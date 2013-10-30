@@ -11,6 +11,7 @@
     <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
+        <details key="documentation" value="Determines whether two KPosition objects have the same x and y values.&#xD;&#xA;Hint: This does not however mean they have the &#xD;&#xA;same position as they could have different parents"/>
       </eAnnotations>
       <eParameters name="other" eType="#//KPosition"/>
     </eOperations>
@@ -40,7 +41,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="placementData" eType="#//KPlacementData"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Information where and how this Rendering shall be placed."/>
+        <details key="documentation" value="Information where and how this Rendering shall be placed. If no placementdata is given this defaults to an AreaPlacementdata filling the bounds of the parent."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
@@ -49,7 +50,7 @@
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="documentation" value="actions that should be performed when according trigger is pulled"/>
         </eAnnotations>
-        <details key="documentation" value="actions that should be performed when "/>
+        <details key="documentation" value="Actions that should be performed when associated trigger is pulled"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -133,7 +134,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="absolute" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="can be used to define an absolute indent of the decorator on the decorated object&#xA;"/>
+        <details key="documentation" value="can be used to define an absolute indent of the decorator on the decorated object&#xD;&#xA;"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
@@ -201,7 +202,11 @@
         <details key="documentation" value="the angle the arc should cover (counterclockwise)"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arcType" eType="#//Arc"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arcType" eType="#//Arc">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Sets the type the arc is supposed to have. See Arc Enum."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KStyle" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -224,11 +229,15 @@
       <details key="documentation" value="contains all the renderings "/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="renderings" upperBound="-1"
-        eType="#//KStyleHolder" containment="true"/>
+        eType="#//KStyleHolder" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The renderings defined by this library."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRenderingRef" eSuperTypes="#//KRendering">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="references an already defined rendering to make redefining unneccessary."/>
+      <details key="documentation" value="References an already defined rendering to make redefining unneccessary. &#xD;&#xA;Be careful to generate no cycles (will cause stack overflow). "/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rendering" lowerBound="1"
         eType="#//KRendering">
@@ -252,21 +261,25 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cursorSelectable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-        defaultValueLiteral="false"/>
+        defaultValueLiteral="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Makes this text selectable similar to a text document so that the whole text or parts of it can be copied."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KPlacement" abstract="true" interface="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="(abstract interface) &#xA;defines a placement for elements"/>
+      <details key="documentation" value="(abstract interface) &#xD;&#xA;defines a placement for elements"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KGridPlacement" eSuperTypes="#//KPlacement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Creates a grid with &lt;numColumns> inside the area defined by &lt;topLeft> and &lt;bottomRight>.&#xA;the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left, the next childElement is placed in the first column of a new row."/>
+      <details key="documentation" value="Creates a grid with &lt;numColumns> inside the area defined by &lt;topLeft> and &lt;bottomRight>.&#xD;&#xA;the grids number of rows depends on the numer of child elements to be placed. Each child is set to the first free column inside the grid. If no column is left, the next childElement is placed in the first column of a new row."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="numColumns" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="The number of columns the grid should have&#xA;if set to -1, all elements are placed in a single row"/>
+        <details key="documentation" value="The number of columns the grid should have&#xD;&#xA;if set to -1, all elements are placed in a single row"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="topLeft" eType="#//KPosition"
@@ -374,6 +387,9 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="LineStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="LineStyles analog to SWT LineStyles"/>
+    </eAnnotations>
     <eLiterals name="SOLID"/>
     <eLiterals name="DASH" value="1"/>
     <eLiterals name="DOT" value="2"/>
@@ -453,7 +469,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KLeftPosition" eSuperTypes="#//KXPosition">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="defines a position starting at the leftmost point of the parent rendering.&#xA;pos = (L+absolute) + (R-L)*relative = (R-absolute) - widthOfParent*relative"/>
+      <details key="documentation" value="defines a position starting at the leftmost point of the parent rendering.&#xD;&#xA;pos = (L+absolute) + (R-L)*relative = (R-absolute) - widthOfParent*relative"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRightPosition" eSuperTypes="#//KXPosition">
@@ -478,43 +494,91 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KForeground" eSuperTypes="#//KColoring">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Defines the alphaChannel of a foregroudRendering"/>
+      <details key="documentation" value="Defines the Foregroundcolor and its alphaChannel of a Rendering"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KColoring" abstract="true" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Defines the alphaChannel of an Object"/>
+      <details key="documentation" value="Defines the alphaChannel and Color of an Object"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-        defaultValueLiteral="255"/>
+        defaultValueLiteral="255">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The transparancy value of this color."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
-        containment="true"/>
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The color the object is supposed to get."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetColor" eType="#//KColor"
-        containment="true"/>
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional target color for gradients. If this is not set no gradient will be displayed."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-        defaultValueLiteral="255"/>
+        defaultValueLiteral="255">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional alpha value for gradient target color."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="gradientAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
-        defaultValueLiteral="0"/>
+        defaultValueLiteral="0">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Angle for the optional gradient. Will be ignored if no targetColor is set."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KBackground" eSuperTypes="#//KColoring">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Defines the alphaChannel of a background of a rendering"/>
+      <details key="documentation" value="Defines the Backgroundcolor and its alphaChannel of a rendering"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontBold" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="FontStyle to dertermine whether to draw it bold or not."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bold" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-        defaultValueLiteral="true"/>
+        defaultValueLiteral="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Set true to draw the text bold."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontItalic" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="FontStyle to dertermine whether to draw it italic or not."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="italic" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Set true to draw the text italic."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontName" eSuperTypes="#//KStyle">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="FontStyle to determine a desired font."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Name of the desired font."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KFontSize" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="FontStyle to determine the size of the font."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-        defaultValueLiteral="10"/>
+        defaultValueLiteral="10">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Desired size of the font."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaleWithZoom" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -523,7 +587,14 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRoundedBendsPolyline" eSuperTypes="#//KPolyline">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bendRadius" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A polyline with rounded corners at its bendpoints"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bendRadius" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Radius of the rounded corners."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRotation" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -609,41 +680,94 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Trigger">
-    <eLiterals name="SINGLECLICK" literal="SINGLECLICK"/>
-    <eLiterals name="DOUBLECLICK" value="1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Trigger presets to determine when to execute actions."/>
+    </eAnnotations>
+    <eLiterals name="SINGLECLICK" literal="SINGLECLICK">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Execute action on single click."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="DOUBLECLICK" value="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Execute action on double click."/>
+      </eAnnotations>
+    </eLiterals>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KStyleHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Element to define styles without attaching them to a specific rendering"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="styles" upperBound="-1"
-        eType="#//KStyle" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//KStyle" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The styles this holder holdes."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Id to reference this style holder."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KInvisibility" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="defines whether an object is visible or not"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="invisible" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Set true to make an element invisible."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KShadow" eSuperTypes="#//KStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
-        defaultValueLiteral="3"/>
+        defaultValueLiteral="3">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Determines x offset from element."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="yOffset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
-        defaultValueLiteral="3"/>
+        defaultValueLiteral="3">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Determines y offset from element."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="blur" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
-        defaultValueLiteral="0.0"/>
+        defaultValueLiteral="0.0">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The amount of blur for this shadow."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
-        containment="true"/>
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The color this shadow effect should have."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KTextUnderline" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="FontStyle to add an unterline to an text element."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="underline" lowerBound="1"
-        eType="#//Underline"/>
+        eType="#//Underline">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The style of the underline."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
-        containment="true"/>
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Color the underline is supposed to have."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Underline">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The style of an underline. Analog to SWT Underline."/>
+    </eAnnotations>
     <eLiterals name="NONE" literal="NONE"/>
     <eLiterals name="SINGLE" value="1" literal="SINGLE"/>
     <eLiterals name="DOUBLE" value="2" literal="DOUBLE"/>
@@ -656,11 +780,22 @@
         eType="#//KStyleHolder"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KTextStrikeout" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="FontStyle to add a strikeout to an text element."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="struckOut" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
-        defaultValueLiteral="true"/>
+        defaultValueLiteral="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Set true to draw the text with a strikeout."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
-        containment="true"/>
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Color the strikeout is supposed to have."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="LineJoin">
     <eLiterals name="JOIN_MITER" literal="JOIN_MITER"/>
