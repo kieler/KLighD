@@ -70,6 +70,7 @@ import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.KXPosition;
 import de.cau.cs.kieler.core.krendering.KYPosition;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
+import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -143,13 +144,23 @@ public final class PlacementUtil {
         }
         
         /**
-         * Constructs a new {@link Point2D} with <code>x</code> and <code>y</code> equal to those of
-         * <code>this</code> {@link Point}.
+         * Constructs a new {@link Point2D} with {@code x} and {@code y} equal to those of {@code this}
+         * {@link Point}.
          * 
          * @return the {@link Point2D}
          */
         public Point2D.Float toPoint2D() {
             return new Point2D.Float(x, y);
+        }
+        
+        /**
+         * Constructs a new {@link KVector} with {@code x} and {@code y} equal to those of {@code this}
+         * {@link Point}.
+         * 
+         * @return the new {@link KVector}.
+         */
+        public KVector toKVector() {
+            return new KVector(x, y);
         }
 
         /**

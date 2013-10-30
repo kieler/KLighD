@@ -30,7 +30,6 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
@@ -505,7 +504,14 @@ public final class LightDiagramServices {
      *            layout with or without animation
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
-        final boolean zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
+        final boolean zoomToFit;
+        if (viewPart.getContextViewer().getCurrentViewContext() != null) {
+            zoomToFit = viewPart.getContextViewer().getCurrentViewContext().isZoomToFit();
+        } else {
+            zoomToFit =
+                    ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
+                            .getString(KlighdPreferences.ZOOM_STYLE)) == ZoomStyle.ZOOM_TO_FIT;
+        }
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -615,8 +621,9 @@ public final class LightDiagramServices {
         
         final KNode viewModel = (KNode) contextViewer.getCurrentViewContext().getViewModel();
         final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
-
-        if (layoutData != null && !layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
+        final ViewContext vc = contextViewer.getCurrentViewContext(); 
+        
+        if (layoutData != null) {
             final List<ILayoutConfig> extendedOptions;
             if (options == null || options.isEmpty()) {
                 extendedOptions = Collections.<ILayoutConfig>singletonList(
@@ -630,7 +637,8 @@ public final class LightDiagramServices {
             DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
                     zoomToFit, extendedOptions);
         } else {
-            diagramViewer.setRecording(false);
+            ZoomStyle zoomStyle = ZoomStyle.create(zoomToFit, vc.isZoomToFocus());
+            diagramViewer.stopRecording(zoomStyle, 0);
         }
     }
 

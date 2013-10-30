@@ -60,10 +60,11 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.util.Iterables2;
@@ -88,7 +89,12 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /** the global, common toolbar for all editors. */
     private IToolBarManager toolBar;
     /** a zoomToFit toolbar button exclusively for one instance of this editor part. */
-    private ActionContributionItem zoomItem;
+    private ActionContributionItem zoomToFitItem;
+    private Action zoomToFitAction;
+    private ActionContributionItem zoomToFocusItem;
+    private Action zoomToFocusAction;
+    /** a zoomToOne button. */
+    private ActionContributionItem zoomToOneItem;
 
     /**
      * Creates a diagram editor part.
@@ -438,17 +444,20 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     private void createButtons() {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
 
-        Action zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+        // zoom to fit
+        zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
             // Constructor
             {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-zoomtofit.gif"));
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtofit.gif"));
                 final ViewContext vc =
                         DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
-                    setChecked(preferenceStore.getBoolean(KlighdPreferences.ZOOM_TO_FIT));
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FIT);
                 }
             }
 
@@ -457,10 +466,13 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 final ViewContext vc =
                         DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
                 if (vc != null) {
-                    vc.setZoomToFit(this.isChecked());
+                    vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
                     // perform zoom to fit upon activation of the toggle button
                     if (this.isChecked()) {
+                        // uncheck the zoom to focus button
+                        zoomToFocusAction.setChecked(false);
+
                         LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
                     }
 
@@ -469,12 +481,69 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         };
         zoomToFitAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFit.h" + hashCode());
         // create the contribution item
-        zoomItem = new ActionContributionItem(zoomToFitAction);
+        zoomToFitItem = new ActionContributionItem(zoomToFitAction);
+        
+        // zoom to focus
+        zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
+            // Constructor
+            {
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
+                final ViewContext vc =
+                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    setChecked(vc.isZoomToFocus());
+                } else {
+                    ZoomStyle style = ZoomStyle.valueOf(
+                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+                    setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
+                }
+            }
+
+            @Override
+            public void run() {
+                final ViewContext vc =
+                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                if (vc != null) {
+                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
+
+                    // perform zoom to focus upon activation of the toggle button
+                    if (this.isChecked()) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
+                        
+                        // uncheck the zoom to fit button
+                        zoomToFitAction.setChecked(false);
+                    }
+
+                }
+            }
+        };
+        zoomToFocusAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFocus.h" + hashCode());
+        zoomToFocusItem = new ActionContributionItem(zoomToFocusAction);
+        
+        // zoom to one ...
+        Action zoomToOne = new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
+            {
+                setImageDescriptor(KlighdPlugin
+                        .getImageDescriptor("icons/kieler-zoomtoone.gif"));
+            }
+            @Override
+            public void run() {
+                DiagramEditorPart.this.getContextViewer().zoomToLevel(1,
+                        KlighdConstants.DEFAULT_ANIMATION_TIME);
+            }
+        };
+        zoomToOne.setId("de.cau.cs.kieler.klighd.editor.zoomToOne.h" + hashCode());
+        zoomToOneItem = new ActionContributionItem(zoomToOne);
     }
 
     /**
      * For edit parts only one common toolbar exists, hence we have to remove the buttons of one
      * editor as soon as a different editor is activated and add our own buttons.
+     * 
+     * TODO fix this. When closing an editor, the toolbar of the new editor is greyed out.
+     * The toolbar itself and its items are enabled however. This might be due
+     * to the partClosed event being invoked after the partActivate event.
      */
     private IPartListener toolBarListener = new IPartListener() {
 
@@ -494,14 +563,18 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
         public void partActivated(final IWorkbenchPart part) {
             if (part.equals(DiagramEditorPart.this)) {
-                toolBar.add(zoomItem);
+                toolBar.add(zoomToFitItem);
+                toolBar.add(zoomToFocusItem);
+                toolBar.add(zoomToOneItem);
                 toolBar.update(true);
             }
         }
         
         private void remove(final IWorkbenchPart part) {
             if (part.equals(DiagramEditorPart.this)) {
-                toolBar.remove(zoomItem);
+                toolBar.remove(zoomToFitItem);
+                toolBar.remove(zoomToFocusItem);
+                toolBar.remove(zoomToOneItem);
                 toolBar.update(true);
             }
         }

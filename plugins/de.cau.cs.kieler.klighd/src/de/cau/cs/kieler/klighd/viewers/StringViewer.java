@@ -21,6 +21,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.klighd.ZoomStyle;
+
 /**
  * A viewer for string messages.
  * 
@@ -109,11 +111,18 @@ public class StringViewer extends AbstractViewer<String> {
     public void setRecording(final boolean recording) {
         // do nothing
     }
-    
+
     /**
-     * {@inheritDoc} 
+     * {@inheritDoc}
      */
-    public void setZoomToFit(final boolean zoomToFit) {
+    public void startRecording() {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
         // do nothing
     }
     

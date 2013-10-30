@@ -44,9 +44,9 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
-import de.cau.cs.kieler.klighd.piccolo.internal.activities.ZoomActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
@@ -414,19 +414,20 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
             layer.removeAllChildren();
         }
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public void setRecording(final boolean recording) {
-        controller.setRecording(recording);
+    public void startRecording() {
+        controller.startRecording();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setZoomToFit(final boolean zoomToFit) {
-        controller.setZoomToFit(zoomToFit);
+    public void stopRecording(final ZoomStyle zoomStyle,
+            final int animationTime) {
+        controller.stopRecording(zoomStyle, animationTime);
     }
 
     /**
@@ -484,21 +485,16 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * {@inheritDoc}
      */
     @Override
-    public void zoom(final float zoomLevel, final int duration) {
-        ZoomActivity zoomActivity = new ZoomActivity(canvas.getCamera(), zoomLevel, duration);
-        if (duration > 0) {
-            canvas.getRoot().addActivity(zoomActivity);
-        } else {
-            zoomActivity.apply();
-        }
+    public void zoomToLevel(final float zoomLevel, final int duration) {
+         controller.zoomToLevel(zoomLevel, duration);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void zoomToFit(final int duration) {
-        controller.zoomToFit(duration);
+    public void zoom(final ZoomStyle style, final int duration) {
+        controller.zoom(style, duration);
     }
 
     /**
@@ -679,5 +675,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         final PPaintContext paintContext = new PPaintContext(g2);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
         camera.fullPaint(paintContext);
+        g2.dispose();
     }
 }

@@ -65,6 +65,7 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
@@ -93,6 +94,7 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolo.util.PDimension;
 
 
 /**
@@ -154,9 +156,14 @@ public class DiagramController {
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
 
-    /** whether to perform 'zoom to fit' while applying the layout. */
-    private boolean zoomToFit = false;
-
+    /** type of zoom style applied after layout. */
+    private ZoomStyle zoomStyle = ZoomStyle.NONE;
+    
+    /** duration of a possible animation. */
+    private int animationTime = 0;
+    
+    private KNode focusNode = null;
+    
     /** the layout changes to graph elements while recording. */
     private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
 
@@ -200,33 +207,30 @@ public class DiagramController {
     }
 
     /**
-     * Sets whether to record layout changes in the graph instead of instantly applying them to the
-     * associated Piccolo nodes.<br>
-     * <br>
-     * Setting the recording status to {@code false} applies all recorded layout changes.
-     * 
-     * @param recording
-     *            true if layout changes should be recorded; false else
-     * 
-     * @author mri, chsch
+     * @see de.cau.cs.kieler.klighd.IViewer IViewer#startRecording()
      */
-    public void setRecording(final boolean recording) {
-        if (record && !recording) {
-            // apply recorded layout changes
-            handleRecordedChanges();
-        }
-        record = recording;
+    public void startRecording() {
+        record = true;
     }
 
     /**
-     * Instructs controller to perform 'zoom to fit' after the layout has been applied.
+     * @param theZoomStyle
+     *            the style used to zoom, eg zoom to fit or zoom to focus
+     * @param theAnimationTime
+     *            duration of the animated layout
      * 
-     * @param zoomToFit
-     *            true if 'zoom to fit' should be applied.
-     * @author chsch
+     * @see de.cau.cs.kieler.klighd.IViewer IViewer#stopRecording(ZoomStyle, int)
      */
-    public void setZoomToFit(final boolean zoomToFit) {
-        this.zoomToFit = zoomToFit;
+    public void stopRecording(final ZoomStyle theZoomStyle, final int theAnimationTime) {
+        if (record) {
+            zoomStyle = theZoomStyle;
+            animationTime = theAnimationTime;
+
+            // apply recorded layout changes
+            handleRecordedChanges();
+
+            record = false;
+        }
     }
 
     /**
@@ -252,6 +256,8 @@ public class DiagramController {
         if (nodeRep != null) {
             nodeRep.getChildArea().setExpanded(false);
         }
+        
+        focusNode = node;
     }
 
     /**
@@ -265,6 +271,8 @@ public class DiagramController {
         if (nodeRep != null) {
             nodeRep.getChildArea().setExpanded(true);
         }
+        
+        focusNode = node;
     }
     
     /**
@@ -291,6 +299,8 @@ public class DiagramController {
         if (nodeRep != null) {
             nodeRep.getChildArea().toggleExpansion();
         }
+        
+        focusNode = node;
     }
 
     /**
@@ -308,7 +318,7 @@ public class DiagramController {
             return;
         }
 
-        remove(diagramElement);
+        remove(diagramElement, false);
     }
     
     /**
@@ -328,13 +338,34 @@ public class DiagramController {
 
         add(diagramElement);
     }
-    
+
     /**
+     * Performs a zooming depending on the specified style.
      * 
+     * @param style
+     *            the desired style
      * @param duration
      *            time to animate
      */
-    public void zoomToFit(final int duration) {
+    public void zoom(final ZoomStyle style, final int duration) {
+        switch (style) {
+        case ZOOM_TO_FIT:
+            zoomToFit(duration);
+            break;
+        case ZOOM_TO_FOCUS:
+            KNode focus = focusNode != null ? focusNode : topNode.getGraphElement();
+            zoomToFocus(focus, duration);
+            break;
+        default:
+            // nothing
+        }
+    }
+    
+    /**
+     * @param duration
+     *            time to animate
+     */
+    private void zoomToFit(final int duration) {
         if (topNode.getParent() instanceof PLayer) {
             KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
             
@@ -356,6 +387,127 @@ public class DiagramController {
                     topNodeLayout.getWidth(), topNodeLayout.getHeight());
             camera.animateViewToCenterBounds(newBounds, true, duration);
         }
+    }
+    
+    /**
+     * 
+     * @param focus
+     *            the desired focus bounds
+     * @param duration
+     *            duration of the animation
+     */
+    private void zoomToFocus(final KNode focus, final int duration) {
+        KShapeLayout shapeLayout = focus.getData(KShapeLayout.class);
+        PBounds newBounds =
+                new PBounds(shapeLayout.getXpos(), shapeLayout.getYpos(), shapeLayout.getWidth(),
+                        shapeLayout.getHeight());
+
+        // we need the bounds in view coordinates (absolute), hence for
+        // a knode add the translations of all parent nodes
+        KNode parent = focus.getParent();
+        while (parent != null) {
+            KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
+            newBounds.moveBy(parentLayout.getXpos(), parentLayout.getYpos());
+            parent = parent.getParent();
+        }
+
+        zoomToFocus(newBounds, duration);
+    }
+
+    /**
+     * 
+     * @param focus
+     *            the desired focus bounds
+     * @param duration
+     *            duration of the animation
+     */
+    private void zoomToFocus(final PBounds focus, final int duration) {
+        PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
+
+        PBounds viewBounds = camera.getViewBounds();
+        // check if we need to scale the view in order for the view to
+        // contain the whole focus
+        boolean scale =
+                viewBounds.getWidth() < focus.getWidth()
+                        || viewBounds.getHeight() < focus.getHeight();
+
+        // fetch bounds of the whole diagram
+        KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+        PBounds newBounds =
+                new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
+                        topNodeLayout.getWidth(), topNodeLayout.getHeight());
+        boolean fullyContains =
+                viewBounds.getWidth() > newBounds.getWidth()
+                        && viewBounds.getHeight() > newBounds.getHeight();
+
+        // if the viewport can fully contain the diagram, we perform zoom to fit 
+        if (fullyContains) {
+            camera.animateViewToCenterBounds(newBounds, true, duration);
+        } else {
+            camera.animateViewToCenterBounds(focus, scale, duration);
+        }
+
+    }
+    
+    /**
+     * Sets the zoomlevel to {@code newZoomLevel}. A value below 1 results in smaller elements than
+     * in the original diagram, a value greater than 1 in a bigger elements than in the original.
+     * 
+     * The method tries retain the center point, i.e., to center over the currently centered point,
+     * however, it is assured that at least some parts of the underlying diagram are visible.
+     * 
+     * @param newZoomLevel
+     *            the new zoom level
+     * @param duration
+     *            time to animate
+     */
+    public void zoomToLevel(final float newZoomLevel, final int duration) {
+        if (topNode.getParent() instanceof PLayer) {
+            KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+
+            if (topNodeLayout == null) {
+                String msg = "KLighD DiagramController: "
+                        + "Failed to apply 'zoom to one' as the topNode's layout data are unavailable. "
+                        + "This is most likely due to a failed incremental update before.";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
+                        StatusManager.LOG);
+                return;
+            }
+
+            // chsch: I don't like this exploit of implicit knowledge!
+            // Would an API change be reasonable here?
+            // (leads to worse class structure, less encapsulation)
+            PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
+            PBounds nodeBounds =
+                    new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
+                            topNodeLayout.getWidth(), topNodeLayout.getHeight());
+
+            // it would be possible to use PCamera#scaleViewAboutPoint(scale, x, y), 
+            // however this method does not allow for animation
+            
+            // calculate the bound as they would be if scaled by the new factor
+            PBounds origBounds = camera.getViewBounds();
+            double oldZoomLevel = camera.getViewTransformReference().getScale();
+            PBounds newBounds =
+                    new PBounds(origBounds.x, origBounds.y, origBounds.width * oldZoomLevel
+                            / newZoomLevel, origBounds.height * oldZoomLevel / newZoomLevel);
+
+            // add the necessary translation
+            double normalizedWidth = origBounds.width * oldZoomLevel;
+            double normalizedHeight = origBounds.height * oldZoomLevel;
+            double transX = (origBounds.width - normalizedWidth / newZoomLevel) / 2f;
+            double transY = (origBounds.height - normalizedHeight / newZoomLevel) / 2f;
+            newBounds.moveBy(transX, transY);
+
+            // make sure at least some of the diagram is visible after zooming to scale 1
+            PDimension dim = newBounds.deltaRequiredToContain(nodeBounds);
+            newBounds.moveBy(dim.width, dim.height);
+
+            // perform the animation
+            camera.animateViewToCenterBounds(newBounds, true, duration);
+        }
+
     }
     
     /**
@@ -452,24 +604,28 @@ public class DiagramController {
      * 
      * @param element
      *            the {@link KGraphElement} to be removed from the diagram
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void remove(final KGraphElement element) {
+    private void remove(final KGraphElement element, final boolean releaseControllers) {
         if (element.eContainer() == null) {
             return;
         }
         
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
-            removeNode((KNode) element);
+            removeNode((KNode) element, releaseControllers);
             break;
         case KGraphPackage.KPORT:
-            removePort((KPort) element);
+            removePort((KPort) element, releaseControllers);
             break;
         case KGraphPackage.KEDGE:
-            removeEdge((KEdge) element);
+            removeEdge((KEdge) element, releaseControllers);
             break;
         case KGraphPackage.KLABEL:
-            removeLabel((KLabel) element);
+            removeLabel((KLabel) element, releaseControllers);
             break;
         }
     }
@@ -612,7 +768,7 @@ public class DiagramController {
      */
     private void removeChildren(final KNode parentNode) {
         for (KNode child : parentNode.getChildren()) {
-            removeNode(child);
+            removeNode(child, false);
         }
         RenderingContextData.get(parentNode).setProperty(KlighdInternalProperties.POPULATED, false);
 
@@ -628,8 +784,12 @@ public class DiagramController {
      * 
      * @param node
      *            the node
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removeNode(final KNode node) {
+    private void removeNode(final KNode node, final boolean releaseControllers) {
         INode nodeRep = RenderingContextData.get(node).getProperty(REP);
         if (nodeRep != null) {
             KNodeNode nodeNode;
@@ -651,22 +811,24 @@ public class DiagramController {
 
             // remove all incoming edges
             for (KEdge incomingEdge : node.getIncomingEdges()) {
-                removeEdge(incomingEdge);
+                removeEdge(incomingEdge, releaseControllers);
             }
 
             // remove all outgoing edges
             for (KEdge outgoingEdge : node.getOutgoingEdges()) {
-                removeEdge(outgoingEdge);
+                removeEdge(outgoingEdge, releaseControllers);
             }
 
             // remove the node representation from the containing child area
             nodeNode.removeFromParent();
             RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, false);
             
-            // release the objects kept in mind
-            nodeNode.getRenderingController().removeAllPNodeControllers();
-            // release the node rendering controller
-            // nodeNode.setRenderingController(null);
+            if (releaseControllers) {
+                // release the objects kept in mind
+                nodeNode.getRenderingController().removeAllPNodeControllers();
+                // release the node rendering controller
+                nodeNode.setRenderingController(null);
+            }
         }
     }
 
@@ -737,8 +899,12 @@ public class DiagramController {
      * 
      * @param edge
      *            the edge
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removeEdge(final KEdge edge) {
+    private void removeEdge(final KEdge edge, final boolean releaseControllers) {
         KEdgeNode edgeNode = RenderingContextData.get(edge).getProperty(EDGE_REP);
         if (edgeNode != null) {
             // remove the edge offset listeners
@@ -757,12 +923,12 @@ public class DiagramController {
             edgeNode.removeFromParent();
             RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, false);
             
-            // due to #deactivateSubgraph() this method will be performed multiple times so: 
-            if (edgeNode.getRenderingController() != null) {
+            // due to #removeNode() this method might be performed multiple times so: 
+            if (releaseControllers && edgeNode.getRenderingController() != null) {
                 // release the objects kept in mind
                 edgeNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
-//                edgeNode.setRenderingController(null);
+                edgeNode.setRenderingController(null);
             }
         }
     }
@@ -825,15 +991,19 @@ public class DiagramController {
      * 
      * @param port
      *            the port
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removePort(final KPort port) {
+    private void removePort(final KPort port, final boolean releaseControllers) {
         KPortNode portNode = RenderingContextData.get(port).getProperty(PORT_REP);
         if (portNode != null) {
             // remove the port representation from the containing node
             portNode.removeFromParent();
             RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, false);
 
-            if (portNode.getRenderingController() != null) {
+            if (releaseControllers) {
                 // release the objects kept in mind
                 portNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
@@ -905,16 +1075,19 @@ public class DiagramController {
      * 
      * @param label
      *            the label
+     * @param releaseControllers
+     *            flag indicating whether controller instances shall be removed from lookup tables
+     *            because the element actually has been removed from the view model rather than just
+     *            hidden
      */
-    private void removeLabel(final KLabel label) {
+    private void removeLabel(final KLabel label, final boolean releaseControllers) {
         KLabelNode labelNode = RenderingContextData.get(label).getProperty(LABEL_REP);
         if (labelNode != null) {
             // remove the label representation from the containing node
             labelNode.removeFromParent();
             RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, false);
 
-            if (labelNode.getRenderingController() != null) {
-                // TODO (chsch) Why may the rendering controller be 'null' here? 
+            if (releaseControllers) {
                 // release the objects kept in mind
                 labelNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
@@ -928,14 +1101,6 @@ public class DiagramController {
      * Applies the recorded layout changes by creating appropriate activities.
      */
     private void handleRecordedChanges() {
-        // get the duration for applying the layout
-        KShapeLayout shapeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
-        int duration;
-        if (shapeLayout != null) {
-            duration = shapeLayout.getProperty(KlighdInternalProperties.APPLY_LAYOUT_DURATION);
-        } else {
-            duration = 0;
-        }
 
         // create activities to apply all recorded changes
         for (Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
@@ -958,10 +1123,10 @@ public class DiagramController {
                     // the visibility is set to false for newly introduced edges in #addEdge
                     //  for avoiding unnecessary flickering and indicating to fade it in
                     activity = new FadeEdgeInActivity(edgeNode, bends, junctions,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 } else {
                     activity = new ApplyBendPointsActivity(edgeNode, bends, junctions,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 }
             } else {
                 // shape layout changed
@@ -973,13 +1138,13 @@ public class DiagramController {
                     //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
                     //  to fade it in
                     activity = new FadeNodeInActivity(shapeNode, bounds,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 } else { 
                     activity = new ApplySmartBoundsActivity(shapeNode, bounds,
-                            duration > 0 ? duration : 1);
+                            animationTime > 0 ? animationTime : 1);
                 }
             }
-            if (duration > 0) {
+            if (animationTime > 0) {
                 // schedule the activity
                 NodeUtil.schedulePrimaryActivity(shapeNode, activity);
             } else {
@@ -992,9 +1157,8 @@ public class DiagramController {
         }
         recordedChanges.clear();
 
-        if (this.zoomToFit) {
-            zoomToFit(duration);
-        }
+        // apply a proper zoom handling if requested
+        zoom(zoomStyle, animationTime);
     }
 
     /**
@@ -1415,7 +1579,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KNode removedNode = (KNode) notification.getOldValue();
-                        removeNode(removedNode);
+                        removeNode(removedNode, true);
 
                         // Removing all contained nodes is required to remove all outgoing or
                         //  incoming edges, as in case of interlevel ones their representing
@@ -1423,7 +1587,7 @@ public class DiagramController {
                         //  be one of removedNode's parent representatives.
                         for (KNode n : Iterables2.toIterable(Iterators.filter(
                                 removedNode.eAllContents(), KNode.class))) {
-                            removeNode(n);
+                            removeNode(n, true);
                         }
                         break;
                     }
@@ -1432,7 +1596,7 @@ public class DiagramController {
                         final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
 
                         for (KNode removedNode : removedNodes) {
-                            removeNode(removedNode);
+                            removeNode(removedNode, true);
 
                             // Removing all contained nodes is required to remove all outgoing or
                             //  incoming edges, as in case of interlevel ones their representing
@@ -1440,7 +1604,7 @@ public class DiagramController {
                             //  be one of removedNode's parent representatives.
                             for (KNode n : Iterables2.toIterable(Iterators.filter(
                                     removedNode.eAllContents(), KNode.class))) {
-                                removeNode(n);
+                                removeNode(n, true);
                             }
                         }
                         break;
@@ -1507,7 +1671,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KEdge removedEdge = (KEdge) notification.getOldValue();
-                        removeEdge(removedEdge);
+                        removeEdge(removedEdge, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -1515,7 +1679,7 @@ public class DiagramController {
                         final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
 
                         for (KEdge removedEdge : removedEdges) {
-                            removeEdge(removedEdge);
+                            removeEdge(removedEdge, true);
                         }
                         break;
                     }
@@ -1578,7 +1742,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KPort removedPort = (KPort) notification.getOldValue();
-                        removePort(removedPort);
+                        removePort(removedPort, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -1586,7 +1750,7 @@ public class DiagramController {
                         final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
 
                         for (KPort removedPort : removedPorts) {
-                            removePort(removedPort);
+                            removePort(removedPort, true);
                         }
                         break;
                     }
@@ -1634,7 +1798,7 @@ public class DiagramController {
                     }
                     case Notification.REMOVE: {
                         final KLabel removedLabel = (KLabel) notification.getOldValue();
-                        removeLabel(removedLabel);
+                        removeLabel(removedLabel, true);
                         break;
                     }
                     case Notification.REMOVE_MANY: {
@@ -1643,7 +1807,7 @@ public class DiagramController {
                                 .getOldValue();
 
                         for (KLabel removedLabel : removedLabels) {
-                            removeLabel(removedLabel);
+                            removeLabel(removedLabel, true);
                         }
                         break;
                     }
@@ -1979,19 +2143,16 @@ public class DiagramController {
     
     private boolean isAutomaticallyArranged(final KGraphElement element) {
         KShapeLayout shapeLayout = this.topNode.getGraphElement().getData(KShapeLayout.class);
-        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)
-                || shapeLayout.getProperty(KlighdProperties.LAYOUT_IGNORE)) {
+        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
         shapeLayout = element.getData(KShapeLayout.class);
-        if (shapeLayout != null && (shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)
-                || shapeLayout.getProperty(KlighdProperties.LAYOUT_IGNORE))) {
+        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
         final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
         shapeLayout = container == null ? null : container.getData(KShapeLayout.class);
-        if (shapeLayout != null && (shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)
-                || shapeLayout.getProperty(KlighdProperties.LAYOUT_IGNORE))) {
+        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
         return true;

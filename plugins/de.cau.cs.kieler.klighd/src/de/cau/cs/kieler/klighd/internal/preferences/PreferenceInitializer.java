@@ -36,7 +36,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         preferenceStore.setDefault(
                 KlighdPreferences.ANIMATE_LAYOUT, KlighdPreferences.ANIMATE_LAYOUT_DEFAULT);
         preferenceStore.setDefault(
-                KlighdPreferences.ZOOM_TO_FIT, KlighdPreferences.ZOOM_TO_FIT_DEFAULT);
+                KlighdPreferences.ZOOM_STYLE, KlighdPreferences.ZOOM_STYLE_DEFAULT);
     }
 
 }

@@ -76,6 +76,12 @@ public final class KlighdConstants {
     public static final int ALPHA_FULL_OPAQUE = 255;
 
     /**
+     * Default animation time in ms.
+     */
+    public static final int DEFAULT_ANIMATION_TIME = 500;
+    
+    
+    /**
      * Constant definition denoting the standard line drawing attributes.
      */
     public static final LineAttributes DEFAULT_LINE_ATTRIBUTES = new LineAttributes(1f);

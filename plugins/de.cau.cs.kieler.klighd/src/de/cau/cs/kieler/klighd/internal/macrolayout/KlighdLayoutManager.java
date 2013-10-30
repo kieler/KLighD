@@ -57,6 +57,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -300,7 +301,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // furthermore, all nodes that have the LAYOUT_IGNORE property set are ignored
         for (KNode node : Iterables.filter(parent.getChildren(), Predicates.and(
                 RenderingContextData.IS_ACTIVE,
-                KlighdPredicates.propertyPredicate(KlighdProperties.LAYOUT_IGNORE, false, true)))) {
+                KlighdPredicates.propertyPredicate(LayoutOptions.NO_LAYOUT, false, true)))) {
             createNode(mapping, node, layoutParent);
         }
     }
@@ -413,7 +414,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         List<KEdge> edges = mapping.getProperty(EDGES);
         Iterables.addAll(edges,
                 Iterables.filter(node.getOutgoingEdges(), RenderingContextData.IS_ACTIVE));
-    }
+        }
 
     /**
      * Creates a layout port for the port attached to the given layout node.
@@ -511,6 +512,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (edgeLayout != null) {
             transferEdgeLayout(edgeLayout, layoutLayout, true);
         }
+        
+        // make sure to clear old junction points
+        // the new layouter might not calculate any and we don't want
+        // any floating junction points in the diagram
+        edgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS, null);
 
         layoutEdge.setSource(layoutSource);
         layoutEdge.setTarget(layoutTarget);
@@ -589,21 +595,21 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     public void applyLayout(final LayoutMapping<KGraphElement> mapping, final boolean zoomToFit,
             final int animationTime) {
-        // set the animation time as property on the root element
-        KShapeLayout parentLayout = mapping.getParentElement().getData(KShapeLayout.class);
-        if (parentLayout != null) {
-            parentLayout.setProperty(KlighdInternalProperties.APPLY_LAYOUT_DURATION, animationTime);
-        }
-
         // get the visualizing viewer if any
         IViewer<?> viewer = mapping.getProperty(KlighdInternalProperties.VIEWER);
 
         // apply the layout
         if (viewer != null) {
-            viewer.setRecording(true);
+            viewer.startRecording();
             applyLayout(mapping);
-            viewer.setZoomToFit(zoomToFit);
-            viewer.setRecording(false);
+            
+            // get the zoomStyle
+            ZoomStyle zoomStyle = ZoomStyle.NONE;
+            if (viewer.getContextViewer().getCurrentViewContext() != null) {
+                zoomStyle = viewer.getContextViewer().getCurrentViewContext().getZoomStyle();
+            }
+            
+            viewer.stopRecording(zoomStyle, animationTime);
         } else {
             applyLayout(mapping);
         }
@@ -672,7 +678,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (excludedEdges != null) {
             for (KEdge edge : excludedEdges) {
                 handleExcludedEdge(edge);
-            }
+    }
         }
     }
 
@@ -913,19 +919,21 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     private void checkAndCopyPoint(final KPoint originPoint, final KPoint destinationPoint,
             final KNode node, final KPort port, final KRendering nodeRendering,
             final KRendering portRendering, final KVector offset) {
+        
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         KVector p = originPoint.createVector();
         if (port == null) {
             p.add(offset);
-            AnchorUtil.anchorPoint(p, nodeLayout.getWidth(), nodeLayout.getHeight(),
+            p = AnchorUtil.nearestBorderPoint(p, nodeLayout.getWidth(), nodeLayout.getHeight(),
                     nodeRendering);
         } else {
             KShapeLayout portLayout = port.getData(KShapeLayout.class);
             offset.translate(-portLayout.getXpos(), -portLayout.getYpos());
             p.add(offset);
-            AnchorUtil.anchorPoint(p, portLayout.getWidth(), portLayout.getHeight(),
+            p = AnchorUtil.nearestBorderPoint(p, portLayout.getWidth(), portLayout.getHeight(),
                     portRendering);
         }
+        
         destinationPoint.applyVector(p.sub(offset));
     }
     
@@ -941,6 +949,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private KVector toElementBorder(final KNode centerNode, final KPort centerPort,
             final KNode remoteNode, final KPort remotePort) {
+        
         KShapeLayout remoteNodeLayout = remoteNode.getData(KShapeLayout.class);
         KVector point = new KVector();
         if (remotePort == null) {
@@ -956,18 +965,26 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             KimlUtil.toAbsolute(point, remoteNode.getParent());
             KimlUtil.toRelative(point, centerNode.getParent());
         }
+        
         KShapeLayout centerNodeLayout = centerNode.getData(KShapeLayout.class);
         point.translate(-centerNodeLayout.getXpos(), -centerNodeLayout.getYpos());
         if (centerPort == null) {
-            AnchorUtil.anchorPoint(point, centerNodeLayout.getWidth(), centerNodeLayout.getHeight(),
+            point = AnchorUtil.collideTowardsCenter(
+                    point,
+                    centerNodeLayout.getWidth(),
+                    centerNodeLayout.getHeight(),
                     centerNode.getData(KRendering.class));
         } else {
             KShapeLayout centerPortLayout = centerPort.getData(KShapeLayout.class);
             point.translate(-centerPortLayout.getXpos(), -centerPortLayout.getYpos());
-            AnchorUtil.anchorPoint(point, centerPortLayout.getWidth(), centerPortLayout.getHeight(),
+            point = AnchorUtil.collideTowardsCenter(
+                    point,
+                    centerPortLayout.getWidth(),
+                    centerPortLayout.getHeight(),
                     centerPort.getData(KRendering.class));
             point.translate(centerPortLayout.getXpos(), centerPortLayout.getYpos());
         }
+        
         return point;
     }
 

@@ -25,11 +25,21 @@
       </diagramSynthesis>
    </extension>
    <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="de.cau.cs.kieler.klighd.examples.ecore.EcorePropertyTester"
+            id="de.cau.cs.kieler.klighd.examples.ecore.EcorePropertyTester"
+            namespace="de.cau.cs.kieler.klighd.examples"
+            properties="AllAreEClassifiers"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="de.cau.cs.kieler.klighd.examples.ecore.RemoveNodeHandler"
-            id="de.cau.cs.kieler.klighd.command1"
-            name="Shoot class away">
+            id="de.cau.cs.kieler.klighd.examples.removeCommand"
+            name="Remove class from diagram">
       </command>
    </extension>
    <extension
@@ -38,22 +48,14 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
-               commandId="de.cau.cs.kieler.klighd.command1"
+               commandId="de.cau.cs.kieler.klighd.examples.removeCommand"
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <with
-                     variable="selection">
-                  <and>
-                     <instanceof
-                           value="java.lang.Iterable">
-                     </instanceof>
-                     <iterate>
-                        <instanceof
-                              value="de.cau.cs.kieler.core.kgraph.KNode">
-                        </instanceof>
-                     </iterate>
-                  </and>
+               <with variable="selection">
+                  <test
+                        property="de.cau.cs.kieler.klighd.examples.AllAreEClassifiers">
+                  </test>
                </with>
             </visibleWhen>
          </command>

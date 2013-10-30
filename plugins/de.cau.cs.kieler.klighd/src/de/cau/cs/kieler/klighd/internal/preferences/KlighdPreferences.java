@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.internal.preferences;
 
+import de.cau.cs.kieler.klighd.ZoomStyle;
+
 /**
  * IDs and default values of preferences defined by KLighD and stored in the preference store.
  * 
@@ -27,13 +29,12 @@ public final class KlighdPreferences {
     /** Default value of the Animate Layout preference. */
     public static final boolean ANIMATE_LAYOUT_DEFAULT = true;
     
-    /** ID of the Zoom-to-Fit preference. */
-    public static final String ZOOM_TO_FIT =
-            "de.cau.cs.kieler.klighd.preferences.zoomToFit"; //$NON-NLS-1$
+    /** ID of the Zoom-style preference. */
+    public static final String ZOOM_STYLE =
+            "de.cau.cs.kieler.klighd.preferences.zoomStyle"; //$NON-NLS-1$
     
-    /** Default value of the Zoom-to-Fit preference. */
-    public static final boolean ZOOM_TO_FIT_DEFAULT = true;
-    
+    /** Default zoom style value. */
+    public static final String ZOOM_STYLE_DEFAULT = ZoomStyle.ZOOM_TO_FIT.name();
     
     /**
      * This class cannot be instantiated.

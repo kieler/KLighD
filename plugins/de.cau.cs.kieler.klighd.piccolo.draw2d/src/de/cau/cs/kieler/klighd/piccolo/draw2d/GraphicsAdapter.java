@@ -226,7 +226,15 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void drawImage(final Image srcImage, final int x, final int y) {
-        pg.drawImage(srcImage, x, y);
+        // since our KlighdSWTGraphics interface requires x/y offsets
+        //  to be performed by means of KlighdSWTGraphics#translate(...)
+        //  create a corresponding AffineTransform and do it this way
+        final AffineTransform transform = new AffineTransform();
+        transform.translate(x, y);
+        pg.transform(transform);
+
+        final org.eclipse.swt.graphics.Rectangle bounds = srcImage.getBounds();
+        pg.drawImage(srcImage, bounds.width, bounds.height);
     }
 
     /**

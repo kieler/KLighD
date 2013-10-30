@@ -24,6 +24,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -116,7 +117,13 @@ public class SynthesisOptionControlFactory {
             public void widgetSelected(final SelectionEvent event) {
                 // set the new option value and trigger the diagram update
                 context.configureOption(option, ((Button) event.widget).getSelection());
-                DiagramViewManager.getInstance().updateView(viewId);
+                
+                // trigger the diagram update
+                Display.getCurrent().asyncExec(new Runnable() {
+                    public void run() {
+                        DiagramViewManager.getInstance().updateView(viewId);
+                    }
+                });
             }
         });
     }
@@ -164,7 +171,13 @@ public class SynthesisOptionControlFactory {
                     if (((Button) event.widget).getSelection()) {
                         // set the new option value and trigger the diagram update
                         context.configureOption(option, value);
-                        DiagramViewManager.getInstance().updateView(viewId);
+                        
+                        // trigger the diagram update
+                        Display.getCurrent().asyncExec(new Runnable() {
+                            public void run() {
+                                DiagramViewManager.getInstance().updateView(viewId);
+                            }
+                        });
                     }
                 }
             });
@@ -274,7 +287,11 @@ public class SynthesisOptionControlFactory {
                 container.layout(true);
                 
                 // trigger the diagram update
-                DiagramViewManager.getInstance().updateView(viewId);
+                Display.getCurrent().asyncExec(new Runnable() {
+                    public void run() {
+                        DiagramViewManager.getInstance().updateView(viewId);
+                    }
+                });
             }
         });
     }

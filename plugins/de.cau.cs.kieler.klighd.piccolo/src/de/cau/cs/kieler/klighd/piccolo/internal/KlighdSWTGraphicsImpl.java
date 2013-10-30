@@ -72,7 +72,7 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
  */
 public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphicsEx {
 
-    // SUPPRESS CHECKSTYLE NEXT 22 Visibility
+    // SUPPRESS CHECKSTYLE NEXT 25 Visibility
     
     /** The {@link Device} to draw on. */
     protected Device device;
@@ -83,8 +83,11 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     /** An internal SWT {@link Rectangle} used for clip handling computations. */
     protected Transform swtTransform;
     
-    /** A {@link TextLayout} used to draw style texts (e.g. those with underline and/or strikeout. */
+    /** A {@link TextLayout} used to draw styled texts (e.g. those with underline and/or strikeout). */
     protected TextLayout textLayout;
+    
+    /** Indicates a self-created textLayout that is to be disposed while disposing this instance. */
+    protected boolean disposeTextLayout = false;
     
     /** The current font to use when drawing text. */
     protected Font curFont;
@@ -105,7 +108,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      *            Device onto which ultimately all gc operations are drawn onto
      */
     public KlighdSWTGraphicsImpl(final GC gc, final Device device) {
-        this(device, gc, null);
+        this(device, gc, new TextLayout(device));
+        this.disposeTextLayout = true;
     }
 
     /**
@@ -783,7 +787,14 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         /* do nothing */
     }
 
-    
+    @Override
+    public void dispose() {
+        if (disposeTextLayout && this.textLayout != null) {
+            this.textLayout.dispose();
+        }
+    }
+
+
     /* ------------------------------------------------ */
     /*  legacy methods due to inheritance of Graphics2D */
     /*   that are not supported by this implementation  */
@@ -1068,11 +1079,6 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1,
             int sx2, int sy2, java.awt.Color bgcolor, ImageObserver observer) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void dispose() {
         throw new UnsupportedOperationException();
     }
 }
