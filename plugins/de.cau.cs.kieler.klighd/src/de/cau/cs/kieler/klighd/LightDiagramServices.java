@@ -56,23 +56,11 @@ public final class LightDiagramServices {
     public static final IProperty<String> REQUESTED_UPDATE_STRATEGY = new Property<String>(
             "klighd.updateStrategy");
 
-    /** the singleton instance. */
-    private static LightDiagramServices instance = new LightDiagramServices();
-
     /**
      * A private constructor to prevent instantiation.
      */
     private LightDiagramServices() {
         // do nothing
-    }
-
-    /**
-     * Returns the singleton instance.
-     * 
-     * @return the singleton
-     */
-    public static LightDiagramServices getInstance() {
-        return instance;
     }
 
     /**
@@ -83,7 +71,7 @@ public final class LightDiagramServices {
      * @return the view context or null if the model and all possible transformations are
      *         unsupported by all viewer providers
      */
-    public ViewContext createViewContext(final Object model) {
+    public static ViewContext createViewContext(final Object model) {
         ViewContext viewContext = new ViewContext();
         if (KlighdDataManager.getInstance().getTransformationsGraph()
                 .configureViewContext(viewContext, model, null)) {
@@ -104,7 +92,7 @@ public final class LightDiagramServices {
      * @return the view context or null if the model and all possible transformations are
      *         unsupported by all viewer providers
      */
-    public ViewContext createViewContext(final Object model,
+    public static ViewContext createViewContext(final Object model,
             final IPropertyHolder... propertyHolders) {
         KlighdDataManager dataManager = KlighdDataManager.getInstance();
         TransformationsGraph transformationsGraph = dataManager.getTransformationsGraph();
@@ -179,7 +167,7 @@ public final class LightDiagramServices {
      *            the property holders
      * @return true if the view context has been updated successfully; false else
      */
-    public boolean updateViewContext(final ViewContext viewContext, final Object model,
+    public static boolean updateViewContext(final ViewContext viewContext, final Object model,
             final IPropertyHolder... propertyHolders) {
         // copy the properties to the view context
         for (IPropertyHolder propertyHolder : propertyHolders) {
@@ -247,8 +235,8 @@ public final class LightDiagramServices {
      *            the parent composite
      * @return the created viewer or null on failure
      */
-    public IViewer<?> createViewer(final ContextViewer parentViewer, final ViewContext viewContext,
-            final Composite parent) {
+    public static IViewer<?> createViewer(final ContextViewer parentViewer,
+            final ViewContext viewContext, final Composite parent) {
         IViewerProvider<KNode> viewerProvider = viewContext.getViewerProvider();
         if (viewerProvider != null) {
             // create a new viewer
@@ -272,7 +260,7 @@ public final class LightDiagramServices {
      *            the list of transformation ids
      * @return the array of transformations or null if a transformation could not be resolved
      */
-    private ITransformation<?, ?>[] getTransformationsById(final List<String> transformationIds) {
+    private static ITransformation<?, ?>[] getTransformationsById(final List<String> transformationIds) {
         LinkedList<ITransformation<?, ?>> transformations = new LinkedList<ITransformation<?, ?>>();
         if (transformationIds.size() > 0) {
             for (String transformationId : transformationIds) {
@@ -297,7 +285,7 @@ public final class LightDiagramServices {
      *            the source model
      * @return the target model
      */
-    private Object performTransformations(final ViewContext viewContext, final Object model) {
+    private static Object performTransformations(final ViewContext viewContext, final Object model) {
         Object currentModel = model;
         for (TransformationContext<?, ?> transformationContext : viewContext
                 .getTransformationContexts()) {
@@ -660,14 +648,14 @@ public final class LightDiagramServices {
      */
     public static <T> T translateModel(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
-        ViewContext vc = LightDiagramServices.getInstance().createViewContext(model, propertyHolders);
+        ViewContext vc = createViewContext(model, propertyHolders);
         
         if (vc == null) {
             throw new IllegalStateException("Could not create a View Context for the model "
                     + ". This might be due to a missing transformation.");
         }
 
-        LightDiagramServices.getInstance().updateViewContext(vc, model);
+        updateViewContext(vc, model);
         @SuppressWarnings("unchecked")
         T result = (T) vc.getViewModel();
         if (otherVC != null) {

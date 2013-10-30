@@ -652,9 +652,9 @@ public class DiagramController {
                 try {
                     Resource res = new ResourceSetImpl().getResource(uri, true);
                     EObject model = res.getContents().get(0);
-                    ViewContext vc = LightDiagramServices.getInstance().createViewContext(model,
+                    ViewContext vc = LightDiagramServices.createViewContext(model,
                         new KlighdSynthesisProperties().useSimpleUpdateStrategy());
-                    LightDiagramServices.getInstance().updateViewContext(vc, model);
+                    LightDiagramServices.updateViewContext(vc, model);
                     res.unload();
                     result = (KNode) vc.getViewModel();
                 } catch (Exception e) {
