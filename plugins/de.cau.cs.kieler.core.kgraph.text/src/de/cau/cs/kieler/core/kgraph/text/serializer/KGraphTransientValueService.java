@@ -46,6 +46,7 @@ public class KGraphTransientValueService extends DefaultTransientValueService {
                 || feature == PACKAGE.getKNode_Parent()
                 || feature == PACKAGE.getKEdge_Source()
                 || feature == R_PACKAGE.getKRendering_Parent()
+                || feature == PACKAGE.getKPort_Edges()
                 || feature == PACKAGE.getEMapPropertyHolder_Properties()) {
             return true;
         }
