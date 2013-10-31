@@ -23,6 +23,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
@@ -626,7 +629,7 @@ public final class LightDiagramServices {
                         contextViewer.getLightLayoutConfig());
             } else {
                 CompoundLayoutConfig compound = new CompoundLayoutConfig();
-                compound.addAll(options);
+                compound.addAll(Collections2.filter(options, Predicates.notNull()));
                 compound.add(contextViewer.getLightLayoutConfig());
                 extendedOptions = Collections.<ILayoutConfig>singletonList(compound);
             }

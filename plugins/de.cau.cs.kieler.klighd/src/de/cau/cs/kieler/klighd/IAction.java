@@ -13,11 +13,10 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-
-import com.google.common.collect.ImmutableList;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -27,6 +26,7 @@ import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
+import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * Common interface of classes providing implementations of
@@ -85,10 +85,17 @@ public interface IAction {
         }
 
         /**
-         * @return the viewer
+         * @return the current actual diagram viewer, usually the PiccoloViewer
          */
-        public IViewer<?> getViewer() {
+        public IViewer<?> getActiveViewer() {
             return viewer;
+        }
+        
+        /**
+         * @return the current {@link ContextViewer}
+         */
+        public ContextViewer getContextViewer() {
+            return viewer.getContextViewer();
         }
         
         /**
@@ -117,9 +124,17 @@ public interface IAction {
         }
 
         /**
+         * @return the node
+         */
+        public KNode getKNode() {
+            return (KNode) ModelingUtil.eContainerOrSelfOfType(getKGraphElement(),
+                    KGraphPackage.eINSTANCE.getKNode());
+        }
+
+        /**
          * @return the rendering
          */
-        public KRendering getRendering() {
+        public KRendering getKRendering() {
             return rendering;
         }
 
@@ -177,7 +192,7 @@ public interface IAction {
          */
         public static ActionResult createResult(final boolean actionPerformed,
                 final ILayoutConfig... config) {
-            return new ActionResult(actionPerformed, ImmutableList.<ILayoutConfig>copyOf(config));
+            return new ActionResult(actionPerformed, Arrays.asList(config));
         }
         
         /**
