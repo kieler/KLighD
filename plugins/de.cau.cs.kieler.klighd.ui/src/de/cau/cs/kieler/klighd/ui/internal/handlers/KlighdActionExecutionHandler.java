@@ -49,6 +49,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer.KlighdTreeSelection;
  */
 public class KlighdActionExecutionHandler extends AbstractHandler {
 
+    /** The action parameter id as defined in the plugin.xml. */
+    private static final String ACTION_PARAMETER_ID = "de.cau.cs.kieler.klighd.ui.action";
+    
     /**
      * {@inheritDoc}
      */
@@ -56,7 +59,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         KlighdTreeSelection selection = (KlighdTreeSelection) HandlerUtil.getCurrentSelection(event);
         IAction action = null;
         try {
-            action = (IAction) event.getObjectParameterForExecution("de.cau.cs.kieler.klighd.ui.action");
+            action = (IAction) event.getObjectParameterForExecution(ACTION_PARAMETER_ID);
         } catch (ExecutionException e) {
             return null;
         }

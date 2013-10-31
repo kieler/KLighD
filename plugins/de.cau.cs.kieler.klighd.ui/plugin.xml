@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="de.cau.cs.kieler.klighd"
+            id="de.cau.cs.kieler.klighd.ui"
             name="KLighD Commands">
       </category>
       <commandParameterType
@@ -13,9 +13,9 @@
             type="de.cau.cs.kieler.klighd.IAction">
       </commandParameterType>
       <command
-            categoryId="de.cau.cs.kieler.klighd"
+            categoryId="de.cau.cs.kieler.klighd.ui"
             description="Generic KLighD command allowing to execution IAction implementations"
-            id="de.cau.cs.kieler.klighd.actionExecution"
+            id="de.cau.cs.kieler.klighd.ui.actionExecution"
             name="IAction execution">
          <commandParameter
                id="de.cau.cs.kieler.klighd.ui.action"
@@ -30,7 +30,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdActionExecutionHandler"
-            commandId="de.cau.cs.kieler.klighd.actionExecution">
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution">
          <enabledWhen>
             <iterate>
                <instanceof
@@ -47,7 +47,7 @@
             allPopups="false"
             locationURI="toolbar:de.cau.cs.kieler.layout.toolbar">
          <command
-               commandId="de.cau.cs.kieler.klighd.actionExecution"
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
                label="TestContribution"
                style="push">
             <parameter
