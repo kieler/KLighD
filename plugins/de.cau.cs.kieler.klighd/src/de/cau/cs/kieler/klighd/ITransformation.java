@@ -69,10 +69,10 @@ public interface ITransformation<S, T> {
     Class<?> getTargetClass();
 
     /**
-     * Contributes the set of {@link SynthesisOption TransformationOptions} provided
+     * Contributes the set of {@link SynthesisOption SynthesisOptions} provided
      * in the UI in order to allow users to influence steer the diagram synthesis.
      * 
-     * @return the set of {@link SynthesisOption TransformationOptions}
+     * @return the set of {@link SynthesisOption SynthesisOptions}
      */
     List<SynthesisOption> getDisplayedSynthesisOptions();
 

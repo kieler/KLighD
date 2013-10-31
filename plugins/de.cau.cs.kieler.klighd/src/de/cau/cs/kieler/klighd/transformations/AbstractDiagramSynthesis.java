@@ -157,12 +157,18 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     //  Synthesis option handling    
 
     /**
-     * {@inheritDoc}
+     * A diagram synthesis can use this method to specify {@link SynthesisOption}s it makes use of.
+     * The options are only used in within the synthesis specifying it and not by any KlighD
+     * internals.
      * 
-     * Concrete transformations are supposed to override this method in order to register dedicated
-     * {@link SynthesisOption TransformationOptions}.
+     * A {@link SynthesisOption} option might be used to either display or hide comments in the
+     * resulting diagram. The {@link SynthesisOption} class provides several convenience methods to
+     * create an option, e.g. {@link SynthesisOption#createRangeOption(...)} to create a 'slider'.
      * 
-     * TODO newdocu
+     * The resulting view with synthesis options will displayed the options according to the order
+     * of the returned list.
+     * 
+     * @return a list with the desired synthesis options.
      */
     public List<SynthesisOption> getDisplayedSynthesisOptions() {
         return Collections.emptyList();
@@ -172,32 +178,51 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     //  Recommended layout option handling    
 
     /**
-     * Concrete implementations may provide a set of recommended layout options and optionally a
-     * restricted set of values to be provided in the user interface for configuring the layout of
-     * the displayed diagram.
+     * Return a list of layout options that will be displayed in the user interface and are directly
+     * manipulatable by the user. For each layout option a, possibly restriced, set of allowed input
+     * values can be specified.
      * 
-     * @return a map of options (map keys) and related values (map values)
+     * Use the {@link #specifyLayoutOption(IProperty, Collection)} method to conveniently specify
+     * the options. An example usage might look like the following (Xtend code). The shown example
+     * will create a choice widget allowing all possible values of KlayLayered'
+     * NodePlacementStrategy enum. Furthermore, a splider is created to set the layout's spacing
+     * that allows values in the interval [0,255].
      * 
-     * TODO newdocu
+     * <pre>
+     *  override getDisplayedLayoutOptions() {
+     *      return ImmutableList::of(
+     *          specifyLayoutOption(Properties::NODE_PLACER, 
+     *              ImmutableList::copyOf(NodePlacementStrategy::values)),
+     *          specifyLayoutOption(LayoutOptions::SPACING, ImmutableList::of(0, 255))
+     *      )
+     * }
+     * 
+     * <pre>
+     * 
+     * @return 
+     *          a {@link List} of
+     * {@link Pair}s where each pair specifies a recommendet layout option.
      */
     public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
         return Collections.emptyList();
     }
 
     /**
-     * TODO.
+     * Convenient function to assemble a pair of layout option and allowed values. The type of the
+     * elements within the 'values' parameter depends on the tyoe if the specified property. For
+     * instance, for an IProperty<Integer> one might pass a List<Integer> of size 2 to specify the
+     * lower and upper bound for the values.
      * 
      * @param prop
-     * .
+     *            the desired property.
      * @param values
-     * .
-     * @return .
+     *            the allowed values.
+     * @return a pair with the property and the possible values.
      */
     protected Pair<IProperty<?>, Collection<?>> specifyLayoutOption(final IProperty<?> prop,
             final Collection<?> values) {
         return Pair.<IProperty<? extends Object>, Collection<? extends Object>>of(prop, values);
     }
-
 
     // ---------------------------------------------------------------------------------- //
     //  Convenience methods to be used in concrete implementations   
