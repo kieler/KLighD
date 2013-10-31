@@ -130,8 +130,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         //canvas.getCamera().getViewScale()
         textinput = new Text(canvas, SWT.MULTI);
         textinput.addVerifyListener(textinputlistener);
-        //textinput.setBackground(new Color(null, 96, 255, 96));
-        //textinput.setVisible(false);
+        textinput.setEditable(false);
         
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
         // canvas.removeInputEventListener(canvas.getPanEventHandler());
