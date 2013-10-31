@@ -35,6 +35,7 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
+import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
 import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
@@ -296,36 +297,35 @@ public final class LightDiagramServices {
      *            the source model
      * @return the target model
      */
+    @SuppressWarnings("unchecked")
     private static Object performTransformations(final ViewContext viewContext, final Object model) {
         Object currentModel = model;
-        for (TransformationContext<?, ?> transformationContext : viewContext
-                .getTransformationContexts()) {
-            @SuppressWarnings("unchecked")
-            TransformationContext<Object, Object> objTransformationContext =
-                    (TransformationContext<Object, Object>) transformationContext;
-            ITransformation<Object, Object> transformation = objTransformationContext
-                    .getTransformation();
+        
+        // TODO check if this works, the transformation 'chaining' will be removed eventually
+        if (!viewContext.getTransformationContexts().isEmpty()) {
+            TransformationContext<Object, KNode> objTransformationContext =
+                    (TransformationContext<Object, KNode>) viewContext.getTransformationContexts()
+                            .get(0);
+            AbstractDiagramSynthesis<Object> transformation =
+                    (AbstractDiagramSynthesis<Object>) objTransformationContext.getTransformation();
+
             try {
                 currentModel = transformation.transform(currentModel, objTransformationContext);
             } catch (Exception e) {
-                if (transformation instanceof ReinitializingTransformationProxy<?, ?>) {
-                    transformation = ((ReinitializingTransformationProxy<Object, Object>) transformation)
-                            .getDelegate();
+                if (transformation instanceof ReinitializingTransformationProxy<?>) {
+                    transformation =
+                            ((ReinitializingTransformationProxy<Object>) transformation)
+                                    .getDelegate();
                 }
-                StatusManager
-                        .getManager()
-                        .handle(new Status(
-                                IStatus.ERROR,
-                                KlighdPlugin.PLUGIN_ID,
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                                 "KLighD: LightDiagramService failed to update a view context:\n"
                                         + e.getClass().getSimpleName()
                                         + " occured while performing the transformation "
-                                        + transformation.getClass().getSimpleName()
-                                        + ":\n"
+                                        + transformation.getClass().getSimpleName() + ":\n"
                                         + e.getMessage()
                                         + "\n Please perform a 'Clean' operation on your project"
-                                        + " and re-try.",
-                                e), StatusManager.LOG);
+                                        + " and re-try.", e), StatusManager.LOG);
                 return null;
             }
         }

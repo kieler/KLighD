@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -38,6 +37,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
@@ -489,23 +489,23 @@ public final class ViewContext extends MapPropertyHolder {
     // ---------------------------------------------------------------------------------- //
     //  Transformation option handling    
 
-    private Map<TransformationContext<?, ?>, Set<TransformationOption>> options = null;
+    private Map<TransformationContext<?, ?>, List<SynthesisOption>> options = null;
     
     /**
-     * Returns the set of {@link TransformationOption TransformationOptions} declared by the
+     * Returns the set of {@link SynthesisOption TransformationOptions} declared by the
      * transformation and forward to the users in the UI in order to allow them to influence the
      * transformation result.
      * 
-     * @return the set of {@link TransformationOption TransformationOptions}
+     * @return the set of {@link SynthesisOption TransformationOptions}
      * 
      * @author chsch
      */
-    public Map<TransformationContext<?, ?>, Set<TransformationOption>> getTransformationOptions() {
+    public Map<TransformationContext<?, ?>, List<SynthesisOption>> getDisplayedSynthesisOptions() {
         if (this.options == null) {
-            Map<TransformationContext<?, ?>, Set<TransformationOption>> map = Maps
+            Map<TransformationContext<?, ?>, List<SynthesisOption>> map = Maps
                     .newLinkedHashMap();
             for (TransformationContext<?, ?> c : this.transformationContexts) {
-                map.put(c, c.getTransformationOptions());
+                map.put(c, c.getDisplayedSynthesisOptions());
             }        
             this.options = ImmutableMap.copyOf(map);
         }
@@ -523,8 +523,8 @@ public final class ViewContext extends MapPropertyHolder {
      * 
      * @return a map of options (map keys) and related values (map values)
      */
-    public Map<IProperty<?>, Collection<?>> getRecommendedLayoutOptions() {
+    public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
         return Iterables.getFirst(this.transformationContextsRev, null)
-                .getRecommendedLayoutOptions();
+                .getDisplayedLayoutOptions();
     }
 }

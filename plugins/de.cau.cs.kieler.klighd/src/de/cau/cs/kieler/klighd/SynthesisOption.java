@@ -22,75 +22,75 @@ import de.cau.cs.kieler.core.util.Pair;
  * transformations the tool user can customize the diagram. It provides a type (on/off, choice of
  * settings) and a set of option values, if necessary.<br>
  * <br>
- * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if the
+ * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if the
  * transformation is a re-initialized one (determined in the registration).
  * 
  * @author chsch
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public final class TransformationOption {
+public final class SynthesisOption {
     
     
     /**
-     * Static factory method providing a 'Separator' pseudo {@link TransformationOption}.<br>
+     * Static factory method providing a 'Separator' pseudo {@link SynthesisOption}.<br>
      * 
      * This option has no semantic meaning, it will result in a separator line within the options
      * view.
      * 
-     * @return a 'Separator' {@link TransformationOption}.
+     * @return a 'Separator' {@link SynthesisOption}.
      */
-    public static TransformationOption createSeparator() {
-        return new TransformationOption("", TransformationOptionType.SEPARATOR, true);
+    public static SynthesisOption createSeparator() {
+        return new SynthesisOption("", TransformationOptionType.SEPARATOR, true);
     }
     
     /**
-     * Static factory method providing a 'Separator' pseudo {@link TransformationOption} with a label
+     * Static factory method providing a 'Separator' pseudo {@link SynthesisOption} with a label
      * text. This can be used to partition transformation options into distinct, labelled groups.
      * 
      * @param label the label text of the separator. If {@code null} or empty, a separator without a
      *              label is created.
-     * @return a 'Separator' {@link TransformationOption}.
+     * @return a 'Separator' {@link SynthesisOption}.
      */
-    public static TransformationOption createSeparator(final String label) {
-        return new TransformationOption(label, TransformationOptionType.SEPARATOR, true);
+    public static SynthesisOption createSeparator(final String label) {
+        return new SynthesisOption(label, TransformationOptionType.SEPARATOR, true);
     }
     
     /**
-     * Static factory method providing an 'OnOff' {@link TransformationOption}.<br>
+     * Static factory method providing an 'OnOff' {@link SynthesisOption}.<br>
      * <br>
-     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).
      * 
      * @param name
      *            the name of the option
      * @param initiallyChecked
      *            true is the option shall be set initially.
-     * @return an 'OnOff' {@link TransformationOption}
+     * @return an 'OnOff' {@link SynthesisOption}
      */
-    public static TransformationOption createCheckOption(final String name,
+    public static SynthesisOption createCheckOption(final String name,
             final Boolean initiallyChecked) {
-        return new TransformationOption(name, TransformationOptionType.CHECK, initiallyChecked);
+        return new SynthesisOption(name, TransformationOptionType.CHECK, initiallyChecked);
     }
     
     /**
-     * Static factory method providing a 'Choice' {@link TransformationOption}.<br>
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
      * <br>
-     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).
      * 
      * @param name
      *            the name of the option
-     * @return an 'Choice' {@link TransformationOption}
+     * @return an 'Choice' {@link SynthesisOption}
      */
-    public static TransformationOption createChoiceOption(final String name) {
-        return new TransformationOption(name, TransformationOptionType.CHOICE, null);
+    public static SynthesisOption createChoiceOption(final String name) {
+        return new SynthesisOption(name, TransformationOptionType.CHOICE, null);
     }    
 
     /**
-     * Static factory method providing a 'Choice' {@link TransformationOption}.<br>
+     * Static factory method providing a 'Choice' {@link SynthesisOption}.<br>
      * <br>
-     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).
      * 
      * @param name
@@ -99,20 +99,20 @@ public final class TransformationOption {
      *            the available option values.
      * @param initialValue
      *            the initially selected option value.
-     * @return an 'Choice' {@link TransformationOption}
+     * @return an 'Choice' {@link SynthesisOption}
      */
-    public static TransformationOption createChoiceOption(final String name, final List<?> values,
+    public static SynthesisOption createChoiceOption(final String name, final List<?> values,
             final Object initialValue) {
-        TransformationOption option = new TransformationOption(name,
+        SynthesisOption option = new SynthesisOption(name,
                 TransformationOptionType.CHOICE, initialValue);
         option.setValues(values);
         return option;
     }
     
     /**
-     * Static factory method providing a 'Range' {@link TransformationOption}.<br>
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
      * <br>
-     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
      * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
@@ -129,11 +129,11 @@ public final class TransformationOption {
      *            the range's upper bound
      * @param initialValue
      *            the initially selected option value.
-     * @return an 'Choice' {@link TransformationOption}
+     * @return an 'Choice' {@link SynthesisOption}
      */
-    public static <T extends Number> TransformationOption createRangeOption(
+    public static <T extends Number> SynthesisOption createRangeOption(
             final String name, final T lowerBound, final T upperBound, final T initialValue) {
-        final TransformationOption option = new TransformationOption(name,
+        final SynthesisOption option = new SynthesisOption(name,
                 TransformationOptionType.RANGE, initialValue);
         option.setValues(Pair.of(lowerBound, upperBound));
         if (!lowerBound.equals(lowerBound.intValue())
@@ -157,9 +157,9 @@ public final class TransformationOption {
     public static final float DEFAULT_STEP_SIZE_INTEGER = 1;
     
     /**
-     * Static factory method providing a 'Range' {@link TransformationOption}.<br>
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
      * <br>
-     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).<br>
      * <br>
      * <b>Note:</b> Use <<OPTION_NAME>>.<code>optionFloatValue</code> while testing the option value
@@ -179,11 +179,11 @@ public final class TransformationOption {
      *            the step size determining the option value granularity
      * @param initialValue
      *            the initially selected option value.
-     * @return an 'Choice' {@link TransformationOption}
+     * @return an 'Choice' {@link SynthesisOption}
      */
-    public static <T extends Number> TransformationOption createRangeOption(final String name,
+    public static <T extends Number> SynthesisOption createRangeOption(final String name,
             final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
-        TransformationOption option = new TransformationOption(name,
+        SynthesisOption option = new SynthesisOption(name,
                 TransformationOptionType.RANGE, initialValue);
         option.setValues(Pair.of(lowerBound, upperBound));
         if (!lowerBound.equals(lowerBound.intValue())
@@ -198,9 +198,9 @@ public final class TransformationOption {
     }
 
     /**
-     * Static factory method providing a 'Range' {@link TransformationOption}.<br>
+     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
      * <br>
-     * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
      * the transformation is a re-initialized one (determined in the registration).
      * 
      * @deprecated use {@link #createRangeOption(String, Number, Number, Number)}
@@ -213,9 +213,9 @@ public final class TransformationOption {
      *            the available option values.
      * @param initialValue
      *            the initially selected option value.
-     * @return an 'Choice' {@link TransformationOption}
+     * @return an 'Choice' {@link SynthesisOption}
      */
-    public static <T extends Number> TransformationOption createRangeOption(
+    public static <T extends Number> SynthesisOption createRangeOption(
             final String name, final Pair<T, T> values, final T initialValue) {
         return createRangeOption(name, values.getFirst(), values.getSecond(), initialValue);
     }
@@ -224,7 +224,7 @@ public final class TransformationOption {
     /* -- the internal part -- */
 
     /**
-     * Enumeration of types of {@link TransformationOption}s.
+     * Enumeration of types of {@link SynthesisOption}s.
      * 
      * @author chsch
      */
@@ -250,7 +250,7 @@ public final class TransformationOption {
     /**
      * Constructor.
      */
-    private TransformationOption(final String theName, final TransformationOptionType theType,
+    private SynthesisOption(final String theName, final TransformationOptionType theType,
             final Object theInitialValue) {
         this.name = theName;
         this.type = theType;
@@ -267,28 +267,28 @@ public final class TransformationOption {
     /**
      * @return the type
      */
-    public Boolean isCheckOption() {
+    public boolean isCheckOption() {
         return type.equals(TransformationOptionType.CHECK);
     }
 
     /**
      * @return the type
      */
-    public Boolean isChoiceOption() {
+    public boolean isChoiceOption() {
         return type.equals(TransformationOptionType.CHOICE);
     }
 
     /**
      * @return the type
      */
-    public Boolean isRangeOption() {
+    public boolean isRangeOption() {
         return type.equals(TransformationOptionType.RANGE);
     }
     
     /**
      * @return the type
      */
-    public Boolean isSeparator() {
+    public boolean isSeparator() {
         return type.equals(TransformationOptionType.SEPARATOR);
     }
 

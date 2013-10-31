@@ -14,15 +14,14 @@
 package de.cau.cs.kieler.klighd.transformations;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
-import de.cau.cs.kieler.klighd.ITransformation;
-import de.cau.cs.kieler.klighd.TransformationContext;
-import de.cau.cs.kieler.klighd.TransformationOption;
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.SynthesisOption;
 
 /**
  * A duplicating transformation à la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
@@ -39,24 +38,23 @@ import de.cau.cs.kieler.klighd.TransformationOption;
  * @param <S>
  *            Type of the model to be duplicated.
  */
-public class DuplicatingTransformation<S extends EObject> implements ITransformation<S, S> {
+public class DuplicatingTransformation<S extends EObject> extends AbstractDiagramSynthesis<S> {
 
     private Copier currentCopier = null;
     
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public S transform(final S model, final TransformationContext<S, S> transformationContext) {
+    public KNode transform(final S model) {
         // 3 lines are copied from EcoreUtil.copy()
         this.currentCopier = new Copier();
         final EObject result = this.currentCopier.copy(model);
         this.currentCopier.copyReferences();
-        transformationContext.clear();
+        getUsedContext().clear();
         for (Map.Entry<EObject, EObject> entry : currentCopier.entrySet()) {
-            transformationContext.addSourceTargetPair(entry.getKey(), entry.getValue());
+            getUsedContext().addSourceTargetPair(entry.getKey(), entry.getValue());
         }
-        return (S) result;
+        return (KNode) result;
     }
 
     /**
@@ -76,8 +74,8 @@ public class DuplicatingTransformation<S extends EObject> implements ITransforma
     /**
      * {@inheritDoc}
      */
-    public Set<TransformationOption> getTransformationOptions() {
-        return Collections.emptySet();
+    public List<SynthesisOption> getDisplayedSynthesisOptions() {
+        return Collections.emptyList();
     }
     
     /**
@@ -86,5 +84,4 @@ public class DuplicatingTransformation<S extends EObject> implements ITransforma
     public boolean supports(final S model) {
         return true;
     }
-
 }

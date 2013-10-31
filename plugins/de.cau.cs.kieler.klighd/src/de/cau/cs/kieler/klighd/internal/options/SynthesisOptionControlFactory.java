@@ -32,7 +32,7 @@ import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.cau.cs.kieler.klighd.TransformationContext;
-import de.cau.cs.kieler.klighd.TransformationOption;
+import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 
 /**
@@ -118,7 +118,7 @@ public class SynthesisOptionControlFactory {
      * @param context the related {@link TransformationContext} the option is declared in
      * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
-    public void createCheckOptionControl(final TransformationOption option,
+    public void createCheckOptionControl(final SynthesisOption option,
             final TransformationContext<?, ?> context, final String viewId) {
 
         final Button checkButton = formToolkit.createButton(parent, option.getName(), SWT.CHECK);
@@ -153,7 +153,7 @@ public class SynthesisOptionControlFactory {
      * @param context the related {@link TransformationContext} the option is declared in
      * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
-    public void createChoiceOptionControl(final TransformationOption option,
+    public void createChoiceOptionControl(final SynthesisOption option,
             final TransformationContext<?, ?> context, final String viewId) {
         
         final GridLayout gl = new GridLayout();
@@ -212,7 +212,7 @@ public class SynthesisOptionControlFactory {
      * @param context the related {@link TransformationContext} the option is declared in
      * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
-    public void createRangeOptionControl(final TransformationOption option,
+    public void createRangeOptionControl(final SynthesisOption option,
             final TransformationContext<?, ?> context, final String viewId) {
         
         final GridLayout gl = new GridLayout();

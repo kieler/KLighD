@@ -15,14 +15,15 @@ package de.cau.cs.kieler.klighd;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
 import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
 
@@ -59,7 +60,7 @@ public class TransformationContext<S, T> {
             final ITransformation<S, T> transformation) {
         TransformationContext<S, T> transformationContext = new TransformationContext<S, T>();
         transformationContext.transformation = transformation;
-        for (TransformationOption option: transformationContext.getTransformationOptions()) {
+        for (SynthesisOption option: transformationContext.getDisplayedSynthesisOptions()) {
             transformationContext.configureOption(option, option.getInitialValue());
         }
         return transformationContext;
@@ -87,9 +88,9 @@ public class TransformationContext<S, T> {
              * Getter.
              * 
              * @param option the option to evaluate the configuration state / the configured value.
-             * @return the configured value of {@link TransformationOption} option.
+             * @return the configured value of {@link SynthesisOption} option.
              */
-            public Object getOptionValue(final TransformationOption option) {
+            public Object getOptionValue(final SynthesisOption option) {
                 return this.original.getOptionValue(option);
             }
             
@@ -152,32 +153,32 @@ public class TransformationContext<S, T> {
     // ---------------------------------------------------------------------------------- //
     //  Transformation option handling    
 
-    private Set<TransformationOption> transformationOptions = null;
+    private List<SynthesisOption> transformationOptions = null;
     
     /**
-     * Returns the set of {@link TransformationOption TransformationOptions} declared by the
+     * Returns the set of {@link SynthesisOption TransformationOptions} declared by the
      * transformation and forward to the users in the UI in order to allow them to influence the
      * transformation result. The provider method of the transformation is ask only once in order
      * to prevent any manipulation on the configured option at runtime.
      * 
-     * @return the set of {@link TransformationOption TransformationOptions}
+     * @return the set of {@link SynthesisOption TransformationOptions}
      */
-    public Set<TransformationOption> getTransformationOptions() {
+    public List<SynthesisOption> getDisplayedSynthesisOptions() {
         if (this.transformationOptions == null) {
-            this.transformationOptions = transformation.getTransformationOptions();
+            this.transformationOptions = transformation.getDisplayedSynthesisOptions();
         }
         return this.transformationOptions;
     }
     
     /** Memory of the configured transformation options to be evaluated by the transformation. */
-    private Map<TransformationOption, Object> configuredOptions = Maps.newHashMap();
+    private Map<SynthesisOption, Object> configuredOptions = Maps.newHashMap();
         
     /**
      *
-     * @param option the {@link TransformationOption} to set
-     * @param value the value of the {@link TransformationOption}
+     * @param option the {@link SynthesisOption} to set
+     * @param value the value of the {@link SynthesisOption}
      */
-    public void configureOption(final TransformationOption option, final Object value) {
+    public void configureOption(final SynthesisOption option, final Object value) {
         
         if (option == null || !this.transformationOptions.contains(option)) {
             throw new IllegalArgumentException("KLighD transformation option handling: "
@@ -198,9 +199,9 @@ public class TransformationContext<S, T> {
      * Getter.
      * 
      * @param option the option to evaluate the configuration state / the configured value.
-     * @return the configured value of {@link TransformationOption} option.
+     * @return the configured value of {@link SynthesisOption} option.
      */
-    public Object getOptionValue(final TransformationOption option) {
+    public Object getOptionValue(final SynthesisOption option) {
         
         if (option == null) {
             throw new IllegalArgumentException("KLighD transformation option handling: "
@@ -219,16 +220,16 @@ public class TransformationContext<S, T> {
      * 
      * @return a map of options (map keys) and related values (map values)
      */
-    public Map<IProperty<?>, Collection<?>> getRecommendedLayoutOptions() {
+    public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
         ITransformation<?, ?> theTransformation = this.transformation;
-        if (this.transformation instanceof ReinitializingTransformationProxy<?, ?>) {
+        if (this.transformation instanceof ReinitializingTransformationProxy<?>) {
             theTransformation =
-                    ((ReinitializingTransformationProxy<?, ?>) this.transformation).getDelegate();
+                    ((ReinitializingTransformationProxy<?>) this.transformation).getDelegate();
         }
         if (theTransformation instanceof AbstractDiagramSynthesis<?>) {
-            return ((AbstractDiagramSynthesis<?>) theTransformation).getRecommendedLayoutOptions();
+            return ((AbstractDiagramSynthesis<?>) theTransformation).getDisplayedLayoutOptions();
         } else {
-            return Collections.emptyMap();
+            return Collections.emptyList();
         }
     }
 
