@@ -744,7 +744,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     public boolean isExpanded(final Object semanticElement) {
-        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramNode =
+                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             return currentViewer.isExpanded((KNode) diagramNode);
         } else {
@@ -764,7 +765,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     @Override
     public void collapse(final Object semanticElement) {
-        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramNode =
+                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             currentViewer.collapse((KNode) diagramNode);
         }
@@ -783,7 +785,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     @Override
     public void expand(final Object semanticElement) {
-        Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramNode =
+                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             currentViewer.expand((KNode) diagramNode);
         }
@@ -802,7 +805,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     @Override
     public void toggleExpansion(final Object semanticElement) {
-        final Object diagramNode = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramNode =
+                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             currentViewer.toggleExpansion((KNode) diagramNode);
         }
@@ -820,7 +824,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     public void hide(final Object semanticElement) {
-        final Object diagramElement = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramElement =
+                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.hide(diagramElement);
         }
@@ -837,7 +842,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      * {@inheritDoc}
      */
     public void show(final Object semanticElement) {
-        final Object diagramElement = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramElement =
+                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.show(diagramElement);
         }
@@ -895,7 +901,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     @Override    
     public void reveal(final Object semanticElement, final int duration) {
-        final Object diagramElement = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramElement =
+                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.centerOn(diagramElement, duration);
         }
@@ -916,7 +923,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
      */
     @Override    
     public void centerOn(final Object semanticElement, final int duration) {
-        final Object diagramElement = getCurrentViewContext().getTargetElement(semanticElement);
+        final EObject diagramElement =
+                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.centerOn(diagramElement, duration);
         }
