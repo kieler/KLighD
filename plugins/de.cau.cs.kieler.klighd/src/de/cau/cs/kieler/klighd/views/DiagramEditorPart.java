@@ -41,6 +41,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -135,7 +136,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         }
         
         // create a view context for the viewer
-        ViewContext viewContext = LightDiagramServices.createViewContext(
+        final ViewContext viewContext = LightDiagramServices.createViewContext(
                 model, configureKlighdProperties());
         if (viewContext != null) {
             viewer.setModel(viewContext);
@@ -145,7 +146,17 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             DiagramViewManager.getInstance().registerView(this);
             
             if (requiresInitialLayout(viewContext)) {
-                LightDiagramServices.layoutDiagram(viewContext, false, false);
+                // it is important to wait with the layout call until the #createPartControl
+                // method has finished and the widget toolkit has applied proper bounds
+                // to the parent composite via a Composite#layout call. 
+                // Otherwise a possible zoomToFit after the layout will fail since the
+                // view bounds are empty and no 'view area' to which to zoom can be
+                // determined. The async call here hopefully assures this.
+                Display.getCurrent().asyncExec(new Runnable() {
+                    public void run() {
+                        LightDiagramServices.layoutDiagram(viewContext, false, false);
+                    }
+                });
             }
             viewer.updateOptions(false);
 
