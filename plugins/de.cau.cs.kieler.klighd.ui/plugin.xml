@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="de.cau.cs.kieler.klighd.ui"
+            name="KLighD Commands">
+      </category>
+      <commandParameterType
+            converter="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdActionExecutionHandler$IActionParameterValueConverter"
+            id="de.cau.cs.kieler.klighd.ui.IAction"
+            type="de.cau.cs.kieler.klighd.IAction">
+      </commandParameterType>
+      <command
+            categoryId="de.cau.cs.kieler.klighd.ui"
+            description="Generic KLighD command allowing to execution IAction implementations"
+            id="de.cau.cs.kieler.klighd.ui.actionExecution"
+            name="IAction execution">
+         <commandParameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               name="Action"
+               optional="false"
+               typeId="de.cau.cs.kieler.klighd.ui.IAction"
+               values="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdActionExecutionHandler$IActionParameterValues">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdActionExecutionHandler"
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution">
+         <enabledWhen>
+            <iterate>
+               <instanceof
+                     value="de.cau.cs.kieler.core.kgraph.KGraphElement">
+               </instanceof>
+            </iterate>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <!-- extension
+         id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:de.cau.cs.kieler.layout.toolbar">
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="TestContribution"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.CollapseExpandAction">
+            </parameter>
+         </command>
+      </menuContribution>
+   </extension -->
+
+</plugin>

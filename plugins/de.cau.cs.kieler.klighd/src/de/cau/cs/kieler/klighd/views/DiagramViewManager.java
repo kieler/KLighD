@@ -225,7 +225,7 @@ public final class DiagramViewManager implements IPartListener {
             Object theModel = (model != null ? model : currentInputModel);
             
             viewContext.getViewer().startRecording();
-            if (!LightDiagramServices.getInstance().updateViewContext(viewContext, theModel,
+            if (!LightDiagramServices.updateViewContext(viewContext, theModel,
                     propertyHolder)) {
                 return null;
             }
@@ -274,10 +274,9 @@ public final class DiagramViewManager implements IPartListener {
             // let the light diagram service create a view context and register it
             ViewContext viewContext;
             if (propertyHolder != null) {
-                viewContext =
-                        LightDiagramServices.getInstance().createViewContext(model, propertyHolder);
+                viewContext = LightDiagramServices.createViewContext(model, propertyHolder);
             } else {
-                viewContext = LightDiagramServices.getInstance().createViewContext(model);
+                viewContext = LightDiagramServices.createViewContext(model);
             }
 
             if (viewContext != null) {
@@ -345,7 +344,7 @@ public final class DiagramViewManager implements IPartListener {
 
                 // do an initial update of the view context
                 viewContext.getViewer().startRecording();
-                LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+                LightDiagramServices.updateViewContext(viewContext, model);
                 
                 LightDiagramServices.layoutDiagram(viewContext, false);
 

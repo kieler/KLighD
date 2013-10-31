@@ -73,10 +73,10 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     public void setModel(final Object model, final boolean sync) {
-        ViewContext viewContext = LightDiagramServices.getInstance().createViewContext(model);
+        ViewContext viewContext = LightDiagramServices.createViewContext(model);
         if (viewContext != null) {
             contextViewer.setModel(viewContext);
-            LightDiagramServices.getInstance().updateViewContext(viewContext, model);
+            LightDiagramServices.updateViewContext(viewContext, model);
         } else {
             contextViewer.setModel("Could not find a visualization for the model.", false);
         }
