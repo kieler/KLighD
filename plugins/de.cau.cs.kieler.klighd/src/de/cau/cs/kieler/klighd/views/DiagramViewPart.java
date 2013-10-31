@@ -219,7 +219,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         };
         toolBar.add(zoomToFocusAction);
 
-        toolBar.add(new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
+        toolBar.add(new Action("Zoom to Original Size", IAction.AS_PUSH_BUTTON) {
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtoone.gif"));

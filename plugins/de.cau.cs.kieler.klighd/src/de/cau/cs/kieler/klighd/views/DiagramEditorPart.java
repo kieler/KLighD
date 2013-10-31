@@ -533,7 +533,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         zoomToFocusItem = new ActionContributionItem(zoomToFocusAction);
         
         // zoom to one ...
-        Action zoomToOne = new Action("Scale to Original Size", IAction.AS_PUSH_BUTTON) {
+        Action zoomToOne = new Action("Zoom to Original Size", IAction.AS_PUSH_BUTTON) {
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtoone.gif"));
