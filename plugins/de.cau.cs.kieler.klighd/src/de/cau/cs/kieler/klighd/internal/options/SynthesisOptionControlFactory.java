@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.internal.options;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.cau.cs.kieler.klighd.TransformationContext;
@@ -53,8 +55,11 @@ public class SynthesisOptionControlFactory {
     private static final int MAJOR_VERTICAL_SPACING = 6;
     /** the vertical space between different option value controls, e.g. 2 radio buttons. */
     private static final int MINOR_VERTICAL_SPACING = 3;
+    /** the vertical space above a group separator (separator with a label). */
+    private static final int GROUP_SEPARATOR_SPACING = 10;
     /** the horizontal indentation option value controls, e.g. radio buttons. */
     private static final int MINOR_HORIZONTAL_MARGIN = 10;
+    
     
     /**
      * Constructor.
@@ -83,14 +88,27 @@ public class SynthesisOptionControlFactory {
     }
     
     /**
-     * Factory method for creating a horizontal spacer.
+     * Factory method for creating a horizontal spacer with an optional label.
+     * 
+     * @param labelText the label text of the separator. If {@code null} or empty, the separator won't
+     *                  have a label.
      */
-    public void createSeparator() {
-        Label separator = formToolkit.createSeparator(parent, SWT.HORIZONTAL);
-        controls.add(separator);
-        
-        final GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-        separator.setLayoutData(gridData);
+    public void createSeparator(final String labelText) {
+        // Check if the separator is supposed to have a label
+        if (labelText == null || labelText.isEmpty()) {
+            Label separator = formToolkit.createSeparator(parent, SWT.HORIZONTAL);
+            controls.add(separator);
+            GridDataFactory.fillDefaults().grab(true, false).applyTo(separator);
+        } else {
+            Label label = formToolkit.createLabel(parent, labelText);
+            controls.add(label);
+            label.setForeground(formToolkit.getColors().getColor(IFormColors.TITLE));
+            GridDataFactory.fillDefaults()
+                .grab(true, false)
+                .indent(0, GROUP_SEPARATOR_SPACING)
+                .applyTo(label);
+        }
+
     }
     
     /**

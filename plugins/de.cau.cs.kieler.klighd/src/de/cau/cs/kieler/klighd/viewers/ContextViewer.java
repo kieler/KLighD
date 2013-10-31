@@ -243,7 +243,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                             viewId);
                     synthesisOptionsAvailable = true;
                 } else if (option.isSeparator()) {
-                    synthesisOptionControlFactory.createSeparator();
+                    synthesisOptionControlFactory.createSeparator(option.getName());
                 }
             }
         }
