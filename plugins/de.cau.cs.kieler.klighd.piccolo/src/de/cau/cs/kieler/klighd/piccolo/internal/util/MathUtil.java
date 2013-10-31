@@ -140,6 +140,10 @@ public final class MathUtil {
      * @return the length of the polyline
      */
     public static double getLength(final Point2D[] points) {
+        if (points.length == 0) {
+            return 0f;
+        }
+        
         Point2D lastBend = points[0];
         double currentLength = 0.0f;
         for (int i = 1; i < points.length; ++i) {

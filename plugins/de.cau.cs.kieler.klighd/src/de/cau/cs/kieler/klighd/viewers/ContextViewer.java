@@ -534,8 +534,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
             removeViewer();
 
             // create the new viewer
-            IViewer<?> viewer =
-                    LightDiagramServices.getInstance().createViewer(this, viewContext, diagramComposite);
+            IViewer<?> viewer = LightDiagramServices.createViewer(this, viewContext, diagramComposite);
 
             // add the new viewer
             addViewer(viewer);

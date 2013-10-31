@@ -68,78 +68,81 @@ public class KlighdActionEventHandler implements PInputEventListener {
      * {@inheritDoc}
      */
     public void processEvent(final PInputEvent inputEvent, final int eventType) {
-        if (inputEvent.getSourceSwingEvent() instanceof KlighdMouseEvent) {
-            final KlighdMouseEvent me = (KlighdMouseEvent) inputEvent.getSourceSwingEvent();
-            
-            final KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
-                    AbstractKGERenderingController.ATTR_KRENDERING);
-            if (rendering == null) {
-                return;
+        if (!(inputEvent.getSourceSwingEvent() instanceof KlighdMouseEvent)) {
+            return;
+        }
+
+        final KlighdMouseEvent me = (KlighdMouseEvent) inputEvent.getSourceSwingEvent();
+        
+        final KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
+                AbstractKGERenderingController.ATTR_KRENDERING);
+        
+        if (rendering == null) {
+            return;
+        }
+        
+        ActionContext context = null; // construct the context lazily when it is required
+        ActionResult result = null;
+        
+        // this flag is used to track the successful execution of actions
+        //  in order to enable animated diagram changes, the viewer must be informed to
+        //  record view model changes, which is done once an action is actually executed
+        boolean anyActionPerformed = false;
+        
+        for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
+            if (!action.getTrigger().equals(me.getTrigger())) {
+                continue;
             }
             
-            ActionContext context = null; // construct the context lazily when it is required
-            ActionResult result = null;
+            final IAction actionImpl = KlighdDataManager.getInstance().getActionById(action.getId());
+            if (actionImpl == null) {
+                continue;
+            }
             
-            // this flag is used to track the successful execution of actions
-            //  in order to enable animated diagram changes, the viewer must be informed to
-            //  record view model changes, which is done once an action is actually executed
-            boolean anyActionPerformed = false;
-            
-            for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
-                if (action.getTrigger().equals(me.getTrigger())) {
-                    IAction actionImpl = KlighdDataManager.getInstance().getActionById(
-                            action.getId());
-                    if (actionImpl != null) {
-                        if (context == null) {
-                            context = new ActionContext(this.viewer, action.getTrigger(), null,
-                                    rendering);
-                        }
-                        if (!anyActionPerformed) {
-                            viewer.startRecording();
-                            // the related 'stopRecording(...)' will be performed after the layout
-                            // application
-                        }
-                        result = actionImpl.execute(context);
-
-                        if (result == null) {
-                            viewer.stopRecording(ZoomStyle.NONE, 0);
-                            final String msg = "KLighD action event handler: Execution of "
-                                    + actionImpl.getClass()
-                                    + " returned 'null', expected an IAction.ActionResult.";
-                            throw new IllegalResultException(msg);
-                        }
-
-                        anyActionPerformed = result.getActionPerformed();
-                    } else {
-                        continue;
-                    }
-                }
+            if (context == null) {
+                context = new ActionContext(this.viewer, action.getTrigger(), null, rendering);
             }
             
             if (!anyActionPerformed) {
-                // if no action has been performed, skip the layout update and return
-                return;
+                viewer.startRecording();
+                // the related 'stopRecording(...)' will be performed after the layout application
             }
-            
-            final boolean zoomToFit = result.getZoomToFit() != null
-                    ? result.getZoomToFit() : context.getViewContext().isZoomToFit();
-            final boolean zoomToFocus =
-                    result.getZoomToFocus() != null ? result.getZoomToFocus() : context
-                            .getViewContext().getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
+            result = actionImpl.execute(context);
 
-            // remember the desired zoom style in the view context
-            ViewContext vc = viewer.getContextViewer().getCurrentViewContext();
-            vc.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
-                    
-            LightDiagramServices.layoutDiagram(vc,
-                    result.getAnimateLayout(), zoomToFit, result.getLayoutConfigs());
-            
-            KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
-                    .getContextViewer().getViewPartId(), viewer.getContextViewer()
-                    .getCurrentViewContext(), viewer);
-            if (KlighdStatusTrigger.getInstance() != null) {
-                KlighdStatusTrigger.getInstance().trigger(state);
+            if (result == null) {
+                viewer.stopRecording(ZoomStyle.NONE, 0);
+                final String msg = "KLighD action event handler: Execution of "
+                        + actionImpl.getClass()
+                        + " returned 'null', expected an IAction.ActionResult.";
+                throw new IllegalResultException(msg);
             }
+
+            anyActionPerformed = result.getActionPerformed();
+        }
+        
+        if (!anyActionPerformed) {
+            // if no action has been performed, skip the layout update and return
+            return;
+        }
+        
+        final boolean zoomToFit = result.getZoomToFit() != null
+                ? result.getZoomToFit() : context.getViewContext().isZoomToFit();
+        final boolean zoomToFocus = result.getZoomToFocus() != null
+                ? result.getZoomToFocus()
+                        : context.getViewContext().getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
+
+        // remember the desired zoom style in the view context
+        final ViewContext vc = viewer.getContextViewer().getCurrentViewContext();
+        vc.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
+                
+        LightDiagramServices.layoutDiagram(vc, result.getAnimateLayout(), zoomToFit,
+                result.getLayoutConfigs());
+        
+        KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
+                .getContextViewer().getViewPartId(), viewer.getContextViewer()
+                .getCurrentViewContext(), viewer);
+        if (KlighdStatusTrigger.getInstance() != null) {
+            KlighdStatusTrigger.getInstance().trigger(state);
         }
     }
 

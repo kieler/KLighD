@@ -310,8 +310,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 final ViewContext viewContext = contextViewer.getCurrentViewContext();
                 if (viewContext != null) {
                     // update the view context in order to re-apply the view synthesis
-                    LightDiagramServices.getInstance().updateViewContext(viewContext,
-                            viewContext.getInputModel());
+                    LightDiagramServices.updateViewContext(viewContext, viewContext.getInputModel());
                     Display.getDefault().asyncExec(new Runnable() {
                         public void run() {
                             IWorkbenchPart workbenchPart = layoutContext.getProperty(

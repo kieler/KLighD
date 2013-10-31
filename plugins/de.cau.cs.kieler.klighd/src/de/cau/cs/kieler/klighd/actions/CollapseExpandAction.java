@@ -13,7 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IAction;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
  * This is first draft of an {@link IAction} realizing the collapsing and expanding of
@@ -44,7 +46,8 @@ public class CollapseExpandAction implements IAction {
      */
     public ActionResult execute(final ActionContext context) {
 
-        context.getViewer().toggleExpansion(context.getNode());
+        context.getViewer().toggleExpansion(
+                ModelingUtil.eContainerOrSelfOfType(context.getKGraphElement(), KNode.class));
 
         return ActionResult.createResult(true);
 //         return ActionResult.createResult(true).doZoomToFocus();

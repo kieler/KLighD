@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -22,6 +23,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.WrappedException;
@@ -85,7 +88,7 @@ public final class KlighdDataManager {
     private Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
 
     /** the mapping of ids on the associated actions. */
-    private Map<String, IAction> idActionMapping = Maps.newHashMap();
+    private BiMap<String, IAction> idActionMapping = HashBiMap.create();
 
     /**
      * A private constructor to prevent instantiation.
@@ -318,6 +321,26 @@ public final class KlighdDataManager {
      */
     public IAction getActionById(final String id) {
         return idActionMapping.get(id);
+    }
+    
+    /**
+     * Returns the id of the given {@link IAction}.
+     * 
+     * @param action
+     *            the {@link IAction}
+     * @return its id
+     */
+    public String getActionsId(final IAction action) {
+        return idActionMapping.inverse().get(action);
+    }
+    
+    /**
+     * Returns the set of registered action ids.
+     * 
+     * @return the registered action ids
+     */
+    public Set<String> getActionIds() {
+        return idActionMapping.keySet();
     }
     
 }

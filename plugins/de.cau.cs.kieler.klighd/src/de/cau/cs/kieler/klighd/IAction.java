@@ -19,6 +19,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.google.common.collect.ImmutableList;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -60,7 +61,7 @@ public interface IAction {
         
         private IViewer<?> viewer = null;
         private Trigger trigger = null;
-        private KNode node = null;
+        private KGraphElement kgraphElement = null;
         private KRendering rendering = null;
         
         /**
@@ -70,15 +71,16 @@ public interface IAction {
          *            the viewer the action was triggered in
          * @param t
          *            the trigger type that fired
-         * @param n
-         *            the node the action is invoked on
+         * @param kge
+         *            the {@link KGraphElement} the action is invoked on
          * @param r
          *            the rendering the action is invoked on
          */
-        public ActionContext(final IViewer<?> v, final Trigger t, final KNode n, final KRendering r) {
+        public ActionContext(final IViewer<?> v, final Trigger t, final KGraphElement kge,
+                final KRendering r) {
             this.viewer = v;
             this.trigger = t;
-            this.node = n;
+            this.kgraphElement = kge;
             this.rendering = r;
         }
 
@@ -106,12 +108,12 @@ public interface IAction {
         /**
          * @return the node
          */
-        public KNode getNode() {
-            if (node == null) {
-                node = (KNode) ModelingUtil.eContainerOfType(rendering,
-                        KGraphPackage.eINSTANCE.getKNode());
+        public KGraphElement getKGraphElement() {
+            if (kgraphElement == null) {
+                kgraphElement = (KGraphElement) ModelingUtil.eContainerOfType(rendering,
+                        KGraphPackage.eINSTANCE.getKGraphElement());
             }
-            return node;
+            return kgraphElement;
         }
 
         /**

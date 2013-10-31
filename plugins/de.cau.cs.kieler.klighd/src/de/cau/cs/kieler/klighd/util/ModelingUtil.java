@@ -102,7 +102,7 @@ public final class ModelingUtil {
     public static EObject eContainerOfType(final EObject eObject, final EClass eClass) {
         EObject eo = eObject;
         while (eo != null && eo.eContainer() != null) {
-            if (eo.eContainer().eClass().equals(eClass)) {
+            if (eClass.isInstance(eo.eContainer())) {
                 return eo.eContainer();
             } else {
                 eo = eo.eContainer();
@@ -122,7 +122,7 @@ public final class ModelingUtil {
      * @return the required parent
      */
     public static EObject eContainerOrSelfOfType(final EObject eObject, final EClass eClass) {
-        if (eObject.eClass().equals(eClass)) {
+        if (eClass.isInstance(eObject)) {
             return eObject;
         } else {
             return eContainerOfType(eObject, eClass);

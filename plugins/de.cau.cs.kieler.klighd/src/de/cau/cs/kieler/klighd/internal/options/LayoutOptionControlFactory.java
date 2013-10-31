@@ -227,6 +227,7 @@ public class LayoutOptionControlFactory {
     /**
      * Reset all displayed layout options to their default values.
      */
+    @SuppressWarnings("incomplete-switch")
     public void resetToDefaults() {
         // temporarily disable auto-refresh to avoid multiple layout runs triggered by listeners
         autoRefreshLayout = false;
@@ -236,8 +237,8 @@ public class LayoutOptionControlFactory {
                 LayoutOptionData<?> optionData = (LayoutOptionData<?>) control.getData();
                 final Object defaultValue = defaultLayoutConfig.getValue(optionData,
                         defaultLayoutContext);
-                switch (optionData.getType()) {
                 
+                switch (optionData.getType()) {
                 case INT:
                 case FLOAT: {
                     Scale slider = (Scale) control;
