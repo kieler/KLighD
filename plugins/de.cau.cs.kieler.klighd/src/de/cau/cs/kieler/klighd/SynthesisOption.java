@@ -195,31 +195,7 @@ public final class SynthesisOption {
             option.setStepSize(Math.round(stepSize.floatValue()));
         }
         return option;
-    }
-
-    /**
-     * Static factory method providing a 'Range' {@link SynthesisOption}.<br>
-     * <br>
-     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
-     * the transformation is a re-initialized one (determined in the registration).
-     * 
-     * @deprecated use {@link #createRangeOption(String, Number, Number, Number)}
-     * 
-     * @param <T>
-     *            concrete type of the range's values
-     * @param name
-     *            the name of the option
-     * @param values
-     *            the available option values.
-     * @param initialValue
-     *            the initially selected option value.
-     * @return an 'Choice' {@link SynthesisOption}
-     */
-    public static <T extends Number> SynthesisOption createRangeOption(
-            final String name, final Pair<T, T> values, final T initialValue) {
-        return createRangeOption(name, values.getFirst(), values.getSecond(), initialValue);
-    }
-    
+    }    
 
     /* -- the internal part -- */
 
