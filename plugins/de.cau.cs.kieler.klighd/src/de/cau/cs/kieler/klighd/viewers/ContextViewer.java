@@ -208,8 +208,8 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
         
         boolean layoutOptionsAvailable = false;
         for (Pair<IProperty<?>, Collection<?>> pair : recommendedOptions) {
-            Object first = pair.getFirst();
-            Object second = pair.getSecond();
+            IProperty<?> first = pair.getFirst();
+            Collection<?> second = pair.getSecond();
             
             if (first instanceof Number && second instanceof Number) {
                 layoutOptionControlFactory.createControl(pair.getFirst().getId(),
@@ -219,8 +219,7 @@ public class ContextViewer extends AbstractViewer<Object> implements IViewerEven
                 layoutOptionControlFactory.createControl(pair.getFirst().getId());
                 layoutOptionsAvailable = true;
             } else {
-                layoutOptionControlFactory.createControl(pair.getFirst().getId(), 
-                        Lists.newArrayList(first, second));
+                layoutOptionControlFactory.createControl(pair.getFirst().getId(), second);
                 layoutOptionsAvailable = true;
             }
         }
