@@ -45,6 +45,18 @@ public final class TransformationOption {
     }
     
     /**
+     * Static factory method providing a 'Separator' pseudo {@link TransformationOption} with a label
+     * text. This can be used to partition transformation options into distinct, labelled groups.
+     * 
+     * @param label the label text of the separator. If {@code null} or empty, a separator without a
+     *              label is created.
+     * @return a 'Separator' {@link TransformationOption}.
+     */
+    public static TransformationOption createSeparator(final String label) {
+        return new TransformationOption(label, TransformationOptionType.SEPARATOR, true);
+    }
+    
+    /**
      * Static factory method providing an 'OnOff' {@link TransformationOption}.<br>
      * <br>
      * Hint: Declare {@link TransformationOption TransformationOptions} by means of static fields if
