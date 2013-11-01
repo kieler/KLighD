@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KLighD Xtend-based Extension Library
 Bundle-SymbolicName: de.cau.cs.kieler.core.krendering.extensions
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensionsPlugin
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Require-Bundle: org.eclipse.core.runtime,

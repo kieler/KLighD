@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: KlighD SVG
+Bundle-Name: KIELER Light-Weight Diagrams for Piccolo (SVG Support)
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.svg;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Require-Bundle: org.eclipse.swt;bundle-version="3.8.0",
