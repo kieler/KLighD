@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
-import java.awt.event.InputEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
@@ -50,6 +49,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
@@ -67,9 +67,8 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.POffscreenCanvas;
 import edu.umd.cs.piccolo.PRoot;
-import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
-import edu.umd.cs.piccolo.event.PInputEventFilter;
+import edu.umd.cs.piccolo.event.PPanEventHandler;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -127,36 +126,61 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         }
         this.parentViewer = theParentViewer;
         this.canvas = new KlighdCanvas(parent, style);
-        //canvas.getCamera().getViewScale()
+
         textinput = new Text(canvas, SWT.MULTI);
         textinput.addVerifyListener(textinputlistener);
         textinput.setEditable(false);
         
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
-        // canvas.removeInputEventListener(canvas.getPanEventHandler());
-        // prevent conflicts with selection handler
-        canvas.getPanEventHandler().setEventFilter(
-                new PInputEventFilter(InputEvent.BUTTON1_MASK, InputEvent.CTRL_MASK));
         
-        // exchange the zoom event handler
+        // remove the original event handlers as they require AWT event type codes
         canvas.removeInputEventListener(canvas.getZoomEventHandler());
-        canvas.addInputEventListener(new PMouseWheelZoomEventHandler());
+        canvas.removeInputEventListener(canvas.getPanEventHandler());
         
-        canvas.addInputEventListener(new KlighdTextInputHandler());
+        final PCamera camera = canvas.getCamera();
+        resizeAndResetLayers(2);
+        
+        final PPanEventHandler panHandler = new PPanEventHandler();
+        // prevent conflicts with selection handler
+//        panHandler.setEventFilter(
+//                new PInputEventFilter(InputEvent.BUTTON1_MASK, InputEvent.CTRL_MASK));
+        
+        // install the required event handlers, they rely on SWT event type codes
+        camera.addInputEventListener(new KlighdActionEventHandler(this));
+        camera.addInputEventListener(new KlighdTextInputHandler());
+        camera.addInputEventListener(new PMouseWheelZoomEventHandler());
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(
+                panHandler));
+
+        // add a node for the rubber band selection marquee
+        final PEmptyNode marqueeParent = new PEmptyNode();
+        camera.getLayer(1).addChild(marqueeParent);
+
+        // add a selection handler
+        selectionHandler = new KlighdSimpleSelectionEventHandler(camera, marqueeParent);
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(
+                selectionHandler));
+
+        // forward the selection events
+        selectionHandler.addSelectionListener(this);
+        
         // add a context menu
         addContextMenu(canvas);
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
 
+        // update the outline page
+        if (outlinePage != null) {
+            outlinePage.setContent(camera.getLayer(0));
+        }
+
         // register a print action with the global action bars
         if (getContextViewer().getWorkbenchPart() instanceof DiagramViewPart) {
             DiagramViewPart viewPart = (DiagramViewPart) getContextViewer().getWorkbenchPart();
 
             // register print action
-            viewPart.getViewSite()
-                    .getActionBars()
-                    .setGlobalActionHandler(ActionFactory.PRINT.getId(),
+            viewPart.getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(),
                             new PrintAction(this, viewPart));
         }
 
@@ -203,7 +227,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      * @author ckru
      *
      */
-    private class KlighdTextInputHandler extends PBasicInputEventHandler {
+    private class KlighdTextInputHandler extends KlighdBasicInputEventHandler {
         
         public KlighdTextInputHandler() {
             super();
@@ -340,28 +364,12 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         // prepare the camera
         PCamera camera = canvas.getCamera();
         // resetCamera(camera);
-        resizeAndResetLayers(2);
+//        resizeAndResetLayers(2);
+        camera.getLayer(0).removeAllChildren();
 
         // create a controller for the graph
         controller = new DiagramController(model, camera.getLayer(0), sync);
         controller.initialize();
-        
-        // update the outline page
-        if (outlinePage != null) {
-            outlinePage.setContent(camera.getLayer(0));
-        }
-
-        // add a node for the marquee
-        PEmptyNode marqueeParent = new PEmptyNode();
-        camera.getLayer(1).addChild(marqueeParent);
-
-        // add a selection handler
-        selectionHandler = new KlighdSimpleSelectionEventHandler(camera, marqueeParent);
-        canvas.addInputEventListener(selectionHandler);
-        canvas.addInputEventListener(new KlighdActionEventHandler(this));
-
-        // forward the selection events
-        selectionHandler.addSelectionListener(this);
     }
 
     /**

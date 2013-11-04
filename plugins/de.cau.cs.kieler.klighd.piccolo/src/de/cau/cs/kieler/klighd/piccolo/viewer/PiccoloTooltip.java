@@ -14,11 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-
-import javax.swing.Timer;
 
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
@@ -30,6 +26,7 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
@@ -37,10 +34,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolox.swt.SWTTimer;
 
 /**
  * The class realizes a tooltip for the
@@ -56,7 +51,6 @@ import edu.umd.cs.piccolox.swt.SWTTimer;
  */
 public class PiccoloTooltip {
 
-    private Display display;
     private PCamera camera;
 
     // graphic elements representing the tooltip
@@ -64,7 +58,6 @@ public class PiccoloTooltip {
     private KlighdStyledText tooltip;
 
     // configuration constants
-    private static final int TOOLTIP_DELAY = 750;
     private static final int ROUNDNESS = 5;
     private static final int OPACITY = 220;
     private static final int INSETS = 5;
@@ -78,7 +71,6 @@ public class PiccoloTooltip {
      *            KlighdViewer}'s canvas.
      */
     public PiccoloTooltip(final Display display, final PCamera camera) {
-        this.display = display;
         this.camera = camera;
 
         // create the text element for the tooltip
@@ -102,13 +94,10 @@ public class PiccoloTooltip {
 
     
     /**
-     * Listens to the {@link PCamera} and reacts to mouse move events in order to display a tooltip
-     * where available.
+     * Listens to the {@link PCamera} and reacts to mouse hover & move events in order to display a
+     * tooltip where available.
      */
-    private class TooltipListener extends PBasicInputEventHandler {
-        
-        /** The last mouseover's KRendering. */
-        private KRendering rendering;
+    private class TooltipListener extends KlighdBasicInputEventHandler {
         
         /** The last mouseover's KNode (only used if no rendering is available). */
         private KNode knode;
@@ -116,54 +105,41 @@ public class PiccoloTooltip {
         /** Position at which the tooltip is displayed. */
         private Point2D mousePos;
         
-        /** The timer used to realize the delay of the tooltip occurrence. */ 
-        private Timer timer = null;
-        
-        /** Flag indicating whether the tooltip is valid and can be shown. */
-        private boolean visible = false;
-
         /**
          * Constructor.
          */
         public TooltipListener() {
-            timer = new SWTTimer(display, TOOLTIP_DELAY, timeOutListener);
-            timer.setRepeats(false);
         }
-
+        
         /**
          * {@inheritDoc}
          */
+        @Override
         public void mouseMoved(final PInputEvent event) {
-            updateToolTip(event);
+            root.setVisible(false);
         }
 
         /**
          * {@inheritDoc}
          */
+        @Override
         public void mouseDragged(final PInputEvent event) {
-            updateToolTip(event);
+            root.setVisible(false);
         }
 
-        private void updateToolTip(final PInputEvent event) {
-
-            // first reset the tooltip timer and configuration
-            timer.stop();
-            visible = false;
-            root.setVisible(visible);
-            
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void mouseHovered(final PInputEvent event) {
             // retrieve the mouse we are over
-            // PNode n = event.getInputManager().getMouseOver().getPickedNode();
             PNode n = event.getPickedNode();
 
             if (n instanceof IGraphElement<?>) {
-                visible = true;
                 IGraphElement<?> graphElement = (IGraphElement<?>) n;
                 AbstractKGERenderingController<?, ?> ctr = graphElement.getRenderingController();
-                if (ctr == null) {
-                    // FIXME the ctr is not supposed to be null, needs to be fixed in KLighD itself
-                    return;
-                }
-                rendering = ctr.getCurrentRendering();
+
+                final KRendering rendering = ctr.getCurrentRendering();
 
                 // fallback to the KNode if no rendering is specified
                 if (rendering == null) {
@@ -180,16 +156,6 @@ public class PiccoloTooltip {
                 // get the mouse position
                 mousePos = event.getCanvasPosition();
                 event.getPath().canvasToLocal(mousePos, camera);
-
-                // start the timer
-                timer.start();
-            }
-        }
-
-        /** The {@link ActionListener} called once the timer expired, lets the tooltip appear. */
-        private ActionListener timeOutListener = new ActionListener() {
-
-            public void actionPerformed(final ActionEvent e) {
 
                 // retrieve the tooltip
                 String tooltipText = "";
@@ -218,10 +184,8 @@ public class PiccoloTooltip {
                         (float) tooltipBounds.height + 2 * INSETS, ROUNDNESS, ROUNDNESS);
 
                 // set visible and repaint
-                root.setVisible(visible);
-                root.invalidatePaint();
-                root.invalidateLayout();
+                root.setVisible(true);
             }
-        };
+        }
     }
 }

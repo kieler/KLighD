@@ -22,10 +22,16 @@ import org.eclipse.swt.widgets.Composite;
 import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdInputManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
+import edu.umd.cs.piccolo.PCamera;
+import edu.umd.cs.piccolo.PInputManager;
+import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
+import edu.umd.cs.piccolox.swt.PSWTRoot;
 
 /**
  * A specialized version of {@link PSWTCanvas} with KLighD-specific customizations.
@@ -58,7 +64,41 @@ public class KlighdCanvas extends PSWTCanvas {
         // this reduces flickering drastically
         this.setDoubleBuffered(true);
 
-    }    
+    }
+    
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This customization is required for injecting the specialized root node providing the
+     * KLighD-specific {@link KlighdInputManager}. This input manager replaces the event evaluation
+     * based on AWT's event type codes by one based on SWT's event type codes.
+     */
+    @Override // SUPPRESS CHECKSTYLE Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
+    public PCamera createBasicSceneGraph() {
+        final PRoot r = new PSWTRoot(this) {
+            private static final long serialVersionUID = -4737922663028304522L;
+
+            private PInputManager inputManager = null;
+            
+            @Override
+            public PInputManager getDefaultInputManager() {
+                if (inputManager == null) {
+                    inputManager = new KlighdInputManager();
+                    addInputSource(inputManager);
+                }
+                return inputManager;
+            }
+        };
+        final PLayer l = new PLayer();
+        final PCamera c = new PCamera();
+
+        r.addChild(c);
+        r.addChild(l);
+        c.addLayer(l);
+
+        return c;
+    }
+
 
     @Override
     protected Graphics2D getGraphics2D(final GC gc, final Device device) {
@@ -67,23 +107,25 @@ public class KlighdCanvas extends PSWTCanvas {
         return (Graphics2D) graphics;
     }
 
+
     /**
      * With this specialized implementation I register customized event listeners that do not
      * translate SWT events into AWT ones.
      */
     @Override
     protected void installInputSources() {
-        // TODO for the moment we need the original ones, too, as long as the the 
-        //  PSWTSimpleSelectionEventHandler is not migrated to the custom listeners
-        super.installInputSources();
-        
+
         this.addKeyListener(new KlighdKeyEventListener(this));
-        KlighdMouseEventListener mouseListener = new KlighdMouseEventListener(this);
+        
+        final KlighdMouseEventListener mouseListener = new KlighdMouseEventListener(this);
         this.addMouseListener(mouseListener);
         this.addMouseMoveListener(mouseListener);
         this.addMouseTrackListener(mouseListener);
         this.addMouseWheelListener(mouseListener);
+        this.addGestureListener(mouseListener);
     }
+    
+    
 
     /**
      * {@inheritDoc}.<br>

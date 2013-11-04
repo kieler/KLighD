@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import java.awt.geom.Point2D;
 
 import edu.umd.cs.piccolo.PCamera;
-import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 
 /**
@@ -24,7 +23,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * 
  * @author mri
  */
-public class PMouseWheelZoomEventHandler extends PBasicInputEventHandler {
+public class PMouseWheelZoomEventHandler extends KlighdBasicInputEventHandler {
 
     /** the zoom sensitivity. */
     private static final double ZOOM_SENSITIVITY = 0.20;
