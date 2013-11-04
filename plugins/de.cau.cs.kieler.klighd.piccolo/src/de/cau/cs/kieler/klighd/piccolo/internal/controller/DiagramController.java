@@ -367,7 +367,7 @@ public class DiagramController {
      */
     private void zoomToFit(final int duration) {
         if (topNode.getParent() instanceof PLayer) {
-            KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+            final KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
             
             if (topNodeLayout == null) {
                 String msg = "KLighD DiagramController: "
@@ -380,12 +380,23 @@ public class DiagramController {
             }
             
             // chsch: I don't like this exploit of implicit knowledge!
+            //  (leads to worse class structure, less encapsulation)
             // Would an API change be reasonable here?
-            // (leads to worse class structure, less encapsulation)
-            PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
-            PBounds newBounds = new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
+            final PCamera camera = ((PLayer) topNode.getParent()).getCamera(0);
+            
+            final PBounds newBounds = new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
                     topNodeLayout.getWidth(), topNodeLayout.getHeight());
-            camera.animateViewToCenterBounds(newBounds, true, duration);
+            
+            if (camera.getBoundsReference().isEmpty()) {
+                // this case occurs while initializing the DiagramEditorPart
+                //  since the whole diagram building and layout is performed within 'createPartControl()'
+                // at that time, the (widget) layout of the KlighdCanvas has not been performed and,
+                //  thus, the root pnodes' bounds are empty
+                // this setting will be replaced by 'setBounds()' in KlighdCanvas (inherited)  
+                camera.setBounds(newBounds);
+            } else {
+                camera.animateViewToCenterBounds(newBounds, true, duration);
+            }
         }
     }
     
