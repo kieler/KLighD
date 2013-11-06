@@ -16,6 +16,9 @@ package de.cau.cs.kieler.core.krendering.extensions
 import de.cau.cs.kieler.core.krendering.KColor
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 
+/**
+ * @containsExtensions
+ */
 class KColorExtensions {
 
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE

@@ -34,6 +34,8 @@ import de.cau.cs.kieler.core.krendering.LineJoin
 
 /**
  * @author chsch, alb
+ * 
+ * @containsExtensions
  */
 class KContainerRenderingExtensions {
 

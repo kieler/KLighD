@@ -28,6 +28,8 @@ import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
 
 /**
  * @author chsch, alb
+ * 
+ * @containsExtensions
  */
 @ViewSynthesisShared
 class KEdgeExtensions {

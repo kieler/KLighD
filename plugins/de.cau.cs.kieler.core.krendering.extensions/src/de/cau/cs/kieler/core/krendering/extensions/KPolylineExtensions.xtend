@@ -25,6 +25,8 @@ import de.cau.cs.kieler.core.krendering.LineCap
 
 /**
  * @author chsch, alb
+ * 
+ * @containsExtensions
  */
 class KPolylineExtensions {
     

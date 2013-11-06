@@ -23,6 +23,8 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef
  * Extension that allow a convenient use of the {@link KRenderingLibrary} mechanism.
  * 
  * @author uru
+ * 
+ * @containsExtensions
  */
 @ViewSynthesisShared
 class KLibraryExtensions {

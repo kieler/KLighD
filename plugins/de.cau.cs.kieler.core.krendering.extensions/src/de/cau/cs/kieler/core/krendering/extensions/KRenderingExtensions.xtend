@@ -64,6 +64,8 @@ import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
  * It does not claim to be complete ;-).
+ * 
+ * @containsExtensions
  */
 class KRenderingExtensions {
 
@@ -825,6 +827,14 @@ class KRenderingExtensions {
         );
     }
 
+    /**
+     * Adds a grid placement to the rendering element with the specified spacing. 
+     *  
+     * @example
+     * <pre>
+     *      rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
+     * </pre> 
+     */
     def KGridPlacementData setGridPlacementData(KRendering rendering) {
         return renderingFactory.createKGridPlacementData() => [
             rendering.placementData = it;
