@@ -36,7 +36,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
-import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
+import de.cau.cs.kieler.klighd.transformations.ReinitializingDiagramSynthesisProxy;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
@@ -312,9 +312,9 @@ public final class LightDiagramServices {
             try {
                 currentModel = transformation.transform(currentModel, objTransformationContext);
             } catch (Exception e) {
-                if (transformation instanceof ReinitializingTransformationProxy<?>) {
+                if (transformation instanceof ReinitializingDiagramSynthesisProxy<?>) {
                     transformation =
-                            ((ReinitializingTransformationProxy<Object>) transformation)
+                            ((ReinitializingDiagramSynthesisProxy<Object>) transformation)
                                     .getDelegate();
                 }
                 StatusManager.getManager().handle(

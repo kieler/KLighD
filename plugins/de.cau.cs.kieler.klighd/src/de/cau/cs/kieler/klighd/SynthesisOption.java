@@ -18,12 +18,14 @@ import java.util.List;
 import de.cau.cs.kieler.core.util.Pair;
 
 /**
- * Represents a view synthesis option provided a view synthesis transformation. By means of such
- * transformations the tool user can customize the diagram. It provides a type (on/off, choice of
+ * Represents a view synthesis option provided by implementations of
+ * {@link de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis}. By means of such
+ * options the tool user can customize the diagram creation. It provides a type (on/off, choice of
  * settings) and a set of option values, if necessary.<br>
  * <br>
- * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if the
- * transformation is a re-initialized one (determined in the registration).
+ * Hint: Declare {@link SynthesisOption SynthesisOptions} as static fields in the diagram synthesis
+ * implementations as concrete settings in the tool are put in hash maps keyed by the corresponding
+ * synthesis option instance.
  * 
  * @author chsch
  * @kieler.design proposed by chsch

@@ -59,10 +59,10 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  The implementation of the transformation. In case the transformation maintains a local memory or uses dependency injection by means of Google Guice the class is suggested to be prefixed with the string &quot;de.cau.cs.kieler.klighd/de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:&quot;. This causes the creation of a transformation proxy instance taking care about (re-)initializing the actual transformation properly.
+                  The implementation of the concrete diagram synthesis. In case it maintains a local memory (e.g. due to the incorporation of the helper classes in de.cau.cs.kieler.core.krendering.extensions) or uses dependency injection by means of Google Guice the class id must be prefixed with the string &quot;de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:&quot;. This causes the creation of a proxy instance taking care about the proper (re-)initializing of the diagram synthesis.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.transformations.AbstractTransformation:de.cau.cs.kieler.klighd.IModelTransformation"/>
+                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis:"/>
                </appinfo>
             </annotation>
          </attribute>

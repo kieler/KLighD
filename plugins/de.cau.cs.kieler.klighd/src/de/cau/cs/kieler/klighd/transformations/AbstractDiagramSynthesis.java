@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphData;
@@ -26,6 +28,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -38,11 +41,33 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 
 /**
- * This is a specialized {@link ITransformation} with target model type {@link KNode}.<br>
+ * The abstract base class for KLighD diagram synthesis implementations.<br>
  * <br>
- * Its aim is to simplify and shrink the class declaration parts of diagram synthesis
- * transformations creating KGraph/KRendering specifications. Please see also the documentation of
- * {@link ITransformation}.
+ * Implementations of this class have to implement {@link #transform(S)} that performs the
+ * mapping of the semantic/business objects into instances of the KGraph/KRendering view model format.<br> 
+ * <br>
+ * Some hints for the use with Xtend (www.xtend-lang.org):<br>
+ * If your custom view synthesis transformation is written in Xtend and leverages <b>create
+ * extensions</b> or <b>dependency injection</b> with Google Guice, please note the hint in
+ * {@link ReinitializingDiagramSynthesisProxy} on registering such transformations.<br>
+ * <br>
+ * If a transformation implementation incorporates helper transformations containing shared or
+ * outsourced parts and the outsourced ones need to have access to the main transformation instance,
+ * e.g. for accessing the transformation context, this can be realized by means of Guice, too. The
+ * helper transformation implementation must declare an injected field of type
+ * AbstractDiagramSynthesis&lt;?&gt;, the actual {@link AbstractDiagramSynthesis} implementation
+ * must be annotated with {@link Singleton &#64;Singleton} on class level. This way the helper
+ * classes are provided with the current instance of the main transformation. <br>
+ * <br>
+ * Furthermore, diagram syntheses may leverage other ones, e.g. for realizing composed views. This
+ * can be achieved by simply declaring an injected field or extension and calling the related
+ * {@link #transform(Object, TransformationContext)} method. If multiple instance of such a delegate
+ * transformation are needed (e.g. due to the use of create extensions) a field of type
+ * {@link com.google.inject.Provider Provider&lt;yourTransformationClass&gt;} can be declared. Each
+ * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
+ * be obtained as long as the provided class is <b>not</b> declared as singleton (via
+ * {@link Singleton &#64;Singleton}). The {@link ViewSynthesisShared} annotation helps if the described
+ * feature of employing helper classes is required.  
  * 
  * @param <S>
  *            Type of the model to be visualized
@@ -72,7 +97,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     protected static final KRenderingFactory RENDERING_FACTORY = KRenderingFactory.eINSTANCE; 
 
     /**
-     * {@inheritDoc}
+     * Method hook to be called by KLighD's runtime.<br>
+     * Concrete implementations shall not call or override this method.
      */
     public KNode transform(final S model, final TransformationContext<S, KNode> transformationContext) {
         use(transformationContext);
@@ -157,16 +183,16 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     //  Synthesis option handling    
 
     /**
-     * A diagram synthesis can use this method to specify {@link SynthesisOption}s it makes use of.
-     * The options are only used in within the synthesis specifying it and not by any KlighD
-     * internals.
+     * A diagram synthesis can use this method to specify {@link SynthesisOption SynthesisOptions}
+     * it makes use of. The option settings can evaluated within the synthesis' transformed method,
+     * they don't have any influence in the behavior of KLighD's runtime.
      * 
      * A {@link SynthesisOption} option might be used to either display or hide comments in the
      * resulting diagram. The {@link SynthesisOption} class provides several convenience methods to
      * create an option, e.g. {@link SynthesisOption#createRangeOption(...)} to create a 'slider'.
      * 
-     * The resulting view with synthesis options will displayed the options according to the order
-     * of the returned list.
+     * The synthesis options will be displayed in the side bar of the corresponding view or editor
+     * part according to the order within the returned list.
      * 
      * @return a list with the desired synthesis options.
      */
@@ -178,15 +204,15 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     //  Recommended layout option handling    
 
     /**
-     * Return a list of layout options that will be displayed in the user interface and are directly
-     * manipulatable by the user. For each layout option a, possibly restriced, set of allowed input
-     * values can be specified.
+     * Returns a list of layout options that will be displayed in the diagram side bar and that are
+     * directly manipulatable by the user. For each layout option a, possibly restricted, set of
+     * allowed input values can be specified.
      * 
      * Use the {@link #specifyLayoutOption(IProperty, Collection)} method to conveniently specify
      * the options. An example usage might look like the following (Xtend code). The shown example
      * will create a choice widget allowing all possible values of KlayLayered'
-     * NodePlacementStrategy enum. Furthermore, a splider is created to set the layout's spacing
-     * that allows values in the interval [0,255].
+     * NodePlacementStrategy enumeration. Furthermore, a slider is created to set the layout's
+     * spacing that allows values in the interval [0,255].
      * 
      * <pre>
      *  override getDisplayedLayoutOptions() {
@@ -199,9 +225,11 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      * 
      * <pre>
      * 
-     * @return 
-     *          a {@link List} of
-     * {@link Pair}s where each pair specifies a recommendet layout option.
+     * The layout options will be displayed in the side bar of the corresponding view or editor
+     * part according to the order within the returned list.
+     * 
+     * @return a {@link List} of {@link Pair Pairs} where each pair specifies a recommended layout
+     * option.
      */
     public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
         return Collections.emptyList();

@@ -25,7 +25,7 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
-import de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy;
+import de.cau.cs.kieler.klighd.transformations.ReinitializingDiagramSynthesisProxy;
 
 /**
  * A data record that is used to keep information related to the execution of
@@ -222,9 +222,9 @@ public class TransformationContext<S, T> {
      */
     public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
         ITransformation<?, ?> theTransformation = this.transformation;
-        if (this.transformation instanceof ReinitializingTransformationProxy<?>) {
+        if (this.transformation instanceof ReinitializingDiagramSynthesisProxy<?>) {
             theTransformation =
-                    ((ReinitializingTransformationProxy<?>) this.transformation).getDelegate();
+                    ((ReinitializingDiagramSynthesisProxy<?>) this.transformation).getDelegate();
         }
         if (theTransformation instanceof AbstractDiagramSynthesis<?>) {
             return ((AbstractDiagramSynthesis<?>) theTransformation).getDisplayedLayoutOptions();

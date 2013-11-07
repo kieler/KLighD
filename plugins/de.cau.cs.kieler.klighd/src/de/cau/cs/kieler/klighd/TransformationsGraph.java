@@ -33,7 +33,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.transformations.DuplicatingTransformation;
+import de.cau.cs.kieler.klighd.transformations.DuplicatingDiagramSynthesis;
 
 /**
  * A graph structure to express the relations between instances of {@code ITransformation} and
@@ -370,7 +370,7 @@ public class TransformationsGraph {
                 //  potentially performed by an update strategy.
                 TransformationContext<?, ?> transformationContext = TransformationContext
                         // .create(new IdentityTransformation());
-                        .create(new DuplicatingTransformation<EObject>());
+                        .create(new DuplicatingDiagramSynthesis<EObject>());
                 viewContext.addTransformationContext(transformationContext);
                 // set the target node
                 targetNode = path.sourceNode;

@@ -24,21 +24,21 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 
 /**
- * A duplicating transformation à la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
+ * A duplicating diagram synthesis performing à la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
  * EcoreUtil#copy} preserving the source-target-mapping.<br>
  * Is used in the {@link de.cau.cs.kieler.klighd.TransformationsGraph TransformationsGraph} while
  * configuring {@link de.cau.cs.kieler.klighd.ViewContext ViewContexts} in case no semantic
  * transformation is needed in order to visualize the given model. Its aim is to decouple the model
  * access performed e.g. by the model editor and those performed by
- * {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategys} and
- * KLighD {@link de.cau.cs.kieler.klighd.IViewer IViewers}.
+ * {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategys} and KLighD
+ * {@link de.cau.cs.kieler.klighd.IViewer IViewers}.
  * 
  * @author chsch
  * 
  * @param <S>
  *            Type of the model to be duplicated.
  */
-public class DuplicatingTransformation<S extends EObject> extends AbstractDiagramSynthesis<S> {
+public class DuplicatingDiagramSynthesis<S extends EObject> extends AbstractDiagramSynthesis<S> {
 
     private Copier currentCopier = null;
     

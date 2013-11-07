@@ -31,23 +31,21 @@ import com.google.inject.TypeLiteral;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
-import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 
 
 /**
- * This transformation proxy realizes the re-initialization of stateful model transformations. It is
- * needed for Xtend2 based transformation leveraging "create extensions", for example. The
- * implementation cares about creating new transformation instances, as well as their proper
- * initialization by means of Guice.<br>
+ * This diagam synthesis proxy realizes the re-initialization of stateful diagram synthesis
+ * implementations. It is needed for Xtend-based diagram syntheses leveraging "create extensions",
+ * for example. This implementation cares about creating new synthesis instances, as well as their
+ * proper initialization by means of Guice.<br>
  * <br>
- * 
- * Transformations that shall be wrapped with an instance of this class must be registered by
+ * Diagram syntheses that shall be wrapped with an instance of this class must be registered by
  * prefixing their class name with the string <code>
- * "de.cau.cs.kieler.klighd/de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:"
- * </code>.
- * 
+ * de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:</code> . See also the
+ * description of the extension point <code>de.cau.cs.kieler.klighd.diagramSyntheses</code>.<br>
+ * <br>
  * This class shall not be instantiated by any user program but only by the runtime.
  * 
  * @param <S>
@@ -55,7 +53,7 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
  * 
  * @author chsch
  */
-public class ReinitializingTransformationProxy<S> extends AbstractDiagramSynthesis<S> {
+public class ReinitializingDiagramSynthesisProxy<S> extends AbstractDiagramSynthesis<S> {
 
     private Class<AbstractDiagramSynthesis<S>> transformationClass = null;
     private AbstractDiagramSynthesis<S> transformationDelegate = null;
@@ -66,13 +64,13 @@ public class ReinitializingTransformationProxy<S> extends AbstractDiagramSynthes
      * Package protected constructor.
      * @param clazz the transformation class
      */
-    ReinitializingTransformationProxy(final Class<AbstractDiagramSynthesis<S>> clazz) {
+    ReinitializingDiagramSynthesisProxy(final Class<AbstractDiagramSynthesis<S>> clazz) {
         this.transformationClass = clazz;
         
         // The following module definition provides the various features:
         //  * A standard binding of ResourceSet is provided for special uses requiring one.
         //  * Helper transformations injected into the main one may declare an injected field
-        //    or extension of type AbstractTransformation<?, ?> in order to generically access
+        //    or extension of type AbstractDiagramSynthesis<?> in order to generically access
         //    the main transformation (current instance of 'clazz'), e.g. for adding stuff to
         //    the current transformation context. Guice is taking care of not deadlocking in
         //    such a cyclic reference; this is resolved by providing the already created instance
@@ -83,35 +81,36 @@ public class ReinitializingTransformationProxy<S> extends AbstractDiagramSynthes
         this.transformationClassBinding = new Module() {
             public void configure(final Binder binder) {
                 binder.bind(ResourceSet.class).to(ResourceSetImpl.class);
-                binder.bind(new TypeLiteral<ITransformation<?, ?>>() { }).to(clazz);
+                binder.bind(new TypeLiteral<AbstractDiagramSynthesis<?>>() { }).to(clazz);
                 binder.bindScope(ViewSynthesisShared.class, new ViewSynthesisScope(clazz));
             }
         };
     }
     
     /**
-     * This {@link Scope} realizes the requirement of injecting the same instances of of helper
-     * classes into further helper classes. <br>
+     * This {@link Scope} realizes the requirement of injecting the same instances of helper classes
+     * like extension libraries into implementations of {@link AbstractDiagramSynthesis} and further
+     * helper classes implementations helper classes.<br>
      * <br>
-     * Example:
-     * DataDependencyVisualisation --requires--> KNodeExtensions,<br>
+     * Example: DataDependencyVisualisation --requires--> KNodeExtensions,<br>
      * DataDependencyVisualisation --requires--> ExpressionVisuHelper --requires--> KNodeExtensions,<br>
      * <br>
      * while the instances of KNodeExtensions should be the same.<br>
-     *
+     * 
      * In addition, the DataDependencyVisualisation may re-use the StateMachineVisualisation with<br>
      * <br>
-     * DataDependencyVisualisation --requires--> KNodeExtensions,<br>
+     * StateMachineVisualisation --requires--> KNodeExtensions,<br>
      * <br>
-     * both sub types of {@link AbstractTransformation}. The helper instance(s) of that class however
-     * shall be disjoint from the ones of DataDependencyVisualisation's instance(s).<br>
+     * both sub types of {@link AbstractDiagramSynthesis}. The helper instance(s) of the
+     * StateMachineVisualisation instance however shall be disjoint from the ones of
+     * DataDependencyVisualisation's instance(s).<br>
      * This requirement is realized by this {@link Scope} by maintaining a Set of instances that
-     * have already been created. If, however, an instance of {@link AbstractTransformation} or a
-     * subclass is requested, those instances will be forgotten - the set is cleared. Thus, new
-     * ones are requested from the upstream {@link Provider}.<br>
+     * have already been created. If, however, an instance of {@link AbstractDiagramSynthesis} or a
+     * subclass is requested, those instances will be forgotten - the set is cleared. Thus, new ones
+     * are requested from the upstream {@link Provider}.<br>
      * <br>
      * <b>Attention</b>: Classes whose instantiation shall be controlled by this {@link Scope} must
-     * by annotated with the {@link ViewSynthesisShared} annotation.  
+     * by annotated with the {@link ViewSynthesisShared} annotation.
      * 
      * 
      * @author chsch
@@ -154,7 +153,7 @@ public class ReinitializingTransformationProxy<S> extends AbstractDiagramSynthes
                  * created by {@link ViewSynthesisScope#scope(Key, Provider)}. Thus the call of
                  * 'get()' for the required instance of 'mainTransformationClazz' invoked by the
                  * 'getInstance()' call in
-                 * {@link ReinitializingTransformationProxy#getNewDelegateInstance} will be the
+                 * {@link ReinitializingDiagramSynthesisProxy#getNewDelegateInstance} will be the
                  * first one entering this method, and the last one leaving it.
                  */
                 public U get() {
@@ -166,7 +165,7 @@ public class ReinitializingTransformationProxy<S> extends AbstractDiagramSynthes
 
                     U instance = null;
                     if (theClazzToBeInjected != mainTransformationClazz
-                            && ITransformation.class.isAssignableFrom(theClazzToBeInjected)) {
+                            && AbstractDiagramSynthesis.class.isAssignableFrom(theClazzToBeInjected)) {
                         // in case an instance of another fully-fledged transformation class requested
                         //  the current provider makes the scope (!) to forget all its known class
                         //  instances as stated in the requirements description above.
