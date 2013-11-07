@@ -19,7 +19,7 @@ import de.cau.cs.kieler.core.util.Pair;
 
 /**
  * Represents a view synthesis option provided by implementations of
- * {@link de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis}. By means of such
+ * {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis}. By means of such
  * options the tool user can customize the diagram creation. It provides a type (on/off, choice of
  * settings) and a set of option values, if necessary.<br>
  * <br>

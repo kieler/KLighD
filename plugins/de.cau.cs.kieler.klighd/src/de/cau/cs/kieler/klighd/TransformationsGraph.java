@@ -33,7 +33,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.transformations.DuplicatingDiagramSynthesis;
+import de.cau.cs.kieler.klighd.syntheses.DuplicatingDiagramSynthesis;
 
 /**
  * A graph structure to express the relations between instances of {@code ITransformation} and

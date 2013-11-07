@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.transformations;
+package de.cau.cs.kieler.klighd.syntheses;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -33,7 +33,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  * 
  * @author chsch
  */
-public class GuiceBasedTransformationFactory implements IExecutableExtension,
+public class GuiceBasedSynthesisFactory implements IExecutableExtension,
         IExecutableExtensionFactory {
 
     /** This bundleId is a {@link Long} value in shape of a String.

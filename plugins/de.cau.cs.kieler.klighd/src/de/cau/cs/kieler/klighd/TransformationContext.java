@@ -24,8 +24,8 @@ import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
-import de.cau.cs.kieler.klighd.transformations.ReinitializingDiagramSynthesisProxy;
+import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
+import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
 
 /**
  * A data record that is used to keep information related to the execution of

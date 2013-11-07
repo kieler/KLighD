@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.transformations;
+package de.cau.cs.kieler.klighd.syntheses;
 
 import java.util.List;
 import java.util.Set;
@@ -43,8 +43,8 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
  * <br>
  * Diagram syntheses that shall be wrapped with an instance of this class must be registered by
  * prefixing their class name with the string <code>
- * de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:</code> . See also the
- * description of the extension point <code>de.cau.cs.kieler.klighd.diagramSyntheses</code>.<br>
+ * de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:</code> . See also the description
+ * of the extension point <code>de.cau.cs.kieler.klighd.diagramSyntheses</code>.<br>
  * <br>
  * This class shall not be instantiated by any user program but only by the runtime.
  * 

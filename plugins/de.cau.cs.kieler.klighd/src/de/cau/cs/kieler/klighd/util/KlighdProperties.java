@@ -108,8 +108,8 @@ public final class KlighdProperties {
      * modification of the port's rendering.<br>
      * <br>
      * This property must be set in implementations of
-     * {@link de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
-     * AbstractDiagramSynthesis} if it is needed, it is not set by KLighD automatically.
+     * {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis AbstractDiagramSynthesis}
+     * if it is needed, it is not set by KLighD automatically.
      */
     public static final IProperty<PortSide> ORIGINAL_PORT_SIDE = new Property<PortSide>(
             "klighd.original.port.side");
