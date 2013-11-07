@@ -12,15 +12,15 @@
    <extension
          point="de.cau.cs.kieler.klighd.diagramSyntheses">
       <diagramSynthesis
-            class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis"
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis"
             id="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis">
       </diagramSynthesis>
       <!-- diagramSynthesis
-            class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis"
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis"
             id="de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis">
       </diagramSynthesis -->
       <diagramSynthesis
-            class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreFileDiagramSynthesis"
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreFileDiagramSynthesis"
             id="de.cau.cs.kieler.klighd.examples.EcoreFileDiagramSynthesis">
       </diagramSynthesis>
    </extension>

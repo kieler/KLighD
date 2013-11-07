@@ -29,7 +29,7 @@ import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.kiml.options.LayoutOptions
 
-import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 
 import java.util.List
 import javax.inject.Inject

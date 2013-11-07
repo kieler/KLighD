@@ -2,7 +2,7 @@ package de.cau.cs.kieler.klighd.examples.ecore
 
 import com.google.common.collect.Iterators
 import de.cau.cs.kieler.klighd.TransformationContext
-import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import javax.inject.Inject
 import org.eclipse.emf.ecore.EPackage
 

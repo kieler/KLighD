@@ -28,8 +28,7 @@ import com.google.inject.ScopeAnnotation;
  * injecting instances of helper transformations into diagram synthesis implementations. <br>
  * <br>
  * For more details see
- * {@link de.cau.cs.kieler.klighd.transformations.ReinitializingTransformationProxy.ViewSynthesisScope}
- * <br>
+ * {@link de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy.ViewSynthesisScope} <br>
  * <br>
  * It is defined at this place as I need to use it within the KNode/KPort/KLabel/KEdgeExtensions.
  * 
