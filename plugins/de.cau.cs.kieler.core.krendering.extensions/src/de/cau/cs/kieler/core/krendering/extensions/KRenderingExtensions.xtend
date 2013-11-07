@@ -106,6 +106,9 @@ class KRenderingExtensions {
         ];
     }
 
+    /**
+     * @extensionType composition  
+     */
     def KRectangle addRectangle(KNode node){
         return renderingFactory.createKRectangle() => [
             node.data.add(it)
@@ -118,6 +121,9 @@ class KRenderingExtensions {
         ];
     }
 
+    /**
+     * @extensionType composition  
+     */
     def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
@@ -232,6 +238,9 @@ class KRenderingExtensions {
         ])).lineWidth;
     }
  
+    /**
+     * @extensionType style  
+     */
     def <T extends KRendering> T setLineWidth(T rendering, float width) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
         return rendering => [
@@ -241,6 +250,9 @@ class KRenderingExtensions {
         ];
     }
     
+    /**
+     * @extensionType style  
+     */
     def KLineStyle getLineStyle(KRendering rendering) {
         return rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [
             lineStyle = LineStyle::SOLID;
@@ -772,6 +784,12 @@ class KRenderingExtensions {
         );
     }
 
+    /**
+     * Adds a grid placement to the rendering element with the specified spacing. 
+     *  
+     * @example
+     * rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
+     */
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight, KPosition topLeft, KPosition bottomRight) {
         return renderingFactory.createKGridPlacementData() => [
@@ -783,6 +801,14 @@ class KRenderingExtensions {
         ];
     }
 
+/**
+     * Adds a grid placement to the rendering element with the specified spacing. 
+     *  
+     * @example
+     * <pre>
+     * rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
+     * </pre> 
+     */
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight) {
         return renderingFactory.createKGridPlacementData() => [
@@ -832,7 +858,7 @@ class KRenderingExtensions {
      *  
      * @example
      * <pre>
-     *      rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
+     *     rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
      * </pre> 
      */
     def KGridPlacementData setGridPlacementData(KRendering rendering) {
