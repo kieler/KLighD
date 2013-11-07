@@ -146,6 +146,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             DiagramViewManager.getInstance().registerView(this);
             
             if (requiresInitialLayout(viewContext)) {
+                viewer.getControl().setVisible(false);
+                
                 // it is important to wait with the layout call until the #createPartControl
                 // method has finished and the widget toolkit has applied proper bounds
                 // to the parent composite via a Composite#layout call. 
@@ -155,6 +157,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
                         LightDiagramServices.layoutDiagram(viewContext, false, false);
+                        viewer.getControl().setVisible(true);
                     }
                 });
             }
