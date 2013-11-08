@@ -4,7 +4,7 @@
    <extension
          point="de.cau.cs.kieler.core.kivi.combinations">
       <combination
-            active="false"
+            active="true"
             class="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesisCombination"
             name="Visualize chosen Ecore classes">
       </combination>
