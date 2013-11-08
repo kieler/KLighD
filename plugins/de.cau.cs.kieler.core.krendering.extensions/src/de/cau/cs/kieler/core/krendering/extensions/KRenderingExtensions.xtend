@@ -64,6 +64,8 @@ import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 /**
  * This utility class contains various methods that are convenient while composing KRendering data.
  * It does not claim to be complete ;-).
+ * 
+ * @containsExtensions
  */
 class KRenderingExtensions {
 
@@ -104,6 +106,15 @@ class KRenderingExtensions {
         ];
     }
 
+    /**
+     * Adds a rectangle to the node.
+     * @example
+     * node.addRectangle => [
+     *   it.background = "green".color
+     * ]
+     * 
+     * @extensionType composition  
+     */
     def KRectangle addRectangle(KNode node){
         return renderingFactory.createKRectangle() => [
             node.data.add(it)
@@ -116,6 +127,9 @@ class KRenderingExtensions {
         ];
     }
 
+    /**
+     * @extensionType composition  
+     */
     def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
@@ -230,6 +244,9 @@ class KRenderingExtensions {
         ])).lineWidth;
     }
  
+    /**
+     * @extensionType style  
+     */
     def <T extends KRendering> T setLineWidth(T rendering, float width) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
         return rendering => [
@@ -239,6 +256,9 @@ class KRenderingExtensions {
         ];
     }
     
+    /**
+     * @extensionType style  
+     */
     def KLineStyle getLineStyle(KRendering rendering) {
         return rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [
             lineStyle = LineStyle::SOLID;
@@ -770,6 +790,10 @@ class KRenderingExtensions {
         );
     }
 
+    /**
+     * Adds a grid placement to the rendering element with the specified spacing. 
+     *  
+     */
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight, KPosition topLeft, KPosition bottomRight) {
         return renderingFactory.createKGridPlacementData() => [
@@ -781,6 +805,9 @@ class KRenderingExtensions {
         ];
     }
 
+/**
+     * Adds a grid placement to the rendering element with the specified spacing. 
+     */
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight) {
         return renderingFactory.createKGridPlacementData() => [
@@ -825,6 +852,16 @@ class KRenderingExtensions {
         );
     }
 
+    /**
+     * Adds a grid placement to the rendering element with the specified spacing. 
+     *  
+     * @example
+     * rectangle.setGridPlacementData => [ cell |
+     *  cell.from(LEFT, padding, 0, TOP, padding - 2, 0).to(RIGHT, padding, 0, BOTTOM, 0, 0)
+     *  cell.minCellHeight = propBarHeight
+     *  cell.flexibleHeight = false
+     * ]
+     */
     def KGridPlacementData setGridPlacementData(KRendering rendering) {
         return renderingFactory.createKGridPlacementData() => [
             rendering.placementData = it;

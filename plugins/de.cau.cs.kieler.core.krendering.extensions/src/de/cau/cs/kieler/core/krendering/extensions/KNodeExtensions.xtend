@@ -25,6 +25,8 @@ import de.cau.cs.kieler.core.math.KVector
 
 /**
  * @author chsch
+ * 
+ * @containsExtensions
  */
 @ViewSynthesisShared
 class KNodeExtensions {

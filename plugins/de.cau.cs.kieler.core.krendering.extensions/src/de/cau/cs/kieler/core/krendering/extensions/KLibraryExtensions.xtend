@@ -23,6 +23,8 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef
  * Extension that allow a convenient use of the {@link KRenderingLibrary} mechanism.
  * 
  * @author uru
+ * 
+ * @containsExtensions
  */
 @ViewSynthesisShared
 class KLibraryExtensions {
@@ -48,8 +50,14 @@ class KLibraryExtensions {
         return library
     }
 
-    /**
+    /** 
+     * Retrieves the rendering element from the library that has been identified with
+     * the <code>id</code> string.  
      * 
+     * @example
+     * val libJunction = edge.source.getFromLibrary("ren_junction")
+     * 
+     * @extensionType library
      */
     def KRenderingRef getFromLibrary(KRenderingLibrary library, String id) {
         val rendering = library.renderings.findFirst[r|r.id == id] as KRendering
@@ -61,13 +69,29 @@ class KLibraryExtensions {
         }
     }
 
+
     def KRenderingRef getFromLibrary(KNode node, String id) {
         val library = node.library
         return library.getFromLibrary(id)
     }
 
     /**
+     * Identifies the passed <code>rendering</code> element with the passed <code>id</code> within the KRendering library.
+     * Afterwards the rendering can be retrieved from the library using the <code>getFromLibrary</code> method. 
      * 
+     * @example
+     * edge.source.addToLibrary("ren_junction", 
+     *  renderingFactory.createKRoundedRectangle => [ rr |
+     *   rr.background = color
+     *   rr.foreground = color
+     *   rr.cornerWidth = 2
+     *   rr.cornerHeight = 2
+     *   rr.setPointPlacementData(LEFT, 0, 0, TOP, 0, 0,
+     *      H_CENTRAL, V_CENTRAL, 0, 0, 10, 10)
+     *  ]
+     * )  
+     * 
+     * @extensionType library
      */
     def KRenderingRef addToLibrary(KRenderingLibrary library, String id, KRendering rendering) {
         rendering.id = id

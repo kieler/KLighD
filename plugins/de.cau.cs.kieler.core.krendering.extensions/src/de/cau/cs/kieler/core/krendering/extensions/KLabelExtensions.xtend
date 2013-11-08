@@ -31,6 +31,8 @@ import java.util.List
 
 /**
  * @author chsch
+ * 
+ * @containsExtensions
  */
 @ViewSynthesisShared
 class KLabelExtensions {

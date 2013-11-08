@@ -32,6 +32,8 @@ import de.cau.cs.kieler.core.krendering.KRendering
 
 /**
  * @author chsch
+ * 
+ * @containsExtensions
  */
 @ViewSynthesisShared
 class KPortExtensions {
