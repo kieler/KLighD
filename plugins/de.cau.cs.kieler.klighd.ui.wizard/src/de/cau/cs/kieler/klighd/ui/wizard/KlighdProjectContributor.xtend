@@ -58,7 +58,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions            
-            import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
+            import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
             
             import «projectInfo.sourceModelClassFullyQualified»
             
@@ -107,7 +107,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             package «projectInfo.transformationPackage»;
             
             import de.cau.cs.kieler.core.kgraph.KNode;
-            import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis;
+            import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
             import «projectInfo.sourceModelClassFullyQualified»;
             
             public class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
@@ -143,7 +143,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                <extension
                      point="de.cau.cs.kieler.klighd.diagramSyntheses">
                <diagramSynthesis
-                     class="de.cau.cs.kieler.klighd.transformations.GuiceBasedTransformationFactory:«projectInfo.
+                     class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:«projectInfo.
                 transformationPackage + "." + projectInfo.transformationName»"
                      id="«projectInfo.transformationPackage + "." + projectInfo.transformationName»">
                </diagramSynthesis>
