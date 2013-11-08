@@ -67,30 +67,49 @@ class KContainerRenderingExtensions {
         ]
     }
 
+
+    /**
+     * @extensionCategory composition
+     */
     def KArc addArc(KContainerRendering cr) {
         return renderingFactory.createKArc() => [
             cr.children += it;
         ];
     }
 
+
+    /**
+     * @extensionCategory composition
+     */
     def KEllipse addEllipse(KContainerRendering cr) {
         return renderingFactory.createKEllipse() => [
             cr.children += it;
         ];
     }
 
+
+    /**
+     * @extensionCategory composition
+     */
     def KPolygon addPolygon(KContainerRendering cr) {
         return renderingFactory.createKPolygon() => [
             cr.children += it;
         ];
     }
 
+    /**
+     * @extensionCategory composition
+     */
     def KRectangle addRectangle(KContainerRendering cr) {
         return renderingFactory.createKRectangle() => [
             cr.children += it;
         ];
     }
 
+
+    /**
+     * @extensionCategory composition
+     */
     def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight) {
         return renderingFactory.createKRoundedRectangle => [
             cr.children += it;
@@ -99,6 +118,10 @@ class KContainerRenderingExtensions {
         ];
     }
 
+
+    /**
+     * @extensionCategory composition
+     */
     def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight, float lineWidth) {
         return renderingFactory.createKRoundedRectangle => [
             cr.children += it;
@@ -130,6 +153,12 @@ class KContainerRenderingExtensions {
         ];
     }
 
+    /**
+     * @example
+     * rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
+     * 
+     * @extensionType microLayout
+     */
     def KGridPlacement setGridPlacement(KContainerRendering cr, int cols) {
         return renderingFactory.createKGridPlacement => [
             cr.setChildPlacement(it);    

@@ -107,6 +107,12 @@ class KRenderingExtensions {
     }
 
     /**
+     * Adds a rectangle to the node.
+     * @example
+     * node.addRectangle => [
+     *   it.background = "green".color
+     * ]
+     * 
      * @extensionType composition  
      */
     def KRectangle addRectangle(KNode node){
@@ -787,8 +793,6 @@ class KRenderingExtensions {
     /**
      * Adds a grid placement to the rendering element with the specified spacing. 
      *  
-     * @example
-     * rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
      */
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight, KPosition topLeft, KPosition bottomRight) {
@@ -803,11 +807,6 @@ class KRenderingExtensions {
 
 /**
      * Adds a grid placement to the rendering element with the specified spacing. 
-     *  
-     * @example
-     * <pre>
-     * rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
-     * </pre> 
      */
     def KGridPlacementData setGridPlacementData(KRendering rendering, float minCellWidth,
             float minCellHeight) {
@@ -857,9 +856,11 @@ class KRenderingExtensions {
      * Adds a grid placement to the rendering element with the specified spacing. 
      *  
      * @example
-     * <pre>
-     *     rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
-     * </pre> 
+     * rectangle.setGridPlacementData => [ cell |
+     *  cell.from(LEFT, padding, 0, TOP, padding - 2, 0).to(RIGHT, padding, 0, BOTTOM, 0, 0)
+     *  cell.minCellHeight = propBarHeight
+     *  cell.flexibleHeight = false
+     * ]
      */
     def KGridPlacementData setGridPlacementData(KRendering rendering) {
         return renderingFactory.createKGridPlacementData() => [
