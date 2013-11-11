@@ -51,6 +51,9 @@ public class RandomGraphGenerator {
     public static final float PORT_HEIGHT = 4.0f;
     /** minimal separation of ports. */
     public static final float PORT_SEPARATION = 7.0f;
+    
+    /** the maximal number of iterations for distributing edges. */
+    private static final int MAX_ITER = 12;
 
     /** the generator options holder. */
     private GeneratorOptions options;
@@ -80,6 +83,7 @@ public class RandomGraphGenerator {
         this.options = genOptions;
         if (!genOptions.getProperty(GeneratorOptions.ENABLE_HIERARCHY)) {
             genOptions.setProperty(GeneratorOptions.HIERARCHY_CHANCE, 0.0f);
+            genOptions.setProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES, false);
         }
         
         // generate the graph
@@ -147,15 +151,23 @@ public class RandomGraphGenerator {
             
             if (genOptions.getProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES)) {
                 // create edges randomly across the whole compound graph, crossing hierarchy borders
-                int[] outgoingEdges;
                 switch (genOptions.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
-                case OUTGOING_EDGES:
-                    outgoingEdges = determineOutgoingEdges(generatedNodes, minOut, maxOut);
+                case OUTGOING_EDGES: {
+                    int[] outgoingEdges = determineOutgoingEdges(generatedNodes, minOut, maxOut);
+                    connectRandomlyAndConditional(generatedNodes, outgoingEdges, basicCondition);
                     break;
-                default:
-                    outgoingEdges = determineOutgoingEdges(generatedNodes, m);
                 }
-                connectRandomlyAndConditional(generatedNodes, outgoingEdges, basicCondition);
+                default: {
+                    int createdEdges = 0;
+                    int iterations = 0;
+                    do {
+                        int[] outgoingEdges = determineOutgoingEdges(generatedNodes, m - createdEdges);
+                        createdEdges += connectRandomlyAndConditional(generatedNodes, outgoingEdges,
+                                basicCondition);
+                        iterations++;
+                    } while (createdEdges < m && iterations < MAX_ITER);
+                }
+                }
             }
             break;
         }
@@ -223,7 +235,7 @@ public class RandomGraphGenerator {
             if (!options.getProperty(GeneratorOptions.MULTI_EDGES) && connected(node1, node2)) {
                 return false;
             }
-            if (!options.getProperty(GeneratorOptions.CYCLES) && findNodeWithDFS(node1, node2)) {
+            if (!options.getProperty(GeneratorOptions.CYCLES) && findNodeWithDFS(node2, node1)) {
                 return false;
             }
             return true;
@@ -250,8 +262,13 @@ public class RandomGraphGenerator {
         // connect the nodes
         if (!options.getProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES)) {
             // determine the number of outgoing edges for every node
-            int[] outgoingEdges = determineOutgoingEdges(nodes, m);
-            connectRandomlyAndConditional(nodes, outgoingEdges, basicCondition);
+            int createdEdges = 0;
+            int iterations = 0;
+            do {
+                int[] outgoingEdges = determineOutgoingEdges(nodes, m - createdEdges);
+                createdEdges += connectRandomlyAndConditional(nodes, outgoingEdges, basicCondition);
+                iterations++;
+            } while (createdEdges < m && iterations < MAX_ITER);
         }
         // recursively create hierarchy if applicable
         float hierarchyChance = options.getProperty(GeneratorOptions.HIERARCHY_CHANCE);
@@ -1183,12 +1200,12 @@ public class RandomGraphGenerator {
             int i = randomInt(0, bufferEnd);
             KNode target = targetBuffer[i];
             if (connectConditional(source, target, condition)) {
-                ++edges;
+                edges++;
             } else {
                 // the current node does not fulfill the condition so replace it with an element
                 // from the end of the buffer
                 targetBuffer[i] = targetBuffer[bufferEnd];
-                --bufferEnd;
+                bufferEnd--;
             }
 
         }
@@ -1211,7 +1228,7 @@ public class RandomGraphGenerator {
             final EdgeCondition condition) {
         // connect every node to the specified number of other nodes
         int edges = 0;
-        for (int i = 0; i < nodes.size(); ++i) {
+        for (int i = 0; i < nodes.size(); i++) {
             KNode source = nodes.get(i);
             edges += connectRandomlyAndConditional(source, nodes, outgoingEdges[i], condition);
         }
@@ -1292,7 +1309,7 @@ public class RandomGraphGenerator {
     private static boolean findNodeWithDFS(final KNode start, final KNode end) {
         Queue<KNode> nodes = new LinkedList<KNode>();
         nodes.add(start);
-        while (!nodes.isEmpty()) {
+        do {
             KNode node = nodes.poll();
             if (node == end) {
                 return true;
@@ -1300,7 +1317,7 @@ public class RandomGraphGenerator {
             for (KEdge edge : node.getOutgoingEdges()) {
                 nodes.add(edge.getTarget());
             }
-        }
+        } while (!nodes.isEmpty());
         return false;
     }
 
