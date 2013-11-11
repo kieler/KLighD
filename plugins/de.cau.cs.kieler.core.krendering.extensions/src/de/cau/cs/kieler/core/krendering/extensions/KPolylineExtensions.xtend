@@ -22,6 +22,8 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KXPosition
 import de.cau.cs.kieler.core.krendering.KYPosition
 import de.cau.cs.kieler.core.krendering.LineCap
+import de.cau.cs.kieler.core.krendering.HorizontalAlignment
+import de.cau.cs.kieler.core.krendering.VerticalAlignment
 
 /**
  * @author chsch, alb
@@ -38,6 +40,9 @@ class KPolylineExtensions {
     @Inject
     extension KContainerRenderingExtensions
     
+    @Inject
+    extension KColorExtensions
+    
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KPolylineExtensions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,12 +54,27 @@ class KPolylineExtensions {
                 it.rotateWithLine = true;
                 it.relative = 1f;
                 it.absolute = -2f;
-                it.width = 10;
-                it.height = 8;
-                it.setXOffset(-8f); // chsch: used the regular way here and below, as the alias 
-                it.setYOffset(-4f); //  name translation convention changed from Xtext 2.3 to 2.4.
+                it.width = 8;
+                it.height = 6;
+                it.setXOffset(-6f); // chsch: used the regular way here and below, as the alias 
+                it.setYOffset(-3f); //  name translation convention changed from Xtext 2.3 to 2.4.
             ];
         ];
+    }
+    
+    def KRendering addJunctionPointDecorator(KPolyline pl) {
+        pl.junctionPointRendering = renderingFactory.createKEllipse => [
+            it.styles += renderingFactory.createKBackground => [
+                it.color = "black".color;
+            ];
+            it.placementData = renderingFactory.createKPointPlacementData => [
+                it.horizontalAlignment = HorizontalAlignment::CENTER;
+                it.verticalAlignment = VerticalAlignment::CENTER;
+                it.minWidth = 4;
+                it.minHeight = 4;
+            ];
+        ];
+        return pl.junctionPointRendering;
     }
     
     def KRendering addInheritanceTriangleArrowDecorator(KPolyline pl) {
