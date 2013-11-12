@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -26,15 +25,12 @@ import org.eclipse.swt.widgets.Spinner;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
 /**
- * The options page for the TREE graph type.
+ * The options page for the tree graph type.
  * 
  * @author mri
  * @author msp
  */
-public class RandomGraphTreePage extends WizardPage {
-
-    /** the generator options. */
-    private GeneratorOptions options;
+public class RandomGraphTreePage extends AbstractRandomGraphPage {
 
     /**
      * Constructs a RandomGraphTreePage.
@@ -42,10 +38,9 @@ public class RandomGraphTreePage extends WizardPage {
      * @param options the generator options
      */
     public RandomGraphTreePage(final GeneratorOptions options) {
-        super("randomGraphTreePage"); //$NON-NLS-1$
+        super("randomGraphTreePage", options); //$NON-NLS-1$
         setTitle(Messages.RandomGraphTreePage_title);
         setDescription(Messages.RandomGraphTreePage_description);
-        this.options = options;
     }
 
     // CHECKSTYLEOFF MagicNumber
@@ -62,31 +57,16 @@ public class RandomGraphTreePage extends WizardPage {
         GridData gridData;
         
         // add NUMBER_OF_NODES option
-        Label label = new Label(composite, SWT.NULL);
-        label.setText(Messages.RandomGraphTreePage_number_of_nodes_caption);
-        
-        final Spinner nodesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
-        nodesSpinner.setToolTipText(Messages.RandomGraphTreePage_number_of_nodes_help);
-        nodesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES),
-                1, Integer.MAX_VALUE, 0, 1, 10);
-        
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
-        gridData.widthHint = 80;
-        nodesSpinner.setLayoutData(gridData);
-        
-        nodesSpinner.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                options.setProperty(GeneratorOptions.NUMBER_OF_NODES, nodesSpinner.getSelection());
-            }
-        });
+        Composite nodeGroup = createNodesGroup(composite);
+        ((GridData) nodeGroup.getLayoutData()).horizontalSpan = 2;
         
         // add MAX_DEGREE option
-        label = new Label(composite, SWT.NULL);
+        Label label = new Label(composite, SWT.NULL);
         label.setText(Messages.RandomGraphTreePage_max_degree_caption);
         
         final Spinner degreeSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         degreeSpinner.setToolTipText(Messages.RandomGraphTreePage_max_degree_help);
-        degreeSpinner.setValues(options.getProperty(GeneratorOptions.MAX_DEGREE),
+        degreeSpinner.setValues(getOptions().getProperty(GeneratorOptions.MAX_DEGREE),
                 1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -95,7 +75,7 @@ public class RandomGraphTreePage extends WizardPage {
         
         degreeSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                options.setProperty(GeneratorOptions.MAX_DEGREE, degreeSpinner.getSelection());
+                getOptions().setProperty(GeneratorOptions.MAX_DEGREE, degreeSpinner.getSelection());
             }
         });
         
@@ -105,7 +85,7 @@ public class RandomGraphTreePage extends WizardPage {
         
         final Spinner widthSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         widthSpinner.setToolTipText(Messages.RandomGraphTreePage_max_width_help);
-        widthSpinner.setValues(options.getProperty(GeneratorOptions.MAX_WIDTH),
+        widthSpinner.setValues(getOptions().getProperty(GeneratorOptions.MAX_WIDTH),
                 1, Integer.MAX_VALUE, 0, 1, 10);
         
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
@@ -114,7 +94,7 @@ public class RandomGraphTreePage extends WizardPage {
         
         widthSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                options.setProperty(GeneratorOptions.MAX_WIDTH, widthSpinner.getSelection());
+                getOptions().setProperty(GeneratorOptions.MAX_WIDTH, widthSpinner.getSelection());
             }
         });
     }

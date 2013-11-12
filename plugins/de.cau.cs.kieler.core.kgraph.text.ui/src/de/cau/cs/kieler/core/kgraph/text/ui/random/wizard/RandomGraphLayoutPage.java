@@ -90,6 +90,13 @@ public class RandomGraphLayoutPage extends WizardPage {
         noConstraintsButton.setSelection(options.getProperty(GeneratorOptions.PORT_CONSTRAINTS)
                 == PortConstraints.UNDEFINED);
         
+        // Free port constraints
+        final Button freeConstraintsButton = new Button(portsGroup, SWT.RADIO);
+        freeConstraintsButton.setText(Messages.RandomGraphLayoutPage_ports_free_caption);
+        freeConstraintsButton.setToolTipText(Messages.RandomGraphLayoutPage_ports_free_help);
+        freeConstraintsButton.setSelection(options.getProperty(GeneratorOptions.PORT_CONSTRAINTS)
+                == PortConstraints.FREE);
+        
         // Fixed side port constraints
         final Button fixedSideButton = new Button(portsGroup, SWT.RADIO);
         fixedSideButton.setText(Messages.RandomGraphLayoutPage_ports_fixed_side_caption);
@@ -177,6 +184,20 @@ public class RandomGraphLayoutPage extends WizardPage {
             }
         });
         
+        freeConstraintsButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                options.setProperty(GeneratorOptions.PORT_CONSTRAINTS, PortConstraints.FREE);
+                incomingNorthSpinner.setEnabled(false);
+                incomingEastSpinner.setEnabled(false);
+                incomingSouthSpinner.setEnabled(false);
+                incomingWestSpinner.setEnabled(false);
+                outgoingNorthSpinner.setEnabled(false);
+                outgoingEastSpinner.setEnabled(false);
+                outgoingSouthSpinner.setEnabled(false);
+                outgoingWestSpinner.setEnabled(false);
+            }
+        });
+        
         fixedSideButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 options.setProperty(GeneratorOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
@@ -223,8 +244,7 @@ public class RandomGraphLayoutPage extends WizardPage {
 
         final Spinner spinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
         spinner.setValues(options.getProperty(generatorOption), 0, Integer.MAX_VALUE, 0, 1, 10);
-        spinner.setEnabled(options.getProperty(GeneratorOptions.PORT_CONSTRAINTS)
-                != PortConstraints.UNDEFINED);
+        spinner.setEnabled(options.getProperty(GeneratorOptions.PORT_CONSTRAINTS).isSideFixed());
         gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
         gridData.widthHint = 60;
         spinner.setLayoutData(gridData);

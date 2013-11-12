@@ -13,15 +13,10 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 
@@ -31,10 +26,7 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
  * @author mri
  * @author msp
  */
-public class RandomGraphTriconnectedPage extends WizardPage {
-
-    /** the generator options. */
-    private GeneratorOptions options;
+public class RandomGraphTriconnectedPage extends AbstractRandomGraphPage {
 
     /**
      * Constructs a RandomGraphTriconnectedPage.
@@ -42,10 +34,9 @@ public class RandomGraphTriconnectedPage extends WizardPage {
      * @param options the generator options
      */
     public RandomGraphTriconnectedPage(final GeneratorOptions options) {
-        super("randomGraphTriconnectedPage"); //$NON-NLS-1$
+        super("randomGraphTriconnectedPage", options); //$NON-NLS-1$
         setTitle(Messages.RandomGraphTriconnectedPage_title);
         setDescription(Messages.RandomGraphTriconnectedPage_description);
-        this.options = options;
     }
 
     // CHECKSTYLEOFF MagicNumber
@@ -56,27 +47,14 @@ public class RandomGraphTriconnectedPage extends WizardPage {
     public void createControl(final Composite parent) {
         Composite composite = new Composite(parent, SWT.NULL);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-        composite.setLayout(new GridLayout(2, false));
         setControl(composite);
         
+        GridLayout layout = new GridLayout(1, false);
+        layout.verticalSpacing = 10;
+        composite.setLayout(layout);
+        
         // add NUMBER_OF_NODES option
-        Label label = new Label(composite, SWT.NULL);
-        label.setText(Messages.RandomGraphTriconnectedPage_number_of_nodes_caption);
-        
-        final Spinner nodesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
-        nodesSpinner.setToolTipText(Messages.RandomGraphTriconnectedPage_number_of_nodes_help);
-        nodesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES),
-                1, Integer.MAX_VALUE, 0, 1, 10);
-        
-        GridData gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
-        gridData.widthHint = 80;
-        nodesSpinner.setLayoutData(gridData);
-        
-        nodesSpinner.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                options.setProperty(GeneratorOptions.NUMBER_OF_NODES, nodesSpinner.getSelection());
-            }
-        });
+        createNodesGroup(composite);
     }
     
 }

@@ -69,7 +69,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     /** the graph type page. */
     private RandomGraphTypePage typePage;
     /** the page for the ANY graph type. */
-    private RandomGraphAnyPage anyPage;
+    private RandomGraphCustomPage anyPage;
     /** the page for the TREE graph type. */
     private RandomGraphTreePage treePage;
     /** the page for the BICONNECTED graph type. */
@@ -102,7 +102,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         
         newFilePage = new RandomGraphNewFilePage(selection, options);
         typePage = new RandomGraphTypePage(options);
-        anyPage = new RandomGraphAnyPage(options);
+        anyPage = new RandomGraphCustomPage(options);
         treePage = new RandomGraphTreePage(options);
         biconnectedPage = new RandomGraphBiconnectedPage(options);
         triconnectedPage = new RandomGraphTriconnectedPage(options);
@@ -137,7 +137,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                 return triconnectedPage;
             case ACYCLIC_NO_TRANSITIVE_EDGES:
                 return antePage;
-            case ANY:
+            case CUSTOM:
             default:
                 return anyPage;
             }
@@ -178,7 +178,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                 return triconnectedPage;
             case ACYCLIC_NO_TRANSITIVE_EDGES:
                 return antePage;
-            case ANY:
+            case CUSTOM:
             default:
                 return anyPage;
             }

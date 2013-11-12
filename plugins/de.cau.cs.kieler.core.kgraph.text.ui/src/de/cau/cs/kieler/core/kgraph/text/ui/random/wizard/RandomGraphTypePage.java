@@ -67,6 +67,16 @@ public class RandomGraphTypePage extends WizardPage {
         // create buttons
         addRadioButton(
                 composite,
+                Messages.RandomGraphTypePage_any_graph_type_caption,
+                Messages.RandomGraphTypePage_any_graph_type_help,
+                GeneratorOptions.GraphType.CUSTOM);
+        addRadioButton(
+                composite,
+                Messages.RandomGraphTypePage_ante_graph_type_caption,
+                Messages.RandomGraphTypePage_ante_graph_type_help,
+                GeneratorOptions.GraphType.ACYCLIC_NO_TRANSITIVE_EDGES);
+        addRadioButton(
+                composite,
                 Messages.RandomGraphTypePage_tree_graph_type_caption,
                 Messages.RandomGraphTypePage_tree_graph_type_help,
                 GeneratorOptions.GraphType.TREE);
@@ -79,16 +89,6 @@ public class RandomGraphTypePage extends WizardPage {
                 Messages.RandomGraphTypePage_triconnected_graph_type_caption,
                 Messages.RandomGraphTypePage_triconnected_graph_type_help,
                 GeneratorOptions.GraphType.TRICONNECTED);
-        addRadioButton(
-                composite,
-                Messages.RandomGraphTypePage_ante_graph_type_caption,
-                Messages.RandomGraphTypePage_ante_graph_type_help,
-                GeneratorOptions.GraphType.ACYCLIC_NO_TRANSITIVE_EDGES);
-        addRadioButton(
-                composite,
-                Messages.RandomGraphTypePage_any_graph_type_caption,
-                Messages.RandomGraphTypePage_any_graph_type_help,
-                GeneratorOptions.GraphType.ANY);
     }
     
     /**
