@@ -81,26 +81,35 @@ public final class Styles {
     public KTextStrikeout strikeout = null;
     
     // CHECKSTYLEON Visibility
+    
+    private boolean applySelectionStyles = false;
 
     /**
      * Enhances a styles container with a list of styles.
      * 
      * @param styleList
      *            the list of styles
+     * @param isSelected
+     *            a flag indicating whether 'selection' styles shall be taken into account
      * @return the styles container
      */
-    public Styles deriveStyles(final List<KStyle> styleList) {
+    public Styles deriveStyles(final List<KStyle> styleList, final boolean isSelected) {
+        this.applySelectionStyles = isSelected;
+
         for (KStyle style : styleList) {
-            kSwitch.doSwitch(style);
+            if (!style.isSelection() || isSelected) {
+                kSwitch.doSwitch(style);
+            }
         }
         return this;
     }
     
     private KRenderingSwitch<Void> kSwitch = new KRenderingSwitch<Void>() {
-
+        
         // styleRef
         public Void caseKStyleRef(final KStyleRef style) {
-            Styles.this.deriveStyles(style.getStyleHolder().getStyles());
+            Styles.this.deriveStyles(style.getStyleHolder().getStyles(),
+                    Styles.this.applySelectionStyles);
             return null;
         }
 
