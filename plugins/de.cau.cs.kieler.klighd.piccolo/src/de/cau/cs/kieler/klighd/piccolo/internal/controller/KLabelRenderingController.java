@@ -15,14 +15,15 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingUtil;
-import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -50,16 +51,16 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
      */
     @Override
     protected PNode internalUpdateRendering() {
-        PNode repNode = getRepresentation();
+        final KLabelNode repNode = getRepresentation();
 
         // evaluate the rendering data
-        KRendering currentRendering = getCurrentRendering();
-        PNode renderingNode;
+        final KRendering currentRendering = getCurrentRendering();
+
+        final PNode renderingNode;
         if (currentRendering != null) {
-            renderingNode = handleLabelRendering(currentRendering, (KLabelNode) repNode);
+            renderingNode = handleLabelRendering(currentRendering, repNode);
         } else {
-            renderingNode =
-                    handleLabelRendering(createDefaultLabelRendering(), (KLabelNode) repNode);
+            renderingNode = handleLabelRendering(createDefaultLabelRendering(), repNode);
         }
 
         return renderingNode;
@@ -77,36 +78,51 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
      * @return the Piccolo node representing the rendering
      */
     private PNode handleLabelRendering(final KRendering rendering, final KLabelNode parent) {
-        // the rendering of a label has to be a text
-        if (!(rendering instanceof KText)) {
-            throw new RuntimeException("Non-text rendering attached to graph label: "
-                    + getGraphElement());
+        // the rendering of a label has to contain exact one KText
+        //  that "inherits" the text from the KLabel itself
+        if (Iterators.size(Iterators.filter(rendering.eAllContents(), KText.class)) != 1) {
+            throw new RuntimeException("KLabel " + getGraphElement()
+                    + " must (deeply) contain exactly 1 KText element.");
         }
-
+        
         // create the rendering
+        final PNodeController<?> controller = (PNodeController<?>) createRendering(rendering,
+                parent, Bounds.of(parent.getBoundsReference()));
+        
+        final KText kText = Iterators.getNext(
+                Iterators.filter(rendering.eAllContents(), KText.class), null); 
+        
         @SuppressWarnings("unchecked")
-        final PNodeController<KlighdStyledText> controller =
-                (PNodeController<KlighdStyledText>) createRendering(rendering,
-                        new ArrayList<KStyle>(0), parent, Bounds.of(parent.getBoundsReference()));
-        controller.getNode().setText(parent.getText());
+        final PNodeController<KlighdStyledText> textController = (PNodeController<KlighdStyledText>)
+                Iterables.getFirst(this.getPNodeController(kText), null);
+        
+        if (textController != null) {
+            // the opposite should never happen (see test above), this test is just for preventing
+            //  null pointer exceptions
+            
+            textController.getNode().setText(parent.getText());
+            
+            // add a listener on the parent's bend points
+            addListener(KLabelNode.PROPERTY_TEXT, parent, controller.getNode(),
+                    new PropertyChangeListener() {
 
-        // add a listener on the parent's bend points
-        addListener(KLabelNode.PROPERTY_TEXT, parent, controller.getNode(),
-                new PropertyChangeListener() {
-                    public void propertyChange(final PropertyChangeEvent e) {
-                        controller.getNode().setText(parent.getText());
-                        controller.getNode().repaint();
-                    }
-                });
+                        public void propertyChange(final PropertyChangeEvent e) {
+                            textController.getNode().setText(parent.getText());
+                            textController.getNode().repaint();
+                        }
+                    });
+        }
 
         // add a listener on the parent's bounds
         addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
                 new PropertyChangeListener() {
+
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
                         Bounds bounds = PlacementUtil.evaluateAreaPlacement(KRenderingUtil
                                 .asAreaPlacementData(KRenderingUtil.getPlacementData(rendering)),
                                 parent.getBoundsReference());
+                        
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
                     }

@@ -13,15 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
-import java.util.Collections;
-
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
 import edu.umd.cs.piccolo.PNode;
 
@@ -45,17 +42,16 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
      */
     @Override
     protected PNode internalUpdateRendering() {
-        PNode repNode = getRepresentation();
+        final KPortNode repNode = getRepresentation();
 
         // evaluate the rendering data
-        KRendering currentRendering = getCurrentRendering();
-        PNode renderingNode;
+        final KRendering currentRendering = getCurrentRendering();
+
+        final PNode renderingNode;
         if (currentRendering != null) {
-            renderingNode = handleAreaAndPointPlacementRendering(currentRendering,
-                    Collections.<KStyle>emptyList(), repNode);
+            renderingNode = handleAreaAndPointPlacementRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleAreaAndPointPlacementRendering(createDefaultPortRendering(),
-                    Collections.<KStyle>emptyList(), repNode);
+            renderingNode = handleAreaAndPointPlacementRendering(createDefaultPortRendering(), repNode);
         }
         
         return renderingNode;

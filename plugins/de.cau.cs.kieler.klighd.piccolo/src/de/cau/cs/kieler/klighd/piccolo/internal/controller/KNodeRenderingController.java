@@ -15,12 +15,10 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collections;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
@@ -66,21 +64,19 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      */
     @Override
     protected PNode internalUpdateRendering() {
-        PNode repNode = getRepresentation();
+        final KNodeNode repNode = getRepresentation();
 
         // detach the child area before updating the rendering
         childAreaNode.removeFromParent();
 
         // evaluate the rendering data
-        KRendering currentRendering = getCurrentRendering();
-        PNode renderingNode;
-        // KPlacementData pd;
+        final KRendering currentRendering = getCurrentRendering();
+        
+        final PNode renderingNode;
         if (currentRendering != null) {
-            renderingNode = handleAreaAndPointPlacementRendering(currentRendering,
-                    Collections.<KStyle>emptyList(), repNode);
+            renderingNode = handleAreaAndPointPlacementRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleAreaAndPointPlacementRendering(createDefaultNodeRendering(),
-                    Collections.<KStyle>emptyList(), repNode);
+            renderingNode = handleAreaAndPointPlacementRendering(createDefaultNodeRendering(), repNode);
         }
 
         // make sure the child area is attached to something

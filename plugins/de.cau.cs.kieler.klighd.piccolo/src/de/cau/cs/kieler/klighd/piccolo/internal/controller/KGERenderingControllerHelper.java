@@ -517,22 +517,16 @@ final class KGERenderingControllerHelper {
         final List<KStyle> renderingStyles = renderingReference.getStyles();
 
         // determine the styles for propagation to child nodes
-        final List<KStyle> childPropagatedStyles = //controller.determinePropagationStyles(
+        final List<KStyle> childPropagatedStyles = 
                 Lists.newLinkedList(Iterables.concat(renderingStyles, propagatedStyles));
 
         // dispatch the rendering
         final PNodeController<?> pnodeController = controller.createRendering(rendering,
-                childPropagatedStyles, parent, initialBounds, styles);
+                childPropagatedStyles, parent, initialBounds);
 
         // remember the KRendering-controller pair in the controller's 'pnodeControllers' map 
         controller.addPNodeController(rendering, pnodeController);
         
-        // determine the styles for this rendering
-        styles.deriveStyles(childPropagatedStyles);
-        
-        // set the styles for the created rendering node using the controller
-        pnodeController.applyChanges(styles);
-
         // return a controller for the reference which sets the bounds of the referenced node
         return new PNodeController<PNode>(pnodeController.getNode()) {
 
