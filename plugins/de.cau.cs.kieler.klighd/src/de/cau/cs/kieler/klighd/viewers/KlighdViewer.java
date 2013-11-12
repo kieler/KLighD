@@ -115,38 +115,6 @@ public class KlighdViewer extends AbstractViewer<Object> {
      * {@inheritDoc}
      */
     @Override
-    public void setSelection(final Iterable<KGraphElement> diagramElements) {
-        contextViewer.setSelection(diagramElements);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clearSelection() {
-        contextViewer.clearSelection();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void select(final Iterable<KGraphElement> diagramElements) {
-        contextViewer.select(diagramElements);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void unselect(final Iterable<KGraphElement> diagramElements) {
-        contextViewer.unselect(diagramElements);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void zoomToLevel(final float zoomLevel, final int duration) {
         contextViewer.zoomToLevel(zoomLevel, duration);
     }
