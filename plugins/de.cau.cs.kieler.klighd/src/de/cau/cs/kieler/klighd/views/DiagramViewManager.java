@@ -88,9 +88,20 @@ public final class DiagramViewManager implements IPartListener {
         // chsch: does this the trick as well as at the other places? We'll see...
         registerPartListener();
     }
+    
+    /**
+     * Returns the {@link IDiagramWorkbenchPart} associated with the given identifier if available.
+     * 
+     * @param id
+     *            the diagram view identifier (can be null for the default view)
+     * @return the diagram view or null if no view with the given identifier exists
+     */
+    public IDiagramWorkbenchPart getDiagramWorkbenchPart(final String id) {
+        return idPartMapping.get(id);
+    }
 
     /**
-     * Returns the diagram view with the given identifier if available. Does not create any views.
+     * Returns the diagram view with the given identifier if available.
      * 
      * @param id
      *            the diagram view identifier (can be null for the default view)
@@ -115,7 +126,7 @@ public final class DiagramViewManager implements IPartListener {
 
     
     /**
-     * Returns the diagram editor part with the given identifier if available. Does not create any views.
+     * Returns the diagram editor part with the given identifier if available.
      * 
      * @param id
      *            the diagram view identifier (can be null for the default view)
