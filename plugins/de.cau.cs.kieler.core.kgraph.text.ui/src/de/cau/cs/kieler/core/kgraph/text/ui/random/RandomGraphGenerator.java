@@ -181,6 +181,13 @@ public class RandomGraphGenerator {
             break;
         }
         
+        case BIPARTITE: {
+            float minPartition = genOptions.getProperty(GeneratorOptions.MIN_PARTITION_FRAC);
+            float maxPartition = genOptions.getProperty(GeneratorOptions.MAX_PARTITION_FRAC);
+            generateBipartite(graph, n, m, minPartition, maxPartition, 0);
+            break;
+        }
+        
         case TREE: {
             int maxDegree = genOptions.getProperty(GeneratorOptions.MAX_DEGREE);
             int maxWidth = genOptions.getProperty(GeneratorOptions.MAX_WIDTH);
@@ -206,6 +213,8 @@ public class RandomGraphGenerator {
             break;
         }
         
+        default:
+            throw new IllegalArgumentException("Selected graph generator is not supported.");
         }
         
         // remove isolated nodes if requested
@@ -340,6 +349,11 @@ public class RandomGraphGenerator {
             }
         }
         return nodes;
+    }
+    
+    private void generateBipartite(final KNode parent, final int n, final int m,
+            final float minPartition, final float maxPartition, final int hierarchyLevel) {
+        
     }
 
     /**

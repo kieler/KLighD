@@ -229,6 +229,15 @@ public class GeneratorOptions extends MapPropertyHolder {
 
     /** option for planarity. */
     public static final IProperty<Boolean> PLANAR = new Property<Boolean>("basic.planar", false);
+    
+    //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE BIPARTITE
+    
+    /** option for minimal fraction of nodes in second partition set. */
+    public static final IProperty<Float> MIN_PARTITION_FRAC = new Property<Float>(
+            "basic.minPartitionFraction", 0.4f);
+    /** option for maximal fraction of nodes in second partition set. */
+    public static final IProperty<Float> MAX_PARTITION_FRAC = new Property<Float>(
+            "basic.maxPartitionFraction", 0.6f);
 
     //~~~~~~~~~~~~~~~~  Utility methods for preference handling
     

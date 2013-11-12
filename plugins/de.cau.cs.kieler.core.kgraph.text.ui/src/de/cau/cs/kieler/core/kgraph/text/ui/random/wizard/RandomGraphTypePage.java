@@ -72,6 +72,11 @@ public class RandomGraphTypePage extends WizardPage {
                 GeneratorOptions.GraphType.CUSTOM);
         addRadioButton(
                 composite,
+                Messages.RandomGraphTypePage_bipartite_graph_type_caption,
+                Messages.RandomGraphTypePage_bipartite_graph_type_help,
+                GeneratorOptions.GraphType.BIPARTITE);
+        addRadioButton(
+                composite,
                 Messages.RandomGraphTypePage_ante_graph_type_caption,
                 Messages.RandomGraphTypePage_ante_graph_type_help,
                 GeneratorOptions.GraphType.ACYCLIC_NO_TRANSITIVE_EDGES);

@@ -68,8 +68,10 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     private RandomGraphNewFilePage newFilePage;
     /** the graph type page. */
     private RandomGraphTypePage typePage;
-    /** the page for the ANY graph type. */
-    private RandomGraphCustomPage anyPage;
+    /** the page for the CUSTOM graph type. */
+    private RandomGraphCustomPage customTypePage;
+    /** the page for the BIPARTITE graph type. */
+    private RandomGraphBipartitePage bipartitePage;
     /** the page for the TREE graph type. */
     private RandomGraphTreePage treePage;
     /** the page for the BICONNECTED graph type. */
@@ -102,7 +104,8 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         
         newFilePage = new RandomGraphNewFilePage(selection, options);
         typePage = new RandomGraphTypePage(options);
-        anyPage = new RandomGraphCustomPage(options);
+        customTypePage = new RandomGraphCustomPage(options);
+        bipartitePage = new RandomGraphBipartitePage(options);
         treePage = new RandomGraphTreePage(options);
         biconnectedPage = new RandomGraphBiconnectedPage(options);
         triconnectedPage = new RandomGraphTriconnectedPage(options);
@@ -111,11 +114,12 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         layoutPage = new RandomGraphLayoutPage(options);
         addPage(newFilePage);
         addPage(typePage);
-        addPage(anyPage);
+        addPage(customTypePage);
+        addPage(bipartitePage);
+        addPage(antePage);
         addPage(treePage);
         addPage(biconnectedPage);
         addPage(triconnectedPage);
-        addPage(antePage);
         addPage(optionsPage);
         addPage(layoutPage);
     }
@@ -129,6 +133,8 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
             return typePage;
         } else if (page == typePage) {
             switch (options.getProperty(GeneratorOptions.GRAPH_TYPE)) {
+            case BIPARTITE:
+                return bipartitePage;
             case TREE:
                 return treePage;
             case BICONNECTED:
@@ -139,13 +145,14 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                 return antePage;
             case CUSTOM:
             default:
-                return anyPage;
+                return customTypePage;
             }
         } else if (page == treePage
                 || page == biconnectedPage
                 || page == triconnectedPage
                 || page == antePage
-                || page == anyPage) {
+                || page == bipartitePage
+                || page == customTypePage) {
             
             return optionsPage;
         } else if (page == optionsPage) {
@@ -166,10 +173,13 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                 || page == biconnectedPage
                 || page == triconnectedPage
                 || page == antePage
-                || page == anyPage) {
+                || page == bipartitePage
+                || page == customTypePage) {
             return typePage;
         } else if (page == optionsPage) {
             switch (options.getProperty(GeneratorOptions.GRAPH_TYPE)) {
+            case BIPARTITE:
+                return bipartitePage;
             case TREE:
                 return treePage;
             case BICONNECTED:
@@ -180,7 +190,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
                 return antePage;
             case CUSTOM:
             default:
-                return anyPage;
+                return customTypePage;
             }
         } else if (page == layoutPage) {
             return optionsPage;

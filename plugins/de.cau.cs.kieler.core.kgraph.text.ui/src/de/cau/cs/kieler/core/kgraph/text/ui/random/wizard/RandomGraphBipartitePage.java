@@ -16,6 +16,8 @@ package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 import java.util.EnumSet;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -24,27 +26,28 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions.EdgeDetermination;
 
 /**
- * The options page for the custom graph type.
+ * The options page for the bipartite graph type.
  * 
- * @author mri
  * @author msp
  */
-public class RandomGraphCustomPage extends AbstractRandomGraphPage {
+public class RandomGraphBipartitePage extends AbstractRandomGraphPage {
     
     /**
-     * Constructs a RandomGraphCustomPage.
+     * Constructs a RandomGraphBipartitePage.
      * 
      * @param options the generator options
      */
-    public RandomGraphCustomPage(final GeneratorOptions options) {
-        super("randomGraphAnyPage", options); //$NON-NLS-1$
-        setTitle(Messages.RandomGraphAnyPage_title);
-        setDescription(Messages.RandomGraphAnyPage_description);
+    public RandomGraphBipartitePage(final GeneratorOptions options) {
+        super("randomGraphBipartitePage", options); //$NON-NLS-1$
+        setTitle(Messages.RandomGraphBipartitePage_title);
+        setDescription(Messages.RandomGraphBipartitePage_description);
     }
 
     // CHECKSTYLEOFF MagicNumber
@@ -63,8 +66,10 @@ public class RandomGraphCustomPage extends AbstractRandomGraphPage {
         
         // Create the different groups
         createNodesGroup(composite);
-        createEdgeGroup(composite, EnumSet.allOf(EdgeDetermination.class));
+        createEdgeGroup(composite, EnumSet.of(EdgeDetermination.ABSOLUTE, EdgeDetermination.RELATIVE,
+                EdgeDetermination.DENSITY));
         createGraphPropertiesGroup(composite);
+        createPartitionGroup(composite);
     }
 
     /**
@@ -77,12 +82,6 @@ public class RandomGraphCustomPage extends AbstractRandomGraphPage {
         optionsGroup.setText(Messages.RandomGraphAnyPage_options_group_caption);
         optionsGroup.setLayout(new RowLayout(SWT.VERTICAL));
         optionsGroup.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-        
-        // Self Loops
-        final Button selfLoopsButton = new Button(optionsGroup, SWT.CHECK);
-        selfLoopsButton.setText(Messages.RandomGraphAnyPage_self_loops_caption);
-        selfLoopsButton.setToolTipText(Messages.RandomGraphAnyPage_self_loops_help);
-        selfLoopsButton.setSelection(getOptions().getProperty(GeneratorOptions.SELF_LOOPS));
         
         // Multi Edges
         final Button multiEdgesButton = new Button(optionsGroup, SWT.CHECK);
@@ -101,13 +100,6 @@ public class RandomGraphCustomPage extends AbstractRandomGraphPage {
         isolatedButton.setText(Messages.RandomGraphAnyPage_isolated_nodes_caption);
         isolatedButton.setToolTipText(Messages.RandomGraphAnyPage_isolated_nodes_help);
         isolatedButton.setSelection(getOptions().getProperty(GeneratorOptions.ISOLATED_NODES));
-        
-        // Event listeners
-        selfLoopsButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                getOptions().setProperty(GeneratorOptions.SELF_LOOPS, selfLoopsButton.getSelection());
-            }
-        });
 
         multiEdgesButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
@@ -126,6 +118,73 @@ public class RandomGraphCustomPage extends AbstractRandomGraphPage {
                 getOptions().setProperty(GeneratorOptions.ISOLATED_NODES, isolatedButton.getSelection());
             }
         });
+    }
+    
+    /**
+     * Creates the group holding partition options and adds it to the given composite.
+     * 
+     * @param composite the composite to add the group to
+     */
+    private void createPartitionGroup(final Composite composite) {
+        Group partitionGroup = new Group(composite, SWT.NONE);
+        partitionGroup.setText(Messages.RandomGraphBipartitePage_partition_group_caption);
+        partitionGroup.setLayout(new GridLayout(2, false));
+        partitionGroup.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
+        
+        // Minimum partition fraction
+        Label label = new Label(partitionGroup, SWT.NONE);
+        label.setText(Messages.RandomGraphBipartitePage_partition_min);
+        final Spinner partitionMinSpinner = new Spinner(partitionGroup, SWT.BORDER | SWT.SINGLE);
+        partitionMinSpinner.setToolTipText(Messages.RandomGraphBipartitePage_partition_min_help);
+        partitionMinSpinner.setValues(
+                (int) (getOptions().getProperty(GeneratorOptions.MIN_PARTITION_FRAC) * 100),
+                1, 99, 2, 1, 10);
+        GridData gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        gridData.widthHint = 80;
+        partitionMinSpinner.setLayoutData(gridData);
+
+        // Maximum partition fraction
+        label = new Label(partitionGroup, SWT.NONE);
+        label.setText(Messages.RandomGraphBipartitePage_partition_max);
+        final Spinner partitionMaxSpinner = new Spinner(partitionGroup, SWT.BORDER | SWT.SINGLE);
+        partitionMaxSpinner.setToolTipText(Messages.RandomGraphBipartitePage_partition_max_help);
+        partitionMaxSpinner.setValues(
+                (int) (getOptions().getProperty(GeneratorOptions.MAX_PARTITION_FRAC) * 100),
+                1, 99, 2, 1, 10);
+        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
+        gridData.widthHint = 80;
+        partitionMaxSpinner.setLayoutData(gridData);
+        
+        // Event Listeners
+        partitionMinSpinner.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                getOptions().setProperty(GeneratorOptions.MIN_PARTITION_FRAC,
+                        partitionMinSpinner.getSelection() / 100f);
+                validate();
+            }
+        });
+
+        partitionMaxSpinner.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                getOptions().setProperty(GeneratorOptions.MAX_PARTITION_FRAC,
+                        partitionMaxSpinner.getSelection() / 100f);
+                validate();
+            }
+        });
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void validate() {
+        if (getOptions().getProperty(GeneratorOptions.MIN_PARTITION_FRAC)
+                > getOptions().getProperty(GeneratorOptions.MAX_PARTITION_FRAC)) {
+            setErrorMessage(Messages.RandomGraphBipartitePage_partition_error);
+            setPageComplete(false);
+        } else {
+            super.validate();
+        }
     }
     
 }
