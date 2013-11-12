@@ -13,12 +13,17 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
+import de.cau.cs.kieler.klighd.viewers.ContextViewer.KlighdTreeSelection;
 
 /**
  * The interface for viewers on incrementally updated models.<br>
@@ -102,35 +107,6 @@ public interface IViewer<T> {
     void stopRecording(final ZoomStyle zoomStyle, final int animationTime);
 
     /**
-     * Sets the given selection of diagram elements as current selection.
-     * 
-     * @param diagramElements
-     *            the diagram elements
-     */
-    void setSelection(Iterable<KGraphElement> diagramElements);
-
-    /**
-     * Clears the current selection.
-     */
-    void clearSelection();
-
-    /**
-     * Adds the given diagram elements to the current selection if possible.
-     * 
-     * @param diagramElements
-     *            the diagram elements
-     */
-    void select(Iterable<KGraphElement> diagramElements);
-
-    /**
-     * Removes the given diagram elements from the current selection if possible.
-     * 
-     * @param diagramElements
-     *            the diagram elements
-     */
-    void unselect(Iterable<KGraphElement> diagramElements);
-
-    /**
      * Reveals the representation of the given semantic element over the specified duration.
      * 
      * @param semanticElement
@@ -171,15 +147,6 @@ public interface IViewer<T> {
     void centerOn(KGraphElement diagramElement, int duration);
     
     /**
-     * @param zoomLevel
-     *            the zoom level
-     * @param duration
-     *            the duration
-     * @deprecated use {@link #zoomToLevel(float, int)}
-     */
-    void zoom(float zoomLevel, int duration);
-
-    /**
      * Zooms to the given zoom level over the specified duration.
      * 
      * @param zoomLevel
@@ -188,16 +155,6 @@ public interface IViewer<T> {
      *            the duration
      */
     void zoomToLevel(float zoomLevel, int duration);
-    
-    /**
-     * Performs a zoom-to-fit over the specified duration.
-     * 
-     * @param duration
-     *            the duration
-     *            
-     * @deprecated use {@link #zoom(ZoomStyle, int)} with {@link ZoomStyle#ZOOM_TO_FIT}.
-     */
-    void zoomToFit(int duration);
     
     /**
      * Performs the specified zoom style over the specified duration.
@@ -232,8 +189,6 @@ public interface IViewer<T> {
      * Collapses the representation of the given element. Note that there must exist related element
      * <-> diagram element tracking information in the {@link TransformationContexts}.
      * 
-     * @author chsch
-     * 
      * @param semanticElement
      *            the semantic element to be expanded
      */
@@ -251,8 +206,6 @@ public interface IViewer<T> {
      * its rendering if necessary. Note that there must exist related element <-> diagram element
      * tracking information in the {@link TransformationContexts}.
      * 
-     * @author chsch
-     * 
      * @param semanticElement
      *            the semantic element to be expanded
      */
@@ -269,8 +222,6 @@ public interface IViewer<T> {
      * Expands the representation of the given element if collapsed and vice versa. Note that there
      * must exist related element <-> diagram element tracking information in the
      * {@link TransformationContexts}.
-     * 
-     * @author chsch
      * 
      * @param semanticElement
      *            the semantic element to be expanded
@@ -325,21 +276,107 @@ public interface IViewer<T> {
      *            the diagram element to show up
      */
     void show(KGraphElement diagramElement);
+
+
+    /* ----------------------------- */
+    /*   the selection setting API   */
+    /* ----------------------------- */
+
     
     /**
-     * Adds an event listener to the viewer.
-     * 
-     * @param listener
-     *            the event listener
+     * Provides the current {@link org.eclipse.jface.viewers.ISelection} provided by the diagram viewer.
+     *  
+     * @return the current {@link org.eclipse.jface.viewers.ISelection}
      */
-    void addEventListener(IViewerEventListener listener);
+    KlighdTreeSelection getSelection();
+    
+    /**
+     * Adds or removes the representative of the provided element to/from the current selection
+     * depending on its presence in the current selection.
+     * 
+     * @param semanticElement
+     *            the element to add or remove
+     */
+    void toggleSelectionOf(Object semanticElement);
+  
+    /**
+     * Adds or removes a diagram element to/from the current selection depending on its presence in
+     * the current selection.
+     * 
+     * @param diagramElement
+     *            the element to add or remove
+     */
+    void toggleSelectionOf(KGraphElement diagramElement);
+ 
+    /**
+     * Adds or removes a diagram element to/from the current selection depending on its presence in
+     * the current selection.
+     * 
+     * @param diagramElement
+     *            the element to add or remove
+     */
+    void toggleSelectionOf(KText diagramElement);
+ 
+    /**
+     * Adds or removes the representatives of the provided set of semantic elements to/from the
+     * current selection depending on their particular presences in the current selection.
+     * 
+     * @param semanticElements
+     *            the elements to add or remove
+     */
+    void toggleSelectionOfSemanticElements(Set<Object> semanticElements);
 
     /**
-     * Removes an event listener from the viewer.
+     * Adds or removes a set of diagram element to/from the current selection depending on their
+     * particular presences in the current selection.
      * 
-     * @param listener
-     *            the event listener
+     * @param diagramElements
+     *            the elements to add or remove
      */
-    void removeEventListener(IViewerEventListener listener);
+    void toggleSelectionOfDiagramElements(Set<? extends EObject> diagramElements);
 
+    /**
+     * Dismisses the current selection and creates a new one containing the only the representative
+     * of the provided element.
+     * 
+     * @param diagramElement
+     *            the element to be put into the new selection
+     */
+    void resetSelectionTo(Object diagramElement);
+
+    /**
+     * Dismisses the current selection and creates a new one containing the provided diagram
+     * element.
+     * 
+     * @param diagramElement
+     *            the element to be put into the new selection
+     */
+    void resetSelectionTo(KGraphElement diagramElement);
+
+    /**
+     * Dismisses the current selection and creates a new one containing the provided diagram
+     * element.
+     * 
+     * @param diagramElement
+     *            the element to be put into the new selection
+     */
+    void resetSelectionTo(KText diagramElement);
+
+    /**
+     * Dismisses the current selection and creates a new one containing the representatives of the
+     * provided elements.
+     * 
+     * @param semanticElements
+     *            the elements to be put into the new selection
+     */
+    void resetSelectionToSemanticElements(Iterable<? extends Object> semanticElements);
+
+    /**
+     * Dismisses the current selection and creates a new one containing the provided diagram
+     * elements.
+     * 
+     * @param diagramElements
+     *            the elements to be put into the new selection
+     */
+    void resetSelectionToDiagramElements(Iterable<? extends EObject> diagramElements);
 }
