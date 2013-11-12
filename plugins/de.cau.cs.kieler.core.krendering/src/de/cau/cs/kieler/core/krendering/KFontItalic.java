@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KFont Italic</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * FontStyle to dertermine whether to draw it italic or not.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -40,6 +44,9 @@ public interface KFontItalic extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Set true to draw the text italic.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Italic</em>' attribute.
      * @see #setItalic(boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontItalic_Italic()

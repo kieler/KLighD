@@ -84,7 +84,7 @@ public interface KRendering extends KGraphData, KStyleHolder {
      * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Information where and how this Rendering shall be placed.
+     * Information where and how this Rendering shall be placed. If no placementdata is given this defaults to an AreaPlacementdata filling the bounds of the parent.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Placement Data</em>' containment reference.
      * @see #setPlacementData(KPlacementData)
@@ -110,7 +110,7 @@ public interface KRendering extends KGraphData, KStyleHolder {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * actions that should be performed when 
+     * Actions that should be performed when associated trigger is pulled
      * <!-- end-model-doc -->
      * @return the value of the '<em>Actions</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRendering_Actions()

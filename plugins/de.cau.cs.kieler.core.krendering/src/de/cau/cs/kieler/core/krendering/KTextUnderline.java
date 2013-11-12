@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KText Underline</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * FontStyle to add an unterline to an text element.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -41,6 +45,9 @@ public interface KTextUnderline extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The style of the underline.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Underline</em>' attribute.
      * @see de.cau.cs.kieler.core.krendering.Underline
      * @see #setUnderline(Underline)
@@ -69,6 +76,9 @@ public interface KTextUnderline extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Color the underline is supposed to have.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Color</em>' containment reference.
      * @see #setColor(KColor)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTextUnderline_Color()

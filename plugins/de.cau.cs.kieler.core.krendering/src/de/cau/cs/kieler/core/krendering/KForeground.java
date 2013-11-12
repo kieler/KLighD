@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Defines the alphaChannel of a foregroudRendering
+ * Defines the Foregroundcolor and its alphaChannel of a Rendering
  * <!-- end-model-doc -->
  *
  *

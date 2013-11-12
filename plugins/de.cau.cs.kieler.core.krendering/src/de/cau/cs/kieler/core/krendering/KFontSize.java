@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KFont Size</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * FontStyle to determine the size of the font.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -41,6 +45,9 @@ public interface KFontSize extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Desired size of the font.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Size</em>' attribute.
      * @see #setSize(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKFontSize_Size()

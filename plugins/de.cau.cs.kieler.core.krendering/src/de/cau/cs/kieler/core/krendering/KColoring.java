@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Defines the alphaChannel of an Object
+ * Defines the alphaChannel and Color of an Object
  * <!-- end-model-doc -->
  *
  * <p>
@@ -48,6 +48,9 @@ public interface KColoring extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The transparancy value of this color.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Alpha</em>' attribute.
      * @see #setAlpha(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_Alpha()
@@ -74,6 +77,9 @@ public interface KColoring extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The color the object is supposed to get.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Color</em>' containment reference.
      * @see #setColor(KColor)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_Color()
@@ -100,6 +106,9 @@ public interface KColoring extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Optional target color for gradients. If this is not set no gradient will be displayed.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Target Color</em>' containment reference.
      * @see #setTargetColor(KColor)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_TargetColor()
@@ -127,6 +136,9 @@ public interface KColoring extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Optional alpha value for gradient target color.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Target Alpha</em>' attribute.
      * @see #setTargetAlpha(int)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_TargetAlpha()
@@ -154,6 +166,9 @@ public interface KColoring extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Angle for the optional gradient. Will be ignored if no targetColor is set.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Gradient Angle</em>' attribute.
      * @see #setGradientAngle(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKColoring_GradientAngle()

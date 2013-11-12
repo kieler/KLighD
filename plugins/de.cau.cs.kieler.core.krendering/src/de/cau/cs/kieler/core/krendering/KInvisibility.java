@@ -44,6 +44,9 @@ public interface KInvisibility extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Set true to make an element invisible.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Invisible</em>' attribute.
      * @see #setInvisible(boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKInvisibility_Invisible()

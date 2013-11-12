@@ -43,6 +43,9 @@ public interface KShadow extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Determines x offset from element.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>XOffset</em>' attribute.
      * @see #setXOffset(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_XOffset()
@@ -70,6 +73,9 @@ public interface KShadow extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Determines y offset from element.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>YOffset</em>' attribute.
      * @see #setYOffset(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_YOffset()
@@ -97,6 +103,9 @@ public interface KShadow extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The amount of blur for this shadow.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Blur</em>' attribute.
      * @see #setBlur(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_Blur()
@@ -123,6 +132,9 @@ public interface KShadow extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The color this shadow effect should have.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Color</em>' containment reference.
      * @see #setColor(KColor)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKShadow_Color()

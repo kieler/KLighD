@@ -74,6 +74,9 @@ public interface KText extends KRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Makes this text selectable similar to a text document so that the whole text or parts of it can be copied.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Cursor Selectable</em>' attribute.
      * @see #setCursorSelectable(boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_CursorSelectable()

@@ -104,6 +104,9 @@ public interface KArc extends KContainerRendering {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Sets the type the arc is supposed to have. See Arc Enum.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Arc Type</em>' attribute.
      * @see de.cau.cs.kieler.core.krendering.Arc
      * @see #setArcType(Arc)

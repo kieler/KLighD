@@ -24,6 +24,9 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Trigger</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
+ * <!-- begin-model-doc -->
+ * Trigger presets to determine when to execute actions.
+ * <!-- end-model-doc -->
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getTrigger()
  * @model
  * @generated
@@ -57,6 +60,9 @@ public enum Trigger implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Execute action on single click.
+     * <!-- end-model-doc -->
      * @see #SINGLECLICK
      * @model
      * @generated
@@ -72,6 +78,9 @@ public enum Trigger implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Execute action on double click.
+     * <!-- end-model-doc -->
      * @see #DOUBLECLICK
      * @model
      * @generated

@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KText Strikeout</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * FontStyle to add a strikeout to an text element.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -41,6 +45,9 @@ public interface KTextStrikeout extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Set true to draw the text with a strikeout.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Struck Out</em>' attribute.
      * @see #setStruckOut(Boolean)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTextStrikeout_StruckOut()
@@ -67,6 +74,9 @@ public interface KTextStrikeout extends KStyle {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Color the strikeout is supposed to have.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Color</em>' containment reference.
      * @see #setColor(KColor)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKTextStrikeout_Color()

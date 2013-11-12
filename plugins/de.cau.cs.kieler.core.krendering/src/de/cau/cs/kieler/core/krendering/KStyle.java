@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#isPropagateToChildren <em>Propagate To Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#getModifierId <em>Modifier Id</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KStyle#isSelection <em>Selection</em>}</li>
  * </ul>
  * </p>
  *
@@ -91,5 +92,32 @@ public interface KStyle extends EObject {
      * @generated
      */
     void setModifierId(String value);
+
+    /**
+     * Returns the value of the '<em><b>Selection</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Selection</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Selection</em>' attribute.
+     * @see #setSelection(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyle_Selection()
+     * @model default="false"
+     * @generated
+     */
+    boolean isSelection();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KStyle#isSelection <em>Selection</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Selection</em>' attribute.
+     * @see #isSelection()
+     * @generated
+     */
+    void setSelection(boolean value);
 
 } // KStyle

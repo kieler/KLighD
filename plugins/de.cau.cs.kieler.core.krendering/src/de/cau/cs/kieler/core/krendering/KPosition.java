@@ -98,6 +98,11 @@ public interface KPosition extends EObject {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Determines whether two KPosition objects have the same x and y values.
+     * Hint: This does not however mean they have the 
+     * same position as they could have different parents
+     * <!-- end-model-doc -->
      * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
      * @generated
      */

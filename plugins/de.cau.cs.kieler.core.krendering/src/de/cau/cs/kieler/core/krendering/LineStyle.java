@@ -24,6 +24,9 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Line Style</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
+ * <!-- begin-model-doc -->
+ * LineStyles analog to SWT LineStyles
+ * <!-- end-model-doc -->
  * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getLineStyle()
  * @model
  * @generated

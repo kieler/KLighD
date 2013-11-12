@@ -47,6 +47,9 @@ public interface KRenderingLibrary extends KGraphData {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The renderings defined by this library.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Renderings</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRenderingLibrary_Renderings()
      * @model containment="true"

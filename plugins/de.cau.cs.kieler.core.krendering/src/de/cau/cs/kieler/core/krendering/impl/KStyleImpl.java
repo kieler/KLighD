@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#isPropagateToChildren <em>Propagate To Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#getModifierId <em>Modifier Id</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleImpl#isSelection <em>Selection</em>}</li>
  * </ul>
  * </p>
  *
@@ -77,6 +78,26 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
      * @ordered
      */
     protected String modifierId = MODIFIER_ID_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isSelection() <em>Selection</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isSelection()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SELECTION_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isSelection() <em>Selection</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isSelection()
+     * @generated
+     * @ordered
+     */
+    protected boolean selection = SELECTION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -144,6 +165,27 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isSelection() {
+        return selection;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setSelection(boolean newSelection) {
+        boolean oldSelection = selection;
+        selection = newSelection;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KSTYLE__SELECTION, oldSelection, selection));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -151,6 +193,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
                 return isPropagateToChildren();
             case KRenderingPackage.KSTYLE__MODIFIER_ID:
                 return getModifierId();
+            case KRenderingPackage.KSTYLE__SELECTION:
+                return isSelection();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -168,6 +212,9 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
                 return;
             case KRenderingPackage.KSTYLE__MODIFIER_ID:
                 setModifierId((String)newValue);
+                return;
+            case KRenderingPackage.KSTYLE__SELECTION:
+                setSelection((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -187,6 +234,9 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
             case KRenderingPackage.KSTYLE__MODIFIER_ID:
                 setModifierId(MODIFIER_ID_EDEFAULT);
                 return;
+            case KRenderingPackage.KSTYLE__SELECTION:
+                setSelection(SELECTION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -203,6 +253,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
                 return propagateToChildren != PROPAGATE_TO_CHILDREN_EDEFAULT;
             case KRenderingPackage.KSTYLE__MODIFIER_ID:
                 return MODIFIER_ID_EDEFAULT == null ? modifierId != null : !MODIFIER_ID_EDEFAULT.equals(modifierId);
+            case KRenderingPackage.KSTYLE__SELECTION:
+                return selection != SELECTION_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -221,6 +273,8 @@ public abstract class KStyleImpl extends EObjectImpl implements KStyle {
         result.append(propagateToChildren);
         result.append(", modifierId: ");
         result.append(modifierId);
+        result.append(", selection: ");
+        result.append(selection);
         result.append(')');
         return result.toString();
     }

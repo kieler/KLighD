@@ -19,6 +19,10 @@ package de.cau.cs.kieler.core.krendering;
  * A representation of the model object '<em><b>KRounded Bends Polyline</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * A polyline with rounded corners at its bendpoints
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -39,6 +43,9 @@ public interface KRoundedBendsPolyline extends KPolyline {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Radius of the rounded corners.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Bend Radius</em>' attribute.
      * @see #setBendRadius(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRoundedBendsPolyline_BendRadius()

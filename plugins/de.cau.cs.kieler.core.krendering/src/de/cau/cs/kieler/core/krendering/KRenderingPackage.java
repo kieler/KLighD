@@ -1230,13 +1230,22 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE__MODIFIER_ID = 1;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE__SELECTION = 2;
+
+    /**
      * The number of structural features of the '<em>KStyle</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE_FEATURE_COUNT = 2;
+    int KSTYLE_FEATURE_COUNT = 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KRenderingLibraryImpl <em>Library</em>}' class.
@@ -1934,6 +1943,15 @@ public interface KRenderingPackage extends EPackage {
     int KLINE_WIDTH__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_WIDTH__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Line Width</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1978,6 +1996,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KLINE_STYLE__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_STYLE__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute.
@@ -2044,6 +2071,15 @@ public interface KRenderingPackage extends EPackage {
     int KVERTICAL_ALIGNMENT__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVERTICAL_ALIGNMENT__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Vertical Alignment</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2088,6 +2124,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KHORIZONTAL_ALIGNMENT__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KHORIZONTAL_ALIGNMENT__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>Horizontal Alignment</b></em>' attribute.
@@ -2476,6 +2521,15 @@ public interface KRenderingPackage extends EPackage {
     int KCOLORING__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLORING__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2556,6 +2610,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KFOREGROUND__MODIFIER_ID = KCOLORING__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND__SELECTION = KCOLORING__SELECTION;
 
     /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
@@ -2640,6 +2703,15 @@ public interface KRenderingPackage extends EPackage {
     int KBACKGROUND__MODIFIER_ID = KCOLORING__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND__SELECTION = KCOLORING__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Alpha</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2722,6 +2794,15 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_BOLD__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_BOLD__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Bold</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2766,6 +2847,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KFONT_ITALIC__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_ITALIC__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute.
@@ -2814,6 +2904,15 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_NAME__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_NAME__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2858,6 +2957,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KFONT_SIZE__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>Size</b></em>' attribute.
@@ -3042,6 +3150,15 @@ public interface KRenderingPackage extends EPackage {
     int KROTATION__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Rotation</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3095,6 +3212,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KLINE_CAP__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_CAP__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>Line Cap</b></em>' attribute.
@@ -3299,6 +3425,15 @@ public interface KRenderingPackage extends EPackage {
     int KINVISIBILITY__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KINVISIBILITY__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Invisible</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3343,6 +3478,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KSHADOW__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>XOffset</b></em>' attribute.
@@ -3418,6 +3562,15 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT_UNDERLINE__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_UNDERLINE__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Underline</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3473,6 +3626,15 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_REF__MODIFIER_ID = KSTYLE__MODIFIER_ID;
 
     /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__SELECTION = KSTYLE__SELECTION;
+
+    /**
      * The feature id for the '<em><b>Style Holder</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3517,6 +3679,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KTEXT_STRIKEOUT__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>Struck Out</b></em>' attribute.
@@ -3572,6 +3743,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KLINE_JOIN__MODIFIER_ID = KSTYLE__MODIFIER_ID;
+
+    /**
+     * The feature id for the '<em><b>Selection</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN__SELECTION = KSTYLE__SELECTION;
 
     /**
      * The feature id for the '<em><b>Line Join</b></em>' attribute.
@@ -4085,6 +4265,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKStyle_ModifierId();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KStyle#isSelection <em>Selection</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Selection</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyle#isSelection()
+     * @see #getKStyle()
+     * @generated
+     */
+    EAttribute getKStyle_Selection();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KRenderingLibrary <em>Library</em>}'.
@@ -5651,6 +5842,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KSTYLE__MODIFIER_ID = eINSTANCE.getKStyle_ModifierId();
+
+        /**
+         * The meta object literal for the '<em><b>Selection</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KSTYLE__SELECTION = eINSTANCE.getKStyle_Selection();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KRenderingLibraryImpl <em>Library</em>}' class.

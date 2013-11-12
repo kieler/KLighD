@@ -20,7 +20,8 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * references an already defined rendering to make redefining unneccessary.
+ * References an already defined rendering to make redefining unneccessary. 
+ * Be careful to generate no cycles (will cause stack overflow). 
  * <!-- end-model-doc -->
  *
  * <p>

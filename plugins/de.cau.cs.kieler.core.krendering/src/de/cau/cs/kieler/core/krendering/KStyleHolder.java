@@ -48,6 +48,9 @@ public interface KStyleHolder extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * The styles this holder holdes.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Styles</em>' containment reference list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleHolder_Styles()
      * @model containment="true"
@@ -63,6 +66,9 @@ public interface KStyleHolder extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Id to reference this style holder.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Id</em>' attribute.
      * @see #setId(String)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleHolder_Id()
