@@ -13,10 +13,18 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.Collection;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -97,5 +105,46 @@ public final class KlighdPredicates {
                 return false;
             }
         };
+    }
+    
+    /**
+     * A static (singleton) predicate definition for testing the selectabilty of view elements.
+     * See also {@link #isSelectable()}.
+     */
+    private static final Predicate<EObject> IS_SELECTABLE = new Predicate<EObject>() {
+        
+        private final EClass kgraphElement = KGraphPackage.eINSTANCE.getKGraphElement();
+        private final EClass ktext = KRenderingPackage.eINSTANCE.getKText();
+
+        public boolean apply(final EObject input) {
+            return input == null ? false : kgraphElement.isInstance(input) || ktext.isInstance(input);
+        }
+    };
+    
+    /**
+     * Provides a static predicate for testing an EObject whether it is a view model element that is
+     * allowed to be selected by the user. Currently only {@link KGraphElement KGraphElements} and
+     * {@link de.cau.cs.kieler.core.krendering.KText KTexts} can be selected. The returned
+     * {@link Predicate} tolerates <code>null</code> values and returns <code>false</code> in that
+     * case.
+     * 
+     * @return the dedicated predicate instance (singleton)
+     */
+    public static Predicate<EObject> isSelectable() {
+        return IS_SELECTABLE;
+    }
+    
+    /**
+     * An abbreviation of {@link Predicates#not(Predicate) Predicates.not}(
+     * {@link Predicates#in(Collection) Predicates.in}(...)).
+     * 
+     * @param <T>
+     *            the type the {@link Predicate} is defined on
+     * @param target
+     *            the collection to check for the containment of the test object
+     * @return the requested {@link Predicate}
+     */
+    public static <T> Predicate<T> notIn(final Collection<? extends T> target) {
+        return Predicates.not(Predicates.in(target));
     }
 }
