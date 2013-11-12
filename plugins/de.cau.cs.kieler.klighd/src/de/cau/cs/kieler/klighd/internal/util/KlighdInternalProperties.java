@@ -56,7 +56,7 @@ public final class KlighdInternalProperties {
             false);
     
     /**
-     * A property for identifying whether a {@link e.cau.cs.kieler.core.kgraph.KGraphElement
+     * A property indicating whether a {@link de.cau.cs.kieler.core.kgraph.KGraphElement
      * KGraphElement} is currently active. This is the case if and only if it is represented in the
      * diagram.<br>
      * <br>
@@ -65,11 +65,19 @@ public final class KlighdInternalProperties {
      * AbstractRenderingController.
      */
     public static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
-
-    /** the duration for applying the layout. */
-    public static final IProperty<Integer> APPLY_LAYOUT_DURATION = new Property<Integer>(
-            "krendering.layout.applyLayoutDuration", 0);
     
+    /**
+     * A property indicating the selection of a {@link de.cau.cs.kieler.core.kgraph.KGraphElement
+     * KGraphElement} or a {@link de.cau.cs.kieler.core.krendering.KText KText}. It is used for
+     * communicating the 'selected' state of such an element from the
+     * {@link de.cau.cs.kieler.klighd.viewers.ContextViewer ContextViewer}, which sets this
+     * property, to concrete viewers, usually the PiccoloViewer and, more specifically, the
+     * (Abstract)KGERenderingControllers. Those viewers will then have to update the respective
+     * diagram figures and incorporate the {@link de.cau.cs.kieler.core.krendering.KStyle KStyles}
+     * with flag 'selection' set.
+     */
+    public static final IProperty<Boolean> SELECTED = new Property<Boolean>("klighd.selected", false);
+
     /** the viewer visualizing the graph. */
     public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>(
             "krendering.layout.viewer");
