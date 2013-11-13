@@ -220,7 +220,7 @@ public class TransformationContext<S, T> {
      * 
      * @return a map of options (map keys) and related values (map values)
      */
-    public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
+    public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
         ITransformation<?, ?> theTransformation = this.transformation;
         if (this.transformation instanceof ReinitializingDiagramSynthesisProxy<?>) {
             theTransformation =

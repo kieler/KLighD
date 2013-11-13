@@ -14,11 +14,8 @@
 package de.cau.cs.kieler.klighd.syntheses;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import javax.inject.Singleton;
 
 import com.google.common.collect.Iterables;
 
@@ -28,23 +25,22 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.ITransformation;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.SynthesisOption;
-// SUPPRESS CHECKSTYLE PREVIOUS LineLength
+import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
+// SUPPRESS CHECKSTYLE PREVIOUS LineLength
 
 /**
  * The abstract base class for KLighD diagram synthesis implementations.<br>
  * <br>
- * Implementations of this class have to implement {@link #transform(S)} that performs the
- * mapping of the semantic/business objects into instances of the KGraph/KRendering view model format.<br> 
+ * Implementations of this class have to implement {@link #transform(S)} that performs the mapping
+ * of the semantic/business objects into instances of the KGraph/KRendering view model format.<br>
  * <br>
  * Some hints for the use with Xtend (www.xtend-lang.org):<br>
  * If your custom view synthesis transformation is written in Xtend and leverages <b>create
@@ -56,8 +52,8 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
  * e.g. for accessing the transformation context, this can be realized by means of Guice, too. The
  * helper transformation implementation must declare an injected field of type
  * AbstractDiagramSynthesis&lt;?&gt;, the actual {@link AbstractDiagramSynthesis} implementation
- * must be annotated with {@link Singleton &#64;Singleton} on class level. This way the helper
- * classes are provided with the current instance of the main transformation. <br>
+ * must be annotated with {@link javax.inject.Singleton &#64;Singleton} on class level. This way the
+ * helper classes are provided with the current instance of the main transformation. <br>
  * <br>
  * Furthermore, diagram syntheses may leverage other ones, e.g. for realizing composed views. This
  * can be achieved by simply declaring an injected field or extension and calling the related
@@ -66,8 +62,9 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
  * {@link com.google.inject.Provider Provider&lt;yourTransformationClass&gt;} can be declared. Each
  * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
  * be obtained as long as the provided class is <b>not</b> declared as singleton (via
- * {@link Singleton &#64;Singleton}). The {@link ViewSynthesisShared} annotation helps if the described
- * feature of employing helper classes is required.  
+ * {@link javax.inject.Singleton &#64;Singleton}). The
+ * {@link de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared ViewSynthesisShared}
+ * annotation helps if the described feature of employing helper classes is required.
  * 
  * @param <S>
  *            Type of the model to be visualized
@@ -208,7 +205,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      * directly manipulatable by the user. For each layout option a, possibly restricted, set of
      * allowed input values can be specified.
      * 
-     * Use the {@link #specifyLayoutOption(IProperty, Collection)} method to conveniently specify
+     * Use the {@link #specifyLayoutOption(IProperty, List)} method to conveniently specify
      * the options. An example usage might look like the following (Xtend code). The shown example
      * will create a choice widget allowing all possible values of KlayLayered'
      * NodePlacementStrategy enumeration. Furthermore, a slider is created to set the layout's
@@ -231,7 +228,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      * @return a {@link List} of {@link Pair Pairs} where each pair specifies a recommended layout
      * option.
      */
-    public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
+    public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
         return Collections.emptyList();
     }
 
@@ -247,9 +244,9 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      *            the allowed values.
      * @return a pair with the property and the possible values.
      */
-    protected Pair<IProperty<?>, Collection<?>> specifyLayoutOption(final IProperty<?> prop,
-            final Collection<?> values) {
-        return Pair.<IProperty<? extends Object>, Collection<? extends Object>>of(prop, values);
+    protected Pair<IProperty<?>, List<?>> specifyLayoutOption(final IProperty<?> prop,
+            final List<?> values) {
+        return Pair.<IProperty<? extends Object>, List<? extends Object>>of(prop, values);
     }
 
     // ---------------------------------------------------------------------------------- //

@@ -202,11 +202,11 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
         // initialize a layout configuration for retrieving default values
         layoutOptionControlFactory.initialize();
 
-        List<Pair<IProperty<?>, Collection<?>>> recommendedOptions =
+        List<Pair<IProperty<?>, List<?>>> recommendedOptions =
                 currentViewContext.getDisplayedLayoutOptions();
         
         boolean layoutOptionsAvailable = false;
-        for (Pair<IProperty<?>, Collection<?>> pair : recommendedOptions) {
+        for (Pair<IProperty<?>, List<?>> pair : recommendedOptions) {
             IProperty<?> first = pair.getFirst();
             Collection<?> second = pair.getSecond();
             

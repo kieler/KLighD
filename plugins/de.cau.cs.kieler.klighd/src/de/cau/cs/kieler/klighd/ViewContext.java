@@ -523,7 +523,7 @@ public final class ViewContext extends MapPropertyHolder {
      * 
      * @return a map of options (map keys) and related values (map values)
      */
-    public List<Pair<IProperty<?>, Collection<?>>> getDisplayedLayoutOptions() {
+    public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
         return Iterables.getFirst(this.transformationContextsRev, null)
                 .getDisplayedLayoutOptions();
     }
