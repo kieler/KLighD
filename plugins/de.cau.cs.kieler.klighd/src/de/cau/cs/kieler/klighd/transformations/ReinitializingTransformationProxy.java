@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.transformations;
 
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -28,10 +29,11 @@ import com.google.inject.Provider;
 import com.google.inject.Scope;
 import com.google.inject.TypeLiteral;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
 import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.TransformationContext;
-import de.cau.cs.kieler.klighd.TransformationOption;
+import de.cau.cs.kieler.klighd.SynthesisOption;
 
 
 /**
@@ -50,15 +52,13 @@ import de.cau.cs.kieler.klighd.TransformationOption;
  * 
  * @param <S>
  *            type of the input models
- * @param <T>
- *            type of the created models
  * 
  * @author chsch
  */
-public class ReinitializingTransformationProxy<S, T> extends AbstractTransformation<S, T> {
+public class ReinitializingTransformationProxy<S> extends AbstractDiagramSynthesis<S> {
 
-    private Class<AbstractTransformation<S, T>> transformationClass = null;
-    private ITransformation<S, T> transformationDelegate = null;
+    private Class<AbstractDiagramSynthesis<S>> transformationClass = null;
+    private AbstractDiagramSynthesis<S> transformationDelegate = null;
     private Module transformationClassBinding = null;
     
 
@@ -66,7 +66,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      * Package protected constructor.
      * @param clazz the transformation class
      */
-    ReinitializingTransformationProxy(final Class<AbstractTransformation<S, T>> clazz) {
+    ReinitializingTransformationProxy(final Class<AbstractDiagramSynthesis<S>> clazz) {
         this.transformationClass = clazz;
         
         // The following module definition provides the various features:
@@ -83,7 +83,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
         this.transformationClassBinding = new Module() {
             public void configure(final Binder binder) {
                 binder.bind(ResourceSet.class).to(ResourceSetImpl.class);
-                binder.bind(new TypeLiteral<AbstractTransformation<?, ?>>() { }).to(clazz);
+                binder.bind(new TypeLiteral<ITransformation<?, ?>>() { }).to(clazz);
                 binder.bindScope(ViewSynthesisShared.class, new ViewSynthesisScope(clazz));
             }
         };
@@ -125,11 +125,11 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
          *              the main transformation class
          */
         public ViewSynthesisScope(
-                final Class<AbstractTransformation<S, T>> themainTransformationClazz) {
+                final Class<AbstractDiagramSynthesis<S>> themainTransformationClazz) {
             this.mainTransformationClazz = themainTransformationClazz;
         }
         
-        private Class<AbstractTransformation<S, T>> mainTransformationClazz = null;
+        private Class<AbstractDiagramSynthesis<S>> mainTransformationClazz = null;
         private Set<Object> instances = Sets.newHashSet();
 
         /**
@@ -166,7 +166,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
 
                     U instance = null;
                     if (theClazzToBeInjected != mainTransformationClazz
-                            && AbstractTransformation.class.isAssignableFrom(theClazzToBeInjected)) {
+                            && ITransformation.class.isAssignableFrom(theClazzToBeInjected)) {
                         // in case an instance of another fully-fledged transformation class requested
                         //  the current provider makes the scope (!) to forget all its known class
                         //  instances as stated in the requirements description above.
@@ -208,7 +208,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
     }
     
     
-    private AbstractTransformation<S, T> getNewDelegateInstance() {
+    private AbstractDiagramSynthesis<S> getNewDelegateInstance() {
         return Guice.createInjector(this.transformationClassBinding).getInstance(
                 this.transformationClass);
     }
@@ -216,7 +216,6 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
     /**
      * {@inheritDoc}
      */
-    @Override
     public boolean supports(final S model) {
         if (this.transformationDelegate == null) {
             this.transformationDelegate = getNewDelegateInstance();
@@ -228,7 +227,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      * {@inheritDoc}<br>
      * Delegates to the 'delegate' object.
      */
-    public T transform(final S model, final TransformationContext<S, T> transformationContext) {
+    public KNode transform(final S model, final TransformationContext<S, KNode> transformationContext) {
         this.transformationDelegate = getNewDelegateInstance(); 
         return this.transformationDelegate.transform(model, transformationContext);
     }
@@ -239,7 +238,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      * @param model the model
      * @return null
      */
-    public T transform(final S model) {
+    public KNode transform(final S model) {
         return null;
     }
 
@@ -247,11 +246,11 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
     /**
      * {@inheritDoc}
      */
-    public Set<TransformationOption> getTransformationOptions() {
+    public List<SynthesisOption> getDisplayedSynthesisOptions() {
         if (this.transformationDelegate == null) {
-            return getNewDelegateInstance().getTransformationOptions();
+            return getNewDelegateInstance().getDisplayedSynthesisOptions();
         }
-        return this.transformationDelegate.getTransformationOptions();
+        return this.transformationDelegate.getDisplayedSynthesisOptions();
     }
     
     
@@ -267,7 +266,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      * Getter for the delegate attribute.
      * @return the delegate
      */
-    public ITransformation<S, T> getDelegate() {
+    public AbstractDiagramSynthesis<S> getDelegate() {
         return this.transformationDelegate;
     }
     
@@ -277,7 +276,7 @@ public class ReinitializingTransformationProxy<S, T> extends AbstractTransformat
      */
     protected void inferSourceAndTargetModelClass() {
         this.setTriedToInferClass();
-        AbstractTransformation<S, T> delegate = getNewDelegateInstance();        
+        AbstractDiagramSynthesis<S> delegate = getNewDelegateInstance();        
         if (delegate != null) {
             delegate.inferSourceAndTargetModelClass();
             this.setSourceClass(delegate.getSourceClass());

@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -81,7 +80,7 @@ import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.TransformationContext;
-import de.cau.cs.kieler.klighd.TransformationOption;
+import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
@@ -203,32 +202,31 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
         // initialize a layout configuration for retrieving default values
         layoutOptionControlFactory.initialize();
 
-        Map<IProperty<?>, Collection<?>> recommendedOptions =
-                currentViewContext.getRecommendedLayoutOptions();
+        List<Pair<IProperty<?>, Collection<?>>> recommendedOptions =
+                currentViewContext.getDisplayedLayoutOptions();
         
         boolean layoutOptionsAvailable = false;
-        for (Entry<IProperty<?>, Collection<?>> entry : recommendedOptions.entrySet()) {
-            Collection<?> values = entry.getValue();
-            Object first = Iterables.get(values, 0, null);
-            Object second = Iterables.get(values, 1, null);
+        for (Pair<IProperty<?>, Collection<?>> pair : recommendedOptions) {
+            IProperty<?> first = pair.getFirst();
+            Collection<?> second = pair.getSecond();
             
-            if (values.size() == 2 && first instanceof Number && second instanceof Number) {
-                layoutOptionControlFactory.createControl(entry.getKey().getId(),
+            if (first instanceof Number && second instanceof Number) {
+                layoutOptionControlFactory.createControl(pair.getFirst().getId(),
                         ((Number) first).floatValue(), ((Number) second).floatValue());
                 layoutOptionsAvailable = true;
-            } else if (values.size() == 0) {
-                layoutOptionControlFactory.createControl(entry.getKey().getId());
+            } else if (first == null && second == null) {
+                layoutOptionControlFactory.createControl(pair.getFirst().getId());
                 layoutOptionsAvailable = true;
             } else {
-                layoutOptionControlFactory.createControl(entry.getKey().getId(), values);
+                layoutOptionControlFactory.createControl(pair.getFirst().getId(), second);
                 layoutOptionsAvailable = true;
             }
         }
         
         boolean synthesisOptionsAvailable = false;
-        for (final Map.Entry<TransformationContext<?, ?>, Set<TransformationOption>> entry
-                : this.getCurrentViewContext().getTransformationOptions().entrySet()) {
-            for (final TransformationOption option : entry.getValue()) {
+        for (final Map.Entry<TransformationContext<?, ?>, List<SynthesisOption>> entry
+                : this.getCurrentViewContext().getDisplayedSynthesisOptions().entrySet()) {
+            for (final SynthesisOption option : entry.getValue()) {
                 if (option.isCheckOption()) {
                     synthesisOptionControlFactory.createCheckOptionControl(option, entry.getKey(),
                             viewId);

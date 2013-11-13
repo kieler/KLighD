@@ -14,8 +14,6 @@
 package de.cau.cs.kieler.klighd.examples.ecore
 
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 
@@ -26,16 +24,14 @@ import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.core.util.Pair
 import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.klighd.TransformationOption
+
 import de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis
 
 import java.util.List
-import java.util.Collection
 import javax.inject.Inject
 
 import org.eclipse.emf.ecore.EAttribute
@@ -48,7 +44,7 @@ import org.eclipse.emf.ecore.EReference
 
 import static extension com.google.common.base.Strings.*
 import static de.cau.cs.kieler.klighd.KlighdConstants.*
-import de.cau.cs.kieler.core.krendering.KContainerRendering
+import de.cau.cs.kieler.core.krendering.KContainerRenderingimport de.cau.cs.kieler.klighd.SynthesisOption
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -91,26 +87,26 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     /**
      * The filter option definition that allows users to customize the constructed class diagrams.
      */
-    private static val TransformationOption CLASS_FILTER = TransformationOption::createChoiceOption(CLASS_FILTER_NAME,
+    private static val SynthesisOption CLASS_FILTER = SynthesisOption::createChoiceOption(CLASS_FILTER_NAME,
        ImmutableList::of(CHOSEN, CHOSEN_AND_RELATED, ALL), CHOSEN_AND_RELATED);
 
     /**
      * Option to activate/deactivate the attribute lists.
      */
-    private static val TransformationOption RELATED_CLASSES_DEPTH = TransformationOption::createRangeOption("Reference depth", 1, 3, 1, 1);
+    private static val SynthesisOption RELATED_CLASSES_DEPTH = SynthesisOption::createRangeOption("Reference depth", 1, 3, 1, 1);
     
     /**
      * Option choose the reference depth while determining the classes related to the selected ones.
      */
-    private static val TransformationOption ATTRIBUTES = TransformationOption::createCheckOption("Attributes/Literals", false);
+    private static val SynthesisOption ATTRIBUTES = SynthesisOption::createCheckOption("Attributes/Literals", false);
     
     /**
      * {@inheritDoc}<br>
      * <br>
      * Registers the diagram filter option declared above, which allow users to tailor the constructed diagrams.
      */
-    override public getTransformationOptions() {
-        return ImmutableSet::of(CLASS_FILTER, RELATED_CLASSES_DEPTH, ATTRIBUTES);
+    override public getDisplayedSynthesisOptions() {
+        return ImmutableList::of(CLASS_FILTER, RELATED_CLASSES_DEPTH, ATTRIBUTES);
     }
     
     /**
@@ -118,10 +114,10 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
      * <br>
      * Registers reasonable layout options that are recommended to users to tailor the constructed diagram layouts.
      */
-    override public getRecommendedLayoutOptions() {
-        return ImmutableMap::<IProperty<?>, Collection<?>>of(
-            LayoutOptions::DIRECTION, Direction::values().drop(1).sortBy[ it.name ],
-            LayoutOptions::SPACING, newArrayList(0, 255)
+    override public getDisplayedLayoutOptions() {
+        return ImmutableList::of(
+            specifyLayoutOption(LayoutOptions::DIRECTION, Direction::values().drop(1).sortBy[ it.name ]),
+            specifyLayoutOption(LayoutOptions::SPACING, newArrayList(0, 255))
         );
     }
 
@@ -144,18 +140,18 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
             //  depending on the value of CLASS_FILTER.
             val depictedClasses = choice.filter(typeof(EClassifier)).toList;
 	    
-	        if (CLASS_FILTER.optionValue == CHOSEN) {
+	        if (CLASS_FILTER.objectValue == CHOSEN) {
                 
                 // create class and relation figures for each of the elements in the collection
                 depictedClasses.createElementFigures(it);
                 
-	        } else if (CLASS_FILTER.optionValue == CHOSEN_AND_RELATED) {
+	        } else if (CLASS_FILTER.objectValue == CHOSEN_AND_RELATED) {
 	            
                 val ePackage = choice.filter(typeof(EClass))?.head?.eContainer as EPackage;
                 
                 val classesCopy = Sets::newHashSet(depictedClasses);
                 
-                (1..RELATED_CLASSES_DEPTH.optionIntValue).forEach[
+                (1..RELATED_CLASSES_DEPTH.intValue).forEach[
                     classesCopy.filter(typeof(EClass)) => [
                         // ... are inspected, and ...
 	                    it.forEach[
@@ -263,7 +259,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                             };
                         ];
                     ];
-                    if (!ATTRIBUTES.optionBooleanValue) {
+                    if (!ATTRIBUTES.booleanValue) {
                         return;
                     }
                     if (EcorePackage::eINSTANCE.getEClass.isInstance(clazz) && !(clazz as EClass).EAttributes.empty) {
