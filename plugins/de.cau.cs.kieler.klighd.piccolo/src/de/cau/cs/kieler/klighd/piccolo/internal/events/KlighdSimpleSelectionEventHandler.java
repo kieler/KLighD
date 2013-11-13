@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
-import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,7 +36,6 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
-import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PNodeFilter;
 
@@ -54,21 +52,28 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
 
     /** the camera this handler references. */
     private PCamera camera;
+    
     /** the marquee parent. */
     private PNode marqueeParent;
+    
     /** the listeners on the selection status. */
     private List<INodeSelectionListener> listeners = new LinkedList<INodeSelectionListener>();
 
     /** the marquee selection rectangle. */
     private KlighdPath marquee = null;
+    
     /** the point on the canvas the last press occurred. */
     private Point2D canvasPoint;
+    
     /** the point in transformed coordinates where the last press occurred. */
     private Point2D point;
+    
     /** the node the last press occurred on. */
     private PNode clickNode;
+    
     /** the current marquee bounds. */
     private PBounds marqueeBounds = new PBounds();
+    
     /** whether a marquee selection is currently performed. */
     private boolean marqueeSelection = false;
 
@@ -88,7 +93,6 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
     public KlighdSimpleSelectionEventHandler(final PCamera camera, final PNode marqueeParent) {
         this.camera = camera;
         this.marqueeParent = marqueeParent;
-        setEventFilter(new PInputEventFilter(InputEvent.BUTTON1_MASK));
     }
 
     /**
@@ -288,8 +292,6 @@ public class KlighdSimpleSelectionEventHandler extends PDragSequenceEventHandler
         if (marqueeSelection) {
             if (isMarqueeSelection(event)) {
                 updateMarquee(event);
-            // } else {
-            //    endDrag(event);
             }
         }
     }
