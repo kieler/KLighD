@@ -13,17 +13,15 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
-import org.eclipse.jface.wizard.WizardPage;
+import java.util.EnumSet;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
+import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions.EdgeDetermination;
 
 /**
  * The options page for the BICONNECTED graph type.
@@ -31,10 +29,7 @@ import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
  * @author mri
  * @author msp
  */
-public class RandomGraphBiconnectedPage extends WizardPage {
-
-    /** the generator options. */
-    private GeneratorOptions options;
+public class RandomGraphBiconnectedPage extends AbstractRandomGraphPage {
 
     /**
      * Constructs a RandomGraphBiconnectedPage.
@@ -42,10 +37,9 @@ public class RandomGraphBiconnectedPage extends WizardPage {
      * @param options the generator options
      */
     public RandomGraphBiconnectedPage(final GeneratorOptions options) {
-        super("randomGraphBiconnectedPage"); //$NON-NLS-1$
+        super("randomGraphBiconnectedPage", options); //$NON-NLS-1$
         setTitle(Messages.RandomGraphBiconnectedPage_title);
         setDescription(Messages.RandomGraphBiconnectedPage_description);
-        this.options = options;
     }
 
     // CHECKSTYLEOFF MagicNumber
@@ -56,48 +50,18 @@ public class RandomGraphBiconnectedPage extends WizardPage {
     public void createControl(final Composite parent) {
         Composite composite = new Composite(parent, SWT.NULL);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-        composite.setLayout(new GridLayout(2, false));
         setControl(composite);
         
-        GridData gridData;
+        GridLayout layout = new GridLayout(1, false);
+        layout.verticalSpacing = 10;
+        composite.setLayout(layout);
         
         // add NUMBER_OF_NODES option
-        Label label = new Label(composite, SWT.NULL);
-        label.setText(Messages.RandomGraphBiconnectedPage_number_of_nodes_caption);
-        
-        final Spinner nodesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
-        nodesSpinner.setToolTipText(Messages.RandomGraphBiconnectedPage_number_of_nodes_help);
-        nodesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_NODES),
-                1, Integer.MAX_VALUE, 0, 1, 10);
-        
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
-        gridData.widthHint = 80;
-        nodesSpinner.setLayoutData(gridData);
-        
-        nodesSpinner.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                options.setProperty(GeneratorOptions.NUMBER_OF_NODES, nodesSpinner.getSelection());
-            }
-        });
+        createNodesGroup(composite);
         
         // add NUMBER_OF_EDGES option
-        label = new Label(composite, SWT.NULL);
-        label.setText(Messages.RandomGraphBiconnectedPage_number_of_edges_caption);
-        
-        final Spinner edgesSpinner = new Spinner(composite, SWT.BORDER | SWT.SINGLE);
-        edgesSpinner.setToolTipText(Messages.RandomGraphBiconnectedPage_number_of_edges_help);
-        edgesSpinner.setValues(options.getProperty(GeneratorOptions.NUMBER_OF_EDGES),
-                0, Integer.MAX_VALUE, 0, 1, 10);
-        
-        gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
-        gridData.widthHint = 80;
-        edgesSpinner.setLayoutData(gridData);
-        
-        edgesSpinner.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                options.setProperty(GeneratorOptions.NUMBER_OF_EDGES, edgesSpinner.getSelection());
-            }
-        });
+        createEdgeGroup(composite, EnumSet.of(EdgeDetermination.ABSOLUTE, EdgeDetermination.RELATIVE,
+                EdgeDetermination.DENSITY));
     }
 
 }

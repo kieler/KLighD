@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: KLighD Visualization Examples
+Bundle-Name: KIELER Light-Weight Diagrams Visualization Examples
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.examples;singleton:=true
 Bundle-Version: 0.2.2.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.examples.KLighDExamplesPlugin
-Bundle-Vendor: Christian-Albrechts-Universtät zu Kiel
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Require-Bundle: org.eclipse.core.runtime,
  javax.inject;bundle-version="1.0.0",
  com.google.inject;bundle-version="3.0.0",

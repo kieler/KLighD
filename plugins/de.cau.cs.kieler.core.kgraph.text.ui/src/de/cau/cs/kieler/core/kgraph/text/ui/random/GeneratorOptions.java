@@ -41,8 +41,8 @@ public class GeneratorOptions extends MapPropertyHolder {
     
     /** the possible graph types. */
     public static enum GraphType {
-        /** any graph. */
-        ANY,
+        /** custom graph. */
+        CUSTOM,
         /** a tree. */
         TREE,
         /** a biconnected graph. */
@@ -50,15 +50,17 @@ public class GeneratorOptions extends MapPropertyHolder {
         /** a triconnected graph. */
         TRICONNECTED,
         /** an acyclic graph without transitive edges. */
-        ACYCLIC_NO_TRANSITIVE_EDGES
+        ACYCLIC_NO_TRANSITIVE_EDGES,
+        /** a bipartite graph. */
+        BIPARTITE;
     }
 
     /** the possible ways to determine edges. */
     public enum EdgeDetermination {
-        /** number of edges in the graph. */
-        GRAPH_EDGES,
+        /** absolute number of edges in the graph. */
+        ABSOLUTE,
         /** number of outgoing edges per node. */
-        OUTGOING_EDGES,
+        OUTGOING,
         /** relative number of edges (relative to n). */
         RELATIVE,
         /** density (relative to n^2). */
@@ -78,19 +80,38 @@ public class GeneratorOptions extends MapPropertyHolder {
 
     /** option for the graph type. */
     public static final IProperty<GraphType> GRAPH_TYPE = new Property<GraphType>("basic.graphType",
-            GraphType.ANY);
+            GraphType.CUSTOM);
 
     //~~~~~~~~~~~~~~~~ Options for all graph types
 
-    /** option for the number of nodes. */
-    public static final IProperty<Integer> NUMBER_OF_NODES = new Property<Integer>(
-            "basic.numberOfNodes", 10, 1);
     /** option for the minimum number of nodes. */
     public static final IProperty<Integer> NUMBER_OF_NODES_MIN = new Property<Integer>(
             "basic.numberOfNodesMin", 10, 1);
     /** option for the maximum number of nodes. */
     public static final IProperty<Integer> NUMBER_OF_NODES_MAX = new Property<Integer>(
             "basic.numberOfNodesMax", 10, 1);
+    /** option for specifying how to determine edges. */
+    public static final IProperty<EdgeDetermination> EDGE_DETERMINATION =
+            new Property<EdgeDetermination>("basic.edgeDetermination",
+                    EdgeDetermination.ABSOLUTE);
+    /** option for the absolute number of edges. */
+    public static final IProperty<Integer> EDGES_ABSOLUTE = new Property<Integer>(
+            "basic.numberOfEdges", 20, 0);
+    /** option for the standard deviation in the absolute number of edges. */
+    public static final IProperty<Integer> EDGES_ABS_STDDEV = new Property<Integer>(
+            "basic.edgesVariance", 0, 0);
+    /** option for the relative number of edges. */
+    public static final IProperty<Double> EDGES_RELATIVE = new Property<Double>(
+            "basic.relEdges", 1.5, 0.0);
+    /** option for standard deviation in the relative number of edges. */
+    public static final IProperty<Double> EDGES_REL_STDDEV = new Property<Double>(
+            "basic.relEdgesVariance", 0.0, 0.0);
+    /** option for graph density. */
+    public static final IProperty<Double> DENSITY = new Property<Double>(
+            "basic.density", 0.1, 0.0);
+    /** option for standard deviation in graph density. */
+    public static final IProperty<Double> DENSITY_STDDEV = new Property<Double>(
+            "basic.densityVariance", 0.0, 0.0);
     /** option that enables hierarchical graphs. */
     public static final IProperty<Boolean> ENABLE_HIERARCHY = new Property<Boolean>(
             "basic.enableHierarchy", false);
@@ -176,27 +197,8 @@ public class GeneratorOptions extends MapPropertyHolder {
     public static final IProperty<Integer> OUTGOING_WEST_SIDE = new Property<Integer>(
             "layout.outgoingWestSide", 5);
     
-    //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE ANY
+    //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE CUSTOM
 
-    /** option for specifying how to determine edges. */
-    public static final IProperty<EdgeDetermination> EDGE_DETERMINATION =
-            new Property<EdgeDetermination>("basic.edgeDetermination",
-                    EdgeDetermination.GRAPH_EDGES);
-    /** option for the variance in the number of edges. */
-    public static final IProperty<Integer> EDGES_VARIANCE = new Property<Integer>(
-            "basic.edgesVariance", 0, 0);
-    /** option for the relative number of edges. */
-    public static final IProperty<Double> EDGES_RELATIVE = new Property<Double>(
-            "basic.relEdges", 1.5, 0.0);
-    /** option for variance in the relative number of edges. */
-    public static final IProperty<Double> EDGES_REL_VARIANCE = new Property<Double>(
-            "basic.relEdgesVariance", 0.0, 0.0);
-    /** option for graph density. */
-    public static final IProperty<Double> DENSITY = new Property<Double>(
-            "basic.density", 0.1, 0.0);
-    /** option for variance in graph density. */
-    public static final IProperty<Double> DENSITY_VARIANCE = new Property<Double>(
-            "basic.densityVariance", 0.0, 0.0);
     /** option for the minimum number of outgoing edges. */
     public static final IProperty<Integer> MIN_OUTGOING_EDGES = new Property<Integer>(
             "basic.minOutgoingEdges", 0, 0);
@@ -227,13 +229,16 @@ public class GeneratorOptions extends MapPropertyHolder {
 
     /** option for planarity. */
     public static final IProperty<Boolean> PLANAR = new Property<Boolean>("basic.planar", false);
-
-    //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE ANY, BICONNECTED and ACYCLIC_NO_TRANSITIVE_EDGES
-
-    /** option for the number of edges. */
-    public static final IProperty<Integer> NUMBER_OF_EDGES = new Property<Integer>(
-            "basic.numberOfEdges", 20, 0);
     
+    //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE BIPARTITE
+    
+    /** option for minimal fraction of nodes in second partition set. */
+    public static final IProperty<Float> MIN_PARTITION_FRAC = new Property<Float>(
+            "basic.minPartitionFraction", 0.4f);
+    /** option for maximal fraction of nodes in second partition set. */
+    public static final IProperty<Float> MAX_PARTITION_FRAC = new Property<Float>(
+            "basic.maxPartitionFraction", 0.6f);
+
     //~~~~~~~~~~~~~~~~  Utility methods for preference handling
     
     /**

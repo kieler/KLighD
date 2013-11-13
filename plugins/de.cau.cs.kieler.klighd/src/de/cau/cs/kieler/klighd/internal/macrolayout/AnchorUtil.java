@@ -94,7 +94,8 @@ public final class AnchorUtil {
                 return nearestBorderPointRoundedRectangle(point, width, height, cornerWidth,
                         cornerHeight);
             case KRenderingPackage.KELLIPSE:
-                return nearestBorderPointEllipse(point, width, height);
+                // For ellipses we want to draw towards the center
+                return collideTowardsEllipseCenter(point, width, height);
             }
         }
         
@@ -164,10 +165,10 @@ public final class AnchorUtil {
         
         if (point.x <= 0) {
             if (point.y <= cornerHeight) {                
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
             } else if (point.y >= rectHeightWidthoutCornerHeight) {
                 result.y -= rectHeightWithoutTwiceCornerHeight;
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
                 result.y += rectHeightWithoutTwiceCornerHeight;
             } else {
                 result.x = 0;
@@ -177,12 +178,12 @@ public final class AnchorUtil {
         if (point.x >= width) {
             if (point.y <= cornerHeight) {                
                 result.x -= rectWidthWithoutTwiceCornerWidth;
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
                 result.x += rectWidthWithoutTwiceCornerWidth;
             } else if (point.y >= rectHeightWidthoutCornerHeight) {
                 result.x -= rectWidthWithoutTwiceCornerWidth;
                 result.y -= rectHeightWithoutTwiceCornerHeight;
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
                 result.x += rectWidthWithoutTwiceCornerWidth;
                 result.y += rectHeightWithoutTwiceCornerHeight;
             } else {
@@ -192,10 +193,10 @@ public final class AnchorUtil {
         
         if (point.y <= 0) {
             if (point.x <= cornerWidth) {                
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
             } else if (point.x >= rectWidthWithoutCornerWidth) {
                 result.x -= rectWidthWithoutTwiceCornerWidth;
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
                 result.x += rectWidthWithoutTwiceCornerWidth;
             } else {
                 result.y = 0;
@@ -205,99 +206,16 @@ public final class AnchorUtil {
         if (point.y >= height) {
             if (point.x <= cornerWidth) {                
                 result.y -= rectHeightWithoutTwiceCornerHeight;
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
                 result.y += rectHeightWithoutTwiceCornerHeight;
             } else if (point.x >= rectWidthWithoutCornerWidth) {
                 result.x -= rectWidthWithoutTwiceCornerWidth;
                 result.y -= rectHeightWithoutTwiceCornerHeight;
-                result = nearestBorderPointEllipse(result, 2 * cornerWidth, 2 * cornerHeight);
+                result = collideTowardsEllipseCenter(result, 2 * cornerWidth, 2 * cornerHeight);
                 result.x += rectWidthWithoutTwiceCornerWidth;
                 result.y += rectHeightWithoutTwiceCornerHeight;
             } else {
                 result.y = height;
-            }
-        }
-        
-        return result;
-    }
-
-    /**
-     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering)} for ellipses.
-     * 
-     * @param point the other end point of the edge, relative to the upper left corner of the figure's
-     *              bounding box.
-     * @param width the width of the figure's bounding box. Must be {@code >=0}.
-     * @param height the height of the figure's bounding box. Must be {@code >=0}.
-     * @return the point on the figure's border that is nearest to the given point, relative to the
-     *         figure's upper left corner.
-     */
-    private static KVector nearestBorderPointEllipse(final KVector point, final double width,
-            final double height) {
-        
-        assert width >= 0 : "width = " + width;
-        assert height >= 0 : "height = " + height;
-        
-        // By means of the following width-height-ratio we can abstract the ellipse by a circle with
-        // the radius 'rad'.
-        final double heightRelation = width / height;
-        final double radius = width / 2;
-
-        final double normX = point.x;
-        final double normY = point.y * heightRelation;
-        
-        KVector result = new KVector();
-
-        // The basic idea of this anchor point movement is the shift along the axis of the center of the
-        //  imaginary circle and the current point. In order to understand the process easier the
-        //  following 4 cases are distinguished, each of them distinguishes two more.
-        // First the angle of the above mentioned axis is determined by means of the arcTan function.
-        //  By means of this angle and our desired hypotenuse of 'radius' we can calculate the desired
-        //  adjacent and opposite sides of the imaginary rectangle. Those two values form our new x and
-        //  y coordinates adjusted depending on the current case.   
-
-        if (point.x <= 0) {
-            if (normY <= radius) {
-                double angle = Math.atan((radius - normY) / radius);
-                result.x = radius - Math.cos(angle) * radius;
-                result.y = (radius - Math.sin(angle) * radius) / heightRelation;
-
-            } else {
-                double angle = Math.atan((normY - radius) / radius);
-                result.x = radius - Math.cos(angle) * radius;
-                result.y = (radius + Math.sin(angle) * radius) / heightRelation;
-            }
-        } else if (point.x >= width) {
-            if (normY <= radius) {
-                double angle = Math.atan((radius - normY) / radius);
-                result.x = radius + Math.cos(angle) * radius;
-                result.y = (radius - Math.sin(angle) * radius) / heightRelation;
-
-            } else {
-                double angle = Math.atan((normY - radius) / radius);
-                result.x = radius + Math.cos(angle) * radius;
-                result.y = (radius + Math.sin(angle) * radius) / heightRelation;
-            }
-        } else if (point.y <= 0) {
-            if (normX <= radius) {
-                double angle = Math.atan((radius - normX) / radius);
-                result.x = radius - Math.sin(angle) * radius;
-                result.y = (radius - Math.cos(angle) * radius) / heightRelation;
-
-            } else {
-                double angle = Math.atan((normX - radius) / radius);
-                result.x = radius + Math.sin(angle) * radius;
-                result.y = (radius - Math.cos(angle) * radius) / heightRelation;
-            }
-        } else if (point.y >= height) {
-            if (normX <= radius) {
-                double angle = Math.atan((radius - normX) / radius);
-                result.x = radius - Math.sin(angle) * radius;
-                result.y = (radius + Math.cos(angle) * radius) / heightRelation;
-
-            } else {
-                double angle = Math.atan((normX - radius) / radius);
-                result.x = radius + Math.sin(angle) * radius;
-                result.y = (radius + Math.cos(angle) * radius) / heightRelation;
             }
         }
         
@@ -427,11 +345,11 @@ public final class AnchorUtil {
         //   y(t) = offsetPoint.y * t
         // The goal is to find 0 <= t0 <= 1 such, that (x(t0), y(t0)) is the intersection between
         // the ellipse and the line
-        double determinant = offsetPoint.x * offsetPoint.x / a / a
-                + offsetPoint.y * offsetPoint.y / b / b;
+        double determinant = offsetPoint.x * offsetPoint.x / (a * a)
+                + offsetPoint.y * offsetPoint.y / (b * b);
         if (determinant == 0) {
             // This can only happen if offsetPoint == (0,0)
-            return null;
+            return new KVector(point);
         }
         
         // Find t0

@@ -31,6 +31,7 @@ import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
@@ -104,6 +105,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                 renderingNode = handleEdgeRendering(customRendering, (KEdgeNode) repNode);
                 break;
             } else {
+                // FIXME why is the status manager used here, while below a runtime exception is thrown?
+                // very inconsistent handling of error states!
                 final String msg = "KLighD: KCustomRendering attached to edge "
                         + currentRendering.eContainer()
                         + " must provide a figure object of type KCustomConnectionFigureNode"
@@ -114,13 +117,25 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                         StatusManager.LOG);
                 return null;
             }
+        
+        case KRenderingPackage.KRENDERING_REF:
+            // TODO this is only a preliminary support of references for edge renderings
+            final KRenderingRef renderingRef = (KRenderingRef) currentRendering;
+            if (renderingRef.getRendering() == null) {
+                return handleEdgeRendering(createDefaultEdgeRendering(), (KEdgeNode) repNode);
+            } else if (renderingRef.getRendering() instanceof KPolyline) {
+                renderingNode = handleEdgeRendering((KPolyline) renderingRef.getRendering(),
+                        (KEdgeNode) repNode);
+            } else {
+                throw new RuntimeException("KLighD: llegal KRendering is attached to graph edge.");
+            }
+            break;
             
         default:
             // hence, throw an exception if something different is provided
-            final String msg = "KLighD: Illegal KRendering is attached to graph edge: "
+            throw new RuntimeException("KLighD: Illegal KRendering is attached to graph edge: "
                     + getGraphElement()
-                    + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!";
-            throw new RuntimeException(msg);
+                    + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!");
         }
 
         

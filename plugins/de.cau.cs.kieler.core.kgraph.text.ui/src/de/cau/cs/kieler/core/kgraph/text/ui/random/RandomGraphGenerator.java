@@ -51,6 +51,9 @@ public class RandomGraphGenerator {
     public static final float PORT_HEIGHT = 4.0f;
     /** minimal separation of ports. */
     public static final float PORT_SEPARATION = 7.0f;
+    
+    /** the maximal number of iterations for distributing edges. */
+    private static final int MAX_ITER = 12;
 
     /** the generator options holder. */
     private GeneratorOptions options;
@@ -80,88 +83,112 @@ public class RandomGraphGenerator {
         this.options = genOptions;
         if (!genOptions.getProperty(GeneratorOptions.ENABLE_HIERARCHY)) {
             genOptions.setProperty(GeneratorOptions.HIERARCHY_CHANCE, 0.0f);
+            genOptions.setProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES, false);
+        }
+        
+        // initialize basic properties
+        int minNodes = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN);
+        int maxNodes = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX);
+        int n = randomInt(minNodes, maxNodes);
+        
+        int minOut = genOptions.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES);
+        int maxOut = genOptions.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES);
+        int m;
+        switch (genOptions.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
+        case ABSOLUTE: {
+            m = genOptions.getProperty(GeneratorOptions.EDGES_ABSOLUTE);
+            int var = genOptions.getProperty(GeneratorOptions.EDGES_ABS_STDDEV);
+            if (var > 0) {
+                m += Math.round(random.nextGaussian() * var);
+            }
+            if (m < 0) {
+                m = 0;
+            }
+            break;
+        }
+        
+        case RELATIVE: {
+            double rel = genOptions.getProperty(GeneratorOptions.EDGES_RELATIVE);
+            double var = genOptions.getProperty(GeneratorOptions.EDGES_REL_STDDEV);
+            if (var > 0) {
+                rel += random.nextGaussian() * var;
+            }
+            m = (int) Math.round(rel * n);
+            if (m < 0) {
+                m = 0;
+            }
+            break;
+        }
+        
+        case DENSITY: {
+            double d = genOptions.getProperty(GeneratorOptions.DENSITY);
+            double var = genOptions.getProperty(GeneratorOptions.DENSITY_STDDEV);
+            if (var > 0) {
+                d += random.nextGaussian() * var;
+            }
+            m = (int) (Math.round(d * n * (n - 1) / 2));
+            if (m < 0) {
+                m = 0;
+            }
+            break;
+        }
+        
+        case OUTGOING: {
+            double edgesPerNode = minOut + random.nextDouble() * (maxOut - minOut);
+            m = (int) (Math.round(n * edgesPerNode));
+            break;
+        }
+        
+        default:
+            throw new IllegalArgumentException("Selected edge determination is not supported.");
         }
         
         // generate the graph
         KNode graph = KimlUtil.createInitializedNode();
         
         switch (genOptions.getProperty(GeneratorOptions.GRAPH_TYPE)) {
-        case ANY: {
-            int minNodes = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES_MIN);
-            int maxNodes = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES_MAX);
-            int n = randomInt(minNodes, maxNodes);
-            int m = genOptions.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
-            int minOut = genOptions.getProperty(GeneratorOptions.MIN_OUTGOING_EDGES);
-            int maxOut = genOptions.getProperty(GeneratorOptions.MAX_OUTGOING_EDGES);
+        case CUSTOM: {
             List<KNode> generatedNodes;
             
             switch (genOptions.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
-            case GRAPH_EDGES: {
-                int var = genOptions.getProperty(GeneratorOptions.EDGES_VARIANCE);
-                if (var > 0) {
-                    m += Math.round(random.nextGaussian() * var);
-                }
-                if (m < 0) {
-                    m = 0;
-                }
-                generatedNodes = generateAnyGraph(graph, n, m, 0);
-                break;
-            }
-            
-            case RELATIVE: {
-                double rel = genOptions.getProperty(GeneratorOptions.EDGES_RELATIVE);
-                double var = genOptions.getProperty(GeneratorOptions.EDGES_REL_VARIANCE);
-                if (var > 0) {
-                    rel += random.nextGaussian() * var;
-                }
-                m = (int) Math.round(rel * n);
-                if (m < 0) {
-                    m = 0;
-                }
-                generatedNodes = generateAnyGraph(graph, n, m, 0);
-                break;
-            }
-            
-            case DENSITY: {
-                double d = genOptions.getProperty(GeneratorOptions.DENSITY);
-                double var = genOptions.getProperty(GeneratorOptions.DENSITY_VARIANCE);
-                if (var > 0) {
-                    d += random.nextGaussian() * var;
-                }
-                m = (int) (Math.round(d * n * n));
-                if (m < 0) {
-                    m = 0;
-                }
-                generatedNodes = generateAnyGraph(graph, n, m, 0);
-                break;
-            }
-            
-            case OUTGOING_EDGES: {
+            case OUTGOING:
                 generatedNodes = generateAnyGraph(graph, n, minOut, maxOut, 0);
                 break;
-            }
-            
             default:
-                throw new IllegalArgumentException("Selected edge determination is not supported.");
+                generatedNodes = generateAnyGraph(graph, n, m, 0);
             }
             
             if (genOptions.getProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES)) {
                 // create edges randomly across the whole compound graph, crossing hierarchy borders
-                int[] outgoingEdges;
                 switch (genOptions.getProperty(GeneratorOptions.EDGE_DETERMINATION)) {
-                case OUTGOING_EDGES:
-                    outgoingEdges = determineOutgoingEdges(generatedNodes, minOut, maxOut);
+                case OUTGOING: {
+                    int[] outgoingEdges = determineOutgoingEdges(generatedNodes, minOut, maxOut);
+                    connectRandomlyAndConditional(generatedNodes, outgoingEdges, basicCondition);
                     break;
-                default:
-                    outgoingEdges = determineOutgoingEdges(generatedNodes, m);
                 }
-                connectRandomlyAndConditional(generatedNodes, outgoingEdges, basicCondition);
+                default: {
+                    int createdEdges = 0;
+                    int iterations = 0;
+                    do {
+                        int[] outgoingEdges = determineOutgoingEdges(generatedNodes, m - createdEdges);
+                        createdEdges += connectRandomlyAndConditional(generatedNodes, outgoingEdges,
+                                basicCondition);
+                        iterations++;
+                    } while (createdEdges < m && iterations < MAX_ITER);
+                }
+                }
             }
             break;
         }
         
+        case BIPARTITE: {
+            float minPartition = genOptions.getProperty(GeneratorOptions.MIN_PARTITION_FRAC);
+            float maxPartition = genOptions.getProperty(GeneratorOptions.MAX_PARTITION_FRAC);
+            generateBipartite(graph, n, m, minPartition, maxPartition, 0);
+            break;
+        }
+        
         case TREE: {
-            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
             int maxDegree = genOptions.getProperty(GeneratorOptions.MAX_DEGREE);
             int maxWidth = genOptions.getProperty(GeneratorOptions.MAX_WIDTH);
             generateTree(graph, n, maxDegree, maxWidth, 0);
@@ -169,14 +196,11 @@ public class RandomGraphGenerator {
         }
         
         case BICONNECTED: {
-            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
-            int m = genOptions.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
             generateBiconnectedGraph(graph, n, m, 0);
             break;
         }
         
         case TRICONNECTED: {
-            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
             float p1 = random.nextFloat();
             float p2 = 1.0f - p1;
             generateTriconnectedGraph(graph, n, p1, p2, 0);
@@ -184,13 +208,13 @@ public class RandomGraphGenerator {
         }
         
         case ACYCLIC_NO_TRANSITIVE_EDGES: {
-            int n = genOptions.getProperty(GeneratorOptions.NUMBER_OF_NODES);
-            int m = genOptions.getProperty(GeneratorOptions.NUMBER_OF_EDGES);
             boolean planar = genOptions.getProperty(GeneratorOptions.PLANAR);
             generateANTEGraph(graph, n, m, planar, false, 0);
             break;
         }
         
+        default:
+            throw new IllegalArgumentException("Selected graph generator is not supported.");
         }
         
         // remove isolated nodes if requested
@@ -223,7 +247,7 @@ public class RandomGraphGenerator {
             if (!options.getProperty(GeneratorOptions.MULTI_EDGES) && connected(node1, node2)) {
                 return false;
             }
-            if (!options.getProperty(GeneratorOptions.CYCLES) && findNodeWithDFS(node1, node2)) {
+            if (!options.getProperty(GeneratorOptions.CYCLES) && findNodeWithDFS(node2, node1)) {
                 return false;
             }
             return true;
@@ -250,8 +274,13 @@ public class RandomGraphGenerator {
         // connect the nodes
         if (!options.getProperty(GeneratorOptions.CROSS_HIERARCHY_EDGES)) {
             // determine the number of outgoing edges for every node
-            int[] outgoingEdges = determineOutgoingEdges(nodes, m);
-            connectRandomlyAndConditional(nodes, outgoingEdges, basicCondition);
+            int createdEdges = 0;
+            int iterations = 0;
+            do {
+                int[] outgoingEdges = determineOutgoingEdges(nodes, m - createdEdges);
+                createdEdges += connectRandomlyAndConditional(nodes, outgoingEdges, basicCondition);
+                iterations++;
+            } while (createdEdges < m && iterations < MAX_ITER);
         }
         // recursively create hierarchy if applicable
         float hierarchyChance = options.getProperty(GeneratorOptions.HIERARCHY_CHANCE);
@@ -320,6 +349,11 @@ public class RandomGraphGenerator {
             }
         }
         return nodes;
+    }
+    
+    private void generateBipartite(final KNode parent, final int n, final int m,
+            final float minPartition, final float maxPartition, final int hierarchyLevel) {
+        
     }
 
     /**
@@ -735,7 +769,7 @@ public class RandomGraphGenerator {
                     // preserve density for number of edges
                     float density = (float) m / (n * n);
                     int cm = (int) density * cn * cn;
-                    generateBiconnectedGraph(node, cn, cm, hierarchyLevel + 1);
+                    generateANTEGraph(node, cn, cm, planar, singleSource, hierarchyLevel + 1);
                 }
             }
         }
@@ -1183,12 +1217,12 @@ public class RandomGraphGenerator {
             int i = randomInt(0, bufferEnd);
             KNode target = targetBuffer[i];
             if (connectConditional(source, target, condition)) {
-                ++edges;
+                edges++;
             } else {
                 // the current node does not fulfill the condition so replace it with an element
                 // from the end of the buffer
                 targetBuffer[i] = targetBuffer[bufferEnd];
-                --bufferEnd;
+                bufferEnd--;
             }
 
         }
@@ -1211,7 +1245,7 @@ public class RandomGraphGenerator {
             final EdgeCondition condition) {
         // connect every node to the specified number of other nodes
         int edges = 0;
-        for (int i = 0; i < nodes.size(); ++i) {
+        for (int i = 0; i < nodes.size(); i++) {
             KNode source = nodes.get(i);
             edges += connectRandomlyAndConditional(source, nodes, outgoingEdges[i], condition);
         }
@@ -1292,7 +1326,7 @@ public class RandomGraphGenerator {
     private static boolean findNodeWithDFS(final KNode start, final KNode end) {
         Queue<KNode> nodes = new LinkedList<KNode>();
         nodes.add(start);
-        while (!nodes.isEmpty()) {
+        do {
             KNode node = nodes.poll();
             if (node == end) {
                 return true;
@@ -1300,7 +1334,7 @@ public class RandomGraphGenerator {
             for (KEdge edge : node.getOutgoingEdges()) {
                 nodes.add(edge.getTarget());
             }
-        }
+        } while (!nodes.isEmpty());
         return false;
     }
 

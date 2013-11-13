@@ -16,10 +16,23 @@ package de.cau.cs.kieler.core.krendering.extensions
 import de.cau.cs.kieler.core.krendering.KColor
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 
+/**
+ * @containsExtensions
+ */
 class KColorExtensions {
 
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
+    /**
+     * Convenient creation of color objects. Allows several names (red, blue, black, etc) 
+     * and hex strings (#00ff00). 
+     * 
+     * @example
+     * rectangle.background = "black".color
+     * rectangle.foreground = "#00ff00".color
+     * 
+     * @extensionType style
+     */
     def KColor getColor(String name) {
         return renderingFactory.createKColor() =>[
             it.setColor(name);

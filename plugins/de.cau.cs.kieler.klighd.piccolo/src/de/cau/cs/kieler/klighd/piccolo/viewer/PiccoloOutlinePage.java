@@ -65,7 +65,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     /** the observed knode. */
     private KNode rootNode;
     /** the adapter listening to layout changes. */
-    private Adapter graphLayoutAdapter;
+    private Adapter nodeLayoutAdapter;
     /** the control listener reacting to canvas resizing. */
     private ControlListener canvasResizeListener;
     /** the original camera of the editor part. */
@@ -203,15 +203,15 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
             if (childNode instanceof KNodeTopNode) {
                 
                 rootNode = ((KNodeTopNode) childNode).getGraphElement();
-                graphLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
+                nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
                    
                     @Override
                     public void notifyChanged(final Notification notification) {
                         super.notifyChanged(notification);
                         
                         if (notification.getNotifier() == rootNode) {
-                            // in case anything is done changed on the node, e.g. the nodes shape
-                            //  layout is removed or a new one is added by the simple update strategy
+                            // in case anything is changed on the node, e.g. the node's shape layout
+                            //  is removed or a new one is added by the simple update strategy
                             //  don't do anything!! 
                             return;
                         }
@@ -226,7 +226,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                     }
                 };
                 
-                rootNode.eAdapters().add(graphLayoutAdapter);
+                rootNode.eAdapters().add(nodeLayoutAdapter);
                 
                 adjustCamera(camera);
                 
@@ -301,9 +301,9 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
         }
 
         if (rootNode != null) {
-            rootNode.eAdapters().remove(graphLayoutAdapter);
+            rootNode.eAdapters().remove(nodeLayoutAdapter);
             rootNode = null;
-            graphLayoutAdapter = null;
+            nodeLayoutAdapter = null;
         }
         if (canvasResizeListener != null) {
             if (!canvas.isDisposed()) {
