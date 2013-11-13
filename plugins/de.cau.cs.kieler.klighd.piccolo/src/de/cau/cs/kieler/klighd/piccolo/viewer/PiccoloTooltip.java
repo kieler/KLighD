@@ -28,6 +28,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
@@ -134,6 +135,10 @@ public class PiccoloTooltip {
         public void mouseHovered(final PInputEvent event) {
             // retrieve the mouse we are over
             PNode n = event.getPickedNode();
+
+            if (n instanceof KNodeTopNode) {
+                return;
+            }
 
             if (n instanceof IGraphElement<?>) {
                 IGraphElement<?> graphElement = (IGraphElement<?>) n;
