@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.viewer;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
@@ -34,8 +33,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -50,13 +47,11 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSimpleSelectionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
@@ -78,12 +73,10 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelectionListener {
+public class PiccoloViewer extends AbstractViewer<KNode> {
 
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
-    /** the current selection event handler. */
-    private KlighdSimpleSelectionEventHandler selectionHandler = null;
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
     
@@ -140,29 +133,19 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         final PCamera camera = canvas.getCamera();
         resizeAndResetLayers(2);
         
-        final PPanEventHandler panHandler = new PPanEventHandler();
-        // prevent conflicts with selection handler
-//        panHandler.setEventFilter(
-//                new PInputEventFilter(InputEvent.BUTTON1_MASK, InputEvent.CTRL_MASK));
-        
         // install the required event handlers, they rely on SWT event type codes
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdTextInputHandler());
         camera.addInputEventListener(new PMouseWheelZoomEventHandler());
-        camera.addInputEventListener(new KlighdBasicInputEventHandler(
-                panHandler));
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(new PPanEventHandler()));
+//        camera.addInputEventListener(new KlighdSwitchFocusEventHandler(this));
+        camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
+        
 
         // add a node for the rubber band selection marquee
-        final PEmptyNode marqueeParent = new PEmptyNode();
-        camera.getLayer(1).addChild(marqueeParent);
+//        final PEmptyNode marqueeParent = new PEmptyNode();
+//        camera.getLayer(1).addChild(marqueeParent);
 
-        // add a selection handler
-        selectionHandler = new KlighdSimpleSelectionEventHandler(camera, marqueeParent);
-        camera.addInputEventListener(new KlighdBasicInputEventHandler(
-                selectionHandler));
-
-        // forward the selection events
-        selectionHandler.addSelectionListener(this);
         
         // add a context menu
         addContextMenu(canvas);
@@ -356,10 +339,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      */
     public void setModel(final KNode model, final boolean sync) {
         // remove the old selection handler
-        if (selectionHandler != null) {
-            canvas.removeInputEventListener(selectionHandler);
-            selectionHandler = null;
-        }
+//        if (selectionHandler != null) {
+//            canvas.removeInputEventListener(selectionHandler);
+//            selectionHandler = null;
+//        }
         
         // prepare the camera
         PCamera camera = canvas.getCamera();
@@ -435,57 +418,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
     public void stopRecording(final ZoomStyle zoomStyle,
             final int animationTime) {
         controller.stopRecording(zoomStyle, animationTime);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSelection(final Iterable<KGraphElement> diagramElements) {
-        if (selectionHandler != null) {
-            selectionHandler.unselectAll();
-            select(diagramElements);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clearSelection() {
-        if (selectionHandler != null) {
-            selectionHandler.unselectAll();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void select(final Iterable<KGraphElement> diagramElements) {
-        if (selectionHandler != null) {
-            for (KGraphElement diagramElement : diagramElements) {
-                PNode node = getRepresentation(diagramElement);
-                if (node != null) {
-                    selectionHandler.select(node);
-                }
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void unselect(final Iterable<KGraphElement> diagramElements) {
-        if (selectionHandler != null) {
-            for (KGraphElement diagramElement : diagramElements) {
-                PNode node = getRepresentation(diagramElement);
-                if (node != null) {
-                    selectionHandler.unselect(node);
-                }
-            }
-        }
     }
 
     /**
@@ -584,7 +516,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
      *            the diagram element
      * @return the Piccolo representation
      */
-    private PNode getRepresentation(final KGraphElement diagramElement) {
+    public PNode getRepresentation(final KGraphElement diagramElement) {
         PNode node = (PNode) controller.getRepresentation(diagramElement);
         if (node != null && node.getRoot() == canvas.getRoot()) {
             return node;
@@ -601,51 +533,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements INodeSelecti
         return canvas;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void selected(final KlighdSimpleSelectionEventHandler handler, final PNode node) {
-        if (node instanceof ITracingElement<?>) {
-            ITracingElement<?> graphElement = (ITracingElement<?>) node;
-            notifyListenersSelected(graphElement.getGraphElement());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void unselected(final KlighdSimpleSelectionEventHandler handler, final PNode node) {
-        if (node instanceof ITracingElement<?>) {
-            ITracingElement<?> graphElement = (ITracingElement<?>) node;
-            notifyListenersUnselected(graphElement.getGraphElement());
-        }
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void selection(final KlighdSimpleSelectionEventHandler handler,
-            final Iterable<PNode> nodes) {
-        
-        Iterable<EObject> elements = Iterables.transform(nodes, new Function<PNode, EObject>() {
-
-            public EObject apply(final PNode node) {
-
-                PNode element = node;
-                while (element != null
-                        && !ITracingElement.class.isAssignableFrom(element.getClass())) {
-                    element = element.getParent();
-                }
-
-                if (element == null) {
-                    return null;
-                } else {
-                    return ITracingElement.class.cast(element).getGraphElement();
-                }
-            }
-        });
-        notifyListenersSelection(Iterables.filter(elements, Predicates.notNull()));
-    }
 
     /**
      * Renders this viewer's contents to the passed gc with the targeted bounds.
