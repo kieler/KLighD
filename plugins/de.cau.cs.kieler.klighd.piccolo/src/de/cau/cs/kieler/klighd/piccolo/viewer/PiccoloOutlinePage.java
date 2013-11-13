@@ -23,7 +23,6 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
@@ -34,12 +33,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
+import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -60,8 +62,8 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     private KlighdCanvas canvas;
     /** the graph layer to display. */
     private PLayer graphLayer;
-    /** the layout data of the observed parent node. */
-    private KShapeLayout graphLayout;
+    /** the observed knode. */
+    private KNode rootNode;
     /** the adapter listening to layout changes. */
     private Adapter graphLayoutAdapter;
     /** the control listener reacting to canvas resizing. */
@@ -178,13 +180,13 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
 
             // add a new layer to the new camera that contains a rectangle indicating the visible
             // part of the model
-            PLayer outlineLayer = new PLayer();
-            PBounds bounds = originalCamera.getBounds();
+            final PLayer outlineLayer = new PLayer();
+            final Rectangle2D.Float bounds = new Rectangle2D.Float();
+            bounds.setRect(originalCamera.getBoundsReference());
+
             // configure the outline rectangle
-            outlineRect =
-                    KlighdPaths.createRoundRectangle((float) bounds.x, (float) bounds.y,
-                            (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
-                            OUTLINE_EDGE_ROUNDNESS);
+            outlineRect = KlighdPaths.createRoundRectangle(bounds.x, bounds.y, bounds.width,
+                    bounds.height, OUTLINE_EDGE_ROUNDNESS, OUTLINE_EDGE_ROUNDNESS);
             outlineRect.setPaint(OUTLINE_EDGE_COLOR);
             outlineRect.setPaintAlpha(OUTLINE_EDGE_OPACITY);
             camera.addLayer(outlineLayer);
@@ -194,16 +196,26 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
             outlineCamera = camera;
 
             // add a handler to the outline canvas to allow dragging
-            canvas.addInputEventListener(new OutlineDragHandler());
+            camera.addInputEventListener(new KlighdBasicInputEventHandler(new OutlineDragHandler()));
 
             // add listeners to layout changes and canvas resizing
             PNode childNode = newLayer.getChild(0);
             if (childNode instanceof KNodeTopNode) {
-                graphLayout =
-                        ((KNodeTopNode) childNode).getGraphElement().getData(KShapeLayout.class);
-                adjustCamera(camera);
-                graphLayoutAdapter = new AdapterImpl() {
+                
+                rootNode = ((KNodeTopNode) childNode).getGraphElement();
+                graphLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
+                   
+                    @Override
                     public void notifyChanged(final Notification notification) {
+                        super.notifyChanged(notification);
+                        
+                        if (notification.getNotifier() == rootNode) {
+                            // in case anything is done changed on the node, e.g. the nodes shape
+                            //  layout is removed or a new one is added by the simple update strategy
+                            //  don't do anything!! 
+                            return;
+                        }
+                        
                         int featureId = notification.getFeatureID(KShapeLayout.class);
                         if (featureId == KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH
                                 || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
@@ -213,7 +225,11 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
                         }
                     }
                 };
-                graphLayout.eAdapters().add(graphLayoutAdapter);
+                
+                rootNode.eAdapters().add(graphLayoutAdapter);
+                
+                adjustCamera(camera);
+                
                 canvasResizeListener = new ControlListener() {
                     public void controlMoved(final ControlEvent e) {
                         adjustCamera();
@@ -240,10 +256,13 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      *            a camera
      */
     private void adjustCamera(final PCamera camera) {
-        float width = Math.max(graphLayout.getWidth(), MIN_SIZE);
-        float height = Math.max(graphLayout.getHeight(), MIN_SIZE);
-        camera.setViewBounds(new Rectangle2D.Double(graphLayout.getXpos(), graphLayout.getYpos(),
-                width, height));
+        // always reveal the current shape layout - it may be exchanged over the diagram's life time
+        final KShapeLayout layoutData = rootNode.getData(KShapeLayout.class);
+        
+        float width = Math.max(layoutData.getWidth(), MIN_SIZE);
+        float height = Math.max(layoutData.getHeight(), MIN_SIZE);
+        camera.setViewBounds(
+                new Rectangle2D.Double(layoutData.getXpos(), layoutData.getYpos(), width, height));
     }
 
     /**
@@ -281,9 +300,10 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
             graphLayer.getChild(0).removePropertyChangeListener(propertyListener);
         }
 
-        if (graphLayout != null) {
-            graphLayout.eAdapters().remove(graphLayoutAdapter);
-            graphLayout = null;
+        if (rootNode != null) {
+            rootNode.eAdapters().remove(graphLayoutAdapter);
+            rootNode = null;
+            graphLayoutAdapter = null;
         }
         if (canvasResizeListener != null) {
             if (!canvas.isDisposed()) {
