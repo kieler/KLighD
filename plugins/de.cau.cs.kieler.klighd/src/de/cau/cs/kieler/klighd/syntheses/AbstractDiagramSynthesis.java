@@ -96,6 +96,13 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     /**
      * Method hook to be called by KLighD's runtime.<br>
      * Concrete implementations shall not call or override this method.
+     * 
+     * @param model
+     *            the semantic model to be depicted
+     * @param transformationContext
+     *            the transformationContext serving as provider and acceptor for various data
+     *            (option values, source view tracing, ...)
+     * @return the related KGraph/KRendering diagram description
      */
     public KNode transform(final S model, final TransformationContext<S, KNode> transformationContext) {
         use(transformationContext);
