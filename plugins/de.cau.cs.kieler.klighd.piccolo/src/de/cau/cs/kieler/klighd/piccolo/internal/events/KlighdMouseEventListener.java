@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import java.awt.Component;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 
 import org.eclipse.core.runtime.Platform;
@@ -27,11 +26,10 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.TypedEvent;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Widget;
 
 import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerEx.IKlighdInputEvent;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener.KlighdEventHelper;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 
 /**
@@ -43,7 +41,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  */
 public class KlighdMouseEventListener implements MouseListener, MouseMoveListener, MouseTrackListener,
         MouseWheelListener, GestureListener {
-        
+
     private KlighdCanvas canvas = null;
     
     /**
@@ -142,10 +140,10 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
      */
     public void gesture(final GestureEvent e) {
         this.canvas
-        .getRoot()
-        .getDefaultInputManager()
-        .processEventFromCamera(new KlighdGestureEvent(e, SWT.Gesture),
-                KlighdInputManager.MOUSE_GESTURE, this.canvas.getCamera());
+                .getRoot()
+                .getDefaultInputManager()
+                .processEventFromCamera(new KlighdGestureEvent(e, SWT.Gesture),
+                        KlighdInputManager.MOUSE_GESTURE, this.canvas.getCamera());
     }
     
     /**
@@ -173,12 +171,14 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         
         private static final long serialVersionUID = 4690767684494461534L;
 
-        private MouseEvent mouseEvent = null;
-        private int eventType = SWT.None;
-        
         private static Component dummySrc = new Component() {
             private static final long serialVersionUID = 2109584415310636543L;
         };
+
+        private MouseEvent mouseEvent = null;
+        private int eventType = SWT.None;
+        
+        private KlighdEventHelper helper;
         
         /**
          * Constructor.
@@ -192,6 +192,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             super(dummySrc, 0, me.time, 0, me.x, me.y, 0, false, me.button);
             this.mouseEvent = me;
             this.eventType = type;
+            this.helper = new KlighdEventHelper(me);
         }
 
         /**
@@ -221,13 +222,62 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             }
             return null;
         }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getModifiers() {
+            return this.helper == null ? 0 : this.helper.getModifiers();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getModifiersEx() {
+            return this.helper == null ? 0 : this.helper.getModifiersEx();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isAltDown() {
+            return helper.isAltDown();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isControlDown() {
+            return helper.isControlDown();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isMetaDown() {
+            return helper.isMetaDown();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isShiftDown() {
+            return helper.isShiftDown();
+        }
     }
     
     /**
      * Custom {@link java.awt.event.MouseEvent} that wraps an {@link GestureEvent SWT GestureEvent}
      * and can be pushed trough Piccolo's runtime. Need this wrapping
      * {@link java.awt.event.MouseEvent} since AWT doesn't provide any gesture-specific event.<br>
-     * In addition, the constructor of its super class {@link InputEvent} is package protected.
+     * In addition, the constructor of its super class {@link java.awt.event.InputEvent} is package
+     * protected.
      * 
      * @author chsch
      */
@@ -236,13 +286,15 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         
         private static final long serialVersionUID = 2711517281987328193L;
 
-        private GestureEvent gestureEvent = null;
-        private int eventType = SWT.None;
-        
         private static Component dummySrc = new Component() {
             private static final long serialVersionUID = 2609348390438849160L;
         };
         
+        private GestureEvent gestureEvent = null;
+        private int eventType = SWT.None;
+        
+        private KlighdEventHelper helper;
+
         /**
          * Constructor.
          * 
@@ -255,6 +307,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             super(dummySrc, 0, ge.time, 0, ge.x, ge.y, 0, false);
             this.gestureEvent = ge;
             this.eventType = type;
+            this.helper = new KlighdEventHelper(ge);
         }
 
         /**
@@ -269,6 +322,54 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
          */
         public int getEventType() {
             return this.eventType;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getModifiers() {
+            return this.helper == null ? 0 : this.helper.getModifiers();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getModifiersEx() {
+            return this.helper == null ? 0 : this.helper.getModifiersEx();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isAltDown() {
+            return helper.isAltDown();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isControlDown() {
+            return helper.isControlDown();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isMetaDown() {
+            return helper.isMetaDown();
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isShiftDown() {
+            return helper.isShiftDown();
         }
     }
     
@@ -288,8 +389,10 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         };
 
         /** Event being wrapped. */
-        private MouseEvent mouseScrollEvent;
+        private MouseEvent mouseEvent;
         private int eventType = SWT.None;
+        
+        private KlighdEventHelper helper;
 
         /**
          * Constructor.
@@ -308,15 +411,16 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
                     me.count < 0 ? -1 : (me.count > 0 ? 1 : 0));
             //super(fakeSrc, 0, me.time, 0, me.x, me.y, 1, false, scrollType, me.count,
             //        me.count < 0 ? -1 : 1);
-            this.mouseScrollEvent = me;
+            this.mouseEvent = me;
             this.eventType = type;
+            this.helper = new KlighdEventHelper(me);
         }
         
         /**
          * {@inheritDoc}
          */
         public TypedEvent getEvent() {
-            return mouseScrollEvent;
+            return mouseEvent;
         }
         
         /**
@@ -325,93 +429,53 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public int getEventType() {
             return eventType;
         }
-                
-        // The following is taken from PSWTMouseEvent
         
-        /** {@inheritDoc} */
-        public Object getSource() {
-            return mouseScrollEvent.getSource();
-        }
-
-        /** {@inheritDoc} */
-        public boolean isShiftDown() {
-            return (mouseScrollEvent.stateMask & SWT.SHIFT) != 0;
-        }
-
-        /** {@inheritDoc} */
-        public boolean isControlDown() {
-            return (mouseScrollEvent.stateMask & SWT.CONTROL) != 0;
-        }
-
-        /** {@inheritDoc} */
-        public boolean isAltDown() {
-            return (mouseScrollEvent.stateMask & SWT.ALT) != 0;
-        }
-
-        /** {@inheritDoc} */
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public int getModifiers() {
-            int modifiers = 0;
-
-            if (mouseScrollEvent != null) {
-                if ((mouseScrollEvent.stateMask & SWT.ALT) != 0) {
-                    modifiers = modifiers | InputEvent.ALT_MASK;
-                }
-                if ((mouseScrollEvent.stateMask & SWT.CONTROL) != 0) {
-                    modifiers = modifiers | InputEvent.CTRL_MASK;
-                }
-                if ((mouseScrollEvent.stateMask & SWT.SHIFT) != 0) {
-                    modifiers = modifiers | InputEvent.SHIFT_MASK;
-                }
-            }
-
-            return modifiers;
+            return this.helper == null ? 0 : this.helper.getModifiers();
         }
-
-        /** {@inheritDoc} */
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public int getModifiersEx() {
-            int modifiers = 0;
-
-            if (mouseScrollEvent != null) {
-                if ((mouseScrollEvent.stateMask & SWT.ALT) != 0) {
-                    modifiers = modifiers | InputEvent.ALT_DOWN_MASK;
-                }
-                if ((mouseScrollEvent.stateMask & SWT.CONTROL) != 0) {
-                    modifiers = modifiers | InputEvent.CTRL_DOWN_MASK;
-                }
-                if ((mouseScrollEvent.stateMask & SWT.SHIFT) != 0) {
-                    modifiers = modifiers | InputEvent.SHIFT_DOWN_MASK;
-                }
-            }
-
-            return modifiers;
+            return this.helper == null ? 0 : this.helper.getModifiersEx();
         }
-
+        
         /**
-         * Returns the widget from which the event was emitted.
-         * 
-         * @return source widget
+         * {@inheritDoc}
          */
-        public Widget getWidget() {
-            return mouseScrollEvent.widget;
+        @Override
+        public boolean isAltDown() {
+            return helper.isAltDown();
         }
-
+        
         /**
-         * Return the display on which the interaction occurred.
-         * 
-         * @return display on which the interaction occurred
+         * {@inheritDoc}
          */
-        public Display getDisplay() {
-            return mouseScrollEvent.display;
+        @Override
+        public boolean isControlDown() {
+            return helper.isControlDown();
         }
-
+        
         /**
-         * Return the associated SWT data for the event.
-         * 
-         * @return data associated to the SWT event
+         * {@inheritDoc}
          */
-        public Object getData() {
-            return mouseScrollEvent.data;
+        @Override
+        public boolean isMetaDown() {
+            return helper.isMetaDown();
         }
-
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isShiftDown() {
+            return helper.isShiftDown();
+        }
     }
 }

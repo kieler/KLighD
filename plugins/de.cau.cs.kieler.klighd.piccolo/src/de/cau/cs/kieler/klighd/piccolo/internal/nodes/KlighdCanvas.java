@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdFocusEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdInputManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
@@ -115,6 +116,7 @@ public class KlighdCanvas extends PSWTCanvas {
     @Override
     protected void installInputSources() {
 
+        this.addFocusListener(new KlighdFocusEventListener(this));
         this.addKeyListener(new KlighdKeyEventListener(this));
         
         final KlighdMouseEventListener mouseListener = new KlighdMouseEventListener(this);
