@@ -61,7 +61,7 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
     /** the graph layer to display. */
-    private PLayer graphLayer;
+    private KNodeTopNode graphLayer;
     /** the observed knode. */
     private KNode rootNode;
     /** the adapter listening to layout changes. */
@@ -150,100 +150,97 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      * @param newLayer
      *            the graph layer to display
      */
-    public void setContent(final PLayer newLayer) {
-        if (canvas != null) {
+    public void setContent(final KNodeTopNode newLayer) {
+        if (canvas == null) {
+            this.graphLayer = newLayer;
+            return;
+        } 
 
-            if (graphLayer != null) {
-                if (graphLayer.getCameraCount() == 0) {
-                    throw new IllegalStateException(
-                            "The PLayer passed to the PiccoloOutlineView has "
-                                    + "to contain at least one camera.");
-                }
-                originalCamera = graphLayer.getCamera(0);
+        if (graphLayer != null) {
+            if (graphLayer.getCameraCount() == 0) {
+                throw new IllegalStateException(
+                        "The PLayer passed to the PiccoloOutlineView has "
+                                + "to contain at least one camera.");
+            }
+            originalCamera = graphLayer.getCamera(0);
 
-                this.graphLayer.getRoot().removeChild(canvas.getCamera());
-                this.graphLayer.removeCamera(canvas.getCamera());
+            this.graphLayer.getRoot().removeChild(canvas.getCamera());
+            this.graphLayer.removeCamera(canvas.getCamera());
 
-                // listen to property changes of the root element
-                if (graphLayer.getChildrenCount() > 0) {
-                    graphLayer.getChild(0).addPropertyChangeListener(propertyListener);
-                }
-
-                // listen to view transformations
-                originalCamera.addPropertyChangeListener(propertyListener);
+            // listen to property changes of the root element
+            if (graphLayer.getChildrenCount() > 0) {
+                graphLayer.getChild(0).addPropertyChangeListener(propertyListener);
             }
 
-            // install a new camera into the given layer
-            final PCamera camera = new PCamera();
-            newLayer.getRoot().addChild(camera);
-            camera.addLayer(newLayer);
-
-            // add a new layer to the new camera that contains a rectangle indicating the visible
-            // part of the model
-            final PLayer outlineLayer = new PLayer();
-            final Rectangle2D.Float bounds = new Rectangle2D.Float();
-            bounds.setRect(originalCamera.getBoundsReference());
-
-            // configure the outline rectangle
-            outlineRect = KlighdPaths.createRoundRectangle(bounds.x, bounds.y, bounds.width,
-                    bounds.height, OUTLINE_EDGE_ROUNDNESS, OUTLINE_EDGE_ROUNDNESS);
-            outlineRect.setPaint(OUTLINE_EDGE_COLOR);
-            outlineRect.setPaintAlpha(OUTLINE_EDGE_OPACITY);
-            camera.addLayer(outlineLayer);
-            outlineLayer.addChild(outlineRect);
-
-            canvas.setCamera(camera);
-            outlineCamera = camera;
-
-            // add a handler to the outline canvas to allow dragging
-            camera.addInputEventListener(new KlighdBasicInputEventHandler(new OutlineDragHandler()));
-
-            // add listeners to layout changes and canvas resizing
-            PNode childNode = newLayer.getChild(0);
-            if (childNode instanceof KNodeTopNode) {
-                
-                rootNode = ((KNodeTopNode) childNode).getGraphElement();
-                nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
-                   
-                    @Override
-                    public void notifyChanged(final Notification notification) {
-                        super.notifyChanged(notification);
-                        
-                        if (notification.getNotifier() == rootNode) {
-                            // in case anything is changed on the node, e.g. the node's shape layout
-                            //  is removed or a new one is added by the simple update strategy
-                            //  don't do anything!! 
-                            return;
-                        }
-                        
-                        int featureId = notification.getFeatureID(KShapeLayout.class);
-                        if (featureId == KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH
-                                || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
-                                || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__XPOS
-                                || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__YPOS) {
-                            adjustCamera();
-                        }
-                    }
-                };
-                
-                rootNode.eAdapters().add(nodeLayoutAdapter);
-                
-                adjustCamera(camera);
-                
-                canvasResizeListener = new ControlListener() {
-                    public void controlMoved(final ControlEvent e) {
-                        adjustCamera();
-                    }
-
-                    public void controlResized(final ControlEvent e) {
-                        adjustCamera();
-                    }
-                };
-                canvas.addControlListener(canvasResizeListener);
-            }
+            // listen to view transformations
+            originalCamera.addPropertyChangeListener(propertyListener);
         }
-
         this.graphLayer = newLayer;
+
+        // install a new camera into the given layer
+        final PCamera camera = new PCamera();
+        newLayer.getRoot().addChild(camera);
+        camera.addLayer(newLayer);
+
+        // add a new layer to the new camera that contains a rectangle indicating the visible
+        // part of the model
+        final PLayer outlineLayer = new PLayer();
+        final Rectangle2D.Float bounds = new Rectangle2D.Float();
+        bounds.setRect(originalCamera.getBoundsReference());
+
+        // configure the outline rectangle
+        outlineRect = KlighdPaths.createRoundRectangle(bounds.x, bounds.y, bounds.width,
+                bounds.height, OUTLINE_EDGE_ROUNDNESS, OUTLINE_EDGE_ROUNDNESS);
+        outlineRect.setPaint(OUTLINE_EDGE_COLOR);
+        outlineRect.setPaintAlpha(OUTLINE_EDGE_OPACITY);
+        camera.addLayer(outlineLayer);
+        outlineLayer.addChild(outlineRect);
+
+        canvas.setCamera(camera);
+        outlineCamera = camera;
+
+        // add a handler to the outline canvas to allow dragging
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(new OutlineDragHandler()));
+
+        // add listeners to layout changes and canvas resizing
+        rootNode = newLayer.getGraphElement();
+        nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
+           
+            @Override
+            public void notifyChanged(final Notification notification) {
+                super.notifyChanged(notification);
+                
+                if (notification.getNotifier() == rootNode) {
+                    // in case anything is changed on the node, e.g. the node's shape layout
+                    //  is removed or a new one is added by the simple update strategy
+                    //  don't do anything!! 
+                    return;
+                }
+                
+                int featureId = notification.getFeatureID(KShapeLayout.class);
+                if (featureId == KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH
+                        || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
+                        || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__XPOS
+                        || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__YPOS) {
+                    adjustCamera();
+                }
+            }
+        };
+        
+        rootNode.eAdapters().add(nodeLayoutAdapter);
+        
+        adjustCamera(camera);
+        
+        canvasResizeListener = new ControlListener() {
+            public void controlMoved(final ControlEvent e) {
+                adjustCamera();
+            }
+
+            public void controlResized(final ControlEvent e) {
+                adjustCamera();
+            }
+        };
+        canvas.addControlListener(canvasResizeListener);
     }
 
     /** the minimal size of the view. */
@@ -276,8 +273,12 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      * Adjusts the displayed outline rectangle to the current view snippet.
      */
     private void adjustOutlineRect() {
+        if (originalCamera == null) {
+            return;
+        }
+        
         // get the new bounds
-        PBounds bounds = originalCamera.getViewBounds();
+        final PBounds bounds = originalCamera.getViewBounds();
         outlineRect.setPathToRoundRectangle((float) bounds.x, (float) bounds.y,
                 (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
                 OUTLINE_EDGE_ROUNDNESS);
@@ -293,11 +294,13 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
 
         outlineRectTimer = null;
 
-        // remove all the listeners!
-        originalCamera.removePropertyChangeListener(propertyListener);
+        if (originalCamera != null) {
+            // remove all the listeners!
+            originalCamera.removePropertyChangeListener(propertyListener);
+        }
 
-        if (graphLayer.getChildrenCount() > 0) {
-            graphLayer.getChild(0).removePropertyChangeListener(propertyListener);
+        if (graphLayer != null) {
+            graphLayer.removePropertyChangeListener(propertyListener);
         }
 
         if (rootNode != null) {

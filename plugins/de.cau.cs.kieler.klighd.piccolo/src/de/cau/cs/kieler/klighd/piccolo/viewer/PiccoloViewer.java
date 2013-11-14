@@ -61,7 +61,6 @@ import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.POffscreenCanvas;
-import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PPanEventHandler;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -126,37 +125,26 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
         
         // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
         
-        // remove the original event handlers as they require AWT event type codes
-        canvas.removeInputEventListener(canvas.getZoomEventHandler());
-        canvas.removeInputEventListener(canvas.getPanEventHandler());
-        
         final PCamera camera = canvas.getCamera();
-        resizeAndResetLayers(2);
         
         // install the required event handlers, they rely on SWT event type codes
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdTextInputHandler());
         camera.addInputEventListener(new PMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(new PPanEventHandler()));
-//        camera.addInputEventListener(new KlighdSwitchFocusEventHandler(this));
+        // camera.addInputEventListener(new KlighdSwitchFocusEventHandler(this));
         camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
         
 
         // add a node for the rubber band selection marquee
-//        final PEmptyNode marqueeParent = new PEmptyNode();
-//        camera.getLayer(1).addChild(marqueeParent);
-
+        // final PEmptyNode marqueeParent = new PEmptyNode();
+        // camera.getLayer(1).addChild(marqueeParent);
         
         // add a context menu
         addContextMenu(canvas);
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
-
-        // update the outline page
-        if (outlinePage != null) {
-            outlinePage.setContent(camera.getLayer(0));
-        }
 
         // register a print action with the global action bars
         if (getContextViewer().getWorkbenchPart() instanceof DiagramViewPart) {
@@ -190,7 +178,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
          */
         public void verifyText(final VerifyEvent e) {
             // TODO Auto-generated method stub
-            
         }
         
         /**
@@ -339,20 +326,25 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
      */
     public void setModel(final KNode model, final boolean sync) {
         // remove the old selection handler
-//        if (selectionHandler != null) {
-//            canvas.removeInputEventListener(selectionHandler);
-//            selectionHandler = null;
-//        }
-        
+        // if (selectionHandler != null) {
+        // canvas.removeInputEventListener(selectionHandler);
+        // selectionHandler = null;
+        // }
+
         // prepare the camera
-        PCamera camera = canvas.getCamera();
+        // PCamera camera = canvas.getCamera();
         // resetCamera(camera);
-//        resizeAndResetLayers(2);
-        camera.getLayer(0).removeAllChildren();
+        // resizeAndResetLayers(2);
+        // camera.getLayer(0).removeAllChildren();
 
         // create a controller for the graph
-        controller = new DiagramController(model, camera.getLayer(0), sync);
-        controller.initialize();
+        controller = new DiagramController(model, canvas.getCamera(), sync);
+
+        // update the outline page
+        if (outlinePage != null) {
+            outlinePage.setContent(controller.getNode());
+        }
+
     }
 
     /**
@@ -371,39 +363,39 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     public IContentOutlinePage getOutlinePage() {
         if (outlinePage == null) {
             outlinePage = new PiccoloOutlinePage();
-            outlinePage.setContent(canvas.getCamera().getLayer(0));
+            outlinePage.setContent(this.controller.getNode());
         }
         return outlinePage;
     }
 
-    /**
-     * Resizes the number of layers in the camera to the given number and resets them.
-     * 
-     * @param number
-     *            the number of layers
-     */
-    private void resizeAndResetLayers(final int number) {
-        PRoot root = canvas.getRoot();
-        PCamera camera = canvas.getCamera();
-        // resize down
-        while (camera.getLayerCount() > number) {
-            PLayer layer = camera.getLayer(camera.getLayerCount() - 1);
-            camera.removeLayer(layer);
-            root.removeChild(layer);
-        }
-        // resize up
-        while (camera.getLayerCount() < number) {
-            PLayer layer = new PLayer();
-            root.addChild(layer);
-            camera.addLayer(layer);
-        }
-        // reset
-        @SuppressWarnings("unchecked")
-        Iterable<PLayer> layers = camera.getLayersReference();
-        for (PLayer layer : layers) {
-            layer.removeAllChildren();
-        }
-    }
+//    /**
+//     * Resizes the number of layers in the camera to the given number and resets them.
+//     * 
+//     * @param number
+//     *            the number of layers
+//     */
+//    private void resizeAndResetLayers(final int number) {
+//        PRoot root = canvas.getRoot();
+//        PCamera camera = canvas.getCamera();
+//        // resize down
+//        while (camera.getLayerCount() > number) {
+//            PLayer layer = camera.getLayer(camera.getLayerCount() - 1);
+//            camera.removeLayer(layer);
+//            root.removeChild(layer);
+//        }
+//        // resize up
+//        while (camera.getLayerCount() < number) {
+//            PLayer layer = new PLayer();
+//            root.addChild(layer);
+//            camera.addLayer(layer);
+//        }
+//        // reset
+//        @SuppressWarnings("unchecked")
+//        Iterable<PLayer> layers = camera.getLayersReference();
+//        for (PLayer layer : layers) {
+//            layer.removeAllChildren();
+//        }
+//    }
     
     /**
      * {@inheritDoc}
