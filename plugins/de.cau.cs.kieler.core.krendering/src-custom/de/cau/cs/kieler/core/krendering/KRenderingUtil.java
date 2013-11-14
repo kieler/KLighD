@@ -13,6 +13,16 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import static com.google.common.collect.Iterators.concat;
+import static com.google.common.collect.Iterators.emptyIterator;
+import static com.google.common.collect.Iterators.singletonIterator;
+import static com.google.common.collect.Iterators.transform;
+
+import java.util.Iterator;
+
+import com.google.common.base.Function;
+
+
 /**
  * Collection of KRendering related convenience methods and singleton fields.
  * 
@@ -265,5 +275,32 @@ public final class KRenderingUtil {
                     && it.getClass() == other.getClass()
                     && it.getAbsolute() == ((KYPosition) other).getAbsolute()
                     && it.getRelative() == ((KYPosition) other).getRelative());
+    }
+    
+    /**
+     * Returns an Iterator allowing to traverse all child {@link KRendering KRenderings} as well as
+     * referenced ones and their children.
+     * 
+     * @param rendering
+     *            the {@link KRendering} to start with
+     * @return the desired {@link Iterator}
+     */
+    public static Iterator<KRendering> selfAndAllChildren(final KRendering rendering) {
+        Iterator<KRendering> children;
+        if (rendering instanceof KRenderingRef) {
+            children = selfAndAllChildren(((KRenderingRef) rendering).getRendering());
+            
+        } else if (rendering instanceof KContainerRendering) {
+            children = concat(transform(((KContainerRendering) rendering).getChildren().iterator(),
+                    new Function<KRendering, Iterator<KRendering>>() {
+                        public Iterator<KRendering> apply(final KRendering rendering) {
+                            return selfAndAllChildren(rendering);
+                        }
+            }));
+            
+        } else {
+            children = emptyIterator();
+        }
+        return concat(singletonIterator(rendering), children);
     }
 }

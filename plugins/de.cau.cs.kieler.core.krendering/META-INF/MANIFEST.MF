@@ -13,5 +13,6 @@ Export-Package: de.cau.cs.kieler.core.krendering,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  de.cau.cs.kieler.core,
- de.cau.cs.kieler.core.kgraph;visibility:=reexport
+ de.cau.cs.kieler.core.kgraph;visibility:=reexport,
+ com.google.guava;bundle-version="10.0.1"
 Bundle-ActivationPolicy: lazy
