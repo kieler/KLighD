@@ -155,7 +155,10 @@ public class KlighdSVGCanvas implements PComponent {
      */
 
     /**
-     * Render this offscreen canvas to the specified graphics.
+     * Render this offscreen canvas to the specified graphics.<br>
+     * <br>
+     * Update: had to change this method due to an API change of DiagramController.
+     * Please report if it doesn't work anymore. (chsch)
      * 
      * @param model
      *            the {@link KNode} model to be rendered.
@@ -175,12 +178,11 @@ public class KlighdSVGCanvas implements PComponent {
         PBounds bounds = new PBounds(0, 0, shape.getWidth(), shape.getHeight());
 
         // init a new camera
-        PCamera camera = PUtil.createBasicScenegraph();
+        PCamera camera = new PCamera();
         camera.setBounds((PBounds) bounds.clone());
 
         // create the piccolo elements for the kgraph model
-        DiagramController controller = new DiagramController(model, camera.getLayer(0), true);
-        controller.initialize();
+        new DiagramController(model, camera, true);
 
         // set up the paint context
         KlighdAbstractSVGGraphics graphics = createGraphics(false, bounds);
