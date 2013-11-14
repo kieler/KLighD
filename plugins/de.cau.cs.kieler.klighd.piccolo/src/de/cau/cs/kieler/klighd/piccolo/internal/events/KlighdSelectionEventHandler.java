@@ -14,13 +14,12 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import java.awt.geom.Point2D;
+import java.util.Collections;
 
 import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Iterables;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import edu.umd.cs.piccolo.PNode;
@@ -91,17 +90,9 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
            
         final EObject graphElement = graphNode.getGraphElement();
         if (event.isControlDown()) {
-            if (graphElement instanceof KGraphElement) {
-                this.viewer.toggleSelectionOf((KGraphElement) graphElement);
-            } else if (graphElement instanceof KText) {
-                this.viewer.toggleSelectionOf((KText) graphElement);
-            }
+            this.viewer.toggleSelectionOfDiagramElements(Collections.singleton(graphElement));
         } else {
-            if (graphElement instanceof KGraphElement) {
-                this.viewer.resetSelectionTo((KGraphElement) graphElement);
-            } else if (graphElement instanceof KText) {
-                this.viewer.resetSelectionTo((KText) graphElement);
-            }
+            this.viewer.resetSelectionToDiagramElements(Collections.singleton(graphElement));
         }
     }
 }
