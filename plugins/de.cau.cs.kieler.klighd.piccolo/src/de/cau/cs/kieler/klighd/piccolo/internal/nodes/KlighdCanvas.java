@@ -62,8 +62,8 @@ public class KlighdCanvas extends PSWTCanvas {
         // remove the original event handlers as they require AWT event type codes
         //  instances of this class are augment with SWT-based event handlers
         //  e.g. in PiccoloViewer or PiccoloOutlinePage
-        this.removeInputEventListener(this.getZoomEventHandler());
-        this.removeInputEventListener(this.getPanEventHandler());
+        this.removeInputEventListener(super.getZoomEventHandler());
+        this.removeInputEventListener(super.getPanEventHandler());
         
         this.graphics = new KlighdSWTGraphicsImpl(null, parent.getDisplay());
         this.getRoot().addAttribute(Constants.DEVICE, parent.getDisplay());
