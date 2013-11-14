@@ -25,6 +25,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -135,6 +136,25 @@ public final class KlighdPredicates {
     }
     
     /**
+     * A static (singleton) predicate definition for testing the selection flag of {@link KStyle
+     * KStyles}. See also {@link #isSelection()}.
+     */
+    private static final Predicate<KStyle> IS_SELECTION = new Predicate<KStyle>() {
+        public boolean apply(final KStyle input) {
+            return input.isSelection();
+        }
+    };
+
+    /**
+     * A.
+     * 
+     * @return the dedicated predicate instance (singleton)
+     */
+    public static Predicate<KStyle> isSelection() {
+        return IS_SELECTION;
+    }
+    
+    /**
      * An abbreviation of {@link Predicates#not(Predicate) Predicates.not}(
      * {@link Predicates#in(Collection) Predicates.in}(...)).
      * 
@@ -146,5 +166,17 @@ public final class KlighdPredicates {
      */
     public static <T> Predicate<T> notIn(final Collection<? extends T> target) {
         return Predicates.not(Predicates.in(target));
+    }
+
+    /**
+     * An abbreviation of {@link Predicates#not(Predicate) Predicates.not}(
+     * {@link Predicates#instanceOf(Class) Predicates.instanceOf}(...)).
+     * 
+     * @param clazz
+     *            the class to the instanceof property
+     * @return the requested {@link Predicate}
+     */
+    public static Predicate<Object> notInstanceOf(final Class<?> clazz) {
+        return Predicates.not(Predicates.instanceOf(clazz));
     }
 }
