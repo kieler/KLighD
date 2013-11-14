@@ -39,7 +39,15 @@ public class GeneratorOptions extends MapPropertyHolder {
     /** the serial version UID. */
     private static final long serialVersionUID = -917483559995737504L;
     
-    /** the possible graph types. */
+    /** the available file formats. */
+    public static enum FileFormat {
+        /** XMI-based format (kgx). */
+        XMI,
+        /** Xtext-based format (kgt). */
+        XTEXT
+    }
+    
+    /** the available graph types. */
     public static enum GraphType {
         /** custom graph. */
         CUSTOM,
@@ -75,6 +83,9 @@ public class GeneratorOptions extends MapPropertyHolder {
     /** the preference key for the filename. */
     public static final IProperty<String> FILE_NAME = new Property<String>(
             "randomWizard.filename", "random.kgt");
+    /** the preference key for the file format. */
+    public static final IProperty<FileFormat> FILE_FORMAT = new Property<FileFormat>(
+            "randomWizard.fileFormat", FileFormat.XTEXT);
 
     //~~~~~~~~~~~~~~~~ All other options depend on which GRAPH_TYPE has been selected
 

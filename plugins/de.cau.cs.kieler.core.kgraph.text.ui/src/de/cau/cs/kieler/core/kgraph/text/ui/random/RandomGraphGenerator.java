@@ -28,6 +28,7 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
@@ -351,9 +352,61 @@ public class RandomGraphGenerator {
         return nodes;
     }
     
+    /**
+     * Generates a random bipartite graph.
+     * 
+     * @param parent the parent node
+     * @param n the number of nodes
+     * @param m the number of edges
+     * @param minPartition the minimal fraction of nodes in the second set
+     * @param maxPartition the maximal fraction of nodes in the second set
+     * @param hierarchyLevel the current hierarchy level
+     */
     private void generateBipartite(final KNode parent, final int n, final int m,
             final float minPartition, final float maxPartition, final int hierarchyLevel) {
+        int n2 = KielerMath.limit(Math.round(n * (minPartition + random.nextFloat()
+                * (maxPartition - minPartition))), 1, n - 1);
+        int n1 = n - n2;
+        KNode[] nodes1 = new KNode[n1];
+        for (int i = 0; i < n1; i++) {
+            nodes1[i] = createNode(parent);
+        }
+        KNode[] nodes2 = new KNode[n2];
+        for (int i = 0; i < n2; i++) {
+            nodes2[i] = createNode(parent);
+        }
+        boolean allowCycles = options.getProperty(GeneratorOptions.CYCLES);
+        for (int j = 0; j < m; j++) {
+            int source;
+            if (allowCycles) {
+                source = random.nextInt(n);
+            } else {
+                source = random.nextInt(n1);
+            }
+            if (source < n1) {
+                int target = random.nextInt(n2);
+                connectConditional(nodes1[source], nodes2[target], basicCondition);
+            } else {
+                int target = random.nextInt(n1);
+                connectConditional(nodes2[source - n1], nodes1[target], basicCondition);
+            }
+        }
         
+        // recursively create hierarchy if applicable
+        float hierarchyChance = options.getProperty(GeneratorOptions.HIERARCHY_CHANCE);
+        if (hierarchyChance > 0.0f
+                && hierarchyLevel < options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
+            for (KNode node : parent.getChildren()) {
+                if (!isHypernode(node) && random.nextFloat() < hierarchyChance) {
+                    // determine the number of nodes in the compound node
+                    float hierarchyNodesFactor = options.getProperty(
+                            GeneratorOptions.HIERARCHY_NODES_FACTOR);
+                    int cn = randomInt(1, (int) (hierarchyNodesFactor * n));
+                    int cm = Math.round((float) cn / n * m);
+                    generateBipartite(node, cn, cm, minPartition, maxPartition, hierarchyLevel + 1);
+                }
+            }
+        }
     }
 
     /**
@@ -390,12 +443,12 @@ public class RandomGraphGenerator {
             Pair<KNode, Integer> nodeInfo = possible[x];
             KNode node = nodeInfo.getFirst();
             int nodeId = nodeInfo.getSecond();
-            // check for the width contraint
+            // check for the width constraint
             if (maxWidth != 0 && width[level[nodeId] + 1] == maxWidth) {
                 possible[x] = possible[max--];
                 continue;
             }
-            // check for the out-degree contraint
+            // check for the out-degree constraint
             if (maxDeg != 0 && node.getOutgoingEdges().size() + 1 == maxDeg) {
                 possible[x] = possible[max--];
             }
@@ -408,10 +461,11 @@ public class RandomGraphGenerator {
             ++width[level[newNodeId]];
             ++i;
         }
+        
         // recursively create hierarchy if applicable
         float hierarchyChance = options.getProperty(GeneratorOptions.HIERARCHY_CHANCE);
         if (hierarchyChance > 0.0f
-                && hierarchyLevel != options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
+                && hierarchyLevel < options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
             for (KNode node : parent.getChildren()) {
                 if (!isHypernode(node) && random.nextFloat() < hierarchyChance) {
                     // determine the number of nodes in the compound node
@@ -478,7 +532,7 @@ public class RandomGraphGenerator {
         // recursively create hierarchy if applicable
         float hierarchyChance = options.getProperty(GeneratorOptions.HIERARCHY_CHANCE);
         if (hierarchyChance > 0.0f
-                && hierarchyLevel != options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
+                && hierarchyLevel < options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
             for (KNode node : nodes) {
                 if (!isHypernode(node) && random.nextFloat() < hierarchyChance) {
                     // determine the number of nodes in the compound node
@@ -609,7 +663,7 @@ public class RandomGraphGenerator {
         // recursively create hierarchy if applicable
         float hierarchyChance = options.getProperty(GeneratorOptions.HIERARCHY_CHANCE);
         if (hierarchyChance > 0.0f
-                && hierarchyLevel != options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
+                && hierarchyLevel < options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
             for (KNode node : parent.getChildren()) {
                 if (!isHypernode(node) && random.nextFloat() < hierarchyChance) {
                     // determine the number of nodes in the compound node
@@ -759,7 +813,7 @@ public class RandomGraphGenerator {
         // recursively create hierarchy if applicable
         float hierarchyChance = options.getProperty(GeneratorOptions.HIERARCHY_CHANCE);
         if (hierarchyChance > 0.0f
-                && hierarchyLevel != options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
+                && hierarchyLevel < options.getProperty(GeneratorOptions.MAX_HIERARCHY_LEVEL)) {
             for (KNode node : parent.getChildren()) {
                 if (!isHypernode(node) && random.nextFloat() < hierarchyChance) {
                     // determine the number of nodes in the compound node
@@ -1000,7 +1054,7 @@ public class RandomGraphGenerator {
             portLayout.setHeight(PORT_HEIGHT);
         }
         
-        if (options.getProperty(GeneratorOptions.PORT_CONSTRAINTS) != PortConstraints.UNDEFINED) {
+        if (options.getProperty(GeneratorOptions.PORT_CONSTRAINTS).isSideFixed()) {
             // determine a random node side
             int northProb, eastProb, southProb, westProb;
             if (source) {

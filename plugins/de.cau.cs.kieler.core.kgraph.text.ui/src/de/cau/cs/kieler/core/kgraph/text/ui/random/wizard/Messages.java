@@ -75,6 +75,12 @@ public class Messages extends NLS {
     public static String RandomGraphBipartitePage_partition_error;
     public static String RandomGraphBiconnectedPage_description;
     public static String RandomGraphBiconnectedPage_title;
+    public static String RandomGraphNewFilePage_file_format_caption;
+    public static String RandomGraphNewFilePage_xtext_format_caption;
+    public static String RandomGraphNewFilePage_xtext_format_help;
+    public static String RandomGraphNewFilePage_xmi_format_caption;
+    public static String RandomGraphNewFilePage_xmi_format_help;
+    public static String RandomGraphNewFilePage_random_seed_caption;
     public static String RandomGraphNewFilePage_time_seed_caption;
     public static String RandomGraphNewFilePage_time_seed_help;
     public static String RandomGraphNewFilePage_constant_seed_caption;
@@ -84,6 +90,7 @@ public class Messages extends NLS {
     public static String RandomGraphNewFilePage_number_of_graphs_caption;
     public static String RandomGraphNewFilePage_number_of_graphs_help;
     public static String RandomGraphNewFilePage_options_group_caption;
+    public static String RandomGraphNewFilePage_randomization_group_caption;
     public static String RandomGraphNewFilePage_title;
     public static String RandomGraphTreePage_description;
     public static String RandomGraphTreePage_max_degree_caption;
