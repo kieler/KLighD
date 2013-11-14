@@ -17,6 +17,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
@@ -40,18 +42,23 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
+import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
+import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -69,6 +76,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
+import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -539,9 +547,30 @@ public abstract class AbstractKGERenderingController
     private void updateStyles() {
         // reset that flag as potentially available styles with a modifier might be removed now
         modifiableStylesPresent = false;
+        
+        final boolean isSelected = this.isSelected();
+        final List<KStyle> selectionStyles;
+        if (!isSelected) {
+            selectionStyles = Collections.<KStyle>emptyList();
+        } else {
+            final Iterator<KRendering> renderings = Iterators.filter(
+                    KRenderingUtil.selfAndAllChildren(this.currentRendering),
+                    KlighdPredicates.notInstanceOf(KText.class));
+            final Iterator<KStyle> styles = Iterators.concat(Iterators.transform(renderings,
+                    new Function<KRendering, Iterator<KStyle>>() {
+                        public Iterator<KStyle> apply(final KRendering rendering) {
+                            return rendering.getStyles().iterator();
+                        }
+                    }));
+            if (Iterators.any(styles, KlighdPredicates.isSelection())) {
+                selectionStyles = Collections.<KStyle>emptyList();
+            } else {
+                selectionStyles = getDefaultNonTextSelectionStyles();
+            }
+        }
 
         // update using the recursive method
-        updateStyles(currentRendering, this.isSelected(), Collections.<KStyle>emptyList());
+        updateStyles(currentRendering, isSelected, selectionStyles);
 
         // in case styles of a detached KRendering are modified, e.g. if selection highlighting
         //  is removed from renderings that are not part of the diagram in the meantime
@@ -660,7 +689,33 @@ public abstract class AbstractKGERenderingController
             s.eSetDeliver(deliver);
         }
     }
+
+    private List<KStyle> defaultNonTextSelectionStyles = null;
     
+    private List<KStyle> getDefaultNonTextSelectionStyles() {
+        if (this.defaultNonTextSelectionStyles != null) {
+            return this.defaultNonTextSelectionStyles;
+        }
+
+        this.defaultNonTextSelectionStyles = Lists.newArrayList();
+        
+        final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
+        // the color values of 'DimGray' // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
+        bgColor.setRed(190);
+        bgColor.setGreen(190);
+        bgColor.setBlue(190);
+        final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
+        bg.setColor(bgColor);
+        this.defaultNonTextSelectionStyles.add(bg);
+
+        final KLineStyle lineStyle = KRenderingFactory.eINSTANCE.createKLineStyle();
+        lineStyle.setLineStyle(LineStyle.DASH);
+        this.defaultNonTextSelectionStyles.add(lineStyle);
+        
+        return this.defaultNonTextSelectionStyles;
+    }
+
+
     /**
      * Creates the Piccolo nodes for a list of renderings inside a parent Piccolo node for the given
      * placement.
@@ -1071,8 +1126,8 @@ public abstract class AbstractKGERenderingController
     protected List<KStyle> determinePropagationStyles(final List<KStyle> renderingStyles,
             final List<KStyle> propagatedStyles) {
         List<KStyle> propagationStyles = Lists.newLinkedList();
-        propagationStyles.addAll(propagatedStyles);
-        for (KStyle style : renderingStyles) {
+//        propagationStyles.addAll(propagatedStyles);
+        for (KStyle style : Iterables.concat(propagatedStyles, renderingStyles)) {
             if (style.isPropagateToChildren()) {
                 propagationStyles.add(style);
             }
