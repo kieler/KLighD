@@ -23,7 +23,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * 
  * @author uru
  * 
- * @see IViewExporter#export(OutputStream, KlighdCanvas, boolean, int, String)
+ * @see IViewExporter#export(OutputStream, KlighdCanvas, boolean, int, boolean, String)
  */
 public interface IViewExporter {
 
