@@ -43,10 +43,6 @@ public interface KColoring extends KStyle {
      * Returns the value of the '<em><b>Alpha</b></em>' attribute.
      * The default value is <code>"255"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Alpha</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * The transparancy value of this color.
@@ -72,10 +68,6 @@ public interface KColoring extends KStyle {
     /**
      * Returns the value of the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Color</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * The color the object is supposed to get.
@@ -101,10 +93,6 @@ public interface KColoring extends KStyle {
     /**
      * Returns the value of the '<em><b>Target Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Target Color</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Optional target color for gradients. If this is not set no gradient will be displayed.
@@ -131,10 +119,6 @@ public interface KColoring extends KStyle {
      * Returns the value of the '<em><b>Target Alpha</b></em>' attribute.
      * The default value is <code>"255"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Target Alpha</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Optional alpha value for gradient target color.
@@ -161,10 +145,6 @@ public interface KColoring extends KStyle {
      * Returns the value of the '<em><b>Gradient Angle</b></em>' attribute.
      * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Gradient Angle</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Angle for the optional gradient. Will be ignored if no targetColor is set.
@@ -186,5 +166,67 @@ public interface KColoring extends KStyle {
      * @generated
      */
     void setGradientAngle(float value);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the color or gradient source color of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int)}.
+     * @param red the red component of the desired color in range of 0 to 255
+     * @param green the green component of the desired color in range of 0 to 255
+     * @param blue the blue component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);'"
+     * @generated
+     */
+    KColoring setColor(int red, int green, int blue);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the color & alpha or gradient source color & source alpha of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, int, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int, int)}.
+     * @param red the red component of the desired color in range of 0 to 255
+     * @param green the green component of the desired color in range of 0 to 255
+     * @param blue the blue component of the desired color in range of 0 to 255
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue, alpha);'"
+     * @generated
+     */
+    KColoring setColor(int red, int green, int blue, int alpha);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient target color of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int)}.
+     * @param red the red component of the desired color in range of 0 to 255
+     * @param green the green component of the desired color in range of 0 to 255
+     * @param blue the blue component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue);'"
+     * @generated
+     */
+    KColoring setTargetColor(int red, int green, int blue);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient target color & target alpha of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int, int)}.
+     * @param red the red component of the desired color in range of 0 to 255
+     * @param green the green component of the desired color in range of 0 to 255
+     * @param blue the blue component of the desired color in range of 0 to 255
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue, alpha);'"
+     * @generated
+     */
+    KColoring setTargetColor(int red, int green, int blue, int alpha);
 
 } // KColoring

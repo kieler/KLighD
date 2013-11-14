@@ -503,6 +503,100 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Defines the alphaChannel and Color of an Object"/>
     </eAnnotations>
+    <eOperations name="setColor" eType="#//KColoring">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);"/>
+        <details key="documentation" value="Convenience setter for configuring the color or gradient source color of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int)}."/>
+      </eAnnotations>
+      <eParameters name="red" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the red component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="green" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the green component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="blue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the blue component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColor" eType="#//KColoring">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue, alpha);"/>
+        <details key="documentation" value="Convenience setter for configuring the color &amp; alpha or gradient source color &amp; source alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, int, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int, int)}."/>
+      </eAnnotations>
+      <eParameters name="red" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the red component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="green" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the green component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="blue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the blue component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setTargetColor" eType="#//KColoring">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int)}."/>
+      </eAnnotations>
+      <eParameters name="red" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the red component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="green" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the green component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="blue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the blue component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setTargetColor" eType="#//KColoring">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue, alpha);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int, int)}."/>
+      </eAnnotations>
+      <eParameters name="red" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the red component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="green" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the green component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="blue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the blue component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="255">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

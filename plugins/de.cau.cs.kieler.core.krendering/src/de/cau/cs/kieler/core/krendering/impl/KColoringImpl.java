@@ -13,17 +13,15 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -289,6 +287,42 @@ public abstract class KColoringImpl extends KStyleImpl implements KColoring {
         gradientAngle = newGradientAngle;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KCOLORING__GRADIENT_ANGLE, oldGradientAngle, gradientAngle));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KColoring setColor(final int red, final int green, final int blue) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KColoring setColor(final int red, final int green, final int blue, final int alpha) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue, alpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KColoring setTargetColor(final int red, final int green, final int blue) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KColoring setTargetColor(final int red, final int green, final int blue, final int alpha) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue, alpha);
     }
 
     /**

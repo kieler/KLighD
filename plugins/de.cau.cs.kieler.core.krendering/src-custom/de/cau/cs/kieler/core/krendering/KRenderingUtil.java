@@ -303,4 +303,105 @@ public final class KRenderingUtil {
         }
         return concat(singletonIterator(rendering), children);
     }
+
+    
+    /* --------------------- */
+    /*    coloring helpers   */
+    /* --------------------- */
+    
+    /**
+     * Convenience setter for configuring the color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setColor(int, int, int)} redirects to this methods.
+     * 
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param red
+     *            the red component of the desired color in range of 0 to 255
+     * @param green
+     *            the green component of the desired color in range of 0 to 255
+     * @param blue
+     *            the blue component of the desired color in range of 0 to 255
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static KColoring setColor(final KColoring coloring, final int red, final int green,
+            final int blue) {
+        final KColor color = FACTORY.createKColor();
+        color.setRed(red);
+        color.setGreen(green);
+        color.setBlue(blue);
+
+        coloring.setColor(color);
+        return coloring;
+    }
+    
+    /**
+     * Convenience setter for configuring the color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setColor(int, int, int, int)} redirects to this methods.
+     * 
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param red
+     *            the red component of the desired color in range of 0 to 255
+     * @param green
+     *            the green component of the desired color in range of 0 to 255
+     * @param blue
+     *            the blue component of the desired color in range of 0 to 255
+     * @param alpha
+     *            the alpha component of the desired color in range of 0 to 255
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static KColoring setColor(final KColoring coloring, final int red, final int green,
+            final int blue, final int alpha) {
+        coloring.setColor(red, green, blue);
+        coloring.setAlpha(alpha);
+        return coloring;
+    }
+    
+    /**
+     * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setTargetColor(int, int, int)} redirects to this methods.
+     * 
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param red
+     *            the red component of the desired color in range of 0 to 255
+     * @param green
+     *            the green component of the desired color in range of 0 to 255
+     * @param blue
+     *            the blue component of the desired color in range of 0 to 255
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static KColoring setTargetColor(final KColoring coloring, final int red, final int green,
+            final int blue) {
+        final KColor color = FACTORY.createKColor();
+        color.setRed(red);
+        color.setGreen(green);
+        color.setBlue(blue);
+
+        coloring.setTargetColor(color);
+        return coloring;
+    }
+    
+    /**
+     * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setTargetColor(int, int, int, int)} redirects to this methods.
+     * 
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param red
+     *            the red component of the desired color in range of 0 to 255
+     * @param green
+     *            the green component of the desired color in range of 0 to 255
+     * @param blue
+     *            the blue component of the desired color in range of 0 to 255
+     * @param alpha
+     *            the alpha component of the desired color in range of 0 to 255
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static KColoring setTargetColor(final KColoring coloring, final int red, final int green,
+            final int blue, final int alpha) {
+        coloring.setTargetColor(red, green, blue);
+        coloring.setTargetAlpha(alpha);
+        return coloring;
+    }
 }
