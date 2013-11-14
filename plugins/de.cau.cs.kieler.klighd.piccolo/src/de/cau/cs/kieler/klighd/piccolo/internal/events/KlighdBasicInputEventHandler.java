@@ -53,6 +53,12 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
      *            <code>null</code>.
      */
     public KlighdBasicInputEventHandler(final PBasicInputEventHandler theDelegate) {
+        if (theDelegate == null) {
+            final String msg = "KLighD Piccolo viewer: "
+                    + "Constructor KlighdBasicInputEventHandler(PBasicInputEventHandler) "
+                    + "is being called with a 'null' argument!";
+            throw new IllegalArgumentException(msg);
+        }
         this.delegate = theDelegate;
     }
 
