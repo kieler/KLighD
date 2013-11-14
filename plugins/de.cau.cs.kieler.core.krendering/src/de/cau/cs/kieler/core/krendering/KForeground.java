@@ -28,5 +28,5 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KForeground extends KColoring {
+public interface KForeground extends KColoring<KForeground> {
 } // KForeground

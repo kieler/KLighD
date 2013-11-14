@@ -176,6 +176,7 @@
     <genClasses ecoreClass="krendering.ecore#//KSpline"/>
     <genClasses ecoreClass="krendering.ecore#//KForeground"/>
     <genClasses image="false" ecoreClass="krendering.ecore#//KColoring">
+      <genTypeParameters ecoreTypeParameter="krendering.ecore#//KColoring/T"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColoring/alpha"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KColoring/color"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KColoring/targetColor"/>

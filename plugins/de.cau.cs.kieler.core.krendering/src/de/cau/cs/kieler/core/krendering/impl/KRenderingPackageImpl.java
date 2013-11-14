@@ -16,9 +16,11 @@ package de.cau.cs.kieler.core.krendering.impl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -2235,8 +2237,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         KGraphPackage theKGraphPackage = (KGraphPackage)EPackage.Registry.INSTANCE.getEPackage(KGraphPackage.eNS_URI);
 
         // Create type parameters
+        ETypeParameter kColoringEClass_T = addETypeParameter(kColoringEClass, "T");
 
         // Set bounds for type parameters
+        EGenericType g1 = createEGenericType(this.getKColoring());
+        EGenericType g2 = createEGenericType(kColoringEClass_T);
+        g1.getETypeArguments().add(g2);
+        kColoringEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
         kRenderingEClass.getESuperTypes().add(theKGraphPackage.getKGraphData());
@@ -2267,9 +2274,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kTopPositionEClass.getESuperTypes().add(this.getKYPosition());
         kBottomPositionEClass.getESuperTypes().add(this.getKYPosition());
         kSplineEClass.getESuperTypes().add(this.getKPolyline());
-        kForegroundEClass.getESuperTypes().add(this.getKColoring());
+        g1 = createEGenericType(this.getKColoring());
+        g2 = createEGenericType(this.getKForeground());
+        g1.getETypeArguments().add(g2);
+        kForegroundEClass.getEGenericSuperTypes().add(g1);
         kColoringEClass.getESuperTypes().add(this.getKStyle());
-        kBackgroundEClass.getESuperTypes().add(this.getKColoring());
+        g1 = createEGenericType(this.getKColoring());
+        g2 = createEGenericType(this.getKBackground());
+        g1.getETypeArguments().add(g2);
+        kBackgroundEClass.getEGenericSuperTypes().add(g1);
         kFontBoldEClass.getESuperTypes().add(this.getKStyle());
         kFontItalicEClass.getESuperTypes().add(this.getKStyle());
         kFontNameEClass.getESuperTypes().add(this.getKStyle());
@@ -2428,27 +2441,35 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKColoring_TargetAlpha(), ecorePackage.getEInt(), "targetAlpha", "255", 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKColoring_GradientAngle(), ecorePackage.getEFloat(), "gradientAngle", "0", 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        op = addEOperation(kColoringEClass, this.getKColoring(), "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
 
-        op = addEOperation(kColoringEClass, this.getKColoring(), "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
 
-        op = addEOperation(kColoringEClass, this.getKColoring(), "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
 
-        op = addEOperation(kColoringEClass, this.getKColoring(), "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
 
         initEClass(kBackgroundEClass, KBackground.class, "KBackground", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

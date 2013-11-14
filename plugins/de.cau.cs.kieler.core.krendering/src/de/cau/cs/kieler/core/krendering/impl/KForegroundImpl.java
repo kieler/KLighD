@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class KForegroundImpl extends KColoringImpl implements KForeground {
+public class KForegroundImpl extends KColoringImpl<KForeground> implements KForeground {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

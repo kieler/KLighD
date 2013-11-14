@@ -220,7 +220,7 @@ public class KGraphLabelProvider extends DefaultEObjectLabelProvider {
      * @param coloring a coloring style
      * @return the displayed text
      */
-    public String text(final KColoring coloring) {
+    public String text(final KColoring<?> coloring) {
         StringBuilder text = new StringBuilder();
         if (coloring instanceof KBackground) {
             text.append("background");

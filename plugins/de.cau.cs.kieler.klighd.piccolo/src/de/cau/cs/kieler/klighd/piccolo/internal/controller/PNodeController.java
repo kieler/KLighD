@@ -550,7 +550,7 @@ public abstract class PNodeController<T extends PNode> {
      *            the {@link KColoring} to be converted
      * @return null if<code>color = null<code>, the related {@link RGB} otherwise
      */
-    public RGBGradient toRGBGradient(final KColoring coloring) {
+    public RGBGradient toRGBGradient(final KColoring<?> coloring) {
         if (coloring == null || coloring.getColor() == null || coloring.getTargetColor() == null) {
             return null;
         } else {

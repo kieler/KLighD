@@ -503,7 +503,7 @@ class KRenderingExtensions {
         ]);
     }
     
-    def <T extends KRendering> T setBackground(T rendering, KColoring coloring){
+    def <T extends KRendering> T setBackground(T rendering, KColoring<?> coloring){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
         return rendering => [
             it.styles += renderingFactory.createKBackground => [
@@ -598,7 +598,7 @@ class KRenderingExtensions {
         ]);
     }
 
-    def <T extends KRendering>  T setForeground(T rendering, KColoring coloring){
+    def <T extends KRendering>  T setForeground(T rendering, KColoring<?> coloring){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
             it.styles += renderingFactory.createKForeground => [

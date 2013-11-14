@@ -38,7 +38,7 @@ package de.cau.cs.kieler.core.krendering;
  * @model abstract="true"
  * @generated
  */
-public interface KColoring extends KStyle {
+public interface KColoring<T extends KColoring<T>> extends KStyle {
     /**
      * Returns the value of the '<em><b>Alpha</b></em>' attribute.
      * The default value is <code>"255"</code>.
@@ -177,10 +177,10 @@ public interface KColoring extends KStyle {
      * @param green the green component of the desired color in range of 0 to 255
      * @param blue the blue component of the desired color in range of 0 to 255
      * <!-- end-model-doc -->
-     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);'"
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, red, green, blue);'"
      * @generated
      */
-    KColoring setColor(int red, int green, int blue);
+    T setColor(int red, int green, int blue);
 
     /**
      * <!-- begin-user-doc -->
@@ -193,10 +193,10 @@ public interface KColoring extends KStyle {
      * @param blue the blue component of the desired color in range of 0 to 255
      * @param alpha the alpha component of the desired color in range of 0 to 255
      * <!-- end-model-doc -->
-     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue, alpha);'"
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, red, green, blue, alpha);'"
      * @generated
      */
-    KColoring setColor(int red, int green, int blue, int alpha);
+    T setColor(int red, int green, int blue, int alpha);
 
     /**
      * <!-- begin-user-doc -->
@@ -208,10 +208,10 @@ public interface KColoring extends KStyle {
      * @param green the green component of the desired color in range of 0 to 255
      * @param blue the blue component of the desired color in range of 0 to 255
      * <!-- end-model-doc -->
-     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue);'"
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue);'"
      * @generated
      */
-    KColoring setTargetColor(int red, int green, int blue);
+    T setTargetColor(int red, int green, int blue);
 
     /**
      * <!-- begin-user-doc -->
@@ -224,9 +224,9 @@ public interface KColoring extends KStyle {
      * @param blue the blue component of the desired color in range of 0 to 255
      * @param alpha the alpha component of the desired color in range of 0 to 255
      * <!-- end-model-doc -->
-     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue, alpha);'"
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue, alpha);'"
      * @generated
      */
-    KColoring setTargetColor(int red, int green, int blue, int alpha);
+    T setTargetColor(int red, int green, int blue, int alpha);
 
 } // KColoring

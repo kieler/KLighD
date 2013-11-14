@@ -13,15 +13,17 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,7 +42,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
  *
  * @generated
  */
-public abstract class KColoringImpl extends KStyleImpl implements KColoring {
+public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl implements KColoring<T> {
     /**
      * The default value of the '{@link #getAlpha() <em>Alpha</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -294,8 +296,10 @@ public abstract class KColoringImpl extends KStyleImpl implements KColoring {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KColoring setColor(final int red, final int green, final int blue) {
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);
+    public T setColor(final int red, final int green, final int blue) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, red, green, blue);
     }
 
     /**
@@ -303,8 +307,10 @@ public abstract class KColoringImpl extends KStyleImpl implements KColoring {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KColoring setColor(final int red, final int green, final int blue, final int alpha) {
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue, alpha);
+    public T setColor(final int red, final int green, final int blue, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, red, green, blue, alpha);
     }
 
     /**
@@ -312,8 +318,10 @@ public abstract class KColoringImpl extends KStyleImpl implements KColoring {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KColoring setTargetColor(final int red, final int green, final int blue) {
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue);
+    public T setTargetColor(final int red, final int green, final int blue) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue);
     }
 
     /**
@@ -321,8 +329,10 @@ public abstract class KColoringImpl extends KStyleImpl implements KColoring {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KColoring setTargetColor(final int red, final int green, final int blue, final int alpha) {
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(this, red, green, blue, alpha);
+    public T setTargetColor(final int red, final int green, final int blue, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue, alpha);
     }
 
     /**

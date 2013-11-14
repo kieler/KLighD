@@ -224,7 +224,7 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKForegroundAdapter();
             }
             @Override
-            public Adapter caseKColoring(KColoring object) {
+            public <T extends KColoring<T>> Adapter caseKColoring(KColoring<T> object) {
                 return createKColoringAdapter();
             }
             @Override
