@@ -192,11 +192,11 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
                 return createKHorizontalAlignmentAdapter();
             }
             @Override
-            public Adapter caseKXPosition(KXPosition object) {
+            public <T extends KXPosition<T>> Adapter caseKXPosition(KXPosition<T> object) {
                 return createKXPositionAdapter();
             }
             @Override
-            public Adapter caseKYPosition(KYPosition object) {
+            public <T extends KYPosition<T>> Adapter caseKYPosition(KYPosition<T> object) {
                 return createKYPositionAdapter();
             }
             @Override

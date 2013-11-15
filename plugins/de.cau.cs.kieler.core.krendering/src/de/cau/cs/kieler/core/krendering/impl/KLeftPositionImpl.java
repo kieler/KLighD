@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class KLeftPositionImpl extends KXPositionImpl implements KLeftPosition {
+public class KLeftPositionImpl extends KXPositionImpl<KLeftPosition> implements KLeftPosition {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

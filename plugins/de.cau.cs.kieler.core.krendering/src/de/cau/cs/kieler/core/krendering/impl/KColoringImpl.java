@@ -340,6 +340,15 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean equals(final Object other) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {

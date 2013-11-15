@@ -54,7 +54,7 @@ public interface KPosition extends EObject {
      * @model containment="true" required="true"
      * @generated
      */
-    KXPosition getX();
+    KXPosition<?> getX();
 
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPosition#getX <em>X</em>}' containment reference.
@@ -64,7 +64,7 @@ public interface KPosition extends EObject {
      * @see #getX()
      * @generated
      */
-    void setX(KXPosition value);
+    void setX(KXPosition<?> value);
 
     /**
      * Returns the value of the '<em><b>Y</b></em>' containment reference.
@@ -83,7 +83,7 @@ public interface KPosition extends EObject {
      * @model containment="true" required="true"
      * @generated
      */
-    KYPosition getY();
+    KYPosition<?> getY();
 
     /**
      * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KPosition#getY <em>Y</em>}' containment reference.
@@ -93,19 +93,38 @@ public interface KPosition extends EObject {
      * @see #getY()
      * @generated
      */
-    void setY(KYPosition value);
+    void setY(KYPosition<?> value);
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Determines whether two KPosition objects have the same x and y values.
-     * Hint: This does not however mean they have the 
-     * same position as they could have different parents
+     * Checks the equalilty of the <code>x</code> and <code>y</code> components of <code>this</code> KPostion instance and the provided <code>other</code> one.
+     * Returns false if <code>other</code> is not a KPosition.<br>
+     * {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KPosition, Object) KRenderingUtil.equals(KPosition, Object)}.<br>
+     * <br>
+     * Hint: Equal KPositions, however, do not imply indentical points in the figure as they may have different parents!
+     * 
+     * @return <code>true</code> if <code>other</code> is a KPosition and its <code>x</code> and <code>y</code> components are equal to those of <code>this</code> instance, <code>false</code> otherwise
+     * 
      * <!-- end-model-doc -->
      * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
      * @generated
      */
-    boolean equals(KPosition other);
+    boolean equals(Object other);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring <code>this</code> KPosition instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setPositions(KPosition, KXPosition, KYPosition) KRenderingUtil.setPositions(KPosition, KXPosition, KYPosition)}.
+     * @param x the horizontal position component
+     * @param y the vertical position component
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setPositions(this, x, y);'"
+     * @generated
+     */
+    KPosition setPositions(KXPosition<?> x, KYPosition<?> y);
 
 } // KPosition

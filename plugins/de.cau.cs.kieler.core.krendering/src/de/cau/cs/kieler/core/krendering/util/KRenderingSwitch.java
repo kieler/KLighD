@@ -330,13 +330,13 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case KRenderingPackage.KX_POSITION: {
-                KXPosition kxPosition = (KXPosition)theEObject;
+                KXPosition<?> kxPosition = (KXPosition<?>)theEObject;
                 T1 result = caseKXPosition(kxPosition);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case KRenderingPackage.KY_POSITION: {
-                KYPosition kyPosition = (KYPosition)theEObject;
+                KYPosition<?> kyPosition = (KYPosition<?>)theEObject;
                 T1 result = caseKYPosition(kyPosition);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -941,7 +941,7 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseKXPosition(KXPosition object) {
+    public <T extends KXPosition<T>> T1 caseKXPosition(KXPosition<T> object) {
         return null;
     }
 
@@ -956,7 +956,7 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseKYPosition(KYPosition object) {
+    public <T extends KYPosition<T>> T1 caseKYPosition(KYPosition<T> object) {
         return null;
     }
 

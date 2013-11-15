@@ -93,7 +93,7 @@ class KPolylineExtensions {
         ];
     }
     
-    def KPosition addKPosition(KPolyline pl, KXPosition xPos, KYPosition yPos) {
+    def KPosition addKPosition(KPolyline pl, KXPosition<?> xPos, KYPosition<?> yPos) {
         renderingFactory.createKPosition => [
             it.x = xPos;
             it.y = yPos;

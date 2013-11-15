@@ -30,5 +30,5 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KRightPosition extends KXPosition {
+public interface KRightPosition extends KXPosition<KRightPosition> {
 } // KRightPosition

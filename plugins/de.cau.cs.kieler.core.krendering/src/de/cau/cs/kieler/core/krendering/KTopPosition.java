@@ -30,5 +30,5 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KTopPosition extends KYPosition {
+public interface KTopPosition extends KYPosition<KTopPosition> {
 } // KTopPosition

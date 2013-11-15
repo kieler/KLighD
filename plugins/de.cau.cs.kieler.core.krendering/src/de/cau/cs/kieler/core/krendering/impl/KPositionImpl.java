@@ -50,7 +50,7 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * @generated
      * @ordered
      */
-    protected KXPosition x;
+    protected KXPosition<?> x;
 
     /**
      * The cached value of the '{@link #getY() <em>Y</em>}' containment reference.
@@ -60,7 +60,7 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * @generated
      * @ordered
      */
-    protected KYPosition y;
+    protected KYPosition<?> y;
 
     /**
      * <!-- begin-user-doc -->
@@ -86,7 +86,7 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KXPosition getX() {
+    public KXPosition<?> getX() {
         return x;
     }
 
@@ -95,8 +95,8 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetX(KXPosition newX, NotificationChain msgs) {
-        KXPosition oldX = x;
+    public NotificationChain basicSetX(KXPosition<?> newX, NotificationChain msgs) {
+        KXPosition<?> oldX = x;
         x = newX;
         if (eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOSITION__X, oldX, newX);
@@ -110,7 +110,7 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setX(KXPosition newX) {
+    public void setX(KXPosition<?> newX) {
         if (newX != x) {
             NotificationChain msgs = null;
             if (x != null)
@@ -129,7 +129,7 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public KYPosition getY() {
+    public KYPosition<?> getY() {
         return y;
     }
 
@@ -138,8 +138,8 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetY(KYPosition newY, NotificationChain msgs) {
-        KYPosition oldY = y;
+    public NotificationChain basicSetY(KYPosition<?> newY, NotificationChain msgs) {
+        KYPosition<?> oldY = y;
         y = newY;
         if (eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, KRenderingPackage.KPOSITION__Y, oldY, newY);
@@ -153,7 +153,7 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setY(KYPosition newY) {
+    public void setY(KYPosition<?> newY) {
         if (newY != y) {
             NotificationChain msgs = null;
             if (y != null)
@@ -172,8 +172,17 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean equals(final KPosition other) {
+    public boolean equals(final Object other) {
         return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KPosition setPositions(final KXPosition<?> x, final KYPosition<?> y) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setPositions(this, x, y);
     }
 
     /**
@@ -217,10 +226,10 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case KRenderingPackage.KPOSITION__X:
-                setX((KXPosition)newValue);
+                setX((KXPosition<?>)newValue);
                 return;
             case KRenderingPackage.KPOSITION__Y:
-                setY((KYPosition)newValue);
+                setY((KYPosition<?>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -235,10 +244,10 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
     public void eUnset(int featureID) {
         switch (featureID) {
             case KRenderingPackage.KPOSITION__X:
-                setX((KXPosition)null);
+                setX((KXPosition<?>)null);
                 return;
             case KRenderingPackage.KPOSITION__Y:
-                setY((KYPosition)null);
+                setY((KYPosition<?>)null);
                 return;
         }
         super.eUnset(featureID);

@@ -229,4 +229,19 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      */
     T setTargetColor(int red, int green, int blue, int alpha);
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Checks the equalilty of the RGB components of <code>this</code> KColor instance and the provided <code>other</code> KColor.
+     * Returns false if <code>other</code> is not a KColor.<br>
+     * {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.
+     * 
+     * @return <code>true</code> if <code>other</code> is a KColor its RGB components are equal to those of <code>this</code> instance, <code>false</code> otherwise
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
+     * @generated
+     */
+    boolean equals(Object other);
+
 } // KColoring

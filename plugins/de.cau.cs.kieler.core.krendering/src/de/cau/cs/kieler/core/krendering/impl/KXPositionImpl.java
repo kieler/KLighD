@@ -37,7 +37,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public abstract class KXPositionImpl extends EObjectImpl implements KXPosition {
+public abstract class KXPositionImpl<T extends KXPosition<T>> extends EObjectImpl implements KXPosition<T> {
     /**
      * The default value of the '{@link #getAbsolute() <em>Absolute</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -146,6 +146,17 @@ public abstract class KXPositionImpl extends EObjectImpl implements KXPosition {
      */
     public boolean equals(final Object other) {
         return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setPosition(final float absolute, final float relative) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setPosition(it, absolute, relative);
     }
 
     /**

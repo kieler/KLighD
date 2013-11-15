@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class KRightPositionImpl extends KXPositionImpl implements KRightPosition {
+public class KRightPositionImpl extends KXPositionImpl<KRightPosition> implements KRightPosition {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

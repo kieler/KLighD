@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class KTopPositionImpl extends KYPositionImpl implements KTopPosition {
+public class KTopPositionImpl extends KYPositionImpl<KTopPosition> implements KTopPosition {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

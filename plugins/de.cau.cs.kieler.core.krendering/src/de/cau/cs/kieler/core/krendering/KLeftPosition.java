@@ -29,5 +29,5 @@ package de.cau.cs.kieler.core.krendering;
  * @model
  * @generated
  */
-public interface KLeftPosition extends KXPosition {
+public interface KLeftPosition extends KXPosition<KLeftPosition> {
 } // KLeftPosition

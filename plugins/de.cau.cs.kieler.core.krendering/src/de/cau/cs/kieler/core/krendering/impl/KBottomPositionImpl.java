@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class KBottomPositionImpl extends KYPositionImpl implements KBottomPosition {
+public class KBottomPositionImpl extends KYPositionImpl<KBottomPosition> implements KBottomPosition {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

@@ -11,21 +11,47 @@
     <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
-        <details key="documentation" value="Determines whether two KPosition objects have the same x and y values.&#xD;&#xA;Hint: This does not however mean they have the &#xD;&#xA;same position as they could have different parents"/>
+        <details key="documentation" value="Checks the equalilty of the &lt;code>x&lt;/code> and &lt;code>y&lt;/code> components of &lt;code>this&lt;/code> KPostion instance and the provided &lt;code>other&lt;/code> one.&#xA;Returns false if &lt;code>other&lt;/code> is not a KPosition.&lt;br>&#xA;{@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KPosition, Object) KRenderingUtil.equals(KPosition, Object)}.&lt;br>&#xA;&lt;br>&#xA;Hint: Equal KPositions, however, do not imply indentical points in the figure as they may have different parents!&#xA;&#xA;@return &lt;code>true&lt;/code> if &lt;code>other&lt;/code> is a KPosition and its &lt;code>x&lt;/code> and &lt;code>y&lt;/code> components are equal to those of &lt;code>this&lt;/code> instance, &lt;code>false&lt;/code> otherwise&#xA;"/>
       </eAnnotations>
-      <eParameters name="other" eType="#//KPosition"/>
+      <eParameters name="other" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" eType="#//KXPosition"
-        containment="true">
+    <eOperations name="setPositions" eType="#//KPosition">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.setPositions(this, x, y);"/>
+        <details key="documentation" value="Convenience setter for configuring &lt;code>this&lt;/code> KPosition instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setPositions(KPosition, KXPosition, KYPosition) KRenderingUtil.setPositions(KPosition, KXPosition, KYPosition)}."/>
+      </eAnnotations>
+      <eParameters name="x">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the horizontal position component"/>
+        </eAnnotations>
+        <eGenericType eClassifier="#//KXPosition">
+          <eTypeArguments/>
+        </eGenericType>
+      </eParameters>
+      <eParameters name="y">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the vertical position component"/>
+        </eAnnotations>
+        <eGenericType eClassifier="#//KYPosition">
+          <eTypeArguments/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the x-position relative to the parent based on absolute coordinates or relative parent width"/>
       </eAnnotations>
+      <eGenericType eClassifier="#//KXPosition">
+        <eTypeArguments/>
+      </eGenericType>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="y" lowerBound="1" eType="#//KYPosition"
-        containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="y" lowerBound="1" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="the y-position relative to the parent based on absolute coordinates or relative parent height"/>
       </eAnnotations>
+      <eGenericType eClassifier="#//KYPosition">
+        <eTypeArguments/>
+      </eGenericType>
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData #//KStyleHolder">
@@ -459,11 +485,34 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="define an x-position by setting absolute and relative position respective to a parent rendering.&#xA;Both parameters are always included in the calculation of the resulting position. See Subtypes for formula. &#xA;Can overlap the parent by setting negative values.&#xA;"/>
     </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="#//KXPosition">
+        <eTypeArguments eTypeParameter="#//KXPosition/T"/>
+      </eBounds>
+    </eTypeParameters>
     <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
+        <details key="documentation" value="Checks the equalilty of the &lt;code>absolute&lt;/code> and &lt;code>relative&lt;/code> components of &lt;code>this&lt;/code> KXPostion instance and the provided &lt;code>other&lt;/code> one.&#xA;Returns false if &lt;code>other&lt;/code> is not a KXPosition.&lt;br>&#xA;{@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KXPosition, Object) KRenderingUtil.equals(KXPosition, Object)}.&lt;br>&#xA;&lt;br>&#xA;Hint: Equal KXPositions, however, do not imply indentical points in the figure as they may have different parents!&#xA;&#xA;@return &lt;code>true&lt;/code> if &lt;code>other&lt;/code> is a KXPosition and its &lt;code>absolute&lt;/code> and &lt;code>relative&lt;/code> components are equal to those of &lt;code>this&lt;/code> instance, &lt;code>false&lt;/code> otherwise&#xA;"/>
       </eAnnotations>
       <eParameters name="other" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="setPosition">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setPosition(it, absolute, relative);"/>
+        <details key="documentation" value="Convenience setter for configuring&lt;code>this&lt;/code> KXPosition instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setPosition(KXPosition, float, float) KRenderingUtil.setPosition(KXPosition, float, float)}."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KXPosition/T"/>
+      <eParameters name="absolute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="define absolute position in pixels"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="relative" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="define relative position based on parent size in range of 0 to 1"/>
+        </eAnnotations>
+      </eParameters>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="absolute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -472,7 +521,7 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relative" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="define relative position based on parent size"/>
+        <details key="documentation" value="define relative position based on parent size in range of 0 to 1"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -480,11 +529,34 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="define an y-position by setting absolute and relative position respective to a parent rendering.&#xA;Both parameters are always included in the calculation of the resulting position. See Subtypes for formula. &#xA;Can overlap the parent by setting negative values."/>
     </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="#//KYPosition">
+        <eTypeArguments eTypeParameter="#//KYPosition/T"/>
+      </eBounds>
+    </eTypeParameters>
     <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
+        <details key="documentation" value="Checks the equalilty of the &lt;code>absolute&lt;/code> and &lt;code>relative&lt;/code> components of &lt;code>this&lt;/code> KXPostion instance and the provided &lt;code>other&lt;/code> one.&#xA;Returns false if &lt;code>other&lt;/code> is not a KXPosition.&lt;br>&#xA;{@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KXPosition, Object) KRenderingUtil.equals(KXPosition, Object)}.&lt;br>&#xA;&lt;br>&#xA;Hint: Equal KXPositions, however, do not imply indentical points in the figure as they may have different parents!&#xA;&#xA;@return &lt;code>true&lt;/code> if &lt;code>other&lt;/code> is a KXPosition and its &lt;code>absolute&lt;/code> and &lt;code>relative&lt;/code> components are equal to those of &lt;code>this&lt;/code> instance, &lt;code>false&lt;/code> otherwise&#xA;"/>
       </eAnnotations>
       <eParameters name="other" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="setPosition">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setPosition(it, absolute, relative);"/>
+        <details key="documentation" value="Convenience setter for configuring&lt;code>this&lt;/code> KYPosition instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setPosition(KYPosition, float, float) KRenderingUtil.setPosition(KYPosition, float, float)}."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KYPosition/T"/>
+      <eParameters name="absolute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="define absolute position in pixels"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="relative" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="define relative position based on parent size in range of 0 to 1"/>
+        </eAnnotations>
+      </eParameters>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="absolute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -497,25 +569,37 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KLeftPosition" eSuperTypes="#//KXPosition">
+  <eClassifiers xsi:type="ecore:EClass" name="KLeftPosition">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="defines a position starting at the leftmost point of the parent rendering.&#xD;&#xA;pos = (L+absolute) + (R-L)*relative = (R-absolute) - widthOfParent*relative"/>
     </eAnnotations>
+    <eGenericSuperTypes eClassifier="#//KXPosition">
+      <eTypeArguments eClassifier="#//KLeftPosition"/>
+    </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KRightPosition" eSuperTypes="#//KXPosition">
+  <eClassifiers xsi:type="ecore:EClass" name="KRightPosition">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="defines a position starting at the rightmost point R of the parent rendering.&#xA;pos = (R-absolute) - (R-L)*relative = (R-absolute) - widthOfParent*relative&#xA;"/>
     </eAnnotations>
+    <eGenericSuperTypes eClassifier="#//KXPosition">
+      <eTypeArguments eClassifier="#//KRightPosition"/>
+    </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KTopPosition" eSuperTypes="#//KYPosition">
+  <eClassifiers xsi:type="ecore:EClass" name="KTopPosition">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="defines a position starting at the highest point H of the parent rendering. &#xA;pos = (H+absolute) + (B-H)*relative&#xA;pos = (H+absolute) + heightOfParent*relative"/>
     </eAnnotations>
+    <eGenericSuperTypes eClassifier="#//KYPosition">
+      <eTypeArguments eClassifier="#//KTopPosition"/>
+    </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KBottomPosition" eSuperTypes="#//KYPosition">
+  <eClassifiers xsi:type="ecore:EClass" name="KBottomPosition">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="defines a position starting at the bottom point B of the parent rendering. &#xA;pos = (B-absolute) - (B-H-absolute)*relative&#xA;pos = (B-absolute) - heightOfParent*relative"/>
     </eAnnotations>
+    <eGenericSuperTypes eClassifier="#//KYPosition">
+      <eTypeArguments eClassifier="#//KBottomPosition"/>
+    </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KSpline" eSuperTypes="#//KPolyline">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

@@ -37,6 +37,33 @@ public final class KRenderingUtil {
     }
     
     /**
+     * Returns an Iterator allowing to traverse all child {@link KRendering KRenderings} as well as
+     * referenced ones and their children.
+     * 
+     * @param rendering
+     *            the {@link KRendering} to start with
+     * @return the desired {@link Iterator}
+     */
+    public static Iterator<KRendering> selfAndAllChildren(final KRendering rendering) {
+        Iterator<KRendering> children;
+        if (rendering instanceof KRenderingRef) {
+            children = selfAndAllChildren(((KRenderingRef) rendering).getRendering());
+            
+        } else if (rendering instanceof KContainerRendering) {
+            children = concat(transform(((KContainerRendering) rendering).getChildren().iterator(),
+                    new Function<KRendering, Iterator<KRendering>>() {
+                        public Iterator<KRendering> apply(final KRendering rendering) {
+                            return selfAndAllChildren(rendering);
+                        }
+            }));
+            
+        } else {
+            children = emptyIterator();
+        }
+        return concat(singletonIterator(rendering), children);
+    }
+    
+    /**
      * Helper method providing the {@link KPlacementData} of a {@link KRendering}. Handles the
      * "inheritance" of {@link KPlacementData} in case of {@link KRenderingRef KRenderingRefs}.
      * 
@@ -116,6 +143,11 @@ public final class KRenderingUtil {
         return null;
     }
 
+
+    /* ------------------------- */
+    /*    positioning helpers    */
+    /* ------------------------- */
+    
     /**
      * Singleton {@link KPosition} instance containing {@link KLeftPosition KLeft-} &
      * {@link KTopPosition} components.
@@ -136,10 +168,10 @@ public final class KRenderingUtil {
      * @return the created {@link KPosition}
      */
     public static KPosition createLeftTopKPosition() {
-        final KPosition result = FACTORY.createKPosition();
-        result.setX(FACTORY.createKLeftPosition());
-        result.setY(FACTORY.createKTopPosition());
-        return result;
+        return setPositions(
+                FACTORY.createKPosition(),
+                FACTORY.createKLeftPosition(),
+                FACTORY.createKTopPosition());
     }
     
     /**
@@ -149,10 +181,10 @@ public final class KRenderingUtil {
      * @return the created {@link KPosition}
      */
     public static KPosition createRightBottomKPosition() {
-        final KPosition result = FACTORY.createKPosition();
-        result.setX(FACTORY.createKRightPosition());
-        result.setY(FACTORY.createKBottomPosition());
-        return result;
+        return setPositions(
+                FACTORY.createKPosition(),
+                FACTORY.createKRightPosition(),
+                FACTORY.createKBottomPosition());
     }
 
 
@@ -186,7 +218,7 @@ public final class KRenderingUtil {
      * @return the provided {@link KXPosition} if non-<code>null</code> or {@link #LEFT_TOP_POS}'s X
      *         component.
      */
-    public static KXPosition toNonNullLeftPosition(final KXPosition position) {
+    public static KXPosition<?> toNonNullLeftPosition(final KXPosition<?> position) {
         return position != null ? position : LEFT_TOP_POS.getX();
     }
 
@@ -198,7 +230,7 @@ public final class KRenderingUtil {
      * @return the provided {@link KXPosition} if non-<code>null</code> or {@link #RIGHT_BOTTOM_POS}
      *         's X component.
      */
-    public static KXPosition toNonNullRightPosition(final KXPosition position) {
+    public static KXPosition<?> toNonNullRightPosition(final KXPosition<?> position) {
         return position != null ? position : RIGHT_BOTTOM_POS.getX();
     }
 
@@ -210,7 +242,7 @@ public final class KRenderingUtil {
      * @return the provided {@link KYPosition} if non-<code>null</code> or {@link #LEFT_TOP_POS}'s Y
      *         component.
      */
-    public static KYPosition toNonNullTopPosition(final KYPosition position) {
+    public static KYPosition<?> toNonNullTopPosition(final KYPosition<?> position) {
         return position != null ? position : LEFT_TOP_POS.getY();
     }
 
@@ -222,10 +254,33 @@ public final class KRenderingUtil {
      * @return the provided {@link KYPosition} if non-<code>null</code> or {@link #RIGHT_BOTTOM_POS}
      *         's Y component.
      */
-    public static KYPosition toNonNullBottomPosition(final KYPosition position) {
+    public static KYPosition<?> toNonNullBottomPosition(final KYPosition<?> position) {
         return position != null ? position : RIGHT_BOTTOM_POS.getY();
     }
 
+
+    /* ------------------------------------------------------- */
+    /*    positioning helpers used by meta model operations    */
+    /* ------------------------------------------------------- */
+    
+    /**
+     * Convenience setter for configuring the components of {@link KPosition KPositions}.<br>
+     * {@link KPosition#setPositions(KXPosition, KYPosition)} redirects to this method.
+     * 
+     * @param pos
+     *            the {@link KPosition} to configure
+     * @param xPart
+     *            the horizontal component of the desired position
+     * @param yPart
+     *            the vertical component of the desired position
+     * @return the provided <code>pos</code> for convenience
+     */
+    public static KPosition setPositions(final KPosition pos, final KXPosition<?> xPart,
+            final KYPosition<?> yPart) {
+        pos.setX(xPart);
+        pos.setY(yPart);
+        return pos;
+    }
 
     /**
      * Tests the deep equality of two {@link KXPosition} objects.
@@ -237,77 +292,110 @@ public final class KRenderingUtil {
      * @return <code>true</code> if both operands are deeply equal, <code>false</code> otherwise.
      */
     public static boolean equals(final KPosition it, final Object other) {
-        return (it == other)
-                || (it != null && other instanceof KPosition
-                        && equals(it.getX(), ((KPosition) other).getX())
-                        && equals(it.getY(), ((KPosition) other).getY()));
-    }
-
-    /**
-     * Tests the deep equality of two {@link KPosition} objects.
-     * 
-     * @param it
-     *            first operand
-     * @param other
-     *            second operand
-     * @return <code>true</code> if both operands are deeply equal, <code>false</code> otherwise.
-     */
-    public static boolean equals(final KXPosition it, final Object other) {
-        return (it == other)
-                || (it != null && other instanceof KXPosition
-                    && it.getClass() == other.getClass()
-                    && it.getAbsolute() == ((KXPosition) other).getAbsolute()
-                    && it.getRelative() == ((KXPosition) other).getRelative());
-    }
-
-    /**
-     * Tests the deep equality of two {@link KYPosition} objects.
-     * 
-     * @param it
-     *            first operand
-     * @param other
-     *            second operand
-     * @return <code>true</code> if both operands are deeply equal, <code>false</code> otherwise.
-     */
-    public static boolean equals(final KYPosition it, final Object other) {
-        return (it == other)
-                || (it != null && other instanceof KYPosition
-                    && it.getClass() == other.getClass()
-                    && it.getAbsolute() == ((KYPosition) other).getAbsolute()
-                    && it.getRelative() == ((KYPosition) other).getRelative());
-    }
-    
-    /**
-     * Returns an Iterator allowing to traverse all child {@link KRendering KRenderings} as well as
-     * referenced ones and their children.
-     * 
-     * @param rendering
-     *            the {@link KRendering} to start with
-     * @return the desired {@link Iterator}
-     */
-    public static Iterator<KRendering> selfAndAllChildren(final KRendering rendering) {
-        Iterator<KRendering> children;
-        if (rendering instanceof KRenderingRef) {
-            children = selfAndAllChildren(((KRenderingRef) rendering).getRendering());
-            
-        } else if (rendering instanceof KContainerRendering) {
-            children = concat(transform(((KContainerRendering) rendering).getChildren().iterator(),
-                    new Function<KRendering, Iterator<KRendering>>() {
-                        public Iterator<KRendering> apply(final KRendering rendering) {
-                            return selfAndAllChildren(rendering);
-                        }
-            }));
-            
+        if (it == other) {
+            return true;
+        } else if (it != null && other instanceof KPosition) {
+            final KPosition position = (KPosition) other;
+            return it.getClass() == position.getClass()
+                    && equals(it.getX(), position.getY())
+                    && equals(it.getY(), position.getY());
         } else {
-            children = emptyIterator();
+            return false;
         }
-        return concat(singletonIterator(rendering), children);
     }
 
-    
-    /* --------------------- */
-    /*    coloring helpers   */
-    /* --------------------- */
+    /**
+     * Convenience setter for configuring the position data of {@link KXPosition KXPositions}.<br>
+     * {@link KXPosition#setPosition(float, float)} redirects to this method.
+     * 
+     * @param <T>
+     *            the concrete type of the provided {@link KXPosition} 
+     * @param xPos
+     *            the {@link KXPosition} to configure
+     * @param absolute
+     *            the absolute component of the desired position
+     * @param relative
+     *            the relative component of the desired position in range of 0 to 1
+     * @return the provided <code>xPos</code> for convenience
+     */
+    public static <T extends KXPosition<T>> T setPosition(final T xPos, final float absolute,
+            final float relative) {
+        xPos.setAbsolute(absolute);
+        xPos.setRelative(relative);
+        return xPos;
+    }
+
+    /**
+     * Tests the deep equality of two {@link KPosition} objects.<br>
+     * {@link KXPosition#equals(Object)} redirects to this method.
+     * 
+     * @param it
+     *            first operand
+     * @param other
+     *            second operand
+     * @return <code>true</code> if both operands are deeply equal, <code>false</code> otherwise.
+     */
+    public static boolean equals(final KXPosition<?> it, final Object other) {
+        if (it == other) {
+            return true;
+        } else if (it != null && other instanceof KXPosition) {
+            final KXPosition<?> xPos = (KXPosition<?>) other;
+            return it.getClass() == other.getClass()
+                    && it.getAbsolute() == xPos.getAbsolute()
+                    && it.getRelative() == xPos.getRelative();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Convenience setter for configuring the position data of {@link KYPosition KYPositions}.<br>
+     * {@link KYPosition#setPosition(float, float)} redirects to this method.
+     * 
+     * @param <T>
+     *            the concrete type of the provided {@link KYPosition} 
+     * @param yPos
+     *            the {@link KYPosition} to configure
+     * @param absolute
+     *            the absolute component of the desired position
+     * @param relative
+     *            the relative component of the desired position in range of 0 to 1
+     * @return the provided <code>xPos</code> for convenience
+     */
+    public static <T extends KYPosition<T>> T setPosition(final T yPos, final float absolute,
+            final float relative) {
+        yPos.setAbsolute(absolute);
+        yPos.setRelative(relative);
+        return yPos;
+    }
+
+    /**
+     * Tests the deep equality of two {@link KYPosition} objects.<br>
+     * {@link KYPosition#equals(Object)} redirects to this method.
+     * 
+     * @param it
+     *            first operand
+     * @param other
+     *            second operand
+     * @return <code>true</code> if both operands are deeply equal, <code>false</code> otherwise.
+     */
+    public static boolean equals(final KYPosition<?> it, final Object other) {
+        if (it == other) {
+            return true;
+        } else if (it != null && other instanceof KYPosition) {
+            final KYPosition<?> yPos = (KYPosition<?>) other;
+            return it.getClass() == other.getClass()
+                    && it.getAbsolute() == yPos.getAbsolute()
+                    && it.getRelative() == yPos.getRelative();
+        } else {
+            return false;
+        }
+    }
+
+
+    /* ---------------------------------------------------- */
+    /*    coloring helpers used by meta model operations    */
+    /* ---------------------------------------------------- */
     
     /**
      * Convenience setter for configuring the RGB values of {@link KColor KColors}.<br>
@@ -345,7 +433,7 @@ public final class KRenderingUtil {
     public static boolean equals(final KColor it, final Object other) {
         if (it == other) {
             return true;
-        } else if (other instanceof KColor) {
+        } else if (it != null && other instanceof KColor) {
             final KColor color = (KColor) other;
             return it.getRed() == color.getRed()
                     && it.getGreen() == color.getGreen()
@@ -472,7 +560,7 @@ public final class KRenderingUtil {
     public static boolean equals(final KColoring<?> it, final Object other) {
         if (it == other) {
             return true;
-        } else if (other instanceof KColoring<?>) {
+        } else if (it != null && other instanceof KColoring<?>) {
             final KColoring<?> coloring = (KColoring<?>) other;
             return it.getClass() == coloring.getClass()
                     && it.getAlpha() == coloring.getAlpha()
