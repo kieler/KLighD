@@ -310,8 +310,53 @@ public final class KRenderingUtil {
     /* --------------------- */
     
     /**
+     * Convenience setter for configuring the RGB values of {@link KColor KColors}.<br>
+     * {@link KColor#setColor(int, int, int)} redirects to this method.
+     * 
+     * @param color
+     *            the {@link KColor} to configure
+     * @param red
+     *            the red component of the desired color in range of 0 to 255
+     * @param green
+     *            the green component of the desired color in range of 0 to 255
+     * @param blue
+     *            the blue component of the desired color in range of 0 to 255
+     * @return the provided <code>color</code> for convenience
+     */
+    public static KColor setColor(final KColor color, final int red,
+            final int green, final int blue) {
+        color.setRed(red);
+        color.setGreen(green);
+        color.setBlue(blue);
+        return color;
+    }
+    
+    /**
+     * Tests the equality of two {@link KColor} objects.<br>
+     * {@link KColor#equals(Object)} redirects to this method.
+     * 
+     * @param it
+     *            first operand
+     * @param other
+     *            second operand
+     * @return <code>true</code> if the RGB components of both operands are equal,
+     *         <code>false</code> otherwise.
+     */
+    public static boolean equals(final KColor it, final Object other) {
+        if (it == other) {
+            return true;
+        } else if (other instanceof KColor) {
+            final KColor color = (KColor) other;
+            return it.getRed() == color.getRed()
+                    && it.getGreen() == color.getGreen()
+                    && it.getBlue() == color.getBlue();
+        }
+        return false;
+    }
+
+    /**
      * Convenience setter for configuring the color of {@link KColoring KColorings}.<br>
-     * {@link KColoring#setColor(int, int, int)} redirects to this methods.
+     * {@link KColoring#setColor(int, int, int)} redirects to this method.
      * 
      * @param <T>
      *            the concrete type of the provided {@link KColoring} 
@@ -338,7 +383,7 @@ public final class KRenderingUtil {
     
     /**
      * Convenience setter for configuring the color of {@link KColoring KColorings}.<br>
-     * {@link KColoring#setColor(int, int, int, int)} redirects to this methods.
+     * {@link KColoring#setColor(int, int, int, int)} redirects to this method.
      * 
      * @param <T>
      *            the concrete type of the provided {@link KColoring} 
@@ -363,7 +408,7 @@ public final class KRenderingUtil {
     
     /**
      * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
-     * {@link KColoring#setTargetColor(int, int, int)} redirects to this methods.
+     * {@link KColoring#setTargetColor(int, int, int)} redirects to this method.
      * 
      * @param <T>
      *            the concrete type of the provided {@link KColoring} 
@@ -390,7 +435,7 @@ public final class KRenderingUtil {
     
     /**
      * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
-     * {@link KColoring#setTargetColor(int, int, int, int)} redirects to this methods.
+     * {@link KColoring#setTargetColor(int, int, int, int)} redirects to this method.
      * 
      * @param <T>
      *            the concrete type of the provided {@link KColoring} 
@@ -412,4 +457,31 @@ public final class KRenderingUtil {
         coloring.setTargetAlpha(alpha);
         return coloring;
     }
+    
+    /**
+     * Tests the equality of two {@link KColor} objects.<br>
+     * {@link KColor#equals(Object)} redirects to this method.
+     * 
+     * @param it
+     *            first operand
+     * @param other
+     *            second operand
+     * @return <code>true</code> if the RGB components of both operands are equal,
+     *         <code>false</code> otherwise.
+     */
+    public static boolean equals(final KColoring<?> it, final Object other) {
+        if (it == other) {
+            return true;
+        } else if (other instanceof KColoring<?>) {
+            final KColoring<?> coloring = (KColoring<?>) other;
+            return it.getClass() == coloring.getClass()
+                    && it.getAlpha() == coloring.getAlpha()
+                    && it.getTargetAlpha() == coloring.getTargetAlpha()
+                    && equals(it.getColor(), coloring.getColor())
+                    && equals(it.getTargetColor(), coloring.getTargetColor());
+        } else {
+            return false;
+        }
+    }
+        
 }

@@ -106,6 +106,6 @@ public interface KPosition extends EObject {
      * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
      * @generated
      */
-    Boolean equals(KPosition other);
+    boolean equals(KPosition other);
 
 } // KPosition

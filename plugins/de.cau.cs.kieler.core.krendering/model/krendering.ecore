@@ -8,7 +8,7 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Used to set an absolute Position of a single point by defining x and y coordinates of this point relative to the parent. The position can be set with absolute values or relative to the parent dimensions"/>
     </eAnnotations>
-    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject">
+    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
         <details key="documentation" value="Determines whether two KPosition objects have the same x and y values.&#xD;&#xA;Hint: This does not however mean they have the &#xD;&#xA;same position as they could have different parents"/>
@@ -358,6 +358,34 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Specifies an RGB color. "/>
     </eAnnotations>
+    <eOperations name="setColor" eType="#//KColor">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);"/>
+        <details key="documentation" value="Convenience setter for configuring&lt;code>this&lt;/code> KColor instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColor, int, int, int) KRenderingUtil.setColor(KColor, int, int, int)}."/>
+      </eAnnotations>
+      <eParameters name="red" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the red component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="green" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the green component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="blue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the blue component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
+        <details key="documentation" value="Checks the equalilty of the RGB components of &lt;code>this&lt;/code> KColor instance and the provided &lt;code>other&lt;/code> KColor.&#xA;Returns false if &lt;code>other&lt;/code> is not a KColor.&lt;br>&#xA;{@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.&#xA;&#xA;@return &lt;code>true&lt;/code> if &lt;code>other&lt;/code> is a KColor its RGB components are equal to those of &lt;code>this&lt;/code> instance, &lt;code>false&lt;/code> otherwise"/>
+      </eAnnotations>
+      <eParameters name="other" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="red" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -608,6 +636,13 @@
           <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
         </eAnnotations>
       </eParameters>
+    </eOperations>
+    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
+        <details key="documentation" value="Checks the equalilty of the RGB components of &lt;code>this&lt;/code> KColor instance and the provided &lt;code>other&lt;/code> KColor.&#xA;Returns false if &lt;code>other&lt;/code> is not a KColor.&lt;br>&#xA;{@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.&#xA;&#xA;@return &lt;code>true&lt;/code> if &lt;code>other&lt;/code> is a KColor its RGB components are equal to those of &lt;code>this&lt;/code> instance, &lt;code>false&lt;/code> otherwise"/>
+      </eAnnotations>
+      <eParameters name="other" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="255">

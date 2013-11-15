@@ -129,4 +129,34 @@ public interface KColor extends EObject {
      */
     void setBlue(int value);
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring<code>this</code> KColor instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColor, int, int, int) KRenderingUtil.setColor(KColor, int, int, int)}.
+     * @param red the red component of the desired color in range of 0 to 255
+     * @param green the green component of the desired color in range of 0 to 255
+     * @param blue the blue component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);'"
+     * @generated
+     */
+    KColor setColor(int red, int green, int blue);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Checks the equalilty of the RGB components of <code>this</code> KColor instance and the provided <code>other</code> KColor.
+     * Returns false if <code>other</code> is not a KColor.<br>
+     * {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.
+     * 
+     * @return <code>true</code> if <code>other</code> is a KColor its RGB components are equal to those of <code>this</code> instance, <code>false</code> otherwise
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
+     * @generated
+     */
+    boolean equals(Object other);
+
 } // KColor

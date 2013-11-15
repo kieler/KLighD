@@ -172,7 +172,7 @@ public class KPositionImpl extends EObjectImpl implements KPosition {
      * <!-- end-user-doc -->
      * @generated
      */
-    public Boolean equals(final KPosition other) {
+    public boolean equals(final KPosition other) {
         return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
     }
 
