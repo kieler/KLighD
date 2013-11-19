@@ -268,9 +268,9 @@ public final class PlacementUtil {
         float height = (float) parentBounds.getHeight();
         
         final Point point = new Point(0, 0);
-        final KXPosition xPos = topLeft ? toNonNullLeftPosition(position.getX())
+        final KXPosition<?> xPos = topLeft ? toNonNullLeftPosition(position.getX())
                 : toNonNullRightPosition(position.getX());
-        final KYPosition yPos = topLeft ? toNonNullTopPosition(position.getY())
+        final KYPosition<?> yPos = topLeft ? toNonNullTopPosition(position.getY())
                 : toNonNullBottomPosition(position.getY());
         
         if (xPos instanceof KLeftPosition) {
@@ -915,7 +915,7 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = PIMARY;
         } else {
-            final KXPosition lPos = toNonNullLeftPosition(tL.getX());
+            final KXPosition<?> lPos = toNonNullLeftPosition(tL.getX());
             abs0 = lPos.getAbsolute();
             rel0 = lPos.getRelative();
             posId0 = lPos.eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION ? PIMARY
@@ -928,7 +928,7 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = PIMARY;
         } else {
-            final KXPosition rPos = toNonNullRightPosition(bR.getX());
+            final KXPosition<?> rPos = toNonNullRightPosition(bR.getX());
             abs1 = rPos.getAbsolute();
             rel1 = rPos.getRelative();
             posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KRIGHT_POSITION ? PIMARY
@@ -957,7 +957,7 @@ public final class PlacementUtil {
             rel0 = 0;
             posId0 = PIMARY;
         } else {
-            final KYPosition rPos = toNonNullTopPosition(tL.getY());
+            final KYPosition<?> rPos = toNonNullTopPosition(tL.getY());
             abs0 = rPos.getAbsolute();
             rel0 = rPos.getRelative();
             posId0 = rPos.eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION ? PIMARY
@@ -970,7 +970,7 @@ public final class PlacementUtil {
             rel1 = 0;
             posId1 = PIMARY;
         } else {
-            final KYPosition rPos = toNonNullBottomPosition(bR.getY());
+            final KYPosition<?> rPos = toNonNullBottomPosition(bR.getY());
             abs1 = rPos.getAbsolute();
             rel1 = rPos.getRelative();
             posId1 = rPos.eClass().getClassifierID() == KRenderingPackage.KBOTTOM_POSITION ? PIMARY
