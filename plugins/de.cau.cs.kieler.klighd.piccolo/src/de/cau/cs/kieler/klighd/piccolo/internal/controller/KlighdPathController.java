@@ -25,9 +25,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 
-
 /**
- * A node controller for the {@code PSWTAdvancedPath}.
+ * A specialized {@link PNodeController} dedicated to instances of {@link KlighdPath}.
  * 
  * @author mri, chsch
  */

@@ -51,6 +51,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
@@ -647,16 +648,16 @@ final class KGERenderingControllerHelper {
             final KCustomRendering customRendering, final List<KStyle> propagatedStyles,
             final PNode parent, final Bounds initialBounds) {
 
-        // get a wrapping PNode containing the actual figure
-        // by means of the KCustomRenderingWrapperFactory
-        PNode node;
+        // get a wrapping PNode containing the actual figure by means of the
+        //  KCustomRenderingWrapperFactory
+        final KCustomFigureNode node;
         if (customRendering.getFigureObject() != null) {
             if (parent instanceof KEdgeNode) {
                 node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
                         customRendering.getFigureObject(), KCustomConnectionFigureNode.class);
             } else {
                 node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
-                        customRendering.getFigureObject(), PNode.class);
+                        customRendering.getFigureObject(), KCustomFigureNode.class);
             }
 
         } else {
@@ -667,7 +668,7 @@ final class KGERenderingControllerHelper {
             } else {
                 node = KCustomRenderingWrapperFactory.getInstance().getWrapperInstance(
                         customRendering.getBundleName(), customRendering.getClassName(),
-                        PNode.class);
+                        KCustomFigureNode.class);
             }
         }
         if (node == null) {
@@ -688,7 +689,8 @@ final class KGERenderingControllerHelper {
         }
 
         // create a standard default node controller
-        return new PNodeController<PNode>(node) {
+        return new KCustomFigureController(node) {
+            
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setBounds(0, 0, bounds.getWidth(), bounds.getHeight());

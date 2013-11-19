@@ -24,7 +24,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 
 /**
- * A node controller for the {@code PSWTText}.
+ * A specialized {@link PNodeController} dedicated to instances of {@link KlighdStyledText}.
  * 
  * @author mri, chsch
  */

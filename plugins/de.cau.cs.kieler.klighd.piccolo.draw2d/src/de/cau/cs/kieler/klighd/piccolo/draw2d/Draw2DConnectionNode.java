@@ -31,12 +31,13 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DNode.WrappingUpdateManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * A Piccolo node implementation wrapping a Draw2d connections.<br>
+ * A Piccolo2D node implementation wrapping a Draw2d connections.<br>
  * <br>
- * Note: This is a very experimental implement that have not been tested.
+ * Note: This is a very experimental implementation that have not been tested.
  * 
  * @author chsch
  */
@@ -102,6 +103,12 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
         this.figure.setPoints(new PointList(iPoints));
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void applyStyles(final Styles styles) {
+    }
 
     /**
      * {@inheritDoc}

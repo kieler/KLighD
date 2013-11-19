@@ -15,8 +15,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.Point2D;
 
-import edu.umd.cs.piccolo.PNode;
-
 /**
  * Abstract class of all Piccolo nodes that are supposed to wrap connection figures of other 2D
  * drawing frameworks. It is used to distinguish connection nodes, which require a method
@@ -26,7 +24,7 @@ import edu.umd.cs.piccolo.PNode;
  * 
  * @author chsch
  */
-public abstract class KCustomConnectionFigureNode extends PNode {
+public abstract class KCustomConnectionFigureNode extends KCustomFigureNode {
 
     private static final long serialVersionUID = -7812579176308866285L;
 

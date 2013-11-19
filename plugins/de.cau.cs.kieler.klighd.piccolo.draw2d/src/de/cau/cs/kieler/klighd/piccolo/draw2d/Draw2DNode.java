@@ -27,6 +27,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -38,7 +40,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public class Draw2DNode extends PNode {
+public class Draw2DNode extends KCustomFigureNode {
 
     /** The serial version UID. */
     private static final long serialVersionUID = -1948310925725969628L;
@@ -108,6 +110,14 @@ public class Draw2DNode extends PNode {
         this.figure.revalidate();
         
         return super.setBounds(x, y, width, height);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void applyStyles(final Styles styles) {
+        // TODO
     }
     
     /**
