@@ -317,15 +317,18 @@ public final class LightDiagramServices {
                             ((ReinitializingDiagramSynthesisProxy<Object>) transformation)
                                     .getDelegate();
                 }
+                final String nl = KlighdDataManager.NEW_LINE;
+                final String msg =
+                        "KLighD: LightDiagramService failed to update a view context:" + nl
+                                + e.getClass().getSimpleName()
+                                + " occured while performing the transformation "
+                                + transformation.getClass().getSimpleName() + ":" + nl
+                                + "Developer hint: " + e.getMessage() + nl + "User hint: "
+                                + "Please perform a 'Clean' operation on your project and re-try.";
+                
                 StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                "KLighD: LightDiagramService failed to update a view context:\n"
-                                        + e.getClass().getSimpleName()
-                                        + " occured while performing the transformation "
-                                        + transformation.getClass().getSimpleName() + ":\n"
-                                        + e.getMessage()
-                                        + "\n Please perform a 'Clean' operation on your project"
-                                        + " and re-try.", e), StatusManager.LOG);
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
+                        StatusManager.LOG);
                 return null;
             }
         }

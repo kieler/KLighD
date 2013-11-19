@@ -29,6 +29,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
 
 /**
  * Singleton for accessing transformations, viewers, update strategies and layout post processors
@@ -42,32 +43,45 @@ public final class KlighdDataManager {
     public static final String EXTP_ID_EXTENSIONS = "de.cau.cs.kieler.klighd.extensions";
     
     /** identifier of the extension point for model transformations. */
-    public static final String EXTP_ID_DIAGRAM_SYNTHESES = "de.cau.cs.kieler.klighd.diagramSyntheses";
+    private static final String EXTP_ID_DIAGRAM_SYNTHESES = "de.cau.cs.kieler.klighd.diagramSyntheses";
 
     /** name of the 'viewer' element. */
-    public static final String ELEMENT_VIEWER = "viewer";
+    private static final String ELEMENT_VIEWER = "viewer";
     
     /** name of the 'transformation' element. */
-    public static final String ELEMENT_DIAGRAM_SYNTHESIS = "diagramSynthesis";
+    private static final String ELEMENT_DIAGRAM_SYNTHESIS = "diagramSynthesis";
     
     /** name of the 'updateStrategy' element. */
-    public static final String ELEMENT_UPDATE_STRATEGY = "updateStrategy";
+    private static final String ELEMENT_UPDATE_STRATEGY = "updateStrategy";
     
     /** name of the 'styleModifier' element. */
-    public static final String ELEMENT_STYLE_MODIFIER = "styleModifier";
+    private static final String ELEMENT_STYLE_MODIFIER = "styleModifier";
 
     /** name of the 'action' element. */
-    public static final String ELEMENT_ACTION = "action";
+    private static final String ELEMENT_ACTION = "action";
 
     /** name of the 'id' attribute in the extension points. */
-    public static final String ATTRIBUTE_ID = "id";
+    private static final String ATTRIBUTE_ID = "id";
     
     /** name of the 'class' attribute in the extension points. */
-    public static final String ATTRIBUTE_CLASS = "class";
+    private static final String ATTRIBUTE_CLASS = "class";
     
+    /** the platform-specific newline delimiter. */
+    public static final String NEW_LINE = System.getProperty("line.separator");
+    
+    /** error message if registered class cannot be found. */
+    private static final String CORE_EXCEPTION_ERROR_MSG = 
+            "The class definition <<CLAZZ>> cannot be found. " + NEW_LINE
+            + "Are there any typing mistakes in the registration? " + NEW_LINE
+            + "Is the (maybe generated) code available? " + NEW_LINE
+            + "If required, is the class name correctly prefixed with "
+            + GuiceBasedSynthesisFactory.CLASS_NAME + "?";
+
     /** error msg if registered class cannot be found. */
     private static final String NO_CLASS_DEF_FOUND_ERROR_MSG = 
-            "The class definition <<CLAZZ>> cannot be found. Is the (maybe generated) code available?";
+            "The class definition <<CLAZZ>> cannot be found. " + NEW_LINE
+            + "Are there any typing mistakes in the registration? " + NEW_LINE
+            + "Is the (maybe generated) code available?";
 
     /** the singleton instance. */
     private static KlighdDataManager instance;
@@ -109,7 +123,7 @@ public final class KlighdDataManager {
         } catch (Exception e) {
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                            "KLighD: Failure while loading registered transformations.", e));
+                            "KLighD: Unexptected failure while loading registered transformations.", e));
         }
     }
 
@@ -136,11 +150,13 @@ public final class KlighdDataManager {
      */
     private static void reportError(final String extensionPoint,
             final IConfigurationElement element, final String attribute, final Exception exception) {
-        String message = "Extension point " + extensionPoint + ": Invalid entry in attribute '"
-                + attribute + "' of element " + element.getName() + ", contributed by "
-                + element.getContributor().getName();
-        IStatus status = new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, 0, message, exception);
-        StatusManager.getManager().handle(status);
+        String message =
+                "KLighD: Element '" + element.getName() + "' extending extension point '"
+                        + extensionPoint + "', contributed by '"
+                        + element.getContributor().getName()
+                        + "' contains invalid entry in attribute '" + attribute + "'";
+        StatusManager.getManager().handle(
+                new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, 0, message, exception));
     }
 
     /**
@@ -219,34 +235,56 @@ public final class KlighdDataManager {
         for (IConfigurationElement element : extensions) {
             if (ELEMENT_DIAGRAM_SYNTHESIS.equals(element.getName())) {
                 // initialize model transformation from the extension point
-                ITransformation<Object, ?> modelTransformation = null;
+                ITransformation<?, ?> modelTransformation = null;
                 try {
-                    // temp var is only used for the SuppressWarnings declaration
-                    @SuppressWarnings("unchecked")
-                    ITransformation<Object, ?> temp = (ITransformation<Object, ?>) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
-                    modelTransformation = temp;
+                    modelTransformation =
+                            (ITransformation<?, ?>) element
+                                    .createExecutableExtension(ATTRIBUTE_CLASS);
+
                 } catch (CoreException exception) {
-                    StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
-                } catch (NoClassDefFoundError exception) {
                     StatusManager.getManager().handle(
                             new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                    NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
+                                    CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
                                             element.getAttribute(ATTRIBUTE_CLASS)), exception));
-                } catch (WrappedException exception) {
+                } catch (NoClassDefFoundError exception) {
+                    final String msg =
+                            NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
+                                    element.getAttribute(ATTRIBUTE_CLASS).replaceFirst(
+                                            GuiceBasedSynthesisFactory.CLASS_NAME + ":", ""));
                     StatusManager.getManager().handle(
-                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                    NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
-                                            element.getAttribute(ATTRIBUTE_CLASS)), exception
-                                            .getCause()));
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, exception));
+                } catch (WrappedException exception) {
+                    final String msg =
+                            NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
+                                    element.getAttribute(ATTRIBUTE_CLASS).replaceFirst(
+                                            GuiceBasedSynthesisFactory.CLASS_NAME + ":", ""));
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, exception
+                                    .getCause()));
                 }
+
                 if (modelTransformation != null) {
                     String id = element.getAttribute(ATTRIBUTE_ID);
                     if (id == null || id.length() == 0) {
                         reportError(EXTP_ID_DIAGRAM_SYNTHESES, element, ATTRIBUTE_ID, null);
                     } else {
-                        transformationsGraph.addTransformation(modelTransformation);
-                        idTransformationMapping.put(id, modelTransformation);
+                        try {
+                            transformationsGraph.addTransformation(modelTransformation);
+                            idTransformationMapping.put(id, modelTransformation);
+                        } catch (WrappedException exception) {
+                            StatusManager.getManager().handle(
+                                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, exception
+                                            .getMessage(), exception.getCause()));
+                        } catch (Exception exception) {
+                            final String msg =
+                                    "KLighD: An unexpected exception occured while loading "
+                                            + "diagram synthesis " + id
+                                            + ". See attached trace for details." + NEW_LINE
+                                            + exception.getMessage();
+                            StatusManager.getManager().handle(
+                                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg,
+                                            exception.getCause()));
+                        }
                     }
                 }
             }

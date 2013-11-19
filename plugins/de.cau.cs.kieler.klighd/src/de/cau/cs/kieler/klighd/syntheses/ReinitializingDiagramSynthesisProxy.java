@@ -29,8 +29,10 @@ import com.google.inject.Provider;
 import com.google.inject.Scope;
 import com.google.inject.TypeLiteral;
 
+import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 
@@ -208,8 +210,20 @@ public class ReinitializingDiagramSynthesisProxy<S> extends AbstractDiagramSynth
     
     
     private AbstractDiagramSynthesis<S> getNewDelegateInstance() {
-        return Guice.createInjector(this.transformationClassBinding).getInstance(
-                this.transformationClass);
+        final AbstractDiagramSynthesis<S> res;
+        try {
+            res = Guice.createInjector(this.transformationClassBinding).getInstance(
+                            this.transformationClass);
+        } catch (Exception e) {
+            final String nl = KlighdDataManager.NEW_LINE;
+            final String msg =
+                    "KLighD: Cannot instantiate " + this.transformationClass.getCanonicalName()
+                            + "." + nl + "Is that class free of compiler errors?" + nl
+                            + "Does it extend " + AbstractDiagramSynthesis.class.getCanonicalName()
+                            + "?" + nl + "See exception trace below.";
+            throw new WrappedException(e, msg);
+        }
+        return res; 
     }
     
     /**

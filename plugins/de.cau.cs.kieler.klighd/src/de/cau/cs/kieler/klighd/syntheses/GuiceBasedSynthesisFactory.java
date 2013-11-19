@@ -35,6 +35,9 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  */
 public class GuiceBasedSynthesisFactory implements IExecutableExtension,
         IExecutableExtensionFactory {
+    
+    /** The fully qualified name of this class, to be used in error messages, for example. */
+    public static final String CLASS_NAME = GuiceBasedSynthesisFactory.class.getCanonicalName();
 
     /** This bundleId is a {@link Long} value in shape of a String.
      * It must not be confused with the bundle id determined in the bundles' manifests. */
@@ -93,9 +96,9 @@ public class GuiceBasedSynthesisFactory implements IExecutableExtension,
             return new ReinitializingDiagramSynthesisProxy(clazz);
         } catch (ClassNotFoundException e) {
             throw new WrappedException(e,
-                    "KLighD: Registered transformation class could not be loaded properly via the"
-                    + "GuiceBasedTransformationFactory. Did you miss to provide the related bundle"
-                    + "id in the extension (plugin.xml)?");
+                    "KLighD: Registered diagram synthesis class could not be loaded properly via the "
+                    + GuiceBasedSynthesisFactory.class.getSimpleName()
+                    + ". Did you miss to provide the related bundle id in the extension (plugin.xml)?");
         }
     }
 }
