@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
-import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -84,7 +83,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         final KRendering currentRendering = getCurrentRendering();
         
         if (currentRendering == null) {
-            return handleEdgeRendering(createDefaultEdgeRendering(), (KEdgeNode) repNode);
+            return handleEdgeRendering(createDefaultRendering(), (KEdgeNode) repNode);
         } 
         
         final PNode renderingNode;
@@ -122,7 +121,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             // TODO this is only a preliminary support of references for edge renderings
             final KRenderingRef renderingRef = (KRenderingRef) currentRendering;
             if (renderingRef.getRendering() == null) {
-                return handleEdgeRendering(createDefaultEdgeRendering(), (KEdgeNode) repNode);
+                return handleEdgeRendering(createDefaultRendering(), (KEdgeNode) repNode);
             } else if (renderingRef.getRendering() instanceof KPolyline) {
                 renderingNode = handleEdgeRendering((KPolyline) renderingRef.getRendering(),
                         (KEdgeNode) repNode);
@@ -333,16 +332,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * 
      * @return the rendering
      */
-    private static KPolyline createDefaultEdgeRendering() {
+    protected KPolyline createDefaultRendering() {
         // create the default rendering model
-        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        KPolyline polyline = factory.createKPolyline();
-
-        KForeground foreground = factory.createKForeground();
-        foreground.setColor(factory.createKColor());
-        
-        polyline.getStyles().add(foreground);
-        return polyline;
+        return KRenderingFactory.eINSTANCE.createKPolyline();
     }
-    
 }

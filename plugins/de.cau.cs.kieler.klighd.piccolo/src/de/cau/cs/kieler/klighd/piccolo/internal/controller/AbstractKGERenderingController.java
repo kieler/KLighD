@@ -70,7 +70,6 @@ import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
@@ -116,7 +115,7 @@ public abstract class AbstractKGERenderingController
      */
     public static final Object ATTR_KRENDERING = new Object();
 
-    /** the graph element which rendering is controlled by this controller. */
+    /** the graph element whose rendering is controlled by this controller. */
     private S element;
     
     /** the rendering currently in use by this controller. */
@@ -188,19 +187,20 @@ public abstract class AbstractKGERenderingController
         if (this.element instanceof KNode) {
             Iterable<KRendering> renderings = Iterables.filter(element.getData(), KRendering.class);
             
-            // in case the node to be depicted has no children (yet - might be added lazily)
-            // look for a rendering marked as 'collapsed' one,
-            //  and if none exists simply take the first one
-            if (((KNodeNode) repNode).getGraphElement().getChildren().isEmpty()) {   
-                currentRendering = Iterables.getFirst(
-                        Iterables.filter(renderings, IS_COLLAPSED_RENDERING),
-                        Iterables.getFirst(renderings, null));
+//            // in case the node to be depicted has no children (yet - might be added lazily)
+//            // look for a rendering marked as 'collapsed' one,
+//            //  and if none exists simply take the first one
+//            if (((KNode) element).getChildren().isEmpty()) {   
+//                currentRendering = Iterables.getFirst(
+//                        Iterables.filter(renderings, IS_COLLAPSED_RENDERING),
+//                        Iterables.getFirst(renderings, null));
+//            } else
                 
             // in case the node to be depicted has children and is populated,
             //  i.e. children are depicted in the diagram
             // look for a rendering marked as 'expanded' one,
             //  and if none exists take the first one that is not marked as 'collapsed' one
-            } else if (RenderingContextData.get(this.element).getProperty(
+            if (RenderingContextData.get(this.element).getProperty(
                     KlighdInternalProperties.POPULATED)) {
                 currentRendering = Iterables.getFirst(
                         Iterables.filter(renderings, IS_EXPANDED_RENDERING),
@@ -221,6 +221,11 @@ public abstract class AbstractKGERenderingController
         } else {
             currentRendering = element.getData(KRendering.class);
         }
+        
+        if (currentRendering == null) {
+            currentRendering = createDefaultRendering();
+        }
+        
         return currentRendering;
     }
 
@@ -244,7 +249,8 @@ public abstract class AbstractKGERenderingController
      * @return the selection state of the current root rendering
      */
     protected boolean isSelected() {
-        return currentRendering.getProperty(KlighdInternalProperties.SELECTED);
+        return currentRendering == null
+                ? false : currentRendering.getProperty(KlighdInternalProperties.SELECTED);
     }
     
     
@@ -328,9 +334,16 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
+     * Creates default rendering corresponding to the type of {@link #element}.
+     * 
+     * @return a default {@link KRendering}
+     */
+    protected abstract KRendering createDefaultRendering();
+    
+    /**
      * Performs the actual update of the rendering.
      * 
-     * @return the Piccolo node representing the current rendering
+     * @return the Piccolo2D node representing the current rendering
      */
     protected abstract PNode internalUpdateRendering();
 
@@ -699,13 +712,9 @@ public abstract class AbstractKGERenderingController
 
         this.defaultNonTextSelectionStyles = Lists.newArrayList();
         
-        final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
-        // the color values of 'DimGray' // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
-        bgColor.setRed(190);
-        bgColor.setGreen(190);
-        bgColor.setBlue(190);
-        final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
-        bg.setColor(bgColor);
+        // the color values of 'DimGray' // SUPPRESS CHECKSTYLE NEXT MagicNumber
+        final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground().setColor(190, 190, 190);
+        
         this.defaultNonTextSelectionStyles.add(bg);
 
         final KLineStyle lineStyle = KRenderingFactory.eINSTANCE.createKLineStyle();

@@ -51,7 +51,7 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
         if (currentRendering != null) {
             renderingNode = handleAreaAndPointPlacementRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleAreaAndPointPlacementRendering(createDefaultPortRendering(), repNode);
+            renderingNode = handleAreaAndPointPlacementRendering(createDefaultRendering(), repNode);
         }
         
         return renderingNode;
@@ -62,15 +62,13 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
      * 
      * @return the rendering
      */
-    private static KRendering createDefaultPortRendering() {
+    protected KRendering createDefaultRendering() {
         // create the default rendering model
-        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        KRectangle rect = factory.createKRectangle();
+        final KRenderingFactory factory = KRenderingFactory.eINSTANCE;
+        final KRectangle rect = factory.createKRectangle();
         
-        KForeground foreground = factory.createKForeground();
-        foreground.setColor(factory.createKColor());
-        KBackground background = factory.createKBackground();
-        background.setColor(factory.createKColor());
+        final KForeground foreground = factory.createKForeground().setColor(0, 0, 0);
+        final KBackground background = factory.createKBackground().setColor(0, 0, 0);
 
         rect.getStyles().add(foreground);
         rect.getStyles().add(background);

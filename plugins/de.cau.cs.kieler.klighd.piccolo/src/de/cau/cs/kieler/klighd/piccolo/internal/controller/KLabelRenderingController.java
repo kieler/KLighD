@@ -15,12 +15,13 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.krendering.KForeground;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingUtil;
@@ -60,7 +61,7 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
         if (currentRendering != null) {
             renderingNode = handleLabelRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleLabelRendering(createDefaultLabelRendering(), repNode);
+            renderingNode = handleLabelRendering(createDefaultRendering(), repNode);
         }
 
         return renderingNode;
@@ -80,7 +81,10 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
     private PNode handleLabelRendering(final KRendering rendering, final KLabelNode parent) {
         // the rendering of a label has to contain exact one KText
         //  that "inherits" the text from the KLabel itself
-        if (Iterators.size(Iterators.filter(rendering.eAllContents(), KText.class)) != 1) {
+        final List<KText> kTexts = Lists.newArrayList(
+                Iterators.filter(KRenderingUtil.selfAndAllChildren(rendering), KText.class));
+       
+        if (kTexts.size() != 1) {
             throw new RuntimeException("KLabel " + getGraphElement()
                     + " must (deeply) contain exactly 1 KText element.");
         }
@@ -89,8 +93,7 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
         final PNodeController<?> controller = (PNodeController<?>) createRendering(rendering,
                 parent, Bounds.of(parent.getBoundsReference()));
         
-        final KText kText = Iterators.getNext(
-                Iterators.filter(rendering.eAllContents(), KText.class), null); 
+        final KText kText = kTexts.get(0); 
         
         @SuppressWarnings("unchecked")
         final PNodeController<KlighdStyledText> textController = (PNodeController<KlighdStyledText>)
@@ -136,16 +139,8 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
      * 
      * @return the rendering
      */
-    private static KRendering createDefaultLabelRendering() {
+    protected KRendering createDefaultRendering() {
         // create the default rendering model
-        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        KText text = factory.createKText();
-
-        KForeground foreground = factory.createKForeground();
-        foreground.setColor(factory.createKColor());
-        
-        text.getStyles().add(foreground);
-        return text;
+        return KRenderingFactory.eINSTANCE.createKText();
     }
-
 }

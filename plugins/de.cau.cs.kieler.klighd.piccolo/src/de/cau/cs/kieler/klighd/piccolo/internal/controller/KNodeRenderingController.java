@@ -76,7 +76,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
         if (currentRendering != null) {
             renderingNode = handleAreaAndPointPlacementRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleAreaAndPointPlacementRendering(createDefaultNodeRendering(), repNode);
+            renderingNode = handleAreaAndPointPlacementRendering(createDefaultRendering(), repNode);
         }
 
         // make sure the child area is attached to something
@@ -147,7 +147,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      * 
      * @return the rendering
      */
-    private static KRendering createDefaultNodeRendering() {
+    protected KRendering createDefaultRendering() {
         // create the default rendering model
         return KRenderingFactory.eINSTANCE.createKRectangle();
     }
