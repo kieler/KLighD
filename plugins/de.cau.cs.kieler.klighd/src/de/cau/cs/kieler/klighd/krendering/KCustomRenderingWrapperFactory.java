@@ -193,7 +193,7 @@ public final class KCustomRenderingWrapperFactory {
                 return null;
             }
         } else {
-            // ... by taking the KLighD bundle of none is given
+            // ... by taking the KLighD bundle if none is given
             bundle = KlighdPlugin.getDefault().getBundle();
         }
         
