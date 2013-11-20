@@ -105,7 +105,7 @@ public class Draw2DNode extends KCustomFigureNode {
      */
     public boolean setBounds(final double x, final double y, final double width, final double height) {
         // convert the bounds to integer-based ones by means of the smart method
-        // RectangularShape#getBounds() and store them in the Draw2d Rectangle 'singletonRectDraw2d'
+        //  RectangularShape#getBounds() and store them in the Draw2d Rectangle 'singletonRectDraw2d'
         this.singletonRectDouble.setRect(x, y, width, height);
         final java.awt.Rectangle intRect = this.singletonRectDouble.getBounds();
         this.singletonRectDraw2d.setBounds(intRect.x, intRect.y, intRect.width, intRect.height);
@@ -117,6 +117,13 @@ public class Draw2DNode extends KCustomFigureNode {
         return super.setBounds(x, y, width, height);
     }
 
+    // some private field for tracking the figure's original attributes
+    //  in case those attributes are changed for highlighting purposes!
+    private Color initialForeground = null;
+    private Color initialBackground = null;
+    private Float initialLineWidth = null;
+    private Integer initialLineStyle = null;
+
     /**
      * {@inheritDoc}
      */
@@ -125,25 +132,79 @@ public class Draw2DNode extends KCustomFigureNode {
         IFigure drawnFigure = (IFigure) figure.getChildren().get(0);
         
         //apply background color
-        KColor bgColor = styles.background.getColor();
-        drawnFigure.setBackgroundColor(new Color(null, bgColor.getRed(), bgColor.getGreen(),
-                bgColor.getBlue()));
-        
-        //apply foreground color
-        KColor fgColor = styles.foreground.getColor();
-        drawnFigure.setForegroundColor(new Color(null, fgColor.getRed(), fgColor.getGreen(),
-                fgColor.getBlue()));
-
-        //if figure is a shape we can add more
-        if (drawnFigure instanceof Shape) {
-            //set line width
-            ((Shape) drawnFigure).setLineWidthFloat(styles.lineWidth.getLineWidth());
-            //set line style
-            ((Shape) drawnFigure).setLineStyle(styles.lineStyle.getLineStyle().getValue());
+        if (styles.background != null) {
+            if (this.initialBackground == null) {
+                this.initialBackground = drawnFigure.getBackgroundColor();
+            } else {
+                drawnFigure.getBackgroundColor().dispose();
+            }
+            
+            final KColor bgColor = styles.background.getColor();
+            drawnFigure.setBackgroundColor(
+                    new Color(null, bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue()));
+        } else {
+            if (this.initialBackground != null
+                    && this.initialBackground != drawnFigure.getBackgroundColor()) {
+                drawnFigure.getBackgroundColor().dispose();
+                drawnFigure.setBackgroundColor(this.initialBackground);
+            }
         }
         
+        //apply foreground color
+        if (styles.foreground != null) {
+            if (this.initialForeground == null) {
+                this.initialForeground = drawnFigure.getForegroundColor();
+            } else {
+                drawnFigure.getForegroundColor().dispose();
+            }
+            
+            final KColor fgColor = styles.foreground.getColor();
+            drawnFigure.setForegroundColor(
+                    new Color(null, fgColor.getRed(), fgColor.getGreen(), fgColor.getBlue()));
+        } else {
+            if (this.initialForeground != null
+                    && this.initialForeground != drawnFigure.getForegroundColor()) {
+                drawnFigure.getForegroundColor().dispose();
+                drawnFigure.setForegroundColor(this.initialForeground);
+            }
+        }
+        
+        //if figure is a shape we can configure more attributes
+        if (drawnFigure instanceof Shape) {
+            final Shape drawnShape = (Shape) drawnFigure;
+            
+            //set line style
+            if (styles.lineWidth != null) {
+                if (this.initialLineWidth == null) {
+                    this.initialLineWidth = drawnShape.getLineWidthFloat();
+                }
+                
+                drawnShape.setLineWidthFloat(styles.lineWidth.getLineWidth());
+                
+            } else {
+                if (this.initialLineWidth != null
+                        && this.initialLineWidth != drawnShape.getLineWidthFloat()) {
+                    drawnShape.setLineWidthFloat(this.initialLineWidth);
+                }
+            }
+            
+            //set line style
+            if (styles.lineStyle != null) {
+                if (this.initialLineStyle == null) {
+                    this.initialLineStyle = drawnShape.getLineStyle();
+                }
+                
+                drawnShape.setLineStyle(styles.lineStyle.getLineStyle().getValue());
+                
+            } else {
+                if (this.initialLineStyle != null
+                        && this.initialLineStyle != drawnShape.getLineStyle()) {
+                    drawnShape.setLineStyle(this.initialLineStyle);
+                }
+            }
+        }
     }
-
+    
     /**
      * {@inheritDoc}
      */
