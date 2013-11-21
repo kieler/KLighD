@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -80,27 +81,29 @@ import edu.umd.cs.piccolo.nodes.PPath;
 
 /**
  * The abstract base class for controllers that manages the transformation of a dedicated
- * {@link KGraphElement}'s KRendering data to Piccolo nodes and the synchronization of those Piccolo
+ * {@link KGraphElement}'s KRendering data to Piccolo2D nodes and the synchronization of those Piccolo2D
  * nodes with the KRendering specification.
  * 
- * @author mri, chsch
+ * @author mri
+ * @author chsch
  * 
  * @param <S>
  *            the type of the underlying graph element
  * @param <T>
- *            the type of the Piccolo node representing the graph element
+ *            the type of the Piccolo2D node representing the graph element
  */
 public abstract class AbstractKGERenderingController
     <S extends KGraphElement, T extends IGraphElement<S>> {
 
     /**
      * A map that tracks the {@link PNodeController PNodeControllers} that are deployed to manage
-     * PNode that represent {@link KRendering} structure over the life cycle of the diagram.<br>
-     * The map is populated initializing/updating the rendering of a {@link KGraphElement}. Pairs
-     * are removed when {@link KRendering} objects are removed from the KGE, see
-     * {@link #installRenderingSyncAdapter()}.<br>
-     * The map is cleared in when the whole node is removed and this controller is disposed, see
-     * references of {@link #removeAllPNodeControllers()}.
+     * the {@link PNode PNodes} representing the {@link KRendering} structure over the life cycle of
+     * the diagram.<br>
+     * The map is populated while initializing/updating the rendering representation (i.e. the
+     * {@link PNode PNodes} of a {@link KGraphElement}. Entries are removed when {@link KRendering}
+     * objects are removed from their containers, see {@link #installRenderingSyncAdapter()}.<br>
+     * The map is cleared if the whole {@link KGraphElement} is removed and this controller is
+     * disposed, see references of {@link #removeAllPNodeControllers()}.
      */
     private final Multimap<KRendering, PNodeController<? extends PNode>> pnodeControllers
             = ArrayListMultimap.create();
@@ -117,10 +120,10 @@ public abstract class AbstractKGERenderingController
     /** the rendering currently in use by this controller. */
     private KRendering currentRendering;
 
-    /** the Piccolo node representing the node. */
+    /** the Piccolo2D node representing the node. */
     private T repNode;
     
-    /** the Piccolo node representing the rendering. */
+    /** the Piccolo2D node representing the rendering. */
     private PNode renderingNode = null;
 
     /** the adapter currently installed on the rendering. */
@@ -130,7 +133,7 @@ public abstract class AbstractKGERenderingController
      * An adapter on the graph element that is supposed to react on changes in the 'data' field. It
      * is sensitive to additions, exchanges, and removals of top level {@link KRendering} data.
      */
-    private AdapterImpl elementAdapter = null;
+    private Adapter elementAdapter = null;
 
     /** whether to synchronize the rendering with the model. */
     private boolean syncRendering = false;
@@ -153,7 +156,7 @@ public abstract class AbstractKGERenderingController
      * @param element
      *            the graph element for this controller
      * @param repNode
-     *            the Piccolo node representing the graph element
+     *            the Piccolo2D node representing the graph element
      */
     public AbstractKGERenderingController(final S element, final T repNode) {
         this.element = element;
@@ -171,9 +174,9 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Returns the Piccolo node representing the underlying graph element.
+     * Returns the Piccolo2D node representing the underlying graph element.
      * 
-     * @return the Piccolo node
+     * @return the Piccolo2D node
      */
     public T getRepresentation() {
         return repNode;
@@ -569,6 +572,11 @@ public abstract class AbstractKGERenderingController
         runInUI(this.updateStylesRunnable);
     }
 
+
+    /* ----------------------------------------------------------------------------------- 
+     * The style evaluation methods: 
+     * ----------------------------------------------------------------------------------- */
+
     /**
      * Updates the styles of the {@link PNode PNodes} representing {@link #currentRendering}.
      */
@@ -748,8 +756,16 @@ public abstract class AbstractKGERenderingController
     }
 
 
+    /* ----------------------------------------------------------------------------------- 
+     *
+     * The PNode creation methods: 
+     * They're called from sub the classes of this one, i.e. the KNodeRenderingController,
+     *  KPortRenderingController, KEdgeRenderingController, and KLabelRenderinController.
+     *
+     * ----------------------------------------------------------------------------------- */
+
     /**
-     * Creates the Piccolo nodes for a list of renderings inside a parent Piccolo node for the given
+     * Creates the Piccolo2D nodes for a list of renderings inside a parent Piccolo2D node for the given
      * placement.
      * 
      * @param children
@@ -759,7 +775,7 @@ public abstract class AbstractKGERenderingController
      * @param styles
      *            the styles propagated to the children
      * @param parent
-     *            the parent Piccolo node
+     *            the parent Piccolo2D node
      */
     protected void handleChildren(final List<KRendering> children, final KPlacement placement,
             final List<KStyle> styles, final PNode parent) {
@@ -775,14 +791,14 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Creates the Piccolo node for a rendering inside a parent Piccolo node using point- or
+     * Creates the Piccolo2D node for a rendering inside a parent Piccolo2D node using point- or
      * area-based child placement.
      * 
      * @param rendering
      *            the rendering
      * @param parent
-     *            the parent Piccolo node
-     * @return the Piccolo node representing the rendering
+     *            the parent Piccolo2D node
+     * @return the Piccolo2D node representing the rendering
      */
     protected PNode handleAreaAndPointPlacementRendering(final KRendering rendering,
             final PNode parent) {
@@ -790,7 +806,7 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Creates the Piccolo node for a rendering inside a parent Piccolo node using point- or
+     * Creates the Piccolo2D node for a rendering inside a parent Piccolo2D node using point- or
      * area-based child placement.
      * 
      * @param rendering
@@ -798,8 +814,8 @@ public abstract class AbstractKGERenderingController
      * @param styles
      *            the styles propagated to the children
      * @param parent
-     *            the parent Piccolo node
-     * @return the Piccolo node representing the rendering
+     *            the parent Piccolo2D node
+     * @return the Piccolo2D node representing the rendering
      */
     protected PNode handleAreaAndPointPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PNode parent) {
@@ -852,7 +868,7 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Creates the Piccolo nodes for a list of renderings inside a parent Piccolo node using grid
+     * Creates the Piccolo2D nodes for a list of renderings inside a parent Piccolo2D node using grid
      * placement.
      * 
      * @param gridPlacement
@@ -862,7 +878,7 @@ public abstract class AbstractKGERenderingController
      * @param styles
      *            the styles propagated to the children
      * @param parent
-     *            the parent Piccolo node
+     *            the parent Piccolo2D node
      */
     protected void handleGridPlacementRendering(final KGridPlacement gridPlacement,
             final List<KRendering> renderings, final List<KStyle> styles, final PNode parent) {
@@ -906,7 +922,7 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Creates the Piccolo node for a rendering inside a parent Piccolo node representing a polyline
+     * Creates the Piccolo2D node for a rendering inside a parent Piccolo2D node representing a polyline
      * using decorator placement.
      * 
      * @param rendering
@@ -914,8 +930,8 @@ public abstract class AbstractKGERenderingController
      * @param styles
      *            the styles propagated to the children
      * @param parent
-     *            the parent Piccolo node representing a polyline
-     * @return the Piccolo node representing the rendering
+     *            the parent Piccolo2D node representing a polyline
+     * @return the Piccolo2D node representing the rendering
      */
     protected PNode handleDecoratorPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final KlighdPath parent) {
@@ -964,16 +980,16 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Creates the Piccolo node representing the rendering inside the given parent with initial
+     * Creates the Piccolo2D node representing the rendering inside the given parent with initial
      * bounds.
      * 
      * @param rendering
      *            the rendering
      * @param parent
-     *            the parent Piccolo node
+     *            the parent Piccolo2D node
      * @param initialBounds
      *            the initial bounds
-     * @return the controller for the created Piccolo node
+     * @return the controller for the created Piccolo2D node
      */
     protected PNodeController<?> createRendering(final KRendering rendering, final PNode parent,
             final Bounds initialBounds) {
@@ -1033,14 +1049,15 @@ public abstract class AbstractKGERenderingController
     }
     
     /**
-     * Configures the Piccolo node for the given {@code KChildArea}.<br>
-     * This method is overloaded by {@link KNodeRenderingController}.
+     * Configures the Piccolo2D node for the given {@code KChildArea}.<br>
+     * <br>
+     * <b>CAUTION:</b> This method is overloaded by {@link KNodeRenderingController}.
      * 
      * @param parent
-     *            the parent Piccolo node
+     *            the parent Piccolo2D node
      * @param initialBounds
      *            the initial bounds
-     * @return the controller for the created Piccolo node
+     * @return the controller for the created Piccolo2D node
      */
     protected PNodeController<?> createChildArea(final PNode parent,
             final Bounds initialBounds) {
@@ -1050,10 +1067,10 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Sets default values for the given Piccolo node used as representation for a rendering.
+     * Sets default values for the given Piccolo2D node used as representation for a rendering.
      * 
      * @param node
-     *            the Piccolo node
+     *            the Piccolo2D node
      */
     protected void initializeRenderingNode(final PNode node) {
         node.setVisible(true);
