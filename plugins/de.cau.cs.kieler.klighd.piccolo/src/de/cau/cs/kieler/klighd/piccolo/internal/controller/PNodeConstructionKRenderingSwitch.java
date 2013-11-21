@@ -31,7 +31,6 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -52,7 +51,6 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
     }
 
     private AbstractKGERenderingController<?, ?> controller;
-    private Styles styles = null;
     private List<KStyle> childPropagatedStyles = null;
     private PNode parent = null;
     private Bounds initialBounds = null;
@@ -60,9 +58,6 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
     /**
      * A.
      * 
-     * @param theStyles
-     *            a Styles object that is used to collect style definition, e.g. in case of
-     *            {@link KRenderingRef} chains
      * @param theChildPropagatedStyles
      *            propagated style definitions
      * @param theParent
@@ -70,9 +65,8 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
      * @param theInitialBounds
      *            the available area to be covered by the child {@link PNode}
      */
-    public void configure(final Styles theStyles, final List<KStyle> theChildPropagatedStyles,
-            final PNode theParent, final Bounds theInitialBounds) {
-        this.styles = theStyles;
+    public void configure(final List<KStyle> theChildPropagatedStyles, final PNode theParent,
+            final Bounds theInitialBounds) {
         this.childPropagatedStyles = theChildPropagatedStyles;
         this.parent = theParent;
         this.initialBounds = theInitialBounds;
@@ -145,7 +139,7 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
     @Override
     public PNodeController<?> caseKRenderingRef(final KRenderingRef renderingReference) {
         return KGERenderingControllerHelper.createRenderingReference(controller,
-                renderingReference, styles, childPropagatedStyles, parent, initialBounds);
+                renderingReference, childPropagatedStyles, parent, initialBounds);
     }
 
     // Image

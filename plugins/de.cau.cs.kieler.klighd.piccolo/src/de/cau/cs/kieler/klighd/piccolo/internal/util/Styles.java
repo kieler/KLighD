@@ -13,9 +13,14 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
+import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KFontBold;
 import de.cau.cs.kieler.core.krendering.KFontItalic;
 import de.cau.cs.kieler.core.krendering.KFontName;
@@ -27,17 +32,24 @@ import de.cau.cs.kieler.core.krendering.KLineCap;
 import de.cau.cs.kieler.core.krendering.KLineJoin;
 import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KLineWidth;
+import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRotation;
 import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KStyleHolder;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTextStrikeout;
 import de.cau.cs.kieler.core.krendering.KTextUnderline;
 import de.cau.cs.kieler.core.krendering.KVerticalAlignment;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
+import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 
 /**
- * Dedicated utility class providing structures and methods to handle the {@link KStyle} definitions.
+ * Dedicated utility class providing structures and methods to handle the {@link KStyle} applications.
  * 
  * @author chsch
  */
@@ -82,34 +94,141 @@ public final class Styles {
     
     // CHECKSTYLEON Visibility
     
+    /**
+     * Indicates the 'selected' state of the represented KGraphElement,
+     *  all selection styles must be applied!
+     */
     private boolean applySelectionStyles = false;
+    /**
+     * Indicates the demand for applying the default selection highlighting styles,
+     *  as the current (compound) rendering doesn't provide custom selection styles.
+     * Is not incorporated for KTexts, as currently only the selection styles
+     *  contained by themselves are considered for text selection highlighting.
+     * The decision on using the default selection highlighting styles is made based
+     *  on the presence of any selection style in their 'styles' list. 
+     */
+    private boolean applyDefaultSelectionStyles = false;
+    /**
+     * The root rendering is tracked for enabling the inheritance of default selection
+     * highlighting styles by those renderings referencing the root by means of a {@link KStyleRef}. 
+     */
+    private KRendering rootRendering;
 
+
+    /**
+     * Enhances <code>this</code> {@link Styles} record with the currently effective {@link KStyle
+     * KStyles}.
+     * 
+     * @param styleHolder
+     *            the {@link KStyleHolder}, usually a {@link KRendering}, whose effective styles are
+     *            to be determined
+     * @param propagatedStyles
+     *            the list of styles propagated from container {@link KRendering KRenderings}
+     * @param isSelected
+     *            a flag indicating whether 'selection' styles shall be taken into account
+     * @param useDefaultRenderingStyles
+     *            a flag indicating whether default selection highlighting styles shall be taken
+     *            into account (usually, if no 'selection' styles are present)
+     * @param theRootRendering
+     *            the root rendering of the current
+     *            {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} to be highlighted
+     *            (used for properly propagating default highlighting styles to those rendering
+     *            referencing the root one via a {@link KStyleRef}).
+     * @return the prepared {@link Styles} record
+     */
+    public Styles deriveStyles(final KStyleHolder styleHolder, final List<KStyle> propagatedStyles,
+            final boolean isSelected, final boolean useDefaultRenderingStyles,
+            final KRendering theRootRendering) {
+        this.applySelectionStyles = isSelected;
+        this.applyDefaultSelectionStyles = useDefaultRenderingStyles;
+        this.rootRendering = theRootRendering;
+        
+        deriveStyles(styleHolder, propagatedStyles);
+
+        return this;
+    }
+    
     /**
      * Enhances a styles container with a list of styles.
      * 
      * @param styleList
      *            the list of styles
-     * @param isSelected
-     *            a flag indicating whether 'selection' styles shall be taken into account
-     * @return the styles container
      */
-    public Styles deriveStyles(final List<KStyle> styleList, final boolean isSelected) {
-        this.applySelectionStyles = isSelected;
+    private void deriveStyles(final KStyleHolder styleHolder, final List<KStyle> propagatedStyles) {
+        final Iterable<KStyle> withPropagatedStyle =
+                Iterables.concat(styleHolder.getStyles(), propagatedStyles);
+        
+        final Iterable<KStyle> withDefaultHighlightingStyles;
+        if (styleHolder instanceof KText) {
+            withDefaultHighlightingStyles =
+                    Iterables.any(styleHolder.getStyles(), KlighdPredicates.isSelection())
+                        ? styleHolder.getStyles()
+                            : Iterables.concat(styleHolder.getStyles(), getDefaultTextSelectionStyles());
+        } else {
+            withDefaultHighlightingStyles =
+                    this.applyDefaultSelectionStyles && styleHolder == this.rootRendering
+                        ? Iterables.concat(withPropagatedStyle, getDefaultNonTextSelectionStyles())
+                            : withPropagatedStyle;
+        }
 
-        for (KStyle style : styleList) {
-            if (!style.isSelection() || isSelected) {
+        for (KStyle style : withDefaultHighlightingStyles) {
+            if (!style.isSelection() || this.applySelectionStyles) {
                 kSwitch.doSwitch(style);
             }
         }
-        return this;
     }
     
+    private static List<KStyle> defaultNonTextSelectionStyles = null;
+    
+    private static List<KStyle> getDefaultNonTextSelectionStyles() {
+        if (defaultNonTextSelectionStyles != null) {
+            return defaultNonTextSelectionStyles;
+        }
+
+        defaultNonTextSelectionStyles = Lists.newArrayList();
+        
+        final KColor c = KlighdConstants.DEFAULT_SELECTION_HIGHLIGHTING_BACKGROUND_COLOR;
+        final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground().setColor(
+                c.getRed(), c.getGreen(), c.getGreen());
+        bg.setSelection(true);
+        defaultNonTextSelectionStyles.add(bg);
+
+        final KLineStyle lineStyle = KRenderingFactory.eINSTANCE.createKLineStyle();
+        lineStyle.setLineStyle(LineStyle.DASH);
+        lineStyle.setSelection(true);
+        defaultNonTextSelectionStyles.add(lineStyle);
+        
+        return defaultNonTextSelectionStyles;
+    }
+
+    private static List<KStyle> defaultTextSelectionStyles = null;
+    
+    private static List<KStyle> getDefaultTextSelectionStyles() {
+        if (defaultTextSelectionStyles != null) {
+            return defaultTextSelectionStyles;
+        }
+
+        defaultTextSelectionStyles = Lists.newArrayList();
+        
+        final KColor c = KlighdConstants.DEFAULT_SELECTION_HIGHLIGHTING_BACKGROUND_COLOR;
+        final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground().setColor(
+                c.getRed(), c.getGreen(), c.getGreen());
+        bg.setSelection(true);
+        defaultTextSelectionStyles.add(bg);
+
+        final KFontBold fontBold = KRenderingFactory.eINSTANCE.createKFontBold();
+        fontBold.setBold(true);
+        fontBold.setSelection(true);
+        defaultTextSelectionStyles.add(fontBold);
+        
+        return defaultTextSelectionStyles;
+    }
+
     private KRenderingSwitch<Void> kSwitch = new KRenderingSwitch<Void>() {
         
         // styleRef
         public Void caseKStyleRef(final KStyleRef style) {
-            Styles.this.deriveStyles(style.getStyleHolder().getStyles(),
-                    Styles.this.applySelectionStyles);
+            Styles.this.deriveStyles(style.getStyleHolder(), Collections.<KStyle>emptyList());
             return null;
         }
 

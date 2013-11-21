@@ -494,8 +494,6 @@ final class KGERenderingControllerHelper {
      *            should be the caller of this method)
      * @param renderingReference
      *            the rendering reference
-     * @param styles
-     *            the styles container for the rendering
      * @param propagatedStyles
      *            the styles propagated to the rendering's children
      * @param parent
@@ -506,8 +504,8 @@ final class KGERenderingControllerHelper {
      */
     static PNodeController<?> createRenderingReference(
             final AbstractKGERenderingController<?, ?> controller,
-            final KRenderingRef renderingReference, final Styles styles,
-            final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
+            final KRenderingRef renderingReference, final List<KStyle> propagatedStyles,
+            final PNode parent, final Bounds initialBounds) {
 
         KRendering rendering = renderingReference.getRendering();
         if (rendering == null) {

@@ -42,23 +42,19 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
-import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
-import de.cau.cs.kieler.core.krendering.KLineStyle;
 import de.cau.cs.kieler.core.krendering.KPlacement;
 import de.cau.cs.kieler.core.krendering.KPlacementData;
 import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -144,6 +140,12 @@ public abstract class AbstractKGERenderingController
      * {@link #currentRendering}.
      */
     private boolean modifiableStylesPresent = false;
+    
+    /**
+     * A flag indicating the availability of {@link KStyle KStyles} with {@link KStyle#isSelection()}
+     * returns <code>true<code>.
+     */
+    private boolean selectionStylesPresent = false;
     
     /**
      * Constructs a rendering controller.
@@ -251,6 +253,19 @@ public abstract class AbstractKGERenderingController
     protected boolean isSelected() {
         return currentRendering == null
                 ? false : currentRendering.getProperty(KlighdInternalProperties.SELECTED);
+    }
+    
+    
+    /**
+     * Convenience etter.
+     * 
+     * @param kText
+     *            the {@link KText} element to check for selection.
+     * 
+     * @return the selection state of the given {@link KText} rendering
+     */
+    private boolean isSelected(final KText kText) {
+        return kText == null ? false : kText.getProperty(KlighdInternalProperties.SELECTED);
     }
     
     
@@ -394,8 +409,8 @@ public abstract class AbstractKGERenderingController
 
             protected boolean shouldAdapt(final EStructuralFeature feature) {
                 // follow the rendering feature of the KRenderingRef
-                return feature.getFeatureID() == KRenderingPackage.KRENDERING_REF__RENDERING;
-//                        || feature.getFeatureID() == KRenderingPackage.KSTYLE_REF__STYLE_HOLDER;
+                return feature.getFeatureID() == KRenderingPackage.KRENDERING_REF__RENDERING
+                        || feature.getFeatureID() == KRenderingPackage.KSTYLE_REF__STYLE_HOLDER;
             }
 
             public void notifyChanged(final Notification msg) {
@@ -562,10 +577,7 @@ public abstract class AbstractKGERenderingController
         modifiableStylesPresent = false;
         
         final boolean isSelected = this.isSelected();
-        final List<KStyle> selectionStyles;
-        if (!isSelected) {
-            selectionStyles = Collections.<KStyle>emptyList();
-        } else {
+        if (isSelected) {
             final Iterator<KRendering> renderings = Iterators.filter(
                     KRenderingUtil.selfAndAllChildren(this.currentRendering),
                     KlighdPredicates.notInstanceOf(KText.class));
@@ -575,15 +587,12 @@ public abstract class AbstractKGERenderingController
                             return rendering.getStyles().iterator();
                         }
                     }));
-            if (Iterators.any(styles, KlighdPredicates.isSelection())) {
-                selectionStyles = Collections.<KStyle>emptyList();
-            } else {
-                selectionStyles = getDefaultNonTextSelectionStyles();
-            }
+            
+            selectionStylesPresent = Iterators.any(styles, KlighdPredicates.isSelection());
         }
 
         // update using the recursive method
-        updateStyles(currentRendering, isSelected, selectionStyles);
+        updateStyles(currentRendering, isSelected, Collections.<KStyle>emptyList());
 
         // in case styles of a detached KRendering are modified, e.g. if selection highlighting
         //  is removed from renderings that are not part of the diagram in the meantime
@@ -623,14 +632,10 @@ public abstract class AbstractKGERenderingController
             return;
         }
         
-        final List<KStyle> renderingStyles = rendering.getStyles();
-        
-        processModifiableStyles(renderingStyles);
+        processModifiableStyles(rendering.getStyles());
         
         // determine the styles for this rendering
-        final Styles styles = new Styles().deriveStyles(
-                determineRenderingStyles(renderingStyles, propagatedStyles),
-                isSelected);
+        final Styles styles = prepareStylesRecord(rendering, propagatedStyles, isSelected);
         
         // apply the styles to the rendering
         for (PNodeController<?> controller : controllers) {
@@ -645,7 +650,7 @@ public abstract class AbstractKGERenderingController
             if (container.getChildren().size() > 0) {
                 // determine the styles for propagation to child nodes
                  childPropagatedStyles = determinePropagationStyles(
-                        renderingStyles, propagatedStyles);
+                         rendering.getStyles(), propagatedStyles);
 
                 // propagate to all children
                 for (KRendering child : container.getChildren()) {
@@ -661,13 +666,52 @@ public abstract class AbstractKGERenderingController
 
                     if (childPropagatedStyles == null) {
                         childPropagatedStyles = determinePropagationStyles(
-                                renderingStyles, propagatedStyles);
+                                rendering.getStyles(), propagatedStyles);
                     }
                     
                     updateStyles(jpr, isSelected, childPropagatedStyles);
                 }
             }
         }
+    }
+    
+    /**
+     * Prepares a {@link Styles} with those styles to be applied to the Piccolo2D node representing
+     * <code>rendering</code>.
+     */
+    private Styles prepareStylesRecord(final KRendering rendering, final List<KStyle> propagatedStyles,
+            final boolean isSelected) {
+        final Styles styles = new Styles();
+        
+        if (rendering instanceof KText) {
+            styles.deriveStyles(rendering, propagatedStyles, isSelected((KText) rendering), false, null);
+        } else {
+            styles.deriveStyles(rendering, propagatedStyles, isSelected,
+                    !this.selectionStylesPresent, this.currentRendering);
+        }
+        return styles;
+    }
+
+    /**
+     * Returns the list of styles propagated to children of the rendering with the given rendering
+     * styles and propagated styles.
+     * 
+     * @param renderingStyles
+     *            the rendering styles
+     * @param propagatedStyles
+     *            the propagated styles
+     * @return the list of styles for propagation to the children of the rendering
+     */
+    protected List<KStyle> determinePropagationStyles(final List<KStyle> renderingStyles,
+            final List<KStyle> propagatedStyles) {
+        List<KStyle> propagationStyles = Lists.newLinkedList();
+//        propagationStyles.addAll(propagatedStyles);
+        for (KStyle style : Iterables.concat(propagatedStyles, renderingStyles)) {
+            if (style.isPropagateToChildren()) {
+                propagationStyles.add(style);
+            }
+        }
+        return propagationStyles;
     }
 
     /** 
@@ -701,27 +745,6 @@ public abstract class AbstractKGERenderingController
                     singletonModContext.configure(s, layoutData));
             s.eSetDeliver(deliver);
         }
-    }
-
-    private List<KStyle> defaultNonTextSelectionStyles = null;
-    
-    private List<KStyle> getDefaultNonTextSelectionStyles() {
-        if (this.defaultNonTextSelectionStyles != null) {
-            return this.defaultNonTextSelectionStyles;
-        }
-
-        this.defaultNonTextSelectionStyles = Lists.newArrayList();
-        
-        // the color values of 'DimGray' // SUPPRESS CHECKSTYLE NEXT MagicNumber
-        final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground().setColor(190, 190, 190);
-        
-        this.defaultNonTextSelectionStyles.add(bg);
-
-        final KLineStyle lineStyle = KRenderingFactory.eINSTANCE.createKLineStyle();
-        lineStyle.setLineStyle(LineStyle.DASH);
-        this.defaultNonTextSelectionStyles.add(lineStyle);
-        
-        return this.defaultNonTextSelectionStyles;
     }
 
 
@@ -957,8 +980,10 @@ public abstract class AbstractKGERenderingController
         return this.createRendering(rendering, Collections.<KStyle>emptyList(), parent, initialBounds);
     }
 
+    private PNodeConstructionKRenderingSwitch kSwitch = new PNodeConstructionKRenderingSwitch(this);
+
     /**
-     * Creates the Piccolo node representing the rendering inside the given parent with initial
+     * Creates the Piccolo2D node representing the rendering inside the given parent with initial
      * bounds.
      * 
      * @param rendering
@@ -966,38 +991,14 @@ public abstract class AbstractKGERenderingController
      * @param propagatedStyles
      *            the styles propagated to the rendering
      * @param parent
-     *            the parent Piccolo node
+     *            the parent Piccolo2D node
      * @param initialBounds
      *            the initial bounds
-     * @return the controller for the created Piccolo node
+     * @return the controller for the created Piccolo2D node
      */
     protected PNodeController<?> createRendering(final KRendering rendering,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
-        return this.createRendering(rendering, propagatedStyles, parent, initialBounds,
-                new Styles());
-    }
 
-    private PNodeConstructionKRenderingSwitch kSwitch = new PNodeConstructionKRenderingSwitch(this);
-    
-    /**
-     * Creates the Piccolo node representing the rendering inside the given parent with initial
-     * bounds.
-     * 
-     * @param rendering
-     *            the rendering
-     * @param propagatedStyles
-     *            the styles propagated to the rendering
-     * @param parent
-     *            the parent Piccolo node
-     * @param initialBounds
-     *            the initial bounds
-     * @param styles
-     *            the styles for the rendering
-     * @return the controller for the created Piccolo node
-     */
-    private PNodeController<?> createRendering(final KRendering rendering,
-            final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds,
-            final Styles styles) {
         final List<KStyle> renderingStyles = rendering.getStyles();
         
         processModifiableStyles(renderingStyles);
@@ -1007,13 +1008,12 @@ public abstract class AbstractKGERenderingController
                 propagatedStyles);
 
         // create the rendering and return its controller
-        kSwitch.configure(styles, childPropagatedStyles, parent, initialBounds);
+        kSwitch.configure(childPropagatedStyles, parent, initialBounds);
         final PNodeController<?> controller = kSwitch.doSwitch(rendering);
         
         // determine the styles for this rendering
-        styles.deriveStyles(determineRenderingStyles(renderingStyles, propagatedStyles),
-                this.isSelected());
-
+        final Styles styles = prepareStylesRecord(rendering, propagatedStyles, this.isSelected()); 
+        
         // set the styles for the created rendering node using the controller
         controller.applyChanges(styles);
 
@@ -1102,46 +1102,6 @@ public abstract class AbstractKGERenderingController
                 node.getParent().removePropertyChangeListener(pair.getFirst(), pair.getSecond());
             }
         }
-    }
-
-    /**
-     * Returns the list of styles for the rendering with the given rendering styles and propagated
-     * styles.
-     * 
-     * @param renderingStyles
-     *            the rendering styles
-     * @param propagatedStyles
-     *            the propagated styles
-     * @return the list of styles for the rendering
-     */
-    protected List<KStyle> determineRenderingStyles(final List<KStyle> renderingStyles,
-            final List<KStyle> propagatedStyles) {
-        List<KStyle> combinedStyles = Lists.newLinkedList();
-        combinedStyles.addAll(renderingStyles);
-        combinedStyles.addAll(propagatedStyles);
-        return combinedStyles;
-    }
-
-    /**
-     * Returns the list of styles propagated to children of the rendering with the given rendering
-     * styles and propagated styles.
-     * 
-     * @param renderingStyles
-     *            the rendering styles
-     * @param propagatedStyles
-     *            the propagated styles
-     * @return the list of styles for propagation to the children of the rendering
-     */
-    protected List<KStyle> determinePropagationStyles(final List<KStyle> renderingStyles,
-            final List<KStyle> propagatedStyles) {
-        List<KStyle> propagationStyles = Lists.newLinkedList();
-//        propagationStyles.addAll(propagatedStyles);
-        for (KStyle style : Iterables.concat(propagatedStyles, renderingStyles)) {
-            if (style.isPropagateToChildren()) {
-                propagationStyles.add(style);
-            }
-        }
-        return propagationStyles;
     }
 
     /**
