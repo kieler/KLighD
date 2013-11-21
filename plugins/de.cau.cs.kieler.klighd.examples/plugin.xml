@@ -42,24 +42,19 @@
             name="Remove class from diagram">
       </command>
    </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated circuit -->
+      <package
+            uri="http://kieler.cs.cau.de/KLighD/circuit"
+            class="de.cau.cs.kieler.klighd.examples.circuit.CircuitPackage"
+            genModel="src/de/cau/cs/kieler/klighd/examples/circuit/circuit.genmodel"/>
+   </extension>
    <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
-         <command
-               commandId="de.cau.cs.kieler.klighd.examples.removeCommand"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with variable="selection">
-                  <test
-                        property="de.cau.cs.kieler.klighd.examples.AllAreEClassifiers">
-                  </test>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
+         point="de.cau.cs.kieler.klighd.diagramSyntheses">
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.circuit.CircuitDiagramSynthesis"
+            id="de.cau.cs.kieler.klighd.examples.circuit.CircuitDiagramSynthesis">
+      </diagramSynthesis>
    </extension>
 
 </plugin>

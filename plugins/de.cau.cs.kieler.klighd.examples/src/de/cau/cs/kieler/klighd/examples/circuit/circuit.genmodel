@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="KIELER - Kiel Integrated Environment for Layout Eclipse RichClient&#xA;&#xA;http://www.informatik.uni-kiel.de/rtsys/kieler/&#xA;&#xA;Copyright 2013 by&#xA;+ Christian-Albrechts-University of Kiel&#xA;  + Department of Computer Science&#xA;    + Real-Time and Embedded Systems Group&#xA;&#xA;This code is provided under the terms of the Eclipse Public License (EPL).&#xA;See the file epl-v10.html for the license text."
+    modelDirectory="/de.cau.cs.kieler.klighd.examples/src" editDirectory="/de.cau.cs.kieler.klighd.examples.circuit.editor/src"
+    editorDirectory="/de.cau.cs.kieler.klighd.examples.circuit.editor/src" modelPluginID="de.cau.cs.kieler.klighd.examples"
+    templateDirectory="" redirection="" modelName="Circuit" modelPluginClass="" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    rootImplementsInterface="" codeFormatting="true" booleanFlagsField="" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="de.cau.cs.kieler.klighd.examples.circuit.editor"
+    editorPluginID="de.cau.cs.kieler.klighd.examples.circuit.editor" language="" interfaceNamePattern=""
+    classNamePattern="" operationReflection="true" importOrganizing="true">
+  <foreignModel>circuit.ecore</foreignModel>
+  <genPackages prefix="Circuit" basePackage="de.cau.cs.kieler.klighd.examples" disposableProviderFactory="true"
+      ecorePackage="circuit.ecore#/">
+    <genClasses ecoreClass="circuit.ecore#//Circuit">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference circuit.ecore#//Circuit/connectors"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference circuit.ecore#//Circuit/innerCircuits"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference circuit.ecore#//Circuit/innerWires"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute circuit.ecore#//Circuit/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute circuit.ecore#//Circuit/instanceName"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference circuit.ecore#//Circuit/parent"/>
+    </genClasses>
+    <genClasses ecoreClass="circuit.ecore#//Connector">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute circuit.ecore#//Connector/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference circuit.ecore#//Connector/connectedWires"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference circuit.ecore#//Connector/parent"/>
+    </genClasses>
+    <genClasses ecoreClass="circuit.ecore#//Wire">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference circuit.ecore#//Wire/connectedTo"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference circuit.ecore#//Wire/parent"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

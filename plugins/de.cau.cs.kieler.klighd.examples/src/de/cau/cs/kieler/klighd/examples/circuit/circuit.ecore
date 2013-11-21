@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="circuit" nsURI="http://kieler.cs.cau.de/KLighD/circuit" nsPrefix="circuit">
+  <eClassifiers xsi:type="ecore:EClass" name="Circuit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connectors" upperBound="-1"
+        eType="#//Connector" containment="true" eOpposite="#//Connector/parent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="innerCircuits" upperBound="-1"
+        eType="#//Circuit" containment="true" eOpposite="#//Circuit/parent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="innerWires" upperBound="-1"
+        eType="#//Wire" containment="true" eOpposite="#//Wire/parent"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="instanceName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
+        eType="#//Circuit" eOpposite="#//Circuit/innerCircuits"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Connector">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connectedWires" upperBound="-1"
+        eType="#//Wire" eOpposite="#//Wire/connectedTo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
+        eType="#//Circuit" eOpposite="#//Circuit/connectors"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Wire">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connectedTo" upperBound="-1"
+        eType="#//Connector" eOpposite="#//Connector/connectedWires"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
+        eType="#//Circuit" eOpposite="#//Circuit/innerWires"/>
+  </eClassifiers>
+</ecore:EPackage>
