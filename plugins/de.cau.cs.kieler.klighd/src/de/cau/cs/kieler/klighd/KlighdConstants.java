@@ -21,6 +21,8 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.core.krendering.KColor;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
@@ -31,6 +33,14 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
  */
 public final class KlighdConstants {
 
+    /**
+     * The background color used in default selection highlighting
+     * {@link de.cau.cs.kieler.core.krendering.KBackground KBackground} style.
+     */
+    // the color values of 'DimGray'
+    public static final KColor DEFAULT_SELECTION_HIGHLIGHTING_BACKGROUND_COLOR =
+            KRenderingFactory.eINSTANCE.createKColor().setColor(190, 190, 190);
+    
     /**
      * Constant definition of the black {@link RGB} color constant.
      */
