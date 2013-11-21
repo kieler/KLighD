@@ -62,7 +62,7 @@ public class CrossDocumentContentAdapter extends EContentAdapter {
                 featureIterator.hasNext();) {
             Notifier notifier = featureIterator.next();
             EStructuralFeature feature = featureIterator.feature();
-            if (shouldAdapt(feature)) {
+            if (shouldAdapt(feature) && !notifier.eAdapters().contains(this)) {
                 addAdapter(notifier);
             }
         }
