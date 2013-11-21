@@ -157,7 +157,7 @@ class KContainerRenderingExtensions {
      * @example
      * rectangle.setGridPlacement(1).from(LEFT, 0, 0, TOP, padding - 3, 0).to(RIGHT, 0, 0, BOTTOM, 0, 0)
      * 
-     * @extensionType microLayout
+     * @extensionCategory microLayout
      */
     def KGridPlacement setGridPlacement(KContainerRendering cr, int cols) {
         return renderingFactory.createKGridPlacement => [

@@ -142,7 +142,7 @@ class KRenderingExtensions {
      *   it.background = "green".color
      * ]
      * 
-     * @extensionType composition  
+     * @extensionCategory composition  
      */
     def dispatch KRectangle addRectangle(KNode node){
         return renderingFactory.createKRectangle() => [
@@ -163,7 +163,7 @@ class KRenderingExtensions {
     }
 
     /**
-     * @extensionType composition  
+     * @extensionCategory composition  
      */
     def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight) {
         return renderingFactory.createKRoundedRectangle => [
@@ -330,7 +330,7 @@ class KRenderingExtensions {
     }
  
     /**
-     * @extensionType style  
+     * @extensionCategory style  
      */
     def <T extends KRendering> T setLineWidth(T rendering, float width) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
@@ -352,7 +352,7 @@ class KRenderingExtensions {
     }
     
     /**
-     * @extensionType style  
+     * @extensionCategory style  
      */
     def KLineStyle getLineStyle(KRendering rendering) {
         return rendering.styles.filter(typeof(KLineStyle)).last?:(renderingFactory.createKLineStyle => [

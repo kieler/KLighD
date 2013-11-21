@@ -31,7 +31,7 @@ class KColorExtensions {
      * rectangle.background = "black".color
      * rectangle.foreground = "#00ff00".color
      * 
-     * @extensionType style
+     * @extensionCategory style
      */
     def KColor getColor(String name) {
         return renderingFactory.createKColor() =>[

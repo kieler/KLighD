@@ -57,7 +57,7 @@ class KLibraryExtensions {
      * @example
      * val libJunction = edge.source.getFromLibrary("ren_junction")
      * 
-     * @extensionType library
+     * @extensionCategory library
      */
     def KRenderingRef getFromLibrary(KRenderingLibrary library, String id) {
         val rendering = library.renderings.findFirst[r|r.id == id] as KRendering
@@ -91,7 +91,7 @@ class KLibraryExtensions {
      *  ]
      * )  
      * 
-     * @extensionType library
+     * @extensionCategory library
      */
     def KRenderingRef addToLibrary(KRenderingLibrary library, String id, KRendering rendering) {
         rendering.id = id
