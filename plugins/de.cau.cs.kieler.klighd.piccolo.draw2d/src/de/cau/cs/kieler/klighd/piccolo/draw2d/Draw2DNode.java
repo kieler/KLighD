@@ -61,6 +61,13 @@ public class Draw2DNode extends KCustomFigureNode {
     /** The required GraphicsAdapter providing the necessary "drawing" API. */
     private GraphicsAdapter graphics;
 
+    // some private fields for tracking the figure's original attributes
+    //  in case those attributes are changed for highlighting purposes!
+    private Color initialForeground = null;
+    private Color initialBackground = null;
+    private Float initialLineWidth = null;
+    private Integer initialLineStyle = null;
+
     /**
      * Create a Draw2D node with the given figure.
      * 
@@ -68,6 +75,11 @@ public class Draw2DNode extends KCustomFigureNode {
      *            a Draw2D figure
      */
     public Draw2DNode(final Figure theFigure) {
+        if (theFigure == null) {
+            final String msg = "KLighD draw2d binding: Constructor of Draw2DNode has "
+                            + "been called with argument of null. This is not allowed!";
+            throw new IllegalArgumentException(msg);
+        }
         this.graphics = new GraphicsAdapter();
         this.updateManager = new WrappingUpdateManager(this);
         this.figure = new Figure() {
@@ -92,6 +104,14 @@ public class Draw2DNode extends KCustomFigureNode {
 
         this.figure.add(theFigure);
         this.figure.setLayoutManager(new StackLayout());
+        
+        this.initialBackground = theFigure.getBackgroundColor();
+        this.initialForeground = theFigure.getForegroundColor();
+        
+        if (theFigure instanceof Shape) {
+            this.initialLineWidth = ((Shape) theFigure).getLineWidthFloat();
+            this.initialLineStyle = ((Shape) theFigure).getLineStyle();
+        }
     }
 
     private final Rectangle2D singletonRectDouble = new Rectangle2D.Double();
@@ -117,13 +137,6 @@ public class Draw2DNode extends KCustomFigureNode {
         return super.setBounds(x, y, width, height);
     }
 
-    // some private field for tracking the figure's original attributes
-    //  in case those attributes are changed for highlighting purposes!
-    private Color initialForeground = null;
-    private Color initialBackground = null;
-    private Float initialLineWidth = null;
-    private Integer initialLineStyle = null;
-
     /**
      * {@inheritDoc}
      */
@@ -133,9 +146,8 @@ public class Draw2DNode extends KCustomFigureNode {
         
         //apply background color
         if (styles.background != null) {
-            if (this.initialBackground == null) {
-                this.initialBackground = drawnFigure.getBackgroundColor();
-            } else {
+            if (drawnFigure.getBackgroundColor() != null
+                    && drawnFigure.getBackgroundColor() != this.initialBackground) {
                 drawnFigure.getBackgroundColor().dispose();
             }
             
@@ -143,18 +155,17 @@ public class Draw2DNode extends KCustomFigureNode {
             drawnFigure.setBackgroundColor(
                     new Color(null, bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue()));
         } else {
-            if (this.initialBackground != null
-                    && this.initialBackground != drawnFigure.getBackgroundColor()) {
+            if (drawnFigure.getBackgroundColor() != null
+                    && drawnFigure.getBackgroundColor() != this.initialBackground) {
                 drawnFigure.getBackgroundColor().dispose();
-                drawnFigure.setBackgroundColor(this.initialBackground);
             }
+            drawnFigure.setBackgroundColor(this.initialBackground);
         }
         
         //apply foreground color
         if (styles.foreground != null) {
-            if (this.initialForeground == null) {
-                this.initialForeground = drawnFigure.getForegroundColor();
-            } else {
+            if (drawnFigure.getForegroundColor() != null
+                    && drawnFigure.getForegroundColor() != this.initialForeground) {
                 drawnFigure.getForegroundColor().dispose();
             }
             
@@ -162,11 +173,11 @@ public class Draw2DNode extends KCustomFigureNode {
             drawnFigure.setForegroundColor(
                     new Color(null, fgColor.getRed(), fgColor.getGreen(), fgColor.getBlue()));
         } else {
-            if (this.initialForeground != null
-                    && this.initialForeground != drawnFigure.getForegroundColor()) {
+            if (drawnFigure.getForegroundColor() != null
+                    && drawnFigure.getForegroundColor() != this.initialForeground) {
                 drawnFigure.getForegroundColor().dispose();
-                drawnFigure.setForegroundColor(this.initialForeground);
             }
+            drawnFigure.setForegroundColor(this.initialForeground);
         }
         
         //if figure is a shape we can configure more attributes
