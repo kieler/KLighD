@@ -28,6 +28,7 @@ import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
 import de.cau.cs.kieler.kiml.options.PortLabelPlacement
 import java.util.List
+import de.cau.cs.kieler.core.kgraph.KPort
 
 /**
  * @author chsch
@@ -172,7 +173,7 @@ class KLabelExtensions {
         ];
     }
     
-     /**
+    /**
      * Adds a central node label to KNode 'node'!
      */
     def KLabel addOutsideBottomRightNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
@@ -185,7 +186,9 @@ class KLabelExtensions {
     /* --------------------------------- */
 
     /**
-     * Configures an inside port label!
+     * Configures an inside port label!<br>
+     * Note that <code>label</code> must be already contained in a {@link KPort} that in turn is contained
+     * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureInsidePortLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
@@ -198,7 +201,18 @@ class KLabelExtensions {
     }
 
     /**
-     * Configures a outside port label!
+     * Adds an inside label to {@link KPort} <code>port</code>!<br>
+     * Note that <code>port</code> must be already contained in a {@link KNode} in order to let the
+     * configuration be performed properly.
+     */
+    def KLabel addInsidePortLabel(KPort port, String labelText, int fontSize, String fontName) {
+        return port.createLabel().configureInsidePortLabel(labelText, fontSize, fontName);
+    }
+
+    /**
+     * Configures a outside port label!<br>
+     * Note that <code>label</code> must be already contained in a {@link KPort} that in turn is contained
+     * in a {@link KNode} in order to let the configuration be performed properly.
      */
     def KLabel configureOutsidePortLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
@@ -208,6 +222,15 @@ class KLabelExtensions {
                 KNode: node.addLayoutParam(LayoutOptions::PORT_LABEL_PLACEMENT, PortLabelPlacement::OUTSIDE)
             }
         ];
+    }
+
+    /**
+     * Adds an outside label to {@link KPort} <code>port</code>!<br>
+     * Note that <code>port</code> must be already contained in a {@link KNode} in order to let the
+     * configuration be performed properly.
+     */
+    def KLabel addOutsidePortLabel(KPort port, String labelText, int fontSize, String fontName) {
+        return port.createLabel().configureOutsidePortLabel(labelText, fontSize, fontName);
     }
 
 

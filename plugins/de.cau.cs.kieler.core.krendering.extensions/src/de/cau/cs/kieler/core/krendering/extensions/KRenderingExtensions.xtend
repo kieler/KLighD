@@ -84,52 +84,52 @@ class KRenderingExtensions {
         return kge.getData(typeof(KRendering));
     }
 
-    def KContainerRendering addInvisibleContainerRendering(KNode node){
+    def dispatch KContainerRendering addInvisibleContainerRendering(KNode node){
         return renderingFactory.createKRectangle() => [
             it.invisible = true;
             node.data += it
         ];
     }
 
-    def KContainerRendering addInvisibleContainerRendering(KPort port){
+    def dispatch KContainerRendering addInvisibleContainerRendering(KPort port){
         return renderingFactory.createKRectangle() => [
             it.invisible = true;
             port.data += it
         ];
     }
 
-    def KContainerRendering addInvisibleContainerRendering(KLabel label){
+    def dispatch KContainerRendering addInvisibleContainerRendering(KLabel label){
         return renderingFactory.createKRectangle() => [
             it.invisible = true;
             label.data += it
         ];
     }
 
-    def KEllipse addEllipse(KNode node){
+    def dispatch KEllipse addEllipse(KNode node){
         return renderingFactory.createKEllipse() => [
             node.data += it
         ];
     }
 
-    def KEllipse addEllipse(KPort port){
+    def dispatch KEllipse addEllipse(KPort port){
         return renderingFactory.createKEllipse() => [
             port.data += it
         ];
     }
 
-    def KEllipse addEllipse(KLabel label){
+    def dispatch KEllipse addEllipse(KLabel label){
         return renderingFactory.createKEllipse() => [
             label.data += it
         ];
     }
 
-    def KPolygon addPolygon(KNode node){
+    def dispatch KPolygon addPolygon(KNode node){
         return renderingFactory.createKPolygon() => [
             node.data += it
         ];
     }
 
-    def KPolygon addPolygon(KPort port){
+    def dispatch KPolygon addPolygon(KPort port){
         return renderingFactory.createKPolygon() => [
             port.data += it
         ];
@@ -165,7 +165,7 @@ class KRenderingExtensions {
     /**
      * @extensionCategory composition  
      */
-    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight) {
+    def dispatch KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
@@ -173,7 +173,7 @@ class KRenderingExtensions {
         ];
     }
     
-    def KRoundedRectangle addRoundedRectangle(KLabel label, float cWidth, float cHeight) {
+    def dispatch KRoundedRectangle addRoundedRectangle(KLabel label, float cWidth, float cHeight) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
@@ -181,7 +181,7 @@ class KRenderingExtensions {
         ];
     }
     
-    def KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, float lineWidth) {
+    def dispatch KRoundedRectangle addRoundedRectangle(KNode node, float cWidth, float cHeight, float lineWidth) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
@@ -190,7 +190,7 @@ class KRenderingExtensions {
         ];
     }
     
-    def KRoundedRectangle addRoundedRectangle(KLabel label, float cWidth, float cHeight, float lineWidth) {
+    def dispatch KRoundedRectangle addRoundedRectangle(KLabel label, float cWidth, float cHeight, float lineWidth) {
         return renderingFactory.createKRoundedRectangle => [
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
