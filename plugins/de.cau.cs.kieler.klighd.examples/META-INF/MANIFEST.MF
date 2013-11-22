@@ -28,7 +28,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.commands,
  org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: de.cau.cs.kieler.klighd.examples.circuit,
- de.cau.cs.kieler.klighd.examples.circuit.impl,
- de.cau.cs.kieler.klighd.examples.circuit.util
 Bundle-ActivationPolicy: lazy
