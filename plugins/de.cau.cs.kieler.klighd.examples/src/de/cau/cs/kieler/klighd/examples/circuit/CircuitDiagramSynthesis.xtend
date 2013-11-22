@@ -34,7 +34,7 @@ import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import javax.inject.Inject
 
 /**
- * An exemplary diagram synthesis illustrating the generation of diagrams containing node with ports.
+ * An exemplary diagram synthesis illustrating the generation of diagrams containing nodes with ports.
  * 
  * @author chsch
  */
@@ -63,7 +63,8 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
     
     @Inject
     extension KColorExtensions
-    
+
+
     /**
      * {@inheritDoc}<br>
      * <br>
@@ -134,12 +135,12 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         // now let's attach figures ...
         //  depending on the string in 'circuit's 'type' field ...
         switch (circuit.type) {
-            case "NOT" : circuitNode.createNotGate()
-            case "AND" : circuitNode.createAndGate()
-            case "OR" : circuitNode.createOrGate()
+            case "NOT" : circuitNode.createNotGateRendering()
+            case "AND" : circuitNode.createAndGateRendering()
+            case "OR" : circuitNode.createOrGateRendering()
             
             // in case no known type is found and 'circuit' doesn't contain any inner circuit's
-            case atomicCircuit : circuitNode.createBasicGate()
+            case atomicCircuit : circuitNode.createBasicGateRendering()
             
             // otherwise, i.e. in case of a hierarchic circuit containing nested circuits
             //  configure the minimal node size and the port constraints
@@ -211,7 +212,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         ];
     } 
     
-    def KRendering createBasicGate(KNode node) {
+    def KRendering createBasicGateRendering(KNode node) {
         node.setNodeSize(40,40);
 
         node.addRectangle => [
@@ -223,7 +224,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         ];
     } 
     
-    def KRendering createNotGate(KNode node) {
+    def KRendering createNotGateRendering(KNode node) {
         node.setNodeSize(30,30);
         node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
         
@@ -252,7 +253,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         ];
     } 
     
-    def KRendering createAndGate(KNode node) {
+    def KRendering createAndGateRendering(KNode node) {
         node.setNodeSize(40,30);
         node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
         
@@ -294,7 +295,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         ];
     } 
     
-    def KRendering createOrGate(KNode node) {
+    def KRendering createOrGateRendering(KNode node) {
         node.setNodeSize(40,30);
         node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
         
