@@ -109,8 +109,8 @@ class KLabelExtensions {
         ];
     }
     
-    def KLabel addLayoutParam(KLabel node, IProperty<?> property, Object value) {
-        return node => [
+    def KLabel addLayoutParam(KLabel label, IProperty<?> property, Object value) {
+        return label => [
             it.getData(typeof(KShapeLayout)).setProperty(property, value)
         ];
     }
