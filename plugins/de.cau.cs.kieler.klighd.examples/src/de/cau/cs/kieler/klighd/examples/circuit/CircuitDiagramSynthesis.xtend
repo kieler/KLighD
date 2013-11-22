@@ -34,7 +34,8 @@ import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import javax.inject.Inject
 
 /**
- *
+ * An exemplary diagram synthesis illustrating the generation of diagrams containing node with ports.
+ * 
  * @author chsch
  */
 class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
@@ -63,62 +64,149 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
     @Inject
     extension KColorExtensions
     
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This method is called by KLighD for synthesizing a KGraph/KRendering-based view model
+     * describing a representation of the given {@link Circuit} <code>circuit</code>.
+     */
     override transform(Circuit circuit) {
+        // the diagram root node is mandatory and represents the diagrams canvas
         val diagramRoot = createNode().putToLookUpWith(circuit);
         
+        // translated the given circuit recursively ...
         circuit.createCircuitNode(diagramRoot);
         
+        // ... and return the result :-) 
         return diagramRoot;
     }
     
-    def KNode createCircuitNode(Circuit circuit, KNode parent) {        
-        val circuitNode = circuit.createNode().putToLookUpWith(circuit);
+    
+    /**
+     * This method translates instances of {@link Circuit} recursively into {@link KNode KNodes} and
+     * adds it to the given <code>parent</code> node.
+     * 
+     * @param circuit
+     *            the circuit to be translated
+     * @param parent
+     *            the parent {@link KNode} the new one is to be attached.
+     */
+    def void createCircuitNode(Circuit circuit, KNode parent) {
+        // first create the new KNode and attach it to its designated parent
+        val KNode circuitNode = circuit.createNode().putToLookUpWith(circuit);
         parent.children += circuitNode;
         
+        // we want the (potentially) contained contained edges to be routed in
+        //  orthogonal style, this option is evaluated by the layout algorithm
         circuitNode.setLayoutOption(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
-            
+
         val atomicCircuit = circuit.innerCircuits.empty;
+        
+        // for each of 'circuit's connectors ...
         circuit.connectors.forEach[ connector |
+
+            // ... create a port, associate it to the connector, and configure it ...
             connector.createPort().putToLookUpWith(connector) => [
+
+                // first add it to the knode representing the circuit
+                //  this is required for the correct label configuration later on 
                 circuitNode.ports += it;
-                it.setPortSize(5, 2);
-                it.setLayoutOption(LayoutOptions.OFFSET, if (atomicCircuit) 0f else -3f);
-                it.addRectangle.setLineJoin(LineJoin.JOIN_ROUND).background = "black".color;
                 
-                connector.createLabel(it).putToLookUpWith(connector)
-                    .configureInsidePortLabel(connector.name, 8, KlighdConstants.DEFAULT_FONT_NAME);
+                // set the ports size ...
+                it.setPortSize(5, 2);
+                
+                // ... and its offset respective to 'circuitNode's bounds
+                //  a negative number causes the port to be moved inside the knode
+                // we, however, want this movement only in case of non-atomic circuits,
+                //  i.e. such containing an inner circuit network
+                it.setLayoutOption(LayoutOptions.OFFSET, if (atomicCircuit) 0f else -3f);
+                
+                // attach a simple rectangular figure filled with black color
+                //  and slightly rounded corners 
+                it.addRectangle.setBackground("black".color).lineJoin=LineJoin.JOIN_ROUND;
+                
+                // last but not least add a label exhibiting the ports name
+                it.addInsidePortLabel(connector.name, 8, KlighdConstants.DEFAULT_FONT_NAME)
+                    .putToLookUpWith(connector)
             ];
         ];
         
+        // now lets attach figures ...
+        //  depending on the string in 'circuit's 'type' field ...
         switch (circuit.type) {
             case "NOT" : circuitNode.createNotGate()
             case "AND" : circuitNode.createAndGate()
             case "OR" : circuitNode.createOrGate()
-            default: circuitNode.setNodeSize(40, 40).addRoundedRectangle(2, 5) => [
+            
+            // in case no known type is found and 'circuit' doesn't contain any inner circuit's
+            case atomicCircuit : circuitNode.createBasicGate()
+            
+            // otherwise, i.e. in case of a hierarchic circuit containing nested circuits
+            //  configure the minimal node size and the port constraints
+            // the expansion aware option setting is only required if collapsing and expanding
+            //  of composite circuits is desired - lets give it try here ;-)
+            default: circuitNode.setNodeSize(40, 40).setExpansionAwareLayoutOption(
+                LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_ORDER, PortConstraints.FREE
+            ).addRoundedRectangle(3, 5) => [
+                // those hierarchic nodes shall be represented by a rectangle with asymmetrically
+                //  rounded corners, this simplifies from distinction from wire bend points
+                
+                // configure the rectangle as follows
                 it.shadow = "black".color
                 it.selectionBackground = "gray".color;
+                
+                // and attach this magic collapse/expand action
+                //  actually only the action's id is related to a Trigger
+                // the action itself is implemented in CollapseExpandAction,
+                //  it is registered in de.cau.cs.kieler.klighd's plugin.xml 
+                it.addDoubleClickAction(KlighdConstants.ACTION_COLLAPSE_EXPAND);
             ]
         }
         
+        // with the configuration of 'circuitNode' be finished
+        //  take about the nested circuits recursively
         circuit.innerCircuits.forEach[
             it.createCircuitNode(circuitNode);
         ];
         
+        // with all inner circuit representing nodes (and their ports) created
+        //  add the wires
         circuit.innerWires.forEach[ wire |
+            // the circuit wires are really special wires they can connect more than 2 connectors :-)
+            //  so let's shamelessly assume connections from the first connector to all remaining ones in the list
+
+            // we won't create view model edges for the pairs of second connector and third, forth, ...
+            //  thus for each of connector except the first one ... 
             wire.connectedTo.tail.forEach[ connector |
+
+                // create an edge 
                 createEdge().putToLookUpWith(wire) => [
+
+                    // from the first connector = head of list...
                     it.source = wire.connectedTo.head?.parent?.node;
                     it.sourcePort = wire.connectedTo.head?.port;
-                    
+
+                    // to the current 'connector'
                     it.target = connector.parent?.node;
                     it.targetPort = connector.port;
-                    
+
+                    // and attach a polyline figure with bend roundings of radius 3
                     it.addRoundedBendsPolyline(3);
                 ];
             ];
         ];
-        
-        return circuitNode;
+    } 
+    
+    def KRendering createBasicGate(KNode node) {
+        node.setNodeSize(40,40);
+
+        node.addRectangle => [
+            it.lineWidth = 2
+            it.lineCap = LineCap.CAP_ROUND;
+            it.lineJoin = LineJoin.JOIN_ROUND;
+            it.background = "white".color;
+            it.selectionBackground = "gray".color;
+        ];
     } 
     
     def KRendering createNotGate(KNode node) {
@@ -126,8 +214,14 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
         
         node.ports.head.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.WEST);
-        node.ports.last.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.EAST)
-                       .setLayoutOption(LayoutOptions.OFFSET, -1f);
+        node.ports.last => [
+            it.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.EAST);
+            it.setLayoutOption(LayoutOptions.OFFSET, 0f);
+            it.setPortSize(5, 5);
+            it.data.removeAll(it.data.filter(typeof(KRendering)));
+            
+            it.addEllipse.setBackground("white".color).lineWidth = 1.5f;
+        ];
         
         node.addRectangle => [
             it.invisible = true
@@ -192,13 +286,15 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         
         node.ports.forEach[
             it.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.WEST)
-                .setLayoutOption(LayoutOptions.OFFSET, -8f);
+              .setLayoutOption(LayoutOptions.OFFSET, -8f);
         ];
         node.ports.last.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.EAST)
                        .setLayoutOption(LayoutOptions.OFFSET, -1f);
         
         node.addRectangle => [
             it.invisible = true;
+            it.lineCap = LineCap.CAP_ROUND;
+            it.lineCap.propagateToChildren = true
 
             it.addRectangle => [
                 it.lineWidth = 0;
@@ -209,34 +305,27 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             
             it.addPolyline => [                
                 it.lineWidth = 2;
-                it.lineCap = LineCap.CAP_ROUND;
-                it.lineJoin = LineJoin.JOIN_ROUND;
                 it.addKPosition(LEFT, 0, 0, TOP, 1, 0);
                 it.addKPosition(RIGHT, 15, 0, TOP, 1 ,0);
             ];
             
             it.addPolyline => [
                 it.lineWidth = 2;
-                it.lineCap = LineCap.CAP_ROUND;
-                it.lineJoin = LineJoin.JOIN_ROUND;
                 it.addKPosition(LEFT, 0, 0, BOTTOM, 1, 0);
                 it.addKPosition(RIGHT, 15, 0, BOTTOM, 1,0);
             ];
             
             it.addArc() => [
                 it.lineWidth = 2;
-                it.lineCap = LineCap.CAP_ROUND;
-                it.lineJoin = LineJoin.JOIN_ROUND;
                 it.arcAngle = 180;
                 it.startAngle = -90;
-                it.background = "white".color;
+                it.selectionBackground = "white".color;
                 it.setAreaPlacementData.from(LEFT, -10.1f, 0, TOP, 0,0)
                     .to(LEFT, 10, 0, BOTTOM, 0, 0);
             ];
 
             it.addArc() => [
                 it.lineWidth = 2
-                it.lineCap = LineCap.CAP_ROUND;
                 it.background = "white".color;
                 it.selectionBackground = "gray".color;
                 it.arcAngle = 180;
