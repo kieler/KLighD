@@ -93,11 +93,18 @@ class KPolylineExtensions {
         ];
     }
     
+    def KPolyline addKPosition(KPolyline pl, PositionReferenceX px, float absoluteLR, float relativeLR,
+                                  PositionReferenceY py, float absoluteTB, float relativeTB) {
+        return pl => [
+            pl.points += createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
+        ];        
+    }
+    
     def KPosition addKPosition(KPolyline pl, KXPosition<?> xPos, KYPosition<?> yPos) {
-        renderingFactory.createKPosition => [
+        return renderingFactory.createKPosition => [
             it.x = xPos;
             it.y = yPos;
             pl.points += it;
-        ];        
+        ];
     }
 }
