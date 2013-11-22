@@ -74,6 +74,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
     def KNode createCircuitNode(Circuit circuit, KNode parent) {        
         val circuitNode = circuit.createNode().putToLookUpWith(circuit);
         parent.children += circuitNode;
+        
         circuitNode.setLayoutOption(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
             
         val atomicCircuit = circuit.innerCircuits.empty;
