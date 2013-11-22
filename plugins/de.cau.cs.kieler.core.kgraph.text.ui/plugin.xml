@@ -365,7 +365,7 @@
      </menuContribution>
     </extension>
    <extension
-         point="de.cau.cs.kieler.kiml.service.graphTransformers">
+         point="de.cau.cs.kieler.kiml.formats.graphTransformers">
       <handler
             class="de.cau.cs.kieler.core.kgraph.text.ui.KGraphExecutableExtensionFactory:de.cau.cs.kieler.core.kgraph.text.ui.KGraphTextHandler"
             description="Xtext-based notation for the KGraph format."
