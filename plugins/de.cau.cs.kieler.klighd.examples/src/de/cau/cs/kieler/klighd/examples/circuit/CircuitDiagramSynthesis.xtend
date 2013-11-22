@@ -131,7 +131,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             ];
         ];
         
-        // now lets attach figures ...
+        // now let's attach figures ...
         //  depending on the string in 'circuit's 'type' field ...
         switch (circuit.type) {
             case "NOT" : circuitNode.createNotGate()
@@ -164,33 +164,47 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         }
         
         // with the configuration of 'circuitNode' be finished
-        //  take about the nested circuits recursively
+        //  take care about the nested circuits recursively
         circuit.innerCircuits.forEach[
             it.createCircuitNode(circuitNode);
         ];
         
-        // with all inner circuit representing nodes (and their ports) created
+        // with all inner circuit representing nodes and their ports created
         //  add the wires
         circuit.innerWires.forEach[ wire |
-            // the circuit wires are really special wires they can connect more than 2 connectors :-)
-            //  so let's shamelessly assume connections from the first connector to all remaining ones in the list
-
-            // we won't create view model edges for the pairs of second connector and third, forth, ...
-            //  thus for each of connector except the first one ... 
+            // the circuit wires are really special wires - they can connect more than 2 connectors :-)
+            //  let's shamelessly assume connections from the first connector to all remaining ones in the list
+            //  thus, we won't create view model edges for the pairs of second connector and third, forth, ...
+            
+            // for each of connector except the first one ... 
             wire.connectedTo.tail.forEach[ connector |
 
                 // create an edge 
                 createEdge().putToLookUpWith(wire) => [
 
-                    // from the first connector = head of list...
+                    // ... from the first connector = head of list...
                     it.source = wire.connectedTo.head?.parent?.node;
                     it.sourcePort = wire.connectedTo.head?.port;
 
-                    // to the current 'connector'
+                    // ... to the current 'connector'
                     it.target = connector.parent?.node;
                     it.targetPort = connector.port;
 
-                    // and attach a polyline figure with bend roundings of radius 3
+                    // the functions '....node' & '....port', actually named 'getNode(...)' & 'getPort(...)'
+                    //  assist us in revealing the nodes and ports corresponding to the connected
+                    //  circuit and connector in our semantic model
+                    // they delegate to a so-called 'create extension', a very powerful element of Xtend
+                    
+                    // for that reason we had to call 'circuit.createNode()' rather than simply 'createNode()'
+                    //  while creating 'circuitNode', see begin of this method,
+                    //  and 'connector.createPort()' rather than 'createPort()', respectively
+                    
+                    // similarly to 'getNode(...)' the former '....createNode()' method also refers
+                    //  to the 'create extension' that builds up a hidden lookup table in a side effect
+                    //  and returns the element associated to the given parameters in the internal lookup
+                    //  (if there is no such associated element yet, the create extension will create and store it)    
+
+                    // attach a polyline figure with bend roundings of radius 3
                     it.addRoundedBendsPolyline(3);
                 ];
             ];
