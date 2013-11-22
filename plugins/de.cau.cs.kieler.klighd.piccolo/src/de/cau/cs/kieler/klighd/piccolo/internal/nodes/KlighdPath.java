@@ -483,21 +483,28 @@ public class KlighdPath extends PNode {
         } else {
             final float lW = lineAttributes.width;
             final float halfLW = lineAttributes.width / 2;
-            Rectangle2D.Float b = (Rectangle2D.Float) origShape.getBounds2D();
 
             if (origShape instanceof Arc2D) {
                 final Arc2D.Float arc = (Arc2D.Float) origShape;
-                shape = new Arc2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW,
+                shape = new Arc2D.Float(arc.x + halfLW, arc.y + halfLW, arc.width - lW, arc.height - lW,
                         arc.start, arc.extent, arc.getArcType());
-            } else if (origShape instanceof Ellipse2D) {
-                shape = new Ellipse2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW);
-            } else if (origShape instanceof Rectangle2D) {
-                shape = new Rectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height
-                        - lW);
-            } else if (origShape instanceof RoundRectangle2D) {
-                final RoundRectangle2D.Float rect = (RoundRectangle2D.Float) origShape;
-                shape = new RoundRectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW,
-                        b.height - lW, rect.arcwidth, rect.archeight);
+            } else {
+                // in the above case the usage of the bound computed below is not valid in case the
+                //  arc's extent is significantly smaller than 360, as 'getBounds2D()' returns the
+                //  actually covered area's bounds; since, in addition, this call is rather expensive
+                //  for arcs it is only performed for ellipses, rectangles, and rounded rectangles
+                final Rectangle2D.Float b = (Rectangle2D.Float) origShape.getBounds2D();
+                
+                if (origShape instanceof Ellipse2D) {
+                    shape = new Ellipse2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW);
+                } else if (origShape instanceof Rectangle2D) {
+                    shape = new Rectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height
+                            - lW);
+                } else if (origShape instanceof RoundRectangle2D) {
+                    final RoundRectangle2D.Float rect = (RoundRectangle2D.Float) origShape;
+                    shape = new RoundRectangle2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW,
+                            b.height - lW, rect.arcwidth, rect.archeight);
+                }
             }
         }
         firePropertyChange(PPath.PROPERTY_CODE_PATH, PPath.PROPERTY_PATH, null, shape);
