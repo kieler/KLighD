@@ -1,12 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: KIELER Light-Weight Diagrams Visualization Examples
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.examples;singleton:=true
 Bundle-Version: 0.2.2.qualifier
-Bundle-ClassPath: .
 Bundle-Activator: de.cau.cs.kieler.klighd.examples.KLighDExamplesPlugin
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  javax.inject;bundle-version="1.0.0",
@@ -28,4 +26,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.commands,
  org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: de.cau.cs.kieler.klighd.examples.circuit,
+ de.cau.cs.kieler.klighd.examples.circuit.impl,
+ de.cau.cs.kieler.klighd.examples.circuit.util
 Bundle-ActivationPolicy: lazy
