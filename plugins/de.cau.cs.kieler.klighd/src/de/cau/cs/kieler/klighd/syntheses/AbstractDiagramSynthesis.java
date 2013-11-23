@@ -121,8 +121,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     
     /**
      * Method to put a pair of source target into the lookup table.<br>
-     * Name, Parameter ordering, and return value (the target) are optimized for
-     * calling in Xtend2 based transformations in a fluent interface fashion, like
+     * Name, parameter ordering, and return value (the target) are optimized for
+     * calling in Xtend-based transformations in a fluent interface fashion, like
      * "model.createShape().putToLookUpWith(model);"<br>
      * <br>
      * Usage requires to perform 'use(TransformationContext)' at the beginning of
@@ -262,6 +262,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     /**
      * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
      * 
+     * @param <R>
+     *            the concrete type of <code>element</code>
      * @param <T>
      *            the property value type
      * @param element
@@ -273,7 +275,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      *            the option value
      * @return <code>node</code> allowing to perform multiple operations on it in one statement
      */
-    protected <T> KGraphElement setLayoutOption(final KGraphElement element,
+    protected <R extends KGraphElement, T> R setLayoutOption(final R element,
             final IProperty<T> option, final T value) {
         element.getData(KLayoutData.class).setProperty(option, value);
         return element;
