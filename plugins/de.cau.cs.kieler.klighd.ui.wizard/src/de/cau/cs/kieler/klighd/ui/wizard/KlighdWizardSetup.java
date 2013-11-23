@@ -31,6 +31,15 @@ public final class KlighdWizardSetup {
     /** the source folder. */
     public static final String SRC_FOLDER = "src/";
 
+    /** the settings folder. */
+    public static final String SETTINGS_FOLDER = ".settings";
+
+    /** the settings folder. */
+    @SuppressWarnings("restriction")
+    public static final String JDT_PREFS_FILE =
+            org.eclipse.jdt.internal.core.JavaProject.JAVA_CORE_PREFS_FILE;
+            // "org.eclipse.jdt.core.prefs";
+
     /** default project name shown in the wizard. */
     public static final String DEFAULT_PROJECT = "my.klighd.diagrams.example";
 

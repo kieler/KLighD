@@ -156,7 +156,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                 }
             }
         };
-        browseButton.addListener(SWT.MouseUp, browseListener);
+        browseButton.addListener(SWT.Selection, browseListener);
 
         // DiagramSynthesis group
         Group transformationGroup = new Group(parent, SWT.NONE);
