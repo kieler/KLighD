@@ -206,7 +206,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                     //  (if there is no such associated element yet, the create extension will create and store it)    
 
                     // attach a polyline figure with bend roundings of radius 3
-                    it.addRoundedBendsPolyline(3);
+                    it.addRoundedBendsPolyline(3).addJunctionPointDecorator;
                 ];
             ];
         ];
@@ -244,7 +244,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                 it.lineWidth = 2
                 it.lineCap = LineCap.CAP_ROUND;
                 it.lineJoin = LineJoin.JOIN_ROUND;
-                it.background = "white".color;
+                it.background = "customLightBlue".color;
                 it.selectionBackground = "gray".color;
                 it.addKPosition(LEFT, 0, 0, TOP, 1, 0)
                 it.addKPosition(RIGHT, 0, 0, TOP, 0, 0.5f)
@@ -268,7 +268,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             
             it.addRectangle => [
                 it.lineWidth = 0;
-                it.background = "white".color;
+                it.background = "customLightBlue".color;
                 it.selectionBackground = "gray".color;
                 it.setAreaPlacementData.from(LEFT, 0, 0, TOP, 0,0).to(RIGHT, 14f, 0, BOTTOM, 0, 0)
             ];
@@ -286,7 +286,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             it.addArc() => [
                 it.lineWidth = 2
                 it.lineCap = LineCap.CAP_ROUND;
-                it.background = "white".color;
+                it.background = "customLightBlue".color;
                 it.selectionBackground = "gray".color;
                 it.arcAngle = 180;
                 it.startAngle = -90;
@@ -313,9 +313,9 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
 
             it.addRectangle => [
                 it.lineWidth = 0;
-                it.background = "white".color;
+                it.background = "customLightBlue".color;
                 it.selectionBackground = "gray".color;
-                it.setAreaPlacementData.from(LEFT, 0, 0, TOP, 0,0).to(RIGHT, 14f, 0, BOTTOM, 0, 0)
+                it.setAreaPlacementData.from(LEFT, 0.1f, 0, TOP, 0,0).to(RIGHT, 14f, 0, BOTTOM, 0, 0)
             ];
             
             it.addPolyline => [                
@@ -334,14 +334,14 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                 it.lineWidth = 2;
                 it.arcAngle = 180;
                 it.startAngle = -90;
-                it.selectionBackground = "white".color;
+                it.background = "white".color;
                 it.setAreaPlacementData.from(LEFT, -10.1f, 0, TOP, 0,0)
                     .to(LEFT, 10, 0, BOTTOM, 0, 0);
             ];
 
             it.addArc() => [
                 it.lineWidth = 2
-                it.background = "white".color;
+                it.background = "customLightBlue".color;
                 it.selectionBackground = "gray".color;
                 it.arcAngle = 180;
                 it.startAngle = -90;

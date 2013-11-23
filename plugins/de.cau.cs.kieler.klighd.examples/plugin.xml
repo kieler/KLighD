@@ -1,47 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
-         point="de.cau.cs.kieler.core.kivi.combinations">
-      <combination
-            active="true"
-            class="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesisCombination"
-            name="Visualize chosen Ecore classes">
-      </combination>
-   </extension>
+   <!-- extensions related to the UML Use Case example -->
    <extension
          point="de.cau.cs.kieler.klighd.diagramSyntheses">
       <diagramSynthesis
-            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis"
-            id="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis">
-      </diagramSynthesis>
-      <!-- diagramSynthesis
             class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis"
             id="de.cau.cs.kieler.klighd.examples.uml2.UML2UseCaseDiagramSynthesis">
-      </diagramSynthesis -->
-      <diagramSynthesis
-            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreFileDiagramSynthesis"
-            id="de.cau.cs.kieler.klighd.examples.EcoreFileDiagramSynthesis">
       </diagramSynthesis>
    </extension>
-   <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="de.cau.cs.kieler.klighd.examples.ecore.EcorePropertyTester"
-            id="de.cau.cs.kieler.klighd.examples.ecore.EcorePropertyTester"
-            namespace="de.cau.cs.kieler.klighd.examples"
-            properties="AllAreEClassifiers"
-            type="java.lang.Object">
-      </propertyTester>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="de.cau.cs.kieler.klighd.examples.ecore.RemoveNodeHandler"
-            id="de.cau.cs.kieler.klighd.examples.removeCommand"
-            name="Remove class from diagram">
-      </command>
-   </extension>
+
+   
+   <!-- extensions related to the circuit example -->
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated circuit -->
       <package
@@ -57,4 +27,44 @@
       </diagramSynthesis>
    </extension>
 
+
+   <!-- extensions related to the Ecore example -->
+   <extension
+         point="de.cau.cs.kieler.klighd.diagramSyntheses">
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis"
+            id="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesis">
+      </diagramSynthesis>
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.ecore.EcoreFileDiagramSynthesis"
+            id="de.cau.cs.kieler.klighd.examples.EcoreFileDiagramSynthesis">
+      </diagramSynthesis>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="de.cau.cs.kieler.klighd.examples.ecore.RemoveNodeHandler"
+            id="de.cau.cs.kieler.klighd.examples.removeCommand"
+            name="Remove class from diagram">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="de.cau.cs.kieler.klighd.examples.ecore.EcorePropertyTester"
+            id="de.cau.cs.kieler.klighd.examples.ecore.EcorePropertyTester"
+            namespace="de.cau.cs.kieler.klighd.examples"
+            properties="AllAreEClassifiers"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.core.kivi.combinations">
+      <combination
+            active="true"
+            class="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesisCombination"
+            name="Visualize chosen Ecore classes">
+      </combination>
+   </extension>
+   
 </plugin>
