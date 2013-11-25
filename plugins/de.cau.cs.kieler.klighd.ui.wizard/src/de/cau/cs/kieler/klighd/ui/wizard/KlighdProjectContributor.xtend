@@ -201,7 +201,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             <extension
                   point="org.eclipse.ui.menus">
                <menuContribution
-                     locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+                     locationURI="popup:org.eclipse.ui.popup.any?before=additions">
                   <command
                         commandId="«projectInfo.projectName».open«projectInfo.sourceModelClassSimple»Diagram"
                         label="Open «projectInfo.sourceModelClassSimple» diagram"
