@@ -405,6 +405,17 @@
         </eAnnotations>
       </eParameters>
     </eOperations>
+    <eOperations name="setColor" eType="#//KColor">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, color);"/>
+        <details key="documentation" value="Convenience setter for configuring&lt;code>this&lt;/code> KColor instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColor, Colors) KRenderingUtil.setColor(KColor, Colors)}."/>
+      </eAnnotations>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
     <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
@@ -647,6 +658,18 @@
     </eOperations>
     <eOperations name="setColor">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color);"/>
+        <details key="documentation" value="Convenience setter for configuring the color or gradient source color of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, Colors) KRenderingUtil.setColor(KColoring, Colors)}."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColor">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, red, green, blue, alpha);"/>
         <details key="documentation" value="Convenience setter for configuring the color &amp; alpha or gradient source color &amp; source alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, int, int, int, int) KRenderingUtil.setColor(KColoring, int, int, int, int)}."/>
       </eAnnotations>
@@ -664,6 +687,23 @@
       <eParameters name="blue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="documentation" value="the blue component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColor">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color, alpha);"/>
+        <details key="documentation" value="Convenience setter for configuring the color &amp; alpha or gradient source color &amp; source alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, Colors, int) KRenderingUtil.setColor(KColoring, Colors, int)}."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
         </eAnnotations>
       </eParameters>
       <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
@@ -696,6 +736,18 @@
     </eOperations>
     <eOperations name="setTargetColor">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, Colors) KRenderingUtil.setTargetColor(KColoring, Colors)}."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setTargetColor">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue, alpha);"/>
         <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, int, int, int, int) KRenderingUtil.setTargetColor(KColoring, int, int, int, int)}."/>
       </eAnnotations>
@@ -713,6 +765,23 @@
       <eParameters name="blue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="documentation" value="the blue component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setTargetColor">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color, alpha);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient target color &amp; target alpha of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, Colors, int) KRenderingUtil.setTargetColor(KColoring, Colors, int)}."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
         </eAnnotations>
       </eParameters>
       <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
@@ -1061,4 +1130,5 @@
       </eAnnotations>
     </eLiterals>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Colors" instanceClassName="de.cau.cs.kieler.core.krendering.Colors"/>
 </ecore:EPackage>

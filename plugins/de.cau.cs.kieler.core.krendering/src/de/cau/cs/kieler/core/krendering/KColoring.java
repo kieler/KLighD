@@ -244,4 +244,62 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      */
     boolean equals(Object other);
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the color or gradient source color of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, Colors) KRenderingUtil.setColor(KColoring, Colors)}.
+     * @param color a color constant from the {@link Colors} enumeration
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color);'"
+     * @generated
+     */
+    T setColor(Colors color);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the color & alpha or gradient source color & source alpha of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, Colors, int) KRenderingUtil.setColor(KColoring, Colors, int)}.
+     * @param color a color constant from the {@link Colors} enumeration
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color, alpha);'"
+     * @generated
+     */
+    T setColor(Colors color, int alpha);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient target color of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, Colors) KRenderingUtil.setTargetColor(KColoring, Colors)}.
+     * @param color a color constant from the {@link Colors} enumeration
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color);'"
+     * @generated
+     */
+    T setTargetColor(Colors color);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient target color & target alpha of <code>this</code> KColoring instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setTargetColor(KColoring, Colors, int) KRenderingUtil.setTargetColor(KColoring, Colors, int)}.
+     * @param color a color constant from the {@link Colors} enumeration
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nreturn de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color, alpha);'"
+     * @generated
+     */
+    T setTargetColor(Colors color, int alpha);
+
 } // KColoring
