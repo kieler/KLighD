@@ -192,6 +192,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                <command
                      categoryId="«projectInfo.projectName».«projectInfo.sourceModelClassSimple»Diagrams"
                      defaultHandler="«projectInfo.transformationPackage + ".OpenDiagramHandler"»"
+                     description="Primitive helper command that opens KLighD-based «projectInfo.sourceModelClassSimple» diagrams."
                      id="«projectInfo.projectName».open«projectInfo.sourceModelClassSimple»Diagram"
                      name="Open «projectInfo.sourceModelClassSimple» diagram">
                </command>
@@ -200,11 +201,11 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             <extension
                   point="org.eclipse.ui.menus">
                <menuContribution
-                     locationURI="toolbar:org.eclipse.ui.popup.toolbar?after=additions">
+                     locationURI="popup:org.eclipse.ui.popup.any?after=additions">
                   <command
                         commandId="«projectInfo.projectName».open«projectInfo.sourceModelClassSimple»Diagram"
-                        icon=""
                         label="Open «projectInfo.sourceModelClassSimple» diagram"
+                        icon="IMG_KLIGHD"
                         style="push">
                      <visibleWhen
                            checkEnabled="false">
