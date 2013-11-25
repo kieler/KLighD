@@ -29,6 +29,7 @@ public class KlighdProjectInfo implements IProjectInfo {
     private String transformationName;
     private String sourceModelClassFullyQualified;
     private boolean createXtendFile = false;
+    private boolean createMenuContribution = false;
 
     /**
      * {@inheritDoc}
@@ -114,5 +115,20 @@ public class KlighdProjectInfo implements IProjectInfo {
      */
     public void setCreateXtendFile(final boolean createXtendFile) {
         this.createXtendFile = createXtendFile;
+    }
+    
+    /**
+     * @return the createMenuContribution
+     */
+    public boolean isCreateMenuContribution() {
+        return createMenuContribution;
+    }
+
+    /**
+     * @param createMenuContribution
+     *            whether to create menu contributions
+     */
+    public void setCreateMenuContribution(final boolean createMenuContribution) {
+        this.createMenuContribution = createMenuContribution;
     }
 }
