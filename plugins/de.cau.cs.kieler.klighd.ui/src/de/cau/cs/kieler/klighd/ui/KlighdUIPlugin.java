@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.ui;
 
-import org.eclipse.ui.IStartup;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -22,13 +21,10 @@ import org.osgi.framework.BundleContext;
  * 
  * @author uru
  */
-public class KlighdUIPlugin extends AbstractUIPlugin implements IStartup {
+public class KlighdUIPlugin extends AbstractUIPlugin {
 
     /** The plug-in ID. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ui"; //$NON-NLS-1$
-    
-    /** The string constant denoting KLighD's icon. */
-    public static final String KLIGHD_ICON = "IMG_KLIGHD";
 
     // The shared instance
     private static KlighdUIPlugin plugin;
@@ -58,14 +54,5 @@ public class KlighdUIPlugin extends AbstractUIPlugin implements IStartup {
     public void stop(final BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("restriction")
-    public void earlyStartup() {
-        org.eclipse.ui.internal.WorkbenchImages.declareImage(KLIGHD_ICON,
-                imageDescriptorFromPlugin(PLUGIN_ID, "icons/klighd.gif"), true);
     }
 }

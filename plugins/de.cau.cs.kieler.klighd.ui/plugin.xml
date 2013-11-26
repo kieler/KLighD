@@ -40,12 +40,6 @@
          </enabledWhen>
       </handler>
    </extension>
-   <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="de.cau.cs.kieler.klighd.ui.KlighdUIPlugin">
-      </startup>
-   </extension>
    <!-- extension
          id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
          point="org.eclipse.ui.menus">

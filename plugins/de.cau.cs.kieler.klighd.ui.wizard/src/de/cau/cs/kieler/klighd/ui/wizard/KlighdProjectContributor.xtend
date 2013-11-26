@@ -205,7 +205,6 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                   <command
                         commandId="«projectInfo.projectName».open«projectInfo.sourceModelClassSimple»Diagram"
                         label="Open «projectInfo.sourceModelClassSimple» diagram"
-                        icon="IMG_KLIGHD"
                         style="push">
                      <visibleWhen
                            checkEnabled="false">
