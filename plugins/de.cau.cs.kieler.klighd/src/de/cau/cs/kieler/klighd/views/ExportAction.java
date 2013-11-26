@@ -35,7 +35,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.formats.GraphFormatData;
 import de.cau.cs.kieler.kiml.formats.IGraphTransformer;
-import de.cau.cs.kieler.kiml.formats.ITransformationHandler;
+import de.cau.cs.kieler.kiml.formats.IGraphFormatHandler;
 import de.cau.cs.kieler.kiml.formats.TransformationData;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 
@@ -109,7 +109,7 @@ public class ExportAction extends Action {
      * @param transHandler the transformation handler
      * @return a serialized transformed graph
      */
-    private <T> String performExport(final KNode graph, final ITransformationHandler<T> transHandler) {
+    private <T> String performExport(final KNode graph, final IGraphFormatHandler<T> transHandler) {
         TransformationData<KNode, T> transData = new TransformationData<KNode, T>();
         transData.setSourceGraph(graph);
         IGraphTransformer<KNode, T> transformer = transHandler.getExporter();

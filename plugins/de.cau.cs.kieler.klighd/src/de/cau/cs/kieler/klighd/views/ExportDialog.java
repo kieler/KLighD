@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
 import de.cau.cs.kieler.kiml.formats.GraphFormatData;
-import de.cau.cs.kieler.kiml.formats.TransformationService;
+import de.cau.cs.kieler.kiml.formats.GraphFormatsService;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 
 /**
@@ -193,7 +193,7 @@ public class ExportDialog extends Dialog {
         Label label = new Label(composite, SWT.NONE);
         label.setText("File f&ormat:");
         fileFormatCombo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
-        Collection<GraphFormatData> formatData = TransformationService.getInstance().getFormatData();
+        Collection<GraphFormatData> formatData = GraphFormatsService.getInstance().getFormatData();
         String[] formatNames = new String[formatData.size()];
         if (formatNames.length > 0) {
             int i = 0;
@@ -368,7 +368,7 @@ public class ExportDialog extends Dialog {
      */
     private void updateFormat() {
         String formatName = fileFormatCombo.getItem(fileFormatCombo.getSelectionIndex());
-        Collection<GraphFormatData> formatData = TransformationService.getInstance().getFormatData();
+        Collection<GraphFormatData> formatData = GraphFormatsService.getInstance().getFormatData();
         for (GraphFormatData gfd : formatData) {
             if (gfd.getName().equals(formatName)) {
                 lastFormat = gfd;
