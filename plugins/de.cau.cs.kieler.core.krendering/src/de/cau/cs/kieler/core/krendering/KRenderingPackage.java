@@ -17,6 +17,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -3861,6 +3862,16 @@ public interface KRenderingPackage extends EPackage {
     int ARC = 60;
 
     /**
+     * The meta object id for the '<em>Colors</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.Colors
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getColors()
+     * @generated
+     */
+    int COLORS = 61;
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPosition <em>KPosition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5494,6 +5505,17 @@ public interface KRenderingPackage extends EPackage {
     EEnum getArc();
 
     /**
+     * Returns the meta object for data type '{@link de.cau.cs.kieler.core.krendering.Colors <em>Colors</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Colors</em>'.
+     * @see de.cau.cs.kieler.core.krendering.Colors
+     * @model instanceClass="de.cau.cs.kieler.core.krendering.Colors"
+     * @generated
+     */
+    EDataType getColors();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6868,6 +6890,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum ARC = eINSTANCE.getArc();
+
+        /**
+         * The meta object literal for the '<em>Colors</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.Colors
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getColors()
+         * @generated
+         */
+        EDataType COLORS = eINSTANCE.getColors();
 
     }
 

@@ -11,7 +11,7 @@
             category="de.cau.cs.kieler.klighd"
             class="de.cau.cs.kieler.klighd.ui.wizard.KlighdExecutableExtensionFactory:de.cau.cs.kieler.klighd.ui.wizard.KlighdNewProjectWizard"
             hasPages="true"
-            icon="icons/new_kproj.gif"
+            icon="icons/new_kproj_trans.gif"
             id="de.cau.cs.kieler.klighd.ui.newKlighdProjectWizard"
             name="KLighD Project"
             project="true">

@@ -31,6 +31,15 @@ public final class KlighdWizardSetup {
     /** the source folder. */
     public static final String SRC_FOLDER = "src/";
 
+    /** the settings folder. */
+    public static final String SETTINGS_FOLDER = ".settings";
+
+    /** the settings folder. */
+    @SuppressWarnings("restriction")
+    public static final String JDT_PREFS_FILE =
+            org.eclipse.jdt.internal.core.JavaProject.JAVA_CORE_PREFS_FILE;
+            // "org.eclipse.jdt.core.prefs";
+
     /** default project name shown in the wizard. */
     public static final String DEFAULT_PROJECT = "my.klighd.diagrams.example";
 
@@ -44,6 +53,7 @@ public final class KlighdWizardSetup {
             "de.cau.cs.kieler.kiml", "de.cau.cs.kieler.klay.layered",
             "de.cau.cs.kieler.klighd", "de.cau.cs.kieler.klighd.ui", "de.cau.cs.kieler.klighd.piccolo",
             "de.cau.cs.kieler.kiml.graphviz.layouter;resolution:=optional",
+            "org.eclipse.ui", // required for the menu contribution extension points
             "org.eclipse.ui.ide.application", "org.eclipse.ui.navigator.resources",
             "org.eclipse.ui.views.log");
 

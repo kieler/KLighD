@@ -15,6 +15,7 @@ package de.cau.cs.kieler.core.krendering.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
@@ -25,6 +26,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.krendering.Arc;
+import de.cau.cs.kieler.core.krendering.Colors;
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KArc;
@@ -521,6 +523,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EEnum arcEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType colorsEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1977,6 +1986,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getColors() {
+        return colorsEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public KRenderingFactory getKRenderingFactory() {
         return (KRenderingFactory)getEFactoryInstance();
     }
@@ -2208,6 +2226,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         underlineEEnum = createEEnum(UNDERLINE);
         lineJoinEEnum = createEEnum(LINE_JOIN);
         arcEEnum = createEEnum(ARC);
+
+        // Create data types
+        colorsEDataType = createEDataType(COLORS);
     }
 
     /**
@@ -2437,6 +2458,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+        op = addEOperation(kColorEClass, this.getKColor(), "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+
         op = addEOperation(kColorEClass, ecorePackage.getEBoolean(), "equals", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEJavaObject(), "other", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -2507,9 +2531,20 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEOperation(op, g1);
 
         op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
         g1 = createEGenericType(kColoringEClass_T);
         initEOperation(op, g1);
@@ -2522,9 +2557,20 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEOperation(op, g1);
 
         op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
         g1 = createEGenericType(kColoringEClass_T);
         initEOperation(op, g1);
@@ -2643,6 +2689,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(arcEEnum, Arc.OPEN);
         addEEnumLiteral(arcEEnum, Arc.CHORD);
         addEEnumLiteral(arcEEnum, Arc.PIE);
+
+        // Initialize data types
+        initEDataType(colorsEDataType, Colors.class, "Colors", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

@@ -54,6 +54,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
     private Text sourceModel;
     private Button useJavaLang;
     private Button useXtendLang;
+    private Button createMenuContribution;
 
     /**
      * Create a new wizard configuration page.
@@ -84,12 +85,13 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
     }
 
     /**
-     * Sets default values for the text boxes and checkboxes.
+     * Sets default values for the text boxes and check boxes.
      */
     protected void setDefaults() {
         transformationName.setText(KlighdWizardSetup.DEFAULT_TRANSFORMATION_NAME);
         transformationPackage.setText(KlighdWizardSetup.DEFAULT_PROJECT);
         useXtendLang.setSelection(true);
+        createMenuContribution.setSelection(true);
 
         validatePage();
     }
@@ -156,7 +158,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                 }
             }
         };
-        browseButton.addListener(SWT.MouseUp, browseListener);
+        browseButton.addListener(SWT.Selection, browseListener);
 
         // DiagramSynthesis group
         Group transformationGroup = new Group(parent, SWT.NONE);
@@ -211,6 +213,15 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         useJavaLang.addListener(SWT.Modify, modifyListener);
         useXtendLang.addListener(SWT.Modify, modifyListener);
         sourceModel.addListener(SWT.Modify, modifyListener);
+        
+        final Group uiConfigGroup = new Group(parent, SWT.NONE);
+        uiConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+        uiConfigGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_UIGroupText);
+        uiConfigGroup.setLayout(new GridLayout(1, false));
+        createMenuContribution = new Button(uiConfigGroup, SWT.CHECK);
+        createMenuContribution.setText(
+                JavaUIMessages.KlighdNewProjectCreationPage_CreateMenuContributionText);
+        createMenuContribution.setLayoutData(new GridData());
     }
     
     // Listen to changes
@@ -315,6 +326,13 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
      */
     public boolean isCreateXtendFile() {
         return useXtendLang.getSelection();
+    }
+
+    /**
+     * @return whether to create an xtend file or a java file
+     */
+    public boolean isCreateMenuContribution() {
+        return createMenuContribution.getSelection();
     }
 
 }

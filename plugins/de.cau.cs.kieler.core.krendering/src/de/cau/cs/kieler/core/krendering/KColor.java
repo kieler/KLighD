@@ -148,6 +148,20 @@ public interface KColor extends EObject {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
+     * Convenience setter for configuring<code>this</code> KColor instance.<br>
+     * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColor, Colors) KRenderingUtil.setColor(KColor, Colors)}.
+     * @param color a color constant from the {@link Colors} enumeration
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, color);'"
+     * @generated
+     */
+    KColor setColor(Colors color);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
      * Checks the equalilty of the RGB components of <code>this</code> KColor instance and the provided <code>other</code> KColor.
      * Returns false if <code>other</code> is not a KColor.<br>
      * {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.

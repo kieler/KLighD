@@ -142,6 +142,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createLineJoinFromString(eDataType, initialValue);
             case KRenderingPackage.ARC:
                 return createArcFromString(eDataType, initialValue);
+            case KRenderingPackage.COLORS:
+                return createColorsFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -171,6 +173,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertLineJoinToString(eDataType, instanceValue);
             case KRenderingPackage.ARC:
                 return convertArcToString(eDataType, instanceValue);
+            case KRenderingPackage.COLORS:
+                return convertColorsToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -784,6 +788,24 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      */
     public String convertArcToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Colors createColorsFromString(EDataType eDataType, String initialValue) {
+        return (Colors)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertColorsToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
     }
 
     /**
