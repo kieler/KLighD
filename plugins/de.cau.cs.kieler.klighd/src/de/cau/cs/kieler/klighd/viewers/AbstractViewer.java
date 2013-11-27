@@ -22,7 +22,6 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.viewers.ContextViewer.KlighdTreeSelection;
 
 /**
  * An abstract base class for viewers which provides an implementation for the handling of listeners
