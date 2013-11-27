@@ -217,13 +217,37 @@ class KRenderingExtensions {
         return rendering => [
             it.actions += renderingFactory.createKAction() => [
                 it.trigger = trigger;
-                it.id = actionId;
+                it.actionId = actionId;
             ];
         ];
     }
     
+    def <T extends KRendering> T addAction(T rendering, Trigger trigger, String actionId,
+            boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
+        return rendering => [
+            it.actions += renderingFactory.createKAction() => [
+                it.trigger = trigger;
+                it.actionId = actionId;
+            ];
+        ];
+    }
+    
+    def <T extends KRendering> T addSingleClickAction(T rendering, String actionId) {
+        return rendering.addAction(Trigger::SINGLECLICK, actionId);
+    }
+
+    def <T extends KRendering> T addSingleClickAction(T rendering, String actionId,
+            boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
+        return rendering.addAction(Trigger::SINGLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
+    }
+
     def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId) {
         return rendering.addAction(Trigger::DOUBLECLICK, actionId);
+    }
+
+    def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId,
+            boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
+        return rendering.addAction(Trigger::DOUBLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
     }
 
 

@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="krendering" nsURI="http://kieler.cs.cau.de/KRendering" nsPrefix="krendering">
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-    <details key="documentation" value="define if this text is increased in size to be able to read it when zooming out.&#xA;Text will only grow until the node space is "/>
+    <details key="documentation" value="This package contains the classes of the KRendering language.&lt;br>&#xA;This languages extends {@link KGraphPackage KGraph} and provides the means for describing the&#xA;figures the elements of a KGraph instance are depicted by. This involves&#xA;primitive figures to be composed to complex ones, &lt;i>micro layout&lt;/i> directives,&#xA;styles, as well as actions for expressing interactivity of KGraph/KRendering-based diagrams."/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="KPosition">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -923,15 +923,31 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="performs action &lt;id> on &lt;trigger> event"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="actionId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="id of the action to happen when &lt;trigger> occurs"/>
+        <details key="documentation" value="id of the action implemenation to be executed when &lt;trigger> occurs; in KLighD such action implementation must be registered via an extension point"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="trigger" lowerBound="1"
         eType="#//Trigger">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="trigger that activates action"/>
+        <details key="documentation" value="trigger that fires the associated action implementation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="altPressed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="if &lt;code>true&lt;/code> the 'alt' key must be pressed to let the associated action be executed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ctrlCmdPressed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="if &lt;code>true&lt;/code> the 'ctrl' key, on OSX the 'cmd' key, must be pressed to let the associated action be executed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shiftPressed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="if &lt;code>true&lt;/code> the 'shift' key must be pressed to let the associated action be executed"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -984,12 +1000,17 @@
     </eAnnotations>
     <eLiterals name="SINGLECLICK" literal="SINGLECLICK">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Execute action on single click."/>
+        <details key="documentation" value="Fires on left button's single click."/>
       </eAnnotations>
     </eLiterals>
     <eLiterals name="DOUBLECLICK" value="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Execute action on double click."/>
+        <details key="documentation" value="Fires on left button's double click."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="MIDDLE_SINGLECLICK" value="2" literal="MIDDLE_SINGLECLICK">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Fires on middle button's single click."/>
       </eAnnotations>
     </eLiterals>
   </eClassifiers>

@@ -27,8 +27,11 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.KAction#getId <em>Id</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KAction#getActionId <em>Action Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KAction#getTrigger <em>Trigger</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KAction#isAltPressed <em>Alt Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KAction#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KAction#isShiftPressed <em>Shift Pressed</em>}</li>
  * </ul>
  * </p>
  *
@@ -38,29 +41,29 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface KAction extends EObject {
     /**
-     * Returns the value of the '<em><b>Id</b></em>' attribute.
+     * Returns the value of the '<em><b>Action Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * id of the action to happen when <trigger> occurs
+     * id of the action implemenation to be executed when <trigger> occurs; in KLighD such action implementation must be registered via an extension point
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Id</em>' attribute.
-     * @see #setId(String)
-     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAction_Id()
+     * @return the value of the '<em>Action Id</em>' attribute.
+     * @see #setActionId(String)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAction_ActionId()
      * @model required="true"
      * @generated
      */
-    String getId();
+    String getActionId();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAction#getId <em>Id</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAction#getActionId <em>Action Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Id</em>' attribute.
-     * @see #getId()
+     * @param value the new value of the '<em>Action Id</em>' attribute.
+     * @see #getActionId()
      * @generated
      */
-    void setId(String value);
+    void setActionId(String value);
 
     /**
      * Returns the value of the '<em><b>Trigger</b></em>' attribute.
@@ -68,7 +71,7 @@ public interface KAction extends EObject {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * trigger that activates action
+     * trigger that fires the associated action implementation
      * <!-- end-model-doc -->
      * @return the value of the '<em>Trigger</em>' attribute.
      * @see de.cau.cs.kieler.core.krendering.Trigger
@@ -89,5 +92,80 @@ public interface KAction extends EObject {
      * @generated
      */
     void setTrigger(Trigger value);
+
+    /**
+     * Returns the value of the '<em><b>Alt Pressed</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * if <code>true</code> the 'alt' key must be pressed to let the associated action be executed
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Alt Pressed</em>' attribute.
+     * @see #setAltPressed(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAction_AltPressed()
+     * @model
+     * @generated
+     */
+    boolean isAltPressed();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAction#isAltPressed <em>Alt Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Alt Pressed</em>' attribute.
+     * @see #isAltPressed()
+     * @generated
+     */
+    void setAltPressed(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Ctrl Cmd Pressed</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * if <code>true</code> the 'ctrl' key, on OSX the 'cmd' key, must be pressed to let the associated action be executed
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Ctrl Cmd Pressed</em>' attribute.
+     * @see #setCtrlCmdPressed(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAction_CtrlCmdPressed()
+     * @model
+     * @generated
+     */
+    boolean isCtrlCmdPressed();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAction#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Ctrl Cmd Pressed</em>' attribute.
+     * @see #isCtrlCmdPressed()
+     * @generated
+     */
+    void setCtrlCmdPressed(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Shift Pressed</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * if <code>true</code> the 'shift' key must be pressed to let the associated action be executed
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Shift Pressed</em>' attribute.
+     * @see #setShiftPressed(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKAction_ShiftPressed()
+     * @model
+     * @generated
+     */
+    boolean isShiftPressed();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KAction#isShiftPressed <em>Shift Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Shift Pressed</em>' attribute.
+     * @see #isShiftPressed()
+     * @generated
+     */
+    void setShiftPressed(boolean value);
 
 } // KAction
