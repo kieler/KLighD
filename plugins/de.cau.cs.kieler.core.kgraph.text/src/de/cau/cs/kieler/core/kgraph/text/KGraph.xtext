@@ -207,60 +207,60 @@ KColoring returns KColoring:
 
 KForeground returns KForeground:
 	{KForeground}
-	(propagateToChildren?='propagate')? 'foreground';
+	(propagateToChildren?='propagate')? (selection?='selection')? 'foreground';
 
 KBackground returns KBackground:
 	{KBackground}
-	(propagateToChildren?='propagate')? 'background';
+	(propagateToChildren?='propagate')? (selection?='selection')? 'background';
 
 KFontBold returns KFontBold:
-	(propagateToChildren?='propagate')? 'bold' '=' bold=BOOLEAN;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'bold' '=' bold=BOOLEAN;
 
 KFontItalic returns KFontItalic:
-	(propagateToChildren?='propagate')? 'italic' '=' italic=BOOLEAN;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'italic' '=' italic=BOOLEAN;
 
 KFontName returns KFontName:
-	(propagateToChildren?='propagate')? 'fontName' '=' name=STRING;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'fontName' '=' name=STRING;
 
 KFontSize returns KFontSize:
-	(propagateToChildren?='propagate')? (scaleWithZoom?='scale')?
+	(propagateToChildren?='propagate')? (selection?='selection')? (scaleWithZoom?='scale')?
 	'fontSize' '=' size=FSIZE;
 
 KTextUnderline returns KTextUnderline:
-	(propagateToChildren?='propagate')? 'underline' '=' underline=Underline;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'underline' '=' underline=Underline;
 
 KHorizontalAlignment returns KHorizontalAlignment:
-	(propagateToChildren?='propagate')? 'hAlign' '=' horizontalAlignment=HorizontalAlignment;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'hAlign' '=' horizontalAlignment=HorizontalAlignment;
 
 KVerticalAlignment returns KVerticalAlignment:
-	(propagateToChildren?='propagate')? 'vAlign' '=' verticalAlignment=VerticalAlignment;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'vAlign' '=' verticalAlignment=VerticalAlignment;
 
 KInvisibility returns KInvisibility:
-	(propagateToChildren?='propagate')? 'invisible' '=' invisible=BOOLEAN;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'invisible' '=' invisible=BOOLEAN;
 
 KLineCap returns KLineCap:
-    (propagateToChildren?='propagate')? 'lineCap' '=' lineCap=LineCap;
+    (propagateToChildren?='propagate')? (selection?='selection')? 'lineCap' '=' lineCap=LineCap;
 
 KLineJoin returns KLineJoin:
-    (propagateToChildren?='propagate')? 'lineJoin' '=' lineJoin=LineJoin;
+    (propagateToChildren?='propagate')? (selection?='selection')? 'lineJoin' '=' lineJoin=LineJoin;
 
 KLineStyle returns KLineStyle:
-	(propagateToChildren?='propagate')? 'lineStyle' '=' lineStyle=LineStyle;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'lineStyle' '=' lineStyle=LineStyle;
 
 KLineWidth returns KLineWidth:
-	(propagateToChildren?='propagate')? 'lineWidth' '=' lineWidth=Float;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'lineWidth' '=' lineWidth=Float;
 
 KRotation returns KRotation:
-	(propagateToChildren?='propagate')? 'rotation' '=' rotation=Float
+	(propagateToChildren?='propagate')? (selection?='selection')? 'rotation' '=' rotation=Float
 	('(' 'anchor' '=' rotationAnchor=KPosition ')')?;
 
 KShadow returns KShadow:
 	{KShadow}
-	(propagateToChildren?='propagate')? 'shadow' '=' (color=KColor)?
+	(propagateToChildren?='propagate')? (selection?='selection')? 'shadow' '=' (color=KColor)?
 	('(' xOffset=Float ',' yOffset=Float (',' blur=Float)? ')')?;
 
 KStyleRef returns KStyleRef:
-	'reference' '=' styleHolder=[KStyleHolder|QualifiedID];
+	 (selection?='selection')? 'reference' '=' styleHolder=[KStyleHolder|QualifiedID];
 
 
 //----------- KRendering Utility ------------
