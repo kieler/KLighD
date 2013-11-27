@@ -1,3 +1,7 @@
+// tests the rendering composition
+//  with the text being contained in a nested (black) rectangle that in turn is contained
+//  in a (red) rectangle and surrounded by some relative margin
+
 knode {
     properties:
         klighd.testing.expected.^height = 100.0
