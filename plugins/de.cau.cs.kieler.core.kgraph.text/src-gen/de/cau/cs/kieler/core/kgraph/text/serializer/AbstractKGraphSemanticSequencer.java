@@ -649,20 +649,10 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (trigger=Trigger id=QualifiedID)
+	 *     (trigger=Trigger actionId=QualifiedID)
 	 */
 	protected void sequence_KAction(EObject context, KAction semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KACTION__ID) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KACTION__ID));
-			if(transientValues.isValueTransient(semanticObject, KRenderingPackage.Literals.KACTION__TRIGGER) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KRenderingPackage.Literals.KACTION__TRIGGER));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getKActionAccess().getTriggerTriggerEnumRuleCall_0_0(), semanticObject.getTrigger());
-		feeder.accept(grammarAccess.getKActionAccess().getIdQualifiedIDParserRuleCall_2_0(), semanticObject.getId());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

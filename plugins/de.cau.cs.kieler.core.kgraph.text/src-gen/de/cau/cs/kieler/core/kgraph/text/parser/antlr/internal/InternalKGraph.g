@@ -6965,16 +6965,16 @@ ruleKAction returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKActionAccess().getIdQualifiedIDParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getKActionAccess().getActionIdQualifiedIDParserRuleCall_2_0()); 
 	    }
-		lv_id_2_0=ruleQualifiedID		{
+		lv_actionId_2_0=ruleQualifiedID		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKActionRule());
 	        }
        		set(
        			$current, 
-       			"id",
-        		lv_id_2_0, 
+       			"actionId",
+        		lv_actionId_2_0, 
         		"QualifiedID");
 	        afterParserOrEnumRuleCall();
 	    }

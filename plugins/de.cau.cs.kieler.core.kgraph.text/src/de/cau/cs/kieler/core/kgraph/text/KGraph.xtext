@@ -330,7 +330,7 @@ KDecoratorPlacementData returns KDecoratorPlacementData:
 		& ('rotateWithLine' '=' rotateWithLine=BOOLEAN)?);
 
 KAction returns KAction:
-	trigger=Trigger '=>' id=QualifiedID;
+	trigger=Trigger '=>' actionId=QualifiedID;
 
 KPosition returns KPosition:
 	x=KXPosition ',' y=KYPosition;

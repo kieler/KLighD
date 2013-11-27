@@ -4030,14 +4030,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cTriggerAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cTriggerTriggerEnumRuleCall_0_0 = (RuleCall)cTriggerAssignment_0.eContents().get(0);
 		private final Keyword cEqualsSignGreaterThanSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cIdAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cIdQualifiedIDParserRuleCall_2_0 = (RuleCall)cIdAssignment_2.eContents().get(0);
+		private final Assignment cActionIdAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cActionIdQualifiedIDParserRuleCall_2_0 = (RuleCall)cActionIdAssignment_2.eContents().get(0);
 		
 		//KAction:
-		//	trigger=Trigger "=>" id=QualifiedID;
+		//	trigger=Trigger "=>" actionId=QualifiedID;
 		public ParserRule getRule() { return rule; }
 
-		//trigger=Trigger "=>" id=QualifiedID
+		//trigger=Trigger "=>" actionId=QualifiedID
 		public Group getGroup() { return cGroup; }
 
 		//trigger=Trigger
@@ -4049,11 +4049,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"=>"
 		public Keyword getEqualsSignGreaterThanSignKeyword_1() { return cEqualsSignGreaterThanSignKeyword_1; }
 
-		//id=QualifiedID
-		public Assignment getIdAssignment_2() { return cIdAssignment_2; }
+		//actionId=QualifiedID
+		public Assignment getActionIdAssignment_2() { return cActionIdAssignment_2; }
 
 		//QualifiedID
-		public RuleCall getIdQualifiedIDParserRuleCall_2_0() { return cIdQualifiedIDParserRuleCall_2_0; }
+		public RuleCall getActionIdQualifiedIDParserRuleCall_2_0() { return cActionIdQualifiedIDParserRuleCall_2_0; }
 	}
 
 	public class KPositionElements extends AbstractParserRuleElementFinder {
@@ -5572,7 +5572,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KAction:
-	//	trigger=Trigger "=>" id=QualifiedID;
+	//	trigger=Trigger "=>" actionId=QualifiedID;
 	public KActionElements getKActionAccess() {
 		return (pKAction != null) ? pKAction : (pKAction = new KActionElements());
 	}
