@@ -745,7 +745,11 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
             feeder.accept(invisibilityAccess.getPropagateToChildrenPropagateKeyword_0_0());
         }
         
-        feeder.accept(invisibilityAccess.getInvisibleBOOLEANTerminalRuleCall_3_0(),
+        if (invisibility.eIsSet(KRENDERING_PKG.getKStyle_Selection())) {
+            feeder.accept(invisibilityAccess.getSelectionSelectionKeyword_1_0());
+        }
+        
+        feeder.accept(invisibilityAccess.getInvisibleBOOLEANTerminalRuleCall_4_0(),
                 invisibility.isInvisible());
         
         if (invisibility.eIsSet(KRENDERING_PKG.getKStyle_ModifierId())) {
@@ -767,7 +771,11 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
             feeder.accept(fontBoldAccess.getPropagateToChildrenPropagateKeyword_0_0());
         }
         
-        feeder.accept(fontBoldAccess.getBoldBOOLEANTerminalRuleCall_3_0(), fontBold.isBold());
+        if (fontBold.eIsSet(KRENDERING_PKG.getKStyle_Selection())) {
+            feeder.accept(fontBoldAccess.getSelectionSelectionKeyword_1_0());
+        }
+        
+        feeder.accept(fontBoldAccess.getBoldBOOLEANTerminalRuleCall_4_0(), fontBold.isBold());
         
         if (fontBold.eIsSet(KRENDERING_PKG.getKStyle_ModifierId())) {
             feeder.accept(grammarAccess.getKStyleAccess()
@@ -789,7 +797,11 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
             feeder.accept(fontItalicAccess.getPropagateToChildrenPropagateKeyword_0_0());
         }
         
-        feeder.accept(fontItalicAccess.getItalicBOOLEANTerminalRuleCall_3_0(), fontItalic.isItalic());
+        if (fontItalic.eIsSet(KRENDERING_PKG.getKStyle_Selection())) {
+            feeder.accept(fontItalicAccess.getSelectionSelectionKeyword_1_0());
+        }
+        
+        feeder.accept(fontItalicAccess.getItalicBOOLEANTerminalRuleCall_4_0(), fontItalic.isItalic());
         
         if (fontItalic.eIsSet(KRENDERING_PKG.getKStyle_ModifierId())) {
             feeder.accept(grammarAccess.getKStyleAccess()

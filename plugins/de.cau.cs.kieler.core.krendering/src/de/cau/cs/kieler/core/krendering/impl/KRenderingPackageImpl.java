@@ -15,6 +15,7 @@ package de.cau.cs.kieler.core.krendering.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
@@ -25,6 +26,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.krendering.Arc;
+import de.cau.cs.kieler.core.krendering.Colors;
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KArc;
@@ -521,6 +523,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EEnum arcEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType colorsEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1626,7 +1635,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKAction_Id() {
+    public EAttribute getKAction_ActionId() {
         return (EAttribute)kActionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1637,6 +1646,33 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EAttribute getKAction_Trigger() {
         return (EAttribute)kActionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKAction_AltPressed() {
+        return (EAttribute)kActionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKAction_CtrlCmdPressed() {
+        return (EAttribute)kActionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKAction_ShiftPressed() {
+        return (EAttribute)kActionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -1977,6 +2013,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getColors() {
+        return colorsEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public KRenderingFactory getKRenderingFactory() {
         return (KRenderingFactory)getEFactoryInstance();
     }
@@ -2159,8 +2204,11 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kLineCapEClass, KLINE_CAP__LINE_CAP);
 
         kActionEClass = createEClass(KACTION);
-        createEAttribute(kActionEClass, KACTION__ID);
+        createEAttribute(kActionEClass, KACTION__ACTION_ID);
         createEAttribute(kActionEClass, KACTION__TRIGGER);
+        createEAttribute(kActionEClass, KACTION__ALT_PRESSED);
+        createEAttribute(kActionEClass, KACTION__CTRL_CMD_PRESSED);
+        createEAttribute(kActionEClass, KACTION__SHIFT_PRESSED);
 
         kPointPlacementDataEClass = createEClass(KPOINT_PLACEMENT_DATA);
         createEReference(kPointPlacementDataEClass, KPOINT_PLACEMENT_DATA__REFERENCE_POINT);
@@ -2208,6 +2256,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         underlineEEnum = createEEnum(UNDERLINE);
         lineJoinEEnum = createEEnum(LINE_JOIN);
         arcEEnum = createEEnum(ARC);
+
+        // Create data types
+        colorsEDataType = createEDataType(COLORS);
     }
 
     /**
@@ -2437,6 +2488,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+        op = addEOperation(kColorEClass, this.getKColor(), "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+
         op = addEOperation(kColorEClass, ecorePackage.getEBoolean(), "equals", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEJavaObject(), "other", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -2507,9 +2561,20 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEOperation(op, g1);
 
         op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
         g1 = createEGenericType(kColoringEClass_T);
         initEOperation(op, g1);
@@ -2522,9 +2587,20 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEOperation(op, g1);
 
         op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "red", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "green", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "blue", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setTargetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
         g1 = createEGenericType(kColoringEClass_T);
         initEOperation(op, g1);
@@ -2558,8 +2634,11 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKLineCap_LineCap(), this.getLineCap(), "lineCap", null, 1, 1, KLineCap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kActionEClass, KAction.class, "KAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKAction_Id(), ecorePackage.getEString(), "id", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_ActionId(), ecorePackage.getEString(), "actionId", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKAction_Trigger(), this.getTrigger(), "trigger", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_AltPressed(), ecorePackage.getEBoolean(), "altPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_CtrlCmdPressed(), ecorePackage.getEBoolean(), "ctrlCmdPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_ShiftPressed(), ecorePackage.getEBoolean(), "shiftPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPointPlacementDataEClass, KPointPlacementData.class, "KPointPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2625,6 +2704,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEEnum(triggerEEnum, Trigger.class, "Trigger");
         addEEnumLiteral(triggerEEnum, Trigger.SINGLECLICK);
         addEEnumLiteral(triggerEEnum, Trigger.DOUBLECLICK);
+        addEEnumLiteral(triggerEEnum, Trigger.MIDDLE_SINGLECLICK);
 
         initEEnum(underlineEEnum, Underline.class, "Underline");
         addEEnumLiteral(underlineEEnum, Underline.NONE);
@@ -2643,6 +2723,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(arcEEnum, Arc.OPEN);
         addEEnumLiteral(arcEEnum, Arc.CHORD);
         addEEnumLiteral(arcEEnum, Arc.PIE);
+
+        // Initialize data types
+        initEDataType(colorsEDataType, Colors.class, "Colors", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

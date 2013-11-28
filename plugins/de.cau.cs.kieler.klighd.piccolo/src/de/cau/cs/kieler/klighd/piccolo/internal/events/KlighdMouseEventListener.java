@@ -212,12 +212,18 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         /**
          * Provides the MouseEventType translated into values of {@link Trigger}.
          * 
-         * TODO: supports currently only double clicks, further events are still to be translated.
-         * 
-         * @return the event {@link Trigger}.
+         * @return the event {@link Trigger} or <code>null</code> if event type is not supported.
          */
         public Trigger getTrigger() {
-            if (eventType == SWT.MouseDoubleClick) {
+            if (eventType == SWT.MouseUp) {
+                if (mouseEvent.button == 1) {
+                    return Trigger.SINGLECLICK;
+                } else if (mouseEvent.button == 2) {
+                    return Trigger.MIDDLE_SINGLECLICK;
+                }
+            }
+            if (eventType == SWT.MouseDoubleClick
+                    && mouseEvent.button == 1) {
                 return Trigger.DOUBLECLICK;
             }
             return null;

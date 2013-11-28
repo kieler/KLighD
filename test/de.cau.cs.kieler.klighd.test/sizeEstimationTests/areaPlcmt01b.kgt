@@ -1,3 +1,8 @@
+// tests the rendering composition
+//  with the text being contained in a nested (black) rectangle that in turn is contained
+//  in a (red) rectangle and surrounded by some absolute margin
+// similar test case than areaPlcmt02a.kgt 
+
 knode {
 	properties:
 		klighd.testing.expected.^height = 36.0

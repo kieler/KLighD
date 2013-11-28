@@ -420,6 +420,21 @@ public final class KRenderingUtil {
     }
     
     /**
+     * Convenience setter for configuring the RGB values of {@link KColor KColors}.<br>
+     * {@link KColor#setColor(Colors)} redirects to this method.
+     * 
+     * @param color
+     *            the {@link KColor} to configure
+     * @param colorConstant
+     *            a color constant from the {@link Colors} enumeration
+     * @return the provided <code>color</code> for convenience
+     */
+    public static KColor setColor(final KColor color, final Colors colorConstant) {
+        return setColor(color, colorConstant.getRed(), colorConstant.getBlue(),
+                colorConstant.getGreen());
+    }
+    
+    /**
      * Tests the equality of two {@link KColor} objects.<br>
      * {@link KColor#equals(Object)} redirects to this method.
      * 
@@ -460,12 +475,24 @@ public final class KRenderingUtil {
      */
     public static <T extends KColoring<T>> T setColor(final T coloring, final int red,
             final int green, final int blue) {
-        final KColor color = FACTORY.createKColor();
-        color.setRed(red);
-        color.setGreen(green);
-        color.setBlue(blue);
-
-        coloring.setColor(color);
+        coloring.setColor(setColor(FACTORY.createKColor(), red, green, blue));
+        return coloring;
+    }
+    
+    /**
+     * Convenience setter for configuring the color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setColor(Colors)} redirects to this method.
+     * 
+     * @param <T>
+     *            the concrete type of the provided {@link KColoring} 
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param color
+     *            a color constant from the {@link Colors} enumeration
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static <T extends KColoring<T>> T setColor(final T coloring, final Colors color) {
+        coloring.setColor(setColor(FACTORY.createKColor(), color));
         return coloring;
     }
     
@@ -495,6 +522,27 @@ public final class KRenderingUtil {
     }
     
     /**
+     * Convenience setter for configuring the color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setColor(Colors)} redirects to this method.
+     * 
+     * @param <T>
+     *            the concrete type of the provided {@link KColoring} 
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param color
+     *            a color constant from the {@link Colors} enumeration
+     * @param alpha
+     *            the alpha component of the desired color in range of 0 to 255
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static <T extends KColoring<T>> T setColor(final T coloring, final Colors color,
+            final int alpha) {
+        coloring.setColor(setColor(FACTORY.createKColor(), color));
+        coloring.setAlpha(alpha);
+        return coloring;
+    }
+    
+    /**
      * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
      * {@link KColoring#setTargetColor(int, int, int)} redirects to this method.
      * 
@@ -512,15 +560,27 @@ public final class KRenderingUtil {
      */
     public static <T extends KColoring<T>> T setTargetColor(final T coloring, final int red,
             final int green, final int blue) {
-        final KColor color = FACTORY.createKColor();
-        color.setRed(red);
-        color.setGreen(green);
-        color.setBlue(blue);
-
-        coloring.setTargetColor(color);
+        coloring.setTargetColor(setColor(FACTORY.createKColor(), red, green, blue));
         return coloring;
     }
     
+    /**
+     * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setTargetColor(Colors)} redirects to this method.
+     * 
+     * @param <T>
+     *            the concrete type of the provided {@link KColoring}
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param color
+     *            a color constant from the {@link Colors} enumeration
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static <T extends KColoring<T>> T setTargetColor(final T coloring, final Colors color) {
+        coloring.setTargetColor(setColor(FACTORY.createKColor(), color));
+        return coloring;
+    }
+   
     /**
      * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
      * {@link KColoring#setTargetColor(int, int, int, int)} redirects to this method.
@@ -546,6 +606,27 @@ public final class KRenderingUtil {
         return coloring;
     }
     
+    /**
+     * Convenience setter for configuring the gradient target color of {@link KColoring KColorings}.<br>
+     * {@link KColoring#setTargetColor(Colors, int)} redirects to this method.
+     * 
+     * @param <T>
+     *            the concrete type of the provided {@link KColoring}
+     * @param coloring
+     *            the {@link KColoring} to configure
+     * @param color
+     *            a color constant from the {@link Colors} enumeration
+     * @param alpha
+     *            the alpha component of the desired color in range of 0 to 255
+     * @return the provided <code>coloring</code> for convenience
+     */
+    public static <T extends KColoring<T>> T setTargetColor(final T coloring, final Colors color,
+            final int alpha) {
+        coloring.setTargetColor(setColor(FACTORY.createKColor(), color));
+        coloring.setTargetAlpha(alpha);
+        return coloring;
+    }
+   
     /**
      * Tests the equality of two {@link KColor} objects.<br>
      * {@link KColor#equals(Object)} redirects to this method.

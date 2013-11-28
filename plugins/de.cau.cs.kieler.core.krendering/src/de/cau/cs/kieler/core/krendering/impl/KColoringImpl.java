@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import de.cau.cs.kieler.core.krendering.Colors;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
@@ -342,6 +343,50 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      */
     public boolean equals(final Object other) {
         return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColor(final Colors color) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColor(final Colors color, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color, alpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColor(final Colors color) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColor(final Colors color, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color, alpha);
     }
 
     /**

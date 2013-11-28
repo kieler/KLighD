@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import de.cau.cs.kieler.core.krendering.Colors;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
@@ -188,6 +189,15 @@ public class KColorImpl extends EObjectImpl implements KColor {
      */
     public KColor setColor(final int red, final int green, final int blue) {
         return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, red, green, blue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public KColor setColor(final Colors color) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, color);
     }
 
     /**

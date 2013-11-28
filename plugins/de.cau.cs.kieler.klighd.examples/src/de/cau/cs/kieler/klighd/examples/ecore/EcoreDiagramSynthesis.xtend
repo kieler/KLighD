@@ -79,7 +79,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	extension KColorExtensions
 	
     private static val CHOSEN = "Chosen classes";
-    private static val CHOSEN_AND_RELATED = "Chosen (highlighted) & related classes";
+    private static val CHOSEN_AND_RELATED = "Chosen (highlighted) && related classes";
     private static val ALL = "All classes, selection highlighted";
     
     private static val String CLASS_FILTER_NAME = "Class filter";

@@ -1003,8 +1003,8 @@ public final class PlacementUtil {
      */
     private static Pair<Float, Float> getSize(final float abs0, final float rel0,
             final int positionId0, final float abs1, final float rel1, final int positionId1) {
-        float absOffset = 0;
-        float relWidth = 1f;
+        final float absOffset;
+        final float relWidth;
 
         int position = positionId0 * FIRST_OFFSET + positionId1;
 
@@ -1020,14 +1020,22 @@ public final class PlacementUtil {
             // top left comes from left
             // bottom right comes from left
             relWidth = rel1 - rel0;
-            absOffset = abs0 - abs1;
+            if (relWidth == 0) {
+                absOffset = abs1;
+            } else {
+                absOffset = abs0 - abs1;
+            }
             break;
 
         case SECONDARY_PIMARY:
             // top left comes from right
             // bottom right comes from right
             relWidth = rel0 - rel1;
-            absOffset = -abs0 + abs1;
+            if (relWidth == 0) {
+                absOffset = abs0;
+            } else {
+                absOffset = -abs0 + abs1;
+            }
             break;
 
         case SECONDARY_SECONDARY:
@@ -1060,8 +1068,8 @@ public final class PlacementUtil {
         float absYOffest = vertSize.getFirst();
         float relHeight = vertSize.getSecond();
 
-        bounds.width = (relWidth == 0f ? 0f : (bounds.width  + absXOffest) / relWidth);
-        bounds.height = (relHeight == 0f ? 0f : (bounds.height  + absYOffest) / relHeight);
+        bounds.width = (relWidth == 0f ? absXOffest : (bounds.width  + absXOffest) / relWidth);
+        bounds.height = (relHeight == 0f ? absYOffest : (bounds.height  + absYOffest) / relHeight);
         
         return bounds;
     }

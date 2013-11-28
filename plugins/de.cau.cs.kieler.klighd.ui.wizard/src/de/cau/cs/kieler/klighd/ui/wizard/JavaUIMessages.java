@@ -33,15 +33,20 @@ final class JavaUIMessages extends NLS {
     public static String KlighdNewProjectCreationPage_Package;
     public static String KlighdNewProjectCreationPage_SourceModelGroupTitle;
     public static String KlighdNewProjectCreationPage_BrowseButtonText;
+
+    public static String KlighdNewProjectCreationPage_CreateMenuContributionText;
     public static String KlighdNewProjectCreationPage_SourceModelDialogTitle;
     public static String KlighdNewProjectCreationPage_LanguageGroupText;
     public static String KlighdNewProjectCreationPage_LanguageJava;
     public static String KlighdNewProjectCreationPage_LanguageXtend;
+    public static String KlighdNewProjectCreationPage_UIGroupText;
     public static String KlighdNewProjectCreationPage_MsgInvalidProjectName;
     public static String KlighdNewProjectCreationPage_MsgInvalidTransformationName;
     public static String KlighdNewProjectCreationPage_MsgInvalidSourceModelType;
 
     public static String KlighdNewProjectWizard_WizardTitle;
+
+    public static String OpenTypeAction_dialogMessage;
     
     static {
         // initialize resource bundle

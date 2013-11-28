@@ -17,6 +17,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -33,8 +34,11 @@ import org.eclipse.emf.ecore.EReference;
  * </ul>
  * <!-- end-user-doc -->
  * <!-- begin-model-doc -->
- * define if this text is increased in size to be able to read it when zooming out.
- * Text will only grow until the node space is 
+ * This package contains the classes of the KRendering language.<br>
+ * This languages extends {@link KGraphPackage KGraph} and provides the means for describing the
+ * figures, the elements of a KGraph instance are depicted by. This involves
+ * primitive figures to be composed to complex ones, <i>micro layout</i> directives,
+ * styles, as well as actions for expressing interactivity of KGraph/KRendering-based diagrams.
  * <!-- end-model-doc -->
  * @see de.cau.cs.kieler.core.krendering.KRenderingFactory
  * @model kind="package"
@@ -3251,13 +3255,13 @@ public interface KRenderingPackage extends EPackage {
     int KACTION = 44;
 
     /**
-     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * The feature id for the '<em><b>Action Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KACTION__ID = 0;
+    int KACTION__ACTION_ID = 0;
 
     /**
      * The feature id for the '<em><b>Trigger</b></em>' attribute.
@@ -3269,13 +3273,40 @@ public interface KRenderingPackage extends EPackage {
     int KACTION__TRIGGER = 1;
 
     /**
+     * The feature id for the '<em><b>Alt Pressed</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KACTION__ALT_PRESSED = 2;
+
+    /**
+     * The feature id for the '<em><b>Ctrl Cmd Pressed</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KACTION__CTRL_CMD_PRESSED = 3;
+
+    /**
+     * The feature id for the '<em><b>Shift Pressed</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KACTION__SHIFT_PRESSED = 4;
+
+    /**
      * The number of structural features of the '<em>KAction</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KACTION_FEATURE_COUNT = 2;
+    int KACTION_FEATURE_COUNT = 5;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl <em>KPoint Placement Data</em>}' class.
@@ -3859,6 +3890,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int ARC = 60;
+
+    /**
+     * The meta object id for the '<em>Colors</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.Colors
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getColors()
+     * @generated
+     */
+    int COLORS = 61;
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPosition <em>KPosition</em>}'.
@@ -5081,15 +5122,15 @@ public interface KRenderingPackage extends EPackage {
     EClass getKAction();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAction#getId <em>Id</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAction#getActionId <em>Action Id</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Id</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KAction#getId()
+     * @return the meta object for the attribute '<em>Action Id</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KAction#getActionId()
      * @see #getKAction()
      * @generated
      */
-    EAttribute getKAction_Id();
+    EAttribute getKAction_ActionId();
 
     /**
      * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAction#getTrigger <em>Trigger</em>}'.
@@ -5101,6 +5142,39 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EAttribute getKAction_Trigger();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAction#isAltPressed <em>Alt Pressed</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Alt Pressed</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KAction#isAltPressed()
+     * @see #getKAction()
+     * @generated
+     */
+    EAttribute getKAction_AltPressed();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAction#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Ctrl Cmd Pressed</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KAction#isCtrlCmdPressed()
+     * @see #getKAction()
+     * @generated
+     */
+    EAttribute getKAction_CtrlCmdPressed();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KAction#isShiftPressed <em>Shift Pressed</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Shift Pressed</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KAction#isShiftPressed()
+     * @see #getKAction()
+     * @generated
+     */
+    EAttribute getKAction_ShiftPressed();
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPointPlacementData <em>KPoint Placement Data</em>}'.
@@ -5492,6 +5566,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EEnum getArc();
+
+    /**
+     * Returns the meta object for data type '{@link de.cau.cs.kieler.core.krendering.Colors <em>Colors</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Colors</em>'.
+     * @see de.cau.cs.kieler.core.krendering.Colors
+     * @model instanceClass="de.cau.cs.kieler.core.krendering.Colors"
+     * @generated
+     */
+    EDataType getColors();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -6526,12 +6611,12 @@ public interface KRenderingPackage extends EPackage {
         EClass KACTION = eINSTANCE.getKAction();
 
         /**
-         * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Action Id</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute KACTION__ID = eINSTANCE.getKAction_Id();
+        EAttribute KACTION__ACTION_ID = eINSTANCE.getKAction_ActionId();
 
         /**
          * The meta object literal for the '<em><b>Trigger</b></em>' attribute feature.
@@ -6540,6 +6625,30 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KACTION__TRIGGER = eINSTANCE.getKAction_Trigger();
+
+        /**
+         * The meta object literal for the '<em><b>Alt Pressed</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KACTION__ALT_PRESSED = eINSTANCE.getKAction_AltPressed();
+
+        /**
+         * The meta object literal for the '<em><b>Ctrl Cmd Pressed</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KACTION__CTRL_CMD_PRESSED = eINSTANCE.getKAction_CtrlCmdPressed();
+
+        /**
+         * The meta object literal for the '<em><b>Shift Pressed</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KACTION__SHIFT_PRESSED = eINSTANCE.getKAction_ShiftPressed();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KPointPlacementDataImpl <em>KPoint Placement Data</em>}' class.
@@ -6868,6 +6977,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum ARC = eINSTANCE.getArc();
+
+        /**
+         * The meta object literal for the '<em>Colors</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.Colors
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getColors()
+         * @generated
+         */
+        EDataType COLORS = eINSTANCE.getColors();
 
     }
 

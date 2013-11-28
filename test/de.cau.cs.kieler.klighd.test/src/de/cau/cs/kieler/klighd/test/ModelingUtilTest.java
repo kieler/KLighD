@@ -15,8 +15,7 @@ package de.cau.cs.kieler.klighd.test;
 
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -48,7 +47,7 @@ public class ModelingUtilTest {
         
         eAllContainerTestObject = c;
     }
-    
+
     @Test
     public void eAllContainerTest() {
         final List<?> containers = Lists.newArrayList(

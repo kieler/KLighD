@@ -331,7 +331,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ('{' (('points' ':') | ('styles' ':') | ('actions' ':'))* '}')?
+	 *     ('{' (('actions' ':') | ('styles' ':') | ('points' ':'))* '}')?
 	 */
 	protected void emit_KPolyline___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_RightCurlyBracketKeyword_3_4__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -347,7 +347,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     (('points' ':') | ('styles' ':') | ('actions' ':'))*
+	 *     (('actions' ':') | ('styles' ':') | ('points' ':'))*
 	 */
 	protected void emit_KPolyline_____ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -355,7 +355,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('points' ':') | ('actions' ':'))* 'styles' ':')*
+	 *     ((('actions' ':') | ('points' ':'))* 'styles' ':')*
 	 */
 	protected void emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -363,7 +363,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('points' ':') | ('actions' ':'))* 'styles' ':')+
+	 *     ((('actions' ':') | ('points' ':'))* 'styles' ':')+
 	 */
 	protected void emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -371,7 +371,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('styles' ':') | ('actions' ':'))* 'points' ':')+
+	 *     ((('actions' ':') | ('styles' ':'))* 'points' ':')+
 	 */
 	protected void emit_KPolyline_______ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -379,7 +379,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('points' ':') | ('styles' ':'))* 'actions' ':')*
+	 *     ((('styles' ':') | ('points' ':'))* 'actions' ':')*
 	 */
 	protected void emit_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -387,7 +387,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('points' ':') | ('styles' ':'))* 'actions' ':')+
+	 *     ((('styles' ':') | ('points' ':'))* 'actions' ':')+
 	 */
 	protected void emit_KPolyline_______PointsKeyword_3_1_0_0_ColonKeyword_3_1_0_1___or___StylesKeyword_3_1_1_0_ColonKeyword_3_1_1_1____a_ActionsKeyword_3_1_2_0_ColonKeyword_3_1_2_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -403,7 +403,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     (('size' ':') | ('properties' ':') | ('pos' ':'))*
+	 *     (('pos' ':') | ('properties' ':') | ('size' ':'))*
 	 */
 	protected void emit_KShapeLayout_____PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -411,7 +411,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('properties' ':') | ('pos' ':'))* 'size' ':')*
+	 *     ((('pos' ':') | ('properties' ':'))* 'size' ':')*
 	 */
 	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -419,7 +419,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('properties' ':') | ('pos' ':'))* 'size' ':')+
+	 *     ((('pos' ':') | ('properties' ':'))* 'size' ':')+
 	 */
 	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___PropertiesKeyword_1_2_0_ColonKeyword_1_2_1____a_SizeKeyword_1_1_0_ColonKeyword_1_1_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -427,7 +427,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('size' ':') | ('pos' ':'))* 'properties' ':')*
+	 *     ((('pos' ':') | ('size' ':'))* 'properties' ':')*
 	 */
 	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -435,7 +435,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('size' ':') | ('pos' ':'))* 'properties' ':')+
+	 *     ((('pos' ':') | ('size' ':'))* 'properties' ':')+
 	 */
 	protected void emit_KShapeLayout_______PosKeyword_1_0_0_ColonKeyword_1_0_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PropertiesKeyword_1_2_0_ColonKeyword_1_2_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -443,7 +443,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('size' ':') | ('properties' ':'))* 'pos' ':')*
+	 *     ((('properties' ':') | ('size' ':'))* 'pos' ':')*
 	 */
 	protected void emit_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -451,7 +451,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ((('size' ':') | ('properties' ':'))* 'pos' ':')+
+	 *     ((('properties' ':') | ('size' ':'))* 'pos' ':')+
 	 */
 	protected void emit_KShapeLayout_______PropertiesKeyword_1_2_0_ColonKeyword_1_2_1___or___SizeKeyword_1_1_0_ColonKeyword_1_1_1____a_PosKeyword_1_0_0_ColonKeyword_1_0_1__p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -459,7 +459,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     ('{' (('styles' ':') | ('actions' ':'))* '}')?
+	 *     ('{' (('actions' ':') | ('styles' ':'))* '}')?
 	 */
 	protected void emit_KSimpleRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -475,7 +475,7 @@ public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntactic
 	
 	/**
 	 * Syntax:
-	 *     (('styles' ':') | ('actions' ':'))*
+	 *     (('actions' ':') | ('styles' ':'))*
 	 */
 	protected void emit_KSimpleRendering_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
