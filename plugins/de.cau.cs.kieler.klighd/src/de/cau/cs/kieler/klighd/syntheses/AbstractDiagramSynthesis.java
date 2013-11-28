@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphData;
@@ -25,6 +26,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -338,6 +340,22 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
         data.setProperty(option, collapsedValue, expandedValue);
                 
         return port;
+    }
+    
+    /**
+     * 
+     * @param kText
+     * @param element
+     * @return
+     */
+    public Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element) {
+        return new Function<String, Void>() {
+            public Void apply(final String arg0) {
+                // TODO Auto-generated method stub
+                System.out.println(arg0);
+                return null;
+            }
+        };
     }
     
     /**

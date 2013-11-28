@@ -239,12 +239,14 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                             if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz)) {
                                 it.addText("<<Enum>>") => [
                                     it.fontSize = 13;
+                                    it.cursorSelectable = true;
                                     it.fontItalic = true;
                                     it.verticalAlignment = V_CENTRAL;
                                     it.setAreaPlacementData.from(LEFT, 20, 0, TOP, 10, 0).to(RIGHT, 20, 0, BOTTOM, 1, 0.5f);
                                 ];
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
+                                    it.cursorSelectable = true;
                                     it.fontBold = true;
                                     it.setAreaPlacementData.from(LEFT, 20, 0, TOP, 1, 0.5f).to(RIGHT, 20, 0, BOTTOM, 10, 0);
                                 ];
@@ -253,6 +255,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                     .setPointPlacementData(LEFT, 20, 0, TOP, 0, 0.5f, H_CENTRAL, V_CENTRAL, 10, 10, 20, 20);
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
+                                    it.cursorSelectable = true;
                                     it.fontBold = true;
                                     it.setPointPlacementData(LEFT, 40, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 10, 10, 0, 0);
                                 ];
@@ -279,6 +282,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                         .setPointPlacementData(LEFT, 10, 0, TOP, 1.5f, 0.5f, H_CENTRAL, V_CENTRAL, 0, 0, 15f, 7.5f);
                                     it.addText(attr.name + " : " + attr.EAttributeType.name) => [
                                         it.fontSize = 13;
+                                        it.cursorSelectable = true;
                                         it.horizontalAlignment = H_LEFT
                                         it.verticalAlignment = V_CENTRAL
                                         it.setPointPlacementData(LEFT, 25, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 20, 5, 0, 0);
@@ -297,6 +301,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                             (clazz as EEnum).ELiterals.forEach[
                                 rect.addText(it.name + " (" + it.literal + ")") => [
                                     it.horizontalAlignment = H_CENTRAL
+                                    it.cursorSelectable = true;
                                     it.verticalAlignment = V_CENTRAL
                                     it.setSurroundingSpaceGrid(3, 0);
                                 ];
