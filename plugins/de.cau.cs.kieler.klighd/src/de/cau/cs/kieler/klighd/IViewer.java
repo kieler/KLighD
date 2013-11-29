@@ -26,9 +26,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
 
 /**
- * The interface for viewers on incrementally updated models.<br>
- * <br>
- * All method calls on this interface have to be made from the UI thread.
+ * The interface for viewers displaying diagrams of provided models.<br>
  * 
  * @author mri
  * @author chsch

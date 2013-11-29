@@ -15,23 +15,23 @@ package de.cau.cs.kieler.klighd.viewers;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
  * The KLighD viewer can be embedded into a SWT component and is able to accept any type of input
  * model. When a model is set as input it tries to find a visualization using the light diagram
- * services.
- * 
- * XXX what is this used for? seems just like a dumb wrapper for ContextViewer
+ * services. This class is intended to wrap the {@link ContextViewer}, it is, however, not clear
+ * whether it is actually helpful in order to form a clean API.  
  * 
  * @author mri
+ * @author chsch
  */
-public class KlighdViewer extends AbstractViewer<Object> {
+public class KlighdViewer extends AbstractViewer<Object> implements IViewer<Object> {
 
     /** the context viewer used to visualize models. */
     private ContextViewer contextViewer;
@@ -72,10 +72,17 @@ public class KlighdViewer extends AbstractViewer<Object> {
     /**
      * {@inheritDoc}
      */
+    public void setModel(final Object model) {
+        this.setModel(model, false);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void setModel(final Object model, final boolean sync) {
         ViewContext viewContext = LightDiagramServices.createViewContext(model);
         if (viewContext != null) {
-            contextViewer.setModel(viewContext);
+            contextViewer.setModel(viewContext, sync);
             LightDiagramServices.updateViewContext(viewContext, model);
         } else {
             contextViewer.setModel("Could not find a visualization for the model.", false);
@@ -92,55 +99,63 @@ public class KlighdViewer extends AbstractViewer<Object> {
     /**
      * {@inheritDoc}
      */
-    public IContentOutlinePage getOutlinePage() {
-        return contextViewer.getOutlinePage();
+    public void reveal(final KGraphElement diagramElement, final int duration) {
+        contextViewer.reveal(diagramElement, duration);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
-        contextViewer.startRecording();
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording(final ZoomStyle zoomStyle,
-            final int animationTime) {
-        contextViewer.stopRecording(zoomStyle, animationTime);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void zoomToLevel(final float zoomLevel, final int duration) {
-        contextViewer.zoomToLevel(zoomLevel, duration);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void reveal(final KGraphElement diagramObject, final int duration) {
-        contextViewer.reveal(diagramObject, duration);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void centerOn(final KGraphElement diagramElement, final int duration) {
         contextViewer.centerOn(diagramElement, duration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void centerOn(final Object semanticElement, final int duration) {
-        contextViewer.centerOn(semanticElement, duration);
+    public boolean isExpanded(final KNode diagramElement) {
+        return contextViewer.isExpanded(diagramElement);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final KNode diagramElement) {
+        contextViewer.collapse(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void expand(final KNode diagramElement) {
+        contextViewer.expand(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final KNode diagramElement) {
+        contextViewer.toggleExpansion(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void hide(final KGraphElement diagramElement) {
+        contextViewer.hide(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void show(final KGraphElement diagramElement) {
+        contextViewer.show(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(final KNode diagramElement) {
+        contextViewer.clip(diagramElement);
+    }
 }
