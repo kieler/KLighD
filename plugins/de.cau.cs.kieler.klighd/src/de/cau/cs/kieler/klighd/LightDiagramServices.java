@@ -32,7 +32,9 @@ import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
@@ -626,18 +628,15 @@ public final class LightDiagramServices {
         final ViewContext vc = contextViewer.getCurrentViewContext(); 
         
         if (layoutData != null) {
-            final List<ILayoutConfig> extendedOptions;
-            if (options == null || options.isEmpty()) {
-                extendedOptions = Collections.<ILayoutConfig>singletonList(
-                        contextViewer.getLightLayoutConfig());
-            } else {
-                CompoundLayoutConfig compound = new CompoundLayoutConfig();
-                compound.addAll(Collections2.filter(options, Predicates.notNull()));
-                compound.add(contextViewer.getLightLayoutConfig());
-                extendedOptions = Collections.<ILayoutConfig>singletonList(compound);
+            final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
+            extendedOptions.add(new VolatileLayoutConfig()
+                    .setValue(LayoutOptions.ANIMATE, animate)
+                    .setValue(LayoutOptions.ZOOM_TO_FIT, zoomToFit));
+            extendedOptions.add(contextViewer.getLightLayoutConfig());
+            if (options != null && !options.isEmpty()) {
+                extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
             }
-            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, animate, false, false,
-                    zoomToFit, extendedOptions);
+            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, extendedOptions);
         } else {
             ZoomStyle zoomStyle = ZoomStyle.create(zoomToFit, vc.isZoomToFocus());
             diagramViewer.stopRecording(zoomStyle, 0);
