@@ -1,0 +1,22 @@
+// tests the rendering composition with the text being contained in a nested (black) rectangle
+//  that in turn is contained in a (red) rectangle while
+// both anchors of the inner rectangle are placed based on the parent rect's right and bottom bound!    
+// 
+
+knode {
+    properties:
+        klighd.testing.expected.^height = 100.0
+        klighd.testing.expected.^width = 100.0
+    krectangle {
+        styles: foreground = 255r
+        krectangle {
+            areaData:
+                topLeftAnchor = right 90%, bottom 90%
+                bottomRightAnchor = right 10%, bottom 10%
+            ktext ("Hello") [
+                klighd.testing.^height = 80.0
+                klighd.testing.^width = 80.0
+            ]
+        }
+    }
+}

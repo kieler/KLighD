@@ -1,3 +1,6 @@
+// tests the simplest rendering composition
+//  with the text covering all the space of the container rectangle
+
 knode {
 	properties:
 	    klighd.testing.expected.^height = 16.0

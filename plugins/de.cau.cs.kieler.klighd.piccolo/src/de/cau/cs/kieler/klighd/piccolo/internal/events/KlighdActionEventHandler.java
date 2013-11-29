@@ -59,7 +59,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
      */
     private static final Predicate<KAction> WELLFORMED = new Predicate<KAction>() {
         public boolean apply(final KAction action) {
-            return action.getTrigger() != null && !Strings.isNullOrEmpty(action.getId());
+            return action.getTrigger() != null && !Strings.isNullOrEmpty(action.getActionId());
         }
     };
     
@@ -90,11 +90,11 @@ public class KlighdActionEventHandler implements PInputEventListener {
         boolean anyActionPerformed = false;
         
         for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
-            if (!action.getTrigger().equals(me.getTrigger())) {
+            if (!action.getTrigger().equals(me.getTrigger()) || !guardsMatch(action, me)) {
                 continue;
             }
             
-            final IAction actionImpl = KlighdDataManager.getInstance().getActionById(action.getId());
+            final IAction actionImpl = KlighdDataManager.getInstance().getActionById(action.getActionId());
             if (actionImpl == null) {
                 continue;
             }
@@ -144,6 +144,12 @@ public class KlighdActionEventHandler implements PInputEventListener {
         if (KlighdStatusTrigger.getInstance() != null) {
             KlighdStatusTrigger.getInstance().trigger(state);
         }
+    }
+    
+    private boolean guardsMatch(final KAction action, final KlighdMouseEvent event) {
+        return (!action.isAltPressed() || event.isAltDown())
+                && (!action.isCtrlCmdPressed() || event.isControlDown())
+                && (!action.isShiftPressed() || event.isShiftDown());
     }
 
 

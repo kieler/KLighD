@@ -31,8 +31,11 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl#getId <em>Id</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl#getActionId <em>Action Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl#getTrigger <em>Trigger</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl#isAltPressed <em>Alt Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KActionImpl#isShiftPressed <em>Shift Pressed</em>}</li>
  * </ul>
  * </p>
  *
@@ -40,24 +43,24 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public class KActionImpl extends EObjectImpl implements KAction {
     /**
-     * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+     * The default value of the '{@link #getActionId() <em>Action Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getId()
+     * @see #getActionId()
      * @generated
      * @ordered
      */
-    protected static final String ID_EDEFAULT = null;
+    protected static final String ACTION_ID_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+     * The cached value of the '{@link #getActionId() <em>Action Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getId()
+     * @see #getActionId()
      * @generated
      * @ordered
      */
-    protected String id = ID_EDEFAULT;
+    protected String actionId = ACTION_ID_EDEFAULT;
 
     /**
      * The default value of the '{@link #getTrigger() <em>Trigger</em>}' attribute.
@@ -78,6 +81,66 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * @ordered
      */
     protected Trigger trigger = TRIGGER_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isAltPressed() <em>Alt Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isAltPressed()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean ALT_PRESSED_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isAltPressed() <em>Alt Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isAltPressed()
+     * @generated
+     * @ordered
+     */
+    protected boolean altPressed = ALT_PRESSED_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isCtrlCmdPressed() <em>Ctrl Cmd Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isCtrlCmdPressed()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean CTRL_CMD_PRESSED_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isCtrlCmdPressed() <em>Ctrl Cmd Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isCtrlCmdPressed()
+     * @generated
+     * @ordered
+     */
+    protected boolean ctrlCmdPressed = CTRL_CMD_PRESSED_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isShiftPressed() <em>Shift Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isShiftPressed()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SHIFT_PRESSED_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isShiftPressed() <em>Shift Pressed</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isShiftPressed()
+     * @generated
+     * @ordered
+     */
+    protected boolean shiftPressed = SHIFT_PRESSED_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -103,8 +166,8 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getId() {
-        return id;
+    public String getActionId() {
+        return actionId;
     }
 
     /**
@@ -112,11 +175,11 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setId(String newId) {
-        String oldId = id;
-        id = newId;
+    public void setActionId(String newActionId) {
+        String oldActionId = actionId;
+        actionId = newActionId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__ID, oldId, id));
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__ACTION_ID, oldActionId, actionId));
     }
 
     /**
@@ -145,13 +208,82 @@ public class KActionImpl extends EObjectImpl implements KAction {
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isAltPressed() {
+        return altPressed;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setAltPressed(boolean newAltPressed) {
+        boolean oldAltPressed = altPressed;
+        altPressed = newAltPressed;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__ALT_PRESSED, oldAltPressed, altPressed));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean isCtrlCmdPressed() {
+        return ctrlCmdPressed;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setCtrlCmdPressed(boolean newCtrlCmdPressed) {
+        boolean oldCtrlCmdPressed = ctrlCmdPressed;
+        ctrlCmdPressed = newCtrlCmdPressed;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__CTRL_CMD_PRESSED, oldCtrlCmdPressed, ctrlCmdPressed));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean isShiftPressed() {
+        return shiftPressed;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setShiftPressed(boolean newShiftPressed) {
+        boolean oldShiftPressed = shiftPressed;
+        shiftPressed = newShiftPressed;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KACTION__SHIFT_PRESSED, oldShiftPressed, shiftPressed));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KACTION__ID:
-                return getId();
+            case KRenderingPackage.KACTION__ACTION_ID:
+                return getActionId();
             case KRenderingPackage.KACTION__TRIGGER:
                 return getTrigger();
+            case KRenderingPackage.KACTION__ALT_PRESSED:
+                return isAltPressed();
+            case KRenderingPackage.KACTION__CTRL_CMD_PRESSED:
+                return isCtrlCmdPressed();
+            case KRenderingPackage.KACTION__SHIFT_PRESSED:
+                return isShiftPressed();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -164,11 +296,20 @@ public class KActionImpl extends EObjectImpl implements KAction {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KACTION__ID:
-                setId((String)newValue);
+            case KRenderingPackage.KACTION__ACTION_ID:
+                setActionId((String)newValue);
                 return;
             case KRenderingPackage.KACTION__TRIGGER:
                 setTrigger((Trigger)newValue);
+                return;
+            case KRenderingPackage.KACTION__ALT_PRESSED:
+                setAltPressed((Boolean)newValue);
+                return;
+            case KRenderingPackage.KACTION__CTRL_CMD_PRESSED:
+                setCtrlCmdPressed((Boolean)newValue);
+                return;
+            case KRenderingPackage.KACTION__SHIFT_PRESSED:
+                setShiftPressed((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -182,11 +323,20 @@ public class KActionImpl extends EObjectImpl implements KAction {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KACTION__ID:
-                setId(ID_EDEFAULT);
+            case KRenderingPackage.KACTION__ACTION_ID:
+                setActionId(ACTION_ID_EDEFAULT);
                 return;
             case KRenderingPackage.KACTION__TRIGGER:
                 setTrigger(TRIGGER_EDEFAULT);
+                return;
+            case KRenderingPackage.KACTION__ALT_PRESSED:
+                setAltPressed(ALT_PRESSED_EDEFAULT);
+                return;
+            case KRenderingPackage.KACTION__CTRL_CMD_PRESSED:
+                setCtrlCmdPressed(CTRL_CMD_PRESSED_EDEFAULT);
+                return;
+            case KRenderingPackage.KACTION__SHIFT_PRESSED:
+                setShiftPressed(SHIFT_PRESSED_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -200,10 +350,16 @@ public class KActionImpl extends EObjectImpl implements KAction {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KACTION__ID:
-                return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+            case KRenderingPackage.KACTION__ACTION_ID:
+                return ACTION_ID_EDEFAULT == null ? actionId != null : !ACTION_ID_EDEFAULT.equals(actionId);
             case KRenderingPackage.KACTION__TRIGGER:
                 return trigger != TRIGGER_EDEFAULT;
+            case KRenderingPackage.KACTION__ALT_PRESSED:
+                return altPressed != ALT_PRESSED_EDEFAULT;
+            case KRenderingPackage.KACTION__CTRL_CMD_PRESSED:
+                return ctrlCmdPressed != CTRL_CMD_PRESSED_EDEFAULT;
+            case KRenderingPackage.KACTION__SHIFT_PRESSED:
+                return shiftPressed != SHIFT_PRESSED_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -218,10 +374,16 @@ public class KActionImpl extends EObjectImpl implements KAction {
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (id: ");
-        result.append(id);
+        result.append(" (actionId: ");
+        result.append(actionId);
         result.append(", trigger: ");
         result.append(trigger);
+        result.append(", altPressed: ");
+        result.append(altPressed);
+        result.append(", ctrlCmdPressed: ");
+        result.append(ctrlCmdPressed);
+        result.append(", shiftPressed: ");
+        result.append(shiftPressed);
         result.append(')');
         return result.toString();
     }

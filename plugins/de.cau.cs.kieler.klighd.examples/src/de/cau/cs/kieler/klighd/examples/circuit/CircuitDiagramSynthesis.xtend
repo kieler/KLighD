@@ -97,8 +97,8 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         val KNode circuitNode = circuit.createNode().putToLookUpWith(circuit);
         parent.children += circuitNode;
         
-        // we want the (potentially) contained contained edges to be routed in
-        //  orthogonal style, this option is evaluated by the layout algorithm
+        // we want the (potentially) contained edges to be routed in orthogonal style,
+        //  this option is evaluated by the layout algorithm
         circuitNode.setLayoutOption(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
 
         val atomicCircuit = circuit.innerCircuits.empty;
@@ -139,7 +139,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             case "AND" : circuitNode.createAndGateRendering()
             case "OR" : circuitNode.createOrGateRendering()
             
-            // in case no known type is found and 'circuit' doesn't contain any inner circuit's
+            // in case no known type is found and 'circuit' doesn't contain any inner circuits
             case atomicCircuit : circuitNode.createBasicGateRendering()
             
             // otherwise, i.e. in case of a hierarchic circuit containing nested circuits
@@ -175,7 +175,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         circuit.innerWires.forEach[ wire |
             // the circuit wires are really special wires - they can connect more than 2 connectors :-)
             //  let's shamelessly assume connections from the first connector to all remaining ones in the list
-            //  thus, we won't create view model edges for the pairs of second connector and third, forth, ...
+            //  thus, we won't create view model edges for the pairs of second connector and third, fourth, ...
             
             // for each of connector except the first one ... 
             wire.connectedTo.tail.forEach[ connector |
@@ -191,7 +191,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                     it.target = connector.parent?.node;
                     it.targetPort = connector.port;
 
-                    // the functions '....node' & '....port', actually named 'getNode(...)' & 'getPort(...)'
+                    // the functions '....node' & '....port', actually named 'getNode(...)' & 'getPort(...)',
                     //  assist us in revealing the nodes and ports corresponding to the connected
                     //  circuit and connector in our semantic model
                     // they delegate to a so-called 'create extension', a very powerful element of Xtend

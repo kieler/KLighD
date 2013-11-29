@@ -1635,7 +1635,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKAction_Id() {
+    public EAttribute getKAction_ActionId() {
         return (EAttribute)kActionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1646,6 +1646,33 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      */
     public EAttribute getKAction_Trigger() {
         return (EAttribute)kActionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKAction_AltPressed() {
+        return (EAttribute)kActionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKAction_CtrlCmdPressed() {
+        return (EAttribute)kActionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getKAction_ShiftPressed() {
+        return (EAttribute)kActionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -2177,8 +2204,11 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         createEAttribute(kLineCapEClass, KLINE_CAP__LINE_CAP);
 
         kActionEClass = createEClass(KACTION);
-        createEAttribute(kActionEClass, KACTION__ID);
+        createEAttribute(kActionEClass, KACTION__ACTION_ID);
         createEAttribute(kActionEClass, KACTION__TRIGGER);
+        createEAttribute(kActionEClass, KACTION__ALT_PRESSED);
+        createEAttribute(kActionEClass, KACTION__CTRL_CMD_PRESSED);
+        createEAttribute(kActionEClass, KACTION__SHIFT_PRESSED);
 
         kPointPlacementDataEClass = createEClass(KPOINT_PLACEMENT_DATA);
         createEReference(kPointPlacementDataEClass, KPOINT_PLACEMENT_DATA__REFERENCE_POINT);
@@ -2604,8 +2634,11 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEAttribute(getKLineCap_LineCap(), this.getLineCap(), "lineCap", null, 1, 1, KLineCap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kActionEClass, KAction.class, "KAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKAction_Id(), ecorePackage.getEString(), "id", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_ActionId(), ecorePackage.getEString(), "actionId", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKAction_Trigger(), this.getTrigger(), "trigger", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_AltPressed(), ecorePackage.getEBoolean(), "altPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_CtrlCmdPressed(), ecorePackage.getEBoolean(), "ctrlCmdPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_ShiftPressed(), ecorePackage.getEBoolean(), "shiftPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPointPlacementDataEClass, KPointPlacementData.class, "KPointPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2671,6 +2704,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEEnum(triggerEEnum, Trigger.class, "Trigger");
         addEEnumLiteral(triggerEEnum, Trigger.SINGLECLICK);
         addEEnumLiteral(triggerEEnum, Trigger.DOUBLECLICK);
+        addEEnumLiteral(triggerEEnum, Trigger.MIDDLE_SINGLECLICK);
 
         initEEnum(underlineEEnum, Underline.class, "Underline");
         addEEnumLiteral(underlineEEnum, Underline.NONE);
