@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.krendering.KYPosition
 import de.cau.cs.kieler.core.krendering.LineCap
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
 import de.cau.cs.kieler.core.krendering.VerticalAlignment
+import de.cau.cs.kieler.core.krendering.KText
 
 /**
  * @author chsch, alb
@@ -122,4 +123,26 @@ class KPolylineExtensions {
             pl.points += it;
         ];
     }
+    
+    /**
+     * Experimental!
+     * 
+     * This way only works if the polyline leaves to the right side.
+     */
+    def KRendering addBoxedTextDecorator(KPolyline pl, KText text, float textWidth, float textHeight) {
+        pl.addRectangle => [ rect |
+            rect.background = "white".color
+            text.setParent(rect)
+            rect.placementData = renderingFactory.createKDecoratorPlacementData => [
+                //it.rotateWithLine = true;
+                it.relative = 0f;
+                it.absolute =  0f;
+                it.width = textWidth;
+                it.height = textHeight;
+                //it.setXOffset(-textWidth/2);
+                it.setYOffset(-textHeight/2);
+            ]; 
+        ]
+    }
+    
 }
