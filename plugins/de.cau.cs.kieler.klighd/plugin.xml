@@ -44,7 +44,7 @@
       </page>
    </extension>
    <extension
-         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
+         point="de.cau.cs.kieler.kiml.service.layoutManagers">
       <manager
             class="de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager">
       </manager>

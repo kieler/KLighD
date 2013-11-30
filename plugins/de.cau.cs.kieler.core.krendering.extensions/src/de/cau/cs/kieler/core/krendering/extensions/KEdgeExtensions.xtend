@@ -122,7 +122,7 @@ class KEdgeExtensions {
     }
     
     
-    def KEdge addLayoutParam(KEdge edge, IProperty<?> property, Object value) {
+    def <T> KEdge addLayoutParam(KEdge edge, IProperty<? super T> property, T value) {
         edge => [
             it.getData(typeof(KEdgeLayout)).setProperty(property, value)
         ];

@@ -36,7 +36,7 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
     /**
      * {@inheritDoc}
      */
-    public void setProperty(final IProperty<?> property, final Object value) {
+    public <T> void setProperty(final IProperty<? super T> property, final T value) {
         if (propertyMap == null) {
             propertyMap = new HashMap<IProperty<?>, Object>();
         }
