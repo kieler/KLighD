@@ -121,7 +121,7 @@ public class LayoutOptionControlFactory {
      * they should be removed first using {@link #clear()}.
      */
     public void initialize() {
-        lightLayoutConfig.clear();
+        lightLayoutConfig.clearValues(LayoutContext.global());
         EObject inputModel = null;
         Object viewModel = null;
         if (workbenchPart instanceof DiagramViewPart) {
@@ -232,7 +232,7 @@ public class LayoutOptionControlFactory {
     public void resetToDefaults() {
         // temporarily disable auto-refresh to avoid multiple layout runs triggered by listeners
         autoRefreshLayout = false;
-        lightLayoutConfig.clear();
+        lightLayoutConfig.clearValues(LayoutContext.global());
         for (Control control : controls) {
             if (control.getData() instanceof LayoutOptionData<?>) {
                 LayoutOptionData<?> optionData = (LayoutOptionData<?>) control.getData();

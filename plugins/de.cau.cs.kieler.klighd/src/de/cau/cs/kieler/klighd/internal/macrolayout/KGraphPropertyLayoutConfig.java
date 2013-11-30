@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -238,9 +241,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public void transferValues(final KLayoutData graphData, final LayoutContext context) {
+    public Collection<IProperty<?>> getAffectedOptions(final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
+        List<IProperty<?>> options = new LinkedList<IProperty<?>>();
         if (diagramPart instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramPart;
             KLayoutData elementLayout = element.getData(KLayoutData.class);
@@ -264,18 +267,19 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                         
                         boolean expanded = !node.getChildren().isEmpty()
                                 && rcd.getProperty(KlighdInternalProperties.POPULATED);
-                        graphData.copyProperties(ealo.getValues(expanded));
+                        options.addAll(ealo.getValues(expanded).getAllProperties().keySet());
                     }
                 }
                 
                 // then handle all normal layout options
                 for (Map.Entry<IProperty<?>, Object> entry : entrySet) {
                     if (!entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
-                        graphData.setProperty((IProperty<Object>) entry.getKey(), entry.getValue());
+                        options.add(entry.getKey());
                     }
                 }
             }
         }
+        return options;
     }
     
     /**
