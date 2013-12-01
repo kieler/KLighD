@@ -39,16 +39,17 @@ import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.kiml.ILayoutData;
-import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.kiml.config.LayoutContext;
+import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
+import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
+import de.cau.cs.kieler.kiml.service.LayoutOptionManager;
 import de.cau.cs.kieler.kiml.ui.AlgorithmSelectionDialog;
-import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
-import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
-import de.cau.cs.kieler.kiml.ui.service.LayoutOptionManager;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -74,7 +75,7 @@ public class LayoutOptionControlFactory {
     /** The layout context for retrieving initial values of controls. */
     private LayoutContext defaultLayoutContext;
     /** The layout configurator that stores the values set by option controls. */
-    private LightLayoutConfig lightLayoutConfig;
+    private VolatileLayoutConfig lightLayoutConfig;
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
     /** Whether the layout shall be refreshed automatically. */
@@ -99,7 +100,7 @@ public class LayoutOptionControlFactory {
      */
     public LayoutOptionControlFactory(final Composite parent,
             final IDiagramWorkbenchPart workbenchPart, final FormToolkit formToolkit,
-            final LightLayoutConfig theLightLayoutConfig) {
+            final VolatileLayoutConfig theLightLayoutConfig) {
         this.parent = parent;
         this.workbenchPart = workbenchPart;
         this.formToolkit = formToolkit;
@@ -120,7 +121,7 @@ public class LayoutOptionControlFactory {
      * they should be removed first using {@link #clear()}.
      */
     public void initialize() {
-        lightLayoutConfig.clear();
+        lightLayoutConfig.clearValues(LayoutContext.global());
         EObject inputModel = null;
         Object viewModel = null;
         if (workbenchPart instanceof DiagramViewPart) {
@@ -231,7 +232,7 @@ public class LayoutOptionControlFactory {
     public void resetToDefaults() {
         // temporarily disable auto-refresh to avoid multiple layout runs triggered by listeners
         autoRefreshLayout = false;
-        lightLayoutConfig.clear();
+        lightLayoutConfig.clearValues(LayoutContext.global());
         for (Control control : controls) {
             if (control.getData() instanceof LayoutOptionData<?>) {
                 LayoutOptionData<?> optionData = (LayoutOptionData<?>) control.getData();
@@ -305,7 +306,8 @@ public class LayoutOptionControlFactory {
             // set initial value for the algorithm selection dialog
             String algorithmHint = defaultLayoutContext.getProperty(DefaultLayoutConfig.CONTENT_HINT);
             if (algorithmHint != null && algorithmHint.length() > 0) {
-                lightLayoutConfig.setOption(optionData, algorithmHint);
+                lightLayoutConfig.setValue((LayoutOptionData<String>) optionData,
+                        algorithmHint);
             }
             
             // chsch: via this tweak we get more space below the 'Select ...' button as in GridData
@@ -525,14 +527,14 @@ public class LayoutOptionControlFactory {
          * 
          * @param optionValue the layout option value
          */
-        @SuppressWarnings("incomplete-switch")
+        @SuppressWarnings({ "incomplete-switch", "unchecked" })
         public void setOptionValue(final float optionValue) {
             switch (optionData.getType()) {
             case INT:
-                lightLayoutConfig.setOption(optionData, (int) optionValue);
+                lightLayoutConfig.setValue((LayoutOptionData<Integer>) optionData, (int) optionValue);
                 break;
             case FLOAT:
-                lightLayoutConfig.setOption(optionData, optionValue);
+                lightLayoutConfig.setValue((LayoutOptionData<Float>) optionData, optionValue);
                 break;
             }
         }
@@ -545,9 +547,7 @@ public class LayoutOptionControlFactory {
 
         @Override
         public void widgetSelected(final SelectionEvent event) {
-            final LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(
-                    LayoutOptions.ALGORITHM.getId());
-            String initialValue = (String) lightLayoutConfig.getOption(optionData);
+            String initialValue = (String) lightLayoutConfig.getGlobalValue(LayoutOptions.ALGORITHM);
             AlgorithmSelectionDialog dialog = new AlgorithmSelectionDialog(parent.getShell(),
                     initialValue);
             dialog.addAlgorithmSelectionListener(new ISelectionChangedListener() {
@@ -556,15 +556,15 @@ public class LayoutOptionControlFactory {
                     IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                     if (!selection.isEmpty() && selection.getFirstElement() instanceof ILayoutData) {
                         ILayoutData layoutData = (ILayoutData) selection.getFirstElement();
-                        lightLayoutConfig.setOption(optionData, layoutData.getId());
+                        lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, layoutData.getId());
                         refreshLayout(true);
                     }
                 }
             });
             if (dialog.open() == AlgorithmSelectionDialog.OK) {
-                lightLayoutConfig.setOption(optionData, dialog.getSelectedHint());
+                lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, dialog.getSelectedHint());
             } else {
-                lightLayoutConfig.setOption(optionData, initialValue);
+                lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, initialValue);
             }
             
             // trigger a new layout on the displayed diagram
@@ -593,10 +593,14 @@ public class LayoutOptionControlFactory {
             this.value = value;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @SuppressWarnings("unchecked")
         @Override
         public void widgetSelected(final SelectionEvent event) {
             if (((Button) event.widget).getSelection()) {
-                lightLayoutConfig.setOption(optionData, value);
+                lightLayoutConfig.setValue((LayoutOptionData<Object>) optionData, value);
                 refreshLayout(true);
             }
         }

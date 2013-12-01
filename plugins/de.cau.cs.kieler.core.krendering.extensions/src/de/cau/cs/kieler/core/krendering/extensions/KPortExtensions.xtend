@@ -407,7 +407,7 @@ class KPortExtensions {
         ];
     }
     
-    def KPort addLayoutParam(KPort port, IProperty<?> property, Object value) {
+    def <T> KPort addLayoutParam(KPort port, IProperty<? super T> property, T value) {
         return port => [
             it.getData(typeof(KShapeLayout)).setProperty(property, value)
         ];
