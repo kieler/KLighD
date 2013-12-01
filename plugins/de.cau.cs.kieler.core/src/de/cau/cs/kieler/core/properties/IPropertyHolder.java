@@ -28,10 +28,11 @@ public interface IPropertyHolder {
      * Sets a property value. No type checking is performed while setting, so
      * users of this method must take care that the right object types are generated.
      * 
+     * @param <T> type of property
      * @param property the property to set
      * @param value the new value
      */
-    void setProperty(IProperty<?> property, Object value);
+    <T> void setProperty(IProperty<? super T> property, T value);
     
     /**
      * Retrieves a property value. If the property is not set, its default value shall be taken,

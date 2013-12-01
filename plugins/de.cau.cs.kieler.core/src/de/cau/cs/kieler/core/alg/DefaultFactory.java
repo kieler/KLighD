@@ -17,10 +17,6 @@ import de.cau.cs.kieler.core.WrappedException;
 
 /**
  * A factory that uses the default constructor to create instances.
- * 
- * <p><b>TODO</b>: This class is currently not used. During the design review, we should decide
- * whether it makes sense to keep this class as a default implementation of the
- * {@link IFactory} interface, or whether to simply get rid of it.</p>
  *
  * @param <T> type of instances that are created by this factory
  * @author msp
@@ -30,7 +26,7 @@ import de.cau.cs.kieler.core.WrappedException;
 public class DefaultFactory<T> implements IFactory<T> {
 
     /** the class for which instances shall be created. */
-    private Class<? extends T> clazz;
+    private final Class<? extends T> clazz;
     
     /**
      * Creates an instance factory for the given class.

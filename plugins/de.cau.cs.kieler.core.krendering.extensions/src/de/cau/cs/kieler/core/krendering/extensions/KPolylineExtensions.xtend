@@ -80,9 +80,7 @@ class KPolylineExtensions {
 
     def KRendering addJunctionPointDecorator(KPolyline pl) {
         pl.junctionPointRendering = renderingFactory.createKEllipse => [
-            it.styles += renderingFactory.createKBackground => [
-                it.color = "black".color;
-            ];
+            it.background = "black".color;
             it.placementData = renderingFactory.createKPointPlacementData => [
                 it.horizontalAlignment = HorizontalAlignment::CENTER;
                 it.verticalAlignment = VerticalAlignment::CENTER;
@@ -145,4 +143,4 @@ class KPolylineExtensions {
         ]
     }
     
-}
+}}

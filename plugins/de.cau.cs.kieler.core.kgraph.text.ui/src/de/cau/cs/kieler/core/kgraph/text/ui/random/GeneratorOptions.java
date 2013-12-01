@@ -283,7 +283,7 @@ public class GeneratorOptions extends MapPropertyHolder {
             IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
             for (Field field : getClass().getFields()) {
                 if (IProperty.class.isAssignableFrom(field.getType())) {
-                    IProperty<?> option = (IProperty<?>) field.get(this);
+                    IProperty<Object> option = (IProperty<Object>) field.get(this);
                     Object value;
                     if (option.getDefault() instanceof Boolean) {
                         value = preferenceStore.getBoolean(option.getId());

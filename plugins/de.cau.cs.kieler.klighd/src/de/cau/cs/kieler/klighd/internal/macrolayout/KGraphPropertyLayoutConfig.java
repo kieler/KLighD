@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,16 +35,16 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyValueProxy;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.kiml.LayoutContext;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
 import de.cau.cs.kieler.kiml.config.IMutableLayoutConfig;
+import de.cau.cs.kieler.kiml.config.LayoutContext;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.ui.diagram.DiagramLayoutEngine;
-import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
+import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
+import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -127,7 +130,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                     if (viewContext != null) {
                         Object sourceElement = viewContext.getSourceElement(element);
                         if (sourceElement instanceof EObject) {
-                            context.setProperty(LayoutContext.DOMAIN_MODEL, sourceElement);
+                            context.setProperty(LayoutContext.DOMAIN_MODEL, (EObject) sourceElement);
                         }
                     }
                 }
@@ -190,7 +193,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                             Object sourceElement = viewContext.getSourceElement(parentNode);
                             if (sourceElement instanceof EObject) {
                                 context.setProperty(LayoutContext.CONTAINER_DOMAIN_MODEL,
-                                        sourceElement);
+                                        (EObject) sourceElement);
                             }
                         }
                     }
@@ -238,8 +241,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public void transferValues(final KLayoutData graphData, final LayoutContext context) {
+    public Collection<IProperty<?>> getAffectedOptions(final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
+        List<IProperty<?>> options = new LinkedList<IProperty<?>>();
         if (diagramPart instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramPart;
             KLayoutData elementLayout = element.getData(KLayoutData.class);
@@ -263,18 +267,19 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                         
                         boolean expanded = !node.getChildren().isEmpty()
                                 && rcd.getProperty(KlighdInternalProperties.POPULATED);
-                        graphData.copyProperties(ealo.getValues(expanded));
+                        options.addAll(ealo.getValues(expanded).getAllProperties().keySet());
                     }
                 }
                 
                 // then handle all normal layout options
                 for (Map.Entry<IProperty<?>, Object> entry : entrySet) {
                     if (!entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
-                        graphData.setProperty(entry.getKey(), entry.getValue());
+                        options.add(entry.getKey());
                     }
                 }
             }
         }
+        return options;
     }
     
     /**
@@ -335,6 +340,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public void setValue(final LayoutOptionData<?> optionData, final LayoutContext context,
             final Object value) {
         KGraphElement element = getModificationModel(context);
@@ -348,7 +354,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 }
                 element.getData().add(elementLayout);
             }
-            elementLayout.setProperty(optionData, value);
+            elementLayout.setProperty((IProperty<Object>) optionData, value);
             refreshModel(element, context);
         }
     }
