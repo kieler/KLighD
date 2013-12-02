@@ -48,7 +48,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSwitchFocusEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -459,9 +458,17 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
      * {@inheritDoc}
      */
     public void clip(final KNode diagramElement) {
-        // TODO
+        controller.clip(diagramElement);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public KNode getClip() {
+        return controller.getClip();
+    }
+
+
     /**
      * Returns the Piccolo2D representation for the given diagram element.
      * 

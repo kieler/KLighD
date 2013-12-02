@@ -836,6 +836,13 @@ public class ContextViewer implements IViewer<Object>, ISelectionProvider {
             this.currentViewer.clip(diagramElement);
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public KNode getClip() {
+        return this.currentViewer.getClip();
+    }
 
 
     /**

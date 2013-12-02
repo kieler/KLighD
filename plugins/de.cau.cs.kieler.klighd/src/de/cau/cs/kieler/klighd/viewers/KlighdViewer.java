@@ -158,4 +158,11 @@ public class KlighdViewer extends AbstractViewer<Object> implements IViewer<Obje
     public void clip(final KNode diagramElement) {
         contextViewer.clip(diagramElement);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KNode getClip() {
+        return contextViewer.getClip();
+    }
 }

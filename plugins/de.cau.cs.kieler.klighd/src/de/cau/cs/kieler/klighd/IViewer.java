@@ -298,6 +298,16 @@ public interface IViewer<T> {
      *            <code>null</code>
      */
     void clip(KNode diagramElement);
+    
+    // a getClipSemantic() is still absent, it's not clear whether that is really necessary
+    
+    /**
+     * Provides the currently set diagram clip.
+     * 
+     * @return the {@link KNode} that is currently clipped.
+     */
+    KNode getClip();
+
 
     /* ----------------------------- */
     /*   the selection setting API   */

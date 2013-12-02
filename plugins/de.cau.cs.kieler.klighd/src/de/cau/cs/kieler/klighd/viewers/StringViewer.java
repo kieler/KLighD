@@ -266,6 +266,13 @@ public class StringViewer implements IViewer<String> {
     public void clip(final KNode diagramElement) {
         // do nothing
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public KNode getClip() {
+        return null;
+    }
 
     /**
      * {@inheritDoc}
