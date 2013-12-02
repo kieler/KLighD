@@ -56,8 +56,9 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
      * {@inheritDoc}
      */
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        KlighdTreeSelection selection = (KlighdTreeSelection) HandlerUtil.getCurrentSelection(event);
-        IAction action = null;
+        final KlighdTreeSelection selection =
+                (KlighdTreeSelection) HandlerUtil.getCurrentSelection(event);
+        final IAction action;
         try {
             action = (IAction) event.getObjectParameterForExecution(ACTION_PARAMETER_ID);
         } catch (ExecutionException e) {
@@ -68,7 +69,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
             return null;
         }
         
-        List<ActionResult> results = Lists.newArrayList();
+        final List<ActionResult> results = Lists.newArrayList();
         
         for (KGraphElement kge: Iterables.filter(selection, KGraphElement.class)) {
             final ActionContext context = new ActionContext(
@@ -76,7 +77,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
             results.add(action.execute(context));
         }
         
-        ActionResult result = Iterables.getFirst(results, ActionResult.createResult(false));
+        final ActionResult result = Iterables.getFirst(results, ActionResult.createResult(false));
         
         final boolean zoomToFit = result.getZoomToFit() != null
                 ? result.getZoomToFit() : selection.getViewContext().isZoomToFit();
