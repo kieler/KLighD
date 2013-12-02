@@ -45,6 +45,9 @@ import org.eclipse.emf.ecore.EReference
 import static extension com.google.common.base.Strings.*
 import static de.cau.cs.kieler.klighd.KlighdConstants.*
 import de.cau.cs.kieler.core.krendering.KContainerRenderingimport de.cau.cs.kieler.klighd.SynthesisOption
+import com.google.common.base.Function
+import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.core.kgraph.KGraphElement
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -119,6 +122,15 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
             specifyLayoutOption(LayoutOptions::DIRECTION, Direction::values().drop(1).sortBy[ it.name ]),
             specifyLayoutOption(LayoutOptions::SPACING, newArrayList(0, 255))
         );
+    }
+
+    override public Function<String, Void> getTextUpdateFunction( KText kText, KGraphElement element) {
+        return [String s |
+                System.out.println("test1");
+                //System.out.println(s);
+                return null;
+            ]
+        ;
     }
 
     /**

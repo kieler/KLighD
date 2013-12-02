@@ -352,7 +352,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
         return new Function<String, Void>() {
             public Void apply(final String arg0) {
                 // TODO Auto-generated method stub
-                System.out.println(arg0);
+                //System.out.println(arg0);
+                System.out.println("hello world");
                 return null;
             }
         };
