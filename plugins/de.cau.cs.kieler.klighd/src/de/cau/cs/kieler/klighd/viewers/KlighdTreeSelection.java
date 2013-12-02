@@ -104,6 +104,7 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<Objec
         return iterator;
     }
     
+    // this convenience method is package protected by intention as it is used in the ContextViewer only 
     Iterator<? extends EObject> eIterator() {
         @SuppressWarnings("unchecked")
         Iterator<? extends EObject> iterator = (Iterator<? extends EObject>) this.iterator();

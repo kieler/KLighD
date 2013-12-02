@@ -24,6 +24,7 @@ import de.cau.cs.kieler.core.krendering.KYPosition
 import de.cau.cs.kieler.core.krendering.LineCap
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
 import de.cau.cs.kieler.core.krendering.VerticalAlignment
+import de.cau.cs.kieler.core.krendering.KText
 
 /**
  * @author chsch, alb
@@ -31,42 +32,55 @@ import de.cau.cs.kieler.core.krendering.VerticalAlignment
  * @containsExtensions
  */
 class KPolylineExtensions {
-    
+
     private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
 
     @Inject
     extension KRenderingExtensions
-    
+
     @Inject
     extension KContainerRenderingExtensions
-    
+
     @Inject
     extension KColorExtensions
-    
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KPolylineExtensions
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    def KRendering addArrowDecorator(KPolyline pl) {
+    private def KRendering internalAddArrowDecorator(KPolyline pl, boolean head) {
         pl.lineCap = LineCap::CAP_FLAT
         return pl.drawArrow() => [
             it.placementData = renderingFactory.createKDecoratorPlacementData => [
                 it.rotateWithLine = true;
-                it.relative = 1f;
-                it.absolute = -2f;
+                it.relative = if (head) 1f else 0f;
+                it.absolute = if (head) -2f else 2f;
                 it.width = 8;
                 it.height = 6;
-                it.setXOffset(-6f); // chsch: used the regular way here and below, as the alias 
-                it.setYOffset(-3f); //  name translation convention changed from Xtext 2.3 to 2.4.
+                it.setXOffset(if (head) -6f else 6f); // chsch: used the regular way here and below, as the alias 
+                it.setYOffset(if (head) -3f else 3f); //  name translation convention changed from Xtext 2.3 to 2.4.
             ];
+            if (!head) it.rotation = 180f
         ];
     }
-    
+
+    /**
+     * @deprecated use {@link #addHeadArrowDecorator(KPolyline)} instead.
+     */
+    def KRendering addArrowDecorator(KPolyline pl) {
+        internalAddArrowDecorator(pl, true)
+    }
+
+    def KRendering addHeadArrowDecorator(KPolyline pl) {
+        internalAddArrowDecorator(pl, true)
+    }
+
+    def KRendering addTailArrowDecorator(KPolyline pl) {
+        internalAddArrowDecorator(pl, false)
+    }
+
     def KRendering addJunctionPointDecorator(KPolyline pl) {
         pl.junctionPointRendering = renderingFactory.createKEllipse => [
-            it.styles += renderingFactory.createKBackground => [
-                it.color = "black".color;
-            ];
+            it.background = "black".color;
             it.placementData = renderingFactory.createKPointPlacementData => [
                 it.horizontalAlignment = HorizontalAlignment::CENTER;
                 it.verticalAlignment = VerticalAlignment::CENTER;
@@ -107,4 +121,26 @@ class KPolylineExtensions {
             pl.points += it;
         ];
     }
+    
+    /**
+     * Experimental!
+     * 
+     * This way only works if the polyline leaves to the right side.
+     */
+    def KRendering addBoxedTextDecorator(KPolyline pl, KText text, float textWidth, float textHeight) {
+        pl.addRectangle => [ rect |
+            rect.background = "white".color
+            text.setParent(rect)
+            rect.placementData = renderingFactory.createKDecoratorPlacementData => [
+                //it.rotateWithLine = true;
+                it.relative = 0f;
+                it.absolute =  0f;
+                it.width = textWidth;
+                it.height = textHeight;
+                //it.setXOffset(-textWidth/2);
+                it.setYOffset(-textHeight/2);
+            ]; 
+        ]
+    }
+    
 }

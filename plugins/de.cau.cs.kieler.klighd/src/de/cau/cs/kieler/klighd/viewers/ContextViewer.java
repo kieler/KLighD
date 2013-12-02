@@ -69,6 +69,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -77,7 +78,6 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
-import de.cau.cs.kieler.klighd.internal.options.LightLayoutConfig;
 import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
@@ -133,7 +133,7 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     private final List<Resource> resources = new LinkedList<Resource>();
 
     /** The layout configurator that stores the values set by the layout option controls. */
-    private LightLayoutConfig lightLayoutConfig = new LightLayoutConfig();
+    private VolatileLayoutConfig lightLayoutConfig = new VolatileLayoutConfig();
 
     
     /**
@@ -619,12 +619,12 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
 
 
     /**
-     * Returns the {@link LightLayoutConfig} that contains the configuration values set via the
+     * Returns the {@link VolatileLayoutConfig} that contains the configuration values set via the
      * layout options controls in the side bar.
      * 
      * @return the lightLayoutConfig
      */
-    public LightLayoutConfig getLightLayoutConfig() {
+    public VolatileLayoutConfig getLightLayoutConfig() {
         return lightLayoutConfig;
     }
 

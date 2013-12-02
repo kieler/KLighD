@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Function;
+import org.eclipse.emf.ecore.EObject;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphData;
@@ -137,13 +138,17 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      */
     @SuppressWarnings("unchecked")
     public <D> D putToLookUpWith(final D derived, final Object source) {
-        if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(derived)) {
-            ((KGraphData) derived).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
-        } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(derived)) {
-            Iterables.getFirst(
-                    (Iterable<KGraphData>) (Iterable<?>) Iterables.filter(
-                            ((KGraphElement) derived).getData(), KLayoutData.class), null)
-                    .setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+        if (source instanceof EObject) {
+            if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(derived)) {
+                ((KGraphData) derived).setProperty(KlighdInternalProperties.MODEL_ELEMEMT,
+                        (EObject) source);
+            } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(derived)) {
+                Iterables.getFirst(
+                        (Iterable<KGraphData>) (Iterable<?>) Iterables.filter(
+                                ((KGraphElement) derived).getData(), KLayoutData.class), null)
+                        .setProperty(KlighdInternalProperties.MODEL_ELEMEMT, (EObject) source);
+            
+            }
         }
         
         if (this.currentContext == null) {
