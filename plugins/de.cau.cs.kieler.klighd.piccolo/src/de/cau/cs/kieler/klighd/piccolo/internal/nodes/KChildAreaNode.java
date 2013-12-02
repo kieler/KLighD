@@ -11,22 +11,24 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-/**
- * 
- */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
- * A Piccolo node for the {@code KChildArea}.
+ * A dedicated Piccolo2D node type whose instances represent
+ * {@link de.cau.cs.kieler.core.krendering.KChildArea KChildAreas}.<br>
+ * <br>
+ * Inherits from PLayer in order to enable its observation by a {@link edu.umd.cs.piccolo.PCamera
+ * PCamera}.
  * 
  * @author mri
  * @author chsch
  */
-public class KChildAreaNode extends PZIndexNode {
+public class KChildAreaNode extends PLayer {
 
     private static final long serialVersionUID = -403773990520864787L;
     
@@ -37,17 +39,16 @@ public class KChildAreaNode extends PZIndexNode {
      */
     public static final String PROPERTY_EXPANSION = "expansion";
 
-    /** the number of z-layers (nodes and edges). */
-    private static final int Z_LAYERS = 2;
-    /** the z-index for the node layer. */
-    private static final int NODE_LAYER = 0;
-    /** the z-index for the edge layer. */
-    private static final int EDGE_LAYER = 1;
+    /** the node layer. */
+    private final PLayer nodeLayer;
+    
+    /** the edge layer. */
+    private final PLayer edgeLayer;
 
-    /** whether to clip nodes and edges. */
+    /** flag indicating whether to clip nodes and edges. */
     private boolean clip = false;
     
-    /** whether the child area is expanded. */
+    /** flag indicating whether the child area is expanded. */
     private boolean expanded = false;
 
     /**
@@ -57,7 +58,12 @@ public class KChildAreaNode extends PZIndexNode {
      *            the node containing this child area
      */
     public KChildAreaNode(final INode containingNode) {
-        super(Z_LAYERS);
+        super();
+
+        this.nodeLayer = new PLayer();
+        super.addChild(nodeLayer);
+        this.edgeLayer = new PLayer();
+        super.addChild(edgeLayer);
     }
 
     /**
@@ -77,7 +83,7 @@ public class KChildAreaNode extends PZIndexNode {
      *            the node representation
      */
     public void addNode(final KNodeNode node) {
-        addChild(node, NODE_LAYER);
+        nodeLayer.addChild(node);
     }
     
     /**
@@ -87,7 +93,7 @@ public class KChildAreaNode extends PZIndexNode {
      *            the edge representation
      */
     public void addEdge(final KEdgeNode edge) {
-        addChild(edge, EDGE_LAYER);
+        edgeLayer.addChild(edge);
     }
 
     /**
@@ -150,7 +156,7 @@ public class KChildAreaNode extends PZIndexNode {
         if (expanded) {
             super.fullPaint(paintContext);
         }
-    }
+    }   
     
     /**
      * {@inheritDoc}
@@ -195,5 +201,4 @@ public class KChildAreaNode extends PZIndexNode {
         }
         return false;
     }
-
 }
