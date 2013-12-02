@@ -36,6 +36,7 @@ import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
+import de.cau.cs.kieler.kiml.service.KimlServicePlugin;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
@@ -628,6 +629,8 @@ public final class LightDiagramServices {
         final ViewContext vc = contextViewer.getCurrentViewContext(); 
         
         if (layoutData != null) {
+            // Activate the KIML Service plugin so all layout options are loaded
+            KimlServicePlugin.getDefault();
             final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
             extendedOptions.add(new VolatileLayoutConfig()
                     .setValue(LayoutOptions.ANIMATE, animate)
