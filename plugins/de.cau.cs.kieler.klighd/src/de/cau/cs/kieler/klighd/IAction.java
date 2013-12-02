@@ -186,6 +186,7 @@ public interface IAction {
          * 
          * @param actionPerformed
          *            flag indicating whether the action actually performed changes on the diagram
+         *            and a subsequent layout refreshment is required
          * @param config
          *            an optional {@link ILayoutConfig}, may be <code>null</code>
          * @return the requested {@link ActionResult}
