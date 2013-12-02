@@ -13,21 +13,19 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
-import java.util.ArrayList
-import javax.inject.Inject
-
 import de.cau.cs.kieler.core.kgraph.KEdge
 import de.cau.cs.kieler.core.krendering.KPolyline
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
+import de.cau.cs.kieler.core.krendering.KSpline
 import de.cau.cs.kieler.core.properties.IProperty
-
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
-import de.cau.cs.kieler.core.krendering.KSpline
-import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
-import java.util.HashMap
 import java.lang.reflect.Field
 import java.util.List
+import java.util.Map
+import javax.inject.Inject
+import org.eclipse.xtext.xbase.lib.CollectionLiterals
 
 /**
  * @author chsch, alb, ssm
@@ -50,17 +48,17 @@ class KEdgeExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KEdge create port: KimlUtil::createInitializedEdge internalCreateEdge(ArrayList<Object> oc) {
+    def private KEdge create port: KimlUtil::createInitializedEdge internalCreateEdge(List<Object> oc) {
     }
 
     /**
      * The following method retrieves the internal map of the create extension. 
      * This is mandatory for queries (e.g. exist tests) on the private and hence inaccessible hash map.
      */ 
-    def private HashMap<ArrayList<? extends Object>,KEdge> getInternalEdgeMap() {
+    def private Map<? extends List<? extends Object>, KEdge> getInternalEdgeMap() {
         val Field internalMapField = KEdgeExtensions.getDeclaredField("_createCache_internalCreateEdge") 
         internalMapField.setAccessible(true)
-        internalMapField.get(this) as HashMap<ArrayList<? extends Object>,KEdge>
+        internalMapField.get(this) as Map<? extends List<? extends Object>, KEdge>
     }
     
     /**
@@ -235,7 +233,7 @@ class KEdgeExtensions {
      * getSemanticObject returns the primary (semantic) object of an edge.
      */
     def Object getSemanticObject(KEdge edge) {
-        (getInternalEdgeMap.filter[p1, p2|p2==edge].keySet.head.head as ArrayList<Object>).head
+        (getInternalEdgeMap.filter[p1, p2|p2==edge].keySet.head.head as List<Object>).head
     }
     
     
