@@ -104,7 +104,7 @@ public class KlighdCanvas extends PSWTCanvas {
             }
         };
         
-        final PCamera c = new PCamera();
+        final PCamera c = new KlighdMainCamera();
         r.addChild(c);
         return c;
     }
