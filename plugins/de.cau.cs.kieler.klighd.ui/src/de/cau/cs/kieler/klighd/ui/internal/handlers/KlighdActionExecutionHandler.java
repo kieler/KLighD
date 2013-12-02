@@ -87,8 +87,10 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         // remember the desired zoom style in the view context
         selection.getViewContext().setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
         
-        LightDiagramServices.layoutDiagram(selection.getViewContext(),
-                result.getAnimateLayout(), zoomToFit, result.getLayoutConfigs());
+        if (result.getActionPerformed()) {
+            LightDiagramServices.layoutDiagram(selection.getViewContext(),
+                    result.getAnimateLayout(), zoomToFit, result.getLayoutConfigs());
+        }
         
         return null;
     }
