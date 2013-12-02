@@ -117,6 +117,14 @@ public class KlighdCanvas extends PSWTCanvas {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KlighdMainCamera getCamera() {
+        return (KlighdMainCamera) super.getCamera();
+    }
+
+    /**
      * With this specialized implementation I register customized event listeners that do not
      * translate SWT events into AWT ones. The original event listeners are omitted.
      */

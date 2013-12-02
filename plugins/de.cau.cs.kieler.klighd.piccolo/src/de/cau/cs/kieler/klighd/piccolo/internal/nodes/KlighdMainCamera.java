@@ -13,8 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import java.awt.geom.AffineTransform;
+
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
 
 /**
  * This specialized {@link PCamera} type describes the diagram root cameras.<br>
@@ -47,5 +51,75 @@ public class KlighdMainCamera extends PCamera {
         } else {
             return null;
         }
+    }
+    
+    /**
+     * Sets the {@link INode} to be displayed on the canvas if it is a {@link PLayer}; does nothing
+     * otherwise.
+     * 
+     * @param node
+     *            the {@link INode} to displayed
+     */
+    public void setDisplayedNode(final INode node) {
+        if (node instanceof PLayer) {
+            this.setDisplayedNode((PLayer) node);
+        }
+    }
+    
+    /**
+     * Sets the {@link PLayer} to be displayed on the canvas.
+     * 
+     * @param node the {@link PLayer} to displayed
+     */
+    private void setDisplayedNode(final PLayer node) {
+        this.addLayer(0, node);
+    }
+    
+    /**
+     * Re-targets <code>this</code> camera to the given <code>node</code> by detaching the currently
+     * displayed {@link PLayer}, if the <code>node</code> is a {@link PLayer}; does nothing otherwise.
+     * 
+     * @param node
+     *            the {@link INode} to be now displayed
+     */
+    public void exchangeDisplayedNode(final INode node) {
+        if (node instanceof PLayer) {
+            exchangeDisplayedNode((PLayer) node);
+        }
+    }
+
+    /**
+     * Detaches the currently configures displayed {@link PLayer} and re-target to the given
+     * <code>node</code>.
+     * 
+     * @param node
+     *            the {@link PLayer} to be now displayed
+     */
+    public void exchangeDisplayedNode(final PLayer node) {
+        
+        final PNode prevNode = (PNode) this.getLayer(0);
+        
+        if (prevNode == node) {
+            return;
+        }
+        
+        this.removeLayer(0);
+
+        final INode prevINode = (INode) prevNode;
+        final INode iNode = (INode) node;
+
+        final AffineTransform t;
+
+        if (prevNode.isAncestorOf(node)) {
+            t = NodeUtil.localToParent((PNode) iNode.getParentNode(), prevNode);
+        } else if (node.isAncestorOf(prevNode)) {
+            t = NodeUtil.inverse(NodeUtil.localToParent((PNode) prevINode.getParentNode(), node));
+        } else {
+            // TODO this case should be implemented some day
+            t = new AffineTransform();
+        }
+
+        this.getViewTransformReference().concatenate(t);
+        this.addLayer(0, node);
     }
 }
