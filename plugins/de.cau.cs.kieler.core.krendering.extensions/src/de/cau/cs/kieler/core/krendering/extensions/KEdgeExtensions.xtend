@@ -13,21 +13,22 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
-import java.util.ArrayList
-import javax.inject.Inject
-
 import de.cau.cs.kieler.core.kgraph.KEdge
 import de.cau.cs.kieler.core.krendering.KPolyline
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
+import de.cau.cs.kieler.core.krendering.KSpline
 import de.cau.cs.kieler.core.properties.IProperty
-
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
-import de.cau.cs.kieler.core.krendering.KSpline
-import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
+import java.lang.reflect.Field
+import java.util.List
+import java.util.Map
+import javax.inject.Inject
+import org.eclipse.xtext.xbase.lib.CollectionLiterals
 
 /**
- * @author chsch, alb
+ * @author chsch, alb, ssm
  * 
  * @containsExtensions
  */
@@ -47,7 +48,45 @@ class KEdgeExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KEdge create port: KimlUtil::createInitializedEdge internalCreateEdge(ArrayList<Object> oc) {
+    def private KEdge create port: KimlUtil::createInitializedEdge internalCreateEdge(List<Object> oc) {
+    }
+
+    /**
+     * The following method retrieves the internal map of the create extension. 
+     * This is mandatory for queries (e.g. exist tests) on the private and hence inaccessible hash map.
+     */ 
+    def private Map<? extends List<? extends Object>, KEdge> getInternalEdgeMap() {
+        val Field internalMapField = KEdgeExtensions.getDeclaredField("_createCache_internalCreateEdge") 
+        internalMapField.setAccessible(true)
+        internalMapField.get(this) as Map<? extends List<? extends Object>, KEdge>
+    }
+    
+    /**
+     * A convenient test method to check whether or not a specific edge exists in the create extension
+     */
+    def boolean edgeExists(Object o1) {
+        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1)))
+    }
+
+    /**
+     * A convenient test method to check whether or not a specific edge exists in the create extension
+     */
+    def boolean edgeExists(Object o1, Object o2) {
+        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1, o2)))
+    }
+
+    /**
+     * A convenient test method to check whether or not a specific edge exists in the create extension
+     */
+    def boolean edgeExists(Object o1, Object o2, Object o3) {
+        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1, o2, o3)))
+    }
+
+    /**
+     * A convenient test method to check whether or not a specific edge exists in the create extension
+     */
+    def boolean edgeExists(Object o1, Object o2, Object o3, Object o4) {
+        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1, o2, o3, o4)))
     }
 
     /**
@@ -121,8 +160,84 @@ class KEdgeExtensions {
         return o1.getEdge(o2, o3, o4);
     }
     
+    /**
+     * Similar to createEdge, createNewEdge creates a new edge related to an object. Furthermore, the 
+     * method makes sure a new edge is created and stored in the create extensions.
+     */
+    def KEdge createNewEdge(Object o1) {
+        var int counter = 0
+        while (o1.edgeExists(counter)) counter = counter + 1 
+        return o1.createEdge(counter)
+    }
+
+    /**
+     * Similar to createEdge, createNewEdge creates a new edge related to an object. Furthermore, the 
+     * method makes sure a new edge is created and stored in the create extensions.
+     */
+    def KEdge createNewEdge(Object o1, Object o2) {
+        var int counter = 0
+        while (o1.edgeExists(o2, counter)) counter = counter + 1 
+        return o1.createEdge(o2, counter)
+    }
+
+    /**
+     * Similar to createEdge, createNewEdge creates a new edge related to an object. Furthermore, the 
+     * method makes sure a new edge is created and stored in the create extensions.
+     */
+    def KEdge createNewEdge(Object o1, Object o2, Object o3) {
+        var int counter = 0
+        while (o1.edgeExists(o2, o3, counter)) counter = counter + 1 
+        return o1.createEdge(o2, o3, counter)
+    }
     
-    def KEdge addLayoutParam(KEdge edge, IProperty<?> property, Object value) {
+    /**
+     * The method getAllEdges retrieves all edges linked to a specific (semantic) object.
+     */
+    def List<KEdge> getAllEdges(Object o1) {
+        var int counter = 0
+        val edges = <KEdge> newArrayList
+        while (o1.edgeExists(counter)) { 
+            edges.add(o1.getEdge(counter)); 
+            counter = counter + 1
+        }
+        edges
+    }
+
+    /**
+     * The method getAllEdges retrieves all edges linked to a specific (semantic) object.
+     */
+    def List<KEdge> getAllEdges(Object o1, Object o2) {
+        var int counter = 0
+        val edges = <KEdge> newArrayList
+        while (o1.edgeExists(o2, counter)) { 
+            edges.add(o1.getEdge(o2, counter)); 
+            counter = counter + 1
+        }
+        edges
+    }
+
+    /**
+     * The method getAllEdges retrieves all edges linked to a specific (semantic) object.
+     */
+    def List<KEdge> getAllEdges(Object o1, Object o2, Object o3) {
+        var int counter = 0
+        val edges = <KEdge> newArrayList
+        while (o1.edgeExists(o2, o3, counter)) { 
+            edges.add(o1.getEdge(o2, o3, counter)); 
+            counter = counter + 1
+        }
+        edges
+    }
+    
+    /**
+     * getSemanticObject returns the primary (semantic) object of an edge.
+     */
+    def Object getSemanticObject(KEdge edge) {
+        (getInternalEdgeMap.filter[p1, p2|p2==edge].keySet.head.head as List<Object>).head
+    }
+    
+    
+    def <T> KEdge addLayoutParam(KEdge edge, IProperty<? super T> property, T value) {
         edge => [
             it.getData(typeof(KEdgeLayout)).setProperty(property, value)
         ];
