@@ -22,7 +22,6 @@ import de.cau.cs.kieler.core.kgraph.KNode;
  * The interface for Piccolo2D nodes that represent a {@link KNode} (currently {@link KNodeNode} and
  * {@link KNodeTopNode}).
  * 
- * 
  * @author mri
  * @author chsch
  */
@@ -33,7 +32,7 @@ public interface INode extends IGraphElement<KNode> {
      * 
      * @return the child area
      */
-    KChildAreaNode getChildArea();
+    KChildAreaNode getChildAreaNode();
     
     /**
      * Returns the parent {@link INode} that (deeply) contains this {@link INode}.

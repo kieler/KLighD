@@ -81,7 +81,7 @@ public class KNodeTopNode extends PLayer implements INode {
     /**
      * {@inheritDoc}
      */
-    public KChildAreaNode getChildArea() {
+    public KChildAreaNode getChildAreaNode() {
         return childArea;
     }
     
