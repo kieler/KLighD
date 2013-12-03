@@ -239,9 +239,9 @@ public final class NodeUtil {
      * @return an {@link AffineTransform} being formed by the concatenation of the required
      *         transforms
      */
-    public static AffineTransform localToParent(final PNode child, final PNode ancestor) {
+    public static PAffineTransform localToParent(final PNode child, final PNode ancestor) {
         if (child == null) {
-            return new AffineTransform();
+            return new PAffineTransform();
         }
         
         if (child == ancestor) {
@@ -249,7 +249,7 @@ public final class NodeUtil {
         }
 
         final PNode childsParent = child.getParent();
-        final AffineTransform transform;
+        final PAffineTransform transform;
 
         if (childsParent != null) {
             transform = localToParent(childsParent, ancestor);
