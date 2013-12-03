@@ -60,6 +60,11 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
     /** the child area for this node. */
     private final KChildAreaNode childArea;
     
+    /**
+     * This camera is used if the diagram is clipped to this node and this node's child area is part
+     * of the composite node figure. In this and only this particular case, the camera observing the
+     * child area is set visible.
+     */
     private final PCamera childAreaCamera; 
 
     /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
@@ -85,7 +90,7 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
         
         this.childAreaCamera = new PCamera();
 
-        this.childAreaCamera.setPickable(false);
+        this.childAreaCamera.setPickable(true);
         this.childAreaCamera.setVisible(false);
         this.childAreaCamera.addLayer(this.childArea);
         
@@ -209,8 +214,9 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
                 this.addChild(0, child);
                 
             } else {
-                // here, no KChildArea exists in the KNode's KRendering
-                //  thus the child area node is added directly to the node
+                // in this case no KChildArea exists in the KNode's KRendering
+                //  thus another pnode made it already to position zero
+                //  and the child area node is added directly to the node afterwards
                 this.addChild(1, child);
             }
 
@@ -219,13 +225,14 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
             super.addChild(child);
 
         } else {
-            // this case occurs after constructing the PNodes from the current KRendering
+            // this case occurs while constructing the PNodes from the current KRendering
             
-            // There is only one rendering child supposed to be attached to KNodeNodes
-            //  so the following is justified
             if (this.isRootLayer) {
                 child.setVisible(false);
             }
+            
+            // Since there is only one rendering child supposed to be attached to KNodeNodes
+            //  the following addition at position zero is justified.
             super.addChild(0, child);
         }
     }
