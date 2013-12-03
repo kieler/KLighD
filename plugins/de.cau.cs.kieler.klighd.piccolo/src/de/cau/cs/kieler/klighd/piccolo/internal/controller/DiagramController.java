@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -82,6 +83,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -89,7 +91,6 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
-import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -156,7 +157,7 @@ public class DiagramController {
     private final KNodeTopNode topNode;
     
     /** the main camera that determines the actually drawn picture. */
-    private final PCamera canvasCamera;
+    private final KlighdMainCamera canvasCamera;
 
     /** whether to sync the representation with the graph model. */
     private boolean sync = false;
@@ -182,12 +183,12 @@ public class DiagramController {
      * @param graph
      *            the diagram describing KGraph rooted by a {@link KNode}
      * @param camera
-     *            the parent Piccolo node
+     *            the {@link KlighdMainCamera} to be used
      * @param sync
      *            true if the visualization should be synchronized with the graph; false otherwise<br>
-     *            review hint: setting to false will prevent the application of automatic layout
+     *            <b>Hint</b>: setting to false will prevent the application of automatic layout
      */
-    public DiagramController(final KNode graph, final PCamera camera, final boolean sync) {
+    public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync) {
         resetGraphElement(graph);
         
         this.sync = sync;
@@ -197,7 +198,7 @@ public class DiagramController {
         RenderingContextData.get(graph).setProperty(REP, topNode);
         
         canvasCamera.getRoot().addChild(topNode);
-        canvasCamera.addLayer(topNode);
+        canvasCamera.setDisplayedNode(topNode);
         
         // updateLayout(topNode);
         addExpansionListener(topNode);
@@ -218,16 +219,28 @@ public class DiagramController {
     }
 
     /**
-     * Returns whether the represenation is synchronized with the graph.
+     * Returns whether the representation is synchronized with the graph.
      * 
      * @return true if the representation is synchronized with the graph; false else
      */
     public boolean getSync() {
         return sync;
     }
+    
+    /**
+     * Returns the employed root camera.
+     * 
+     * @return the employed root camera.
+     */
+    public KlighdMainCamera getMainCamera() {
+        return canvasCamera;
+    }
 
     /**
-     * @see de.cau.cs.kieler.klighd.IViewer IViewer#startRecording()
+     * Starts to record layout changes in the model instead of instantly applying them to the
+     * visualization.<br>
+     * <br>
+     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
      */
     public void startRecording() {
         record = true;
@@ -246,10 +259,10 @@ public class DiagramController {
             zoomStyle = theZoomStyle;
             animationTime = theAnimationTime;
 
+            record = false;
+
             // apply recorded layout changes
             handleRecordedChanges();
-
-            record = false;
         }
     }
 
@@ -346,6 +359,36 @@ public class DiagramController {
 
         add(diagramElement);
     }
+    
+    /**
+     * Limits the visible elements of the diagram to the content of the given {@link KNode} without
+     * causing any change on the view model. Hence, this method can be used for changing the
+     * diagram's amount of detail without changing the view model.<br>
+     * The clip can be reset to the whole diagram by calling <code>clip((KNode) null)</code>.
+     * 
+     * @param diagramElement
+     *            the diagram element to which the diagram view is to be limited, may be
+     *            <code>null</code>
+     */
+    public void clip(final KNode diagramElement) {
+        final IGraphElement<KNode> node =
+                (diagramElement == null) ? topNode : getRepresentation(diagramElement);
+        
+        final INode currentRootNode = canvasCamera.getDisplayedINode();
+        if (currentRootNode != node) {
+            canvasCamera.exchangeDisplayedNode((INode) node);
+        }
+    }
+    
+    /**
+     * Provides the currently set diagram clip.
+     * 
+     * @return the {@link KNode} that is currently clipped.
+     */
+    public KNode getClip() {
+        final INode node = canvasCamera.getDisplayedINode();
+        return node.getGraphElement();
+    }
 
     /**
      * Performs a zooming depending on the specified style.
@@ -374,7 +417,8 @@ public class DiagramController {
      *            time to animate
      */
     private void zoomToFit(final int duration) {
-        final KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
+        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
+        final KShapeLayout topNodeLayout = displayedKNode.getData(KShapeLayout.class);
         
         if (topNodeLayout == null) {
             String msg = "KLighD DiagramController: "
@@ -387,7 +431,9 @@ public class DiagramController {
         }
         
         final PBounds newBounds = new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
-                topNodeLayout.getWidth(), topNodeLayout.getHeight());
+                            topNodeLayout.getWidth(), topNodeLayout.getHeight());
+
+        includePortAndLabelBounds(newBounds, displayedKNode);
         
         if (this.canvasCamera.getBoundsReference().isEmpty()) {
             // this case occurs while initializing the DiagramEditorPart
@@ -399,6 +445,38 @@ public class DiagramController {
         } else {
             this.canvasCamera.animateViewToCenterBounds(newBounds, true, duration);
         }
+    }
+    
+    /**
+     * This method checks for ports and labels of the given <code>node</code> and increases the
+     * given <code>nodeBounds</code> accordingly.
+     */
+    private Rectangle2D includePortAndLabelBounds(final Rectangle2D nodeBounds, final KNode node) {
+        double maxX = nodeBounds.getWidth();
+        double maxY = nodeBounds.getHeight();
+        
+        // these min values are <= 0 at all times!
+        double minX = 0;
+        double minY = 0;
+        
+        for (KGraphElement element : Iterables.concat(node.getPorts(), node.getLabels())) {
+            final KShapeLayout pL = element.getData(KShapeLayout.class);
+            if (pL.getXpos() < minX) {
+                minX = pL.getXpos();
+            }
+            if (pL.getYpos() < minY) {
+                minY = pL.getYpos();
+            }
+            if (pL.getXpos() + pL.getWidth() > maxX) {
+                maxX = pL.getXpos() + pL.getWidth();
+            }
+            if (pL.getYpos() + pL.getHeight() > maxY) {
+                maxY = pL.getYpos() + pL.getHeight();
+            }
+        }
+        
+        nodeBounds.setRect(nodeBounds.getX() + minX, nodeBounds.getY() + minY, maxX - minX, maxY - minY);
+        return nodeBounds;
     }
     
     /**
@@ -514,14 +592,18 @@ public class DiagramController {
     }
     
     /**
-     * Returns the Piccolo representation for the given diagram element.
+     * Returns the Piccolo2D representation for the given diagram element.
      * 
+     * @param <T> the concrete type of the diagramElement
      * @param diagramElement
      *            the diagram element
-     * @return the Piccolo representation
+     * @return the Piccolo2D representation
      */
-    public IGraphElement<?> getRepresentation(final KGraphElement diagramElement) {
-        return RenderingContextData.get(diagramElement).getProperty(REP);
+    public <T extends KGraphElement> IGraphElement<T> getRepresentation(final T diagramElement) {
+        @SuppressWarnings("unchecked")
+        final IGraphElement<T> result =
+                (IGraphElement<T>) RenderingContextData.get(diagramElement).getProperty(REP);
+        return result;
     }
 
     /* --------------------------------------------- */
@@ -1995,7 +2077,7 @@ public class DiagramController {
      *            the edge representation
      */
     private void updateEdgeOffset(final KEdgeNode edgeNode) {
-        final PNode edgeNodeParent = edgeNode.getParent();
+        final KChildAreaNode edgeNodeParent = edgeNode.getParentChildArea();
         if (edgeNodeParent != null) {
             KEdge edge = edgeNode.getGraphElement();
             // chsch: change due to KIELER-1988; // SUPPRESS CHECKSTYLE NEXT 3 LineLength
@@ -2106,28 +2188,31 @@ public class DiagramController {
     /**
      * Returns the lowest common ancestor to both given nodes.
      * 
-     * @param initialNode1
+     * @param source
      *            the first node
-     * @param initialNode2
+     * @param target
      *            the second node
      * @return the lowest common ancestor
      */
-    private static KNode findLowestCommonAncestor(final KNode initialNode1, final KNode initialNode2) {
-        KNode node1 = initialNode1.getParent();
-        while (node1 != null) {
-            KNode node2 = initialNode2.getParent();
-            while (node2 != null) {
-                if (node1 == node2) {
-                    // common ancestor found
-                    return node1;
-                }
-                node2 = node2.getParent();
-            }
-            node1 = node1.getParent();
+    private static KNode findLowestCommonAncestor(final KNode source, final KNode target) {
+        if (source.getParent() == target.getParent()) {
+            // this is the case in common graphs, e.g. state charts
+            return source.getParent();
+        } else if (target.getParent() == source) {
+            // this is the case if (in data flow diagrams) the edge connects an input port
+            //  of a composite node with an inner node 
+            return source;
+        } else if (source.getParent() == target) {
+            // this is the case if (in data flow diagrams) the edge connects an inner node
+            //  of a composite node with an output port of the latter one 
+            return target;
+        } else {
+            final List<EObject> sourceParents = Lists.newArrayList(ModelingUtil.eAllContainers(source));
+            final List<EObject> targetParents = Lists.newArrayList(ModelingUtil.eAllContainers(target));
+            
+            sourceParents.retainAll(targetParents);
+            return (KNode) Iterables.getFirst(sourceParents, null);
         }
-
-        // no common ancestor
-        return null;
     }
 
     /**

@@ -40,6 +40,90 @@
          </enabledWhen>
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+         <and>
+            <count
+                  value="1">
+            </count>
+            <iterate>
+               <instanceof
+                     value="de.cau.cs.kieler.core.kgraph.KNode">
+               </instanceof>
+            </iterate>
+         </and>
+      </definition>
+   </extension>
+   <extension
+         id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="Clip selected"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.ClipSelectionAction">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="Clip towards selection"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="Clip parent"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.ClipParentAction">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="Clip root"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.ClipResetAction">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
    <!-- extension
          id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
          point="org.eclipse.ui.menus">
