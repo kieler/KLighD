@@ -23,7 +23,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * 
  * @author mri
  */
-public class PMouseWheelZoomEventHandler extends KlighdBasicInputEventHandler {
+public class KlighdMouseWheelZoomEventHandler extends KlighdBasicInputEventHandler {
 
     /** the zoom sensitivity. */
     private static final double ZOOM_SENSITIVITY = 0.20;
@@ -35,7 +35,7 @@ public class PMouseWheelZoomEventHandler extends KlighdBasicInputEventHandler {
     /**
      * Constructs a mouse wheel zoom event handler.
      */
-    public PMouseWheelZoomEventHandler() {
+    public KlighdMouseWheelZoomEventHandler() {
         super();
     }
 

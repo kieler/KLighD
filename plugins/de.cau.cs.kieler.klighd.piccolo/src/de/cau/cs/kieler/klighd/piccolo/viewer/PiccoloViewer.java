@@ -48,7 +48,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
@@ -130,7 +130,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
         // install the required event handlers, they rely on SWT event type codes
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdTextInputHandler());
-        camera.addInputEventListener(new PMouseWheelZoomEventHandler());
+        camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(new PPanEventHandler()));
         // camera.addInputEventListener(new KlighdSwitchFocusEventHandler(this));
         camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
