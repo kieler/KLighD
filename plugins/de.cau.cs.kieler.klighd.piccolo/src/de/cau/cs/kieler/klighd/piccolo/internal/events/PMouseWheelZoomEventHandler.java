@@ -82,7 +82,8 @@ public class PMouseWheelZoomEventHandler extends KlighdBasicInputEventHandler {
      */
     @Override
     public void mouseWheelRotated(final PInputEvent event) {
-        final PCamera camera = event.getCamera();
+        // change the following statement to event.getCamera() for local zooming
+        final PCamera camera = event.getTopCamera();
         double scaleDelta = 1.0 + ZOOM_SENSITIVITY * event.getWheelRotation();
 
         final double currentScale = camera.getViewScale();
@@ -94,7 +95,12 @@ public class PMouseWheelZoomEventHandler extends KlighdBasicInputEventHandler {
         if (maxScale > 0 && newScale > maxScale) {
             scaleDelta = maxScale / currentScale;
         }
-        Point2D viewZoomPoint = event.getPosition();
+
+        // the following lines follow event#getPosition();
+        final Point2D viewZoomPoint = event.getCanvasPosition();
+        event.getPath().canvasToLocal(viewZoomPoint, camera);
+        camera.localToView(viewZoomPoint);
+
         camera.scaleViewAboutPoint(scaleDelta, viewZoomPoint.getX(), viewZoomPoint.getY());
     }
 
