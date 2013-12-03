@@ -105,15 +105,12 @@ public class KlighdMainCamera extends PCamera {
         
         this.removeLayer(0);
 
-        final INode prevINode = (INode) prevNode;
-        final INode iNode = (INode) node;
-
         final AffineTransform t;
 
         if (prevNode.isAncestorOf(node)) {
-            t = NodeUtil.localToParent((PNode) iNode.getParentNode(), prevNode);
+            t = NodeUtil.localToParent(node.getParent(), prevNode);
         } else if (node.isAncestorOf(prevNode)) {
-            t = NodeUtil.inverse(NodeUtil.localToParent((PNode) prevINode.getParentNode(), node));
+            t = NodeUtil.inverse(NodeUtil.localToParent(prevNode.getParent(), node));
         } else {
             // TODO this case should be implemented some day
             t = new AffineTransform();
