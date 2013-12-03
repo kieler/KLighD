@@ -59,6 +59,7 @@ public class KChildAreaNode extends PLayer {
      */
     public KChildAreaNode(final INode containingNode) {
         super();
+        this.setPickable(false);
 
         this.nodeLayer = new PLayer();
         super.addChild(nodeLayer);
