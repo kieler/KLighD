@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -24,6 +25,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -56,7 +58,9 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
     private final PLayer labelLayer;
     
     /** the child area for this node. */
-    private KChildAreaNode childArea = null;
+    private final KChildAreaNode childArea;
+    
+    private final PCamera childAreaCamera; 
 
     /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
     private boolean isRootLayer = false;
@@ -71,30 +75,60 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
      *            the parent node
      */
     public KNodeNode(final KNode node, final INode parent) {
-        super();        
+        super();
+
         this.node = node;
         this.parent = parent;
         this.portLayer = new PLayer();
         this.labelLayer = new PLayer();
+        this.childArea = new KChildAreaNode(this);
         
+        this.childAreaCamera = new PCamera();
+
+        this.childAreaCamera.setPickable(false);
+        this.childAreaCamera.setVisible(false);
+        this.childAreaCamera.addLayer(this.childArea);
+        
+        this.addChild(childAreaCamera);
         this.addChild(portLayer);
         this.addChild(labelLayer);
         
-        Boolean b = node.getData(KShapeLayout.class).getProperty(
+        final Boolean b = node.getData(KShapeLayout.class).getProperty(
                 KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
-        setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
+        this.setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
         
         this.addPropertyChangeListener(PLayer.PROPERTY_CAMERAS, new PropertyChangeListener() {
             
             public void propertyChange(final PropertyChangeEvent evt) {
                 final KNodeNode thisNode = KNodeNode.this;
                 if (evt.getNewValue() instanceof List<?>) {
+
                     @SuppressWarnings("unchecked")
                     final List<PCamera> newCameras = (List<PCamera>) evt.getNewValue();
-                    boolean isRoot =
+                    final boolean isRoot =
                             Iterables.any(newCameras, Predicates.instanceOf(KlighdMainCamera.class));
-                    thisNode.getChild(0).setVisible(!isRoot);
                     thisNode.isRootLayer = isRoot;
+
+                    thisNode.getChild(0).setVisible(!isRoot);
+                                        
+                    final PNode childAreaParent = thisNode.childArea.getParent();
+                    if (isRoot && childAreaParent != null && childAreaParent != thisNode) {
+                        
+                        thisNode.childAreaCamera.setViewTransform(NodeUtil.localToParent(
+                                thisNode.childArea.getParent(), thisNode.getChild(0)));
+                        
+                        thisNode.childAreaCamera.setVisible(true);
+                    } else {
+                        thisNode.childAreaCamera.setVisible(false);
+                    }
+                }
+            }
+        });
+
+        this.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, new PropertyChangeListener() {
+            public void propertyChange(final PropertyChangeEvent evt) {
+                if (evt.getNewValue() instanceof Rectangle2D) {
+                    KNodeNode.this.childAreaCamera.setBounds((Rectangle2D) evt.getNewValue());
                 }
             }
         });
@@ -150,16 +184,6 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
     }
     
     /**
-     * Sets the child area for this node.
-     * 
-     * @param childArea
-     *            the child area
-     */
-    public void setChildArea(final KChildAreaNode childArea) {
-        this.childArea = childArea;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public INode getParentNode() {
@@ -169,7 +193,7 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
     /**
      * {@inheritDoc}
      */
-    public KChildAreaNode getChildArea() {
+    public KChildAreaNode getChildAreaNode() {
         return childArea;
     }
     
@@ -178,10 +202,26 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
      */
     @Override
     public void addChild(final PNode child) {
-        if (child instanceof PLayer) {
+
+        if (child instanceof KChildAreaNode) {
+            if (getChild(0) == childAreaCamera) {
+                // in this case a KChildArea is the only KRendering of the KNode
+                this.addChild(0, child);
+                
+            } else {
+                // here, no KChildArea exists in the KNode's KRendering
+                //  thus the child area node is added directly to the node
+                this.addChild(1, child);
+            }
+
+        } else if (child instanceof PLayer) {
+            // this happens during the initialization (constructor)
             super.addChild(child);
+
         } else {
-            // There is only one figure child supposed to be attached to KNodeNodes
+            // this case occurs after constructing the PNodes from the current KRendering
+            
+            // There is only one rendering child supposed to be attached to KNodeNodes
             //  so the following is justified
             if (this.isRootLayer) {
                 child.setVisible(false);
