@@ -55,6 +55,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
@@ -268,6 +269,19 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
             updateTextInput(event);
         }
 
+        private ITracingElement<?> getParentTracingElement(final PNode n) {
+            PNode parent = n.getParent();
+            if (parent != null) {
+                if (parent instanceof ITracingElement<?>) {
+                    return (ITracingElement<?>) parent;
+                } else {
+                    return getParentTracingElement(parent);
+                }
+            } else {
+                return null;
+            }
+        }
+        
         /**
          * Sets position, style and text of the textinput widget to the text element the mouse
          * currently hovers over.
@@ -279,8 +293,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
             PNode n = event.getPickedNode();
             KText kText = null;
             KlighdStyledText styledText = null;
+            
             KGraphElement element = null;
-
             if (n instanceof KLabelNode) {
                 final KLabelNode labelNode = (KLabelNode) n;
                 element = labelNode.getGraphElement().getParent();
@@ -301,8 +315,12 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
 
             } else if (n instanceof KlighdStyledText) {
                 styledText = (KlighdStyledText) n;
+                Object o = this.getParentTracingElement(n).getGraphElement();
+                if (o instanceof KGraphElement) {
+                    element = (KGraphElement) o;
+                }
                 kText = styledText.getGraphElement();
-                // element = kText.getParent();
+                
             }
 
             if ((kText == null || !kText.isCursorSelectable())) {

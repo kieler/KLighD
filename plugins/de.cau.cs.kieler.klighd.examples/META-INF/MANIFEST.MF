@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecoretools.diagram;bundle-version="1.0.0",
  org.eclipse.ui.workbench;bundle-version="3.7.0",
  org.eclipse.ui.ide;bundle-version="3.8.0",
- org.eclipse.uml2.uml;resolution:=optional;bundle-version="4.0.0",
+ org.eclipse.uml2.uml;bundle-version="4.0.0";resolution:=optional,
  de.cau.cs.kieler.core.kivi,
  de.cau.cs.kieler.core.krendering,
  de.cau.cs.kieler.core.krendering.extensions,
@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.core.runtime,
  de.cau.cs.kieler.kiml.ogdf,
  de.cau.cs.kieler.klay.layered,
  org.eclipse.core.commands,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.emf.transaction;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.cau.cs.kieler.klighd.examples.circuit,
  de.cau.cs.kieler.klighd.examples.circuit.impl,
