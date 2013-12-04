@@ -22,7 +22,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
@@ -98,11 +98,12 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
         this.addChild(portLayer);
         this.addChild(labelLayer);
         
-        final Boolean b = node.getData(KShapeLayout.class).getProperty(
+        final Boolean b = node.getData(KLayoutData.class).getProperty(
                 KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
         this.setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
         
         this.addPropertyChangeListener(PLayer.PROPERTY_CAMERAS, new PropertyChangeListener() {
+            // this property change listener reacts on changes in the cameras list
             
             public void propertyChange(final PropertyChangeEvent evt) {
                 final KNodeNode thisNode = KNodeNode.this;
@@ -110,20 +111,33 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
 
                     @SuppressWarnings("unchecked")
                     final List<PCamera> newCameras = (List<PCamera>) evt.getNewValue();
+                    
+                    // if there is a KlighdMainCamera in the list of observing cameras
+                    //  that one is supposed to be the diagram main camera and, thus,
+                    //  the diagram is assumed to be clipped to this node
                     final boolean isRoot =
                             Iterables.any(newCameras, Predicates.instanceOf(KlighdMainCamera.class));
                     thisNode.isRootLayer = isRoot;
 
-                    thisNode.getChild(0).setVisible(!isRoot);
-                                        
                     final PNode childAreaParent = thisNode.childArea.getParent();
+                    
                     if (isRoot && childAreaParent != null && childAreaParent != thisNode) {
-                        
+                        // ... i.e. 'childArea' is somehow burried in the rendering nodes
+                        //  set the helper 'childAreaCamera' visible and adjust its view transform
+                        //  ... if that's not the case yet
+
+                        if (thisNode.childAreaCamera.getVisible()) {
+                            // if the helper camera is already visible
+                            //  we're done as nothing will change
+                            return;
+                        }
+
                         thisNode.childAreaCamera.setViewTransform(NodeUtil.localToParent(
                                 thisNode.childArea.getParent(), thisNode.getChild(0)));
                         
                         thisNode.childAreaCamera.setVisible(true);
                     } else {
+                        // otherwise switch the helper camera off be setting it invisible 
                         thisNode.childAreaCamera.setVisible(false);
                     }
                 }
@@ -131,6 +145,11 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
         });
 
         this.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, new PropertyChangeListener() {
+            // this property change listeners is simply in charge of synchronizing the
+            //  helper camera's bounds with those of this KNodeNode
+            // the view transform/bounds is set by the above listener
+            //  a listener rendering figure changes requiring the (de-)activation of the
+            //  camera while the the diagram is clipped to this node is sill missing (TODO)
             public void propertyChange(final PropertyChangeEvent evt) {
                 if (evt.getNewValue() instanceof Rectangle2D) {
                     KNodeNode.this.childAreaCamera.setBounds((Rectangle2D) evt.getNewValue());
@@ -227,10 +246,6 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
         } else {
             // this case occurs while constructing the PNodes from the current KRendering
             
-            if (this.isRootLayer) {
-                child.setVisible(false);
-            }
-            
             // Since there is only one rendering child supposed to be attached to KNodeNodes
             //  the following addition at position zero is justified.
             super.addChild(0, child);
@@ -242,6 +257,32 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
      */
     @Override
     public void fullPaint(final PPaintContext paintContext) {
-        super.fullPaint(paintContext);
+        // unfortunately I had to copy the whole method just for
+        //  introducing filter in loop below
+        // guess it's worth a related API change in some future Piccolo2D version 
+        
+        if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
+            paintContext.pushTransform(getTransformReference(false));
+            paintContext.pushTransparency(getTransparency());
+
+            if (!getOccluded()) {
+                paint(paintContext);
+            }
+
+            final int count = getChildrenCount();
+            for (int i = 0; i < count; i++) {
+                if (i == 0 && isRootLayer
+                        && this.getCamerasReference().contains(paintContext.getCamera())) {
+                    continue;
+                }
+                final PNode each = (PNode) getChildrenReference().get(i);
+                each.fullPaint(paintContext);
+            }
+
+            paintAfterChildren(paintContext);
+
+            paintContext.popTransparency(getTransparency());
+            paintContext.popTransform(getTransformReference(false));
+        }
     }
 }
