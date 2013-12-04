@@ -29,11 +29,14 @@ public class KNodeTopNode extends PLayer implements INode {
 
     private static final long serialVersionUID = 8395163186723344696L;
 
-    /** the encapsulated {@code KNode}. */
+    /** the encapsulated {@link KNode}. */
     private transient KNode node;
 
     /** the Piccolo2D node representing the child area. */
     private KChildAreaNode childArea;
+
+    /** the main camera of the diagram headed by this top node. */
+    private KlighdMainCamera diagramMainCamera = null;
 
     /**
      * Constructs a Piccolo2D node for representing the top-level {@link KNode}.
@@ -50,6 +53,27 @@ public class KNodeTopNode extends PLayer implements INode {
         childArea.setClip(false);
         
         this.addChild(childArea);
+    }
+    
+    /**
+     * Sets the main camera of the diagram headed by this top node. This method may currently only
+     * be called from {@link KlighdMainCamera#setDisplayedNode(INode)}.
+     * 
+     * @param camera
+     */
+    void setDiagramMainCamera(final KlighdMainCamera camera) {
+        if (this.diagramMainCamera == null) {
+            this.diagramMainCamera = camera;
+        }
+    }
+    
+    /**
+     * Getter.
+     * 
+     * @return the main camera of the diagram headed by this top node
+     */
+    public KlighdMainCamera getDiagramMainCamera() {
+        return this.diagramMainCamera;
     }
 
     /**
