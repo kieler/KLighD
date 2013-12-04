@@ -330,8 +330,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
         controller = new DiagramController(model, canvas.getCamera(), sync);
 
         // update the outline page
-        if (outlinePage != null) {
+        if (outlinePage != null && !outlinePage.isDisposed()) {
             outlinePage.setContent(controller.getNode());
+        } else {
+            this.outlinePage = null;
         }
 
     }
@@ -350,7 +352,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
      * {@inheritDoc}
      */
     public IContentOutlinePage getOutlinePage() {
-        if (outlinePage == null) {
+        if (outlinePage == null || outlinePage.isDisposed()) {
             outlinePage = new PiccoloOutlinePage();
             outlinePage.setContent(this.controller.getNode());
         }
