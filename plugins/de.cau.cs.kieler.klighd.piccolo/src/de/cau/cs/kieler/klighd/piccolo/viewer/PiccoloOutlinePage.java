@@ -41,6 +41,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -264,13 +265,17 @@ public class PiccoloOutlinePage implements IContentOutlinePage {
      * Adjusts the displayed outline rectangle to the current view snippet.
      */
     private void adjustOutlineRect() {
-        final PCamera originalCamera = topNode.getDiagramMainCamera();
+        final KlighdMainCamera originalCamera = topNode.getDiagramMainCamera();
         if (originalCamera == null) {
             return;
         }
-        
+
+        final PNode displayedNode = (PNode) originalCamera.getDisplayedINode();
+
         // get the new bounds
         final PBounds bounds = originalCamera.getViewBounds();
+        NodeUtil.localToParent(displayedNode.getParent(), topNode).transform(bounds, bounds);
+
         outlineRect.setPathToRoundRectangle((float) bounds.x, (float) bounds.y,
                 (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
                 OUTLINE_EDGE_ROUNDNESS);
