@@ -94,7 +94,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 continue;
             }
             
-            final IAction actionImpl = KlighdDataManager.getInstance().getActionById(action.getActionId());
+            final IAction actionImpl =
+                    KlighdDataManager.getInstance().getActionById(action.getActionId());
             if (actionImpl == null) {
                 continue;
             }

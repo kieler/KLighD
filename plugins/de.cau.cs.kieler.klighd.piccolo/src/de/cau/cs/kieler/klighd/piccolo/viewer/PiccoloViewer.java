@@ -54,8 +54,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.PMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
@@ -75,7 +75,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * A viewer for Piccolo diagram contexts.
+ * A viewer for Piccolo2D diagram contexts.
  * 
  * @author mri
  * @author chsch
@@ -166,7 +166,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
         // install the required event handlers, they rely on SWT event type codes
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdTextInputHandler());
-        camera.addInputEventListener(new PMouseWheelZoomEventHandler());
+        camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(new PPanEventHandler()));
         // camera.addInputEventListener(new KlighdSwitchFocusEventHandler(this));
         camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
@@ -399,17 +399,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
      * {@inheritDoc}
      */
     public void setModel(final KNode model, final boolean sync) {
-        // remove the old selection handler
-        // if (selectionHandler != null) {
-        // canvas.removeInputEventListener(selectionHandler);
-        // selectionHandler = null;
-        // }
-
-        // prepare the camera
-        // PCamera camera = canvas.getCamera();
-        // resetCamera(camera);
-        // resizeAndResetLayers(2);
-        // camera.getLayer(0).removeAllChildren();
 
         // create a controller for the graph
         controller = new DiagramController(model, canvas.getCamera(), sync);
@@ -442,34 +431,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
         return outlinePage;
     }
 
-    // /**
-    // * Resizes the number of layers in the camera to the given number and resets them.
-    // *
-    // * @param number
-    // * the number of layers
-    // */
-    // private void resizeAndResetLayers(final int number) {
-    // PRoot root = canvas.getRoot();
-    // PCamera camera = canvas.getCamera();
-    // // resize down
-    // while (camera.getLayerCount() > number) {
-    // PLayer layer = camera.getLayer(camera.getLayerCount() - 1);
-    // camera.removeLayer(layer);
-    // root.removeChild(layer);
-    // }
-    // // resize up
-    // while (camera.getLayerCount() < number) {
-    // PLayer layer = new PLayer();
-    // root.addChild(layer);
-    // camera.addLayer(layer);
-    // }
-    // // reset
-    // @SuppressWarnings("unchecked")
-    // Iterable<PLayer> layers = camera.getLayersReference();
-    // for (PLayer layer : layers) {
-    // layer.removeAllChildren();
-    // }
-    // }
 
     /**
      * {@inheritDoc}
@@ -504,7 +465,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void reveal(final KGraphElement diagramElement, final int duration) {
         PNode node = getRepresentation(diagramElement);
         if (node != null) {
@@ -517,7 +477,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void centerOn(final KGraphElement diagramElement, final int duration) {
         PNode node = getRepresentation(diagramElement);
         if (node != null) {
@@ -537,7 +496,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void collapse(final KNode diagramElement) {
         controller.collapse(diagramElement);
     }
@@ -545,7 +503,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void expand(final KNode diagramElement) {
         controller.expand(diagramElement);
     }
@@ -553,7 +510,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleExpansion(final KNode diagramElement) {
         controller.toggleExpansion(diagramElement);
     }
@@ -561,7 +517,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void hide(final KGraphElement diagramElement) {
         controller.hide(diagramElement);
     }
@@ -569,17 +524,31 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void show(final KGraphElement diagramElement) {
         controller.show(diagramElement);
     }
 
     /**
-     * Returns the Piccolo representation for the given diagram element.
+     * {@inheritDoc}
+     */
+    public void clip(final KNode diagramElement) {
+        controller.clip(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KNode getClip() {
+        return controller.getClip();
+    }
+
+
+    /**
+     * Returns the Piccolo2D representation for the given diagram element.
      * 
      * @param diagramElement
      *            the diagram element
-     * @return the Piccolo representation
+     * @return the Piccolo2D representation
      */
     public PNode getRepresentation(final KGraphElement diagramElement) {
         PNode node = (PNode) controller.getRepresentation(diagramElement);

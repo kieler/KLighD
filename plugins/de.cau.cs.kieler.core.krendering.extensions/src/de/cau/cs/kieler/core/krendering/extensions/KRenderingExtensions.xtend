@@ -228,6 +228,9 @@ class KRenderingExtensions {
             it.actions += renderingFactory.createKAction() => [
                 it.trigger = trigger;
                 it.actionId = actionId;
+                it.altPressed = altPressed;
+                it.ctrlCmdPressed = ctrlCmdPressed;
+                it.shiftPressed = shiftPressed;
             ];
         ];
     }

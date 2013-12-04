@@ -13,40 +13,66 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import edu.umd.cs.piccolo.PCamera;
+import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * The Piccolo node for representing a {@code KNode}.
+ * The Piccolo2D node for representing a {@code KNode}.
  * 
  * @author mri
+ * @author chsch
  */
-public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElement<KNode> {
+public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
     
-    /** the number of z-layers (rendering, ports and labels). */
-    private static final int Z_LAYERS = 3;
-    /** the z-index for the label layer. */
-    private static final int LABEL_LAYER = 2;
-    /** the z-index for the port layer. */
-    private static final int PORT_LAYER = 1;
-
-    /** the parent node. */
+    /** the parent {@link INode}. */
     private INode parent;
+
     /** the represented {@link KNode}. */
     private KNode node;
+
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
 
+    /** a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.*/
+    private final PLayer portLayer;
+    
+    /** a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.*/
+    private final PLayer labelLayer;
+    
     /** the child area for this node. */
-    private KChildAreaNode childArea = null;
+    private final KChildAreaNode childArea;
+    
+    /**
+     * This camera is used if the diagram is clipped to this node and this node's child area is part
+     * of the composite node figure. In this and only this particular case, the camera observing the
+     * child area is set visible.
+     */
+    private final PCamera childAreaCamera; 
+
+    /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
+    private boolean isRootLayer = false;
+
 
     /**
-     * Constructs a Piccolo node for representing a {@code KNode}.
+     * Constructs a Piccolo2D node for representing a {@code KNode}.
      * 
      * @param node
      *            the node
@@ -54,12 +80,63 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
      *            the parent node
      */
     public KNodeNode(final KNode node, final INode parent) {
-        super(Z_LAYERS);
+        super();
+
         this.node = node;
         this.parent = parent;
-        Boolean b = node.getData(KShapeLayout.class).getProperty(
+        this.portLayer = new PLayer();
+        this.labelLayer = new PLayer();
+        this.childArea = new KChildAreaNode(this);
+        
+        this.childAreaCamera = new PCamera();
+
+        this.childAreaCamera.setPickable(true);
+        this.childAreaCamera.setVisible(false);
+        this.childAreaCamera.addLayer(this.childArea);
+        
+        this.addChild(childAreaCamera);
+        this.addChild(portLayer);
+        this.addChild(labelLayer);
+        
+        final Boolean b = node.getData(KShapeLayout.class).getProperty(
                 KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
-        setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
+        this.setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
+        
+        this.addPropertyChangeListener(PLayer.PROPERTY_CAMERAS, new PropertyChangeListener() {
+            
+            public void propertyChange(final PropertyChangeEvent evt) {
+                final KNodeNode thisNode = KNodeNode.this;
+                if (evt.getNewValue() instanceof List<?>) {
+
+                    @SuppressWarnings("unchecked")
+                    final List<PCamera> newCameras = (List<PCamera>) evt.getNewValue();
+                    final boolean isRoot =
+                            Iterables.any(newCameras, Predicates.instanceOf(KlighdMainCamera.class));
+                    thisNode.isRootLayer = isRoot;
+
+                    thisNode.getChild(0).setVisible(!isRoot);
+                                        
+                    final PNode childAreaParent = thisNode.childArea.getParent();
+                    if (isRoot && childAreaParent != null && childAreaParent != thisNode) {
+                        
+                        thisNode.childAreaCamera.setViewTransform(NodeUtil.localToParent(
+                                thisNode.childArea.getParent(), thisNode.getChild(0)));
+                        
+                        thisNode.childAreaCamera.setVisible(true);
+                    } else {
+                        thisNode.childAreaCamera.setVisible(false);
+                    }
+                }
+            }
+        });
+
+        this.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, new PropertyChangeListener() {
+            public void propertyChange(final PropertyChangeEvent evt) {
+                if (evt.getNewValue() instanceof Rectangle2D) {
+                    KNodeNode.this.childAreaCamera.setBounds((Rectangle2D) evt.getNewValue());
+                }
+            }
+        });
     }
 
     /**
@@ -98,7 +175,7 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
      *            the port representation
      */
     public void addPort(final KPortNode port) {
-        addChild(port, PORT_LAYER);
+        portLayer.addChild(port);
     }
 
     /**
@@ -108,19 +185,9 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
      *            the label representation
      */
     public void addLabel(final KLabelNode label) {
-        addChild(label, LABEL_LAYER);
+        labelLayer.addChild(label);
     }
     
-    /**
-     * Sets the child area for this node.
-     * 
-     * @param childArea
-     *            the child area
-     */
-    public void setChildArea(final KChildAreaNode childArea) {
-        this.childArea = childArea;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -131,8 +198,50 @@ public class KNodeNode extends PZIndexNode implements INode, ILabeledGraphElemen
     /**
      * {@inheritDoc}
      */
-    public KChildAreaNode getChildArea() {
+    public KChildAreaNode getChildAreaNode() {
         return childArea;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addChild(final PNode child) {
 
+        if (child instanceof KChildAreaNode) {
+            if (getChild(0) == childAreaCamera) {
+                // in this case a KChildArea is the only KRendering of the KNode
+                this.addChild(0, child);
+                
+            } else {
+                // in this case no KChildArea exists in the KNode's KRendering
+                //  thus another pnode made it already to position zero
+                //  and the child area node is added directly to the node afterwards
+                this.addChild(1, child);
+            }
+
+        } else if (child instanceof PLayer) {
+            // this happens during the initialization (constructor)
+            super.addChild(child);
+
+        } else {
+            // this case occurs while constructing the PNodes from the current KRendering
+            
+            if (this.isRootLayer) {
+                child.setVisible(false);
+            }
+            
+            // Since there is only one rendering child supposed to be attached to KNodeNodes
+            //  the following addition at position zero is justified.
+            super.addChild(0, child);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void fullPaint(final PPaintContext paintContext) {
+        super.fullPaint(paintContext);
+    }
 }

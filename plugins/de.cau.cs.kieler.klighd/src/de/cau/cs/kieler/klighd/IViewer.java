@@ -26,9 +26,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
 
 /**
- * The interface for viewers on incrementally updated models.<br>
- * <br>
- * All method calls on this interface have to be made from the UI thread.
+ * The interface for viewers displaying diagrams of provided models.<br>
  * 
  * @author mri
  * @author chsch
@@ -276,6 +274,39 @@ public interface IViewer<T> {
      *            the diagram element to show up
      */
     void show(KGraphElement diagramElement);
+
+    /**
+     * Limits the visible elements of the diagram to the content of the representation of the given
+     * {@link Object} without causing any change on the view model. Hence, this method can be used
+     * for changing the diagram's amount of detail without changing the view model.<br>
+     * The clip can be reset to the whole diagram by calling <code>clip((Object) null)</code>.
+     * 
+     * @param semanticElement
+     *            the semantic element to whose representation the diagram view is to be limited,
+     *            may be <code>null</code>
+     */
+    void clip(Object semanticElement);
+    
+    /**
+     * Limits the visible elements of the diagram to the content of the given {@link KNode} without
+     * causing any change on the view model. Hence, this method can be used for changing the
+     * diagram's amount of detail without changing the view model.<br>
+     * The clip can be reset to the whole diagram by calling <code>clip((KNode) null)</code>.
+     * 
+     * @param diagramElement
+     *            the diagram element to which the diagram view is to be limited, may be
+     *            <code>null</code>
+     */
+    void clip(KNode diagramElement);
+    
+    // a getClipSemantic() is still absent, it's not clear whether that is really necessary
+    
+    /**
+     * Provides the currently set diagram clip.
+     * 
+     * @return the {@link KNode} that is currently clipped.
+     */
+    KNode getClip();
 
 
     /* ----------------------------- */

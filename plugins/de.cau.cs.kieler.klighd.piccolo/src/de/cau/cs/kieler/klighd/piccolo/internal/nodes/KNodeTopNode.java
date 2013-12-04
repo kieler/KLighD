@@ -19,8 +19,8 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
- * The dedicated root node of our Piccolo-powered KLighD diagrams.
- * Nodes of this type represent the top-level {@code KNode} of KGraph+KRendering view models.
+ * The dedicated root node of our Piccolo2D-powered KLighD diagrams.
+ * Nodes of this type represent the top-level {@link KNode} of KGraph+KRendering view models.
  * 
  * @author mri
  * @author chsch
@@ -32,11 +32,11 @@ public class KNodeTopNode extends PLayer implements INode {
     /** the encapsulated {@code KNode}. */
     private transient KNode node;
 
-    /** the Piccolo node representing the child area. */
+    /** the Piccolo2D node representing the child area. */
     private KChildAreaNode childArea;
 
     /**
-     * Constructs a Piccolo node for representing the top-level {@code KNode}.
+     * Constructs a Piccolo2D node for representing the top-level {@link KNode}.
      * 
      * @param node
      *            the KNode
@@ -81,8 +81,15 @@ public class KNodeTopNode extends PLayer implements INode {
     /**
      * {@inheritDoc}
      */
-    public KChildAreaNode getChildArea() {
+    public KChildAreaNode getChildAreaNode() {
         return childArea;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public INode getParentNode() {
+        return null;
     }
     
     /**
@@ -98,7 +105,6 @@ public class KNodeTopNode extends PLayer implements INode {
             
             return true;
         }
-        
         return fullPick;
     }
 

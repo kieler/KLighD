@@ -269,7 +269,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         KShapeLayout layoutGraphShapeLayout = layoutGraph.getData(KShapeLayout.class);
         KShapeLayout graphShapeLayout = graph.getData(KShapeLayout.class);
         if (graphShapeLayout != null) {
-            transferShapeLayout(graphShapeLayout, layoutGraphShapeLayout);
+            transferShapeLayout(graphShapeLayout, layoutGraphShapeLayout, false);
         }
 
         mapping.getGraphMap().put(layoutGraph, graph);
@@ -339,7 +339,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
-            transferShapeLayout(nodeLayout, layoutLayout);
+            transferShapeLayout(nodeLayout, layoutLayout, false);
             
             // In the following the minimal width and height of the node is determined, which
             //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
@@ -434,7 +434,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         KShapeLayout layoutLayout = layoutPort.getData(KShapeLayout.class);
         KShapeLayout portLayout = port.getData(KShapeLayout.class);
         if (portLayout != null) {
-            transferShapeLayout(portLayout, layoutLayout);
+            transferShapeLayout(portLayout, layoutLayout, false);
         }
 
         layoutPort.setNode(layoutNode);
@@ -554,7 +554,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
         
         if (labelLayout != null) {
-            transferShapeLayout(labelLayout, layoutLayout);
+            transferShapeLayout(labelLayout, layoutLayout, false);
             
             // integrate the minimal estimated label size based on the updated layoutLayout
             // - manipulating the labelLayout may cause immediate glitches in the diagram
@@ -634,7 +634,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
                     KShapeLayout nodeLayout = element.getData(KShapeLayout.class);
                     if (nodeLayout != null) {
-                        transferShapeLayout(layoutLayout, nodeLayout);
+                        transferShapeLayout(layoutLayout, nodeLayout, true);
                         nodeLayout.setProperty(INITIAL_NODE_SIZE, false);
                     }
                     return true;
@@ -655,7 +655,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KShapeLayout layoutLayout = layoutPort.getData(KShapeLayout.class);
                     KShapeLayout portLayout = element.getData(KShapeLayout.class);
                     if (portLayout != null) {
-                        transferShapeLayout(layoutLayout, portLayout);
+                        transferShapeLayout(layoutLayout, portLayout, false);
                         portLayout.setProperty(KlighdProperties.LAYOUT_PORT_SIDE,
                                 layoutLayout.getProperty(LayoutOptions.PORT_SIDE));
                     }
@@ -666,7 +666,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KShapeLayout layoutLayout = layoutLabel.getData(KShapeLayout.class);
                     KShapeLayout labelLayout = element.getData(KShapeLayout.class);
                     if (labelLayout != null) {
-                        transferShapeLayout(layoutLayout, labelLayout);
+                        transferShapeLayout(layoutLayout, labelLayout, false);
                     }
                     return true;
                 }
@@ -689,13 +689,26 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the source shape layout
      * @param targetShapeLayout
      *            the target shape layout
+     * @param copyInsets
+     *            <code>true</code> if insets shall be copied
      */
     private void transferShapeLayout(final KShapeLayout sourceShapeLayout,
-            final KShapeLayout targetShapeLayout) {
+            final KShapeLayout targetShapeLayout, final boolean copyInsets) {
         // Attention: Layout options are transfered by the {@link KGraphPropertyLayoutConfig}
         targetShapeLayout.setPos(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
         targetShapeLayout.setSize(sourceShapeLayout.getWidth(), sourceShapeLayout.getHeight());
+        
+        if (copyInsets) {
+            final KInsets sourceInsets = sourceShapeLayout.getInsets();
+            final KInsets targetInsets = targetShapeLayout.getInsets();
+
+            targetInsets.setLeft(sourceInsets.getLeft());
+            targetInsets.setRight(sourceInsets.getRight());
+            targetInsets.setTop(sourceInsets.getTop());
+            targetInsets.setBottom(sourceInsets.getBottom());
+        }
     }
+
 
     /**
      * Transfers the source edge layout to the target edge layout.
