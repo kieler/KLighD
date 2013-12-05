@@ -33,7 +33,7 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * The Piccolo2D node for representing a {@code KNode}.
+ * The Piccolo2D node for representing a {link KNode}.
  * 
  * @author mri
  * @author chsch
@@ -122,7 +122,7 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
                     final PNode childAreaParent = thisNode.childArea.getParent();
                     
                     if (isRoot && childAreaParent != null && childAreaParent != thisNode) {
-                        // ... i.e. 'childArea' is somehow burried in the rendering nodes
+                        // ... i.e. 'childArea' is somehow buried in the rendering nodes
                         //  set the helper 'childAreaCamera' visible and adjust its view transform
                         //  ... if that's not the case yet
 
@@ -258,8 +258,9 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
     @Override
     public void fullPaint(final PPaintContext paintContext) {
         // unfortunately I had to copy the whole method just for
-        //  introducing filter in loop below
-        // guess it's worth a related API change in some future Piccolo2D version 
+        //  introducing the filter in the loop below, since 'PNode#fullPaint(...)'
+        //  accesses the child list directly rather via 'getChildrenReference()'
+        // I guess it's worth a related API change in some future Piccolo2D version 
         
         if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
             paintContext.pushTransform(getTransformReference(false));
@@ -271,11 +272,11 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
 
             final int count = getChildrenCount();
             for (int i = 0; i < count; i++) {
-                if (i == 0 && isRootLayer
+                final PNode each = (PNode) getChildrenReference().get(i);
+                if (i == 0 && this.isRootLayer && each != this.childArea
                         && this.getCamerasReference().contains(paintContext.getCamera())) {
                     continue;
                 }
-                final PNode each = (PNode) getChildrenReference().get(i);
                 each.fullPaint(paintContext);
             }
 
