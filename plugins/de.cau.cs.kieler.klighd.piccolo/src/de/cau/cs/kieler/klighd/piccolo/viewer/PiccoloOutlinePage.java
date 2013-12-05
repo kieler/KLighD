@@ -157,6 +157,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         outlineCanvas.setFocus();
     }
 
+    /** A flag for tracking the visibility state until the {@link #outlineCanvas} is created. */
     private boolean visible = false; 
 
     /**
@@ -167,6 +168,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     public void setVisible(final boolean isVisible) {
         visible = isVisible;
         if (outlineCanvas != null) {
+            adjustOutlineRect();
             outlineCanvas.setVisible(isVisible);
         }
     }
@@ -250,6 +252,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         outlineCanvas.addControlListener(canvasResizeListener);
         
         adjustCamera();
+        adjustOutlineRect();
         
         outlineCanvas.setVisible(visible);
     }
