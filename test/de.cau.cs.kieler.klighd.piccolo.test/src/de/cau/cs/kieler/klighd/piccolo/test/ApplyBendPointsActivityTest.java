@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.test;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
