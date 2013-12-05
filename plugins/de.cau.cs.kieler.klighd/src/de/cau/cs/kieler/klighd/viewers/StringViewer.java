@@ -28,6 +28,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
@@ -76,7 +77,14 @@ public class StringViewer implements IViewer<String> {
     public String getModel() {
         return message;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public ViewContext getViewContext() {
+        return null;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -110,21 +118,6 @@ public class StringViewer implements IViewer<String> {
      */
     public IContentOutlinePage getOutlinePage() {
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void startRecording() {
-        // do nothing
-        
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
-        // do nothing
     }
 
     /**

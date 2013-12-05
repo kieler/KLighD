@@ -126,7 +126,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             // determine the domain model element
             if (context.getProperty(LayoutContext.DOMAIN_MODEL) == null) {
                 if (contextViewer != null) {
-                    ViewContext viewContext = contextViewer.getCurrentViewContext();
+                    ViewContext viewContext = contextViewer.getViewContext();
                     if (viewContext != null) {
                         Object sourceElement = viewContext.getSourceElement(element);
                         if (sourceElement instanceof EObject) {
@@ -188,7 +188,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                     }
                     context.setProperty(LayoutContext.CONTAINER_DIAGRAM_PART, parentNode);
                     if (contextViewer != null) {
-                        ViewContext viewContext = contextViewer.getCurrentViewContext();
+                        ViewContext viewContext = contextViewer.getViewContext();
                         if (viewContext != null) {
                             Object sourceElement = viewContext.getSourceElement(parentNode);
                             if (sourceElement instanceof EObject) {
@@ -312,7 +312,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         if (element == layoutContext.getProperty(LayoutContext.DOMAIN_MODEL)) {
             ContextViewer contextViewer = layoutContext.getProperty(CONTEXT_VIEWER);
             if (contextViewer != null) {
-                final ViewContext viewContext = contextViewer.getCurrentViewContext();
+                final ViewContext viewContext = contextViewer.getViewContext();
                 if (viewContext != null) {
                     // update the view context in order to re-apply the view synthesis
                     LightDiagramServices.updateViewContext(viewContext, viewContext.getInputModel());

@@ -385,7 +385,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 // default behavior: get the first element in the resource
                 model = resource.getContents().get(0);
                 
-                ViewContext viewContext = viewer.getCurrentViewContext();
+                ViewContext viewContext = viewer.getViewContext();
                 LightDiagramServices.updateViewContext(viewContext, model);
             } catch (IOException exception) {
                 IStatus status = new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
@@ -464,7 +464,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofit.gif"));
                 final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                        DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
@@ -477,7 +477,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             @Override
             public void run() {
                 final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                        DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
@@ -502,8 +502,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
-                final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
@@ -515,8 +514,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
             @Override
             public void run() {
-                final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
 

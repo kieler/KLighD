@@ -75,9 +75,16 @@ public interface IViewer<T> {
     /**
      * Returns the input model currently set for this viewer.
      * 
-     * @return the input model or null if no input model is set
+     * @return the input model or <code>null</code> if no input model is set
      */
     T getModel();
+    
+    /**
+     * Returns the {@link ViewContext} that is associated to <code>this</this> viewer.
+     * 
+     * @return the associated {@link ViewContext} or <code>null</code> if no input model is set
+     */
+    ViewContext getViewContext();
     
     /**
      * Returns a content outline page for this viewer.
@@ -85,24 +92,6 @@ public interface IViewer<T> {
      * @return a content outline page
      */
     IContentOutlinePage getOutlinePage();
-
-    /**
-     * Starts to record layout changes in the model instead of instantly applying them to the
-     * visualization.<br>
-     * <br>
-     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
-     */
-    void startRecording();
-    
-    /**
-     * Stops to record layout changes, initialized by {@link #startRecording()}.
-     * 
-     * @param zoomStyle
-     *            the style used to zoom, eg zoom to fit or zoom to focus
-     * @param animationTime
-     *            duration of the animated layout
-     */
-    void stopRecording(final ZoomStyle zoomStyle, final int animationTime);
 
     /**
      * Reveals the representation of the given semantic element over the specified duration.

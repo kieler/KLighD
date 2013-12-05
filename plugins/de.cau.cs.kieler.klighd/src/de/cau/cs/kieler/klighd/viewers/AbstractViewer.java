@@ -55,20 +55,6 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void zoomToLevel(final float zoomLevel, final int duration) {
         getContextViewer().zoomToLevel(zoomLevel, duration);
     }

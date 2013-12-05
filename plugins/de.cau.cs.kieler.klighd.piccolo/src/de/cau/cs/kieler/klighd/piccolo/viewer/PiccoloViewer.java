@@ -40,15 +40,17 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
@@ -72,7 +74,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class PiccoloViewer extends AbstractViewer<KNode> {
+public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder {
 
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
@@ -324,6 +326,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
+    public ViewContext getViewContext() {
+        return this.parentViewer.getViewContext();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void setModel(final KNode model, final boolean sync) {
 
         // create a controller for the graph
@@ -364,6 +373,22 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
      */
     public void startRecording() {
         controller.startRecording();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final int animationTime) {
+        final ZoomStyle zoomStyle;
+        
+        if (this.getViewContext() != null) {
+            // get the zoomStyle
+            zoomStyle = this.getViewContext().getZoomStyle();
+        } else {
+            zoomStyle = ZoomStyle.NONE;
+        }
+        
+        stopRecording(zoomStyle, animationTime);
     }
 
     /**

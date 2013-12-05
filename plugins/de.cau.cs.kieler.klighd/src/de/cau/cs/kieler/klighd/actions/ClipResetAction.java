@@ -30,7 +30,7 @@ public class ClipResetAction implements IAction {
      */
     public ActionResult execute(final ActionContext context) {        
         final IViewer<?> activeViewer = context.getActiveViewer();
-        final KNode diagramRoot = context.getContextViewer().getCurrentViewContext().getViewModel();
+        final KNode diagramRoot = context.getViewContext().getViewModel();
         
         if (activeViewer.getClip() != diagramRoot) {
             activeViewer.clip(null);

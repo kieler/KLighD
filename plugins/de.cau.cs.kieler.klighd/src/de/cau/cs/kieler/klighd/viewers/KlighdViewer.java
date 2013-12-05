@@ -99,6 +99,13 @@ public class KlighdViewer extends AbstractViewer<Object> implements IViewer<Obje
     /**
      * {@inheritDoc}
      */
+    public ViewContext getViewContext() {
+        return contextViewer.getViewContext();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void reveal(final KGraphElement diagramElement, final int duration) {
         contextViewer.reveal(diagramElement, duration);
     }

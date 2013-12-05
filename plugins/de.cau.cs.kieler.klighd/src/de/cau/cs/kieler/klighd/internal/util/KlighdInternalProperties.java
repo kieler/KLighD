@@ -21,6 +21,7 @@ import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 
 /**
  * A collection of internal KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty
@@ -81,6 +82,10 @@ public final class KlighdInternalProperties {
     /** the viewer visualizing the graph. */
     public static final IProperty<IViewer<?>> VIEWER = new Property<IViewer<?>>(
             "krendering.layout.viewer");
+    
+    /** the layout recorder responsible for diagram animation. */
+    public static final IProperty<ILayoutRecorder> RECORDER = new Property<ILayoutRecorder>(
+            "krendering.layout.recorder");
     
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
