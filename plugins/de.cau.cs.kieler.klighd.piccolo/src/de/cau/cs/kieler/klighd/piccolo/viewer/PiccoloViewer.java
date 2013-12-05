@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.collect.Iterables;
 
@@ -42,6 +41,7 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
@@ -74,7 +74,8 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder {
+public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder,
+    IDiagramOutlinePage.Provider {
 
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
@@ -312,6 +313,17 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     /**
      * {@inheritDoc}
      */
+    public IDiagramOutlinePage getDiagramOutlinePage() {
+        if (outlinePage == null || outlinePage.isDisposed()) {
+            outlinePage = new PiccoloOutlinePage();
+            outlinePage.setContent(this.controller.getNode());
+        }
+        return outlinePage;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Control getControl() {
         return canvas;
     }
@@ -355,17 +367,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
             return controller.getNode().getGraphElement();
         }
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IContentOutlinePage getOutlinePage() {
-        if (outlinePage == null || outlinePage.isDisposed()) {
-            outlinePage = new PiccoloOutlinePage();
-            outlinePage.setContent(this.controller.getNode());
-        }
-        return outlinePage;
     }
 
     /**

@@ -17,7 +17,6 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -26,7 +25,11 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
 
 /**
- * The interface for viewers displaying diagrams of provided models.<br>
+ * The common interface for viewers displaying diagrams of provided models.<br>
+ * <br>
+ * This interface is supposed to be used in client's code for revealing elements in diagrams,
+ * expanding & collapsing elements, clipping the diagram, or asking for the source elements
+ * of representatives in diagrams by referring to {@link #getViewContext()}.
  * 
  * @author mri
  * @author chsch
@@ -86,13 +89,6 @@ public interface IViewer<T> {
      */
     ViewContext getViewContext();
     
-    /**
-     * Returns a content outline page for this viewer.
-     * 
-     * @return a content outline page
-     */
-    IContentOutlinePage getOutlinePage();
-
     /**
      * Reveals the representation of the given semantic element over the specified duration.
      * 

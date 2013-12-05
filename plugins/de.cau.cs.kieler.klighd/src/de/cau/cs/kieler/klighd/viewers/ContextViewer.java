@@ -56,7 +56,6 @@ import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
@@ -73,10 +72,11 @@ import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.SynthesisOption;
+import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
 import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
@@ -107,7 +107,8 @@ import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
  * @author chsch
  * @author msp
  */
-public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelectionProvider {
+public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelectionProvider,
+        IDiagramOutlinePage.Provider {
 
     /** the workbench part for which the viewer is created. */
     private IDiagramWorkbenchPart workbenchPart;
@@ -572,6 +573,18 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
+    public IDiagramOutlinePage getDiagramOutlinePage() {
+        if (currentViewer instanceof IDiagramOutlinePage.Provider) {
+            return ((IDiagramOutlinePage.Provider) currentViewer).getDiagramOutlinePage();
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public Control getControl() {
         return currentViewer.getControl();
     }
@@ -620,17 +633,6 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      */
     public IViewer<?> getActiveViewer() {
         return currentViewer;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public IContentOutlinePage getOutlinePage() {
-        if (currentViewer != null) {
-            return currentViewer.getOutlinePage();
-        }
-        return null;
     }
 
 
