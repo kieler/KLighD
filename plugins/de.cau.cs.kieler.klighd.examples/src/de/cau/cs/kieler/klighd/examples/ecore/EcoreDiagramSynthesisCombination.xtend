@@ -3,11 +3,11 @@ package de.cau.cs.kieler.klighd.examples.ecore
 import de.cau.cs.kieler.core.kivi.AbstractCombination
 import de.cau.cs.kieler.core.kivi.triggers.PartTrigger
 import de.cau.cs.kieler.core.kivi.triggers.SelectionTrigger
-import de.cau.cs.kieler.klighd.LightDiagramServices
 import de.cau.cs.kieler.klighd.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy
 import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger
 import de.cau.cs.kieler.klighd.util.KlighdProperties
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.List
 import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.ecore.EClass
@@ -96,7 +96,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
         		        ) => [
         		       	// FIXME reactivate incremental update
                         // it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
-                        it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy::ID);
+                        it.setProperty(KlighdSynthesisProperties::REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy::ID);
                         it.setProperty(KlighdProperties::MODEL_ACCESS, new EcoreModelAccess(this.selectedModelElements));
                     ]);
                 }
