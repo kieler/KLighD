@@ -102,7 +102,7 @@ public interface IAction {
          * @return the view context related to the current diagram
          */
         public ViewContext getViewContext() {
-            return viewer.getContextViewer().getCurrentViewContext();
+            return viewer.getViewContext();
         }
 
         /**
@@ -149,8 +149,7 @@ public interface IAction {
          */
         @SuppressWarnings("unchecked")
         public <T> T getDomainElement(final KNode viewElement) {
-            return (T) this.viewer.getContextViewer().getCurrentViewContext()
-                    .getSourceElement(viewElement);
+            return (T) this.viewer.getViewContext().getSourceElement(viewElement);
         }
     }
 
@@ -186,6 +185,7 @@ public interface IAction {
          * 
          * @param actionPerformed
          *            flag indicating whether the action actually performed changes on the diagram
+         *            and a subsequent layout refreshment is required
          * @param config
          *            an optional {@link ILayoutConfig}, may be <code>null</code>
          * @return the requested {@link ActionResult}

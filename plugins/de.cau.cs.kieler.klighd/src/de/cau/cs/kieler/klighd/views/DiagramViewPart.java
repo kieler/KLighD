@@ -153,8 +153,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofit.gif"));
-                final ViewContext vc =
-                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
@@ -166,8 +165,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
             @Override
             public void run() {
-                final ViewContext vc =
-                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
@@ -188,8 +186,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
-                final ViewContext vc =
-                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
@@ -201,8 +198,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
 
             @Override
             public void run() {
-                final ViewContext vc =
-                        DiagramViewPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
 

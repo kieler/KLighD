@@ -109,7 +109,7 @@ class KLabelExtensions {
         ];
     }
     
-    def KLabel addLayoutParam(KLabel label, IProperty<?> property, Object value) {
+    def <T> KLabel addLayoutParam(KLabel label, IProperty<? super T> property, T value) {
         return label => [
             it.getData(typeof(KShapeLayout)).setProperty(property, value)
         ];
@@ -119,6 +119,26 @@ class KLabelExtensions {
     /* --------------------------------- */
     /*  node label configurators/adders  */
     /* --------------------------------- */
+    
+    /**
+     * Configures a central inside top node label!
+     */
+    def KLabel configureInsideCentralTopNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.basicConfigureLabel(labelText, fontSize, fontName);
+            val node = it.parent;
+            switch(node) {
+                KNode: node.addLayoutParam(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
+            }
+        ];
+    }
+
+    /**
+     * Adds a central node label to KNode 'node'!
+     */
+    def KLabel addInsideCentralTopNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
+        return node.createLabel().configureInsideCentralTopNodeLabel(labelText, fontSize, fontName);
+    }
     
     /**
      * Configures a central node label!

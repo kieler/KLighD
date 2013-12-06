@@ -16,6 +16,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -28,12 +30,13 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * A utility class for handling common Piccolo node related tasks.<br>
+ * A utility class for handling common Piccolo2D node related tasks.<br>
  * <br>
  * In the context of this utility class the term 'smart bounds' refers to a bounds instance, which
  * origin is the translation of an associated node instead of a static offset.
  * 
  * @author mri
+ * @author chsch
  */
 public final class NodeUtil {
     
@@ -210,7 +213,7 @@ public final class NodeUtil {
     }
 
     /**
-     * Unschedules a primary activity of the given node if any.
+     * Removes a formerly scheduled primary activity of the given from the schedule if any exists.
      * 
      * @param node
      *            the node
@@ -220,6 +223,60 @@ public final class NodeUtil {
         if (attribute instanceof PActivity) {
             PActivity oldActivity = (PActivity) attribute;
             oldActivity.terminate();
+        }
+    }
+    
+    /**
+     * Recursively concatenates the {@link AffineTransform AffineTransforms} of all {@link PNode
+     * PNodes} in the containment hierarchy starting with the <code>ancestor</code>'s transform. If
+     * <code>ancestor</code> is actually not an ancestor of <code>child</code>, this method
+     * concatenates all transforms of <code>child</code>' ancestors and that of<code>child</code>.
+     * 
+     * @param child
+     *            the child {@link PNode}
+     * @param ancestor
+     *            the ancestor {@link PNode}
+     * @return an {@link AffineTransform} being formed by the concatenation of the required
+     *         transforms
+     */
+    public static PAffineTransform localToParent(final PNode child, final PNode ancestor) {
+        if (child == null) {
+            return new PAffineTransform();
+        }
+        
+        if (child == ancestor) {
+            return child.getTransform();
+        }
+
+        final PNode childsParent = child.getParent();
+        final PAffineTransform transform;
+
+        if (childsParent != null) {
+            transform = localToParent(childsParent, ancestor);
+        } else {
+            return child.getTransform(); 
+        }
+
+        transform.concatenate(child.getTransformReference(true));
+        return transform;
+    }
+    
+    /**
+     * This method simply wraps {@link AffineTransform#createInverse()} in order to encapsulate its
+     * required try-catch-block. <br>
+     * The method can be used without any doubts if the provided <code>transform</code>
+     * only consists of <i>translate</i> data. <b>Otherwise be careful!</b>
+     * 
+     * @param transform
+     *            the transform to invert
+     * @return the inverted transform, or an <b>empty transform if <code>transform</code> is not
+     *         invertible</b>
+     */
+    public static AffineTransform inverse(final AffineTransform transform) {
+        try {
+            return transform.createInverse();
+        } catch (NoninvertibleTransformException e) {
+            return new AffineTransform();
         }
     }
 

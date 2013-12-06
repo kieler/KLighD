@@ -65,6 +65,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -79,19 +80,25 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
+
     /** the model represented by this editor part. */
     private Object model;
+
     /** the viewer for this editor part. */
     private ContextViewer viewer;
     /** the dirty status of the editor. */
+
     private boolean dirty;
+
     /** the global, common toolbar for all editors. */
     private IToolBarManager toolBar;
+
     /** a zoomToFit toolbar button exclusively for one instance of this editor part. */
     private ActionContributionItem zoomToFitItem;
     private Action zoomToFitAction;
     private ActionContributionItem zoomToFocusItem;
     private Action zoomToFocusAction;
+
     /** a zoomToOne button. */
     private ActionContributionItem zoomToOneItem;
 
@@ -139,12 +146,20 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         
         if (viewContext != null) {
             viewer.setModel(viewContext);
+            
             // do an initial update of the view context
             LightDiagramServices.updateViewContext(viewContext, model);
             
+            // register this editor part in the DiagramViewManager in order to
+            //  obtain it based in the ViewContext, e.g. for performing the layout,
+            //  see e.g. LightDiagramServices#layoutDiagram(IDiagramWorkbenchPart,
+            //          de.cau.cs.kieler.klighd.IViewer, boolean, boolean, java.util.List)
             DiagramViewManager.getInstance().registerView(this);
             
             if (requiresInitialLayout(viewContext)) {
+                // in order to avoid flickering we set the viewer's control
+                //  (the canvas) invisible, the canvas of a potentially created outline
+                //  page is invisible after initialization, too.
                 viewer.getControl().setVisible(false);
                 
                 // it is important to wait with the layout call until the #createPartControl
@@ -156,7 +171,12 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
                         LightDiagramServices.layoutDiagram(viewContext, false, false);
+                        
+                        // now the editor's and outline page's canvas can be set visible
                         viewer.getControl().setVisible(true);
+                        if (currentOutlinePage != null) {
+                            currentOutlinePage.setVisible(true);
+                        }
                     }
                 });
             }
@@ -205,15 +225,22 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         super.dispose();
     }
     
+    private IDiagramOutlinePage currentOutlinePage = null;
+    
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings("rawtypes")
     public Object getAdapter(final Class type) {
-        if (type == IContentOutlinePage.class) {
-            IContentOutlinePage outlinePage = viewer.getOutlinePage();
-            if (outlinePage != null) {
-                return outlinePage;
+        if (type == IContentOutlinePage.class && viewer instanceof IDiagramOutlinePage.Provider) {
+
+            currentOutlinePage = ((IDiagramOutlinePage.Provider) viewer).getDiagramOutlinePage();
+            if (currentOutlinePage != null) {
+                // if the main canvas is visible we can assume the presence of a properly
+                //  initialized and arrange diagram (see #createPartControl() above),
+                // otherwise leave the outline canvas invisible, thus...
+                currentOutlinePage.setVisible(viewer.getControl().isVisible());
+                return currentOutlinePage;
             }
         }
         return super.getAdapter(type);
@@ -385,7 +412,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 // default behavior: get the first element in the resource
                 model = resource.getContents().get(0);
                 
-                ViewContext viewContext = viewer.getCurrentViewContext();
+                ViewContext viewContext = viewer.getViewContext();
                 LightDiagramServices.updateViewContext(viewContext, model);
             } catch (IOException exception) {
                 IStatus status = new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
@@ -464,7 +491,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofit.gif"));
                 final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                        DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
@@ -477,7 +504,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             @Override
             public void run() {
                 final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                        DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
@@ -502,8 +529,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
-                final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
@@ -515,8 +541,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
             @Override
             public void run() {
-                final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getCurrentViewContext();
+                final ViewContext vc = DiagramEditorPart.this.getContextViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
 

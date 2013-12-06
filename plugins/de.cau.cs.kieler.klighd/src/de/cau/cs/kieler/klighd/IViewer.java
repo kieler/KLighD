@@ -17,7 +17,6 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -26,9 +25,11 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
 
 /**
- * The interface for viewers on incrementally updated models.<br>
+ * The common interface for viewers displaying diagrams of provided models.<br>
  * <br>
- * All method calls on this interface have to be made from the UI thread.
+ * This interface is supposed to be used in client's code for revealing elements in diagrams,
+ * expanding & collapsing elements, clipping the diagram, or asking for the source elements
+ * of representatives in diagrams by referring to {@link #getViewContext()}.
  * 
  * @author mri
  * @author chsch
@@ -77,35 +78,17 @@ public interface IViewer<T> {
     /**
      * Returns the input model currently set for this viewer.
      * 
-     * @return the input model or null if no input model is set
+     * @return the input model or <code>null</code> if no input model is set
      */
     T getModel();
     
     /**
-     * Returns a content outline page for this viewer.
+     * Returns the {@link ViewContext} that is associated to <code>this</this> viewer.
      * 
-     * @return a content outline page
+     * @return the associated {@link ViewContext} or <code>null</code> if no input model is set
      */
-    IContentOutlinePage getOutlinePage();
-
-    /**
-     * Starts to record layout changes in the model instead of instantly applying them to the
-     * visualization.<br>
-     * <br>
-     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
-     */
-    void startRecording();
+    ViewContext getViewContext();
     
-    /**
-     * Stops to record layout changes, initialized by {@link #startRecording()}.
-     * 
-     * @param zoomStyle
-     *            the style used to zoom, eg zoom to fit or zoom to focus
-     * @param animationTime
-     *            duration of the animated layout
-     */
-    void stopRecording(final ZoomStyle zoomStyle, final int animationTime);
-
     /**
      * Reveals the representation of the given semantic element over the specified duration.
      * 
@@ -276,6 +259,39 @@ public interface IViewer<T> {
      *            the diagram element to show up
      */
     void show(KGraphElement diagramElement);
+
+    /**
+     * Limits the visible elements of the diagram to the content of the representation of the given
+     * {@link Object} without causing any change on the view model. Hence, this method can be used
+     * for changing the diagram's amount of detail without changing the view model.<br>
+     * The clip can be reset to the whole diagram by calling <code>clip((Object) null)</code>.
+     * 
+     * @param semanticElement
+     *            the semantic element to whose representation the diagram view is to be limited,
+     *            may be <code>null</code>
+     */
+    void clip(Object semanticElement);
+    
+    /**
+     * Limits the visible elements of the diagram to the content of the given {@link KNode} without
+     * causing any change on the view model. Hence, this method can be used for changing the
+     * diagram's amount of detail without changing the view model.<br>
+     * The clip can be reset to the whole diagram by calling <code>clip((KNode) null)</code>.
+     * 
+     * @param diagramElement
+     *            the diagram element to which the diagram view is to be limited, may be
+     *            <code>null</code>
+     */
+    void clip(KNode diagramElement);
+    
+    // a getClipSemantic() is still absent, it's not clear whether that is really necessary
+    
+    /**
+     * Provides the currently set diagram clip.
+     * 
+     * @return the {@link KNode} that is currently clipped.
+     */
+    KNode getClip();
 
 
     /* ----------------------------- */

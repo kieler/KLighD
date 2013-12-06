@@ -13,14 +13,21 @@
  */
 package de.cau.cs.kieler.klighd.viewers;
 
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
@@ -29,8 +36,9 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
  * chsch: TODO class and its interaction with the framework must be reviewed!!
  * 
  * @author mri
+ * @author chsch
  */
-public class StringViewer extends AbstractViewer<String> {
+public class StringViewer implements IViewer<String> {
 
     /** the canvas used to display the message. */
     private Canvas canvas = null;
@@ -65,8 +73,14 @@ public class StringViewer extends AbstractViewer<String> {
     /**
      * {@inheritDoc}
      */
-    public ContextViewer getContextViewer() {
-        // Doesn't track the parent viewer, yet.
+    public String getModel() {
+        return message;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ViewContext getViewContext() {
         return null;
     }
 
@@ -74,16 +88,9 @@ public class StringViewer extends AbstractViewer<String> {
      * {@inheritDoc}
      */
     public void setModel(final String model) {
-        setModel(model, false);
+        this.setModel(model, false);
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public String getModel() {
-        return message;
-    }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -91,39 +98,241 @@ public class StringViewer extends AbstractViewer<String> {
         if (model == null) {
             return;
         }
-        // chsch: is the synchronization actually needed? The way below it won't work right, anyway!
-        // synchronized (message) {
-            message = model;
-        // }
+        message = model;
     }
+
+    
+    // remaining methods of the IViewer interface
+    //  their application is not reasonable for this viewer
 
     /**
      * {@inheritDoc}
      */
-    public IContentOutlinePage getOutlinePage() {
-        // no outline required
+    public ContextViewer getContextViewer() {
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public void setRecording(final boolean recording) {
+    public void reveal(final Object semanticElement, final int duration) {
         // do nothing
     }
 
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
+    public void reveal(final KGraphElement diagramElement, final int duration) {
         // do nothing
     }
 
     /**
      * {@inheritDoc}
      */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
+    public void centerOn(final Object semanticElement, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void centerOn(final KGraphElement diagramElement, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToLevel(final float zoomLevel, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void zoom(final ZoomStyle style, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isExpanded(final Object semanticElement) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isExpanded(final KNode diagramElement) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void collapse(final KNode diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void expand(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void expand(final KNode diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleExpansion(final KNode diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void hide(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void hide(final KGraphElement diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void show(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void show(final KGraphElement diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(final KNode diagramElement) {
         // do nothing
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public KNode getClip() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KlighdTreeSelection getSelection() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleSelectionOf(final Object semanticElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleSelectionOf(final KGraphElement diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleSelectionOf(final KText diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleSelectionOfSemanticElements(final Set<Object> semanticElements) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleSelectionOfDiagramElements(final Set<? extends EObject> diagramElements) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetSelectionTo(final Object diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetSelectionTo(final KGraphElement diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetSelectionTo(final KText diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetSelectionToSemanticElements(final Iterable<? extends Object> semanticElements) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetSelectionToDiagramElements(final Iterable<? extends EObject> diagramElements) {
+        // do nothing
+    }
 }

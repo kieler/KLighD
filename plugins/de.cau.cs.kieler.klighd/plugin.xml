@@ -44,19 +44,13 @@
       </page>
    </extension>
    <extension
-         point="de.cau.cs.kieler.kiml.ui.layoutManagers">
+         point="de.cau.cs.kieler.kiml.service.layoutManagers">
       <manager
             class="de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager">
       </manager>
    </extension>
    <extension
          point="de.cau.cs.kieler.core.kivi.combinations">
-      <!-- combination
-            active="true"
-            class="de.cau.cs.kieler.klighd.combinations.KlighdAutomaticLayoutCombination"
-            description="Applies automatic layout on KLighD views which have been created or updated using the appropriate effect."
-            name="Automatic Layout after KLighD View Creation and Update (KLighD)">
-      </combination -->
       <combination
             active="true"
             class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeDroppedEMFModelCombination"
@@ -89,6 +83,22 @@
       <action
             class="de.cau.cs.kieler.klighd.actions.CollapseExpandAction"
             id="de.cau.cs.kieler.klighd.actions.CollapseExpandAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.ClipParentAction"
+            id="de.cau.cs.kieler.klighd.actions.ClipParentAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.ClipResetAction"
+            id="de.cau.cs.kieler.klighd.actions.ClipResetAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.ClipSelectionAction"
+            id="de.cau.cs.kieler.klighd.actions.ClipSelectionAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction"
+            id="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction">
       </action>
    </extension>
    <extension

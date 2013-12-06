@@ -21,13 +21,10 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingControl
 import edu.umd.cs.piccolo.PNode;
 
 /**
- * The Piccolo node for representing a {@code KEdge}.
- * 
- * Warning (chsch): KEdge renderings, i.e. splines and polylines, must not have a
- *  paint (box color) since this will impair the correct selection determination.
- *  (surrounding edge will cover node and other edges) 
+ * The Piccolo2D node for representing a {@link KEdge}.
  * 
  * @author mri
+ * @author chsch
  */
 public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphElement<KEdge> {
 
@@ -41,17 +38,18 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
 
     /** the represented {@link KEdge}. */
     private transient KEdge edge;
+
     /** the edge rendering controller deployed to manage the rendering of {@link #edge}. */
     private KEdgeRenderingController renderingController;
 
     /** the bend points. */
     private Point2D[] bendPoints = new Point2D[2];
-    
+
     /** the junction points. */
     private Point2D[] junctionPoints = new Point2D[0];
 
     /**
-     * Constructs a Piccolo node for representing a {@code KEdge}.
+     * Constructs a Piccolo2D node for representing a {@link KEdge}.
      * 
      * @param edge
      *            the edge
@@ -91,6 +89,13 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
      */
     public KEdgeRenderingController getRenderingController() {
         return this.renderingController;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void addLabel(final KLabelNode label) {
+        addChild(label);
     }
     
     /**
@@ -141,19 +146,11 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
      * @return the child area containing this edge or null if the edge is not contained in a child
      *         area
      */
-    public KChildAreaNode getChildArea() {
+    public KChildAreaNode getParentChildArea() {
         PNode parent = getParent();
-        if (parent instanceof KChildAreaNode) {
-            return (KChildAreaNode) parent;
+        if (parent != null && parent.getParent() instanceof KChildAreaNode) {
+            return (KChildAreaNode) parent.getParent();
         }
         return null;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void addLabel(final KLabelNode label) {
-        addChild(label);
-    }
-    
 }

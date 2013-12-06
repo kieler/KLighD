@@ -19,8 +19,8 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
- * The dedicated root node of our Piccolo-powered KLighD diagrams.
- * Nodes of this type represent the top-level {@code KNode} of KGraph+KRendering view models.
+ * The dedicated root node of our Piccolo2D-powered KLighD diagrams.
+ * Nodes of this type represent the top-level {@link KNode} of KGraph+KRendering view models.
  * 
  * @author mri
  * @author chsch
@@ -29,14 +29,17 @@ public class KNodeTopNode extends PLayer implements INode {
 
     private static final long serialVersionUID = 8395163186723344696L;
 
-    /** the encapsulated {@code KNode}. */
+    /** the encapsulated {@link KNode}. */
     private transient KNode node;
 
-    /** the Piccolo node representing the child area. */
+    /** the Piccolo2D node representing the child area. */
     private KChildAreaNode childArea;
 
+    /** the main camera of the diagram headed by this top node. */
+    private KlighdMainCamera diagramMainCamera = null;
+
     /**
-     * Constructs a Piccolo node for representing the top-level {@code KNode}.
+     * Constructs a Piccolo2D node for representing the top-level {@link KNode}.
      * 
      * @param node
      *            the KNode
@@ -50,6 +53,27 @@ public class KNodeTopNode extends PLayer implements INode {
         childArea.setClip(false);
         
         this.addChild(childArea);
+    }
+    
+    /**
+     * Sets the main camera of the diagram headed by this top node. This method may currently only
+     * be called from {@link KlighdMainCamera#setDisplayedNode(INode)}.
+     * 
+     * @param camera
+     */
+    void setDiagramMainCamera(final KlighdMainCamera camera) {
+        if (this.diagramMainCamera == null) {
+            this.diagramMainCamera = camera;
+        }
+    }
+    
+    /**
+     * Getter.
+     * 
+     * @return the main camera of the diagram headed by this top node
+     */
+    public KlighdMainCamera getDiagramMainCamera() {
+        return this.diagramMainCamera;
     }
 
     /**
@@ -81,8 +105,15 @@ public class KNodeTopNode extends PLayer implements INode {
     /**
      * {@inheritDoc}
      */
-    public KChildAreaNode getChildArea() {
+    public KChildAreaNode getChildAreaNode() {
         return childArea;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public INode getParentNode() {
+        return null;
     }
     
     /**
@@ -98,7 +129,6 @@ public class KNodeTopNode extends PLayer implements INode {
             
             return true;
         }
-        
         return fullPick;
     }
 

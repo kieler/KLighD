@@ -113,7 +113,7 @@ class KNodeExtensions {
         ];
     }
     
-    def KNode addLayoutParam(KNode node, IProperty<?> property, Object value) {
+    def <T> KNode addLayoutParam(KNode node, IProperty<? super T> property, T value) {
         return node => [
             it.getData(typeof(KShapeLayout)).setProperty(property, value)
         ];

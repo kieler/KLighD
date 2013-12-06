@@ -104,7 +104,7 @@ public class KlighdCanvas extends PSWTCanvas {
             }
         };
         
-        final PCamera c = new PCamera();
+        final PCamera c = new KlighdMainCamera();
         r.addChild(c);
         return c;
     }
@@ -114,6 +114,14 @@ public class KlighdCanvas extends PSWTCanvas {
         graphics.setDevice(device);
         graphics.setGC(gc);
         return (Graphics2D) graphics;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KlighdMainCamera getCamera() {
+        return (KlighdMainCamera) super.getCamera();
     }
 
     /**
@@ -154,6 +162,7 @@ public class KlighdCanvas extends PSWTCanvas {
         throw new UnsupportedOperationException(msg);
     }
 
+
     /**
      * {@inheritDoc}<br>
      * <br>
@@ -163,6 +172,19 @@ public class KlighdCanvas extends PSWTCanvas {
     public void repaint(final PBounds bounds) {
         if (!this.isDisposed()) {
             super.repaint(bounds);
+        }
+    }
+
+    @Override
+    public void setBounds(final int x, final int y, final int newWidth, final int newHeight) {
+        // extracted the following check from the super implementation
+        //  in order to allow to roll back most of the customizations in the Piccolo2D code some day
+        if (newWidth == 0 || newHeight == 0) {
+            // chsch: introduced this check as the workbench sometimes determines width
+            //  and/or height of zero that results in an exception later on. 
+            return;
+        } else {
+            super.setBounds(x, y, newWidth, newHeight);
         }
     }
 

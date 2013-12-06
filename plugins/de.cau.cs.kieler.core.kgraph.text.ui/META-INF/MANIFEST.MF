@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.xtext.ui,
  de.cau.cs.kieler.core.kgraph.text;visibility:=reexport,
  de.cau.cs.kieler.core.krendering,
  de.cau.cs.kieler.kiml,
+ de.cau.cs.kieler.kiml.formats,
  de.cau.cs.kieler.kiml.ui
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test

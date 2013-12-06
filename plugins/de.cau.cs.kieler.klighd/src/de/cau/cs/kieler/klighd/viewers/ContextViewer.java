@@ -56,7 +56,6 @@ import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
@@ -69,15 +68,17 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.SynthesisOption;
+import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.options.LayoutOptionControlFactory;
-import de.cau.cs.kieler.klighd.internal.options.LightLayoutConfig;
 import de.cau.cs.kieler.klighd.internal.options.SynthesisOptionControlFactory;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.views.DiagramViewPart;
@@ -106,8 +107,8 @@ import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
  * @author chsch
  * @author msp
  */
-public class ContextViewer extends AbstractViewer<Object> implements // IViewerEventListener,
-        ISelectionProvider {
+public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelectionProvider,
+        IDiagramOutlinePage.Provider {
 
     /** the workbench part for which the viewer is created. */
     private IDiagramWorkbenchPart workbenchPart;
@@ -119,6 +120,8 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     private IViewer<Object> currentViewer;
     /** the current view context. */
     private ViewContext currentViewContext = null;
+    /** the {@link #currentViewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
+    private ILayoutRecorder layoutRecorder;
     /** the factory for diagram synthesis option controls. */
     private SynthesisOptionControlFactory synthesisOptionControlFactory;
     /** the factory for layout option controls. */
@@ -133,7 +136,7 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     private final List<Resource> resources = new LinkedList<Resource>();
 
     /** The layout configurator that stores the values set by the layout option controls. */
-    private LightLayoutConfig lightLayoutConfig = new LightLayoutConfig();
+    private VolatileLayoutConfig lightLayoutConfig = new VolatileLayoutConfig();
 
     
     /**
@@ -217,7 +220,7 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
         
         boolean synthesisOptionsAvailable = false;
         for (final Map.Entry<TransformationContext<?, ?>, List<SynthesisOption>> entry
-                : this.getCurrentViewContext().getDisplayedSynthesisOptions().entrySet()) {
+                : this.getViewContext().getDisplayedSynthesisOptions().entrySet()) {
             for (final SynthesisOption option : entry.getValue()) {
                 if (option.isCheckOption()) {
                     synthesisOptionControlFactory.createCheckOptionControl(option, entry.getKey(),
@@ -511,6 +514,12 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
         }
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void setModel(final Object model) {
+        setModel(model, false);
+    }
     
     /**
      * {@inheritDoc}
@@ -564,6 +573,18 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
+    public IDiagramOutlinePage getDiagramOutlinePage() {
+        if (currentViewer instanceof IDiagramOutlinePage.Provider) {
+            return ((IDiagramOutlinePage.Provider) currentViewer).getDiagramOutlinePage();
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public Control getControl() {
         return currentViewer.getControl();
     }
@@ -586,9 +607,17 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
         return null;
     }
     
-    
+    /**
+     * {@inheritDoc}
+     */
+    public ViewContext getViewContext() {
+        return currentViewContext;
+    }
+
     /**
      * Returns the currently active view context.
+     * 
+     * @deprecated use {@link IViewer#getViewContext()}, which is implemented by this class
      * 
      * @return the view context
      */
@@ -608,23 +637,12 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
 
 
     /**
-     * {@inheritDoc}
-     */
-    public IContentOutlinePage getOutlinePage() {
-        if (currentViewer != null) {
-            return currentViewer.getOutlinePage();
-        }
-        return null;
-    }
-
-
-    /**
-     * Returns the {@link LightLayoutConfig} that contains the configuration values set via the
+     * Returns the {@link VolatileLayoutConfig} that contains the configuration values set via the
      * layout options controls in the side bar.
      * 
      * @return the lightLayoutConfig
      */
-    public LightLayoutConfig getLightLayoutConfig() {
+    public VolatileLayoutConfig getLightLayoutConfig() {
         return lightLayoutConfig;
     }
 
@@ -647,6 +665,10 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     private synchronized void addViewer(final IViewer<?> viewer) {
         currentViewer = (IViewer<Object>) viewer;
         diagramComposite.layout();
+        
+        if (currentViewer instanceof ILayoutRecorder) {
+            layoutRecorder = (ILayoutRecorder) currentViewer;
+        }
     }
 
     private synchronized void removeViewer() {
@@ -661,21 +683,33 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
      * {@inheritDoc}
      */
     public void startRecording() {
-        currentViewer.startRecording();
+        if (layoutRecorder != null) {
+            layoutRecorder.startRecording();
+        }
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void stopRecording(final int animationTime) {
+        if (layoutRecorder != null) {
+            layoutRecorder.stopRecording(animationTime);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
     public void stopRecording(final ZoomStyle zoomStyle,
             final int animationTime) {
-        currentViewer.stopRecording(zoomStyle, animationTime);
+        if (layoutRecorder != null) {
+            layoutRecorder.stopRecording(zoomStyle, animationTime);
+        }
     }
     
     /**
      * {@inheritDoc}
      */
-    @Override
     public void zoomToLevel(final float zoomLevel, final int duration) {
         if (currentViewer != null) {
             currentViewer.zoomToLevel(zoomLevel, duration);
@@ -685,7 +719,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void zoom(final ZoomStyle style, final int duration) {
         if (currentViewer != null) {
             currentViewer.zoom(style, duration);
@@ -702,7 +735,7 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
      */
     public boolean isExpanded(final Object semanticElement) {
         final EObject diagramNode =
-                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
+                getViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             return currentViewer.isExpanded((KNode) diagramNode);
         } else {
@@ -720,10 +753,9 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void collapse(final Object semanticElement) {
         final EObject diagramNode =
-                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
+                getViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             currentViewer.collapse((KNode) diagramNode);
         }
@@ -732,7 +764,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void collapse(final KNode diagramElement) {
         currentViewer.collapse(diagramElement);
     }
@@ -740,10 +771,9 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void expand(final Object semanticElement) {
         final EObject diagramNode =
-                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
+                getViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             currentViewer.expand((KNode) diagramNode);
         }
@@ -752,7 +782,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void expand(final KNode diagramElement) {
         currentViewer.expand(diagramElement);
     }
@@ -760,10 +789,9 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleExpansion(final Object semanticElement) {
         final EObject diagramNode =
-                getCurrentViewContext().getTargetElement(semanticElement, KNode.class);
+                getViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KNode) {
             currentViewer.toggleExpansion((KNode) diagramNode);
         }
@@ -772,7 +800,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleExpansion(final KNode diagramElement) {
         currentViewer.toggleExpansion(diagramElement);
     }
@@ -782,7 +809,7 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
      */
     public void hide(final Object semanticElement) {
         final EObject diagramElement =
-                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.hide(diagramElement);
         }
@@ -800,7 +827,7 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
      */
     public void show(final Object semanticElement) {
         final EObject diagramElement =
-                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.show(diagramElement);
         }
@@ -816,10 +843,44 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override    
+    public void clip(final Object semanticElement) {
+        if (semanticElement == null) {
+            this.currentViewer.clip(this.getViewContext().getViewModel());
+            return;
+        }
+        
+        final EObject diagramElement =
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
+        if (diagramElement instanceof KNode) {
+            this.currentViewer.clip(diagramElement);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(final KNode diagramElement) {
+        if (diagramElement == null) {
+            this.currentViewer.clip(this.getViewContext().getViewModel());
+        } else {
+            this.currentViewer.clip(diagramElement);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public KNode getClip() {
+        return this.currentViewer.getClip();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void reveal(final Object semanticElement, final int duration) {
         final EObject diagramElement =
-                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.centerOn(diagramElement, duration);
         }
@@ -828,7 +889,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void reveal(final KGraphElement diagramElement, final int duration) {
         if (currentViewer != null) {
             currentViewer.reveal(diagramElement, duration);
@@ -838,10 +898,9 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override    
     public void centerOn(final Object semanticElement, final int duration) {
         final EObject diagramElement =
-                getCurrentViewContext().getTargetElement(semanticElement, KGraphElement.class);
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
         if (diagramElement instanceof KGraphElement) {
             currentViewer.centerOn(diagramElement, duration);
         }
@@ -850,7 +909,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void centerOn(final KGraphElement diagramElement, final int duration) {
         if (currentViewer != null) {
             currentViewer.centerOn(diagramElement, duration);
@@ -864,8 +922,7 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
 
     private final Function<Object, EObject> getViews = new Function<Object, EObject>() {
         public EObject apply(final Object semanticElement) {
-            final EObject diagramElement =
-                    getCurrentViewContext().getTargetElement(semanticElement, null);
+            final EObject diagramElement = getViewContext().getTargetElement(semanticElement, null);
             return isSelectable().apply(diagramElement) ? diagramElement : null;
         }
     };
@@ -874,7 +931,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleSelectionOf(final Object semanticElement) {
         final EObject diagramElement = getViews.apply(semanticElement);
         if (diagramElement != null) {
@@ -885,7 +941,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleSelectionOf(final KGraphElement diagramElement) {
         toggleSelectionOfDiagramElements(singleton(diagramElement));
     }
@@ -893,7 +948,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleSelectionOf(final KText diagramElement) {
         toggleSelectionOfDiagramElements(singleton(diagramElement));
     }
@@ -901,7 +955,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleSelectionOfSemanticElements(final Set<Object> semanticElements) {
         toggleSelectionOfDiagramElements(
                 Sets.newHashSet(transform(semanticElements, getViews)));
@@ -911,7 +964,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void toggleSelectionOfDiagramElements(final Set<? extends EObject> toBeToggled) {
         final List<EObject> theSelection = newArrayList(this.selection.eIterator());
         for (EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
@@ -927,7 +979,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void resetSelectionTo(final Object semanticElement) {
         final EObject diagramElement = getViews.apply(semanticElement);
         // Collections.singleton accepts 'null' values and 'updateSelection' does so, too!
@@ -937,7 +988,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void resetSelectionTo(final KGraphElement diagramElement) {
         updateSelection(singleton(diagramElement));
     }
@@ -945,7 +995,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void resetSelectionTo(final KText diagramElement) {
         updateSelection(singleton(diagramElement));
     }
@@ -953,7 +1002,6 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
     /**
      * {@inheritDoc}
      */
-    @Override
     public void resetSelectionToSemanticElements(final Iterable<? extends Object> semanticElements) {
         updateSelection(transform(semanticElements, getViews));
     }
@@ -1000,63 +1048,9 @@ public class ContextViewer extends AbstractViewer<Object> implements // IViewerE
             r.setProperty(KlighdInternalProperties.SELECTED, true);
         }
         
-        // updateSelectionHighlighting(diagramElements);
-        
         // update the selection status for the ISelectionProvider interface
         notifySelectionListeners(new KlighdTreeSelection(currentViewContext, toBeSelected));
     }
-    
-//    /** a map used to track the highlighting styles, which have been attached to selected elements. */
-//    private Map<EObject, Iterable<? extends KStyle>> selectionHighlighting = Maps.newHashMap();
-//    
-//    private void updateSelectionHighlighting(final Collection<? extends EObject> diagramElements) {
-//        // chsch: the following lines realizes the highlighting of selected diagram elements
-//        //  (if the diagram is given as a KGraph/KRendering model)
-//        List<?> noLongerSelected = newLinkedList(selectionHighlighting.keySet());
-//        noLongerSelected.removeAll(diagramElements);
-//        for (Object element : noLongerSelected) {
-//            // the related value should never be null!!
-//            for (KStyle style : selectionHighlighting.remove(element)) {
-//                EcoreUtil.remove(style);
-//            }
-//        }
-//        
-//        List<EObject> newlySelected = newLinkedList(filter(diagramElements,
-//                EObject.class));
-//        newlySelected.removeAll(selectionHighlighting.keySet());
-//
-//        for (EObject element : newlySelected) {
-//
-//            final KBackground bg = KRenderingFactory.eINSTANCE.createKBackground();
-//            final KColor bgColor = KRenderingFactory.eINSTANCE.createKColor();
-//            bg.setColor(bgColor);
-//            // the color values of 'DimGray'   // SUPPRESS CHECKSTYLE NEXT 3 MagicNumber
-//            bgColor.setRed(190);
-//            bgColor.setGreen(190);
-//            bgColor.setBlue(190);
-//
-//            if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
-//                KRendering rendering = ((KGraphElement) element).getData(KRendering.class);
-//                KLineStyle style = KRenderingFactory.eINSTANCE.createKLineStyle();
-//                if (rendering != null) {
-//                    style.setLineStyle(LineStyle.DASH);
-//                    List<KStyle> styles = newArrayList(style, bg);
-//                    rendering.getStyles().addAll(styles);
-//                    selectionHighlighting.put(element, styles);
-//                    
-//                    if (KGraphPackage.eINSTANCE.getKEdge().isInstance(element)) {
-//                        for (KStyle s: styles) {
-//                            s.setPropagateToChildren(false);
-//                        }
-//                    }
-//                }
-//            } else if (KRenderingPackage.eINSTANCE.getKText().isInstance(element)) {
-//                ((KText) element).getStyles().add(bg);                
-//                selectionHighlighting.put(element, newArrayList(bg));
-//            }
-//        }
-//        // end of selection highlighting stuff
-//    }
 
 
     /* ------------------------------- */

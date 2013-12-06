@@ -50,14 +50,14 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.ui.diagram.IDiagramLayoutManager;
-import de.cau.cs.kieler.kiml.ui.diagram.LayoutMapping;
-import de.cau.cs.kieler.kiml.ui.service.EclipseLayoutConfig;
+import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
+import de.cau.cs.kieler.kiml.service.IDiagramLayoutManager;
+import de.cau.cs.kieler.kiml.service.LayoutMapping;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -114,13 +114,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         ViewContext viewContext = null;
         if (object instanceof IDiagramWorkbenchPart) {
             IDiagramWorkbenchPart view = (IDiagramWorkbenchPart) object;
-            viewContext = view.getContextViewer().getCurrentViewContext();
+            viewContext = view.getContextViewer().getViewContext();
         } else if (object instanceof ContextViewer) {
             ContextViewer contextViewer = (ContextViewer) object;
-            viewContext = contextViewer.getCurrentViewContext();
+            viewContext = contextViewer.getViewContext();
         } else if (object instanceof KlighdViewer) {
             KlighdViewer klighdViewer = (KlighdViewer) object;
-            viewContext = klighdViewer.getContextViewer().getCurrentViewContext();
+            viewContext = klighdViewer.getContextViewer().getViewContext();
         }
         if (viewContext != null) {
             return viewContext.getViewerProvider().getModelClass().equals(KNode.class);
@@ -157,7 +157,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             }
             
             if (contextViewer != null) {
-                ViewContext viewContext = contextViewer.getCurrentViewContext();
+                ViewContext viewContext = contextViewer.getViewContext();
                 if (viewContext != null) {
                     Object model = viewContext.getInputModel();
                     if (adapterType.isInstance(model)) {
@@ -201,8 +201,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     public LayoutMapping<KGraphElement> buildLayoutGraph(final IWorkbenchPart workbenchPart,
             final Object diagramPart) {
         KNode graph = null;
-        IViewer<?> viewer = null;
         IDiagramWorkbenchPart diagramWorkbenchPart = null;
+        IViewer<?> viewer = null;
+        ILayoutRecorder recorder = null;
 
         // search for the root node
         if (diagramPart instanceof KNode) {
@@ -225,6 +226,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 if (model instanceof KNode) {
                     graph = (KNode) model;
                 }
+                if (viewer instanceof ILayoutRecorder) {
+                    recorder = (ILayoutRecorder) viewer;
+                }
             }
         }
 
@@ -242,7 +246,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // remember the viewer if any
         if (viewer != null) {
-            mapping.setProperty(KlighdInternalProperties.VIEWER, viewer);
+            mapping.setProperty(KlighdInternalProperties.RECORDER, recorder);
         }
 
         return mapping;
@@ -269,7 +273,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         KShapeLayout layoutGraphShapeLayout = layoutGraph.getData(KShapeLayout.class);
         KShapeLayout graphShapeLayout = graph.getData(KShapeLayout.class);
         if (graphShapeLayout != null) {
-            transferShapeLayout(graphShapeLayout, layoutGraphShapeLayout);
+            transferShapeLayout(graphShapeLayout, layoutGraphShapeLayout, false);
         }
 
         mapping.getGraphMap().put(layoutGraph, graph);
@@ -339,7 +343,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
-            transferShapeLayout(nodeLayout, layoutLayout);
+            transferShapeLayout(nodeLayout, layoutLayout, false);
             
             // In the following the minimal width and height of the node is determined, which
             //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
@@ -434,7 +438,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         KShapeLayout layoutLayout = layoutPort.getData(KShapeLayout.class);
         KShapeLayout portLayout = port.getData(KShapeLayout.class);
         if (portLayout != null) {
-            transferShapeLayout(portLayout, layoutLayout);
+            transferShapeLayout(portLayout, layoutLayout, false);
         }
 
         layoutPort.setNode(layoutNode);
@@ -554,7 +558,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
         
         if (labelLayout != null) {
-            transferShapeLayout(labelLayout, layoutLayout);
+            transferShapeLayout(labelLayout, layoutLayout, false);
             
             // integrate the minimal estimated label size based on the updated layoutLayout
             // - manipulating the labelLayout may cause immediate glitches in the diagram
@@ -595,21 +599,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     public void applyLayout(final LayoutMapping<KGraphElement> mapping, final boolean zoomToFit,
             final int animationTime) {
-        // get the visualizing viewer if any
-        IViewer<?> viewer = mapping.getProperty(KlighdInternalProperties.VIEWER);
+        // get the animation recorder if anyone has been attached above ...
+        final ILayoutRecorder recorder = mapping.getProperty(KlighdInternalProperties.RECORDER);
 
-        // apply the layout
-        if (viewer != null) {
-            viewer.startRecording();
+        // ... and apply the layout
+        if (recorder != null) {
+            recorder.startRecording();
             applyLayout(mapping);
+            recorder.stopRecording(animationTime);
             
-            // get the zoomStyle
-            ZoomStyle zoomStyle = ZoomStyle.NONE;
-            if (viewer.getContextViewer().getCurrentViewContext() != null) {
-                zoomStyle = viewer.getContextViewer().getCurrentViewContext().getZoomStyle();
-            }
-            
-            viewer.stopRecording(zoomStyle, animationTime);
         } else {
             applyLayout(mapping);
         }
@@ -634,7 +632,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
                     KShapeLayout nodeLayout = element.getData(KShapeLayout.class);
                     if (nodeLayout != null) {
-                        transferShapeLayout(layoutLayout, nodeLayout);
+                        transferShapeLayout(layoutLayout, nodeLayout, true);
                         nodeLayout.setProperty(INITIAL_NODE_SIZE, false);
                     }
                     return true;
@@ -655,7 +653,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KShapeLayout layoutLayout = layoutPort.getData(KShapeLayout.class);
                     KShapeLayout portLayout = element.getData(KShapeLayout.class);
                     if (portLayout != null) {
-                        transferShapeLayout(layoutLayout, portLayout);
+                        transferShapeLayout(layoutLayout, portLayout, false);
                         portLayout.setProperty(KlighdProperties.LAYOUT_PORT_SIDE,
                                 layoutLayout.getProperty(LayoutOptions.PORT_SIDE));
                     }
@@ -666,7 +664,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KShapeLayout layoutLayout = layoutLabel.getData(KShapeLayout.class);
                     KShapeLayout labelLayout = element.getData(KShapeLayout.class);
                     if (labelLayout != null) {
-                        transferShapeLayout(layoutLayout, labelLayout);
+                        transferShapeLayout(layoutLayout, labelLayout, false);
                     }
                     return true;
                 }
@@ -689,13 +687,26 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the source shape layout
      * @param targetShapeLayout
      *            the target shape layout
+     * @param copyInsets
+     *            <code>true</code> if insets shall be copied
      */
     private void transferShapeLayout(final KShapeLayout sourceShapeLayout,
-            final KShapeLayout targetShapeLayout) {
+            final KShapeLayout targetShapeLayout, final boolean copyInsets) {
         // Attention: Layout options are transfered by the {@link KGraphPropertyLayoutConfig}
         targetShapeLayout.setPos(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
         targetShapeLayout.setSize(sourceShapeLayout.getWidth(), sourceShapeLayout.getHeight());
+        
+        if (copyInsets) {
+            final KInsets sourceInsets = sourceShapeLayout.getInsets();
+            final KInsets targetInsets = targetShapeLayout.getInsets();
+
+            targetInsets.setLeft(sourceInsets.getLeft());
+            targetInsets.setRight(sourceInsets.getRight());
+            targetInsets.setTop(sourceInsets.getTop());
+            targetInsets.setBottom(sourceInsets.getBottom());
+        }
     }
+
 
     /**
      * Transfers the source edge layout to the target edge layout.
