@@ -29,9 +29,10 @@ import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
 import de.cau.cs.kieler.kiml.options.PortLabelPlacement
 import java.util.List
 import de.cau.cs.kieler.core.kgraph.KPort
+import de.cau.cs.kieler.core.krendering.KColor
 
 /**
- * @author chsch
+ * @author chsch ssm
  * 
  * @containsExtensions
  */
@@ -199,6 +200,26 @@ class KLabelExtensions {
     def KLabel addOutsideBottomRightNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
         return node.createLabel().configureOutsideBottomRightNodeLabel(labelText, fontSize, fontName);
     }
+    
+    /**
+     * Configures a outside top left label!
+     */
+    def KLabel configureOutsideTopLeftNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.basicConfigureLabel(labelText, fontSize, fontName);
+            val node = it.parent;
+            switch(node) {
+                KNode: node.addLayoutParam(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
+            }
+        ];
+    }
+    
+    /**
+     * Adds a outside top left label to KNode 'node'!
+     */
+    def KLabel addOutsideTopLeftNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
+        return node.createLabel().configureOutsideTopLeftNodeLabel(labelText, fontSize, fontName);
+    }    
 
 
     /* --------------------------------- */
@@ -324,7 +345,7 @@ class KLabelExtensions {
      * The least common denominator of all the 'configure...Label' methods.<br>
      * Is private as it's to be used internally only!
      */
-    def private void basicConfigureLabel(KLabel label, String labelText, int fontSize, String fontName) {
+    def void basicConfigureLabel(KLabel label, String labelText, int fontSize, String fontName) {
         label.text = labelText;
         label.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
         label.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
@@ -342,5 +363,18 @@ class KLabelExtensions {
         return label?.getData(typeof(KText))?:(label?.getData(typeof(KRendering))?.eAllContents?.filter(typeof(KText))?.head);
     }
 
+    /**
+     * Shortcut for setting the label's foreground color directly.
+     */
+    def KLabel foreground(KLabel label, KColor color) {
+    	label => [it.KRendering.foreground = color]
+    } 
+
+    /**
+     * Shortcut for setting the label's background color directly.
+     */
+    def KLabel background(KLabel label, KColor color) {
+    	label => [it.KRendering.background = color]
+    } 
     
 }
