@@ -32,13 +32,16 @@ import com.google.inject.TypeLiteral;
 import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.SynthesisOption;
+import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.ISynthesis;
 
 
 /**
- * This diagam synthesis proxy realizes the re-initialization of stateful diagram synthesis
+ * This diagram synthesis proxy realizes the re-initialization of stateful diagram synthesis
  * implementations. It is needed for Xtend-based diagram syntheses leveraging "create extensions",
  * for example. This implementation cares about creating new synthesis instances, as well as their
  * proper initialization by means of Guice.<br>
@@ -55,7 +58,7 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
  * 
  * @author chsch
  */
-public class ReinitializingDiagramSynthesisProxy<S> extends AbstractDiagramSynthesis<S> {
+public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
 
     private Class<AbstractDiagramSynthesis<S>> transformationClass = null;
     private AbstractDiagramSynthesis<S> transformationDelegate = null;
@@ -208,6 +211,16 @@ public class ReinitializingDiagramSynthesisProxy<S> extends AbstractDiagramSynth
         }
     }
     
+
+    /**
+     * Getter for the delegate attribute.
+     * 
+     * @return the delegate
+     */
+    public AbstractDiagramSynthesis<S> getDelegate() {
+        return this.transformationDelegate;
+    }
+    
     
     private AbstractDiagramSynthesis<S> getNewDelegateInstance() {
         final AbstractDiagramSynthesis<S> res;
@@ -225,34 +238,37 @@ public class ReinitializingDiagramSynthesisProxy<S> extends AbstractDiagramSynth
         }
         return res; 
     }
+
     
     /**
      * {@inheritDoc}
      */
-    public boolean supports(final S model) {
+    public Class<?> getSourceClass() {
         if (this.transformationDelegate == null) {
             this.transformationDelegate = getNewDelegateInstance();
         }
-        return this.transformationDelegate.supports(model);
+        return this.transformationDelegate.getSourceClass();
     }
-    
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean supports(final Object model, final ViewContext viewContext) {
+        if (this.transformationDelegate == null) {
+            this.transformationDelegate = getNewDelegateInstance();
+        }
+        return this.transformationDelegate.supports(model, viewContext);
+    }
+
+
     /**
      * {@inheritDoc}<br>
      * Delegates to the 'delegate' object.
      */
-    public KNode transform(final S model, final TransformationContext<S, KNode> transformationContext) {
+    public KNode transform(final Object model, final ViewContext viewContext) {
         this.transformationDelegate = getNewDelegateInstance(); 
-        return this.transformationDelegate.transform(model, transformationContext);
-    }
-    
-    
-    /**
-     * Stub enforced by {@link AbstractTransformation}.
-     * @param model the model
-     * @return null
-     */
-    public KNode transform(final S model) {
-        return null;
+        return this.transformationDelegate.transform(model, viewContext);
     }
 
 
@@ -261,9 +277,19 @@ public class ReinitializingDiagramSynthesisProxy<S> extends AbstractDiagramSynth
      */
     public List<SynthesisOption> getDisplayedSynthesisOptions() {
         if (this.transformationDelegate == null) {
-            return getNewDelegateInstance().getDisplayedSynthesisOptions();
+            this.transformationDelegate = getNewDelegateInstance();
         }
         return this.transformationDelegate.getDisplayedSynthesisOptions();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
+        if (this.transformationDelegate == null) {
+            this.transformationDelegate = getNewDelegateInstance();
+        }
+        return this.transformationDelegate.getDisplayedLayoutOptions();
     }
     
     
@@ -272,28 +298,5 @@ public class ReinitializingDiagramSynthesisProxy<S> extends AbstractDiagramSynth
      */
     public String toString() {
         return this.getClass().getSimpleName() + "(" + getNewDelegateInstance() + ")";
-    }
-    
-
-    /**
-     * Getter for the delegate attribute.
-     * @return the delegate
-     */
-    public AbstractDiagramSynthesis<S> getDelegate() {
-        return this.transformationDelegate;
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    protected void inferSourceAndTargetModelClass() {
-        this.setTriedToInferClass();
-        AbstractDiagramSynthesis<S> delegate = getNewDelegateInstance();        
-        if (delegate != null) {
-            delegate.inferSourceAndTargetModelClass();
-            this.setSourceClass(delegate.getSourceClass());
-            this.setTargetClass(delegate.getTargetClass());
-        }
     }
 }
