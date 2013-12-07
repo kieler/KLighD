@@ -13,6 +13,10 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,12 +27,19 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
 
 /**
@@ -86,23 +97,31 @@ public final class KlighdDataManager {
     /** the singleton instance. */
     private static KlighdDataManager instance;
 
-    /** the transformations graph used to manage transformations and viewer providers. */
-    private TransformationsGraph transformationsGraph = new TransformationsGraph();
-
-    /** the mapping of ids on the associated transformations. */
-    private Map<String, ITransformation<?, ?>> idTransformationMapping = Maps.newHashMap();
+    /** the mapping of ids to the corresponding instances of {@link ISynthesis}. */
+    private Map<String, ISynthesis> idSynthesisMapping = Maps.newHashMap();
     
+    /** the mapping of types to the corresponding instances of {@link ISynthesis}. */
+    private Multimap<Class<?>, ISynthesis> typeSynthesisMapping = ArrayListMultimap.create();
+
+    /**
+     * A caching map that avoids the effort of determining the correct syntheses for a given type
+     * each time. */
+    private Map<Class<?>, Iterable<ISynthesis>> concreteTypeSynthesisMapping = Maps.newHashMap();
+
     /** the mapping of ids on the associated viewer providers. */
     private Map<String, IViewerProvider<KNode>> idViewerProviderMapping = Maps.newHashMap();
     
     /** the mapping of ids on the associated update strategies. */
     private Map<String, IUpdateStrategy<KNode>> idUpdateStrategyMapping = Maps.newHashMap();
     
+    private IUpdateStrategy<KNode> highestPriorityUpdateStrategy = null;
+    
     /** the mapping of ids on the associated style modifiers. */
     private Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
 
     /** the mapping of ids on the associated actions. */
     private BiMap<String, IAction> idActionMapping = HashBiMap.create();
+
 
     /**
      * A private constructor to prevent instantiation.
@@ -159,12 +178,15 @@ public final class KlighdDataManager {
                 new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, 0, message, exception));
     }
 
+
     /**
-     * Loads and registers all viewer provider from the extension point.
+     * Loads all registered extensions from the extension point 'extensions' and builds up the
+     * corresponding mappings.
      */
     private void loadViewerProviderExtension() {
         IConfigurationElement[] extensions = Platform.getExtensionRegistry()
                 .getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
+        
         for (IConfigurationElement element : extensions) {
             try {
                 if (ELEMENT_VIEWER.equals(element.getName())) {
@@ -177,7 +199,6 @@ public final class KlighdDataManager {
                         if (id == null || id.length() == 0) {
                             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
-                            transformationsGraph.addViewerProvider(viewerProvider);
                             idViewerProviderMapping.put(id, viewerProvider);
                         }
                     }
@@ -191,8 +212,12 @@ public final class KlighdDataManager {
                         if (id == null || id.length() == 0) {
                             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
-                            transformationsGraph.addUpdateStrategy(updateStrategy);
                             idUpdateStrategyMapping.put(id, updateStrategy);
+                            if (this.highestPriorityUpdateStrategy == null
+                                    || this.highestPriorityUpdateStrategy.getPriority() < updateStrategy
+                                            .getPriority()) {
+                                this.highestPriorityUpdateStrategy = updateStrategy;
+                            }
                         }
                     }
                 } else if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
@@ -227,19 +252,21 @@ public final class KlighdDataManager {
     }
     
     /**
-     * Loads and registers all model transformations from the extension point.
+     * Loads the registered {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
+     * AbstractDiagramSynthesis} from the extension point and builds up the
+     * {@link #typeSynthesisMapping}.
      */
     private void loadModelTransformationsExtension() {
-        IConfigurationElement[] extensions = Platform.getExtensionRegistry()
+        final IConfigurationElement[] extensions = Platform.getExtensionRegistry()
                 .getConfigurationElementsFor(EXTP_ID_DIAGRAM_SYNTHESES);
+
         for (IConfigurationElement element : extensions) {
             if (ELEMENT_DIAGRAM_SYNTHESIS.equals(element.getName())) {
                 // initialize model transformation from the extension point
-                ITransformation<?, ?> modelTransformation = null;
+                ISynthesis synthesis = null;
                 try {
-                    modelTransformation =
-                            (ITransformation<?, ?>) element
-                                    .createExecutableExtension(ATTRIBUTE_CLASS);
+                    synthesis =
+                            (ISynthesis) element.createExecutableExtension(ATTRIBUTE_CLASS);
 
                 } catch (CoreException exception) {
                     StatusManager.getManager().handle(
@@ -263,14 +290,15 @@ public final class KlighdDataManager {
                                     .getCause()));
                 }
 
-                if (modelTransformation != null) {
+                if (synthesis != null) {
                     String id = element.getAttribute(ATTRIBUTE_ID);
                     if (id == null || id.length() == 0) {
                         reportError(EXTP_ID_DIAGRAM_SYNTHESES, element, ATTRIBUTE_ID, null);
                     } else {
                         try {
-                            transformationsGraph.addTransformation(modelTransformation);
-                            idTransformationMapping.put(id, modelTransformation);
+                            idSynthesisMapping.put(id, synthesis);
+                            typeSynthesisMapping.put(synthesis.getSourceClass(), synthesis);
+
                         } catch (WrappedException exception) {
                             StatusManager.getManager().handle(
                                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, exception
@@ -289,29 +317,102 @@ public final class KlighdDataManager {
                 }
             }
         }
+
+        // I hope the ImmutableMultiMap is better wrt. to query performance
+        //  so this immutable copy of the temporary map is created.
+        this.typeSynthesisMapping = ImmutableMultimap.copyOf(typeSynthesisMapping);
     }
 
+
     /**
-     * Returns the graph containing the registered transformations.
+     * Returns the list of registered {@link ISynthesis} implementations whose input types are
+     * compatible to <code>type</code>. 
      * 
-     * @return the transformations graph
+     * @param type
+     *            the type the of model to be translated
+     * @return the matching {@link ISynthesis} implementations 
      */
-    public TransformationsGraph getTransformationsGraph() {
-        return transformationsGraph;
+    public Iterable<ISynthesis> getAvailableSyntheses(final Class<?> type) {
+
+        if (type == null) {
+            return null;
+        } else {
+
+            final Iterable<ISynthesis> knownSyntheses = this.concreteTypeSynthesisMapping.get(type);
+            if (knownSyntheses != null) {
+                // if the fitting syntheses have been determined already, use that those
+                return knownSyntheses;
+                
+            } else {
+                // otherwise reveal those input types of registered ISynthesis implementations
+                //  that are compatible to 'type'
+                final List<Class<?>> validTypes =
+                        Lists.newArrayList(Iterables.filter(typeSynthesisMapping.keySet(),
+                                new Predicate<Class<?>>() {
+                                    public boolean apply(final Class<?> clazz) {
+                                        return clazz.isAssignableFrom(type);
+                                    }
+                                }));
+                
+                final Collection<ISynthesis> res; 
+                if (validTypes.isEmpty()) {
+                    res = Collections.emptyList();
+                    
+                } else {
+                    // sort them s.t. the most concrete type is at position 0
+                    Collections.sort(validTypes, TYPE_SORTER);
+
+                    // and reveal the collection of related ISynthesis from the main mapping  
+                    res = typeSynthesisMapping.get(validTypes.get(0));
+                }
+                
+                this.concreteTypeSynthesisMapping.put(type, res);
+                return res;
+            }
+        }
     }
+    
+    /** Sorts a list of types s.t. a super type is place after a sub type. */
+    private static final Comparator<Class<?>> TYPE_SORTER = new Comparator<Class<?>>() {
+
+        /**
+         * {@inheritDoc}
+         */
+        public int compare(final Class<?> o1, final Class<?> o2) {
+            if (o1.isAssignableFrom(o2)) {
+                return 1;
+            } else if (o2.isAssignableFrom(o1)) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    };
+
 
     /**
-     * Returns the transformation with the given identifier.
+     * Returns the {@link ISynthesis} with the given identifier.
      * 
      * @param id
      *            the identifier
-     * @return the transformation or null if there is no transformation with the given id
+     * @return the {@link ISynthesis} instance or <code>null</code> if there is no synthesis with
+     *         the given id
      */
-    public ITransformation<?, ?> getTransformationById(final String id) {
+    public ISynthesis getDiagramSynthesisById(final String id) {
         if (id == null) {
             return null;
         }
-        return idTransformationMapping.get(id);
+        return idSynthesisMapping.get(id);
+    }
+
+
+    /**
+     * Returns all registered instances of {@link IViewerProvider}. 
+     * 
+     * @return an immutable collection of the registered {@link IViewerProvider IViewerProviders}
+     */
+    public Collection<IViewerProvider<KNode>> getAvailableViewerProviders() {
+        return Collections.unmodifiableCollection(idViewerProviderMapping.values());
     }
 
     /**
@@ -339,6 +440,20 @@ public final class KlighdDataManager {
         return idUpdateStrategyMapping.get(id);
     }
     
+    
+    /**
+     * Returns one of those registered {@link IUpdateStrategy IUpdateStrategies} with the highest
+     * priority. If multiple {@link IUpdateStrategy IUpdateStrategies} with the maximal priority
+     * are registered, no assertion on the provided one can be made!
+     * 
+     * @return one of those registered {@link IUpdateStrategy IUpdateStrategies} with the highest
+     *         priority.
+     */
+    public IUpdateStrategy<KNode> getHighestPriorityUpdateStrategy() {
+        return this.highestPriorityUpdateStrategy;
+    }
+
+
     /**
      * Returns the style modifier with the given identifier.
      * 
@@ -349,7 +464,8 @@ public final class KlighdDataManager {
     public IStyleModifier getStyleModifierById(final String id) {
         return idStyleModifierMapping.get(id);
     }
-    
+
+
     /**
      * Returns the action with the given identifier.
      * 
@@ -360,7 +476,8 @@ public final class KlighdDataManager {
     public IAction getActionById(final String id) {
         return idActionMapping.get(id);
     }
-    
+
+
     /**
      * Returns the id of the given {@link IAction}.
      * 
@@ -371,7 +488,8 @@ public final class KlighdDataManager {
     public String getActionsId(final IAction action) {
         return idActionMapping.inverse().get(action);
     }
-    
+
+
     /**
      * Returns the set of registered action ids.
      * 
