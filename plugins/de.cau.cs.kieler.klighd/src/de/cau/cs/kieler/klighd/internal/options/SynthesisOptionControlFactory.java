@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.SynthesisOption;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.views.DiagramViewManager;
 
 /**
@@ -115,11 +115,11 @@ public class SynthesisOptionControlFactory {
      * Factory method for creating a check button related to a 'check' option.  
      * 
      * @param option the 'check' option
-     * @param context the related {@link TransformationContext} the option is declared in
+     * @param context the related {@link ViewContext} the option is declared in
      * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
     public void createCheckOptionControl(final SynthesisOption option,
-            final TransformationContext<?, ?> context, final String viewId) {
+            final ViewContext context, final String viewId) {
 
         final Button checkButton = formToolkit.createButton(parent, option.getName(), SWT.CHECK);
         checkButton.setToolTipText(option.getName());
@@ -150,11 +150,11 @@ public class SynthesisOptionControlFactory {
      * Factory method for creating a check button related to a 'choice' option.  
      * 
      * @param option the 'choice' option
-     * @param context the related {@link TransformationContext} the option is declared in
+     * @param context the related {@link ViewContext} the option is declared in
      * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
     public void createChoiceOptionControl(final SynthesisOption option,
-            final TransformationContext<?, ?> context, final String viewId) {
+            final ViewContext context, final String viewId) {
         
         final GridLayout gl = new GridLayout();
         gl.verticalSpacing = MINOR_VERTICAL_SPACING;
@@ -209,11 +209,11 @@ public class SynthesisOptionControlFactory {
      * Factory method for creating a check button related to a 'range' option.  
      * 
      * @param option the 'range' option
-     * @param context the related {@link TransformationContext} the option is declared in
+     * @param context the related {@link ViewContext} the option is declared in
      * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
     public void createRangeOptionControl(final SynthesisOption option,
-            final TransformationContext<?, ?> context, final String viewId) {
+            final ViewContext context, final String viewId) {
         
         final GridLayout gl = new GridLayout();
         gl.verticalSpacing = MINOR_VERTICAL_SPACING;

@@ -25,7 +25,6 @@ import static java.util.Collections.singleton;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -71,9 +70,7 @@ import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
@@ -219,24 +216,20 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         }
         
         boolean synthesisOptionsAvailable = false;
-        for (final Map.Entry<TransformationContext<?, ?>, List<SynthesisOption>> entry
-                : this.getViewContext().getDisplayedSynthesisOptions().entrySet()) {
-            for (final SynthesisOption option : entry.getValue()) {
-                if (option.isCheckOption()) {
-                    synthesisOptionControlFactory.createCheckOptionControl(option, entry.getKey(),
-                            viewId);
-                    synthesisOptionsAvailable = true;
-                } else if (option.isChoiceOption()) {
-                    synthesisOptionControlFactory.createChoiceOptionControl(option, entry.getKey(),
-                            viewId);
-                    synthesisOptionsAvailable = true;
-                } else if (option.isRangeOption()) {
-                    synthesisOptionControlFactory.createRangeOptionControl(option, entry.getKey(),
-                            viewId);
-                    synthesisOptionsAvailable = true;
-                } else if (option.isSeparator()) {
-                    synthesisOptionControlFactory.createSeparator(option.getName());
-                }
+        final ViewContext vc = this.getViewContext();
+
+        for (final SynthesisOption option : vc.getDisplayedSynthesisOptions()) {
+            if (option.isCheckOption()) {
+                synthesisOptionControlFactory.createCheckOptionControl(option, vc, viewId);
+                synthesisOptionsAvailable = true;
+            } else if (option.isChoiceOption()) {
+                synthesisOptionControlFactory.createChoiceOptionControl(option, vc, viewId);
+                synthesisOptionsAvailable = true;
+            } else if (option.isRangeOption()) {
+                synthesisOptionControlFactory.createRangeOptionControl(option, vc, viewId);
+                synthesisOptionsAvailable = true;
+            } else if (option.isSeparator()) {
+                synthesisOptionControlFactory.createSeparator(option.getName());
             }
         }
         
@@ -532,7 +525,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
             removeViewer();
 
             // create the new viewer
-            IViewer<?> viewer = LightDiagramServices.createViewer(this, viewContext, diagramComposite);
+            IViewer<?> viewer = viewContext.createViewer(this, diagramComposite);
 
             // add the new viewer
             addViewer(viewer);
