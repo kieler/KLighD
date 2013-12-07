@@ -110,8 +110,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (object instanceof KGraphElement) {
             return true;
         }
+
         // KGraph viewer are supported
-        ViewContext viewContext = null;
+        final ViewContext viewContext;
         if (object instanceof IDiagramWorkbenchPart) {
             IDiagramWorkbenchPart view = (IDiagramWorkbenchPart) object;
             viewContext = view.getContextViewer().getViewContext();
@@ -120,13 +121,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             viewContext = contextViewer.getViewContext();
         } else if (object instanceof KlighdViewer) {
             KlighdViewer klighdViewer = (KlighdViewer) object;
-            viewContext = klighdViewer.getContextViewer().getViewContext();
+            viewContext = klighdViewer.getViewContext();
+        } else {
+            viewContext = null;
         }
+
         if (viewContext != null) {
-            return viewContext.getViewerProvider().getModelClass().equals(KNode.class);
+            return true;
         } else if (object instanceof IViewer<?>) {
-            IViewer<?> viewer = (IViewer<?>) object;
-            Object model = viewer.getModel();
+            final Object model = ((IViewer<?>) object).getModel();
             return model instanceof KNode;
         }
         return false;
