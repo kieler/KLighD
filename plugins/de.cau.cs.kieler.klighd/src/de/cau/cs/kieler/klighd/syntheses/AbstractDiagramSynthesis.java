@@ -26,13 +26,12 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.ITransformation;
 import de.cau.cs.kieler.klighd.SynthesisOption;
-import de.cau.cs.kieler.klighd.TransformationContext;
+import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
@@ -59,7 +58,7 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
  * <br>
  * Furthermore, diagram syntheses may leverage other ones, e.g. for realizing composed views. This
  * can be achieved by simply declaring an injected field or extension and calling the related
- * {@link #transform(Object, TransformationContext)} method. If multiple instance of such a delegate
+ * {@link #transform(Object, ViewContext)} method. If multiple instance of such a delegate
  * transformation are needed (e.g. due to the use of create extensions) a field of type
  * {@link com.google.inject.Provider Provider&lt;yourTransformationClass&gt;} can be declared. Each
  * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
@@ -74,41 +73,69 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
  * @author chsch
  * @author uru
  */
-public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, KNode> {
+public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     
     /** the current context of this synthesis. */
-    private TransformationContext<S, KNode> currentContext = null;
+    private ViewContext currentContext = null;
     
     /** whether it has been tried to infer the classes. */
     private boolean triedToInferClasses = false;
+
     /** the inferred source model class. */
     private Class<?> sourceModelClass = null;
-    /** the inferred target model class. */
-    private Class<?> targetModelClass = null;
     
     /** the name of the {@code transform} method. */
-    protected static final String TRANSFORM_METHOD_NAME = "transform";
-    
+    private static final String TRANSFORM_METHOD_NAME = "transform";
+
+
     /**
-     * This constant expression is a convenience handle to easy the access to the
-     * {@link KRenderingFactory} in derivatives of this class, i.e. concrete diagram syntheses.
+     * {@inheritDoc}<br>
+     * May be overridden by concrete implementations in order to incorporate property settings of
+     * the <code>viewContext</code> into the decision.
      */
-    protected static final KRenderingFactory RENDERING_FACTORY = KRenderingFactory.eINSTANCE; 
+    public boolean supports(final Object model, final ViewContext viewContext) {
+
+        if (this.getSourceClass().isInstance(model)) {
+            @SuppressWarnings("unchecked")
+            final S input = (S) model;
+            return supports(input);
+
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Method for checking whether <code>this</code> diagram synthesis implementation supports the
+     * given <code>model</code>.<br>
+     * May be overridden by concrete implementations.
+     * 
+     * @param model
+     *            the model to test
+     * @return <code>true</code> if <code>this</code> transformation supports <code>model</code>,
+     *         and <code>false</code> otherwise
+     */
+    public boolean supports(final S model) {
+        return true;
+    }
 
     /**
      * Method hook to be called by KLighD's runtime.<br>
-     * Concrete implementations shall not call or override this method.
+     * Concrete implementations shall override this method.
      * 
      * @param model
      *            the semantic model to be depicted
-     * @param transformationContext
-     *            the transformationContext serving as provider and acceptor for various data
+     * @param viewContext
+     *            the {@link ViewContext} serving as provider and acceptor for various data
      *            (option values, source view tracing, ...)
      * @return the related KGraph/KRendering diagram description
      */
-    public KNode transform(final S model, final TransformationContext<S, KNode> transformationContext) {
-        use(transformationContext);
-        return transform(model);
+    public final KNode transform(final Object model, final ViewContext viewContext) {
+        use(viewContext);
+        @SuppressWarnings("unchecked")
+        final S input = (S) model; 
+        return transform(input);
     }
     
     /**
@@ -126,9 +153,6 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      * Name, parameter ordering, and return value (the target) are optimized for
      * calling in Xtend-based transformations in a fluent interface fashion, like
      * "model.createShape().putToLookUpWith(model);"<br>
-     * <br>
-     * Usage requires to perform 'use(TransformationContext)' at the beginning of
-     * {@link ITransformation#transform(Object, TransformationContext)}.
      * 
      * @param <D> the type of the target element which is implicitly determined 
      * @param derived the derived element
@@ -164,7 +188,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      * {@inheritDoc}
      */
     protected void inferSourceAndTargetModelClass() {
-        this.setTriedToInferClass();
+        this.triedToInferClasses = true;
         // try to find a method with one parameter which returns KNode
         // takes the first matching method with parameter 0 != Object
         Method transformMethod = null;
@@ -184,7 +208,6 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
         // infer the types if a matching method has been found
         if (transformMethod != null) {
             this.setSourceClass(transformMethod.getParameterTypes()[0]);
-            this.setTargetClass(KNode.class);
         }
     }
 
@@ -214,10 +237,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     //  Recommended layout option handling    
 
     /**
-     * Returns a list of layout options that will be displayed in the diagram side bar and that are
-     * directly manipulatable by the user. For each layout option a, possibly restricted, set of
-     * allowed input values can be specified.
-     * 
+     * {@inheritDoc}<br>
+     * <br> 
      * Use the {@link #specifyLayoutOption(IProperty, List)} method to conveniently specify
      * the options. An example usage might look like the following (Xtend code). The shown example
      * will create a choice widget allowing all possible values of KlayLayered'
@@ -232,14 +253,11 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      *          specifyLayoutOption(LayoutOptions::SPACING, ImmutableList::of(0, 255))
      *      )
      * }
-     * 
-     * <pre>
+     * </pre>
      * 
      * The layout options will be displayed in the side bar of the corresponding view or editor
-     * part according to the order within the returned list.
-     * 
-     * @return a {@link List} of {@link Pair Pairs} where each pair specifies a recommended layout
-     * option.
+     * part according to the order within the returned list.<br>
+     * <br>
      */
     public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
         return Collections.emptyList();
@@ -347,14 +365,14 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     }
     
     /**
-     * Initializes the transformation run.
-     * Currently, just keeps the context to be used
-     * (allowing to neglect it in the concrete transformation methods).
+     * Initializes the transformation run. Currently, just keeps the context to be used (allowing to
+     * neglect it in the concrete transformation methods).
      * 
-     * @param transformationContext the context to be used during the current run
+     * @param viewContext
+     *            the context to be used during the current run
      */
-    protected void use(final TransformationContext<S, KNode> transformationContext) {        
-        this.currentContext = transformationContext;
+    protected void use(final ViewContext viewContext) {
+        this.currentContext = viewContext;
         this.currentContext.clear();
     }
     
@@ -363,7 +381,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
      * 
      * @return the currently used transformation context or <code>null</code> if no one is set.
      */
-    protected TransformationContext<S, KNode> getUsedContext() {
+    protected ViewContext getUsedContext() {
         return this.currentContext;
     }
 
@@ -456,24 +474,6 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     }
     
     /**
-     * {@inheritDoc}
-     */
-    public Class<?> getTargetClass() {
-        if (!triedToInferClass()) {
-            inferSourceAndTargetModelClass();
-        }
-        return targetModelClass;
-    }  
-    
-    /**
-     * Setter for the sourceModelClass property.
-     * @param theTargetClass the class of the source models.
-     */
-    protected void setTargetClass(final Class<?> theTargetClass) {
-        this.targetModelClass = theTargetClass;
-    }   
-    
-    /**
      * Getter for the triedToInferClasses flag.
      * 
      * @return true if source and target classes have been tried to infer
@@ -481,19 +481,4 @@ public abstract class AbstractDiagramSynthesis<S> implements ITransformation<S, 
     protected boolean triedToInferClass() {
         return this.triedToInferClasses;
     }
-
-    /**
-     * Setter for the triedToInferClasses flag.
-     */
-    protected void setTriedToInferClass() {
-        this.triedToInferClasses = true;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public boolean supports(final S model) {
-        return true;
-    }
-
 }
