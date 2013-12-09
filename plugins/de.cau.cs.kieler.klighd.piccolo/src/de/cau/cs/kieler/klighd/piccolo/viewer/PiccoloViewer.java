@@ -231,7 +231,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
             if (node != null) {
                 if (!textinput.getText().equals(node.getText())) {
                     ITransformation<?, ?> trans =
-                            PiccoloViewer.this.parentViewer.getCurrentViewContext()
+                            PiccoloViewer.this.parentViewer.getContextViewer().getViewContext()
                                     .getTransformationContexts().get(0).getTransformation();
                     if (trans instanceof AbstractDiagramSynthesis) {
                         AbstractDiagramSynthesis<?> synth = (AbstractDiagramSynthesis<?>) trans;
