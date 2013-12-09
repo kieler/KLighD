@@ -115,6 +115,9 @@ public final class ViewContext extends MapPropertyHolder {
         this.businessModel = inputModel;
     }
     
+    // ---------------------------------------------------------------------------------- //
+    //  initialization part    
+    
     /**
      * This method performs the initial configuration of <code>this</code> view context.<br>
      * In case some custom configurations are to be applied {@link #configure(IPropertyHolder)}
@@ -183,6 +186,20 @@ public final class ViewContext extends MapPropertyHolder {
         return this;
     }
 
+    private final Predicate<ISynthesis> synthesisFilter = new Predicate<ISynthesis>() {
+        public boolean apply(final ISynthesis synthesis) {
+            try {
+                return synthesis.supports(ViewContext.this.businessModel, ViewContext.this);
+            } catch (WrappedException e) {
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(),
+                                e.getCause()), StatusManager.LOG);
+                return false;
+            }
+        }
+    };
+
+
     /**
      * Creates the wrapped {@link IViewer} instance that is actually in charge of drawing the diagram
      * into the provided SWT {@link Composite} widget <code>parent</code>. Returns <code>null</code>
@@ -212,7 +229,8 @@ public final class ViewContext extends MapPropertyHolder {
             return null;
         }
     }
-    
+
+
     /**
      * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
      * the view model by applying the configured {@link IUpdateStrategy}. In case the former
@@ -276,7 +294,8 @@ public final class ViewContext extends MapPropertyHolder {
         
         this.businessModel = sourceModel;
     }
-    
+
+
     /**
      * Sets the source workbench part (part the source model has been chosen in).
      * 
@@ -696,21 +715,4 @@ public final class ViewContext extends MapPropertyHolder {
             return Collections.emptyList();
         }
     }
-    
-    
-    // ---------------------------------------------------------------------------------- //
-    //  internal/initialization part    
-    
-    private final Predicate<ISynthesis> synthesisFilter = new Predicate<ISynthesis>() {
-        public boolean apply(final ISynthesis synthesis) {
-            try {
-                return synthesis.supports(ViewContext.this.businessModel, ViewContext.this);
-            } catch (WrappedException e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(),
-                                e.getCause()), StatusManager.LOG);
-                return false;
-            }
-        }
-    };
 }
