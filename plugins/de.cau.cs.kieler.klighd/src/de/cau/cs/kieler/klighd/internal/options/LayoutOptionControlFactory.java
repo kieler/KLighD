@@ -126,7 +126,7 @@ public class LayoutOptionControlFactory {
         Object viewModel = null;
         if (workbenchPart instanceof DiagramViewPart) {
             ViewContext viewContext = ((DiagramViewPart) workbenchPart).getContextViewer()
-                    .getCurrentViewContext();
+                    .getViewContext();
             if (viewContext != null) {
                 if (viewContext.getInputModel() instanceof EObject) {
                     inputModel = (EObject) viewContext.getInputModel();

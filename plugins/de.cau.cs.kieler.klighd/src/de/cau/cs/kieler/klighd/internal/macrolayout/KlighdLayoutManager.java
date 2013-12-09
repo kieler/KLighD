@@ -57,7 +57,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -114,13 +114,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         ViewContext viewContext = null;
         if (object instanceof IDiagramWorkbenchPart) {
             IDiagramWorkbenchPart view = (IDiagramWorkbenchPart) object;
-            viewContext = view.getContextViewer().getCurrentViewContext();
+            viewContext = view.getContextViewer().getViewContext();
         } else if (object instanceof ContextViewer) {
             ContextViewer contextViewer = (ContextViewer) object;
-            viewContext = contextViewer.getCurrentViewContext();
+            viewContext = contextViewer.getViewContext();
         } else if (object instanceof KlighdViewer) {
             KlighdViewer klighdViewer = (KlighdViewer) object;
-            viewContext = klighdViewer.getContextViewer().getCurrentViewContext();
+            viewContext = klighdViewer.getContextViewer().getViewContext();
         }
         if (viewContext != null) {
             return viewContext.getViewerProvider().getModelClass().equals(KNode.class);
@@ -157,7 +157,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             }
             
             if (contextViewer != null) {
-                ViewContext viewContext = contextViewer.getCurrentViewContext();
+                ViewContext viewContext = contextViewer.getViewContext();
                 if (viewContext != null) {
                     Object model = viewContext.getInputModel();
                     if (adapterType.isInstance(model)) {
@@ -201,8 +201,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     public LayoutMapping<KGraphElement> buildLayoutGraph(final IWorkbenchPart workbenchPart,
             final Object diagramPart) {
         KNode graph = null;
-        IViewer<?> viewer = null;
         IDiagramWorkbenchPart diagramWorkbenchPart = null;
+        IViewer<?> viewer = null;
+        ILayoutRecorder recorder = null;
 
         // search for the root node
         if (diagramPart instanceof KNode) {
@@ -225,6 +226,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 if (model instanceof KNode) {
                     graph = (KNode) model;
                 }
+                if (viewer instanceof ILayoutRecorder) {
+                    recorder = (ILayoutRecorder) viewer;
+                }
             }
         }
 
@@ -242,7 +246,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // remember the viewer if any
         if (viewer != null) {
-            mapping.setProperty(KlighdInternalProperties.VIEWER, viewer);
+            mapping.setProperty(KlighdInternalProperties.RECORDER, recorder);
         }
 
         return mapping;
@@ -595,21 +599,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     public void applyLayout(final LayoutMapping<KGraphElement> mapping, final boolean zoomToFit,
             final int animationTime) {
-        // get the visualizing viewer if any
-        IViewer<?> viewer = mapping.getProperty(KlighdInternalProperties.VIEWER);
+        // get the animation recorder if anyone has been attached above ...
+        final ILayoutRecorder recorder = mapping.getProperty(KlighdInternalProperties.RECORDER);
 
-        // apply the layout
-        if (viewer != null) {
-            viewer.startRecording();
+        // ... and apply the layout
+        if (recorder != null) {
+            recorder.startRecording();
             applyLayout(mapping);
+            recorder.stopRecording(animationTime);
             
-            // get the zoomStyle
-            ZoomStyle zoomStyle = ZoomStyle.NONE;
-            if (viewer.getContextViewer().getCurrentViewContext() != null) {
-                zoomStyle = viewer.getContextViewer().getCurrentViewContext().getZoomStyle();
-            }
-            
-            viewer.stopRecording(zoomStyle, animationTime);
         } else {
             applyLayout(mapping);
         }

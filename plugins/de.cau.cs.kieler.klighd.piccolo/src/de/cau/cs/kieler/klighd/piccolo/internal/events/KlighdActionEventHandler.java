@@ -133,15 +133,14 @@ public class KlighdActionEventHandler implements PInputEventListener {
                         : context.getViewContext().getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
 
         // remember the desired zoom style in the view context
-        final ViewContext vc = viewer.getContextViewer().getCurrentViewContext();
+        final ViewContext vc = viewer.getViewContext();
         vc.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
                 
         LightDiagramServices.layoutDiagram(vc, result.getAnimateLayout(), zoomToFit,
                 result.getLayoutConfigs());
         
         KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
-                .getContextViewer().getViewPartId(), viewer.getContextViewer()
-                .getCurrentViewContext(), viewer);
+                .getContextViewer().getViewPartId(), viewer.getViewContext(), viewer);
         if (KlighdStatusTrigger.getInstance() != null) {
             KlighdStatusTrigger.getInstance().trigger(state);
         }

@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.viewers;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KText;
@@ -43,27 +42,6 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      */
     public void setModel(final T model) {
         this.setModel(model, false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IContentOutlinePage getOutlinePage() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void startRecording() {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
-        // do nothing
     }
 
     /**

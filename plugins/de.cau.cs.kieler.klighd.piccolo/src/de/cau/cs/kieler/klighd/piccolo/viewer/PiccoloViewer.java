@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -46,7 +45,10 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.ITransformation;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
@@ -80,7 +82,8 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class PiccoloViewer extends AbstractViewer<KNode> {
+public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder,
+    IDiagramOutlinePage.Provider {
 
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
@@ -384,6 +387,17 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
+    public IDiagramOutlinePage getDiagramOutlinePage() {
+        if (outlinePage == null || outlinePage.isDisposed()) {
+            outlinePage = new PiccoloOutlinePage();
+            outlinePage.setContent(this.controller.getNode());
+        }
+        return outlinePage;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Control getControl() {
         return canvas;
     }
@@ -398,14 +412,23 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
+    public ViewContext getViewContext() {
+        return this.parentViewer.getViewContext();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void setModel(final KNode model, final boolean sync) {
 
         // create a controller for the graph
         controller = new DiagramController(model, canvas.getCamera(), sync);
 
         // update the outline page
-        if (outlinePage != null) {
+        if (outlinePage != null && !outlinePage.isDisposed()) {
             outlinePage.setContent(controller.getNode());
+        } else {
+            this.outlinePage = null;
         }
 
     }
@@ -423,20 +446,24 @@ public class PiccoloViewer extends AbstractViewer<KNode> {
     /**
      * {@inheritDoc}
      */
-    public IContentOutlinePage getOutlinePage() {
-        if (outlinePage == null) {
-            outlinePage = new PiccoloOutlinePage();
-            outlinePage.setContent(this.controller.getNode());
-        }
-        return outlinePage;
+    public void startRecording() {
+        controller.startRecording();
     }
-
-
+    
     /**
      * {@inheritDoc}
      */
-    public void startRecording() {
-        controller.startRecording();
+    public void stopRecording(final int animationTime) {
+        final ZoomStyle zoomStyle;
+        
+        if (this.getViewContext() != null) {
+            // get the zoomStyle
+            zoomStyle = this.getViewContext().getZoomStyle();
+        } else {
+            zoomStyle = ZoomStyle.NONE;
+        }
+        
+        stopRecording(zoomStyle, animationTime);
     }
 
     /**

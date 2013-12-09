@@ -67,21 +67,26 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
 
-        List<KNode> children = Lists.newArrayList(newModel.getChildren());
-        List<KGraphData> data = Lists.newArrayList(newModel.getData());
+        List<KNode> newChildren = Lists.newArrayList(newModel.getChildren());
+        List<KGraphData> newData = Lists.newArrayList(newModel.getData());
         newModel.getChildren().clear();
         newModel.getData().clear();
-        List<KGraphData> removeData = Lists.newLinkedList();
-        for (KGraphData graphData : baseModel.getData()) {
-            if (graphData instanceof KRendering || graphData instanceof KRenderingLibrary
-                    || graphData instanceof KShapeLayout) {
-                removeData.add(graphData);
-            }
-        }
-        baseModel.getData().removeAll(removeData);
+        
+        // compose a collection of the baseModel's data that are to be replaced by those of newModel
+        List<KGraphData> obsoleteData =
+                Lists.newArrayList(Iterables.concat(
+                        Iterables.filter(baseModel.getData(), KShapeLayout.class),
+                        Iterables.filter(baseModel.getData(), KRendering.class),
+                        Iterables.filter(baseModel.getData(), KRenderingLibrary.class)));
+
+        // reset the clip (here the transform difference can still be computed properly)
+        viewContext.getViewer().clip(baseModel);
+
+        // ... and remove the diagram elements afterwards
         baseModel.getChildren().clear();
-        baseModel.getData().addAll(data);
-        baseModel.getChildren().addAll(children);
+        baseModel.getData().removeAll(obsoleteData);
+        baseModel.getData().addAll(newData);
+        baseModel.getChildren().addAll(newChildren);
 
         
         // In the following part all tracing relation of the semantic elements, that is associated

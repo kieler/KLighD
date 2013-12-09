@@ -44,7 +44,6 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The KLighD-specific {@link PNode} implementation for displaying primitive figures.<br>
@@ -553,24 +552,6 @@ public class KlighdPath extends PNode {
             curBounds.height += shadowExtendY;
         }
         return curBounds;
-    }
-
-
-    /* ----------------------- */
-    /*  picking related stuff  */
-    /* ----------------------- */
-
-    @Override
-    public boolean fullPick(final PPickPath pickPath) {
-        return super.fullPick(pickPath);
-    }
-
-    @Override
-    public boolean pick(final PPickPath pickPath) {
-        if (this.getPickable()) {
-            return super.pickAfterChildren(pickPath);
-        }
-        return super.pick(pickPath);
     }
 
 

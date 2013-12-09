@@ -22,12 +22,12 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
@@ -76,7 +76,14 @@ public class StringViewer implements IViewer<String> {
     public String getModel() {
         return message;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public ViewContext getViewContext() {
+        return null;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -103,28 +110,6 @@ public class StringViewer implements IViewer<String> {
      */
     public ContextViewer getContextViewer() {
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IContentOutlinePage getOutlinePage() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void startRecording() {
-        // do nothing
-        
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
-        // do nothing
     }
 
     /**

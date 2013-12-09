@@ -40,6 +40,7 @@ import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -92,6 +93,9 @@ public final class ViewContext extends MapPropertyHolder {
     
     /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
     private IViewer<KNode> viewer = null;
+    
+    /** the {@link #viewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
+    private ILayoutRecorder layoutRecorder = null;
     
     /** the view-specific zoom style. */
     private ZoomStyle zoomStyle = ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
@@ -236,6 +240,10 @@ public final class ViewContext extends MapPropertyHolder {
      */
     void setViewer(final IViewer<KNode> theViewer) {
         this.viewer = theViewer;
+        
+        if (theViewer instanceof ILayoutRecorder) {
+            this.layoutRecorder = (ILayoutRecorder) theViewer;
+        }
     }
     
     /**
@@ -243,6 +251,13 @@ public final class ViewContext extends MapPropertyHolder {
      */
     public IViewer<KNode> getViewer() {
         return viewer;
+    }
+    
+    /**
+     * @return the {@link ILayoutRecorder} being in charge of recording the layout for proper animation
+     */
+    public ILayoutRecorder getLayoutRecorder() {
+        return layoutRecorder;
     }
 
     /**

@@ -222,7 +222,7 @@ public final class DiagramViewManager implements IPartListener {
         
         // 'diagramView' is supposed to be non-null here
         if (viewContext == null) {
-            viewContext = diagramView.getContextViewer().getCurrentViewContext();
+            viewContext = diagramView.getContextViewer().getViewContext();
             if (viewContext == null) {
                 return null;
             }
@@ -235,7 +235,7 @@ public final class DiagramViewManager implements IPartListener {
             // update the view context and viewer
             Object theModel = (model != null ? model : currentInputModel);
             
-            viewContext.getViewer().startRecording();
+            viewContext.getLayoutRecorder().startRecording();
             if (!LightDiagramServices.updateViewContext(viewContext, theModel,
                     propertyHolder)) {
                 return null;
@@ -354,7 +354,7 @@ public final class DiagramViewManager implements IPartListener {
                 diagramView.getContextViewer().setModel(viewContext);
 
                 // do an initial update of the view context
-                viewContext.getViewer().startRecording();
+                viewContext.getLayoutRecorder().startRecording();
                 LightDiagramServices.updateViewContext(viewContext, model);
                 
                 LightDiagramServices.layoutDiagram(viewContext, false);
@@ -408,7 +408,7 @@ public final class DiagramViewManager implements IPartListener {
     void registerView(final IDiagramWorkbenchPart part) {
         final String id = part.getContextViewer().getViewPartId();
         this.idPartMapping.put(id, part);
-        this.idContextMapping.put(id, part.getContextViewer().getCurrentViewContext());
+        this.idContextMapping.put(id, part.getContextViewer().getViewContext());
     }
 
     /**

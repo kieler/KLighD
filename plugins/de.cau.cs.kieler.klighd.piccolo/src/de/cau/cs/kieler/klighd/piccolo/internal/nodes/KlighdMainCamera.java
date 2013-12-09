@@ -31,11 +31,9 @@ public class KlighdMainCamera extends PCamera {
     private static final long serialVersionUID = -1769999483311436492L;
     
     /**
-     * Constructor.<br>
-     * It is flagged 'package protected' as this class is not supposed to be instantiated outside
-     * it's package.
+     * Constructor.
      */
-    KlighdMainCamera() {
+    public KlighdMainCamera() {
         super();
     }
 
@@ -63,6 +61,10 @@ public class KlighdMainCamera extends PCamera {
     public void setDisplayedNode(final INode node) {
         if (node instanceof PLayer) {
             this.setDisplayedNode((PLayer) node);
+        }
+        if (node instanceof KNodeTopNode) {
+            // this is only for initialization, has no effect later on
+            ((KNodeTopNode) node).setDiagramMainCamera(this);
         }
     }
     

@@ -19,12 +19,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PComponent;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
-import edu.umd.cs.piccolo.util.PUtil;
 
 /**
  * This class can be used to render a {@link de.cau.cs.kieler.core.kgraph.KNode KNode} model to an
@@ -48,7 +49,7 @@ import edu.umd.cs.piccolo.util.PUtil;
  */
 public class KlighdSVGCanvas implements PComponent {
 
-    private PCamera camera;
+    private KlighdMainCamera camera;
 
     private static final PBounds INITIAL_BOUNDS = new PBounds(0, 0, 800, 600);
 
@@ -78,13 +79,17 @@ public class KlighdSVGCanvas implements PComponent {
     public KlighdSVGCanvas(final Rectangle2D bounds, final boolean textAsShapes) {
         this.textAsShapes = textAsShapes;
 
-        // create a new camera
-        camera = PUtil.createBasicScenegraph();
-        camera.setComponent(this);
+        // create a new main camera
+        camera = new KlighdMainCamera();
+        
+        // the basic PRoot is sufficient as this canvas doesn't rely on any SWT stuff
+        final PRoot root = new PRoot();
+        root.addChild(camera);
 
-        // set the bounds of the camera, this is the actual size of the camera, not what it is
-        // viewing
+        // set the bounds of the camera,
+        //  this is the actual size of the camera, not of what it is viewing
         camera.setBounds(bounds);
+        camera.setComponent(this);
     }
 
     private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes,
@@ -144,7 +149,7 @@ public class KlighdSVGCanvas implements PComponent {
     /**
      * @return the camera
      */
-    public PCamera getCamera() {
+    public KlighdMainCamera getCamera() {
         return camera;
     }
 
