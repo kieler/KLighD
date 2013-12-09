@@ -62,7 +62,7 @@
                   The implementation of the concrete diagram synthesis. In case it maintains a local memory (e.g. due to the incorporation of the helper classes in de.cau.cs.kieler.core.krendering.extensions) or uses dependency injection by means of Google Guice the class id must be prefixed with the string &quot;de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:&quot;. This causes the creation of a proxy instance taking care about the proper (re-)initializing of the diagram synthesis.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.transformations.AbstractDiagramSynthesis:"/>
+                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis:"/>
                </appinfo>
             </annotation>
          </attribute>
