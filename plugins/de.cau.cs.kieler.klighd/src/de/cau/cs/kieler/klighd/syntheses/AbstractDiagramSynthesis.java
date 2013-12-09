@@ -26,6 +26,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -74,19 +75,24 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
  * @author uru
  */
 public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
-    
+
     /** the current context of this synthesis. */
     private ViewContext currentContext = null;
-    
+
     /** whether it has been tried to infer the classes. */
     private boolean triedToInferClasses = false;
 
     /** the inferred source model class. */
     private Class<?> sourceModelClass = null;
-    
+
     /** the name of the {@code transform} method. */
     private static final String TRANSFORM_METHOD_NAME = "transform";
 
+    /**
+     * This constant expression is a convenience handle to easy the access to the
+     * {@link KRenderingFactory} in derivatives of this class, i.e. concrete diagram syntheses.
+     */
+    protected static final KRenderingFactory RENDERING_FACTORY = KRenderingFactory.eINSTANCE; 
 
     /**
      * {@inheritDoc}<br>
