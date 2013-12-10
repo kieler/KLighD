@@ -180,7 +180,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                         }
                     }
                 });
+            } else if (currentOutlinePage != null) {
+                currentOutlinePage.setVisible(true);
             }
+
             viewer.updateOptions(false);
 
             // since no initial selection is set in the view context/context viewer implementation,
@@ -240,7 +243,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 // if the main canvas is visible we can assume the presence of a properly
                 //  initialized and arrange diagram (see #createPartControl() above),
                 // otherwise leave the outline canvas invisible, thus...
-                currentOutlinePage.setVisible(viewer.getControl().isVisible());
+                currentOutlinePage.setVisible(viewer.getControl().isVisible()
+                        || !requiresInitialLayout(viewer.getViewContext()));
                 return currentOutlinePage;
             }
         }
