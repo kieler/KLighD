@@ -13,10 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import java.util.Collection;
 import java.util.List;
-
-import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -28,16 +25,13 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
 
 /**
- * A simple update strategy for KGraph with KRendering which merges by copying the new model.<br>
- * Uses a {@link DuplicatingTransformation} in order to decouple the given model and the depicted
- * one for use with the textual KGraph editor and adds a related {@link TransformationContext} to
- * the used view context for ensuring the model-image-traceability.
+ * A simple update strategy for KGraph with KRendering which merges by copying the new model.
  *
  * @author mri
+ * @author chsch
  */
 public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
 
@@ -88,26 +82,10 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
         baseModel.getData().addAll(newData);
         baseModel.getChildren().addAll(newChildren);
 
-        
-        // In the following part all tracing relation of the semantic elements, that is associated
-        //  newModels' root node are reset, since the root node is not transfered into the diagram's
-        //  view model (the root KNode of a diagram is constant for the diagram's life time).
-        @SuppressWarnings("unchecked")
-        TransformationContext<?, KNode> tc = (TransformationContext<?, KNode>) Iterables
-                .getLast(viewContext.getTransformationContexts());
-        
-        Object semanticRoot = tc.getSourceElement(newModel);
-        if (semanticRoot != null) {
-            @SuppressWarnings("unchecked")
-            Collection<EObject> viewElements = (Collection<EObject>) tc.getTargetElement(semanticRoot);
-            List<EObject> copy = Lists.newArrayList(viewElements);
-            viewElements.clear();
-            copy.remove(newModel);
-            copy.add(baseModel);
-            for (EObject viewElement : copy) {
-                tc.addSourceTargetPair(semanticRoot, viewElement);
-            }
-        }
+        // redirect any source view element association from the 'newModel' root to the 'baseModel'
+        //  as 'baseModel' remains in place over the diagram's life time.
+        viewContext.associateSourceTargetPair(viewContext.getSourceElement(newModel), baseModel);
+
     }
 
     /**
