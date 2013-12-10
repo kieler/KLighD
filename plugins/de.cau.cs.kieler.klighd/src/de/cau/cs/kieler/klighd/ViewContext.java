@@ -50,6 +50,7 @@ import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.syntheses.DuplicatingDiagramSynthesis;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
@@ -89,6 +90,9 @@ public final class ViewContext extends MapPropertyHolder {
     
     /** the {@link ISynthesis} being applied. */
     private transient ISynthesis diagramSynthesis = null;
+    
+    /** a fall-back instance of {@link DuplicatingDiagramSynthesis}, is instantiated if necessary. */
+    private transient ISynthesis duplicator = null;
     
     /** the business model to be represented by means of this context. */
     private Object businessModel = null;
@@ -275,7 +279,11 @@ public final class ViewContext extends MapPropertyHolder {
             }
 
         } else if (sourceModel instanceof KNode) {
-            newViewModel = (KNode) sourceModel;
+            if (this.duplicator == null) {
+                this.duplicator = new DuplicatingDiagramSynthesis();
+            }
+            
+            newViewModel = duplicator.transform(sourceModel, this);
             
         } else {
             final String msg = "KLighD: Could not create a diagram of provided input model "

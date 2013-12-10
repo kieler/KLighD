@@ -13,15 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.syntheses;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.SynthesisOption;
 
 /**
  * A duplicating diagram synthesis performing à la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
@@ -31,29 +26,22 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
  * {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategys} and KLighD
  * {@link de.cau.cs.kieler.klighd.IViewer IViewers}.<br>
  * <br>
- * <b>Currently, this class is not used.</b>
  * 
  * @author chsch
- * 
- * @param <S>
- *            Type of the model to be duplicated.
  */
-public class DuplicatingDiagramSynthesis<S extends EObject> extends AbstractDiagramSynthesis<S> {
+public class DuplicatingDiagramSynthesis extends AbstractDiagramSynthesis<KNode> {
 
     private Copier currentCopier = null;
     
     /**
      * {@inheritDoc}
      */
-    public KNode transform(final S model) {
+    public KNode transform(final KNode model) {
         // 3 lines are copied from EcoreUtil.copy()
         this.currentCopier = new Copier();
         final EObject result = this.currentCopier.copy(model);
         this.currentCopier.copyReferences();
-        getUsedContext().clear();
-        for (Map.Entry<EObject, EObject> entry : currentCopier.entrySet()) {
-            getUsedContext().addSourceTargetPair(entry.getKey(), entry.getValue());
-        }
+
         return (KNode) result;
     }
 
@@ -61,20 +49,6 @@ public class DuplicatingDiagramSynthesis<S extends EObject> extends AbstractDiag
      * {@inheritDoc}
      */
     public Class<?> getSourceClass() {
-        return EObject.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<SynthesisOption> getDisplayedSynthesisOptions() {
-        return Collections.emptyList();
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public boolean supports(final S model) {
-        return true;
+        return KNode.class;
     }
 }
