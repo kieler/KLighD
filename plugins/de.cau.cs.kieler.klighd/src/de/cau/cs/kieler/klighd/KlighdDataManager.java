@@ -112,9 +112,9 @@ public final class KlighdDataManager {
     private Map<String, IViewerProvider<KNode>> idViewerProviderMapping = Maps.newHashMap();
     
     /** the mapping of ids on the associated update strategies. */
-    private Map<String, IUpdateStrategy<KNode>> idUpdateStrategyMapping = Maps.newHashMap();
+    private Map<String, IUpdateStrategy> idUpdateStrategyMapping = Maps.newHashMap();
     
-    private IUpdateStrategy<KNode> highestPriorityUpdateStrategy = null;
+    private IUpdateStrategy highestPriorityUpdateStrategy = null;
     
     /** the mapping of ids on the associated style modifiers. */
     private Map<String, IStyleModifier> idStyleModifierMapping = Maps.newHashMap();
@@ -204,8 +204,7 @@ public final class KlighdDataManager {
                     }
                 } else if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
                     // initialize update strategy from the extension point
-                    @SuppressWarnings("unchecked")
-                    IUpdateStrategy<KNode> updateStrategy = (IUpdateStrategy<KNode>) element
+                    IUpdateStrategy updateStrategy = (IUpdateStrategy) element
                             .createExecutableExtension(ATTRIBUTE_CLASS);
                     if (updateStrategy != null) {
                         String id = element.getAttribute(ATTRIBUTE_ID);
@@ -436,7 +435,7 @@ public final class KlighdDataManager {
      *            the identifier
      * @return the update strategy
      */
-    public IUpdateStrategy<KNode> getUpdateStrategyById(final String id) {
+    public IUpdateStrategy getUpdateStrategyById(final String id) {
         return idUpdateStrategyMapping.get(id);
     }
     
@@ -449,7 +448,7 @@ public final class KlighdDataManager {
      * @return one of those registered {@link IUpdateStrategy IUpdateStrategies} with the highest
      *         priority.
      */
-    public IUpdateStrategy<KNode> getHighestPriorityUpdateStrategy() {
+    public IUpdateStrategy getHighestPriorityUpdateStrategy() {
         return this.highestPriorityUpdateStrategy;
     }
 

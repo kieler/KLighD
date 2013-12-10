@@ -86,7 +86,7 @@ public final class ViewContext extends MapPropertyHolder {
     private transient IViewerProvider<KNode> viewerProvider = null;
 
     /** the update strategy. */
-    private transient IUpdateStrategy<KNode> updateStrategy = null;
+    private transient IUpdateStrategy updateStrategy = null;
     
     /** the {@link ISynthesis} being applied. */
     private transient ISynthesis diagramSynthesis = null;
@@ -262,7 +262,7 @@ public final class ViewContext extends MapPropertyHolder {
      * @param theUpdateStrategy
      *            the updateStrategy to use during this update, must not be <code>null</code>
      */
-    public void update(final Object model, final IUpdateStrategy<KNode> theUpdateStrategy) {
+    public void update(final Object model, final IUpdateStrategy theUpdateStrategy) {
         final Object sourceModel = model != null ? model : this.businessModel;
         
         final KNode newViewModel;
@@ -365,7 +365,7 @@ public final class ViewContext extends MapPropertyHolder {
      * 
      * @return the update strategy
      */
-    public IUpdateStrategy<? extends KNode> getUpdateStrategy() {
+    public IUpdateStrategy getUpdateStrategy() {
         return updateStrategy;
     }
 

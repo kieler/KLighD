@@ -112,7 +112,7 @@ public final class LightDiagramServices {
      */
     public static boolean updateViewContext(final ViewContext viewContext, final Object model,
             final IPropertyHolder... propertyHolders) {
-        final IUpdateStrategy<KNode> updateStrategy;
+        final IUpdateStrategy updateStrategy;
         
         if (propertyHolders != null) {
             final KlighdSynthesisProperties ksp = KlighdSynthesisProperties.newInstance();

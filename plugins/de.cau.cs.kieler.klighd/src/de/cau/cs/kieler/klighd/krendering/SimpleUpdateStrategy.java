@@ -23,7 +23,6 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
 
@@ -33,7 +32,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
  * @author mri
  * @author chsch
  */
-public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
+public class SimpleUpdateStrategy implements IUpdateStrategy {
 
     /** The id used at registration of the strategy in the plugin.xml. */
     public static final String ID = SimpleUpdateStrategy.class.getCanonicalName();
@@ -46,14 +45,6 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
      */
     public int getPriority() {
         return PRIORITY;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KNode getInitialBaseModel(final ViewContext viewContext) {
-        KNode baseModel = KimlUtil.createInitializedNode();
-        return baseModel;
     }
 
     /**
@@ -87,12 +78,4 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
         viewContext.associateSourceTargetPair(viewContext.getSourceElement(newModel), baseModel);
 
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class<?> getModelClass() {
-        return KNode.class;
-    }
-
 }
