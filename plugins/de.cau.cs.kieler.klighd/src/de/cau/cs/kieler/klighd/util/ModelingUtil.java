@@ -13,11 +13,18 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
+import org.eclipse.emf.common.util.AbstractTreeIterator;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 /**
@@ -237,4 +244,55 @@ public final class ModelingUtil {
         }
     }
 
+
+    /**
+     * A modified version of {@link EObject#eAllContents()} allowing to filter the traversed
+     * elements based on its type. In contrast to
+     * 
+     * <pre>
+     * Iterators.filter(eObject.eAllContents(), ...)
+     * </pre>
+     * 
+     * or {@link ModelingUtil#eAllContentsOfType(EObject, Class)} this function does not visit
+     * elements being not of one of the given types. Consequently, elements of one of the given types
+     * being (deeply) contained by those skipped elements are not found.
+     * 
+     * @param eObject
+     *            the {@link EObject} whose contents are to be traversed
+     * @param types
+     *            the types of elements to be visited (varArgs)
+     * @return the tailored {@link TreeIterator}
+     */
+    public static TreeIterator<EObject> eAllContentsOfType2(final EObject eObject,
+            final Class<?>... types) {
+        if (types == null) {
+            return eObject.eAllContents();
+        }
+
+        final Predicate<Object> p =
+                Predicates.or(Iterables.transform(Arrays.asList(types), CLASS_TO_PREDICATE));
+
+        return new AbstractTreeIterator<EObject>(eObject, false) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Iterator<EObject> getChildren(final Object object) {
+                return Iterators.filter(((EObject) object).eContents().iterator(), p);
+            }
+        };
+    }
+
+    /**
+     * A singleton helper Function used in {@link #eAllContentsOfType(EObject, Class...)}.
+     */
+    private static final Function<Class<?>, Predicate<Object>> CLASS_TO_PREDICATE =
+            new Function<Class<?>, Predicate<Object>>() {
+
+                /**
+                 * {@inheritDoc}
+                 */
+                public Predicate<Object> apply(final Class<?> clazz) {
+                    return Predicates.instanceOf(clazz);
+                }
+            };
 }
