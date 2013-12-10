@@ -426,7 +426,25 @@ public final class ViewContext extends MapPropertyHolder {
 
 
     // ---------------------------------------------------------------------------------- //
-    //  Source target element handling    
+    //  Source target element handling
+
+    /**
+     * Associates the given <code>source</code> element, which should be part of the input model,
+     * and the given <code>target</code> element, which is assumed to be part of the view model.
+     * 
+     * @param source
+     *            a member of the input model, may be <code>null</code>
+     * @param target
+     *            a member of the view model, must not by <code>null</code>
+     */
+    public void associateSourceTargetPair(final Object source, final EObject target) {
+        if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(target)) {
+            ((KGraphData) target).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+        } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(target)) {
+            ((KGraphElement) target).getData(KLayoutData.class).setProperty(
+                    KlighdInternalProperties.MODEL_ELEMEMT, source);
+        }
+    }
 
     /**
      * Returns the element in the input model that is represented by the given <code>element</code>

@@ -19,11 +19,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
-import com.google.common.collect.Iterables;
-
-import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
@@ -33,7 +29,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
-import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 // SUPPRESS CHECKSTYLE PREVIOUS LineLength
@@ -155,39 +150,48 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     
     /**
-     * Method to put a pair of source target into the lookup table.<br>
-     * Name, parameter ordering, and return value (the target) are optimized for
-     * calling in Xtend-based transformations in a fluent interface fashion, like
+     * Associates a view model element with a input model element.<br>
+     * Name, parameter ordering, and return value (the target) are optimized for calling in
+     * Xtend-based transformations in a fluent interface fashion, like
+     * "model.createShape().associateWith(model);"<br>
+     * <br>
+     * <b>Note:</b> A view model element can be associated with at most 1 input model element.
+     * Hence, this method shall be called at most once for a given view model element.<br>
+     * In contrast, multiple view model elements can be associated with an input model element.
+     * 
+     * @param <T>
+     *            the type of the view model element
+     * @param derived
+     *            the view model element
+     * @param source
+     *            the input model element
+     * @return the view model element for convenience
+     */
+    public <T extends EObject> T associateWith(final T derived, final Object source) {
+        currentContext.associateSourceTargetPair(source, derived);
+        return derived;
+    }
+    
+
+    
+    /**
+     * Associates a view model element with a input model element.<br>
+     * Name, parameter ordering, and return value (the target) are optimized for calling in
+     * Xtend-based transformations in a fluent interface fashion, like
      * "model.createShape().putToLookUpWith(model);"<br>
      * 
-     * @param <D> the type of the target element which is implicitly determined 
-     * @param derived the derived element
-     * @param source the model element
+     * @deprecated use {@link #associateWith(EObject, Object)}
+     * 
+     * @param <D>
+     *            the type of the target element which is implicitly determined
+     * @param derived
+     *            the derived element
+     * @param source
+     *            the model element
      * @return the image element
      */
-    @SuppressWarnings("unchecked")
-    public <D> D putToLookUpWith(final D derived, final Object source) {
-        if (source instanceof EObject) {
-            if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(derived)) {
-                ((KGraphData) derived).setProperty(KlighdInternalProperties.MODEL_ELEMEMT,
-                        (EObject) source);
-            } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(derived)) {
-                Iterables.getFirst(
-                        (Iterable<KGraphData>) (Iterable<?>) Iterables.filter(
-                                ((KGraphElement) derived).getData(), KLayoutData.class), null)
-                        .setProperty(KlighdInternalProperties.MODEL_ELEMEMT, (EObject) source);
-            
-            }
-        }
-        
-        if (this.currentContext == null) {
-            throw new IllegalStateException("KLighD transformation "
-                    + this.getClass().getCanonicalName()
-                    + " uses 'putToLookUp(...) and probably does not invoke"
-                    + "'use(TransformationContxt)' at the beginning of its 'transform()' method");
-        }
-        this.currentContext.addSourceTargetPair(source, derived);
-        return derived;
+    public <D extends EObject> D putToLookUpWith(final D derived, final Object source) {
+        return this.associateWith(derived, source);
     }
     
     /**
@@ -379,7 +383,6 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     protected void use(final ViewContext viewContext) {
         this.currentContext = viewContext;
-        this.currentContext.clear();
     }
     
     /**
