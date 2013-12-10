@@ -89,109 +89,15 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     protected static final KRenderingFactory RENDERING_FACTORY = KRenderingFactory.eINSTANCE; 
 
+
     /**
-     * {@inheritDoc}<br>
-     * May be overridden by concrete implementations in order to incorporate property settings of
-     * the <code>viewContext</code> into the decision.
+     * {@inheritDoc}
      */
-    public boolean supports(final Object model, final ViewContext viewContext) {
-
-        if (this.getSourceClass().isInstance(model)) {
-            @SuppressWarnings("unchecked")
-            final S input = (S) model;
-            return supports(input);
-
-        } else {
-            return false;
+    public Class<?> getSourceClass() {
+        if (!triedToInferClasses) {
+            inferSourceAndTargetModelClass();
         }
-    }
-
-
-    /**
-     * Method for checking whether <code>this</code> diagram synthesis implementation supports the
-     * given <code>model</code>.<br>
-     * May be overridden by concrete implementations.
-     * 
-     * @param model
-     *            the model to test
-     * @return <code>true</code> if <code>this</code> transformation supports <code>model</code>,
-     *         and <code>false</code> otherwise
-     */
-    public boolean supports(final S model) {
-        return true;
-    }
-
-    /**
-     * Method hook to be called by KLighD's runtime.<br>
-     * Concrete implementations shall override this method.
-     * 
-     * @param model
-     *            the semantic model to be depicted
-     * @param viewContext
-     *            the {@link ViewContext} serving as provider and acceptor for various data
-     *            (option values, source view tracing, ...)
-     * @return the related KGraph/KRendering diagram description
-     */
-    public final KNode transform(final Object model, final ViewContext viewContext) {
-        use(viewContext);
-        @SuppressWarnings("unchecked")
-        final S input = (S) model; 
-        return transform(input);
-    }
-    
-    /**
-     * Translates the an model of type S into a KGraph/KRendering diagram description.
-     * 
-     * @param model
-     *            the semantic model to be depicted
-     * @return the related KGraph/KRendering diagram description
-     */
-    public abstract KNode transform(S model);
-
-    
-    /**
-     * Associates a view model element with a input model element.<br>
-     * Name, parameter ordering, and return value (the target) are optimized for calling in
-     * Xtend-based transformations in a fluent interface fashion, like
-     * "model.createShape().associateWith(model);"<br>
-     * <br>
-     * <b>Note:</b> A view model element can be associated with at most 1 input model element.
-     * Hence, this method shall be called at most once for a given view model element.<br>
-     * In contrast, multiple view model elements can be associated with an input model element.
-     * 
-     * @param <T>
-     *            the type of the view model element
-     * @param derived
-     *            the view model element
-     * @param source
-     *            the input model element
-     * @return the view model element for convenience
-     */
-    public <T extends EObject> T associateWith(final T derived, final Object source) {
-        currentContext.associateSourceTargetPair(source, derived);
-        return derived;
-    }
-    
-
-    
-    /**
-     * Associates a view model element with a input model element.<br>
-     * Name, parameter ordering, and return value (the target) are optimized for calling in
-     * Xtend-based transformations in a fluent interface fashion, like
-     * "model.createShape().putToLookUpWith(model);"<br>
-     * 
-     * @deprecated use {@link #associateWith(EObject, Object)}
-     * 
-     * @param <D>
-     *            the type of the target element which is implicitly determined
-     * @param derived
-     *            the derived element
-     * @param source
-     *            the model element
-     * @return the image element
-     */
-    public <D extends EObject> D putToLookUpWith(final D derived, final Object source) {
-        return this.associateWith(derived, source);
+        return sourceModelClass;
     }
     
     /**
@@ -217,8 +123,114 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
         }
         // infer the types if a matching method has been found
         if (transformMethod != null) {
-            this.setSourceClass(transformMethod.getParameterTypes()[0]);
+            this.sourceModelClass = transformMethod.getParameterTypes()[0];
         }
+    }
+
+
+    /**
+     * {@inheritDoc}<br>
+     * May be overridden by concrete implementations in order to incorporate property settings of
+     * the <code>viewContext</code> into the decision.
+     */
+    public boolean supports(final Object model, final ViewContext viewContext) {
+
+        if (this.getSourceClass().isInstance(model)) {
+            @SuppressWarnings("unchecked")
+            final S input = (S) model;
+            return supports(input);
+
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Method for checking whether <code>this</code> diagram synthesis implementation supports the
+     * given <code>model</code>.<br>
+     * May be overridden by concrete implementations.
+     * 
+     * @param model
+     *            the model to test
+     * @return <code>true</code> if <code>this</code> transformation supports <code>model</code>,
+     *         and <code>false</code> otherwise
+     */
+    public boolean supports(final S model) {
+        return true;
+    }
+
+
+    /**
+     * Method hook to be called by KLighD's runtime.<br>
+     * Concrete implementations must not override this method but {@link #transform(Object)}.
+     * The {@link ViewContext} can be accessed via {@link #getUsedContext()}.
+     * 
+     * @param model
+     *            the semantic model to be depicted
+     * @param viewContext
+     *            the {@link ViewContext} serving as provider and acceptor for various data
+     *            (option values, source view tracing, ...)
+     * @return the related KGraph/KRendering diagram description
+     */
+    public final KNode transform(final Object model, final ViewContext viewContext) {
+        use(viewContext);
+        @SuppressWarnings("unchecked")
+        final S input = (S) model; 
+        return transform(input);
+    }
+
+    /**
+     * Translates the an model of type S into a KGraph/KRendering diagram description.<br>
+     * The {@link ViewContext} can be accessed via {@link #getUsedContext()}.
+     * 
+     * @param model
+     *            the semantic model to be depicted
+     * @return the related KGraph/KRendering diagram description
+     */
+    public abstract KNode transform(S model);
+
+
+    /**
+     * Associates a view model element with a input model element.<br>
+     * Name, parameter ordering, and return value (the target) are optimized for calling in
+     * Xtend-based transformations in a fluent interface fashion, like
+     * "model.createShape().associateWith(model);"<br>
+     * <br>
+     * <b>Note:</b> A view model element can be associated with at most 1 input model element.
+     * Hence, this method shall be called at most once for a given view model element.<br>
+     * In contrast, multiple view model elements can be associated with an input model element.
+     * 
+     * @param <T>
+     *            the type of the view model element
+     * @param derived
+     *            the view model element
+     * @param source
+     *            the input model element
+     * @return the view model element for convenience
+     */
+    public <T extends EObject> T associateWith(final T derived, final Object source) {
+        currentContext.associateSourceTargetPair(source, derived);
+        return derived;
+    }
+
+    /**
+     * Associates a view model element with a input model element.<br>
+     * Name, parameter ordering, and return value (the target) are optimized for calling in
+     * Xtend-based transformations in a fluent interface fashion, like
+     * "model.createShape().putToLookUpWith(model);"<br>
+     * 
+     * @deprecated use {@link #associateWith(EObject, Object)}
+     * 
+     * @param <D>
+     *            the type of the target element which is implicitly determined
+     * @param derived
+     *            the derived element
+     * @param source
+     *            the model element
+     * @return the image element
+     */
+    public <D extends EObject> D putToLookUpWith(final D derived, final Object source) {
+        return this.associateWith(derived, source);
     }
 
 
@@ -334,7 +346,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     protected <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        KLayoutData sl = node.getData(KLayoutData.class);
+        final KLayoutData sl = node.getData(KLayoutData.class);
         if (sl != null) {
             ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
         }
@@ -361,7 +373,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     protected <T> KPort setExpansionAwareLayoutOption(final KPort port, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        KLayoutData sl = port.getData(KLayoutData.class); 
+        final KLayoutData sl = port.getData(KLayoutData.class); 
         ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
         
         if (data == null) {
@@ -394,6 +406,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
         return this.currentContext;
     }
 
+
     // ---------------------------------------------------------------------------------- //
     //  Convenience methods to retrieve the value of a SynthesisOption
 
@@ -414,9 +427,13 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * @return the configured value of {@link SynthesisOption} option.
      */
     public boolean getBooleanValue(final SynthesisOption option) {
-        Object result = this.getUsedContext().getOptionValue(option);
-        if (result instanceof Boolean) {
-            return (Boolean) result; 
+        final Object result = this.getUsedContext().getOptionValue(option);
+        if (result == null) {
+            return false;
+
+        } else if (result instanceof Boolean) {
+            return (Boolean) result;
+
         } else {
             throw new IllegalArgumentException("KLighD transformation option handling: "
                     + "The transformation " + this
@@ -432,12 +449,16 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * @return the configured value of {@link SynthesisOption} option.
      */
     public int getIntValue(final SynthesisOption option) {
-        Object result = this.getUsedContext().getOptionValue(option);
-        if (result instanceof Float) {
+        final Object result = this.getUsedContext().getOptionValue(option);
+        if (result == null) {
+            return 0;
+
+        } else if (result instanceof Float) {
             return ((Float) result).intValue();
-        }
-        if (result instanceof Integer) {
-            return (Integer) result; 
+
+        } else  if (result instanceof Integer) {
+            return (Integer) result;
+
         } else {
             throw new IllegalArgumentException("KLighD transformation option handling: "
                     + "The transformation " + this
@@ -453,41 +474,18 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * @return the configured value of {@link SynthesisOption} option.
      */
     public float getFloatValue(final SynthesisOption option) {
-        Object result = this.getUsedContext().getOptionValue(option);
-        if (result instanceof Float) {
-            return (Float) result; 
+        final Object result = this.getUsedContext().getOptionValue(option);
+        if (result == null) {
+            return 0.0f;
+
+        } else if (result instanceof Float) {
+            return (Float) result;
+
         } else {
             throw new IllegalArgumentException("KLighD transformation option handling: "
                     + "The transformation " + this
                     + " attempted to evaluate the non-Float valued transformation option "
                     + option.getName() + " expecting a float value.");
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class<?> getSourceClass() {
-        if (!triedToInferClass()) {
-            inferSourceAndTargetModelClass();
-        }
-        return sourceModelClass;
-    }
-    
-    /**
-     * Setter for the sourceModelClass property.
-     * @param theSourceClass the class of the source models.
-     */
-    protected void setSourceClass(final Class<?> theSourceClass) {
-        this.sourceModelClass = theSourceClass;
-    }
-    
-    /**
-     * Getter for the triedToInferClasses flag.
-     * 
-     * @return true if source and target classes have been tried to infer
-     */
-    protected boolean triedToInferClass() {
-        return this.triedToInferClasses;
     }
 }
