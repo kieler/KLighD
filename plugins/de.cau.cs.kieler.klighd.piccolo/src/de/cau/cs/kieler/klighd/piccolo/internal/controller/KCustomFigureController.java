@@ -39,6 +39,17 @@ public abstract class KCustomFigureController extends PNodeController<KCustomFig
      */
     @Override
     public void applyChanges(final Styles styles) {
+        // since rotation is applicable to KCustomFigureNodes
+        //  apply it the potentially available rotation style 
+        
+        if (styles.rotation != null) {
+            this.setRotation(styles.rotation.getRotation(), styles.rotation.getRotationAnchor());
+            styles.rotation = null;
+        } else {
+            this.setRotation(0, null);
+        }
+
+        // now let the concrete KCustomFigureNode apply the remaining styles
         getNode().applyStyles(styles);
     }
 }
