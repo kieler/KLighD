@@ -118,9 +118,9 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<Objec
      * @return an {@link Iterator} providing the requested source model elements
      */
     public Iterator<Object> sourceElementIterator() {
-        return Iterators.transform(KlighdTreeSelection.this.iterator(),
-                new Function<Object, Object>() {
-                    public Object apply(final Object object) {
+        return Iterators.transform(KlighdTreeSelection.this.eIterator(),
+                new Function<EObject, Object>() {
+                    public Object apply(final EObject object) {
                         return KlighdTreeSelection.this.viewContext.getSourceElement(object);
                     }
                 });
@@ -133,11 +133,11 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<Objec
      * @return an {@link Iterator} providing the requested source model elements
      */
     public Iterator<Pair<EObject, Object>> sourceViewPairIterator() {
-        return Iterators.transform(KlighdTreeSelection.this.iterator(),
-                new Function<Object, Pair<EObject, Object>>() {
-                    public Pair<EObject, Object> apply(final Object object) {
-                        return Pair.of((EObject) object,
-                                KlighdTreeSelection.this.viewContext.getSourceElement(object));
+        return Iterators.transform(KlighdTreeSelection.this.eIterator(),
+                new Function<EObject, Pair<EObject, Object>>() {
+                    public Pair<EObject, Object> apply(final EObject eObject) {
+                        return Pair.of(eObject,
+                                KlighdTreeSelection.this.viewContext.getSourceElement(eObject));
                     }
                 });
     }

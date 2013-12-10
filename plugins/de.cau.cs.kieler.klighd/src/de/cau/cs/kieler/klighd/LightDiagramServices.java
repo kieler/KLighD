@@ -444,19 +444,18 @@ public final class LightDiagramServices {
     /**
      * Translates the given <code>model</code> by means of the known diagram synthesis translations.
      * Incorporates constraints given in the <code>propertyHolders</code>.
+     * 
      * @param model
      *            the model
      * @param otherVC
-     *            the view context to merge mappings created while translating <code>model</code> into
+     *            the view context to merge mappings created while translating <code>model</code>
+     *            into
      * @param propertyHolders
      *            the property holders
-     * 
-     * @param <T>
-     *            the expected type of the result
      * @return the view context or null if the model and all possible transformations are
      *         unsupported by all viewer providers
      */
-    public static <T> T translateModel(final Object model, final ViewContext otherVC,
+    public static KNode translateModel(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
         ViewContext vc = createViewContext(model, propertyHolders);
         
@@ -466,11 +465,7 @@ public final class LightDiagramServices {
         }
 
         updateViewContext(vc, model);
-        @SuppressWarnings("unchecked")
-        T result = (T) vc.getViewModel();
-        if (otherVC != null) {
-            otherVC.merge(vc);
-        }
+        final KNode result = vc.getViewModel();
         return result;
     }
 }

@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,16 +28,17 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
@@ -50,6 +52,7 @@ import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -258,9 +261,6 @@ public final class ViewContext extends MapPropertyHolder {
     public void update(final Object model, final IUpdateStrategy<KNode> theUpdateStrategy) {
         final Object sourceModel = model != null ? model : this.businessModel;
         
-        // clear out the mapping data of the involved transformation contexts
-        this.clearSourceTargetMappings();
-
         final KNode newViewModel;
         if (this.diagramSynthesis != null
                 && diagramSynthesis.getSourceClass().isAssignableFrom(sourceModel.getClass())) {
@@ -281,7 +281,7 @@ public final class ViewContext extends MapPropertyHolder {
             final String msg = "KLighD: Could not create a diagram of provided input model "
                     + sourceModel + ".";
             // TODO: extend error msg
-            StatusManager.getManager().handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+            StatusManager.getManager().handle(new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
             return;
         }
         
@@ -421,23 +421,19 @@ public final class ViewContext extends MapPropertyHolder {
     //  Source target element handling    
 
     /**
-     * An additional map containing target source mappings that are contributed into this view
-     * context while merging another view context into this one. It is populated, e.g, when the
-     * diagram is incrementally extended. Usually such mappings are stored in the transformation
-     * contexts.
-     */
-    private Map<Object, Object> additionalTargetSourceElementMap = null;
-
-    /**
-     * Returns the element in the source model that translates to the given object in the context's
-     * model by using the transformations invoked to obtain that model.
+     * Returns the element in the input model that is represented by the given <code>element</code>
+     * in the diagram.<br>
+     * <b>Note:</b> This method does not check whether <code>element</code> is currently contained
+     * in the view model (accessible via {@link #getViewModel()}).
      * 
      * @param element
-     *            the object in the context's model
-     * @return the element in the source model or null if the link could not be made
+     *            the diagram element whose source element in the input (source, semantic, or
+     *            business) model is requested
+     * @return the element in the input model or <code>null</code> if no source element could be
+     *         identified
      */
-    public Object getSourceElement(final Object element) {
-        Object model;
+    public Object getSourceElement(final EObject element) {
+        final Object model;
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(element)) {
             model = ((KGraphData) element).getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
@@ -451,34 +447,66 @@ public final class ViewContext extends MapPropertyHolder {
             model = null;
         }
         
-        if (model != null) {
-            return model;
-        }
-        
-        if (additionalTargetSourceElementMap != null) {
-            Object source = additionalTargetSourceElementMap.get(element);
-            if (source != null) {
-                return source;
-            }
-        }
-        return null;
+         return model;
     }
 
-    /**
-     * An additional map containing source target mappings that are contributed into this view
-     * context while merging another view context into this one. It is populated, e.g, when the
-     * diagram is incrementally extended. Usually such mappings are stored in the transformation
-     * contexts.
-     */
-    private Multimap<Object, Object> additionalSourceTargetElementMap = null;
 
     /**
-     * Returns the element in the context's view model that derives from the given element in the
-     * source model by using the transformations invoked to obtain the context's view model.<br>
-     * Since multiple view elements can be associated with a source model element, there are most
-     * likely multiple target elements. Thus the method returns the first one, or the first one of
+     * Returns the elements in the view model that represent the given <code>element</code> in the
+     * diagram.<br>
+     * <b>Note:</b> This method does not check whether <code>element</code> is currently contained
+     * in the input model being represented (accessible via {@link #getInputModel()}).
+     * 
+     * @param element
+     *            the object in the input (source, semantic, or business) model
+     * @return a {@link Collection} of diagram elements representing the given <code>element</code>
+     *         or <code>{@link Collections#emptyList()}</code> if no corresponding view model
+     *         elements could be identified
+     */
+    public Collection<EObject> getTargetElements(final Object element) {
+        
+        if (element == null) {
+            return Collections.emptyList();
+        }
+        
+        final Iterator<EObject> it =
+                ModelingUtil.eAllContentsOfType2(viewModel, KGraphElement.class, KRendering.class);
+        
+        final Collection<EObject> targetCollection =
+                Lists.newArrayList(Iterators.filter(it, new Predicate<EObject>() {
+
+            /** {@inheritDoc} */
+            public boolean apply(final EObject input) {
+                
+                if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(input)) {
+                    return apply(((KGraphElement) input).getData(KLayoutData.class));
+                    
+                } else if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(input)) {
+                    return apply((KGraphData) input);
+                    
+                } else {
+                    return false;
+                }
+            }
+            
+            private boolean apply(final KGraphData data) {
+                return data.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) == element;
+            }
+        }));
+        
+        return targetCollection;
+    }
+
+
+    /**
+     * Returns the elements in the view model that represent the given <code>element</code> in the
+     * diagram.<br>
+     * Since multiple view elements can be associated with an input model element, there are most
+     * likely multiple view model elements. Thus the method returns the first one, or the first one of
      * type <code>ofType</code> if that parameter is non-<code>null</code>, or <code>null</code> if
-     * there isn't any corresponding element (of type <code>ofType</code>).
+     * there isn't any corresponding element (of type <code>ofType</code>).<br>
+     * <b>Note:</b> This method does not check whether <code>element</code> is currently contained
+     * in the input model being represented (accessible via {@link #getInputModel()}).
      * 
      * @param <T>
      *            the type of denoted by <code>type</code>
@@ -493,11 +521,8 @@ public final class ViewContext extends MapPropertyHolder {
         if (element == null) {
             return null;
         }
-        Collection<?> targetCollection = null;
         
-        if (additionalSourceTargetElementMap != null) {
-            targetCollection = additionalSourceTargetElementMap.get(element);
-        }
+        final Collection<EObject> targetCollection = getTargetElements(element);
         
         if (targetCollection == null || targetCollection.isEmpty()) {
             return null;
@@ -512,130 +537,7 @@ public final class ViewContext extends MapPropertyHolder {
         }
     }
 
-    /**
-     * A. 
-     * @param element a
-     * @return b
-     */
-    public Collection<?> getTargetElements(final Object element) {
-        if (additionalSourceTargetElementMap != null) {
-            return additionalSourceTargetElementMap.get(element);
-        }
-        return Collections.emptyList();        
-    }
 
-    /**
-     * Merges the source target mappings of <code>otherViewContext</code> into this one.
-     * 
-     * @param otherViewContext another view context to take source target mappings from
-     */
-    public void merge(final ViewContext otherViewContext) {
-        if (this.additionalTargetSourceElementMap == null) {
-            this.additionalTargetSourceElementMap = Maps.newHashMap();
-        }
-        if (this.additionalSourceTargetElementMap == null) {
-            this.additionalSourceTargetElementMap = HashMultimap.create();
-        }
-        
-        for (Object target : otherViewContext.getTargetElements()) {
-            Object source = otherViewContext.getSourceElement(target);
-            if (source != null) {
-                this.additionalTargetSourceElementMap.put(target, source);
-                this.additionalSourceTargetElementMap.put(source, target);
-            }
-        }
-    }
-
-    /**
-     * Clears out the mapping data of the involved transformation contexts and those of the
-     * additional maps that may contain mappings of lazily added diagram elements.<br>
-     * <br>
-     * <b>TODO</b>: Doing that this way is wrong in case of incremental updates. We need another
-     * solution for that situation.
-     */
-    public void clearSourceTargetMappings() {
-        if (additionalSourceTargetElementMap != null) {
-            additionalSourceTargetElementMap.clear();
-        }
-    }
-    
-    
-    /** The lookup tables maintaining the model-image-relation of the transformation. */
-    private Multimap<Object, Object> sourceTargetElementMap = null;
-    private Map<Object, Object> targetSourceElementMap = null;
-   
-    /**
-     * Put a pair of a model and a derived element into the lookup table.
-     * 
-     * @param derived the derived element
-     * @param model the model element
-     */
-    public void addSourceTargetPair(final Object model, final Object derived) {
-        if (this.targetSourceElementMap == null
-                || this.sourceTargetElementMap == null) {
-            this.targetSourceElementMap = Maps.newHashMap();
-            this.sourceTargetElementMap = HashMultimap.create();
-        }
-        this.sourceTargetElementMap.put(model, derived);        
-        this.targetSourceElementMap.put(derived, model);        
-    }
-
-    /**
-     * Returns all target elements that are tracked in the source target mappings.<br>
-     * Must be used in {@link ViewContext} only, therefore it is "package protected".
-     * 
-     * @return an {@link Iterable} containing all tracked target elements
-     */
-    Iterable<?> getTargetElements() {
-        return this.targetSourceElementMap.keySet();
-    }
-    
-    /**
-     * Returns the element in the source model which is represented by the given element in the
-     * target model.
-     * 
-     * @param element
-     *            the element in the target model
-     * @return the element in the source model or null if the element could not be found
-     */
-    public Object getSourceElement2(final Object element) {
-        if (this.targetSourceElementMap != null) {
-            return this.targetSourceElementMap.get(element);
-        }
-        return null;
-    }
-
-    /**
-     * Returns the element in the target model which represents the given element in the source
-     * model.
-     * 
-     * @param element
-     *            the element in the source model
-     * @return the element in the target model or null if the element could not be found
-     */
-    public Collection<?> getTargetElement(final Object element) {
-        if (this.sourceTargetElementMap != null) {
-            return this.sourceTargetElementMap.get(element);
-        }
-        return null;
-    }
-    
-    /**
-     * Cleans up the source target mappings.
-     */
-    public void clear() {
-        if (this.sourceTargetElementMap != null) {
-            this.sourceTargetElementMap.clear();
-        }
-        if (this.targetSourceElementMap != null) {
-            this.targetSourceElementMap.clear();
-        }
-    }
-
-    
-    
-    
-    
     // ---------------------------------------------------------------------------------- //
     //  Synthesis option handling    
 
