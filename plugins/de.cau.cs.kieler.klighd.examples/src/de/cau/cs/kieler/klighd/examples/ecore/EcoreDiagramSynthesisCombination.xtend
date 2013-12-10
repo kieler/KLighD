@@ -52,7 +52,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
             return;
 		}
 		
-		val selection = selectionState.selection;
+		val selection = selectionState.selectionElements;
 		if (!selection.nullOrEmpty) {
             if (selection.forall[typeof(EPackage).isInstance(it) || typeof(EClass).isInstance(it)]) {
                 // in case the elements to be depicted are given immediately,
@@ -68,7 +68,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                 if (editorInputPath != null) {
                     val id = editorInputPath.toPortableString().replace(":", "") as String;
                     this.schedule(new KlighdUpdateDiagramEffect(id, editorInputPath.lastSegment,
-                            EModelElementCollection::of(selectionState.selection.filter(typeof(EModelElement)).toList),
+                            EModelElementCollection::of(selectionState.selectionElements.filter(typeof(EModelElement)).toList),
                             es.editorPart
                         )
                     );
@@ -77,7 +77,7 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
                 // this case covers the situation of depicting classes selected in the Project Explorer
                 val itemClass = typeof(org.eclipse.emf.ecoretools.diagram.navigator.EcoreDomainNavigatorItem);               
                 if (selection.forall[itemClass.isInstance(it)]) {
-                    val elements = selectionState.selection.filter(itemClass).map[
+                    val elements = selectionState.selectionElements.filter(itemClass).map[
                         it.EObject
                     ].filter(typeof(EModelElement)).toList;
                     
