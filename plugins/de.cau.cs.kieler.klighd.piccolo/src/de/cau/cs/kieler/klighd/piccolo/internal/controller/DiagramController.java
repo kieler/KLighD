@@ -124,19 +124,19 @@ public class DiagramController {
      */
     private static final String K_EDGE_LAYOUT_LISTENER = "KEdgeLayoutListener";
 
-    /** the property for the Piccolo representation of a node. */
+    /** the property for the Piccolo2D representation of a node. */
     private static final IProperty<INode> REP = new Property<INode>(
             "klighd.piccolo.representation");
     
-    /** the property for the Piccolo representation of an edge. */
+    /** the property for the Piccolo2D representation of an edge. */
     private static final IProperty<KEdgeNode> EDGE_REP = new Property<KEdgeNode>(
             "klighd.piccolo.representation");
 
-    /** the property for the Piccolo representation of a port. */
+    /** the property for the Piccolo2D representation of a port. */
     private static final IProperty<KPortNode> PORT_REP = new Property<KPortNode>(
             "klighd.piccolo.representation");
     
-    /** the property for the Piccolo representation of a label. */
+    /** the property for the Piccolo2D representation of a label. */
     private static final IProperty<KLabelNode> LABEL_REP = new Property<KLabelNode>(
             "klighd.piccolo.representation");
 
@@ -926,6 +926,8 @@ public class DiagramController {
                 nodeNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
                 nodeNode.setRenderingController(null);
+                // release the node representation from the node's renderingContextData
+                RenderingContextData.get(node).setProperty(REP, null);
             }
         }
     }
@@ -1027,6 +1029,8 @@ public class DiagramController {
                 edgeNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
                 edgeNode.setRenderingController(null);
+                // release the edge representation from the edge's renderingContextData
+                RenderingContextData.get(edge).setProperty(EDGE_REP, null);
             }
         }
     }
@@ -1106,6 +1110,8 @@ public class DiagramController {
                 portNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
                 portNode.setRenderingController(null);
+                // release the port representation from the port's renderingContextData
+                RenderingContextData.get(port).setProperty(PORT_REP, null);
             }
         }
     }
@@ -1190,6 +1196,8 @@ public class DiagramController {
                 labelNode.getRenderingController().removeAllPNodeControllers();
                 // release the node rendering controller
                 labelNode.setRenderingController(null);
+                // release the label representation from the label's renderingContextData
+                RenderingContextData.get(label).setProperty(LABEL_REP, null);
             }
         }
     }
