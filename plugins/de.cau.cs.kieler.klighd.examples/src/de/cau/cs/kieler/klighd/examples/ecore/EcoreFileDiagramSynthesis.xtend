@@ -7,12 +7,20 @@ import org.eclipse.emf.ecore.EPackage
 
 class EcoreFileDiagramSynthesis extends AbstractDiagramSynthesis<EPackage> {
     
-    @Inject private EcoreDiagramSynthesis delegate
+    @Inject
+    private EcoreDiagramSynthesis delegate
 
     override transform(EPackage model) {
         val col = EModelElementCollection::of(Iterators::singletonIterator(model))
 
-        delegate.transform(col, usedContext);
+        return delegate.transform(col, usedContext);
     }
     
+    override getDisplayedSynthesisOptions() {
+        return delegate.displayedSynthesisOptions;
+    }
+    
+    override getDisplayedLayoutOptions() {
+        return delegate.displayedLayoutOptions;
+    }
 }
