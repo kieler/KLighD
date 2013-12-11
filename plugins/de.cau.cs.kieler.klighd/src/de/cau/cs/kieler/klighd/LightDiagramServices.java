@@ -31,12 +31,8 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.service.KimlServicePlugin;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
-import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
-import de.cau.cs.kieler.klighd.views.DiagramViewManager;
-import de.cau.cs.kieler.klighd.views.DiagramViewPart;
-import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * Singleton for accessing basic KLighD services.
@@ -249,10 +245,10 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
         IViewer<KNode> diagramViewer = viewContext.getViewer();
-        DiagramViewPart viewPart = DiagramViewManager.getInstance().getView(
-                diagramViewer.getContextViewer().getViewPartId());
+//        DiagramViewPart viewPart = DiagramViewManager.getInstance().getView(
+//                diagramViewer.getContextViewer().getViewPartId());
         
-        layoutDiagram(viewPart, diagramViewer, animate, zoomToFit, options);
+        layoutDiagram(null, diagramViewer, animate, zoomToFit, options);
     }
     
     /**

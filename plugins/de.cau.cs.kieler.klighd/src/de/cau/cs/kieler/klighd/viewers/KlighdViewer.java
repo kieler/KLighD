@@ -43,7 +43,7 @@ public class KlighdViewer extends AbstractViewer<Object> implements IViewer<Obje
      *            the parent composite
      */
     public KlighdViewer(final Composite parent) {
-        contextViewer = new ContextViewer(parent, null, null);
+        contextViewer = new ContextViewer(parent, null);
     }
     
     /**

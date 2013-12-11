@@ -45,15 +45,14 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
-import de.cau.cs.kieler.klighd.views.DiagramEditorPart;
-import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 //SUPPRESS CHECKSTYLE PREVIOUS 6 LineLength
 
 /**
@@ -322,13 +321,13 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                                     EclipseLayoutConfig.WORKBENCH_PART);
                             if (workbenchPart != null) {
                                 // re-apply auto-layout with the new configuration
-                                DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null,
-                                        true, false, false, false);
-                                if (workbenchPart instanceof DiagramEditorPart) {
-                                    DiagramEditorPart dep = (DiagramEditorPart) workbenchPart;
-                                    // mark the editor as dirty
-                                    dep.setDirty(true);
-                                }
+//                                DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null,
+//                                        true, false, false, false);
+//                                if (workbenchPart instanceof DiagramEditorPart) {
+//                                    DiagramEditorPart dep = (DiagramEditorPart) workbenchPart;
+//                                    // mark the editor as dirty
+//                                    dep.setDirty(true);
+//                                }
                             }
                         }
                     });

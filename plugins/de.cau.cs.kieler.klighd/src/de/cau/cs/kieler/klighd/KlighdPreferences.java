@@ -11,9 +11,8 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.internal.preferences;
+package de.cau.cs.kieler.klighd;
 
-import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
  * IDs and default values of preferences defined by KLighD and stored in the preference store.

@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.views;
+package de.cau.cs.kieler.klighd.ui.views;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +39,8 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -59,14 +61,16 @@ import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
-import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -121,6 +125,13 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         registerResourceChangeListener();
     }
 
+    private DiagramSideBarFactory sideBarFactory;
+    
+    private Composite diagramComposite;
+
+    /** The layout configurator that stores the values set by the layout option controls. */
+    private VolatileLayoutConfig lightLayoutConfig = new VolatileLayoutConfig();
+
     /**
      * {@inheritDoc}
      */
@@ -130,7 +141,11 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         setPartName(getEditorInput().getName());
         
         // create a context viewer
-        viewer = new ContextViewer(parent, "diagramEditor:" + getEditorInput().toString(), this);
+        viewer = new ContextViewer(parent, "diagramEditor:" + getEditorInput().toString());
+        
+        // introduce a new Composite that accommodates the visualized content
+        this.diagramComposite = new Composite(parent, SWT.NONE);
+        this.diagramComposite.setLayout(new FillLayout());
         
         // add buttons to the editor toolbar
         // requires non-null 'viewer' field
@@ -144,6 +159,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // create a view context for the viewer
         final ViewContext viewContext = LightDiagramServices.createViewContext(model,
                 configureKlighdProperties());
+        
+        // create the options pane
+        sideBarFactory = new DiagramSideBarFactory();
+        sideBarFactory.createSideBar(parent, this.diagramComposite, lightLayoutConfig, viewContext);
         
         if (viewContext != null) {
             viewer.setModel(viewContext);
@@ -184,7 +203,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 currentOutlinePage.setVisible(true);
             }
 
-            viewer.updateOptions(false);
+            sideBarFactory.updateOptions(this.diagramComposite, viewer.getViewContext(), false);
 
             // since no initial selection is set in the view context/context viewer implementation,
             //  define some here by selection the root of the view model representing the diagram canvas!
@@ -622,5 +641,4 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             }
         }
     };
-    
 }

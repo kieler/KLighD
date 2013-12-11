@@ -48,7 +48,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
-import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.syntheses.DuplicatingDiagramSynthesis;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -81,6 +80,9 @@ public final class ViewContext extends MapPropertyHolder {
 
     /** the part the source model was selected from (if can reasonably be determined). */
     private transient IWorkbenchPart sourceWorkbenchPart = null;
+    
+    /** the workbench part for which the viewer is created. */
+    private IDiagramWorkbenchPart diagramWorkbenchPart;
     
     /** the viewer provider. */
     private transient IViewerProvider<KNode> viewerProvider = null;
@@ -301,6 +303,15 @@ public final class ViewContext extends MapPropertyHolder {
         
         
         this.businessModel = sourceModel;
+    }
+
+    /**
+     * Returns the diagram workbench part.
+     * 
+     * @return the {@link IDiagramWorkbenchPart}
+     */
+    public IDiagramWorkbenchPart getDiagramWorkbenchPart() {
+        return diagramWorkbenchPart;
     }
 
 

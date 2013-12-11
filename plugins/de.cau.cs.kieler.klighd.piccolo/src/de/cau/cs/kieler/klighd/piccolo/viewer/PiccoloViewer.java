@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.actions.ActionFactory;
 
 import com.google.common.collect.Iterables;
 
@@ -58,7 +57,6 @@ import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
-import de.cau.cs.kieler.klighd.views.DiagramViewPart;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -150,13 +148,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
 
         // register a print action with the global action bars
-        if (getContextViewer().getWorkbenchPart() instanceof DiagramViewPart) {
-            DiagramViewPart viewPart = (DiagramViewPart) getContextViewer().getWorkbenchPart();
-
-            // register print action
-            viewPart.getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(),
-                            new PrintAction(this, viewPart));
-        }
+//        if (getContextViewer().getWorkbenchPart() instanceof DiagramViewPart) {
+//            DiagramViewPart viewPart = (DiagramViewPart) getContextViewer().getWorkbenchPart();
+//
+//            // register print action
+//            viewPart.getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(),
+//                            new PrintAction(this, viewPart));
+//        }
 
     }
 
@@ -306,8 +304,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         
         // register the context menu in the current work bench part site
         //  this enables the population with entries contributed via extension points
-        this.getContextViewer().getWorkbenchPart().getSite()
-                .registerContextMenu(menuManager, this.getContextViewer());
+//        this.getContextViewer().getWorkbenchPart().getSite()
+//                .registerContextMenu(menuManager, this.getContextViewer());
     }
 
     /**

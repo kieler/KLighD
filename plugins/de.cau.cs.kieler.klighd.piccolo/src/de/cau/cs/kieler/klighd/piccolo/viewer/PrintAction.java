@@ -22,8 +22,6 @@ import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
-import de.cau.cs.kieler.klighd.views.DiagramViewPart;
-
 /**
  * @author uru
  * 

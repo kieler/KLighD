@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.internal.options;
+package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -33,7 +33,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.views.DiagramViewManager;
+import de.cau.cs.kieler.klighd.ui.views.DiagramViewManager;
 
 /**
  * A factory providing methods for creating diagram synthesis option controls in the diagram side bar.
@@ -116,10 +116,10 @@ public class SynthesisOptionControlFactory {
      * 
      * @param option the 'check' option
      * @param context the related {@link ViewContext} the option is declared in
-     * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
+//    * @param viewId the id of the current view, is required used for invoking the diagram update. 
     public void createCheckOptionControl(final SynthesisOption option,
-            final ViewContext context, final String viewId) {
+            final ViewContext context) {
 
         final Button checkButton = formToolkit.createButton(parent, option.getName(), SWT.CHECK);
         checkButton.setToolTipText(option.getName());
@@ -139,7 +139,7 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        DiagramViewManager.getInstance().updateView(viewId);
+                        DiagramViewManager.getInstance().updateView(context);
                     }
                 });
             }
@@ -151,10 +151,9 @@ public class SynthesisOptionControlFactory {
      * 
      * @param option the 'choice' option
      * @param context the related {@link ViewContext} the option is declared in
-     * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
-    public void createChoiceOptionControl(final SynthesisOption option,
-            final ViewContext context, final String viewId) {
+//    * @param viewId the id of the current view, is required used for invoking the diagram update. 
+    public void createChoiceOptionControl(final SynthesisOption option, final ViewContext context) {
         
         final GridLayout gl = new GridLayout();
         gl.verticalSpacing = MINOR_VERTICAL_SPACING;
@@ -193,7 +192,7 @@ public class SynthesisOptionControlFactory {
                         // trigger the diagram update
                         Display.getCurrent().asyncExec(new Runnable() {
                             public void run() {
-                                DiagramViewManager.getInstance().updateView(viewId);
+                                DiagramViewManager.getInstance().updateView(context);
                             }
                         });
                     }
@@ -210,10 +209,9 @@ public class SynthesisOptionControlFactory {
      * 
      * @param option the 'range' option
      * @param context the related {@link ViewContext} the option is declared in
-     * @param viewId the id of the current view, is required used for invoking the diagram update. 
      */
-    public void createRangeOptionControl(final SynthesisOption option,
-            final ViewContext context, final String viewId) {
+//    * @param viewId the id of the current view, is required used for invoking the diagram update. 
+    public void createRangeOptionControl(final SynthesisOption option, final ViewContext context) {
         
         final GridLayout gl = new GridLayout();
         gl.verticalSpacing = MINOR_VERTICAL_SPACING;
@@ -307,7 +305,7 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        DiagramViewManager.getInstance().updateView(viewId);
+                        DiagramViewManager.getInstance().updateView(context);
                     }
                 });
             }

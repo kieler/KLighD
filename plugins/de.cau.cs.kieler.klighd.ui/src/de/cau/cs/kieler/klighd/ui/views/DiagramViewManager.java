@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.views;
+package de.cau.cs.kieler.klighd.ui.views;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +34,7 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -54,7 +55,7 @@ public final class DiagramViewManager implements IPartListener {
     public static final IProperty<String> VIEW_ID = new Property<String>("klighd.viewId");
 
     /** the primary identifier for the diagram view as specified in the view extension. */
-    private static final String PRIMARY_VIEW_ID = "de.cau.cs.kieler.klighd.lightDiagramView";
+    private static final String PRIMARY_VIEW_ID = "de.cau.cs.kieler.klighd.ui.lightDiagramView";
 
     /** the singleton instance. */
     private static DiagramViewManager instance = new DiagramViewManager();
@@ -255,6 +256,37 @@ public final class DiagramViewManager implements IPartListener {
         return diagramView;
     }
     
+    
+    public IDiagramWorkbenchPart updateView(final ViewContext viewContext) {
+        return this.updateView(viewContext, null);
+    }
+
+    public IDiagramWorkbenchPart updateView(final ViewContext viewContext, final Object model) {
+        // update the view context
+        
+        final IDiagramWorkbenchPart diagramView = viewContext.getDiagramWorkbenchPart();
+        final IWorkbenchPage page;
+        
+        if (diagramView instanceof DiagramViewPart) {
+            page = diagramView.getSite().getPage();
+        } else {
+            return null;
+        }
+        
+        Object currentInputModel = viewContext.getInputModel(); 
+        if (model != null || currentInputModel != null) {
+            page.bringToTop(diagramView);
+            // update the view context and viewer
+            Object theModel = (model != null ? model : currentInputModel);
+            
+            viewContext.getLayoutRecorder().startRecording();
+            if (!LightDiagramServices.updateViewContext(viewContext, theModel)) {
+                return null;
+            }
+            LightDiagramServices.layoutDiagram(viewContext);
+        }
+        return diagramView;
+    }
 
     /**
      * Creates a diagram view with the given name and model under the specified identifier. <br>
@@ -355,7 +387,7 @@ public final class DiagramViewManager implements IPartListener {
                 }
 
                 registerViewContext(diagramView, id, viewContext);
-                diagramView.getContextViewer().setModel(viewContext);
+                diagramView.setViewContext(viewContext);
 
                 // do an initial update of the view context
                 viewContext.getLayoutRecorder().startRecording();
@@ -364,7 +396,7 @@ public final class DiagramViewManager implements IPartListener {
                 LightDiagramServices.layoutDiagram(viewContext, false);
 
                 // fill the options pane according to the the incorporated transformations
-                diagramView.getContextViewer().updateOptions(viewContext.isZoomToFit());
+                diagramView.updateOptions(viewContext.isZoomToFit());
 
                 // make the view visible without giving it the focus
                 page.bringToTop(diagramView);

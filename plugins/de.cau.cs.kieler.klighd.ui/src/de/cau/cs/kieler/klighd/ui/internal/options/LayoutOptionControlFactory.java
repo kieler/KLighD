@@ -11,11 +11,10 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.internal.options;
+package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -23,8 +22,8 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -47,15 +46,11 @@ import de.cau.cs.kieler.kiml.config.LayoutContext;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
-import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.service.LayoutOptionManager;
 import de.cau.cs.kieler.kiml.ui.AlgorithmSelectionDialog;
-import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KGraphPropertyLayoutConfig;
-import de.cau.cs.kieler.klighd.views.DiagramViewPart;
-import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * A factory for controls for layout options.
@@ -66,8 +61,11 @@ public class LayoutOptionControlFactory {
     
     /** The parent composite into which controls are created. */
     private Composite parent;
-    /** The workbench part containing the diagram viewer. */
-    private IDiagramWorkbenchPart workbenchPart;
+    
+    private ViewContext viewContext;
+    
+//    /** The workbench part containing the diagram viewer. */
+//    private IDiagramWorkbenchPart workbenchPart;
     /** the form toolkit used to create controls. */
     private FormToolkit formToolkit;
     /** The layout configurator for retrieving initial values of controls. */
@@ -91,18 +89,22 @@ public class LayoutOptionControlFactory {
      * 
      * @param parent
      *            the parent container
-     * @param workbenchPart
-     *            the workbench part containing the diagram viewer
+     * @param viewContext
+     *            the viewContext belonging to the current diagram
      * @param formToolkit
      *            the form toolkit used to create controls
      * @param theLightLayoutConfig
      *            the layout configuration to the user-chosen values in
      */
-    public LayoutOptionControlFactory(final Composite parent,
-            final IDiagramWorkbenchPart workbenchPart, final FormToolkit formToolkit,
+//    * @param workbenchPart
+//    *            the workbench part containing the diagram viewer
+    public LayoutOptionControlFactory(final Composite parent, final ViewContext viewContext,
+            /* final IDiagramWorkbenchPart workbenchPart, */
+            final FormToolkit formToolkit,
             final VolatileLayoutConfig theLightLayoutConfig) {
         this.parent = parent;
-        this.workbenchPart = workbenchPart;
+        this.viewContext = viewContext;
+//        this.workbenchPart = workbenchPart;
         this.formToolkit = formToolkit;
 
         this.lightLayoutConfig = theLightLayoutConfig;
@@ -122,37 +124,38 @@ public class LayoutOptionControlFactory {
      */
     public void initialize() {
         lightLayoutConfig.clearValues(LayoutContext.global());
-        EObject inputModel = null;
-        Object viewModel = null;
-        if (workbenchPart instanceof DiagramViewPart) {
-            ViewContext viewContext = ((DiagramViewPart) workbenchPart).getContextViewer()
-                    .getViewContext();
-            if (viewContext != null) {
-                if (viewContext.getInputModel() instanceof EObject) {
-                    inputModel = (EObject) viewContext.getInputModel();
-                } else if (viewContext.getInputModel() instanceof Collection<?>) {
-                    Collection<?> collection = (Collection<?>) viewContext.getInputModel();
-                    Iterator<?> iterator = collection.iterator();
-                    if (iterator.hasNext()) {
-                        Object next = iterator.next();
-                        if (next instanceof EObject) {
-                            inputModel = (EObject) next;
-                        }
-                    }
-                }
-                viewModel = viewContext.getViewModel();
-            }
-            IViewer<?> viewer = ((DiagramViewPart) workbenchPart).getContextViewer().getActiveViewer();
-            if (viewer != null) {
-                viewModel = viewer.getModel();
-            }
-        }
+        final Object o = this.viewContext.getInputModel();
+        final EObject inputModel = o instanceof EObject ? (EObject) o : null;
+        Object viewModel = this.viewContext.getViewModel();
+//        if (workbenchPart instanceof DiagramViewPart) {
+//            ViewContext viewContext = ((DiagramViewPart) workbenchPart).getContextViewer()
+//                    .getViewContext();
+//            if (viewContext != null) {
+//                if (viewContext.getInputModel() instanceof EObject) {
+//                    inputModel = (EObject) viewContext.getInputModel();
+//                } else if (viewContext.getInputModel() instanceof Collection<?>) {
+//                    Collection<?> collection = (Collection<?>) viewContext.getInputModel();
+//                    Iterator<?> iterator = collection.iterator();
+//                    if (iterator.hasNext()) {
+//                        Object next = iterator.next();
+//                        if (next instanceof EObject) {
+//                            inputModel = (EObject) next;
+//                        }
+//                    }
+//                }
+//                viewModel = viewContext.getViewModel();
+//            }
+//            IViewer<?> viewer = ((DiagramViewPart) workbenchPart).getContextViewer().getActiveViewer();
+//            if (viewer != null) {
+//                viewModel = viewer.getModel();
+//            }
+//        }
         // create the layout configurator
         LayoutOptionManager optionManager = DiagramLayoutEngine.INSTANCE.getOptionManager();
         defaultLayoutConfig = optionManager.createConfig(inputModel, new KGraphPropertyLayoutConfig());
         // create and enrich the layout context
         defaultLayoutContext = new LayoutContext();
-        defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
+//        defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
         defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
         defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
         defaultLayoutContext.setProperty(DefaultLayoutConfig.OPT_MAKE_OPTIONS, true);
@@ -179,9 +182,9 @@ public class LayoutOptionControlFactory {
     private void refreshLayout(final boolean animate) {
         if (autoRefreshLayout) {
             if (animate) {
-                LightDiagramServices.layoutDiagram(workbenchPart);
+                LightDiagramServices.layoutDiagram(viewContext);
             } else {
-                LightDiagramServices.layoutDiagram(workbenchPart, false);
+                LightDiagramServices.layoutDiagram(viewContext, false);
             }
         }
     }

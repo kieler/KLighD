@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.views;
+package de.cau.cs.kieler.klighd.ui.views;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
@@ -19,22 +19,26 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
+import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -70,14 +74,23 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
      * Action to reset the layout options.
      */
     private IAction resetLayoutOptionsAction;
+    
+    private DiagramSideBarFactory sideBarFactory;
+    
+    private Composite diagramComposite;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void createPartControl(final Composite parent) {        
+        
+        // introduce a new Composite that accommodates the visualized content
+        this.diagramComposite = new Composite(parent, SWT.NONE);
+        this.diagramComposite.setLayout(new FillLayout());
+        
         // create the context viewer
-        viewer = new ContextViewer(parent, getViewSite().getSecondaryId(), this);
+        viewer = new ContextViewer(diagramComposite, getViewSite().getSecondaryId());
         
         // add buttons to the view toolbar
         //  requires non-null 'viewer' field 
@@ -96,6 +109,22 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
     
+    /** The layout configurator that stores the values set by the layout option controls. */
+    private VolatileLayoutConfig lightLayoutConfig = new VolatileLayoutConfig();
+
+    /**
+     * 
+     * @param viewContext the {@link ViewContext} to be displayed
+     */
+    public void setViewContext(final ViewContext viewContext) {
+        // create the options pane
+        sideBarFactory = new DiagramSideBarFactory();
+        sideBarFactory.createSideBar(this.diagramComposite.getParent(), this.diagramComposite,
+                lightLayoutConfig, viewContext);
+
+        this.getContextViewer().setModel(viewContext);
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -105,6 +134,14 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         viewer.dispose();
         disposed = true;
         DiagramViewManager.getInstance().unregisterViewContexts(this);
+    }
+    
+    /**
+     * 
+     * @param fitSpace a;
+     */
+    public void updateOptions(final boolean fitSpace) {
+        this.sideBarFactory.updateOptions(diagramComposite, this.viewer.getViewContext(), fitSpace);
     }
     
     /**
@@ -123,9 +160,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
      * @param menuManager the menu manager
      */
     private void fillViewMenu(final IMenuManager menuManager) {
-        Action exportAction = new ExportAction(this);
-        exportAction.setId(PERMANENT_ACTION_PREFIX + ".export");
-        menuManager.add(exportAction);
+//        Action exportAction = new ExportAction(this);
+//        exportAction.setId(PERMANENT_ACTION_PREFIX + ".export");
+//        menuManager.add(exportAction);
     }
     
     private Action zoomToFitAction;
@@ -242,7 +279,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         IMenuManager menu = getViewSite().getActionBars().getMenuManager();
         resetLayoutOptionsAction = new Action("Reset Layout Options") {
             public void run() {
-                viewer.getLayoutOptionControlFactory().resetToDefaults();
+                sideBarFactory.resetLayoutOptionsToDefaults();
             }
         };
         resetLayoutOptionsAction.setId(ACTION_ID_RESET_LAYOUT_OPTIONS);
@@ -346,5 +383,5 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
             }
 
         });
-    }    
+    }
 }

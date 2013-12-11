@@ -18,6 +18,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
+import de.cau.cs.kieler.klighd.viewers.IDiagramSideBarFactory;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -107,5 +108,20 @@ public class KlighdPlugin extends AbstractUIPlugin {
             }
         }
         return statusTrigger;
+    }
+    
+    /**
+     * Provides an instance of {@link IDiagramSideBarFactory}.
+     * 
+     * @return an instance of {@link IDiagramSideBarFactory} if
+     *         <code>de.cau.cs.kieler.klighd.ui</code> is available, <code>null</code> otherwise.
+     */
+    public static synchronized IDiagramSideBarFactory getSideBarFactory() {
+        try {
+            return (IDiagramSideBarFactory) Class.forName(
+                    PLUGIN_ID + ".ui.views.DiagramSideBarFactory").newInstance();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
