@@ -5,16 +5,15 @@ import de.cau.cs.kieler.core.kivi.triggers.PartTrigger
 import de.cau.cs.kieler.core.kivi.triggers.SelectionTrigger
 import de.cau.cs.kieler.klighd.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy
-import de.cau.cs.kieler.klighd.triggers.KlighdSelectionTrigger
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import java.util.List
 import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EModelElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.ui.part.FileEditorInput
+import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.
@@ -26,8 +25,12 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 	/**
 	 * The 'execute()' method, see doc of {@link AbstractCombination}.
 	 */
-	def public void execute(PartTrigger.PartState es, SelectionTrigger.SelectionState selectionState,
-	    KlighdSelectionTrigger.KlighdSelectionState klighdSelectionState) {
+	def public void execute(PartTrigger.PartState es, SelectionTrigger.SelectionState selectionState) {
+	    
+	    if (selectionState.selection instanceof KlighdTreeSelection) {
+	        // do not react on selections in KLighD diagrams
+	        return;
+	    }
 		
 		// do not react on partStates as well as on selectionStates in case
 		//  a view part has been deactivated recently, as an potentially out-dated selection
@@ -37,19 +40,6 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 		if (this.latestState() == es || es.eventType == PartTrigger.EventType::VIEW_DEACTIVATED) {
 		   //inputPath = es.getProperty(PartTrigger::EDITOR_INPUT_PATH) as IPath;
 		   return; // do only react on selectionState
-		}
-		
-		if (this.latestState() == klighdSelectionState && klighdSelectionState.selections.size > 1) {
-		    // in case a selection has been performed in the diagram ...
-		    //  (the case of selections.size == 1 is skipped as this interferes with the
-		    //   'highlight in source functionality')
-            this.schedule(
-                new KlighdUpdateDiagramEffect("de.cau.cs.kieler.klighd.examples.ecore.selection",
-                    EModelElementCollection::of(klighdSelectionState.selectedEModelElements
-                        .filter(typeof(EClassifier)))
-                )
-            );
-            return;
 		}
 		
 		val selection = selectionState.selectionElements;
