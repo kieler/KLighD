@@ -520,7 +520,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     public synchronized void setModel(final Object model, final boolean sync) {
         // if the model is a view context adapt the viewer to the given context if possible
         if (model instanceof ViewContext) {
-            ViewContext viewContext = (ViewContext) model;
+            final ViewContext viewContext = (ViewContext) model;
             // remove the old viewer
             removeViewer();
 
@@ -529,17 +529,19 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
 
             // add the new viewer
             addViewer(viewer);
+
             // set the new view context
             currentViewContext = viewContext;
+            
+            // initialize the current selection
+            notifySelectionListeners(new KlighdTreeSelection(currentViewContext));
 
         } else if (model instanceof String) {
             // if the model is a string show it
             showMessage((String) model);
-
+            
+            // provide no selection in this case!
         }
-
-        // initialize the current selection
-        notifySelectionListeners(new KlighdTreeSelection(currentViewContext));
     }
 
 
