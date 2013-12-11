@@ -37,8 +37,7 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
-import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
+import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 
 /**
  * A singleton manager for creating, updating and closing diagram views. All methods in this class
@@ -245,12 +244,13 @@ public final class DiagramViewManager implements IPartListener {
         
         
         // trigger the update status
-        KlighdStatusState state =
-                new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
-                        viewContext.getViewer());
-        if (KlighdStatusTrigger.getInstance() != null) {
-            KlighdStatusTrigger.getInstance().trigger(state);
-        }
+//        KlighdStatusState state =
+//                new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
+//                        viewContext.getViewer());
+//        if (KlighdStatusTrigger.getInstance() != null) {
+//            KlighdStatusTrigger.getInstance().trigger(state);
+//        }
+        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, id, viewContext);
         
         return diagramView;
     }
@@ -316,12 +316,14 @@ public final class DiagramViewManager implements IPartListener {
                                         .getMessage(), e));
 
                         // trigger the create failure status
-                        KlighdStatusState state =
-                                new KlighdStatusState(KlighdStatusState.Status.CREATE_FAILURE, id,
-                                        null, null);
-                        if (KlighdStatusTrigger.getInstance() != null) {
-                            KlighdStatusTrigger.getInstance().trigger(state);
-                        }
+//                        KlighdStatusState state =
+//                                new KlighdStatusState(KlighdStatusState.Status.CREATE_FAILURE, id,
+//                                        null, null);
+//                        if (KlighdStatusTrigger.getInstance() != null) {
+//                            KlighdStatusTrigger.getInstance().trigger(state);
+//                        }
+                        KlighdPlugin.getTrigger().triggerStatus(
+                                IKlighdTrigger.Status.CREATE_FAILURE, id, null);
                         return null;
                     } catch (IllegalArgumentException e) {
                         StatusManager.getManager().handle(
@@ -330,12 +332,14 @@ public final class DiagramViewManager implements IPartListener {
                                                 + "must not be empty or contain any colons."));
 
                         // trigger the create failure status
-                        KlighdStatusState state =
-                                new KlighdStatusState(KlighdStatusState.Status.CREATE_FAILURE, id,
-                                        null, null);
-                        if (KlighdStatusTrigger.getInstance() != null) {
-                            KlighdStatusTrigger.getInstance().trigger(state);
-                        }
+//                        KlighdStatusState state =
+//                                new KlighdStatusState(KlighdStatusState.Status.CREATE_FAILURE, id,
+//                                        null, null);
+//                        if (KlighdStatusTrigger.getInstance() != null) {
+//                            KlighdStatusTrigger.getInstance().trigger(state);
+//                        }
+                        KlighdPlugin.getTrigger().triggerStatus(
+                                IKlighdTrigger.Status.CREATE_FAILURE, id, null);
                         return null;
                     }
                 } else {
@@ -366,12 +370,15 @@ public final class DiagramViewManager implements IPartListener {
                 page.bringToTop(diagramView);
 
                 // trigger the create success status
-                KlighdStatusState state =
-                        new KlighdStatusState(KlighdStatusState.Status.CREATE_SUCCESS, id,
-                                viewContext, viewContext.getViewer());
-                if (KlighdStatusTrigger.getInstance() != null) {
-                    KlighdStatusTrigger.getInstance().trigger(state);
-                }
+//                KlighdStatusState state =
+//                        new KlighdStatusState(KlighdStatusState.Status.CREATE_SUCCESS, id,
+//                                viewContext, viewContext.getViewer());
+//                if (KlighdStatusTrigger.getInstance() != null) {
+//                    KlighdStatusTrigger.getInstance().trigger(state);
+//                }
+                KlighdPlugin.getTrigger().triggerStatus(
+                        IKlighdTrigger.Status.CREATE_SUCCESS, id, viewContext);
+                
             }
         }
         return diagramView;
@@ -426,12 +433,14 @@ public final class DiagramViewManager implements IPartListener {
                 idContextMapping.remove(id);
 
                 // trigger the close status
-                KlighdStatusState state =
-                        new KlighdStatusState(KlighdStatusState.Status.CLOSE, id, viewContext,
-                                viewContext.getViewer());
-                if (KlighdStatusTrigger.getInstance() != null) {
-                    KlighdStatusTrigger.getInstance().trigger(state);
-                }
+//                KlighdStatusState state =
+//                        new KlighdStatusState(KlighdStatusState.Status.CLOSE, id, viewContext,
+//                                viewContext.getViewer());
+//                if (KlighdStatusTrigger.getInstance() != null) {
+//                    KlighdStatusTrigger.getInstance().trigger(state);
+//                }
+                KlighdPlugin.getTrigger().triggerStatus(
+                        IKlighdTrigger.Status.CLOSE, id, viewContext);
             }
         }
         // unmap the view from all contexts

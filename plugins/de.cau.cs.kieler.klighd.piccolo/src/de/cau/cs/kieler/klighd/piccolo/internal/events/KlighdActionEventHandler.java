@@ -23,14 +23,14 @@ import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
-import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
 
@@ -139,11 +139,14 @@ public class KlighdActionEventHandler implements PInputEventListener {
         LightDiagramServices.layoutDiagram(vc, result.getAnimateLayout(), zoomToFit,
                 result.getLayoutConfigs());
         
-        KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
-                .getContextViewer().getViewPartId(), viewer.getViewContext(), viewer);
-        if (KlighdStatusTrigger.getInstance() != null) {
-            KlighdStatusTrigger.getInstance().trigger(state);
-        }
+//        KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
+//                .getContextViewer().getViewPartId(), viewer.getViewContext(), viewer);
+//        if (KlighdStatusTrigger.getInstance() != null) {
+//            KlighdStatusTrigger.getInstance().trigger(state);
+//        }
+        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE,
+                viewer.getContextViewer().getViewPartId(), viewer.getViewContext());
+
     }
     
     private boolean guardsMatch(final KAction action, final KlighdMouseEvent event) {

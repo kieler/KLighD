@@ -3,7 +3,7 @@ package de.cau.cs.kieler.klighd.examples.ecore
 import de.cau.cs.kieler.core.kivi.AbstractCombination
 import de.cau.cs.kieler.core.kivi.triggers.PartTrigger
 import de.cau.cs.kieler.core.kivi.triggers.SelectionTrigger
-import de.cau.cs.kieler.klighd.effects.KlighdUpdateDiagramEffect
+import de.cau.cs.kieler.klighd.kivi.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties

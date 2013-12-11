@@ -35,8 +35,6 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
-import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger;
-import de.cau.cs.kieler.klighd.triggers.KlighdResourceDropTrigger.KlighdResourceDropState;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -299,16 +297,18 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         target.addDropListener(new DropTargetListener() {
 
             public void drop(final DropTargetEvent event) {
-                KlighdResourceDropTrigger trigger = KlighdResourceDropTrigger.getInstance();
-                if (trigger != null) {
+//                KlighdResourceDropTrigger trigger = KlighdResourceDropTrigger.getInstance();
+//                if (trigger != null) {
                     if (resourceTransfer.isSupportedType(event.currentDataType)
                             && event.data instanceof IResource[]) {
                         IResource[] resources = (IResource[]) event.data;
                         if (resources.length > 0) {
-                            KlighdResourceDropState state = new KlighdResourceDropState(
-                                    getViewSite().getSecondaryId(), resources[0]);
-                            trigger.trigger(state);
-                        }
+//                            KlighdResourceDropState state = new KlighdResourceDropState(
+//                                    getViewSite().getSecondaryId(), resources[0]);
+//                            trigger.trigger(state);
+                        KlighdPlugin.getTrigger().triggerDrop(getViewSite().getSecondaryId(),
+                                resources[0]);
+//                        }
                     }
                 }
             }
