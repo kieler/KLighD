@@ -303,11 +303,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         // create the context menu
         Menu menu = menuManager.createContextMenu(composite);
         composite.setMenu(menu);
-        
+
         // register the context menu in the current work bench part site
         //  this enables the population with entries contributed via extension points
-//        this.getContextViewer().getWorkbenchPart().getSite()
-//                .registerContextMenu(menuManager, this.getContextViewer());
+        this.getViewContext().getDiagramWorkbenchPart().getSite()
+                .registerContextMenu(menuManager, this.getContextViewer());
     }
 
     /**
