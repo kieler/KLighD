@@ -116,11 +116,14 @@ public final class ViewContext extends MapPropertyHolder {
     /**
      * Standard constructor.
      * 
+     * @param diagramPart
+     *            the {@link IDiagramWorkbenchPart} the diagram is shown in
      * @param inputModel
      *            the source model to be represented by a diagram
      */
-    public ViewContext(final Object inputModel) {
+    public ViewContext(final IDiagramWorkbenchPart diagramPart, final Object inputModel) {
         super();
+        this.diagramWorkbenchPart = diagramPart;
         this.businessModel = inputModel;
     }
     

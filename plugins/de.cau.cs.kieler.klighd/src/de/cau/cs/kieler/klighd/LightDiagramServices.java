@@ -30,6 +30,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.service.KimlServicePlugin;
+import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -58,7 +59,7 @@ public final class LightDiagramServices {
      *         unsupported by all viewer providers
      */
     public static ViewContext createViewContext(final Object model) {
-        return new ViewContext(model).configure();
+        return new ViewContext(null, model).configure();
     }
 
 
@@ -75,7 +76,7 @@ public final class LightDiagramServices {
      */
     public static ViewContext createViewContext(final Object model,
             final IPropertyHolder... propertyHolders) {
-        final ViewContext context = new ViewContext(model);
+        final ViewContext context = new ViewContext(null, model);
         
         if (propertyHolders != null) {
             final KlighdSynthesisProperties ksp = KlighdSynthesisProperties.newInstance();
@@ -245,10 +246,8 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
         IViewer<KNode> diagramViewer = viewContext.getViewer();
-//        DiagramViewPart viewPart = DiagramViewManager.getInstance().getView(
-//                diagramViewer.getContextViewer().getViewPartId());
         
-        layoutDiagram(null, diagramViewer, animate, zoomToFit, options);
+        layoutDiagram(viewContext.getDiagramWorkbenchPart(), diagramViewer, animate, zoomToFit, options);
     }
     
     /**
@@ -423,7 +422,9 @@ public final class LightDiagramServices {
             extendedOptions.add(new VolatileLayoutConfig()
                     .setValue(LayoutOptions.ANIMATE, animate)
                     .setValue(LayoutOptions.ZOOM_TO_FIT, zoomToFit));
-            extendedOptions.add(contextViewer.getLightLayoutConfig());
+            if (viewPart instanceof ILayoutConfigProvider) {
+                extendedOptions.add(((ILayoutConfigProvider) viewPart).getLayoutConfig());
+            }
             if (options != null && !options.isEmpty()) {
                 extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
             }
