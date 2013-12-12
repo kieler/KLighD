@@ -50,50 +50,6 @@ public final class LightDiagramServices {
         // do nothing
     }
 
-    /**
-     * Creates a view context for the given model if possible.
-     * 
-     * @param model
-     *            the model
-     * @return the view context or null if the model and all possible transformations are
-     *         unsupported by all viewer providers
-     */
-    public static ViewContext createViewContext(final Object model) {
-        return new ViewContext(null, model).configure();
-    }
-
-
-    /**
-     * Creates a view context for the given model if possible. The properties from the given
-     * property holders are copied to the view context.
-     * 
-     * @param model
-     *            the model
-     * @param propertyHolders
-     *            the property holders
-     * @return the view context or null if the model and all possible transformations are
-     *         unsupported by all viewer providers
-     */
-    public static ViewContext createViewContext(final Object model,
-            final IPropertyHolder... propertyHolders) {
-        final ViewContext context = new ViewContext(null, model);
-        
-        if (propertyHolders != null) {
-            final KlighdSynthesisProperties ksp = KlighdSynthesisProperties.newInstance();
-            
-            for (IPropertyHolder h : propertyHolders) {
-                ksp.copyProperties(h);
-            }
-
-            context.configure(ksp);
-            
-        } else {
-            context.configure();
-        }
-        
-        return context;
-    }
-
 
     /**
      * Updates the view context with the given model. The properties from the given property holders
@@ -454,7 +410,8 @@ public final class LightDiagramServices {
      */
     public static KNode translateModel(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
-        ViewContext vc = createViewContext(model, propertyHolders);
+        final ViewContext vc = new ViewContext(null, model).configure(
+                        KlighdSynthesisProperties.newInstance(propertyHolders));
         
         if (vc == null) {
             throw new IllegalStateException("Could not create a View Context for the model "

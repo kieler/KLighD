@@ -321,8 +321,8 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                                     EclipseLayoutConfig.WORKBENCH_PART);
                             if (workbenchPart != null) {
                                 // re-apply auto-layout with the new configuration
-//                                DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null,
-//                                        true, false, false, false);
+                                DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null,
+                                        true, false, false, false);
 //                                if (workbenchPart instanceof DiagramEditorPart) {
 //                                    DiagramEditorPart dep = (DiagramEditorPart) workbenchPart;
 //                                    // mark the editor as dirty

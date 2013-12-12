@@ -74,10 +74,25 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /**
      * Factory method.
      * 
+     * @param propertyHolders
+     *            a variable number of {@link IPropertyHolder IPropertyHolders} allowing providing
+     *            configurations
+     * 
      * @return a new instance of {@link KlighdSynthesisProperties}.
      */
-    public static KlighdSynthesisProperties newInstance() {
-        return new KlighdSynthesisProperties();
+    public static KlighdSynthesisProperties newInstance(final IPropertyHolder... propertyHolders) {
+        if (propertyHolders == null || propertyHolders.length == 0) {
+            return new KlighdSynthesisProperties();
+            
+        } else {
+            final KlighdSynthesisProperties sp = new KlighdSynthesisProperties();
+            
+            for (IPropertyHolder p : propertyHolders) {
+                sp.copyProperties(p);
+            }
+            
+            return sp;
+        }
     }
     
     /**
