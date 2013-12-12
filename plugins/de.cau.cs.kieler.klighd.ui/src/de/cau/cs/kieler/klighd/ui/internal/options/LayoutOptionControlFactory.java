@@ -34,8 +34,10 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.kiml.ILayoutData;
 import de.cau.cs.kieler.kiml.LayoutDataService;
@@ -46,8 +48,10 @@ import de.cau.cs.kieler.kiml.config.LayoutContext;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
+import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.service.LayoutOptionManager;
 import de.cau.cs.kieler.kiml.ui.AlgorithmSelectionDialog;
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KGraphPropertyLayoutConfig;
@@ -64,8 +68,8 @@ public class LayoutOptionControlFactory {
     
     private ViewContext viewContext;
     
-//    /** The workbench part containing the diagram viewer. */
-//    private IDiagramWorkbenchPart workbenchPart;
+    /** The workbench part containing the diagram viewer. */
+    private IDiagramWorkbenchPart workbenchPart;
     /** the form toolkit used to create controls. */
     private FormToolkit formToolkit;
     /** The layout configurator for retrieving initial values of controls. */
@@ -80,7 +84,7 @@ public class LayoutOptionControlFactory {
     private boolean autoRefreshLayout = true;
     
     /** number of columns in the grid for enumeration value selection. */
-    private static final int ENUM_GRID_COLS = 2;
+    private static final int ENUM_GRID_COLS = 1;
     /** widget data identifier for the attached selection listener. */
     private static final String DATA_SELECTION_LISTENER = "klighd.selectionListener";
     
@@ -96,15 +100,11 @@ public class LayoutOptionControlFactory {
      * @param theLightLayoutConfig
      *            the layout configuration to the user-chosen values in
      */
-//    * @param workbenchPart
-//    *            the workbench part containing the diagram viewer
     public LayoutOptionControlFactory(final Composite parent, final ViewContext viewContext,
-            /* final IDiagramWorkbenchPart workbenchPart, */
-            final FormToolkit formToolkit,
-            final VolatileLayoutConfig theLightLayoutConfig) {
+            final FormToolkit formToolkit, final VolatileLayoutConfig theLightLayoutConfig) {
         this.parent = parent;
         this.viewContext = viewContext;
-//        this.workbenchPart = workbenchPart;
+        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
         this.formToolkit = formToolkit;
 
         this.lightLayoutConfig = theLightLayoutConfig;
@@ -124,38 +124,27 @@ public class LayoutOptionControlFactory {
      */
     public void initialize() {
         lightLayoutConfig.clearValues(LayoutContext.global());
-        final Object o = this.viewContext.getInputModel();
-        final EObject inputModel = o instanceof EObject ? (EObject) o : null;
-        Object viewModel = this.viewContext.getViewModel();
-//        if (workbenchPart instanceof DiagramViewPart) {
-//            ViewContext viewContext = ((DiagramViewPart) workbenchPart).getContextViewer()
-//                    .getViewContext();
-//            if (viewContext != null) {
-//                if (viewContext.getInputModel() instanceof EObject) {
-//                    inputModel = (EObject) viewContext.getInputModel();
-//                } else if (viewContext.getInputModel() instanceof Collection<?>) {
-//                    Collection<?> collection = (Collection<?>) viewContext.getInputModel();
-//                    Iterator<?> iterator = collection.iterator();
-//                    if (iterator.hasNext()) {
-//                        Object next = iterator.next();
-//                        if (next instanceof EObject) {
-//                            inputModel = (EObject) next;
-//                        }
-//                    }
-//                }
-//                viewModel = viewContext.getViewModel();
-//            }
-//            IViewer<?> viewer = ((DiagramViewPart) workbenchPart).getContextViewer().getActiveViewer();
-//            if (viewer != null) {
-//                viewModel = viewer.getModel();
-//            }
-//        }
+        
+        final Object input = this.viewContext.getInputModel();
+        final KNode viewModel = this.viewContext.getViewModel();
+        final EObject inputModel;
+        
+        if (input instanceof EObject) {
+            inputModel = (EObject) viewContext.getInputModel();
+        } else if (input instanceof Iterable) {
+            inputModel =
+                    Iterables.getFirst(Iterables.filter(
+                            (Collection<?>) viewContext.getInputModel(), EObject.class), null);
+        } else {
+            inputModel = null;
+        }
+        
         // create the layout configurator
         LayoutOptionManager optionManager = DiagramLayoutEngine.INSTANCE.getOptionManager();
         defaultLayoutConfig = optionManager.createConfig(inputModel, new KGraphPropertyLayoutConfig());
         // create and enrich the layout context
         defaultLayoutContext = new LayoutContext();
-//        defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
+        defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
         defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
         defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
         defaultLayoutContext.setProperty(DefaultLayoutConfig.OPT_MAKE_OPTIONS, true);
