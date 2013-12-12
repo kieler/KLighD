@@ -139,15 +139,6 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // set the part name
         setPartName(getEditorInput().getName());
         
-        // add buttons to the editor toolbar
-        // requires non-null 'viewer' field
-        if (toolBar == null) {
-            toolBar = this.getEditorSite().getActionBars().getToolBarManager();
-            createButtons();
-            this.getEditorSite().getWorkbenchWindow().getPartService()
-            .addPartListener(toolBarListener);
-        }
-        
         // introduce a new Composite that accommodates the visualized content
         Composite diagramComposite = new Composite(parent, SWT.NONE);
         diagramComposite.setLayout(new FillLayout());
@@ -201,7 +192,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 currentOutlinePage.setVisible(true);
             }
 
-            sideBar.updateOptions(diagramComposite, viewer.getViewContext(), false);
+            sideBar.updateOptions(diagramComposite, viewContext, false);
 
             // since no initial selection is set in the view context/context viewer implementation,
             //  define some here by selection the root of the view model representing the diagram canvas!
@@ -212,6 +203,12 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         
         // register the context viewer as selection provider on the workbench
         getSite().setSelectionProvider(viewer);
+        
+        // add buttons to the editor toolbar
+        //  requires non-null 'viewer' field!!
+        toolBar = this.getEditorSite().getActionBars().getToolBarManager();
+        createButtons();
+        getEditorSite().getWorkbenchWindow().getPartService().addPartListener(toolBarListener);
         
         // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
