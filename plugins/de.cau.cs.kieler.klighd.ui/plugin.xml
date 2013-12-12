@@ -10,7 +10,7 @@
       <view
             allowMultiple="true"
             category="de.cau.cs.kieler.klighd"
-            class="de.cau.cs.kieler.klighd.ui.views.DiagramViewPart"
+            class="de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart"
             icon="icons/klighd.gif"
             id="de.cau.cs.kieler.klighd.ui.lightDiagramView"
             name="Light-weight Diagram"
@@ -20,7 +20,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="de.cau.cs.kieler.klighd.ui.views.DiagramEditorPart"
+            class="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"
             default="false"
             icon="icons/klighd.gif"
             id="de.cau.cs.kieler.klighd.ui.lightDiagramEditor"

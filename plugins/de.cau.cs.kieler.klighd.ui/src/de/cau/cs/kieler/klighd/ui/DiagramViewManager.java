@@ -39,8 +39,8 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
-import de.cau.cs.kieler.klighd.ui.views.DiagramEditorPart;
-import de.cau.cs.kieler.klighd.ui.views.DiagramViewPart;
+import de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart;
+import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 
 /**
  * A singleton manager for creating, updating and closing diagram views. All methods in this class

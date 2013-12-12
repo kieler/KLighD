@@ -51,7 +51,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.ui.views.DiagramViewPart;
+import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 
 /**
  * Builds up the diagram side bar containing the controls for configuring diagram synthesis and
