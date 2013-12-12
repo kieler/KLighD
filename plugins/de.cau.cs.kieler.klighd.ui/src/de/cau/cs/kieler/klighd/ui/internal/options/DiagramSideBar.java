@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.views;
+package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -51,8 +51,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.ui.internal.options.LayoutOptionControlFactory;
-import de.cau.cs.kieler.klighd.ui.internal.options.SynthesisOptionControlFactory;
+import de.cau.cs.kieler.klighd.ui.views.DiagramViewPart;
 
 /**
  * Builds up the diagram side bar containing the controls for configuring diagram synthesis and

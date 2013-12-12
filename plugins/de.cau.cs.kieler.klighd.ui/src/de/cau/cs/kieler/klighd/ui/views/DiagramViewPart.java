@@ -40,6 +40,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
+import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
