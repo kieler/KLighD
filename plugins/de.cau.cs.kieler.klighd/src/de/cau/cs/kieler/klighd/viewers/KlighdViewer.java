@@ -43,14 +43,13 @@ public class KlighdViewer extends AbstractViewer<Object> implements IViewer<Obje
      *            the parent composite
      */
     public KlighdViewer(final Composite parent) {
-        contextViewer = new ContextViewer(parent, null);
+        contextViewer = new ContextViewer(parent);
     }
     
     /**
      * Release all resources that were allocated for this viewer.
      */
     public void dispose() {
-        contextViewer.dispose();
     }
 
     /**
@@ -80,7 +79,7 @@ public class KlighdViewer extends AbstractViewer<Object> implements IViewer<Obje
      * {@inheritDoc}
      */
     public void setModel(final Object model, final boolean sync) {
-        ViewContext viewContext = LightDiagramServices.createViewContext(model);
+        ViewContext viewContext = new ViewContext(null, model).configure();
         if (viewContext != null) {
             contextViewer.setModel(viewContext, sync);
             LightDiagramServices.updateViewContext(viewContext, model);

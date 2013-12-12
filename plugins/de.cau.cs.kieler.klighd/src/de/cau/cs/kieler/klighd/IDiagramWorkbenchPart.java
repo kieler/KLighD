@@ -23,12 +23,20 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author msp
  */
 public interface IDiagramWorkbenchPart extends IWorkbenchPart {
-    
+
     /**
-     * Returns the context viewer represented by this workbench part.
+     * Returns the id associated with this {@link IDiagramWorkbenchPart}.<br>
+     * If <code>this</code> part is a {@link org.eclipse.ui.part.ViewPart ViewPart}
+     * this method returns the view's secondary id.
      * 
-     * @return the context viewer
+     * @return the id associated with this {@link IDiagramWorkbenchPart}.
+     */
+    String getPartId();
+
+    /**
+     * Returns the viewer associated with this workbench part.
+     * 
+     * @return the viewer
      */
     ContextViewer getContextViewer();
-
 }

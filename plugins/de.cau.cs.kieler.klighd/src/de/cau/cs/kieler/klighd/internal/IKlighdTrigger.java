@@ -52,12 +52,10 @@ public interface IKlighdTrigger {
      * 
      * @param status
      *            the status
-     * @param viewId
-     *            the identifier of the view
      * @param viewContext
      *            the view context
      */
-   void triggerStatus(final Status status, final String viewId, final ViewContext viewContext);
+   void triggerStatus(final Status status, final ViewContext viewContext);
 
    /**
     * Fires a resource drop state with a given view identifier and a resource.
@@ -81,8 +79,7 @@ public interface IKlighdTrigger {
         /**
          * {@inheritDoc}
          */
-        public void triggerStatus(final Status status, final String viewId,
-                final ViewContext viewContext) {
+        public void triggerStatus(final Status status, final ViewContext viewContext) {
             // do nothing
         }
         
