@@ -4,20 +4,19 @@ Bundle-Name: KIELER Light-Weight Diagrams UI Components
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.ui.KlighdUIPlugin
-Require-Bundle: org.eclipse.core.expressions;bundle-version="3.4.401",
+Require-Bundle: org.eclipse.core.expressions;bundle-version="3.4.500",
+ org.eclipse.core.resources;bundle-version="3.8.100",
  org.eclipse.core.runtime;bundle-version="3.8.0",
- org.eclipse.ui;bundle-version="3.104.0",
  de.cau.cs.kieler.core.kgraph;bundle-version="0.4.3",
  de.cau.cs.kieler.core.krendering;bundle-version="0.2.0",
- de.cau.cs.kieler.kiml;bundle-version="0.13.0",
+ de.cau.cs.kieler.kiml;bundle-version="0.13.1",
  de.cau.cs.kieler.kiml.service;bundle-version="0.5.1",
  de.cau.cs.kieler.kiml.ui;bundle-version="0.9.0",
- de.cau.cs.kieler.klighd;bundle-version="0.2.1",
- org.eclipse.core.resources,
- org.eclipse.ui.forms,
- org.eclipse.ui.workbench,
- org.eclipse.ui.ide;bundle-version="3.9.1",
- org.eclipse.ui.views
+ de.cau.cs.kieler.klighd;bundle-version="0.3.0",
+ org.eclipse.ui;bundle-version="3.104.0",
+ org.eclipse.ui.forms;bundle-version="3.6.0",
+ org.eclipse.ui.ide;bundle-version="3.9.0",
+ org.eclipse.ui.views;bundle-version="3.6.100"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
