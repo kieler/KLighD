@@ -457,7 +457,7 @@ public final class DiagramSideBar {
      * {@inheritDoc}
      */
     public void resetLayoutOptionsToDefaults() {
-        // TODO Auto-generated method stub
+        this.layoutOptionControlFactory.resetToDefaults();
     }
     
     /**
