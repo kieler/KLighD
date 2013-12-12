@@ -61,7 +61,7 @@ import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -71,6 +71,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -81,7 +82,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author msp
  * @author uru
  */
-public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart {
+public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart,
+        ILayoutConfigProvider {
     
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
@@ -91,8 +93,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
     /** the viewer for this editor part. */
     private ContextViewer viewer;
-    /** the dirty status of the editor. */
 
+    /** the dirty status of the editor. */
     private boolean dirty;
 
     /** the global, common toolbar for all editors. */
@@ -125,13 +127,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         registerResourceChangeListener();
     }
 
-    private DiagramSideBarFactory sideBarFactory;
+    private DiagramSideBar sideBar;
     
-    private Composite diagramComposite;
-
-    /** The layout configurator that stores the values set by the layout option controls. */
-    private VolatileLayoutConfig lightLayoutConfig = new VolatileLayoutConfig();
-
     /**
      * {@inheritDoc}
      */
@@ -140,29 +137,28 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // set the part name
         setPartName(getEditorInput().getName());
         
-        // create a context viewer
-        viewer = new ContextViewer(parent, "diagramEditor:" + getEditorInput().toString());
-        
-        // introduce a new Composite that accommodates the visualized content
-        this.diagramComposite = new Composite(parent, SWT.NONE);
-        this.diagramComposite.setLayout(new FillLayout());
-        
         // add buttons to the editor toolbar
         // requires non-null 'viewer' field
         if (toolBar == null) {
             toolBar = this.getEditorSite().getActionBars().getToolBarManager();
             createButtons();
             this.getEditorSite().getWorkbenchWindow().getPartService()
-                    .addPartListener(toolBarListener);
+            .addPartListener(toolBarListener);
         }
         
-        // create a view context for the viewer
-        final ViewContext viewContext = LightDiagramServices.createViewContext(model,
-                configureKlighdProperties());
+        // introduce a new Composite that accommodates the visualized content
+        Composite diagramComposite = new Composite(parent, SWT.NONE);
+        diagramComposite.setLayout(new FillLayout());
         
+        // create a context viewer
+        viewer = new ContextViewer(diagramComposite);
+        
+        // create a view context carrying all data required for building up the diagram
+        final ViewContext viewContext =
+                new ViewContext(this, model).configure(configureKlighdProperties());
+
         // create the options pane
-        sideBarFactory = new DiagramSideBarFactory();
-        sideBarFactory.createSideBar(parent, this.diagramComposite, lightLayoutConfig, viewContext);
+        sideBar = DiagramSideBar.createSideBar(parent, diagramComposite, viewContext);
         
         if (viewContext != null) {
             viewer.setModel(viewContext);
@@ -203,7 +199,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 currentOutlinePage.setVisible(true);
             }
 
-            sideBarFactory.updateOptions(this.diagramComposite, viewer.getViewContext(), false);
+            sideBar.updateOptions(diagramComposite, viewer.getViewContext(), false);
 
             // since no initial selection is set in the view context/context viewer implementation,
             //  define some here by selection the root of the view model representing the diagram canvas!
@@ -236,13 +232,20 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /**
      * {@inheritDoc}
      */
+    public ILayoutConfig getLayoutConfig() {
+        return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void dispose() {
         unregisterResourceChangeListener();
         getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
         
-        if (viewer != null) {
-            viewer.dispose();
+        if (this.sideBar != null) {
+            this.sideBar.dispose();
         }
         
         super.dispose();
@@ -275,6 +278,13 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      */
     public ContextViewer getContextViewer() {
         return viewer;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPartId() {
+        return "diagramEditor:" + getEditorInput().toString();
     }
 
     /**

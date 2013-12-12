@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
-import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -39,6 +39,7 @@ import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -49,21 +50,23 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author msp
  * @author uru
  */
-public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
+public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, ILayoutConfigProvider {
 
-    /** The id this viewpart is registered with in the extension point. */
-    public static final String VIEW_ID = "de.cau.cs.kieler.klighd.lightDiagramView";
+    /** The id this {@link ViewPart} is registered with in the extension point. */
+    public static final String VIEW_ID = "de.cau.cs.kieler.klighd.ui.lightDiagramView";
+
     /** Action identifier for resetting the layout options in the side bar. */
     public static final String ACTION_ID_RESET_LAYOUT_OPTIONS = "klighd.resetLayoutOptions";
-    
+
     /** the default name for this view. */
     public static final String DEFAULT_NAME = "Light Diagram";
+
     /** the action identifier prefix for permanent menu contributions. */
     public static final String PERMANENT_ACTION_PREFIX = "klighd.action";
-    
+
     /** the viewer for this view part. */
     private ContextViewer viewer;
-    
+
     /**
      * Tracks whether this {@link ViewPart} is disposed. Since the {@link DiagramViewManager} tracks
      * created views it needs to test whether those views are still alive.
@@ -75,7 +78,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
      */
     private IAction resetLayoutOptionsAction;
     
-    private DiagramSideBarFactory sideBarFactory;
+    private DiagramSideBar sideBar;
     
     private Composite diagramComposite;
 
@@ -90,7 +93,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         this.diagramComposite.setLayout(new FillLayout());
         
         // create the context viewer
-        viewer = new ContextViewer(diagramComposite, getViewSite().getSecondaryId());
+        viewer = new ContextViewer(diagramComposite);
         
         // add buttons to the view toolbar
         //  requires non-null 'viewer' field 
@@ -109,20 +112,24 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
     
-    /** The layout configurator that stores the values set by the layout option controls. */
-    private VolatileLayoutConfig lightLayoutConfig = new VolatileLayoutConfig();
-
     /**
      * 
      * @param viewContext the {@link ViewContext} to be displayed
      */
     public void setViewContext(final ViewContext viewContext) {
         // create the options pane
-        sideBarFactory = new DiagramSideBarFactory();
-        sideBarFactory.createSideBar(this.diagramComposite.getParent(), this.diagramComposite,
-                lightLayoutConfig, viewContext);
+        sideBar =
+                DiagramSideBar.createSideBar(diagramComposite.getParent(), diagramComposite,
+                        viewContext);
 
         this.getContextViewer().setModel(viewContext);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ILayoutConfig getLayoutConfig() {
+        return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
     
     /**
@@ -131,7 +138,11 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
     @Override
     public void dispose() {
         super.dispose();
-        viewer.dispose();
+
+        if (this.sideBar != null) {
+            this.sideBar.dispose();
+        }
+
         disposed = true;
         DiagramViewManager.getInstance().unregisterViewContexts(this);
     }
@@ -141,7 +152,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
      * @param fitSpace a;
      */
     public void updateOptions(final boolean fitSpace) {
-        this.sideBarFactory.updateOptions(diagramComposite, this.viewer.getViewContext(), fitSpace);
+        this.sideBar.updateOptions(diagramComposite, this.viewer.getViewContext(), fitSpace);
     }
     
     /**
@@ -160,9 +171,6 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
      * @param menuManager the menu manager
      */
     private void fillViewMenu(final IMenuManager menuManager) {
-//        Action exportAction = new ExportAction(this);
-//        exportAction.setId(PERMANENT_ACTION_PREFIX + ".export");
-//        menuManager.add(exportAction);
     }
     
     private Action zoomToFitAction;
@@ -176,7 +184,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         toolBar.add(new Action("Refresh diagram", KlighdPlugin
                 .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
             public void run() {
-                DiagramViewManager.getInstance().updateView(viewer.getViewPartId());
+                DiagramViewManager.getInstance().updateView(DiagramViewPart.this.getPartId());
             }
         });
         
@@ -279,7 +287,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         IMenuManager menu = getViewSite().getActionBars().getMenuManager();
         resetLayoutOptionsAction = new Action("Reset Layout Options") {
             public void run() {
-                sideBarFactory.resetLayoutOptionsToDefaults();
+                sideBar.resetLayoutOptionsToDefaults();
             }
         };
         resetLayoutOptionsAction.setId(ACTION_ID_RESET_LAYOUT_OPTIONS);
@@ -299,6 +307,13 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
      */
     public ContextViewer getContextViewer() {
         return viewer;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getPartId() {
+        return this.getViewSite().getSecondaryId();
     }
     
     /**
@@ -334,18 +349,12 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart {
         target.addDropListener(new DropTargetListener() {
 
             public void drop(final DropTargetEvent event) {
-//                KlighdResourceDropTrigger trigger = KlighdResourceDropTrigger.getInstance();
-//                if (trigger != null) {
-                    if (resourceTransfer.isSupportedType(event.currentDataType)
-                            && event.data instanceof IResource[]) {
-                        IResource[] resources = (IResource[]) event.data;
-                        if (resources.length > 0) {
-//                            KlighdResourceDropState state = new KlighdResourceDropState(
-//                                    getViewSite().getSecondaryId(), resources[0]);
-//                            trigger.trigger(state);
+                if (resourceTransfer.isSupportedType(event.currentDataType)
+                        && event.data instanceof IResource[]) {
+                    IResource[] resources = (IResource[]) event.data;
+                    if (resources.length > 0) {
                         KlighdPlugin.getTrigger().triggerDrop(getViewSite().getSecondaryId(),
                                 resources[0]);
-//                        }
                     }
                 }
             }

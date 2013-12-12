@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.ui.views;
 
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,10 +40,13 @@ import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
+import com.google.common.collect.Lists;
+
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
-import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -54,10 +55,12 @@ import de.cau.cs.kieler.klighd.ui.internal.options.LayoutOptionControlFactory;
 import de.cau.cs.kieler.klighd.ui.internal.options.SynthesisOptionControlFactory;
 
 /**
+ * Builds up the diagram side bar containing the controls for configuring diagram synthesis and
+ * layout options.
+ * 
  * @author chsch
- *
  */
-public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
+public final class DiagramSideBar {
     
     /** The initial width of the option pane and the diagram viewer. */
     private static final int INITIAL_OPTIONS_FORM_WIDTH = 230;
@@ -74,20 +77,30 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
     /** Constant value denoting 100%. */
     private static final int FULL = 100;
     
+    /** The layout configurator that stores the values set by the layout option controls. */
+    private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig();
+    
+    private final Composite sideBarParent;
+
     /** the factory for diagram synthesis option controls. */
     private SynthesisOptionControlFactory synthesisOptionControlFactory;
+
     /** the factory for layout option controls. */
     private LayoutOptionControlFactory layoutOptionControlFactory;
+
     /** the form toolkit, is only kept to properly dispose it finally. */
     private FormToolkit optionsformToolkit;
+
     /** The form that holds synthesis options. */
     private Form synthesisOptionsForm;
+
     /** The form that holds layout options. */
     private Form layoutOptionsForm;
+
     /** the set of resources to be disposed when the view is closed. */
     private final List<Resource> resources = new LinkedList<Resource>();
 
-    private final List<Control> sideBarControls = newArrayListWithCapacity(5);
+    private final List<Control> sideBarControls = Lists.newArrayListWithCapacity(5);
     
     private FormData sashLayoutData = null;
 
@@ -97,17 +110,54 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
      * of the side bar's size in case a different model has been assigned to the current view.
      */
     private int horizontalPos = -INITIAL_OPTIONS_FORM_WIDTH;
+    
+    /**
+     * Hidden constructor.
+     * 
+     * @param parent
+     *            the parent {@link Composite} to attach the side bar to
+     */
+    private DiagramSideBar(final Composite parent) {
+        this.sideBarParent = parent;
+    }
+    
+    /**
+     * Provides the {@link ILayoutConfig} with layout settings from <code>this</code> side bar.
+     * 
+     * @return the employed {@link ILayoutConfig}
+     */
+    public ILayoutConfig getLayoutConfig() {
+        return this.layoutConfig;
+    }
 
     /**
-     * {@inheritDoc}
+     * Creates and attaches a side bar to the given <code>parent</code> {@link Composite}.<br>
+     * The given <code>diagramContainer</code> is thereby integrated in the tree of widgets.
+     * 
+     * @param parent
+     *            the parent {@link Composite} to attach the side bar to
+     * @param diagramContainer
+     *            the {@link Composite} accommodating the diagram (later on)
+     * @param viewContext
+     *            the {@link ViewContext} to get the configured option entries from
+     * @return an instance of {@link DiagramSideBar} allowing to access the employed
+     *         {@link ILayoutConfig}
      */
-    public void createSideBar(final Composite parent, final Composite diagramContainer,
-            final VolatileLayoutConfig layoutConfig, final ViewContext viewContext) {
-        parent.setLayout(new FormLayout());
+    public static DiagramSideBar createSideBar(final Composite parent,
+            final Composite diagramContainer, final ViewContext viewContext) {
+        return new DiagramSideBar(parent).initialize(diagramContainer, viewContext);
+    }
+    
+    /**
+     * @see #createSideBar(Composite, Composite, ViewContext)
+     */
+    private DiagramSideBar initialize(final Composite diagramContainer,
+            final ViewContext viewContext) {
+        sideBarParent.setLayout(new FormLayout());
         
         // for easier managing the visibility of the side bar's collapse/expand arrows
         //  let's put them in a dedicated container, this is advantageous below
-        final Composite arrowsContainer = new Composite(parent, SWT.NONE);
+        final Composite arrowsContainer = new Composite(sideBarParent, SWT.NONE);
         sideBarControls.add(arrowsContainer);
         arrowsContainer.setVisible(false);
         final StackLayout arrowLabelContainerLayout = new StackLayout(); 
@@ -129,14 +179,14 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
         leftArrowLabel.setVisible(true);
         
         // create the sash for resizing the options pane
-        final Sash sash = new Sash(parent, SWT.VERTICAL);
+        final Sash sash = new Sash(sideBarParent, SWT.VERTICAL);
         sideBarControls.add(sash);
         sash.addPaintListener(new LinePainter());
         sash.setVisible(false);
         
-        optionsformToolkit = new FormToolkit(parent.getDisplay());
+        optionsformToolkit = new FormToolkit(sideBarParent.getDisplay());
 
-        final ScrolledForm formRootScroller = optionsformToolkit.createScrolledForm(parent);
+        final ScrolledForm formRootScroller = optionsformToolkit.createScrolledForm(sideBarParent);
         formRootScroller.setText(null);
         sideBarControls.add(formRootScroller);
                 
@@ -211,10 +261,10 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
         // register the sash moving handler for resizing the options pane
         sash.addListener(SWT.Selection, new Listener() {
             public void handleEvent(final Event event) {
-                final int maxDiagSize = parent.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
+                final int maxDiagSize = sideBarParent.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
                 if (maxDiagSize > event.x) {
                     sashLayoutData.left.numerator = FULL;
-                    sashLayoutData.left.offset = -(parent.getClientArea().width - event.x);
+                    sashLayoutData.left.offset = -(sideBarParent.getClientArea().width - event.x);
                 } else {
                     sashLayoutData.left.numerator = FULL;
                     sashLayoutData.left.offset = -MINIMAL_OPTIONS_FORM_WIDTH;
@@ -223,7 +273,7 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
                     event.x = maxDiagSize;
                 }
                 horizontalPos = sashLayoutData.left.offset;
-                parent.layout(true);
+                sideBarParent.layout(true);
             }
         });
         
@@ -235,10 +285,10 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
             public void mouseUp(final MouseEvent event) {
                 sashLayoutData.left.numerator = FULL;
                 sashLayoutData.left.offset = -sashLayoutData.width;
-                lastXpos[0] = parent.getClientArea().width - sash.getBounds().x;                
+                lastXpos[0] = sideBarParent.getClientArea().width - sash.getBounds().x;                
                 horizontalPos = sashLayoutData.left.offset;
                 arrowLabelContainerLayout.topControl = leftArrowLabel;
-                parent.layout(true, true);
+                sideBarParent.layout(true, true);
             }
         });
         leftArrowLabel.addMouseListener(new MouseAdapter() {
@@ -247,9 +297,10 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
                 sashLayoutData.left.offset = -lastXpos[0];
                 horizontalPos = sashLayoutData.left.offset;
                 arrowLabelContainerLayout.topControl = rightArrowLabel;
-                parent.layout(true, true);
+                sideBarParent.layout(true, true);
             }
-        });
+        });        
+        return this;
     }
     
     /**
@@ -327,13 +378,13 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
             }
         }
         
-        this.enableOptionsSideBar(diagramComposite, viewContext.getViewer(), fitSpace,
-                synthesisOptionsAvailable, layoutOptionsAvailable);
-//        if (workbenchPart instanceof DiagramViewPart) {
-//            DiagramViewPart viewPart = (DiagramViewPart) workbenchPart;
-//            viewPart.getAction(DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS)
-//                    .setEnabled(layoutOptionsAvailable);
-//        }
+        this.enableOptionsSideBar(viewContext, fitSpace, synthesisOptionsAvailable,
+                layoutOptionsAvailable);
+        final IDiagramWorkbenchPart part = viewContext.getDiagramWorkbenchPart();
+        if (part instanceof DiagramViewPart) {
+            ((DiagramViewPart) part).getAction(DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS)
+                    .setEnabled(layoutOptionsAvailable);
+        }
     }
     
     /**
@@ -347,9 +398,9 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
      * @param showLayoutOptions
      *            {@code true} if the layout options group should be displayed.
      */
-    private void enableOptionsSideBar(final Composite diagramComposite,
-            final IViewer<?> currentViewer, final boolean zoomToFit,
-            final boolean showSynthesisOptions, final boolean showLayoutOptions) {
+    private void enableOptionsSideBar(final ViewContext viewContext,
+            final boolean zoomToFit, final boolean showSynthesisOptions,
+            final boolean showLayoutOptions) {
         if (showSynthesisOptions || showLayoutOptions) {
             // define the controls (sash, right arrow, form) to be visible
             for (Control c : this.sideBarControls) {
@@ -389,12 +440,13 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
         }
 
         // re-layout the view part's composite
-        diagramComposite.getParent().layout(true, true);
+        if (!this.sideBarParent.isDisposed()) {
+            this.sideBarParent.layout(true, true);
+        }
 
         // let the diagram fit the available space,
-        // should be dependent on a preference setting in future (TODO)
         if (zoomToFit) {
-            currentViewer.zoom(ZoomStyle.ZOOM_TO_FIT, 0);
+            viewContext.getViewer().zoom(ZoomStyle.ZOOM_TO_FIT, 0);
         }
     }
 
@@ -403,11 +455,10 @@ public class DiagramSideBarFactory /* implements IDiagramSideBarFactory */ {
      */
     public void resetLayoutOptionsToDefaults() {
         // TODO Auto-generated method stub
-        
     }
     
     /**
-     * Disposes.
+     * Disposes the {@link Resource Resources}.
      */
     public void dispose() {
         if (optionsformToolkit != null) {

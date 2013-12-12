@@ -202,8 +202,8 @@ public final class DiagramViewManager implements IPartListener {
         registerPartListener();
 
         // get the view
-        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        IWorkbenchPage page = window.getActivePage();
+        final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        final IWorkbenchPage page = window.getActivePage();
         ViewContext viewContext = idContextMapping.get(id);
         
         IDiagramWorkbenchPart diagramView = getView(id);
@@ -245,22 +245,37 @@ public final class DiagramViewManager implements IPartListener {
         
         
         // trigger the update status
-//        KlighdStatusState state =
-//                new KlighdStatusState(KlighdStatusState.Status.UPDATE, id, viewContext,
-//                        viewContext.getViewer());
-//        if (KlighdStatusTrigger.getInstance() != null) {
-//            KlighdStatusTrigger.getInstance().trigger(state);
-//        }
-        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, id, viewContext);
+        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, viewContext);
         
         return diagramView;
     }
     
     
+    /**
+     * Updates the diagram view corresponding to the given {@link ViewContext}.<br>
+     * <br>
+     * The <code>viewContext</code>'s current input model is taken as new input. 
+     * 
+     * @param viewContext
+     *            the {@link ViewContext} of the diagram to be updated
+     * @return the view with the identifier or null on failure
+     */
     public IDiagramWorkbenchPart updateView(final ViewContext viewContext) {
         return this.updateView(viewContext, null);
     }
 
+    /**
+     * Updates the diagram view corresponding to the given {@link ViewContext}.<br>
+     * <br>
+     * The model has to be of the type of the old model, i.e. the view context associated with the
+     * identifier must support the model.
+     * 
+     * @param viewContext
+     *            the {@link ViewContext} of the diagram to be updated
+     * @param model
+     *            the new model, if <code>null</code> the current input model is taken
+     * @return the view with the identifier or null on failure
+     */
     public IDiagramWorkbenchPart updateView(final ViewContext viewContext, final Object model) {
         // update the view context
         
@@ -269,15 +284,17 @@ public final class DiagramViewManager implements IPartListener {
         
         if (diagramView instanceof DiagramViewPart) {
             page = diagramView.getSite().getPage();
+        } else if (diagramView instanceof DiagramEditorPart) {
+            page = diagramView.getSite().getPage();
         } else {
             return null;
         }
         
-        Object currentInputModel = viewContext.getInputModel(); 
+        final Object currentInputModel = viewContext.getInputModel(); 
         if (model != null || currentInputModel != null) {
             page.bringToTop(diagramView);
             // update the view context and viewer
-            Object theModel = (model != null ? model : currentInputModel);
+            final Object theModel = (model != null ? model : currentInputModel);
             
             viewContext.getLayoutRecorder().startRecording();
             if (!LightDiagramServices.updateViewContext(viewContext, theModel)) {
@@ -290,8 +307,6 @@ public final class DiagramViewManager implements IPartListener {
 
     /**
      * Creates a diagram view with the given name and model under the specified identifier. <br>
-     * <br>
-     * chsch: refactored this method s.t. a view is opened only if a valid view context exists.
      * 
      * @param id
      *            the diagram identifier (can be null for the default view)
@@ -310,109 +325,85 @@ public final class DiagramViewManager implements IPartListener {
         // register the manager as part listener if necessary
         registerPartListener();
 
-        DiagramViewPart diagramView = null;
-
         // create a view context for the model
-        if (model != null) {
-            // let the light diagram service create a view context and register it
-            ViewContext viewContext;
-            if (propertyHolder != null) {
-                viewContext = LightDiagramServices.createViewContext(model, propertyHolder);
-            } else {
-                viewContext = LightDiagramServices.createViewContext(model);
-            }
-
-            if (viewContext != null) {
-
-                // make sure the view exists
-                IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-                IWorkbenchPage page = window.getActivePage();
-                diagramView = getView(id);
-
-                if (diagramView == null) {
-                    // create the view and register it
-                    try {
-                        IViewPart view =
-                                page.showView(PRIMARY_VIEW_ID, id, IWorkbenchPage.VIEW_VISIBLE);
-                        if (view instanceof DiagramViewPart) {
-                            diagramView = (DiagramViewPart) view;
-                        } else {
-                            throw new PartInitException(
-                                    "KLighD: Creation of a KLighD DiagramViewPart failed.\n"
-                                            + "This appears to be a heavy internal error!");
-                        }
-                        
-                    } catch (PartInitException e) {
-                        StatusManager.getManager()
-                                .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e
-                                        .getMessage(), e));
-
-                        // trigger the create failure status
-//                        KlighdStatusState state =
-//                                new KlighdStatusState(KlighdStatusState.Status.CREATE_FAILURE, id,
-//                                        null, null);
-//                        if (KlighdStatusTrigger.getInstance() != null) {
-//                            KlighdStatusTrigger.getInstance().trigger(state);
-//                        }
-                        KlighdPlugin.getTrigger().triggerStatus(
-                                IKlighdTrigger.Status.CREATE_FAILURE, id, null);
-                        return null;
-                    } catch (IllegalArgumentException e) {
-                        StatusManager.getManager().handle(
-                                new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                        "Invalid KLighD view id:"
-                                                + "must not be empty or contain any colons."));
-
-                        // trigger the create failure status
-//                        KlighdStatusState state =
-//                                new KlighdStatusState(KlighdStatusState.Status.CREATE_FAILURE, id,
-//                                        null, null);
-//                        if (KlighdStatusTrigger.getInstance() != null) {
-//                            KlighdStatusTrigger.getInstance().trigger(state);
-//                        }
-                        KlighdPlugin.getTrigger().triggerStatus(
-                                IKlighdTrigger.Status.CREATE_FAILURE, id, null);
-                        return null;
-                    }
-                } else {
-                    // in case there is already a view with the given id
-                    //  clean that one up by unregistering view contexts currently associated with it
-                    //  as a new one will be registered below
-                    unregisterViewContexts(diagramView);
-                }
-
-                // set the view name
-                if (name != null) {
-                    diagramView.setName(name);
-                }
-
-                registerViewContext(diagramView, id, viewContext);
-                diagramView.setViewContext(viewContext);
-
-                // do an initial update of the view context
-                viewContext.getLayoutRecorder().startRecording();
-                LightDiagramServices.updateViewContext(viewContext, model);
-                
-                LightDiagramServices.layoutDiagram(viewContext, false);
-
-                // fill the options pane according to the the incorporated transformations
-                diagramView.updateOptions(viewContext.isZoomToFit());
-
-                // make the view visible without giving it the focus
-                page.bringToTop(diagramView);
-
-                // trigger the create success status
-//                KlighdStatusState state =
-//                        new KlighdStatusState(KlighdStatusState.Status.CREATE_SUCCESS, id,
-//                                viewContext, viewContext.getViewer());
-//                if (KlighdStatusTrigger.getInstance() != null) {
-//                    KlighdStatusTrigger.getInstance().trigger(state);
-//                }
-                KlighdPlugin.getTrigger().triggerStatus(
-                        IKlighdTrigger.Status.CREATE_SUCCESS, id, viewContext);
-                
-            }
+        if (model == null) {
+            return null;
         }
+        
+        final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        final IWorkbenchPage page = window.getActivePage();
+
+        // look for an available view with the id 'id'
+        DiagramViewPart diagramView = getView(id);
+
+        if (diagramView == null) {
+            // create the view and register it
+            try {
+                final IViewPart view =
+                        page.showView(PRIMARY_VIEW_ID, id, IWorkbenchPage.VIEW_VISIBLE);
+                if (view instanceof DiagramViewPart) {
+                    diagramView = (DiagramViewPart) view;
+                } else {
+                    throw new PartInitException(
+                            "KLighD: Creation of a KLighD DiagramViewPart failed.\n"
+                                    + "This appears to be a heavy internal error!");
+                }
+                
+            } catch (PartInitException e) {
+                StatusManager.getManager()
+                        .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e
+                                .getMessage(), e));
+
+                // trigger the create failure status
+                KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CREATE_FAILURE, null);
+                return null;
+            } catch (IllegalArgumentException e) {
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, "Invalid KLighD view id:"
+                                + "must not be empty or contain any colons."));
+
+                // trigger the create failure status
+                KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CREATE_FAILURE, null);
+                return null;
+            }
+        } else {
+            // in case there is already a view with the given id
+            //  clean that one up by unregistering view contexts currently associated with it
+            //  as a new one will be registered below
+            unregisterViewContexts(diagramView);
+        }
+        
+        // set the view name
+        if (name != null) {
+            diagramView.setName(name);
+        }
+        
+        // let the light diagram service create a view context and register it
+        final ViewContext viewContext = new ViewContext(diagramView, model);
+        if (propertyHolder != null) {
+            viewContext.configure(propertyHolder);
+        } else {
+            viewContext.configure();
+        }
+
+        registerViewContext(diagramView, id, viewContext);
+        diagramView.setViewContext(viewContext);
+
+        // do an initial update of the view context
+        viewContext.getLayoutRecorder().startRecording();
+        LightDiagramServices.updateViewContext(viewContext, model);
+        
+        LightDiagramServices.layoutDiagram(viewContext, false);
+
+        // fill the options pane according to the the incorporated transformations
+        diagramView.updateOptions(viewContext.isZoomToFit());
+
+        // make the view visible without giving it the focus
+        page.bringToTop(diagramView);
+
+        // trigger the create success status
+        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CREATE_SUCCESS, viewContext);
+                
         return diagramView;
     }
 
@@ -445,7 +436,7 @@ public final class DiagramViewManager implements IPartListener {
      *            the {@link IDiagramWorkbenchPart} to register
      */
     void registerView(final IDiagramWorkbenchPart part) {
-        final String id = part.getContextViewer().getViewPartId();
+        final String id = part.getPartId();
         this.idPartMapping.put(id, part);
         this.idContextMapping.put(id, part.getContextViewer().getViewContext());
     }
@@ -457,22 +448,14 @@ public final class DiagramViewManager implements IPartListener {
      */
     void unregisterViewContexts(final IDiagramWorkbenchPart part) {
         // unmap the id from the view
-        List<ViewContext> viewContexts = partContextMapping.get(part);
+        final List<ViewContext> viewContexts = partContextMapping.get(part);
         if (viewContexts != null) {
             for (ViewContext viewContext : viewContexts) {
                 String id = viewContext.getProperty(DIAGRAM_ID);
                 idPartMapping.remove(id);
                 idContextMapping.remove(id);
 
-                // trigger the close status
-//                KlighdStatusState state =
-//                        new KlighdStatusState(KlighdStatusState.Status.CLOSE, id, viewContext,
-//                                viewContext.getViewer());
-//                if (KlighdStatusTrigger.getInstance() != null) {
-//                    KlighdStatusTrigger.getInstance().trigger(state);
-//                }
-                KlighdPlugin.getTrigger().triggerStatus(
-                        IKlighdTrigger.Status.CLOSE, id, viewContext);
+                KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CLOSE, viewContext);
             }
         }
         // unmap the view from all contexts
