@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.views;
+package de.cau.cs.kieler.klighd.ui;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +39,8 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
+import de.cau.cs.kieler.klighd.ui.views.DiagramEditorPart;
+import de.cau.cs.kieler.klighd.ui.views.DiagramViewPart;
 
 /**
  * A singleton manager for creating, updating and closing diagram views. All methods in this class
@@ -435,7 +437,7 @@ public final class DiagramViewManager implements IPartListener {
      * @param part
      *            the {@link IDiagramWorkbenchPart} to register
      */
-    void registerView(final IDiagramWorkbenchPart part) {
+    public void registerView(final IDiagramWorkbenchPart part) {
         final String id = part.getPartId();
         this.idPartMapping.put(id, part);
         this.idContextMapping.put(id, part.getContextViewer().getViewContext());
@@ -444,9 +446,10 @@ public final class DiagramViewManager implements IPartListener {
     /**
      * Is package protected in order to be callable from {@link DiagramViewPart#dispose()}.
      * 
-     * @param view the view to close
+     * @param part
+     *            the part being closed
      */
-    void unregisterViewContexts(final IDiagramWorkbenchPart part) {
+    public void unregisterViewContexts(final IDiagramWorkbenchPart part) {
         // unmap the id from the view
         final List<ViewContext> viewContexts = partContextMapping.get(part);
         if (viewContexts != null) {

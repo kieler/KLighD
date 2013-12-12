@@ -73,6 +73,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
+import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -242,6 +243,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      */
     @Override
     public void dispose() {
+        DiagramViewManager.getInstance().unregisterViewContexts(this);
         unregisterResourceChangeListener();
         getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
         

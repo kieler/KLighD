@@ -33,7 +33,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.ui.views.DiagramViewManager;
+import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 
 /**
  * A factory providing methods for creating diagram synthesis option controls in the diagram side bar.
