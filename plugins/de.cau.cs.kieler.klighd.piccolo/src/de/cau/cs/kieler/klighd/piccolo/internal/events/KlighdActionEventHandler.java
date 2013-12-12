@@ -144,8 +144,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
 //        if (KlighdStatusTrigger.getInstance() != null) {
 //            KlighdStatusTrigger.getInstance().trigger(state);
 //        }
-        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE,
-                viewer.getContextViewer().getViewPartId(), viewer.getViewContext());
+        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, viewer.getViewContext());
 
     }
     
