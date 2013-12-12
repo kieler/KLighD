@@ -118,7 +118,6 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         if (currentViewer != null) {
             currentViewer.getControl().dispose();
             currentViewer = null;
-            currentViewContext = null;
         }
 
         @SuppressWarnings("unchecked")
