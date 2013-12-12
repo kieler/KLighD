@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.actions.ActionFactory;
 
 import com.google.common.collect.Iterables;
 
@@ -89,7 +91,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     private KlighdTextInputVerifyListener textinputlistener = new KlighdTextInputVerifyListener();
     
     /**
-     * Creates a Piccolo viewer with default style.
+     * Creates a Piccolo2D viewer with default style.
      * 
      * @param parentViewer
      *            the parent {@link ContextViewer}
@@ -101,7 +103,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     }
 
     /**
-     * Creates a Piccolo viewer with given style.
+     * Creates a Piccolo2D viewer with given style.
      * 
      * @param theParentViewer
      *            the parent {@link ContextViewer}
@@ -148,13 +150,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
 
         // register a print action with the global action bars
-//        if (getContextViewer().getWorkbenchPart() instanceof DiagramViewPart) {
-//            DiagramViewPart viewPart = (DiagramViewPart) getContextViewer().getWorkbenchPart();
-//
-//            // register print action
-//            viewPart.getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(),
-//                            new PrintAction(this, viewPart));
-//        }
+        if (getViewContext().getDiagramWorkbenchPart() instanceof IViewPart) {
+            IViewPart viewPart = (IViewPart) getViewContext().getDiagramWorkbenchPart();
+
+            // register print action
+            viewPart.getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(),
+                            new PrintAction(this));
+        }
 
     }
 
