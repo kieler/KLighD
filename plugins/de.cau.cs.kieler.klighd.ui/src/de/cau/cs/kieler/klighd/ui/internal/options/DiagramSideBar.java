@@ -61,6 +61,10 @@ import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
  */
 public final class DiagramSideBar {
     
+    /** The priority of the {@link ILayoutConfig} employed in side bars. */
+    private static final int LAYOUT_CONFIG_PRIORITY = VolatileLayoutConfig.DEFAULT_PRIORITY - 10;
+    // SUPPRESS CHECKSTYLE PREVIOUS MagicNumber
+    
     /** The initial width of the option pane and the diagram viewer. */
     private static final int INITIAL_OPTIONS_FORM_WIDTH = 230;
     
@@ -77,7 +81,7 @@ public final class DiagramSideBar {
     private static final int FULL = 100;
     
     /** The layout configurator that stores the values set by the layout option controls. */
-    private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig();
+    private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
     
     private final Composite sideBarParent;
 
