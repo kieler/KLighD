@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.viewers;
+package de.cau.cs.kieler.klighd;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.reverse;
@@ -29,8 +29,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
+import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * A specialized {@link TreeSelection} providing the selected view elements as well as
@@ -40,7 +40,12 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * 
  * @author chsch
  */
-public class KlighdTreeSelection extends TreeSelection implements Iterable<Object> {
+public class KlighdTreeSelection extends TreeSelection implements Iterable<EObject> {
+    
+    /**
+     * Empty singleton instance of {@link KlighdTreeSelection}.
+     */
+    public static final KlighdTreeSelection EMPTY = new KlighdTreeSelection(null);
     
     private ViewContext viewContext;
     
@@ -96,20 +101,20 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<Objec
     }
 
     @Override
-    public Iterator<Object> iterator() {
+    public Iterator<EObject> iterator() {
         // the aim of this method is only to apply the cast and avoid the warning on class level
         
         @SuppressWarnings("unchecked")
-        final Iterator<Object> iterator = (Iterator<Object>) super.iterator();
+        final Iterator<EObject> iterator = (Iterator<EObject>) super.iterator();
         return iterator;
     }
     
-    // this convenience method is package protected by intention as it is used in the ContextViewer only 
-    Iterator<? extends EObject> eIterator() {
-        @SuppressWarnings("unchecked")
-        Iterator<? extends EObject> iterator = (Iterator<? extends EObject>) this.iterator();
-        return iterator;
-    }
+//  // this convenience method is package protected by intention as it is used in the ContextViewer only 
+//    Iterator<? extends EObject> eIterator() {
+//        @SuppressWarnings("unchecked")
+//        Iterator<? extends EObject> iterator = (Iterator<? extends EObject>) this.iterator();
+//        return iterator;
+//    }
     
     /**
      * Analogously to {@link #iterator()} this methods returns an {@link Iterator} providing the
@@ -118,7 +123,7 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<Objec
      * @return an {@link Iterator} providing the requested source model elements
      */
     public Iterator<Object> sourceElementIterator() {
-        return Iterators.transform(KlighdTreeSelection.this.eIterator(),
+        return Iterators.transform(KlighdTreeSelection.this.iterator(),
                 new Function<EObject, Object>() {
                     public Object apply(final EObject object) {
                         return KlighdTreeSelection.this.viewContext.getSourceElement(object);
@@ -133,7 +138,7 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<Objec
      * @return an {@link Iterator} providing the requested source model elements
      */
     public Iterator<Pair<EObject, Object>> sourceViewPairIterator() {
-        return Iterators.transform(KlighdTreeSelection.this.eIterator(),
+        return Iterators.transform(KlighdTreeSelection.this.iterator(),
                 new Function<EObject, Pair<EObject, Object>>() {
                     public Pair<EObject, Object> apply(final EObject eObject) {
                         return Pair.of(eObject,

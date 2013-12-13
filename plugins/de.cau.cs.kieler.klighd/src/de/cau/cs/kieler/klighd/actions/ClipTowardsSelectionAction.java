@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.TreePath;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
+import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 
 /**
  * Set the diagram clip the child of the current clip that on the "hierarchy path" leading to

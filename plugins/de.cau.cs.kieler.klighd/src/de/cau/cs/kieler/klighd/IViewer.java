@@ -22,7 +22,6 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
-import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
 
 /**
  * The common interface for viewers displaying diagrams of provided models.<br>
