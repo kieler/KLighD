@@ -65,11 +65,9 @@ public class PiccoloTooltip {
 
     /**
      * @param display
-     *            the current display of the {@link de.cau.cs.kieler.klighd.viewers.KlighdViewer
-     *            KlighdViewer}.
+     *            the current display of the canvas displaying the corresponding diagram.
      * @param camera
-     *            the camera of the current {@link de.cau.cs.kieler.klighd.viewers.KlighdViewer
-     *            KlighdViewer}'s canvas.
+     *            the main camera observing the corresponding diagram.
      */
     public PiccoloTooltip(final Display display, final PCamera camera) {
         this.camera = camera;
