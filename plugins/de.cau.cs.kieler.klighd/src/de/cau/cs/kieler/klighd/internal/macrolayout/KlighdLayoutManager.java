@@ -66,7 +66,6 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
-import de.cau.cs.kieler.klighd.viewers.KlighdViewer;
 
 /**
  * A diagram layout manager for KLighD viewers that supports instances of {@code KNode}, as well as
@@ -119,9 +118,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         } else if (object instanceof ContextViewer) {
             ContextViewer contextViewer = (ContextViewer) object;
             viewContext = contextViewer.getViewContext();
-        } else if (object instanceof KlighdViewer) {
-            KlighdViewer klighdViewer = (KlighdViewer) object;
-            viewContext = klighdViewer.getViewContext();
         } else {
             viewContext = null;
         }
@@ -218,9 +214,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             } else if (diagramPart instanceof ContextViewer) {
                 ContextViewer contextViewer = (ContextViewer) diagramPart;
                 viewer = contextViewer.getActiveViewer();
-            } else if (diagramPart instanceof KlighdViewer) {
-                KlighdViewer klighdViewer = (KlighdViewer) diagramPart;
-                viewer = klighdViewer.getContextViewer().getActiveViewer();
             } else if (diagramPart instanceof IViewer<?>) {
                 viewer = (IViewer<?>) diagramPart;
             }
