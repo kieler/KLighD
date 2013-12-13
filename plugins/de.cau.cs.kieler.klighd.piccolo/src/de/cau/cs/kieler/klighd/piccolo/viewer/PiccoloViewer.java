@@ -16,8 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.viewer;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -28,7 +26,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.ActionFactory;
@@ -44,7 +41,6 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
-import de.cau.cs.kieler.klighd.piccolo.Messages;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
@@ -55,7 +51,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandl
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
-import de.cau.cs.kieler.klighd.piccolo.ui.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -75,7 +70,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author chsch
  */
 public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder,
-    IDiagramOutlinePage.Provider {
+        IDiagramOutlinePage.Provider {
 
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
@@ -126,8 +121,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         textinput.addVerifyListener(textinputlistener);
         textinput.setEditable(false);
         
-        // canvas.setDefaultRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
-        
         final PCamera camera = canvas.getCamera();
         
         // install the required event handlers, they rely on SWT event type codes
@@ -142,9 +135,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         // add a node for the rubber band selection marquee
         // final PEmptyNode marqueeParent = new PEmptyNode();
         // camera.getLayer(1).addChild(marqueeParent);
-        
-        // add a context menu
-        addContextMenu(canvas);
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
@@ -286,40 +276,30 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
             textinput.setVisible(true);
         }
     }
-    
-    /**
-     * Creates the context menu and adds the actions.
-     * 
-     * @param composite
-     *            the composite to add the context menu to
-     */
-    private void addContextMenu(final Composite composite) {
-        MenuManager menuManager = new MenuManager();
-        // add the 'save-as-image' action
-        Action saveAsImageAction =
-                new SaveAsImageAction(this, Messages.PiccoloViewer_save_as_image_text);
-        menuManager.add(saveAsImageAction);
 
-        // create the context menu
-        Menu menu = menuManager.createContextMenu(composite);
-        composite.setMenu(menu);
-
-        // register the context menu in the current work bench part site
-        //  this enables the population with entries contributed via extension points
-        this.getViewContext().getDiagramWorkbenchPart().getSite()
-                .registerContextMenu(menuManager, this.getContextViewer());
-    }
 
     /**
      * {@inheritDoc}
      */
     public IDiagramOutlinePage getDiagramOutlinePage() {
         if (outlinePage == null || outlinePage.isDisposed()) {
-            outlinePage = new PiccoloOutlinePage();
+            outlinePage = createDiagramOutlinePage();
             outlinePage.setContent(this.controller.getNode());
         }
         return outlinePage;
     }
+    
+    /**
+     * Factory method for creation of a corresponding outline page.<br>
+     * To be overridden by subclasses in order to inject specialized outline pages, see e.g.
+     * PiccoloViewerProvider in <code>de.cau.cs.kieler.klighd.ui.internal.PiccoloViewer</code>.
+     * 
+     * @return a {@link PiccoloOutlinePage}
+     */
+    protected PiccoloOutlinePage createDiagramOutlinePage() {
+        return new PiccoloOutlinePage();
+    }
+
 
     /**
      * {@inheritDoc}
