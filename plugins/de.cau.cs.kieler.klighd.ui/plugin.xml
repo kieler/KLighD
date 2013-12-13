@@ -28,6 +28,21 @@
       </editor>
    </extension>
    <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.cau.cs.kieler.klighd.ui.internal.KlighdPreferencePage"
+            id="de.cau.cs.kieler.klighd.ui.preferences"
+            name="%preferencePage.name">
+      </page>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <viewer
+            class="de.cau.cs.kieler.klighd.ui.internal.viewers.PiccoloViewerProvider"
+            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
+      </viewer>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
       <category
             id="de.cau.cs.kieler.klighd.ui"
