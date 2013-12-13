@@ -21,6 +21,7 @@ import static de.cau.cs.kieler.klighd.util.KlighdPredicates.isSelectable;
 import static de.cau.cs.kieler.klighd.util.KlighdPredicates.notIn;
 import static java.util.Collections.singleton;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +43,7 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
@@ -95,25 +97,15 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      */
     public ContextViewer(final Composite parent) {
         this.diagramComposite = parent;
-        
-        // initialize with the display of an empty string
-        showMessage("");
     }
 
     /**
-     * Shows the given message.
+     * Employs the given <code>viewer</code>.
      * 
-     * @param message
-     *            the message
+     * @param viewer
+     *            the {@link IViewer} to be employed
      */
-    private synchronized void showMessage(final String message) {
-        if (!((IViewer<?>) currentViewer instanceof StringViewer)) {
-            setViewer(new StringViewer(diagramComposite));
-        }
-        currentViewer.setModel(message, false);
-    }
-
-    private synchronized void setViewer(final IViewer<?> viewer) {
+    protected synchronized void setViewer(final IViewer<?> viewer) {
         // remove the current viewer if someone exists
         if (currentViewer != null) {
             currentViewer.getControl().dispose();
@@ -215,12 +207,6 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
 
             // initialize the current selection
             notifySelectionListeners(new KlighdTreeSelection(currentViewContext));
-
-        } else if (model instanceof String) {
-            // if the model is a string show it
-            showMessage((String) model);
-            
-            // provide no selection in this case!
         }
     }
 
@@ -526,7 +512,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      * {@inheritDoc}
      */
     public void toggleSelectionOfDiagramElements(final Set<? extends EObject> toBeToggled) {
-        final List<EObject> theSelection = newArrayList(this.selection.eIterator());
+        final List<EObject> theSelection = newArrayList(this.getSelection());
         for (EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
             boolean removed = theSelection.remove(diagramElement);
             if (!removed) {
@@ -593,11 +579,16 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
             }
         }
     };
-    
+
+    /**
+     * Updates the selection provided by this {@link IViewer}.
+     * 
+     * @param diagramElements an {@link Iterable} of view model elements being selected
+     */
     private void updateSelection(final Iterable<? extends EObject> diagramElements) {
         // here the selected elements are assumed to be diagram elements, i.e. KGraph elements or KTexts
         
-        final List<EObject> currentlySelected = newArrayList(this.selection.eIterator());
+        final List<EObject> currentlySelected = newArrayList(getSelection());
         final List<EObject> toBeSelected = newArrayList(filter(diagramElements, Predicates.notNull())); 
         
         for (KRendering r : concat(transform(filter(currentlySelected, notIn(toBeSelected)),
@@ -608,9 +599,18 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         for (KRendering r : concat(transform(toBeSelected, AS_RENDERING))) {
             r.setProperty(KlighdInternalProperties.SELECTED, true);
         }
-        
+
+        createSelection(toBeSelected);
+    }
+    
+    /**
+     * A.
+     * 
+     * @param elements a
+     */
+    protected void createSelection(final Collection<EObject> elements) {
         // update the selection status for the ISelectionProvider interface
-        notifySelectionListeners(new KlighdTreeSelection(currentViewContext, toBeSelected));
+        notifySelectionListeners(new KlighdTreeSelection(getViewContext(), elements));
     }
 
 
@@ -619,7 +619,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /* -------------------------------------------------- */
 
     /** the current selection. */
-    private KlighdTreeSelection selection = null;
+    private KlighdTreeSelection selection = KlighdTreeSelection.EMPTY;
 
     /** the selection listeners registered on this view. */
     private Set<ISelectionChangedListener> selectionListeners = Sets.newLinkedHashSet();
