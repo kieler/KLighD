@@ -27,8 +27,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.actions.ActionFactory;
 
 import com.google.common.collect.Iterables;
 
@@ -37,6 +35,7 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
@@ -128,9 +127,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.addInputEventListener(new KlighdTextInputHandler());
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(new PPanEventHandler()));
-        // camera.addInputEventListener(new KlighdSwitchFocusEventHandler(this));
-        camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
-        
+        camera.addInputEventListener(new KlighdSelectionEventHandler((IViewer<?>) theParentViewer));
 
         // add a node for the rubber band selection marquee
         // final PEmptyNode marqueeParent = new PEmptyNode();
@@ -138,16 +135,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
-
-        // register a print action with the global action bars
-        if (getViewContext().getDiagramWorkbenchPart() instanceof IViewPart) {
-            IViewPart viewPart = (IViewPart) getViewContext().getDiagramWorkbenchPart();
-
-            // register print action
-            viewPart.getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(),
-                            new PrintAction(this));
-        }
-
     }
 
     
