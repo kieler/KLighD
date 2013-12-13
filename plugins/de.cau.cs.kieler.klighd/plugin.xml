@@ -10,14 +10,6 @@
       </initializer>
    </extension>
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferencePage"
-            id="de.cau.cs.kieler.klighd.preferences"
-            name="%preferencePage.name">
-      </page>
-   </extension>
-   <extension
          point="de.cau.cs.kieler.kiml.service.layoutManagers">
       <manager
             class="de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager">
