@@ -23,8 +23,6 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -382,34 +380,6 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         // no action to register
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void addSelectionChangedListener(final ISelectionChangedListener listener) {
-        // selection is not supported by this outline page
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
-        // selection is not supported by this outline page
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public ISelection getSelection() {
-        // selection is not supported by this outline page
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setSelection(final ISelection selection) {
-        // selection is not supported by this outline page
-    }
 
 
     /**
