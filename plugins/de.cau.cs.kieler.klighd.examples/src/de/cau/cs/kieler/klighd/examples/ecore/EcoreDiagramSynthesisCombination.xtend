@@ -3,6 +3,7 @@ package de.cau.cs.kieler.klighd.examples.ecore
 import de.cau.cs.kieler.core.kivi.AbstractCombination
 import de.cau.cs.kieler.core.kivi.triggers.PartTrigger
 import de.cau.cs.kieler.core.kivi.triggers.SelectionTrigger
+import de.cau.cs.kieler.klighd.KlighdTreeSelection
 import de.cau.cs.kieler.klighd.kivi.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy
 import de.cau.cs.kieler.klighd.util.KlighdProperties
@@ -13,7 +14,6 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EModelElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.ui.part.FileEditorInput
-import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.

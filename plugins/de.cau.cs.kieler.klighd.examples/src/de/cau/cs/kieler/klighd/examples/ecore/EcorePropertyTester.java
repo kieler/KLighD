@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
+import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 
 /**
  * Experimental/exemplary {@link PropertyTester} used for limiting the visibility of Ecore-related
