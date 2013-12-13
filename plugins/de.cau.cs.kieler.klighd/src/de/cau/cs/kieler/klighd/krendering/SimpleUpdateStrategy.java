@@ -65,7 +65,10 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
                         Iterables.filter(baseModel.getData(), KRenderingLibrary.class)));
 
         // reset the clip (here the transform difference can still be computed properly)
-        viewContext.getViewer().clip(baseModel);
+        if (viewContext != null && viewContext.getViewer() != null) {
+            // viewContext.getViewer() is null if called via LightDiagramServices#translateModel(...)
+            viewContext.getViewer().clip(baseModel);
+        }
 
         // ... and remove the diagram elements afterwards
         baseModel.getChildren().clear();
