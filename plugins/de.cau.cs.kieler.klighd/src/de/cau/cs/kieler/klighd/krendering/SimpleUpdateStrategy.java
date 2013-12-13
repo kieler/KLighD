@@ -76,9 +76,10 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
         baseModel.getData().addAll(newData);
         baseModel.getChildren().addAll(newChildren);
 
-        // redirect any source view element association from the 'newModel' root to the 'baseModel'
-        //  as 'baseModel' remains in place over the diagram's life time.
-        viewContext.associateSourceTargetPair(viewContext.getSourceElement(newModel), baseModel);
-
+        // Note: no update of the source element associated with the baseModel (the root node) is
+        //  required since the source element/view element tracking for KGraphElements is performed
+        //  by means of a property on the corresponding layout data.
+        // Thus, the baseModel node obtains its associated source element through the above statement
+        //  'baseModel.getData().addAll(newData); :-)
     }
 }
