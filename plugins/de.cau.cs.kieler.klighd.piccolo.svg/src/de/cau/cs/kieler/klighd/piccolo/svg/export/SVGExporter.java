@@ -30,11 +30,12 @@ import edu.umd.cs.piccolo.PCamera;
  * 
  * @author uru
  */
-public class SVGExporter implements IViewExporter {
+public class SVGExporter extends IViewExporter.KlighdCanvasExporter {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void export(final OutputStream stream, final KlighdCanvas canvas,
             final boolean cameraViewport, final int scale, final boolean textAsShapes,
             final String subFormatId) {

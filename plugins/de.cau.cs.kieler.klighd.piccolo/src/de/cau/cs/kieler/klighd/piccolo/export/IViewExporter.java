@@ -15,6 +15,12 @@ package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.io.OutputStream;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.statushandlers.StatusManager;
+
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 
 /**
@@ -23,7 +29,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * 
  * @author uru
  * 
- * @see IViewExporter#export(OutputStream, KlighdCanvas, boolean, int, boolean, String)
+ * @see IViewExporter#export(OutputStream,
+ *      de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas, boolean, int, boolean, String)
  */
 public interface IViewExporter {
 
@@ -37,7 +44,7 @@ public interface IViewExporter {
      * 
      * @param stream
      *            the output stream
-     * @param canvas
+     * @param control
      *            the visible canvas
      * @param cameraViewport
      *            should only the visible area be exported?
@@ -48,7 +55,41 @@ public interface IViewExporter {
      * @param subFormatId
      *            an id for a certain subformat
      */
-    void export(final OutputStream stream, final KlighdCanvas canvas, final boolean cameraViewport,
+    void export(final OutputStream stream, final Control control, final boolean cameraViewport,
             final int scale, boolean textAsShapes, final String subFormatId);
 
+
+    /**
+     * An abstract implementation of {@link IViewExporter} exporting diagrams {@link KlighdCanvas
+     * KlighdCanvases}.
+     * 
+     * @author chsch
+     */
+    public abstract static class KlighdCanvasExporter implements IViewExporter {
+
+        /**
+         * {@inheritDoc}
+         */
+        public void export(final OutputStream stream, final Control control,
+                final boolean cameraViewport, final int scale, final boolean textAsShapes,
+                final String subFormatId) {
+            
+            final KlighdCanvas canvas;
+            if (control instanceof KlighdCanvas) {
+                canvas = (KlighdCanvas) control;
+                export(stream, canvas, cameraViewport, scale, textAsShapes, subFormatId);
+            } else {
+                final String msg = "";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, msg));
+                return;
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public abstract void export(OutputStream stream, KlighdCanvas canvas, boolean cameraViewport,
+                int scale, boolean textAsShapes, String subFormatId);
+    }
 }
