@@ -42,6 +42,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
+import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -95,7 +96,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
         this.diagramComposite.setLayout(new FillLayout());
         
         // create the context viewer
-        viewer = new ContextViewer(diagramComposite);
+        viewer = new UiContextViewer(diagramComposite);
         
         // add buttons to the view toolbar
         //  requires non-null 'viewer' field 
@@ -106,12 +107,11 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
         
         // install a drop handler for the view (XXX this could be omitted)
         installDropHandler(parent);
+
         viewer.setModel("No model selected.", false);
         
-        // register the context viewer as selection provider on the workbench
-        getSite().setSelectionProvider(viewer);
-
-        // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
+        // the configuration of the context menu is and selection provider
+        //  is done in the UiContextViewer
     }
     
     /**

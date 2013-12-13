@@ -75,6 +75,7 @@ import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
+import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -144,7 +145,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         diagramComposite.setLayout(new FillLayout());
         
         // create a context viewer
-        viewer = new ContextViewer(diagramComposite);
+        viewer = new UiContextViewer(diagramComposite);
         
         // create a view context carrying all data required for building up the diagram
         final ViewContext viewContext =
@@ -201,16 +202,14 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             viewer.setModel("The selected file does not contain any supported model.", false);
         }
         
-        // register the context viewer as selection provider on the workbench
-        getSite().setSelectionProvider(viewer);
+        // the configuration of the context menu is and selection provider
+        //  is done in the UiContextViewer
         
         // add buttons to the editor toolbar
         //  requires non-null 'viewer' field!!
         toolBar = this.getEditorSite().getActionBars().getToolBarManager();
         createButtons();
         getEditorSite().getWorkbenchWindow().getPartService().addPartListener(toolBarListener);
-        
-        // the initialization of the context menu is done in PiccoloViewer#addContextMenu()
     }
     
     /**
