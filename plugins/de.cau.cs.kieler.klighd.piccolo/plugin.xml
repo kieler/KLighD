@@ -3,13 +3,6 @@
 <plugin>
    <extension-point id="exporters" name="Piccolo View Exporter" schema="schema/exporters.exsd"/>
    <extension
-         point="de.cau.cs.kieler.klighd.extensions">
-      <viewer
-            class="de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewerProvider"
-            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
-      </viewer>
-   </extension>
-   <extension
          point="de.cau.cs.kieler.kiml.layoutProviders">
       <layoutOption
             appliesTo="nodes"
