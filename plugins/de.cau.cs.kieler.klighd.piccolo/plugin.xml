@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="exporters" name="Piccolo View Exporter" schema="schema/exporters.exsd"/>
    <extension
          point="de.cau.cs.kieler.kiml.layoutProviders">
       <layoutOption
@@ -13,7 +12,7 @@
       </layoutOption>
    </extension>
    <extension
-         point="de.cau.cs.kieler.klighd.piccolo.exporters">
+         point="de.cau.cs.kieler.klighd.extensions">
       <exporter
             class="de.cau.cs.kieler.klighd.piccolo.export.BitmapExporter"
             extension="png"

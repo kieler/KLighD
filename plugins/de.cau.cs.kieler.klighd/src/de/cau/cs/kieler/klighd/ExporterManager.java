@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.export;
+package de.cau.cs.kieler.klighd;
 
 import java.util.List;
 import java.util.Map;
@@ -25,24 +25,21 @@ import org.osgi.framework.Bundle;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
-
 /**
- * Management class for {@link IViewExporter} to export the currently visible diagram of a
+ * Management class for {@link IDiagramExporter} to export the currently visible diagram of a
  * {@link de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer PiccoloViewer}.
  * 
  * @author uru
  */
 public final class ExporterManager {
 
-    /**
-     * Id of the exporters extension point.
-     */
-    public static final String EXTP_ID_EXPORTERS = "de.cau.cs.kieler.klighd.piccolo.exporters";
+    /** name of the 'exporter' element. */
+    private static final String ELEMENT_EXPORTER = "exporter";
+    
 
     private static ExporterManager instance;
 
-    private Map<String, IViewExporter> exportersMap = Maps.newHashMap();
+    private Map<String, IDiagramExporter> exportersMap = Maps.newHashMap();
     private List<ExporterDescriptor> descriptors = Lists.newArrayList();
 
     private ExporterManager() {
@@ -71,16 +68,16 @@ public final class ExporterManager {
 
     /**
      * @param id
-     *            the id of the registered {@link IViewExporter}.
+     *            the id of the registered {@link IDiagramExporter}.
      * @return the registered exporter for the passed id.
      * 
      * @throws IllegalArgumentException
      *             if the passed {@code id} is not registered.
      */
-    public IViewExporter getExporter(final String id) {
-        IViewExporter exporter = exportersMap.get(id);
+    public IDiagramExporter getExporter(final String id) {
+        IDiagramExporter exporter = exportersMap.get(id);
         if (exporter == null) {
-            throw new IllegalArgumentException("Id of " + IViewExporter.class + " not registered: "
+            throw new IllegalArgumentException("Id of " + IDiagramExporter.class + " not registered: "
                     + id + ".");
         }
         return exporter;
@@ -89,8 +86,13 @@ public final class ExporterManager {
     private void loadExporters() {
         // read the extension point
         IConfigurationElement[] extensions =
-                Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_EXPORTERS);
+                Platform.getExtensionRegistry().getConfigurationElementsFor(
+                        KlighdDataManager.EXTP_ID_EXTENSIONS);
         for (IConfigurationElement element : extensions) {
+            if (!ELEMENT_EXPORTER.equals(element.getName())) {
+                continue;
+            }
+
             try {
                 // store the generator
                 String id = element.getAttribute("id");
@@ -107,11 +109,12 @@ public final class ExporterManager {
                 descriptors.add(descriptor);
 
                 // create the exporter class
-                IViewExporter exporter = (IViewExporter) element.createExecutableExtension("class");
+                IDiagramExporter exporter =
+                        (IDiagramExporter) element.createExecutableExtension("class");
                 exportersMap.put(id, exporter);
 
             } catch (Exception e) {
-                reportError(EXTP_ID_EXPORTERS, element, e);
+                reportError(KlighdDataManager.EXTP_ID_EXTENSIONS, element, e);
             }
 
         }
@@ -174,6 +177,5 @@ public final class ExporterManager {
         public String getFileExtension() {
             return fileExtension;
         }
-
     }
 }

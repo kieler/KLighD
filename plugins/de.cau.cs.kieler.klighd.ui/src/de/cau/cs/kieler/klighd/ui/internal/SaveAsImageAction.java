@@ -29,10 +29,10 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.klighd.ExporterManager;
+import de.cau.cs.kieler.klighd.ExporterManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager;
-import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager.ExporterDescriptor;
-import de.cau.cs.kieler.klighd.piccolo.export.IViewExporter;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
@@ -126,7 +126,7 @@ public class SaveAsImageAction extends Action {
             final boolean textAsShapes) {
 
         // retrieve the exporter from the central registry
-        IViewExporter exporter =
+        IDiagramExporter exporter =
                 ExporterManager.getInstance().getExporter(exporterDescr.getExporterId());
         // execute the export process
         exporter.export(stream, control, cameraViewport, scale, textAsShapes,

@@ -19,6 +19,7 @@
       <complexType>
          <choice minOccurs="1" maxOccurs="unbounded">
             <element ref="action"/>
+            <element ref="exporter"/>
             <element ref="styleModifier"/>
             <element ref="updateStrategy"/>
             <element ref="viewer"/>
@@ -164,6 +165,49 @@
                <appinfo>
                   <meta.attribute kind="java"/>
                </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="exporter">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IDiagramExporter"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="subFormat" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="extension" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The file extension, e.g., png (without leading dot)
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  An additional description that will be displayed in a file dialog, thus it should be as short as possible.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

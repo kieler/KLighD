@@ -47,8 +47,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
-import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager;
-import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.ExporterManager;
+import de.cau.cs.kieler.klighd.ExporterManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
