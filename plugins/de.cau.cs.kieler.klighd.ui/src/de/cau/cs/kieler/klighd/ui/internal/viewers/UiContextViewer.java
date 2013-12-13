@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.internal.viewers;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.widgets.Composite;
@@ -21,9 +22,15 @@ import org.eclipse.ui.IWorkbenchPartSite;
 
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.ui.internal.Messages;
+import de.cau.cs.kieler.klighd.ui.internal.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
+ * A specialized {@link ContextViewer} being in charge of providing UI contributions like context
+ * menu and propagation of the selection into the platform.<br>
+ * It is used by the {@link de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart DiagramEditorPart}
+ * and {@link de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart DiagramViewPart}.
  * 
  * @author chsch
  */
@@ -31,8 +38,6 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
         IDiagramOutlinePage.Provider {
 
     private Composite diagramContainer;
-    
-    private MenuManager menuManager;
     
     /**
      * Constructor.
@@ -57,7 +62,7 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
             super.setModel(model, sync);
 
             // create the context menu
-            menuManager = new MenuManager();
+            final MenuManager menuManager = new MenuManager();
 
             final Control control = getControl();
             if (control != null) {
@@ -67,6 +72,10 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
                 control.setMenu(menuManager.createContextMenu(control));
             }
 
+            Action saveAsImageAction =
+                    new SaveAsImageAction(this, Messages.UiContextViewer_save_as_image_text);
+            menuManager.add(saveAsImageAction);
+            
             final IWorkbenchPartSite site = ((ViewContext) model).getDiagramWorkbenchPart().getSite();
 
             // register this selection provider in the current work bench part site 
@@ -82,19 +91,6 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
             
             // provide no selection in this case!
         }
-    }
-    
-    /**
-     * Getter.
-     *
-     * @return the {@link MenuManager} associated with <code>this</code> viewer.
-     */
-    public MenuManager getContextMenuManager() {
-        return this.menuManager;
-        // add the 'save-as-image' action
-//        Action saveAsImageAction =
-//                new SaveAsImageAction(this, Messages.PiccoloViewer_save_as_image_text);
-//        menuManager.add(saveAsImageAction);
     }
 
     /**

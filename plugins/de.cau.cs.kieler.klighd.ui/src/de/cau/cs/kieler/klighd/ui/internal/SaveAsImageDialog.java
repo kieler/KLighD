@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.ui;
+package de.cau.cs.kieler.klighd.ui.internal;
 
 import java.io.File;
 import java.util.Collections;
@@ -47,12 +47,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager;
 import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
- * The 'save-as-image' dialog for Piccolo.
+ * The 'save-as-image' dialog for Piccolo2D.
  * 
  * The available image formats are retrieved from the {@link ExporterManager#EXTP_ID_EXPORTERS}
  * extension point. An additional description of each format is added in parentheses (...), the
@@ -108,7 +108,7 @@ public class SaveAsImageDialog extends Dialog {
     private IPath path;
     /** whether the selected path is workspace relative. */
     private boolean workspacePath;
-    /** whether to render through the camera viewport. */
+    /** whether to render through the camera view port. */
     private boolean cameraViewport;
     /** whether to transform text to shapes in vector graphics. */
     private boolean textAsShapes;
@@ -121,7 +121,7 @@ public class SaveAsImageDialog extends Dialog {
     private ExporterDescriptor currentExporter;
 
     /**
-     * Constructs the dialog for saving a Piccolo scene graph as an image.
+     * Constructs the dialog for saving the diagram as an image.
      * 
      * @param parentShell
      *            the parent shell
@@ -129,7 +129,7 @@ public class SaveAsImageDialog extends Dialog {
     public SaveAsImageDialog(final Shell parentShell) {
         super(parentShell);
         // receive the preference store
-        preferenceStore = KlighdPiccoloPlugin.getDefault().getPreferenceStore();
+        preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
 
         // get the available descriptors
         descriptors = ExporterManager.getInstance().getAvailableExporters();

@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.ui;
+package de.cau.cs.kieler.klighd.ui.internal;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,35 +26,36 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager;
 import de.cau.cs.kieler.klighd.piccolo.export.ExporterManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.piccolo.export.IViewExporter;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
- * An action which invokes the 'save-as-image' dialog and performs the save for Piccolo.
+ * An action which invokes the 'save-as-image' dialog and performs the diagram export.
  * 
  * @author mri
  * @author uru
+ * @author chsch
  */
 public class SaveAsImageAction extends Action {
 
-    /** the associated Piccolo viewer. */
-    private PiccoloViewer viewer;
+    /** the associated {@link IViewer}. */
+    private IViewer<?> viewer;
 
     /**
      * Constructs the 'save-as-image' action.
      * 
      * @param viewer
-     *            the associated Piccolo viewer
+     *            the associated {@link IViewer}, is supposed to be the Piccolo2D-based one
      * @param text
      *            the user-friendly text for the action
      */
-    public SaveAsImageAction(final PiccoloViewer viewer, final String text) {
+    public SaveAsImageAction(final IViewer<?> viewer, final String text) {
         super(text);
         this.viewer = viewer;
     }
@@ -65,7 +66,7 @@ public class SaveAsImageAction extends Action {
     @Override
     public void run() {
         // open the dialog to receive the required user input
-        SaveAsImageDialog dialog = new SaveAsImageDialog(viewer.getCanvas().getShell());
+        SaveAsImageDialog dialog = new SaveAsImageDialog(viewer.getControl().getShell());
         int code = dialog.open();
         if (code == Dialog.OK) {
             try {
@@ -73,12 +74,12 @@ public class SaveAsImageAction extends Action {
                 OutputStream stream =
                         createOutputStream(dialog.getFilePath(), dialog.isWorkspacePath());
                 // render the canvas to an image and write it to the stream
-                toImage(stream, viewer.getCanvas(), dialog.isCameraViewport(),
+                toImage(stream, viewer.getControl(), dialog.isCameraViewport(),
                         dialog.getCurrentExporter(), dialog.getScaleFactor(), dialog.isTextAsShapes());
                 stream.close();
             } catch (IOException exception) {
                 Status myStatus =
-                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID,
+                        new Status(IStatus.WARNING, KlighdUIPlugin.PLUGIN_ID,
                                 Messages.SaveAsImageAction_save_as_image_error, exception);
                 StatusManager.getManager().handle(myStatus,
                         StatusManager.BLOCK | StatusManager.SHOW);
@@ -103,12 +104,12 @@ public class SaveAsImageAction extends Action {
     }
 
     /**
-     * Renders a Piccolo canvas to an image and writes it in the specified file format to the given
+     * Renders a Piccolo2D canvas to an image and writes it in the specified file format to the given
      * stream.
      * 
      * @param stream
      *            the output stream to write the image data to
-     * @param canvas
+     * @param control
      *            the canvas
      * @param cameraViewport
      *            true if the scene graph should be rendered through the camera, i.e. only render
@@ -120,7 +121,7 @@ public class SaveAsImageAction extends Action {
      * @param textAsShapes
      *            whether text in vector graphics should be rendered as shapes
      */
-    public static void toImage(final OutputStream stream, final KlighdCanvas canvas,
+    public static void toImage(final OutputStream stream, final Control control,
             final boolean cameraViewport, final ExporterDescriptor exporterDescr, final int scale,
             final boolean textAsShapes) {
 
@@ -128,7 +129,7 @@ public class SaveAsImageAction extends Action {
         IViewExporter exporter =
                 ExporterManager.getInstance().getExporter(exporterDescr.getExporterId());
         // execute the export process
-        exporter.export(stream, canvas, cameraViewport, scale, textAsShapes,
+        exporter.export(stream, control, cameraViewport, scale, textAsShapes,
                 exporterDescr.getSubFormatId());
 
     }

@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.ui;
+package de.cau.cs.kieler.klighd.ui.internal;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -19,7 +19,10 @@ import org.eclipse.osgi.util.NLS;
  * @generated
  */
 public class Messages extends NLS {
-    private static final String BUNDLE_NAME = "de.cau.cs.kieler.klighd.piccolo.ui.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "de.cau.cs.kieler.klighd.ui.internal.messages"; //$NON-NLS-1$
+    
+    public static String UiContextViewer_save_as_image_text;
+
     public static String SaveAsImageAction_save_as_image_error;
     public static String SaveAsImageDialog_browse_file_system_caption;
     public static String SaveAsImageDialog_browse_workspace_caption;
@@ -35,17 +38,6 @@ public class Messages extends NLS {
     public static String SaveAsImageDialog_use_camera_viewport_caption;
     public static String SaveAsImageDialog_text_as_shapes;
 
-    public static String ExportKGraphAction_export_kgraph_error;
-    public static String ExportKGraphDialog_browse_file_system_caption;
-    public static String ExportKGraphDialog_browse_workspace_caption;
-    public static String ExportKGraphDialog_container_not_exist_error;
-    public static String ExportKGraphDialog_file_caption;
-    public static String ExportKGraphDialog_file_outside_project_error;
-    public static String ExportKGraphDialog_export_format_caption;
-    public static String ExportKGraphDialog_is_workspace_path_caption;
-    public static String ExportKGraphDialog_path_is_not_valid_error;
-    public static String ExportKGraphDialog_save_as_caption;
-    public static String ExportKGraphDialog_title;
     
     static {
         // initialize resource bundle
