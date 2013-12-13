@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
-import org.eclipse.emf.ecore.EObject;
+import de.cau.cs.kieler.core.kgraph.EMapPropertyHolder;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model abstract="true"
  * @generated
  */
-public interface KStyle extends EObject {
+public interface KStyle extends EMapPropertyHolder {
     /**
      * Returns the value of the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->

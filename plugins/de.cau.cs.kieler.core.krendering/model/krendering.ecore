@@ -234,7 +234,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KStyle" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="KStyle" abstract="true" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//EMapPropertyHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Adds additional StyleInformation to a rendering.&#xA;can be set to propagate to children to make redefinining styles unneccessary"/>
     </eAnnotations>

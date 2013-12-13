@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- begin-model-doc -->
  * This package contains the classes of the KRendering language.<br>
  * This languages extends {@link KGraphPackage KGraph} and provides the means for describing the
- * figures, the elements of a KGraph instance are depicted by. This involves
+ * figures the elements of a KGraph instance are depicted by. This involves
  * primitive figures to be composed to complex ones, <i>micro layout</i> directives,
  * styles, as well as actions for expressing interactivity of KGraph/KRendering-based diagrams.
  * <!-- end-model-doc -->
@@ -1216,13 +1216,31 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE = 11;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE__PROPERTIES = KGraphPackage.EMAP_PROPERTY_HOLDER__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE__PERSISTENT_ENTRIES = KGraphPackage.EMAP_PROPERTY_HOLDER__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE__PROPAGATE_TO_CHILDREN = 0;
+    int KSTYLE__PROPAGATE_TO_CHILDREN = KGraphPackage.EMAP_PROPERTY_HOLDER_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Modifier Id</b></em>' attribute.
@@ -1231,7 +1249,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KSTYLE__MODIFIER_ID = 1;
+    int KSTYLE__MODIFIER_ID = KGraphPackage.EMAP_PROPERTY_HOLDER_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Selection</b></em>' attribute.
@@ -1240,7 +1258,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KSTYLE__SELECTION = 2;
+    int KSTYLE__SELECTION = KGraphPackage.EMAP_PROPERTY_HOLDER_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>KStyle</em>' class.
@@ -1249,7 +1267,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KSTYLE_FEATURE_COUNT = 3;
+    int KSTYLE_FEATURE_COUNT = KGraphPackage.EMAP_PROPERTY_HOLDER_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KRenderingLibraryImpl <em>Library</em>}' class.
@@ -1929,6 +1947,24 @@ public interface KRenderingPackage extends EPackage {
     int KLINE_WIDTH = 23;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_WIDTH__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_WIDTH__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1982,6 +2018,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KLINE_STYLE = 24;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_STYLE__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_STYLE__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2057,6 +2111,24 @@ public interface KRenderingPackage extends EPackage {
     int KVERTICAL_ALIGNMENT = 25;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVERTICAL_ALIGNMENT__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KVERTICAL_ALIGNMENT__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2110,6 +2182,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KHORIZONTAL_ALIGNMENT = 26;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KHORIZONTAL_ALIGNMENT__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KHORIZONTAL_ALIGNMENT__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2507,6 +2597,24 @@ public interface KRenderingPackage extends EPackage {
     int KCOLORING = 35;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLORING__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLORING__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2596,6 +2704,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KFOREGROUND = 34;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND__PROPERTIES = KCOLORING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND__PERSISTENT_ENTRIES = KCOLORING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2689,6 +2815,24 @@ public interface KRenderingPackage extends EPackage {
     int KBACKGROUND = 36;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND__PROPERTIES = KCOLORING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND__PERSISTENT_ENTRIES = KCOLORING__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2780,6 +2924,24 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_BOLD = 37;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_BOLD__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_BOLD__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2833,6 +2995,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KFONT_ITALIC = 38;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_ITALIC__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_ITALIC__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -2890,6 +3070,24 @@ public interface KRenderingPackage extends EPackage {
     int KFONT_NAME = 39;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_NAME__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_NAME__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2943,6 +3141,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KFONT_SIZE = 40;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFONT_SIZE__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -3136,6 +3352,24 @@ public interface KRenderingPackage extends EPackage {
     int KROTATION = 42;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROTATION__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3198,6 +3432,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KLINE_CAP = 43;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_CAP__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_CAP__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -3438,6 +3690,24 @@ public interface KRenderingPackage extends EPackage {
     int KINVISIBILITY = 47;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KINVISIBILITY__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KINVISIBILITY__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3491,6 +3761,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KSHADOW = 48;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSHADOW__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -3575,6 +3863,24 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT_UNDERLINE = 49;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_UNDERLINE__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_UNDERLINE__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3639,6 +3945,24 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_REF = 50;
 
     /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
+
+    /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3692,6 +4016,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KTEXT_STRIKEOUT = 51;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT_STRIKEOUT__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.
@@ -3756,6 +4098,24 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KLINE_JOIN = 52;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN__PROPERTIES = KSTYLE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KLINE_JOIN__PERSISTENT_ENTRIES = KSTYLE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Propagate To Children</b></em>' attribute.

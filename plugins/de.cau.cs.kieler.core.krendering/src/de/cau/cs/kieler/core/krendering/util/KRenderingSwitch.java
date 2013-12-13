@@ -204,6 +204,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
             case KRenderingPackage.KSTYLE: {
                 KStyle kStyle = (KStyle)theEObject;
                 T1 result = caseKStyle(kStyle);
+                if (result == null) result = caseEMapPropertyHolder(kStyle);
+                if (result == null) result = caseIPropertyHolder(kStyle);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -305,6 +307,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KLineWidth kLineWidth = (KLineWidth)theEObject;
                 T1 result = caseKLineWidth(kLineWidth);
                 if (result == null) result = caseKStyle(kLineWidth);
+                if (result == null) result = caseEMapPropertyHolder(kLineWidth);
+                if (result == null) result = caseIPropertyHolder(kLineWidth);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -312,6 +316,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KLineStyle kLineStyle = (KLineStyle)theEObject;
                 T1 result = caseKLineStyle(kLineStyle);
                 if (result == null) result = caseKStyle(kLineStyle);
+                if (result == null) result = caseEMapPropertyHolder(kLineStyle);
+                if (result == null) result = caseIPropertyHolder(kLineStyle);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -319,6 +325,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KVerticalAlignment kVerticalAlignment = (KVerticalAlignment)theEObject;
                 T1 result = caseKVerticalAlignment(kVerticalAlignment);
                 if (result == null) result = caseKStyle(kVerticalAlignment);
+                if (result == null) result = caseEMapPropertyHolder(kVerticalAlignment);
+                if (result == null) result = caseIPropertyHolder(kVerticalAlignment);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -326,6 +334,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KHorizontalAlignment kHorizontalAlignment = (KHorizontalAlignment)theEObject;
                 T1 result = caseKHorizontalAlignment(kHorizontalAlignment);
                 if (result == null) result = caseKStyle(kHorizontalAlignment);
+                if (result == null) result = caseEMapPropertyHolder(kHorizontalAlignment);
+                if (result == null) result = caseIPropertyHolder(kHorizontalAlignment);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -387,6 +397,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKForeground(kForeground);
                 if (result == null) result = caseKColoring(kForeground);
                 if (result == null) result = caseKStyle(kForeground);
+                if (result == null) result = caseEMapPropertyHolder(kForeground);
+                if (result == null) result = caseIPropertyHolder(kForeground);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -394,6 +406,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KColoring<?> kColoring = (KColoring<?>)theEObject;
                 T1 result = caseKColoring(kColoring);
                 if (result == null) result = caseKStyle(kColoring);
+                if (result == null) result = caseEMapPropertyHolder(kColoring);
+                if (result == null) result = caseIPropertyHolder(kColoring);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -402,6 +416,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKBackground(kBackground);
                 if (result == null) result = caseKColoring(kBackground);
                 if (result == null) result = caseKStyle(kBackground);
+                if (result == null) result = caseEMapPropertyHolder(kBackground);
+                if (result == null) result = caseIPropertyHolder(kBackground);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -409,6 +425,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KFontBold kFontBold = (KFontBold)theEObject;
                 T1 result = caseKFontBold(kFontBold);
                 if (result == null) result = caseKStyle(kFontBold);
+                if (result == null) result = caseEMapPropertyHolder(kFontBold);
+                if (result == null) result = caseIPropertyHolder(kFontBold);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -416,6 +434,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KFontItalic kFontItalic = (KFontItalic)theEObject;
                 T1 result = caseKFontItalic(kFontItalic);
                 if (result == null) result = caseKStyle(kFontItalic);
+                if (result == null) result = caseEMapPropertyHolder(kFontItalic);
+                if (result == null) result = caseIPropertyHolder(kFontItalic);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -423,6 +443,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KFontName kFontName = (KFontName)theEObject;
                 T1 result = caseKFontName(kFontName);
                 if (result == null) result = caseKStyle(kFontName);
+                if (result == null) result = caseEMapPropertyHolder(kFontName);
+                if (result == null) result = caseIPropertyHolder(kFontName);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -430,6 +452,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KFontSize kFontSize = (KFontSize)theEObject;
                 T1 result = caseKFontSize(kFontSize);
                 if (result == null) result = caseKStyle(kFontSize);
+                if (result == null) result = caseEMapPropertyHolder(kFontSize);
+                if (result == null) result = caseIPropertyHolder(kFontSize);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -450,6 +474,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KRotation kRotation = (KRotation)theEObject;
                 T1 result = caseKRotation(kRotation);
                 if (result == null) result = caseKStyle(kRotation);
+                if (result == null) result = caseEMapPropertyHolder(kRotation);
+                if (result == null) result = caseIPropertyHolder(kRotation);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -457,6 +483,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KLineCap kLineCap = (KLineCap)theEObject;
                 T1 result = caseKLineCap(kLineCap);
                 if (result == null) result = caseKStyle(kLineCap);
+                if (result == null) result = caseEMapPropertyHolder(kLineCap);
+                if (result == null) result = caseIPropertyHolder(kLineCap);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -483,6 +511,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KInvisibility kInvisibility = (KInvisibility)theEObject;
                 T1 result = caseKInvisibility(kInvisibility);
                 if (result == null) result = caseKStyle(kInvisibility);
+                if (result == null) result = caseEMapPropertyHolder(kInvisibility);
+                if (result == null) result = caseIPropertyHolder(kInvisibility);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -490,6 +520,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KShadow kShadow = (KShadow)theEObject;
                 T1 result = caseKShadow(kShadow);
                 if (result == null) result = caseKStyle(kShadow);
+                if (result == null) result = caseEMapPropertyHolder(kShadow);
+                if (result == null) result = caseIPropertyHolder(kShadow);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -497,6 +529,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KTextUnderline kTextUnderline = (KTextUnderline)theEObject;
                 T1 result = caseKTextUnderline(kTextUnderline);
                 if (result == null) result = caseKStyle(kTextUnderline);
+                if (result == null) result = caseEMapPropertyHolder(kTextUnderline);
+                if (result == null) result = caseIPropertyHolder(kTextUnderline);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -504,6 +538,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KStyleRef kStyleRef = (KStyleRef)theEObject;
                 T1 result = caseKStyleRef(kStyleRef);
                 if (result == null) result = caseKStyle(kStyleRef);
+                if (result == null) result = caseEMapPropertyHolder(kStyleRef);
+                if (result == null) result = caseIPropertyHolder(kStyleRef);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -511,6 +547,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KTextStrikeout kTextStrikeout = (KTextStrikeout)theEObject;
                 T1 result = caseKTextStrikeout(kTextStrikeout);
                 if (result == null) result = caseKStyle(kTextStrikeout);
+                if (result == null) result = caseEMapPropertyHolder(kTextStrikeout);
+                if (result == null) result = caseIPropertyHolder(kTextStrikeout);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -518,6 +556,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KLineJoin kLineJoin = (KLineJoin)theEObject;
                 T1 result = caseKLineJoin(kLineJoin);
                 if (result == null) result = caseKStyle(kLineJoin);
+                if (result == null) result = caseEMapPropertyHolder(kLineJoin);
+                if (result == null) result = caseIPropertyHolder(kLineJoin);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
