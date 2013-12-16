@@ -31,6 +31,7 @@ import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The Piccolo2D node for representing a {link KNode}.
@@ -63,7 +64,9 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
     /**
      * This camera is used if the diagram is clipped to this node and this node's child area is part
      * of the composite node figure. In this and only this particular case, the camera observing the
-     * child area is set visible.
+     * child area is set visible, since the node's figure shall not be shown on the main diagram.
+     * The latter requirement is implemented in {@link #fullPaint(PPaintContext)} as setting the
+     * figure node to invisible will also hide it in the outline diagram.
      */
     private final PCamera childAreaCamera; 
 
@@ -133,7 +136,7 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
                         }
 
                         thisNode.childAreaCamera.setViewTransform(NodeUtil.localToParent(
-                                thisNode.childArea.getParent(), thisNode.getChild(0)));
+                                thisNode.childArea.getParent(), thisNode));
                         
                         thisNode.childAreaCamera.setVisible(true);
                     } else {
@@ -148,7 +151,7 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
             // this property change listeners is simply in charge of synchronizing the
             //  helper camera's bounds with those of this KNodeNode
             // the view transform/bounds is set by the above listener
-            //  a listener rendering figure changes requiring the (de-)activation of the
+            //  a listener on rendering figure changes requiring the (de-)activation of the
             //  camera while the the diagram is clipped to this node is sill missing (TODO)
             public void propertyChange(final PropertyChangeEvent evt) {
                 if (evt.getNewValue() instanceof Rectangle2D) {
@@ -226,8 +229,15 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
      */
     @Override
     public void addChild(final PNode child) {
-
-        if (child instanceof KChildAreaNode) {
+        // this method has been specialized in order to implement some special child ordering:
+        //  1: the node's rendering figure node: a (nested) KlighdPath or KlighdStyledText;
+        //  2: the node's child area node if it is not already contained in 1;
+        //  3: the node's child area camera
+        //  4: the node's port layer
+        //  5: the node's label layer
+        // the ordering or 3-5 is build up in the constructor
+        
+        if (child == childArea) {
             if (getChild(0) == childAreaCamera) {
                 // in this case a KChildArea is the only KRendering of the KNode
                 this.addChild(0, child);
@@ -256,11 +266,32 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
      * {@inheritDoc}
      */
     @Override
+    public boolean fullPick(final PPickPath pickPath) {
+        final boolean fullPick = super.fullPick(pickPath);
+        
+        if (!fullPick && isRootLayer) {
+            pickPath.pushNode(this);
+            pickPath.pushTransform(getTransform());
+            
+            return true;
+        }
+        return fullPick;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void fullPaint(final PPaintContext paintContext) {
-        // unfortunately I had to copy the whole method just for
+        // Unfortunately I had to copy the whole method just for
         //  introducing the filter in the loop below, since 'PNode#fullPaint(...)'
-        //  accesses the child list directly rather via 'getChildrenReference()'
-        // I guess it's worth a related API change in some future Piccolo2D version 
+        //  accesses the child list directly rather via 'getChildrenReference()'.
+        // I guess it's worth a related API change in some future Piccolo2D version. 
+        
+        // The filter is in charge of masking out the rendering while the diagram is
+        //  clipped to this node and it's being drawn via the diagram's main camera!
+        // In contrast, the rendering figure is supposed to be drawn at all times
+        //  while the diagram is drawn via the outline view's camera!
         
         if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
             paintContext.pushTransform(getTransformReference(false));
@@ -275,6 +306,14 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
                 final PNode each = (PNode) getChildrenReference().get(i);
                 if (i == 0 && this.isRootLayer && each != this.childArea
                         && this.getCamerasReference().contains(paintContext.getCamera())) {
+                    // do not draw the node's figure on the main diagram if it is clipped to this node
+                    continue;
+                }
+                if (each == this.childAreaCamera && each.getVisible() // implies isRootLayer == true
+                        && !this.getCamerasReference().contains(paintContext.getCamera())) {
+                    // do not draw the childAreaCamera on the outline view if the diagram is clipped
+                    //  to this node and the paint camera is unequal to that of the main diagram.
+                    //  Hence, it must be that of the outline diagram or an further one.
                     continue;
                 }
                 each.fullPaint(paintContext);

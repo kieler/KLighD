@@ -228,8 +228,10 @@ public final class NodeUtil {
     
     /**
      * Recursively concatenates the {@link AffineTransform AffineTransforms} of all {@link PNode
-     * PNodes} in the containment hierarchy starting with the <code>ancestor</code>'s transform. If
-     * <code>ancestor</code> is actually not an ancestor of <code>child</code>, this method
+     * PNodes} in the containment hierarchy between <code>ancestor</code> and <code>child</code>
+     * starting with the transform of <code>ancestor</code>'s first child in that containment path
+     * (<code>ancestor</code>'s transform is not considered).<br>
+     * If <code>ancestor</code> is actually not an ancestor of <code>child</code>, this method
      * concatenates all transforms of <code>child</code>' ancestors and that of<code>child</code>.
      * 
      * @param child
@@ -240,14 +242,10 @@ public final class NodeUtil {
      *         transforms
      */
     public static PAffineTransform localToParent(final PNode child, final PNode ancestor) {
-        if (child == null) {
+        if (child == null || child == ancestor) {
             return new PAffineTransform();
         }
         
-        if (child == ancestor) {
-            return child.getTransform();
-        }
-
         final PNode childsParent = child.getParent();
         final PAffineTransform transform;
 
