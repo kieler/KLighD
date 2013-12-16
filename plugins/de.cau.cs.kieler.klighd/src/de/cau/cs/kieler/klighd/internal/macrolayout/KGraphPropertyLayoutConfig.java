@@ -288,7 +288,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * @return the graph element that shall be modified in the given context, or {@code null}
      */
     private KGraphElement getModificationModel(final LayoutContext context) {
-        EObject domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
+        Object domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
         if (domainElement instanceof KGraphElement) {
             return (KGraphElement) domainElement;
         }
