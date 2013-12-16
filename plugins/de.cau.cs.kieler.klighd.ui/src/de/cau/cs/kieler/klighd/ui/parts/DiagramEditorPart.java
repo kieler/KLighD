@@ -145,7 +145,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         diagramComposite.setLayout(new FillLayout());
         
         // create a context viewer
-        viewer = new UiContextViewer(diagramComposite);
+        viewer = new UiContextViewer(diagramComposite, this);
         
         // create a view context carrying all data required for building up the diagram
         final ViewContext viewContext =

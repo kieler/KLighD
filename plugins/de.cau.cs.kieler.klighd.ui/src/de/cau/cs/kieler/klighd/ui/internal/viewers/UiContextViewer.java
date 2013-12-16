@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPartSite;
 
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
@@ -42,12 +43,21 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
     /**
      * Constructor.
      * 
-     * @param parent a
+     * @param parent
+     *            the parent {@link Composite} the diagram canvas is to be attached to
+     * @param part
+     *            the {@link IDiagramWorkbenchPart} this {@link ContextViewer} is attached to (is
+     *            only required for setting the selection provider in time!)
      */
-    public UiContextViewer(final Composite parent) {
+    public UiContextViewer(final Composite parent, final IDiagramWorkbenchPart part) {
         super(parent);
         diagramContainer = parent;
-        
+
+        // register this selection provider in the current work bench part site;
+        // this must be done within 'createPartControl()' of 'part',
+        //  which is why this registration is done here rather than in 'setModel(...)'
+        part.getSite().setSelectionProvider(this);
+
         // initialize with the display of an empty string
         showMessage("");
     }
@@ -72,14 +82,11 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
                 control.setMenu(menuManager.createContextMenu(control));
             }
 
-            Action saveAsImageAction =
+            final Action saveAsImageAction =
                     new SaveAsImageAction(this, Messages.UiContextViewer_save_as_image_text);
             menuManager.add(saveAsImageAction);
             
             final IWorkbenchPartSite site = ((ViewContext) model).getDiagramWorkbenchPart().getSite();
-
-            // register this selection provider in the current work bench part site 
-            site.setSelectionProvider(this);
 
             // register the context menu in the current work bench part site
             //  this enables the population with entries contributed via extension points

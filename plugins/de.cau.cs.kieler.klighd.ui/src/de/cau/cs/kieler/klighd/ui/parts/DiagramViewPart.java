@@ -96,7 +96,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
         this.diagramComposite.setLayout(new FillLayout());
         
         // create the context viewer
-        viewer = new UiContextViewer(diagramComposite);
+        viewer = new UiContextViewer(diagramComposite, this);
         
         // add buttons to the view toolbar
         //  requires non-null 'viewer' field 
