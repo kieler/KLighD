@@ -70,7 +70,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     def KNode createActorNode(Actor actor) {
         return actor.createNode().putToLookUpWith(actor) => [
             it.setNodeSize(60, 100);
-            it.addOutsideCentralBottomNodeLabel(actor.name,
+            it.addOutsideBottomCenteredNodeLabel(actor.name,
                 KlighdConstants::DEFAULT_FONT_SIZE, KlighdConstants::DEFAULT_FONT_NAME
             ).putToLookUpWith(actor);
             it.addRectangle() => [
