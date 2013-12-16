@@ -165,7 +165,7 @@
          </command>
       </menuContribution>
    </extension>
-   <extension
+   <!-- extension
          id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
          point="org.eclipse.ui.menus">
       <menuContribution
@@ -181,6 +181,6 @@
             </parameter>
          </command>
       </menuContribution>
-   </extension>
+   </extension -->
 
 </plugin>
