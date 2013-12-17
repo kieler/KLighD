@@ -65,6 +65,26 @@
             class="de.cau.cs.kieler.klighd.examples.ecore.EcoreDiagramSynthesisCombination"
             name="Visualize chosen Ecore classes">
       </combination>
+      <combination
+            active="false"
+            class="de.cau.cs.kieler.klighd.examples.dependencies.ProjectDependencyCombination"
+            description="Allows you to visualize the dependencies between selected projects."
+            name="Visualize Project Dependencies (KLighD)">
+      </combination>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.diagramSyntheses">
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.examples.dependencies.ProjectDependencySynthesis"
+            id="de.cau.cs.kieler.klighd.examples.projectDependencies">
+      </diagramSynthesis>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <action
+            class="de.cau.cs.kieler.klighd.examples.dependencies.HighlightEdgesAction"
+            id="de.cau.cs.kieler.klighd.examples.dependencies.hightlightEdges">
+      </action>
    </extension>
    
 </plugin>
