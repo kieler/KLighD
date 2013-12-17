@@ -46,6 +46,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdPanEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -58,7 +59,6 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.POffscreenCanvas;
 import edu.umd.cs.piccolo.event.PInputEvent;
-import edu.umd.cs.piccolo.event.PPanEventHandler;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -126,7 +126,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdTextInputHandler());
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
-        camera.addInputEventListener(new KlighdBasicInputEventHandler(new PPanEventHandler()));
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(new KlighdPanEventHandler()));
         camera.addInputEventListener(new KlighdSelectionEventHandler((IViewer<?>) theParentViewer));
 
         // add a node for the rubber band selection marquee
