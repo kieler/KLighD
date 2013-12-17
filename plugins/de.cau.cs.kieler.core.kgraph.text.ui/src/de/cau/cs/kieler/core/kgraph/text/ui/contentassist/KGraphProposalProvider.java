@@ -274,6 +274,12 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
                 // find the specific option an display all possible values
                 LayoutOptionData<?> optionData = layoutServices.getOptionData(annotationName);
+                
+                // if option data is null, try to add the kieler prefix
+                if(optionData == null) {
+                    optionData = layoutServices.getOptionData("de.cau.cs.kieler." + annotationName);
+                }
+                
                 Type theType = (optionData != null) ? optionData.getType() : Type.UNDEFINED;
                 String proposal = null;
                 
