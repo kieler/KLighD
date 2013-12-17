@@ -248,6 +248,9 @@
       <genOperations ecoreOperation="krendering.ecore#//KColoring/equals">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/equals/other"/>
       </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor.4">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.4/color"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="krendering.ecore#//KBackground"/>
     <genClasses ecoreClass="krendering.ecore#//KFontBold">
