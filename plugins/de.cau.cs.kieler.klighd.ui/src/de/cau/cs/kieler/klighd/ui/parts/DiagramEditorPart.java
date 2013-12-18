@@ -85,7 +85,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author msp
  * @author uru
  */
-public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart,
+public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart.IDiagramEditorPart,
         ILayoutConfigProvider {
     
     /** the resource set managed by this editor part. */
@@ -303,9 +303,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     }
     
     /**
-     * Set the dirty status of the editor.
-     * 
-     * @param dirty the new dirty status
+     * {@inheritDoc}
      */
     public void setDirty(final boolean dirty) {
         this.dirty = dirty;

@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -21,6 +22,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * Interface for workbench parts implemented by KLighD.
  *
  * @author msp
+ * @author chsch
  */
 public interface IDiagramWorkbenchPart extends IWorkbenchPart {
 
@@ -39,4 +41,17 @@ public interface IDiagramWorkbenchPart extends IWorkbenchPart {
      * @return the viewer
      */
     ContextViewer getContextViewer();
+    
+    /**
+     * Extended interface for editor parts implemented by KLighD.
+     */
+    public interface IDiagramEditorPart extends IDiagramWorkbenchPart, IEditorPart {
+        
+        /**
+         * Set the dirty status of the editor.
+         * 
+         * @param dirty the new dirty status
+         */
+        void setDirty(boolean dirty);
+    }
 }

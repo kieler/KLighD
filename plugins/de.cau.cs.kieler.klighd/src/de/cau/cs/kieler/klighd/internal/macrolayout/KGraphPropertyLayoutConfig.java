@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +24,6 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
@@ -332,28 +330,10 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                         DiagramLayoutEngine.INSTANCE.layout(workbenchPart, null,
                                 true, false, false, false);
                         
-                        // chsch: since the following code isn't possible after the restructuring ...
-                        
-                        // if (workbenchPart instanceof DiagramEditorPart) {
-                        //     DiagramEditorPart dep = (DiagramEditorPart) workbenchPart;
-                        //     // mark the editor as dirty
-                        //     dep.setDirty(true);
-                        // }
-                        
-                        // try it this way:
-                        if (workbenchPart instanceof IDiagramWorkbenchPart
-                                && workbenchPart instanceof IEditorPart) {
-
-                            try {
-                                final Method m =
-                                        workbenchPart.getClass().getMethod("setDirty",
-                                                boolean.class);
-                                if (m != null) {
-                                    m.invoke(workbenchPart, true);
-                                }
-                            } catch (Exception e) {
-                                // fail silently - it's ok for this niche feature
-                            }
+                        if (workbenchPart instanceof IDiagramWorkbenchPart.IDiagramEditorPart) {
+                            // mark the editor as dirty
+                            ((IDiagramWorkbenchPart.IDiagramEditorPart) workbenchPart)
+                                    .setDirty(true);
                         }
                     }
                 }
