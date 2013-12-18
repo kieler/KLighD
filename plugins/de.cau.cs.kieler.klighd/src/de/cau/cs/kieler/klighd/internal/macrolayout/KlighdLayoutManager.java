@@ -517,6 +517,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // the new layouter might not calculate any and we don't want
         // any floating junction points in the diagram
         edgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS, null);
+        
+        // delete the old EDGE_ROUTING return value
+        // this is allowed as the EDGE_ROUTING directive to the layouter
+        //  must be set on the parent of the KNode with the outgoing edge
+        edgeLayout.setProperty(LayoutOptions.EDGE_ROUTING, null);
 
         layoutEdge.setSource(layoutSource);
         layoutEdge.setTarget(layoutTarget);
@@ -638,8 +643,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
                     KEdgeLayout edgeLayout = element.getData(KEdgeLayout.class);
                     if (edgeLayout != null) {
-                        edgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS,
-                                layoutLayout.getProperty(LayoutOptions.JUNCTION_POINTS));
                         transferEdgeLayout(edgeLayout, layoutLayout, false);
                     }
                     return true;
@@ -726,6 +729,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         final boolean deliver = viewModelEdgeLayout.eDeliver();
         viewModelEdgeLayout.eSetDeliver(false);
 
+        // copy all properties from the layoutEdgeLayout to the viewModelEdgeLayout,
+        //  esp. the concrete EDGE_ROUTING and the JUNCTION_POINTS
+        // the viewModel2LayoutGraph case this statement will have no effect
         viewModelEdgeLayout.copyProperties(layoutEdgeLayout);
 
         if (viewModelEdgeLayout.getSourcePoint() == null) {
