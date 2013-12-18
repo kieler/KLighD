@@ -13,23 +13,24 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
-import javax.inject.Inject
 import de.cau.cs.kieler.core.kgraph.KLabel
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement
 import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.krendering.KRenderingFactory
-import de.cau.cs.kieler.core.properties.IProperty
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement
-import de.cau.cs.kieler.kiml.util.KimlUtil
-import de.cau.cs.kieler.core.krendering.KRendering
-import de.cau.cs.kieler.core.krendering.KText
-import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
-import de.cau.cs.kieler.kiml.options.PortLabelPlacement
-import java.util.List
 import de.cau.cs.kieler.core.kgraph.KPort
 import de.cau.cs.kieler.core.krendering.KColor
+import de.cau.cs.kieler.core.krendering.KRendering
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
+import de.cau.cs.kieler.core.properties.IProperty
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
+import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement
+import de.cau.cs.kieler.kiml.options.LayoutOptions
+import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
+import de.cau.cs.kieler.kiml.options.PortLabelPlacement
+import de.cau.cs.kieler.kiml.util.KimlUtil
+import java.util.List
+import javax.inject.Inject
 
 /**
  * @author chsch

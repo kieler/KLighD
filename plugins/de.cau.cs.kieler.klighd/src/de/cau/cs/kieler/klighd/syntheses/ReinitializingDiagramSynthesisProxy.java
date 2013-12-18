@@ -31,7 +31,7 @@ import com.google.inject.TypeLiteral;
 
 import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared;
+import de.cau.cs.kieler.core.krendering.ViewSynthesisShared;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdDataManager;

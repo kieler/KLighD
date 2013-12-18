@@ -17,8 +17,7 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.6.0",
  de.cau.cs.kieler.kiml;visibility:=reexport,
  de.cau.cs.kieler.kiml.service,
  de.cau.cs.kieler.core.kgraph;visibility:=reexport,
- de.cau.cs.kieler.core.krendering;visibility:=reexport,
- de.cau.cs.kieler.core.krendering.extensions
+ de.cau.cs.kieler.core.krendering;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
