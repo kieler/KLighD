@@ -79,6 +79,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             import javax.inject.Inject
             
             import de.cau.cs.kieler.core.kgraph.KNode
+            import de.cau.cs.kieler.core.krendering.KRenderingFactory
             import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions
@@ -116,6 +117,9 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                 
                 @Inject
                 extension KColorExtensions
+                
+                extension KRenderingFactory = KRenderingFactory.eINSTANCE
+                
                 
                 override KNode transform(«projectInfo.sourceModelClassSimple» model) {
                     val root = model.createNode().putToLookUpWith(model);
