@@ -245,8 +245,8 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
         import org.eclipse.jface.viewers.IStructuredSelection;
         import org.eclipse.ui.handlers.HandlerUtil;
         
+        import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
         import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
-        import de.cau.cs.kieler.klighd.views.DiagramViewManager;
         
         /**
          * A simple handler for opening diagrams.
