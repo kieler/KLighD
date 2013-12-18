@@ -47,6 +47,7 @@ import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -62,8 +63,7 @@ import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 public final class DiagramSideBar {
     
     /** The priority of the {@link ILayoutConfig} employed in side bars. */
-    private static final int LAYOUT_CONFIG_PRIORITY = VolatileLayoutConfig.DEFAULT_PRIORITY - 10;
-    // SUPPRESS CHECKSTYLE PREVIOUS MagicNumber
+    public static final int LAYOUT_CONFIG_PRIORITY = KlighdConstants.SIDE_BAR_LAYOUT_CONFIG_PRIORITY;
     
     /** The initial width of the option pane and the diagram viewer. */
     private static final int INITIAL_OPTIONS_FORM_WIDTH = 230;
