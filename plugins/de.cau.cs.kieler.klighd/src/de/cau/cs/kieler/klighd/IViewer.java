@@ -77,6 +77,9 @@ public interface IViewer<T> {
     /**
      * Returns the input model currently set for this viewer.
      * 
+     * @deprecated Use {@link #getViewContext()}.{@link ViewContext#getInputModel() getInputModel()}
+     *             or {@link #getViewContext()}.{@link ViewContext#getViewModel() getViewModel()}.
+     * 
      * @return the input model or <code>null</code> if no input model is set
      */
     T getModel();
