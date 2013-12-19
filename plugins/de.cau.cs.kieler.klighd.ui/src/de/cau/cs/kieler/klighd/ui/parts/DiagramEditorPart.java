@@ -64,6 +64,7 @@ import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
@@ -274,6 +275,15 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
     /**
      * {@inheritDoc}
+     */
+    public IViewer<?> getViewer() {
+        return viewer;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @deprecated Use {@link #getViewer()}.
      */
     public ContextViewer getContextViewer() {
         return viewer;
@@ -522,7 +532,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofit.gif"));
                 final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getViewContext();
+                        DiagramEditorPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
@@ -535,7 +545,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             @Override
             public void run() {
                 final ViewContext vc =
-                        DiagramEditorPart.this.getContextViewer().getViewContext();
+                        DiagramEditorPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
@@ -560,7 +570,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
-                final ViewContext vc = DiagramEditorPart.this.getContextViewer().getViewContext();
+                final ViewContext vc = DiagramEditorPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
@@ -572,7 +582,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
             @Override
             public void run() {
-                final ViewContext vc = DiagramEditorPart.this.getContextViewer().getViewContext();
+                final ViewContext vc = DiagramEditorPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
 
@@ -598,7 +608,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             }
             @Override
             public void run() {
-                DiagramEditorPart.this.getContextViewer().zoomToLevel(1,
+                DiagramEditorPart.this.getViewer().zoomToLevel(1,
                         KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         };

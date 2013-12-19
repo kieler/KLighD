@@ -218,7 +218,7 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -253,8 +253,8 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
         final boolean zoomToFit;
-        if (viewPart.getContextViewer().getViewContext() != null) {
-            zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        if (viewPart.getViewer().getViewContext() != null) {
+            zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         } else {
             zoomToFit =
                     ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
@@ -295,7 +295,7 @@ public final class LightDiagramServices {
             final List<ILayoutConfig> options) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, options);
     }
@@ -315,7 +315,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final List<ILayoutConfig> options) {
-        final boolean zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -335,7 +335,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, viewPart.getContextViewer(), animate, zoomToFit,
+        layoutDiagram(viewPart, viewPart.getViewer(), animate, zoomToFit,
                 Collections.<ILayoutConfig>emptyList());
     }
     
@@ -360,7 +360,7 @@ public final class LightDiagramServices {
         
         final ContextViewer contextViewer;
         if (viewPart != null) {
-            contextViewer = viewPart.getContextViewer();
+            contextViewer = viewPart.getViewer().getContextViewer();
         } else if (diagramViewer != null) {
             contextViewer = diagramViewer.getContextViewer();
         } else {
@@ -372,7 +372,7 @@ public final class LightDiagramServices {
         final ViewContext vc = contextViewer.getViewContext(); 
         
         if (layoutData != null) {
-            // Activate the KIML Service plugin so all layout options are loaded
+            // Activate the KIML Service plug-in so all layout options are loaded
             KimlServicePlugin.getDefault();
             final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
             extendedOptions.add(new VolatileLayoutConfig()

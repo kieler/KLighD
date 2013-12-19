@@ -114,7 +114,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         final ViewContext viewContext;
         if (object instanceof IDiagramWorkbenchPart) {
             IDiagramWorkbenchPart view = (IDiagramWorkbenchPart) object;
-            viewContext = view.getContextViewer().getViewContext();
+            viewContext = view.getViewer().getContextViewer().getViewContext();
         } else if (object instanceof ContextViewer) {
             ContextViewer contextViewer = (ContextViewer) object;
             viewContext = contextViewer.getViewContext();
@@ -152,7 +152,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             if (object instanceof ContextViewer) {
                 contextViewer = (ContextViewer) object;
             } else if (object instanceof IDiagramWorkbenchPart) {
-                contextViewer = ((IDiagramWorkbenchPart) object).getContextViewer();
+                contextViewer = ((IDiagramWorkbenchPart) object).getViewer().getContextViewer();
             }
             
             if (contextViewer != null) {
@@ -172,7 +172,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             if (object instanceof ContextViewer) {
                 contextViewer = (ContextViewer) object;
             } else if (object instanceof IDiagramWorkbenchPart) {
-                contextViewer = ((IDiagramWorkbenchPart) object).getContextViewer();
+                contextViewer = ((IDiagramWorkbenchPart) object).getViewer().getContextViewer();
             }
             if (contextViewer != null) {
                 Object model = contextViewer.getModel();
@@ -210,7 +210,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         } else {
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
                 diagramWorkbenchPart = (IDiagramWorkbenchPart) workbenchPart;
-                viewer = diagramWorkbenchPart.getContextViewer().getActiveViewer();
+                viewer = diagramWorkbenchPart.getViewer().getContextViewer().getActiveViewer();
             } else if (diagramPart instanceof ContextViewer) {
                 ContextViewer contextViewer = (ContextViewer) diagramPart;
                 viewer = contextViewer.getActiveViewer();

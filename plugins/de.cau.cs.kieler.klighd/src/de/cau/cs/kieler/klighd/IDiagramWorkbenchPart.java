@@ -34,9 +34,18 @@ public interface IDiagramWorkbenchPart extends IWorkbenchPart {
      * @return the id associated with this {@link IDiagramWorkbenchPart}.
      */
     String getPartId();
+    
+    /**
+     * Returns the viewer associated with this workbench part.
+     * 
+     * @return the viewer
+     */
+    IViewer<?> getViewer();
 
     /**
      * Returns the viewer associated with this workbench part.
+     * 
+     * @deprecated Use {@link #getViewer()}.
      * 
      * @return the viewer
      */

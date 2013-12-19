@@ -224,7 +224,7 @@ public final class DiagramViewManager implements IPartListener {
         
         // 'diagramView' is supposed to be non-null here
         if (viewContext == null) {
-            viewContext = diagramView.getContextViewer().getViewContext();
+            viewContext = diagramView.getViewer().getViewContext();
             if (viewContext == null) {
                 return null;
             }
@@ -440,7 +440,7 @@ public final class DiagramViewManager implements IPartListener {
     public void registerView(final IDiagramWorkbenchPart part) {
         final String id = part.getPartId();
         this.idPartMapping.put(id, part);
-        this.idContextMapping.put(id, part.getContextViewer().getViewContext());
+        this.idContextMapping.put(id, part.getViewer().getViewContext());
     }
 
     /**

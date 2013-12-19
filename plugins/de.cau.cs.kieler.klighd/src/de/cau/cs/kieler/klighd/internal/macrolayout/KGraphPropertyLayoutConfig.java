@@ -118,7 +118,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             ContextViewer contextViewer = null;
             IWorkbenchPart workbenchPart = context.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
-                contextViewer = ((IDiagramWorkbenchPart) workbenchPart).getContextViewer();
+                contextViewer = ((IDiagramWorkbenchPart) workbenchPart).getViewer().getContextViewer();
                 context.setProperty(CONTEXT_VIEWER, contextViewer);
             }
             

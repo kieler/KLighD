@@ -33,6 +33,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
@@ -124,7 +125,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
                 DiagramSideBar.createSideBar(diagramComposite.getParent(), diagramComposite,
                         viewContext);
 
-        this.getContextViewer().setModel(viewContext);
+        this.getViewer().getContextViewer().setModel(viewContext);
     }
     
     /**
@@ -198,7 +199,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofit.gif"));
-                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
+                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
@@ -210,7 +211,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
 
             @Override
             public void run() {
-                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
+                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
 
@@ -231,7 +232,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
-                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
+                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
@@ -243,7 +244,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
 
             @Override
             public void run() {
-                final ViewContext vc = DiagramViewPart.this.getContextViewer().getViewContext();
+                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
                 if (vc != null) {
                     vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
 
@@ -267,7 +268,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             }
             @Override
             public void run() {
-                DiagramViewPart.this.getContextViewer().zoomToLevel(1, 
+                DiagramViewPart.this.getViewer().zoomToLevel(1, 
                         KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         });
@@ -306,6 +307,15 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
 
     /**
      * {@inheritDoc}
+     */
+    public IViewer<?> getViewer() {
+        return viewer;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @deprecated Use {@link #getViewer()}.
      */
     public ContextViewer getContextViewer() {
         return viewer;
