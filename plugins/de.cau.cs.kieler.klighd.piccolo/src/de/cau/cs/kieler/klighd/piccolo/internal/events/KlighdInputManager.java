@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 
 import edu.umd.cs.piccolo.PInputManager;
 import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.event.PInputEventListener;
 
 /**
  * Specialized {@link PInputManager} that replaces the evaluation of events from the SWT event
@@ -34,7 +35,12 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * back to <code>this</code> instance while calling the particular event handling methods.<br>
  * <br>
  * This class implements {@link IKlighdInputEventHandlerEx} in order to properly support the above
- * mentioned SWT events, see {@link KlighdBasicInputEventHandler}.
+ * mentioned SWT events, see {@link KlighdBasicInputEventHandler}.<br>
+ * <br>
+ * <b>Note:</b> the local override of
+ * {@link #dispatchEventToListener(PInputEvent, int, PInputEventListener)} omits the propagation of
+ * {@link MouseEvent#MOUSE_ENTERED} and {@link MouseEvent#MOUSE_EXITED} e.g. fired by
+ * {@link #checkForMouseEnteredAndExited(PInputEvent)} as it disturbs the panning.
  * 
  * @author chsch
  */
@@ -81,7 +87,21 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
     public void processEvent(final PInputEvent event, final int type) {
         helper.processEvent(event, type);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void dispatchEventToListener(final PInputEvent event, final int type,
+            final PInputEventListener listener) {
+        if (type == MouseEvent.MOUSE_ENTERED || type == MouseEvent.MOUSE_EXITED) {
+            // suppress original implementation in this case as it disturbs the panning,
+            //  may be implemented in future in case exiting/entering of PNodes shall be observed 
+            
+            return;
+        }
+        super.dispatchEventToListener(event, type, listener);
+    }
 
     // the additional handler methods according to KlighdInputEventHandlerEx
 

@@ -13,10 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
+import org.eclipse.emf.ecore.EObject;
+
+import com.google.common.collect.Iterables;
+
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
 
 /**
  * Sets the diagram clip to the first element of the current selection if it is a {@link KNode}.
@@ -36,10 +39,10 @@ public class ClipSelectionAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {
-        final KlighdTreeSelection selection = context.getContextViewer().getSelection();
+        final Iterable<EObject> selection = context.getContextViewer().getSelection();
         final IViewer<?> contextViewer = context.getContextViewer();
         
-        final Object first = selection.getFirstElement();
+        final Object first = Iterables.getFirst(selection, null);
 
         if (first instanceof KNode) {
             final KNode node = (KNode) first;

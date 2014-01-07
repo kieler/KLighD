@@ -13,15 +13,13 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import de.cau.cs.kieler.core.kgraph.impl.EMapPropertyHolderImpl;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
-
-import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,7 +36,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public abstract class KStyleImpl extends EObjectImpl implements KStyle {
+public abstract class KStyleImpl extends EMapPropertyHolderImpl implements KStyle {
     /**
      * The default value of the '{@link #isPropagateToChildren() <em>Propagate To Children</em>}' attribute.
      * <!-- begin-user-doc -->

@@ -18,6 +18,7 @@ import de.cau.cs.kieler.core.krendering.KPolyline
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
 import de.cau.cs.kieler.core.krendering.KSpline
+import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
 import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil

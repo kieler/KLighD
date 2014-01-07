@@ -18,6 +18,8 @@ import java.awt.event.MouseWheelEvent;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.GestureListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -40,7 +42,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * @author chsch
  */
 public class KlighdMouseEventListener implements MouseListener, MouseMoveListener, MouseTrackListener,
-        MouseWheelListener, GestureListener {
+        MouseWheelListener, DragDetectListener, GestureListener {
 
     private KlighdCanvas canvas = null;
     
@@ -96,7 +98,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
                 .getRoot()
                 .getDefaultInputManager()
                 .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseMove),
-                        java.awt.event.MouseEvent.MOUSE_CLICKED, this.canvas.getCamera());
+                        java.awt.event.MouseEvent.MOUSE_MOVED, this.canvas.getCamera());
     }
 
     /**
@@ -133,6 +135,17 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
                 .getDefaultInputManager()
                 .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseUp),
                         java.awt.event.MouseEvent.MOUSE_RELEASED, this.canvas.getCamera());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void dragDetected(final DragDetectEvent e) {
+        this.canvas
+                .getRoot()
+                .getDefaultInputManager()
+                .processEventFromCamera(new KlighdMouseEvent(e, SWT.DragDetect),
+                        java.awt.event.MouseEvent.MOUSE_DRAGGED, this.canvas.getCamera());
     }
 
     /**

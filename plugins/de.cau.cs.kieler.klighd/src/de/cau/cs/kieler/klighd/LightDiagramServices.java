@@ -14,22 +14,15 @@
 package de.cau.cs.kieler.klighd;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
@@ -37,14 +30,10 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.service.KimlServicePlugin;
+import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
-import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
-import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
-import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
-import de.cau.cs.kieler.klighd.views.DiagramViewManager;
-import de.cau.cs.kieler.klighd.views.DiagramViewPart;
-import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
 
 /**
  * Singleton for accessing basic KLighD services.
@@ -54,16 +43,6 @@ import de.cau.cs.kieler.klighd.views.IDiagramWorkbenchPart;
  */
 public final class LightDiagramServices {
 
-    /** the property for a viewer provider. */
-    public static final IProperty<String> REQUESTED_VIEWER_PROVIDER = new Property<String>(
-            "klighd.viewerProvider");
-    /** the property for a path of transformations (can contain gaps). */
-    public static final IProperty<List<String>> REQUESTED_TRANSFORMATIONS = new Property<List<String>>(
-            "klighd.transformations", new LinkedList<String>());
-    /** the property for an update strategy. */
-    public static final IProperty<String> REQUESTED_UPDATE_STRATEGY = new Property<String>(
-            "klighd.updateStrategy");
-
     /**
      * A private constructor to prevent instantiation.
      */
@@ -71,105 +50,6 @@ public final class LightDiagramServices {
         // do nothing
     }
 
-    /**
-     * Creates a view context for the given model if possible.
-     * 
-     * @param model
-     *            the model
-     * @return the view context or null if the model and all possible transformations are
-     *         unsupported by all viewer providers
-     */
-    public static ViewContext createViewContext(final Object model) {
-        ViewContext viewContext = new ViewContext();
-        if (KlighdDataManager.getInstance().getTransformationsGraph()
-                .configureViewContext(viewContext, model, null)) {
-            return viewContext;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Creates a view context for the given model if possible. The properties from the given
-     * property holders are copied to the view context.
-     * 
-     * @param model
-     *            the model
-     * @param propertyHolders
-     *            the property holders
-     * @return the view context or null if the model and all possible transformations are
-     *         unsupported by all viewer providers
-     */
-    public static ViewContext createViewContext(final Object model,
-            final IPropertyHolder... propertyHolders) {
-        KlighdDataManager dataManager = KlighdDataManager.getInstance();
-        TransformationsGraph transformationsGraph = dataManager.getTransformationsGraph();
-        ViewContext viewContext = new ViewContext();
-
-        // copy the properties to the view context
-        for (IPropertyHolder propertyHolder : propertyHolders) {
-            viewContext.copyProperties(propertyHolder);
-        }
-
-        // chsch: obtain the instructions on the viewer provider and transformations to
-        // be used that might have been added to the viewContext by the foregoing for-loop
-
-        // get the viewer provider request
-        String viewerProviderId = viewContext.getProperty(REQUESTED_VIEWER_PROVIDER);
-        IViewerProvider<KNode> viewerProvider = dataManager.getViewerProviderById(viewerProviderId);
-
-        // get the transformations request
-        List<String> transformationIds = viewContext.getProperty(REQUESTED_TRANSFORMATIONS);
-        ITransformation<?, ?>[] transformations = getTransformationsById(transformationIds);
-        if (transformations == null) {
-            return null;
-        }
-
-        // get the update strategy request
-        String updateStrategyId = viewContext.getProperty(REQUESTED_UPDATE_STRATEGY);
-        IUpdateStrategy<KNode> updateStrategy = dataManager.getUpdateStrategyById(updateStrategyId);
-
-        // call the fitting configure method on the transformations graph
-        boolean success;
-        if (viewerProvider != null) {
-            if (transformations.length > 0) {
-                // viewer and transformations hint
-                success = transformationsGraph.configureViewContext(viewContext, model,
-                        viewerProvider, updateStrategy, transformations);
-            } else {
-                // viewer hint
-                success = transformationsGraph.configureViewContext(viewContext, model,
-                        viewerProvider, updateStrategy);
-            }
-        } else if (viewerProviderId == null) {
-            if (transformations.length > 0) {
-                // transformations hint
-                success = transformationsGraph.configureViewContext(viewContext, model,
-                        updateStrategy, transformations);
-            } else {
-                // no hints
-                success = transformationsGraph.configureViewContext(viewContext, model,
-                        updateStrategy);
-            }
-        } else {
-            return null;
-        }
-
-        // on success return the view context, otherwise return null
-        if (success) {
-            return viewContext;
-        } else {
-            final String msg = "KLighD: Couldn't find any matching diagram synthesis & viewer "
-                    + "configuration for visualizing the model " + model.toString()
-                    + ". Is de.cau.cs.kieler.klighd.piccolo and the plug-in contributing "
-                    + "your diagram synthesis part of your product or run configuration?";
-            
-            StatusManager.getManager().handle(
-                    new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
-            
-            return null;
-        }
-    }
 
     /**
      * Updates the view context with the given model. The properties from the given property holders
@@ -185,161 +65,25 @@ public final class LightDiagramServices {
      */
     public static boolean updateViewContext(final ViewContext viewContext, final Object model,
             final IPropertyHolder... propertyHolders) {
-        // copy the properties to the view context
-        for (IPropertyHolder propertyHolder : propertyHolders) {
-            viewContext.copyProperties(propertyHolder);
-        }
-
-        // clear out the mapping data of the involved transformation contexts
-        viewContext.clearSourceTargetMappings();
-
-        // re-run the involved transformations
-        KNode viewModel = (KNode) performTransformations(viewContext, model);
-        if (viewModel == null) {
-            return false;
-        }
-
-        // use update strategy if possible
-        if (viewContext.getUpdateStrategy() != null) {
-            @SuppressWarnings("unchecked")
-            IUpdateStrategy<KNode> updateStrategy = (IUpdateStrategy<KNode>) viewContext
-                    .getUpdateStrategy();
-            try {
-                updateStrategy.update(viewContext.getViewModel(), viewModel, viewContext);
-            } catch (Exception e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                "KLighD: LightDiagramService failed to update a view context:\n"
-                                        + e.getClass().getSimpleName()
-                                        + " occured while performing "
-                                        + updateStrategy.getClass().getSimpleName() + ":\n"
-                                        + e.getMessage(), e), StatusManager.LOG);
-                return false;
+        final IUpdateStrategy updateStrategy;
+        
+        if (propertyHolders != null) {
+            final KlighdSynthesisProperties ksp = KlighdSynthesisProperties.newInstance();
+            for (IPropertyHolder h : propertyHolders) {
+                ksp.copyProperties(h);
             }
+            final String usId = ksp.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
+            updateStrategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
+            
         } else {
-            // if no update strategy is present just set the new model into the viewer
-            IViewer<KNode> viewer = viewContext.getViewer();
-            if (viewer != null) {
-                try {
-                    viewer.setModel(viewModel, true);
-                } catch (Exception e) {
-                    StatusManager.getManager().handle(
-                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                                    "KLighD: LightDiagramService failed to update a view context:\n"
-                                            + e.getClass().getSimpleName() + " updating "
-                                            + viewer.getClass().getSimpleName() + ":\n"
-                                            + e.getMessage(), e), StatusManager.LOG);
-                    return false;
-                }
-            }
+            updateStrategy = null;
         }
+        
+        viewContext.update(model, updateStrategy);
         return true;
     }
 
-    /**
-     * Creates a viewer instance with the viewer provider associated with the view context into the
-     * given parent composite and sets the base model of the view context into that viewer if
-     * possible.<br>
-     * <br>
-     * chsch: added parentViewer parameter as it is needed e.g. in the KlighdActionEventHandler
-     * 
-     * @param parentViewer
-     *            the parent {@link ContextViewer}
-     * @param viewContext
-     *            the view context
-     * @param parent
-     *            the parent composite
-     * @return the created viewer or null on failure
-     */
-    public static IViewer<?> createViewer(final ContextViewer parentViewer,
-            final ViewContext viewContext, final Composite parent) {
-        IViewerProvider<KNode> viewerProvider = viewContext.getViewerProvider();
-        if (viewerProvider != null) {
-            // create a new viewer
-            IViewer<KNode> viewer = viewerProvider.createViewer(parentViewer, parent);
-            // remember the created viewer in a property
-            viewContext.setViewer(viewer);
-            // set the base model if possible
-            if (viewContext.getViewModel() != null) {
-                IViewer<KNode> objViewer = viewer;
-                objViewer.setModel(viewContext.getViewModel(), true);
-            }
-            return viewer;
-        }
-        return null;
-    }
 
-    /**
-     * Returns the array of transformations defined by the list of given transformation ids.
-     * 
-     * @param transformationIds
-     *            the list of transformation ids
-     * @return the array of transformations or null if a transformation could not be resolved
-     */
-    private static ITransformation<?, ?>[] getTransformationsById(final List<String> transformationIds) {
-        LinkedList<ITransformation<?, ?>> transformations = new LinkedList<ITransformation<?, ?>>();
-        if (transformationIds.size() > 0) {
-            for (String transformationId : transformationIds) {
-                ITransformation<?, ?> transformation = KlighdDataManager.getInstance()
-                        .getTransformationById(transformationId);
-                if (transformation != null) {
-                    transformations.add(transformation);
-                } else {
-                    return null;
-                }
-            }
-        }
-        return transformations.toArray(new ITransformation<?, ?>[0]);
-    }
-
-    /**
-     * Performs the transformations in the view context for the given source model.
-     * 
-     * @param viewContext
-     *            the view context
-     * @param model
-     *            the source model
-     * @return the target model
-     */
-    @SuppressWarnings("unchecked")
-    private static Object performTransformations(final ViewContext viewContext, final Object model) {
-        Object currentModel = model;
-        
-        // TODO check if this works, the transformation 'chaining' will be removed eventually
-        if (!viewContext.getTransformationContexts().isEmpty()) {
-            TransformationContext<Object, KNode> objTransformationContext =
-                    (TransformationContext<Object, KNode>) viewContext.getTransformationContexts()
-                            .get(0);
-            AbstractDiagramSynthesis<Object> transformation =
-                    (AbstractDiagramSynthesis<Object>) objTransformationContext.getTransformation();
-
-            try {
-                currentModel = transformation.transform(currentModel, objTransformationContext);
-            } catch (Exception e) {
-                if (transformation instanceof ReinitializingDiagramSynthesisProxy<?>) {
-                    transformation =
-                            ((ReinitializingDiagramSynthesisProxy<Object>) transformation)
-                                    .getDelegate();
-                }
-                final String nl = KlighdDataManager.NEW_LINE;
-                final String msg =
-                        "KLighD: LightDiagramService failed to update a view context:" + nl
-                                + e.getClass().getSimpleName()
-                                + " occured while performing the transformation "
-                                + transformation.getClass().getSimpleName() + ":" + nl
-                                + "Developer hint: " + e.getMessage() + nl + "User hint: "
-                                + "Please perform a 'Clean' operation on your project and re-try.";
-                
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                        StatusManager.LOG);
-                return null;
-            }
-        }
-        return currentModel;
-    }
-
-    
     /**
      * Performs the automatic layout on the diagram represented by the given view context.<br>
      * <br>
@@ -458,10 +202,8 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
         IViewer<KNode> diagramViewer = viewContext.getViewer();
-        DiagramViewPart viewPart = DiagramViewManager.getInstance().getView(
-                diagramViewer.getContextViewer().getViewPartId());
         
-        layoutDiagram(viewPart, diagramViewer, animate, zoomToFit, options);
+        layoutDiagram(viewContext.getDiagramWorkbenchPart(), diagramViewer, animate, zoomToFit, options);
     }
     
     /**
@@ -476,7 +218,7 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -511,8 +253,8 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
         final boolean zoomToFit;
-        if (viewPart.getContextViewer().getViewContext() != null) {
-            zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        if (viewPart.getViewer().getViewContext() != null) {
+            zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         } else {
             zoomToFit =
                     ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
@@ -553,7 +295,7 @@ public final class LightDiagramServices {
             final List<ILayoutConfig> options) {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final boolean zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, options);
     }
@@ -573,7 +315,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final List<ILayoutConfig> options) {
-        final boolean zoomToFit = viewPart.getContextViewer().getViewContext().isZoomToFit();
+        final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
         layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
     }
@@ -593,7 +335,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, viewPart.getContextViewer(), animate, zoomToFit,
+        layoutDiagram(viewPart, viewPart.getViewer(), animate, zoomToFit,
                 Collections.<ILayoutConfig>emptyList());
     }
     
@@ -618,7 +360,7 @@ public final class LightDiagramServices {
         
         final ContextViewer contextViewer;
         if (viewPart != null) {
-            contextViewer = viewPart.getContextViewer();
+            contextViewer = viewPart.getViewer().getContextViewer();
         } else if (diagramViewer != null) {
             contextViewer = diagramViewer.getContextViewer();
         } else {
@@ -630,13 +372,15 @@ public final class LightDiagramServices {
         final ViewContext vc = contextViewer.getViewContext(); 
         
         if (layoutData != null) {
-            // Activate the KIML Service plugin so all layout options are loaded
+            // Activate the KIML Service plug-in so all layout options are loaded
             KimlServicePlugin.getDefault();
             final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
             extendedOptions.add(new VolatileLayoutConfig()
                     .setValue(LayoutOptions.ANIMATE, animate)
                     .setValue(LayoutOptions.ZOOM_TO_FIT, zoomToFit));
-            extendedOptions.add(contextViewer.getLightLayoutConfig());
+            if (viewPart instanceof ILayoutConfigProvider) {
+                extendedOptions.add(((ILayoutConfigProvider) viewPart).getLayoutConfig());
+            }
             if (options != null && !options.isEmpty()) {
                 extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
             }
@@ -653,21 +397,21 @@ public final class LightDiagramServices {
     /**
      * Translates the given <code>model</code> by means of the known diagram synthesis translations.
      * Incorporates constraints given in the <code>propertyHolders</code>.
+     * 
      * @param model
      *            the model
      * @param otherVC
-     *            the view context to merge mappings created while translating <code>model</code> into
+     *            the view context to merge mappings created while translating <code>model</code>
+     *            into
      * @param propertyHolders
      *            the property holders
-     * 
-     * @param <T>
-     *            the expected type of the result
      * @return the view context or null if the model and all possible transformations are
      *         unsupported by all viewer providers
      */
-    public static <T> T translateModel(final Object model, final ViewContext otherVC,
+    public static KNode translateModel(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
-        ViewContext vc = createViewContext(model, propertyHolders);
+        final ViewContext vc = new ViewContext(null, model).configure(
+                        KlighdSynthesisProperties.newInstance(propertyHolders));
         
         if (vc == null) {
             throw new IllegalStateException("Could not create a View Context for the model "
@@ -675,11 +419,7 @@ public final class LightDiagramServices {
         }
 
         updateViewContext(vc, model);
-        @SuppressWarnings("unchecked")
-        T result = (T) vc.getViewModel();
-        if (otherVC != null) {
-            otherVC.merge(vc);
-        }
+        final KNode result = vc.getViewModel();
         return result;
     }
 }

@@ -24,7 +24,6 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferences;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 

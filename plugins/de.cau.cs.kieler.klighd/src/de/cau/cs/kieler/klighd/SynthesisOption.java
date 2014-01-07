@@ -192,7 +192,7 @@ public final class SynthesisOption {
                 || !upperBound.equals(upperBound.intValue())
                 || !stepSize.equals(stepSize.intValue())
                 || !initialValue.equals(initialValue.intValue())) {
-            option.setStepSize(stepSize.intValue());
+            option.setStepSize(stepSize.floatValue());
         } else {
             option.setStepSize(Math.round(stepSize.floatValue()));
         }

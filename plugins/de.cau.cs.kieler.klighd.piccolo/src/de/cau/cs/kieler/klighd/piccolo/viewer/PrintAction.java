@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -22,36 +21,29 @@ import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
-import de.cau.cs.kieler.klighd.views.DiagramViewPart;
-
 /**
  * @author uru
- * 
+ * @author chsch
  */
-public class PrintAction extends Action {
+public class PrintAction implements Runnable {
 
     private PiccoloViewer viewer;
-    private DiagramViewPart viewPart;
 
     /**
      * @param viewer
-     *            piccolo viewer we know how to print.
-     * @param viewPart
-     *            the parent viewpart to be printed.
+     *            Piccolo2D viewer we know how to print.
      */
-    public PrintAction(final PiccoloViewer viewer, final DiagramViewPart viewPart) {
+    public PrintAction(final PiccoloViewer viewer) {
         this.viewer = viewer;
-        this.viewPart = viewPart;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
     public void run() {
-
+        
         // open a dialog, ask for print information!
-        PrintDialog printDialog = new PrintDialog(viewPart.getViewSite().getShell(), SWT.NONE);
+        PrintDialog printDialog = new PrintDialog(viewer.getCanvas().getShell(), SWT.NONE);
         printDialog.setText("Print KlighD View");
 
         PrinterData printerData = printDialog.open();
@@ -86,7 +78,7 @@ public class PrintAction extends Action {
                 // only print the visible area
 
                 // fit it into the page dimensions
-                Rectangle controlArea = viewPart.getContextViewer().getControl().getBounds();
+                Rectangle controlArea = viewer.getControl().getBounds();
                 float scaleX = controlArea.width / (float) clientArea.width;
                 float scaleY = controlArea.height / (float) clientArea.height;
                 float minScale = 1 / Math.max(scaleX, scaleY);
@@ -94,7 +86,7 @@ public class PrintAction extends Action {
 
                 gc.setTransform(t);
 
-                viewPart.getContextViewer().getControl().print(gc);
+                viewer.getControl().print(gc);
             }
 
             // finish and cleanup

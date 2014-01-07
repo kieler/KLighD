@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**

@@ -2,6 +2,47 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.cau.cs.kieler.klighd"
+            name="KIELER Light-weight Diagrams">
+      </category>
+      <view
+            allowMultiple="true"
+            category="de.cau.cs.kieler.klighd"
+            class="de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart"
+            icon="icons/klighd.gif"
+            id="de.cau.cs.kieler.klighd.ui.lightDiagramView"
+            name="Light-weight Diagram"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"
+            default="false"
+            icon="icons/klighd.gif"
+            id="de.cau.cs.kieler.klighd.ui.lightDiagramEditor"
+            name="Light-weight Diagram">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.cau.cs.kieler.klighd.ui.internal.KlighdPreferencePage"
+            id="de.cau.cs.kieler.klighd.ui.preferences"
+            name="KIELER Light-Weight Diagrams">
+      </page>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <viewer
+            class="de.cau.cs.kieler.klighd.ui.internal.viewers.PiccoloViewerProvider"
+            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
+      </viewer>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
       <category
             id="de.cau.cs.kieler.klighd.ui"

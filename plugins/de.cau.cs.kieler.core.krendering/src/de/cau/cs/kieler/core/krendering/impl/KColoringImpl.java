@@ -350,6 +350,56 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    public T setColor2(final KColor color) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        this.setColor(color);
+        return it;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColor2(final KColor color, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        this.setColor(color);
+        this.setAlpha(alpha);
+        return it;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColor2(final KColor targetColor) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        this.setTargetColor(targetColor);
+        return it;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColor2(final KColor targetColor, final int targetAlpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        this.setTargetColor(targetColor);
+        this.setTargetAlpha(targetAlpha);
+        return it;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public T setColor(final Colors color) {
         @SuppressWarnings("unchecked")
         final T it = (T) this;

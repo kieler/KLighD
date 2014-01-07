@@ -36,7 +36,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.viewers.KlighdTreeSelection;
+import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 
 /**
  * Generic handler implementation executing {@link IAction IActions} on view models and re-arranging

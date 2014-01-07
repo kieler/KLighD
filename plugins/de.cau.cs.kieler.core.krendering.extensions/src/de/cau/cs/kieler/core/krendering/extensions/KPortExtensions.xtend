@@ -13,22 +13,23 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
-import de.cau.cs.kieler.core.kgraph.KPort
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-import de.cau.cs.kieler.kiml.util.KimlUtil
 import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.util.Maybe
-import javax.inject.Inject
-import de.cau.cs.kieler.core.krendering.VerticalAlignment
-import de.cau.cs.kieler.core.krendering.KRenderingFactory
-import de.cau.cs.kieler.core.krendering.KFontSize
+import de.cau.cs.kieler.core.kgraph.KPort
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment
+import de.cau.cs.kieler.core.krendering.KFontSize
+import de.cau.cs.kieler.core.krendering.KRendering
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.KText
+import de.cau.cs.kieler.core.krendering.VerticalAlignment
+import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
+import de.cau.cs.kieler.core.properties.IProperty
+import de.cau.cs.kieler.core.util.Maybe
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
 import de.cau.cs.kieler.kiml.options.LayoutOptions
 import de.cau.cs.kieler.kiml.options.PortSide
-import de.cau.cs.kieler.core.properties.IProperty
+import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
-import de.cau.cs.kieler.core.krendering.KText
-import de.cau.cs.kieler.core.krendering.KRendering
+import javax.inject.Inject
 
 /**
  * @author chsch

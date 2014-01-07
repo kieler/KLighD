@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.cau.cs.kieler.core.krendering;singleton:=true
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.4.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -14,5 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  de.cau.cs.kieler.core,
  de.cau.cs.kieler.core.kgraph;visibility:=reexport,
- com.google.guava;bundle-version="10.0.1"
+ com.google.guava;bundle-version="10.0.1",
+ com.google.inject
 Bundle-ActivationPolicy: lazy

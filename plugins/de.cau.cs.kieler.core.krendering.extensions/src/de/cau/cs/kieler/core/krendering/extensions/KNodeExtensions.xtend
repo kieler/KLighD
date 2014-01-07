@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.core.krendering.extensions
 
 import de.cau.cs.kieler.core.kgraph.KNode
+import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
 import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.core.properties.Property
 import de.cau.cs.kieler.core.util.Pair

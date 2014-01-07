@@ -42,7 +42,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * 
  * @author uru
  */
-public class BitmapExporter implements IViewExporter {
+public class BitmapExporter extends KlighdCanvasExporter {
 
     /** the bmp format. */
     public static final String SUB_FORMAT_BMP = "bmp";
@@ -54,6 +54,7 @@ public class BitmapExporter implements IViewExporter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void export(final OutputStream stream, final KlighdCanvas canvas,
             final boolean cameraViewport, final int scale, final boolean textAsShapes,
             final String subFormatId) {

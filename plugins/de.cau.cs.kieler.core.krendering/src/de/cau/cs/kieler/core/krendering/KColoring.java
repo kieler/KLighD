@@ -249,6 +249,60 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Convenience setter for configuring the color or gradient source color of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor(KColor)} and returns <code>this</code> KColoring instance instead of <code>void</code>.
+     * @param color an instance of {@link KColor}
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nthis.setColor(color);\nreturn it;'"
+     * @generated
+     */
+    T setColor2(KColor color);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the color & alpha or gradient source color & alpha of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor(KColor)} and {@link #setAlpha(int)}, and returns <code>this</code> KColoring instance instead of <code>void</code>.
+     * @param color an instance of {@link KColor}
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nthis.setColor(color);\nthis.setAlpha(alpha);\nreturn it;'"
+     * @generated
+     */
+    T setColor2(KColor color, int alpha);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient target color of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setTargetColor(KColor)} and returns <code>this</code> KColoring instance instead of <code>void</code>.
+     * @param targetColor an instance of {@link KColor}
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nthis.setTargetColor(targetColor);\nreturn it;'"
+     * @generated
+     */
+    T setTargetColor2(KColor targetColor);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient target color & target alpha of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setTargetColor(KColor)} and {@link #setTargetAlpha(int)}, and returns <code>this</code> KColoring instance instead of <code>void</code>.
+     * @param targetColor an instance of {@link KColor}
+     * @param targetAlpha the alpha component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='@SuppressWarnings(\"unchecked\")\nfinal T it = (T) this;\nthis.setTargetColor(targetColor);\nthis.setTargetAlpha(targetAlpha);\nreturn it;'"
+     * @generated
+     */
+    T setTargetColor2(KColor targetColor, int targetAlpha);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the color or gradient source color of <code>this</code> KColoring instance.<br>
      * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColoring, Colors) KRenderingUtil.setColor(KColoring, Colors)}.
      * @param color a color constant from the {@link Colors} enumeration
      * <!-- end-model-doc -->

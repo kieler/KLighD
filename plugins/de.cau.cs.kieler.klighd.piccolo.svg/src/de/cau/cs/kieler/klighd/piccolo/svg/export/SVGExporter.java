@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.svg.export;
 
 import java.io.OutputStream;
 
-import de.cau.cs.kieler.klighd.piccolo.export.IViewExporter;
+import de.cau.cs.kieler.klighd.piccolo.export.KlighdCanvasExporter;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.svg.KlighdSVGCanvas;
 import edu.umd.cs.piccolo.PCamera;
@@ -30,11 +30,12 @@ import edu.umd.cs.piccolo.PCamera;
  * 
  * @author uru
  */
-public class SVGExporter implements IViewExporter {
+public class SVGExporter extends KlighdCanvasExporter {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void export(final OutputStream stream, final KlighdCanvas canvas,
             final boolean cameraViewport, final int scale, final boolean textAsShapes,
             final String subFormatId) {
@@ -43,6 +44,5 @@ public class SVGExporter implements IViewExporter {
         // to handle it
         PCamera camera = canvas.getCamera();
         KlighdSVGCanvas.render(camera, cameraViewport, textAsShapes, stream, subFormatId);
-
     }
 }

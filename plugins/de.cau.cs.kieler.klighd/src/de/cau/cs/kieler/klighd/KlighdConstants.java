@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
@@ -159,6 +160,13 @@ public final class KlighdConstants {
      * no definition is given for a particular node.
      */
     public static final Bounds MINIMAL_NODE_BOUNDS = Bounds.immutableCopy(new Bounds(10, 10));
+    
+    /**
+     * The priority of the {@link de.cau.cs.kieler.kiml.config.ILayoutConfig ILayoutConfig} employed
+     * in the side bar layout configuration tools of KLighD diagrams.
+     */
+    // SUPPRESS CHECKSTYLE NEXT MagicNumber
+    public static final int SIDE_BAR_LAYOUT_CONFIG_PRIORITY = VolatileLayoutConfig.DEFAULT_PRIORITY - 25;
 
     /**
      * Hidden default constructor.

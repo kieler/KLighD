@@ -139,6 +139,7 @@ public class KlighdCanvas extends PSWTCanvas {
         this.addMouseMoveListener(mouseListener);
         this.addMouseTrackListener(mouseListener);
         this.addMouseWheelListener(mouseListener);
+        this.addDragDetectListener(mouseListener);
         this.addGestureListener(mouseListener);
     }
     

@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.KlighdPreferences;
 
 /**
  * Initializes the KLighD preferences to their default values.

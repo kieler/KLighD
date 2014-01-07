@@ -13,11 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.internal;
 
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.ui.part.IPage;
 
 /**
  * An extension of {@link IContentOutlinePage} allowing to delay the visibility of the outline
  * diagram until the diagram structures are initialized properly.<br>
+ * This interface does not extend IContentOutlinePage as that one requires a dependency to the
+ * bundle <code>org.eclipse.ui.views</code>. Since IContentOutlinePage is {@link IPage} +
+ * {@link org.eclipse.jface.viewers.ISelectionProvider ISelectionProvider} we can avoid that
+ * dependency this way ({@link org.eclipse.jface.viewers.ISelectionProvider ISelectionProvider}
+ * might be added here if it is really required some day, our current outline page, however, doesn't
+ * provide a selection).<br>
  * <br>
  * This is an internal interface that is not to be used by clients.
  * {@link de.cau.cs.kieler.klighd.IViewer IViewers} that want to contribute an outline diagram have
@@ -25,7 +31,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * 
  * @author chsch
  */
-public interface IDiagramOutlinePage extends IContentOutlinePage {
+public interface IDiagramOutlinePage extends IPage {
     
     /**
      * Sets the outline diagram (in-) visible.

@@ -69,11 +69,15 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
         if (!(event.getSourceSwingEvent() instanceof IKlighdInputEvent)) {
             return;
         }
-
+        
         final IKlighdInputEvent kEvent = (IKlighdInputEvent) event.getSourceSwingEvent();
 
         switch (kEvent.getEventType()) {
 
+        case SWT.DragDetect:
+            // is currently not helpful as only a single event at the beginning of the dragging is sent
+            //  might be used in future for initiating the dragging 
+            break;
         case SWT.FocusIn:
             delegate.keyboardFocusGained(event);
             break;
@@ -108,8 +112,9 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
 
         case SWT.MouseMove:
             if ((((MouseEvent) kEvent.getEvent()).stateMask & SWT.BUTTON1) != 0) {
-                // since SWT doesn't distinguish a dedicated 'drag' event we have
-                // to test for a pressed button ourselves.
+                // since SWT doesn't distinguish a dedicated 'drag' event similar to the move we have
+                //  to test for a pressed button ourselves;
+                // could be improved using SWT.DragDetected in future
                 delegate.mouseDragged(event);
             } else {
                 delegate.mouseMoved(event);

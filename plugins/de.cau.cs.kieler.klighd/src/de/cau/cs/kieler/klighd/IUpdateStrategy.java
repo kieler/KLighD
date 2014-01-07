@@ -16,16 +16,14 @@ package de.cau.cs.kieler.klighd;
 import de.cau.cs.kieler.core.kgraph.KNode;
 
 /**
- * The interface for classes implementing an update strategy for a specific model class.
- * These update strategies are used for the purpose of updating a view model (KGraph)
+ * The interface for classes implementing an update strategy for a specific model class. These
+ * update strategies are used for the purpose of updating a view model (KGraph/KRendering) instance
  * that is currently displayed according to a newer version of the view model.
  * 
- * @author mri, chsch
- * 
- * @param <T>
- *            the type of the model class
+ * @author mri
+ * @author chsch
  */
-public interface IUpdateStrategy<T extends KNode> {
+public interface IUpdateStrategy {
 
     /**
      * Returns the priority for this update strategy. Higher value means higher priority.
@@ -34,25 +32,13 @@ public interface IUpdateStrategy<T extends KNode> {
      */
     int getPriority();
     
-    /**
-     * Returns the initial base model for the incremental update process.
-     * 
-     * @param viewContext
-     *            the view context
-     * @return the initial base model
-     */
-    T getInitialBaseModel(ViewContext viewContext);
-
     // SUPPRESS CHECKSTYLE NEXT 10 LineLength
     /**
-     * Performs an incremental update of the base view model, the view model that is currently being
-     * displayed, using another (updated) view model. Implementations of this method may assume,
-     * that 'newModel' has been synthesized by a transformation or is at least a deep copy of a
-     * model maintained by an editor, e.g. an Xtext editor. (see line 20ff of
-     * {@link TransformationsGraph#configureViewContext(ViewContext, java.util.List, Object, IUpdateStrategy)}
-     * <br>
-     * Hence, the update strategy need not care on any side effects caused by massive model changes
-     * performed by the editor.
+     * Performs an update of the base view model (the view model that is currently being displayed)
+     * by equalizing it the (updated) <code>newModel</code>. Implementations of this method may
+     * assume, that <code>newModel</code> has been synthesized by a transformation or is at least a
+     * deep copy of a model maintained by an editor, e.g. an Xtext editor.<br>
+     * Hence, the update strategy need not fear any changes of 'newModel' by any other tooling.
      * 
      * @param baseModel
      *            the base model
@@ -61,13 +47,5 @@ public interface IUpdateStrategy<T extends KNode> {
      * @param viewContext
      *            the view context
      */
-    void update(T baseModel, T newModel, ViewContext viewContext);
-
-    /**
-     * Returns the class of the models supported by this update strategy.
-     * 
-     * @return the class of the supported models
-     */
-    Class<?> getModelClass();
-
+    void update(KNode baseModel, KNode newModel, ViewContext viewContext);
 }

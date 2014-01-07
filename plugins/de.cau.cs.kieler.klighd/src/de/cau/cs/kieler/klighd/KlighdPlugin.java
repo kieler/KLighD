@@ -17,10 +17,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
+
 /**
  * The activator class controls the plug-in life cycle.
  * 
  * @author mri
+ * @author chsch
  */
 public class KlighdPlugin extends AbstractUIPlugin {
 
@@ -75,4 +78,35 @@ public class KlighdPlugin extends AbstractUIPlugin {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 
+
+    /* -------------------------- */
+    /*   Access to KIVi-binding   */
+    /* -------------------------- */
+    
+    private static IKlighdTrigger statusTrigger = null;
+    
+    /**
+     * Provides the singleton instance of {@link IKlighdTrigger} being in charge of firing KIVi
+     * triggers, or a {@link IKlighdTrigger.NullTrigger} if the fragment
+     * <code>de.cau.cs.kieler.klighd.kivi</code> is not available.<br>
+     * <br>
+     * <b>Note:</b> In order to work properly this code requires the declaration of
+     * <pre> DynamicImport-Package: de.cau.cs.kieler.klighd.kivi.internal </pre>
+     * in this plug-in's MANIFEST.MF.<br>
+     * <br>
+     * 
+     * @return the available {@link IKlighdTrigger}
+     */
+    public static synchronized IKlighdTrigger getTrigger() {
+        if (statusTrigger == null) {
+            try {
+                final String className = PLUGIN_ID + ".kivi.internal.KlighdTrigger";
+                statusTrigger = (IKlighdTrigger) Class.forName(className).newInstance();
+                // .getMethod("getInstance").invoke(null);
+            } catch (Exception e) {
+                statusTrigger = new IKlighdTrigger.NullTrigger();
+            }
+        }
+        return statusTrigger;
+    }
 }

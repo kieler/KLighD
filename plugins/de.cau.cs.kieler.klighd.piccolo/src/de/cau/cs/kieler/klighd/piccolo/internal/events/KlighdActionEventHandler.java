@@ -13,24 +13,29 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
+import java.util.List;
+
+import org.eclipse.ui.PlatformUI;
+
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger;
-import de.cau.cs.kieler.klighd.triggers.KlighdStatusTrigger.KlighdStatusState;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
 
@@ -68,6 +73,12 @@ public class KlighdActionEventHandler implements PInputEventListener {
      * {@inheritDoc}
      */
     public void processEvent(final PInputEvent inputEvent, final int eventType) {
+        // don't modify the evaluation of the 'handled' flag in an ad-hoc way,
+        //  first make sure that the scenario described below is not enabled again.
+        if (inputEvent.isHandled()) {
+            return;
+        }
+        
         if (!(inputEvent.getSourceSwingEvent() instanceof KlighdMouseEvent)) {
             return;
         }
@@ -126,6 +137,10 @@ public class KlighdActionEventHandler implements PInputEventListener {
             return;
         }
         
+        // don't modify the evaluation of the 'handled' flag in an ad-hoc way,
+        //  first make sure that the scenario described below is not enabled again.
+        inputEvent.setHandled(true);
+        
         final boolean zoomToFit = result.getZoomToFit() != null
                 ? result.getZoomToFit() : context.getViewContext().isZoomToFit();
         final boolean zoomToFocus = result.getZoomToFocus() != null
@@ -135,15 +150,26 @@ public class KlighdActionEventHandler implements PInputEventListener {
         // remember the desired zoom style in the view context
         final ViewContext vc = viewer.getViewContext();
         vc.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
-                
-        LightDiagramServices.layoutDiagram(vc, result.getAnimateLayout(), zoomToFit,
-                result.getLayoutConfigs());
+
+        final boolean animate = result.getAnimateLayout();
+        final List<ILayoutConfig> layoutConfigs = result.getLayoutConfigs();
+
+        // Execute the layout asynchronously in order to let the KLighdInputManager
+        //  finish the processing of 'inputEvent' quickly.
+        // Otherwise if the diagram layout engine interrupts its work by calling
+        //  Display.readAndDispatch() and, with that, the control flow executing this method
+        //  the processing of 'inputEvent' by the input manager might get triggered a
+        //  second time by some timer event causing a kind of nested/recursive (!) evaluation
+        //  of 'inputEvent' and, thereby, this method.
+        // In addition, this scenario is tried to avoid by setting & evaluating the 'handled'.
+        //  flag of 'inputEvent' properly.
+        PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+            public void run() {
+                LightDiagramServices.layoutDiagram(vc, animate, zoomToFit, layoutConfigs);
+            }
+        });
         
-        KlighdStatusState state = new KlighdStatusState(KlighdStatusState.Status.UPDATE, viewer
-                .getContextViewer().getViewPartId(), viewer.getViewContext(), viewer);
-        if (KlighdStatusTrigger.getInstance() != null) {
-            KlighdStatusTrigger.getInstance().trigger(state);
-        }
+        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, viewer.getViewContext());
     }
     
     private boolean guardsMatch(final KAction action, final KlighdMouseEvent event) {

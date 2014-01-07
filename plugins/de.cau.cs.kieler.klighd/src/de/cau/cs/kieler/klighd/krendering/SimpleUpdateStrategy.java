@@ -13,10 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import java.util.Collection;
 import java.util.List;
-
-import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -26,20 +23,16 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
-import de.cau.cs.kieler.klighd.TransformationContext;
 import de.cau.cs.kieler.klighd.ViewContext;
 
 /**
- * A simple update strategy for KGraph with KRendering which merges by copying the new model.<br>
- * Uses a {@link DuplicatingTransformation} in order to decouple the given model and the depicted
- * one for use with the textual KGraph editor and adds a related {@link TransformationContext} to
- * the used view context for ensuring the model-image-traceability.
+ * A simple update strategy for KGraph with KRendering which merges by copying the new model.
  *
  * @author mri
+ * @author chsch
  */
-public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
+public class SimpleUpdateStrategy implements IUpdateStrategy {
 
     /** The id used at registration of the strategy in the plugin.xml. */
     public static final String ID = SimpleUpdateStrategy.class.getCanonicalName();
@@ -52,14 +45,6 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
      */
     public int getPriority() {
         return PRIORITY;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KNode getInitialBaseModel(final ViewContext viewContext) {
-        KNode baseModel = KimlUtil.createInitializedNode();
-        return baseModel;
     }
 
     /**
@@ -80,7 +65,10 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
                         Iterables.filter(baseModel.getData(), KRenderingLibrary.class)));
 
         // reset the clip (here the transform difference can still be computed properly)
-        viewContext.getViewer().clip(baseModel);
+        if (viewContext != null && viewContext.getViewer() != null) {
+            // viewContext.getViewer() is null if called via LightDiagramServices#translateModel(...)
+            viewContext.getViewer().clip(baseModel);
+        }
 
         // ... and remove the diagram elements afterwards
         baseModel.getChildren().clear();
@@ -88,33 +76,10 @@ public class SimpleUpdateStrategy implements IUpdateStrategy<KNode> {
         baseModel.getData().addAll(newData);
         baseModel.getChildren().addAll(newChildren);
 
-        
-        // In the following part all tracing relation of the semantic elements, that is associated
-        //  newModels' root node are reset, since the root node is not transfered into the diagram's
-        //  view model (the root KNode of a diagram is constant for the diagram's life time).
-        @SuppressWarnings("unchecked")
-        TransformationContext<?, KNode> tc = (TransformationContext<?, KNode>) Iterables
-                .getLast(viewContext.getTransformationContexts());
-        
-        Object semanticRoot = tc.getSourceElement(newModel);
-        if (semanticRoot != null) {
-            @SuppressWarnings("unchecked")
-            Collection<EObject> viewElements = (Collection<EObject>) tc.getTargetElement(semanticRoot);
-            List<EObject> copy = Lists.newArrayList(viewElements);
-            viewElements.clear();
-            copy.remove(newModel);
-            copy.add(baseModel);
-            for (EObject viewElement : copy) {
-                tc.addSourceTargetPair(semanticRoot, viewElement);
-            }
-        }
+        // Note: no update of the source element associated with the baseModel (the root node) is
+        //  required since the source element/view element tracking for KGraphElements is performed
+        //  by means of a property on the corresponding layout data.
+        // Thus, the baseModel node obtains its associated source element through the above statement
+        //  'baseModel.getData().addAll(newData); :-)
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class<?> getModelClass() {
-        return KNode.class;
-    }
-
 }

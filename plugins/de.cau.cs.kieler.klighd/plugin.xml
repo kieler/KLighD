@@ -4,75 +4,16 @@
    <extension-point id="extensions" name="Compound extension point for all kinds of extensions" schema="schema/extensions.exsd"/>
    <extension-point id="diagramSyntheses" name="Diagram syntheses registering point" schema="schema/diagramSyntheses.exsd"/>
    <extension
-         point="org.eclipse.ui.views">
-      <category
-            id="de.cau.cs.kieler.klighd"
-            name="KIELER Light-weight Diagrams">
-      </category>
-      <view
-            allowMultiple="true"
-            category="de.cau.cs.kieler.klighd"
-            class="de.cau.cs.kieler.klighd.views.DiagramViewPart"
-            icon="icons/klighd.gif"
-            id="de.cau.cs.kieler.klighd.lightDiagramView"
-            name="Light-weight Diagram"
-            restorable="true">
-      </view>
-   </extension>
-   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="de.cau.cs.kieler.klighd.internal.preferences.PreferenceInitializer">
       </initializer>
    </extension>
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="de.cau.cs.kieler.klighd.views.DiagramEditorPart"
-            default="false"
-            icon="icons/klighd.gif"
-            id="de.cau.cs.kieler.klighd.lightDiagramEditor"
-            name="Light-weight Diagram">
-      </editor>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="de.cau.cs.kieler.klighd.internal.preferences.KlighdPreferencePage"
-            id="de.cau.cs.kieler.klighd.preferences"
-            name="%preferencePage.name">
-      </page>
-   </extension>
-   <extension
          point="de.cau.cs.kieler.kiml.service.layoutManagers">
       <manager
             class="de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager">
       </manager>
-   </extension>
-   <extension
-         point="de.cau.cs.kieler.core.kivi.combinations">
-      <combination
-            active="true"
-            class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeDroppedEMFModelCombination"
-            description="Enables the visualization of EMF models in resources dropped on KLighD views."
-            name="Visualize dropped EMF Resources in KLighD Views (KLighD)">
-      </combination>
-      <combination
-            active="false"
-            class="de.cau.cs.kieler.klighd.combinations.KlighdVisualizeEMFEditorContentCombination"
-            description="Visualize EMF tree editor content"
-            name="Visualize EMF tree editor content  (KLighD)">
-      </combination>
-      <combination
-            active="true"
-            class="de.cau.cs.kieler.klighd.combinations.KlighdFocusSelectedElementInTreeViewerCombination"
-            name="Focus selected Element in tree viewer (KLighD)">
-      </combination>
-      <combination
-            active="false"
-            class="de.cau.cs.kieler.klighd.combinations.KlighdCropDiagramCombination"
-            name="Crop KLighD diagram by a box-based selection">
-      </combination>
    </extension>
    <extension
          point="de.cau.cs.kieler.klighd.extensions">
