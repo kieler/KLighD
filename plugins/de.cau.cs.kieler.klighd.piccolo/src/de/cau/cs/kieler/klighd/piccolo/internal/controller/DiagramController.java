@@ -14,20 +14,15 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
@@ -54,7 +49,6 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
-import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -62,7 +56,6 @@ import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplySmartBoundsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity;
@@ -87,7 +80,6 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PDimension;
 
 /**
  * Overall manager of KGraph+KRendering-based diagrams.<br>
@@ -146,12 +138,15 @@ public class DiagramController {
     /** the attribute key for the nodes listed by edge offset listeners. */
     private static final Object EDGE_OFFSET_LISTENED_KEY = new Object();
 
-    /** the Piccolo node representing the top node in the graph. */
+    /** the Piccolo2D node representing the top node in the graph. */
     private final KNodeTopNode topNode;
     
     /** the main camera that determines the actually drawn picture. */
     private final KlighdMainCamera canvasCamera;
 
+    /** the zoom controller implementing the zoom functionalities. */
+    private final DiagramZoomController zoomController;
+    
     /** whether to sync the representation with the graph model. */
     private boolean sync = false;
 
@@ -163,8 +158,6 @@ public class DiagramController {
     
     /** duration of a possible animation. */
     private int animationTime = 0;
-    
-    private KNode focusNode = null;
     
     /** the layout changes to graph elements while recording. */
     private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
@@ -183,17 +176,18 @@ public class DiagramController {
      */
     public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync) {
         resetGraphElement(graph);
-        
+
         this.sync = sync;
         this.canvasCamera = camera;
-        
+
         this.topNode = new KNodeTopNode(graph);
         RenderingContextData.get(graph).setProperty(REP, topNode);
-        
+
+        this.zoomController = new DiagramZoomController(topNode, canvasCamera);
+
         canvasCamera.getRoot().addChild(topNode);
         canvasCamera.setDisplayedNode(topNode);
-        
-        // updateLayout(topNode);
+
         addExpansionListener(topNode);
 
         RenderingContextData.get(topNode.getGraphElement()).setProperty(
@@ -230,10 +224,22 @@ public class DiagramController {
     }
 
     /**
+     * Returns the 'recording' state of <code>this</code> controller.
+     * 
+     * @return <code>true</code> if <code>this</code> controller is in recording mode.
+     */
+    public boolean isRecording() {
+        return record;
+    }
+
+    /**
      * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
      * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
+     * 
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#startRecording()
+     *      ILayoutRecorder#startRecording()
      */
     public void startRecording() {
         record = true;
@@ -241,11 +247,12 @@ public class DiagramController {
 
     /**
      * @param theZoomStyle
-     *            the style used to zoom, eg zoom to fit or zoom to focus
+     *            the style used to zoom, e.g. zoom to fit or zoom to focus
      * @param theAnimationTime
      *            duration of the animated layout
      * 
-     * @see de.cau.cs.kieler.klighd.IViewer IViewer#stopRecording(ZoomStyle, int)
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, int)
+     *      ILayoutRecorder#stopRecording(ZoomStyle, int)
      */
     public void stopRecording(final ZoomStyle theZoomStyle, final int theAnimationTime) {
         if (record) {
@@ -254,9 +261,12 @@ public class DiagramController {
 
             record = false;
 
-            // apply recorded layout changes
             handleRecordedChanges();
         }
+    }
+
+    void recordChange(final PNode node, final Object change) {
+        recordedChanges.put(node, change);
     }
 
     /**
@@ -271,7 +281,7 @@ public class DiagramController {
             nodeRep.getChildAreaNode().setExpanded(false);
         }
         
-        focusNode = node;
+        zoomController.setFocusNode(node);
     }
 
     /**
@@ -286,7 +296,7 @@ public class DiagramController {
             nodeRep.getChildAreaNode().setExpanded(true);
         }
         
-        focusNode = node;
+        zoomController.setFocusNode(node);
     }
     
     /**
@@ -314,7 +324,7 @@ public class DiagramController {
             nodeRep.getChildAreaNode().toggleExpansion();
         }
         
-        focusNode = node;
+        zoomController.setFocusNode(node);
     }
 
     /**
@@ -392,155 +402,9 @@ public class DiagramController {
      *            time to animate
      */
     public void zoom(final ZoomStyle style, final int duration) {
-        switch (style) {
-        case ZOOM_TO_FIT:
-            zoomToFit(duration);
-            break;
-        case ZOOM_TO_FOCUS:
-            KNode focus = focusNode != null ? focusNode : topNode.getGraphElement();
-            zoomToFocus(focus, duration);
-            break;
-        default:
-            // nothing
-        }
-    }
-    
-    /**
-     * @param duration
-     *            time to animate
-     */
-    private void zoomToFit(final int duration) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
-        final KShapeLayout topNodeLayout = displayedKNode.getData(KShapeLayout.class);
-        
-        if (topNodeLayout == null) {
-            String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to fit' as the topNode's layout data are unavailable. "
-                    + "This is most likely due to a failed incremental update before.";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
-                    StatusManager.LOG);
-            return;
-        }
-        
-        final PBounds newBounds = new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
-                            topNodeLayout.getWidth(), topNodeLayout.getHeight());
-
-        includePortAndLabelBounds(newBounds, displayedKNode);
-        
-        if (this.canvasCamera.getBoundsReference().isEmpty()) {
-            // this case occurs while initializing the DiagramEditorPart
-            //  since the whole diagram building and layout is performed within 'createPartControl()'
-            // at that time, the (widget) layout of the KlighdCanvas has not been performed and,
-            //  thus, the root pnodes' bounds are empty
-            // this setting will be replaced by 'setBounds()' in KlighdCanvas (inherited)  
-            this.canvasCamera.setBounds(newBounds);
-        } else {
-            this.canvasCamera.animateViewToCenterBounds(newBounds, true, duration);
-        }
-    }
-    
-    /**
-     * This method checks for ports and labels of the given <code>node</code> and increases the
-     * given <code>nodeBounds</code> accordingly.
-     */
-    private Rectangle2D includePortAndLabelBounds(final Rectangle2D nodeBounds, final KNode node) {
-        double maxX = nodeBounds.getWidth();
-        double maxY = nodeBounds.getHeight();
-        
-        // these min values are <= 0 at all times!
-        double minX = 0;
-        double minY = 0;
-
-        boolean includedElement = false;
-        
-        for (KGraphElement element : Iterables.concat(node.getPorts(), node.getLabels())) {
-            final KShapeLayout pL = element.getData(KShapeLayout.class);
-            if (pL.getXpos() < minX) {
-                minX = pL.getXpos();
-            }
-            if (pL.getYpos() < minY) {
-                minY = pL.getYpos();
-            }
-            if (pL.getXpos() + pL.getWidth() > maxX) {
-                maxX = pL.getXpos() + pL.getWidth();
-            }
-            if (pL.getYpos() + pL.getHeight() > maxY) {
-                maxY = pL.getYpos() + pL.getHeight();
-            }
-            includedElement = true;
-        }
-        
-        if (includedElement) {
-            nodeBounds.setRect(nodeBounds.getX() + minX, nodeBounds.getY() + minY, maxX - minX,
-                    maxY - minY);
-        } else {
-            final KInsets insets = node.getData(KShapeLayout.class).getInsets();
-            nodeBounds.setRect(nodeBounds.getX() + insets.getLeft(),
-                    nodeBounds.getY() + insets.getTop(),
-                    maxX - insets.getLeft() - insets.getRight(),
-                    maxY - insets.getTop() - insets.getBottom());
-        }
-
-        return nodeBounds;
-    }
-    
-    /**
-     * 
-     * @param focus
-     *            the desired focus bounds
-     * @param duration
-     *            duration of the animation
-     */
-    private void zoomToFocus(final KNode focus, final int duration) {
-        final KShapeLayout shapeLayout = focus.getData(KShapeLayout.class);
-        final PBounds newBounds = new PBounds(shapeLayout.getXpos(), shapeLayout.getYpos(),
-                shapeLayout.getWidth(), shapeLayout.getHeight());
-
-        // we need the bounds in view coordinates (absolute), hence for
-        // a knode add the translations of all parent nodes
-        KNode parent = focus.getParent();
-        while (parent != null) {
-            KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
-            newBounds.moveBy(parentLayout.getXpos(), parentLayout.getYpos());
-            parent = parent.getParent();
-        }
-
-        zoomToFocus(newBounds, duration);
+        zoomController.zoom(style, duration);
     }
 
-    /**
-     * 
-     * @param focus
-     *            the desired focus bounds
-     * @param duration
-     *            duration of the animation
-     */
-    private void zoomToFocus(final PBounds focus, final int duration) {
-        final PBounds viewBounds = canvasCamera.getViewBounds();
-
-        // check if we need to scale the view in order for the view to
-        // contain the whole focus
-        boolean scale = viewBounds.getWidth() < focus.getWidth()
-                || viewBounds.getHeight() < focus.getHeight();
-
-        // fetch bounds of the whole diagram
-        final KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
-        
-        final PBounds newBounds = new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
-                topNodeLayout.getWidth(), topNodeLayout.getHeight());
-        
-        boolean fullyContains = viewBounds.getWidth() > newBounds.getWidth()
-                && viewBounds.getHeight() > newBounds.getHeight();
-
-        // if the viewport can fully accomodate the diagram, we perform zoom to fit 
-        if (fullyContains) {
-            canvasCamera.animateViewToCenterBounds(newBounds, true, duration);
-        } else {
-            canvasCamera.animateViewToCenterBounds(focus, scale, duration);
-        }
-    }
-    
     /**
      * Sets the zoom level to {@code newZoomLevel}. A value below 1 results in smaller elements than
      * in the original diagram, a value greater than 1 in a bigger elements than in the original.
@@ -554,46 +418,7 @@ public class DiagramController {
      *            time to animate
      */
     public void zoomToLevel(final float newZoomLevel, final int duration) {
-        final KShapeLayout topNodeLayout = topNode.getGraphElement().getData(KShapeLayout.class);
-
-        if (topNodeLayout == null) {
-            final String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to one' as the topNode's layout data are unavailable. "
-                    + "This is most likely due to a failed incremental update before.";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
-                    StatusManager.LOG);
-            return;
-        }
-
-        final PBounds nodeBounds = new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
-                        topNodeLayout.getWidth(), topNodeLayout.getHeight());
-
-        // it would be possible to use PCamera#scaleViewAboutPoint(scale, x, y), 
-        // however this method does not allow for animation
-        
-        // calculate the bound as they would be if scaled by the new factor
-        final PBounds origBounds = canvasCamera.getViewBounds();
-        final double oldZoomLevel = canvasCamera.getViewTransformReference().getScale();
-        
-        final PBounds newBounds = new PBounds(origBounds.x, origBounds.y,
-                origBounds.width * oldZoomLevel / newZoomLevel,
-                origBounds.height * oldZoomLevel / newZoomLevel);
-
-        // add the necessary translation
-        final double normalizedWidth = origBounds.width * oldZoomLevel;
-        final double normalizedHeight = origBounds.height * oldZoomLevel;
-        final double transX = (origBounds.width - normalizedWidth / newZoomLevel) / 2f;
-        final double transY = (origBounds.height - normalizedHeight / newZoomLevel) / 2f;
-        
-        newBounds.moveBy(transX, transY);
-
-        // make sure at least some of the diagram is visible after zooming to scale 1
-        final PDimension dim = newBounds.deltaRequiredToContain(nodeBounds);
-        newBounds.moveBy(dim.width, dim.height);
-
-        // perform the animation
-        canvasCamera.animateViewToCenterBounds(newBounds, true, duration);
+        zoomController.zoomToLevel(newZoomLevel, duration);
     }
     
     /**
@@ -1232,111 +1057,96 @@ public class DiagramController {
     }
 
     /**
-     * Updates the bounds and translation of the node representation according to the
-     * {@code KShapeLayout} of the wrapped node.
-     * 
-     * @param nodeNode
-     *            the node representation
-     */
-    @SuppressWarnings("unused")
-    private void updateLayout(final KNodeTopNode nodeNode) {
-        // Puts the KShapeLayout coordinates in the KNodeTopNode,
-        // installs the change listener that are in charge of
-        // updating the coordinates after applying the automatic layout.
-        KNode node = nodeNode.getGraphElement();
-        KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
-        if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(nodeNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
-            if (sync) {
-                installLayoutSyncAdapter(nodeNode);
-            }
-        }
-    }
-
-    /**
-     * Updates the bounds and translation of the node representation according to the
-     * {@code KShapeLayout} of the wrapped node.
+     * Installs a change listener being in charge of updating <code>nodeNode</code>'s coordinates
+     * according to changes in the corresponding {@link KShapeLayout} if synchronization is enabled.<br>
+     * <br>
+     * Besides, updates the bounds and translation of the node representation according to the
+     * corresponding {@link KShapeLayout}.
      * 
      * @param nodeNode
      *            the node representation
      */
     private void updateLayout(final KNodeNode nodeNode) {
-        // Puts the KShapeLayout coordinates in the KNodeNode,
-        // installs the change listener that are in charge of
-        // updating the coordinates after applying the automatic layout.
-        KNode node = nodeNode.getGraphElement();
-        KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
+        if (sync) {
+            installLayoutSyncAdapter(nodeNode);
+        }
+ 
+        final KShapeLayout shapeLayout = nodeNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(nodeNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
-            if (sync) {
-                installLayoutSyncAdapter(nodeNode);
-            }
         }
     }
 
     /**
-     * Updates the bounds and translation of the port representation according to the
-     * {@code KShapeLayout} of the wrapped port.
+     * Installs a change listener being in charge of updating <code>portNode</code>'s coordinates
+     * according to changes in the corresponding {@link KShapeLayout} if synchronization is enabled.<br>
+     * <br>
+     * Besides, updates the bounds and translation of the port representation according to the
+     * corresponding {@link KShapeLayout}.
      * 
      * @param portNode
      *            the port representation
      */
     private void updateLayout(final KPortNode portNode) {
-        KPort port = portNode.getGraphElement();
-        KShapeLayout shapeLayout = port.getData(KShapeLayout.class);
+        if (sync) {
+            installLayoutSyncAdapter(portNode);
+        }
+
+        final KShapeLayout shapeLayout = portNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(portNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
 
-            if (sync) {
-                installLayoutSyncAdapter(portNode);
-            }
         }
     }
 
     /**
-     * Updates the bounds and translation of the label representation according to the
-     * {@code KShapeLayout} of the wrapped label.
+     * Installs a change listener being in charge of updating <code>labelNode</code>'s coordinates
+     * according to changes in the corresponding {@link KShapeLayout} if synchronization is enabled.<br>
+     * <br>
+     * Besides, updates the bounds and translation of the label representation according to the
+     * corresponding {@link KShapeLayout}.
      * 
      * @param labelNode
      *            the label representation
      */
     private void updateLayout(final KLabelNode labelNode) {
-        KLabel label = labelNode.getGraphElement();
-        KShapeLayout shapeLayout = label.getData(KShapeLayout.class);
+        if (sync) {
+            installLayoutSyncAdapter(labelNode);
+        }
+
+        final KShapeLayout shapeLayout = labelNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applySmartBounds(labelNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
                     shapeLayout.getWidth(), shapeLayout.getHeight());
-
-            if (sync) {
-                installLayoutSyncAdapter(labelNode);
-            }
         }
     }
 
     /**
-     * Updates the bend points of the edge representation according to the {@code KEdgeLayout} of
-     * the wrapped edge.
+     * Installs a change listener being in charge of updating <code>edgeRep</code>'s coordinates
+     * according to changes in the corresponding {@link KEdgeLayout} if synchronization is enabled.<br>
+     * <br>
+     * Besides, updates the bounds and translation of the edge representation according to the
+     * corresponding {@link KEdgeLayout}.
      * 
      * @param edgeRep
      *            the edge representation
      */
     private void updateLayout(final KEdgeNode edgeRep) {
-        KEdge edge = edgeRep.getGraphElement();
-        KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
-        KRendering rendering = edge.getData(KRendering.class);
-        boolean renderedAsPolyline = rendering instanceof KPolyline
-                && !(rendering instanceof KSpline);
+        if (sync) {
+            installLayoutSyncAdapter(edgeRep);
+        }
 
+        final KEdge edge = edgeRep.getGraphElement();
+        final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
-            Point2D[] bendPoints = getBendPoints(edgeLayout, renderedAsPolyline);
+            final KRendering rendering = edge.getData(KRendering.class);
+            final boolean renderedAsPolyline = rendering instanceof KPolyline
+                    && !(rendering instanceof KSpline);
+            
+            final Point2D[] bendPoints = getBendPoints(edgeLayout, renderedAsPolyline);
             edgeRep.setBendPoints(bendPoints);
-
-            if (sync) {
-                installLayoutSyncAdapter(edgeRep);
-            }
         }
     }
 
@@ -1427,25 +1237,11 @@ public class DiagramController {
      * @param nodeRep
      *            the node representation
      */
-    private void installLayoutSyncAdapter(final KNodeTopNode nodeRep) {
-        final KNode node = nodeRep.getGraphElement();
-
-        // register adapter on the node to stay in sync
-        node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeRep));
-    }
-
-    /**
-     * Installs an adapter on the represented node to synchronize new shape layouts with specified
-     * layout.
-     * 
-     * @param nodeRep
-     *            the node representation
-     */
     private void installLayoutSyncAdapter(final KNodeNode nodeRep) {
         final KNode node = nodeRep.getGraphElement();
 
         // register adapter on the node to stay in sync
-        node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeRep));
+        node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeRep, this));
     }
 
     /**
@@ -1459,7 +1255,7 @@ public class DiagramController {
         final KPort port = portRep.getGraphElement();
 
         // register adapter on the port to stay in sync
-        port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portRep));
+        port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portRep, this));
     }
 
     /**
@@ -1473,127 +1269,7 @@ public class DiagramController {
         final KLabel label = labelRep.getGraphElement();
         
         // register adapter on the label to stay in sync
-        label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelRep));
-    }
-
-    /**
-     * A specialized {@link LimitedKGraphContentAdapter}, which is in charge of synchronizing the
-     * position the PNode that represents of the {@link KGraphElement} that this adapter is attached
-     * to. It is intended to be attached to {@link KNode KNodes}, {@link KPort KPorts}, and
-     * {@link KLabel KLabels}.<br>
-     * <br>
-     * Due to the fact that EMF Compare's standard mergers replace whole instances of
-     * {@link KShapeLayout} when some of the attribute values have changed, such updaters are
-     * attached to the {@link KGraphElement}. They propagate themselves to the available
-     * {@link KShapeLayout KShapeLayouts} or those that are added afterwards.
-     * 
-     * @author chsch
-     */
-    private class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
-        
-        public KGEShapeLayoutPNodeUpdater(final PNode theRepNode) {
-            super(KShapeLayout.class);
-            this.nodeRep = theRepNode;
-        }
-        
-        private PNode nodeRep = null;
-        
-        @Override 
-        public void notifyChanged(final Notification notification) {
-            super.notifyChanged(notification);
-
-            switch (notification.getEventType()) {
-            case Notification.ADD:
-            case Notification.SET:
-                // good cases - continue executing this method
-                break;                
-            case Notification.ADD_MANY:
-            case Notification.MOVE:
-            case Notification.REMOVE:
-            case Notification.REMOVE_MANY:
-            case Notification.REMOVING_ADAPTER:
-            case Notification.RESOLVE:
-            case Notification.UNSET:
-            default:
-                // uninteresting cases - stop executing here
-                return;
-            }
-            
-            final KShapeLayout shL;
-            if (notification.getNotifier() instanceof KNode
-                    && notification.getNewValue() instanceof KShapeLayout) {
-                shL = (KShapeLayout) notification.getNewValue();
-
-            } else if (notification.getNotifier() instanceof KShapeLayout
-                    && notification.getNewValue() instanceof Number) {
-                
-                switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
-                case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-                case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-                case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-                case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                    break;
-                default:
-                    return;
-                }
-                
-                shL = (KShapeLayout) notification.getNotifier();
-                
-            } else {
-                return;
-            }
-            
-            if (record) {
-                recordedChanges.put(nodeRep, getBounds(shL));
-                return;
-
-            } else {
-                final Point2D offset = nodeRep.getOffset();
-                
-                switch (notification.getFeatureID(KShapeLayout.class)) {
-                case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                    double oldX = offset.getX();
-                    double newX = shL.getXpos();
-                    if (newX != oldX) {
-                        nodeRep.setOffset(newX, offset.getY());
-                    }
-                    break;
-                }
-                case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                    double oldY = offset.getY();
-                    double newY = shL.getYpos();
-                    if (newY != oldY) {
-                        nodeRep.setOffset(offset.getX(), newY);
-                    }
-                    break;
-                }
-                case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
-                    double oldWidth = nodeRep.getWidth();
-                    double newWidth = shL.getWidth();
-                    if (oldWidth != newWidth) {
-                        nodeRep.setWidth(newWidth);
-                    }
-                    break;
-                }
-                case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
-                    double oldHeight = nodeRep.getHeight();
-                    double newHeight = shL.getHeight();
-                    if (oldHeight != newHeight) {
-                        nodeRep.setHeight(newHeight);
-                    }
-                    break;
-                }
-                default:
-                    break;
-                }
-
-                final AbstractKGERenderingController<?, ?> controller = NodeUtil.asIGraphElement(
-                        nodeRep).getRenderingController();
-                if (controller != null) {
-                    controller.modifyStyles();
-                }
-            }
-        }
+        label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelRep, this));
     }
 
     /**
@@ -1631,7 +1307,7 @@ public class DiagramController {
                     // check if a edge layout is exists
                     if (edL != null) {
                         if (record) {
-                            recordedChanges.put(edgeRep, Pair.of(
+                            recordChange(edgeRep, Pair.of(
                                     getBendPoints(edL, renderedAsPolyline), getJunctionPoints(edL)));
                         } else {
                             edgeRep.setBendPoints(getBendPoints(edL, renderedAsPolyline));
@@ -1955,21 +1631,6 @@ public class DiagramController {
 
     // ---------------------------------------------------------------------------------- //
     //  Helper methods
-
-    /**
-     * Returns bounds from the given {@code KShapeLayout}.
-     * 
-     * @param shapeLayout
-     *            the shape layout
-     * @return the bounds
-     */
-    private static PBounds getBounds(final KShapeLayout shapeLayout) {
-        PBounds bounds = new PBounds();
-        
-        bounds.setRect(shapeLayout.getXpos(), shapeLayout.getYpos(), shapeLayout.getWidth(),
-                shapeLayout.getHeight());
-        return bounds;
-    }
 
     /**
      * Returns an array of bend points from the given {@code KEdgeLayout}.
