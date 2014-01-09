@@ -34,6 +34,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.ViewSynthesisShared;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -291,8 +292,17 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
         }
         return this.transformationDelegate.getDisplayedLayoutOptions();
     }
-    
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+        if (this.transformationDelegate == null) {
+            this.transformationDelegate = getNewDelegateInstance();
+        }
+        return this.transformationDelegate.getAdditionalLayoutConfigs();
+    }
+
     /**
      * {@inheritDoc}
      */

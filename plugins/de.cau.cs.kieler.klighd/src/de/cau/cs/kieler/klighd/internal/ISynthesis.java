@@ -18,6 +18,7 @@ import java.util.List;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 
@@ -86,4 +87,12 @@ public interface ISynthesis {
      * option.
      */
     List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions();
+
+    /**
+     * Returns a list of {@link ILayoutConfig ILayoutConfigs} to be handed over to KIML in order to
+     * cause additional layout runs corresponding to the provided configurations.
+     * 
+     * @return a {@link List} of {@link ILayoutConfig ILayoutConfigs}
+     */
+    List<? extends ILayoutConfig> getAdditionalLayoutConfigs();
 }

@@ -44,6 +44,7 @@ import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -644,15 +645,31 @@ public final class ViewContext extends MapPropertyHolder {
     //  Recommended layout option handling    
     
     /**
-     * Passes the recommended layout options and related values provided by the last transformation
-     * context in the chain of such contexts, i.e. the last transformation in the transformation
-     * chain.
+     * Passes the recommended layout options and related values provided by the employed diagram
+     * synthesis.
      * 
      * @return a map of options (map keys) and related values (map values)
      */
     public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
         if (this.diagramSynthesis != null) {
             return this.diagramSynthesis.getDisplayedLayoutOptions();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    // ---------------------------------------------------------------------------------- //
+    //  Additional layout configuration handling    
+    
+    /**
+     * Passes the registered additional layout configurations provided by the employed diagram
+     * synthesis.
+     * 
+     * @return a map of options (map keys) and related values (map values)
+     */
+    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+        if (this.diagramSynthesis != null) {
+            return this.diagramSynthesis.getAdditionalLayoutConfigs();
         } else {
             return Collections.emptyList();
         }

@@ -25,6 +25,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -301,6 +302,18 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
             final List<?> values) {
         return Pair.<IProperty<? extends Object>, List<? extends Object>>of(prop, values);
     }
+
+
+    // ---------------------------------------------------------------------------------- //
+    //  Recommended layout option handling    
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+        return Collections.emptyList();
+    }
+
 
     // ---------------------------------------------------------------------------------- //
     //  Convenience methods to be used in concrete implementations   

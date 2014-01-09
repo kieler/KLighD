@@ -20,6 +20,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
@@ -317,7 +319,7 @@ public final class LightDiagramServices {
             final List<ILayoutConfig> options) {
         final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
-        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+        layoutDiagram(viewPart, animate, zoomToFit, options);
     }
     
     /**
@@ -335,8 +337,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, viewPart.getViewer(), animate, zoomToFit,
-                Collections.<ILayoutConfig>emptyList());
+        layoutDiagram(viewPart, viewPart.getViewer(), animate, zoomToFit, options);
     }
     
     /**
@@ -374,17 +375,32 @@ public final class LightDiagramServices {
         if (layoutData != null) {
             // Activate the KIML Service plug-in so all layout options are loaded
             KimlServicePlugin.getDefault();
+
             final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
             extendedOptions.add(new VolatileLayoutConfig()
                     .setValue(LayoutOptions.ANIMATE, animate)
                     .setValue(LayoutOptions.ZOOM_TO_FIT, zoomToFit));
+
             if (viewPart instanceof ILayoutConfigProvider) {
                 extendedOptions.add(((ILayoutConfigProvider) viewPart).getLayoutConfig());
             }
+
             if (options != null && !options.isEmpty()) {
                 extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
             }
-            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, extendedOptions);
+
+            List<? extends ILayoutConfig> additionalConfigs = vc.getAdditionalLayoutConfigs();
+
+            if (additionalConfigs.isEmpty()) {
+                DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, extendedOptions);
+
+            } else {
+                final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
+                configs.addAll(additionalConfigs);
+
+                DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer,
+                        Iterables.toArray(configs, ILayoutConfig.class));
+            }
         } else {
             ZoomStyle zoomStyle = ZoomStyle.create(zoomToFit, vc.isZoomToFocus());
             if (diagramViewer instanceof ILayoutRecorder) {
