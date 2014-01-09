@@ -93,20 +93,15 @@ public class LayoutOptionControlFactory {
      * 
      * @param parent
      *            the parent container
-     * @param viewContext
-     *            the viewContext belonging to the current diagram
      * @param formToolkit
      *            the form toolkit used to create controls
      * @param theLightLayoutConfig
      *            the layout configuration to the user-chosen values in
      */
-    public LayoutOptionControlFactory(final Composite parent, final ViewContext viewContext,
-            final FormToolkit formToolkit, final VolatileLayoutConfig theLightLayoutConfig) {
+    public LayoutOptionControlFactory(final Composite parent, final FormToolkit formToolkit,
+            final VolatileLayoutConfig theLightLayoutConfig) {
         this.parent = parent;
-        this.viewContext = viewContext;
-        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
         this.formToolkit = formToolkit;
-
         this.lightLayoutConfig = theLightLayoutConfig;
         
         // configure the parent's layout
@@ -121,9 +116,15 @@ public class LayoutOptionControlFactory {
      * Clear the current layout configuration and reinitialize option values. These values
      * are used when new controls are created. If any controls have been created before,
      * they should be removed first using {@link #clear()}.
+     * 
+     * @param theViewContext
+     *            the viewContext belonging to the current diagram
      */
-    public void initialize() {
+    public void initialize(final ViewContext theViewContext) {
         lightLayoutConfig.clearValues(LayoutContext.global());
+        
+        this.viewContext = theViewContext;
+        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
         
         final Object input = this.viewContext.getInputModel();
         final KNode viewModel = this.viewContext.getViewModel();
