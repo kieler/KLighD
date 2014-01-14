@@ -84,6 +84,10 @@ class KRenderingExtensions {
         return kge.getData(typeof(KRendering));
     }
 
+    def KContainerRendering getKContainerRendering(KGraphElement kge) {
+        return kge.getData(typeof(KContainerRendering));
+    }
+
     def dispatch KContainerRendering addInvisibleContainerRendering(KNode node){
         return renderingFactory.createKRectangle() => [
             it.invisible = true;
