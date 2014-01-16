@@ -74,7 +74,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author mri
  * @author chsch
  */
-public final class ViewContext extends MapPropertyHolder {
+public class ViewContext extends MapPropertyHolder {
 
     /** the serial version UID. */
     private static final long serialVersionUID = -431994394109554393L;
@@ -113,7 +113,7 @@ public final class ViewContext extends MapPropertyHolder {
     /** the view-specific zoom style. */
     private ZoomStyle zoomStyle = ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
             .getString(KlighdPreferences.ZOOM_STYLE));
-    
+
     /**
      * Standard constructor.
      * 
@@ -127,7 +127,22 @@ public final class ViewContext extends MapPropertyHolder {
         this.diagramWorkbenchPart = diagramPart;
         this.businessModel = inputModel;
     }
-    
+
+    /**
+     * Partially copying constructor.
+     * 
+     * @param otherContext
+     *            the {@link ViewContext} to take {@link SynthesisOption} settings from 
+     * @param inputModel
+     *            the source model to be represented by a diagram
+     */
+    public ViewContext(final ViewContext otherContext, final Object inputModel) {
+        super();
+        this.businessModel = inputModel;
+        this.synthesisOptions.addAll(otherContext.synthesisOptions);
+        this.synthesisOptionConfig.putAll(otherContext.synthesisOptionConfig);
+    }
+
     // ---------------------------------------------------------------------------------- //
     //  initialization part    
     
@@ -255,6 +270,31 @@ public final class ViewContext extends MapPropertyHolder {
      */
     public void update(final Object sourceModel) {
         this.update(sourceModel, this.updateStrategy);
+    }
+
+    /**
+     * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
+     * the view model by applying the configured {@link IUpdateStrategy}. In case the former
+     * input/source model has been replaced by a new one of compatible type this new one must be
+     * provided, otherwise <code>model</code> may by <code>null</code>.
+     * 
+     * @param sourceModel
+     *            the initial, updated, or replaced input model, may be <code>null</code>
+     * @param propertyHolder
+     *            a property holder that might influence the diagram update, currently only
+     *            the {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY} property is evaluated
+     */
+    public void update(final Object sourceModel, final IPropertyHolder propertyHolder) {
+        if (propertyHolder != null) {
+            final String usId =
+                    propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
+            updateStrategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
+            
+        } else {
+            updateStrategy = null;
+        }
+        
+        this.update(sourceModel, updateStrategy);
     }
 
     /**

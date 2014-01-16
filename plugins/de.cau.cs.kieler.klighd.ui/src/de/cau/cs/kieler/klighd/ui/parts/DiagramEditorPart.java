@@ -159,7 +159,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             viewer.setModel(viewContext);
             
             // do an initial update of the view context
-            LightDiagramServices.updateViewContext(viewContext, model);
+            viewContext.update(model);
             
             // register this editor part in the DiagramViewManager in order to
             //  obtain it based in the ViewContext, e.g. for performing the layout,
@@ -452,9 +452,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
                 // default behavior: get the first element in the resource
                 model = resource.getContents().get(0);
-                
-                ViewContext viewContext = viewer.getViewContext();
-                LightDiagramServices.updateViewContext(viewContext, model);
+                viewer.getViewContext().update(model);
+
             } catch (IOException exception) {
                 IStatus status = new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                         "Failed to update " + resource.getURI().toString(), exception);

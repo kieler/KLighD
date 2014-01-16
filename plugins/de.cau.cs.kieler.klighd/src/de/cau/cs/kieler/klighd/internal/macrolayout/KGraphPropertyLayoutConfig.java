@@ -46,7 +46,6 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
@@ -320,7 +319,8 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             }
 
             // update the view context in order to re-apply the view synthesis
-            LightDiagramServices.updateViewContext(viewContext, viewContext.getInputModel());
+            viewContext.update(viewContext.getInputModel());
+
             Display.getDefault().asyncExec(new Runnable() {
                 public void run() {
                     IWorkbenchPart workbenchPart = layoutContext.getProperty(

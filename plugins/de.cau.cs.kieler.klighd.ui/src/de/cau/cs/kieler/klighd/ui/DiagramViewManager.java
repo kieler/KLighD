@@ -238,10 +238,8 @@ public final class DiagramViewManager implements IPartListener {
             Object theModel = (model != null ? model : currentInputModel);
             
             viewContext.getLayoutRecorder().startRecording();
-            if (!LightDiagramServices.updateViewContext(viewContext, theModel,
-                    propertyHolder)) {
-                return null;
-            }
+            viewContext.update(theModel, propertyHolder);
+
             LightDiagramServices.layoutDiagram(viewContext);
         }
         
@@ -295,13 +293,13 @@ public final class DiagramViewManager implements IPartListener {
         final Object currentInputModel = viewContext.getInputModel(); 
         if (model != null || currentInputModel != null) {
             page.bringToTop(diagramView);
+            
             // update the view context and viewer
             final Object theModel = (model != null ? model : currentInputModel);
             
             viewContext.getLayoutRecorder().startRecording();
-            if (!LightDiagramServices.updateViewContext(viewContext, theModel)) {
-                return null;
-            }
+            viewContext.update(theModel);
+            
             LightDiagramServices.layoutDiagram(viewContext);
         }
         return diagramView;
@@ -393,7 +391,7 @@ public final class DiagramViewManager implements IPartListener {
 
         // do an initial update of the view context
         viewContext.getLayoutRecorder().startRecording();
-        LightDiagramServices.updateViewContext(viewContext, model);
+        viewContext.update(model);
         
         LightDiagramServices.layoutDiagram(viewContext, false);
 
