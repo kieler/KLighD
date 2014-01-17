@@ -183,12 +183,12 @@ public class ViewContext extends MapPropertyHolder {
         }
         
         if (this.diagramSynthesis != null) {
-            this.synthesisOptions = this.diagramSynthesis.getDisplayedSynthesisOptions();
+            this.synthesisOptions.addAll(this.diagramSynthesis.getDisplayedSynthesisOptions());
             for (SynthesisOption option: this.synthesisOptions) {
-                this.configureOption(option, option.getInitialValue());
+                if (!this.synthesisOptionConfig.containsKey(option)) {
+                    this.configureOption(option, option.getInitialValue());
+                }
             }
-        } else {
-            this.synthesisOptions = Collections.emptyList();
         }
         
         final String updateStrategyId =
@@ -622,7 +622,7 @@ public class ViewContext extends MapPropertyHolder {
     // ---------------------------------------------------------------------------------- //
     //  Synthesis option handling    
 
-    private List<SynthesisOption> synthesisOptions = null;
+    private List<SynthesisOption> synthesisOptions = Lists.newLinkedList();
     
     /** Memory of the configured transformation options to be evaluated by the transformation. */
     private Map<SynthesisOption, Object> synthesisOptionConfig = Maps.newHashMap();
