@@ -34,23 +34,27 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
     /** the target bounds. */
     private PBounds targetBounds;
     
-
+    private float targetScale;
+    
     /**
-     * Constructs an activity that immediately applies the bounds to a Piccolo node and fades it in
+     * Constructs an activity that immediately applies the bounds to a Piccolo2D node and fades it in
      * over a duration.
      * 
      * @param node
-     *            the Piccolo node
+     *            the Piccolo2D node
      * @param bounds
      *            the bounds
+     * @param scaleFactor
+     *            the scale factor to be applied to <code>node</code>
      * @param duration
      *            the duration
      */
     public FadeNodeInActivity(final PNode node, final PBounds bounds,
-            final long duration) {
+            final float scaleFactor, final long duration) {
         super(duration);
         this.node = node;
         this.targetBounds = bounds;
+        this.targetScale = scaleFactor;
     }
 
     /**
@@ -64,6 +68,7 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
         if (gE.getRenderingController() != null) {
             gE.getRenderingController().modifyStyles();
         }
+        node.setScale(targetScale);
         NodeUtil.applySmartBounds(node, targetBounds);
         node.setTransparency(0);
         node.setVisible(true);

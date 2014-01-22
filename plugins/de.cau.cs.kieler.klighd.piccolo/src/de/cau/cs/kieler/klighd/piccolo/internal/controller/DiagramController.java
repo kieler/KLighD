@@ -1027,16 +1027,24 @@ public class DiagramController {
                 // shape layout changed
                 shapeNode = (PNode) recordedChange.getKey();
                 PBounds bounds = (PBounds) recordedChange.getValue();
-                
+
+                final float scale;
+                if (shapeNode instanceof KNodeNode) {
+                    scale = ((KNodeNode) shapeNode).getGraphElement().getData(KShapeLayout.class)
+                                    .getProperty(LayoutOptions.SCALE_FACTOR);
+                } else {
+                    scale = 1f;
+                }
+
                 if (!shapeNode.getVisible()) {
                     // the visibility is set to false for newly introduced edges in #addNode,
                     //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
                     //  to fade it in
                     activity = new FadeNodeInActivity(shapeNode, bounds,
-                            animationTime > 0 ? animationTime : 1);
+                            scale, animationTime > 0 ? animationTime : 1);
                 } else { 
                     activity = new ApplySmartBoundsActivity(shapeNode, bounds,
-                            animationTime > 0 ? animationTime : 1);
+                            scale, animationTime > 0 ? animationTime : 1);
                 }
             }
             if (animationTime > 0) {
