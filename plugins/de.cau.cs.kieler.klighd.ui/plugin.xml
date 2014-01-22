@@ -163,6 +163,51 @@
                </reference>
             </visibleWhen>
          </command>
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="Scale up"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.ScaleUpAction">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="Scale down"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.ScaleDownAction">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+               label="Scale 100%"
+               style="push">
+            <parameter
+                  name="de.cau.cs.kieler.klighd.ui.action"
+                  value="de.cau.cs.kieler.klighd.actions.ScaleResetAction">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <!-- extension
