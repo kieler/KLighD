@@ -472,6 +472,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         if (layoutData != null) {
             layoutData.setProperty(LayoutOptions.SCALE_FACTOR, factor);
         }
+        
+        if (isExpanded(diagramElement)) {
+            controller.getZoomController().setFocusNode(diagramElement);
+        }
     }
 
     /**

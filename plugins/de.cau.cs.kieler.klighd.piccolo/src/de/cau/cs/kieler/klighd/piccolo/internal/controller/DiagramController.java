@@ -224,6 +224,15 @@ public class DiagramController {
     }
 
     /**
+     * Returns the employed zoom controller.
+     * 
+     * @return the employed zoom controller.
+     */
+    public DiagramZoomController getZoomController() {
+        return zoomController;
+    }
+
+    /**
      * Returns the 'recording' state of <code>this</code> controller.
      * 
      * @return <code>true</code> if <code>this</code> controller is in recording mode.
@@ -380,6 +389,7 @@ public class DiagramController {
         final INode currentRootNode = canvasCamera.getDisplayedINode();
         if (currentRootNode != node) {
             canvasCamera.exchangeDisplayedNode((INode) node);
+            zoomController.setFocusNode(diagramElement);
         }
     }
     
