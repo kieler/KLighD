@@ -203,7 +203,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public Object getValue(final LayoutOptionData<?> optionData, final LayoutContext context) {
+    public Object getValue(final LayoutOptionData optionData, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
             KLayoutData elementLayout = ((KGraphElement) diagramPart).getData(KLayoutData.class);
@@ -344,8 +344,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public void setValue(final LayoutOptionData<?> optionData, final LayoutContext context,
+    public void setValue(final LayoutOptionData optionData, final LayoutContext context,
             final Object value) {
         KGraphElement element = getModificationModel(context);
         if (element != null) {
@@ -358,7 +357,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 }
                 element.getData().add(elementLayout);
             }
-            elementLayout.setProperty((IProperty<Object>) optionData, value);
+            elementLayout.setProperty(optionData, value);
             refreshModel(element, context);
         }
     }
@@ -366,7 +365,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public boolean isSet(final LayoutOptionData<?> optionData, final LayoutContext context) {
+    public boolean isSet(final LayoutOptionData optionData, final LayoutContext context) {
         KGraphElement element = getModificationModel(context);
         if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
