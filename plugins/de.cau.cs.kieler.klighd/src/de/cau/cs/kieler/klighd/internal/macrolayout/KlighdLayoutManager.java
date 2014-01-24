@@ -642,6 +642,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     if (nodeLayout != null) {
                         transferShapeLayout(layoutLayout, nodeLayout, true, true);
                         nodeLayout.setProperty(INITIAL_NODE_SIZE, false);
+                        
+                        // transfer the scale factor value since KIML might have reset it
+                        //  to 1f in case scaling was not supported in the particular configuration
+                        // and the figure scaling will be set according this property setting 
+                        nodeLayout.setProperty(LayoutOptions.SCALE_FACTOR,
+                                layoutLayout.getProperty(LayoutOptions.SCALE_FACTOR));
                     }
                     return true;
                 }
@@ -697,8 +703,8 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            <code>true</code> if insets shall be copied
      * @param adjustScaling
      *            if <code>true</code> the <code>sourceShapeLayout</code>'s data will be adjusted
-     *            s.t. the scaling of the corresponding node will be reverted to 100% since the
-     *            scaling is implemented by means of affine transforms on the figure level.
+     *            s.t. the scaling of the corresponding node will be reverted to 100%, since the
+     *            scaling is implemented by means of affine transforms on figure level.
      */
     private void transferShapeLayout(final KShapeLayout sourceShapeLayout,
             final KShapeLayout targetShapeLayout, final boolean copyInsets,
@@ -711,7 +717,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             final float scale;
             
             if (pack.getKNode().isInstance(container)) {
-                scale = targetShapeLayout.getProperty(LayoutOptions.SCALE_FACTOR);
+                scale = sourceShapeLayout.getProperty(LayoutOptions.SCALE_FACTOR);
                 targetShapeLayout.setPos(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
                 targetShapeLayout.setSize(sourceShapeLayout.getWidth() / scale,
                         sourceShapeLayout.getHeight() / scale);
@@ -989,26 +995,27 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     private void checkAndCopyPoint(final KPoint originPoint, final KPoint destinationPoint,
             final KNode node, final KPort port, final KRendering nodeRendering,
             final KRendering portRendering, final KVector offset, final boolean adjustPortPos) {
-        
-        KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+
         KVector p = originPoint.createVector();
+        final KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
+        final float scale = node.getData(KShapeLayout.class).getProperty(LayoutOptions.SCALE_FACTOR);
+
         if (port == null) {
             p.add(offset);
             p = AnchorUtil.nearestBorderPoint(p, nodeLayout.getWidth(), nodeLayout.getHeight(),
-                    nodeRendering);
+                    nodeRendering, scale);
         } else {
             final KShapeLayout portLayout = port.getData(KShapeLayout.class);
-            final float scale;
+            
             if (adjustPortPos) {
-                scale = node.getData(KShapeLayout.class).getProperty(LayoutOptions.SCALE_FACTOR);
+                offset.translate(-portLayout.getXpos() / scale, -portLayout.getYpos() / scale);
             } else {
-                scale = 1f;
+                offset.translate(-portLayout.getXpos(), -portLayout.getYpos());
             }
 
-            offset.translate(-portLayout.getXpos() / scale, -portLayout.getYpos() / scale);
             p.add(offset);
             p = AnchorUtil.nearestBorderPoint(p, portLayout.getWidth(), portLayout.getHeight(),
-                    portRendering);
+                    portRendering, scale);
         }
         
         destinationPoint.applyVector(p.sub(offset));

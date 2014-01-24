@@ -26,17 +26,22 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
- * <p>Utility class for anchor point calculation of edges. This class provides two public methods. The
- * first, {@link #nearestBorderPoint(KVector, double, double, KRendering)}, takes a reference point and
- * returns the point on the figure's border that is nearest to that reference point. This method is
- * usually used to ensure that edges touch the border of nodes or ports they connect to. The second,
- * {@link #collideTowardsCenter(KVector, double, double, KRendering)}, calculates the point where a
- * line through a given reference point and the figure's center would intersect the figure's border.
- * This is usually used to calculate the end points of edges not included in automatic layout.</p>
+ * <p>
+ * Utility class for anchor point calculation of edges. This class provides two public methods. The
+ * first, {@link #nearestBorderPoint(KVector, double, double, KRendering, float)}, takes a reference
+ * point and returns the point on the figure's border that is nearest to that reference point. This
+ * method is usually used to ensure that edges touch the border of nodes or ports they connect to.
+ * The second, {@link #collideTowardsCenter(KVector, double, double, KRendering)}, calculates the
+ * point where a line through a given reference point and the figure's center would intersect the
+ * figure's border. This is usually used to calculate the end points of edges not included in
+ * automatic layout.
+ * </p>
  * 
- * <p>All methods assume that the coordinates of the reference point and the returned intersection point
- * are relative to the figure's top left corner.</p>
- *
+ * <p>
+ * All methods assume that the coordinates of the reference point and the returned intersection
+ * point are relative to the figure's top left corner.
+ * </p>
+ * 
  * @author msp
  * @author chsch
  * @author cds
@@ -62,18 +67,28 @@ public final class AnchorUtil {
      * Returns the coordinates of the point on the border of the given figure that is nearest to the
      * given point. For more information, please see the {@link AnchorUtil class documentation}.
      * 
-     * @param point the other end point of the edge, relative to the upper left corner of the figure's
-     *              bounding box.
-     * @param width the width of the figure's bounding box. Must be {@code >=0}.
-     * @param height the height of the figure's bounding box. Must be {@code >=0}.
-     * @param rendering the rendering associated with the figure. If this is {@code null}, a simple
-     *                  rectangle will be assumed.
+     * @param point
+     *            the other end point of the edge, relative to the upper left corner of the figure's
+     *            bounding box.
+     * @param width
+     *            the width of the figure's bounding box. Must be {@code >=0}.
+     * @param height
+     *            the height of the figure's bounding box. Must be {@code >=0}.
+     * @param rendering
+     *            the rendering associated with the figure. If this is {@code null}, a simple
+     *            rectangle will be assumed.
+     * @param scale
+     *            the connected node's
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions#SCALE_FACTOR SCALE_FACTOR} for
+     *            adjusting corner sizes of {@link KRoundedRectangle KRoundedRectangles} and
+     *            port positions
      * @return the point on the figure's border that is nearest to the given point, relative to the
      *         figure's upper left corner.
-     * @throws IllegalArgumentException if {@code width} or {@code height} are negative.
+     * @throws IllegalArgumentException
+     *             if {@code width} or {@code height} are negative.
      */
     public static KVector nearestBorderPoint(final KVector point, final double width,
-            final double height, final KRendering rendering) {
+            final double height, final KRendering rendering, final float scale) {
 
         if (width < 0 || height < 0) {
             throw new IllegalArgumentException("width (" + width + ") and height (" + height
@@ -85,10 +100,10 @@ public final class AnchorUtil {
             case KRenderingPackage.KROUNDED_RECTANGLE:
                 KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
                 
-                double cornerWidth = roundedRectangle.getCornerWidth();
+                double cornerWidth = roundedRectangle.getCornerWidth() * scale;
                 cornerWidth = 2 * cornerWidth <= width ? cornerWidth : width / 2;
                 
-                double cornerHeight = roundedRectangle.getCornerHeight();
+                double cornerHeight = roundedRectangle.getCornerHeight() * scale;
                 cornerHeight = 2 * cornerHeight <= height ? cornerHeight : height / 2;
                 
                 return nearestBorderPointRoundedRectangle(point, width, height, cornerWidth,
@@ -103,7 +118,7 @@ public final class AnchorUtil {
     }
     
     /**
-     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering)} for rectangles.
+     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering, float)} for rectangles.
      * 
      * @param point the other end point of the edge, relative to the upper left corner of the figure's
      *              bounding box.
@@ -133,7 +148,7 @@ public final class AnchorUtil {
     }
     
     /**
-     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering)} for rounded
+     * Implements {@link #nearestBorderPoint(KVector, double, double, KRendering, float)} for rounded
      * rectangles with the given dimensions and corner specifications.
      * 
      * @param point the other end point of the edge, relative to the upper left corner of the figure's
