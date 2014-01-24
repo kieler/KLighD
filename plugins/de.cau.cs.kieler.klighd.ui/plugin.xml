@@ -2,6 +2,36 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.cau.cs.kieler.klighd.ui.nodesSelected">
+         <iterate>
+            <instanceof
+                  value="de.cau.cs.kieler.core.kgraph.KNode">
+            </instanceof>
+         </iterate>
+      </definition>
+      <definition
+            id="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+         <and>
+            <count
+                  value="1">
+            </count>
+            <reference
+                  definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
+            </reference>
+         </and>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="de.cau.cs.kieler.klighd.ui.context"
+            name="Browsing KIELER Lightweight Diagrams"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
+   </extension>
+   <extension
          point="org.eclipse.ui.views">
       <category
             id="de.cau.cs.kieler.klighd"
@@ -34,13 +64,6 @@
             id="de.cau.cs.kieler.klighd.ui.preferences"
             name="KIELER Light-Weight Diagrams">
       </page>
-   </extension>
-   <extension
-         point="de.cau.cs.kieler.klighd.extensions">
-      <viewer
-            class="de.cau.cs.kieler.klighd.ui.internal.viewers.PiccoloViewerProvider"
-            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
-      </viewer>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -82,20 +105,11 @@
       </handler>
    </extension>
    <extension
-         point="org.eclipse.core.expressions.definitions">
-      <definition
-            id="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
-         <and>
-            <count
-                  value="1">
-            </count>
-            <iterate>
-               <instanceof
-                     value="de.cau.cs.kieler.core.kgraph.KNode">
-               </instanceof>
-            </iterate>
-         </and>
-      </definition>
+         point="de.cau.cs.kieler.klighd.extensions">
+      <viewer
+            class="de.cau.cs.kieler.klighd.ui.internal.viewers.PiccoloViewerProvider"
+            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
+      </viewer>
    </extension>
    <extension
          id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
@@ -174,7 +188,7 @@
             <visibleWhen
                   checkEnabled="false">
                <reference
-                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+                     definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
                </reference>
             </visibleWhen>
          </command>
@@ -189,7 +203,7 @@
             <visibleWhen
                   checkEnabled="false">
                <reference
-                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+                     definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
                </reference>
             </visibleWhen>
          </command>
@@ -204,11 +218,84 @@
             <visibleWhen
                   checkEnabled="false">
                <reference
-                     definitionId="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
+                     definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
                </reference>
             </visibleWhen>
          </command>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+            contextId="de.cau.cs.kieler.klighd.ui.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1++">
+         <parameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               value="de.cau.cs.kieler.klighd.actions.ScaleUpAction">
+         </parameter>
+      </key>
+      <key
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+            contextId="de.cau.cs.kieler.klighd.ui.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+-">
+         <parameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               value="de.cau.cs.kieler.klighd.actions.ScaleDownAction">
+         </parameter>
+      </key>
+      <key
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+            contextId="de.cau.cs.kieler.klighd.ui.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+0">
+         <parameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               value="de.cau.cs.kieler.klighd.actions.ScaleResetAction">
+         </parameter>
+      </key>
+      <key
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+            contextId="de.cau.cs.kieler.klighd.ui.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+ARROW_DOWN">
+         <parameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               value="de.cau.cs.kieler.klighd.actions.ClipSelectionAction">
+         </parameter>
+      </key>
+      <key
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+            contextId="de.cau.cs.kieler.klighd.ui.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+ARROW_DOWN">
+         <parameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               value="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction">
+         </parameter>
+      </key>
+      <key
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+            contextId="de.cau.cs.kieler.klighd.ui.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+ARROW_UP">
+         <parameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               value="de.cau.cs.kieler.klighd.actions.ClipParentAction">
+         </parameter>
+      </key>
+      <key
+            commandId="de.cau.cs.kieler.klighd.ui.actionExecution"
+            contextId="de.cau.cs.kieler.klighd.ui.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+ARROW_UP">
+         <parameter
+               id="de.cau.cs.kieler.klighd.ui.action"
+               value="de.cau.cs.kieler.klighd.actions.ClipResetAction">
+         </parameter>
+      </key>
    </extension>
    <!-- extension
          id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"

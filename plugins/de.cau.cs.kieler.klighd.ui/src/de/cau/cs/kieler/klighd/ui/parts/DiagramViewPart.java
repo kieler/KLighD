@@ -111,8 +111,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
 
         viewer.setModel("No model selected.", false);
         
-        // the configuration of the context menu is and selection provider
-        //  is done in the UiContextViewer
+        // the configuration of the context menu, selection provider,
+        //  and UI (key binding) context activation is done in the UiContextViewer
     }
     
     /**
