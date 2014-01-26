@@ -285,16 +285,17 @@ public class ViewContext extends MapPropertyHolder {
      *            the {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY} property is evaluated
      */
     public void update(final Object sourceModel, final IPropertyHolder propertyHolder) {
+        final IUpdateStrategy strategy;
         if (propertyHolder != null) {
             final String usId =
                     propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
-            updateStrategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
+            strategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
             
         } else {
-            updateStrategy = null;
+            strategy = null;
         }
         
-        this.update(sourceModel, updateStrategy);
+        this.update(sourceModel, strategy);
     }
 
     /**
