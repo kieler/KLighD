@@ -44,6 +44,7 @@ import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -73,7 +74,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author mri
  * @author chsch
  */
-public final class ViewContext extends MapPropertyHolder {
+public class ViewContext extends MapPropertyHolder {
 
     /** the serial version UID. */
     private static final long serialVersionUID = -431994394109554393L;
@@ -112,7 +113,7 @@ public final class ViewContext extends MapPropertyHolder {
     /** the view-specific zoom style. */
     private ZoomStyle zoomStyle = ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
             .getString(KlighdPreferences.ZOOM_STYLE));
-    
+
     /**
      * Standard constructor.
      * 
@@ -126,7 +127,22 @@ public final class ViewContext extends MapPropertyHolder {
         this.diagramWorkbenchPart = diagramPart;
         this.businessModel = inputModel;
     }
-    
+
+    /**
+     * Partially copying constructor.
+     * 
+     * @param otherContext
+     *            the {@link ViewContext} to take {@link SynthesisOption} settings from 
+     * @param inputModel
+     *            the source model to be represented by a diagram
+     */
+    public ViewContext(final ViewContext otherContext, final Object inputModel) {
+        super();
+        this.businessModel = inputModel;
+        this.synthesisOptions.addAll(otherContext.synthesisOptions);
+        this.synthesisOptionConfig.putAll(otherContext.synthesisOptionConfig);
+    }
+
     // ---------------------------------------------------------------------------------- //
     //  initialization part    
     
@@ -167,12 +183,12 @@ public final class ViewContext extends MapPropertyHolder {
         }
         
         if (this.diagramSynthesis != null) {
-            this.synthesisOptions = this.diagramSynthesis.getDisplayedSynthesisOptions();
+            this.synthesisOptions.addAll(this.diagramSynthesis.getDisplayedSynthesisOptions());
             for (SynthesisOption option: this.synthesisOptions) {
-                this.configureOption(option, option.getInitialValue());
+                if (!this.synthesisOptionConfig.containsKey(option)) {
+                    this.configureOption(option, option.getInitialValue());
+                }
             }
-        } else {
-            this.synthesisOptions = Collections.emptyList();
         }
         
         final String updateStrategyId =
@@ -254,6 +270,32 @@ public final class ViewContext extends MapPropertyHolder {
      */
     public void update(final Object sourceModel) {
         this.update(sourceModel, this.updateStrategy);
+    }
+
+    /**
+     * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
+     * the view model by applying the configured {@link IUpdateStrategy}. In case the former
+     * input/source model has been replaced by a new one of compatible type this new one must be
+     * provided, otherwise <code>model</code> may by <code>null</code>.
+     * 
+     * @param sourceModel
+     *            the initial, updated, or replaced input model, may be <code>null</code>
+     * @param propertyHolder
+     *            a property holder that might influence the diagram update, currently only
+     *            the {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY} property is evaluated
+     */
+    public void update(final Object sourceModel, final IPropertyHolder propertyHolder) {
+        final IUpdateStrategy strategy;
+        if (propertyHolder != null) {
+            final String usId =
+                    propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
+            strategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
+            
+        } else {
+            strategy = null;
+        }
+        
+        this.update(sourceModel, strategy);
     }
 
     /**
@@ -589,7 +631,7 @@ public final class ViewContext extends MapPropertyHolder {
     // ---------------------------------------------------------------------------------- //
     //  Synthesis option handling    
 
-    private List<SynthesisOption> synthesisOptions = null;
+    private List<SynthesisOption> synthesisOptions = Lists.newLinkedList();
     
     /** Memory of the configured transformation options to be evaluated by the transformation. */
     private Map<SynthesisOption, Object> synthesisOptionConfig = Maps.newHashMap();
@@ -652,15 +694,31 @@ public final class ViewContext extends MapPropertyHolder {
     //  Recommended layout option handling    
     
     /**
-     * Passes the recommended layout options and related values provided by the last transformation
-     * context in the chain of such contexts, i.e. the last transformation in the transformation
-     * chain.
+     * Passes the recommended layout options and related values provided by the employed diagram
+     * synthesis.
      * 
      * @return a map of options (map keys) and related values (map values)
      */
     public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
         if (this.diagramSynthesis != null) {
             return this.diagramSynthesis.getDisplayedLayoutOptions();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    // ---------------------------------------------------------------------------------- //
+    //  Additional layout configuration handling    
+    
+    /**
+     * Passes the registered additional layout configurations provided by the employed diagram
+     * synthesis.
+     * 
+     * @return a map of options (map keys) and related values (map values)
+     */
+    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+        if (this.diagramSynthesis != null) {
+            return this.diagramSynthesis.getAdditionalLayoutConfigs();
         } else {
             return Collections.emptyList();
         }

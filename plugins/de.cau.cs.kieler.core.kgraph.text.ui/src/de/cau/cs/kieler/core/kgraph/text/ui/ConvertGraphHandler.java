@@ -43,7 +43,14 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.cau.cs.kieler.core.kgraph.KNode;
 
 /**
- * A command handler that can be used to convert a graph from one format into another.
+ * A command handler that can be used to convert a graph from one format into another. The default
+ * implementation only copies input models and makes certain modifications if the target format
+ * happens to be KGraph Text. Subclasses should provide their own implementation of the
+ * {@link ConvertGraphHandler#transform(EObject)} method.
+ * 
+ * <p>Note that plug-ins containing subclasses of this handler must define their own convert graphs
+ * command. Only then can they declare menu contributions that reference their new command, which
+ * in turn defines their new subclass as command handler.</p>
  * 
  * @author msp
  * @kieler.rating proposed yellow 2012-11-06 cds msp
@@ -75,6 +82,7 @@ public class ConvertGraphHandler extends AbstractHandler {
                         if (monitor.isCanceled()) {
                             break;
                         }
+                        
                         if (object instanceof IFile) {
                             convert((IFile) object);
                         }
@@ -83,11 +91,11 @@ public class ConvertGraphHandler extends AbstractHandler {
                     monitor.done();
                     return Status.OK_STATUS;
                 }
-                
             };
             job.setUser(true);
             job.schedule();
         }
+        
         return null;
     }
 
@@ -102,9 +110,8 @@ public class ConvertGraphHandler extends AbstractHandler {
                     file.getFullPath().toString(), false));
             List<EObject> targetModels = new ArrayList<EObject>(sourceModels.size());
             for (EObject model : sourceModels) {
-                EObject copy = EcoreUtil.copy(model);
-                transform(copy);
-                targetModels.add(copy);
+                EObject transformed = transform(model);
+                targetModels.add(transformed);
             }
             saveModel(targetModels, createTarget(file));
         } catch (Exception exception) {
@@ -118,12 +125,26 @@ public class ConvertGraphHandler extends AbstractHandler {
      * Transform the graph before it is written to the new file format.
      * 
      * @param model a graph instance
+     * @return the transformed model
      */
-    private void transform(final EObject model) {
-        if (targetExtension.equals("kgt") && model instanceof KNode) {
+    protected EObject transform(final EObject model) {
+        EObject copy = EcoreUtil.copy(model);
+        
+        if (getTargetExtension().equals("kgt") && copy instanceof KNode) {
             // we want to convert to the textual format, so write missing identifiers into the graph
-            KGraphTextHandler.generateMissingIdentifiers((KNode) model);
+            KGraphTextHandler.generateMissingIdentifiers((KNode) copy);
         }
+        
+        return copy;
+    }
+    
+    /**
+     * Returns the target extension for models that are currently converted.
+     * 
+     * @return the current target extension.
+     */
+    protected final String getTargetExtension() {
+        return targetExtension;
     }
     
     /**

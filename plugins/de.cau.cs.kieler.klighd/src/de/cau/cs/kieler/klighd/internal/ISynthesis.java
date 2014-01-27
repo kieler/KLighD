@@ -22,6 +22,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 
@@ -98,4 +99,12 @@ public interface ISynthesis {
      * @return a method that can change the text in the view as well as its source
      */
     Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element);
+
+    /**
+     * Returns a list of {@link ILayoutConfig ILayoutConfigs} to be handed over to KIML in order to
+     * cause additional layout runs corresponding to the provided configurations.
+     * 
+     * @return a {@link List} of {@link ILayoutConfig ILayoutConfigs}
+     */
+    List<? extends ILayoutConfig> getAdditionalLayoutConfigs();
 }

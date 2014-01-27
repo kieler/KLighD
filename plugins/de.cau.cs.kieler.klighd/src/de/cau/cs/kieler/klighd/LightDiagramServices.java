@@ -20,6 +20,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
@@ -49,40 +51,6 @@ public final class LightDiagramServices {
     private LightDiagramServices() {
         // do nothing
     }
-
-
-    /**
-     * Updates the view context with the given model. The properties from the given property holders
-     * are copied to the view context.
-     * 
-     * @param viewContext
-     *            the view context
-     * @param model
-     *            the model
-     * @param propertyHolders
-     *            the property holders
-     * @return true if the view context has been updated successfully; false else
-     */
-    public static boolean updateViewContext(final ViewContext viewContext, final Object model,
-            final IPropertyHolder... propertyHolders) {
-        final IUpdateStrategy updateStrategy;
-        
-        if (propertyHolders != null) {
-            final KlighdSynthesisProperties ksp = KlighdSynthesisProperties.newInstance();
-            for (IPropertyHolder h : propertyHolders) {
-                ksp.copyProperties(h);
-            }
-            final String usId = ksp.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
-            updateStrategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
-            
-        } else {
-            updateStrategy = null;
-        }
-        
-        viewContext.update(model, updateStrategy);
-        return true;
-    }
-
 
     /**
      * Performs the automatic layout on the diagram represented by the given view context.<br>
@@ -317,7 +285,7 @@ public final class LightDiagramServices {
             final List<ILayoutConfig> options) {
         final boolean zoomToFit = viewPart.getViewer().getViewContext().isZoomToFit();
         
-        layoutDiagram(viewPart, animate, zoomToFit, Collections.<ILayoutConfig>emptyList());
+        layoutDiagram(viewPart, animate, zoomToFit, options);
     }
     
     /**
@@ -335,8 +303,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, viewPart.getViewer(), animate, zoomToFit,
-                Collections.<ILayoutConfig>emptyList());
+        layoutDiagram(viewPart, viewPart.getViewer(), animate, zoomToFit, options);
     }
     
     /**
@@ -374,17 +341,32 @@ public final class LightDiagramServices {
         if (layoutData != null) {
             // Activate the KIML Service plug-in so all layout options are loaded
             KimlServicePlugin.getDefault();
+
             final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
             extendedOptions.add(new VolatileLayoutConfig()
                     .setValue(LayoutOptions.ANIMATE, animate)
                     .setValue(LayoutOptions.ZOOM_TO_FIT, zoomToFit));
+
             if (viewPart instanceof ILayoutConfigProvider) {
                 extendedOptions.add(((ILayoutConfigProvider) viewPart).getLayoutConfig());
             }
+
             if (options != null && !options.isEmpty()) {
                 extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
             }
-            DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, extendedOptions);
+
+            List<? extends ILayoutConfig> additionalConfigs = vc.getAdditionalLayoutConfigs();
+
+            if (additionalConfigs.isEmpty()) {
+                DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer, extendedOptions);
+
+            } else {
+                final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
+                configs.addAll(additionalConfigs);
+
+                DiagramLayoutEngine.INSTANCE.layout(viewPart, diagramViewer,
+                        Iterables.toArray(configs, ILayoutConfig.class));
+            }
         } else {
             ZoomStyle zoomStyle = ZoomStyle.create(zoomToFit, vc.isZoomToFocus());
             if (diagramViewer instanceof ILayoutRecorder) {
@@ -395,31 +377,50 @@ public final class LightDiagramServices {
 
 
     /**
-     * Translates the given <code>model</code> by means of the known diagram synthesis translations.
-     * Incorporates constraints given in the <code>propertyHolders</code>.
+     * Translates the given <code>model</code> by means of the known diagram synthesis translations.<br>
+     * Incorporates constraints given in the <code>propertyHolders</code> as well as the diagram
+     * {@link SynthesisOption} settings from <code>otherVC</code>.<br>
+     * <br>
+     * <b>Note:</b> If no matching diagram synthesis is available this method will return an empty
+     * {@link KNode}.
      * 
      * @param model
-     *            the model
+     *            the model to be translated into a diagram
      * @param otherVC
-     *            the view context to merge mappings created while translating <code>model</code>
-     *            into
+     *            the view context to take {@link SynthesisOption} settings from while translating
+     *            <code>model</code>
      * @param propertyHolders
      *            the property holders
-     * @return the view context or null if the model and all possible transformations are
-     *         unsupported by all viewer providers
+     * @return the resulting view model, may be an empty {@link KNode} in case no matching diagram
+     *         synthesis is available.
      */
     public static KNode translateModel(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
-        final ViewContext vc = new ViewContext(null, model).configure(
-                        KlighdSynthesisProperties.newInstance(propertyHolders));
-        
-        if (vc == null) {
-            throw new IllegalStateException("Could not create a View Context for the model "
-                    + ". This might be due to a missing transformation.");
-        }
+        return translateModel2(model, otherVC, propertyHolders).getViewModel();
+    }
 
-        updateViewContext(vc, model);
-        final KNode result = vc.getViewModel();
-        return result;
+    /**
+     * Translates the given <code>model</code> by means of the known diagram synthesis translations.<br>
+     * Incorporates constraints given in the <code>propertyHolders</code> as well as the diagram
+     * {@link SynthesisOption} settings from <code>otherVC</code>.<br>
+     * <br>
+     * <b>Note:</b> If no matching diagram synthesis is available {@link ViewContext#getViewModel()
+     * getViewModel()} being called on the result of this method will return an empty {@link KNode}.
+     * 
+     * @param model
+     *            the model to be translated into a diagram
+     * @param otherVC
+     *            the view context to take {@link SynthesisOption} settings from while translating
+     *            <code>model</code>
+     * @param propertyHolders
+     *            the property holders
+     * @return the view context
+     */
+    public static ViewContext translateModel2(final Object model, final ViewContext otherVC,
+            final IPropertyHolder... propertyHolders) {
+        final ViewContext vc = new ViewContext(otherVC, model).configure(
+                KlighdSynthesisProperties.newInstance(propertyHolders));
+        vc.update(model);
+        return vc;
     }
 }

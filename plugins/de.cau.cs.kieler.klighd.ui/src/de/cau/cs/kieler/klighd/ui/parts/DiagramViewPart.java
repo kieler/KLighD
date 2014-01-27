@@ -116,14 +116,17 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     }
     
     /**
+     * Sets the {@link ViewContext} to be used by this view part.<br>
+     * Note that this method may be called multiple times in life of a part instance.
      * 
      * @param viewContext the {@link ViewContext} to be displayed
      */
     public void setViewContext(final ViewContext viewContext) {
         // create the options pane
-        sideBar =
-                DiagramSideBar.createSideBar(diagramComposite.getParent(), diagramComposite,
-                        viewContext);
+        if (sideBar == null) {
+            sideBar = DiagramSideBar.createSideBar(
+                    diagramComposite.getParent(), diagramComposite, viewContext);
+        }
 
         this.getViewer().getContextViewer().setModel(viewContext);
     }

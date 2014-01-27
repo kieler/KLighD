@@ -21,6 +21,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
@@ -35,6 +36,8 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
@@ -78,18 +81,36 @@ public class KlighdActionEventHandler implements PInputEventListener {
         if (inputEvent.isHandled()) {
             return;
         }
-        
+
         if (!(inputEvent.getSourceSwingEvent() instanceof KlighdMouseEvent)) {
             return;
         }
 
         final KlighdMouseEvent me = (KlighdMouseEvent) inputEvent.getSourceSwingEvent();
-        
-        final KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
+
+        KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
                 AbstractKGERenderingController.ATTR_KRENDERING);
-        
+
         if (rendering == null) {
-            return;
+            // in case no KRendering has been found,
+            //  check whether top node has been picked
+
+            if (inputEvent.getPickedNode() instanceof KNodeTopNode) {
+
+                // if so reveal the represented KNode and check for a dummy KRendering element
+                //  which might contain KActions...
+                final KNode node = ((INode) inputEvent.getPickedNode()).getGraphElement();
+
+                if (node != null) {
+                    rendering = node.getData(KRendering.class);
+                }
+
+                if (rendering == null) {
+                    return;
+                }
+            } else {
+                return;
+            }
         }
         
         ActionContext context = null; // construct the context lazily when it is required

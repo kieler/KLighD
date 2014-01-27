@@ -215,8 +215,8 @@ public final class DiagramSideBar {
         final Composite layoutOptionsContainer = layoutOptionsForm.getBody();
         
         // create the factory for layout option controls to fill the options container
-        layoutOptionControlFactory = new LayoutOptionControlFactory(layoutOptionsContainer,
-                viewContext, optionsformToolkit, layoutConfig);
+        layoutOptionControlFactory = new LayoutOptionControlFactory(
+                layoutOptionsContainer, optionsformToolkit, layoutConfig);
         
         // prepare the form layout data for each of the above created widgets
         final FormData diagramContainerLayoutData = new FormData();
@@ -341,7 +341,7 @@ public final class DiagramSideBar {
         // remove any option controls that have been created before
         layoutOptionControlFactory.clear();
         // initialize a layout configuration for retrieving default values
-        layoutOptionControlFactory.initialize();
+        layoutOptionControlFactory.initialize(viewContext);
 
         List<Pair<IProperty<?>, List<?>>> recommendedOptions =
                 viewContext.getDisplayedLayoutOptions();

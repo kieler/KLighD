@@ -93,20 +93,15 @@ public class LayoutOptionControlFactory {
      * 
      * @param parent
      *            the parent container
-     * @param viewContext
-     *            the viewContext belonging to the current diagram
      * @param formToolkit
      *            the form toolkit used to create controls
      * @param theLightLayoutConfig
      *            the layout configuration to the user-chosen values in
      */
-    public LayoutOptionControlFactory(final Composite parent, final ViewContext viewContext,
-            final FormToolkit formToolkit, final VolatileLayoutConfig theLightLayoutConfig) {
+    public LayoutOptionControlFactory(final Composite parent, final FormToolkit formToolkit,
+            final VolatileLayoutConfig theLightLayoutConfig) {
         this.parent = parent;
-        this.viewContext = viewContext;
-        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
         this.formToolkit = formToolkit;
-
         this.lightLayoutConfig = theLightLayoutConfig;
         
         // configure the parent's layout
@@ -121,9 +116,15 @@ public class LayoutOptionControlFactory {
      * Clear the current layout configuration and reinitialize option values. These values
      * are used when new controls are created. If any controls have been created before,
      * they should be removed first using {@link #clear()}.
+     * 
+     * @param theViewContext
+     *            the viewContext belonging to the current diagram
      */
-    public void initialize() {
+    public void initialize(final ViewContext theViewContext) {
         lightLayoutConfig.clearValues(LayoutContext.global());
+        
+        this.viewContext = theViewContext;
+        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
         
         final Object input = this.viewContext.getInputModel();
         final KNode viewModel = this.viewContext.getViewModel();
@@ -184,7 +185,7 @@ public class LayoutOptionControlFactory {
      * @param optionId a layout option identifier
      */
     public void createControl(final String optionId) {
-        LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(optionId);
+        LayoutOptionData optionData = LayoutDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
             createControl(optionData, null, null, null);
         }
@@ -198,7 +199,7 @@ public class LayoutOptionControlFactory {
      * @param maxValue the maximal value for the option
      */
     public void createControl(final String optionId, final Float minValue, final Float maxValue) {
-        LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(optionId);
+        LayoutOptionData optionData = LayoutDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
             createControl(optionData, minValue, maxValue, null);
         }
@@ -211,7 +212,7 @@ public class LayoutOptionControlFactory {
      * @param availableValues the set of values to offer
      */
     public void createControl(final String optionId, final Collection<?> availableValues) {
-        LayoutOptionData<?> optionData = LayoutDataService.getInstance().getOptionData(optionId);
+        LayoutOptionData optionData = LayoutDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
             createControl(optionData, null, null, availableValues);
         }
@@ -226,8 +227,8 @@ public class LayoutOptionControlFactory {
         autoRefreshLayout = false;
         lightLayoutConfig.clearValues(LayoutContext.global());
         for (Control control : controls) {
-            if (control.getData() instanceof LayoutOptionData<?>) {
-                LayoutOptionData<?> optionData = (LayoutOptionData<?>) control.getData();
+            if (control.getData() instanceof LayoutOptionData) {
+                LayoutOptionData optionData = (LayoutOptionData) control.getData();
                 final Object defaultValue = defaultLayoutConfig.getValue(optionData,
                         defaultLayoutContext);
                 
@@ -283,7 +284,7 @@ public class LayoutOptionControlFactory {
      * @param availableValues the set of values to offer, or {@code null}
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void createControl(final LayoutOptionData<?> optionData, final Float minValue,
+    private void createControl(final LayoutOptionData optionData, final Float minValue,
             final Float maxValue, final Collection<?> availableValues) {
         
         if (optionData.equals(LayoutOptions.ALGORITHM)) {
@@ -298,8 +299,7 @@ public class LayoutOptionControlFactory {
             // set initial value for the algorithm selection dialog
             String algorithmHint = defaultLayoutContext.getProperty(DefaultLayoutConfig.CONTENT_HINT);
             if (algorithmHint != null && algorithmHint.length() > 0) {
-                lightLayoutConfig.setValue((LayoutOptionData<String>) optionData,
-                        algorithmHint);
+                lightLayoutConfig.setValue(optionData, algorithmHint);
             }
             
             // chsch: via this tweak we get more space below the 'Select ...' button as in GridData
@@ -412,15 +412,13 @@ public class LayoutOptionControlFactory {
      * @param requested the requested bound, or {@code null}
      * @return a minimal value
      */
-    private static float getMinValue(final LayoutOptionData<?> optionData, final Float requested) {
+    private static float getMinValue(final LayoutOptionData optionData, final Float requested) {
         if (requested != null) {
             return requested;
         }
-        if (optionData.getLowerBound() instanceof Float) {
-            return (Float) optionData.getLowerBound();
-        }
-        if (optionData.getLowerBound() instanceof Integer) {
-            return (Integer) optionData.getLowerBound();
+        Object lowerBound = optionData.getLowerBound();
+        if (lowerBound instanceof Number) {
+            return ((Number) lowerBound).floatValue();
         }
         return DEFAULT_MIN;
     }
@@ -435,15 +433,13 @@ public class LayoutOptionControlFactory {
      * @param requested the requested bound, or {@code null}
      * @return a maximal value
      */
-    private static float getMaxValue(final LayoutOptionData<?> optionData, final Float requested) {
+    private static float getMaxValue(final LayoutOptionData optionData, final Float requested) {
         if (requested != null) {
             return requested;
         }
-        if (optionData.getUpperBound() instanceof Float) {
-            return (Float) optionData.getUpperBound();
-        }
-        if (optionData.getUpperBound() instanceof Integer) {
-            return (Integer) optionData.getUpperBound();
+        Object upperBound = optionData.getUpperBound();
+        if (upperBound instanceof Number) {
+            return ((Number) upperBound).floatValue();
         }
         return DEFAULT_MAX;
     }
@@ -478,7 +474,7 @@ public class LayoutOptionControlFactory {
     private class SliderListener extends SelectionAdapter {
         
         /** the layout option that is affected by the slider. */
-        private LayoutOptionData<?> optionData;
+        private LayoutOptionData optionData;
         /** the maximal value. */
         private float minFloat;
         /** the minimal value. */
@@ -491,7 +487,7 @@ public class LayoutOptionControlFactory {
          * @param minFloat the maximal value
          * @param maxFloat the minimal value
          */
-        SliderListener(final LayoutOptionData<?> optionData, final float minFloat,
+        SliderListener(final LayoutOptionData optionData, final float minFloat,
                 final Float maxFloat) {
             this.optionData = optionData;
             this.minFloat = minFloat;
@@ -519,14 +515,14 @@ public class LayoutOptionControlFactory {
          * 
          * @param optionValue the layout option value
          */
-        @SuppressWarnings({ "incomplete-switch", "unchecked" })
+        @SuppressWarnings({ "incomplete-switch" })
         public void setOptionValue(final float optionValue) {
             switch (optionData.getType()) {
             case INT:
-                lightLayoutConfig.setValue((LayoutOptionData<Integer>) optionData, (int) optionValue);
+                lightLayoutConfig.setValue(optionData, (int) optionValue);
                 break;
             case FLOAT:
-                lightLayoutConfig.setValue((LayoutOptionData<Float>) optionData, optionValue);
+                lightLayoutConfig.setValue(optionData, optionValue);
                 break;
             }
         }
@@ -570,7 +566,7 @@ public class LayoutOptionControlFactory {
     private class EnumerationListener extends SelectionAdapter {
         
         /** the layout option that is affected by the button. */
-        private LayoutOptionData<?> optionData;
+        private LayoutOptionData optionData;
         /** the enumeration value to set when selection is triggered. */
         private Object value;
         
@@ -580,7 +576,7 @@ public class LayoutOptionControlFactory {
          * @param optionData the layout option that is affected by the button
          * @param value the enumeration value to set when selection is triggered
          */
-        public EnumerationListener(final LayoutOptionData<?> optionData, final Object value) {
+        public EnumerationListener(final LayoutOptionData optionData, final Object value) {
             this.optionData = optionData;
             this.value = value;
         }
@@ -588,11 +584,10 @@ public class LayoutOptionControlFactory {
         /**
          * {@inheritDoc}
          */
-        @SuppressWarnings("unchecked")
         @Override
         public void widgetSelected(final SelectionEvent event) {
             if (((Button) event.widget).getSelection()) {
-                lightLayoutConfig.setValue((LayoutOptionData<Object>) optionData, value);
+                lightLayoutConfig.setValue(optionData, value);
                 refreshLayout(true);
             }
         }
