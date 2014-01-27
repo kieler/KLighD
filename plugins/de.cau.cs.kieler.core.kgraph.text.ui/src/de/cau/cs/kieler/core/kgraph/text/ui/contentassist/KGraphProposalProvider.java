@@ -229,7 +229,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
         LayoutDataService layoutServices = LayoutDataService.getInstance();
 
         // create and register the completion proposal for every element in the list
-        for (LayoutOptionData<?> optionData : layoutServices.getOptionData()) {
+        for (LayoutOptionData optionData : layoutServices.getOptionData()) {
             StyledString displayString = new StyledString(optionData.toString(),
                     (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
             displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
@@ -273,10 +273,10 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 LayoutDataService layoutServices = LayoutDataService.getInstance();
 
                 // find the specific option an display all possible values
-                LayoutOptionData<?> optionData = layoutServices.getOptionData(annotationName);
+                LayoutOptionData optionData = layoutServices.getOptionData(annotationName);
                 
                 // if option data is null, try to add the kieler prefix
-                if(optionData == null) {
+                if (optionData == null) {
                     optionData = layoutServices.getOptionData("de.cau.cs.kieler." + annotationName);
                 }
                 

@@ -39,7 +39,7 @@ public interface IProperty<T> {
      * 
      * @return the lower bound
      */
-    Comparable<T> getLowerBound();
+    Comparable<? super T> getLowerBound();
     
     /**
      * Returns the upper bound of this property. If there is no upper bound, a
@@ -47,7 +47,7 @@ public interface IProperty<T> {
      * 
      * @return the upper bound
      */
-    Comparable<T> getUpperBound();
+    Comparable<? super T> getUpperBound();
     
     /**
      * Returns an identifier string for this property.
