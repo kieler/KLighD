@@ -13,36 +13,14 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
-import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
-
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.actions.ActionFactory;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -51,26 +29,18 @@ import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdPanEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
-import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
-import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
-import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.POffscreenCanvas;
-import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -92,9 +62,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     private ContextViewer parentViewer;
     /** the graph controller. */
     private DiagramController controller;
-
-    private Text textinput;
-    private KlighdTextInputVerifyListener textinputlistener = new KlighdTextInputVerifyListener();
 
     /**
      * Creates a Piccolo2D viewer with default style.
@@ -129,43 +96,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         this.parentViewer = theParentViewer;
         this.canvas = new KlighdCanvas(parent, style);
 
-        textinput = new Text(canvas, SWT.MULTI);
-        textinput.addListener(SWT.MouseDoubleClick, new Listener() {
-            public void handleEvent(final Event event) {
-                textinput.setEditable(true);
-            }
-        });
-
-        parentViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-            public void selectionChanged(final SelectionChangedEvent event) {
-                textinputlistener.handleEvent(null);
-                textinput.setEditable(false);
-                textinput.setVisible(false);
-            }
-        });
-
-        textinput.addKeyListener(new KeyListener() {
-
-            public void keyReleased(final KeyEvent e) {
-
-            }
-
-            public void keyPressed(final KeyEvent e) {
-                if (((e.stateMask & SWT.SHIFT) != 0) && ((char) e.keyCode == 'f')) {
-                    textinputlistener.handleEvent(null);
-                    textinput.setEditable(false);
-                    textinput.setVisible(false);
-                }
-
-            }
-        });
-        textinput.setEditable(false);
-
         final PCamera camera = canvas.getCamera();
 
         // install the required event handlers, they rely on SWT event type codes
         camera.addInputEventListener(new KlighdActionEventHandler(this));
-        camera.addInputEventListener(new KlighdTextInputHandler());
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(new KlighdPanEventHandler()));
         camera.addInputEventListener(new KlighdSelectionEventHandler((IViewer<?>) theParentViewer));
@@ -174,191 +108,19 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         // final PEmptyNode marqueeParent = new PEmptyNode();
         // camera.getLayer(1).addChild(marqueeParent);
 
-        // add a context menu
-        addContextMenu(canvas);
-
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
 
-        // register a print action with the global action bars
-        if (getContextViewer().getWorkbenchPart() instanceof DiagramViewPart) {
-            DiagramViewPart viewPart = (DiagramViewPart) getContextViewer().getWorkbenchPart();
-
-            // register print action
-            viewPart.getViewSite()
-                    .getActionBars()
-                    .setGlobalActionHandler(ActionFactory.PRINT.getId(),
-                            new PrintAction(this, viewPart));
-        }
+     
 
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
     }
 
-    /**
-     * 
-     * Listens to committed text inputs.
-     * 
-     * @author ckru
-     * 
-     */
-    private class KlighdTextInputVerifyListener implements Listener {
+    
 
-        /**
-         * node the committed text is linked to.
-         */
-        private KText node;
-
-        private KGraphElement element;
-
-        /**
-         * Set node currently linked to the textinput.
-         * 
-         * @param n
-         *            node currently linked to the textinput.
-         */
-        public void setNode(final KText n, final KGraphElement e) {
-            node = n;
-            element = e;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void handleEvent(final Event event) {
-            if (node != null) {
-                if (!textinput.getText().equals(node.getText())) {
-                    ITransformation<?, ?> trans =
-                            PiccoloViewer.this.parentViewer.getContextViewer().getViewContext()
-                                    .getTransformationContexts().get(0).getTransformation();
-                    if (trans instanceof AbstractDiagramSynthesis) {
-                        AbstractDiagramSynthesis<?> synth = (AbstractDiagramSynthesis<?>) trans;
-                        Function<String, Void> f = synth.getTextUpdateFunction(node, element);
-                        f.apply(textinput.getText());
-                    }
-                    textinput.setEditable(false);
-                }
-            }
-        }
-
-    }
-
-    /**
-     * 
-     * Handles mouseover on a text element and displays a text input dialog in that case.
-     * 
-     * @author ckru
-     * 
-     */
-    private class KlighdTextInputHandler extends KlighdBasicInputEventHandler {
-
-        public KlighdTextInputHandler() {
-            super();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void mouseMoved(final PInputEvent event) {
-            updateTextInput(event);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void mouseDragged(final PInputEvent event) {
-            updateTextInput(event);
-        }
-
-        private ITracingElement<?> getParentTracingElement(final PNode n) {
-            PNode parent = n.getParent();
-            if (parent != null) {
-                if (parent instanceof ITracingElement<?>) {
-                    return (ITracingElement<?>) parent;
-                } else {
-                    return getParentTracingElement(parent);
-                }
-            } else {
-                return null;
-            }
-        }
-        
-        /**
-         * Sets position, style and text of the textinput widget to the text element the mouse
-         * currently hovers over.
-         * 
-         * @param event
-         *            the event that triggered this update.
-         */
-        private void updateTextInput(final PInputEvent event) {
-            PNode n = event.getPickedNode();
-            KText kText = null;
-            KlighdStyledText styledText = null;
-            
-            KGraphElement element = null;
-            if (n instanceof KLabelNode) {
-                final KLabelNode labelNode = (KLabelNode) n;
-                element = labelNode.getGraphElement().getParent();
-                KLabel kLabel = labelNode.getGraphElement();
-                kText =
-                        Iterables.getFirst(ModelingUtil.eAllContentsOfType(kLabel, KText.class),
-                                null);
-
-                if (kText != null) {
-                    Iterator<PNodeController<?>> controllers =
-                            labelNode.getRenderingController().getPNodeController(kText).iterator();
-                    if (controllers.hasNext()) {
-                        styledText = (KlighdStyledText) controllers.next().getNode();
-                    } else {
-                        kText = null;
-                    }
-                }
-
-            } else if (n instanceof KlighdStyledText) {
-                styledText = (KlighdStyledText) n;
-                Object o = this.getParentTracingElement(n).getGraphElement();
-                if (o instanceof KGraphElement) {
-                    element = (KGraphElement) o;
-                }
-                kText = styledText.getGraphElement();
-                
-            }
-
-            if ((kText == null || !kText.isCursorSelectable())) {
-                // set input widget invisible if mouse is not over a text element
-                if (!textinput.getEditable()) {
-                    textinput.setVisible(false);
-                }
-                return;
-            }
-            String text = styledText.getText();
-
-            // determine text value
-            textinput.setText(text);
-
-            // determine global position of the text element
-            Rectangle2D bounds = n.getGlobalBounds();
-            canvas.getCamera().getViewTransformReference().transform(bounds, bounds);
-            textinput.setLocation((int) bounds.getX(), (int) bounds.getY());
-
-            // determine font data (i.e. font size)
-            FontData fd = new FontData(styledText.getFontData().toString());
-            fd.setHeight((int) Math.round((styledText.getFontData().getHeight() * canvas
-                    .getCamera().getViewScale())));
-            textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-            textinput.setFont(new Font(textinput.getDisplay(), fd));
-
-            // determine text color
-            Color textColor = new Color(textinput.getDisplay(), styledText.getPenColor());
-            textinput.setForeground(textColor);
-
-            // link this currently selected node to verify listener
-            textinputlistener.setNode(kText, element);
-
-            textinput.setVisible(true);
-        }
-    }
+    
 
     /**
      * {@inheritDoc}

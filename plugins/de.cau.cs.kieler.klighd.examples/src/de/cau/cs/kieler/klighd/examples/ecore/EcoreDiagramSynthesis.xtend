@@ -127,7 +127,8 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     override public Function<String, Void> getTextUpdateFunction( KText kText, KGraphElement element) {
         return [String s |
                 kText.setText(s);
-                val EClass sourceElement = (this.usedContext.viewContext.getSourceElement(element) as EClass);
+                val EClass sourceElement = (this.usedContext.getSourceElement(element) as EClass
+                );
                 sourceElement.setName(s)
                 return null;
             ]

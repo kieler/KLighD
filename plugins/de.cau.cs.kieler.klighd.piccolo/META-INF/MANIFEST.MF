@@ -8,8 +8,7 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.google.guava;bundle-version="10.0.0",
  edu.umd.cs.piccolo;bundle-version="1.3.2";visibility:=reexport,
- de.cau.cs.kieler.klighd;bundle-version="0.3.0";visibility:=reexport,
- de.cau.cs.kieler.klighd.ui
+ de.cau.cs.kieler.klighd;bundle-version="0.3.0";visibility:=reexport
 Bundle-Activator: de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin
 Export-Package: de.cau.cs.kieler.klighd.piccolo,
  de.cau.cs.kieler.klighd.piccolo.export,

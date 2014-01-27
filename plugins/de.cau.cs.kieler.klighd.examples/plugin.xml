@@ -86,5 +86,30 @@
             id="de.cau.cs.kieler.klighd.examples.dependencies.hightlightEdges">
       </action>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.ksbase.configurations">
+      <configuration
+            contextId="org.eclipse.emf.ecoretools.diagram.ui.diagramContext"
+            editorId="org.eclipse.emf.ecoretools.diagram.part.EcoreDiagramEditorID">
+         <transformations>
+            <transformation
+                  menu="true"
+                  name="test"
+                  popup="true"
+                  popupbar="false"
+                  templates="false"
+                  toolbar="false"
+                  transformation="testme"
+                  transformationId="de.cau.cs.kieler.klighd.examples.transformation1">
+            </transformation>
+         </transformations>
+         <Xtend2TransformationClass
+               TransformationClass="de.cau.cs.kieler.klighd.examples.ecore.EcoreKsbaseTest">
+         </Xtend2TransformationClass>
+         <package
+               class="org.eclipse.emf.ecore.EcorePackage">
+         </package>
+      </configuration>
+   </extension>
    
 </plugin>

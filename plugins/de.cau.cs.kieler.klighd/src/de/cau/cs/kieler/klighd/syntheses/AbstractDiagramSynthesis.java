@@ -388,17 +388,11 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     }
     
     /**
-     * 
-     * @param kText
-     * @param element
-     * @return
+     * {@inheritDoc}
      */
     public Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element) {
         return new Function<String, Void>() {
             public Void apply(final String arg0) {
-                // TODO Auto-generated method stub
-                //System.out.println(arg0);
-                System.out.println("hello world");
                 return null;
             }
         };

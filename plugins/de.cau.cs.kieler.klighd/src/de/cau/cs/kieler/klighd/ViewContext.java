@@ -338,6 +338,14 @@ public final class ViewContext extends MapPropertyHolder {
     }
 
     /**
+     * Returns the synthesis being applied.
+     * @return the synthesis being applied
+     */
+    public ISynthesis getDiagramSynthesis() {
+        return diagramSynthesis;
+    }
+    
+    /**
      * Returns the source workbench part viewer (experimental).
      * 
      * @return the source workbench part viewer(viewer the source model has been chosen in)

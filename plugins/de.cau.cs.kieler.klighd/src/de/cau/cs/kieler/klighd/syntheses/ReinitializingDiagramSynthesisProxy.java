@@ -285,8 +285,9 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
         return this.transformationDelegate.getDisplayedSynthesisOptions();
     }
     
-    
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public Function<String, Void> getTextUpdateFunction(final KText kText, 
             final  KGraphElement element) {
         if (this.transformationDelegate == null) {

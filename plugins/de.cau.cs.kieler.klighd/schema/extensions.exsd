@@ -24,6 +24,7 @@
             <element ref="updateStrategy"/>
             <element ref="viewer"/>
             <element ref="wrapper"/>
+            <element ref="handler"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -208,6 +209,21 @@
                <documentation>
                   An additional description that will be displayed in a file dialog, thus it should be as short as possible.
                </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="handler">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class implementing the handler interface
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IModifyModelHandler"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>

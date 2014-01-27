@@ -17,7 +17,8 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.kivi,
  de.cau.cs.kieler.kiml.ogdf;bundle-version="0.5.0";resolution:=optional,
- de.cau.cs.kieler.klay.layered;bundle-version="0.6.0";resolution:=optional
+ de.cau.cs.kieler.klay.layered;bundle-version="0.6.0";resolution:=optional,
+ de.cau.cs.kieler.ksbase;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.cau.cs.kieler.klighd.examples.circuit,
  de.cau.cs.kieler.klighd.examples.circuit.impl,
