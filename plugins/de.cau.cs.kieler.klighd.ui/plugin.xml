@@ -2,6 +2,13 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <viewer
+            class="de.cau.cs.kieler.klighd.ui.internal.viewers.PiccoloViewerProvider"
+            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
+      </viewer>
+   </extension>
+   <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="de.cau.cs.kieler.klighd.ui.nodesSelected">
@@ -103,16 +110,20 @@
             </iterate>
          </enabledWhen>
       </handler>
+      <handler
+            class="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdLayoutHandler"
+            commandId="de.cau.cs.kieler.kiml.ui.command.layout">
+         <activeWhen>
+            <with
+                  variable="activeEditor">
+               <instanceof
+                     value="de.cau.cs.kieler.klighd.IDiagramWorkbenchPart$IDiagramEditorPart">
+               </instanceof>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
-         point="de.cau.cs.kieler.klighd.extensions">
-      <viewer
-            class="de.cau.cs.kieler.klighd.ui.internal.viewers.PiccoloViewerProvider"
-            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
-      </viewer>
-   </extension>
-   <extension
-         id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
