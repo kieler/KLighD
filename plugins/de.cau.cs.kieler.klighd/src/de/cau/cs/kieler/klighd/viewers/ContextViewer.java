@@ -421,6 +421,43 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         return this.currentViewer.getClip();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void scale(final Object semanticElement, final float scale) {
+        final EObject diagramElement =
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
+        if (diagramElement instanceof KGraphElement) {
+            currentViewer.scale(diagramElement, scale);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void scale(final KNode diagramElement, final float scale) {
+        currentViewer.scale(diagramElement, scale);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public float getScale(final Object semanticElement) {
+        final EObject diagramNode =
+                getViewContext().getTargetElement(semanticElement, KNode.class);
+        if (diagramNode instanceof KNode) {
+            return currentViewer.getScale((KNode) diagramNode);
+        } else {
+            return 1f;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getScale(final KNode diagramElement) {
+        return currentViewer.getScale(diagramElement);
+    }
 
     /**
      * {@inheritDoc}

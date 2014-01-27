@@ -113,6 +113,19 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         getContextViewer().clip(semanticElement);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void scale(final Object semanticElement, final float scale) {
+        getContextViewer().scale(semanticElement, scale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getScale(final Object semanticElement) {
+        return getContextViewer().getScale(semanticElement);
+    }
 
     /**
      * {@inheritDoc}

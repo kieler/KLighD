@@ -253,7 +253,7 @@ public interface IViewer<T> {
     void show(Object semanticElement);
     
     /**
-     * Shows the given {@link KGraphElement} from the diagram. In combination with
+     * Shows the given {@link KGraphElement} in the diagram. In combination with
      * {@link #hide(KGraphElement)} this method can be used for changing the diagram's amount of
      * detail without changing the view model.
      * 
@@ -295,11 +295,52 @@ public interface IViewer<T> {
      */
     KNode getClip();
 
+    /**
+     * Scales the representation of the given {@link Object} in the diagram, i.e. increases or
+     * decreases the size of the corresponding diagram node wrt. to its siblings without
+     * re-arranging the children of that node.
+     * 
+     * @param semanticElement
+     *            the semantic element whose representing node is to be scaled 
+     * @param factor
+     *            the absolute factor by which the representing node is to be scaled
+     */
+    void scale(Object semanticElement, float factor);
+    
+    /**
+     * Scales the given {@link KGraphElement} in the diagram, i.e. increases or decreases its size
+     * wrt. to its siblings without re-arranging the children of that node.
+     * 
+     * @param diagramElement
+     *            the diagram node to be scaled
+     * @param factor
+     *            the absolute factor by which the representing node is to be scaled
+     */
+    void scale(KNode diagramElement, float factor);
+    
+    /**
+     * Provides the scale factor being currently applied to the diagram node representing the given
+     * {@link Object}.
+     * 
+     * @param semanticElement
+     *            the semantic element being represented by a diagram node
+     * @return the scale factor of the corresponding diagram node 
+     */
+    float getScale(Object semanticElement);
+
+    /**
+     * Provides the scale factor being currently applied to the given diagram node.
+     * 
+     * @param diagramElement
+     *            the diagram node whose scale factory is requested
+     * @return the scale factor of the given diagram node 
+     */
+    float getScale(KNode diagramElement);
+
 
     /* ----------------------------- */
     /*   the selection setting API   */
     /* ----------------------------- */
-
     
     /**
      * Provides the current {@link org.eclipse.jface.viewers.ISelection} provided by the diagram viewer.
