@@ -34,7 +34,14 @@ class KLibraryExtensions {
     public val renderingFactory = KRenderingFactory::eINSTANCE
 
     /**
+     * Retrieves the rendering library valid for the given node. The library must
+     * be located in the node's topmost ancestor. If that ancestor does not yet
+     * have a rendering library attached, one is generated.
      * 
+     * @example
+     * val library = node.library
+     * 
+     * @extensionCategory library
      */
     def KRenderingLibrary getLibrary(KNode node) {
         var parent = node
@@ -52,8 +59,8 @@ class KLibraryExtensions {
     }
 
     /** 
-     * Retrieves the rendering element from the library that has been identified with
-     * the <code>id</code> string.  
+     * Retrieves the rendering element that has been identified with the {@code id} string from the
+     * given rendering library.
      * 
      * @example
      * val libJunction = edge.source.getFromLibrary("ren_junction")
@@ -70,18 +77,27 @@ class KLibraryExtensions {
         }
     }
 
-
+    /** 
+     * Retrieves the rendering element that has been identified with the {@code id} string from the
+     * rendering library valid for the given node.
+     * 
+     * @example
+     * val libJunction = edge.source.getFromLibrary("ren_junction")
+     * 
+     * @extensionCategory library
+     */
     def KRenderingRef getFromLibrary(KNode node, String id) {
         val library = node.library
         return library.getFromLibrary(id)
     }
 
     /**
-     * Identifies the passed <code>rendering</code> element with the passed <code>id</code> within the KRendering library.
-     * Afterwards the rendering can be retrieved from the library using the <code>getFromLibrary</code> method. 
+     * Identifies the passed <code>rendering</code> element with the passed <code>id</code> within
+     * the KRendering library. Afterwards the rendering can be retrieved from the library using the
+     * {@code getFromLibrary} method. 
      * 
      * @example
-     * edge.source.addToLibrary("ren_junction", 
+     * edge.source.library.addToLibrary("ren_junction", 
      *  renderingFactory.createKRoundedRectangle => [ rr |
      *   rr.background = color
      *   rr.foreground = color
@@ -103,6 +119,25 @@ class KLibraryExtensions {
         return ref
     }
 
+    /**
+     * Identifies the passed <code>rendering</code> element with the passed <code>id</code> within
+     * the KRendering library valid for the given node. Afterwards the rendering can be retrieved from
+     * the library using the {@code getFromLibrary} method. 
+     * 
+     * @example
+     * edge.source.addToLibrary("ren_junction", 
+     *  renderingFactory.createKRoundedRectangle => [ rr |
+     *   rr.background = color
+     *   rr.foreground = color
+     *   rr.cornerWidth = 2
+     *   rr.cornerHeight = 2
+     *   rr.setPointPlacementData(LEFT, 0, 0, TOP, 0, 0,
+     *      H_CENTRAL, V_CENTRAL, 0, 0, 10, 10)
+     *  ]
+     * )  
+     * 
+     * @extensionCategory library
+     */
     def KRenderingRef addToLibrary(KNode node, String id, KRendering rendering) {
         val library = node.library
         return library.addToLibrary(id, rendering)
