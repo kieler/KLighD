@@ -20,7 +20,7 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * The Piccolo activity for applying smart bounds to a Piccolo node.
+ * The Piccolo2D activity for applying smart bounds to a Piccolo2D node.
  * 
  * @author mri, chsch
  */
@@ -37,23 +37,31 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     /** the delta bounds. */
     private PBounds deltaBounds;
 
+    private double sourceScale;
+    private double targetScale;
+    private double deltaScale;
+
     /** a local memory indicating whether a style update took place already. */
     private boolean stylesModified = false;
     
     /**
-     * Constructs an activity to apply smart bounds to a Piccolo node over a duration.
+     * Constructs an activity to apply smart bounds to a Piccolo2D node over a duration.
      * 
      * @param node
-     *            the Piccolo node
+     *            the Piccolo2D node
      * @param bounds
      *            the bounds
+     * @param scaleFactor
+     *            the scale factor to be applied to <code>node</code>
      * @param duration
      *            the duration
      */
-    public ApplySmartBoundsActivity(final PNode node, final PBounds bounds, final long duration) {
+    public ApplySmartBoundsActivity(final PNode node, final PBounds bounds,
+            final float scaleFactor, final long duration) {
         super(duration);
         this.node = node;
         this.targetBounds = bounds;
+        this.targetScale = scaleFactor;
     }
     
     /**
@@ -64,6 +72,10 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
         this.deltaBounds = new PBounds(targetBounds.x - sourceBounds.x, targetBounds.y
                 - sourceBounds.y, targetBounds.width - sourceBounds.width, targetBounds.height
                 - sourceBounds.height);
+        
+        this.sourceScale = node.getTransform().getScale();
+        this.deltaScale = this.targetScale - this.sourceScale;
+        
         node.setVisible(true);
         super.activityStarted();
     }
@@ -75,9 +87,11 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     public void setRelativeTargetValue(final float zeroToOne) {
         if (zeroToOne == 1.0f) {
             // when the activity completes set the target bounds
+            node.setScale(targetScale);
             NodeUtil.applySmartBounds(node, targetBounds);
         } else {
-            // as long as the activity is not completed use the delta bounds
+            // as long as the activity is not completed use the delta values
+            node.setScale(sourceScale + zeroToOne * deltaScale);
             NodeUtil.applySmartBounds(node, sourceBounds.getX() + zeroToOne * deltaBounds.getX(),
                     sourceBounds.getY() + zeroToOne * deltaBounds.getY(), sourceBounds.getWidth()
                             + zeroToOne * deltaBounds.getWidth(), sourceBounds.getHeight()
@@ -99,6 +113,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
      * This customization puts the desired bounds to the node.
      */
     public void activityFinished() {
+        node.setScale(targetScale);
         NodeUtil.applySmartBounds(node, targetBounds);
         if (!stylesModified) {
             stylesModified = true;

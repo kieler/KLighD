@@ -264,6 +264,34 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
+    public void scale(final Object semanticElement, final float factor) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void scale(final KNode diagramElement, final float factor) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getScale(final Object semanticElement) {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getScale(final KNode diagramElement) {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public KlighdTreeSelection getSelection() {
         return null;
     }

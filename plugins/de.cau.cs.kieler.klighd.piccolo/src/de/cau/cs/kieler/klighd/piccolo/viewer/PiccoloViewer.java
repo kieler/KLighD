@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -319,6 +320,31 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         return controller.getClip();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void scale(final KNode diagramElement, final float factor) {
+        KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
+        if (layoutData != null) {
+            layoutData.setProperty(LayoutOptions.SCALE_FACTOR, factor);
+        }
+        
+        if (isExpanded(diagramElement)) {
+            controller.getZoomController().setFocusNode(diagramElement);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getScale(final KNode diagramElement) {
+        KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
+        if (layoutData != null) {
+            return layoutData.getProperty(LayoutOptions.SCALE_FACTOR);
+        } else {
+            return 1f;
+        }
+    }
 
     /**
      * Returns the Piccolo2D representation for the given diagram element.

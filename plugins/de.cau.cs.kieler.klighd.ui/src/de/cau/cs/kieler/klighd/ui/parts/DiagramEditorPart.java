@@ -203,8 +203,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             viewer.setModel("The selected file does not contain any supported model.", false);
         }
         
-        // the configuration of the context menu is and selection provider
-        //  is done in the UiContextViewer
+        // the configuration of the context menu, selection provider,
+        //  and UI (key binding) context activation is done in the UiContextViewer
         
         // add buttons to the editor toolbar
         //  requires non-null 'viewer' field!!

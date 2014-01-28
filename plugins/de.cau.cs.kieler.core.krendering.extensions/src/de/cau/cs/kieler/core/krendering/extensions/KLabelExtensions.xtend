@@ -126,6 +126,26 @@ class KLabelExtensions {
     // inside configurators/adder
 
     /**
+     * Configures an inside centrally-aligned node label!
+     */
+    def KLabel configureInsideCenteredNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
+        return label => [
+            it.basicConfigureLabel(labelText, fontSize, fontName);
+            val node = it.parent;
+            switch(node) {
+                KNode: node.addLayoutParam(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
+            }
+        ];
+    }
+
+    /**
+     * Adds an inside bottom right-aligned node label!
+     */
+    def KLabel addInsideCenteredNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
+        return node.createLabel().configureInsideCenteredNodeLabel(labelText, fontSize, fontName);
+    }
+
+    /**
      * Configures an inside bottom centrally-aligned node label!
      */
     def KLabel configureInsideBottomCenteredNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
@@ -185,8 +205,6 @@ class KLabelExtensions {
     def KLabel addInsideBottomRightNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
         return node.createLabel().configureInsideBottomRightNodeLabel(labelText, fontSize, fontName);
     }
-
-
     
     /**
      * Configures an inside top centrally-aligned node label!

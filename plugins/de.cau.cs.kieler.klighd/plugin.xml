@@ -41,6 +41,18 @@
             class="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction"
             id="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction">
       </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.ScaleUpAction"
+            id="de.cau.cs.kieler.klighd.actions.ScaleUpAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.ScaleDownAction"
+            id="de.cau.cs.kieler.klighd.actions.ScaleDownAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.ScaleResetAction"
+            id="de.cau.cs.kieler.klighd.actions.ScaleResetAction">
+      </action>
    </extension>
    <extension
          point="de.cau.cs.kieler.kiml.layoutProviders">

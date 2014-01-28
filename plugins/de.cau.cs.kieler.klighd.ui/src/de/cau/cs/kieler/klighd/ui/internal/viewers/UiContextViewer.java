@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.contexts.IContextService;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -38,6 +39,11 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 public class UiContextViewer extends ContextViewer implements ISelectionProvider,
         IDiagramOutlinePage.Provider {
 
+    /**
+     * Constant string defining the KLighD-specific Eclipse UI key binding context id. 
+     */
+    public static final String KLIGHD_UI_CONTEXT_ID = "de.cau.cs.kieler.klighd.ui.context";
+    
     private Composite diagramContainer;
     
     /**
@@ -47,7 +53,7 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
      *            the parent {@link Composite} the diagram canvas is to be attached to
      * @param part
      *            the {@link IDiagramWorkbenchPart} this {@link ContextViewer} is attached to (is
-     *            only required for setting the selection provider in time!)
+     *            only required for setting the selection provider and ui context in time!)
      */
     public UiContextViewer(final Composite parent, final IDiagramWorkbenchPart part) {
         super(parent);
@@ -57,6 +63,11 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
         // this must be done within 'createPartControl()' of 'part',
         //  which is why this registration is done here rather than in 'setModel(...)'
         part.getSite().setSelectionProvider(this);
+        
+        // the following activates the our (key binding) context, which is registered
+        //  in the plugin.xml
+        ((IContextService) part.getSite().getService(IContextService.class))
+                .activateContext(KLIGHD_UI_CONTEXT_ID);
 
         // initialize with the display of an empty string
         showMessage("");
