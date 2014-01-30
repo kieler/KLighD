@@ -68,26 +68,6 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
     }
     
     /**
-     * Retrieves a property value for a given class. If the property holder contains multiple instances
-     * of the class, the returned instance is selected arbitrarily. This method is less efficient than
-     * {@link #getProperty(IProperty)}, so use it with caution.
-     * 
-     * @param <T> type of property
-     * @param clazz a class
-     * @return a contained instance of the class, or {@code null} if there is none
-     */
-    public <T> T getProperty(final Class<T> clazz) {
-        if (propertyMap != null) {
-            for (Object value : propertyMap.values()) {
-                if (clazz.isInstance(value)) {
-                    return clazz.cast(value);
-                }
-            }
-        }
-        return null;
-    }
-    
-    /**
      * {@inheritDoc}
      */
     public void copyProperties(final IPropertyHolder other) {
