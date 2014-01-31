@@ -75,10 +75,12 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
             return;
         }
         Map<IProperty<?>, Object> otherMap = other.getAllProperties();
-        if (this.propertyMap == null) {
-            propertyMap = new HashMap<IProperty<?>, Object>(otherMap);
-        } else {
-            this.propertyMap.putAll(otherMap);
+        if (!otherMap.isEmpty()) {
+            if (this.propertyMap == null) {
+                propertyMap = new HashMap<IProperty<?>, Object>(otherMap);
+            } else {
+                this.propertyMap.putAll(otherMap);
+            }
         }
     }
     
