@@ -438,14 +438,16 @@ public class GraphicsAdapter extends Graphics {
     @Override
     public org.eclipse.draw2d.geometry.Rectangle getClip(
             final org.eclipse.draw2d.geometry.Rectangle rect) {
-        Shape clip = pg.getClip();
+        final Shape clip = pg.getClip();
         if (clip == null) {
-            return null;
+            // since {@link Figure#paintChildren(Graphics)} requires reasonable bounds
+            //  return the "maximal possible clip"
+            rect.setBounds(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
         } else {
             Rectangle bounds = clip.getBounds();
             rect.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-            return rect; 
         }
+        return rect; 
     }
 
     /**
