@@ -21,7 +21,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory
  */
 class KColorExtensions {
 
-    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+    extension KRenderingFactory = KRenderingFactory::eINSTANCE
 
     /**
      * Convenient creation of color objects. Allows several names (red, blue, black, etc) 
@@ -34,7 +34,7 @@ class KColorExtensions {
      * @extensionCategory style
      */
     def KColor getColor(String name) {
-        return renderingFactory.createKColor() =>[
+        return createKColor() =>[
             it.setColor(name);
         ];
     }

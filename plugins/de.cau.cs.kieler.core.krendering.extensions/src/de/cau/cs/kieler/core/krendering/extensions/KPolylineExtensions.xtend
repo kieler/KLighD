@@ -33,7 +33,7 @@ import de.cau.cs.kieler.core.krendering.KText
  */
 class KPolylineExtensions {
 
-    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+    extension KRenderingFactory = KRenderingFactory::eINSTANCE
 
     @Inject
     extension KRenderingExtensions
@@ -50,7 +50,7 @@ class KPolylineExtensions {
     private def KRendering internalAddArrowDecorator(KPolyline pl, boolean head) {
         pl.lineCap = LineCap::CAP_FLAT
         return pl.drawArrow() => [
-            it.placementData = renderingFactory.createKDecoratorPlacementData => [
+            it.placementData = createKDecoratorPlacementData => [
                 it.rotateWithLine = true;
                 it.relative = if (head) 1f else 0f;
                 it.absolute = if (head) -2f else 2f;
@@ -79,9 +79,9 @@ class KPolylineExtensions {
     }
 
     def KRendering addJunctionPointDecorator(KPolyline pl) {
-        pl.junctionPointRendering = renderingFactory.createKEllipse => [
+        pl.junctionPointRendering = createKEllipse => [
             it.background = "black".color;
-            it.placementData = renderingFactory.createKPointPlacementData => [
+            it.placementData = createKPointPlacementData => [
                 it.horizontalAlignment = HorizontalAlignment::CENTER;
                 it.verticalAlignment = VerticalAlignment::CENTER;
                 it.minWidth = 4;
@@ -93,7 +93,7 @@ class KPolylineExtensions {
     
     def KRendering addInheritanceTriangleArrowDecorator(KPolyline pl) {
         return pl.drawTriangle() => [
-            it.placementData = renderingFactory.createKDecoratorPlacementData => [
+            it.placementData = createKDecoratorPlacementData => [
                 val float scale = pl.lineWidth.lineWidth;
                 val float modifiedScale = Math::sqrt(3*scale).floatValue;
                 it.rotateWithLine = true;
@@ -115,7 +115,7 @@ class KPolylineExtensions {
     }
     
     def KPosition addKPosition(KPolyline pl, KXPosition<?> xPos, KYPosition<?> yPos) {
-        return renderingFactory.createKPosition => [
+        return createKPosition => [
             it.x = xPos;
             it.y = yPos;
             pl.points += it;
@@ -131,7 +131,7 @@ class KPolylineExtensions {
         pl.addRectangle => [ rect |
             rect.background = "white".color
             text.setParent(rect)
-            rect.placementData = renderingFactory.createKDecoratorPlacementData => [
+            rect.placementData = createKDecoratorPlacementData => [
                 //it.rotateWithLine = true;
                 it.relative = 0f;
                 it.absolute =  0f;
