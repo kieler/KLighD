@@ -213,16 +213,6 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
-    public synchronized Object getModel() {
-        if (currentViewer != null) {
-            return currentViewer.getModel();
-        }
-        return null;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
     public ViewContext getViewContext() {
         return currentViewContext;
     }

@@ -39,7 +39,7 @@ import de.cau.cs.kieler.core.krendering.LineJoin
  */
 class KContainerRenderingExtensions {
 
-    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+   extension KRenderingFactory = KRenderingFactory::eINSTANCE
     
     @Inject
     extension KRenderingExtensions;
@@ -61,7 +61,7 @@ class KContainerRenderingExtensions {
     }
     
     def KChildArea addChildArea(KContainerRendering cr) {
-        return renderingFactory.createKChildArea => [
+        return createKChildArea => [
             cr.children.removeAll(cr.children.filter(typeof(KChildArea)).toList);
             cr.children.add(it)
         ]
@@ -72,7 +72,7 @@ class KContainerRenderingExtensions {
      * @extensionCategory composition
      */
     def KArc addArc(KContainerRendering cr) {
-        return renderingFactory.createKArc() => [
+        return createKArc() => [
             cr.children += it;
         ];
     }
@@ -82,7 +82,7 @@ class KContainerRenderingExtensions {
      * @extensionCategory composition
      */
     def KEllipse addEllipse(KContainerRendering cr) {
-        return renderingFactory.createKEllipse() => [
+        return createKEllipse() => [
             cr.children += it;
         ];
     }
@@ -92,7 +92,7 @@ class KContainerRenderingExtensions {
      * @extensionCategory composition
      */
     def KPolygon addPolygon(KContainerRendering cr) {
-        return renderingFactory.createKPolygon() => [
+        return createKPolygon() => [
             cr.children += it;
         ];
     }
@@ -101,7 +101,7 @@ class KContainerRenderingExtensions {
      * @extensionCategory composition
      */
     def KRectangle addRectangle(KContainerRendering cr) {
-        return renderingFactory.createKRectangle() => [
+        return createKRectangle() => [
             cr.children += it;
         ];
     }
@@ -111,7 +111,7 @@ class KContainerRenderingExtensions {
      * @extensionCategory composition
      */
     def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight) {
-        return renderingFactory.createKRoundedRectangle => [
+        return createKRoundedRectangle => [
             cr.children += it;
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
@@ -123,7 +123,7 @@ class KContainerRenderingExtensions {
      * @extensionCategory composition
      */
     def KRoundedRectangle addRoundedRectangle(KContainerRendering cr, float cWidth, float cHeight, float lineWidth) {
-        return renderingFactory.createKRoundedRectangle => [
+        return createKRoundedRectangle => [
             cr.children += it;
             it.cornerWidth = cWidth;
             it.cornerHeight = cHeight;
@@ -132,14 +132,14 @@ class KContainerRenderingExtensions {
     }
 
     def KText addText(KContainerRendering cr, String text) {
-        return renderingFactory.createKText() => [
+        return createKText() => [
             cr.children += it;
             it.text = text;
         ];
     }
 
     def KImage addImage(KContainerRendering cr, String bundleId, String imagePath) {
-        return renderingFactory.createKImage() => [
+        return createKImage() => [
             cr.children += it;
             it.bundleName = bundleId;
             it.imagePath = imagePath;
@@ -147,7 +147,7 @@ class KContainerRenderingExtensions {
     }
     
     def KImage addImage(KContainerRendering cr, Object imageObj) {
-        return renderingFactory.createKImage() => [
+        return createKImage() => [
             cr.children += it;
             it.imageObject = imageObj
         ];
@@ -160,7 +160,7 @@ class KContainerRenderingExtensions {
      * @extensionCategory microLayout
      */
     def KGridPlacement setGridPlacement(KContainerRendering cr, int cols) {
-        return renderingFactory.createKGridPlacement => [
+        return createKGridPlacement => [
             cr.setChildPlacement(it);    
             it.setNumColumns(cols);        
         ];
@@ -169,12 +169,12 @@ class KContainerRenderingExtensions {
     
     def KRectangle addGridBox(KContainerRendering cr, float widthHint, float heightHint, 
         KPosition topLeft, KPosition bottomRight) {
-        return renderingFactory.createKRectangle => [
+        return createKRectangle => [
             cr.children.add(it);
-            it.setBackground(renderingFactory.createKBackground()=>[
+            it.setBackground(createKBackground()=>[
                 it.alpha=0;
             ]);
-            it.setForeground(renderingFactory.createKForeground()=>[
+            it.setForeground(createKForeground()=>[
                 it.alpha=0;
             ]);
             it.setGridPlacementData(widthHint, heightHint, topLeft, bottomRight);
@@ -182,20 +182,20 @@ class KContainerRenderingExtensions {
     }
     
     def KPolyline addPolyline(KContainerRendering cr) {
-        return renderingFactory.createKPolyline => [
+        return createKPolyline => [
             cr.addChild(it);
         ]
     }
     
     def KPolyline addPolyline(KContainerRendering cr, float lineWidth) {
-        return renderingFactory.createKPolyline => [
+        return createKPolyline => [
             cr.addChild(it);
             it.lineWidth = lineWidth;
         ]
     }
     
     def KPolyline addPolyline(KContainerRendering cr, float lineWidth, List<KPosition> points) {
-        return renderingFactory.createKPolyline => [
+        return createKPolyline => [
             cr.addChild(it);
             it.lineWidth = lineWidth;
             it.points += points;
@@ -203,7 +203,7 @@ class KContainerRenderingExtensions {
     }
     
     def KPolyline addHorizontalLine(KContainerRendering cr, float leftRightAbsIndent) {
-        return cr.addChild(renderingFactory.createKPolyline())  as KPolyline => [
+        return cr.addChild(createKPolyline())  as KPolyline => [
            it.lineWidth = 1;
            it.points += createKPosition(PositionReferenceX::LEFT, leftRightAbsIndent, 0, TOP, 0, 0.5f);
            it.points += createKPosition(PositionReferenceX::RIGHT, leftRightAbsIndent, 0, TOP, 0, 0.5f);
@@ -216,7 +216,7 @@ class KContainerRenderingExtensions {
     
     
     def KPolyline addHorizontalLine(KContainerRendering cr, PositionReferenceY y, float absIndent) {
-        return cr.addChild(renderingFactory.createKPolyline())  as KPolyline => [
+        return cr.addChild(createKPolyline())  as KPolyline => [
            it.lineWidth = 1;
            it.points += createKPosition(PositionReferenceX::LEFT, absIndent, 0, y, 0, 0);
            it.points += createKPosition(PositionReferenceX::RIGHT, absIndent, 0, y, 0, 0);
@@ -229,7 +229,7 @@ class KContainerRenderingExtensions {
 
     
     def KPolyline addVerticalLine(KContainerRendering cr, PositionReferenceX x, float absIndent) {
-        return cr.addChild(renderingFactory.createKPolyline()) => [
+        return cr.addChild(createKPolyline()) => [
            it.lineWidth = 1;
            it.points += createKPosition(x, 0, 0, TOP, absIndent, 0);
            it.points += createKPosition(x, 0, 0, BOTTOM, absIndent, 0);
@@ -242,19 +242,19 @@ class KContainerRenderingExtensions {
 
     
     def KPolyline addHorizontalSeperatorLine(KContainerRendering cr, float lineWidth, int spacing) {
-        return renderingFactory.createKPolyline => [
+        return createKPolyline => [
             cr.addChild(it);
             it.setLineWidth(lineWidth);
             it.points.add(createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
             it.points.add(createKPosition(PositionReferenceX::RIGHT, 0, 0, PositionReferenceY::TOP, 0, 0.5f))
-            it.placementData = renderingFactory.createKGridPlacementData => [
+            it.placementData = createKGridPlacementData => [
                 it.setMinCellHeight(lineWidth + spacing)
             ]; 
         ];
     }
     
     def KPolygon drawArrow(KContainerRendering cr) {
-        return renderingFactory.createKPolygon => [
+        return createKPolygon => [
             cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground).setBackground(cr.foreground).setLineJoin(LineJoin::JOIN_ROUND);
             it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0);
             it.points += createKPosition(PositionReferenceX::LEFT, 0, 0.4f, PositionReferenceY::TOP, 0, 0.5f);
@@ -264,7 +264,7 @@ class KContainerRenderingExtensions {
     }
     
     def KPolygon drawTriangle(KContainerRendering cr) {
-        return renderingFactory.createKPolygon => [
+        return createKPolygon => [
             cr.addChild(it).withCopyOf(cr.lineWidth).withCopyOf(cr.foreground).setBackground("white".color);
             it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::TOP, 0, 0);
             it.points += createKPosition(PositionReferenceX::LEFT, 0, 0, PositionReferenceY::BOTTOM, 0, 0);

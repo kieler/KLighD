@@ -26,7 +26,7 @@ import de.cau.cs.kieler.core.util.IDataObject;
  * @author uru
  * @author owo
  */
-public class KVector implements IDataObject, Cloneable {
+public final class KVector implements IDataObject, Cloneable {
 
     /** the serial version UID. */
     private static final long serialVersionUID = -4780985519832787684L;
@@ -91,21 +91,13 @@ public class KVector implements IDataObject, Cloneable {
     }
 
     /**
-     * returns an exact copy of this vector.
+     * Returns an exact copy of this vector.
      * 
      * @return identical vector
      */
     @Override
     public KVector clone() {
-        try {
-            KVector clone = (KVector) super.clone();
-            clone.x = this.x;
-            clone.y = this.y;
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            // This cannot happen since we're implementing the Cloneable interface
-            return null;
-        }
+        return new KVector(x, y);
     }
 
     /**
@@ -160,7 +152,7 @@ public class KVector implements IDataObject, Cloneable {
      * 
      * @return {@code this}
      */
-    public final KVector reset() {
+    public KVector reset() {
         this.x = 0.0;
         this.y = 0.0;
         return this;
@@ -173,7 +165,7 @@ public class KVector implements IDataObject, Cloneable {
      *            vector to add
      * @return <code>this + v</code>
      */
-    public final KVector add(final KVector v) {
+    public KVector add(final KVector v) {
         this.x += v.x;
         this.y += v.y;
         return this;
@@ -201,7 +193,7 @@ public class KVector implements IDataObject, Cloneable {
      *            vector to subtract
      * @return {@code this}
      */
-    public final KVector sub(final KVector v) {
+    public KVector sub(final KVector v) {
         this.x -= v.x;
         this.y -= v.y;
         return this;
@@ -227,7 +219,7 @@ public class KVector implements IDataObject, Cloneable {
      *            scaling factor
      * @return {@code this}
      */
-    public final KVector scale(final double scale) {
+    public KVector scale(final double scale) {
         this.x *= scale;
         this.y *= scale;
         return this;
@@ -242,7 +234,7 @@ public class KVector implements IDataObject, Cloneable {
      *            the y scaling factor
      * @return {@code this}
      */
-    public final KVector scale(final double scalex, final double scaley) {
+    public KVector scale(final double scalex, final double scaley) {
         this.x *= scalex;
         this.y *= scaley;
         return this;
@@ -257,7 +249,7 @@ public class KVector implements IDataObject, Cloneable {
      *            the y offset
      * @return {@code this}
      */
-    public final KVector translate(final double dx, final double dy) {
+    public KVector translate(final double dx, final double dy) {
         this.x += dx;
         this.y += dy;
         return this;
@@ -336,7 +328,7 @@ public class KVector implements IDataObject, Cloneable {
      * @param amount
      *            the amount of noise to add
      */
-    public final void wiggle(final Random random, final double amount) {
+    public void wiggle(final Random random, final double amount) {
         this.x += random.nextDouble() * amount - (amount / 2);
         this.y += random.nextDouble() * amount - (amount / 2);
     }
@@ -348,7 +340,7 @@ public class KVector implements IDataObject, Cloneable {
      *            scaling factor
      * @return new vector which is {@code this} scaled by {@code lambda}
      */
-    public final KVector scaledCreate(final double lambda) {
+    public KVector scaledCreate(final double lambda) {
         return new KVector(this).scale(lambda);
     }
 
@@ -357,7 +349,7 @@ public class KVector implements IDataObject, Cloneable {
      * 
      * @return normalized copy of {@code this}
      */
-    public final KVector normalizedCreate() {
+    public KVector normalizedCreate() {
         return new KVector(this).normalize();
     }
 
@@ -368,7 +360,7 @@ public class KVector implements IDataObject, Cloneable {
      *            second addend
      * @return new vector which is the sum of {@code this} and {@code v}
      */
-    public final KVector sumCreate(final KVector v) {
+    public KVector sumCreate(final KVector v) {
         return new KVector(this).add(v);
     }
 
@@ -379,7 +371,7 @@ public class KVector implements IDataObject, Cloneable {
      *            subtrahend
      * @return new vector which is the difference between {@code this} and {@code v}
      */
-    public final KVector differenceCreate(final KVector v) {
+    public KVector differenceCreate(final KVector v) {
         return new KVector(this).sub(v);
     }
 

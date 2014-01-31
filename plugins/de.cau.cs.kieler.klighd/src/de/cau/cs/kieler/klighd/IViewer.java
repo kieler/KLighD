@@ -75,16 +75,6 @@ public interface IViewer<T> {
     void setModel(T model, boolean sync);
 
     /**
-     * Returns the input model currently set for this viewer.
-     * 
-     * @deprecated Use {@link #getViewContext()}.{@link ViewContext#getInputModel() getInputModel()}
-     *             or {@link #getViewContext()}.{@link ViewContext#getViewModel() getViewModel()}.
-     * 
-     * @return the input model or <code>null</code> if no input model is set
-     */
-    T getModel();
-    
-    /**
      * Returns the {@link ViewContext} that is associated to <code>this</this> viewer.
      * 
      * @return the associated {@link ViewContext} or <code>null</code> if no input model is set
