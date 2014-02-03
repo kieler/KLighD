@@ -214,6 +214,15 @@ public class KColorImpl extends EObjectImpl implements KColor {
      * <!-- end-user-doc -->
      * @generated
      */
+    public KColor setColor(final KColor kColor) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, kColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {

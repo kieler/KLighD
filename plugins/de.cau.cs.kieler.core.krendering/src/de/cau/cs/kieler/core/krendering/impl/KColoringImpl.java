@@ -350,6 +350,100 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    public T setColors(final KColor color, final KColor targetColor) {
+        return this.setColor2(color).setTargetColor2(targetColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColors(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
+        return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorsCopiesOf(final KColor color, final KColor targetColor) {
+        return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorsCopiesOf(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
+        return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorsCopiedFrom(final KColoring<?> coloring) {
+        return this.setColorsCopiesOf(coloring.getColor(), coloring.getTargetColor());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorsAlphasGradientAngleCopiedFrom(final KColoring<?> coloring) {
+        return this.setColorsCopiesOf(coloring.getColor(), coloring.getAlpha(), coloring.getTargetColor(), coloring.getTargetAlpha()).setGradientAngle2(coloring.getGradientAngle());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorCopyOf(final KColor kColor) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColorCopyOf(it, kColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorCopyOf(final KColor kColor, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColorCopyOf(it, kColor, alpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorCopiedFrom(final KColoring<?> coloring) {
+        return this.setColorCopyOf(coloring.getColor());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorAndAlphaCopiedFrom(final KColoring<?> coloring) {
+        return this.setColorCopyOf(coloring.getColor(), coloring.getAlpha());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public T setColor2(final KColor color) {
         @SuppressWarnings("unchecked")
         final T it = (T) this;
@@ -392,6 +486,58 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
         final T it = (T) this;
         this.setTargetColor(targetColor);
         this.setTargetAlpha(targetAlpha);
+        return it;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColorCopyOf(final KColor targetColor) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColorCopyOf(it, targetColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColorCopyOf(final KColor targetColor, final int targetAlpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColorCopyOf(it, targetColor, targetAlpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColorCopiedFrom(final KColoring<?> coloring) {
+        return this.setTargetColorCopyOf(coloring.getTargetColor());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColorAndAlphaCopiedFrom(final KColoring<?> coloring) {
+        return this.setTargetColorCopyOf(coloring.getTargetColor(), coloring.getTargetAlpha());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setGradientAngle2(final float angle) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        this.setGradientAngle(angle);
         return it;
     }
 
