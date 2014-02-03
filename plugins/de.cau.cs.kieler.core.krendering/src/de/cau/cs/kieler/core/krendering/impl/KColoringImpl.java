@@ -33,8 +33,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl#getAlpha <em>Alpha</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl#getColor <em>Color</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl#getAlpha <em>Alpha</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl#getTargetColor <em>Target Color</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl#getTargetAlpha <em>Target Alpha</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KColoringImpl#getGradientAngle <em>Gradient Angle</em>}</li>
@@ -44,6 +44,16 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl implements KColoring<T> {
+    /**
+     * The cached value of the '{@link #getColor() <em>Color</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getColor()
+     * @generated
+     * @ordered
+     */
+    protected KColor color;
+
     /**
      * The default value of the '{@link #getAlpha() <em>Alpha</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -63,16 +73,6 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * @ordered
      */
     protected int alpha = ALPHA_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getColor() <em>Color</em>}' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getColor()
-     * @generated
-     * @ordered
-     */
-    protected KColor color;
 
     /**
      * The cached value of the '{@link #getTargetColor() <em>Target Color</em>}' containment reference.
@@ -148,27 +148,6 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public int getAlpha() {
-        return alpha;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setAlpha(int newAlpha) {
-        int oldAlpha = alpha;
-        alpha = newAlpha;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KCOLORING__ALPHA, oldAlpha, alpha));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public KColor getColor() {
         return color;
     }
@@ -205,6 +184,27 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
         }
         else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KCOLORING__COLOR, newColor, newColor));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public int getAlpha() {
+        return alpha;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setAlpha(int newAlpha) {
+        int oldAlpha = alpha;
+        alpha = newAlpha;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KCOLORING__ALPHA, oldAlpha, alpha));
     }
 
     /**
@@ -308,6 +308,17 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    public T setColor(final Colors color) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public T setColor(final int red, final int green, final int blue, final int alpha) {
         @SuppressWarnings("unchecked")
         final T it = (T) this;
@@ -319,10 +330,10 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setTargetColor(final int red, final int green, final int blue) {
+    public T setColor(final Colors color, final int alpha) {
         @SuppressWarnings("unchecked")
         final T it = (T) this;
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue);
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color, alpha);
     }
 
     /**
@@ -330,10 +341,11 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setTargetColor(final int red, final int green, final int blue, final int alpha) {
+    public T setColor2(final KColor color) {
         @SuppressWarnings("unchecked")
         final T it = (T) this;
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue, alpha);
+        this.setColor(color);
+        return it;
     }
 
     /**
@@ -341,62 +353,12 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public boolean equals(final Object other) {
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public T setColors(final KColor color, final KColor targetColor) {
-        return this.setColor2(color).setTargetColor2(targetColor);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public T setColors(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
-        return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public T setColorsCopiesOf(final KColor color, final KColor targetColor) {
-        return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public T setColorsCopiesOf(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
-        return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public T setColorsCopiedFrom(final KColoring<?> coloring) {
-        return this.setColorsCopiesOf(coloring.getColor(), coloring.getTargetColor());
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public T setColorsAlphasGradientAngleCopiedFrom(final KColoring<?> coloring) {
-        return this.setColorsCopiesOf(coloring.getColor(), coloring.getAlpha(), coloring.getTargetColor(), coloring.getTargetAlpha()).setGradientAngle2(coloring.getGradientAngle());
+    public T setColor2(final KColor color, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        this.setColor(color);
+        this.setAlpha(alpha);
+        return it;
     }
 
     /**
@@ -444,11 +406,10 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setColor2(final KColor color) {
+    public T setTargetColor(final int red, final int green, final int blue) {
         @SuppressWarnings("unchecked")
         final T it = (T) this;
-        this.setColor(color);
-        return it;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue);
     }
 
     /**
@@ -456,12 +417,32 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setColor2(final KColor color, final int alpha) {
+    public T setTargetColor(final Colors color) {
         @SuppressWarnings("unchecked")
         final T it = (T) this;
-        this.setColor(color);
-        this.setAlpha(alpha);
-        return it;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColor(final int red, final int green, final int blue, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, red, green, blue, alpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setTargetColor(final Colors color, final int alpha) {
+        @SuppressWarnings("unchecked")
+        final T it = (T) this;
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color, alpha);
     }
 
     /**
@@ -546,10 +527,8 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setColor(final Colors color) {
-        @SuppressWarnings("unchecked")
-        final T it = (T) this;
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color);
+    public T setColors(final KColor color, final KColor targetColor) {
+        return this.setColor2(color).setTargetColor2(targetColor);
     }
 
     /**
@@ -557,10 +536,8 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setColor(final Colors color, final int alpha) {
-        @SuppressWarnings("unchecked")
-        final T it = (T) this;
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(it, color, alpha);
+    public T setColors(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
+        return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha);
     }
 
     /**
@@ -568,10 +545,8 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setTargetColor(final Colors color) {
-        @SuppressWarnings("unchecked")
-        final T it = (T) this;
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color);
+    public T setColorsCopiesOf(final KColor color, final KColor targetColor) {
+        return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);
     }
 
     /**
@@ -579,10 +554,35 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
-    public T setTargetColor(final Colors color, final int alpha) {
-        @SuppressWarnings("unchecked")
-        final T it = (T) this;
-        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setTargetColor(it, color, alpha);
+    public T setColorsCopiesOf(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
+        return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorsCopiedFrom(final KColoring<?> coloring) {
+        return this.setColorsCopiesOf(coloring.getColor(), coloring.getTargetColor());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorsAlphasGradientAngleCopiedFrom(final KColoring<?> coloring) {
+        return this.setColorsCopiesOf(coloring.getColor(), coloring.getAlpha(), coloring.getTargetColor(), coloring.getTargetAlpha()).setGradientAngle2(coloring.getGradientAngle());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean equals(final Object other) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
     }
 
     /**
@@ -609,10 +609,10 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KCOLORING__ALPHA:
-                return getAlpha();
             case KRenderingPackage.KCOLORING__COLOR:
                 return getColor();
+            case KRenderingPackage.KCOLORING__ALPHA:
+                return getAlpha();
             case KRenderingPackage.KCOLORING__TARGET_COLOR:
                 return getTargetColor();
             case KRenderingPackage.KCOLORING__TARGET_ALPHA:
@@ -631,11 +631,11 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KCOLORING__ALPHA:
-                setAlpha((Integer)newValue);
-                return;
             case KRenderingPackage.KCOLORING__COLOR:
                 setColor((KColor)newValue);
+                return;
+            case KRenderingPackage.KCOLORING__ALPHA:
+                setAlpha((Integer)newValue);
                 return;
             case KRenderingPackage.KCOLORING__TARGET_COLOR:
                 setTargetColor((KColor)newValue);
@@ -658,11 +658,11 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KCOLORING__ALPHA:
-                setAlpha(ALPHA_EDEFAULT);
-                return;
             case KRenderingPackage.KCOLORING__COLOR:
                 setColor((KColor)null);
+                return;
+            case KRenderingPackage.KCOLORING__ALPHA:
+                setAlpha(ALPHA_EDEFAULT);
                 return;
             case KRenderingPackage.KCOLORING__TARGET_COLOR:
                 setTargetColor((KColor)null);
@@ -685,10 +685,10 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KCOLORING__ALPHA:
-                return alpha != ALPHA_EDEFAULT;
             case KRenderingPackage.KCOLORING__COLOR:
                 return color != null;
+            case KRenderingPackage.KCOLORING__ALPHA:
+                return alpha != ALPHA_EDEFAULT;
             case KRenderingPackage.KCOLORING__TARGET_COLOR:
                 return targetColor != null;
             case KRenderingPackage.KCOLORING__TARGET_ALPHA:

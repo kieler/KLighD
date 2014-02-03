@@ -15,7 +15,6 @@ package de.cau.cs.kieler.core.krendering;
 
 import org.eclipse.emf.ecore.EObject;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>KColor</b></em>'.
@@ -43,13 +42,9 @@ public interface KColor extends EObject {
      * Returns the value of the '<em><b>Red</b></em>' attribute.
      * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Red</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * the red component of a color
+     * the red component of the color
      * <!-- end-model-doc -->
      * @return the value of the '<em>Red</em>' attribute.
      * @see #setRed(int)
@@ -73,13 +68,9 @@ public interface KColor extends EObject {
      * Returns the value of the '<em><b>Green</b></em>' attribute.
      * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Green</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * the green component of a color
+     * the green component of the color
      * <!-- end-model-doc -->
      * @return the value of the '<em>Green</em>' attribute.
      * @see #setGreen(int)
@@ -103,13 +94,9 @@ public interface KColor extends EObject {
      * Returns the value of the '<em><b>Blue</b></em>' attribute.
      * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Blue</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * the blue component of a color
+     * the blue component of the color
      * <!-- end-model-doc -->
      * @return the value of the '<em>Blue</em>' attribute.
      * @see #setBlue(int)
@@ -162,21 +149,6 @@ public interface KColor extends EObject {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Checks the equalilty of the RGB components of <code>this</code> KColor instance and the provided <code>other</code> KColor.
-     * Returns false if <code>other</code> is not a KColor.<br>
-     * {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.
-     * 
-     * @return <code>true</code> if <code>other</code> is a KColor its RGB components are equal to those of <code>this</code> instance, <code>false</code> otherwise
-     * <!-- end-model-doc -->
-     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
-     * @generated
-     */
-    boolean equals(Object other);
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
      * Convenience setter for configuring<code>this</code> KColor instance.<br>
      * Redirects to {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#setColor(KColor, KColor) KRenderingUtil.setColor(KColor, KColor)}.
      * @param kColor
@@ -187,5 +159,20 @@ public interface KColor extends EObject {
      * @generated
      */
     KColor setColor(KColor kColor);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Checks the equality of the RGB components of <code>this</code> KColor instance and the provided <code>other</code> KColor.
+     * Returns false if <code>other</code> is not a KColor.<br>
+     * {@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.
+     * 
+     * @return <code>true</code> if <code>other</code> is a KColor its RGB components are equal to those of <code>this</code> instance, <code>false</code> otherwise
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);'"
+     * @generated
+     */
+    boolean equals(Object other);
 
 } // KColor

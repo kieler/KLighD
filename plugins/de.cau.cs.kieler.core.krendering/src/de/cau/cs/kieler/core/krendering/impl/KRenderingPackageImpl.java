@@ -13,18 +13,8 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.ETypeParameter;
-import org.eclipse.emf.ecore.impl.EPackageImpl;
-
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+
 import de.cau.cs.kieler.core.krendering.Arc;
 import de.cau.cs.kieler.core.krendering.Colors;
 import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
@@ -89,6 +79,18 @@ import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.core.krendering.Underline;
 import de.cau.cs.kieler.core.krendering.VerticalAlignment;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypeParameter;
+
+import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -494,14 +496,14 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    private EEnum triggerEEnum = null;
+    private EEnum lineCapEEnum = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EEnum lineCapEEnum = null;
+    private EEnum triggerEEnum = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1428,8 +1430,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getKColoring_Alpha() {
-        return (EAttribute)kColoringEClass.getEStructuralFeatures().get(0);
+    public EReference getKColoring_Color() {
+        return (EReference)kColoringEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1437,8 +1439,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getKColoring_Color() {
-        return (EReference)kColoringEClass.getEStructuralFeatures().get(1);
+    public EAttribute getKColoring_Alpha() {
+        return (EAttribute)kColoringEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1968,8 +1970,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EEnum getTrigger() {
-        return triggerEEnum;
+    public EEnum getLineCap() {
+        return lineCapEEnum;
     }
 
     /**
@@ -1977,8 +1979,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EEnum getLineCap() {
-        return lineCapEEnum;
+    public EEnum getTrigger() {
+        return triggerEEnum;
     }
 
     /**
@@ -2172,8 +2174,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kForegroundEClass = createEClass(KFOREGROUND);
 
         kColoringEClass = createEClass(KCOLORING);
-        createEAttribute(kColoringEClass, KCOLORING__ALPHA);
         createEReference(kColoringEClass, KCOLORING__COLOR);
+        createEAttribute(kColoringEClass, KCOLORING__ALPHA);
         createEReference(kColoringEClass, KCOLORING__TARGET_COLOR);
         createEAttribute(kColoringEClass, KCOLORING__TARGET_ALPHA);
         createEAttribute(kColoringEClass, KCOLORING__GRADIENT_ANGLE);
@@ -2551,8 +2553,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kForegroundEClass, KForeground.class, "KForeground", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(kColoringEClass, KColoring.class, "KColoring", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getKColoring_Alpha(), ecorePackage.getEInt(), "alpha", "255", 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKColoring_Color(), this.getKColor(), null, "color", null, 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKColoring_Alpha(), ecorePackage.getEInt(), "alpha", "255", 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getKColoring_TargetColor(), this.getKColor(), null, "targetColor", null, 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKColoring_TargetAlpha(), ecorePackage.getEInt(), "targetAlpha", "255", 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKColoring_GradientAngle(), ecorePackage.getEFloat(), "gradientAngle", "0", 0, 1, KColoring.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

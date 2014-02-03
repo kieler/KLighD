@@ -430,26 +430,26 @@
     <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);"/>
-        <details key="documentation" value="Checks the equalilty of the RGB components of &lt;code>this&lt;/code> KColor instance and the provided &lt;code>other&lt;/code> KColor.&#xA;Returns false if &lt;code>other&lt;/code> is not a KColor.&lt;br>&#xA;{@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.&#xA;&#xA;@return &lt;code>true&lt;/code> if &lt;code>other&lt;/code> is a KColor its RGB components are equal to those of &lt;code>this&lt;/code> instance, &lt;code>false&lt;/code> otherwise"/>
+        <details key="documentation" value="Checks the equality of the RGB components of &lt;code>this&lt;/code> KColor instance and the provided &lt;code>other&lt;/code> KColor.&#xA;Returns false if &lt;code>other&lt;/code> is not a KColor.&lt;br>&#xA;{@link de.cau.cs.kieler.core.krendering.KRenderingUtil#equals(KColor, Object) KRenderingUtil.equals(KColor, Object)}.&#xA;&#xA;@return &lt;code>true&lt;/code> if &lt;code>other&lt;/code> is a KColor its RGB components are equal to those of &lt;code>this&lt;/code> instance, &lt;code>false&lt;/code> otherwise"/>
       </eAnnotations>
       <eParameters name="other" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="red" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="the red component of a color"/>
+        <details key="documentation" value="the red component of the color"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="green" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="the green component of a color"/>
+        <details key="documentation" value="the green component of the color"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="blue" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="0">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="the blue component of a color"/>
+        <details key="documentation" value="the blue component of the color"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -1114,16 +1114,16 @@
       </eAnnotations>
       <eParameters name="other" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-        defaultValueLiteral="255">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="The transparancy value of this color."/>
-      </eAnnotations>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="#//KColor"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="The color the object is supposed to get."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="255">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The transparency value of this color."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetColor" eType="#//KColor"
@@ -1135,7 +1135,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="255">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Optional alpha value for gradient target color."/>
+        <details key="documentation" value="The transparency value of the (optinal) gradient target color."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="gradientAngle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"
