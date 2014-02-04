@@ -16,8 +16,8 @@ package de.cau.cs.kieler.klighd.examples.ecore
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
-
 import de.cau.cs.kieler.core.kgraph.KNode
+import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
@@ -28,26 +28,21 @@ import de.cau.cs.kieler.core.util.Pair
 import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.kiml.options.LayoutOptions
-
+import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-
 import java.util.List
 import javax.inject.Inject
-
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
+
+import static de.cau.cs.kieler.klighd.KlighdConstants.*
 
 import static extension com.google.common.base.Strings.*
-import static de.cau.cs.kieler.klighd.KlighdConstants.*
-import de.cau.cs.kieler.core.krendering.KContainerRenderingimport de.cau.cs.kieler.klighd.SynthesisOption
-import com.google.common.base.Function
-import de.cau.cs.kieler.core.krendering.KText
-import de.cau.cs.kieler.core.kgraph.KGraphElement
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -123,18 +118,6 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
             specifyLayoutOption(LayoutOptions::SPACING, newArrayList(0, 255))
         );
     }
-
-    override public Function<String, Void> getTextUpdateFunction( KText kText, KGraphElement element) {
-        return [String s |
-                kText.setText(s);
-                val EClass sourceElement = (this.usedContext.getSourceElement(element) as EClass
-                );
-                sourceElement.setName(s)
-                return null;
-            ]
-        ;
-    }
-    
 
     /**
      * {@inheritDoc}<br>
@@ -213,7 +196,6 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                     classes.createElementFigures(it)
                     depictedClasses += classes;
                 ];
-
                 // each of the above given ones is highlighted in a special fashion
                 chosenClasse.forEach[
                     it.node.KRendering.setBackgroundGradient("white".color, ALPHA_FULL_OPAQUE, "red".color, 150, 0);
@@ -254,14 +236,12 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                             if (EcorePackage::eINSTANCE.getEEnum.isInstance(clazz)) {
                                 it.addText("<<Enum>>") => [
                                     it.fontSize = 13;
-                                    it.cursorSelectable = true;
                                     it.fontItalic = true;
                                     it.verticalAlignment = V_CENTRAL;
                                     it.setAreaPlacementData.from(LEFT, 20, 0, TOP, 10, 0).to(RIGHT, 20, 0, BOTTOM, 1, 0.5f);
                                 ];
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
-                                    it.cursorSelectable = true;
                                     it.fontBold = true;
                                     it.setAreaPlacementData.from(LEFT, 20, 0, TOP, 1, 0.5f).to(RIGHT, 20, 0, BOTTOM, 10, 0);
                                 ];
@@ -270,7 +250,6 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                     .setPointPlacementData(LEFT, 20, 0, TOP, 0, 0.5f, H_CENTRAL, V_CENTRAL, 10, 10, 20, 20);
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
-                                    it.cursorSelectable = true;
                                     it.fontBold = true;
                                     it.setPointPlacementData(LEFT, 40, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 10, 10, 0, 0);
                                 ];
@@ -297,7 +276,6 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                         .setPointPlacementData(LEFT, 10, 0, TOP, 1.5f, 0.5f, H_CENTRAL, V_CENTRAL, 0, 0, 15f, 7.5f);
                                     it.addText(attr.name + " : " + attr.EAttributeType.name) => [
                                         it.fontSize = 13;
-                                        it.cursorSelectable = true;
                                         it.horizontalAlignment = H_LEFT
                                         it.verticalAlignment = V_CENTRAL
                                         it.setPointPlacementData(LEFT, 25, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 20, 5, 0, 0);
@@ -316,7 +294,6 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                             (clazz as EEnum).ELiterals.forEach[
                                 rect.addText(it.name + " (" + it.literal + ")") => [
                                     it.horizontalAlignment = H_CENTRAL
-                                    it.cursorSelectable = true;
                                     it.verticalAlignment = V_CENTRAL
                                     it.setSurroundingSpaceGrid(3, 0);
                                 ];

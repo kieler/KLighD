@@ -31,7 +31,7 @@ import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
 class KLibraryExtensions {
 
     /** Rendering factory used to instantiate KRendering instances. */
-    public val renderingFactory = KRenderingFactory::eINSTANCE
+    extension KRenderingFactory = KRenderingFactory::eINSTANCE
 
     /**
      * Retrieves the rendering library valid for the given node. The library must
@@ -51,7 +51,7 @@ class KLibraryExtensions {
 
         var library = parent.getData(typeof(KRenderingLibrary))
         if (library == null) {
-            library = renderingFactory.createKRenderingLibrary()
+            library = createKRenderingLibrary()
             parent.data.add(library)
         }
 
@@ -71,7 +71,7 @@ class KLibraryExtensions {
         val rendering = library.renderings.findFirst[r|r.id == id] as KRendering
 
         if (rendering != null) {
-            val ref = renderingFactory.createKRenderingRef()
+            val ref = createKRenderingRef()
             ref.rendering = rendering
             return ref
         }
@@ -98,7 +98,7 @@ class KLibraryExtensions {
      * 
      * @example
      * edge.source.library.addToLibrary("ren_junction", 
-     *  renderingFactory.createKRoundedRectangle => [ rr |
+     *  createKRoundedRectangle => [ rr |
      *   rr.background = color
      *   rr.foreground = color
      *   rr.cornerWidth = 2
@@ -114,7 +114,7 @@ class KLibraryExtensions {
         rendering.id = id
         library.renderings.add(rendering)
 
-        val ref = renderingFactory.createKRenderingRef()
+        val ref = createKRenderingRef()
         ref.rendering = rendering
         return ref
     }
@@ -126,7 +126,7 @@ class KLibraryExtensions {
      * 
      * @example
      * edge.source.addToLibrary("ren_junction", 
-     *  renderingFactory.createKRoundedRectangle => [ rr |
+     *  createKRoundedRectangle => [ rr |
      *   rr.background = color
      *   rr.foreground = color
      *   rr.cornerWidth = 2

@@ -41,7 +41,7 @@ import javax.inject.Inject
 @ViewSynthesisShared
 class KLabelExtensions {
     
-    static KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+    extension KRenderingFactory = KRenderingFactory::eINSTANCE
     
     @Inject
     extension KNodeExtensions
@@ -515,7 +515,7 @@ class KLabelExtensions {
      */
     def void basicConfigureLabel(KLabel label, String labelText, int fontSize, String fontName) {
         label.text = labelText;
-        label.data += renderingFactory.createKText().setFontName(fontName).setFontSize(fontSize);
+        label.data += createKText().setFontName(fontName).setFontSize(fontSize);
         label.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
         label.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
     }

@@ -44,8 +44,5 @@ public class PiccoloViewerProvider implements IViewerProvider<KNode> {
     public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
         return new PiccoloViewerUI(parentViewer, parent);
     }
-    
-    
 
-    
 }

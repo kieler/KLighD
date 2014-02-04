@@ -2642,22 +2642,22 @@ public interface KRenderingPackage extends EPackage {
     int KCOLORING__SELECTION = KSTYLE__SELECTION;
 
     /**
-     * The feature id for the '<em><b>Alpha</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCOLORING__ALPHA = KSTYLE_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KCOLORING__COLOR = KSTYLE_FEATURE_COUNT + 1;
+    int KCOLORING__COLOR = KSTYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Alpha</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCOLORING__ALPHA = KSTYLE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Target Color</b></em>' containment reference.
@@ -2751,15 +2751,6 @@ public interface KRenderingPackage extends EPackage {
     int KFOREGROUND__SELECTION = KCOLORING__SELECTION;
 
     /**
-     * The feature id for the '<em><b>Alpha</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KFOREGROUND__ALPHA = KCOLORING__ALPHA;
-
-    /**
      * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2767,6 +2758,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KFOREGROUND__COLOR = KCOLORING__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Alpha</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KFOREGROUND__ALPHA = KCOLORING__ALPHA;
 
     /**
      * The feature id for the '<em><b>Target Color</b></em>' containment reference.
@@ -2860,15 +2860,6 @@ public interface KRenderingPackage extends EPackage {
     int KBACKGROUND__SELECTION = KCOLORING__SELECTION;
 
     /**
-     * The feature id for the '<em><b>Alpha</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KBACKGROUND__ALPHA = KCOLORING__ALPHA;
-
-    /**
      * The feature id for the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2876,6 +2867,15 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KBACKGROUND__COLOR = KCOLORING__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Alpha</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KBACKGROUND__ALPHA = KCOLORING__ALPHA;
 
     /**
      * The feature id for the '<em><b>Target Color</b></em>' containment reference.
@@ -4202,16 +4202,6 @@ public interface KRenderingPackage extends EPackage {
     int VERTICAL_ALIGNMENT = 55;
 
     /**
-     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.Trigger <em>Trigger</em>}' enum.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.core.krendering.Trigger
-     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getTrigger()
-     * @generated
-     */
-    int TRIGGER = 57;
-
-    /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4220,6 +4210,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int LINE_CAP = 56;
+
+    /**
+     * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.Trigger <em>Trigger</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.core.krendering.Trigger
+     * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getTrigger()
+     * @generated
+     */
+    int TRIGGER = 57;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.Underline <em>Underline</em>}' enum.
@@ -4260,6 +4260,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int COLORS = 61;
+
 
     /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPosition <em>KPosition</em>}'.
@@ -5238,17 +5239,6 @@ public interface KRenderingPackage extends EPackage {
     EClass getKColoring();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KColoring#getAlpha <em>Alpha</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Alpha</em>'.
-     * @see de.cau.cs.kieler.core.krendering.KColoring#getAlpha()
-     * @see #getKColoring()
-     * @generated
-     */
-    EAttribute getKColoring_Alpha();
-
-    /**
      * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KColoring#getColor <em>Color</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5258,6 +5248,17 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EReference getKColoring_Color();
+
+    /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KColoring#getAlpha <em>Alpha</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Alpha</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KColoring#getAlpha()
+     * @see #getKColoring()
+     * @generated
+     */
+    EAttribute getKColoring_Alpha();
 
     /**
      * Returns the meta object for the containment reference '{@link de.cau.cs.kieler.core.krendering.KColoring#getTargetColor <em>Target Color</em>}'.
@@ -5878,16 +5879,6 @@ public interface KRenderingPackage extends EPackage {
     EEnum getVerticalAlignment();
 
     /**
-     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.Trigger <em>Trigger</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for enum '<em>Trigger</em>'.
-     * @see de.cau.cs.kieler.core.krendering.Trigger
-     * @generated
-     */
-    EEnum getTrigger();
-
-    /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5896,6 +5887,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EEnum getLineCap();
+
+    /**
+     * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.Trigger <em>Trigger</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Trigger</em>'.
+     * @see de.cau.cs.kieler.core.krendering.Trigger
+     * @generated
+     */
+    EEnum getTrigger();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.core.krendering.Underline <em>Underline</em>}'.
@@ -6769,20 +6770,20 @@ public interface KRenderingPackage extends EPackage {
         EClass KCOLORING = eINSTANCE.getKColoring();
 
         /**
-         * The meta object literal for the '<em><b>Alpha</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute KCOLORING__ALPHA = eINSTANCE.getKColoring_Alpha();
-
-        /**
          * The meta object literal for the '<em><b>Color</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
         EReference KCOLORING__COLOR = eINSTANCE.getKColoring_Color();
+
+        /**
+         * The meta object literal for the '<em><b>Alpha</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KCOLORING__ALPHA = eINSTANCE.getKColoring_Alpha();
 
         /**
          * The meta object literal for the '<em><b>Target Color</b></em>' containment reference feature.
@@ -7289,16 +7290,6 @@ public interface KRenderingPackage extends EPackage {
         EEnum VERTICAL_ALIGNMENT = eINSTANCE.getVerticalAlignment();
 
         /**
-         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.Trigger <em>Trigger</em>}' enum.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see de.cau.cs.kieler.core.krendering.Trigger
-         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getTrigger()
-         * @generated
-         */
-        EEnum TRIGGER = eINSTANCE.getTrigger();
-
-        /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.LineCap <em>Line Cap</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -7307,6 +7298,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum LINE_CAP = eINSTANCE.getLineCap();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.Trigger <em>Trigger</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.core.krendering.Trigger
+         * @see de.cau.cs.kieler.core.krendering.impl.KRenderingPackageImpl#getTrigger()
+         * @generated
+         */
+        EEnum TRIGGER = eINSTANCE.getTrigger();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.Underline <em>Underline</em>}' enum.

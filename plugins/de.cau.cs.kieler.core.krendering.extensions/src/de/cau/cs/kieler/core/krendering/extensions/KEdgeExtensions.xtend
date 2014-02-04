@@ -26,7 +26,6 @@ import java.lang.reflect.Field
 import java.util.List
 import java.util.Map
 import javax.inject.Inject
-import org.eclipse.xtext.xbase.lib.CollectionLiterals
 
 /**
  * @author chsch, alb, ssm
@@ -57,7 +56,7 @@ class KEdgeExtensions {
      * This is mandatory for queries (e.g. exist tests) on the private and hence inaccessible hash map.
      */ 
     def private Map<? extends List<? extends Object>, KEdge> getInternalEdgeMap() {
-        val Field internalMapField = KEdgeExtensions.getDeclaredField("_createCache_internalCreateEdge") 
+        val Field internalMapField = this.class.getDeclaredField("_createCache_internalCreateEdge") 
         internalMapField.setAccessible(true)
         internalMapField.get(this) as Map<? extends List<? extends Object>, KEdge>
     }
@@ -66,28 +65,28 @@ class KEdgeExtensions {
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1) {
-        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1)))
+        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1)))
     }
 
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1, Object o2) {
-        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1, o2)))
+        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1, o2)))
     }
 
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1, Object o2, Object o3) {
-        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1, o2, o3)))
+        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1, o2, o3)))
     }
 
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
     def boolean edgeExists(Object o1, Object o2, Object o3, Object o4) {
-        getInternalEdgeMap().containsKey(CollectionLiterals.newArrayList(newArrayList(o1, o2, o3, o4)))
+        getInternalEdgeMap().containsKey(newArrayList(newArrayList(o1, o2, o3, o4)))
     }
 
     /**

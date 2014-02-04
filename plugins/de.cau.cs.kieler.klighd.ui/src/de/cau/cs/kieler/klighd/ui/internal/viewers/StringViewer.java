@@ -75,13 +75,6 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
-    public String getModel() {
-        return message;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public ViewContext getViewContext() {
         return null;
     }

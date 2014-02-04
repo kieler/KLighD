@@ -187,16 +187,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     /**
      * {@inheritDoc}
      */
-    public KNode getModel() {
-        if (controller != null) {
-            return controller.getNode().getGraphElement();
-        }
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void startRecording() {
         controller.startRecording();
     }

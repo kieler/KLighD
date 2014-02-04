@@ -63,7 +63,7 @@ class KPortExtensions {
      */
     private static val Integer PORT_LABEL_FONT_SIZE = 7;
 
-    private static val KRenderingFactory renderingFactory = KRenderingFactory::eINSTANCE
+    extension KRenderingFactory = KRenderingFactory::eINSTANCE
     
     @Inject
     extension KRenderingExtensions;
@@ -274,53 +274,53 @@ class KPortExtensions {
     }
     
     def private KRendering createWPortRendering(String label) {
-        return renderingFactory.createKRectangle => [
-            it.foreground = renderingFactory.createKForeground() => [
+        return createKRectangle => [
+            it.foreground = createKForeground() => [
                 it.alpha = 255; // is also the default in the meta model
-                it.color = renderingFactory.createKColor();
+                it.color = createKColor();
             ];
-            it.background = renderingFactory.createKBackground() => [
+            it.background = createKBackground() => [
                 it.alpha = 255; // is also the default in the meta model
-                it.color = renderingFactory.createKColor();
+                it.color = createKColor();
             ];
-            it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
+            it.children += createKText.withCopyOf(portLabelFontSize()) => [
                 it.text = label;
                 it.setHorizontalAlignment(
                     if (inlyingPortLabels) HorizontalAlignment::LEFT else HorizontalAlignment::RIGHT
                 );
                 it.setVerticalAlignment(VerticalAlignment::CENTER)
-                it.placementData = renderingFactory.createKAreaPlacementData() => [
+                it.placementData = createKAreaPlacementData() => [
                     if (inlyingPortLabels) {
-                        topLeft = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKRightPosition() => [
+                        topLeft = createKPosition() => [
+                            it.x = createKRightPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ]
-                        bottomRight = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKRightPosition() => [
+                        bottomRight = createKPosition() => [
+                            it.x = createKRightPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ];
                     } else {
-                        topLeft = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKLeftPosition() => [
+                        topLeft = createKPosition() => [
+                            it.x = createKLeftPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ];
-                        bottomRight = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKLeftPosition() => [
+                        bottomRight = createKPosition() => [
+                            it.x = createKLeftPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ];
@@ -331,53 +331,53 @@ class KPortExtensions {
     }
     
     def private KRendering createEPortRendering(String label) {
-        return renderingFactory.createKRectangle() => [
-            it.foreground = renderingFactory.createKForeground() => [
+        return createKRectangle() => [
+            it.foreground = createKForeground() => [
                 it.alpha = 255; // is also the default in the meta model
-                it.color = renderingFactory.createKColor();
+                it.color = createKColor();
             ];
-            it.background = renderingFactory.createKBackground() => [
+            it.background = createKBackground() => [
                 it.alpha = 255; // is also the default in the meta model
-                it.color = renderingFactory.createKColor();
+                it.color = createKColor();
             ];
-            it.children += renderingFactory.createKText.withCopyOf(portLabelFontSize()) => [
+            it.children += createKText.withCopyOf(portLabelFontSize()) => [
                 it.text = label;
                 it.setHorizontalAlignment(
                     if (inlyingPortLabels) HorizontalAlignment::RIGHT else HorizontalAlignment::LEFT
                 );
                 it.setVerticalAlignment(VerticalAlignment::CENTER)
-                it.placementData = renderingFactory.createKAreaPlacementData() => [
+                it.placementData = createKAreaPlacementData() => [
                     if (inlyingPortLabels) {
-                        topLeft = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKLeftPosition() => [
+                        topLeft = createKPosition() => [
+                            it.x = createKLeftPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ];
-                        bottomRight = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKLeftPosition() => [
+                        bottomRight = createKPosition() => [
+                            it.x = createKLeftPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ];
                     } else {
-                        topLeft = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKRightPosition() => [
+                        topLeft = createKPosition() => [
+                            it.x = createKRightPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ]
-                        bottomRight = renderingFactory.createKPosition() => [
-                            it.x = renderingFactory.createKRightPosition() => [
+                        bottomRight = createKPosition() => [
+                            it.x = createKRightPosition() => [
                                 it.absolute = -2
                             ];
-                            it.y = renderingFactory.createKTopPosition() => [
+                            it.y = createKTopPosition() => [
                                 it.absolute = portEdgeLength/2;
                             ];
                         ];
@@ -418,7 +418,7 @@ class KPortExtensions {
         port.getData(typeof(KShapeLayout))
     }
 
-    def KFontSize create it: renderingFactory.createKFontSize portLabelFontSize() {
+    def KFontSize create it: createKFontSize portLabelFontSize() {
         it.size = PORT_LABEL_FONT_SIZE;
     }
 

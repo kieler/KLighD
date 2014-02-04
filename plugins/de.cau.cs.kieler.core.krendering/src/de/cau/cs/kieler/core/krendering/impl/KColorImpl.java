@@ -205,6 +205,15 @@ public class KColorImpl extends EObjectImpl implements KColor {
      * <!-- end-user-doc -->
      * @generated
      */
+    public KColor setColor(final KColor kColor) {
+        return de.cau.cs.kieler.core.krendering.KRenderingUtil.setColor(this, kColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public boolean equals(final Object other) {
         return de.cau.cs.kieler.core.krendering.KRenderingUtil.equals(this,other);
     }
