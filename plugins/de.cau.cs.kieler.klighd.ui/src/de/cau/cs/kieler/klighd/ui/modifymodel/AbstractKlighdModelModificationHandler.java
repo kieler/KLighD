@@ -28,20 +28,18 @@ import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Function;
 
-import de.cau.cs.kieler.klighd.IModifyModelHandler;
+import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
- * 
  * Abstract implementation of the IModifyModelHandler for convenience purposes.
  * 
  * @author ckru
- * 
  */
-public abstract class KlighdModifyModelHandler implements IModifyModelHandler {
+public abstract class AbstractKlighdModelModificationHandler implements IModelModificationHandler {
 
     /**
      * Cache to get workbench part from different thread.
@@ -108,7 +106,7 @@ public abstract class KlighdModifyModelHandler implements IModifyModelHandler {
     /**
      * {@inheritDoc}
      */
-    public boolean isPerformLayout() {
+    public boolean isLayoutRequired() {
         return false;
     }
 

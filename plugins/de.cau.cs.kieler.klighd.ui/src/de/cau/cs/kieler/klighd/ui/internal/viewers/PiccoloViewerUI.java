@@ -16,6 +16,8 @@ package de.cau.cs.kieler.klighd.ui.internal.viewers;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -33,6 +35,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
@@ -41,7 +44,7 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.klighd.IModifyModelHandler;
+import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
@@ -52,14 +55,13 @@ import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PrintAction;
 import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
-import de.cau.cs.kieler.klighd.ui.modifymodel.ModifyModelHandlerProvider;
+import de.cau.cs.kieler.klighd.ui.modifymodel.ModelModificationHandlerProvider;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
 
 /**
- * 
  * UI stuff such as the text input mechanism and registry of actions are extracted from the
  * PiccoloViewer to this class to optimize dependencies. PiccoloViewerUi instance will be generated
  * by the PiccoloViewerProvider.
@@ -70,10 +72,10 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 public class PiccoloViewerUI extends PiccoloViewer {
 
     /**
-     * SWT text element that acts as an overlay for labels in some situations. 
+     * SWT text element that acts as an overlay for labels in some situations.
      */
     private Text textinput;
-    
+
     /**
      * Listens to text inputs and applies changes accordingly.
      */
@@ -124,11 +126,17 @@ public class PiccoloViewerUI extends PiccoloViewer {
         }
     }
 
+    /**
+     * Adds a text widget to the viewer that can be used to select and edit texts.
+     * 
+     * @param parentViewer
+     *            the viewer to which to add the text widget
+     */
     private void addTextInput(final ContextViewer parentViewer) {
         textinput = new Text(this.getCanvas(), SWT.MULTI);
         textinput.addListener(SWT.MouseUp, new Listener() {
             public void handleEvent(final Event event) {
-                //textinput.setSize(textinput.getSize().x + 50, textinput.getSize().y);
+                // textinput.setSize(textinput.getSize().x + 50, textinput.getSize().y);
                 textinput.setEditable(true);
             }
         });
@@ -203,19 +211,20 @@ public class PiccoloViewerUI extends PiccoloViewer {
     }
 
     /**
-     * 
      * Listens to committed text inputs.
      * 
      * @author ckru
-     * 
      */
     private class KlighdTextInputVerifyListener implements Listener {
 
         /**
-         * node the committed text is linked to.
+         * Node the committed text is linked to.
          */
         private KText node;
 
+        /**
+         * The element whose text is supposed to change.
+         */
         private KGraphElement element;
 
         /**
@@ -240,19 +249,27 @@ public class PiccoloViewerUI extends PiccoloViewer {
                         synth = ((ReinitializingDiagramSynthesisProxy<?>) synth).getDelegate();
                     }
                     Function<String, Void> f = synth.getTextUpdateFunction(node, element);
+                    if (f == null) {
+                        return;
+                    }
                     PiccoloViewerUI.this.getContextViewer().getViewContext()
                             .getDiagramWorkbenchPart();
                     IWorkbenchPart wPart =
                             PiccoloViewerUI.this.getContextViewer().getViewContext()
-                                .getSourceWorkbenchPart();
-                    IModifyModelHandler handler =
-                            ModifyModelHandlerProvider.getInstance().getFittingHandler(wPart);
-                    if (handler != null) {
-                        handler.execute(wPart, f, textinput.getText());
-                    } else {
-                        f.apply(textinput.getText());
+                                    .getSourceWorkbenchPart();
+                    IModelModificationHandler handler =
+                            ModelModificationHandlerProvider.getInstance().getFittingHandler(wPart);
+                    try {
+                        if (handler != null) {
+                            handler.execute(wPart, f, textinput.getText());
+                        } else {
+                            f.apply(textinput.getText());
+                        }
+                    } catch (Exception e) {
+                        StatusManager.getManager().handle(
+                                new Status(IStatus.ERROR, "de.cau.cs.kieler.klighd.ui",
+                                        "An error has occured while applying the text", e));
                     }
-
                     textinput.setEditable(false);
                 }
             }
@@ -261,14 +278,15 @@ public class PiccoloViewerUI extends PiccoloViewer {
     }
 
     /**
-     * 
      * Handles mouseover on a text element and displays a text input dialog in that case.
      * 
      * @author ckru
-     * 
      */
     private class KlighdTextInputHandler extends KlighdBasicInputEventHandler {
 
+        /**
+         * Constructor that just calls super.
+         */
         public KlighdTextInputHandler() {
             super();
         }
@@ -287,6 +305,13 @@ public class PiccoloViewerUI extends PiccoloViewer {
             updateTextInput(event);
         }
 
+        /**
+         * Gets the element in the graph hierarchy thats linking the given PNode to the KGraph.
+         * 
+         * @param n
+         *            the PNode whose text is about to be changed
+         * @return the element thats linked to the KGraph.
+         */
         private ITracingElement<?> getParentTracingElement(final PNode n) {
             PNode parent = n.getParent();
             if (parent != null) {
@@ -301,7 +326,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         }
 
         /**
-         * Sets position, style and text of the textinput widget to the text element the mouse
+         * Sets position, style and text of the text input widget to the text element the mouse
          * currently hovers over.
          * 
          * @param event

@@ -31,9 +31,12 @@ import com.google.common.base.Function;
  * 
  * @author uru, ckru
  */
-public interface IModifyModelHandler {
+public interface IModelModificationHandler {
 
     /**
+     * Test whether this handler is able to execute methods and functions in the context of the
+     * given the given IWorkbenchPart.
+     * 
      * @param workbenchPart
      *            the workbench part to be tested, eg, a {@link IEditorPart}
      * @return true if this handler is able to handle the editor and selection
@@ -41,6 +44,7 @@ public interface IModifyModelHandler {
     boolean canHandle(final IWorkbenchPart workbenchPart);
 
     /**
+     * Gets the selected EObjects out of a selection of undefined objects.
      * 
      * @param workbenchPart
      *            the workbench part for which to retrieve the selection, eg, a {@link IEditorPart}
@@ -51,20 +55,31 @@ public interface IModifyModelHandler {
     List<EObject> getSelection(final IWorkbenchPart workbenchPart, List<?> selection);
 
     /**
-     * Execute the given method in a fitting environment.
-     * @param workbenchPart the workbenchpart of the source for this view.
-     * @param m the method to execute
-     * @param classObject the class the given method belongs to
-     * @param params the params to be given to the method
+     * Execute the given method in a way thats required to modify the data source i.e.: using a
+     * TransactionalEditingDomain for GMF models.
+     * 
+     * @param workbenchPart
+     *            the IWorkbenchPart of the source for this view.
+     * @param m
+     *            the method to execute
+     * @param classObject
+     *            the class the given method belongs to
+     * @param params
+     *            the parameters to be given to the method
      */
     void execute(final IWorkbenchPart workbenchPart, final Method m, final Object classObject,
             final List<Object> params);
 
     /**
-     * Execute the given function in a fitting environment.
-     * @param workbenchPart the workbenchpart of the source for this view.
-     * @param m the function to be executed
-     * @param param the parameter to be given to the function
+     * Execute the given method in a way thats required to modify the data source i.e.: using a
+     * TransactionalEditingDomain for GMF models.
+     * 
+     * @param workbenchPart
+     *            the IWorkbenchPart of the source for this view.
+     * @param m
+     *            the function to be executed
+     * @param param
+     *            the parameter to be given to the function
      */
     void execute(final IWorkbenchPart workbenchPart, final Function<String, Void> m,
             final String param);
@@ -76,11 +91,16 @@ public interface IModifyModelHandler {
     void performPostProcessing();
 
     /**
+     * Determines whether the diagram should be layouted after method/function has been executed.
+     * 
      * @return true if a automatic layout should be performed after the ksbase action.
      */
-    boolean isPerformLayout();
+    boolean isLayoutRequired();
 
     /**
+     * Gets the element on which to execute the layout thats executed after the method has been
+     * executed.
+     * 
      * @return the root element for which layout should be applied if the {@link #isPerformLayout()}
      *         method returns true.
      */

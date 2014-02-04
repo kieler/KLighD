@@ -94,6 +94,7 @@ public interface ISynthesis {
     
     /**
      * Returns a function that is supposed to apply changes to a text element.
+     * Its returned as a function so that it can be executed within transactional contexts.
      * @param kText the text element that is supposed to be changed
      * @param element the graph element whose text is supposed to be changed
      * @return a method that can change the text in the view as well as its source

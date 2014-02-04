@@ -404,11 +404,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * {@inheritDoc}
      */
     public Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element) {
-        return new Function<String, Void>() {
-            public Void apply(final String arg0) {
-                return null;
-            }
-        };
+        return null;
     }
     
     /**

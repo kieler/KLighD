@@ -22,41 +22,48 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.IModifyModelHandler;
+import de.cau.cs.kieler.klighd.IModelModificationHandler;
 
 /**
- * 
  * Class is used to get fitting IModifyModelHandlers that can handle the given IWorkbenchPart.
  * ExtensionPoint will be lazily read when its first called.
  * 
  * @author ckru
- *
  */
-public final class ModifyModelHandlerProvider {
+public final class ModelModificationHandlerProvider {
 
     /**
      * singleton instance.
      */
-    private static ModifyModelHandlerProvider instance = new ModifyModelHandlerProvider();
-    
-    private List<IModifyModelHandler> handlers = null;
-    
-    private ModifyModelHandlerProvider() {
-        
-    }
-    
+    private static ModelModificationHandlerProvider instance =
+            new ModelModificationHandlerProvider();
+
     /**
-     * 
-     * @param part the workbenchpart the handlers should be compatible with.
-     * @return the _first_ matching {@link IModifyModelHandler} for the passed parameters.
+     * Cache of parsed handlers so that extension point only has to be evaluated once.
      */
-    public IModifyModelHandler getFittingHandler(final IWorkbenchPart part) {
+    private List<IModelModificationHandler> handlers = null;
+
+    /**
+     * Private constructor, part of singleton pattern.
+     */
+    private ModelModificationHandlerProvider() {
+
+    }
+
+    /**
+     * Get a handler that is able to execute methods on the data source of the given IWorkbenchPart.
+     * 
+     * @param part
+     *            the IWorkbenchPart the handlers should be compatible with.
+     * @return the _first_ matching {@link IModelModificationHandler} for the passed parameters.
+     */
+    public IModelModificationHandler getFittingHandler(final IWorkbenchPart part) {
 
         if (handlers == null) {
             readHandlerExtensionPoint();
         }
-        
-        for (IModifyModelHandler handler : handlers) {
+
+        for (IModelModificationHandler handler : handlers) {
             if (handler.canHandle(part)) {
                 return handler;
             }
@@ -64,7 +71,10 @@ public final class ModifyModelHandlerProvider {
 
         return null;
     }
-    
+
+    /**
+     * Parse the extension point and generate handler instances.
+     */
     private void readHandlerExtensionPoint() {
         handlers = Lists.newLinkedList();
         // read extension point
@@ -75,8 +85,8 @@ public final class ModifyModelHandlerProvider {
         for (IConfigurationElement element : elements) {
             if (element.getName().equals("handler")) {
                 try {
-                    IModifyModelHandler handler =
-                            (IModifyModelHandler) element.createExecutableExtension("class");
+                    IModelModificationHandler handler =
+                            (IModelModificationHandler) element.createExecutableExtension("class");
                     handlers.add(handler);
                 } catch (CoreException e) {
                     e.printStackTrace();
@@ -84,12 +94,13 @@ public final class ModifyModelHandlerProvider {
             }
         }
     }
-    
+
     /**
-     * this.
-     * @return Singleton instance 
+     * Gets the singleton instance of the ModelModificationHandlerProvider.
+     * 
+     * @return Singleton instance
      */
-    public static ModifyModelHandlerProvider getInstance() {
+    public static ModelModificationHandlerProvider getInstance() {
         return instance;
     }
 }
