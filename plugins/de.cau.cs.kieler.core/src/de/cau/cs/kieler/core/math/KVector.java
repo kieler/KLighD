@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.core.math;
 
 import java.util.Random;
-import java.util.StringTokenizer;
 
 import de.cau.cs.kieler.core.util.IDataObject;
 
@@ -494,14 +493,14 @@ public final class KVector implements IDataObject, Cloneable {
         if (start >= end) {
             throw new IllegalArgumentException("The given string does not contain any numbers.");
         }
-        StringTokenizer tokenizer = new StringTokenizer(string.substring(start, end), ",; \t\r\n");
-        if (tokenizer.countTokens() != 2) {
+        String[] tokens = string.substring(start, end).split(",|;| |\t|\r|\n");
+        if (tokens.length != 2) {
             throw new IllegalArgumentException("Exactly two numbers are expected, "
-                    + tokenizer.countTokens() + " were found.");
+                    + tokens.length + " were found.");
         }
         try {
-            x = Double.parseDouble(tokenizer.nextToken());
-            y = Double.parseDouble(tokenizer.nextToken());
+            x = Double.parseDouble(tokens[0]);
+            y = Double.parseDouble(tokens[1]);
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException(
                     "The given string contains parts that cannot be parsed as numbers." + exception);
