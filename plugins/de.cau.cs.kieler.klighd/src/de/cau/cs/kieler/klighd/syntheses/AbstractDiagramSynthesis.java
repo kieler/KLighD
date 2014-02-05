@@ -17,12 +17,13 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Function;
 import org.eclipse.emf.ecore.EObject;
-
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
@@ -400,6 +401,16 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element) {
+        return null;
+    }
+    
+    /**
+     * Initializes the transformation run.
+     * Currently, just keeps the context to be used
+     * (allowing to neglect it in the concrete transformation methods).
      * Initializes the transformation run. Currently, just keeps the context to be used (allowing to
      * neglect it in the concrete transformation methods).
      * 

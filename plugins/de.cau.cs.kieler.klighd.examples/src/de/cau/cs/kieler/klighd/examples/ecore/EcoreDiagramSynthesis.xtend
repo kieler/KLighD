@@ -16,8 +16,8 @@ package de.cau.cs.kieler.klighd.examples.ecore
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
-
 import de.cau.cs.kieler.core.kgraph.KNode
+import de.cau.cs.kieler.core.krendering.KContainerRendering
 import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
@@ -28,23 +28,21 @@ import de.cau.cs.kieler.core.util.Pair
 import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.kiml.options.LayoutOptions
-
+import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-
 import java.util.List
 import javax.inject.Inject
-
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
+
+import static de.cau.cs.kieler.klighd.KlighdConstants.*
 
 import static extension com.google.common.base.Strings.*
-import static de.cau.cs.kieler.klighd.KlighdConstants.*
-import de.cau.cs.kieler.core.krendering.KContainerRenderingimport de.cau.cs.kieler.klighd.SynthesisOption
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -198,7 +196,6 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                     classes.createElementFigures(it)
                     depictedClasses += classes;
                 ];
-
                 // each of the above given ones is highlighted in a special fashion
                 chosenClasse.forEach[
                     it.node.KRendering.setBackgroundGradient("white".color, ALPHA_FULL_OPAQUE, "red".color, 150, 0);

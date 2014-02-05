@@ -19,6 +19,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.google.inject.Binder;
@@ -30,7 +31,9 @@ import com.google.inject.Scope;
 import com.google.inject.TypeLiteral;
 
 import de.cau.cs.kieler.core.WrappedException;
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.ViewSynthesisShared;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
@@ -281,6 +284,17 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
             this.transformationDelegate = getNewDelegateInstance();
         }
         return this.transformationDelegate.getDisplayedSynthesisOptions();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Function<String, Void> getTextUpdateFunction(final KText kText, 
+            final  KGraphElement element) {
+        if (this.transformationDelegate == null) {
+            return getNewDelegateInstance().getTextUpdateFunction(kText, element);
+        }
+        return this.transformationDelegate.getTextUpdateFunction(kText, element);
     }
     
     /**

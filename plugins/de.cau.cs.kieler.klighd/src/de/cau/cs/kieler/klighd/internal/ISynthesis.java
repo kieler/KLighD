@@ -15,7 +15,11 @@ package de.cau.cs.kieler.klighd.internal;
 
 import java.util.List;
 
+import com.google.common.base.Function;
+
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
@@ -87,6 +91,15 @@ public interface ISynthesis {
      * option.
      */
     List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions();
+    
+    /**
+     * Returns a function that is supposed to apply changes to a text element.
+     * Its returned as a function so that it can be executed within transactional contexts.
+     * @param kText the text element that is supposed to be changed
+     * @param element the graph element whose text is supposed to be changed
+     * @return a method that can change the text in the view as well as its source
+     */
+    Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element);
 
     /**
      * Returns a list of {@link ILayoutConfig ILayoutConfigs} to be handed over to KIML in order to
