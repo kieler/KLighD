@@ -71,11 +71,17 @@ public final class KlighdDataManager {
     /** name of the 'action' element. */
     private static final String ELEMENT_ACTION = "action";
 
+    /** name of the 'offscreenRenderer' element. */
+    private static final String ELEMENT_OFFSCREEN_RENDERER = "offscreenRenderer";
+
     /** name of the 'id' attribute in the extension points. */
     private static final String ATTRIBUTE_ID = "id";
     
     /** name of the 'class' attribute in the extension points. */
     private static final String ATTRIBUTE_CLASS = "class";
+    
+    /** name of the 'supportedFormats' attribute in the 'offscreenRenderer' extensions. */
+    private static final String ATTRIBUTE_SUPPORTED_FORMATS = "supportedFormats";
     
     /** the platform-specific newline delimiter. */
     public static final String NEW_LINE = System.getProperty("line.separator");
@@ -122,6 +128,8 @@ public final class KlighdDataManager {
     /** the mapping of ids on the associated actions. */
     private BiMap<String, IAction> idActionMapping = HashBiMap.create();
 
+    /** the mapping of formats and the supporting off-screen renderers. */
+    private Multimap<String, IOffscreenRenderer> formatOffscreenRendererMapping = null;
 
     /**
      * A private constructor to prevent instantiation.
@@ -498,4 +506,46 @@ public final class KlighdDataManager {
         return idActionMapping.keySet();
     }
     
+    /**
+     * Returns the collection of registered {@link IOffscreenRenderer IOffscreenRenderers} with the
+     * given <code>format</code>.
+     * 
+     * @param format the format an {@link IOffscreenRenderer} is requested for
+     * 
+     * @return the {@link Collection} of 
+     */
+    public Collection<IOffscreenRenderer> getOffscreenRenderersByFormat(final String format) {
+        if (formatOffscreenRendererMapping == null) {
+            formatOffscreenRendererMapping = ArrayListMultimap.create();
+
+            IConfigurationElement[] extensions =
+                    Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
+
+            for (IConfigurationElement element : extensions) {
+                try {
+                    if (ELEMENT_OFFSCREEN_RENDERER.equals(element.getName())) {
+                        // initialize style modifier from the extension point
+                        IOffscreenRenderer renderer =
+                                (IOffscreenRenderer) element
+                                        .createExecutableExtension(ATTRIBUTE_CLASS);
+                        if (renderer != null) {
+                            String id = element.getAttribute(ATTRIBUTE_ID);
+                            if (id == null || id.length() == 0) {
+                                reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
+                            } else {
+                                for (String f : element.getAttribute(ATTRIBUTE_SUPPORTED_FORMATS)
+                                        .split("[,\\s]")) {
+                                    formatOffscreenRendererMapping.put(f, renderer);
+                                }
+                            }
+                        }
+                    }
+                } catch (CoreException exception) {
+                    StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
+                }
+            }
+        }
+
+        return Collections.unmodifiableCollection(formatOffscreenRendererMapping.get(format));
+    }
 }

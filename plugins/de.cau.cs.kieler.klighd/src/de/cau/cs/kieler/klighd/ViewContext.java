@@ -132,15 +132,18 @@ public class ViewContext extends MapPropertyHolder {
      * Partially copying constructor.
      * 
      * @param otherContext
-     *            the {@link ViewContext} to take {@link SynthesisOption} settings from 
+     *            the {@link ViewContext} to take {@link SynthesisOption} settings from, may be
+     *            <code>null</code>
      * @param inputModel
      *            the source model to be represented by a diagram
      */
     public ViewContext(final ViewContext otherContext, final Object inputModel) {
         super();
         this.businessModel = inputModel;
-        this.synthesisOptions.addAll(otherContext.synthesisOptions);
-        this.synthesisOptionConfig.putAll(otherContext.synthesisOptionConfig);
+        if (otherContext != null) {
+            this.synthesisOptions.addAll(otherContext.synthesisOptions);
+            this.synthesisOptionConfig.putAll(otherContext.synthesisOptionConfig);
+        }
     }
 
     // ---------------------------------------------------------------------------------- //

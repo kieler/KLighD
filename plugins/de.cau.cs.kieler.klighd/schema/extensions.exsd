@@ -24,6 +24,7 @@
             <element ref="updateStrategy"/>
             <element ref="viewer"/>
             <element ref="wrapper"/>
+            <element ref="offscreenRenderer"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -207,6 +208,35 @@
             <annotation>
                <documentation>
                   An additional description that will be displayed in a file dialog, thus it should be as short as possible.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="offscreenRenderer">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IOffscreenRenderer"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="supportedFormats" type="string">
+            <annotation>
+               <documentation>
+                  A space/comma separated list of formats like svg, gml, etc.
                </documentation>
             </annotation>
          </attribute>

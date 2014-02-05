@@ -201,16 +201,19 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // search for the root node
             
-        if (diagramPart instanceof IViewer<?>) {
+        if (diagramPart instanceof KNode) {
+            graph = (KNode) diagramPart;
+            viewContext = null;
+        } else if (diagramPart instanceof ViewContext) {
+            viewContext = (ViewContext) diagramPart;
+            graph = viewContext.getViewModel();
+        } else if (diagramPart instanceof IViewer<?>) {
             viewContext = ((IViewer<?>) diagramPart).getViewContext();
             graph = viewContext.getViewModel();
         } else if (workbenchPart instanceof IDiagramWorkbenchPart) {
             viewContext = ((IDiagramWorkbenchPart) workbenchPart).getViewer().getViewContext();
             graph = viewContext.getViewModel();
-        } else if (diagramPart instanceof KNode) {
-            graph = (KNode) diagramPart;
-            viewContext = null;
-        } else {
+        } else  {
             viewContext = null;
             graph = null;
         }
