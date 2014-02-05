@@ -18,6 +18,11 @@
             id="de.cau.cs.kieler.klighd.piccolo.svg.exporter.batik"
             subFormat="de.cau.cs.kieler.klighd.piccolo.svg.batik">
       </exporter>
+      <offscreenRenderer
+            class="de.cau.cs.kieler.klighd.piccolo.svg.SVGOffscreenRenderer"
+            id="de.cau.cs.kieler.klighd.piccolo.svg.SVGOffscreenRenderer"
+            supportedFormats="svg">
+      </offscreenRenderer>
    </extension>
 
 </plugin>

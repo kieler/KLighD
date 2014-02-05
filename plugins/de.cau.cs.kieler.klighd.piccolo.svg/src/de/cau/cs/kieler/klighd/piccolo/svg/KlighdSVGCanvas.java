@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PComponent;
@@ -89,7 +91,7 @@ public class KlighdSVGCanvas implements PComponent {
         // set the bounds of the camera,
         //  this is the actual size of the camera, not of what it is viewing
         camera.setBounds(bounds);
-        camera.setComponent(this);
+        // camera.setComponent(this);
     }
 
     private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes,
@@ -101,6 +103,22 @@ public class KlighdSVGCanvas implements PComponent {
             final Rectangle2D bounds, final String svgGen) {
 
         return SVGGeneratorManager.getInstance().createGraphics(svgGen, bounds, textAsShapes);
+    }
+    
+    /**
+     * Adjusts the diagram bounds based on with and height of the provided {@link KNode}.<br>
+     * Must be called before {@link #render()}.
+     * 
+     * @param node
+     *            the node to take width and height from
+     * @return <code>this</code> {@link KlighdSVGCanvas} for convenience.
+     */
+    public KlighdSVGCanvas setDiagramBounds(final KNode node) {
+        final KShapeLayout bounds = node.getData(KShapeLayout.class);
+        
+        this.camera.setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
+        
+        return this;
     }
 
     /**
