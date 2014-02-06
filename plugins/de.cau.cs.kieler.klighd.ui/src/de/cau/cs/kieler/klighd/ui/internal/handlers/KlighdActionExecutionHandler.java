@@ -35,6 +35,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 
@@ -69,28 +70,47 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
             return null;
         }
         
+        final ViewContext viewContext = selection.getViewContext();
         final List<ActionResult> results = Lists.newArrayList();
         
-        for (KGraphElement kge: Iterables.filter(selection, KGraphElement.class)) {
-            final ActionContext context = new ActionContext(
-                    selection.getContextViewer().getActiveViewer(), null, kge, null);
-            results.add(action.execute(context));
+        // this flag is used to track the successful execution of actions
+        //  in order to enable animated diagram changes, the viewer must be informed to
+        //  record view model changes, which is done once an action is actually executed
+        boolean anyActionPerformed = false;
+        
+        viewContext.getLayoutRecorder().startRecording();
+
+        for (KGraphElement kge : Iterables.filter(selection, KGraphElement.class)) {
+            final ActionContext context =
+                    new ActionContext(selection.getContextViewer().getActiveViewer(), null, kge,
+                            null);
+
+            final ActionResult result = action.execute(context);
+            if (result != null) {
+                results.add(result);
+                anyActionPerformed |= result.getActionPerformed();
+            }
         }
-        
+
         final ActionResult result = Iterables.getFirst(results, ActionResult.createResult(false));
-        
-        final boolean zoomToFit = result.getZoomToFit() != null
-                ? result.getZoomToFit() : selection.getViewContext().isZoomToFit();
-        final boolean zoomToFocus =
-                result.getZoomToFocus() != null ? result.getZoomToFocus() : selection
-                        .getViewContext().getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
-        
-        // remember the desired zoom style in the view context
-        selection.getViewContext().setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
-        
-        if (result.getActionPerformed()) {
-            LightDiagramServices.layoutDiagram(selection.getViewContext(),
-                    result.getAnimateLayout(), zoomToFit, result.getLayoutConfigs());
+
+        if (anyActionPerformed) {
+            final boolean zoomToFit =
+                    result.getZoomToFit() != null ? result.getZoomToFit() : viewContext
+                            .isZoomToFit();
+            final boolean zoomToFocus =
+                    result.getZoomToFocus() != null ? result.getZoomToFocus() : viewContext
+                            .getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
+
+            // remember the desired zoom style in the view context
+            viewContext.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
+
+            LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(), zoomToFit,
+                    result.getLayoutConfigs());
+
+        } else {
+            viewContext.setZoomStyle(ZoomStyle.NONE);
+            viewContext.getLayoutRecorder().stopRecording(0);
         }
         
         return null;
