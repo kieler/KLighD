@@ -18,17 +18,26 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphData;
@@ -76,7 +85,7 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * Overall manager of KGraph+KRendering-based diagrams.<br>
+ * Overall manager of KGraph+KRendering+KLayoutData-based diagrams.<br>
  * Instances of this class are in charge of adding, updating, and removing representatives of
  * {@link KGraphElement KGraphElements} to/in/from its {@link KNodeTopNode}, our internal Piccolo2d
  * root element.<br>
@@ -251,10 +260,6 @@ public class DiagramController {
         }
     }
 
-    void recordChange(final PNode node, final Object change) {
-        recordedChanges.put(node, change);
-    }
-
     /**
      * Collapses the representation of the given node.
      * 
@@ -407,7 +412,7 @@ public class DiagramController {
     public void zoomToLevel(final float newZoomLevel, final int duration) {
         zoomController.zoomToLevel(newZoomLevel, duration);
     }
-    
+
     /**
      * Returns the Piccolo2D representation for the given diagram element.
      * 
@@ -426,6 +431,123 @@ public class DiagramController {
     /* --------------------------------------------- */
     /* internal part */
     /* --------------------------------------------- */
+
+    void recordChange(final PNode node, final Object change) {
+        recordedChanges.put(node, change);
+    }
+    
+    private Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = Sets.newHashSet();
+
+    void scheduleRenderingUpdate(final AbstractKGERenderingController<?, ?> controller) {
+        renderingUpdater.cancel();
+        synchronized (dirtyDiagramElements) {
+            dirtyDiagramElements.add(controller);
+        }
+        renderingUpdater.schedule(1);
+    }
+    
+    private final Job renderingUpdater = new Job("KLighD DiagramElementUpdater") {
+
+        @Override
+        protected IStatus run(final IProgressMonitor monitor) {
+            if (Display.getCurrent() == null && PlatformUI.isWorkbenchRunning()) {
+                PlatformUI.getWorkbench().getDisplay().asyncExec(this.diagramUpdateRunnable);
+            } else {
+                this.diagramUpdateRunnable.run();
+            }
+            return Status.OK_STATUS;
+        }
+
+        private final Runnable diagramUpdateRunnable = new Runnable() {
+
+            /**
+             * {@inheritDoc}
+             */
+            public void run() {
+                final Set<AbstractKGERenderingController<?, ?>> copy;
+                synchronized (dirtyDiagramElements) {                
+                    copy = ImmutableSet.copyOf(dirtyDiagramElements);
+                    dirtyDiagramElements.clear();
+                }
+                for (AbstractKGERenderingController<?, ?> ctrl : copy) {
+                    ctrl.updateRenderingInUi();
+                }
+            }
+        };
+    };
+    
+
+    /**
+     * Applies the recorded layout changes by creating appropriate activities.
+     */
+    private void handleRecordedChanges() {
+
+        // create activities to apply all recorded changes
+        for (Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
+            // create the activity to apply the change
+            PInterpolatingActivity activity;
+            final PNode shapeNode;
+            if (recordedChange.getKey() instanceof KEdgeNode) {
+                // edge layout changed
+                
+                final KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
+                shapeNode = edgeNode;
+                
+                @SuppressWarnings("unchecked")
+                final Pair<Point2D[], Point2D[]> value =
+                        (Pair<Point2D[], Point2D[]>) recordedChange.getValue();
+                final Point2D[] bends = (Point2D[]) value.getFirst();
+                final Point2D[] junctions = (Point2D[]) value.getSecond(); 
+
+                if (!edgeNode.getVisible()) {
+                    // the visibility is set to false for newly introduced edges in #addEdge
+                    //  for avoiding unnecessary flickering and indicating to fade it in
+                    activity = new FadeEdgeInActivity(edgeNode, bends, junctions,
+                            animationTime > 0 ? animationTime : 1);
+                } else {
+                    activity = new ApplyBendPointsActivity(edgeNode, bends, junctions,
+                            animationTime > 0 ? animationTime : 1);
+                }
+            } else {
+                // shape layout changed
+                shapeNode = (PNode) recordedChange.getKey();
+                PBounds bounds = (PBounds) recordedChange.getValue();
+
+                final float scale;
+                if (shapeNode instanceof KNodeNode) {
+                    scale = ((KNodeNode) shapeNode).getGraphElement().getData(KShapeLayout.class)
+                                    .getProperty(LayoutOptions.SCALE_FACTOR);
+                } else {
+                    scale = 1f;
+                }
+
+                if (!shapeNode.getVisible()) {
+                    // the visibility is set to false for newly introduced edges in #addNode,
+                    //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
+                    //  to fade it in
+                    activity = new FadeNodeInActivity(shapeNode, bounds,
+                            scale, animationTime > 0 ? animationTime : 1);
+                } else { 
+                    activity = new ApplySmartBoundsActivity(shapeNode, bounds,
+                            scale, animationTime > 0 ? animationTime : 1);
+                }
+            }
+            if (animationTime > 0) {
+                // schedule the activity
+                NodeUtil.schedulePrimaryActivity(shapeNode, activity);
+            } else {
+                // unschedule a currently running primary activity on the node if any
+                NodeUtil.unschedulePrimaryActivity(shapeNode);
+                // instantly apply the activity without scheduling it
+                ((IStartingAndFinishingActivity) activity).activityStarted(); 
+                ((IStartingAndFinishingActivity) activity).activityFinished(); 
+            }
+        }
+        recordedChanges.clear();
+
+        // apply a proper zoom handling if requested
+        zoom(zoomStyle, animationTime);
+    }
 
     /**
      * Adds a listener on the expansion of the child area of the given node representation.
@@ -456,7 +578,7 @@ public class DiagramController {
                                     Predicates.or(
                                             AbstractKGERenderingController.IS_COLLAPSED_RENDERING,
                                             AbstractKGERenderingController.IS_EXPANDED_RENDERING))) {
-                                nodeNode.getRenderingController().updateRendering();
+                                nodeNode.getRenderingController().updateRenderingInUi();
                             }
                         }
                     });
@@ -1027,78 +1149,6 @@ public class DiagramController {
         return true;
     }
 
-
-    /**
-     * Applies the recorded layout changes by creating appropriate activities.
-     */
-    private void handleRecordedChanges() {
-
-        // create activities to apply all recorded changes
-        for (Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
-            // create the activity to apply the change
-            PInterpolatingActivity activity;
-            final PNode shapeNode;
-            if (recordedChange.getKey() instanceof KEdgeNode) {
-                // edge layout changed
-                
-                final KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
-                shapeNode = edgeNode;
-                
-                @SuppressWarnings("unchecked")
-                final Pair<Point2D[], Point2D[]> value =
-                        (Pair<Point2D[], Point2D[]>) recordedChange.getValue();
-                final Point2D[] bends = (Point2D[]) value.getFirst();
-                final Point2D[] junctions = (Point2D[]) value.getSecond(); 
-
-                if (!edgeNode.getVisible()) {
-                    // the visibility is set to false for newly introduced edges in #addEdge
-                    //  for avoiding unnecessary flickering and indicating to fade it in
-                    activity = new FadeEdgeInActivity(edgeNode, bends, junctions,
-                            animationTime > 0 ? animationTime : 1);
-                } else {
-                    activity = new ApplyBendPointsActivity(edgeNode, bends, junctions,
-                            animationTime > 0 ? animationTime : 1);
-                }
-            } else {
-                // shape layout changed
-                shapeNode = (PNode) recordedChange.getKey();
-                PBounds bounds = (PBounds) recordedChange.getValue();
-
-                final float scale;
-                if (shapeNode instanceof KNodeNode) {
-                    scale = ((KNodeNode) shapeNode).getGraphElement().getData(KShapeLayout.class)
-                                    .getProperty(LayoutOptions.SCALE_FACTOR);
-                } else {
-                    scale = 1f;
-                }
-
-                if (!shapeNode.getVisible()) {
-                    // the visibility is set to false for newly introduced edges in #addNode,
-                    //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
-                    //  to fade it in
-                    activity = new FadeNodeInActivity(shapeNode, bounds,
-                            scale, animationTime > 0 ? animationTime : 1);
-                } else { 
-                    activity = new ApplySmartBoundsActivity(shapeNode, bounds,
-                            scale, animationTime > 0 ? animationTime : 1);
-                }
-            }
-            if (animationTime > 0) {
-                // schedule the activity
-                NodeUtil.schedulePrimaryActivity(shapeNode, activity);
-            } else {
-                // unschedule a currently running primary activity on the node if any
-                NodeUtil.unschedulePrimaryActivity(shapeNode);
-                // instantly apply the activity without scheduling it
-                ((IStartingAndFinishingActivity) activity).activityStarted(); 
-                ((IStartingAndFinishingActivity) activity).activityFinished(); 
-            }
-        }
-        recordedChanges.clear();
-
-        // apply a proper zoom handling if requested
-        zoom(zoomStyle, animationTime);
-    }
 
     /**
      * Installs a change listener being in charge of updating <code>nodeNode</code>'s coordinates

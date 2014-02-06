@@ -319,7 +319,7 @@ public abstract class AbstractKGERenderingController
      * Updates the rendering by removing the current rendering and evaluating the rendering data
      * attached to the graph element.
      */
-    void updateRendering() {
+    private void updateRendering() {
         // remove the rendering adapter
         if (currentRendering != null) {
             unregisterElementAdapter();
@@ -386,7 +386,7 @@ public abstract class AbstractKGERenderingController
                         final KRendering rendering = element.getData(KRendering.class);
                         if (rendering != currentRendering) {
                             // a rendering has been added or removed
-                            updateRenderingInUi();
+                            scheduleRenderingUpdate();
                         }
                         break;
                     default:
@@ -401,7 +401,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Unregisters the adapter currently installed on the element.
      */
-    private void unregisterElementAdapter() {
+    void unregisterElementAdapter() {
         if (elementAdapter != null) {
             element.eAdapters().remove(elementAdapter);
             elementAdapter = null;
@@ -509,8 +509,9 @@ public abstract class AbstractKGERenderingController
                     }
 
                     // handle other changes by reevaluating the rendering
-                    updateRenderingInUi();
+                    scheduleRenderingUpdate();
                     break;
+
                 default:
                     break;
                 }
@@ -529,6 +530,17 @@ public abstract class AbstractKGERenderingController
             currentRendering.eAdapters().remove(renderingDeepAdapter);
             renderingDeepAdapter = null;
         }
+    }
+
+    /**
+     * Schedules a re-evaluation of this' KGE's rendering.<br>
+     * The scheduling allows to collect a bunch of changes within some time and apply them in one
+     * run, which is desirable in combination with the new EMF compare-based incremental update.
+     * <br>
+     * In addition, this automatically realizes the switching to the UI thread. 
+     */
+    private void scheduleRenderingUpdate() {
+        diagramController.scheduleRenderingUpdate(this);
     }
 
     /**
@@ -557,7 +569,7 @@ public abstract class AbstractKGERenderingController
     /**
      * A short convenience method for invoking {@link #updateRendering()} in UI context.
      */
-    private void updateRenderingInUi() {
+    void updateRenderingInUi() {
         runInUI(this.updateRenderingRunnable);
     }
 
