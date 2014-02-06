@@ -19,11 +19,11 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -42,17 +42,12 @@ import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KSpline;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.math.KVectorChain;
-import de.cau.cs.kieler.core.math.KielerMath;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -74,7 +69,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
@@ -99,15 +93,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public class DiagramController {
 
-    /**
-     * Property name of edge layout listeners updating the edge node. Listeners are attached to edge
-     * nodes via this name allowing to detach them from the edge layout if the edge is removed from
-     * the KGraph.
-     * 
-     * @author chsch
-     */
-    private static final String K_EDGE_LAYOUT_LISTENER = "KEdgeLayoutListener";
-
     /** the property for the Piccolo2D representation of a node. */
     private static final IProperty<INode> REP = new Property<INode>(
             "klighd.piccolo.representation");
@@ -123,14 +108,6 @@ public class DiagramController {
     /** the property for the Piccolo2D representation of a label. */
     private static final IProperty<KLabelNode> LABEL_REP = new Property<KLabelNode>(
             "klighd.piccolo.representation");
-
-    /** the property for remembering the edge sync adapter on a node. */
-    private static final IProperty<AdapterImpl> CHILDREN_SYNC_ADAPTER = new Property<AdapterImpl>(
-            "klighd.childrenSyncAdapter");
-
-    /** the property for remembering the edge sync adapter on a node. */
-    private static final IProperty<AdapterImpl> EDGE_SYNC_ADAPTER = new Property<AdapterImpl>(
-            "klighd.edgeSyncAdapter");
 
     /** the attribute key for the edge offset listeners. */
     private static final Object EDGE_OFFSET_LISTENER_KEY = new Object();
@@ -479,7 +456,7 @@ public class DiagramController {
                                     Predicates.or(
                                             AbstractKGERenderingController.IS_COLLAPSED_RENDERING,
                                             AbstractKGERenderingController.IS_EXPANDED_RENDERING))) {
-                                nodeNode.getRenderingController().initialize(true);
+                                nodeNode.getRenderingController().updateRendering();
                             }
                         }
                     });
@@ -573,7 +550,7 @@ public class DiagramController {
         RenderingContextData.get(parent).setProperty(KlighdInternalProperties.POPULATED, true);
 
         if (sync) {
-            installChildrenSyncAdapter(parentNode);
+            installChildrenSyncAdapter(parentNode, parent);
         }
     }
 
@@ -587,7 +564,7 @@ public class DiagramController {
      * @return the created node representation
      */
     private KNodeNode addNode(final INode parent, final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
+        final INode nodeRep = RenderingContextData.get(node).getProperty(REP);
 
         KNodeNode nodeNode;
         if (nodeRep instanceof KNodeTopNode) {
@@ -601,58 +578,46 @@ public class DiagramController {
         //  note that this condition implies that invisible children's children
         //  that are still contained in there parent will break the recursion
         //  of this method
-        if (nodeNode == null || nodeNode.getParent() == null) {
-            // if there is no Piccolo representation for the node create it
-            if (nodeNode == null) {
-                nodeNode = new KNodeNode(node, parent);
-                RenderingContextData.get(node).setProperty(REP, nodeNode);
-                if (record && isAutomaticallyArranged(node)) {
-                    // this avoids flickering and denotes the application of fade-in,
-                    //  see #handleRecordedChanges()
-                    nodeNode.setVisible(false);
-                }
-                updateLayout(nodeNode);
-                updateRendering(nodeNode);
-                handlePorts(nodeNode);
-                handleLabels(nodeNode, node);
-                addExpansionListener(nodeNode);
-
-                // add the node
-                parent.getChildAreaNode().addNode(nodeNode);
-                RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, true);
-
-                KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
-                boolean expand = data == null || data.getProperty(KlighdProperties.EXPAND);
-                // in case the EXPAND property is not set the default value 'true' is returned
-                nodeNode.getChildAreaNode().setExpanded(expand);
-                
-            } else {
-                if (record && isAutomaticallyArranged(node)) {
-                    nodeNode.setVisible(false);
-                }
-
-                // add the node
-                parent.getChildAreaNode().addNode(nodeNode);
-                RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, true);
-
-                // touch the expansion state, see the methods javadoc for details
-                nodeNode.getChildAreaNode().touchExpanded();
-            }
-
-            // add all incoming edges
-            for (KEdge incomingEdge : node.getIncomingEdges()) {
-                addEdge(incomingEdge);
-            }
-            
-            // add all outgoing edges
-            for (KEdge outgoingEdge : node.getOutgoingEdges()) {
-                addEdge(outgoingEdge);
-            }
-            
-            if (sync) {
-                installEdgeSyncAdapter(node);
-            }
+        if (nodeNode != null && nodeNode.getParent() != null) {
+            return nodeNode;
         }
+        
+        // if there is no Piccolo2D representation of the node create it
+        if (nodeNode == null) {
+            nodeNode = new KNodeNode(node, parent);
+            RenderingContextData.get(node).setProperty(REP, nodeNode);
+
+            updateRendering(nodeNode);
+            
+            addExpansionListener(nodeNode);
+
+            KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
+            boolean expand = data == null || data.getProperty(KlighdProperties.EXPAND);
+            // in case the EXPAND property is not set the default value 'true' is returned
+            nodeNode.getChildAreaNode().setExpanded(expand);
+            
+        } else {
+            // touch the expansion state, see the methods javadoc for details
+            nodeNode.getChildAreaNode().touchExpanded();
+        }
+
+        if (record && isAutomaticallyArranged(node)) {
+            // this avoids flickering and denotes the application of fade-in,
+            //  see #handleRecordedChanges()
+            nodeNode.setVisible(false);
+        }
+
+        // declare the node 'ACTIVE' that is required by 'handleEdges' 
+        RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, true);
+
+        updateLayout(nodeNode);
+        handleEdges(nodeNode);
+        handlePorts(nodeNode);
+        handleLabels(nodeNode, node);
+        
+        // add the node
+        parent.getChildAreaNode().addNode(nodeNode);
+        
         return nodeNode;
     }
 
@@ -687,50 +652,81 @@ public class DiagramController {
      *            hidden
      */
     private void removeNode(final KNode node, final boolean releaseControllers) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
-        if (nodeRep != null) {
-            KNodeNode nodeNode;
-            if (nodeRep instanceof KNodeTopNode) {
-                // if the node is the current top-node something went wrong
-                throw new RuntimeException("The top-node can never be removed from a parent node");
-            } else {
-                nodeNode = (KNodeNode) nodeRep;
-            }
+        final INode nodeRep = RenderingContextData.get(node).getProperty(REP);
 
-            if (nodeNode.getParent() == null) {
-                // nodeNode is not contained in the PNode tree since, e.g., it has been removed already
-                return;
-            }
-                
-            if (sync) {
-                uninstallEdgeSyncAdapter(node);
-            }
+        if (nodeRep == null) {
+            return;
+        }
+        
+        final KNodeNode nodeNode;
+        if (nodeRep instanceof KNodeTopNode) {
+            // if the node is the current top-node something went wrong
+            throw new RuntimeException("The top-node can never be removed from a parent node");
+        } else {
+            nodeNode = (KNodeNode) nodeRep;
+        }
 
-            // remove all incoming edges
-            for (KEdge incomingEdge : node.getIncomingEdges()) {
-                removeEdge(incomingEdge, releaseControllers);
-            }
-
-            // remove all outgoing edges
-            for (KEdge outgoingEdge : node.getOutgoingEdges()) {
-                removeEdge(outgoingEdge, releaseControllers);
-            }
-
-            // remove the node representation from the containing child area
-            nodeNode.removeFromParent();
-            RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, false);
+        if (nodeNode.getParent() == null) {
+            // nodeNode is not contained in the PNode tree since, e.g., it has been removed already
+            return;
+        }
             
-            if (releaseControllers) {
-                // release the objects kept in mind
-                nodeNode.getRenderingController().removeAllPNodeControllers();
-                // release the node rendering controller
-                nodeNode.setRenderingController(null);
-                // release the node representation from the node's renderingContextData
-                RenderingContextData.get(node).setProperty(REP, null);
-            }
+        uninstallLayoutSyncAdapter(node);
+        uninstallChildrenSyncAdapter(node);
+        uninstallEdgeSyncAdapter(node);
+        uninstallPortSyncAdapter(node);
+        uninstallLabelSyncAdapter(node);
+
+        // remove all incoming edges
+        for (KEdge incomingEdge : node.getIncomingEdges()) {
+            removeEdge(incomingEdge, releaseControllers);
+        }
+
+        // remove all outgoing edges
+        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+            removeEdge(outgoingEdge, releaseControllers);
+        }
+
+        // remove the node representation from the containing child area
+        nodeNode.removeFromParent();
+        RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, false);
+        
+        if (releaseControllers) {
+            // release the objects kept in mind
+            nodeNode.getRenderingController().removeAllPNodeControllers();
+            // release the node rendering controller
+            nodeNode.setRenderingController(null);
+            // release the child (label)nodes
+            nodeNode.removeAllChildren();
+            // release the node representation from the node's renderingContextData
+            RenderingContextData.get(node).setProperty(REP, null);
         }
     }
 
+
+    /**
+     * Adds representations for edges attached to the corresponding node.
+     * 
+     * @param nodeNode
+     *            the node representation
+     */
+    private void handleEdges(final KNodeNode nodeNode) {
+        KNode node = nodeNode.getGraphElement();
+
+        // add all incoming edges
+        for (KEdge incomingEdge : node.getIncomingEdges()) {
+            addEdge(incomingEdge);
+        }
+        
+        // add all outgoing edges
+        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+            addEdge(outgoingEdge);
+        }
+        
+        if (sync) {
+            installEdgeSyncAdapter(node);
+        }
+    }
 
     /**
      * Adds a representation for the edge to the appropriate child area.
@@ -740,57 +736,52 @@ public class DiagramController {
      */
     private void addEdge(final KEdge edge) {
         KEdgeNode edgeNode = RenderingContextData.get(edge).getProperty(EDGE_REP);
-        // only add the representation if it is not added already
-        if (edgeNode == null || edgeNode.getParent() == null) {
-            if (edgeNode == null) {
-                KNode source = edge.getSource();
-                KNode target = edge.getTarget();
-                if (source != null
-                        && target != null
-                        && RenderingContextData.get(source).getProperty(
-                                KlighdInternalProperties.ACTIVE)
-                        && RenderingContextData.get(target).getProperty(
-                                KlighdInternalProperties.ACTIVE)) {
-                    // if there is no Piccolo representation for the edge create it
-                    if (edgeNode == null) {
-                        edgeNode = new KEdgeNode(edge);
-                        RenderingContextData.get(edge).setProperty(EDGE_REP, edgeNode);
-                        if (record && isAutomaticallyArranged(edge)) {
-                            // this avoids flickering and denotes the application of fade-in,
-                            //  see #handleRecordedChanges()
-                            edgeNode.setVisible(false);
-                        }
-                        updateLayout(edgeNode);
-                        updateRendering(edgeNode);
-                        handleLabels(edgeNode, edge);
-                    }
 
-                    // the following is needed in case of interlevel edges:
-                    //  edges ending in an outer child area will be clipped by the inner childArea;
-                    //  the clipping is generally intended and is realized by KChildAreaNode
-
-                    // find and set the parent for the edge
-                    updateEdgeParent(edgeNode);
-                    RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE,
-                            true);
-
-                    // update the offset of the edge layout to the containing child area
-                    updateEdgeOffset(edgeNode);
-                }
-            } else {
-                if (record && isAutomaticallyArranged(edge)) {
-                    edgeNode.setVisible(false);
-                }
-
-                // see comments above
-                // find and set the parent for the edge
-                updateEdgeParent(edgeNode);
-                RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, true);
-
-                // update the offset of the edge layout to the containing child area
-                updateEdgeOffset(edgeNode);
-            }
+        // only add a representation if none is added already
+        if (edgeNode != null && edgeNode.getParent() != null) {
+            return;
         }
+
+        final KNode source = edge.getSource();
+        final KNode target = edge.getTarget();
+        
+        final boolean sourceAndTargetActive = source != null && target != null
+                && RenderingContextData.get(source).getProperty(KlighdInternalProperties.ACTIVE)
+                && RenderingContextData.get(target).getProperty(KlighdInternalProperties.ACTIVE);
+        
+        if (!sourceAndTargetActive) {
+            return;
+        }
+        
+        // if there is no Piccolo2D representation for the node create it
+        if (edgeNode == null) {
+            edgeNode = new KEdgeNode(edge);
+            RenderingContextData.get(edge).setProperty(EDGE_REP, edgeNode);
+            
+            updateRendering(edgeNode);
+        }
+
+        // note that 'edgeNode' is not contained in any parent and, thus, fires no events
+        if (record && isAutomaticallyArranged(edge)) {
+            // this avoids flickering and denotes the application of fade-in,
+            //  see #handleRecordedChanges()
+            edgeNode.setVisible(false);
+        }
+        
+        // it is still not contained ...
+        updateLayout(edgeNode);
+        handleLabels(edgeNode, edge);
+
+        // the following is needed in case of interlevel edges:
+        //  edges ending in an outer child area will be clipped by the inner childArea;
+        //  the clipping is generally intended and is realized by KChildAreaNode
+
+        // find and set the parent of the edge, i.e. add it into the figure tree
+        updateEdgeParent(edgeNode);
+        RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, true);
+        
+        // update the offset of the edge layout to the containing child area
+        updateEdgeOffset(edgeNode);
     }
 
     /**
@@ -805,32 +796,30 @@ public class DiagramController {
      */
     private void removeEdge(final KEdge edge, final boolean releaseControllers) {
         KEdgeNode edgeNode = RenderingContextData.get(edge).getProperty(EDGE_REP);
-        if (edgeNode != null) {
-            // remove the edge offset listeners
-            removeEdgeOffsetListener(edgeNode);
+        if (edgeNode == null) {
+            return;
+        }
 
-            // remove KEdgeLayoutAdapter
-            // chsch: added this for performance reasons to get rid of out-dated edges and edge
-            // listeners
-            final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
-            final Object edgeLayoutAdapter = edgeNode.getAttribute(K_EDGE_LAYOUT_LISTENER);
-            if (edgeLayout != null && edgeLayoutAdapter != null) {
-                edgeLayout.eAdapters().remove(edgeLayoutAdapter);
-            }
+        // remove the edge offset listeners
+        removeEdgeOffsetListener(edgeNode);
 
-            // remove the edge representation from the containing child area
-            edgeNode.removeFromParent();
-            RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, false);
-            
-            // due to #removeNode() this method might be performed multiple times so: 
-            if (releaseControllers && edgeNode.getRenderingController() != null) {
-                // release the objects kept in mind
-                edgeNode.getRenderingController().removeAllPNodeControllers();
-                // release the node rendering controller
-                edgeNode.setRenderingController(null);
-                // release the edge representation from the edge's renderingContextData
-                RenderingContextData.get(edge).setProperty(EDGE_REP, null);
-            }
+        uninstallLayoutSyncAdapter(edge);
+        uninstallLabelSyncAdapter(edge);
+        
+        // remove the edge representation from the containing child area
+        edgeNode.removeFromParent();
+        RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, false);
+        
+        // due to #removeNode() this method might be performed multiple times so: 
+        if (releaseControllers && edgeNode.getRenderingController() != null) {
+            // release the objects kept in mind
+            edgeNode.getRenderingController().removeAllPNodeControllers();
+            // release the node rendering controller
+            edgeNode.setRenderingController(null);
+            // release the child (label)nodes
+            edgeNode.removeAllChildren();
+            // release the edge representation from the edge's renderingContextData
+            RenderingContextData.get(edge).setProperty(EDGE_REP, null);
         }
     }
 
@@ -843,13 +832,14 @@ public class DiagramController {
      */
     private void handlePorts(final KNodeNode nodeNode) {
         KNode node = nodeNode.getGraphElement();
+
         // create the ports
         for (KPort port : node.getPorts()) {
             addPort(nodeNode, port);
         }
 
         if (sync) {
-            installPortSyncAdapter(nodeNode);
+            installPortSyncAdapter(nodeNode, node);
         }
     }
 
@@ -864,27 +854,30 @@ public class DiagramController {
     private void addPort(final KNodeNode parent, final KPort port) {
         KPortNode portNode = RenderingContextData.get(port).getProperty(PORT_REP);
 
-        // if there is no Piccolo representation for the port create it
-        if (portNode == null || portNode.getParent() == null) {
-            if (portNode == null) {
-                portNode = new KPortNode(port);
-                RenderingContextData.get(port).setProperty(PORT_REP, portNode);
-                
-                updateLayout(portNode);
-                updateRendering(portNode);
-                handleLabels(portNode, port);
-            }
-
-            if (record && isAutomaticallyArranged(port)) {
-                // this avoids flickering and denotes the application of fade-in,
-                //  see #handleRecordedChanges()
-                portNode.setVisible(false);
-            }
-
-            // add the port
-            parent.addPort(portNode);
-            RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, true);
+        if (portNode != null && portNode.getParent() != null) {
+            return;
         }
+        
+        // if there is no Piccolo2D representation of the port create it
+        if (portNode == null) {
+            portNode = new KPortNode(port);
+            RenderingContextData.get(port).setProperty(PORT_REP, portNode);
+            
+            updateRendering(portNode);
+        }
+
+        if (record && isAutomaticallyArranged(port)) {
+            // this avoids flickering and denotes the application of fade-in,
+            //  see #handleRecordedChanges()
+            portNode.setVisible(false);
+        }
+
+        updateLayout(portNode);
+        handleLabels(portNode, port);
+        
+        // add the port
+        parent.addPort(portNode);
+        RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, true);
     }
 
     /**
@@ -899,19 +892,26 @@ public class DiagramController {
      */
     private void removePort(final KPort port, final boolean releaseControllers) {
         KPortNode portNode = RenderingContextData.get(port).getProperty(PORT_REP);
-        if (portNode != null) {
-            // remove the port representation from the containing node
-            portNode.removeFromParent();
-            RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, false);
+        if (portNode == null) {
+            return;
+        }
+        
+        uninstallLayoutSyncAdapter(port);
+        uninstallLabelSyncAdapter(port);
+        
+        // remove the port representation from the containing node
+        portNode.removeFromParent();
+        RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, false);
 
-            if (releaseControllers) {
-                // release the objects kept in mind
-                portNode.getRenderingController().removeAllPNodeControllers();
-                // release the node rendering controller
-                portNode.setRenderingController(null);
-                // release the port representation from the port's renderingContextData
-                RenderingContextData.get(port).setProperty(PORT_REP, null);
-            }
+        if (releaseControllers) {
+            // release the objects kept in mind
+            portNode.getRenderingController().removeAllPNodeControllers();
+            // release the node rendering controller
+            portNode.setRenderingController(null);
+            // release the child (label)nodes
+            portNode.removeAllChildren();
+            // release the port representation from the port's renderingContextData
+            RenderingContextData.get(port).setProperty(PORT_REP, null);
         }
     }
 
@@ -946,31 +946,34 @@ public class DiagramController {
     private void addLabel(final ILabeledGraphElement<?> labeledNode, final KLabel label) {
         KLabelNode labelNode = RenderingContextData.get(label).getProperty(LABEL_REP);
 
-        // if there is no Piccolo representation for the label create it
-        if (labelNode == null || labelNode.getParent() == null) {
-            if (labelNode == null) {
-                labelNode = new KLabelNode(label);
-                RenderingContextData.get(label).setProperty(LABEL_REP, labelNode);
-                
-                labelNode.setText(label.getText());
-                updateLayout(labelNode);
-                updateRendering(labelNode);
-
-                if (sync) {
-                    installTextSyncAdapter(labelNode);
-                }
-            }
-
-            if (record && isAutomaticallyArranged(label)) {
-                // this avoids flickering and denotes the application of fade-in,
-                //  see #handleRecordedChanges()
-                labelNode.setVisible(false);
-            }
-            
-            // add the label
-            labeledNode.addLabel(labelNode);
-            RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, true);
+        if (labelNode != null && labelNode.getParent() != null) {
+            return;
         }
+
+        // if there is no Piccolo2d representation of the label create it
+        if (labelNode == null) {
+            labelNode = new KLabelNode(label);
+            RenderingContextData.get(label).setProperty(LABEL_REP, labelNode);
+
+            updateRendering(labelNode);
+        }
+
+        if (record && isAutomaticallyArranged(label)) {
+            // this avoids flickering and denotes the application of fade-in,
+            //  see #handleRecordedChanges()
+            labelNode.setVisible(false);
+        }
+
+        updateLayout(labelNode);
+
+        labelNode.setText(label.getText());
+        if (sync) {
+            installTextSyncAdapter(labelNode, label);
+        }
+
+        // add the label
+        labeledNode.addLabel(labelNode);
+        RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, true);
     }
 
     /**
@@ -985,20 +988,43 @@ public class DiagramController {
      */
     private void removeLabel(final KLabel label, final boolean releaseControllers) {
         KLabelNode labelNode = RenderingContextData.get(label).getProperty(LABEL_REP);
-        if (labelNode != null) {
-            // remove the label representation from the containing node
-            labelNode.removeFromParent();
-            RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, false);
-
-            if (releaseControllers) {
-                // release the objects kept in mind
-                labelNode.getRenderingController().removeAllPNodeControllers();
-                // release the node rendering controller
-                labelNode.setRenderingController(null);
-                // release the label representation from the label's renderingContextData
-                RenderingContextData.get(label).setProperty(LABEL_REP, null);
-            }
+        if (labelNode == null) {
+            return;
         }
+
+        uninstallLayoutSyncAdapter(label);
+        uninstallTextSyncAdapter(label);
+
+        // remove the label representation from the containing node
+        labelNode.removeFromParent();
+        RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, false);
+
+        if (releaseControllers) {
+            // release the objects kept in mind
+            labelNode.getRenderingController().removeAllPNodeControllers();
+            // release the node rendering controller
+            labelNode.setRenderingController(null);
+            // release the label representation from the label's renderingContextData
+            RenderingContextData.get(label).setProperty(LABEL_REP, null);
+        }
+    }
+
+
+    private boolean isAutomaticallyArranged(final KGraphElement element) {
+        KShapeLayout shapeLayout = this.topNode.getGraphElement().getData(KShapeLayout.class);
+        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+            return false;
+        }
+        shapeLayout = element.getData(KShapeLayout.class);
+        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+            return false;
+        }
+        final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
+        shapeLayout = container == null ? null : container.getData(KShapeLayout.class);
+        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+            return false;
+        }
+        return true;
     }
 
 
@@ -1163,8 +1189,9 @@ public class DiagramController {
             final boolean renderedAsPolyline = rendering instanceof KPolyline
                     && !(rendering instanceof KSpline);
             
-            final Point2D[] bendPoints = getBendPoints(edgeLayout, renderedAsPolyline);
-            edgeRep.setBendPoints(bendPoints);
+            edgeRep.setBendPoints(KEdgeLayoutEdgeNodeUpdater.getBendPoints(edgeLayout,
+                    renderedAsPolyline));
+            edgeRep.setJunctionPoints(KEdgeLayoutEdgeNodeUpdater.getJunctionPoints(edgeLayout));
         }
     }
 
@@ -1181,7 +1208,7 @@ public class DiagramController {
             //  AbstractRenderingController
             renderingController = new KNodeRenderingController(nodeRep);
             // nodeRep.addAttribute(RENDERING_KEY, renderingController);
-            renderingController.initialize(sync);
+            renderingController.initialize(this, sync);
         } else {
             renderingController.internalUpdateRendering();
         }
@@ -1200,7 +1227,7 @@ public class DiagramController {
             //  AbstractRenderingController
             renderingController = new KPortRenderingController(portRep);
             // portRep.addAttribute(RENDERING_KEY, renderingController);
-            renderingController.initialize(sync);
+            renderingController.initialize(this, sync);
         } else {
             renderingController.internalUpdateRendering();
         }
@@ -1219,7 +1246,7 @@ public class DiagramController {
             //  AbstractRenderingController
             renderingController = new KLabelRenderingController(labelRep);
             // labelRep.addAttribute(RENDERING_KEY, renderingController);
-            renderingController.initialize(sync);
+            renderingController.initialize(this, sync);
         } else {
             renderingController.internalUpdateRendering();
         }
@@ -1238,7 +1265,7 @@ public class DiagramController {
             //  AbstractRenderingController
             renderingController = new KEdgeRenderingController(edgeRep);
             // edgeRep.addAttribute(RENDERING_KEY, renderingController);
-            renderingController.initialize(sync);
+            renderingController.initialize(this, sync);
         } else {
             renderingController.internalUpdateRendering();
         }
@@ -1247,6 +1274,9 @@ public class DiagramController {
 
     // ---------------------------------------------------------------------------------- //
     //  Layout data synchronization
+
+    private static final Predicate<Object> INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER
+            = Predicates.instanceOf(KGEShapeLayoutPNodeUpdater.class);
 
     /**
      * Installs an adapter on the represented node to synchronize new shape layouts with specified
@@ -1258,8 +1288,16 @@ public class DiagramController {
     private void installLayoutSyncAdapter(final KNodeNode nodeRep) {
         final KNode node = nodeRep.getGraphElement();
 
+        // remove the currently installed adapter if any
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
+        
         // register adapter on the node to stay in sync
         node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeRep, this));
+    }
+
+    private void uninstallLayoutSyncAdapter(final KNode node) {
+        // remove the currently installed adapter if any
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
     }
 
     /**
@@ -1272,8 +1310,16 @@ public class DiagramController {
     private void installLayoutSyncAdapter(final KPortNode portRep) {
         final KPort port = portRep.getGraphElement();
 
+        // remove the currently installed adapter if any
+        Iterables.removeIf(port.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
+        
         // register adapter on the port to stay in sync
         port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portRep, this));
+    }
+
+    private void uninstallLayoutSyncAdapter(final KPort port) {
+        // remove the currently installed adapter if any
+        Iterables.removeIf(port.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
     }
 
     /**
@@ -1286,62 +1332,43 @@ public class DiagramController {
     private void installLayoutSyncAdapter(final KLabelNode labelRep) {
         final KLabel label = labelRep.getGraphElement();
         
+        // remove the currently installed adapter if any
+        Iterables.removeIf(label.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
+        
         // register adapter on the label to stay in sync
         label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelRep, this));
     }
 
+    private void uninstallLayoutSyncAdapter(final KLabel label) {
+        // remove the currently installed adapter if any
+        Iterables.removeIf(label.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
+    }
+
+
+    private static final Predicate<Object> INSTANCEOF_EDGE_LAYOUT_SYNC_ADAPTER
+            = Predicates.instanceOf(KEdgeLayoutEdgeNodeUpdater.class);
+
     /**
      * Installs an adapter on the represented edge to synchronize the representation with the
      * specified layout.
-     * 
-     * @author chsch: Method massively changed.
-     * 
+     *
      * @param edgeRep
      *            the edge representation
      */
     private void installLayoutSyncAdapter(final KEdgeNode edgeRep) {
         final KEdge edge = edgeRep.getGraphElement();
-        final KRendering rendering = edge.getData(KRendering.class);
-        final boolean renderedAsPolyline = rendering instanceof KPolyline
-                && !(rendering instanceof KSpline);
+
+        // remove the currently installed adapter if any
+        Iterables.removeIf(edge.eAdapters(), INSTANCEOF_EDGE_LAYOUT_SYNC_ADAPTER);
 
         // register adapter on the edge to stay in sync
-        edge.eAdapters().add(new LimitedKGraphContentAdapter(KEdgeLayout.class) {
-
-            public void notifyChanged(final Notification notification) {
-                super.notifyChanged(notification);
-
-                Object notifier = notification.getNotifier();
-                int featureId = notification.getFeatureID(KEdgeLayout.class);
-                if (notifier instanceof KEdgeLayout
-                        && (featureId == KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS
-                                || featureId == KLayoutDataPackage.KEDGE_LAYOUT__SOURCE_POINT 
-                                || featureId == KLayoutDataPackage.KEDGE_LAYOUT__TARGET_POINT)
-                        || notifier instanceof KPoint
-                        && (featureId == KLayoutDataPackage.KPOINT__X 
-                                || featureId == KLayoutDataPackage.KPOINT__Y)) {
-
-                    KEdgeLayout edL = edge.getData(KEdgeLayout.class);
-                    // check if a edge layout is exists
-                    if (edL != null) {
-                        if (record) {
-                            recordChange(edgeRep, Pair.of(
-                                    getBendPoints(edL, renderedAsPolyline), getJunctionPoints(edL)));
-                        } else {
-                            edgeRep.setBendPoints(getBendPoints(edL, renderedAsPolyline));
-                            edgeRep.setJunctionPoints(getJunctionPoints(edL));
-                            
-                            final KEdgeRenderingController controller = edgeRep.getRenderingController();
-                            if (controller != null) {
-                                controller.modifyStyles();
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        edge.eAdapters().add(new KEdgeLayoutEdgeNodeUpdater(edgeRep, this));
     }
 
+    private void uninstallLayoutSyncAdapter(final KEdge edge) {
+        // remove the currently installed adapter if any
+        Iterables.removeIf(edge.eAdapters(), INSTANCEOF_EDGE_LAYOUT_SYNC_ADAPTER);
+    }
 
     // ---------------------------------------------------------------------------------- //
     //  KGraphElement data synchronization
@@ -1352,33 +1379,78 @@ public class DiagramController {
      * 
      * @param nodeRep
      *            the node representation
+     * @param node
+     *            the node
      */
-    private void installChildrenSyncAdapter(final INode nodeRep) {
-        KNode node = nodeRep.getGraphElement();
+    private void installChildrenSyncAdapter(final INode nodeRep, final KNode node) {
+        // remove any existing children sync adapters, which may be out-of-date 
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_CHILDREN_SYNC_ADAPTER);
         
         // add an adapter on the node's children
-        node.eAdapters().add(new AdapterImpl() {
-            
-            public void notifyChanged(final Notification notification) {
+        node.eAdapters().add(new ChildrenSyncAdapter(nodeRep));
+    }
 
-                if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
-                    switch (notification.getEventType()) {
-                    case Notification.ADD: {
-                        final KNode addedNode = (KNode) notification.getNewValue();
+    /**
+     * Uninstalls the children synchronization adapter from a {@link KNode}.
+     * 
+     * @param node
+     *            the node
+     */
+    private void uninstallChildrenSyncAdapter(final KNode node) {
+        // remove the currently installed children sync adapters
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_CHILDREN_SYNC_ADAPTER);
+    }
+
+    private static final Predicate<Object> INSTANCEOF_CHILDREN_SYNC_ADAPTER
+            = Predicates.instanceOf(ChildrenSyncAdapter.class);
+
+    /**
+     * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     */
+    private final class ChildrenSyncAdapter extends AdapterImpl {
+        private final INode nodeRep;
+        
+        private ChildrenSyncAdapter(final INode theNodeRep) {
+            this.nodeRep = theNodeRep;
+        }
+        
+        public void notifyChanged(final Notification notification) {
+
+            if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
+                switch (notification.getEventType()) {
+                case Notification.ADD: {
+                    final KNode addedNode = (KNode) notification.getNewValue();
+                    addNode(nodeRep, addedNode);
+                    break;
+                }
+                case Notification.ADD_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
+
+                    for (KNode addedNode : addedNodes) {
                         addNode(nodeRep, addedNode);
-                        break;
                     }
-                    case Notification.ADD_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
+                    break;
+                }
+                case Notification.REMOVE: {
+                    final KNode removedNode = (KNode) notification.getOldValue();
+                    removeNode(removedNode, true);
 
-                        for (KNode addedNode : addedNodes) {
-                            addNode(nodeRep, addedNode);
-                        }
-                        break;
+                    // Removing all contained nodes is required to remove all outgoing or
+                    //  incoming edges, as in case of interlevel ones their representing
+                    //  KEdgeNodes are attached to one of n's parent representatives, which might
+                    //  be one of removedNode's parent representatives.
+                    for (KNode n : Iterables2.toIterable(Iterators.filter(
+                            removedNode.eAllContents(), KNode.class))) {
+                        removeNode(n, true);
                     }
-                    case Notification.REMOVE: {
-                        final KNode removedNode = (KNode) notification.getOldValue();
+                    break;
+                }
+                case Notification.REMOVE_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
+
+                    for (KNode removedNode : removedNodes) {
                         removeNode(removedNode, true);
 
                         // Removing all contained nodes is required to remove all outgoing or
@@ -1389,44 +1461,13 @@ public class DiagramController {
                                 removedNode.eAllContents(), KNode.class))) {
                             removeNode(n, true);
                         }
-                        break;
                     }
-                    case Notification.REMOVE_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
-
-                        for (KNode removedNode : removedNodes) {
-                            removeNode(removedNode, true);
-
-                            // Removing all contained nodes is required to remove all outgoing or
-                            //  incoming edges, as in case of interlevel ones their representing
-                            //  KEdgeNodes are attached to one of n's parent representatives, which might
-                            //  be one of removedNode's parent representatives.
-                            for (KNode n : Iterables2.toIterable(Iterators.filter(
-                                    removedNode.eAllContents(), KNode.class))) {
-                                removeNode(n, true);
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                        break;
-                    }
+                    break;
+                }
+                default:
+                    break;
                 }
             }
-        });
-    }
-
-    /**
-     * Uninstalls the children synchronization adapter on a node.
-     * 
-     * @param node
-     *            the node
-     */
-    private void uninstallChildrenSyncAdapter(final KNode node) {
-        Adapter childrenSyncAdapter = RenderingContextData.get(node).getProperty(CHILDREN_SYNC_ADAPTER);
-        if (childrenSyncAdapter != null) {
-            node.eAdapters().remove(childrenSyncAdapter);
         }
     }
 
@@ -1438,77 +1479,75 @@ public class DiagramController {
      *            the node
      */
     private void installEdgeSyncAdapter(final KNode node) {
-        RenderingContextData data = RenderingContextData.get(node);
-
-        // remove the currently installed adapter if any
-        AdapterImpl edgeSyncAdapter = data.getProperty(EDGE_SYNC_ADAPTER);
-        if (edgeSyncAdapter != null) {
-            node.eAdapters().remove(edgeSyncAdapter);
-        }
-
-        // create an adapter on the node's edges
-        edgeSyncAdapter = new AdapterImpl() {
-
-            public void notifyChanged(final Notification notification) {
-                int featureId = notification.getFeatureID(KNode.class);
-                if (featureId == KGraphPackage.KNODE__OUTGOING_EDGES
-                        || featureId == KGraphPackage.KNODE__INCOMING_EDGES) {
-
-                    switch (notification.getEventType()) {
-                    case Notification.ADD: {
-                        final KEdge addedEdge = (KEdge) notification.getNewValue();
-                        addEdge(addedEdge);
-                        break;
-                    }
-                    case Notification.ADD_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KEdge> addedEdges = (List<KEdge>) notification.getNewValue();
-
-                        for (KEdge addedEdge : addedEdges) {
-                            addEdge(addedEdge);
-                        }
-                        break;
-                    }
-                    case Notification.REMOVE: {
-                        final KEdge removedEdge = (KEdge) notification.getOldValue();
-                        removeEdge(removedEdge, true);
-                        break;
-                    }
-                    case Notification.REMOVE_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
-
-                        for (KEdge removedEdge : removedEdges) {
-                            removeEdge(removedEdge, true);
-                        }
-                        break;
-                    }
-                    default:
-                        break;
-                    }
-                }
-            }
-        };
-
-        // remember the adapter
-        data.setProperty(EDGE_SYNC_ADAPTER, edgeSyncAdapter);
+        // remove any existing edge sync adapters, which may be out-of-date 
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_EDGE_SYNC_ADAPTER);
 
         // add the adapter
-        node.eAdapters().add(edgeSyncAdapter);
+        node.eAdapters().add(new EdgeSyncAdapter());
     }
-
+    
     /**
-     * Uninstalls the edge synchronization adapter on a node.
+     * Uninstalls the edge synchronization adapters from a {@link KNode}.
      * 
      * @param node
      *            the node
      */
     private void uninstallEdgeSyncAdapter(final KNode node) {
-        Adapter edgeSyncAdapter = RenderingContextData.get(node).getProperty(EDGE_SYNC_ADAPTER);
-        if (edgeSyncAdapter != null) {
-            node.eAdapters().remove(edgeSyncAdapter);
+        // remove the currently installed edge sync adapters
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_EDGE_SYNC_ADAPTER);
+    }
+
+    private static final Predicate<Object> INSTANCEOF_EDGE_SYNC_ADAPTER
+            = Predicates.instanceOf(EdgeSyncAdapter.class);
+
+    /**
+     * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     */
+    private final class EdgeSyncAdapter extends AdapterImpl {
+
+        public void notifyChanged(final Notification notification) {
+            int featureId = notification.getFeatureID(KNode.class);
+            if (featureId == KGraphPackage.KNODE__OUTGOING_EDGES
+                    || featureId == KGraphPackage.KNODE__INCOMING_EDGES) {
+                final boolean releaseChildrenAndControllers =
+                        featureId == KGraphPackage.KNODE__OUTGOING_EDGES;
+                
+                switch (notification.getEventType()) {
+                case Notification.ADD: {
+                    final KEdge addedEdge = (KEdge) notification.getNewValue();
+                    addEdge(addedEdge);
+                    break;
+                }
+                case Notification.ADD_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KEdge> addedEdges = (List<KEdge>) notification.getNewValue();
+
+                    for (KEdge addedEdge : addedEdges) {
+                        addEdge(addedEdge);
+                    }
+                    break;
+                }
+                case Notification.REMOVE: {
+                    final KEdge removedEdge = (KEdge) notification.getOldValue();
+                    removeEdge(removedEdge, releaseChildrenAndControllers);
+                    break;
+                }
+                case Notification.REMOVE_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
+
+                    for (KEdge removedEdge : removedEdges) {
+                        removeEdge(removedEdge, releaseChildrenAndControllers);
+                    }
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
         }
     }
+
 
     /**
      * Installs an adapter on the represented node to synchronize the ports of the representation
@@ -1516,51 +1555,80 @@ public class DiagramController {
      * 
      * @param nodeRep
      *            the node representation
+     * @param node
+     *            the node
      */
-    private void installPortSyncAdapter(final KNodeNode nodeRep) {
-        KNode node = nodeRep.getGraphElement();
-        // add an adapter on the node's ports
-        node.eAdapters().add(new AdapterImpl() {
+    private void installPortSyncAdapter(final KNodeNode nodeRep, final KNode node) {
+        // remove any existing port sync adapters, which may be out-of-date 
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_PORT_SYNC_ADAPTER);
 
-            public void notifyChanged(final Notification notification) {
-                if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__PORTS) {
+        // add the adapter
+        node.eAdapters().add(new PortSyncAdapter(nodeRep));
+    }
+    
+    /**
+     * Uninstalls the port synchronization adapters from a {@link KNode}.
+     * 
+     * @param node
+     *            the node
+     */
+    private void uninstallPortSyncAdapter(final KNode node) {
+        // remove the currently installed port sync adapters
+        Iterables.removeIf(node.eAdapters(), INSTANCEOF_PORT_SYNC_ADAPTER);
+    }
 
-                    switch (notification.getEventType()) {
-                    case Notification.ADD: {
-                        final KPort addedPort = (KPort) notification.getNewValue();
+    private static final Predicate<Object> INSTANCEOF_PORT_SYNC_ADAPTER
+            = Predicates.instanceOf(PortSyncAdapter.class);
+
+    /**
+     * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     */
+    private final class PortSyncAdapter extends AdapterImpl {
+        private final KNodeNode nodeRep;
+        
+        private PortSyncAdapter(final KNodeNode theNodeRep) {
+            this.nodeRep = theNodeRep;
+        }
+        
+        public void notifyChanged(final Notification notification) {
+            if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__PORTS) {
+
+                switch (notification.getEventType()) {
+                case Notification.ADD: {
+                    final KPort addedPort = (KPort) notification.getNewValue();
+                    addPort(nodeRep, addedPort);
+                    break;
+                }
+                case Notification.ADD_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KPort> addedPorts = (List<KPort>) notification.getNewValue();
+
+                    for (KPort addedPort : addedPorts) {
                         addPort(nodeRep, addedPort);
-                        break;
                     }
-                    case Notification.ADD_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KPort> addedPorts = (List<KPort>) notification.getNewValue();
+                    break;
+                }
+                case Notification.REMOVE: {
+                    final KPort removedPort = (KPort) notification.getOldValue();
+                    removePort(removedPort, true);
+                    break;
+                }
+                case Notification.REMOVE_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
 
-                        for (KPort addedPort : addedPorts) {
-                            addPort(nodeRep, addedPort);
-                        }
-                        break;
-                    }
-                    case Notification.REMOVE: {
-                        final KPort removedPort = (KPort) notification.getOldValue();
+                    for (KPort removedPort : removedPorts) {
                         removePort(removedPort, true);
-                        break;
                     }
-                    case Notification.REMOVE_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
-
-                        for (KPort removedPort : removedPorts) {
-                            removePort(removedPort, true);
-                        }
-                        break;
-                    }
-                    default:
-                        break;
-                    }
+                    break;
+                }
+                default:
+                    break;
                 }
             }
-        });
+        }
     }
+
 
     /**
      * Installs an adapter on the labeled element to synchronize the labels of the representation
@@ -1573,51 +1641,80 @@ public class DiagramController {
      */
     private void installLabelSyncAdapter(final ILabeledGraphElement<?> labeledNode,
             final KLabeledGraphElement labeledElement) {
+
+        // remove any existing label sync adapters, which may be out-of-date 
+        Iterables.removeIf(labeledElement.eAdapters(), INSTANCEOF_LABEL_SYNC_ADAPTER);
+
         // add an adapter on the labeled element's labels
-        labeledElement.eAdapters().add(new AdapterImpl() {
+        labeledElement.eAdapters().add(new LabelSyncAdapter(labeledNode));
+    }
+
+    /**
+     * Uninstalls the label synchronization adapters from a {@link KLabeledGraphElement}.
+     * 
+     * @param labeledElement
+     *            the {@link KLabeledGraphElement}
+     */
+    private void uninstallLabelSyncAdapter(final KLabeledGraphElement labeledElement) {
+        // remove the currently installed label sync adapters
+        Iterables.removeIf(labeledElement.eAdapters(), INSTANCEOF_LABEL_SYNC_ADAPTER);
+    }
+    
+    private static final Predicate<Object> INSTANCEOF_LABEL_SYNC_ADAPTER
+            = Predicates.instanceOf(LabelSyncAdapter.class);
+
+    /**
+     * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     */
+    private final class LabelSyncAdapter extends AdapterImpl {
+        private final ILabeledGraphElement<?> labeledNode;
+        
+        private LabelSyncAdapter(final ILabeledGraphElement<?> theLabeledNode) {
+            this.labeledNode = theLabeledNode;
+        }
+        
+        public void notifyChanged(final Notification notification) {
             
-            public void notifyChanged(final Notification notification) {
+            if (notification.getFeatureID(KLabeledGraphElement.class)
+                    == KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS) {
                 
-                if (notification.getFeatureID(KLabeledGraphElement.class)
-                        == KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS) {
-                    
-                    switch (notification.getEventType()) {
-                    case Notification.ADD: {
-                        final KLabel addedLabel = (KLabel) notification.getNewValue();
+                switch (notification.getEventType()) {
+                case Notification.ADD: {
+                    final KLabel addedLabel = (KLabel) notification.getNewValue();
+                    addLabel(labeledNode, addedLabel);
+                    break;
+                }
+                case Notification.ADD_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KLabel> addedLabels = (List<KLabel>) notification.getNewValue();
+
+                    for (KLabel addedLabel : addedLabels) {
                         addLabel(labeledNode, addedLabel);
-                        break;
                     }
-                    case Notification.ADD_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KLabel> addedLabels = (List<KLabel>) notification.getNewValue();
+                    break;
+                }
+                case Notification.REMOVE: {
+                    final KLabel removedLabel = (KLabel) notification.getOldValue();
+                    removeLabel(removedLabel, true);
+                    break;
+                }
+                case Notification.REMOVE_MANY: {
+                    @SuppressWarnings("unchecked")
+                    final List<KLabel> removedLabels = (List<KLabel>) notification
+                            .getOldValue();
 
-                        for (KLabel addedLabel : addedLabels) {
-                            addLabel(labeledNode, addedLabel);
-                        }
-                        break;
-                    }
-                    case Notification.REMOVE: {
-                        final KLabel removedLabel = (KLabel) notification.getOldValue();
+                    for (KLabel removedLabel : removedLabels) {
                         removeLabel(removedLabel, true);
-                        break;
                     }
-                    case Notification.REMOVE_MANY: {
-                        @SuppressWarnings("unchecked")
-                        final List<KLabel> removedLabels = (List<KLabel>) notification
-                                .getOldValue();
-
-                        for (KLabel removedLabel : removedLabels) {
-                            removeLabel(removedLabel, true);
-                        }
-                        break;
-                    }
-                    default:
-                        break;
-                    }
+                    break;
+                }
+                default:
+                    break;
                 }
             }
-        });
+        }
     }
+
 
     /**
      * Installs an adapter on the represented label to synchronize the text of the representation
@@ -1625,88 +1722,58 @@ public class DiagramController {
      * 
      * @param nodeRep
      *            the node representation
+     * @param label
+     *            the label
      */
-    private void installTextSyncAdapter(final KLabelNode labelRep) {
-        final KLabel node = labelRep.getGraphElement();
+    private void installTextSyncAdapter(final KLabelNode labelRep, final KLabel label) {
+        // remove any existing text sync adapters, which may be out-of-date 
+        Iterables.removeIf(label.eAdapters(), INSTANCEOF_TEXT_SYNC_ADAPTER);
+
         // add an adapter on the node's ports
-        node.eAdapters().add(new AdapterImpl() {
+        label.eAdapters().add(new TextSyncAdapter(labelRep));
+    }
+    
+    /**
+     * Uninstalls the text synchronization adapter(s) from a {@link KLabel}.
+     * 
+     * @param label
+     *            the {@link KLabel}
+     */
+    private void uninstallTextSyncAdapter(final KLabel label) {
+        // remove the currently installed text sync adapters
+        Iterables.removeIf(label.eAdapters(), INSTANCEOF_TEXT_SYNC_ADAPTER);
+    }
+    
+    private static final Predicate<Object> INSTANCEOF_TEXT_SYNC_ADAPTER
+            = Predicates.instanceOf(TextSyncAdapter.class);
+    
+    /**
+     * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     */
+    private final class TextSyncAdapter extends AdapterImpl {
+        private final KLabelNode labelRep;
+        
+        private TextSyncAdapter(final KLabelNode theLabelRep) {
+            this.labelRep = theLabelRep;
+        }
 
-            public void notifyChanged(final Notification notification) {
-                if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
+        public void notifyChanged(final Notification notification) {
+            if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
 
-                    switch (notification.getEventType()) {
-                    case Notification.SET:
-                        labelRep.setText(node.getText());
-                        break;
-                    default:
-                        break;
-                    }
+                switch (notification.getEventType()) {
+                case Notification.SET:
+                    labelRep.setText(notification.getNewStringValue());
+                    break;
+                default:
+                    break;
                 }
             }
-        });
+        }
     }
 
 
     // ---------------------------------------------------------------------------------- //
     //  Helper methods
-
-    /**
-     * Returns an array of bend points from the given {@code KEdgeLayout}.
-     * 
-     * @param edgeLayout
-     *            the edge layout
-     * @param renderedAsPolyline
-     *            true if the edge is rendered by a polyline, causes approximation of the bend
-     *            points if the layouter returned spline-based ones
-     * @return the bend points
-     */
-    private static Point2D[] getBendPoints(final KEdgeLayout edgeLayout,
-            final boolean renderedAsPolyline) {
-
-        // chsch: the following 8 lines for approximating spline connections are mainly taken
-        // from de.cau.cs.kieler.kiml.gmf.GmfLayoutEditPolicy#getBendPoints()
-        KVectorChain bendPoints = edgeLayout.createVectorChain();
-
-        // for connections that support splines the control points are passed without change
-        boolean layoutedAsSpline = edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING)
-                == EdgeRouting.SPLINES;
-        // in other cases an approximation is used // SUPPRESS CHECKSTYLE NEXT MagicNumber
-        if (renderedAsPolyline && layoutedAsSpline && bendPoints.size() >= 4) {
-            bendPoints = KielerMath.approximateSpline(bendPoints);
-        }
-
-        // build the bend point array
-        Point2D[] points = new Point2D[bendPoints.size()];
-        int i = 0;
-        for (KVector bend : bendPoints) {
-            points[i++] = new Point2D.Double(bend.x, bend.y);
-        }
-        return points;
-    }
-
-    /**
-     * Returns an array of junction points from the given {@code KEdgeLayout}.
-     * 
-     * @param edgeLayout
-     *            the edge layout
-     * @return the junction points or an empty Point2D[] if none exist
-     */
-    private static Point2D[] getJunctionPoints(final KEdgeLayout edgeLayout) {
-
-        final KVectorChain junctionPoints = edgeLayout.getProperty(LayoutOptions.JUNCTION_POINTS);
-        
-        if (junctionPoints == null || junctionPoints.isEmpty()) {
-            return new Point2D[0];
-        }
-        
-        // build the bend point array
-        Point2D[] points = new Point2D[junctionPoints.size()];
-        int i = 0;
-        for (KVector bend : junctionPoints) {
-            points[i++] = new Point2D.Double(bend.x, bend.y);
-        }
-        return points;
-    }
 
     /**
      * Finds the parent node for the edge representation and adds the edge to that node
@@ -1927,22 +1994,5 @@ public class DiagramController {
                 return true;
             }
         } /**/.doSwitch(element);
-    }
-    
-    private boolean isAutomaticallyArranged(final KGraphElement element) {
-        KShapeLayout shapeLayout = this.topNode.getGraphElement().getData(KShapeLayout.class);
-        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
-            return false;
-        }
-        shapeLayout = element.getData(KShapeLayout.class);
-        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
-            return false;
-        }
-        final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
-        shapeLayout = container == null ? null : container.getData(KShapeLayout.class);
-        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
-            return false;
-        }
-        return true;
     }
 }

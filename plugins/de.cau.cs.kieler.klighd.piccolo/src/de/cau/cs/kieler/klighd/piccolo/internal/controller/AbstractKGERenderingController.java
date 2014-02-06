@@ -114,6 +114,8 @@ public abstract class AbstractKGERenderingController
      */
     public static final Object ATTR_KRENDERING = new Object();
 
+    private DiagramController diagramController;
+
     /** the graph element whose rendering is controlled by this controller. */
     private S element;
     
@@ -237,11 +239,14 @@ public abstract class AbstractKGERenderingController
     /**
      * Initializes the rendering controller.
      * 
+     * @param diagCtrl
+     *            the overall {@link DiagramController} referenced for scheduling rendering updates
      * @param sync
      *            true if the rendering should be synchronized with the model; false else
      */
-    public void initialize(final boolean sync) {
-        syncRendering = sync;
+    public void initialize(final DiagramController diagCtrl, final boolean sync) {
+        this.diagramController = diagCtrl;
+        this.syncRendering = sync;
 
         // do the initial update of the rendering
         updateRendering();
@@ -314,7 +319,7 @@ public abstract class AbstractKGERenderingController
      * Updates the rendering by removing the current rendering and evaluating the rendering data
      * attached to the graph element.
      */
-    private void updateRendering() {
+    void updateRendering() {
         // remove the rendering adapter
         if (currentRendering != null) {
             unregisterElementAdapter();
