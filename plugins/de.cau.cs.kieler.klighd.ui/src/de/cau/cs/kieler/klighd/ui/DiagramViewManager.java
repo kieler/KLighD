@@ -429,9 +429,6 @@ public final class DiagramViewManager implements IPartListener {
      * let the side bar work correctly (diagram refresh), since those event listener call
      * {@link DiagramViewManager#updateView(String, IPropertyHolder)}.
      * 
-     * Is package protected since it is only called from
-     * {@link DiagramEditorPart#createPartControl(org.eclipse.swt.widgets.Composite)} at the moment.
-     * 
      * @param part
      *            the {@link IDiagramWorkbenchPart} to register
      */
