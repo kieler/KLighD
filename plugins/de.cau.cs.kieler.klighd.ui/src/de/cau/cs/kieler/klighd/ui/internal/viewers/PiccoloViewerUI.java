@@ -14,7 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.viewers;
 
 import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
+import java.util.Collection;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -23,6 +23,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Color;
@@ -44,10 +46,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
@@ -57,7 +59,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PrintAction;
-import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.modifymodel.ModelModificationHandlerProvider;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -71,7 +73,6 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * 
  * @author ckru
  */
-@SuppressWarnings("restriction")
 public class PiccoloViewerUI extends PiccoloViewer {
 
     /**
@@ -109,7 +110,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     public PiccoloViewerUI(final ContextViewer parentViewer, final Composite parent, final int style) {
         super(parentViewer, parent);
         
-        
+        // registers a print action by means of the global action bars
         final IActionBars actions;
         final IDiagramWorkbenchPart part = getViewContext().getDiagramWorkbenchPart();
 
@@ -141,6 +142,11 @@ public class PiccoloViewerUI extends PiccoloViewer {
         addTextInput(parentViewer);
     }
 
+    @Override
+    protected PiccoloOutlinePage createDiagramOutlinePage() {
+        return new PiccoloContentOutlinePage();
+    }
+
     /**
      * Adds a text widget to the viewer that can be used to select and edit texts.
      * 
@@ -156,11 +162,18 @@ public class PiccoloViewerUI extends PiccoloViewer {
             }
         });
 
-        parentViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+        final ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
             public void selectionChanged(final SelectionChangedEvent event) {
                 textinputlistener.handleEvent(null);
                 textinput.setEditable(false);
                 textinput.setVisible(false);
+            }
+        };
+        
+        parentViewer.addSelectionChangedListener(selectionListener);
+        textinput.addDisposeListener(new DisposeListener() {
+            public void widgetDisposed(final DisposeEvent e) {
+                parentViewer.removeSelectionChangedListener(selectionListener);
             }
         });
 
@@ -180,58 +193,6 @@ public class PiccoloViewerUI extends PiccoloViewer {
             }
         });
         textinput.setEditable(false);
-    }
-
-    @Override
-    protected PiccoloOutlinePage createDiagramOutlinePage() {
-        return new PiccoloContentOutlinePage();
-    }
-
-    /**
-     * A subclass of the {@link PiccoloOutlinePage} that implements the required
-     * {@link IContentOutlinePage} interface.<br>
-     * <br>
-     * Since that interface requires an additional UI dependency but luckily is simply a composition
-     * of {@link org.eclipse.ui.part.IPage IPage} and
-     * {@link org.eclipse.jface.viewers.ISelectionProvider ISelectionProvider}, and we do not
-     * support any selection providing functionality, {@link PiccoloOutlinePage} only implements
-     * {@link org.eclipse.ui.part.IPage IPage} for the sake of reducing dependencies. The required
-     * (empty) {@link org.eclipse.jface.viewers.ISelectionProvider ISelectionProvider} methods are
-     * than contributed by this sub class.
-     * 
-     * @author chsch
-     */
-    private static class PiccoloContentOutlinePage extends PiccoloOutlinePage implements
-            IContentOutlinePage {
-
-        /**
-         * {@inheritDoc}
-         */
-        public void addSelectionChangedListener(final ISelectionChangedListener listener) {
-            // selection is not supported by this outline page
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
-            // selection is not supported by this outline page
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public ISelection getSelection() {
-            // selection is not supported by this outline page
-            return null;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public void setSelection(final ISelection selection) {
-            // selection is not supported by this outline page
-        }
     }
 
     /**
@@ -266,43 +227,45 @@ public class PiccoloViewerUI extends PiccoloViewer {
          * {@inheritDoc}
          */
         public void handleEvent(final Event event) {
-            if (node != null) {
-                if (!textinput.getText().equals(node.getText())) {
-                    ISynthesis synth = PiccoloViewerUI.this.getViewContext().getDiagramSynthesis();
-                    if (synth instanceof ReinitializingDiagramSynthesisProxy) {
-                        synth = ((ReinitializingDiagramSynthesisProxy<?>) synth).getDelegate();
-                    }
-                    Function<String, Void> f = synth.getTextUpdateFunction(node, element);
-                    if (f == null) {
-                        return;
-                    }
-                    PiccoloViewerUI.this.getContextViewer().getViewContext()
-                            .getDiagramWorkbenchPart();
-                    IWorkbenchPart wPart =
-                            PiccoloViewerUI.this.getContextViewer().getViewContext()
-                                    .getSourceWorkbenchPart();
-                    IModelModificationHandler handler =
-                            ModelModificationHandlerProvider.getInstance().getFittingHandler(wPart);
-                    try {
-                        if (handler != null) {
-                            handler.execute(wPart, f, textinput.getText());
-                        } else {
-                            f.apply(textinput.getText());
-                        }
-                    } catch (Exception e) {
-                        StatusManager.getManager().handle(
-                                new Status(IStatus.ERROR, "de.cau.cs.kieler.klighd.ui",
-                                        "An error has occured while applying the text", e));
-                    }
-                    textinput.setEditable(false);
-                }
+            if (node == null) {
+                return;
             }
+            
+            if (textinput.getText().equals(node.getText())) {
+                return;
+            }
+            
+            final ViewContext viewContext = PiccoloViewerUI.this.getViewContext();
+            final ISynthesis synth = viewContext.getDiagramSynthesis();
+            final Function<String, Void> f = synth.getTextUpdateFunction(node, element);
+            
+            if (f == null) {
+                return;
+            }
+
+            final IWorkbenchPart wPart = viewContext.getSourceWorkbenchPart();
+            final IModelModificationHandler handler =
+                    ModelModificationHandlerProvider.getInstance().getFittingHandler(wPart);
+            try {
+                if (handler != null) {
+                    handler.execute(wPart, f, textinput.getText());
+                } else {
+                    f.apply(textinput.getText());
+                }
+            } catch (Exception e) {
+                final String msg =
+                        "KLighD: An error occured while applying the updated string value in "
+                                + viewContext.getDiagramWorkbenchPart().getPartId() + "!";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, msg, e));
+            }
+            textinput.setEditable(false);
         }
 
     }
 
     /**
-     * Handles mouseover on a text element and displays a text input dialog in that case.
+     * Handles mouse-over events on a text element and displays a text input dialog in that case.
      * 
      * @author ckru
      */
@@ -361,20 +324,19 @@ public class PiccoloViewerUI extends PiccoloViewer {
             KText kText = null;
             KlighdStyledText styledText = null;
 
-            KGraphElement element = null;
+            final KGraphElement element;
             if (n instanceof KLabelNode) {
                 final KLabelNode labelNode = (KLabelNode) n;
                 element = labelNode.getGraphElement().getParent();
-                KLabel kLabel = labelNode.getGraphElement();
-                kText =
-                        Iterables.getFirst(ModelingUtil.eAllContentsOfType(kLabel, KText.class),
-                                null);
+
+                kText = Iterables.getFirst(ModelingUtil.eAllContentsOfType(
+                                labelNode.getGraphElement(), KText.class), null);
 
                 if (kText != null) {
-                    Iterator<PNodeController<?>> controllers =
-                            labelNode.getRenderingController().getPNodeController(kText).iterator();
-                    if (controllers.hasNext()) {
-                        styledText = (KlighdStyledText) controllers.next().getNode();
+                    final Collection<PNodeController<?>> controllers =
+                            labelNode.getRenderingController().getPNodeController(kText);
+                    if (!controllers.isEmpty()) {
+                        styledText = (KlighdStyledText) controllers.iterator().next().getNode();
                     } else {
                         kText = null;
                     }
@@ -385,9 +347,13 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 Object o = this.getParentTracingElement(n).getGraphElement();
                 if (o instanceof KGraphElement) {
                     element = (KGraphElement) o;
+                } else {
+                    element = null;
                 }
                 kText = styledText.getGraphElement();
 
+            } else {
+                element = null;
             }
 
             if ((kText == null || !kText.isCursorSelectable())) {
@@ -427,4 +393,51 @@ public class PiccoloViewerUI extends PiccoloViewer {
         }
     }
 
+
+    /**
+     * A subclass of the {@link PiccoloOutlinePage} that implements the required
+     * {@link IContentOutlinePage} interface.<br>
+     * <br>
+     * Since that interface requires an additional UI dependency but luckily is simply a composition
+     * of {@link org.eclipse.ui.part.IPage IPage} and
+     * {@link org.eclipse.jface.viewers.ISelectionProvider ISelectionProvider}, and we do not
+     * support any selection providing functionality, {@link PiccoloOutlinePage} only implements
+     * {@link org.eclipse.ui.part.IPage IPage} for the sake of reducing dependencies. The required
+     * (empty) {@link org.eclipse.jface.viewers.ISelectionProvider ISelectionProvider} methods are
+     * than contributed by this sub class.
+     * 
+     * @author chsch
+     */
+    private static class PiccoloContentOutlinePage extends PiccoloOutlinePage implements
+            IContentOutlinePage {
+
+        /**
+         * {@inheritDoc}
+         */
+        public void addSelectionChangedListener(final ISelectionChangedListener listener) {
+            // selection is not supported by this outline page
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
+            // selection is not supported by this outline page
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public ISelection getSelection() {
+            // selection is not supported by this outline page
+            return null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void setSelection(final ISelection selection) {
+            // selection is not supported by this outline page
+        }
+    }
 }
