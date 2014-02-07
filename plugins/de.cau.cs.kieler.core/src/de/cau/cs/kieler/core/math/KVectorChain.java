@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.math;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -83,12 +84,21 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      */
     public void parse(final String string) {
         String[] tokens = string.split(",|;|\\(|\\)|\\[|\\]|\\{|\\}| |\t|\n");
+        // String::split may contain empty strings whenever two delimiters follow each other
+        // e.g. ";]{" would result in an array of 3 empty strings.
+        // We remove these empty strings first. 
+        List<String> nonEmptyTokens = new ArrayList<String>(tokens.length);
+        for (String token : tokens) {
+            if (token != null && !token.isEmpty()) {
+                nonEmptyTokens.add(token);
+            }
+        }
         clear();
         try {
             // an extra token is ignored
-            for (int i = 0; i < tokens.length - 1; i += 2) {
-                double x = Double.parseDouble(tokens[i]);
-                double y = Double.parseDouble(tokens[i + 1]);
+            for (int i = 0; i < nonEmptyTokens.size() - 1; i += 2) {
+                double x = Double.parseDouble(nonEmptyTokens.get(i));
+                double y = Double.parseDouble(nonEmptyTokens.get(i + 1));
                 add(new KVector(x, y));
             }
         } catch (NumberFormatException exception) {
