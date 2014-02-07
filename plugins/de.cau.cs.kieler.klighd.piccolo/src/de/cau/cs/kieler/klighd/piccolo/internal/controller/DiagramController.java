@@ -570,6 +570,14 @@ public class DiagramController {
                                 // i.e. the child area of node 'nodeNode' has been collapsed ...
                                 removeChildren(node);
                             }
+                            
+                            if (nodeNode instanceof KNodeTopNode) {
+                                // we're done :-)
+                                // (root KNodes might also contain KRenderings, e.g. in case mouse
+                                // actions are associated with the canvas or due to custom lazy
+                                // loading mechanisms)
+                                return;
+                            }
 
                             // in case distinct 'expanded' and/or 'collapsed' KRendering definitions
                             //  are given the rendering needs to be updated/exchanged after changing the
