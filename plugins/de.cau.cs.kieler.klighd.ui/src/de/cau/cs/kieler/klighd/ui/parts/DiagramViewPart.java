@@ -57,16 +57,13 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, ILayoutConfigProvider {
 
     /** The id this {@link ViewPart} is registered with in the extension point. */
-    public static final String VIEW_ID = "de.cau.cs.kieler.klighd.ui.lightDiagramView";
+    public static final String VIEW_ID = "de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart";
 
     /** Action identifier for resetting the layout options in the side bar. */
-    public static final String ACTION_ID_RESET_LAYOUT_OPTIONS = "klighd.resetLayoutOptions";
+    public static final String ACTION_ID_RESET_LAYOUT_OPTIONS = VIEW_ID + ".resetLayoutOptions";
 
     /** the default name for this view. */
     public static final String DEFAULT_NAME = "Light Diagram";
-
-    /** the action identifier prefix for permanent menu contributions. */
-    public static final String PERMANENT_ACTION_PREFIX = "klighd.action";
 
     /** the viewer for this view part. */
     private ContextViewer viewer;
@@ -311,6 +308,13 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     /**
      * {@inheritDoc}
      */
+    public String getPartId() {
+        return this.getViewSite().getSecondaryId();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public IViewer<?> getViewer() {
         return viewer;
     }
@@ -322,13 +326,6 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
      */
     public ContextViewer getContextViewer() {
         return viewer;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public String getPartId() {
-        return this.getViewSite().getSecondaryId();
     }
     
     /**

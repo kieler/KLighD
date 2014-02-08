@@ -11,19 +11,43 @@
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
+            id="de.cau.cs.kieler.klighd.ui.isKlighdContext">
+         <with
+               variable="activeContexts">
+            <iterate
+                  ifEmpty="false"
+                  operator="or">
+               <equals
+                     value="de.cau.cs.kieler.klighd.ui.context">
+               </equals>
+            </iterate>
+         </with>
+      </definition>
+      <definition
             id="de.cau.cs.kieler.klighd.ui.nodesSelected">
-         <iterate>
-            <instanceof
-                  value="de.cau.cs.kieler.core.kgraph.KNode">
-            </instanceof>
-         </iterate>
+           <and>
+              <reference
+                    definitionId="de.cau.cs.kieler.klighd.ui.isKlighdContext">
+              </reference>
+              <with
+                    variable="activeMenuSelection">
+                 <iterate>
+                    <instanceof
+                          value="de.cau.cs.kieler.core.kgraph.KNode">
+                    </instanceof>
+                 </iterate>
+              </with>
+          </and>
       </definition>
       <definition
             id="de.cau.cs.kieler.klighd.ui.clipActionVisibility">
          <and>
-            <count
-                  value="1">
-            </count>
+            <with
+                  variable="activeMenuSelection">
+               <count
+                     value="1">
+               </count>
+            </with>
             <reference
                   definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
             </reference>
@@ -49,7 +73,7 @@
             category="de.cau.cs.kieler.klighd"
             class="de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart"
             icon="icons/klighd.gif"
-            id="de.cau.cs.kieler.klighd.ui.lightDiagramView"
+            id="de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart"
             name="Light-weight Diagram"
             restorable="true">
       </view>
@@ -60,8 +84,8 @@
             class="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"
             default="false"
             icon="icons/klighd.gif"
-            id="de.cau.cs.kieler.klighd.ui.lightDiagramEditor"
-            name="Light-weight Diagram">
+            id="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"
+            name="Light-weight Diagram Viewer">
       </editor>
    </extension>
    <extension
@@ -69,7 +93,7 @@
       <page
             class="de.cau.cs.kieler.klighd.ui.internal.KlighdPreferencePage"
             id="de.cau.cs.kieler.klighd.ui.preferences"
-            name="KIELER Light-Weight Diagrams">
+            name="KIELER Light-weight Diagrams">
       </page>
    </extension>
    <extension
@@ -103,11 +127,16 @@
             class="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdActionExecutionHandler"
             commandId="de.cau.cs.kieler.klighd.ui.actionExecution">
          <enabledWhen>
-            <iterate>
-               <instanceof
-                     value="de.cau.cs.kieler.core.kgraph.KGraphElement">
-               </instanceof>
-            </iterate>
+            <and>
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.isKlighdContext">
+               </reference>
+               <iterate>
+                  <instanceof
+                        value="de.cau.cs.kieler.core.kgraph.KGraphElement">
+                  </instanceof>
+               </iterate>
+            </and>
          </enabledWhen>
       </handler>
       <handler
@@ -233,6 +262,21 @@
                </reference>
             </visibleWhen>
          </command>
+         <command
+               commandId="org.eclipse.ui.edit.copy"
+               label="hugo"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenu">
+                  <iterate>
+                     <equals
+                           value="de.cau.cs.kieler.klighd.ui.popupMenu.floatingText">
+                     </equals></iterate>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -307,6 +351,53 @@
                value="de.cau.cs.kieler.klighd.actions.ClipResetAction">
          </parameter>
       </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.activities">
+      <activity
+            description="Hides the &apos;Layout selection&apos; contribution KLighD diagrams."
+            id="de.cau.cs.kieler.klighd.ui.hideLayoutSelectionContribution"
+            name="Enable Layout Selection Menu Contribution">
+         <enabledWhen>
+            <not>
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.isKlighdContext">
+               </reference>
+            </not>
+         </enabledWhen>
+      </activity>
+      <activityPatternBinding
+            activityId="de.cau.cs.kieler.klighd.ui.hideLayoutSelectionContribution"
+            isEqualityPattern="true"
+            pattern="de.cau.cs.kieler.kiml.ui/de.cau.cs.kieler.kiml.ui.command.layout.selection">
+      </activityPatternBinding>
+      <activity
+            description="Hides the &apos;Show Layout View&apos; contribution under certain circumstances."
+            id="de.cau.cs.kieler.klighd.ui.hideShowLayoutViewContributions"
+            name="Enable Show Layout View Contributions">
+         <enabledWhen>
+         <not>
+         <and>
+            <reference
+                  definitionId="de.cau.cs.kieler.klighd.ui.isKlighdContext">
+            </reference>
+            <with
+                  variable="activeMenu">
+               <iterate>
+                     <equals
+                           value="de.cau.cs.kieler.klighd.ui.popupMenu.floatingText">
+                     </equals>
+               </iterate>
+            </with>
+         </and>
+         </not>
+         </enabledWhen>
+      </activity>
+      <activityPatternBinding
+            activityId="de.cau.cs.kieler.klighd.ui.hideShowLayoutViewContributions"
+            isEqualityPattern="true"
+            pattern="de.cau.cs.kieler.kiml.ui/de.cau.cs.kieler.kiml.ui.command.showLayoutView">
+      </activityPatternBinding>
    </extension>
    <!-- extension
          id="de.cau.cs.kieler.klighd.ui.internal.commands.TestHandler"
