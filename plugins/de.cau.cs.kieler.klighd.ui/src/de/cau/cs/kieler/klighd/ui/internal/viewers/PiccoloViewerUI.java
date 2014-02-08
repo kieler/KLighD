@@ -19,9 +19,12 @@ import java.util.Collection;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -38,6 +41,7 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -193,6 +197,36 @@ public class PiccoloViewerUI extends PiccoloViewer {
             }
         });
         textinput.setEditable(false);
+
+        // create a additional (context) menu manager, ... 
+        final MenuManager menu = new MenuManager();
+
+        // ... install it on the text input control, and ... 
+        textinput.setMenu(menu.createContextMenu(textinput));
+
+        // ... and register it in the workbench part site, in order to let the work bench populate it!
+        IWorkbenchPartSite site = parentViewer.getViewContext().getDiagramWorkbenchPart().getSite();
+        site.registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, new ISelectionProvider() {
+
+            // Note that this selection provider is not registered in part site as such,
+            //  the selection provided by this method is, thus, not propagated into the global selection.
+            // Instead, it is considered the 'activeMenuSelection' (ISources#ACTIVE_MENU_SELECTION_NAME).
+            // Therefore, it cannot obtained, e.g., via HandlerUtil.getCurrentSelection(...),
+            //  but, e.g., via HandlerUtil.getActiveMenuSelection(...)!
+
+            public void setSelection(final ISelection selection) {
+            }
+
+            public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
+            }
+
+            public ISelection getSelection() {
+                return new StructuredSelection(textinput.getText());
+            }
+
+            public void addSelectionChangedListener(final ISelectionChangedListener listener) {
+            }
+        });
     }
 
     /**
