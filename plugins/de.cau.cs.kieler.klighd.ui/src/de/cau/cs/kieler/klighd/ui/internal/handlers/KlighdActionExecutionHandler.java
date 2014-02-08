@@ -22,6 +22,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IParameterValues;
 import org.eclipse.core.commands.ParameterValueConversionException;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.google.common.base.Function;
@@ -57,8 +58,34 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
      * {@inheritDoc}
      */
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        final KlighdTreeSelection selection =
-                (KlighdTreeSelection) HandlerUtil.getCurrentSelection(event);
+        final KlighdTreeSelection selection;
+
+        // in case this handler is invoked via a context menu,
+        //  the activeMenuSelection (ISources#ACTIVE_MENU_SELECTION_NAME) is available
+        ISelection s = HandlerUtil.getActiveMenuSelection(event);
+        
+        if (s instanceof KlighdTreeSelection) {
+            // if it's a KLighD selection (it is supposed to be, we're fine :-)
+            selection = (KlighdTreeSelection) s;
+            
+        } else if (s == null) {
+            // if no activeMenuSelection is set, the handler may be called by the main menu,
+            //  toolbar, or a key binding; refer to the global selection in that case 
+            s = HandlerUtil.getCurrentSelectionChecked(event);
+
+            if (s instanceof KlighdTreeSelection) {
+                // again if it's a KLighD selection (it is supposed to be, we're fine :-)
+                selection = (KlighdTreeSelection) s;
+                
+            } else {
+                // something really strange must have happened
+                return null;
+            }
+        } else {
+            // something really strange must have happened
+            return null;
+        }
+        
         final IAction action;
         try {
             action = (IAction) event.getObjectParameterForExecution(ACTION_PARAMETER_ID);
