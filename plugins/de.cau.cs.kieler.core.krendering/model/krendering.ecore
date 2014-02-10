@@ -1008,6 +1008,28 @@
     </eOperations>
     <eOperations name="setColors">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColor2(color).setTargetColor2(targetColor).setGradientAngle2(angle);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor2(KColor)}, {@link #setTargetColor2(KColor)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the desired gradient angle in degrees."/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColors">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha);"/>
         <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor2(KColor, int)} and {@link #setTargetColor2(KColor, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
       </eAnnotations>
@@ -1033,6 +1055,136 @@
         </eAnnotations>
       </eParameters>
     </eOperations>
+    <eOperations name="setColors">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha).setGradientAngle2(angle);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor2(KColor, int)}, {@link #setTargetColor2(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the desired gradient angle in degrees."/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColors">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColor(color).setTargetColor(targetColor);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source color and target color of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors)} and {@link #setTargetColor(Colors)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColors">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColor(color).setTargetColor(targetColor).setGradientAngle2(angle);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors as well as the color gradient angle  of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors)}, {@link #setTargetColor(Colors)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the desired gradient angle in degrees."/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColors">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors, int)} and {@link #setTargetColor(Colors, int)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColors">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha).setGradientAngle2(angle);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColor(Colors, int)}, {@link #setTargetColor(Colors, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//Colors">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="a color constant from the {@link Colors} enumeration"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the desired gradient angle in degrees."/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
     <eOperations name="setColorsCopiesOf">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);"/>
@@ -1047,6 +1199,28 @@
       <eParameters name="targetColor" eType="#//KColor">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColorsCopiesOf">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target color as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor)}, {@link #setTargetColorCopyOf(KColor)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the desired gradient angle in degrees."/>
         </eAnnotations>
       </eParameters>
     </eOperations>
@@ -1074,6 +1248,38 @@
       <eParameters name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+    </eOperations>
+    <eOperations name="setColorsCopiesOf">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha).setGradientAngle2(angle);"/>
+        <details key="documentation" value="Convenience setter for configuring the gradient source and target colors &amp; alphas as well as the color gradient angle of &lt;code>this&lt;/code> KColoring instance.&lt;br>&#xA;Simply redirects to {@link #setColorCopyOf(KColor, int)}, {@link #setTargetColorCopyOf(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns &lt;code>this&lt;/code> KColoring instance."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//KColoring/T"/>
+      <eParameters name="color" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="alpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetColor" eType="#//KColor">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="an instance of {@link KColor}"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="targetAlpha" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the alpha component of the desired color in range of 0 to 255"/>
+        </eAnnotations>
+      </eParameters>
+      <eParameters name="angle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="the desired gradient angle in degrees."/>
         </eAnnotations>
       </eParameters>
     </eOperations>

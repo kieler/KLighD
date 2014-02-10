@@ -478,6 +478,21 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source and target colors as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor2(KColor)}, {@link #setTargetColor2(KColor)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
+     * @param color an instance of {@link KColor}
+     * @param targetColor an instance of {@link KColor}
+     * @param angle the desired gradient angle in degrees.
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColor2(color).setTargetColor2(targetColor).setGradientAngle2(angle);'"
+     * @generated
+     */
+    T setColors(KColor color, KColor targetColor, float angle);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
      * Convenience setter for configuring the gradient source and target colors & alphas of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColor2(KColor, int)} and {@link #setTargetColor2(KColor, int)}, and returns <code>this</code> KColoring instance.
      * @param color an instance of {@link KColor}
@@ -489,6 +504,89 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * @generated
      */
     T setColors(KColor color, int alpha, KColor targetColor, int targetAlpha);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source and target colors & alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor2(KColor, int)}, {@link #setTargetColor2(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
+     * @param color an instance of {@link KColor}
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * @param targetColor an instance of {@link KColor}
+     * @param targetAlpha the alpha component of the desired color in range of 0 to 255
+     * @param angle the desired gradient angle in degrees.
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha).setGradientAngle2(angle);'"
+     * @generated
+     */
+    T setColors(KColor color, int alpha, KColor targetColor, int targetAlpha, float angle);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source color and target color of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor(Colors)} and {@link #setTargetColor(Colors)}, and returns <code>this</code> KColoring instance.
+     * @param color a color constant from the {@link Colors} enumeration
+     * @param targetColor a color constant from the {@link Colors} enumeration
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors" targetColorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColor(color).setTargetColor(targetColor);'"
+     * @generated
+     */
+    T setColors(Colors color, Colors targetColor);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source and target colors as well as the color gradient angle  of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor(Colors)}, {@link #setTargetColor(Colors)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
+     * @param color a color constant from the {@link Colors} enumeration
+     * @param targetColor a color constant from the {@link Colors} enumeration
+     * @param angle the desired gradient angle in degrees.
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors" targetColorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColor(color).setTargetColor(targetColor).setGradientAngle2(angle);'"
+     * @generated
+     */
+    T setColors(Colors color, Colors targetColor, float angle);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source and target colors & alphas of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor(Colors, int)} and {@link #setTargetColor(Colors, int)}, and returns <code>this</code> KColoring instance.
+     * @param color a color constant from the {@link Colors} enumeration
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * @param targetColor a color constant from the {@link Colors} enumeration
+     * @param targetAlpha the alpha component of the desired color in range of 0 to 255
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors" targetColorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha);'"
+     * @generated
+     */
+    T setColors(Colors color, int alpha, Colors targetColor, int targetAlpha);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source and target colors & alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColor(Colors, int)}, {@link #setTargetColor(Colors, int)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
+     * @param color a color constant from the {@link Colors} enumeration
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * @param targetColor a color constant from the {@link Colors} enumeration
+     * @param targetAlpha the alpha component of the desired color in range of 0 to 255
+     * @param angle the desired gradient angle in degrees.
+     * <!-- end-model-doc -->
+     * @model colorDataType="de.cau.cs.kieler.core.krendering.Colors" targetColorDataType="de.cau.cs.kieler.core.krendering.Colors"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha).setGradientAngle2(angle);'"
+     * @generated
+     */
+    T setColors(Colors color, int alpha, Colors targetColor, int targetAlpha, float angle);
 
     /**
      * <!-- begin-user-doc -->
@@ -508,6 +606,21 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source and target color as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColorCopyOf(KColor)}, {@link #setTargetColorCopyOf(KColor)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
+     * @param color an instance of {@link KColor}
+     * @param targetColor an instance of {@link KColor}
+     * @param angle the desired gradient angle in degrees.
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);'"
+     * @generated
+     */
+    T setColorsCopiesOf(KColor color, KColor targetColor, float angle);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
      * Convenience setter for configuring the gradient source and target colors & alphas of <code>this</code> KColoring instance.<br>
      * Simply redirects to {@link #setColorCopyOf(KColor, int)} and {@link #setTargetColorCopyOf(KColor, int)}, and returns <code>this</code> KColoring instance.
      * @param color an instance of {@link KColor}
@@ -519,6 +632,23 @@ public interface KColoring<T extends KColoring<T>> extends KStyle {
      * @generated
      */
     T setColorsCopiesOf(KColor color, int alpha, KColor targetColor, int targetAlpha);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Convenience setter for configuring the gradient source and target colors & alphas as well as the color gradient angle of <code>this</code> KColoring instance.<br>
+     * Simply redirects to {@link #setColorCopyOf(KColor, int)}, {@link #setTargetColorCopyOf(KColor, int)}, and {@link #setGradientAngle2(float)}, and returns <code>this</code> KColoring instance.
+     * @param color an instance of {@link KColor}
+     * @param alpha the alpha component of the desired color in range of 0 to 255
+     * @param targetColor an instance of {@link KColor}
+     * @param targetAlpha the alpha component of the desired color in range of 0 to 255
+     * @param angle the desired gradient angle in degrees.
+     * <!-- end-model-doc -->
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha).setGradientAngle2(angle);'"
+     * @generated
+     */
+    T setColorsCopiesOf(KColor color, int alpha, KColor targetColor, int targetAlpha, float angle);
 
     /**
      * <!-- begin-user-doc -->

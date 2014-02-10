@@ -2700,9 +2700,55 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         op = addEOperation(kColoringEClass, null, "setColors", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, this.getKColor(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEFloat(), "angle", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColors", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, this.getKColor(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "targetAlpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColors", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "targetAlpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEFloat(), "angle", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColors", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColors", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEFloat(), "angle", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColors", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "targetAlpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColors", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getColors(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "targetAlpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEFloat(), "angle", 0, 1, IS_UNIQUE, IS_ORDERED);
         g1 = createEGenericType(kColoringEClass_T);
         initEOperation(op, g1);
 
@@ -2714,9 +2760,25 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         op = addEOperation(kColoringEClass, null, "setColorsCopiesOf", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, this.getKColor(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEFloat(), "angle", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColorsCopiesOf", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, this.getKColor(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEInt(), "targetAlpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(kColoringEClass_T);
+        initEOperation(op, g1);
+
+        op = addEOperation(kColoringEClass, null, "setColorsCopiesOf", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "color", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "alpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getKColor(), "targetColor", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEInt(), "targetAlpha", 0, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, ecorePackage.getEFloat(), "angle", 0, 1, IS_UNIQUE, IS_ORDERED);
         g1 = createEGenericType(kColoringEClass_T);
         initEOperation(op, g1);
 
