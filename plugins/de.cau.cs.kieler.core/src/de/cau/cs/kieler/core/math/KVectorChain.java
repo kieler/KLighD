@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.core.math;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -86,20 +85,26 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
         String[] tokens = string.split(",|;|\\(|\\)|\\[|\\]|\\{|\\}| |\t|\n");
         // String::split may contain empty strings whenever two delimiters follow each other
         // e.g. ";]{" would result in an array of 3 empty strings.
-        // We remove these empty strings first. 
-        List<String> nonEmptyTokens = new ArrayList<String>(tokens.length);
-        for (String token : tokens) {
-            if (token != null && !token.isEmpty()) {
-                nonEmptyTokens.add(token);
-            }
-        }
+        // We ignore empty strings. 
         clear();
         try {
             // an extra token is ignored
-            for (int i = 0; i < nonEmptyTokens.size() - 1; i += 2) {
-                double x = Double.parseDouble(nonEmptyTokens.get(i));
-                double y = Double.parseDouble(nonEmptyTokens.get(i + 1));
-                add(new KVector(x, y));
+            int i = 0;
+            int xy = 0;
+            double x = 0, y = 0;
+            while (i < tokens.length) {
+                if (tokens[i] != null && tokens[i].trim().length() > 0) {
+                    if (xy % 2 == 0) {
+                        x = Double.parseDouble(tokens[i]);
+                    } else {
+                        y = Double.parseDouble(tokens[i]);
+                    }
+                    if (xy > 0 && xy % 2 != 0) {
+                        add(new KVector(x, y));
+                    }
+                    xy++;
+                }
+                i++;
             }
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException(
