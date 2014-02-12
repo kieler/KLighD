@@ -281,7 +281,7 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         // serialize the properties
         int i = 0;
         for (PersistentEntry entry : shapeLayout.getPersistentEntries()) {
-            feeder.accept(shapeLayoutAccess.getPersistentEntriesPersistentEntryParserRuleCall_0_2_2_0(),
+            feeder.accept(shapeLayoutAccess.getPersistentEntriesPropertyParserRuleCall_0_2_2_0(),
                     entry, i++);
         }
         
@@ -426,7 +426,7 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         // serialize the properties
         int i = 0;
         for (PersistentEntry entry : edgeLayout.getPersistentEntries()) {
-            feeder.accept(edgeLayoutAccess.getPersistentEntriesPersistentEntryParserRuleCall_1_2_0(),
+            feeder.accept(edgeLayoutAccess.getPersistentEntriesPropertyParserRuleCall_1_2_0(),
                     entry, i++);
         }
         
@@ -523,7 +523,7 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         // serialize the properties
         int i = 0;
         for (PersistentEntry entry : shapeLayout.getPersistentEntries()) {
-            feeder.accept(shapeLayoutAccess.getPersistentEntriesPersistentEntryParserRuleCall_1_2_2_0(),
+            feeder.accept(shapeLayoutAccess.getPersistentEntriesPropertyParserRuleCall_1_2_2_0(),
                     entry, i++);
         }
         
@@ -619,7 +619,7 @@ public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
         // serialize the properties
         int i = 0;
         for (PersistentEntry entry : polyline.getPersistentEntries()) {
-            feeder.accept(polylineAccess.getPersistentEntriesPersistentEntryParserRuleCall_2_1_0(),
+            feeder.accept(polylineAccess.getPersistentEntriesPropertyParserRuleCall_2_1_0(),
                     entry, i++);
         }
 
