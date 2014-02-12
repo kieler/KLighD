@@ -54,8 +54,9 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
     @Override
     public void mousePressed(final PInputEvent event) {
         if (event.isLeftMouseButton()) {
+            System.out.println("true");
             this.pressedNode = event.getPickedNode();
-            this.point = event.getPosition();
+            this.point = event.getCanvasPosition();
         }
     }
 
@@ -72,7 +73,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         // if other events occurred in the mean time like other button hits, movements (e.g. panning)
         //  abort the selection
         if (!event.isLeftMouseButton()
-                || !event.getPosition().equals(thePreviousPoint)
+                || !event.getCanvasPosition().equals(thePreviousPoint)
                 || !(event.getPickedNode() == thePressedNode)) {
             return;
         }
