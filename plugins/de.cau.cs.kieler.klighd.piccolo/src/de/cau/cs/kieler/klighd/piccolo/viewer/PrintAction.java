@@ -50,11 +50,11 @@ public class PrintAction implements Runnable {
         if (!(printerData == null)) {
 
             // evaluate the user specified informations
-            Printer p = new Printer(printerData);
-            Rectangle trim = p.computeTrim(0, 0, 0, 0);
-            Rectangle clientArea = p.getClientArea();
-            clientArea =
-                    p.computeTrim(clientArea.x, clientArea.y, clientArea.width, clientArea.height);
+            final Printer p = new Printer(printerData);
+            final Rectangle trim = p.computeTrim(0, 0, 0, 0);
+            final Rectangle clientArea = p.getClientArea();
+            final Rectangle pageBounds = new Rectangle(clientArea.x - trim.x, clientArea.y - trim.y,
+                    clientArea.width - trim.width, clientArea.height - trim.height);
 
             // start the print job
             p.startJob("Print KlighD View");
@@ -62,25 +62,26 @@ public class PrintAction implements Runnable {
 
             // create and scale the GC according to dpis
             GC gc = new GC(p);
-            // adjust to page's trim area
-            Transform t = new Transform(gc.getDevice());
-            t.translate(-trim.x, -trim.y);
-            gc.setTransform(t);
 
             // perform printing
             if (printerData.scope != PrinterData.SELECTION) {
                 // print the whole diagram fitted into the page
 
-                // clet the piccolo viewer take care of the rendering
-                viewer.renderOffscreen(gc, clientArea);
+                // let the Piccolo2d viewer take care of the rendering
+                viewer.renderOffscreen(gc, pageBounds);
 
             } else {
                 // only print the visible area
 
+                // adjust to page's trim area
+                Transform t = new Transform(gc.getDevice());
+                gc.getTransform(t);
+                t.translate(-trim.x, -trim.y);
+
                 // fit it into the page dimensions
                 Rectangle controlArea = viewer.getControl().getBounds();
-                float scaleX = controlArea.width / (float) clientArea.width;
-                float scaleY = controlArea.height / (float) clientArea.height;
+                float scaleX = controlArea.width / (float) pageBounds.width;
+                float scaleY = controlArea.height / (float) pageBounds.height;
                 float minScale = 1 / Math.max(scaleX, scaleY);
                 t.scale(minScale, minScale);
 
@@ -94,8 +95,6 @@ public class PrintAction implements Runnable {
             gc.dispose();
             p.endJob();
             p.dispose();
-
         }
     }
-
 }
