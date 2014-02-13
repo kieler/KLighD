@@ -32,6 +32,7 @@ import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramZoomController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
@@ -387,12 +388,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.addLayer(canvas.getLayer());
 
         // fit the currently displayed diagram into the passed bounds
-        final KShapeLayout topNodeLayout = controller.getMainCamera().getDisplayedINode()
-                .getGraphElement().getData(KShapeLayout.class);
+        final KNode displayedNode =
+                controller.getMainCamera().getDisplayedINode().getGraphElement();
 
         final PBounds newBounds =
-                new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
-                        topNodeLayout.getWidth(), topNodeLayout.getHeight());
+                DiagramZoomController.toPBoundsIncludingPortsAndLabels(displayedNode);
         camera.animateViewToCenterBounds(newBounds, true, 0);
 
         // set up a new paint context and paint the camera
