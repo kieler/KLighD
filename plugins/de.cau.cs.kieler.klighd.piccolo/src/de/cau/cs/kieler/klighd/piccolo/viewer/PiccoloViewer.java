@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
+import java.awt.geom.AffineTransform;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -30,6 +32,7 @@ import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramZoomController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
@@ -39,7 +42,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
-import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.POffscreenCanvas;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -371,25 +373,27 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public void renderOffscreen(final GC gc, final Rectangle bounds) {
 
         // create a wrapping graphics object
-        KlighdSWTGraphicsImpl g2 = new KlighdSWTGraphicsImpl(gc, gc.getDevice());
+        final KlighdSWTGraphicsImpl g2 = new KlighdSWTGraphicsImpl(gc, gc.getDevice());
+
+        final AffineTransform t = g2.getTransform();
+        t.translate(bounds.x, bounds.y);
+        g2.setTransform(t);
 
         // create an offscreen canvas and fetch its camera
-        POffscreenCanvas offCanvas = new POffscreenCanvas(bounds.width, bounds.height);
-        PCamera camera = offCanvas.getCamera();
+        final POffscreenCanvas offCanvas = new POffscreenCanvas(bounds.width, bounds.height);
+        final PCamera camera = offCanvas.getCamera();
+        camera.getLayersReference().clear();
 
         // let the camera view the original canvas's first layer
         camera.addLayer(canvas.getLayer());
 
-        // fit the overall diagram into the passed bounds
-        // (copied from #zoomToFit(0))
-        if (controller.getNode().getParent() instanceof PLayer) {
-            KShapeLayout topNodeLayout =
-                    controller.getNode().getGraphElement().getData(KShapeLayout.class);
-            PBounds newBounds =
-                    new PBounds(topNodeLayout.getXpos(), topNodeLayout.getYpos(),
-                            topNodeLayout.getWidth(), topNodeLayout.getHeight());
-            camera.animateViewToCenterBounds(newBounds, true, 0);
-        }
+        // fit the currently displayed diagram into the passed bounds
+        final KNode displayedNode =
+                controller.getMainCamera().getDisplayedINode().getGraphElement();
+
+        final PBounds newBounds =
+                DiagramZoomController.toPBoundsIncludingPortsAndLabels(displayedNode);
+        camera.animateViewToCenterBounds(newBounds, true, 0);
 
         // set up a new paint context and paint the camera
         final PPaintContext paintContext = new PPaintContext(g2);

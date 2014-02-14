@@ -108,7 +108,7 @@ public class DiagramZoomController {
             return;
         }
 
-        final PBounds newBounds = includePortAndLabelBounds(toPBounds(displayedKNode), displayedKNode);
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
 
         if (this.canvasCamera.getBoundsReference().isEmpty()) {
             // this case occurs while initializing the DiagramEditorPart
@@ -123,62 +123,6 @@ public class DiagramZoomController {
     }
     
     /**
-     * This method checks for ports and labels of the given <code>node</code> and increases the
-     * given <code>nodeBounds</code> accordingly.
-     */
-    private PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
-        double maxX = nodeBounds.getWidth();
-        double maxY = nodeBounds.getHeight();
-        final float scale = node.getData(KShapeLayout.class).getProperty(LayoutOptions.SCALE_FACTOR); 
-        
-        // these min values are <= 0 at all times!
-        double minX = 0;
-        double minY = 0;
-
-        boolean includedElement = false;
-        
-        for (KGraphElement element : Iterables.concat(node.getPorts(), node.getLabels())) {
-            final KShapeLayout pL = element.getData(KShapeLayout.class);
-            float val;
-
-            val = pL.getXpos() * scale; 
-            if (val < minX) {
-                minX = val;
-            }
-
-            val = pL.getYpos() * scale; 
-            if (val  < minY) {
-                minY = val;
-            }
-
-            val = pL.getXpos() * scale + pL.getWidth() * scale;
-            if (val > maxX) {
-                maxX = val;
-            }
-
-            val = pL.getYpos() * scale + pL.getHeight() * scale;
-            if (val > maxY) {
-                maxY = val;
-            }
-
-            includedElement = true;
-        }
-        
-        if (includedElement) {
-            nodeBounds.setRect(nodeBounds.getX() + minX, nodeBounds.getY() + minY,
-                    maxX - minX, maxY - minY);
-        } else {
-            final KInsets insets = node.getData(KShapeLayout.class).getInsets();
-            nodeBounds.setRect(nodeBounds.getX() + insets.getLeft() * scale,
-                    nodeBounds.getY() + insets.getTop() * scale,
-                    maxX - insets.getLeft() - insets.getRight() * scale,
-                    maxY - insets.getTop() - insets.getBottom() * scale);
-        }
-
-        return nodeBounds;
-    }
-    
-    /**
      * 
      * @param focus
      *            the desired focus bounds
@@ -187,7 +131,7 @@ public class DiagramZoomController {
      */
     private void zoomToFocus(final KNode focus, final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
-        final PBounds newBounds = includePortAndLabelBounds(toPBounds(focus), focus);
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(focus);
 
         // we need the bounds in view coordinates (absolute), hence for
         // a knode add the translations of all parent nodes
@@ -221,8 +165,7 @@ public class DiagramZoomController {
 
         // fetch bounds of the whole diagram
         final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
-        final PBounds newBounds =
-                includePortAndLabelBounds(toPBounds(displayedKNode), displayedKNode);
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
         
         boolean fullyContains = viewBounds.getWidth() > newBounds.getWidth()
                 && viewBounds.getHeight() > newBounds.getHeight();
@@ -290,6 +233,7 @@ public class DiagramZoomController {
         canvasCamera.animateViewToCenterBounds(newBounds, true, duration);
     }
 
+
     /**
      * Converts <code>node</code>'s layout data into {@link PBounds}, respects an attached
      * {@link LayoutOptions#SCALE_FACTOR}.
@@ -298,10 +242,86 @@ public class DiagramZoomController {
      *            the node
      * @return the corresponding {@link PBounds}
      */
-    private PBounds toPBounds(final KNode node) {
+    public static PBounds toPBounds(final KNode node) {
         final KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         final float scale = nodeLayout.getProperty(LayoutOptions.SCALE_FACTOR); 
         return new PBounds(nodeLayout.getXpos(), nodeLayout.getYpos(),
                 nodeLayout.getWidth() * scale, nodeLayout.getHeight() * scale);
+    }
+    
+    /**
+     * Converts <code>node</code>'s layout data into {@link PBounds} s.t. <code>node</code>'s ports
+     * and labels are included, respects an attached {@link LayoutOptions#SCALE_FACTOR}.
+     * 
+     * @param node
+     *            the node
+     * @return the corresponding {@link PBounds}
+     */
+    public static PBounds toPBoundsIncludingPortsAndLabels(final KNode node) {
+        return includePortAndLabelBounds(toPBounds(node), node);
+    }    
+
+    /**
+     * This method checks for ports and labels of the given <code>node</code> and increases the
+     * given <code>nodeBounds</code> accordingly.<br>
+     * 
+     * 
+     * @param nodeBounds
+     *            the bounds of the {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode
+     *            INode} representing {@link KNode} <code>node</code>
+     * @param node
+     *            the {@link KNode} to be evaluated for ports and labels
+     * @return the updated <code>nodeBounds</code> for convenience
+     */
+    private static PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
+        double maxX = nodeBounds.getWidth();
+        double maxY = nodeBounds.getHeight();
+        final float scale = node.getData(KShapeLayout.class).getProperty(LayoutOptions.SCALE_FACTOR); 
+        
+        // these min values are <= 0 at all times!
+        double minX = 0;
+        double minY = 0;
+
+        boolean includedElement = false;
+        
+        for (KGraphElement element : Iterables.concat(node.getPorts(), node.getLabels())) {
+            final KShapeLayout pL = element.getData(KShapeLayout.class);
+            float val;
+
+            val = pL.getXpos() * scale; 
+            if (val < minX) {
+                minX = val;
+            }
+
+            val = pL.getYpos() * scale; 
+            if (val  < minY) {
+                minY = val;
+            }
+
+            val = pL.getXpos() * scale + pL.getWidth() * scale;
+            if (val > maxX) {
+                maxX = val;
+            }
+
+            val = pL.getYpos() * scale + pL.getHeight() * scale;
+            if (val > maxY) {
+                maxY = val;
+            }
+
+            includedElement = true;
+        }
+        
+        if (includedElement) {
+            nodeBounds.setRect(nodeBounds.getX() + minX, nodeBounds.getY() + minY,
+                    maxX - minX, maxY - minY);
+        } else {
+            final KInsets insets = node.getData(KShapeLayout.class).getInsets();
+            nodeBounds.setRect(nodeBounds.getX() + insets.getLeft() * scale,
+                    nodeBounds.getY() + insets.getTop() * scale,
+                    maxX - insets.getLeft() - insets.getRight() * scale,
+                    maxY - insets.getTop() - insets.getBottom() * scale);
+        }
+
+        return nodeBounds;
     }
 }

@@ -49,18 +49,21 @@ public class KlighdCanvas extends PSWTCanvas {
     private KlighdSWTGraphicsEx graphics;
 
     /**
-     * Construct a canvas with the basic scene graph consisting of a root,
-     * camera, and layer. Event handlers for zooming and panning are
-     * automatically installed.
+     * Construct a canvas with the basic scene graph consisting of a root node, a camera, and a
+     * layer (via <code>super(...)</code> and {@link #createBasicSceneGraph()}). The original event
+     * handlers for zooming and panning coming via <code>super(...)</code> are removed, appropriate
+     * ones are installed later on by users of this class.
      * 
-     * @param parent component onto which the canvas is installed
-     * @param style component style for the PSWTCanvas
+     * @param parent
+     *            component onto which the canvas is installed
+     * @param style
+     *            {@link Composite} style of <code>this</code> {@link KlighdCanvas}
      */
     public KlighdCanvas(final Composite parent, final int style) {
         super(parent, style);
 
         // remove the original event handlers as they require AWT event type codes
-        //  instances of this class are augment with SWT-based event handlers
+        //  instances of this class are augmented with SWT-based event handlers
         //  e.g. in PiccoloViewer or PiccoloOutlinePage
         this.removeInputEventListener(super.getZoomEventHandler());
         this.removeInputEventListener(super.getPanEventHandler());
