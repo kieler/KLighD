@@ -536,8 +536,62 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    public T setColors(final KColor color, final KColor targetColor, final float angle) {
+        return this.setColor2(color).setTargetColor2(targetColor).setGradientAngle2(angle);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public T setColors(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
         return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColors(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha, final float angle) {
+        return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha).setGradientAngle2(angle);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColors(final Colors color, final Colors targetColor) {
+        return this.setColor(color).setTargetColor(targetColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColors(final Colors color, final Colors targetColor, final float angle) {
+        return this.setColor(color).setTargetColor(targetColor).setGradientAngle2(angle);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColors(final Colors color, final int alpha, final Colors targetColor, final int targetAlpha) {
+        return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColors(final Colors color, final int alpha, final Colors targetColor, final int targetAlpha, final float angle) {
+        return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha).setGradientAngle2(angle);
     }
 
     /**
@@ -554,8 +608,26 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    public T setColorsCopiesOf(final KColor color, final KColor targetColor, final float angle) {
+        return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public T setColorsCopiesOf(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha) {
         return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public T setColorsCopiesOf(final KColor color, final int alpha, final KColor targetColor, final int targetAlpha, final float angle) {
+        return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha).setGradientAngle2(angle);
     }
 
     /**

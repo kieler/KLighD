@@ -297,9 +297,43 @@
       </genOperations>
       <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.1">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/color"/>
-        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/targetColor"/>
-        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/targetAlpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/angle"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.2">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/alpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/targetColor"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/targetAlpha"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.3">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/alpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/targetColor"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/targetAlpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/angle"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.4">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.4/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.4/targetColor"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.5">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.5/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.5/targetColor"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.5/angle"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.6">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/alpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/targetColor"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/targetAlpha"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.7">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/alpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/targetColor"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/targetAlpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/angle"/>
       </genOperations>
       <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf/color"/>
@@ -307,9 +341,21 @@
       </genOperations>
       <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.1">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/color"/>
-        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/targetColor"/>
-        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/targetAlpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/angle"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.2">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/alpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/targetColor"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/targetAlpha"/>
+      </genOperations>
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.3">
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/color"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/alpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/targetColor"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/targetAlpha"/>
+        <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/angle"/>
       </genOperations>
       <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiedFrom">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiedFrom/coloring"/>

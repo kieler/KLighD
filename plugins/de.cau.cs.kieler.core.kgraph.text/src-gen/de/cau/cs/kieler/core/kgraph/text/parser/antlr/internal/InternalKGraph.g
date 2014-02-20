@@ -902,28 +902,28 @@ ruleKPort returns [EObject current=null]
 
 
 
-// Entry rule entryRulePersistentEntry
-entryRulePersistentEntry returns [EObject current=null] 
+// Entry rule entryRuleProperty
+entryRuleProperty returns [EObject current=null] 
 	:
-	{ newCompositeNode(grammarAccess.getPersistentEntryRule()); }
-	 iv_rulePersistentEntry=rulePersistentEntry 
-	 { $current=$iv_rulePersistentEntry.current; } 
+	{ newCompositeNode(grammarAccess.getPropertyRule()); }
+	 iv_ruleProperty=ruleProperty 
+	 { $current=$iv_ruleProperty.current; } 
 	 EOF 
 ;
 
-// Rule PersistentEntry
-rulePersistentEntry returns [EObject current=null] 
+// Rule Property
+ruleProperty returns [EObject current=null] 
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
 ((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getPersistentEntryAccess().getKeyQualifiedIDParserRuleCall_0_0()); 
+	        newCompositeNode(grammarAccess.getPropertyAccess().getKeyQualifiedIDParserRuleCall_0_0()); 
 	    }
 		lv_key_0_0=ruleQualifiedID		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getPersistentEntryRule());
+	            $current = createModelElementForParent(grammarAccess.getPropertyRule());
 	        }
        		set(
        			$current, 
@@ -936,16 +936,16 @@ rulePersistentEntry returns [EObject current=null]
 )
 )	otherlv_1='=' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getPersistentEntryAccess().getEqualsSignKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getPropertyAccess().getEqualsSignKeyword_1());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getPersistentEntryAccess().getValuePropertyValueParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getPropertyAccess().getValuePropertyValueParserRuleCall_2_0()); 
 	    }
 		lv_value_2_0=rulePropertyValue		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getPersistentEntryRule());
+	            $current = createModelElementForParent(grammarAccess.getPropertyRule());
 	        }
        		set(
        			$current, 
@@ -1002,9 +1002,9 @@ ruleKIdentifier returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKIdentifierAccess().getPersistentEntriesPersistentEntryParserRuleCall_1_1_0()); 
+	        newCompositeNode(grammarAccess.getKIdentifierAccess().getPersistentEntriesPropertyParserRuleCall_1_1_0()); 
 	    }
-		lv_persistentEntries_2_0=rulePersistentEntry		{
+		lv_persistentEntries_2_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKIdentifierRule());
 	        }
@@ -1012,7 +1012,7 @@ ruleKIdentifier returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_2_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1291,9 +1291,9 @@ ruleKNodeLayout returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKNodeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_0_2_2_0()); 
+	        newCompositeNode(grammarAccess.getKNodeLayoutAccess().getPersistentEntriesPropertyParserRuleCall_0_2_2_0()); 
 	    }
-		lv_persistentEntries_21_0=rulePersistentEntry		{
+		lv_persistentEntries_21_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKNodeLayoutRule());
 	        }
@@ -1301,7 +1301,7 @@ ruleKNodeLayout returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_21_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -1902,9 +1902,9 @@ ruleKShapeLayout returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKShapeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_1_2_2_0()); 
+	        newCompositeNode(grammarAccess.getKShapeLayoutAccess().getPersistentEntriesPropertyParserRuleCall_1_2_2_0()); 
 	    }
-		lv_persistentEntries_22_0=rulePersistentEntry		{
+		lv_persistentEntries_22_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKShapeLayoutRule());
 	        }
@@ -1912,7 +1912,7 @@ ruleKShapeLayout returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_22_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -2153,9 +2153,9 @@ ruleKEdgeLayout returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKEdgeLayoutAccess().getPersistentEntriesPersistentEntryParserRuleCall_1_2_0()); 
+	        newCompositeNode(grammarAccess.getKEdgeLayoutAccess().getPersistentEntriesPropertyParserRuleCall_1_2_0()); 
 	    }
-		lv_persistentEntries_14_0=rulePersistentEntry		{
+		lv_persistentEntries_14_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKEdgeLayoutRule());
 	        }
@@ -2163,7 +2163,7 @@ ruleKEdgeLayout returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_14_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -2438,9 +2438,9 @@ ruleKSimpleRendering returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKSimpleRenderingAccess().getPersistentEntriesPersistentEntryParserRuleCall_2_1_0()); 
+	        newCompositeNode(grammarAccess.getKSimpleRenderingAccess().getPersistentEntriesPropertyParserRuleCall_2_1_0()); 
 	    }
-		lv_persistentEntries_5_0=rulePersistentEntry		{
+		lv_persistentEntries_5_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKSimpleRenderingRule());
 	        }
@@ -2448,7 +2448,7 @@ ruleKSimpleRendering returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_5_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -2692,9 +2692,9 @@ ruleKContainerRendering returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKContainerRenderingAccess().getPersistentEntriesPersistentEntryParserRuleCall_2_1_0()); 
+	        newCompositeNode(grammarAccess.getKContainerRenderingAccess().getPersistentEntriesPropertyParserRuleCall_2_1_0()); 
 	    }
-		lv_persistentEntries_8_0=rulePersistentEntry		{
+		lv_persistentEntries_8_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKContainerRenderingRule());
 	        }
@@ -2702,7 +2702,7 @@ ruleKContainerRendering returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_8_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -3528,9 +3528,9 @@ ruleKPolyline returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKPolylineAccess().getPersistentEntriesPersistentEntryParserRuleCall_2_1_0()); 
+	        newCompositeNode(grammarAccess.getKPolylineAccess().getPersistentEntriesPropertyParserRuleCall_2_1_0()); 
 	    }
-		lv_persistentEntries_6_0=rulePersistentEntry		{
+		lv_persistentEntries_6_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKPolylineRule());
 	        }
@@ -3538,7 +3538,7 @@ ruleKPolyline returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_6_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -5740,9 +5740,9 @@ ruleKRenderingLibrary returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getKRenderingLibraryAccess().getPersistentEntriesPersistentEntryParserRuleCall_2_1_0()); 
+	        newCompositeNode(grammarAccess.getKRenderingLibraryAccess().getPersistentEntriesPropertyParserRuleCall_2_1_0()); 
 	    }
-		lv_persistentEntries_3_0=rulePersistentEntry		{
+		lv_persistentEntries_3_0=ruleProperty		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getKRenderingLibraryRule());
 	        }
@@ -5750,7 +5750,7 @@ ruleKRenderingLibrary returns [EObject current=null]
        			$current, 
        			"persistentEntries",
         		lv_persistentEntries_3_0, 
-        		"PersistentEntry");
+        		"Property");
 	        afterParserOrEnumRuleCall();
 	    }
 

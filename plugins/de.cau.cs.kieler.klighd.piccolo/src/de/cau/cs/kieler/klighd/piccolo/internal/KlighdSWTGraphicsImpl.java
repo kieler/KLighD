@@ -129,6 +129,22 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         this.gc = gc;
         this.swtTransform = new Transform(device);
         this.textLayout = tl;
+        this.transform = new AffineTransform();
+
+        this.initializeTransform();
+    }
+
+    /**
+     * Initializes the {@link #transform(AffineTransform)} based on the current {@link #gc}'s
+     * {@link Transform}.
+     */
+    private void initializeTransform() {
+        if (gc != null) {
+            gc.getTransform(swtTransform);
+            final float[] elements = new float[6]; // SUPPRESS CHECKSTYLE MagicNumber
+            this.swtTransform.getElements(elements);
+            this.transform.setTransform(new AffineTransform(elements));
+        }
     }
 
     /**
@@ -158,6 +174,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public void setGC(final GC theGc) {
         this.gc = theGc;
         this.gc.setAntialias(SWT.ON);
+
+        this.initializeTransform();
     }
 
     /**
@@ -641,7 +659,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     }
 
     /** An {@link AffineTransform} instance denoting the currently set drawing transform. */
-    protected final AffineTransform transform = new AffineTransform();  // SUPPRESS CHECKSTYLE Visibility
+    private final AffineTransform transform; 
     
     @Override
     public AffineTransform getTransform() {

@@ -121,7 +121,7 @@ public class LayoutOptionControlFactory {
      *            the viewContext belonging to the current diagram
      */
     public void initialize(final ViewContext theViewContext) {
-        lightLayoutConfig.clearValues(LayoutContext.global());
+        lightLayoutConfig.clearOptionValues(LayoutContext.global());
         
         this.viewContext = theViewContext;
         this.workbenchPart = viewContext.getDiagramWorkbenchPart();
@@ -148,10 +148,10 @@ public class LayoutOptionControlFactory {
         defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
         defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
         defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
-        defaultLayoutContext.setProperty(DefaultLayoutConfig.OPT_MAKE_OPTIONS, true);
         defaultLayoutContext.setProperty(LayoutContext.OPT_TARGETS,
                 EnumSet.of(LayoutOptionData.Target.PARENTS));
-        defaultLayoutConfig.enrich(defaultLayoutContext);
+        DiagramLayoutEngine.INSTANCE.getOptionManager().enrich(defaultLayoutContext,
+                defaultLayoutConfig, true);
     }
     
     /**
@@ -225,11 +225,11 @@ public class LayoutOptionControlFactory {
     public void resetToDefaults() {
         // temporarily disable auto-refresh to avoid multiple layout runs triggered by listeners
         autoRefreshLayout = false;
-        lightLayoutConfig.clearValues(LayoutContext.global());
+        lightLayoutConfig.clearOptionValues(LayoutContext.global());
         for (Control control : controls) {
             if (control.getData() instanceof LayoutOptionData) {
                 LayoutOptionData optionData = (LayoutOptionData) control.getData();
-                final Object defaultValue = defaultLayoutConfig.getValue(optionData,
+                final Object defaultValue = defaultLayoutConfig.getOptionValue(optionData,
                         defaultLayoutContext);
                 
                 switch (optionData.getType()) {
@@ -327,7 +327,7 @@ public class LayoutOptionControlFactory {
                 slider.setData(optionData);
                 controls.add(slider);
                 // set initial value for the slider
-                float initialValue = ((Number) defaultLayoutConfig.getValue(optionData,
+                float initialValue = ((Number) defaultLayoutConfig.getOptionValue(optionData,
                         defaultLayoutContext)).floatValue();
                 initialValue = KielerMath.limit(initialValue, sliderListener.minFloat,
                         sliderListener.maxFloat);
@@ -356,7 +356,7 @@ public class LayoutOptionControlFactory {
                 valuesContainer.setData(optionData);
                 controls.add(valuesContainer);
                 // set initial value for the radio buttons
-                if ((Boolean) defaultLayoutConfig.getValue(optionData, defaultLayoutContext)) {
+                if ((Boolean) defaultLayoutConfig.getOptionValue(optionData, defaultLayoutContext)) {
                     trueButton.setSelection(true);
                 } else {
                     falseButton.setSelection(true);
@@ -376,7 +376,8 @@ public class LayoutOptionControlFactory {
                 } else {
                     values = ((Class<Enum>) optionData.getOptionClass()).getEnumConstants();
                 }
-                Object initialValue = defaultLayoutConfig.getValue(optionData, defaultLayoutContext);
+                Object initialValue = defaultLayoutConfig.getOptionValue(optionData,
+                        defaultLayoutContext);
                 for (Object value : values) {
                     Button button = formToolkit.createButton(valuesContainer, getUserValue(value),
                             SWT.RADIO);

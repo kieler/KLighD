@@ -50,16 +50,16 @@ KPort returns KPort:
 
 //-------------- KLayoutData ---------------
 
-PersistentEntry returns PersistentEntry:
+Property returns PersistentEntry:
     key=QualifiedID '=' value=PropertyValue;
 
 KIdentifier returns KIdentifier:
-    id=QualifiedID ('[' (persistentEntries+=PersistentEntry)* ']')?;
+    id=QualifiedID ('[' (persistentEntries+=Property)* ']')?;
 
 KNodeLayout returns KShapeLayout:
     (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
 	    & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
-	    & ('properties' ':' (persistentEntries+=PersistentEntry)*)?)
+	    & ('properties' ':' (persistentEntries+=Property)*)?)
     (('insets' ':' insets=KInsets) | insets=EmptyKInsets);
 
 EmptyKNodeLayout returns KShapeLayout:
@@ -77,7 +77,7 @@ KShapeLayout returns KShapeLayout:
     {KShapeLayout}
     (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
     & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
-    & ('properties' ':' (persistentEntries+=PersistentEntry)*)?);
+    & ('properties' ':' (persistentEntries+=Property)*)?);
 
 EmptyKShapeLayout returns KShapeLayout:
     {KShapeLayout};
@@ -88,7 +88,7 @@ KEdgeLayout returns KEdgeLayout:
             | targetPoint=EmptyKPoint))
         | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
     ) | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
-    ('properties' ':' (persistentEntries+=PersistentEntry)*)?;
+    ('properties' ':' (persistentEntries+=Property)*)?;
 
 EmptyKEdgeLayout returns KEdgeLayout:
     sourcePoint=EmptyKPoint targetPoint=EmptyKPoint;
@@ -107,7 +107,7 @@ KRendering returns KRendering:
 
 KSimpleRendering returns KRendering:
 	(KRenderingRef | KChildArea | KText)
-	(id=QualifiedID)? ('[' (persistentEntries+=PersistentEntry)* ']')? ('{'
+	(id=QualifiedID)? ('[' (persistentEntries+=Property)* ']')? ('{'
 		(('styles' ':' (styles+=KStyle)*)?
 		& ('actions' ':' (actions+=KAction)*)?
 		& (placementData=KPlacementData)?)
@@ -115,7 +115,7 @@ KSimpleRendering returns KRendering:
 
 KContainerRendering returns KContainerRendering:
 	(KRectangle | KRoundedRectangle | KEllipse | KArc | KCustomRendering | KImage)
-	(id=QualifiedID)? ('[' (persistentEntries+=PersistentEntry)* ']')? ('{'
+	(id=QualifiedID)? ('[' (persistentEntries+=Property)* ']')? ('{'
 		(('styles' ':' (styles+=KStyle)*)?
 		& ('actions' ':' (actions+=KAction)*)?
 		& (placementData=KPlacementData)?
@@ -160,7 +160,7 @@ KImage returns KImage:
 
 KPolyline returns KPolyline:
 	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline)
-	(id=QualifiedID)? ('[' (persistentEntries+=PersistentEntry)* ']')? ('{'
+	(id=QualifiedID)? ('[' (persistentEntries+=Property)* ']')? ('{'
 		(('points' ':' (points+=KPosition (';' points+=KPosition)*)?)?
 		& ('styles' ':' (styles+=KStyle)*)?
 		& ('actions' ':' (actions+=KAction)*)?
@@ -268,7 +268,7 @@ KStyleRef returns KStyleRef:
 KRenderingLibrary returns KRenderingLibrary:
 	{KRenderingLibrary}
 	'krenderingLibrary'
-	('[' (persistentEntries+=PersistentEntry)* ']')? '{'
+	('[' (persistentEntries+=Property)* ']')? '{'
 		(renderings+=KRendering | renderings+=KStyleHolder)*
 	'}';
 

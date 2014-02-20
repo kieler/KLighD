@@ -114,6 +114,8 @@ public abstract class AbstractKGERenderingController
      */
     public static final Object ATTR_KRENDERING = new Object();
 
+    private DiagramController diagramController;
+
     /** the graph element whose rendering is controlled by this controller. */
     private S element;
     
@@ -237,11 +239,14 @@ public abstract class AbstractKGERenderingController
     /**
      * Initializes the rendering controller.
      * 
+     * @param diagCtrl
+     *            the overall {@link DiagramController} referenced for scheduling rendering updates
      * @param sync
      *            true if the rendering should be synchronized with the model; false else
      */
-    public void initialize(final boolean sync) {
-        syncRendering = sync;
+    public void initialize(final DiagramController diagCtrl, final boolean sync) {
+        this.diagramController = diagCtrl;
+        this.syncRendering = sync;
 
         // do the initial update of the rendering
         updateRendering();
@@ -381,7 +386,7 @@ public abstract class AbstractKGERenderingController
                         final KRendering rendering = element.getData(KRendering.class);
                         if (rendering != currentRendering) {
                             // a rendering has been added or removed
-                            updateRenderingInUi();
+                            scheduleRenderingUpdate();
                         }
                         break;
                     default:
@@ -396,7 +401,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Unregisters the adapter currently installed on the element.
      */
-    private void unregisterElementAdapter() {
+    void unregisterElementAdapter() {
         if (elementAdapter != null) {
             element.eAdapters().remove(elementAdapter);
             elementAdapter = null;
@@ -504,8 +509,9 @@ public abstract class AbstractKGERenderingController
                     }
 
                     // handle other changes by reevaluating the rendering
-                    updateRenderingInUi();
+                    scheduleRenderingUpdate();
                     break;
+
                 default:
                     break;
                 }
@@ -527,16 +533,27 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
+     * Schedules a re-evaluation of this' KGE's rendering.<br>
+     * The scheduling allows to collect a bunch of changes within some time and apply them in one
+     * run, which is desirable in combination with the new EMF compare-based incremental update.
+     * <br>
+     * In addition, this automatically realizes the switching to the UI thread. 
+     */
+    private void scheduleRenderingUpdate() {
+        diagramController.scheduleRenderingUpdate(this);
+    }
+
+    /**
      * A little helper reducing the 'syncExec' calls if possible.
      * 
      * @param r
      *            the runnable to be performed in the UI context.
      */
     private static void runInUI(final Runnable r) {
-        if (Display.getCurrent() != null) {
-            r.run();
-        } else {
+        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() != null) {
             PlatformUI.getWorkbench().getDisplay().syncExec(r);
+        } else {
+            r.run();
         }
     }
 
@@ -552,7 +569,7 @@ public abstract class AbstractKGERenderingController
     /**
      * A short convenience method for invoking {@link #updateRendering()} in UI context.
      */
-    private void updateRenderingInUi() {
+    void updateRenderingInUi() {
         runInUI(this.updateRenderingRunnable);
     }
 

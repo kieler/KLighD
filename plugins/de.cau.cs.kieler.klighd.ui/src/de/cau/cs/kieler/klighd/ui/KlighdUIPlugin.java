@@ -25,6 +25,9 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
 
     /** The plug-in ID. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ui"; //$NON-NLS-1$
+    
+    /** Menu id of the floating text widget's context menu. */
+    public static final String FLOATING_TEXT_MENU_ID = PLUGIN_ID + ".popupMenu.floatingText";
 
     // The shared instance
     private static KlighdUIPlugin plugin;

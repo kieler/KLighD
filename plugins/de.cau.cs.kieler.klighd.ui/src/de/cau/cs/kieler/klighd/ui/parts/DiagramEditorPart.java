@@ -276,6 +276,13 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /**
      * {@inheritDoc}
      */
+    public String getPartId() {
+        return "diagramEditor:" + getEditorInput().toString();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public IViewer<?> getViewer() {
         return viewer;
     }
@@ -289,13 +296,6 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         return viewer;
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    public String getPartId() {
-        return "diagramEditor:" + getEditorInput().toString();
-    }
-
     /**
      * {@inheritDoc}
      */

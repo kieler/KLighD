@@ -109,8 +109,8 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 				}
 				else break;
 			case KGraphPackage.PERSISTENT_ENTRY:
-				if(context == grammarAccess.getPersistentEntryRule()) {
-					sequence_PersistentEntry(context, (PersistentEntry) semanticObject); 
+				if(context == grammarAccess.getPropertyRule()) {
+					sequence_Property(context, (PersistentEntry) semanticObject); 
 					return; 
 				}
 				else break;
@@ -672,7 +672,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *         arcAngle=DEGREES 
 	 *         arcType=Arc? 
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
 	 *     )
 	 */
@@ -785,7 +785,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *     (
 	 *         (bundleName=QualifiedID? className=QualifiedID)? 
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
 	 *     )
 	 */
@@ -798,7 +798,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 * Constraint:
 	 *     (
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
 	 *     )
 	 */
@@ -812,7 +812,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *     (
 	 *         (bundleName=QualifiedID? imagePath=STRING)? 
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
 	 *     )
 	 */
@@ -825,7 +825,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 * Constraint:
 	 *     (
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
 	 *     )
 	 */
@@ -839,7 +839,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *     (
 	 *         (cornerWidth=Float cornerHeight=Float)? 
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
 	 *     )
 	 */
@@ -882,7 +882,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *             (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) | 
 	 *             (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint)
 	 *         ) 
-	 *         persistentEntries+=PersistentEntry*
+	 *         persistentEntries+=Property*
 	 *     )
 	 */
 	protected void sequence_KEdgeLayout(EObject context, KEdgeLayout semanticObject) {
@@ -1040,7 +1040,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (id=QualifiedID persistentEntries+=PersistentEntry*)
+	 *     (id=QualifiedID persistentEntries+=Property*)
 	 */
 	protected void sequence_KIdentifier(EObject context, KIdentifier semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1175,7 +1175,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     ((xpos=Float? ypos=Float?)? (width=Float? height=Float?)? persistentEntries+=PersistentEntry* (insets=KInsets | insets=EmptyKInsets))
+	 *     ((xpos=Float? ypos=Float?)? (width=Float? height=Float?)? persistentEntries+=Property* (insets=KInsets | insets=EmptyKInsets))
 	 */
 	protected void sequence_KNodeLayout(EObject context, KShapeLayout semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1256,7 +1256,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 * Constraint:
 	 *     (
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (
 	 *             (points+=KPosition points+=KPosition*)? 
 	 *             styles+=KStyle* 
@@ -1277,7 +1277,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 * Constraint:
 	 *     (
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (
 	 *             (points+=KPosition points+=KPosition*)? 
 	 *             styles+=KStyle* 
@@ -1299,7 +1299,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *     (
 	 *         bendRadius=Float? 
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (
 	 *             (points+=KPosition points+=KPosition*)? 
 	 *             styles+=KStyle* 
@@ -1320,7 +1320,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 * Constraint:
 	 *     (
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (
 	 *             (points+=KPosition points+=KPosition*)? 
 	 *             styles+=KStyle* 
@@ -1376,7 +1376,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (persistentEntries+=PersistentEntry* (renderings+=KRendering | renderings+=KStyleHolder)*)
+	 *     (persistentEntries+=Property* (renderings+=KRendering | renderings+=KStyleHolder)*)
 	 */
 	protected void sequence_KRenderingLibrary(EObject context, KRenderingLibrary semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1397,7 +1397,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *     (
 	 *         rendering=[KRendering|QualifiedID] 
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData?)?
 	 *     )
 	 */
@@ -1471,7 +1471,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     ((xpos=Float? ypos=Float?)? (width=Float? height=Float?)? persistentEntries+=PersistentEntry*)
+	 *     ((xpos=Float? ypos=Float?)? (width=Float? height=Float?)? persistentEntries+=Property*)
 	 */
 	protected void sequence_KShapeLayout(EObject context, KShapeLayout semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1489,7 +1489,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (id=QualifiedID? persistentEntries+=PersistentEntry* (styles+=KStyle* actions+=KAction* placementData=KPlacementData?)?)
+	 *     (id=QualifiedID? persistentEntries+=Property* (styles+=KStyle* actions+=KAction* placementData=KPlacementData?)?)
 	 */
 	protected void sequence_KSimpleRendering(EObject context, KChildArea semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1501,7 +1501,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 *     (
 	 *         (text=STRING cursorSelectable=BOOLEAN?)? 
 	 *         id=QualifiedID? 
-	 *         persistentEntries+=PersistentEntry* 
+	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData?)?
 	 *     )
 	 */
@@ -1660,7 +1660,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	 * Constraint:
 	 *     (key=QualifiedID value=PropertyValue)
 	 */
-	protected void sequence_PersistentEntry(EObject context, PersistentEntry semanticObject) {
+	protected void sequence_Property(EObject context, PersistentEntry semanticObject) {
 		if(errorAcceptor != null) {
 			if(transientValues.isValueTransient(semanticObject, KGraphPackage.Literals.PERSISTENT_ENTRY__KEY) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, KGraphPackage.Literals.PERSISTENT_ENTRY__KEY));
@@ -1669,8 +1669,8 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getPersistentEntryAccess().getKeyQualifiedIDParserRuleCall_0_0(), semanticObject.getKey());
-		feeder.accept(grammarAccess.getPersistentEntryAccess().getValuePropertyValueParserRuleCall_2_0(), semanticObject.getValue());
+		feeder.accept(grammarAccess.getPropertyAccess().getKeyQualifiedIDParserRuleCall_0_0(), semanticObject.getKey());
+		feeder.accept(grammarAccess.getPropertyAccess().getValuePropertyValueParserRuleCall_2_0(), semanticObject.getValue());
 		feeder.finish();
 	}
 }

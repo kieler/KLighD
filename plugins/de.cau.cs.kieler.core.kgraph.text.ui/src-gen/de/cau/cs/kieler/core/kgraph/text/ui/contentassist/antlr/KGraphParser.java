@@ -85,7 +85,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKLabelAccess().getGroup_4_0(), "rule__KLabel__Group_4_0__0");
 					put(grammarAccess.getKPortAccess().getGroup(), "rule__KPort__Group__0");
 					put(grammarAccess.getKPortAccess().getGroup_3_0(), "rule__KPort__Group_3_0__0");
-					put(grammarAccess.getPersistentEntryAccess().getGroup(), "rule__PersistentEntry__Group__0");
+					put(grammarAccess.getPropertyAccess().getGroup(), "rule__Property__Group__0");
 					put(grammarAccess.getKIdentifierAccess().getGroup(), "rule__KIdentifier__Group__0");
 					put(grammarAccess.getKIdentifierAccess().getGroup_1(), "rule__KIdentifier__Group_1__0");
 					put(grammarAccess.getKNodeLayoutAccess().getGroup(), "rule__KNodeLayout__Group__0");
@@ -277,8 +277,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKPortAccess().getLabelsAssignment_3_0_2_0(), "rule__KPort__LabelsAssignment_3_0_2_0");
 					put(grammarAccess.getKPortAccess().getDataAssignment_3_0_2_1(), "rule__KPort__DataAssignment_3_0_2_1");
 					put(grammarAccess.getKPortAccess().getDataAssignment_3_1(), "rule__KPort__DataAssignment_3_1");
-					put(grammarAccess.getPersistentEntryAccess().getKeyAssignment_0(), "rule__PersistentEntry__KeyAssignment_0");
-					put(grammarAccess.getPersistentEntryAccess().getValueAssignment_2(), "rule__PersistentEntry__ValueAssignment_2");
+					put(grammarAccess.getPropertyAccess().getKeyAssignment_0(), "rule__Property__KeyAssignment_0");
+					put(grammarAccess.getPropertyAccess().getValueAssignment_2(), "rule__Property__ValueAssignment_2");
 					put(grammarAccess.getKIdentifierAccess().getIdAssignment_0(), "rule__KIdentifier__IdAssignment_0");
 					put(grammarAccess.getKIdentifierAccess().getPersistentEntriesAssignment_1_1(), "rule__KIdentifier__PersistentEntriesAssignment_1_1");
 					put(grammarAccess.getKNodeLayoutAccess().getXposAssignment_0_0_2_0_2(), "rule__KNodeLayout__XposAssignment_0_0_2_0_2");

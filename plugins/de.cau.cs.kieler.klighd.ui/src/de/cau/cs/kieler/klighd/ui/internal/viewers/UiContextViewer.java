@@ -18,7 +18,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.contexts.IContextService;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
@@ -82,32 +81,39 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
 
             super.setModel(model, sync);
 
-            // create the context menu
-            final MenuManager menuManager = new MenuManager();
-
+            // since the control, i.e. the diagram canvas, is setup during the above call of
+            //  'setModel(...)' we cannot register the context menu earlier; thus...
             final Control control = getControl();
+
+            // this test is just for safety purposes, should never be null
             if (control != null) {
-                // this test is just for safety purposes, should never be null
+                // create the context menu
+                final MenuManager menuManager = new MenuManager();
+
                 // be careful: associating the menu with 'diagramContainer' does not work
                 //  as it is completely covered by the active viewer's canvas!
                 control.setMenu(menuManager.createContextMenu(control));
+
+                final Action saveAsImageAction =
+                        new SaveAsImageAction(this, Messages.UiContextViewer_save_as_image_text);
+                menuManager.add(saveAsImageAction);
+                
+                // register the context menu in the current work bench part site
+                //  this enables the population with entries contributed via extension points
+                ((ViewContext) model).getDiagramWorkbenchPart().getSite()
+                        .registerContextMenu(menuManager, this);
             }
 
-            final Action saveAsImageAction =
-                    new SaveAsImageAction(this, Messages.UiContextViewer_save_as_image_text);
-            menuManager.add(saveAsImageAction);
-            
-            final IWorkbenchPartSite site = ((ViewContext) model).getDiagramWorkbenchPart().getSite();
-
-            // register the context menu in the current work bench part site
-            //  this enables the population with entries contributed via extension points
-            site.registerContextMenu(menuManager, this);
+            // Note that the text widget employed for cursor-based text selection
+            //  uses its own context menu, which must be registered at the part site, as well.
+            // Since this feature is a service of the PiccoloViewerUI implementation
+            //  that context menu is setup in PiccoloViewerUI!
 
         } else if (model instanceof String) {
             // if the model is a string show it
             showMessage((String) model);
             
-            // provide no selection in this case!
+            // provide no (custom) context menu in this case!
         }
     }
 

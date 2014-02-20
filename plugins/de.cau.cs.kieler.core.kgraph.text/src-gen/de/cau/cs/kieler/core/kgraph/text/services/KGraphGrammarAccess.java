@@ -532,8 +532,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getDataEmptyKShapeLayoutParserRuleCall_3_1_0() { return cDataEmptyKShapeLayoutParserRuleCall_3_1_0; }
 	}
 
-	public class PersistentEntryElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "PersistentEntry");
+	public class PropertyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Property");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cKeyAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cKeyQualifiedIDParserRuleCall_0_0 = (RuleCall)cKeyAssignment_0.eContents().get(0);
@@ -542,7 +542,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cValuePropertyValueParserRuleCall_2_0 = (RuleCall)cValueAssignment_2.eContents().get(0);
 		
 		////-------------- KLayoutData ---------------
-		//PersistentEntry:
+		//Property returns PersistentEntry:
 		//	key=QualifiedID "=" value=PropertyValue;
 		public ParserRule getRule() { return rule; }
 
@@ -573,14 +573,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Keyword cLeftSquareBracketKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final Assignment cPersistentEntriesAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_1_1_0 = (RuleCall)cPersistentEntriesAssignment_1_1.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_1_1_0 = (RuleCall)cPersistentEntriesAssignment_1_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//KIdentifier:
-		//	id=QualifiedID ("[" persistentEntries+=PersistentEntry* "]")?;
+		//	id=QualifiedID ("[" persistentEntries+=Property* "]")?;
 		public ParserRule getRule() { return rule; }
 
-		//id=QualifiedID ("[" persistentEntries+=PersistentEntry* "]")?
+		//id=QualifiedID ("[" persistentEntries+=Property* "]")?
 		public Group getGroup() { return cGroup; }
 
 		//id=QualifiedID
@@ -589,17 +589,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedID
 		public RuleCall getIdQualifiedIDParserRuleCall_0_0() { return cIdQualifiedIDParserRuleCall_0_0; }
 
-		//("[" persistentEntries+=PersistentEntry* "]")?
+		//("[" persistentEntries+=Property* "]")?
 		public Group getGroup_1() { return cGroup_1; }
 
 		//"["
 		public Keyword getLeftSquareBracketKeyword_1_0() { return cLeftSquareBracketKeyword_1_0; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_1_1() { return cPersistentEntriesAssignment_1_1; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_1_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_1_1_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_1_1_0() { return cPersistentEntriesPropertyParserRuleCall_1_1_0; }
 
 		//"]"
 		public Keyword getRightSquareBracketKeyword_1_2() { return cRightSquareBracketKeyword_1_2; }
@@ -641,7 +641,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropertiesKeyword_0_2_0 = (Keyword)cGroup_0_2.eContents().get(0);
 		private final Keyword cColonKeyword_0_2_1 = (Keyword)cGroup_0_2.eContents().get(1);
 		private final Assignment cPersistentEntriesAssignment_0_2_2 = (Assignment)cGroup_0_2.eContents().get(2);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_0_2_2_0 = (RuleCall)cPersistentEntriesAssignment_0_2_2.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_0_2_2_0 = (RuleCall)cPersistentEntriesAssignment_0_2_2.eContents().get(0);
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
 		private final Group cGroup_1_0 = (Group)cAlternatives_1.eContents().get(0);
 		private final Keyword cInsetsKeyword_1_0_0 = (Keyword)cGroup_1_0.eContents().get(0);
@@ -653,17 +653,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//KNodeLayout returns KShapeLayout:
 		//	(("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)? & ("height"
-		//	"=" height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?) ("insets" ":" insets=KInsets |
+		//	"=" height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?) ("insets" ":" insets=KInsets |
 		//	insets=EmptyKInsets);
 		public ParserRule getRule() { return rule; }
 
 		//(("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)? & ("height" "="
-		//height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?) ("insets" ":" insets=KInsets |
+		//height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?) ("insets" ":" insets=KInsets |
 		//insets=EmptyKInsets)
 		public Group getGroup() { return cGroup; }
 
 		//("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)? & ("height" "="
-		//height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?
+		//height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?
 		public UnorderedGroup getUnorderedGroup_0() { return cUnorderedGroup_0; }
 
 		//("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))?
@@ -750,7 +750,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//Float
 		public RuleCall getHeightFloatParserRuleCall_0_1_2_1_2_0() { return cHeightFloatParserRuleCall_0_1_2_1_2_0; }
 
-		//("properties" ":" persistentEntries+=PersistentEntry*)?
+		//("properties" ":" persistentEntries+=Property*)?
 		public Group getGroup_0_2() { return cGroup_0_2; }
 
 		//"properties"
@@ -759,11 +759,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//":"
 		public Keyword getColonKeyword_0_2_1() { return cColonKeyword_0_2_1; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_0_2_2() { return cPersistentEntriesAssignment_0_2_2; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_0_2_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_0_2_2_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_0_2_2_0() { return cPersistentEntriesPropertyParserRuleCall_0_2_2_0; }
 
 		//"insets" ":" insets=KInsets | insets=EmptyKInsets
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
@@ -957,22 +957,22 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropertiesKeyword_1_2_0 = (Keyword)cGroup_1_2.eContents().get(0);
 		private final Keyword cColonKeyword_1_2_1 = (Keyword)cGroup_1_2.eContents().get(1);
 		private final Assignment cPersistentEntriesAssignment_1_2_2 = (Assignment)cGroup_1_2.eContents().get(2);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_1_2_2_0 = (RuleCall)cPersistentEntriesAssignment_1_2_2.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_1_2_2_0 = (RuleCall)cPersistentEntriesAssignment_1_2_2.eContents().get(0);
 		
 		//KShapeLayout:
 		//	{KShapeLayout} (("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)?
-		//	& ("height" "=" height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?);
+		//	& ("height" "=" height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?);
 		public ParserRule getRule() { return rule; }
 
 		//{KShapeLayout} (("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)? &
-		//("height" "=" height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?)
+		//("height" "=" height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?)
 		public Group getGroup() { return cGroup; }
 
 		//{KShapeLayout}
 		public Action getKShapeLayoutAction_0() { return cKShapeLayoutAction_0; }
 
 		//("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)? & ("height" "="
-		//height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?
+		//height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?
 		public UnorderedGroup getUnorderedGroup_1() { return cUnorderedGroup_1; }
 
 		//("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))?
@@ -1059,7 +1059,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//Float
 		public RuleCall getHeightFloatParserRuleCall_1_1_2_1_2_0() { return cHeightFloatParserRuleCall_1_1_2_1_2_0; }
 
-		//("properties" ":" persistentEntries+=PersistentEntry*)?
+		//("properties" ":" persistentEntries+=Property*)?
 		public Group getGroup_1_2() { return cGroup_1_2; }
 
 		//"properties"
@@ -1068,11 +1068,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//":"
 		public Keyword getColonKeyword_1_2_1() { return cColonKeyword_1_2_1; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_1_2_2() { return cPersistentEntriesAssignment_1_2_2; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_1_2_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_1_2_2_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_1_2_2_0() { return cPersistentEntriesPropertyParserRuleCall_1_2_2_0; }
 	}
 
 	public class EmptyKShapeLayoutElements extends AbstractParserRuleElementFinder {
@@ -1123,17 +1123,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cPropertiesKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final Keyword cColonKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
 		private final Assignment cPersistentEntriesAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_1_2_0 = (RuleCall)cPersistentEntriesAssignment_1_2.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_1_2_0 = (RuleCall)cPersistentEntriesAssignment_1_2.eContents().get(0);
 		
 		//KEdgeLayout:
 		//	("points" ":" (sourcePoint=KPoint (";" (bendPoints+=KPoint ";")* targetPoint=KPoint | targetPoint=EmptyKPoint) |
 		//	sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) | sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) ("properties" ":"
-		//	persistentEntries+=PersistentEntry*)?;
+		//	persistentEntries+=Property*)?;
 		public ParserRule getRule() { return rule; }
 
 		//("points" ":" (sourcePoint=KPoint (";" (bendPoints+=KPoint ";")* targetPoint=KPoint | targetPoint=EmptyKPoint) |
 		//sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) | sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) ("properties" ":"
-		//persistentEntries+=PersistentEntry*)?
+		//persistentEntries+=Property*)?
 		public Group getGroup() { return cGroup; }
 
 		//"points" ":" (sourcePoint=KPoint (";" (bendPoints+=KPoint ";")* targetPoint=KPoint | targetPoint=EmptyKPoint) |
@@ -1226,7 +1226,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//EmptyKPoint
 		public RuleCall getTargetPointEmptyKPointParserRuleCall_0_1_1_0() { return cTargetPointEmptyKPointParserRuleCall_0_1_1_0; }
 
-		//("properties" ":" persistentEntries+=PersistentEntry*)?
+		//("properties" ":" persistentEntries+=Property*)?
 		public Group getGroup_1() { return cGroup_1; }
 
 		//"properties"
@@ -1235,11 +1235,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//":"
 		public Keyword getColonKeyword_1_1() { return cColonKeyword_1_1; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_1_2() { return cPersistentEntriesAssignment_1_2; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_1_2_0() { return cPersistentEntriesPersistentEntryParserRuleCall_1_2_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_1_2_0() { return cPersistentEntriesPropertyParserRuleCall_1_2_0; }
 	}
 
 	public class EmptyKEdgeLayoutElements extends AbstractParserRuleElementFinder {
@@ -1351,7 +1351,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cLeftSquareBracketKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cPersistentEntriesAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cLeftCurlyBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
@@ -1371,11 +1371,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		
 		//KSimpleRendering returns KRendering:
-		//	(KRenderingRef | KChildArea | KText) id=QualifiedID? ("[" persistentEntries+=PersistentEntry* "]")? ("{" (("styles"
-		//	":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData?) "}")?;
+		//	(KRenderingRef | KChildArea | KText) id=QualifiedID? ("[" persistentEntries+=Property* "]")? ("{" (("styles" ":"
+		//	styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData?) "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//(KRenderingRef | KChildArea | KText) id=QualifiedID? ("[" persistentEntries+=PersistentEntry* "]")? ("{" (("styles" ":"
+		//(KRenderingRef | KChildArea | KText) id=QualifiedID? ("[" persistentEntries+=Property* "]")? ("{" (("styles" ":"
 		//styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData?) "}")?
 		public Group getGroup() { return cGroup; }
 
@@ -1397,17 +1397,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedID
 		public RuleCall getIdQualifiedIDParserRuleCall_1_0() { return cIdQualifiedIDParserRuleCall_1_0; }
 
-		//("[" persistentEntries+=PersistentEntry* "]")?
+		//("[" persistentEntries+=Property* "]")?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"["
 		public Keyword getLeftSquareBracketKeyword_2_0() { return cLeftSquareBracketKeyword_2_0; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_2_1() { return cPersistentEntriesAssignment_2_1; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_2_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_2_1_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_2_1_0() { return cPersistentEntriesPropertyParserRuleCall_2_1_0; }
 
 		//"]"
 		public Keyword getRightSquareBracketKeyword_2_2() { return cRightSquareBracketKeyword_2_2; }
@@ -1476,7 +1476,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cLeftSquareBracketKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cPersistentEntriesAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cLeftCurlyBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
@@ -1501,12 +1501,12 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//KContainerRendering:
 		//	(KRectangle | KRoundedRectangle | KEllipse | KArc | KCustomRendering | KImage) id=QualifiedID? ("["
-		//	persistentEntries+=PersistentEntry* "]")? ("{" (("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? &
+		//	persistentEntries+=Property* "]")? ("{" (("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? &
 		//	placementData=KPlacementData? & childPlacement=KPlacement?) children+=KRendering* "}")?;
 		public ParserRule getRule() { return rule; }
 
 		//(KRectangle | KRoundedRectangle | KEllipse | KArc | KCustomRendering | KImage) id=QualifiedID? ("["
-		//persistentEntries+=PersistentEntry* "]")? ("{" (("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? &
+		//persistentEntries+=Property* "]")? ("{" (("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? &
 		//placementData=KPlacementData? & childPlacement=KPlacement?) children+=KRendering* "}")?
 		public Group getGroup() { return cGroup; }
 
@@ -1537,17 +1537,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedID
 		public RuleCall getIdQualifiedIDParserRuleCall_1_0() { return cIdQualifiedIDParserRuleCall_1_0; }
 
-		//("[" persistentEntries+=PersistentEntry* "]")?
+		//("[" persistentEntries+=Property* "]")?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"["
 		public Keyword getLeftSquareBracketKeyword_2_0() { return cLeftSquareBracketKeyword_2_0; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_2_1() { return cPersistentEntriesAssignment_2_1; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_2_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_2_1_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_2_1_0() { return cPersistentEntriesPropertyParserRuleCall_2_1_0; }
 
 		//"]"
 		public Keyword getRightSquareBracketKeyword_2_2() { return cRightSquareBracketKeyword_2_2; }
@@ -2008,7 +2008,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cLeftSquareBracketKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cPersistentEntriesAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cLeftCurlyBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
@@ -2046,15 +2046,15 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
 		
 		//KPolyline:
-		//	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("["
-		//	persistentEntries+=PersistentEntry* "]")? ("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? &
-		//	("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData? &
-		//	childPlacement=KPlacement?) ("junction" junctionPointRendering=KRendering)? children+=KRendering* "}")?;
+		//	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("[" persistentEntries+=Property* "]")?
+		//	("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? & ("styles" ":" styles+=KStyle*)? & ("actions" ":"
+		//	actions+=KAction*)? & placementData=KPlacementData? & childPlacement=KPlacement?) ("junction"
+		//	junctionPointRendering=KRendering)? children+=KRendering* "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("[" persistentEntries+=PersistentEntry*
-		//"]")? ("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? & ("styles" ":" styles+=KStyle*)? &
-		//("actions" ":" actions+=KAction*)? & placementData=KPlacementData? & childPlacement=KPlacement?) ("junction"
+		//(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("[" persistentEntries+=Property* "]")?
+		//("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? & ("styles" ":" styles+=KStyle*)? & ("actions" ":"
+		//actions+=KAction*)? & placementData=KPlacementData? & childPlacement=KPlacement?) ("junction"
 		//junctionPointRendering=KRendering)? children+=KRendering* "}")?
 		public Group getGroup() { return cGroup; }
 
@@ -2079,17 +2079,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedID
 		public RuleCall getIdQualifiedIDParserRuleCall_1_0() { return cIdQualifiedIDParserRuleCall_1_0; }
 
-		//("[" persistentEntries+=PersistentEntry* "]")?
+		//("[" persistentEntries+=Property* "]")?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"["
 		public Keyword getLeftSquareBracketKeyword_2_0() { return cLeftSquareBracketKeyword_2_0; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_2_1() { return cPersistentEntriesAssignment_2_1; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_2_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_2_1_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_2_1_0() { return cPersistentEntriesPropertyParserRuleCall_2_1_0; }
 
 		//"]"
 		public Keyword getRightSquareBracketKeyword_2_2() { return cRightSquareBracketKeyword_2_2; }
@@ -3349,7 +3349,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cLeftSquareBracketKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cPersistentEntriesAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cPersistentEntriesPersistentEntryParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
+		private final RuleCall cPersistentEntriesPropertyParserRuleCall_2_1_0 = (RuleCall)cPersistentEntriesAssignment_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Alternatives cAlternatives_4 = (Alternatives)cGroup.eContents().get(4);
@@ -3361,11 +3361,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		
 		////----------- KRendering Utility ------------
 		//KRenderingLibrary:
-		//	{KRenderingLibrary} "krenderingLibrary" ("[" persistentEntries+=PersistentEntry* "]")? "{" (renderings+=KRendering |
+		//	{KRenderingLibrary} "krenderingLibrary" ("[" persistentEntries+=Property* "]")? "{" (renderings+=KRendering |
 		//	renderings+=KStyleHolder)* "}";
 		public ParserRule getRule() { return rule; }
 
-		//{KRenderingLibrary} "krenderingLibrary" ("[" persistentEntries+=PersistentEntry* "]")? "{" (renderings+=KRendering |
+		//{KRenderingLibrary} "krenderingLibrary" ("[" persistentEntries+=Property* "]")? "{" (renderings+=KRendering |
 		//renderings+=KStyleHolder)* "}"
 		public Group getGroup() { return cGroup; }
 
@@ -3375,17 +3375,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"krenderingLibrary"
 		public Keyword getKrenderingLibraryKeyword_1() { return cKrenderingLibraryKeyword_1; }
 
-		//("[" persistentEntries+=PersistentEntry* "]")?
+		//("[" persistentEntries+=Property* "]")?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"["
 		public Keyword getLeftSquareBracketKeyword_2_0() { return cLeftSquareBracketKeyword_2_0; }
 
-		//persistentEntries+=PersistentEntry*
+		//persistentEntries+=Property*
 		public Assignment getPersistentEntriesAssignment_2_1() { return cPersistentEntriesAssignment_2_1; }
 
-		//PersistentEntry
-		public RuleCall getPersistentEntriesPersistentEntryParserRuleCall_2_1_0() { return cPersistentEntriesPersistentEntryParserRuleCall_2_1_0; }
+		//Property
+		public RuleCall getPersistentEntriesPropertyParserRuleCall_2_1_0() { return cPersistentEntriesPropertyParserRuleCall_2_1_0; }
 
 		//"]"
 		public Keyword getRightSquareBracketKeyword_2_2() { return cRightSquareBracketKeyword_2_2; }
@@ -4929,7 +4929,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	private KEdgeElements pKEdge;
 	private KLabelElements pKLabel;
 	private KPortElements pKPort;
-	private PersistentEntryElements pPersistentEntry;
+	private PropertyElements pProperty;
 	private KIdentifierElements pKIdentifier;
 	private KNodeLayoutElements pKNodeLayout;
 	private EmptyKNodeLayoutElements pEmptyKNodeLayout;
@@ -5110,18 +5110,18 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	////-------------- KLayoutData ---------------
-	//PersistentEntry:
+	//Property returns PersistentEntry:
 	//	key=QualifiedID "=" value=PropertyValue;
-	public PersistentEntryElements getPersistentEntryAccess() {
-		return (pPersistentEntry != null) ? pPersistentEntry : (pPersistentEntry = new PersistentEntryElements());
+	public PropertyElements getPropertyAccess() {
+		return (pProperty != null) ? pProperty : (pProperty = new PropertyElements());
 	}
 	
-	public ParserRule getPersistentEntryRule() {
-		return getPersistentEntryAccess().getRule();
+	public ParserRule getPropertyRule() {
+		return getPropertyAccess().getRule();
 	}
 
 	//KIdentifier:
-	//	id=QualifiedID ("[" persistentEntries+=PersistentEntry* "]")?;
+	//	id=QualifiedID ("[" persistentEntries+=Property* "]")?;
 	public KIdentifierElements getKIdentifierAccess() {
 		return (pKIdentifier != null) ? pKIdentifier : (pKIdentifier = new KIdentifierElements());
 	}
@@ -5132,7 +5132,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KNodeLayout returns KShapeLayout:
 	//	(("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)? & ("height"
-	//	"=" height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?) ("insets" ":" insets=KInsets |
+	//	"=" height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?) ("insets" ":" insets=KInsets |
 	//	insets=EmptyKInsets);
 	public KNodeLayoutElements getKNodeLayoutAccess() {
 		return (pKNodeLayout != null) ? pKNodeLayout : (pKNodeLayout = new KNodeLayoutElements());
@@ -5175,7 +5175,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KShapeLayout:
 	//	{KShapeLayout} (("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)?
-	//	& ("height" "=" height=Float)?))? & ("properties" ":" persistentEntries+=PersistentEntry*)?);
+	//	& ("height" "=" height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?);
 	public KShapeLayoutElements getKShapeLayoutAccess() {
 		return (pKShapeLayout != null) ? pKShapeLayout : (pKShapeLayout = new KShapeLayoutElements());
 	}
@@ -5197,7 +5197,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KEdgeLayout:
 	//	("points" ":" (sourcePoint=KPoint (";" (bendPoints+=KPoint ";")* targetPoint=KPoint | targetPoint=EmptyKPoint) |
 	//	sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) | sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) ("properties" ":"
-	//	persistentEntries+=PersistentEntry*)?;
+	//	persistentEntries+=Property*)?;
 	public KEdgeLayoutElements getKEdgeLayoutAccess() {
 		return (pKEdgeLayout != null) ? pKEdgeLayout : (pKEdgeLayout = new KEdgeLayoutElements());
 	}
@@ -5248,8 +5248,8 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KSimpleRendering returns KRendering:
-	//	(KRenderingRef | KChildArea | KText) id=QualifiedID? ("[" persistentEntries+=PersistentEntry* "]")? ("{" (("styles"
-	//	":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData?) "}")?;
+	//	(KRenderingRef | KChildArea | KText) id=QualifiedID? ("[" persistentEntries+=Property* "]")? ("{" (("styles" ":"
+	//	styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData?) "}")?;
 	public KSimpleRenderingElements getKSimpleRenderingAccess() {
 		return (pKSimpleRendering != null) ? pKSimpleRendering : (pKSimpleRendering = new KSimpleRenderingElements());
 	}
@@ -5260,7 +5260,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	//KContainerRendering:
 	//	(KRectangle | KRoundedRectangle | KEllipse | KArc | KCustomRendering | KImage) id=QualifiedID? ("["
-	//	persistentEntries+=PersistentEntry* "]")? ("{" (("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? &
+	//	persistentEntries+=Property* "]")? ("{" (("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? &
 	//	placementData=KPlacementData? & childPlacement=KPlacement?) children+=KRendering* "}")?;
 	public KContainerRenderingElements getKContainerRenderingAccess() {
 		return (pKContainerRendering != null) ? pKContainerRendering : (pKContainerRendering = new KContainerRenderingElements());
@@ -5361,10 +5361,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KPolyline:
-	//	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("["
-	//	persistentEntries+=PersistentEntry* "]")? ("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? &
-	//	("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData? &
-	//	childPlacement=KPlacement?) ("junction" junctionPointRendering=KRendering)? children+=KRendering* "}")?;
+	//	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline) id=QualifiedID? ("[" persistentEntries+=Property* "]")?
+	//	("{" (("points" ":" (points+=KPosition (";" points+=KPosition)*)?)? & ("styles" ":" styles+=KStyle*)? & ("actions" ":"
+	//	actions+=KAction*)? & placementData=KPlacementData? & childPlacement=KPlacement?) ("junction"
+	//	junctionPointRendering=KRendering)? children+=KRendering* "}")?;
 	public KPolylineElements getKPolylineAccess() {
 		return (pKPolyline != null) ? pKPolyline : (pKPolyline = new KPolylineElements());
 	}
@@ -5611,7 +5611,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 	////----------- KRendering Utility ------------
 	//KRenderingLibrary:
-	//	{KRenderingLibrary} "krenderingLibrary" ("[" persistentEntries+=PersistentEntry* "]")? "{" (renderings+=KRendering |
+	//	{KRenderingLibrary} "krenderingLibrary" ("[" persistentEntries+=Property* "]")? "{" (renderings+=KRendering |
 	//	renderings+=KStyleHolder)* "}";
 	public KRenderingLibraryElements getKRenderingLibraryAccess() {
 		return (pKRenderingLibrary != null) ? pKRenderingLibrary : (pKRenderingLibrary = new KRenderingLibraryElements());

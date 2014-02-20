@@ -57,7 +57,7 @@ public final class DiagramViewManager implements IPartListener {
     public static final IProperty<String> VIEW_ID = new Property<String>("klighd.viewId");
 
     /** the primary identifier for the diagram view as specified in the view extension. */
-    private static final String PRIMARY_VIEW_ID = "de.cau.cs.kieler.klighd.ui.lightDiagramView";
+    private static final String PRIMARY_VIEW_ID = DiagramViewPart.VIEW_ID;
 
     /** the singleton instance. */
     private static DiagramViewManager instance = new DiagramViewManager();
@@ -428,9 +428,6 @@ public final class DiagramViewManager implements IPartListener {
      * e.g. {@link DiagramEditorPart DiagramEditorParts}. This is (currently) necessary in order to
      * let the side bar work correctly (diagram refresh), since those event listener call
      * {@link DiagramViewManager#updateView(String, IPropertyHolder)}.
-     * 
-     * Is package protected since it is only called from
-     * {@link DiagramEditorPart#createPartControl(org.eclipse.swt.widgets.Composite)} at the moment.
      * 
      * @param part
      *            the {@link IDiagramWorkbenchPart} to register

@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
@@ -52,7 +51,6 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
-//SUPPRESS CHECKSTYLE PREVIOUS 6 LineLength
 
 /**
  * A layout configuration which derives layout options from properties attached to layout data of
@@ -108,102 +106,107 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public void enrich(final LayoutContext context) {
+    public Object getContextValue(final IProperty<?> property, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
             KGraphElement element = (KGraphElement) diagramPart;
             KLayoutData elementLayout = element.getData(KLayoutData.class);
 
-            ContextViewer contextViewer = null;
+            if (property.equals(LayoutContext.CONTAINER_DIAGRAM_PART)) {
+                // find the parent node for the selected graph element
+                return getParentNode(element);
+                
+            } else if (property.equals(LayoutContext.DOMAIN_MODEL)) {
+                // determine the domain model element
+                ContextViewer contextViewer = getContextViewer(context);
+                if (contextViewer != null) {
+                    ViewContext viewContext = contextViewer.getViewContext();
+                    if (viewContext != null) {
+                        return viewContext.getSourceElement(element);
+                    }
+                }
+                
+            } else if (property.equals(LayoutContext.CONTAINER_DOMAIN_MODEL)) {
+                // determine the domain model element of the parent node
+                KNode parentNode = getParentNode(element);
+                ContextViewer contextViewer = getContextViewer(context);
+                if (parentNode != null && contextViewer != null) {
+                    ViewContext viewContext = contextViewer.getViewContext();
+                    if (viewContext != null) {
+                        return viewContext.getSourceElement(parentNode);
+                    }
+                }
+                
+            } else if (property.equals(LayoutContext.OPT_TARGETS)) {
+                // add layout option target types
+                return new DefaultLayoutConfig.OptionTargetSwitch().doSwitch(element);
+                
+            } else if (property.equals(DefaultLayoutConfig.HAS_PORTS)) {
+                // determine whether the graph element is a node with ports
+                if (element instanceof KNode) {
+                    return !((KNode) element).getPorts().isEmpty();
+                }
+                
+            } else if (property.equals(EclipseLayoutConfig.ASPECT_RATIO)) {
+                // get aspect ratio for the current diagram
+                try {
+                    ContextViewer contextViewer = getContextViewer(context);
+                    if (contextViewer != null) {
+                        Control control = contextViewer.getControl();
+                        if (control != null) {
+                            Point size = control.getSize();
+                            if (size.x > 0 && size.y > 0) {
+                                return Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                                        / ASPECT_RATIO_ROUND;
+                            }
+                        }
+                    }
+                } catch (SWTException exception) {
+                    // ignore exception
+                }
+                
+            } else if (property.equals(DefaultLayoutConfig.CONTENT_HINT)) {
+                // check whether a hint for the layout algorithm has been set
+                if (elementLayout != null) {
+                    elementLayout.getProperty(LayoutOptions.ALGORITHM);
+                }
+                
+            } else if (property.equals(DefaultLayoutConfig.CONTAINER_HINT)) {
+                // check whether a hint for the layout algorithm has been set on the parent node
+                KNode parentNode = getParentNode(element);
+                if (parentNode != null) {
+                    KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
+                    if (parentLayout != null) {
+                        return parentLayout.getProperty(LayoutOptions.ALGORITHM);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Determine the KLighD context viewer from the given layout context.
+     * 
+     * @param context a layout context
+     * @return the corresponding KLighD context viewer, or {@code null}
+     */
+    private ContextViewer getContextViewer(final LayoutContext context) {
+        ContextViewer contextViewer = context.getProperty(CONTEXT_VIEWER);
+        if (contextViewer == null) {
             IWorkbenchPart workbenchPart = context.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
                 contextViewer = ((IDiagramWorkbenchPart) workbenchPart).getViewer().getContextViewer();
                 context.setProperty(CONTEXT_VIEWER, contextViewer);
             }
-            
-            // determine the domain model element
-            if (context.getProperty(LayoutContext.DOMAIN_MODEL) == null) {
-                if (contextViewer != null) {
-                    ViewContext viewContext = contextViewer.getViewContext();
-                    if (viewContext != null) {
-                        Object sourceElement = viewContext.getSourceElement(element);
-                        if (sourceElement instanceof EObject) {
-                            context.setProperty(LayoutContext.DOMAIN_MODEL, (EObject) sourceElement);
-                        }
-                    }
-                }
-            }
-            
-            // add layout option target types
-            Set<LayoutOptionData.Target> optionTargets = context.getProperty(LayoutContext.OPT_TARGETS);
-            if (optionTargets == null) {
-                optionTargets = new DefaultLayoutConfig.OptionTargetSwitch().doSwitch(element);
-                context.setProperty(LayoutContext.OPT_TARGETS, optionTargets);
-            }
-
-            // determine whether the graph element is a node with ports
-            if (element instanceof KNode) {
-                context.setProperty(DefaultLayoutConfig.HAS_PORTS,
-                        !((KNode) element).getPorts().isEmpty());
-            }
-            
-            // get aspect ratio for the current diagram
-            try {
-                if (contextViewer != null) {
-                    Control control = contextViewer.getControl();
-                    if (control != null) {
-                        Point size = control.getSize();
-                        if (size.x > 0 && size.y > 0) {
-                            context.setProperty(EclipseLayoutConfig.ASPECT_RATIO,
-                                    Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
-                                    / ASPECT_RATIO_ROUND);
-                        }
-                    }
-                }
-            } catch (SWTException exception) {
-                // ignore exception
-            }
-            
-            if (context.getProperty(DefaultLayoutConfig.OPT_MAKE_OPTIONS)) {
-                // if not defined yet, check whether a hint for the layout algorithm has been set
-                if (context.getProperty(DefaultLayoutConfig.CONTENT_HINT) == null
-                        && elementLayout != null) {
-                    String contentHint = elementLayout.getProperty(LayoutOptions.ALGORITHM);
-                    if (contentHint != null) {
-                        context.setProperty(DefaultLayoutConfig.CONTENT_HINT, contentHint);
-                    }
-                }
-                
-                // find the parent node for the selected graph element
-                KNode parentNode = getParentNode(element);
-                if (parentNode != null) {
-                    if (context.getProperty(DefaultLayoutConfig.CONTAINER_HINT) == null) {
-                        String containerHint = parentNode.getData(KShapeLayout.class)
-                                .getProperty(LayoutOptions.ALGORITHM);
-                        if (containerHint != null) {
-                            context.setProperty(DefaultLayoutConfig.CONTAINER_HINT, containerHint);
-                        }
-                    }
-                    context.setProperty(LayoutContext.CONTAINER_DIAGRAM_PART, parentNode);
-                    if (contextViewer != null) {
-                        ViewContext viewContext = contextViewer.getViewContext();
-                        if (viewContext != null) {
-                            Object sourceElement = viewContext.getSourceElement(parentNode);
-                            if (sourceElement instanceof EObject) {
-                                context.setProperty(LayoutContext.CONTAINER_DOMAIN_MODEL,
-                                        (EObject) sourceElement);
-                            }
-                        }
-                    }
-                }
-            }
         }
+        return contextViewer;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Object getValue(final LayoutOptionData optionData, final LayoutContext context) {
+    public Object getOptionValue(final LayoutOptionData optionData, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
             KLayoutData elementLayout = ((KGraphElement) diagramPart).getData(KLayoutData.class);
@@ -308,7 +311,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      */
     private void refreshModel(final KGraphElement element, final LayoutContext layoutContext) {
         if (element == layoutContext.getProperty(LayoutContext.DOMAIN_MODEL)) {
-            final ContextViewer contextViewer = layoutContext.getProperty(CONTEXT_VIEWER);
+            final ContextViewer contextViewer = getContextViewer(layoutContext);
             if (contextViewer == null) {
                 return;
             }
@@ -344,7 +347,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public void setValue(final LayoutOptionData optionData, final LayoutContext context,
+    public void setOptionValue(final LayoutOptionData optionData, final LayoutContext context,
             final Object value) {
         KGraphElement element = getModificationModel(context);
         if (element != null) {
@@ -379,7 +382,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     /**
      * {@inheritDoc}
      */
-    public void clearValues(final LayoutContext context) {
+    public void clearOptionValues(final LayoutContext context) {
         KGraphElement element = getModificationModel(context);
         if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
