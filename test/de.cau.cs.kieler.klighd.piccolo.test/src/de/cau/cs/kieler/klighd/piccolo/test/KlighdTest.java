@@ -13,8 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.test;
 
+import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -97,8 +99,9 @@ public class KlighdTest {
      * 
      * @param root
      *            root node of the graph to fill.
+     * @return first child of testgraph
      */
-    private void makeTestGraph(final KNode root) {
+    private KNode makeTestGraph(final KNode root) {
         KNode next = this.addchild(root);
         this.addport(next);
         this.addport(next);
@@ -106,6 +109,7 @@ public class KlighdTest {
         KNode a = this.addchild(next);
         KNode b = this.addchild(next);
         this.connectNodes(a, b, null, null);
+        return next;
     }
 
     /**
@@ -167,7 +171,53 @@ public class KlighdTest {
         INode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
+    
+    /**
+     * Test if all adapters are added correctly.
+     */
+    @Test
+    public void adapterTest() {
+        KlighdMainCamera camera = new KlighdMainCamera();
+        PRoot pRoot = new PRoot();
+        pRoot.addChild(camera);
 
+        KNode root = KimlUtil.createInitializedNode();
+        KLabel l = KimlUtil.createInitializedLabel(root);
+        l.setText("rootnode");
+        DiagramController controller = new DiagramController(root, camera, true);
+        KNode child = makeTestGraph(root);
+        // create a controller for the graph
+        INode topNode = controller.getNode();
+        Assert.assertTrue(checkAdapters(child));
+    }
+
+    /**
+     * Check recursively if given KNode has all its adapters added correctly.
+     * @param kgraph the model whoose adapters to check
+     * @return false if not all adapters set.
+     */
+    private boolean checkAdapters(final KNode kgraph) {
+        List<Adapter> adapters = kgraph.eAdapters();
+        if (kgraph.eAdapters().size() != 6) {
+            return false;
+        }
+        //String s = adapters.get(3).getClass().getSimpleName();
+        if (adapters.get(0) == null || !adapters.get(1).getClass().getSimpleName().equals("ChildrenSyncAdapter") || 
+                !adapters.get(2).getClass().getSimpleName().equals("KGEShapeLayoutPNodeUpdater") ||
+                !adapters.get(3).getClass().getSimpleName().equals("EdgeSyncAdapter") ||
+                !adapters.get(4).getClass().getSimpleName().equals("PortSyncAdapter") ||
+                !adapters.get(5).getClass().getSimpleName().equals("LabelSyncAdapter")
+                ) {
+            return false;
+        }
+        for (KNode child: kgraph.getChildren()) {
+            if (!checkAdapters(child)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     /**
      * Recusively check if every given element of the input kgraph is also present in the Piccolo
      * structure.
