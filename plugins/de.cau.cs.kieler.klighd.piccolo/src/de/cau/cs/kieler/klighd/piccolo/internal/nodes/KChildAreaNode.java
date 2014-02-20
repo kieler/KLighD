@@ -202,4 +202,21 @@ public class KChildAreaNode extends PLayer {
         }
         return false;
     }
+    
+    /**
+     * Get the EdgeLayer.
+     * @return a dedicated layer accommodating all attached {@link KEdgeNode KEdgeNodes}.
+     */
+    public PLayer getEdgeLayer() {
+        return this.edgeLayer;
+    }
+    
+    /**
+     * Get the NodeLayer.
+     * @return a dedicated layer accommodating all attached {@link KNodeNode KNodeNodes}.
+     */
+    public PLayer getNodeLayer() {
+        return this.nodeLayer;
+    }
+    
 }

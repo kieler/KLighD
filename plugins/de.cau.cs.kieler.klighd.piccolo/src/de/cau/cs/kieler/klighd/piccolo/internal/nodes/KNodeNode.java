@@ -325,4 +325,21 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
             paintContext.popTransform(getTransformReference(false));
         }
     }
+    
+    /**
+     * Get the PortLayer.
+     * @return a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.
+     */
+    public PLayer getPortLayer() {
+        return this.portLayer;
+    }
+    
+    /**
+     * Get the LabelLayer.
+     * @return a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.
+     */
+    public PLayer getLabelLayer() {
+        return this.labelLayer;
+    }
+    
 }
