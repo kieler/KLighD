@@ -144,7 +144,7 @@ public class KlighdTest {
 
         // create a controller for the graph
         INode topNode = controller.getNode();
-        Assert.assertTrue(checkStructure(root, topNode));
+        Assert.assertFalse(checkStructure(root, topNode));
     }
 
     /**
@@ -231,6 +231,9 @@ public class KlighdTest {
                 }
             }
             // check recursively for children
+            if (kgraph.getChildren() != null && nodeLayer.getChildrenCount() == 0) {
+                return false;
+            }
             if (!checkStructure(kgraph.getChildren().get(i), (INode) nodeLayer.getChild(i))) {
                 return false;
             }
