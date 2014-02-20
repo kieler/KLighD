@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Control;
  * @author uru
  * @author chsch
  * 
- * @see IDiagramExporter#export(OutputStream, Control, boolean, int, boolean, String)
+ * @see IDiagramExporter#export(OutputStream, Control, boolean, int, boolean, boolean, String)
  */
 public interface IDiagramExporter {
 
@@ -45,11 +45,13 @@ public interface IDiagramExporter {
      *            should the canvas be scaled before exporting
      * @param textAsShapes
      *            whether text in vector graphics should be rendered as shapes
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      * @param subFormatId
      *            an id for a certain subformat
      */
     void export(final OutputStream stream, final Control control, final boolean cameraViewport,
-            final int scale, boolean textAsShapes, final String subFormatId);
+            final int scale, boolean textAsShapes, boolean embedFonts, final String subFormatId);
 
 
 }

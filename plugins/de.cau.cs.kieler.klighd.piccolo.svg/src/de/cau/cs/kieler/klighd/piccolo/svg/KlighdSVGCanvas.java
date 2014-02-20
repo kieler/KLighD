@@ -56,12 +56,13 @@ public class KlighdSVGCanvas implements PComponent {
     private static final PBounds INITIAL_BOUNDS = new PBounds(0, 0, 800, 600);
 
     private boolean textAsShapes = false;
+    private boolean embedFonts = false;
 
     /**
      * 
      */
     public KlighdSVGCanvas() {
-        this(INITIAL_BOUNDS, false);
+        this(INITIAL_BOUNDS, false, false);
     }
 
     /**
@@ -69,7 +70,17 @@ public class KlighdSVGCanvas implements PComponent {
      *            whether text should be rendered as a shape.
      */
     public KlighdSVGCanvas(final boolean textAsShapes) {
-        this(INITIAL_BOUNDS, textAsShapes);
+        this(INITIAL_BOUNDS, textAsShapes, false);
+    }
+
+    /**
+     * @param textAsShapes
+     *            whether text should be rendered as a shape.
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
+     */
+    public KlighdSVGCanvas(final boolean textAsShapes, final boolean embedFonts) {
+        this(INITIAL_BOUNDS, textAsShapes, embedFonts);
     }
 
     /**
@@ -77,9 +88,13 @@ public class KlighdSVGCanvas implements PComponent {
      *            the initial bounds of this canvas
      * @param textAsShapes
      *            whether text should be rendered as a shape.
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      */
-    public KlighdSVGCanvas(final Rectangle2D bounds, final boolean textAsShapes) {
+    public KlighdSVGCanvas(final Rectangle2D bounds, final boolean textAsShapes,
+            final boolean embedFonts) {
         this.textAsShapes = textAsShapes;
+        this.embedFonts = embedFonts;
 
         // create a new main camera
         camera = new KlighdMainCamera();
@@ -95,14 +110,15 @@ public class KlighdSVGCanvas implements PComponent {
     }
 
     private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes,
-            final Rectangle2D bounds) {
-        return createGraphics(textAsShapes, bounds, DEFAULT_GENERATOR);
+            final boolean embedFonts, final Rectangle2D bounds) {
+        return createGraphics(textAsShapes, embedFonts, bounds, DEFAULT_GENERATOR);
     }
 
     private static KlighdAbstractSVGGraphics createGraphics(final boolean textAsShapes,
-            final Rectangle2D bounds, final String svgGen) {
+            final boolean embedFonts, final Rectangle2D bounds, final String svgGen) {
 
-        return SVGGeneratorManager.getInstance().createGraphics(svgGen, bounds, textAsShapes);
+        return SVGGeneratorManager.getInstance().createGraphics(svgGen, bounds, textAsShapes,
+                embedFonts);
     }
     
     /**
@@ -142,7 +158,7 @@ public class KlighdSVGCanvas implements PComponent {
         // camera.setBounds(bounds);
 
         // create a new graphics object
-        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, bounds);
+        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, embedFonts, bounds);
         // initially clear the graphics object
         graphics.clear();
 
@@ -185,7 +201,7 @@ public class KlighdSVGCanvas implements PComponent {
      *         {@link #render(PCamera, boolean)} method and pass true as second argument.
      */
     public static String render(final PCamera camera) {
-        return render(camera, true, false);
+        return render(camera, true, false, false);
     }
 
     /**
@@ -195,11 +211,13 @@ public class KlighdSVGCanvas implements PComponent {
      *            whether to render only the camera's viewport or the whole diagram.
      * @param textAsShapes
      *            whether text should be rendered as shapes
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      * @return the SVG string.
      */
     public static String render(final PCamera camera, final boolean viewPort,
-            final boolean textAsShapes) {
-        return render(camera, viewPort, textAsShapes, DEFAULT_GENERATOR);
+            final boolean textAsShapes, final boolean embedFonts) {
+        return render(camera, viewPort, textAsShapes, embedFonts, DEFAULT_GENERATOR);
     }
 
     /**
@@ -209,12 +227,14 @@ public class KlighdSVGCanvas implements PComponent {
      *            whether to render only the camera's viewport or the whole diagram.
      * @param textAsShapes
      *            whether text should be rendered as shapes
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      * @param generatorId
      *            which svg generator to use
      * @return the SVG string.
      */
     public static String render(final PCamera camera, final boolean viewPort,
-            final boolean textAsShapes, final String generatorId) {
+            final boolean textAsShapes, final boolean embedFonts, final String generatorId) {
 
         Rectangle2D bounds = null;
         if (viewPort) {
@@ -225,7 +245,8 @@ public class KlighdSVGCanvas implements PComponent {
         }
 
         // set up the paint context
-        KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, bounds, generatorId);
+        KlighdAbstractSVGGraphics graphics =
+                createGraphics(textAsShapes, embedFonts, bounds, generatorId);
 
         final PPaintContext paintContext = new PPaintContext(graphics);
         // the following setting contradict the defaults in BatikSVGGraphics
@@ -265,14 +286,17 @@ public class KlighdSVGCanvas implements PComponent {
      *            whether to render only the camera's viewport or the whole diagram.
      * @param textAsShapes
      *            whether text should be rendered as shapes
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      * @param stream
      *            the stream to which the svg is written.
      * @param generatorId
      *            which svg generator to use
      */
     public static void render(final PCamera camera, final boolean viewport,
-            final boolean textAsShapes, final OutputStream stream, final String generatorId) {
-        String svg = render(camera, viewport, textAsShapes, generatorId);
+            final boolean textAsShapes, final boolean embedFonts, final OutputStream stream,
+            final String generatorId) {
+        String svg = render(camera, viewport, textAsShapes, embedFonts, generatorId);
         try {
             stream.write(svg.getBytes());
         } catch (IOException ex) {
@@ -284,8 +308,9 @@ public class KlighdSVGCanvas implements PComponent {
     // CHECKSTYLEOFF Javadoc
 
     public static void staticRenderStream(final PCamera camera, final Boolean viewport,
-            final Boolean textAsShapes, final OutputStream stream, final String generator) {
-        KlighdSVGCanvas.render(camera, viewport, textAsShapes, stream, generator);
+            final Boolean textAsShapes, final boolean embedFonts, final OutputStream stream,
+            final String generator) {
+        KlighdSVGCanvas.render(camera, viewport, textAsShapes, embedFonts, stream, generator);
     }
 
     public static String staticRender(final PCamera camera) {

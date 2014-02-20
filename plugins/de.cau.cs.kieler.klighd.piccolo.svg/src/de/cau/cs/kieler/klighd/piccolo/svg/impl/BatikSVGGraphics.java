@@ -59,7 +59,7 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
      *            the bounds will be set as viewport values for the resulting root <svg ..> tag.
      */
     public BatikSVGGraphics(final Rectangle2D bounds) {
-        this(bounds, false);
+        this(bounds, false, false);
     }
 
     /**
@@ -69,8 +69,11 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
      *            the bounds will be set as viewport values for the resulting root <svg ..> tag.
      * @param textAsShapes
      *            whether text should be rendered as shapes
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      */
-    public BatikSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes) {
+    public BatikSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes,
+            final Boolean embedFonts) {
         super(null);
 //        this.bounds = bounds;
 
@@ -84,7 +87,7 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
 
         // assemble context
         final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
-        ctx.setEmbeddedFontsOn(true);
+        ctx.setEmbeddedFontsOn(embedFonts);
         
         final GraphicContextDefaults defaults = new GraphicContextDefaults();
         ctx.setGraphicContextDefaults(defaults);

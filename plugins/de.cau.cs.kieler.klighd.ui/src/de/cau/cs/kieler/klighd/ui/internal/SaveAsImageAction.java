@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Control;
@@ -75,7 +74,8 @@ public class SaveAsImageAction extends Action {
                         createOutputStream(dialog.getFilePath(), dialog.isWorkspacePath());
                 // render the canvas to an image and write it to the stream
                 toImage(stream, viewer.getControl(), dialog.isCameraViewport(),
-                        dialog.getCurrentExporter(), dialog.getScaleFactor(), dialog.isTextAsShapes());
+                        dialog.getCurrentExporter(), dialog.getScaleFactor(),
+                        dialog.isTextAsShapes(), dialog.isEmbedFonts());
                 stream.close();
             } catch (IOException exception) {
                 Status myStatus =
@@ -92,8 +92,7 @@ public class SaveAsImageAction extends Action {
         if (isWorkspacePath) {
             // workspace path
             URI fileURI = URI.createPlatformResourceURI(path.toOSString(), true);
-            URIConverter uriConverter = new ExtensibleURIConverterImpl();
-            OutputStream outputStream = uriConverter.createOutputStream(fileURI);
+            OutputStream outputStream = URIConverter.INSTANCE.createOutputStream(fileURI);
             return outputStream;
         } else {
             // file system path
@@ -104,8 +103,8 @@ public class SaveAsImageAction extends Action {
     }
 
     /**
-     * Renders a Piccolo2D canvas to an image and writes it in the specified file format to the given
-     * stream.
+     * Renders a Piccolo2D canvas to an image and writes it in the specified file format to the
+     * given stream.
      * 
      * @param stream
      *            the output stream to write the image data to
@@ -120,17 +119,19 @@ public class SaveAsImageAction extends Action {
      *            the scale factor to apply while constructing the image
      * @param textAsShapes
      *            whether text in vector graphics should be rendered as shapes
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      */
     public static void toImage(final OutputStream stream, final Control control,
             final boolean cameraViewport, final ExporterDescriptor exporterDescr, final int scale,
-            final boolean textAsShapes) {
+            final boolean textAsShapes, final boolean embedFonts) {
 
         // retrieve the exporter from the central registry
-        IDiagramExporter exporter =
+        final IDiagramExporter exporter =
                 ExporterManager.getInstance().getExporter(exporterDescr.getExporterId());
         // execute the export process
         exporter.export(stream, control, cameraViewport, scale, textAsShapes,
-                exporterDescr.getSubFormatId());
+                embedFonts, exporterDescr.getSubFormatId());
 
     }
 
