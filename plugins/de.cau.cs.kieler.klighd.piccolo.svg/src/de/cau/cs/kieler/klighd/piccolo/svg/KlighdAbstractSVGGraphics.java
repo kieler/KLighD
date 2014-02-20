@@ -539,7 +539,10 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
 
     @Override
     public void setRenderingHint(final Key hintKey, final Object hintValue) {
-        graphics.setRenderingHint(hintKey, hintValue);
+        // RenderingsHints set this way are likely to contradict the defaults in BatikSVGGraphics
+        //  which leads to a blown-up svg file with a huge amount of repeated local style settings
+
+        // graphics.setRenderingHint(hintKey, hintValue);
     }
 
     /* ------------------------------------------------ */

@@ -228,7 +228,12 @@ public class KlighdSVGCanvas implements PComponent {
         KlighdAbstractSVGGraphics graphics = createGraphics(textAsShapes, bounds, generatorId);
 
         final PPaintContext paintContext = new PPaintContext(graphics);
-        paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
+        // the following setting contradict the defaults in BatikSVGGraphics
+        //  which leads to a blown-up svg file with a huge amount of repeated local style settings
+        // therefore, here and in KlighdAbstractSVGGraphics#setRenderingHint(Key, Object)
+        //  the propagation of such RenderingHints has been suppressed
+        
+        // paintContext.setRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
 
         // remove the global clip!
         // the following clip set is required in order to get rid of the one set in
