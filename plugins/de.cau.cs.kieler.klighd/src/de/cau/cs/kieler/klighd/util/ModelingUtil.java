@@ -21,10 +21,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 /**
@@ -269,8 +266,7 @@ public final class ModelingUtil {
             return eObject.eAllContents();
         }
 
-        final Predicate<Object> p =
-                Predicates.or(Iterables.transform(Arrays.asList(types), CLASS_TO_PREDICATE));
+        final Predicate<Object> p = KlighdPredicates.instanceOf(Arrays.asList(types));
 
         return new AbstractTreeIterator<EObject>(eObject, false) {
             private static final long serialVersionUID = 1L;
@@ -282,17 +278,54 @@ public final class ModelingUtil {
         };
     }
 
-    /**
-     * A singleton helper Function used in {@link #eAllContentsOfType(EObject, Class...)}.
-     */
-    private static final Function<Class<?>, Predicate<Object>> CLASS_TO_PREDICATE =
-            new Function<Class<?>, Predicate<Object>>() {
 
-                /**
-                 * {@inheritDoc}
-                 */
-                public Predicate<Object> apply(final Class<?> clazz) {
-                    return Predicates.instanceOf(clazz);
-                }
-            };
+
+    /**
+     * A little shortcut for removing {@link org.eclipse.emf.common.notify.Adapter Adapters} from an
+     * {@link EObject} by their type.<br>
+     * <br>
+     * Is to be used in instead of
+     * {@link com.google.common.collect.Iterables#removeIf(Iterable, Predicate)
+     * Iterables#removeIf(Iterable, Predicate)}, which may lead to unintended behavior wrt. to the
+     * caused notifications. That one moves elements via {@link java.util.List#set(int, Object)
+     * List#set(int, Object)} leading to duplicate entries in the adapters list, and removes the
+     * duplicates later on causing {@link org.eclipse.emf.common.notify.Notification#REMOVE
+     * Notification#REMOVE} or {@link org.eclipse.emf.common.notify.Notification#REMOVE_MANY
+     * #REMOVE_MANY} notifications for elements that are still in the list!
+     * 
+     * @param eObject
+     *            the {@link EObject} to remove {@link org.eclipse.emf.common.notify.Adapter
+     *            Adapters} from
+     * @param adapterTypes
+     *            the types of the {@link org.eclipse.emf.common.notify.Adapter Adapters} to be
+     *            removed
+     */
+    public static void removeAdapters(final EObject eObject, final Class<?>... adapterTypes) {
+        final Predicate<Object> p = KlighdPredicates.instanceOf(Arrays.asList(adapterTypes));
+        Iterators.removeIf(eObject.eAdapters().iterator(), p);
+    }
+
+    /**
+     * A little shortcut for removing {@link org.eclipse.emf.common.notify.Adapter Adapters} from an
+     * {@link EObject} by means of a {@link Predicate}.<br>
+     * <br>
+     * Is to be used in instead of
+     * {@link com.google.common.collect.Iterables#removeIf(Iterable, Predicate)
+     * Iterables#removeIf(Iterable, Predicate)}, which may lead to unintended behavior wrt. to the
+     * caused notifications. That one moves elements via {@link java.util.List#set(int, Object)
+     * List#set(int, Object)} leading to duplicate entries in the adapters list, and removes the
+     * duplicates later on causing {@link org.eclipse.emf.common.notify.Notification#REMOVE
+     * Notification#REMOVE} or {@link org.eclipse.emf.common.notify.Notification#REMOVE_MANY
+     * #REMOVE_MANY} notifications for elements that are still in the list!
+     * 
+     * @param eObject
+     *            the {@link EObject} to remove {@link org.eclipse.emf.common.notify.Adapter
+     *            Adapters} from
+     * @param predicate
+     *            the predicate to be applied to the list of
+     *            {@link org.eclipse.emf.common.notify.Adapter Adapters}
+     */
+    public static void removeAdapters(final EObject eObject, final Predicate<Object> predicate) {
+        Iterators.removeIf(eObject.eAdapters().iterator(), predicate);
+    }
 }

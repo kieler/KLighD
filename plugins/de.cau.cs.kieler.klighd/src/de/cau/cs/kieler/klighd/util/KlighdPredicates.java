@@ -18,8 +18,10 @@ import java.util.Collection;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -179,4 +181,32 @@ public final class KlighdPredicates {
     public static Predicate<Object> notInstanceOf(final Class<?> clazz) {
         return Predicates.not(Predicates.instanceOf(clazz));
     }
+    
+
+    /**
+     * Creates new compound {@link Predicates#instanceOf(Class)} predicates testing for several
+     * <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this predicate returns
+     * <true> if the input is instance of one of the provided classes or interfaces.
+     * 
+     * @param classes
+     *            the classes/interface to be 'instanceof' checked
+     * @return the compound {@link Predicate}
+     */
+    public static Predicate<Object> instanceOf(final Iterable<Class<?>> classes) {
+        return Predicates.or(Iterables.transform(classes, CLASS_TO_PREDICATE));
+    }
+    
+    /**
+     * A singleton helper Function used in {@link #eAllContentsOfType(EObject, Class...)}.
+     */
+    public static final Function<Class<?>, Predicate<Object>> CLASS_TO_PREDICATE =
+            new Function<Class<?>, Predicate<Object>>() {
+
+                /**
+                 * {@inheritDoc}
+                 */
+                public Predicate<Object> apply(final Class<?> clazz) {
+                    return Predicates.instanceOf(clazz);
+                }
+            };    
 }
