@@ -32,6 +32,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -77,6 +78,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
+import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -447,6 +449,9 @@ public class DiagramController {
     }
     
     private final Job renderingUpdater = new Job("KLighD DiagramElementUpdater") {
+        {
+            this.setSystem(true);
+        }
 
         @Override
         protected IStatus run(final IProgressMonitor monitor) {
@@ -680,7 +685,11 @@ public class DiagramController {
         RenderingContextData.get(parent).setProperty(KlighdInternalProperties.POPULATED, true);
 
         if (sync) {
-            installChildrenSyncAdapter(parentNode, parent);
+            // remove any existing children sync adapters, which may be out-of-date 
+            ModelingUtil.removeAdapters(parent, CHILDREN_SYNC_ADAPTERS);
+            
+            // add an adapter on the node's children
+            parent.eAdapters().add(new ChildrenSyncAdapter(parentNode));
         }
     }
 
@@ -737,7 +746,7 @@ public class DiagramController {
             nodeNode.setVisible(false);
         }
 
-        // declare the node 'ACTIVE' that is required by 'handleEdges' 
+        // declare the node 'ACTIVE' just yet, it is required by 'handleEdges' 
         RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, true);
 
         updateLayout(nodeNode);
@@ -755,17 +764,18 @@ public class DiagramController {
     /**
      * Handles the children of the parent node.
      * 
-     * @param parentNode
-     *            the parent structure node representing a KNode
+     * @param parent
+     *            the parent KNode
      */
-    private void removeChildren(final KNode parentNode) {
-        for (KNode child : parentNode.getChildren()) {
+    private void removeChildren(final KNode parent) {
+        for (KNode child : parent.getChildren()) {
             removeNode(child, false);
         }
-        RenderingContextData.get(parentNode).setProperty(KlighdInternalProperties.POPULATED, false);
+        RenderingContextData.get(parent).setProperty(KlighdInternalProperties.POPULATED, false);
 
         if (sync) {
-            uninstallChildrenSyncAdapter(parentNode);
+            // remove any existing children sync adapters, which may be out-of-date 
+            ModelingUtil.removeAdapters(parent, CHILDREN_SYNC_ADAPTERS);
         }
     }
 
@@ -801,12 +811,6 @@ public class DiagramController {
             return;
         }
             
-        uninstallLayoutSyncAdapter(node);
-        uninstallChildrenSyncAdapter(node);
-        uninstallEdgeSyncAdapter(node);
-        uninstallPortSyncAdapter(node);
-        uninstallLabelSyncAdapter(node);
-
         // remove all incoming edges
         for (KEdge incomingEdge : node.getIncomingEdges()) {
             removeEdge(incomingEdge, releaseControllers);
@@ -822,6 +826,8 @@ public class DiagramController {
         RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, false);
         
         if (releaseControllers) {
+            // detach the synchronization adapters
+            ModelingUtil.removeAdapters(node, NODE_ADAPTERS);
             // release the objects kept in mind
             nodeNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
@@ -832,7 +838,10 @@ public class DiagramController {
             RenderingContextData.get(node).setProperty(REP, null);
         }
     }
-
+    
+    private static final Predicate<Object> NODE_ADAPTERS = KlighdPredicates.instanceOf(
+            ImmutableList.<Class<?>>of(KGEShapeLayoutPNodeUpdater.class, ChildrenSyncAdapter.class,
+                    EdgeSyncAdapter.class, PortSyncAdapter.class, LabelSyncAdapter.class));
 
     /**
      * Adds representations for edges attached to the corresponding node.
@@ -854,7 +863,11 @@ public class DiagramController {
         }
         
         if (sync) {
-            installEdgeSyncAdapter(node);
+            // remove any existing edge sync adapters, which may be out-of-date 
+            ModelingUtil.removeAdapters(node, EDGE_SYNC_ADAPTERS);
+
+            // add the adapter
+            node.eAdapters().add(new EdgeSyncAdapter());
         }
     }
 
@@ -933,15 +946,14 @@ public class DiagramController {
         // remove the edge offset listeners
         removeEdgeOffsetListener(edgeNode);
 
-        uninstallLayoutSyncAdapter(edge);
-        uninstallLabelSyncAdapter(edge);
-        
         // remove the edge representation from the containing child area
         edgeNode.removeFromParent();
         RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, false);
         
         // due to #removeNode() this method might be performed multiple times so: 
         if (releaseControllers && edgeNode.getRenderingController() != null) {
+            // detach the synchronization adapters
+            ModelingUtil.removeAdapters(edge, EDGE_ADAPTERS);
             // release the objects kept in mind
             edgeNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
@@ -952,6 +964,9 @@ public class DiagramController {
             RenderingContextData.get(edge).setProperty(EDGE_REP, null);
         }
     }
+    
+    private static final Predicate<Object> EDGE_ADAPTERS = KlighdPredicates.instanceOf(
+            ImmutableList.<Class<?>>of(KEdgeLayoutEdgeNodeUpdater.class, LabelSyncAdapter.class));
 
 
     /**
@@ -969,7 +984,11 @@ public class DiagramController {
         }
 
         if (sync) {
-            installPortSyncAdapter(nodeNode, node);
+            // remove any existing port sync adapters, which may be out-of-date 
+            ModelingUtil.removeAdapters(node, PORT_SYNC_ADAPTERS);
+
+            // add the adapter
+            node.eAdapters().add(new PortSyncAdapter(nodeNode));
         }
     }
 
@@ -1026,14 +1045,13 @@ public class DiagramController {
             return;
         }
         
-        uninstallLayoutSyncAdapter(port);
-        uninstallLabelSyncAdapter(port);
-        
         // remove the port representation from the containing node
         portNode.removeFromParent();
         RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, false);
 
         if (releaseControllers) {
+            // detach the synchronization adapters
+            ModelingUtil.removeAdapters(port, PORT_ADAPTERS);
             // release the objects kept in mind
             portNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
@@ -1044,6 +1062,9 @@ public class DiagramController {
             RenderingContextData.get(port).setProperty(PORT_REP, null);
         }
     }
+    
+    private static final Predicate<Object> PORT_ADAPTERS = KlighdPredicates.instanceOf(
+            ImmutableList.<Class<?>>of(KGEShapeLayoutPNodeUpdater.class, LabelSyncAdapter.class));
 
 
     /**
@@ -1061,7 +1082,11 @@ public class DiagramController {
         }
 
         if (sync) {
-            installLabelSyncAdapter(labeledNode, labeledElement);
+            // remove any existing label sync adapters, which may be out-of-date 
+            ModelingUtil.removeAdapters(labeledElement, LABEL_SYNC_ADAPTERS);
+
+            // add an adapter on the labeled element's labels
+            labeledElement.eAdapters().add(new LabelSyncAdapter(labeledNode));
         }
     }
 
@@ -1097,8 +1122,13 @@ public class DiagramController {
         updateLayout(labelNode);
 
         labelNode.setText(label.getText());
+
         if (sync) {
-            installTextSyncAdapter(labelNode, label);
+            // remove any existing text sync adapters, which may be out-of-date 
+            ModelingUtil.removeAdapters(label, TEXT_SYNC_ADAPTERS);
+
+            // add an adapter on the node's ports
+            label.eAdapters().add(new TextSyncAdapter(labelNode));
         }
 
         // add the label
@@ -1122,14 +1152,13 @@ public class DiagramController {
             return;
         }
 
-        uninstallLayoutSyncAdapter(label);
-        uninstallTextSyncAdapter(label);
-
         // remove the label representation from the containing node
         labelNode.removeFromParent();
         RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, false);
 
         if (releaseControllers) {
+            // detach the synchronization adapters
+            ModelingUtil.removeAdapters(label, LABEL_ADAPTERS);
             // release the objects kept in mind
             labelNode.getRenderingController().removeAllPNodeControllers();
             // release the node rendering controller
@@ -1138,6 +1167,9 @@ public class DiagramController {
             RenderingContextData.get(label).setProperty(LABEL_REP, null);
         }
     }
+    
+    private static final Predicate<Object> LABEL_ADAPTERS = KlighdPredicates.instanceOf(
+            ImmutableList.<Class<?>>of(KGEShapeLayoutPNodeUpdater.class, TextSyncAdapter.class));
 
 
     private boolean isAutomaticallyArranged(final KGraphElement element) {
@@ -1170,7 +1202,15 @@ public class DiagramController {
      */
     private void updateLayout(final KNodeNode nodeNode) {
         if (sync) {
-            installLayoutSyncAdapter(nodeNode);
+            final KNode node = nodeNode.getGraphElement();
+
+            // remove the currently installed adapter if any; existing adapters get outdated if 
+            //  a) 'node' has been moved within the view model
+            //  b) 'node' has been moved from one view model into another one
+            ModelingUtil.removeAdapters(node, SHAPE_LAYOUT_SYNC_ADAPTERS);
+            
+            // register adapter on the node to stay in sync
+            node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeNode, this));
         }
  
         final KShapeLayout shapeLayout = nodeNode.getGraphElement().getData(KShapeLayout.class);
@@ -1191,8 +1231,17 @@ public class DiagramController {
      *            the port representation
      */
     private void updateLayout(final KPortNode portNode) {
+
         if (sync) {
-            installLayoutSyncAdapter(portNode);
+            final KPort port = portNode.getGraphElement();
+
+            // remove the currently installed adapter if any; existing adapters get outdated if 
+            //  a) 'port' has been moved within the view model
+            //  b) 'port' has been moved from one view model into another one
+            ModelingUtil.removeAdapters(port, SHAPE_LAYOUT_SYNC_ADAPTERS);
+            
+            // register adapter on the port to stay in sync
+            port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portNode, this));
         }
 
         final KShapeLayout shapeLayout = portNode.getGraphElement().getData(KShapeLayout.class);
@@ -1214,8 +1263,17 @@ public class DiagramController {
      *            the label representation
      */
     private void updateLayout(final KLabelNode labelNode) {
+
         if (sync) {
-            installLayoutSyncAdapter(labelNode);
+            final KLabel label = labelNode.getGraphElement();
+            
+            // remove the currently installed adapter if any; existing adapters get outdated if 
+            //  a) 'label' has been moved within the view model
+            //  b) 'label' has been moved from one view model into another one
+            ModelingUtil.removeAdapters(label, SHAPE_LAYOUT_SYNC_ADAPTERS);
+            
+            // register adapter on the label to stay in sync
+            label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelNode, this));
         }
 
         final KShapeLayout shapeLayout = labelNode.getGraphElement().getData(KShapeLayout.class);
@@ -1236,8 +1294,17 @@ public class DiagramController {
      *            the edge representation
      */
     private void updateLayout(final KEdgeNode edgeRep) {
+
         if (sync) {
-            installLayoutSyncAdapter(edgeRep);
+            final KEdge edge = edgeRep.getGraphElement();
+
+            // remove the currently installed adapter if any; existing adapters get outdated if 
+            //  a) 'edge' has been moved within the view model
+            //  b) 'edge' has been moved from one view model into another one
+            ModelingUtil.removeAdapters(edge, EDGE_LAYOUT_SYNC_ADAPTERS);
+
+            // register adapter on the edge to stay in sync
+            edge.eAdapters().add(new KEdgeLayoutEdgeNodeUpdater(edgeRep, this));
         }
 
         final KEdge edge = edgeRep.getGraphElement();
@@ -1333,137 +1400,31 @@ public class DiagramController {
     // ---------------------------------------------------------------------------------- //
     //  Layout data synchronization
 
-    private static final Predicate<Object> INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER
+    private static final Predicate<Object> SHAPE_LAYOUT_SYNC_ADAPTERS
             = Predicates.instanceOf(KGEShapeLayoutPNodeUpdater.class);
 
-    /**
-     * Installs an adapter on the represented node to synchronize new shape layouts with specified
-     * layout.
-     * 
-     * @param nodeRep
-     *            the node representation
-     */
-    private void installLayoutSyncAdapter(final KNodeNode nodeRep) {
-        final KNode node = nodeRep.getGraphElement();
-
-        // remove the currently installed adapter if any
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
-        
-        // register adapter on the node to stay in sync
-        node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeRep, this));
-    }
-
-    private void uninstallLayoutSyncAdapter(final KNode node) {
-        // remove the currently installed adapter if any
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
-    }
-
-    /**
-     * Installs an adapter on the represented port to synchronize the representation with the
-     * specified layout.
-     * 
-     * @param portRep
-     *            the port representation
-     */
-    private void installLayoutSyncAdapter(final KPortNode portRep) {
-        final KPort port = portRep.getGraphElement();
-
-        // remove the currently installed adapter if any
-        Iterables.removeIf(port.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
-        
-        // register adapter on the port to stay in sync
-        port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portRep, this));
-    }
-
-    private void uninstallLayoutSyncAdapter(final KPort port) {
-        // remove the currently installed adapter if any
-        Iterables.removeIf(port.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
-    }
-
-    /**
-     * Installs an adapter on the represented label to synchronize the representation with the
-     * specified layout.
-     * 
-     * @param labelRep
-     *            the label representation
-     */
-    private void installLayoutSyncAdapter(final KLabelNode labelRep) {
-        final KLabel label = labelRep.getGraphElement();
-        
-        // remove the currently installed adapter if any
-        Iterables.removeIf(label.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
-        
-        // register adapter on the label to stay in sync
-        label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelRep, this));
-    }
-
-    private void uninstallLayoutSyncAdapter(final KLabel label) {
-        // remove the currently installed adapter if any
-        Iterables.removeIf(label.eAdapters(), INSTANCEOF_SHAPE_LAYOUT_SYNC_ADAPTER);
-    }
-
-
-    private static final Predicate<Object> INSTANCEOF_EDGE_LAYOUT_SYNC_ADAPTER
+    private static final Predicate<Object> EDGE_LAYOUT_SYNC_ADAPTERS
             = Predicates.instanceOf(KEdgeLayoutEdgeNodeUpdater.class);
-
-    /**
-     * Installs an adapter on the represented edge to synchronize the representation with the
-     * specified layout.
-     *
-     * @param edgeRep
-     *            the edge representation
-     */
-    private void installLayoutSyncAdapter(final KEdgeNode edgeRep) {
-        final KEdge edge = edgeRep.getGraphElement();
-
-        // remove the currently installed adapter if any
-        Iterables.removeIf(edge.eAdapters(), INSTANCEOF_EDGE_LAYOUT_SYNC_ADAPTER);
-
-        // register adapter on the edge to stay in sync
-        edge.eAdapters().add(new KEdgeLayoutEdgeNodeUpdater(edgeRep, this));
-    }
-
-    private void uninstallLayoutSyncAdapter(final KEdge edge) {
-        // remove the currently installed adapter if any
-        Iterables.removeIf(edge.eAdapters(), INSTANCEOF_EDGE_LAYOUT_SYNC_ADAPTER);
-    }
+    
+    // implementations of layout sync adapters are externalized into dedicated classes
 
     // ---------------------------------------------------------------------------------- //
     //  KGraphElement data synchronization
 
-    /**
-     * Installs an adapter on the represented node to synchronize the children of the representation
-     * with the specified children in the model.
-     * 
-     * @param nodeRep
-     *            the node representation
-     * @param node
-     *            the node
-     */
-    private void installChildrenSyncAdapter(final INode nodeRep, final KNode node) {
-        // remove any existing children sync adapters, which may be out-of-date 
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_CHILDREN_SYNC_ADAPTER);
-        
-        // add an adapter on the node's children
-        node.eAdapters().add(new ChildrenSyncAdapter(nodeRep));
-    }
-
-    /**
-     * Uninstalls the children synchronization adapter from a {@link KNode}.
-     * 
-     * @param node
-     *            the node
-     */
-    private void uninstallChildrenSyncAdapter(final KNode node) {
-        // remove the currently installed children sync adapters
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_CHILDREN_SYNC_ADAPTER);
-    }
-
-    private static final Predicate<Object> INSTANCEOF_CHILDREN_SYNC_ADAPTER
+    private static final Predicate<Object> CHILDREN_SYNC_ADAPTERS
             = Predicates.instanceOf(ChildrenSyncAdapter.class);
+    
+    private static final String UI_REQUIRED_ERROR_MSG =
+            "KLighD: Adding & Removing XX is not allowed by any non-UI thead. "
+            + "Put your executions into an instance of 'Runnable' and call "
+            + "'PlatformUI.getWorkbench().getDisplay().(a)syncExec(Runnable)'!";
+    
+    private static final String UI_REQUIRED_ERROR_MSG_NODES = 
+            UI_REQUIRED_ERROR_MSG.replaceFirst("XX", "KNodes");
 
     /**
      * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     * (in contrast to an anonymous subclass)
      */
     private final class ChildrenSyncAdapter extends AdapterImpl {
         private final INode nodeRep;
@@ -1475,6 +1436,10 @@ public class DiagramController {
         public void notifyChanged(final Notification notification) {
 
             if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
+                if (UIExecRequired()) {
+                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_NODES);
+                }
+                
                 switch (notification.getEventType()) {
                 case Notification.ADD: {
                     final KNode addedNode = (KNode) notification.getNewValue();
@@ -1529,44 +1494,28 @@ public class DiagramController {
         }
     }
 
-    /**
-     * Installs an adapter on the node to synchronize the incoming and outgoing edges of the
-     * representation with the specified incoming and outgoing edges in the model.
-     * 
-     * @param node
-     *            the node
-     */
-    private void installEdgeSyncAdapter(final KNode node) {
-        // remove any existing edge sync adapters, which may be out-of-date 
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_EDGE_SYNC_ADAPTER);
 
-        // add the adapter
-        node.eAdapters().add(new EdgeSyncAdapter());
-    }
-    
-    /**
-     * Uninstalls the edge synchronization adapters from a {@link KNode}.
-     * 
-     * @param node
-     *            the node
-     */
-    private void uninstallEdgeSyncAdapter(final KNode node) {
-        // remove the currently installed edge sync adapters
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_EDGE_SYNC_ADAPTER);
-    }
-
-    private static final Predicate<Object> INSTANCEOF_EDGE_SYNC_ADAPTER
+    private static final Predicate<Object> EDGE_SYNC_ADAPTERS
             = Predicates.instanceOf(EdgeSyncAdapter.class);
+
+    private static final String UI_REQUIRED_ERROR_MSG_EDGES = 
+            UI_REQUIRED_ERROR_MSG.replaceFirst("XX", "KEdges");
 
     /**
      * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     * (in contrast to an anonymous subclass)
      */
     private final class EdgeSyncAdapter extends AdapterImpl {
 
         public void notifyChanged(final Notification notification) {
-            int featureId = notification.getFeatureID(KNode.class);
+            final int featureId = notification.getFeatureID(KNode.class);
+
             if (featureId == KGraphPackage.KNODE__OUTGOING_EDGES
                     || featureId == KGraphPackage.KNODE__INCOMING_EDGES) {
+                if (UIExecRequired()) {
+                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_EDGES);
+                }
+                
                 final boolean releaseChildrenAndControllers =
                         featureId == KGraphPackage.KNODE__OUTGOING_EDGES;
                 
@@ -1607,39 +1556,15 @@ public class DiagramController {
     }
 
 
-    /**
-     * Installs an adapter on the represented node to synchronize the ports of the representation
-     * with the specified ports in the model.
-     * 
-     * @param nodeRep
-     *            the node representation
-     * @param node
-     *            the node
-     */
-    private void installPortSyncAdapter(final KNodeNode nodeRep, final KNode node) {
-        // remove any existing port sync adapters, which may be out-of-date 
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_PORT_SYNC_ADAPTER);
-
-        // add the adapter
-        node.eAdapters().add(new PortSyncAdapter(nodeRep));
-    }
-    
-    /**
-     * Uninstalls the port synchronization adapters from a {@link KNode}.
-     * 
-     * @param node
-     *            the node
-     */
-    private void uninstallPortSyncAdapter(final KNode node) {
-        // remove the currently installed port sync adapters
-        Iterables.removeIf(node.eAdapters(), INSTANCEOF_PORT_SYNC_ADAPTER);
-    }
-
-    private static final Predicate<Object> INSTANCEOF_PORT_SYNC_ADAPTER
+    private static final Predicate<Object> PORT_SYNC_ADAPTERS
             = Predicates.instanceOf(PortSyncAdapter.class);
+
+    private static final String UI_REQUIRED_ERROR_MSG_PORTS = 
+            UI_REQUIRED_ERROR_MSG.replaceFirst("XX", "KPorts");
 
     /**
      * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     * (in contrast to an anonymous subclass)
      */
     private final class PortSyncAdapter extends AdapterImpl {
         private final KNodeNode nodeRep;
@@ -1650,7 +1575,10 @@ public class DiagramController {
         
         public void notifyChanged(final Notification notification) {
             if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__PORTS) {
-
+                if (UIExecRequired()) {
+                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_PORTS);
+                }
+                
                 switch (notification.getEventType()) {
                 case Notification.ADD: {
                     final KPort addedPort = (KPort) notification.getNewValue();
@@ -1688,41 +1616,15 @@ public class DiagramController {
     }
 
 
-    /**
-     * Installs an adapter on the labeled element to synchronize the labels of the representation
-     * with the specified labels in the model.
-     * 
-     * @param labeledNode
-     *            the labeled node
-     * @param labeledElement
-     *            the labeled element
-     */
-    private void installLabelSyncAdapter(final ILabeledGraphElement<?> labeledNode,
-            final KLabeledGraphElement labeledElement) {
-
-        // remove any existing label sync adapters, which may be out-of-date 
-        Iterables.removeIf(labeledElement.eAdapters(), INSTANCEOF_LABEL_SYNC_ADAPTER);
-
-        // add an adapter on the labeled element's labels
-        labeledElement.eAdapters().add(new LabelSyncAdapter(labeledNode));
-    }
-
-    /**
-     * Uninstalls the label synchronization adapters from a {@link KLabeledGraphElement}.
-     * 
-     * @param labeledElement
-     *            the {@link KLabeledGraphElement}
-     */
-    private void uninstallLabelSyncAdapter(final KLabeledGraphElement labeledElement) {
-        // remove the currently installed label sync adapters
-        Iterables.removeIf(labeledElement.eAdapters(), INSTANCEOF_LABEL_SYNC_ADAPTER);
-    }
-    
-    private static final Predicate<Object> INSTANCEOF_LABEL_SYNC_ADAPTER
+    private static final Predicate<Object> LABEL_SYNC_ADAPTERS
             = Predicates.instanceOf(LabelSyncAdapter.class);
+
+    private static final String UI_REQUIRED_ERROR_MSG_LABELS = 
+            UI_REQUIRED_ERROR_MSG.replaceFirst("XX", "KLabels");
 
     /**
      * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     * (in contrast to an anonymous subclass)
      */
     private final class LabelSyncAdapter extends AdapterImpl {
         private final ILabeledGraphElement<?> labeledNode;
@@ -1735,6 +1637,9 @@ public class DiagramController {
             
             if (notification.getFeatureID(KLabeledGraphElement.class)
                     == KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS) {
+                if (UIExecRequired()) {
+                    throw new RuntimeException(UI_REQUIRED_ERROR_MSG_LABELS);
+                }
                 
                 switch (notification.getEventType()) {
                 case Notification.ADD: {
@@ -1774,39 +1679,12 @@ public class DiagramController {
     }
 
 
-    /**
-     * Installs an adapter on the represented label to synchronize the text of the representation
-     * with the specified text in the model.
-     * 
-     * @param nodeRep
-     *            the node representation
-     * @param label
-     *            the label
-     */
-    private void installTextSyncAdapter(final KLabelNode labelRep, final KLabel label) {
-        // remove any existing text sync adapters, which may be out-of-date 
-        Iterables.removeIf(label.eAdapters(), INSTANCEOF_TEXT_SYNC_ADAPTER);
-
-        // add an adapter on the node's ports
-        label.eAdapters().add(new TextSyncAdapter(labelRep));
-    }
-    
-    /**
-     * Uninstalls the text synchronization adapter(s) from a {@link KLabel}.
-     * 
-     * @param label
-     *            the {@link KLabel}
-     */
-    private void uninstallTextSyncAdapter(final KLabel label) {
-        // remove the currently installed text sync adapters
-        Iterables.removeIf(label.eAdapters(), INSTANCEOF_TEXT_SYNC_ADAPTER);
-    }
-    
-    private static final Predicate<Object> INSTANCEOF_TEXT_SYNC_ADAPTER
+    private static final Predicate<Object> TEXT_SYNC_ADAPTERS
             = Predicates.instanceOf(TextSyncAdapter.class);
     
     /**
      * A dedicated specialization of {@link AdapterImpl} allowing 'instanceof' tests.
+     * (in contrast to an anonymous subclass)
      */
     private final class TextSyncAdapter extends AdapterImpl {
         private final KLabelNode labelRep;
@@ -1820,7 +1698,19 @@ public class DiagramController {
 
                 switch (notification.getEventType()) {
                 case Notification.SET:
-                    labelRep.setText(notification.getNewStringValue());
+                    if (UIExecRequired()) {
+                        // Since changing the label text is no structural modification
+                        //  we support the automatic switching the Display thread here!
+                        // (potentially concurrent modification on die diagram's structure
+                        //  might lead to chaos...)
+                        PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+                            public void run() {
+                                labelRep.setText(notification.getNewStringValue());
+                            }
+                        });
+                    } else {
+                        labelRep.setText(notification.getNewStringValue());
+                    }
                     break;
                 default:
                     break;
@@ -1864,7 +1754,7 @@ public class DiagramController {
      * @param edgeNode
      *            the edge representation
      */
-    private void updateEdgeOffset(final KEdgeNode edgeNode) {
+    private static void updateEdgeOffset(final KEdgeNode edgeNode) {
         final KChildAreaNode edgeNodeParent = edgeNode.getParentChildArea();
         if (edgeNodeParent != null) {
             KEdge edge = edgeNode.getGraphElement();
@@ -1932,7 +1822,7 @@ public class DiagramController {
      * @param edgeNode
      *            the edge representation
      */
-    private void removeEdgeOffsetListener(final KEdgeNode edgeNode) {
+    private static void removeEdgeOffsetListener(final KEdgeNode edgeNode) {
         PropertyChangeListener listener = (PropertyChangeListener) edgeNode
                 .getAttribute(EDGE_OFFSET_LISTENER_KEY);
         @SuppressWarnings("unchecked")
@@ -2001,6 +1891,20 @@ public class DiagramController {
             sourceParents.retainAll(targetParents);
             return (KNode) Iterables.getFirst(sourceParents, null);
         }
+    }
+    
+    /**
+     * Checks whether the delegation to the Display thread is required for performing UI-relevant
+     * executions.
+     * 
+     * @return <code>true</code> if an Eclipse workbench is available and the current thread is not
+     *         the UI thread ( {@link Display#getCurrent()} <code>== null</code>) indicating that
+     *         calling {@link PlatformUI#getWorkbench()}.{@link org.eclipse.ui.IWorkbench#getDisplay()
+     *         getDisplay()}.{@link Display#asyncExec(Runnable)
+     *         asyncExec(Runnable)}/{@link Display#syncExec(Runnable) syncExec(Runnable)} is required.
+     */
+    public static boolean UIExecRequired() { // SUPPRESS CHECKSTYLE MethodName
+        return PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null;
     }
 
     /**
