@@ -1701,8 +1701,8 @@ public class DiagramController {
                     if (UIExecRequired()) {
                         // Since changing the label text is no structural modification
                         //  we support the automatic switching the Display thread here!
-                        // (potentially concurrent modification on die diagram's structure
-                        //  might lead to chaos...)
+                        // (several potentially concurrent modifications of the
+                        //  diagram's structure might lead to chaos...)
                         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
                             public void run() {
                                 labelRep.setText(notification.getNewStringValue());
