@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +28,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -38,7 +36,6 @@ import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
@@ -46,14 +43,15 @@ import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.internal.util.SourceModelTrackingAdapter;
 import de.cau.cs.kieler.klighd.syntheses.DuplicatingDiagramSynthesis;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
-import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -100,9 +98,11 @@ public class ViewContext extends MapPropertyHolder {
     /** the business model to be represented by means of this context. */
     private Object businessModel = null;
 
+    private SourceModelTrackingAdapter tracer = new SourceModelTrackingAdapter();
+
     /** the view model is initiated while configuring the involved {@link IUpdateStrategy} and kept
      * for the whole life-cycle of the view context, in order to enable proper incremental update. */
-    private KNode viewModel = KimlUtil.createInitializedNode();
+    private KNode viewModel = createViewModel();
     
     /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
     private IViewer<KNode> viewer = null;
@@ -126,6 +126,8 @@ public class ViewContext extends MapPropertyHolder {
         super();
         this.diagramWorkbenchPart = diagramPart;
         this.businessModel = inputModel;
+        this.viewModel.eAdapters().add(tracer);
+
     }
 
     /**
@@ -147,7 +149,16 @@ public class ViewContext extends MapPropertyHolder {
     }
 
     // ---------------------------------------------------------------------------------- //
-    //  initialization part    
+    //  initialization part
+
+    /**
+     * Helper method called while creating a new instance of this class.
+     * 
+     * @return a new empty view model root node
+     */
+    private KNode createViewModel() {
+        return KimlUtil.createInitializedNode();
+    }
     
     /**
      * This method performs the initial configuration of <code>this</code> view context.<br>
@@ -505,8 +516,12 @@ public class ViewContext extends MapPropertyHolder {
      *            a member of the view model, must not by <code>null</code>
      */
     public void associateSourceTargetPair(final Object source, final EObject target) {
+        if (KLayoutDataPackage.eINSTANCE.getKLayoutData().isInstance(target)) {
+            return;
+        }
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(target)) {
             ((KGraphData) target).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+            
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(target)) {
             ((KGraphElement) target).getData(KLayoutData.class).setProperty(
                     KlighdInternalProperties.MODEL_ELEMEMT, source);
@@ -514,33 +529,23 @@ public class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Returns the element in the input model that is represented by the given <code>element</code>
+     * Returns the element in the input model that is represented by the given <code>viewElement</code>
      * in the diagram.<br>
-     * <b>Note:</b> This method does not check whether <code>element</code> is currently contained
+     * <b>Note:</b> This method does not check whether <code>viewElement</code> is currently contained
      * in the view model (accessible via {@link #getViewModel()}).
      * 
-     * @param element
+     * @param viewElement
      *            the diagram element whose source element in the input (source, semantic, or
      *            business) model is requested
      * @return the element in the input model or <code>null</code> if no source element could be
      *         identified
      */
-    public Object getSourceElement(final EObject element) {
-        final Object model;
-        if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(element)) {
-            model = ((KGraphData) element).getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
-        } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(element)) {
-            KLayoutData layoutData = ((KGraphElement) element).getData(KLayoutData.class);
-            if (layoutData != null) {
-                model = layoutData.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
-            } else {
-                model = null;
-            }
-        } else {
-            model = null;
+    public Object getSourceElement(final EObject viewElement) {
+        if (viewElement == null) {
+            return null;
         }
         
-         return model;
+        return tracer.getSourceElement(viewElement);
     }
 
 
@@ -556,38 +561,12 @@ public class ViewContext extends MapPropertyHolder {
      *         or <code>{@link Collections#emptyList()}</code> if no corresponding view model
      *         elements could be identified
      */
-    public Collection<EObject> getTargetElements(final Object element) {
-        
+    public Collection<EObject> getTargetElements(final Object element) {        
         if (element == null) {
             return Collections.emptyList();
         }
         
-        final Iterator<EObject> it =
-                ModelingUtil.eAllContentsOfType2(viewModel, KGraphElement.class, KRendering.class);
-        
-        final Collection<EObject> targetCollection =
-                Lists.newArrayList(Iterators.filter(it, new Predicate<EObject>() {
-
-            /** {@inheritDoc} */
-            public boolean apply(final EObject input) {
-                
-                if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(input)) {
-                    return apply(((KGraphElement) input).getData(KLayoutData.class));
-                    
-                } else if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(input)) {
-                    return apply((KGraphData) input);
-                    
-                } else {
-                    return false;
-                }
-            }
-            
-            private boolean apply(final KGraphData data) {
-                return data.getProperty(KlighdInternalProperties.MODEL_ELEMEMT) == element;
-            }
-        }));
-        
-        return targetCollection;
+        return tracer.getTargetElements(element);
     }
 
 
