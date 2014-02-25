@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.syntheses;
 
+import java.util.Map;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
@@ -41,6 +43,10 @@ public class DuplicatingDiagramSynthesis extends AbstractDiagramSynthesis<KNode>
         this.currentCopier = new Copier();
         final EObject result = this.currentCopier.copy(model);
         this.currentCopier.copyReferences();
+
+        for (Map.Entry<EObject, EObject> entry : currentCopier.entrySet()) {
+            getUsedContext().associateSourceTargetPair(entry.getKey(), entry.getValue());
+        }
 
         return (KNode) result;
     }
