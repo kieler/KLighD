@@ -15,10 +15,12 @@ package de.cau.cs.kieler.klighd.test;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.hamcrest.collection.IsEmptyIterable;
@@ -38,6 +40,9 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KRectangle;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
@@ -93,7 +98,7 @@ public class ViewContextSourceModelTrackingTest {
      * A.
      */
     @Test
-    public void test1() {
+    public void test01() {
         updateViewModelRootSourceElement(
                 createViewContext());
     }
@@ -102,7 +107,7 @@ public class ViewContextSourceModelTrackingTest {
      * A.
      */
     @Test
-    public void test2() {
+    public void test02() {
         updateViewModelRootSourceElement(
                 updateViewModelRootSourceElement(
                         createViewContext()));
@@ -133,13 +138,11 @@ public class ViewContextSourceModelTrackingTest {
      * 
      */
     @Test
-    public void test3() {
-        updateWithSimpleViewModel(createViewContext());
+    public void test03() {
+        updateWith(createViewContext(), createSimpleNetwork());
     }
     
-    private ViewContext updateWithSimpleViewModel(final ViewContext viewContext) {
-        
-        final KNode sourceRoot = createSimpleNetwork();
+    private ViewContext updateWith(final ViewContext viewContext, final KNode sourceRoot) {
         
         final KNode targetRoot = new DuplicatingDiagramSynthesis().transform(sourceRoot, viewContext);
 
@@ -181,8 +184,8 @@ public class ViewContextSourceModelTrackingTest {
      * A.
      */
     @Test
-    public void test4() {
-        final ViewContext viewContext = updateWithSimpleViewModel(createViewContext());
+    public void test04() {
+        final ViewContext viewContext = updateWith(createViewContext(), createSimpleNetwork());
         
         final KNode child0 = viewContext.getViewModel().getChildren().get(0);
         final Object source0 = viewContext.getSourceElement(child0);
@@ -208,10 +211,11 @@ public class ViewContextSourceModelTrackingTest {
      * 
      */
     @Test
-    public void test5() {
+    public void test05() {
         final ViewContext viewContext = 
-                addSubViewModels(updateWithSimpleViewModel(createViewContext()));
-        
+                addSubViewModels(
+                        updateWith(createViewContext(), createSimpleNetwork()));
+
         final KNode child0 = viewContext.getViewModel().getChildren().get(0);
         
         final Collection<KGraphElement> child0kges =
@@ -274,12 +278,155 @@ public class ViewContextSourceModelTrackingTest {
      * 
      */
     @Test
-    public void test6() {
+    public void test06() {
         final ViewContext viewContext = 
-                addSubViewModels(updateWithSimpleViewModel(createViewContext()));
+                addSubViewModels(updateWith(createViewContext(), createSimpleNetwork()));
         
         viewContext.getViewModel().getChildren().clear();
         
         checkTracerMaps(viewContext, 1);
     }
+
+    
+
+    /**
+     * 
+     */
+    @Test
+    public void test07() {
+        final ViewContext viewContext = 
+                updateWith(createViewContext(), attachRenderings(createSimpleNetwork()));
+
+        // 1 (root) + 2*3 (kge+rect+ktext) + 1 (edge)
+        checkTracerMaps(viewContext, 8);
+
+        final KRectangle rect =
+                Iterators.getNext(Iterators.filter(viewContext.getViewModel().eAllContents(),
+                        KRectangle.class), null);
+        
+        Assert.assertNotNull(rect);
+        
+       final Object source = viewContext.getSourceElement(rect);
+        
+       Assert.assertNotNull(source);
+       
+       final Iterable<EObject> targets = viewContext.getTargetElements(source);
+       
+       Assert.assertNotNull(targets);
+       Assert.assertThat(targets, IsIterableWithSize.<EObject>iterableWithSize(1));
+       Assert.assertSame(rect, Iterables.getOnlyElement(targets));
+   }
+    
+    private KNode attachRenderings(final KNode viewModel) {
+        for (Iterator<KGraphElement> it =
+                Iterators.filter(viewModel.eAllContents(), KGraphElement.class);
+                it.hasNext();) {
+            final KGraphElement kge = it.next();
+            if (!(kge instanceof KEdge)) {
+                final KText text = KRenderingFactory.eINSTANCE.createKText();
+                final KRectangle rect = KRenderingFactory.eINSTANCE.createKRectangle();
+                rect.getChildren().add(text);
+                kge.getData().add(rect);
+            }
+        }
+
+        return viewModel;
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void test08() {
+        final ViewContext viewContext = 
+                updateWith(createViewContext(), attachRenderings(createSimpleNetwork()));
+
+        final KRectangle rect =
+                Iterators.getNext(Iterators.filter(viewContext.getViewModel().eAllContents(),
+                        KRectangle.class), null);
+
+        final Object source = viewContext.getSourceElement(rect);
+
+       EcoreUtil.remove(rect);
+
+       Assert.assertNull(viewContext.getSourceElement(rect));
+       Assert.assertNull(viewContext.getTargetElement(source, null));
+
+        // 1 (root) + 1 (child node) 1*3 (node+rect+ktext) + 1 (edge)
+        checkTracerMaps(viewContext, 6);
+    }
+    
+    /**
+     * 
+     */
+    @Test
+    public void test09() {
+        final ViewContext viewContext = 
+                updateWith(createViewContext(), createSimpleNetwork());
+        
+        // 1 (root) + 2*1 (child nodes) + 1 (edge)
+        checkTracerMaps(viewContext, 4);
+
+        final KText text = KRenderingFactory.eINSTANCE.createKText();
+        final KRectangle rect = KRenderingFactory.eINSTANCE.createKRectangle();
+        rect.getChildren().add(text);
+        viewContext.getViewModel().getChildren().get(0).getData().add(rect);
+
+        // 1 (root) + 2*1 (child nodes) + 1 (edge)
+       checkTracerMaps(viewContext, 4);
+        
+       final EObject source = new EObjectImpl() { };
+       
+       viewContext.associateSourceTargetPair(source, text);
+
+       // 1 (root) + 2+1 (child nodes, first with text) + 1 (edge)
+       checkTracerMaps(viewContext, 5);
+
+       viewContext.associateSourceTargetPair(null, text);
+
+       // 1 (root) + 2+1 (child nodes, first with text) + 1 (edge)
+       checkTracerMaps(viewContext, 4);
+
+       viewContext.associateSourceTargetPair(source, text);
+
+       // 1 (root) + 2+1 (child nodes, first with text) + 1 (edge)
+       checkTracerMaps(viewContext, 5);
+    }
+    
+    /**
+     * 
+     */
+    @Test
+    public void test10() {
+        final ViewContext viewContext = 
+                updateWith(createViewContext(), createSimpleNetwork());
+        
+        // 1 (root) + 2*1 (child nodes) + 1 (edge)
+        checkTracerMaps(viewContext, 4);
+
+        final KText text = KRenderingFactory.eINSTANCE.createKText();
+        final KRectangle rect = KRenderingFactory.eINSTANCE.createKRectangle();
+        rect.getChildren().add(text);
+        viewContext.getViewModel().getChildren().get(0).getData().add(rect);
+
+        // 1 (root) + 2*1 (child nodes) + 1 (edge)
+       checkTracerMaps(viewContext, 4);
+        
+       final EObject source = new EObjectImpl() { };
+       
+       viewContext.associateSourceTargetPair(source, text);
+
+       // 1 (root) + 2+1 (child nodes, first with text) + 1 (edge)
+       checkTracerMaps(viewContext, 5);
+       
+       final EObject source2 = new EObjectImpl() { };
+       
+       viewContext.associateSourceTargetPair(source2, text);
+       
+       // 1 (root) + 2+1 (child nodes, first with text) + 1 (edge)
+       checkTracerMaps(viewContext, 5);
+       
+       Assert.assertSame(source2, viewContext.getSourceElement(text));
+
+    }    
 }

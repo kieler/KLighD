@@ -34,7 +34,9 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 
@@ -48,12 +50,14 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
 
     private static final Predicate<Object> CANDIDATES = KlighdPredicates.instanceOf(
             KGraphElement.class, KLayoutData.class, KRendering.class
-            // , IPropertyToObjectMapImpl.class
+            , IPropertyToObjectMapImpl.class
             );
+    
+    private static final IProperty<Object> MODEL_ELEMENT = KlighdInternalProperties.MODEL_ELEMEMT;
 
 //    private final ViewContext viewContext;
 
-    private Object mapsMonitor = new Object();
+    private Object mapsMonitor = this;
     private Multimap<Object, EObject> sourceTargetsMap = ArrayListMultimap.create();
     private Map<EObject, Object> targetSourceMap = Maps.newHashMap();
 
@@ -111,6 +115,11 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         }
     }
 
+
+    /* --------------------- */
+    /*   the internal part   */
+    /* --------------------- */
+
     /**
      * {@inheritDoc}
      */
@@ -133,35 +142,6 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
      * {@inheritDoc}
      */
     @Override
-    protected void handleContainment(final Notification notification) {
-
-        switch (notification.getEventType()) {
-        case Notification.SET:
-        case Notification.UNSET:
-        case Notification.ADD:
-        case Notification.REMOVE:
-            if (CANDIDATES.apply(notification.getNewValue())
-                    || CANDIDATES.apply(notification.getOldValue())) {
-                super.handleContainment(notification);
-            }
-            break;
-        case Notification.ADD_MANY:
-        case Notification.REMOVE_MANY:
-            final Object oldValue = notification.getOldValue();
-            final Object newValue = notification.getNewValue();
-
-            if (oldValue instanceof Iterable && Iterables.all((Iterable<?>) oldValue, CANDIDATES)
-                    || newValue instanceof Iterable
-                    && Iterables.all((Iterable<?>) newValue, CANDIDATES)) {
-                super.handleContainment(notification);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected void addAdapter(final Notifier notifier) {
         super.addAdapter(notifier);
 
@@ -177,24 +157,102 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
 
         removeTracedElement((EObject) notifier);
     }
-    //
-    // /**
-    // * {@inheritDoc}
-    // */
-    // @Override
-    // public void notifyChanged(final Notification notification) {
-    // super.notifyChanged(notification);
-    //
-    // if (notification.getEventType() == Notification.ADD
-    // && notification.getFeature() == KGraphPackage.eINSTANCE
-    // .getEMapPropertyHolder_Properties()
-    // && notification.getNotifier() instanceof KLayoutData) {
-    // final Object newValue = notification.getNewValue();
-    // if (newValue instanceof IPropertyToObjectMapImpl) {
-    // viewContext.addTracedElement(((EObject) notification.getNotifier()).eContainer());
-    // }
-    // }
-    // }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void handleContainment(final Notification notification) {
+
+        switch (notification.getEventType()) {
+        case Notification.SET:
+        case Notification.UNSET:
+        case Notification.ADD:
+        case Notification.REMOVE:
+            final EObject newValue = (EObject) notification.getNewValue();
+
+            if (CANDIDATES.apply(notification.getNewValue())
+                    || CANDIDATES.apply(notification.getOldValue())) {
+
+                if (newValue instanceof IPropertyToObjectMapImpl
+                    && ((IPropertyToObjectMapImpl) newValue).getKey() != MODEL_ELEMENT) {
+                    return;
+                } else {
+                    super.handleContainment(notification);
+                }
+            }
+            break;
+        case Notification.ADD_MANY:
+        case Notification.REMOVE_MANY:
+            final Object oldValues = notification.getOldValue();
+            final Object newValues = notification.getNewValue();
+
+            if (oldValues instanceof Iterable && Iterables.all((Iterable<?>) oldValues, CANDIDATES)
+                    || newValues instanceof Iterable
+                    && Iterables.all((Iterable<?>) newValues, CANDIDATES)) {
+                super.handleContainment(notification);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notifyChanged(final Notification notification) {
+        super.notifyChanged(notification);
+        
+        switch(notification.getEventType()) {
+        case Notification.SET:
+        case Notification.ADD:
+        case Notification.REMOVE:
+            break;
+        case Notification.UNSET:
+            System.out.println("HERE");
+        default:
+            return;
+        }
+
+        final int type = notification.getEventType();
+        final Object newValue = notification.getNewValue();
+
+        
+        final KGraphData notifier;
+        if (notification.getFeature() == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()
+                && notification.getNotifier() instanceof KGraphData) {
+            notifier = (KGraphData) notification.getNotifier();
+            
+        } else if (notification.getNotifier() instanceof IPropertyToObjectMapImpl) {
+            notifier = (KGraphData) ((EObject) notification.getNotifier()).eContainer();
+
+        } else {
+            return;
+        }
+        
+        if (type == Notification.SET
+                && ((IPropertyToObjectMapImpl) notification.getNotifier()).getKey() == MODEL_ELEMENT
+                && newValue != null) {
+            removeAdapter(notifier);
+            addTracedElement(notifier);
+            return;
+
+        } else if (type == Notification.ADD) {
+            if (newValue instanceof IPropertyToObjectMapImpl
+                    && ((IPropertyToObjectMapImpl) newValue).getKey() == MODEL_ELEMENT) {
+                addTracedElement(notifier);
+                return;
+            }
+
+        } else if (type == Notification.REMOVE) {
+            final Object oldValue = notification.getOldValue();
+            if (oldValue instanceof IPropertyToObjectMapImpl
+                    && ((IPropertyToObjectMapImpl) oldValue).getKey() == MODEL_ELEMENT) {
+                removeTracedElement(notifier);
+                return;
+            }
+        }
+    }
+
 
     void addTracedElement(final EObject element) {
         synchronized (mapsMonitor) {
@@ -223,7 +281,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
     private Object internalGetSourceElement(final EObject viewElement) {
         final Object model;
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(viewElement)) {
-            model = ((KGraphData) viewElement).getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+            model = ((KGraphData) viewElement).getProperty(MODEL_ELEMENT);
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(viewElement)) {
             KLayoutData layoutData = ((KGraphElement) viewElement).getData(KLayoutData.class);
             if (layoutData != null) {
