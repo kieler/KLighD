@@ -38,11 +38,11 @@ public class SVGExporter extends KlighdCanvasExporter {
     @Override
     public void export(final OutputStream stream, final KlighdCanvas canvas,
             final boolean cameraViewport, final int scale, final boolean textAsShapes,
-            final String subFormatId) {
+            final boolean embedFonts, final String subFormatId) {
 
         // just call the svg canvas's static render method, pass the subFormat, the canvas knows how
         // to handle it
         PCamera camera = canvas.getCamera();
-        KlighdSVGCanvas.render(camera, cameraViewport, textAsShapes, stream, subFormatId);
+        KlighdSVGCanvas.render(camera, cameraViewport, textAsShapes, embedFonts, stream, subFormatId);
     }
 }

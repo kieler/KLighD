@@ -25,8 +25,16 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 
 /**
+ * Abstract implementation of {@link IDiagramExporter} supporting the export of diagrams depicted by
+ * a {@link KlighdCanvas}.<br>
+ * <br>
+ * Thus, it treats the {@link Control} in
+ * {@link #export(OutputStream, Control, boolean, int, boolean, boolean, String)} as a
+ * {@link KlighdCanvas} and redirects to
+ * {@link #export(OutputStream, KlighdCanvas, boolean, int, boolean, boolean, String)}, which has to be
+ * implemented by concrete subclasses.
+ * 
  * @author chsch
- *
  */
 public abstract class KlighdCanvasExporter implements IDiagramExporter {
     
@@ -35,12 +43,12 @@ public abstract class KlighdCanvasExporter implements IDiagramExporter {
      */
     public void export(final OutputStream stream, final Control control,
             final boolean cameraViewport, final int scale, final boolean textAsShapes,
-            final String subFormatId) {
+            final boolean embedFonts, final String subFormatId) {
         
         final KlighdCanvas canvas;
         if (control instanceof KlighdCanvas) {
             canvas = (KlighdCanvas) control;
-            export(stream, canvas, cameraViewport, scale, textAsShapes, subFormatId);
+            export(stream, canvas, cameraViewport, scale, textAsShapes, embedFonts, subFormatId);
         } else {
             final String msg = "";
             StatusManager.getManager().handle(
@@ -67,9 +75,11 @@ public abstract class KlighdCanvasExporter implements IDiagramExporter {
      *            should the canvas be scaled before exporting
      * @param textAsShapes
      *            whether text in vector graphics should be rendered as shapes
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      * @param subFormatId
      *            an id for a certain subformat
      */
     public abstract void export(OutputStream stream, KlighdCanvas canvas, boolean cameraViewport,
-            int scale, boolean textAsShapes, String subFormatId);
+            int scale, boolean textAsShapes, boolean embedFonts, String subFormatId);
 }

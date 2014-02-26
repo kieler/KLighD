@@ -66,7 +66,7 @@ public class SaveAsImageDialog extends Dialog {
     /** the default dialog width. */
     private static final int DEFAULT_WIDTH = 500;
     /** the default dialog height. */
-    private static final int DEFAULT_HEIGHT = 270;
+    private static final int DEFAULT_HEIGHT = 300;
 
     /** the preference key for the file path. */
     private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
@@ -83,6 +83,9 @@ public class SaveAsImageDialog extends Dialog {
     /** the preference key for the text as shapes property. */
     private static final String PREFERENCE_TEXT_AS_SHAPES 
         = "saveAsImageDialog.textAsShapes"; //$NON-NLS-1$
+    /** the preference key for the embed fonts property. */
+    private static final String PREFERENCE_EMBED_FONTS 
+        = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -95,8 +98,10 @@ public class SaveAsImageDialog extends Dialog {
     private Combo imageFormatCombo;
     /** the camera viewport checkbox. */
     private Button cameraViewportCheckbox;
-    /** the camera viewport checkbox. */
+    /** the camera text as shapes checkbox. */
     private Button textAsShapesCheckbox;
+    /** the camera embed fonts checkbox. */
+    private Button embedFontsCheckbox;
     /** the message image. */
     private Label messageImageLabel;
     /** the message label. */
@@ -112,6 +117,8 @@ public class SaveAsImageDialog extends Dialog {
     private boolean cameraViewport;
     /** whether to transform text to shapes in vector graphics. */
     private boolean textAsShapes;
+    /** whether the texts' fonts shall be embedded in the output. */
+    private boolean embedFonts;
     /** the selected scaleFactor. */
     private int scaleFactor;
 
@@ -310,7 +317,35 @@ public class SaveAsImageDialog extends Dialog {
         // text as shapes
         textAsShapesCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
         textAsShapesCheckbox.setText(Messages.SaveAsImageDialog_text_as_shapes);
-        textAsShapesCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_TEXT_AS_SHAPES)); 
+        textAsShapesCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_TEXT_AS_SHAPES));
+        
+        // embed fonts
+        embedFontsCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+        embedFontsCheckbox.setText(Messages.SaveAsImageDialog_embed_fonts);
+        embedFontsCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_EMBED_FONTS));
+        
+        updateEmbedFontsCheckbox(textAsShapesCheckbox.getSelection(), embedFontsCheckbox.getSelection());
+        textAsShapesCheckbox.addSelectionListener(new SelectionAdapter() {
+            private boolean prevEmbedFonts = embedFontsCheckbox.getSelection();
+            
+            public void widgetSelected(final SelectionEvent e) {
+                boolean selected = ((Button) e.widget).getSelection();
+                if (selected) {
+                    prevEmbedFonts = embedFontsCheckbox.getSelection();
+                }
+                updateEmbedFontsCheckbox(selected, prevEmbedFonts);
+            }
+        });
+    }
+    
+    private void updateEmbedFontsCheckbox(final boolean disabled, final boolean prevSelection) {
+        if (disabled) {
+            embedFontsCheckbox.setEnabled(false);
+            embedFontsCheckbox.setSelection(false);
+        } else {
+            embedFontsCheckbox.setSelection(prevSelection);
+            embedFontsCheckbox.setEnabled(true);
+        }
     }
 
     private static final int MESSAGE_LABEL_WIDTH_HINT = 300;
@@ -542,6 +577,15 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     /**
+     * Returns whether the texts' fonts shall be embedded in the output.
+     * 
+     * @return true if the texts' fonts shall be embedded in the output.
+     */
+    public boolean isEmbedFonts() {
+        return embedFonts;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -553,6 +597,7 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_CAMERA_VIEWPORT, cameraViewportCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
         preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
+        preferenceStore.setValue(PREFERENCE_EMBED_FONTS, embedFontsCheckbox.getSelection());
         return super.close();
     }
 
@@ -570,6 +615,7 @@ public class SaveAsImageDialog extends Dialog {
         currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex()); 
         cameraViewport = cameraViewportCheckbox.getSelection();
         textAsShapes = textAsShapesCheckbox.getSelection();
+        embedFonts = embedFontsCheckbox.getSelection();
         scaleFactor = scaleSlider.getSelection();
         // has to be last because it disposes the dialog
         super.okPressed();

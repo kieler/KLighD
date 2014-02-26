@@ -72,22 +72,54 @@ public final class SVGGeneratorManager {
      *            the expected bounds of the svg being generated.
      * @param textAsShapes
      *            whether texts should be transformed to paths.
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
      * @throws IllegalArgumentException
      *             when the graphics object cannot be created.
      * @return a instance of a svg generator initialized with the passed parameters.
      */
     @SuppressWarnings("unchecked")
     public KlighdAbstractSVGGraphics createGraphics(final String id, final Rectangle2D bounds,
-            final boolean textAsShapes) {
-        String graphicsClass = generatorsMap.get(id);
+            final boolean textAsShapes, final boolean embedFonts) {
+        final String graphicsClass = generatorsMap.get(id);
 
         try {
-            Constructor<? extends KlighdAbstractSVGGraphics> constr =
-                    (Constructor<? extends KlighdAbstractSVGGraphics>) Class.forName(graphicsClass)
-                            .getDeclaredConstructor(Rectangle2D.class, Boolean.class);
-            KlighdAbstractSVGGraphics graphics = constr.newInstance(bounds, textAsShapes);
+            final Class<? extends KlighdAbstractSVGGraphics> clazz =
+                    (Class<? extends KlighdAbstractSVGGraphics>) Class.forName(graphicsClass);
+            
+            KlighdAbstractSVGGraphics graphics = null;
+            try {
 
-            return graphics;
+                final Constructor<? extends KlighdAbstractSVGGraphics> constr =
+                        clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class,
+                                Boolean.class);
+                graphics = constr.newInstance(bounds, textAsShapes, embedFonts);
+
+            } catch (NoSuchMethodException e0) {
+                // nothing
+            }
+            
+            if (graphics != null) {
+                return graphics;
+            }
+            
+            try {
+                final Constructor<? extends KlighdAbstractSVGGraphics> constr =
+                        clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class);
+                graphics = constr.newInstance(bounds, textAsShapes);
+                
+            } catch (NoSuchMethodException e1) {
+                // nothing
+            }
+            
+            if (graphics != null) {
+                return graphics;
+            }
+            
+            throw new IllegalArgumentException("Could not instantiate svg graphics object for id "
+                    + id + " because of a missing constructor with signature "
+                    + "(Rectangle2D, Boolean) or (Reactangle2D, Boolean, Boolean)");
+            
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Could not instantiate svg graphics object for id "

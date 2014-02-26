@@ -130,9 +130,9 @@ public class Draw2DNode extends KCustomFigureNode {
         final java.awt.Rectangle intRect = this.singletonRectDouble.getBounds();
         this.singletonRectDraw2d.setBounds(intRect.x, intRect.y, intRect.width, intRect.height);
 
-        // now put them into the custom Draw2d figure and re-validate it
+        // now put them into the custom Draw2d figure and (re-)validate it
         this.figure.setBounds(this.singletonRectDraw2d);
-        this.figure.revalidate();
+        this.figure.validate();
 
         return super.setBounds(x, y, width, height);
     }
@@ -261,14 +261,22 @@ public class Draw2DNode extends KCustomFigureNode {
             // (bounds have not been correctly propagated to children)
             // bridging the decoupling, and thus validating the compound figure at once, works
             // as desired
-            super.performUpdate();
+
+            // UPDATE (chsch):
+            // since 'queueWork()' is called in DeferredUpdateManager#addInvalidFigure(IFigure)
+            //  BEFORE the invalid figure is added to the 'invalidFigures' list invoking the
+            //  update won't have any affect
+            // thus I deactivated the following call and call 'figure.validate()' in 'setBounds(...)'
+            //  above instead of 'figure.invalidate()'; considering this the whole update manager
+            //  construction may be obsolete now...
+            // super.performUpdate();
         }
 
         @Override
         protected Graphics getGraphics(final Rectangle region) {
-            // We do not allow the update manager to directly access the
-            // graphics object, redraw requests shall be somehow escalated
-            // to the Piccolo2D node in future if necessary (TODO).
+            // We do not allow the update manager to directly access the graphics object.
+            // Redrawing is escalated to the Piccolo2D nodes in 'setBounds(...)' above by calling
+            //  'super.setBounds(...)'
             return null;
         }
     }
