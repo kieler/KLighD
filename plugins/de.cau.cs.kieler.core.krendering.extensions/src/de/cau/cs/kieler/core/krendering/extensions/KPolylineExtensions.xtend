@@ -90,7 +90,20 @@ class KPolylineExtensions {
         ];
         return pl.junctionPointRendering;
     }
-    
+
+    def KRendering addJunctionPointDecorator(KPolyline pl, KRendering decorator, float width, float height) {
+        pl.junctionPointRendering = decorator => [
+            it.background = "black".color;
+            it.placementData = createKPointPlacementData => [
+                it.horizontalAlignment = HorizontalAlignment::CENTER;
+                it.verticalAlignment = VerticalAlignment::CENTER;
+                it.minWidth = width;
+                it.minHeight = height;
+            ];
+        ];
+        return decorator;
+    }
+
     def KRendering addInheritanceTriangleArrowDecorator(KPolyline pl) {
         return pl.drawTriangle() => [
             it.placementData = createKDecoratorPlacementData => [
