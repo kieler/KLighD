@@ -91,8 +91,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public PiccoloViewer(final ContextViewer theParentViewer, final Composite parent,
             final int style) {
         if (parent.isDisposed()) {
-            final String msg =
-                    "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
+            final String msg = "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
                             + "disposed 'Composite' widget.";
             throw new IllegalArgumentException(msg);
         }
@@ -113,17 +112,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
-
-     
-
-
-        // add a tooltip element
-        new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
     }
-
-    
-
-    
 
     /**
      * {@inheritDoc}
