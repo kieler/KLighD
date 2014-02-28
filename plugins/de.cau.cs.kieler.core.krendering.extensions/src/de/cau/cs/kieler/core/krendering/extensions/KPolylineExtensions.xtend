@@ -91,7 +91,7 @@ class KPolylineExtensions {
         return pl.junctionPointRendering;
     }
 
-    def KRendering addJunctionPointDecorator(KPolyline pl, KRendering decorator, float width, float height) {
+    def KRendering setJunctionPointDecorator(KPolyline pl, KRendering decorator, float width, float height) {
         pl.junctionPointRendering = decorator => [
             it.background = "black".color;
             it.placementData = createKPointPlacementData => [
