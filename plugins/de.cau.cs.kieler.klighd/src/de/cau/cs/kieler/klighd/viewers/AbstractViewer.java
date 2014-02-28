@@ -13,14 +13,23 @@
  */
 package de.cau.cs.kieler.klighd.viewers;
 
+import java.awt.geom.Rectangle2D;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
+
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.IViewChangeListener;
+import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
+import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
@@ -45,6 +54,85 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         this.setModel(model, false);
     }
 
+    private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListeners;
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addViewChangedListener(final IViewChangeListener listener,
+            final ViewChangeType... eventTypes) {
+        if (listener == null) {
+            return;
+        }
+
+        if (viewChangeListeners == null) {
+            viewChangeListeners = HashMultimap.create();
+        }
+        
+        final ViewChangeType[] types =
+                eventTypes != null && eventTypes.length != 0 ? eventTypes : ViewChangeType.values();
+        
+        for (ViewChangeType t : types) {
+            viewChangeListeners.put(t, listener);
+        }
+    }
+    
+    private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListenersView;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void removeViewChangedEventListener(final IViewChangeListener listener) {
+        if (listener != null) {
+            this.viewChangeListeners.values().remove(listener);
+        }
+    }
+    
+    /**
+     * Provides the {@link Multimap} containing the registered {@link IViewChangeListener
+     * IViewChangeListeners}.
+     * 
+     * @return the {@link Multimap} containing the registered {@link IViewChangeListener
+     *         IViewChangeListeners}.
+     */
+    protected Multimap<ViewChangeType, IViewChangeListener> getViewChangeListeners() {
+        if (viewChangeListenersView == null) {
+            viewChangeListenersView = Multimaps.unmodifiableSetMultimap(this.viewChangeListeners);
+        }
+        return viewChangeListeners;
+    }
+    
+    /**
+     * Notifies the registered {@link IViewChangeListener IViewChangeListeners} of a diagram view
+     * change.
+     * 
+     * @param type
+     *            the corresponding {@link ViewChangeType}
+     * @param affectedElement
+     *            a potentially affect few element, e.g. a collapsed or expanded
+     *            {@link de.cau.cs.kieler.core.kgraph.KNode KNode}, may be <code>null</code>
+     * @param viewPort
+     *            a {@link Rectangle2D} with the bounds of the currently visible diagram area
+     */
+    protected void notifyViewChangeListeners(final ViewChangeType type,
+            final KGraphElement affectedElement, final Rectangle2D viewPort) {
+        
+        if (viewChangeListeners == null) {
+            return;
+        }
+        
+        final ViewChange change = new ViewChange(this, type, affectedElement, viewPort);
+
+        for (IViewChangeListener l : viewChangeListeners.get(type)) {
+            l.viewChanged(change);
+        }
+    }
+
+
+    /* ----------------------------- */
+    /*   the view manipulation API   */
+    /* ----------------------------- */
+
     /**
      * {@inheritDoc}
      */
@@ -58,12 +146,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     public void zoom(final ZoomStyle style, final int duration) {
         getContextViewer().zoom(style, duration);
     }
-
-
-    /* ----------------------------- */
-    /*   the view manipulation API   */
-    /* ----------------------------- */
-
+    
     /**
      * {@inheritDoc}
      */

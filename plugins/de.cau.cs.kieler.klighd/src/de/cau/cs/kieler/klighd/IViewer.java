@@ -80,7 +80,33 @@ public interface IViewer<T> {
      * @return the associated {@link ViewContext} or <code>null</code> if no input model is set
      */
     ViewContext getViewContext();
-    
+
+    /**
+     * Registers the given {@link IViewChangeListener} to be notified of events of the given
+     * {@link ViewChangeType ViewChangeEventTypes}. The provided <code>listener</code> will be
+     * notified after all possible changes if no {@link ViewChangeType} is specified.
+     * 
+     * @param listener
+     *            the {@link IViewChangeListener} to be registered
+     * @param eventTypes
+     *            the {@link ViewChangeType} this listener is notified of
+     */
+    void addViewChangedListener(IViewChangeListener listener,
+            ViewChangeType... eventTypes);
+
+    /**
+     * Unregisters the given {@link IViewChangeListener}.
+     * 
+     * @param listener the {@link IViewChangeListener} to be removed from the listeners queue
+     */
+    void removeViewChangedEventListener(IViewChangeListener listener);
+
+
+
+    /* ----------------------------- */
+    /*   the view modification API   */
+    /* ----------------------------- */
+     
     /**
      * Reveals the representation of the given semantic element over the specified duration.
      * 

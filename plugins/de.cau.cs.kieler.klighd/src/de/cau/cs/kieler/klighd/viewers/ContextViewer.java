@@ -42,8 +42,10 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
+import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
@@ -243,7 +245,37 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     public IViewer<?> getActiveViewer() {
         return currentViewer;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addViewChangedListener(final IViewChangeListener listener,
+            final ViewChangeType... eventTypes) {
+        if (currentViewer != null) {
+            if (listener != null) {
+                currentViewer.addViewChangedListener(listener, eventTypes);
+            }
+        } else {
+            throw new RuntimeException("KLighD: Registering the "
+                    + listener.getClass().getSimpleName()
+                    + " is possible, since the actual diagram viewer is not yet initialized.");
+        }
+    }
     
+    /**
+     * {@inheritDoc}
+     */
+    public void removeViewChangedEventListener(final IViewChangeListener listener) {
+        if (listener != null && currentViewer != null) {
+            currentViewer.removeViewChangedEventListener(listener);
+        }
+    }
+
+
+    /* ----------------------------- */
+    /*   the view manipulation API   */
+    /* ----------------------------- */
+
     /**
      * {@inheritDoc}
      */
@@ -261,11 +293,6 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
             currentViewer.zoom(style, duration);
         }
     }
-
-
-    /* ----------------------------- */
-    /*   the view manipulation API   */
-    /* ----------------------------- */
 
     /**
      * {@inheritDoc}
