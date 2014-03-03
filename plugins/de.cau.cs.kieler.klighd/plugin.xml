@@ -64,6 +64,13 @@
             type="object"
             variance="0">
       </layoutOption>
+      <layoutOption
+            class="de.cau.cs.kieler.core.math.KVector"
+            id="de.cau.cs.kieler.klighd.minimalNodeSize"
+            name="Minimal Node Size (programmatic)"
+            type="object"
+            variance="0">
+      </layoutOption>
    </extension>
 
 </plugin>

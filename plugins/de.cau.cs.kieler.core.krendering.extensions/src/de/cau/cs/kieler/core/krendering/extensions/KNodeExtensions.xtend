@@ -106,7 +106,7 @@ class KNodeExtensions {
     }
     
     private static val IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
-            "klighd.minimalNodeSize", new KVector(10d, 10d));
+            "de.cau.cs.kieler.klighd.minimalNodeSize", new KVector(10d, 10d));
 
     def KNode setMinimalNodeSize(KNode node, float width, float height) {
         return node => [
