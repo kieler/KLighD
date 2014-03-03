@@ -208,7 +208,6 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         case Notification.REMOVE:
             break;
         case Notification.UNSET:
-            System.out.println("HERE");
         default:
             return;
         }
@@ -254,7 +253,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
     }
 
 
-    void addTracedElement(final EObject element) {
+    private void addTracedElement(final EObject element) {
         synchronized (mapsMonitor) {
 
             final EObject viewElement;
@@ -296,7 +295,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         return model;
     }
     
-    void removeTracedElement(final EObject element) {
+    private void removeTracedElement(final EObject element) {
         synchronized (mapsMonitor) {
             final EObject viewElement;
             if (element instanceof KLayoutData) {
