@@ -194,7 +194,6 @@ public final class ExpansionAwareLayoutOption {
          * '((collapsed: id0 = value0,, id1 = value1 ...;; expanded: id0 = value0,, id1 = value1 ...))'
          * </pre>.
          */
-        // SUPPRESS CHECKSTYLE PREVIOUS 3 LineLength
         @Override
         public String toString() {
             final String collapsed = "collapsed: " + toString(collapsedValues); 
