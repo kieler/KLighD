@@ -18,13 +18,11 @@ import java.util.Iterator;
 
 import org.eclipse.emf.common.util.AbstractTreeIterator;
 
-import com.google.common.collect.AbstractIterator;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
  * Defines the notification API to be implemented by concrete listeners being informed about changes
@@ -54,7 +52,7 @@ public interface IViewChangeListener {
         private final IViewer<?> activeViewer;
         private final ViewChangeType changeType;
         private final KGraphElement affectedElement;
-        private final Rectangle2D visibleViewPort;
+//        private final Rectangle2D visibleViewPort;
         
         /**
          * Constructor.
@@ -73,7 +71,7 @@ public interface IViewChangeListener {
             this.activeViewer = viewer;
             this.changeType = type;
             this.affectedElement = element;
-            this.visibleViewPort = viewPort;
+//            this.visibleViewPort = viewPort;
         }
         
         /**
@@ -101,19 +99,19 @@ public interface IViewChangeListener {
          */
         public Iterator<KGraphElement> visibleElements() {
             final KNode clip = activeViewer.getClip();
-            final KVector absPos = KimlUtil.toAbsolute(
-                    new KVector(visibleViewPort.getCenterX(), visibleViewPort.getY()), clip);
+//            final KVector absPos = KimlUtil.toAbsolute(
+//                    new KVector(visibleViewPort.getCenterX(), visibleViewPort.getY()), clip);
             
-            final Rectangle2D.Double absoluteViewPort =
-                    new Rectangle2D.Double(absPos.x, absPos.y,
-                            visibleViewPort.getWidth(), visibleViewPort.getHeight());
+//            final Rectangle2D.Double absoluteViewPort =
+//                    new Rectangle2D.Double(absPos.x, absPos.y,
+//                            visibleViewPort.getWidth(), visibleViewPort.getHeight());
             
             return new AbstractTreeIterator<KGraphElement>(clip) {
                 private static final long serialVersionUID = 1021356500841593549L;
 
 //                private Stack<KNode> parents = new Stack<KNode>();
-                private KVector singleVec = new KVector();
-                private Rectangle2D.Float singleRect = new Rectangle2D.Float();
+//                private KVector singleVec = new KVector();
+//                private Rectangle2D.Float singleRect = new Rectangle2D.Float();
                 
                 @Override
                 protected Iterator<? extends KGraphElement> getChildren(final Object object) {
@@ -130,39 +128,48 @@ public interface IViewChangeListener {
 //                    
 //                    parents.push(node);
                     
-                    final Iterator<KNode> children = node.getChildren().iterator();
-                    
-                    return new AbstractIterator<KGraphElement>() {
-                        
+//                    final Iterator<KNode> children =
+                            
+                    return Iterators.filter(node.getChildren().iterator(), new Predicate<KNode>() {
                         /**
                          * {@inheritDoc}
                          */
-                        @Override
-                        protected KGraphElement computeNext() {
-                            KNode node;
-                            while (children.hasNext()) {
-                                node = children.next();
-                                if (intersects(node)) {
-                                    return node;
-                                }
-                            }
-                            endOfData();
-                            return null;
+                        public boolean apply(final KNode input) {
+                            return activeViewer.isVisible(input);
                         }
-                        
-                        protected boolean intersects(final KNode node) {
-                            final KShapeLayout layout = node.getData(KShapeLayout.class);
-                            singleVec.x = layout.getXpos();
-                            singleVec.y = layout.getYpos();
-                            KimlUtil.toAbsolute(singleVec, node);
-
-                            singleRect.setRect(singleVec.x, singleVec.y, layout.getWidth(),
-                                    layout.getHeight());
-
-                            final boolean res = absoluteViewPort.intersects(singleRect);
-                            return res;
-                        }
-                    };
+                    });
+                    
+//                    return new AbstractIterator<KGraphElement>() {
+//                        
+//                        /**
+//                         * {@inheritDoc}
+//                         */
+//                        @Override
+//                        protected KGraphElement computeNext() {
+//                            KNode node;
+//                            while (children.hasNext()) {
+//                                node = children.next();
+//                                if (intersects(node)) {
+//                                    return node;
+//                                }
+//                            }
+//                            endOfData();
+//                            return null;
+//                        }
+//                        
+//                        protected boolean intersects(final KNode node) {
+//                            final KShapeLayout layout = node.getData(KShapeLayout.class);
+//                            singleVec.x = layout.getXpos();
+//                            singleVec.y = layout.getYpos();
+//                            KimlUtil.toAbsolute(singleVec, node);
+//
+//                            singleRect.setRect(singleVec.x, singleVec.y, layout.getWidth(),
+//                                    layout.getHeight());
+//
+//                            final boolean res = absoluteViewPort.intersects(singleRect);
+//                            return res;
+//                        }
+//                    };
                 }
             };
         }
