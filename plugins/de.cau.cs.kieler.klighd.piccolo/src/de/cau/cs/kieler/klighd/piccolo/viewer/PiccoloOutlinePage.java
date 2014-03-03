@@ -21,6 +21,8 @@ import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Timer;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.swt.SWT;
@@ -48,7 +50,6 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolox.swt.SWTTimer;
 
 /**
  * A content outline page for the Piccolo2D viewer.
@@ -83,8 +84,9 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
     /** Indicates whether a drag action on the outline canvas is in progress. */
     private boolean isDragging = false;
+
     /** A timer to reduce the load during panning of the original canvas. */
-    private SWTTimer outlineRectTimer;
+    private Timer outlineRectTimer;
 
     /**
      * Property Listener that listens to changes on the original canvas and triggers a redraw of the
@@ -122,8 +124,8 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         outlineCanvas.addInputEventListener(new KlighdBasicInputEventHandler(new OutlineDragHandler()));
 
 
-        // initialize the timers to redraw the outline rect
-        outlineRectTimer = new SWTTimer(parent.getDisplay(), REPAINT_DELAY, new ActionListener() {
+        // initialize the timer triggering the request to redraw the outline rect
+        outlineRectTimer = outlineCanvas.getRoot().createTimer(REPAINT_DELAY, new ActionListener() {
 
             public void actionPerformed(final ActionEvent e) {
                 adjustOutlineRect();
