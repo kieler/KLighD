@@ -13,7 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.Timer;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -26,6 +32,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
@@ -112,6 +119,41 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
+
+        // add a listener sensitive to view transform changes, i.e. view port changes,
+        //  being in charge of notifying the registered view change listeners of new view port bounds
+        camera.addPropertyChangeListener(PCamera.PROPERTY_VIEW_TRANSFORM, new PropertyChangeListener() {
+                    private static final int DELAY = 250; // ms
+
+                    /**
+                     * A timer being in charge of buffering and thus aggregating a bunch of single
+                     * view transform changes occurring closely after each other to a single view
+                     * change notification. Once the time elapsed without restarting it in the
+                     * meantime the provided {@link ActionListener#actionPerformed(ActionEvent)}
+                     * method is called.
+                     */
+                    private Timer timer = camera.getRoot().createTimer(DELAY, new ActionListener() {
+
+                        public void actionPerformed(final ActionEvent e) {
+                            PiccoloViewer.this.notifyViewChangeListeners(ViewChangeType.VIEW_PORT,
+                                    null, camera.getViewBounds());
+                        }
+                    });
+
+                    // constructor of this anonymous subclass
+                    {
+                        timer.setRepeats(false);
+                    }
+
+                    /**
+                     * Called after each particular change of the camera's view transform.
+                     * (Re-)Starts the timer in order to aggregate subsequent notifications, which
+                     * occur during animations or manual zooming and panning.
+                     */
+                    public void propertyChange(final PropertyChangeEvent evt) {
+                        timer.restart();
+                    }
+                });
     }
 
     /**
@@ -204,6 +246,22 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
         controller.stopRecording(zoomStyle, animationTime);
     }
+    
+    /**
+     * Convenience method simplifying the notification call.
+     * 
+     * @see #notifyViewChangeListeners(ViewChangeType, KGraphElement, java.awt.geom.Rectangle2D)
+     * 
+     * @param type
+     *            the corresponding {@link ViewChangeType}
+     * @param affectedElement
+     *            a potentially affect few element, e.g. a collapsed or expanded
+     *            {@link de.cau.cs.kieler.core.kgraph.KNode KNode}, may be <code>null</code>
+     */
+    protected void notifyViewChangeListeners(final ViewChangeType type,
+            final KGraphElement affectedElement) {
+        super.notifyViewChangeListeners(type, affectedElement, canvas.getCamera().getViewBounds());
+    }
 
     /**
      * {@inheritDoc}
@@ -257,6 +315,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void collapse(final KNode diagramElement) {
         controller.collapse(diagramElement);
+        this.notifyViewChangeListeners(ViewChangeType.COLLAPSE, diagramElement);
     }
 
     /**
@@ -264,6 +323,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void expand(final KNode diagramElement) {
         controller.expand(diagramElement);
+        this.notifyViewChangeListeners(ViewChangeType.EXPAND, diagramElement);
     }
 
     /**
@@ -271,6 +331,12 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void toggleExpansion(final KNode diagramElement) {
         controller.toggleExpansion(diagramElement);
+
+        if (isExpanded(diagramElement)) {
+            this.notifyViewChangeListeners(ViewChangeType.EXPAND, diagramElement);
+        } else {
+            this.notifyViewChangeListeners(ViewChangeType.COLLAPSE, diagramElement);
+        }
     }
 
     /**
@@ -278,6 +344,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void hide(final KGraphElement diagramElement) {
         controller.hide(diagramElement);
+        this.notifyViewChangeListeners(ViewChangeType.HIDE, diagramElement);
     }
 
     /**
@@ -285,6 +352,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void show(final KGraphElement diagramElement) {
         controller.show(diagramElement);
+        this.notifyViewChangeListeners(ViewChangeType.SHOW, diagramElement);
     }
 
     /**
@@ -292,6 +360,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void clip(final KNode diagramElement) {
         controller.clip(diagramElement);
+        this.notifyViewChangeListeners(ViewChangeType.CLIP, diagramElement);
     }
 
     /**
@@ -313,6 +382,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         if (isExpanded(diagramElement)) {
             controller.getZoomController().setFocusNode(diagramElement);
         }
+        
+        this.notifyViewChangeListeners(ViewChangeType.SCALE, diagramElement);
     }
 
     /**
