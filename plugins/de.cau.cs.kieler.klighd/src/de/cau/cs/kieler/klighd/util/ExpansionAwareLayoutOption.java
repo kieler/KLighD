@@ -13,18 +13,21 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
+
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.IDataObject;
+import de.cau.cs.kieler.kiml.LayoutDataService;
+import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
  * Contributes support for declarative layout option value definitions depending on the
- * collapsed/expanded state of the {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.<br>
- * <br>
- * TODO implementation of the {@link ExpansionAwareLayoutOptionData#parse(String)} and
- * {@link ExpansionAwareLayoutOptionData#toString()}
+ * collapsed/expanded state of the {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.
  * 
  * @author chsch
  */
@@ -145,16 +148,69 @@ public final class ExpansionAwareLayoutOption {
 
         /**
          * {@inheritDoc}
+         * 
+         * This particular implementation parses the content of the {@link #collapsedValues} and
+         * {@link #expandedValues} maps from the following form:s
+         * <pre>
+         * '((collapsed: id0 = value0,, id1 = value1 ...;; expanded: id0 = value0,, id1 = value1 ...))'
+         * </pre>.
          */
         public void parse(final String string) {
+            final LayoutDataService dataService = LayoutDataService.getInstance();
+            final Iterator<String> definitions =
+                    Arrays.asList(string.trim().split("\\(\\(|;;|\\)\\)")).iterator();
+            
+            while (definitions.hasNext()) {
+                final String next = definitions.next().trim();
+                final IPropertyHolder holder;
+                
+                if (next.startsWith("collapsed:")) {
+                    holder = collapsedValues;
+                } else if (next.startsWith("expanded:")) {
+                    holder = expandedValues;
+                } else {
+                    continue;
+                }
+
+                final Iterator<String> keyVals =
+                        Arrays.asList(next.substring(next.indexOf(':') + 1).split(",,|=")).iterator();
+                
+                while (keyVals.hasNext()) {
+                    final String key = keyVals.next().trim();
+                    if (keyVals.hasNext()) {
+                        final String value = keyVals.next().trim();
+                        KimlUtil.loadDataElement(dataService, holder, key, value);
+                    }
+                }
+            }
         }
 
         /**
          * {@inheritDoc}
+         * 
+         * This particular implementation serializes the {@link #collapsedValues} and
+         * {@link #expandedValues} maps in the following form:
+         * <pre>
+         * '((collapsed: id0 = value0,, id1 = value1 ...;; expanded: id0 = value0,, id1 = value1 ...))'
+         * </pre>.
          */
+        // SUPPRESS CHECKSTYLE PREVIOUS 3 LineLength
         @Override
         public String toString() {
-            return super.toString(); //"(" + collapsedValues + ", " + expandedValues + ")";
+            final String collapsed = "collapsed: " + toString(collapsedValues); 
+            final String expanded = "expanded: " + toString(expandedValues);
+
+            return "((" + collapsed + ";; " + expanded + "))";
+        }
+        
+        private String toString(final IPropertyHolder properties) {
+            String result = new String();
+            
+            for (Map.Entry<IProperty<?>, Object> p : properties.getAllProperties().entrySet()) {
+                result += p.getKey().getId() + " = " + p.getValue().toString() + ",, ";
+            }
+
+            return result.replaceFirst(",, $", "");
         }
     }
 }
