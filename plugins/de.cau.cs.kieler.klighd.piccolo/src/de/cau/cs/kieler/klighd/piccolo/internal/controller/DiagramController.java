@@ -321,6 +321,19 @@ public class DiagramController {
     }
 
     /**
+     * Provides the visibility state of the given diagram element.
+     * 
+     * @param diagramElement
+     *            a {@link KGraphElement}
+     * @return <code>true</code> if the {@link KGraphElement} <code>diagramElement</code> is
+     *         visible, <code>false</code> otherwise.
+     */
+    public boolean isVisible(final KGraphElement diagramElement) {
+        final PNode p = (PNode) RenderingContextData.get(diagramElement).getProperty(REP);
+        return p != null && p.getParent() != null && p.fullIntersects(canvasCamera.getViewBounds());
+    }
+
+    /**
      * Hides the given {@link KGraphElement} from the diagram by removing the related
      * {@link IGraphElement} from the network of {@link PNode PNodes}. In combination with
      * {@link #show(KGraphElement)} this method can be used for changing the diagram's amount of
