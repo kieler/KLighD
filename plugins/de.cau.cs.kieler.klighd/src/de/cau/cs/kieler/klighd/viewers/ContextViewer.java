@@ -279,6 +279,26 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
+    public boolean isVisible(final Object semanticElement) {
+        final EObject diagramNode =
+                getViewContext().getTargetElement(semanticElement, KNode.class);
+        if (diagramNode instanceof KGraphElement) {
+            return currentViewer.isVisible((KGraphElement) diagramNode);
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final KGraphElement diagramElement) {
+        return this.currentViewer.isVisible(diagramElement);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void zoomToLevel(final float zoomLevel, final int duration) {
         if (currentViewer != null) {
             currentViewer.zoomToLevel(zoomLevel, duration);

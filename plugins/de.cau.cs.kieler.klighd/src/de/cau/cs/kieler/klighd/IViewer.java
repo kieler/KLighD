@@ -106,6 +106,26 @@ public interface IViewer<T> {
     /* ----------------------------- */
     /*   the view modification API   */
     /* ----------------------------- */
+    
+    /**
+     * Provides the visibility state of the given element's representation.
+     * 
+     * @param semanticElement
+     *            being visualized by a {@link KGraphElement}
+     * @return <code>true</code> if the {@link KGraphElement} related to
+     *         <code>semanticElement</code> is visible, <code>false</code> otherwise.
+     */
+    boolean isVisible(Object semanticElement);
+    
+    /**
+     * Provides the visibility state of the given diagram element.
+     * 
+     * @param diagramElement
+     *            a {@link KGraphElement}
+     * @return <code>true</code> if the {@link KGraphElement} <code>diagramElement</code> is
+     *         visible, <code>false</code> otherwise.
+     */
+    boolean isVisible(KGraphElement diagramElement);
      
     /**
      * Reveals the representation of the given semantic element over the specified duration.
@@ -161,19 +181,19 @@ public interface IViewer<T> {
      * Performs the specified zoom style over the specified duration.
      * 
      * @param style
-     *            the desired zoom stlye
+     *            the desired zoom style
      * @param duration
      *            the duration
      */
     void zoom(ZoomStyle style, int duration);
     
     /**
-     * Provides the expansion state of the given representation element.
+     * Provides the expansion state of the given element's representation.
      * 
      * @param semanticElement
      *            being visualized by a (hierarchic) {@link KNode}
-     * @return true if the {@link KNode} related to <code>semanticElement</code> is expanded, false
-     *         otherwise.
+     * @return <code>true</code> if the {@link KNode} related to <code>semanticElement</code> is
+     *         expanded, <code>false</code> otherwise.
      */
     boolean isExpanded(Object semanticElement);
     
@@ -182,7 +202,8 @@ public interface IViewer<T> {
      * 
      * @param diagramElement
      *            a (hierarchic) {@link KNode}
-     * @return true if the {@link KNode} <code>diagramElement</code> is expanded, false otherwise.
+     * @return <code>true</code> if the {@link KNode} <code>diagramElement</code> is expanded,
+     *         <code>true</code> otherwise.
      */
     boolean isExpanded(KNode diagramElement);
 

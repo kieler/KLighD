@@ -266,6 +266,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     /**
      * {@inheritDoc}
      */
+    public boolean isVisible(final KGraphElement diagramElement) {
+        return controller.isVisible(diagramElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void zoomToLevel(final float zoomLevel, final int duration) {
         controller.zoomToLevel(zoomLevel, duration);

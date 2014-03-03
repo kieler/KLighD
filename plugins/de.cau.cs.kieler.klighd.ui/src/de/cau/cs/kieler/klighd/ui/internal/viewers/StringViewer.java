@@ -127,6 +127,20 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
+    public boolean isVisible(final Object semanticElement) {
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final KGraphElement diagramElement) {
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void reveal(final Object semanticElement, final int duration) {
         // do nothing
     }

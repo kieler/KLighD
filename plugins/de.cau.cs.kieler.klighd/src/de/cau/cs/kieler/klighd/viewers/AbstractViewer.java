@@ -136,6 +136,13 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
+    public boolean isVisible(final Object semanticElement) {
+        return getContextViewer().isVisible(semanticElement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void zoomToLevel(final float zoomLevel, final int duration) {
         getContextViewer().zoomToLevel(zoomLevel, duration);
     }
