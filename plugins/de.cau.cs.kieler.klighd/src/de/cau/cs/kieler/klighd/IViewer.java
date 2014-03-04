@@ -102,13 +102,15 @@ public interface IViewer<T> {
     void removeViewChangedEventListener(IViewChangeListener listener);
 
 
-
     /* ----------------------------- */
     /*   the view modification API   */
     /* ----------------------------- */
     
     /**
-     * Provides the visibility state of the given element's representation.
+     * Provides the visibility state of the given element's representation, assuming the parent of
+     * {@link Object}'s representative is visible. A recursive invisibility check along the
+     * containment hierarchy is omitted for performance reasons. Thus, given nested diagram nodes A
+     * contains B contains C with B collapsed this method may return <code>true</code> for C.
      * 
      * @param semanticElement
      *            being visualized by a {@link KGraphElement}
@@ -118,7 +120,10 @@ public interface IViewer<T> {
     boolean isVisible(Object semanticElement);
     
     /**
-     * Provides the visibility state of the given diagram element.
+     * Provides the visibility state of the given diagram element, assuming the parent
+     * {@link KGraphElement} is visible. A recursive invisibility check along the containment
+     * hierarchy is omitted for performance reasons. Thus, given nested diagram nodes A contains B
+     * contains C with B collapsed this method may return <code>true</code> for C.
      * 
      * @param diagramElement
      *            a {@link KGraphElement}

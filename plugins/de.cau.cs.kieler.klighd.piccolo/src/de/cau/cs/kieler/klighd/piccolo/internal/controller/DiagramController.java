@@ -321,7 +321,10 @@ public class DiagramController {
     }
 
     /**
-     * Provides the visibility state of the given diagram element.
+     * Provides the visibility state of the given diagram element, assuming the parent
+     * {@link KGraphElement} is visible. A recursive invisibility check along the containment
+     * hierarchy is omitted for performance reasons. Thus, given nested diagram nodes A contains
+     * B contains C with B collapsed this method may return <code>true</code> for C.
      * 
      * @param diagramElement
      *            a {@link KGraphElement}
@@ -330,7 +333,8 @@ public class DiagramController {
      */
     public boolean isVisible(final KGraphElement diagramElement) {
         final PNode p = (PNode) RenderingContextData.get(diagramElement).getProperty(REP);
-        return p != null && p.getParent() != null && p.fullIntersects(canvasCamera.getViewBounds());
+        final PBounds camBounds = canvasCamera.getViewBounds();
+        return p != null && p.getParent() != null && p.getGlobalFullBounds().intersects(camBounds);
     }
 
     /**

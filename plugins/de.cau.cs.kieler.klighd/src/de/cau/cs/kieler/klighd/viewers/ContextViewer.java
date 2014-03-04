@@ -257,8 +257,8 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
             }
         } else {
             throw new RuntimeException("KLighD: Registering the "
-                    + listener.getClass().getSimpleName()
-                    + " is possible, since the actual diagram viewer is not yet initialized.");
+                    + listener.getClass().getCanonicalName()
+                    + " is not possible, since the actual diagram viewer is not initialized yet.");
         }
     }
     
