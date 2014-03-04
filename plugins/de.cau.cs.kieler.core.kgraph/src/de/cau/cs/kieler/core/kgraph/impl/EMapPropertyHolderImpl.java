@@ -142,6 +142,7 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
                 if (i >= persisEntries.size()) {
                     persisEntry = KGraphFactory.eINSTANCE.createPersistentEntry();
                     persisEntries.add(persisEntry);
+                    i++;
                 } else {
                     persisEntry = persisEntries.get(i++);
                 }
