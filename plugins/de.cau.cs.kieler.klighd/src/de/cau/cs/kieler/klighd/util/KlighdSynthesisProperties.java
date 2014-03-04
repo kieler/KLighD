@@ -104,4 +104,17 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         this.setProperty(REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
         return this;
     }
+    
+    /**
+     * Configures the {@link de.cau.cs.kieler.klighd.IViewer IViewer} to be employed by means of the
+     * id it is registered via KLighD's 'extensions' extension point.
+     * 
+     * @param id
+     *            the id the desired {@link de.cau.cs.kieler.klighd.IViewer IViewer}
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties useViewer(final String id) {
+        this.setProperty(REQUESTED_VIEWER_PROVIDER, id);
+        return this;
+    }
 }
