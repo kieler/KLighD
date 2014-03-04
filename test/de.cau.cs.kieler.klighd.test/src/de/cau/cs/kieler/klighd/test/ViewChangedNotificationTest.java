@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
@@ -49,7 +49,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * Tests KLighD's view change notification mechanism, especially
- * {@link ViewChange#visibleElements()}.
+ * {@link ViewChange#visibleDiagramNodes()} & {@link ViewChange#visibleDiagramsElements()}.
  * 
  * @author chsch
  */
@@ -145,18 +145,28 @@ public class ViewChangedNotificationTest {
     }
 
     /**
+     * Denominates whether to count only diagram nodes or all visible diagram elements.
+     */
+    private boolean countNodesOnly = true;
+    
+    /**
+     * Field to be configured in test methods, is read by {@link #listener}.
+     */
+    private int expectedElementsNumber = 0;
+
+    /**
      * The {@link IViewChangeListener} being employed for testing
-     * {@link ViewChange#visibleElements()}.
+     * {@link ViewChange#visibleDiagramNodes()}.
      */
     private final IViewChangeListener listener = new IViewChangeListener() {
 
         public void viewChanged(final ViewChange change) {
-            System.out.println(change.getType());
             
-            final Iterable<KGraphElement> l = Lists.newArrayList(change.visibleElements());
+            final Iterable<KGraphElement> l = Sets.newHashSet(
+                    countNodesOnly ? change.visibleDiagramNodes() : change.visibleDiagramsElements());
             try {
                 Assert.assertThat(l,
-                        IsIterableWithSize.<KGraphElement>iterableWithSize(expectedNodeNumber));
+                        IsIterableWithSize.<KGraphElement>iterableWithSize(expectedElementsNumber));
             } catch (AssertionError e) {
                 failure = e;
             }
@@ -166,17 +176,20 @@ public class ViewChangedNotificationTest {
     };
 
     /**
-     * Field to be configured in test methods, is read by {@link #listener}.
+     * Test on whole diagram with notification due to layout + zoom to fit.
      */
-    private int expectedNodeNumber = 0;
-
+    @Test
+    public void test01() {
+        expectedElementsNumber = 6; // SUPPRESS CHECKSTYLE MagicNumber
+    }
 
     /**
      * Test on whole diagram with notification due to layout + zoom to fit.
      */
     @Test
-    public void test01() {
-        expectedNodeNumber = 6; // SUPPRESS CHECKSTYLE MagicNumber
+    public void test01b() {
+        countNodesOnly = false;
+        expectedElementsNumber = 40;
     }
 
 
@@ -188,7 +201,43 @@ public class ViewChangedNotificationTest {
         viewContext.getViewer().collapse(
                 (Object) Iterables.getFirst(Iterables.filter(
                         ((EObject) viewContext.getInputModel()).eContents(), KNode.class), null));
-        expectedNodeNumber = 2; // SUPPRESS CHECKSTYLE MagicNumber
+        expectedElementsNumber = 2;
+    }
+
+    /**
+     * Test on diagram with collapsed main circuit with notification due to layout + zoom to fit.
+     */
+    @Test
+    public void test02b() {
+        viewContext.getViewer().collapse(
+                (Object) Iterables.getFirst(Iterables.filter(
+                        ((EObject) viewContext.getInputModel()).eContents(), KNode.class), null));
+        countNodesOnly = false;
+        expectedElementsNumber = 2;
+    }
+
+
+    /**
+     * Test on diagram with collapsed main circuit with notification due to layout + zoom to fit.
+     */
+    @Test
+    public void test03() {
+        viewContext.getViewer().collapse(
+                (Object) ((KNode) viewContext.getInputModel()).getChildren().get(0).getChildren()
+                        .get(0));
+        expectedElementsNumber = 4;
+    }
+
+    /**
+     * Test on diagram with collapsed main circuit with notification due to layout + zoom to fit.
+     */
+    @Test
+    public void test03b() {
+        viewContext.getViewer().collapse(
+                (Object) ((KNode) viewContext.getInputModel()).getChildren().get(0).getChildren()
+                        .get(0));
+        countNodesOnly = false;
+        expectedElementsNumber = 20;
     }
 
 
@@ -196,10 +245,22 @@ public class ViewChangedNotificationTest {
      * Test on whole diagram with notification due to canvas resizing.
      */
     @Test
-    public void test03() {
+    public void test04() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
-        expectedNodeNumber = 3;
-        shell.setSize(100,  shell.getSize().y);
+        expectedElementsNumber = 3;
+        shell.setSize(100, shell.getSize().y);
+    }
+
+    /**
+     * Test on whole diagram with notification due to canvas resizing.
+     */
+    @Test
+    public void test04b() {
+        respectDeadline = false;
+        viewContext.setZoomStyle(ZoomStyle.NONE);
+        countNodesOnly = false;
+        expectedElementsNumber = 9;
+        shell.setSize(100, shell.getSize().y);
     }
 
 
@@ -207,9 +268,20 @@ public class ViewChangedNotificationTest {
      * Further test on whole diagram with notification due to canvas resizing.
      */
     @Test
-    public void test04() {
+    public void test05() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
-        expectedNodeNumber = 4;
-        shell.setSize(125,  shell.getSize().y);
+        expectedElementsNumber = 4;
+        shell.setSize(125, shell.getSize().y);
+    }
+
+    /**
+     * Further test on whole diagram with notification due to canvas resizing.
+     */
+    @Test
+    public void test05b() {
+        viewContext.setZoomStyle(ZoomStyle.NONE);
+        countNodesOnly = false;
+        expectedElementsNumber = 20;
+        shell.setSize(125, shell.getSize().y);
     }
 }

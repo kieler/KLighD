@@ -17,6 +17,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import org.eclipse.emf.common.util.AbstractTreeIterator;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -92,45 +95,34 @@ public interface IViewChangeListener {
             return affectedElement;
         }
         
+        private static final String MSG =
+                "KLighD: Application attempted to traverse an Iterator provided by "
+                + "ViewChange#visibleDiagramsElements. Evaluations of those Iterators must be "
+                + "performed by the display (UI) thread for integrity reasons.";
+
         /**
-         * TODO Incorporation of scaling is missing !!
+         * Creates an {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} providing the
+         * {@link KNode KNodes} visible at the moment of iterating (lazy evaluation)!<br>
+         * <br>
+         * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
+         * reasons. 
          * 
-         * @return a {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} 
+         * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
          */
-        public Iterator<KGraphElement> visibleElements() {
+        public Iterator<KGraphElement> visibleDiagramNodes() {
             final KNode clip = activeViewer.getClip();
-//            final KVector absPos = KimlUtil.toAbsolute(
-//                    new KVector(visibleViewPort.getCenterX(), visibleViewPort.getY()), clip);
-            
-//            final Rectangle2D.Double absoluteViewPort =
-//                    new Rectangle2D.Double(absPos.x, absPos.y,
-//                            visibleViewPort.getWidth(), visibleViewPort.getHeight());
             
             return new AbstractTreeIterator<KGraphElement>(clip) {
                 private static final long serialVersionUID = 1021356500841593549L;
 
-//                private Stack<KNode> parents = new Stack<KNode>();
-//                private KVector singleVec = new KVector();
-//                private Rectangle2D.Float singleRect = new Rectangle2D.Float();
-                
                 @Override
                 protected Iterator<? extends KGraphElement> getChildren(final Object object) {
-
-                    final KNode node = (KNode) object;
-                    /* return new MyIterator((KNode) object, parents) {
-                     * 
-                        @Override
-                       } */
-                    
-//                    while (!parents.isEmpty() && parents.peek() != node.eContainer()) {
-//                        parents.pop();
-//                    }
-//                    
-//                    parents.push(node);
-                    
-//                    final Iterator<KNode> children =
-                            
-                    return Iterators.filter(node.getChildren().iterator(), new Predicate<KNode>() {
+                    if (PlatformUI.isWorkbenchRunning()
+                            && Display.getCurrent() == null) {
+                        throw new RuntimeException(MSG);
+                    }
+                    return Iterators.filter(((KNode) object).getChildren().iterator(),
+                            new Predicate<KNode>() {
                         /**
                          * {@inheritDoc}
                          */
@@ -138,119 +130,60 @@ public interface IViewChangeListener {
                             return activeViewer.isVisible(input);
                         }
                     });
-                    
-//                    return new AbstractIterator<KGraphElement>() {
-//                        
-//                        /**
-//                         * {@inheritDoc}
-//                         */
-//                        @Override
-//                        protected KGraphElement computeNext() {
-//                            KNode node;
-//                            while (children.hasNext()) {
-//                                node = children.next();
-//                                if (intersects(node)) {
-//                                    return node;
-//                                }
-//                            }
-//                            endOfData();
-//                            return null;
-//                        }
-//                        
-//                        protected boolean intersects(final KNode node) {
-//                            final KShapeLayout layout = node.getData(KShapeLayout.class);
-//                            singleVec.x = layout.getXpos();
-//                            singleVec.y = layout.getYpos();
-//                            KimlUtil.toAbsolute(singleVec, node);
-//
-//                            singleRect.setRect(singleVec.x, singleVec.y, layout.getWidth(),
-//                                    layout.getHeight());
-//
-//                            final boolean res = absoluteViewPort.intersects(singleRect);
-//                            return res;
-//                        }
-//                    };
                 }
             };
         }
-    }
-    
-//    /**
-//     * package protected since private is prohibited.
-//     *  
-//     * @author chsch
-//     */
-//    abstract static class MyIterator implements Iterator<KGraphElement> {
-//        private KNode next = null;
-//        private boolean initial = true;
-//        private boolean finished = false;
-//        private final Stack<KNode> parents;
-//        private final KNode parent;
-//        private final Iterator<KNode> children;
-//        
-//        /**
-//         * Constructor.
-//         */
-//        public MyIterator(final KNode parent, final Stack<KNode> parents) {
-//            this.parents = parents;
-//            this.parent = parent;
-//            this.children = parent.getChildren().iterator();
-//        }
-//        
-//        /**
-//         * a.
-//         * @param node b
-//         * @return c
-//         */
-//        protected abstract boolean intersects(KNode node);
-//
-//        public boolean hasNext() {            
-//            if (next != null) {
-//                // hastNext() has already been called after the most recent call of 'next()'
-//                return true;
-//                
-//            } else if (!children.hasNext()) {
-//                // there're no elements any more
-//                if (!finished) {
-//                    parents.pop();
-//                    finished = true;
-//                }
-//                return false;
-//
-//            } else {
-//                // first call either after initialization or a call of 'next()'                
-//                if (initial) {
-//                    parents.push(parent);
-//                    initial = false;
-//                }
-//                
-//                                
-//                next = children.next();
-//                
-//                while (!intersects(next)) {
-//                    if (children.hasNext()) {
-//                        next = children.next();
-//                    } else {
-//                        next = null;
-//                        return hasNext();
-//                    }
-//                }
-//                return true;
-//            }
-//        }
-//
-//        public KGraphElement next() {
-//            if (this.hasNext()) {
-//                final KNode res = next;
-//                next = null;
-//                return res;
-//            } else {
-//                throw new NoSuchElementException();
-//            }
-//        }
-//
-//        public void remove() {
-//            throw new UnsupportedOperationException();
-//        }
-//    }
+
+        /**
+         * Creates an {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} providing the
+         * {@link KGraphElement KGraphElements} visible at the moment of iterating (lazy
+         * evaluation)!<br>
+         * <br>
+         * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
+         * reasons. {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} are likely to be returned
+         * twice as both outgoing as well as incoming edges of a {@link KNode} must be considered.
+         * 
+         * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
+         */
+        public Iterator<KGraphElement> visibleDiagramsElements() {
+            final KNode clip = activeViewer.getClip();
+            
+            return new AbstractTreeIterator<KGraphElement>(clip) {
+                private static final long serialVersionUID = 1021356500841593549L;
+
+                @Override
+                protected Iterator<? extends KGraphElement> getChildren(final Object object) {
+                    if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
+                        throw new RuntimeException(MSG);
+                    }
+                    
+                    final Iterator<EObject> candidates;
+                    if (object instanceof KNode) {
+                        candidates =
+                                Iterators.concat(((EObject) object).eContents().iterator(),
+                                        ((KNode) object).getIncomingEdges().iterator());
+                    } else {
+                        candidates = ((EObject) object).eContents().iterator();
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    Iterator<? extends KGraphElement> res = (Iterator<KGraphElement>) (Iterator<?>)
+                            Iterators.filter(candidates, filter);
+                    
+                    return res; 
+                }
+                    
+                private Predicate<EObject> filter = new Predicate<EObject>() {
+
+                    /**
+                     * {@inheritDoc}
+                     */
+                    public boolean apply(final EObject input) {
+                        return input instanceof KGraphElement
+                                && activeViewer.isVisible((KGraphElement) input);
+                    }
+                };
+            };
+        }
+    }    
 }
