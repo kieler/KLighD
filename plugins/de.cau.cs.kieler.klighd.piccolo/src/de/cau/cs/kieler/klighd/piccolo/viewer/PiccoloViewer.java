@@ -22,6 +22,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Timer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +33,6 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -62,6 +63,8 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  */
 public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder,
         IDiagramOutlinePage.Provider {
+
+    private static final int VIEW_PORT_CHANGE_NOTIFY_DELAY = 250; // ms
 
     /** the canvas used for drawing. */
     private KlighdCanvas canvas;
@@ -111,7 +114,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(new KlighdPanEventHandler()));
-        camera.addInputEventListener(new KlighdSelectionEventHandler((IViewer<?>) theParentViewer));
+        camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
 
         // add a node for the rubber band selection marquee
         // final PEmptyNode marqueeParent = new PEmptyNode();
@@ -120,30 +123,35 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
 
-        // add a listener sensitive to view transform changes, i.e. view port changes,
-        //  being in charge of notifying the registered view change listeners of new view port bounds
-        camera.addPropertyChangeListener(PCamera.PROPERTY_VIEW_TRANSFORM, new PropertyChangeListener() {
-                    private static final int DELAY = 250; // ms
+        
+        // A timer being in charge of buffering and thus aggregating a bunch of single
+        // view transform changes occurring closely after each other to a single view
+        // change notification. Once the time elapsed without restarting it in the
+        // meantime the provided {@link ActionListener#actionPerformed(ActionEvent)}
+        // method is called.
+        final Timer timer =
+                camera.getRoot().createTimer(VIEW_PORT_CHANGE_NOTIFY_DELAY, new ActionListener() {
 
-                    /**
-                     * A timer being in charge of buffering and thus aggregating a bunch of single
-                     * view transform changes occurring closely after each other to a single view
-                     * change notification. Once the time elapsed without restarting it in the
-                     * meantime the provided {@link ActionListener#actionPerformed(ActionEvent)}
-                     * method is called.
-                     */
-                    private Timer timer = camera.getRoot().createTimer(DELAY, new ActionListener() {
-
-                        public void actionPerformed(final ActionEvent e) {
-                            PiccoloViewer.this.notifyViewChangeListeners(ViewChangeType.VIEW_PORT,
-                                    null, camera.getViewBounds());
-                        }
-                    });
-
-                    // constructor of this anonymous subclass
-                    {
-                        timer.setRepeats(false);
+                    public void actionPerformed(final ActionEvent e) {
+                        PiccoloViewer.this.notifyViewChangeListeners(ViewChangeType.VIEW_PORT,
+                                null, camera.getViewBounds());
                     }
+                });
+        timer.setRepeats(false);
+
+        // Install a listener sensitive to canvas size changes, i.e. view port changes,
+        //  being in charge of notifying the registered view change listeners of new view port bounds.
+        this.canvas.addControlListener(new ControlAdapter() {
+            
+            public void controlResized(final ControlEvent e) {
+                timer.restart();
+            }
+        });
+
+        // Install a listener sensitive to view transform changes, i.e. view port changes,
+        //  being in charge of notifying the registered view change listeners of new view port bounds.
+        camera.addPropertyChangeListener(PCamera.PROPERTY_VIEW_TRANSFORM,
+                new PropertyChangeListener() {
 
                     /**
                      * Called after each particular change of the camera's view transform.
