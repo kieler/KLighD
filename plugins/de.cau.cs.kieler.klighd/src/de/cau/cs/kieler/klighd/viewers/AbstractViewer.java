@@ -113,15 +113,18 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      *            {@link de.cau.cs.kieler.core.kgraph.KNode KNode}, may be <code>null</code>
      * @param viewPort
      *            a {@link Rectangle2D} with the bounds of the currently visible diagram area
+     * @param diagramScale
+     *            the zoom factor of the currently visible diagram area
      */
     protected void notifyViewChangeListeners(final ViewChangeType type,
-            final KGraphElement affectedElement, final Rectangle2D viewPort) {
+            final KGraphElement affectedElement, final Rectangle2D viewPort,
+            final double diagramScale) {
         
         if (viewChangeListeners == null) {
             return;
         }
         
-        final ViewChange change = new ViewChange(this, type, affectedElement, viewPort);
+        final ViewChange change = new ViewChange(this, type, affectedElement, viewPort, diagramScale);
 
         for (IViewChangeListener l : viewChangeListeners.get(type)) {
             l.viewChanged(change);

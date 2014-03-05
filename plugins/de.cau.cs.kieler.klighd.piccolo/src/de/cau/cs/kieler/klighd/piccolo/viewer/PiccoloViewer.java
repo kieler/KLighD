@@ -134,7 +134,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
 
                     public void actionPerformed(final ActionEvent e) {
                         PiccoloViewer.this.notifyViewChangeListeners(ViewChangeType.VIEW_PORT,
-                                null, camera.getViewBounds());
+                                null, camera.getViewBounds(), camera.getViewScale());
                     }
                 });
         timer.setRepeats(false);
@@ -258,7 +258,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     /**
      * Convenience method simplifying the notification call.
      * 
-     * @see #notifyViewChangeListeners(ViewChangeType, KGraphElement, java.awt.geom.Rectangle2D)
+     * @see #notifyViewChangeListeners(ViewChangeType, KGraphElement, java.awt.geom.Rectangle2D, float)
      * 
      * @param type
      *            the corresponding {@link ViewChangeType}
@@ -268,7 +268,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     protected void notifyViewChangeListeners(final ViewChangeType type,
             final KGraphElement affectedElement) {
-        super.notifyViewChangeListeners(type, affectedElement, canvas.getCamera().getViewBounds());
+        final PCamera camera = canvas.getCamera();
+        super.notifyViewChangeListeners(type, affectedElement, camera.getViewBounds(),
+                camera.getViewScale());
     }
 
     /**

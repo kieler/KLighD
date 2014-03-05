@@ -56,6 +56,7 @@ public interface IViewChangeListener {
         private final ViewChangeType changeType;
         private final KGraphElement affectedElement;
 //        private final Rectangle2D visibleViewPort;
+        private final double diagramScale;
         
         /**
          * Constructor.
@@ -68,13 +69,16 @@ public interface IViewChangeListener {
          *            the element affected during the view change being notified
          * @param viewPort
          *            a {@link Rectangle2D} denoting the visible area of the displayed diagram view
+         * @param diagramScale
+         *            the zoom factor of the currently visible diagram area
          */
         public ViewChange(final IViewer<?> viewer, final ViewChangeType type,
-                final KGraphElement element, final Rectangle2D viewPort) {
+                final KGraphElement element, final Rectangle2D viewPort, final double diagramScale) {
             this.activeViewer = viewer;
             this.changeType = type;
             this.affectedElement = element;
 //            this.visibleViewPort = viewPort;
+            this.diagramScale = diagramScale;
         }
         
         /**
@@ -94,7 +98,17 @@ public interface IViewChangeListener {
         public KGraphElement getAffectedElement() {
             return affectedElement;
         }
-        
+
+        /**
+         * Provides the zoom factor of the currently visible diagram area.
+         * The value is normalized to 1.0, i.e. 1.0 denotes original size.
+         * 
+         * @return the zoom factor of the currently visible diagram area
+         */
+        public double getDiagramZoomScale() {
+            return diagramScale;
+        }
+
         private static final String MSG =
                 "KLighD: Application attempted to traverse an Iterator provided by "
                 + "ViewChange#visibleDiagramsElements. Evaluations of those Iterators must be "
