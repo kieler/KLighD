@@ -256,7 +256,6 @@ public class ViewChangedNotificationTest {
      */
     @Test
     public void test04b() {
-        respectDeadline = false;
         viewContext.setZoomStyle(ZoomStyle.NONE);
         countNodesOnly = false;
         expectedElementsNumber = 9;
