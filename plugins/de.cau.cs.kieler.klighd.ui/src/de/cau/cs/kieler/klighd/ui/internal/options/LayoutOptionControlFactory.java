@@ -39,8 +39,8 @@ import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.math.KielerMath;
-import de.cau.cs.kieler.kiml.ILayoutData;
-import de.cau.cs.kieler.kiml.LayoutDataService;
+import de.cau.cs.kieler.kiml.ILayoutMetaData;
+import de.cau.cs.kieler.kiml.LayoutMetaDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
@@ -185,7 +185,7 @@ public class LayoutOptionControlFactory {
      * @param optionId a layout option identifier
      */
     public void createControl(final String optionId) {
-        LayoutOptionData optionData = LayoutDataService.getInstance().getOptionData(optionId);
+        LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
             createControl(optionData, null, null, null);
         }
@@ -199,7 +199,7 @@ public class LayoutOptionControlFactory {
      * @param maxValue the maximal value for the option
      */
     public void createControl(final String optionId, final Float minValue, final Float maxValue) {
-        LayoutOptionData optionData = LayoutDataService.getInstance().getOptionData(optionId);
+        LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
             createControl(optionData, minValue, maxValue, null);
         }
@@ -212,7 +212,7 @@ public class LayoutOptionControlFactory {
      * @param availableValues the set of values to offer
      */
     public void createControl(final String optionId, final Collection<?> availableValues) {
-        LayoutOptionData optionData = LayoutDataService.getInstance().getOptionData(optionId);
+        LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
         if (optionData != null) {
             createControl(optionData, null, null, availableValues);
         }
@@ -543,8 +543,8 @@ public class LayoutOptionControlFactory {
                 public void selectionChanged(final SelectionChangedEvent event) {
                     // instantly update the layout when an algorithm is selected
                     IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                    if (!selection.isEmpty() && selection.getFirstElement() instanceof ILayoutData) {
-                        ILayoutData layoutData = (ILayoutData) selection.getFirstElement();
+                    if (!selection.isEmpty() && selection.getFirstElement() instanceof ILayoutMetaData) {
+                        ILayoutMetaData layoutData = (ILayoutMetaData) selection.getFirstElement();
                         lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, layoutData.getId());
                         refreshLayout(true);
                     }

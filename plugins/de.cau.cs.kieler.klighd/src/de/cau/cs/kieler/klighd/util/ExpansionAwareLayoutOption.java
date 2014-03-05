@@ -22,7 +22,7 @@ import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.IDataObject;
-import de.cau.cs.kieler.kiml.LayoutDataService;
+import de.cau.cs.kieler.kiml.LayoutMetaDataService;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
@@ -156,7 +156,7 @@ public final class ExpansionAwareLayoutOption {
          * </pre>.
          */
         public void parse(final String string) {
-            final LayoutDataService dataService = LayoutDataService.getInstance();
+            final LayoutMetaDataService dataService = LayoutMetaDataService.getInstance();
             final Iterator<String> definitions =
                     Arrays.asList(string.trim().split("\\(\\(|;;|\\)\\)")).iterator();
             
