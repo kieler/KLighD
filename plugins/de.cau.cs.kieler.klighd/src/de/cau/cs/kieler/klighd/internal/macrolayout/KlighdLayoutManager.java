@@ -19,7 +19,6 @@ import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -42,7 +41,7 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.kiml.config.IMutableLayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -102,8 +101,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     private static final IProperty<IWorkbenchPart> WORKBENCH_PART = new Property<IWorkbenchPart>(
             "klighd.layout.workbenchPart");
     
-    /** the property layout config. */
-    private ILayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
+    /** the property layout configurator. */
+    private final KGraphPropertyLayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
+
+    /**
+     * {@inheritDoc}
+     */
+    public IMutableLayoutConfig getDiagramConfig() {
+        return propertyLayoutConfig;
+    }
     
     /**
      * {@inheritDoc}
@@ -122,72 +128,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             return true;
         } 
         return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public Object getAdapter(final Object object, final Class adapterType) {
-        // This method is called while evaluating the available layout configs,
-        //  esp. the semantic ones, and populating the Layout View, for example! 
-        
-        if (adapterType.isAssignableFrom(KGraphPropertyLayoutConfig.class)) {
-            return propertyLayoutConfig;
-            
-        } else {
-            
-            final IViewer<?> viewer;
-            if (object instanceof IViewer<?>) {
-                viewer = (IViewer<?>) object;
-            } else if (object instanceof IDiagramWorkbenchPart) {
-                viewer = ((IDiagramWorkbenchPart) object).getViewer();
-            } else {
-                viewer = null;
-            }
-
-            if (adapterType.isAssignableFrom(EObject.class)) {
-                final Object semanticModel;
-
-                if (object instanceof KGraphElement) {
-                    semanticModel = ((KGraphElement) object).getData(KLayoutData.class).getProperty(
-                            KlighdInternalProperties.MODEL_ELEMEMT);
-                    if (adapterType.isInstance(semanticModel)) {
-                        return semanticModel;
-                    }
-                    
-                } else if (viewer != null) {
-                    final ViewContext viewContext = viewer.getViewContext();
-                    if (viewContext != null) {
-                        final Object model = viewContext.getInputModel();
-                        if (adapterType.isInstance(model)) {
-                            return model;
-                        }
-                    }
-                }
-            } else if (adapterType.isAssignableFrom(KGraphElement.class)) {
-                
-                if (object instanceof KGraphElement) {
-                    return object;
-                    
-                } else if (viewer != null) {
-                    return viewer.getViewContext().getViewModel();
-                }
-            }
-        }
-
-        if (object instanceof IAdaptable) {
-            return ((IAdaptable) object).getAdapter(adapterType);
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class<?>[] getAdapterList() {
-        return new Class<?>[] { KGraphElement.class };
     }
 
     /**
@@ -251,14 +191,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      * @return the layout graph mapping
      */
     public LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph) {
-        LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>(this);
+        LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>();
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
         
         // set the parent element
         mapping.setParentElement(graph);
-        
-        // add the property layout config
-        mapping.getLayoutConfigs().add(propertyLayoutConfig);
 
         KNode layoutGraph = KimlUtil.createInitializedNode();
         KShapeLayout layoutGraphShapeLayout = layoutGraph.getData(KShapeLayout.class);

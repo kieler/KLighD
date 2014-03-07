@@ -107,12 +107,24 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Object getContextValue(final IProperty<?> property, final LayoutContext context) {
+        KGraphElement element = null;
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
-            KGraphElement element = (KGraphElement) diagramPart;
+            element = (KGraphElement) diagramPart;
+        } else {
+            IViewer<?> contextViewer = getContextViewer(context);
+            if (contextViewer != null) {
+                element = contextViewer.getViewContext().getViewModel();
+            }
+        }
+        
+        if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
 
-            if (property.equals(LayoutContext.CONTAINER_DIAGRAM_PART)) {
+            if (property.equals(LayoutContext.DIAGRAM_PART)) {
+                return element;
+                
+            } else if (property.equals(LayoutContext.CONTAINER_DIAGRAM_PART)) {
                 // find the parent node for the selected graph element
                 return getParentNode(element);
                 
