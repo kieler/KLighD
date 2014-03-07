@@ -40,6 +40,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -113,6 +115,9 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /** a zoomToOne button. */
     private ActionContributionItem zoomToOneItem;
 
+    /** the composite into which the sidebar is placed. */
+    private Composite diagramComposite;
+    
     /**
      * Creates a diagram editor part.
      */
@@ -142,7 +147,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         setPartName(getEditorInput().getName());
         
         // introduce a new Composite that accommodates the visualized content
-        Composite diagramComposite = new Composite(parent, SWT.NONE);
+        diagramComposite = new Composite(parent, SWT.NONE);
         diagramComposite.setLayout(new FillLayout());
         
         // create a context viewer
@@ -211,6 +216,12 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         toolBar = this.getEditorSite().getActionBars().getToolBarManager();
         createButtons();
         getEditorSite().getWorkbenchWindow().getPartService().addPartListener(toolBarListener);
+      
+        // listen to any changes of the diagram area's size and re-zoom the diagram if  
+        // a zoom style is defined
+        // note that it is enough to register the listener on the composite containing the sidebar
+        // as this is resized simultaneously with the main window
+        diagramComposite.addControlListener(diagramAreaListener);
     }
     
     /**
@@ -243,6 +254,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         DiagramViewManager.getInstance().unregisterViewContexts(this);
         unregisterResourceChangeListener();
         getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
+
+        if (!diagramComposite.isDisposed()) {
+            diagramComposite.removeControlListener(diagramAreaListener);
+        }
         
         if (this.sideBar != null) {
             this.sideBar.dispose();
@@ -655,6 +670,25 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 toolBar.remove(zoomToOneItem);
                 toolBar.update(true);
             }
+        }
+    };
+    
+    /**
+     * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
+     * defined.
+     */
+    private ControlListener diagramAreaListener = new ControlListener() {
+
+        public void controlResized(final ControlEvent e) {
+            // assure that the composite's size is settled before we execute the layout
+            Display.getCurrent().asyncExec(new Runnable() {
+                public void run() {
+                   LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
+                }
+            });
+        }
+
+        public void controlMoved(final ControlEvent e) {
         }
     };
 }

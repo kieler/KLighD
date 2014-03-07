@@ -25,8 +25,11 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
@@ -108,6 +111,12 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
 
         viewer.setModel("No model selected.", false);
         
+        // listen to any changes of the diagram area's size and re-zoom the diagram if  
+        // a zoom style is defined
+        // note that it is enough to register the listener on the composite containing the sidebar
+        // as this is resized simultaneously with the main window
+        diagramComposite.addControlListener(diagramAreaListener);
+        
         // the configuration of the context menu, selection provider,
         //  and UI (key binding) context activation is done in the UiContextViewer
     }
@@ -142,6 +151,10 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     public void dispose() {
         super.dispose();
 
+        if (!diagramComposite.isDisposed()) {
+            diagramComposite.removeControlListener(diagramAreaListener);
+        }
+        
         if (this.sideBar != null) {
             this.sideBar.dispose();
         }
@@ -405,4 +418,23 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
 
         });
     }
+    
+    /**
+     * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
+     * defined.
+     */
+    private ControlListener diagramAreaListener = new ControlListener() {
+
+        public void controlResized(final ControlEvent e) {
+            // assure that the composite's size is settled before we execute the layout
+            Display.getCurrent().asyncExec(new Runnable() {
+                public void run() {
+                   LightDiagramServices.zoomDiagram(DiagramViewPart.this);
+                }
+            });
+        }
+
+        public void controlMoved(final ControlEvent e) {
+        }
+    };
 }
