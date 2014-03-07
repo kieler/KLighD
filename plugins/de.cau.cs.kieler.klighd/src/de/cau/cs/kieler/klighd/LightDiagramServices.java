@@ -377,6 +377,45 @@ public final class LightDiagramServices {
 
 
     /**
+     * Performs zoom on the diagram represented by the given view context based on the current
+     * {@link ZoomStyle} defined for the view context.
+     * 
+     * The configurations of 'animate' is taken from the preference settings.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     */
+    public static void zoomDiagram(final ViewContext viewContext) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+
+        if (viewContext.getZoomStyle() != ZoomStyle.NONE) {
+            viewContext.getViewer().zoom(viewContext.getZoomStyle(),
+                    animate ? KlighdConstants.DEFAULT_ANIMATION_TIME : 0);
+        }
+    }
+
+    /**
+     * Performs zoom on the diagram represented by the given {@link IDiagramWorkbenchPart} based on
+     * the current {@link ZoomStyle} defined for the view context.
+     * 
+     * The configurations of 'animate' are taken from the preference settings.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     */
+    public static void zoomDiagram(final IDiagramWorkbenchPart viewPart) {
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        final ViewContext viewContext = viewPart.getViewer().getViewContext();
+
+        if (viewContext.getZoomStyle() != ZoomStyle.NONE) {
+            viewContext.getViewer().zoom(viewContext.getZoomStyle(),
+                    animate ? KlighdConstants.DEFAULT_ANIMATION_TIME : 0);
+        }
+    }
+
+    /**
      * Translates the given <code>model</code> by means of the known diagram synthesis translations.<br>
      * Incorporates constraints given in the <code>propertyHolders</code> as well as the diagram
      * {@link SynthesisOption} settings from <code>otherVC</code>.<br>
