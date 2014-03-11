@@ -27,6 +27,7 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
@@ -35,7 +36,9 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
+import edu.umd.cs.piccolo.util.PAffineTransform;
 
 // CHECKSTYLEOFF Javadoc|MagicNumber
 
@@ -97,6 +100,58 @@ public class KlighdTest {
         return next;
     }
 
+    @Test
+    public void layoutTest() {
+        KlighdMainCamera camera = new KlighdMainCamera();
+        PRoot pRoot = new PRoot();
+        pRoot.addChild(camera);
+        KNode root = KimlUtil.createInitializedNode();
+        KLabel l = KimlUtil.createInitializedLabel(root);
+        l.setText("rootnode");
+        KNode next = makeTestGraph(root);
+        KPort nextport = this.addport(next);
+        KLabel nextlabel = next.getLabels().get(0);
+        // create a controller for the graph
+        DiagramController controller = new DiagramController(root, camera, true);
+        
+        //node layout
+        KShapeLayout nodelayout = next.getData(KShapeLayout.class);
+        nodelayout.setPos(12, 32);
+        nodelayout.setSize(40, 40);
+        //port layout
+        KShapeLayout portlayout = nextport.getData(KShapeLayout.class);
+        portlayout.setPos(6, 7);
+        portlayout.setSize(5, 5);
+        //label layout 
+        KShapeLayout labellayout = nextlabel.getData(KShapeLayout.class);
+        labellayout.setPos(2, 3);
+        labellayout.setSize(4, 5);
+        
+        
+        INode node = controller.getNode();
+        PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
+        PNode pnext = nodeLayer.getChild(0);
+        PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
+        PNode pport = portlayer.getChild(0);
+        PLayer labellayer = ((KNodeNode) pnext).getLabelLayer();
+        PNode plabel = labellayer.getChild(0);
+        
+        PAffineTransform porttransform = pport.getTransform();
+        PAffineTransform labeltransform = plabel.getTransform();
+        PAffineTransform nodetransform = pnext.getTransform();
+                
+        Assert.assertTrue(nodetransform.getTranslateX() == 12 && nodetransform.getTranslateY() == 32);
+        Assert.assertTrue(pnext.getBounds().height == 40 && pnext.getBounds().width == 40);
+        
+        Assert.assertTrue(labeltransform.getTranslateX() == 2 && labeltransform.getTranslateY() == 3);
+        Assert.assertTrue(plabel.getBounds().height == 5 && plabel.getBounds().width == 4);
+        
+        //Assert.assertTrue(porttransform.getTranslateX() == 6 && porttransform.getTranslateY() == 7);
+        //Assert.assertTrue(pport.getBounds().height == 5 && pport.getBounds().width == 5);
+    }
+    
+    
+    
     /**
      * Test for checking if all kgraph elements are also existing in the pgraph.
      */
@@ -216,30 +271,11 @@ public class KlighdTest {
         KNode child = makeTestGraph(root);
         controller.collapse(child);
         KNode cc = this.addchild(child);
-       // this.addport(cc);
-       // this.addport(cc);
+        this.addport(cc);
+        this.addport(cc);
         // create a controller for the graph
         controller.getNode();
         Assert.assertTrue(checkAdaptersCollapsed(child));
-    }
-    
-    /**
-     * Check if adapters are correctly applied in case of collapsed nodes. i.e.: collapsed node looses
-     * ChildSyncAdapter, its children have no adapters installed.
-     * @param kgraph the kgraph to check
-     * @return true if all adapters are applied correctly
-     */
-    private boolean checkAdaptersCollapsedChildren(final KNode kgraph) {
-        List<Adapter> nodeadapters = kgraph.eAdapters();
-        if (nodeadapters.size() != 1) {
-            return false;
-        }
-        for (KNode child: kgraph.getChildren()) {
-            if (!checkAdaptersCollapsedChildren(child)) {
-                return false;
-            }
-        }
-        return true;
     }
     
     /**
@@ -262,7 +298,7 @@ public class KlighdTest {
         
       //check recursively for children
         for (KNode child: kgraph.getChildren()) {
-            if (!checkAdaptersCollapsedChildren(child)) {
+            if (!checkAdapters(child)) {
                 return false;
             }
         }

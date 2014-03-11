@@ -33,6 +33,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -413,8 +414,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
             fd.setHeight((int) Math
                     .round((styledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas()
                             .getCamera().getViewScale())));
-            textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             textinput.setFont(new Font(textinput.getDisplay(), fd));
+            textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+            Rectangle r = textinput.getBounds();
+            Rectangle c = textinput.getClientArea();
 
             // determine text color
             Color textColor = new Color(textinput.getDisplay(), styledText.getPenColor());

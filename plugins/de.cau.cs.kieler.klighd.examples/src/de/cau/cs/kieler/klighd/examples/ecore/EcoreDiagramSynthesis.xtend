@@ -243,6 +243,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
                                     it.fontBold = true;
+                                    it.cursorSelectable = true;
                                     it.setAreaPlacementData.from(LEFT, 20, 0, TOP, 1, 0.5f).to(RIGHT, 20, 0, BOTTOM, 10, 0);
                                 ];
                             } else {
@@ -251,6 +252,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
                                     it.fontBold = true;
+                                    it.cursorSelectable = true;
                                     it.setPointPlacementData(LEFT, 40, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 10, 10, 0, 0);
                                 ];
                             };
@@ -278,6 +280,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                         it.fontSize = 13;
                                         it.horizontalAlignment = H_LEFT
                                         it.verticalAlignment = V_CENTRAL
+                                        it.cursorSelectable = true;
                                         it.setPointPlacementData(LEFT, 25, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 20, 5, 0, 0);
                                     ];
                                 ];
@@ -295,6 +298,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                 rect.addText(it.name + " (" + it.literal + ")") => [
                                     it.horizontalAlignment = H_CENTRAL
                                     it.verticalAlignment = V_CENTRAL
+                                    it.cursorSelectable = true;
                                     it.setSurroundingSpaceGrid(3, 0);
                                 ];
                             ];
