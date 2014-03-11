@@ -332,7 +332,7 @@ public class KlighdTest {
         }
         
         //check adapters on node
-        if (nodeadapters.get(0) == null || !Iterables.any(nodeadapters, this.getCondition("ChildrenSyncAdapter")) || 
+        if (Iterables.any(nodeadapters, this.getCondition("AbstractKGERenderingController$ElementAdapter")) || !Iterables.any(nodeadapters, this.getCondition("ChildrenSyncAdapter")) || 
                 !Iterables.any(nodeadapters, this.getCondition("KGEShapeLayoutPNodeUpdater")) ||
                 !Iterables.any(nodeadapters, this.getCondition("EdgeSyncAdapter")) ||
                 !Iterables.any(nodeadapters, this.getCondition("PortSyncAdapter")) ||
