@@ -48,4 +48,21 @@ public enum ZoomStyle {
         }
         return NONE;
     }
+
+    /**
+     * @param value
+     *            String representation of the requested ZoomStyle
+     * @param defaultStyle
+     *            the default value to return, eg if the 'value' is null
+     * @return either the result of {@link ZoomStyle#valueOf(String)} or, if this does not yield a
+     *         proper result, the specified 'defaultStyle'.
+     */
+    public static ZoomStyle valueOf(final String value, final ZoomStyle defaultStyle) {
+        ZoomStyle res = ZoomStyle.valueOf(value);
+        if (res == null) {
+            return defaultStyle;
+        } else {
+            return res;
+        }
+    }
 }

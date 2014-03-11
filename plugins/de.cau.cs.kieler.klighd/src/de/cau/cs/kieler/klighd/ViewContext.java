@@ -110,9 +110,12 @@ public class ViewContext extends MapPropertyHolder {
     /** the {@link #viewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
     private ILayoutRecorder layoutRecorder = null;
     
-    /** the view-specific zoom style. */
+    /**
+     * the view-specific zoom style, initially it is either the value stored in the preference store
+     * or {@link ZoomStyle#NONE} if no value was stored so far.
+     */
     private ZoomStyle zoomStyle = ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
-            .getString(KlighdPreferences.ZOOM_STYLE));
+            .getString(KlighdPreferences.ZOOM_STYLE), ZoomStyle.NONE);
 
     /**
      * Standard constructor.
