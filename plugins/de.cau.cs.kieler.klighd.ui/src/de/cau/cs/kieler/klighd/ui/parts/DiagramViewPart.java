@@ -429,7 +429,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             // assure that the composite's size is settled before we execute the layout
             Display.getCurrent().asyncExec(new Runnable() {
                 public void run() {
-                    if (DiagramViewPart.this.getViewer().getControl().isVisible()) {
+                    if (!DiagramViewPart.this.getViewer().getControl().isDisposed()
+                            && DiagramViewPart.this.getViewer().getControl().isVisible()) {
                         LightDiagramServices.zoomDiagram(DiagramViewPart.this);
                     }
                 }

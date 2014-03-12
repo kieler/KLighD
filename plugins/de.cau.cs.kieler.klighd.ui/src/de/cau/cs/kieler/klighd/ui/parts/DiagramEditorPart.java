@@ -684,7 +684,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             Display.getCurrent().asyncExec(new Runnable() {
                 public void run() {
                     // if the part is not visible, no zoom is required
-                    if (DiagramEditorPart.this.getViewer().getControl().isVisible()) {
+                    if (!DiagramEditorPart.this.getViewer().getControl().isDisposed() 
+                            && DiagramEditorPart.this.getViewer().getControl().isVisible()) {
                         LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
                     }
                 }
