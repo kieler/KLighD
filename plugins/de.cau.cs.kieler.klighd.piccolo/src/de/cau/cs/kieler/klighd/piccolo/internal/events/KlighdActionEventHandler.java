@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Predicate;
@@ -87,6 +88,10 @@ public class KlighdActionEventHandler implements PInputEventListener {
         }
 
         final KlighdMouseEvent me = (KlighdMouseEvent) inputEvent.getSourceSwingEvent();
+        
+        if (me.getEventType() == SWT.MouseMove) {
+            return;
+        }
 
         KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
                 AbstractKGERenderingController.ATTR_KRENDERING);
