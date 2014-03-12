@@ -683,7 +683,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             // assure that the composite's size is settled before we execute the layout
             Display.getCurrent().asyncExec(new Runnable() {
                 public void run() {
-                   LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
+                    // if the part is not visible, no zoom is required
+                    if (DiagramEditorPart.this.getViewer().getControl().isVisible()) {
+                        LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
+                    }
                 }
             });
         }
