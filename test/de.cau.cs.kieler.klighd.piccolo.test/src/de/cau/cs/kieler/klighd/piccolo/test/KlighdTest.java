@@ -131,7 +131,7 @@ public class KlighdTest {
         PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
         PNode pnext = nodeLayer.getChild(0);
         PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
-        PNode pport = portlayer.getChild(0);
+        PNode pport = portlayer.getChild(3);
         PLayer labellayer = ((KNodeNode) pnext).getLabelLayer();
         PNode plabel = labellayer.getChild(0);
 
@@ -147,9 +147,8 @@ public class KlighdTest {
                 && labeltransform.getTranslateY() == 3);
         Assert.assertTrue(plabel.getBounds().height == 5 && plabel.getBounds().width == 4);
 
-        // Assert.assertTrue(porttransform.getTranslateX() == 6 && porttransform.getTranslateY() ==
-        // 7);
-        // Assert.assertTrue(pport.getBounds().height == 5 && pport.getBounds().width == 5);
+        Assert.assertTrue(porttransform.getTranslateX() == 6 && porttransform.getTranslateY() == 7);
+        Assert.assertTrue(pport.getBounds().height == 5 && pport.getBounds().width == 5);
     }
 
     /**
@@ -178,7 +177,6 @@ public class KlighdTest {
         KlighdMainCamera camera = new KlighdMainCamera();
         PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
-
         KNode root = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
@@ -258,7 +256,7 @@ public class KlighdTest {
     /**
      * Test if all adapters are added correctly.
      */
-    // @Test
+    //@Test
     public void adapterTestCollapsed() {
         KlighdMainCamera camera = new KlighdMainCamera();
         PRoot pRoot = new PRoot();
@@ -275,7 +273,7 @@ public class KlighdTest {
         this.addport(cc);
         // create a controller for the graph
         controller.getNode();
-        Assert.assertTrue(checkAdaptersCollapsed(child));
+        Assert.assertTrue(checkAdaptersCollapsed(cc));
     }
 
     /**
@@ -518,7 +516,7 @@ public class KlighdTest {
     private KNode addchild(final KNode node) {
         KNode child = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(child);
-        l.setText(node.toString() + "child" + node.getLabels().size());
+        l.setText(node.toString() + "child" + node.getChildren().size());
         // child.getLabels().add(l);
         node.getChildren().add(child);
         return child;
