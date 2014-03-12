@@ -20,7 +20,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import edu.umd.cs.piccolo.PNode;
@@ -73,9 +72,8 @@ public final class NodeUtil {
      *            a custom {@link PNode} implementing {@link IGraphElement}
      * @return node typed as {@link IGraphElement}
      */
-    public static IGraphElement<KGraphElement> asIGraphElement(final PNode node) {
-        @SuppressWarnings("unchecked")
-        final IGraphElement<KGraphElement> graphNode = (IGraphElement<KGraphElement>) node;
+    public static IGraphElement<?> asIGraphElement(final PNode node) {
+        final IGraphElement<?> graphNode = (IGraphElement<?>) node;
         return graphNode;
     }
 
