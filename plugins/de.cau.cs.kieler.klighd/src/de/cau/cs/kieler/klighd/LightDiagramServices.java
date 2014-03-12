@@ -386,6 +386,11 @@ public final class LightDiagramServices {
      *            the viewContext whose diagram diagram is to be arranged
      */
     public static void zoomDiagram(final ViewContext viewContext) {
+        
+        if (viewContext == null) {
+            return;
+        }
+        
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
 
@@ -405,6 +410,13 @@ public final class LightDiagramServices {
      *            the diagram view part showing the diagram to layout
      */
     public static void zoomDiagram(final IDiagramWorkbenchPart viewPart) {
+
+        // check that we can obtain all information we need
+        if (viewPart == null || viewPart.getViewer() == null
+                || viewPart.getViewer().getViewContext() == null) {
+            return;
+        }
+        
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
         final ViewContext viewContext = viewPart.getViewer().getViewContext();
