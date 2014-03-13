@@ -37,6 +37,22 @@ public final class KRenderingUtil {
     }
     
     /**
+     * Dereference the given rendering by following the chain of references until a rendering
+     * is found that is not a {@link KRenderingRef}. Note that the method runs into an infinite
+     * loop if there is a cycle in the references.
+     * 
+     * @param rendering a rendering
+     * @return the dereferenced rendering
+     */
+    public static KRendering dereference(final KRendering rendering) {
+        KRendering r = rendering;
+        while (r instanceof KRenderingRef) {
+            r = ((KRenderingRef) r).getRendering();
+        }
+        return r;
+    }
+    
+    /**
      * Returns an Iterator allowing to traverse all child {@link KRendering KRenderings} as well as
      * referenced ones and their children.
      * 

@@ -51,6 +51,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -1327,7 +1328,7 @@ public class DiagramController {
         final KEdge edge = edgeRep.getGraphElement();
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
-            final KRendering rendering = edge.getData(KRendering.class);
+            KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
             final boolean renderedAsPolyline = rendering instanceof KPolyline
                     && !(rendering instanceof KSpline);
             
