@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -348,18 +349,27 @@ public final class DiagramSideBar {
         
         boolean layoutOptionsAvailable = false;
         for (Pair<IProperty<?>, List<?>> pair : recommendedOptions) {
-            IProperty<?> first = pair.getFirst();
-            Collection<?> second = pair.getSecond();
+            final Object first;
+            final Object second;
+            if (pair.getSecond() instanceof Collection) {
+                final Iterator<?> it = ((Collection<?>) pair.getSecond()).iterator();
+                first = it.hasNext() ? it.next() : null;
+                second = it.hasNext() ? it.next() : null;
+            } else {
+                first = null;
+                second = null;
+            }
             
             if (first instanceof Number && second instanceof Number) {
                 layoutOptionControlFactory.createControl(pair.getFirst().getId(),
                         ((Number) first).floatValue(), ((Number) second).floatValue());
                 layoutOptionsAvailable = true;
-            } else if (first == null && second == null) {
+            } else if (pair.getSecond() == null) {
                 layoutOptionControlFactory.createControl(pair.getFirst().getId());
                 layoutOptionsAvailable = true;
             } else {
-                layoutOptionControlFactory.createControl(pair.getFirst().getId(), second);
+                layoutOptionControlFactory.createControl(pair.getFirst().getId(),
+                        pair.getSecond());
                 layoutOptionsAvailable = true;
             }
         }
