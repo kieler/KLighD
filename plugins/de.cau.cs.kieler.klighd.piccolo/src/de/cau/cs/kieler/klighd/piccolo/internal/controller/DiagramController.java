@@ -634,7 +634,7 @@ public class DiagramController {
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
             if (parentRep != null) {
-                addNode((KNodeNode) parentRep, (KNode) element);
+                addNode((INode) parentRep, (KNode) element);
             }
             break;
         case KGraphPackage.KPORT:
