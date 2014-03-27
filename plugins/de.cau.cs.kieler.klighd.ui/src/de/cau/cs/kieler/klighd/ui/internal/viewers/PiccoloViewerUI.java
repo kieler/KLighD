@@ -60,6 +60,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHand
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PrintAction;
@@ -403,7 +404,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
             textinput.setText(text);
 
             // determine global position of the text element
-            Rectangle2D bounds = n.getGlobalBounds();
+            Rectangle2D bounds = NodeUtil.clipRelativeGlobalBoundsOf(n,
+                    PiccoloViewerUI.this.getCanvas().getCamera().getDisplayedINode());
             PiccoloViewerUI.this.getCanvas().getCamera().getViewTransformReference()
                     .transform(bounds, bounds);
             textinput.setLocation((int) bounds.getX(), (int) bounds.getY());
