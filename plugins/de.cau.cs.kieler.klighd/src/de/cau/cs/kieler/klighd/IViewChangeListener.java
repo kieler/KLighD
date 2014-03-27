@@ -91,6 +91,19 @@ public interface IViewChangeListener {
         }
 
         /**
+         * Provides the corresponding {@link ViewContext} for convenience.
+         *  
+         * @return the {@link ViewContext} associated to the diagram the change took place in.
+         */
+        public ViewContext getViewContext() {
+            if (this.activeViewer != null) {
+                return this.activeViewer.getViewContext();
+            } else {
+                return null;
+            }
+        }
+
+        /**
          * Provides the {@link KGraphElement} affected during the view change being notified.
          * 
          * @return the {@link KGraphElement} affected during the view change being notified
