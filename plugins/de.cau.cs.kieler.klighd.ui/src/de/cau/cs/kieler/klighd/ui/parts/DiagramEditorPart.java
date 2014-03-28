@@ -44,6 +44,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -189,7 +190,12 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                         LightDiagramServices.layoutDiagram(viewContext, false, false);
                         
                         // now the editor's and outline page's canvas can be set visible
-                        viewer.getControl().setVisible(true);
+                        final Control control = viewer.getControl();
+                        control.setVisible(true);
+                        if (toBeFocussed) {
+                            toBeFocussed = false;
+                            control.setFocus();
+                        }
                         if (currentOutlinePage != null) {
                             currentOutlinePage.setVisible(true);
                         }
@@ -311,12 +317,19 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         return viewer;
     }
     
+    private boolean toBeFocussed = false;
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public void setFocus() {
-        viewer.getControl().setFocus();
+        final Control c = viewer.getControl();
+        if (c.isVisible()) {
+            c.setFocus();
+        } else {
+            toBeFocussed = true;
+        }
     }
 
     /**
