@@ -138,27 +138,29 @@ public interface IViewChangeListener {
          */
         public Iterator<KGraphElement> visibleDiagramNodes() {
             final KNode clip = activeViewer.getClip();
-            
-            return new AbstractTreeIterator<KGraphElement>(clip) {
-                private static final long serialVersionUID = 1021356500841593549L;
 
-                @Override
-                protected Iterator<? extends KGraphElement> getChildren(final Object object) {
-                    if (PlatformUI.isWorkbenchRunning()
-                            && Display.getCurrent() == null) {
-                        throw new RuntimeException(MSG);
-                    }
-                    return Iterators.filter(((KNode) object).getChildren().iterator(),
-                            new Predicate<KNode>() {
-                        /**
-                         * {@inheritDoc}
-                         */
-                        public boolean apply(final KNode input) {
-                            return activeViewer.isVisible(input);
+            if (!activeViewer.isVisible(clip)) {
+                return Iterators.emptyIterator();
+
+            } else {
+                return new AbstractTreeIterator<KGraphElement>(clip) {
+                    private static final long serialVersionUID = 1021356500841593549L;
+
+                    @Override
+                    protected Iterator<? extends KGraphElement> getChildren(final Object object) {
+                        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
+                            throw new RuntimeException(MSG);
                         }
-                    });
-                }
-            };
+                        return Iterators.filter(((KNode) object).getChildren().iterator(),
+                                new Predicate<KNode>() {
+
+                            public boolean apply(final KNode input) {
+                                return activeViewer.isVisible(input);
+                            }
+                        });
+                    }
+                };
+            }
         }
 
         /**
@@ -174,43 +176,45 @@ public interface IViewChangeListener {
          */
         public Iterator<KGraphElement> visibleDiagramsElements() {
             final KNode clip = activeViewer.getClip();
-            
-            return new AbstractTreeIterator<KGraphElement>(clip) {
-                private static final long serialVersionUID = 1021356500841593549L;
 
-                @Override
-                protected Iterator<? extends KGraphElement> getChildren(final Object object) {
-                    if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
-                        throw new RuntimeException(MSG);
-                    }
-                    
-                    final Iterator<EObject> candidates;
-                    if (object instanceof KNode) {
-                        candidates =
-                                Iterators.concat(((EObject) object).eContents().iterator(),
-                                        ((KNode) object).getIncomingEdges().iterator());
-                    } else {
-                        candidates = ((EObject) object).eContents().iterator();
+            if (!activeViewer.isVisible(clip)) {
+                return Iterators.emptyIterator();
+
+            } else {
+                return new AbstractTreeIterator<KGraphElement>(clip) {
+                    private static final long serialVersionUID = 1021356500841593549L;
+
+                    @Override
+                    protected Iterator<? extends KGraphElement> getChildren(final Object object) {
+                        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
+                            throw new RuntimeException(MSG);
+                        }
+                        
+                        final Iterator<EObject> candidates;
+                        if (object instanceof KNode) {
+                            candidates =
+                                    Iterators.concat(((EObject) object).eContents().iterator(),
+                                            ((KNode) object).getIncomingEdges().iterator());
+                        } else {
+                            candidates = ((EObject) object).eContents().iterator();
+                        }
+
+                        @SuppressWarnings("unchecked")
+                        Iterator<? extends KGraphElement> res = (Iterator<KGraphElement>) (Iterator<?>)
+                                Iterators.filter(candidates, filter);
+                        
+                        return res; 
                     }
 
-                    @SuppressWarnings("unchecked")
-                    Iterator<? extends KGraphElement> res = (Iterator<KGraphElement>) (Iterator<?>)
-                            Iterators.filter(candidates, filter);
-                    
-                    return res; 
-                }
-                    
-                private Predicate<EObject> filter = new Predicate<EObject>() {
+                    private Predicate<EObject> filter = new Predicate<EObject>() {
 
-                    /**
-                     * {@inheritDoc}
-                     */
-                    public boolean apply(final EObject input) {
-                        return input instanceof KGraphElement
-                                && activeViewer.isVisible((KGraphElement) input);
-                    }
+                        public boolean apply(final EObject input) {
+                            return input instanceof KGraphElement
+                                    && activeViewer.isVisible((KGraphElement) input);
+                        }
+                    };
                 };
-            };
+            }
         }
     }    
 }
