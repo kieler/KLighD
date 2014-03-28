@@ -23,6 +23,7 @@ import de.cau.cs.kieler.klighd.KlighdPreferences;
  * Initializes the KLighD preferences to their default values.
  * 
  * @author cds
+ * @author chsch
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
@@ -36,8 +37,16 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         // Set default option values
         preferenceStore.setDefault(
                 KlighdPreferences.ANIMATE_LAYOUT, KlighdPreferences.ANIMATE_LAYOUT_DEFAULT);
+
         preferenceStore.setDefault(
                 KlighdPreferences.ZOOM_STYLE, KlighdPreferences.ZOOM_STYLE_DEFAULT);
-    }
 
+        // Magnification lens settings
+        preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_WIDTH,
+                KlighdPreferences.MAGNIFICATION_LENS_WIDTH_DEFAULT);
+        preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_HEIGHT,
+                KlighdPreferences.MAGNIFICATION_LENS_HEIGHT_DEFAULT);
+        preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_SCALE,
+                KlighdPreferences.MAGNIFICATION_LENS_SCALE_DEFAULT);
+    }
 }

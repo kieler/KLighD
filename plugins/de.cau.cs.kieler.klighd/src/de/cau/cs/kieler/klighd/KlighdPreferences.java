@@ -18,6 +18,7 @@ package de.cau.cs.kieler.klighd;
  * IDs and default values of preferences defined by KLighD and stored in the preference store.
  * 
  * @author cds
+ * @author chsch
  */
 public final class KlighdPreferences {
     
@@ -34,6 +35,28 @@ public final class KlighdPreferences {
     
     /** Default zoom style value. */
     public static final String ZOOM_STYLE_DEFAULT = ZoomStyle.ZOOM_TO_FIT.name();
+
+    /** ID of the magnification lens width preference. */
+    public static final String MAGNIFICATION_LENS_WIDTH =
+            "de.cau.cs.kieler.klighd.preferences.magnificationLensWidth";
+    
+    /** Default magnification lens width value. */
+    public static final int MAGNIFICATION_LENS_WIDTH_DEFAULT = 400;
+    
+    /** ID of the magnification lens height preference. */
+    public static final String MAGNIFICATION_LENS_HEIGHT =
+            "de.cau.cs.kieler.klighd.preferences.magnificationLensHeight";
+    
+    /** Default magnification lens height value. */
+    public static final int MAGNIFICATION_LENS_HEIGHT_DEFAULT = 400;
+    
+    /** ID of the magnification lens scale preference, unit is percent. */
+    public static final String MAGNIFICATION_LENS_SCALE =
+            "de.cau.cs.kieler.klighd.preferences.magnificationLensScale";
+    
+    /** Default magnification lens scale value in percent. */
+    public static final int MAGNIFICATION_LENS_SCALE_DEFAULT = 200;
+    
     
     /**
      * This class cannot be instantiated.
