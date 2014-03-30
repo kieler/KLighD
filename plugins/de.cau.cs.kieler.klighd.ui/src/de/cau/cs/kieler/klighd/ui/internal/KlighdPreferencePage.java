@@ -49,8 +49,8 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     private Button advancedPanning;
     
     private static final String ADVANCED_PANNING_TOOLTIP =
-            "If enabled diagram panning continues if mouse pointer leaves the diagram area "
-            + "until it return or the mouse button is released.";
+            "If enabled diagram panning continues when mouse pointer leaves the diagram area and stops,"
+            + " until it returns to diagram area or the mouse button is released.";
 
     /** group for zoom styles. */
     private Group zoomStyleGroup;
