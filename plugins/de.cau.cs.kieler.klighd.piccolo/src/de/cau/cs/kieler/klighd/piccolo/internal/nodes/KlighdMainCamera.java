@@ -43,9 +43,18 @@ public class KlighdMainCamera extends PCamera {
      * @return the currently displayed {@link INode}
      */
     public INode getDisplayedINode() {
+        return (INode) getDisplayedLayer();
+    }
+    
+    /**
+     * Getter.
+     * 
+     * @return the currently displayed {@link INode} casted to {@link PLayer}.
+     */
+    public PLayer getDisplayedLayer() {
         final PLayer res = this.getLayer(0);
         if (res instanceof INode) {
-            return (INode) res;
+            return res;
         } else {
             return null;
         }

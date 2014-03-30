@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.RGB;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
@@ -43,17 +44,17 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
     
     private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
     
-    private final PCamera mainCamera;
+    private final KlighdMainCamera mainCamera;
     private final PCamera lensCamera;
 
     /**
      * Constructor.
      * 
      * @param canvasCamera
-     *            the {@link PCamera} employed in the corresponding diagram canvas for drawing the
-     *            diagram.
+     *            the {@link KlighdMainCamera} employed in the corresponding diagram canvas for
+     *            drawing the diagram.
      */
-    public KlighdShowLensEventHandler(final PCamera canvasCamera) {
+    public KlighdShowLensEventHandler(final KlighdMainCamera canvasCamera) {
         this.mainCamera = canvasCamera;
         this.lensCamera = new PCamera();
         this.lensCamera.setPickable(false);
@@ -121,8 +122,11 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
         
         // SUPPRESS CHECKSTYLE NEXT MagicNumber -- the preference unit is percent        
         float scale = STORE.getFloat(KlighdPreferences.MAGNIFICATION_LENS_SCALE) / 100f;
-
         viewTransform.scale(scale, scale);
+
+        double clipScale = mainCamera.getDisplayedLayer().getScale();
+        viewTransform.scale(1 / clipScale, 1 / clipScale);
+        
         viewTransform.translate(-pos.getX(), -pos.getY());
         return viewTransform;
     }
