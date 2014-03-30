@@ -19,8 +19,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -55,6 +53,7 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
      *            drawing the diagram.
      */
     public KlighdShowLensEventHandler(final KlighdMainCamera canvasCamera) {
+        this.disabled = !KlighdPreferences.isMagnificationLensEnabled();
         this.mainCamera = canvasCamera;
         this.lensCamera = new PCamera();
         this.lensCamera.setPickable(false);
@@ -86,33 +85,32 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
             }            
         };
 
-        final IPropertyChangeListener prefListener = new IPropertyChangeListener() {
-            // SUPPRESS CHECKSTYLE NEXT 15 MagicNumber
+        KlighdPreferences.registerPrefChangeListener((KlighdCanvas) canvasCamera.getComponent(),
+                new IPropertyChangeListener() {
 
             public void propertyChange(final PropertyChangeEvent event) {
-                if (KlighdPreferences.MAGNIFICATION_LENS_WIDTH.equals(event.getProperty())) {
+                final String pref = event.getProperty();
+                
+                // SUPPRESS CHECKSTYLE NEXT 15 MagicNumber
+                
+                if (KlighdPreferences.MAGNIFICATION_LENS_ENABLED.equals(pref)) {
+                    disabled = !KlighdPreferences.isMagnificationLensEnabled();
+                    
+                } else if (KlighdPreferences.MAGNIFICATION_LENS_WIDTH.equals(pref)) {
                     final float width = STORE.getInt(KlighdPreferences.MAGNIFICATION_LENS_WIDTH);
                     final float height = (float) path.getHeight();
                     path.setPathToRoundRectangle(-width / 2, -height / 2, width, height, 20, 20);
-                }
-                if (KlighdPreferences.MAGNIFICATION_LENS_HEIGHT.equals(event.getProperty())) {
+                    
+                } else if (KlighdPreferences.MAGNIFICATION_LENS_HEIGHT.equals(pref)) {
                     final float width = (float) path.getWidth();
                     final int height = STORE.getInt(KlighdPreferences.MAGNIFICATION_LENS_HEIGHT);
                     path.setPathToRoundRectangle(-width / 2, -height / 2, width, height, 20, 20);
                 }
             }
-        };
-
-        STORE.addPropertyChangeListener(prefListener);
-
-        ((KlighdCanvas) canvasCamera.getComponent()).addDisposeListener(new DisposeListener() {
-            
-            public void widgetDisposed(final DisposeEvent e) {
-                STORE.removePropertyChangeListener(prefListener);
-                e.widget.removeDisposeListener(this);
-            }
         });
     }
+    
+    private boolean disabled = true;
     
     private boolean lensVisible = false;
     
@@ -135,7 +133,7 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
     
     @Override
     public void keyPressed(final PInputEvent event) {
-        if (lensVisible) {
+        if (disabled || lensVisible) {
             return;
         } else if (event.isControlDown() && (event.getKeyCode() & SWT.ALT) != 0
                 || event.isAltDown() && (event.getKeyCode() & CTRL_CMD) != 0) {
