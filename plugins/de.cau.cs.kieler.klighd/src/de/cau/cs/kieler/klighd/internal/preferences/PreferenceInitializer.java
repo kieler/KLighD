@@ -35,11 +35,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         
         // Set default option values
-        preferenceStore.setDefault(
-                KlighdPreferences.ANIMATE_LAYOUT, KlighdPreferences.ANIMATE_LAYOUT_DEFAULT);
+        preferenceStore.setDefault(KlighdPreferences.ANIMATE_LAYOUT,
+                KlighdPreferences.ANIMATE_LAYOUT_DEFAULT);
 
-        preferenceStore.setDefault(
-                KlighdPreferences.ZOOM_STYLE, KlighdPreferences.ZOOM_STYLE_DEFAULT);
+        preferenceStore.setDefault(KlighdPreferences.ADVANCED_PANNING_MODE,
+                KlighdPreferences.ADVANCED_PANNING_MODE_DEFAULT);
+
+        preferenceStore.setDefault(KlighdPreferences.ZOOM_STYLE,
+                KlighdPreferences.ZOOM_STYLE_DEFAULT);
 
         // Magnification lens settings
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_WIDTH,

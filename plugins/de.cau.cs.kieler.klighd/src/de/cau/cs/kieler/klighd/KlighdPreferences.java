@@ -13,6 +13,12 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.widgets.Widget;
+
 
 /**
  * IDs and default values of preferences defined by KLighD and stored in the preference store.
@@ -57,11 +63,60 @@ public final class KlighdPreferences {
     /** Default magnification lens scale value in percent. */
     public static final int MAGNIFICATION_LENS_SCALE_DEFAULT = 200;
     
-    
+    /**
+     * ID of the advanced panning mode preference; advanced panning means diagram panning continues
+     * if cursor leaves diagram area until in re-enters or button is released.
+     */
+    public static final String ADVANCED_PANNING_MODE =
+            "de.cau.cs.kieler.klighd.preferences.advancedPanning";
+
+    /** Default advanced panning mode setting. */
+    public static final boolean ADVANCED_PANNING_MODE_DEFAULT = false;
+
+
+    /** The {@link IPreferenceStore} used for KLighD-specific preferences. */
+    public static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
+
     /**
      * This class cannot be instantiated.
      */
     private KlighdPreferences() {
         
+    }
+    
+    /**
+     * Getter.
+     * 
+     * @return <code>true</code> if advanced panning is active, <code>false</code> otherwise.
+     */
+    public static boolean isAdvancedPanningMode() {
+        return STORE.getBoolean(ADVANCED_PANNING_MODE);
+    }
+
+
+    /**
+     * 
+     * @param widget
+     *            an SWT {@link Widget} onto which a {@link DisposeListener} is installed to for
+     *            properly removing the preference change listener once it is not required anymore,
+     *            may be <code>null</code>
+     * @param listener
+     *            an {@link IPropertyChangeListener} performing internal updates
+     */
+    public static void registerPrefChangeListener(final Widget widget,
+            final IPropertyChangeListener listener) {
+        KlighdPreferences.STORE.addPropertyChangeListener(listener);
+        
+        if (widget == null) {
+            return;
+        }
+        
+        widget.addDisposeListener(new DisposeListener() {
+            
+            public void widgetDisposed(final DisposeEvent e) {
+                KlighdPreferences.STORE.removePropertyChangeListener(listener);
+                e.widget.removeDisposeListener(this);
+            }
+        });
     }
 }

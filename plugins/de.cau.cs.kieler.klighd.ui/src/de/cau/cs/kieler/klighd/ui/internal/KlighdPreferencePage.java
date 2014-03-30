@@ -44,6 +44,13 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
 
     /** checkbox for animation. */
     private Button animationCheckBox;
+    
+    /** checkbox for advanced panning. */
+    private Button advancedPanning;
+    
+    private static final String ADVANCED_PANNING_TOOLTIP =
+            "If enabled diagram panning continues if mouse pointer leaves the diagram area "
+            + "until it return or the mouse button is released.";
 
     /** group for zoom styles. */
     private Group zoomStyleGroup;
@@ -77,10 +84,14 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
 
     @Override
     public boolean performOk() {
-        IPreferenceStore preferenceStore = getPreferenceStore();
+        final IPreferenceStore preferenceStore = getPreferenceStore();
 
-        preferenceStore
-                .setValue(KlighdPreferences.ANIMATE_LAYOUT, animationCheckBox.getSelection());
+        preferenceStore.setValue(KlighdPreferences.ANIMATE_LAYOUT,
+                animationCheckBox.getSelection());
+
+        preferenceStore.setValue(KlighdPreferences.ADVANCED_PANNING_MODE,
+                advancedPanning.getSelection());
+        
         ZoomStyle zoomStyle = getZoomStyleFromSelection();
         preferenceStore.setValue(KlighdPreferences.ZOOM_STYLE, zoomStyle.name());
         
@@ -98,11 +109,15 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     protected void performDefaults() {
         super.performDefaults();
 
-        IPreferenceStore preferenceStore = getPreferenceStore();
+        final IPreferenceStore preferenceStore = getPreferenceStore();
 
         // Set default values
         animationCheckBox.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.ANIMATE_LAYOUT));
+        
+        advancedPanning.setSelection(preferenceStore
+                .getDefaultBoolean(KlighdPreferences.ADVANCED_PANNING_MODE));
+        
         setZoomStyleSelection(ZoomStyle.valueOf(preferenceStore
                 .getDefaultString(KlighdPreferences.ZOOM_STYLE)));
         
@@ -139,7 +154,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         Group zoomGroup = createZoomToFitGroup(composite);
         zoomGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
         
-        Group magnificationLensGroup = createMagnificationLensConfig(composite);
+        Group magnificationLensGroup = createMagnificationLensGroup(composite);
         magnificationLensGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         
         return composite;
@@ -167,6 +182,12 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         animationCheckBox.setToolTipText(Messages.KlighdPreferencePage_animateLayout_tooltip);
         animationCheckBox.setSelection(getPreferenceStore().getBoolean(
                 KlighdPreferences.ANIMATE_LAYOUT));
+        
+        advancedPanning = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
+        advancedPanning.setText("Advanced Panning");
+        advancedPanning.setToolTipText(ADVANCED_PANNING_TOOLTIP);
+        advancedPanning.setSelection(getPreferenceStore().getBoolean(
+                KlighdPreferences.ADVANCED_PANNING_MODE));
 
         return generalGroup;
     }
@@ -225,8 +246,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
             return ZoomStyle.NONE;
         }
     }
-    
-    private Group createMagnificationLensConfig(final Composite parent) {
+
+
+    private Group createMagnificationLensGroup(final Composite parent) {
         // SUPPRESS CHECKSTYLE NEXT 35 MagicNumber
         
         final Group magnificationLensGroup = new Group(parent, SWT.NONE);
