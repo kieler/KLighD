@@ -45,10 +45,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
                 KlighdPreferences.ZOOM_STYLE_DEFAULT);
 
         // Magnification lens settings
+        preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_ENABLED,
+                KlighdPreferences.MAGNIFICATION_LENS_ENABLED_DEFAULT);
+
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_WIDTH,
                 KlighdPreferences.MAGNIFICATION_LENS_WIDTH_DEFAULT);
+
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_HEIGHT,
                 KlighdPreferences.MAGNIFICATION_LENS_HEIGHT_DEFAULT);
+
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_SCALE,
                 KlighdPreferences.MAGNIFICATION_LENS_SCALE_DEFAULT);
     }

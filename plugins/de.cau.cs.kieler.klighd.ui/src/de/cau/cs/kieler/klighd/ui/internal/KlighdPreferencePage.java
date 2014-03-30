@@ -16,7 +16,8 @@ package de.cau.cs.kieler.klighd.ui.internal;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -61,6 +62,10 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     /** radio button for no zoom. */
     private Button zoomNone;
     
+
+    /** checkbox for setting the magnification lens enabled/disabled. */
+    private Button magLensEnabled;
+    
     private Spinner magLensWidth;
     private Spinner magLensHeight;
     private Spinner magLensScale;
@@ -95,6 +100,8 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         ZoomStyle zoomStyle = getZoomStyleFromSelection();
         preferenceStore.setValue(KlighdPreferences.ZOOM_STYLE, zoomStyle.name());
         
+        preferenceStore.setValue(KlighdPreferences.MAGNIFICATION_LENS_ENABLED,
+                magLensEnabled.getSelection());
         preferenceStore.setValue(KlighdPreferences.MAGNIFICATION_LENS_WIDTH,
                 magLensWidth.getSelection());
         preferenceStore.setValue(KlighdPreferences.MAGNIFICATION_LENS_HEIGHT,
@@ -121,6 +128,8 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         setZoomStyleSelection(ZoomStyle.valueOf(preferenceStore
                 .getDefaultString(KlighdPreferences.ZOOM_STYLE)));
         
+        magLensEnabled.setSelection(preferenceStore
+                .getDefaultBoolean(KlighdPreferences.MAGNIFICATION_LENS_ENABLED));
         magLensWidth.setSelection(preferenceStore
                 .getDefaultInt(KlighdPreferences.MAGNIFICATION_LENS_WIDTH));
         magLensHeight.setSelection(preferenceStore
@@ -168,13 +177,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
      * @return the group control.
      */
     private Group createGeneralGroup(final Composite parent) {
-        Group generalGroup = new Group(parent, SWT.NONE);
+        final Group generalGroup = new Group(parent, SWT.NONE);
         generalGroup.setText(Messages.KlighdPreferencePage_generalOptions);
-
-        FillLayout groupLayout = new FillLayout(SWT.VERTICAL);
-        groupLayout.marginWidth = 10;
-        groupLayout.marginHeight = 5;
-        generalGroup.setLayout(groupLayout);
+        generalGroup.setLayout(new RowLayout(SWT.VERTICAL));
 
         // Layout Animation
         animationCheckBox = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
@@ -249,15 +254,36 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
 
 
     private Group createMagnificationLensGroup(final Composite parent) {
-        // SUPPRESS CHECKSTYLE NEXT 35 MagicNumber
-        
+
         final Group magnificationLensGroup = new Group(parent, SWT.NONE);
         magnificationLensGroup.setText("Magification lens");
-        magnificationLensGroup.setLayout(new GridLayout(6, false));
+        magnificationLensGroup.setLayout(new RowLayout(SWT.VERTICAL));
+
+        magLensEnabled = new Button(magnificationLensGroup, SWT.CHECK | SWT.LEFT);
+        magLensEnabled.setText("Enable magnification lens, hit ALT + CTRL/CMD to use it");
+        magLensEnabled.setSelection(getPreferenceStore().getBoolean(
+                KlighdPreferences.MAGNIFICATION_LENS_ENABLED));
+
+        final Composite magnificationLensSizeGroup =
+                new Composite(magnificationLensGroup, SWT.NONE);
         
-        final Label width = new Label(magnificationLensGroup, SWT.NONE);
+        // SUPPRESS CHECKSTYLE NEXT MagicNumber
+        magnificationLensSizeGroup.setLayout(new GridLayout(6, false));
+        magnificationLensSizeGroup.setEnabled(magLensEnabled.getSelection());
+        
+        magLensEnabled.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                magnificationLensSizeGroup.setEnabled(magLensEnabled.getSelection());
+            }            
+        });
+        
+        // SUPPRESS CHECKSTYLE NEXT 30 MagicNumber
+        
+        final Label width = new Label(magnificationLensSizeGroup, SWT.NONE);
         width.setText("width:");
-        magLensWidth = new Spinner(magnificationLensGroup, SWT.NONE);
+        magLensWidth = new Spinner(magnificationLensSizeGroup, SWT.NONE);
         magLensWidth.setMinimum(100);
         magLensWidth.setMaximum(1000);
         magLensWidth.setIncrement(10);
@@ -265,9 +291,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         magLensWidth.setSelection(getPreferenceStore().getInt(
                 KlighdPreferences.MAGNIFICATION_LENS_WIDTH));
         
-        final Label height = new Label(magnificationLensGroup, SWT.NONE);
+        final Label height = new Label(magnificationLensSizeGroup, SWT.NONE);
         height.setText("height:");
-        magLensHeight = new Spinner(magnificationLensGroup, SWT.NONE);
+        magLensHeight = new Spinner(magnificationLensSizeGroup, SWT.NONE);
         magLensHeight.setMinimum(100);
         magLensHeight.setMaximum(1000);
         magLensHeight.setIncrement(10);
@@ -275,9 +301,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         magLensHeight.setSelection(getPreferenceStore().getInt(
                 KlighdPreferences.MAGNIFICATION_LENS_HEIGHT));
         
-        final Label scale = new Label(magnificationLensGroup, SWT.NONE);
+        final Label scale = new Label(magnificationLensSizeGroup, SWT.NONE);
         scale.setText("scale:");
-        magLensScale = new Spinner(magnificationLensGroup, SWT.NONE);
+        magLensScale = new Spinner(magnificationLensSizeGroup, SWT.NONE);
         magLensScale.setMinimum(50);
         magLensScale.setDigits(2);
         magLensScale.setMaximum(500);

@@ -42,6 +42,13 @@ public final class KlighdPreferences {
     /** Default zoom style value. */
     public static final String ZOOM_STYLE_DEFAULT = ZoomStyle.ZOOM_TO_FIT.name();
 
+    /** ID of the magnification lens enablement preference. */
+    public static final String MAGNIFICATION_LENS_ENABLED =
+            "de.cau.cs.kieler.klighd.preferences.magnificationLensEnabled";
+    
+    /** Default magnification lens width value. */
+    public static final boolean MAGNIFICATION_LENS_ENABLED_DEFAULT = true;
+    
     /** ID of the magnification lens width preference. */
     public static final String MAGNIFICATION_LENS_WIDTH =
             "de.cau.cs.kieler.klighd.preferences.magnificationLensWidth";
@@ -91,6 +98,15 @@ public final class KlighdPreferences {
      */
     public static boolean isAdvancedPanningMode() {
         return STORE.getBoolean(ADVANCED_PANNING_MODE);
+    }
+    
+    /**
+     * Getter.
+     * 
+     * @return <code>true</code> if the magnification lens is enabled, <code>false</code> otherwise.
+     */
+    public static boolean isMagnificationLensEnabled() {
+        return STORE.getBoolean(MAGNIFICATION_LENS_ENABLED);
     }
 
 
