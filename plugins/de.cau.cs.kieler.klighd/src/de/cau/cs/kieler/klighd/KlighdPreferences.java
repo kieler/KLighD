@@ -42,11 +42,18 @@ public final class KlighdPreferences {
     /** Default zoom style value. */
     public static final String ZOOM_STYLE_DEFAULT = ZoomStyle.ZOOM_TO_FIT.name();
 
+    /** ID of the 'zoom on workbench part change' preference. */
+    public static final String ZOOM_ON_WORKBENCHPART_CHANGE =
+            "de.cau.cs.kieler.klighd.preferences.zoomOnWorkBenchPartChange";
+    
+    /** Default 'zoom on workbench part change' value. */
+    public static final boolean ZOOM_ON_WORKBENCHPART_CHANGE_DEFAULT = false;
+    
     /** ID of the magnification lens enablement preference. */
     public static final String MAGNIFICATION_LENS_ENABLED =
             "de.cau.cs.kieler.klighd.preferences.magnificationLensEnabled";
     
-    /** Default magnification lens width value. */
+    /** Default magnification lens enablement value. */
     public static final boolean MAGNIFICATION_LENS_ENABLED_DEFAULT = true;
     
     /** ID of the magnification lens width preference. */
@@ -107,6 +114,15 @@ public final class KlighdPreferences {
      */
     public static boolean isMagnificationLensEnabled() {
         return STORE.getBoolean(MAGNIFICATION_LENS_ENABLED);
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return <code>true</code> if the magnification lens is enabled, <code>false</code> otherwise.
+     */
+    public static boolean isZoomOnWorkbenchpartChange() {
+        return STORE.getBoolean(ZOOM_ON_WORKBENCHPART_CHANGE);
     }
 
 

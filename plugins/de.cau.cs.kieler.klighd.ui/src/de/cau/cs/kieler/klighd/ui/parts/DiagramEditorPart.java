@@ -694,15 +694,17 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
         public void controlResized(final ControlEvent e) {
             // assure that the composite's size is settled before we execute the layout
-            Display.getCurrent().asyncExec(new Runnable() {
-                public void run() {
-                    // if the part is not visible, no zoom is required
-                    if (!DiagramEditorPart.this.getViewer().getControl().isDisposed() 
-                            && DiagramEditorPart.this.getViewer().getControl().isVisible()) {
-                        LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
+            if (KlighdPreferences.isZoomOnWorkbenchpartChange()) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    public void run() {
+                        // if the part is not visible, no zoom is required
+                        if (!DiagramEditorPart.this.getViewer().getControl().isDisposed() 
+                                && DiagramEditorPart.this.getViewer().getControl().isVisible()) {
+                            LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         public void controlMoved(final ControlEvent e) {

@@ -426,15 +426,17 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     private ControlListener diagramAreaListener = new ControlListener() {
 
         public void controlResized(final ControlEvent e) {
+            if (KlighdPreferences.isZoomOnWorkbenchpartChange()) {
             // assure that the composite's size is settled before we execute the layout
-            Display.getCurrent().asyncExec(new Runnable() {
-                public void run() {
-                    if (!DiagramViewPart.this.getViewer().getControl().isDisposed()
-                            && DiagramViewPart.this.getViewer().getControl().isVisible()) {
-                        LightDiagramServices.zoomDiagram(DiagramViewPart.this);
+                Display.getCurrent().asyncExec(new Runnable() {
+                    public void run() {
+                        if (!DiagramViewPart.this.getViewer().getControl().isDisposed()
+                                && DiagramViewPart.this.getViewer().getControl().isVisible()) {
+                            LightDiagramServices.zoomDiagram(DiagramViewPart.this);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         public void controlMoved(final ControlEvent e) {

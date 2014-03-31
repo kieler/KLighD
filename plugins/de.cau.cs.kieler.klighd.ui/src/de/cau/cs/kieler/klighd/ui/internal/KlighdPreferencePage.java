@@ -53,8 +53,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
             "If enabled diagram panning continues when mouse pointer leaves the diagram area and stops,"
             + " until it returns to diagram area or the mouse button is released.";
 
-    /** group for zoom styles. */
-    private Group zoomStyleGroup;
+    /** checkbox for 'zoom on workbench part change'. */
+    private Button zoomOnWorkbenchpartChange;
+    
     /** radio button for zoom-to-fit. */
     private Button zoomToFit;
     /** radio button for zoomToFocus. */
@@ -97,6 +98,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         preferenceStore.setValue(KlighdPreferences.ADVANCED_PANNING_MODE,
                 advancedPanning.getSelection());
         
+        preferenceStore.setValue(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE,
+                zoomOnWorkbenchpartChange.getSelection());
+        
         ZoomStyle zoomStyle = getZoomStyleFromSelection();
         preferenceStore.setValue(KlighdPreferences.ZOOM_STYLE, zoomStyle.name());
         
@@ -125,6 +129,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         advancedPanning.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.ADVANCED_PANNING_MODE));
         
+        zoomOnWorkbenchpartChange.setSelection(preferenceStore
+                .getDefaultBoolean(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE));
+
         setZoomStyleSelection(ZoomStyle.valueOf(preferenceStore
                 .getDefaultString(KlighdPreferences.ZOOM_STYLE)));
         
@@ -180,6 +187,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         final Group generalGroup = new Group(parent, SWT.NONE);
         generalGroup.setText(Messages.KlighdPreferencePage_generalOptions);
         generalGroup.setLayout(new RowLayout(SWT.VERTICAL));
+        ((RowLayout) generalGroup.getLayout()).spacing = 5;
 
         // Layout Animation
         animationCheckBox = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
@@ -199,9 +207,15 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     
     private Group createZoomToFitGroup(final Composite parent) {
         // zoom styles
-        zoomStyleGroup = new Group(parent, SWT.NONE);
-        zoomStyleGroup.setText("Zoom Style");
+        
+        final Group zoomGroup = new Group(parent, SWT.NONE);
+        zoomGroup.setText("Zoom Style");
+        zoomGroup.setLayout(new RowLayout(SWT.VERTICAL));
+        ((RowLayout) zoomGroup.getLayout()).spacing = 5;
+        
+        final Composite zoomStyleGroup = new Composite(zoomGroup, SWT.NONE); 
         zoomStyleGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
+        ((RowLayout) zoomStyleGroup.getLayout()).marginLeft = 0;
 
         // Zoom-to-Fit
         zoomToFit = new Button(zoomStyleGroup, SWT.RADIO | SWT.LEFT);
@@ -219,11 +233,15 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         zoomNone.setToolTipText(Messages.KlighdPreferencePage_zoomNone_tooltip);
 
         // Selection
-        ZoomStyle initialStyle = ZoomStyle.valueOf(
-                getPreferenceStore().getString(KlighdPreferences.ZOOM_STYLE));
-        setZoomStyleSelection(initialStyle);
-        
-        return zoomStyleGroup;
+        setZoomStyleSelection(ZoomStyle.valueOf(getPreferenceStore().getString(
+                KlighdPreferences.ZOOM_STYLE)));
+
+        zoomOnWorkbenchpartChange = new Button(zoomGroup, SWT.CHECK | SWT.LEFT);
+        zoomOnWorkbenchpartChange.setText("Apply zoom on diagram workbench part resize && moves");
+        zoomOnWorkbenchpartChange.setSelection(getPreferenceStore().getBoolean(
+                KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE));
+
+        return zoomGroup;
     }
     
     // End of UI code -- no magic numbers allowed anymore.
