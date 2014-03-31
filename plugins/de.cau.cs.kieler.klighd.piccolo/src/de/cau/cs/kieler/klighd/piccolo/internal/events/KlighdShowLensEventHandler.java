@@ -19,6 +19,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -41,6 +42,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
     
     private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
+    private static final int CTRL_CMD = KlighdKeyEventListener.OS_MACOSX ? SWT.COMMAND : SWT.CTRL;
     
     private final KlighdMainCamera mainCamera;
     private final PCamera lensCamera;
@@ -113,9 +115,41 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
     private boolean disabled = true;
     
     private boolean lensVisible = false;
-    
+
+    /**
+     * Determines the lens position (especially its midpoint) based on the <code>event</code>'s
+     * canvas point. This point is adjusted wrt. the minimum, the half of the lens' width & height,
+     * as well as the maximum, the canvas' size minus the lens's half width & height.
+     * 
+     * @param event
+     *            the {@link PInputEvent} to get the canvas position from
+     * @return the desired lens position in shape of a {@link Point2D}
+     */
+    private Point2D determineLensOffset(final PInputEvent event) {
+        final PBounds lensSize = lensCamera.getParent().getBounds();
+        lensSize.setRect(lensSize.x, lensSize.y, lensSize.width / 2, lensSize.height / 2);
+        
+        final Point2D canvasPos = event.getCanvasPosition();
+        canvasPos.setLocation(Math.max(canvasPos.getX(), lensSize.width),
+                Math.max(canvasPos.getY(), lensSize.height));
+        
+        final Point canvasSize = ((KlighdCanvas) event.getComponent()).getSize();
+        canvasPos.setLocation(Math.min(canvasPos.getX(), canvasSize.x - lensSize.width),
+                Math.min(canvasPos.getY(), canvasSize.y - lensSize.height));
+
+        return canvasPos;
+    }
+
+    /**
+     * Composes a {@link PAffineTransform} incorporating the lens magnification according to the
+     * corresponding preference setting, the inverse of the clip node's scaling, and event's mouse
+     * pointer position in terms the diagram coordinates (rather than canvas coordinates).
+     * 
+     * @param event
+     *            the {@link PInputEvent} to get the diagram position from
+     * @return the desired {@link PAffineTransform} denoting the lens camera's view transform
+     */
     private PAffineTransform createViewTransform(final PInputEvent event) {
-        final Point2D pos = event.getPosition();
         final PAffineTransform viewTransform = new PAffineTransform();
         
         // SUPPRESS CHECKSTYLE NEXT MagicNumber -- the preference unit is percent        
@@ -125,25 +159,25 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
         double clipScale = mainCamera.getDisplayedLayer().getScale();
         viewTransform.scale(1 / clipScale, 1 / clipScale);
         
+        final Point2D pos = event.getPosition();
         viewTransform.translate(-pos.getX(), -pos.getY());
         return viewTransform;
     }
     
-    private static final int CTRL_CMD = KlighdKeyEventListener.OS_MACOSX ? SWT.COMMAND : SWT.CTRL;
     
     @Override
     public void keyPressed(final PInputEvent event) {
         if (disabled || lensVisible) {
             return;
+
         } else if (event.isControlDown() && (event.getKeyCode() & SWT.ALT) != 0
                 || event.isAltDown() && (event.getKeyCode() & CTRL_CMD) != 0) {
             event.setHandled(true);
-            lensCamera.addLayer(mainCamera.getLayer(0));
-            lensCamera.getParent().setOffset(event.getCanvasPosition());            
+
+            lensCamera.getParent().setOffset(determineLensOffset(event));            
             lensCamera.setViewTransform(createViewTransform(event));
 
-            
-            lensCamera.setVisible(true);
+            lensCamera.addLayer(mainCamera.getLayer(0));
             lensVisible = true;
             lensCamera.getParent().setVisible(true);
         }
@@ -154,6 +188,7 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
         if (lensVisible
                 && ((event.getKeyCode() & SWT.ALT) != 0 || (event.getKeyCode() & CTRL_CMD) != 0)) {
             event.setHandled(true);
+
             lensCamera.getParent().setVisible(false);
             lensVisible = false;
             lensCamera.getLayersReference().clear();
@@ -164,7 +199,8 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
     public void mouseMoved(final PInputEvent event) {
         if (lensVisible) {
             event.setHandled(true);
-            lensCamera.getParent().setOffset(event.getCanvasPosition());            
+            
+            lensCamera.getParent().setOffset(determineLensOffset(event));            
             lensCamera.setViewTransform(createViewTransform(event));
         }
     }
