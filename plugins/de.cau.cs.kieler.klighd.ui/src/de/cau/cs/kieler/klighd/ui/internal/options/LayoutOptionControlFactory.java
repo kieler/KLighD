@@ -60,6 +60,7 @@ import de.cau.cs.kieler.klighd.internal.macrolayout.KGraphPropertyLayoutConfig;
  * A factory for controls for layout options.
  *
  * @author msp
+ * @author chsch
  */
 public class LayoutOptionControlFactory {
     
@@ -394,6 +395,40 @@ public class LayoutOptionControlFactory {
                 break;
             }
             
+            case ENUMSET: {
+                final Composite valuesContainer = formToolkit.createComposite(parent);
+                valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
+                
+                final Object[] values;
+                if (availableValues != null) {
+                    values = availableValues.toArray();
+
+                } else {
+                    label = new Label(parent, SWT.NONE);
+                    label.setText("This option type requires pre-defined values.");
+                    label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+                    controls.add(label);
+                    break;
+                }
+                
+                final Object initialValue = defaultLayoutConfig.getOptionValue(optionData,
+                        defaultLayoutContext);
+                for (Object value : values) {
+                    Button button = formToolkit.createButton(valuesContainer, getUserValue(value),
+                            SWT.RADIO);
+                    button.setToolTipText(optionData.getDescription());
+                    button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                    button.setData(value);
+                    if (value.equals(initialValue)) {
+                        button.setSelection(true);
+                    }
+                    button.addSelectionListener(new EnumerationListener(optionData, value));
+                }
+                valuesContainer.setData(optionData);
+                controls.add(valuesContainer);
+                break;               
+            }
+
             default:
                 label = new Label(parent, SWT.NONE);
                 label.setText("This option type is not supported");
