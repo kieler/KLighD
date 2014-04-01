@@ -18,7 +18,6 @@ import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary
 import de.cau.cs.kieler.core.krendering.KRenderingRef
-import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
 
 /**
  * Extension that allow a convenient use of the {@link KRenderingLibrary} mechanism.
@@ -27,7 +26,6 @@ import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
  * 
  * @containsExtensions
  */
-@ViewSynthesisShared
 class KLibraryExtensions {
 
     /** Rendering factory used to instantiate KRendering instances. */
