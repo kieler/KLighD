@@ -392,8 +392,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      * Load a model from the editor input. The result is put into {@link #model}.
      * 
      * @throws PartInitException if loading the model fails
+     * 
+     * @return the loaded model for convenience
      */
-    protected void loadModel() throws PartInitException {
+    protected Object loadModel() throws PartInitException {
         // get a URI or an input stream from the editor input
         URI uri = null;
         InputStream inputStream = null;
@@ -419,7 +421,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             throw new PartInitException("The given editor input is not supported.");
         }
         
-        Resource resource;
+        final Resource resource;
         try {
             resourceSet = new ResourceSetImpl();
             configureResourceSet(resourceSet);
@@ -444,6 +446,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         }
         // default behavior: get the first element in the resource
         model = resource.getContents().get(0);
+        
+        return model;
     }
     
     /**
