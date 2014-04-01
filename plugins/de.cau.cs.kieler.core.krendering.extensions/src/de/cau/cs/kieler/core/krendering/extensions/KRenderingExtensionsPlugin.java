@@ -62,8 +62,6 @@ public class KRenderingExtensionsPlugin extends Plugin {
      */
     public static Module createSingletonScopeBindingModule() {
         final Module result = new Module() {
-
-            @Override
             public void configure(final Binder binder) {
                 binder.bindScope(ViewSynthesisShared.class, Scopes.SINGLETON);
             }
@@ -80,8 +78,6 @@ public class KRenderingExtensionsPlugin extends Plugin {
      */
     public static Module createNoScopeBindingModule() {
         final Module result = new Module() {
-
-            @Override
             public void configure(final Binder binder) {
                 binder.bindScope(ViewSynthesisShared.class, Scopes.NO_SCOPE);
             }
