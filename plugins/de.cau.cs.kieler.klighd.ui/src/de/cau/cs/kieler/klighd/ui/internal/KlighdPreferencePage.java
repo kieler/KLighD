@@ -49,9 +49,16 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     /** checkbox for advanced panning. */
     private Button advancedPanning;
     
+    /** checkbox for expand side bar on initializing diagrams. */
+    private Button expandSideBar;
+    
     private static final String ADVANCED_PANNING_TOOLTIP =
             "If enabled diagram panning continues when mouse pointer leaves the diagram area and stops,"
             + " until it returns to diagram area or the mouse button is released.";
+    
+    private static final String EXPAND_SIDE_BAR_TOOLTIP =
+            "Diagram side bars accommodate the controls for diagram options and layout options."
+            + " If deactivated the side bars must be expanded manually.";
 
     /** checkbox for 'zoom on workbench part change'. */
     private Button zoomOnWorkbenchpartChange;
@@ -98,6 +105,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         preferenceStore.setValue(KlighdPreferences.ADVANCED_PANNING_MODE,
                 advancedPanning.getSelection());
         
+        preferenceStore.setValue(KlighdPreferences.EXPAND_SIDE_BAR,
+                expandSideBar.getSelection());
+        
         preferenceStore.setValue(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE,
                 zoomOnWorkbenchpartChange.getSelection());
         
@@ -128,6 +138,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         
         advancedPanning.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.ADVANCED_PANNING_MODE));
+        
+        expandSideBar.setSelection(preferenceStore
+                .getDefaultBoolean(KlighdPreferences.EXPAND_SIDE_BAR));
         
         zoomOnWorkbenchpartChange.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE));
@@ -202,6 +215,12 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         advancedPanning.setSelection(getPreferenceStore().getBoolean(
                 KlighdPreferences.ADVANCED_PANNING_MODE));
 
+        expandSideBar = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
+        expandSideBar.setText("Expand diagram side bar");
+        expandSideBar.setToolTipText(EXPAND_SIDE_BAR_TOOLTIP);
+        expandSideBar.setSelection(getPreferenceStore().getBoolean(
+                KlighdPreferences.EXPAND_SIDE_BAR));
+
         return generalGroup;
     }
     
@@ -237,7 +256,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
                 KlighdPreferences.ZOOM_STYLE)));
 
         zoomOnWorkbenchpartChange = new Button(zoomGroup, SWT.CHECK | SWT.LEFT);
-        zoomOnWorkbenchpartChange.setText("Apply zoom on diagram workbench part resize && moves");
+        zoomOnWorkbenchpartChange.setText("Apply zoom on diagram workbench part resizes");
         zoomOnWorkbenchpartChange.setSelection(getPreferenceStore().getBoolean(
                 KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE));
 

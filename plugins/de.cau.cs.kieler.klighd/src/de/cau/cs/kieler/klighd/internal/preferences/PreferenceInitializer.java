@@ -59,5 +59,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_SCALE,
                 KlighdPreferences.MAGNIFICATION_LENS_SCALE_DEFAULT);
+        
+        
+        preferenceStore.setDefault(KlighdPreferences.EXPAND_SIDE_BAR,
+                KlighdPreferences.EXPAND_SIDE_BAR_DEFAULT);
     }
 }

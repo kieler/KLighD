@@ -88,6 +88,16 @@ public final class KlighdPreferences {
     public static final boolean ADVANCED_PANNING_MODE_DEFAULT = false;
 
 
+    /** ID of the expand side bar preference. */
+    public static final String EXPAND_SIDE_BAR =
+            "de.cau.cs.kieler.klighd.preferences.expandSideBar";
+    
+    /** Default expand side bar setting. */
+    public static final boolean EXPAND_SIDE_BAR_DEFAULT = true;
+    
+    
+
+
     /** The {@link IPreferenceStore} used for KLighD-specific preferences. */
     public static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
 
@@ -106,7 +116,16 @@ public final class KlighdPreferences {
     public static boolean isAdvancedPanningMode() {
         return STORE.getBoolean(ADVANCED_PANNING_MODE);
     }
-    
+
+    /**
+     * Getter.
+     * 
+     * @return <code>true</code> if expand side bar is active, <code>false</code> otherwise.
+     */
+    public static boolean isExpandSideBar() {
+        return STORE.getBoolean(EXPAND_SIDE_BAR);
+    }
+
     /**
      * Getter.
      * 
