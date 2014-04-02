@@ -49,10 +49,12 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
  * one, e.g. one realizing an SVG export. Thus, methods like {@link Graphics#getForegroundColor()}
  * can't be realized safely.<br>
  * <br>
- * Wrt drawing on an SWT-based graphics implementation the clipping appears to be a costly
+ * Wrt. drawing on an SWT-based graphics implementation the clipping appears to be a costly
  * operation. In case of performance bottle necks the implementations of
  * {@link #clipRect(org.eclipse.draw2d.geometry.Rectangle) #clipRect(Rectangle)} and
- * {@link #setClip(org.eclipse.draw2d.geometry.Rectangle)  #setClip(Rectangle)} could be deactivated.
+ * {@link #setClip(org.eclipse.draw2d.geometry.Rectangle)  #setClip(Rectangle)} could be deactivated.<br>
+ * <br>
+ * ... which is now done since the clipping simply seems to be not necessary. (chsch)
  * 
  * @author msp
  * @author chsch
@@ -61,7 +63,7 @@ public class GraphicsAdapter extends Graphics {
     
     /** The state data class. */
     private class State {
-        private Shape clip;
+        // private Shape clip;
         private AffineTransform transform;
         private int alpha;
         private RGB foreground;
@@ -77,7 +79,7 @@ public class GraphicsAdapter extends Graphics {
          * @param g an SWT graphics wrapper
          */
         State(final KlighdSWTGraphicsEx g) {
-            this.clip = g.getClip();
+            // this.clip = g.getClip();
             this.transform = g.getTransform();
             this.alpha = g.getAlpha();
             this.font = g.getFontData();
@@ -825,10 +827,10 @@ public class GraphicsAdapter extends Graphics {
      *            the lineWidth to incorporate
      */
     public void updateClip(final float lineWidth) {
-        Rectangle2D clip = pg.getClip().getBounds2D();
-        final float hLineWidth = lineWidth / 2;
-        clip.setRect(clip.getX() - hLineWidth, clip.getY() - hLineWidth,
-                     clip.getWidth() + lineWidth, clip.getHeight() + lineWidth);
+        // Rectangle2D clip = pg.getClip().getBounds2D();
+        // final float hLineWidth = lineWidth / 2;
+        // clip.setRect(clip.getX() - hLineWidth, clip.getY() - hLineWidth,
+        //              clip.getWidth() + lineWidth, clip.getHeight() + lineWidth);
         // pg.setClip(clip);
     }
 }
