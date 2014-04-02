@@ -193,7 +193,7 @@ public class GraphicsAdapter extends Graphics {
         final State lastState = stack.peek();
         if (lastState != null) {
             pg.setTransform(lastState.transform);
-            pg.setClip(lastState.clip);
+            // pg.setClip(lastState.clip);
             pg.setAlpha(lastState.alpha);
             pg.setFont(lastState.font);
             pg.setLineAttributes(lastState.lineAttributes);
@@ -565,14 +565,14 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setClip(final org.eclipse.draw2d.geometry.Rectangle r) {
-        pg.setClip(new Rectangle(r.x, r.y, r.width, r.height));
+        // pg.setClip(new Rectangle(r.x, r.y, r.width, r.height));
     }
     
     /**
      * {@inheritDoc}
      */
     public void clipRect(final org.eclipse.draw2d.geometry.Rectangle r) {
-        pg.setClip(new Rectangle(r.x, r.y, r.width, r.height));
+        // pg.clip(new Rectangle(r.x, r.y, r.width, r.height));
     }
 
     /**
@@ -829,6 +829,6 @@ public class GraphicsAdapter extends Graphics {
         final float hLineWidth = lineWidth / 2;
         clip.setRect(clip.getX() - hLineWidth, clip.getY() - hLineWidth,
                      clip.getWidth() + lineWidth, clip.getHeight() + lineWidth);
-        pg.setClip(clip);
+        // pg.setClip(clip);
     }
 }
