@@ -655,6 +655,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                         sourceShapeLayout.getYpos() / scale);
                 targetShapeLayout.setSize(sourceShapeLayout.getWidth() / scale,
                         sourceShapeLayout.getHeight() / scale);
+
+                final KVector anchor = targetShapeLayout.getProperty(LayoutOptions.PORT_ANCHOR);
+                if (anchor != null) {
+                    anchor.x /= scale;
+                    anchor.y /= scale;
+                }
             }
             
         } else {

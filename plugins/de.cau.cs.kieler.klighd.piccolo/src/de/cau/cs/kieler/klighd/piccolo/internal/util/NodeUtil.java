@@ -22,6 +22,7 @@ import java.awt.geom.Point2D;
 
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PActivity;
 import edu.umd.cs.piccolo.activities.PActivity.PActivityDelegate;
@@ -276,4 +277,29 @@ public final class NodeUtil {
         }
     }
 
+    /**
+     * Advancement of {@link PNode#getGlobalBounds()} respecting the current clip that may be set to
+     * a non-root {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.<br>
+     * <br>
+     * It is used in {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController
+     * DiagramController#isVisible(de.cau.cs.kieler.core.kgraph.KGraphElement)}, for example.
+     * 
+     * @param node
+     *            the {@link PNode} to compute the bounds for
+     * @param clipNode
+     *            the INode the diagram is currently clipped to (for convenience)
+     * @return <code>node's</code> global bounds relative to the current clip
+     */
+    public static PBounds clipRelativeGlobalBoundsOf(final PNode node, final INode clipNode) {
+        final PBounds nodeBounds = node.getBounds();
+        PNode p = node;
+        while (p != null && p.getParent() != null) {
+            p.localToParent(nodeBounds);
+            if (p == clipNode) {
+                break;
+            }
+            p = p.getParent();
+        }
+        return nodeBounds;
+    }
 }

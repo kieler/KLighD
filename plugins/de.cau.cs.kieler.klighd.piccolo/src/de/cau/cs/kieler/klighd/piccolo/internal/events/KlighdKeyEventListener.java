@@ -36,8 +36,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  */
 public class KlighdKeyEventListener implements KeyListener {
 
-    private static final boolean OS_MACOSX = Platform.getOS().equals(Platform.OS_MACOSX);
-    
+    static final boolean OS_MACOSX = Platform.getOS().equals(Platform.OS_MACOSX);
+
     private KlighdCanvas canvas = null;
     
     /**

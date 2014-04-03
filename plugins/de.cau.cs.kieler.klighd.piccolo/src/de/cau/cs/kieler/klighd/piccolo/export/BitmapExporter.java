@@ -59,18 +59,20 @@ public class BitmapExporter extends KlighdCanvasExporter {
             final boolean cameraViewport, final int scale, final boolean textAsShapes,
             final boolean embedFonts, final String subFormatId) {
 
-        // default format is bmp
-        int format = SWT.IMAGE_BMP;
+        final int format;
         if (subFormatId.equals(SUB_FORMAT_JPEG)) {
             format = SWT.IMAGE_JPEG;
         } else if (subFormatId.equals(SUB_FORMAT_PNG)) {
             format = SWT.IMAGE_PNG;
+        } else {
+            // default format is bmp
+            format = SWT.IMAGE_BMP;
         }
 
-        PCamera camera = canvas.getCamera();
+        final PCamera camera = canvas.getCamera();
 
         // create the target image and a linked graphics context
-        PBounds bounds;
+        final PBounds bounds;
         if (cameraViewport) {
             bounds = camera.getFullBounds();
         } else {
@@ -79,20 +81,20 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
         // construct an affine transform for applying the scale factor
         // and apply it to the camera's bounds
-        PAffineTransform transform = new PAffineTransform();
+        final PAffineTransform transform = new PAffineTransform();
         transform.scale(scale, scale);
         transform.transform(bounds, bounds);
 
         // reveal the size and respect the indentation imposed by x/y on both sides
         // in order to avoid clippings of root figure drawings
-        int width = (int) (bounds.width + 2 * bounds.x);
-        int height = (int) (bounds.height + 2 * bounds.y);
+        final int width = (int) (bounds.width + 2 * bounds.x);
+        final int height = (int) (bounds.height + 2 * bounds.y);
 
         // let Piccolo render onto a image GC
-        Image image = new Image(canvas.getDisplay(), width, height);
-        GC gc = new GC(image);
+        final Image image = new Image(canvas.getDisplay(), width, height);
+        final GC gc = new GC(image);
 
-        PPaintContext paintContext =
+        final PPaintContext paintContext =
                 new PPaintContext(new KlighdSWTGraphicsImpl(gc, canvas.getDisplay()));
 
         // apply scaling translation to the paint context, too, for actually scaling the diagram
@@ -106,7 +108,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
         paintContext.popTransform(transform);
 
         // create an image loader to save the image
-        ImageLoader loader = new ImageLoader();
+        final ImageLoader loader = new ImageLoader();
         loader.data = new ImageData[] { image.getImageData() };
         loader.save(stream, format);
         
@@ -118,9 +120,11 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
     @SuppressWarnings("unchecked")
     private static void fullPaintLayers(final PPaintContext paintContext, final PCamera camera) {
+        paintContext.pushCamera(camera);
         for (PLayer layer : (List<PLayer>) camera.getLayersReference()) {
             layer.fullPaint(paintContext);
         }
+        paintContext.popCamera();
     }
 
 }

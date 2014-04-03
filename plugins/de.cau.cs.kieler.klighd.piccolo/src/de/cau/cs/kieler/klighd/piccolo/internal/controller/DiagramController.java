@@ -51,6 +51,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -324,7 +325,7 @@ public class DiagramController {
      * Provides the visibility state of the given diagram element, assuming the parent
      * {@link KGraphElement} is visible. A recursive invisibility check along the containment
      * hierarchy is omitted for performance reasons. Thus, given nested diagram nodes A contains
-     * B contains C with B collapsed this method may return <code>true</code> for C.
+     * B contains C with A collapsed this method may return <code>true</code> for C.
      * 
      * @param diagramElement
      *            a {@link KGraphElement}
@@ -332,9 +333,17 @@ public class DiagramController {
      *         visible, <code>false</code> otherwise.
      */
     public boolean isVisible(final KGraphElement diagramElement) {
-        final PNode p = (PNode) RenderingContextData.get(diagramElement).getProperty(REP);
+        PNode p = (PNode) RenderingContextData.get(diagramElement).getProperty(REP);
+        if (p == topNode) {
+            return true;
+        } else if (p == null || p.getParent() == null) {
+            return false;
+        }
+
+        final INode clip = getClipNode();
         final PBounds camBounds = canvasCamera.getViewBounds();
-        return p != null && p.getParent() != null && p.getGlobalFullBounds().intersects(camBounds);
+        final PBounds elemFullBounds = NodeUtil.clipRelativeGlobalBoundsOf(p, clip);
+        return elemFullBounds.intersects(camBounds);
     }
 
     /**
@@ -394,13 +403,17 @@ public class DiagramController {
         }
     }
     
+    private INode getClipNode() {
+        return canvasCamera.getDisplayedINode();
+    }
+    
     /**
      * Provides the currently set diagram clip.
      * 
      * @return the {@link KNode} that is currently clipped.
      */
     public KNode getClip() {
-        final INode node = canvasCamera.getDisplayedINode();
+        final INode node = getClipNode();
         return node.getGraphElement();
     }
 
@@ -633,7 +646,7 @@ public class DiagramController {
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
             if (parentRep != null) {
-                addNode((KNodeNode) parentRep, (KNode) element);
+                addNode((INode) parentRep, (KNode) element);
             }
             break;
         case KGraphPackage.KPORT:
@@ -1327,7 +1340,7 @@ public class DiagramController {
         final KEdge edge = edgeRep.getGraphElement();
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
-            final KRendering rendering = edge.getData(KRendering.class);
+            KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
             final boolean renderedAsPolyline = rendering instanceof KPolyline
                     && !(rendering instanceof KSpline);
             

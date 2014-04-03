@@ -16,6 +16,12 @@ package de.cau.cs.kieler.core.krendering.extensions;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.Scopes;
+
+import de.cau.cs.kieler.core.krendering.ViewSynthesisShared;
+
 /**
  * Activator of the core.krendering.extensions bundle.
  *  We'll see whether we need it in future.
@@ -47,4 +53,35 @@ public class KRenderingExtensionsPlugin extends Plugin {
         KRenderingExtensionsPlugin.context = null;
     }
 
+    /**
+     * Convenience method providing a Guice configuration {@link Module} that binds the
+     * {@link ViewSynthesisShared} annotation to the generally available {@link Scopes#SINGLETON}
+     * scope.
+     * 
+     * @return the desired {@link Module}
+     */
+    public static Module createSingletonScopeBindingModule() {
+        final Module result = new Module() {
+            public void configure(final Binder binder) {
+                binder.bindScope(ViewSynthesisShared.class, Scopes.SINGLETON);
+            }
+        };
+        return result;
+    }
+
+    /**
+     * Convenience method providing a Guice configuration {@link Module} that binds the
+     * {@link ViewSynthesisShared} annotation to the generally available {@link Scopes#NO_SCOPE}
+     * scope. This configuration basically deactivates the scoping feature.
+     * 
+     * @return the desired {@link Module}
+     */
+    public static Module createNoScopeBindingModule() {
+        final Module result = new Module() {
+            public void configure(final Binder binder) {
+                binder.bindScope(ViewSynthesisShared.class, Scopes.NO_SCOPE);
+            }
+        };
+        return result;
+    }
 }

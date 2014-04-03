@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.math.KVectorChain;
@@ -63,7 +64,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
         super.notifyChanged(notification);
 
         final KEdge edge = edgeRep.getGraphElement();
-        final KRendering rendering = edge.getData(KRendering.class);
+        final KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
         final boolean renderedAsPolyline =
                 rendering instanceof KPolyline && !(rendering instanceof KSpline);
         

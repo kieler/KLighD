@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Resource;
@@ -32,9 +35,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -49,6 +50,7 @@ import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -79,6 +81,8 @@ public final class DiagramSideBar {
     
     /** Constant value denoting 100%. */
     private static final int FULL = 100;
+    
+    private final boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
     
     /** The layout configurator that stores the values set by the layout option controls. */
     private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
@@ -112,7 +116,7 @@ public final class DiagramSideBar {
      * workbenchPart's right side. Its kept as an attribute in order to avoid the re-initialization
      * of the side bar's size in case a different model has been assigned to the current view.
      */
-    private int horizontalPos = -INITIAL_OPTIONS_FORM_WIDTH;
+    private int horizontalPos = initiallyExpanded ? -INITIAL_OPTIONS_FORM_WIDTH : -SASH_WIDTH;
     
     /**
      * Hidden constructor.
@@ -156,6 +160,7 @@ public final class DiagramSideBar {
      */
     private DiagramSideBar initialize(final Composite diagramContainer,
             final ViewContext viewContext) {
+        // SUPPRESS CHECKSTYLE PREVIOUS 2 Length -- UI stuff is lengthy :-(
         sideBarParent.setLayout(new FormLayout());
         
         // for easier managing the visibility of the side bar's collapse/expand arrows
@@ -172,7 +177,6 @@ public final class DiagramSideBar {
         resources.add(rightArrow);
         rightArrowLabel.setImage(rightArrow);
         rightArrowLabel.setVisible(true);
-        arrowLabelContainerLayout.topControl = rightArrowLabel;
 
         // create the left arrow for expanding the options pane
         final Label leftArrowLabel = new Label(arrowsContainer, SWT.NONE);
@@ -180,13 +184,17 @@ public final class DiagramSideBar {
         resources.add(leftArrow);
         leftArrowLabel.setImage(leftArrow);
         leftArrowLabel.setVisible(true);
-        
+
+        // depending on the preference of initially expanding or collapsing the side bar
+        //  let the corresponding symbol be visible
+        arrowLabelContainerLayout.topControl = initiallyExpanded ? rightArrowLabel : leftArrowLabel;
+
         // create the sash for resizing the options pane
         final Sash sash = new Sash(sideBarParent, SWT.VERTICAL);
         sideBarControls.add(sash);
         sash.addPaintListener(new LinePainter());
         sash.setVisible(false);
-        
+
         optionsformToolkit = new FormToolkit(sideBarParent.getDisplay());
 
         final ScrolledForm formRootScroller = optionsformToolkit.createScrolledForm(sideBarParent);
@@ -232,7 +240,11 @@ public final class DiagramSideBar {
         arrowsContainerLayoutData.left = new FormAttachment(diagramContainer); 
         arrowsContainerLayoutData.right = new FormAttachment(formRootScroller);
         arrowsContainer.setLayoutData(arrowsContainerLayoutData);
-        
+
+        // initially put the sash outside its parent composite's visible area
+        //  right next to that widget's right border (i.e. at 100% of its width)
+        // if the side bar is to be shown later on, a negative absolute offset
+        //  will be configured on the 'left' form attachment 
         sashLayoutData = new FormData();
         sashLayoutData.top = new FormAttachment(arrowsContainer);
         sashLayoutData.bottom = new FormAttachment(FULL);
@@ -262,8 +274,8 @@ public final class DiagramSideBar {
         layoutOptionsForm.setLayoutData(layoutOptionsFormLayoutData);
 
         // register the sash moving handler for resizing the options pane
-        sash.addListener(SWT.Selection, new Listener() {
-            public void handleEvent(final Event event) {
+        sash.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent event) {
                 final int maxDiagSize = sideBarParent.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
                 if (maxDiagSize > event.x) {
                     sashLayoutData.left.numerator = FULL;
@@ -281,7 +293,9 @@ public final class DiagramSideBar {
         });
         
         // a "pseudo" field ;-)
-        final int[] lastXpos = new int[] { 0 };
+        // the initialization with #INITIAL_OPTIONS_FORM_WIDTH is required for proper expansion
+        //  in case the side bar is initially to be collapsed
+        final int[] lastXpos = new int[] { INITIAL_OPTIONS_FORM_WIDTH };
         
         // register actions for the collapse / expand labels
         rightArrowLabel.addMouseListener(new MouseAdapter() {
@@ -348,18 +362,27 @@ public final class DiagramSideBar {
         
         boolean layoutOptionsAvailable = false;
         for (Pair<IProperty<?>, List<?>> pair : recommendedOptions) {
-            IProperty<?> first = pair.getFirst();
-            Collection<?> second = pair.getSecond();
+            final Object first;
+            final Object second;
+            if (pair.getSecond() instanceof Collection) {
+                final Iterator<?> it = ((Collection<?>) pair.getSecond()).iterator();
+                first = it.hasNext() ? it.next() : null;
+                second = it.hasNext() ? it.next() : null;
+            } else {
+                first = null;
+                second = null;
+            }
             
             if (first instanceof Number && second instanceof Number) {
                 layoutOptionControlFactory.createControl(pair.getFirst().getId(),
                         ((Number) first).floatValue(), ((Number) second).floatValue());
                 layoutOptionsAvailable = true;
-            } else if (first == null && second == null) {
+            } else if (pair.getSecond() == null) {
                 layoutOptionControlFactory.createControl(pair.getFirst().getId());
                 layoutOptionsAvailable = true;
             } else {
-                layoutOptionControlFactory.createControl(pair.getFirst().getId(), second);
+                layoutOptionControlFactory.createControl(pair.getFirst().getId(),
+                        pair.getSecond());
                 layoutOptionsAvailable = true;
             }
         }

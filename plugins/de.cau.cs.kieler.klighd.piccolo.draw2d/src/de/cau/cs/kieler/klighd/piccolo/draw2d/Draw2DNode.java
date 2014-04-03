@@ -229,7 +229,7 @@ public class Draw2DNode extends KCustomFigureNode {
         } catch (Throwable throwable) {
             final String msg =
                     "KLighD: Error occurred while drawing the diagram figure "
-                            + this.figure.getClass().getName();
+                            + this.figure.getChildren().get(0).getClass().getName();
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, throwable),
                     StatusManager.LOG);

@@ -13,24 +13,24 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
-import javax.inject.Inject
-import java.util.List
-
 import de.cau.cs.kieler.core.krendering.KArc
 import de.cau.cs.kieler.core.krendering.KChildArea
 import de.cau.cs.kieler.core.krendering.KContainerRendering
-import de.cau.cs.kieler.core.krendering.KPolyline
-import de.cau.cs.kieler.core.krendering.KRectangle
-import de.cau.cs.kieler.core.krendering.KRenderingFactory
-import de.cau.cs.kieler.core.krendering.KPolygon
+import de.cau.cs.kieler.core.krendering.KCustomRendering
+import de.cau.cs.kieler.core.krendering.KEllipse
 import de.cau.cs.kieler.core.krendering.KGridPlacement
 import de.cau.cs.kieler.core.krendering.KImage
+import de.cau.cs.kieler.core.krendering.KPolygon
+import de.cau.cs.kieler.core.krendering.KPolyline
 import de.cau.cs.kieler.core.krendering.KPosition
-import de.cau.cs.kieler.core.krendering.KRoundedRectangle
+import de.cau.cs.kieler.core.krendering.KRectangle
 import de.cau.cs.kieler.core.krendering.KRendering
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
+import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 import de.cau.cs.kieler.core.krendering.KText
-import de.cau.cs.kieler.core.krendering.KEllipse
 import de.cau.cs.kieler.core.krendering.LineJoin
+import java.util.List
+import javax.inject.Inject
 
 /**
  * @author chsch, alb
@@ -151,6 +151,19 @@ class KContainerRenderingExtensions {
             cr.children += it;
             it.imageObject = imageObj
         ];
+    }
+
+    def KCustomRendering addCustomRendering(KContainerRendering cr) {
+        return createKCustomRendering => [
+            cr.children += it;
+        ]
+    }
+
+    def KCustomRendering addCustomRendering(KContainerRendering cr, Object figureObject) {
+        return createKCustomRendering => [
+            cr.children += it;
+            it.figureObject = figureObject;
+        ]
     }
 
     /**

@@ -128,8 +128,13 @@ public final class ExpansionAwareLayoutOption {
          * @return the related property value
          */
         public <T> T getValue(final IProperty<T> property, final boolean expanded) {
-            return expanded ? expandedValues.getProperty(property) : collapsedValues
-                    .getProperty(property);
+            // MapPropertyHolder.getProperty(IProperty) is not used by intention,
+            //  in order to avoid the return of the property's default value!
+            // That would prevent evaluation of further layout configs
+            @SuppressWarnings("unchecked")
+            T res = expanded ? (T) expandedValues.getAllProperties().get(property)
+                            : (T) collapsedValues.getAllProperties().get(property);
+            return res;
         }
         
         /**

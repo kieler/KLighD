@@ -28,7 +28,22 @@ import java.util.Map
 import javax.inject.Inject
 
 /**
- * @author chsch, alb, ssm
+ * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
+ * <br>
+ * In order to employ them beyond KLighD diagram syntheses you best declare a field of type
+ * {@link KNodeExtensions} in your class and annotate it with {@link javax.inject.Inject Inject}.<br>
+ * <br>
+ * Make sure to bind the {@link ViewSynthesisShared} annotation in the employed
+ * {@link com.google.inject.Injector Injector} to a {@link com.google.inject.Scope}, e.g. by calling
+ * {@code Guice.createInjector(KRenderingExtensionsPlugin.createSingletonScopeBindingModule());} or 
+ * {@code Guice.createInjector(KRenderingExtensionsPlugin.createNoScopeBindingModule());}.<br>
+ * <br>
+ * By means of that {@link com.google.inject.Injector Injector} you may get a new instance of your class,
+ * or you may inject the above mentioned attribute within instances of your class, e.g. by calling
+ * {@code injector.injectMembers(this)} in the constructor of your class.
+ * 
+ * @author chsch
+ * @author ssm
  * 
  * @containsExtensions
  */
