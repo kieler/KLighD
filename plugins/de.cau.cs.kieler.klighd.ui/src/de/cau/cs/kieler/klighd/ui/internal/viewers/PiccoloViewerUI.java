@@ -391,9 +391,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 element = null;
             }
 
-            if ((kText == null || !kText.isCursorSelectable())) {
+            if ((kText == null || !kText.isCursorSelectable()) || (textinput.getSelectionCount() > 0)) {
                 // set input widget invisible if mouse is not over a text element
-                if (!textinput.getEditable()) {
+                if (!textinput.getEditable() && !(textinput.getSelectionCount() > 0)) {
                     textinput.setVisible(false);
                 }
                 return;
