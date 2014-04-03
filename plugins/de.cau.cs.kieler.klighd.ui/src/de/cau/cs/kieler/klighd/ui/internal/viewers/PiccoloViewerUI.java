@@ -172,6 +172,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             public void selectionChanged(final SelectionChangedEvent event) {
                 textinputlistener.handleEvent(null);
                 textinput.setEditable(false);
+                textinput.setSelection(0, 0);
                 textinput.setVisible(false);
             }
         };
