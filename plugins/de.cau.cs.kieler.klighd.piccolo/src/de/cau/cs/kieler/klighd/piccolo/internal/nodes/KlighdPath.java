@@ -187,6 +187,9 @@ public class KlighdPath extends PNode implements IResourceEmployer {
      *            the desired {@link LineAttributes} record.
      */
     public void setLineAttributes(final LineAttributes theLineAttributes) {
+        if (theLineAttributes == null || theLineAttributes.equals(this.lineAttributes)) {
+            return;
+        }
         this.lineAttributes = theLineAttributes;
         this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
                 lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
@@ -211,6 +214,9 @@ public class KlighdPath extends PNode implements IResourceEmployer {
      *            the line width
      */
     public void setLineWidth(final float width) {
+        if (width == this.lineAttributes.width) {
+            return;
+        }
         this.lineAttributes.width = width;
         this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
                 lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
