@@ -27,6 +27,7 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
@@ -35,7 +36,9 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
+import edu.umd.cs.piccolo.util.PAffineTransform;
 
 // CHECKSTYLEOFF Javadoc|MagicNumber
 
@@ -97,6 +100,57 @@ public class KlighdTest {
         return next;
     }
 
+    @Test
+    public void layoutTest() {
+        KlighdMainCamera camera = new KlighdMainCamera();
+        PRoot pRoot = new PRoot();
+        pRoot.addChild(camera);
+        KNode root = KimlUtil.createInitializedNode();
+        KLabel l = KimlUtil.createInitializedLabel(root);
+        l.setText("rootnode");
+        KNode next = makeTestGraph(root);
+        KPort nextport = this.addport(next);
+        KLabel nextlabel = next.getLabels().get(0);
+        // create a controller for the graph
+        DiagramController controller = new DiagramController(root, camera, true);
+
+        // node layout
+        KShapeLayout nodelayout = next.getData(KShapeLayout.class);
+        nodelayout.setPos(12, 32);
+        nodelayout.setSize(40, 40);
+        // port layout
+        KShapeLayout portlayout = nextport.getData(KShapeLayout.class);
+        portlayout.setPos(6, 7);
+        portlayout.setSize(5, 5);
+        // label layout
+        KShapeLayout labellayout = nextlabel.getData(KShapeLayout.class);
+        labellayout.setPos(2, 3);
+        labellayout.setSize(4, 5);
+
+        INode node = controller.getNode();
+        PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
+        PNode pnext = nodeLayer.getChild(0);
+        PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
+        PNode pport = portlayer.getChild(3);
+        PLayer labellayer = ((KNodeNode) pnext).getLabelLayer();
+        PNode plabel = labellayer.getChild(0);
+
+        PAffineTransform porttransform = pport.getTransform();
+        PAffineTransform labeltransform = plabel.getTransform();
+        PAffineTransform nodetransform = pnext.getTransform();
+
+        Assert.assertTrue(nodetransform.getTranslateX() == 12
+                && nodetransform.getTranslateY() == 32);
+        Assert.assertTrue(pnext.getBounds().height == 40 && pnext.getBounds().width == 40);
+
+        Assert.assertTrue(labeltransform.getTranslateX() == 2
+                && labeltransform.getTranslateY() == 3);
+        Assert.assertTrue(plabel.getBounds().height == 5 && plabel.getBounds().width == 4);
+
+        Assert.assertTrue(porttransform.getTranslateX() == 6 && porttransform.getTranslateY() == 7);
+        Assert.assertTrue(pport.getBounds().height == 5 && pport.getBounds().width == 5);
+    }
+
     /**
      * Test for checking if all kgraph elements are also existing in the pgraph.
      */
@@ -123,7 +177,6 @@ public class KlighdTest {
         KlighdMainCamera camera = new KlighdMainCamera();
         PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
-
         KNode root = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
@@ -156,7 +209,7 @@ public class KlighdTest {
         INode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
-    
+
     /**
      * Test if all adapters are added correctly.
      */
@@ -199,7 +252,7 @@ public class KlighdTest {
         controller.getNode();
         Assert.assertTrue(checkAdapters(child));
     }
-    
+
     /**
      * Test if all adapters are added correctly.
      */
@@ -216,35 +269,18 @@ public class KlighdTest {
         KNode child = makeTestGraph(root);
         controller.collapse(child);
         KNode cc = this.addchild(child);
-       // this.addport(cc);
-       // this.addport(cc);
+        this.addport(cc);
+        this.addport(cc);
         // create a controller for the graph
         controller.getNode();
-        Assert.assertTrue(checkAdaptersCollapsed(child));
+        Assert.assertTrue(checkAdaptersCollapsed(cc));
     }
-    
-    /**
-     * Check if adapters are correctly applied in case of collapsed nodes. i.e.: collapsed node looses
-     * ChildSyncAdapter, its children have no adapters installed.
-     * @param kgraph the kgraph to check
-     * @return true if all adapters are applied correctly
-     */
-    private boolean checkAdaptersCollapsedChildren(final KNode kgraph) {
-        List<Adapter> nodeadapters = kgraph.eAdapters();
-        if (nodeadapters.size() != 1) {
-            return false;
-        }
-        for (KNode child: kgraph.getChildren()) {
-            if (!checkAdaptersCollapsedChildren(child)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
+
     /**
      * Check recursively if given KNode has the correct adapters installed for a collapsed node.
-     * @param kgraph the model whoose adapters to check
+     * 
+     * @param kgraph
+     *            the model whoose adapters to check
      * @return false if not all adapters set.
      */
     private boolean checkAdaptersCollapsed(final KNode kgraph) {
@@ -252,26 +288,29 @@ public class KlighdTest {
         if (nodeadapters.size() != 5) {
             return false;
         }
-        if (nodeadapters.get(0) == null || 
-                !Iterables.any(nodeadapters, this.getCondition("KGEShapeLayoutPNodeUpdater")) ||
-                !Iterables.any(nodeadapters, this.getCondition("EdgeSyncAdapter")) ||
-                !Iterables.any(nodeadapters, this.getCondition("PortSyncAdapter")) ||
-                !Iterables.any(nodeadapters, this.getCondition("LabelSyncAdapter"))) {
+        if (Iterables.any(nodeadapters,
+                this.getCondition("AbstractKGERenderingController$ElementAdapter"))
+                || !Iterables.any(nodeadapters, this.getCondition("KGEShapeLayoutPNodeUpdater"))
+                || !Iterables.any(nodeadapters, this.getCondition("EdgeSyncAdapter"))
+                || !Iterables.any(nodeadapters, this.getCondition("PortSyncAdapter"))
+                || !Iterables.any(nodeadapters, this.getCondition("LabelSyncAdapter"))) {
             return false;
         }
-        
-      //check recursively for children
-        for (KNode child: kgraph.getChildren()) {
-            if (!checkAdaptersCollapsedChildren(child)) {
+
+        // check recursively for children
+        for (KNode child : kgraph.getChildren()) {
+            if (!checkAdapters(child)) {
                 return false;
             }
         }
         return true;
     }
-    
+
     /**
      * Generate a predicate that checks if an adapters classname matches the given string.
-     * @param name The string thats supposed to be the class name of the adapter.
+     * 
+     * @param name
+     *            The string thats supposed to be the class name of the adapter.
      * @return true if name matches classname
      */
     private Predicate<Adapter> getCondition(final String name) {
@@ -280,13 +319,15 @@ public class KlighdTest {
                 // TODO Auto-generated method stub
                 return arg0.getClass().getSimpleName().equals(name);
             }
-            
+
         };
     }
-    
+
     /**
      * Check recursively if given KNode has all its adapters added correctly.
-     * @param kgraph the model whoose adapters to check
+     * 
+     * @param kgraph
+     *            the model whoose adapters to check
      * @return false if not all adapters set.
      */
     private boolean checkAdapters(final KNode kgraph) {
@@ -294,53 +335,63 @@ public class KlighdTest {
         if (nodeadapters.size() != 6) {
             return false;
         }
-        
-        //check adapters on node
-        if (nodeadapters.get(0) == null || !Iterables.any(nodeadapters, this.getCondition("ChildrenSyncAdapter")) || 
-                !Iterables.any(nodeadapters, this.getCondition("KGEShapeLayoutPNodeUpdater")) ||
-                !Iterables.any(nodeadapters, this.getCondition("EdgeSyncAdapter")) ||
-                !Iterables.any(nodeadapters, this.getCondition("PortSyncAdapter")) ||
-                !Iterables.any(nodeadapters, this.getCondition("LabelSyncAdapter"))) {
+
+        // check adapters on node
+        if (Iterables.any(nodeadapters,
+                this.getCondition("AbstractKGERenderingController$ElementAdapter"))
+                || !Iterables.any(nodeadapters, this.getCondition("ChildrenSyncAdapter"))
+                || !Iterables.any(nodeadapters, this.getCondition("KGEShapeLayoutPNodeUpdater"))
+                || !Iterables.any(nodeadapters, this.getCondition("EdgeSyncAdapter"))
+                || !Iterables.any(nodeadapters, this.getCondition("PortSyncAdapter"))
+                || !Iterables.any(nodeadapters, this.getCondition("LabelSyncAdapter"))) {
             return false;
         }
-        
-        //check adapters on ports
-        for (KPort p: kgraph.getPorts()) {
+
+        // check adapters on ports
+        for (KPort p : kgraph.getPorts()) {
             List<Adapter> portadapters = p.eAdapters();
-            if (portadapters.get(0) == null || !Iterables.any(portadapters, this.getCondition("KGEShapeLayoutPNodeUpdater")) || 
-                    !Iterables.any(portadapters, this.getCondition("LabelSyncAdapter"))) {
+            if (Iterables.any(nodeadapters,
+                    this.getCondition("AbstractKGERenderingController$ElementAdapter"))
+                    || !Iterables
+                            .any(portadapters, this.getCondition("KGEShapeLayoutPNodeUpdater"))
+                    || !Iterables.any(portadapters, this.getCondition("LabelSyncAdapter"))) {
                 return false;
             }
         }
-        //check adapters on labels
-        for (KLabel l: kgraph.getLabels()) {
+        // check adapters on labels
+        for (KLabel l : kgraph.getLabels()) {
             List<Adapter> labeladapters = l.eAdapters();
-            if (labeladapters.get(0) == null || !Iterables.any(labeladapters, this.getCondition("KGEShapeLayoutPNodeUpdater")) || 
-                    !Iterables.any(labeladapters, this.getCondition("TextSyncAdapter"))) {
+            if (Iterables.any(nodeadapters,
+                    this.getCondition("AbstractKGERenderingController$ElementAdapter"))
+                    || !Iterables.any(labeladapters,
+                            this.getCondition("KGEShapeLayoutPNodeUpdater"))
+                    || !Iterables.any(labeladapters, this.getCondition("TextSyncAdapter"))) {
                 return false;
             }
         }
-        
-        //check adapters on edges
-        for (KEdge e: kgraph.getOutgoingEdges()) {
+
+        // check adapters on edges
+        for (KEdge e : kgraph.getOutgoingEdges()) {
             List<Adapter> edgeadapters = e.eAdapters();
-            if (edgeadapters.get(0) == null || !Iterables.any(edgeadapters, this.getCondition("KEdgeLayoutEdgeNodeUpdater")) || 
-                    !Iterables.any(edgeadapters, this.getCondition("LabelSyncAdapter"))) {
+            if (Iterables.any(nodeadapters,
+                    this.getCondition("AbstractKGERenderingController$ElementAdapter"))
+                    || !Iterables
+                            .any(edgeadapters, this.getCondition("KEdgeLayoutEdgeNodeUpdater"))
+                    || !Iterables.any(edgeadapters, this.getCondition("LabelSyncAdapter"))) {
                 return false;
             }
-       
-            
+
         }
-        
-        //check recursively for children
-        for (KNode child: kgraph.getChildren()) {
+
+        // check recursively for children
+        for (KNode child : kgraph.getChildren()) {
             if (!checkAdapters(child)) {
                 return false;
             }
         }
         return true;
     }
-    
+
     /**
      * Recusively check if every given element of the input kgraph is also present in the Piccolo
      * structure.
@@ -465,7 +516,7 @@ public class KlighdTest {
     private KNode addchild(final KNode node) {
         KNode child = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(child);
-        l.setText(node.toString() + "child" + node.getLabels().size());
+        l.setText(node.toString() + "child" + node.getChildren().size());
         // child.getLabels().add(l);
         node.getChildren().add(child);
         return child;

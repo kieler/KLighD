@@ -33,6 +33,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -171,6 +172,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             public void selectionChanged(final SelectionChangedEvent event) {
                 textinputlistener.handleEvent(null);
                 textinput.setEditable(false);
+                textinput.setSelection(0, 0);
                 textinput.setVisible(false);
             }
         };
@@ -391,9 +393,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 element = null;
             }
 
-            if ((kText == null || !kText.isCursorSelectable())) {
+            if ((kText == null || !kText.isCursorSelectable()) || (textinput.getSelectionCount() > 0)) {
                 // set input widget invisible if mouse is not over a text element
-                if (!textinput.getEditable()) {
+                if (!textinput.getEditable() && !(textinput.getSelectionCount() > 0)) {
                     textinput.setVisible(false);
                 }
                 return;
@@ -415,8 +417,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
             fd.setHeight((int) Math
                     .round((styledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas()
                             .getCamera().getViewScale())));
-            textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             textinput.setFont(new Font(textinput.getDisplay(), fd));
+            textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+            Rectangle r = textinput.getBounds();
+            Rectangle c = textinput.getClientArea();
 
             // determine text color
             Color textColor = new Color(textinput.getDisplay(), styledText.getPenColor());

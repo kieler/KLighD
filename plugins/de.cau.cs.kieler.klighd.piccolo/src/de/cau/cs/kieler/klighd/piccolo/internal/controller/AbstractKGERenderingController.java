@@ -379,27 +379,35 @@ public abstract class AbstractKGERenderingController
      * This on is sensitive to additions, exchanges, and removals of {@link KRendering} data.
      */
     private void registerElementAdapter() {
-        elementAdapter = new AdapterImpl() {
-            public void notifyChanged(final Notification msg) {
-                if (msg.getFeatureID(KGraphElement.class) == KGraphPackage.KGRAPH_ELEMENT__DATA) {
-                    switch (msg.getEventType()) {
-                    case Notification.ADD:
-                    case Notification.ADD_MANY:
-                    case Notification.REMOVE:
-                    case Notification.REMOVE_MANY:
-                        final KRendering rendering = element.getData(KRendering.class);
-                        if (rendering != currentRendering) {
-                            // a rendering has been added or removed
-                            scheduleRenderingUpdate();
-                        }
-                        break;
-                    default:
-                        break;
+        elementAdapter = new ElementAdapter();
+        element.eAdapters().add(elementAdapter);
+    }
+    
+    /**
+     * An adapter on the graph element to react on changes in its graph data feature.
+     * This on is sensitive to additions, exchanges, and removals of {@link KRendering} data.
+     * 
+     * @author chsch
+     */
+    private class ElementAdapter extends AdapterImpl {
+        public void notifyChanged(final Notification msg) {
+            if (msg.getFeatureID(KGraphElement.class) == KGraphPackage.KGRAPH_ELEMENT__DATA) {
+                switch (msg.getEventType()) {
+                case Notification.ADD:
+                case Notification.ADD_MANY:
+                case Notification.REMOVE:
+                case Notification.REMOVE_MANY:
+                    final KRendering rendering = element.getData(KRendering.class);
+                    if (rendering != currentRendering) {
+                        // a rendering has been added or removed
+                        scheduleRenderingUpdate();
                     }
+                    break;
+                default:
+                    break;
                 }
             }
-        };
-        element.eAdapters().add(elementAdapter);
+        }
     }
 
     /**
