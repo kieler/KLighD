@@ -45,7 +45,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
 
     /** property denoting a desired side bar handling. */
     public static final IProperty<SideBarHandling> REQUESTED_SIDE_BAR_HANDLING =
-            new Property<SideBarHandling>("", SideBarHandling.UNDEFINED);
+            new Property<SideBarHandling>("klighd.sideBarHandling", SideBarHandling.UNDEFINED);
 
     /**
      * Defines the possible diagram side bar initialization options. 
