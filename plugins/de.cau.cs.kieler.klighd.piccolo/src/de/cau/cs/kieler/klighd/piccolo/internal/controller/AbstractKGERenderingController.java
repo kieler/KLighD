@@ -68,6 +68,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
@@ -331,6 +332,9 @@ public abstract class AbstractKGERenderingController
         if (renderingNode != null) {
             removeListeners(renderingNode);
             renderingNode.removeFromParent();
+            
+            // dispose the SWT Resources employed by the out-dated pnodes
+            NodeDisposeListener.disposePNode(renderingNode);
             renderingNode = null;
         }
 
