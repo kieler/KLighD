@@ -225,8 +225,11 @@ public class ViewContext extends MapPropertyHolder {
         
         if (viewerProvider == null) {
             viewerProvider = Iterables.getFirst(data.getAvailableViewerProviders(), null);
-            
         }
+        
+        // copy the properties from propertyHolder into 'this', e.g. in order to provide them to
+        //  to the diagram synthesis
+        this.copyProperties(propertyHolder);
         
         return this;
     }
