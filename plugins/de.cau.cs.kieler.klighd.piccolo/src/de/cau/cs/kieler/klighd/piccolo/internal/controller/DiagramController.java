@@ -77,6 +77,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
@@ -854,7 +855,10 @@ public class DiagramController {
         // remove the node representation from the containing child area
         nodeNode.removeFromParent();
         RenderingContextData.get(node).setProperty(KlighdInternalProperties.ACTIVE, false);
-        
+
+        // recursively dispose all attached SWT Resources
+        NodeDisposeListener.disposePNode(nodeNode);
+
         if (releaseControllers) {
             // detach the synchronization adapters
             ModelingUtil.removeAdapters(node, NODE_ADAPTERS);
@@ -979,7 +983,10 @@ public class DiagramController {
         // remove the edge representation from the containing child area
         edgeNode.removeFromParent();
         RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, false);
-        
+
+        // recursively dispose all attached SWT Resources
+        NodeDisposeListener.disposePNode(edgeNode);
+
         // due to #removeNode() this method might be performed multiple times so: 
         if (releaseControllers && edgeNode.getRenderingController() != null) {
             // detach the synchronization adapters
@@ -1078,6 +1085,9 @@ public class DiagramController {
         // remove the port representation from the containing node
         portNode.removeFromParent();
         RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, false);
+
+        // recursively dispose all attached SWT Resources
+        NodeDisposeListener.disposePNode(portNode);
 
         if (releaseControllers) {
             // detach the synchronization adapters
@@ -1185,6 +1195,9 @@ public class DiagramController {
         // remove the label representation from the containing node
         labelNode.removeFromParent();
         RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, false);
+
+        // recursively dispose all attached SWT Resources
+        NodeDisposeListener.disposePNode(labelNode);
 
         if (releaseControllers) {
             // detach the synchronization adapters
