@@ -39,7 +39,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNode> {
+public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphElement<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
     
@@ -87,8 +87,8 @@ public class KNodeNode extends PLayer implements INode, ILabeledGraphElement<KNo
 
         this.node = node;
         this.parent = parent;
-        this.portLayer = new PLayer();
-        this.labelLayer = new PLayer();
+        this.portLayer = new KDisposingLayer();
+        this.labelLayer = new KDisposingLayer();
         this.childArea = new KChildAreaNode(this);
         
         this.childAreaCamera = new PCamera();

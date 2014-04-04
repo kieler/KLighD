@@ -28,7 +28,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KChildAreaNode extends PLayer {
+public class KChildAreaNode extends KDisposingLayer {
 
     private static final long serialVersionUID = -403773990520864787L;
     
@@ -61,9 +61,9 @@ public class KChildAreaNode extends PLayer {
         super();
         this.setPickable(false);
 
-        this.nodeLayer = new PLayer();
+        this.nodeLayer = new KDisposingLayer();
         super.addChild(nodeLayer);
-        this.edgeLayer = new PLayer();
+        this.edgeLayer = new KDisposingLayer();
         super.addChild(edgeLayer);
     }
 
