@@ -63,7 +63,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * <ul>
  * <li>the business model (input model) that is to be shown,</li>
  * <li>the source workbench part the business model stems from,</li>
- * <li>the transformations that are involved in creating the diagram,</li>
+ * <li>the diagram synthesis that is in charge of creating the view model,</li>
  * <li>the update strategy that is to be applied in case of diagram updates,</li>
  * <li>the resulting view model describing the diagram,</li>
  * <li>the {@link IViewerProvider} that wraps the instantiation of the viewer being used</li>
@@ -366,8 +366,12 @@ public class ViewContext extends MapPropertyHolder {
             this.updateStrategy.update(this.viewModel, newViewModel, this);
         }
         
-        
         this.businessModel = sourceModel;
+
+        final KNode clipNode = this.getProperty(KlighdProperties.CLIP);
+        if (clipNode != null && this.getViewer() != null) {            
+            this.getViewer().clip(clipNode);
+        }
     }
 
     /**
