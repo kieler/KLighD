@@ -374,6 +374,11 @@ public class DiagramController {
         add(diagramElement, true);
     }
     
+    private static final String INVALID_CLIP_NODE_ERROR_MSG =
+            "KLighD: Diagram shall be clipped to KNode XX that is (currently) not depicted in the"
+            + " diagram right now. Make sure that it is contained by expanding its full parent"
+            + " node hierarchy and/or calling IViewer.show(XX);";
+
     /**
      * Limits the visible elements of the diagram to the content of the given {@link KNode} without
      * causing any change on the view model. Hence, this method can be used for changing the
@@ -388,11 +393,23 @@ public class DiagramController {
         final IGraphElement<KNode> node =
                 (diagramElement == null) ? topNode : getRepresentation(diagramElement);
         
-        final INode currentRootNode = canvasCamera.getDisplayedINode();
-        if (currentRootNode != node) {
-            canvasCamera.exchangeDisplayedNode((INode) node);
-            zoomController.setFocusNode(diagramElement);
+        if (node == null) {
+            throw new RuntimeException(INVALID_CLIP_NODE_ERROR_MSG.replace("XX",
+                    diagramElement.toString()));
         }
+
+        final INode currentRootNode = canvasCamera.getDisplayedINode();
+        if (currentRootNode == node) {
+            return;
+        }
+
+        if (((PNode) node).getRoot() == null) {
+            throw new RuntimeException(INVALID_CLIP_NODE_ERROR_MSG.replace("XX",
+                    diagramElement.toString()));
+        }
+
+        canvasCamera.exchangeDisplayedNode((INode) node);
+        zoomController.setFocusNode(diagramElement);
     }
     
     private INode getClipNode() {
