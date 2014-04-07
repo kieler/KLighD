@@ -80,12 +80,35 @@ public final class KlighdProperties {
     
     /**
      * Property indicating the auto expansion of a node if the value is true.<br>
-     * This is property is currently to be attached to the nodes shape layout data during the view
+     * This property is currently to be attached to the node's shape layout data during the view
      * synthesis process. If it is absent the node gets expanded, anyway.
      */
     public static final IProperty<Boolean> EXPAND = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.expand", true);
+    
+    /**
+     * Property indicating the auto incorporation of a
+     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} (kge) into the corresponding
+     * diagram if the value is true.<br>
+     * This property is currently to be attached to the kge's
+     * {@link de.cau.cs.kieler.kiml.klayoutdata.KLayoutData } data during the view synthesis process.
+     * If it is absent the kge is incorporated, anyway.
+     */
+    public static final IProperty<Boolean> SHOW = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.show", true);
 
+    /**
+     * Property indicating the initialization of the diagram clip to the corresponding node if the
+     * value is true.<br>
+     * This property is currently to be attached to the node's shape layout data during the view
+     * synthesis process. If must be set to at most 1 {@link de.cau.cs.kieler.core.kgraph.KNode
+     * KNode} in the diagram's view model. If that condition is violated, the last
+     * {@link de.cau.cs.kieler.core.kgraph.KNode KNode} being evaluated with the property value of
+     * <code>true</code> will be the winner.
+     */
+    public static final IProperty<Boolean> CLIP = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.clip", false);
+    
     /**
      * Property providing a URI to semantic elements to be depicted but that are to be loaded lazily.
      * This is property is currently to be attached to the nodes shape layout data during the view
