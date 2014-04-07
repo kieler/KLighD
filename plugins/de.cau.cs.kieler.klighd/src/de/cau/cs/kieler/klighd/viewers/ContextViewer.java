@@ -676,11 +676,13 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
 
         createSelection(toBeSelected);
     }
-    
+
     /**
-     * A.
+     * Updates the selection provided by <code>this</code> {@link ContextViewer} and notifies the
+     * registered {@link ISelectionChangedListener ISelectionChangedListeners}.
      * 
-     * @param elements a
+     * @param elements
+     *            the elements contained in the updated selection
      */
     protected void createSelection(final Collection<EObject> elements) {
         // update the selection status for the ISelectionProvider interface
@@ -709,8 +711,12 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     private void notifySelectionListeners(final KlighdTreeSelection theSelection) {
         this.selection = theSelection;
         synchronized (selectionListeners) {
-            for (ISelectionChangedListener listener : selectionListeners) {
-                listener.selectionChanged(new SelectionChangedEvent(this, theSelection));
+            if (!selectionListeners.isEmpty()) {
+                final SelectionChangedEvent event = new SelectionChangedEvent(this, theSelection);
+
+                for (ISelectionChangedListener listener : selectionListeners) {
+                    listener.selectionChanged(event);
+                }
             }
         }
     }
@@ -738,13 +744,18 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      * {@inheritDoc}
      */
     public void addSelectionChangedListener(final ISelectionChangedListener listener) {
-        selectionListeners.add(listener);
+        synchronized (selectionListeners) {
+            selectionListeners.add(listener);
+            listener.selectionChanged(new SelectionChangedEvent(this, selection));
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
-        selectionListeners.remove(listener);
+        synchronized (selectionListeners) {
+            selectionListeners.remove(listener);
+        }
     }
 }
