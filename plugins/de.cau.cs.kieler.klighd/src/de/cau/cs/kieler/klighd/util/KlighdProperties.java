@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.util;
 
 import org.eclipse.emf.common.util.URI;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -98,17 +99,14 @@ public final class KlighdProperties {
             "de.cau.cs.kieler.klighd.show", true);
 
     /**
-     * Property indicating the initialization of the diagram clip to the corresponding node if the
-     * value is true.<br>
-     * This property is currently to be attached to the node's shape layout data during the view
-     * synthesis process. If must be set to at most 1 {@link de.cau.cs.kieler.core.kgraph.KNode
-     * KNode} in the diagram's view model. If that condition is violated, the last
-     * {@link de.cau.cs.kieler.core.kgraph.KNode KNode} being evaluated with the property value of
-     * <code>true</code> will be the winner.
+     * Property indicating the initialization of the diagram clip to the associated node (property
+     * value).<br>
+     * This property is to be attached to the {@link de.cau.cs.kieler.klighd.ViewContext
+     * ViewContext} being used during the view synthesis process.
      */
-    public static final IProperty<Boolean> CLIP = new Property<Boolean>(
-            "de.cau.cs.kieler.klighd.clip", false);
-    
+    public static final IProperty<KNode> CLIP = new Property<KNode>(
+            "de.cau.cs.kieler.klighd.clip");
+
     /**
      * Property providing a URI to semantic elements to be depicted but that are to be loaded lazily.
      * This is property is currently to be attached to the nodes shape layout data during the view
