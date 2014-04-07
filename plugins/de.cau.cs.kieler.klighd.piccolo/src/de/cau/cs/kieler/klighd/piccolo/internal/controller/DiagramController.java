@@ -694,12 +694,13 @@ public class DiagramController {
 
 
     /**
-     * A.
+     * Filter predicate returning <code>true</code> for those <code>kge</code>'s whose corresponding
+     * KlighdProperties.SHOW property value evaluates to <code>true</code>, <code>false</code> else.
      */
     private static final Predicate<KGraphElement> NON_HIDDEN_KGE_FILTER = 
             new Predicate<KGraphElement>() {
-        public boolean apply(final KGraphElement edge) {
-            final KGraphData data = edge.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
+        public boolean apply(final KGraphElement kge) {
+            final KGraphData data = kge.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
             return data.getProperty(KlighdProperties.SHOW);
         }
     };
