@@ -34,6 +34,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyValueProxy;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.core.util.Maybe;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
 import de.cau.cs.kieler.kiml.config.IMutableLayoutConfig;
@@ -161,20 +162,32 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(EclipseLayoutConfig.ASPECT_RATIO)) {
                 // get aspect ratio for the current diagram
-                try {
-                    IViewer<?> contextViewer = getContextViewer(context);
-                    if (contextViewer != null) {
-                        Control control = contextViewer.getControl();
-                        if (control != null) {
-                            Point size = control.getSize();
-                            if (size.x > 0 && size.y > 0) {
-                                return Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
-                                        / ASPECT_RATIO_ROUND;
+                IViewer<?> contextViewer = getContextViewer(context);
+                if (contextViewer != null) {
+                    final Control control = contextViewer.getControl();
+                    if (control != null) {
+                        final Maybe<Float> result = new Maybe<Float>();
+                        Runnable runnable = new Runnable() {
+                            public void run() {
+                                try {
+                                    Point size = control.getSize();
+                                    if (size.x > 0 && size.y > 0) {
+                                        result.set(Math.round(
+                                                ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                                                / ASPECT_RATIO_ROUND);
+                                    }
+                                } catch (SWTException exception) {
+                                    // ignore exception
+                                }
                             }
+                        };
+                        if (control.getDisplay() == Display.getCurrent()) {
+                            runnable.run();
+                        } else {
+                            control.getDisplay().syncExec(runnable);
                         }
+                        return result.get();
                     }
-                } catch (SWTException exception) {
-                    // ignore exception
                 }
                 
             } else if (property.equals(DefaultLayoutConfig.CONTENT_HINT)) {
