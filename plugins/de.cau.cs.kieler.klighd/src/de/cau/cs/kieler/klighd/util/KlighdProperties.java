@@ -119,7 +119,7 @@ public final class KlighdProperties {
      * node is not pickable in a KLighD diagram. Can be used to mask auxiliary encapsulating nodes.
      */
     public static final IProperty<Boolean> KLIGHD_SELECTION_UNPICKABLE = new Property<Boolean>(
-            "klighd.selection.unpickable");
+            "klighd.selection.unpickable", false);
 
     /**
      * A pre-defined property to be used for handing over an {@link RunnableWithResult} to the
