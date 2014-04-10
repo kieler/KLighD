@@ -30,22 +30,27 @@ import de.cau.cs.kieler.core.krendering.KRoundedRectangle
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.LineJoin
 import java.util.List
-import javax.inject.Inject
 
 /**
+ * This class contains lots of convenient helper functions for composing & configuring
+ * KRendering-based view models. In order to be consistent with the further extension classes
+ * the extension methods are non-static ones requiring this class to be instantiated. Since this
+ * class doesn't declare any fields (i.e. required memory) except the reference of further extensions
+ * classes the instantiation should not be a problem. The instantiation may be done directly by calling
+ * 'new KContainerRenderingExtensions()' or by delegating that to a dependency injection framework.<br>
+ * <br>
+ * NOTE: Do NOT introduce <i>create extensions</i> or other continuous memory in that class!
+ * 
  * @author chsch, alb
  * 
  * @containsExtensions
  */
 class KContainerRenderingExtensions {
 
-   extension KRenderingFactory = KRenderingFactory::eINSTANCE
+    extension KRenderingFactory = KRenderingFactory::eINSTANCE
     
-    @Inject
-    extension KRenderingExtensions;
-    
-    @Inject
-    extension KColorExtensions;
+    extension KRenderingExtensions = new KRenderingExtensions();    
+    extension KColorExtensions = new KColorExtensions;
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////                    KContainerRenderings
