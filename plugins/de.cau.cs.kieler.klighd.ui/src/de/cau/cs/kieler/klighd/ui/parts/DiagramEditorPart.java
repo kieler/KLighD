@@ -187,10 +187,27 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 // determined. The async call here hopefully assures this.
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
+                        final Control control = viewer.getControl();
+                        
+                        // In case of the editor initialization at start of the tool (due
+                        //  to foregoing tool exit without closing the editor)
+                        // and some startup logic closing all "leftover" editor parts
+                        //  the viewer's control (the canvas) may have been disposed in the
+                        //  meantime of schedule this runnable and executing it.
+                        // Thus check disposition here, and for cautiousness below, too.
+                        // (further Display activities may be schedule during the layout run
+                        //  while waiting for the layouters to finish).
+                        if (control.isDisposed()) {
+                            return;
+                        }
+                        
                         LightDiagramServices.layoutDiagram(viewContext, false, false);
+
+                        if (control.isDisposed()) {
+                            return;
+                        }
                         
                         // now the editor's and outline page's canvas can be set visible
-                        final Control control = viewer.getControl();
                         control.setVisible(true);
                         if (toBeFocussed) {
                             toBeFocussed = false;
