@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
@@ -84,7 +85,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     /**
      * SWT text element that acts as an overlay for labels in some situations.
      */
-    private Text textinput;
+    private StyledText textinput;
 
     /**
      * Listens to text inputs and applies changes accordingly.
@@ -160,7 +161,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      *            the viewer to which to add the text widget
      */
     private void addTextInput(final ContextViewer parentViewer) {
-        textinput = new Text(this.getCanvas(), SWT.MULTI);
+        textinput = new StyledText(this.getCanvas(), SWT.MULTI);
         textinput.addListener(SWT.MouseUp, new Listener() {
             public void handleEvent(final Event event) {
                 // textinput.setSize(textinput.getSize().x + 50, textinput.getSize().y);
@@ -414,13 +415,13 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
             // determine font data (i.e. font size)
             FontData fd = new FontData(styledText.getFontData().toString());
-            fd.setHeight((int) Math
-                    .round((styledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas()
-                            .getCamera().getViewScale())));
+            //fd.height = (float) (styledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas().getCamera().getViewScale());
+            float height = (float) (styledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas()
+                            .getCamera().getViewScale());
+            //fd = FontData.win32_new(fd.data, height);               
+            fd.setHeight(Math.round(height));
             textinput.setFont(new Font(textinput.getDisplay(), fd));
             textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-            Rectangle r = textinput.getBounds();
-            Rectangle c = textinput.getClientArea();
 
             // determine text color
             Color textColor = new Color(textinput.getDisplay(), styledText.getPenColor());
