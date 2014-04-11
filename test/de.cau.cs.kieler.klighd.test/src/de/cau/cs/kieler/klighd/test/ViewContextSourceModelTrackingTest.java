@@ -95,6 +95,42 @@ public class ViewContextSourceModelTrackingTest {
 
 
     /**
+     * Tests the initialization of the {@link SourceModelTrackingAdapter}'s maps if an instance is
+     * attached to a given KGraph network.
+     */
+    @Test
+    public void test00() {
+        final Object elementB = new Object();
+        final KNode nodeB = KimlUtil.createInitializedNode();        
+        nodeB.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementB);
+        
+        final Object elementA = new Object();
+        final KNode nodeA = KimlUtil.createInitializedNode();
+        nodeA.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementA);
+        nodeA.getChildren().add(nodeB);
+
+        final KNode root = KimlUtil.createInitializedNode();
+        root.getChildren().add(nodeA);
+        
+        final SourceModelTrackingAdapter adapter = new SourceModelTrackingAdapter();
+        root.eAdapters().add(adapter);
+        
+        Assert.assertSame(elementB, adapter.getSourceElement(nodeB));
+        Assert.assertSame(nodeB, Iterables.getFirst(adapter.getTargetElements(elementB), null));
+        
+        Assert.assertSame(elementA, adapter.getSourceElement(nodeA));
+        Assert.assertSame(nodeA, Iterables.getFirst(adapter.getTargetElements(elementA), null));
+        
+        root.getChildren().clear();
+        
+        Assert.assertNull(adapter.getSourceElement(nodeA));
+        Assert.assertNull(adapter.getSourceElement(nodeB));
+        
+        root.eAdapters().remove(adapter);
+    }
+
+
+    /**
      * A.
      */
     @Test

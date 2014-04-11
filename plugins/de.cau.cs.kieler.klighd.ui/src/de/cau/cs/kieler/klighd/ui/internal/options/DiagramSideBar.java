@@ -55,6 +55,7 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * Builds up the diagram side bar containing the controls for configuring diagram synthesis and
@@ -82,7 +83,7 @@ public final class DiagramSideBar {
     /** Constant value denoting 100%. */
     private static final int FULL = 100;
     
-    private final boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
+    private boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
     
     /** The layout configurator that stores the values set by the layout option controls. */
     private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
@@ -161,6 +162,21 @@ public final class DiagramSideBar {
     private DiagramSideBar initialize(final Composite diagramContainer,
             final ViewContext viewContext) {
         // SUPPRESS CHECKSTYLE PREVIOUS 2 Length -- UI stuff is lengthy :-(
+        
+        // in addition to the side bar initialization preference setting
+        //  a diagram specific configuration shall be possible; thus...
+        switch (viewContext.getProperty(KlighdSynthesisProperties.REQUESTED_SIDE_BAR_HANDLING)) {
+        case UNDEFINED:
+            break;
+        case EXPAND: 
+            initiallyExpanded = true;
+            horizontalPos = -INITIAL_OPTIONS_FORM_WIDTH;
+            break;
+        case COLLAPSE:
+            initiallyExpanded = false;
+            horizontalPos = -SASH_WIDTH;
+        }
+        
         sideBarParent.setLayout(new FormLayout());
         
         // for easier managing the visibility of the side bar's collapse/expand arrows

@@ -25,6 +25,7 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
@@ -50,7 +51,16 @@ import edu.umd.cs.piccolo.event.PInputEventListener;
  */
 public class KlighdActionEventHandler implements PInputEventListener {
 
+    /**
+     * Denotes the minimal time in ms to be elapsed between two consecutive mouse single click
+     * events. The aim of this filter is the avoidance of inconsistency failures due to consecutive
+     * action invocation a too short delay in between.
+     */
+    private static final int SINGLE_CLICK_DELAY = 100;
+    
     private PiccoloViewer viewer = null;
+    
+    private long lastMouseUpTime = 0;
     
     /**
      * Constructor.
@@ -98,7 +108,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
         if (rendering == null) {
             // in case no KRendering has been found,
-            //  check whether top node has been picked
+            //  check whether the top node has been picked
 
             if (inputEvent.getPickedNode() instanceof KNodeTopNode) {
 
@@ -129,6 +139,19 @@ public class KlighdActionEventHandler implements PInputEventListener {
         for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
             if (!action.getTrigger().equals(me.getTrigger()) || !guardsMatch(action, me)) {
                 continue;
+            }
+            
+            if (action.getTrigger() == Trigger.SINGLECLICK) {
+                // if the trigger is a single click event and the time elapsed since the previous
+                //  one is less than SINGLE_CLICK_DELAY stop the evaluation completely
+                //  as we simply assume that no other action is associated with that rendering  
+                long time = System.currentTimeMillis();
+                if (time - lastMouseUpTime < SINGLE_CLICK_DELAY) {
+                    break;
+                } else {
+                    // otherwise keep the current time and go on
+                    lastMouseUpTime = time;
+                }
             }
             
             final IAction actionImpl =

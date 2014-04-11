@@ -23,9 +23,6 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Device;
@@ -37,7 +34,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import edu.umd.cs.piccolo.PNode;
@@ -74,7 +71,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * 
  * @author chsch, mri
  */
-public class KlighdPath extends PNode {
+public class KlighdPath extends PNode implements IResourceEmployer {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
@@ -129,24 +126,10 @@ public class KlighdPath extends PNode {
      * Creates an empty {@link KlighdPath}.
      */
     public KlighdPath() {
-        final PropertyChangeListener disposeListener = new PropertyChangeListener() {
-            public void propertyChange(final PropertyChangeEvent event) {
-                if (event.getNewValue() == null) {
-                    disposeSWTPath();
-                    
-                    @SuppressWarnings("unchecked")
-                    final List<PNode> children = KlighdPath.this.getChildrenReference();
-                    for (PNode p : children) {
-                        p.firePropertyChange(NodeUtil.DISPOSE_CODE, NodeUtil.DISPOSE, this, null);
-                    }
-                }
-            }
-        };
-        this.addPropertyChangeListener(PROPERTY_PARENT, disposeListener);
-        this.addPropertyChangeListener(NodeUtil.DISPOSE, disposeListener);
+        this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
         // reacting on event of PROPERTY_BOUNDS seems to be not necessary as that will lead to
         //  a call of one of the 'setPathTo...' methods below that in turn will lead to a call of
-        //  'updateShape', which calls 'disposeSWTPath', too!
+        //  'updateShape', which calls 'disposeSWTResource', too!
     }
 
     /**
@@ -204,6 +187,9 @@ public class KlighdPath extends PNode {
      *            the desired {@link LineAttributes} record.
      */
     public void setLineAttributes(final LineAttributes theLineAttributes) {
+        if (theLineAttributes == null || theLineAttributes.equals(this.lineAttributes)) {
+            return;
+        }
         this.lineAttributes = theLineAttributes;
         this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
                 lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
@@ -228,6 +214,9 @@ public class KlighdPath extends PNode {
      *            the line width
      */
     public void setLineWidth(final float width) {
+        if (width == this.lineAttributes.width) {
+            return;
+        }
         this.lineAttributes.width = width;
         this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
                 lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
@@ -474,7 +463,7 @@ public class KlighdPath extends PNode {
      * @author chsch
      */
     private void updateShape() {
-        disposeSWTPath();
+        disposeSWTResource();
 
         if (isLine() || isPolygon) {
             shape = origShape;
@@ -718,7 +707,7 @@ public class KlighdPath extends PNode {
      * to tidy up the native drawing objects, which have been created while constructing
      * {@link #shapePath}. (see {@link Path#Path(Device)} for details)
      */
-    private void disposeSWTPath() {
+    public void disposeSWTResource() {
         if (this.shapePath != null) {
             this.shapePath.dispose();
             this.shapePath = null;

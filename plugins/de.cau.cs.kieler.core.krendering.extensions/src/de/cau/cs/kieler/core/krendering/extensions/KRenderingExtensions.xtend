@@ -65,8 +65,15 @@ import de.cau.cs.kieler.core.krendering.VerticalAlignment
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 
 /**
- * This utility class contains various methods that are convenient while composing KRendering data.
- * It does not claim to be complete ;-).
+/**
+ * This class contains lots of convenient helper functions for configuring KRendering-based view models, 
+ * and it does not claim to be complete ;-).<br>
+ * In order to be consistent with the further extension classes the extension methods are non-static
+ * ones requiring this class to be instantiated. Since this class doesn't declare any fields (i.e.
+ * required memory) the instantiation should not be a problem. The instantiation may be done directly
+ * by calling 'new KRenderingExtensions()' or by delegating that to a dependency injection framework.<br>
+ * <br>
+ * NOTE: Do NOT introduce <i>create extensions</i> or other continuous memory in that class!
  * 
  * @containsExtensions
  */

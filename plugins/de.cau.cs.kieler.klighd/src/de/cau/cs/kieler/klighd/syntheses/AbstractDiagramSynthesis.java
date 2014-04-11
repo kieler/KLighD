@@ -17,8 +17,10 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Function;
 import org.eclipse.emf.ecore.EObject;
+
+import com.google.common.base.Function;
+
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
@@ -306,7 +308,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
 
     // ---------------------------------------------------------------------------------- //
-    //  Recommended layout option handling    
+    //  Hook allowing to register additional ILayoutConfigs for
+    //   those in a row with the default one    
 
     /**
      * {@inheritDoc}
@@ -317,7 +320,54 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
 
     // ---------------------------------------------------------------------------------- //
-    //  Convenience methods to be used in concrete implementations   
+    //  Hook for registering model update functions being used for transferring
+    //   name & label updates back to the application/business/semantic model
+
+    /**
+     * {@inheritDoc}
+     */
+    public Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element) {
+        return null;
+    }
+
+
+    // ---------------------------------------------------------------------------------- //
+    //  Convenience methods to be used in concrete implementations
+
+    /**
+     * Convenience method for setting the initially applied diagram clip node.<br>
+     * Refers to {@link #getUsedContext()} for determining the {@link ViewContext} to perform this
+     * definition and delegates to {@link #initiallyClipTo(ViewContext, KNode)}.
+     * 
+     * @param node
+     *            the initial diagram clip node
+     * @return <code>node</code> for convenience
+     */
+    protected final KNode initiallyClipTo(final KNode node) {
+        return setInitialClipTo(getUsedContext(), node);
+    }
+
+
+    private static final String NO_VIEWCONTEXT_ERROR_MSG =
+            "KLighD: Failed to set the initial diagram clip in XX: No ViewContext is available.";
+
+    /**
+     * Convenience method for setting the initially applied diagram clip node.
+     * 
+     * @param viewContext
+     *            the {@link ViewContext} to perform this definition in
+     * @param node
+     *            the initial diagram clip node
+     * @return <code>node</code> for convenience
+     */
+    protected final KNode setInitialClipTo(final ViewContext viewContext, final KNode node) {
+        if (viewContext != null) {
+            return DiagramSyntheses.initiallyClipTo(viewContext, node);
+        } else {
+            throw new RuntimeException(NO_VIEWCONTEXT_ERROR_MSG.replace("XX", getClass().getName()));
+        }
+    }
+
 
     /**
      * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
@@ -335,7 +385,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *            the option value
      * @return <code>node</code> allowing to perform multiple operations on it in one statement
      */
-    protected <R extends KGraphElement, T> R setLayoutOption(final R element,
+    protected final <R extends KGraphElement, T> R setLayoutOption(final R element,
             final IProperty<T> option, final T value) {
         element.getData(KLayoutData.class).setProperty(option, value);
         return element;
@@ -358,7 +408,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *            the value in case <code>node</code> is expanded
      * @return <code>node</code> allowing to perform multiple operations on it in one statement
      */
-    protected <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
+    protected final <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
         final KLayoutData sl = node.getData(KLayoutData.class);
         if (sl != null) {
@@ -385,8 +435,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      *            the value in case <code>port</code>'s container node is expanded
      * @return <code>node</code> allowing to perform multiple operations on it in one statement
      */
-    protected <T> KPort setExpansionAwareLayoutOption(final KPort port, final IProperty<T> option,
-            final T collapsedValue, final T expandedValue) {
+    protected final <T> KPort setExpansionAwareLayoutOption(final KPort port,
+            final IProperty<T> option, final T collapsedValue, final T expandedValue) {
         final KLayoutData sl = port.getData(KLayoutData.class); 
         ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
         
@@ -399,25 +449,18 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
                 
         return port;
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element) {
-        return null;
-    }
-    
+
     /**
      * Initializes the transformation run.
      * Currently, just keeps the context to be used
      * (allowing to neglect it in the concrete transformation methods).
      * Initializes the transformation run. Currently, just keeps the context to be used (allowing to
-     * neglect it in the concrete transformation methods).
+     * neglect it in the concrete transformation methods' interfaces (parameters)).
      * 
      * @param viewContext
      *            the context to be used during the current run
      */
-    protected void use(final ViewContext viewContext) {
+    private void use(final ViewContext viewContext) {
         this.currentContext = viewContext;
     }
     

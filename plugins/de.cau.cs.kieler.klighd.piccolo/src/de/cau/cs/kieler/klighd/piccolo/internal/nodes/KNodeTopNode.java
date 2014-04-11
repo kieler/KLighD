@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
-import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
@@ -25,7 +24,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeTopNode extends PLayer implements INode {
+public class KNodeTopNode extends KDisposingLayer implements INode {
 
     private static final long serialVersionUID = 8395163186723344696L;
 

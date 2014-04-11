@@ -42,6 +42,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -187,10 +188,27 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 // determined. The async call here hopefully assures this.
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
+                        final Control control = viewer.getControl();
+                        
+                        // In case of the editor initialization at start of the tool (due
+                        //  to foregoing tool exit without closing the editor)
+                        // and some startup logic closing all "leftover" editor parts
+                        //  the viewer's control (the canvas) may have been disposed in the
+                        //  meantime of schedule this runnable and executing it.
+                        // Thus check disposition here, and for cautiousness below, too.
+                        // (further Display activities may be schedule during the layout run
+                        //  while waiting for the layouters to finish).
+                        if (control.isDisposed()) {
+                            return;
+                        }
+                        
                         LightDiagramServices.layoutDiagram(viewContext, false, false);
+
+                        if (control.isDisposed()) {
+                            return;
+                        }
                         
                         // now the editor's and outline page's canvas can be set visible
-                        final Control control = viewer.getControl();
                         control.setVisible(true);
                         if (toBeFocussed) {
                             toBeFocussed = false;
@@ -696,15 +714,20 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      */
     private ControlListener diagramAreaListener = new ControlListener() {
 
+        /** The aspect ratio is rounded at two decimal places. */
+        private static final float ASPECT_RATIO_ROUND = 100;
+
+        private double oldAspectRatio = -1;
+
         public void controlResized(final ControlEvent e) {
             // assure that the composite's size is settled before we execute the layout
             if (KlighdPreferences.isZoomOnWorkbenchpartChange()) {
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
                         // if the part is not visible, no zoom is required
-                        if (!DiagramEditorPart.this.getViewer().getControl().isDisposed() 
+                        if (!DiagramEditorPart.this.getViewer().getControl().isDisposed()
                                 && DiagramEditorPart.this.getViewer().getControl().isVisible()) {
-                            LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
+                            zoomOrRelayout();
                         }
                     }
                 });
@@ -713,5 +736,32 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
         public void controlMoved(final ControlEvent e) {
         }
+
+        /**
+         * Some layouters (eg KlayLayered) might change the layout based on the aspect ratio of the
+         * canvas. Thus, when the aspect ratio passes 1 we re-layout the diagram instead of just
+         * triggering a re-zoom.
+         */
+        private void zoomOrRelayout() {
+            // it makes only sense to do something if we have a viewcontext, ie a viewmodel
+            if (getViewer().getViewContext() != null) {
+                // calculate the aspect ratio of the current canvas
+                Point size = getViewer().getControl().getSize();
+                if (size.x > 0 && size.y > 0) {
+                    Float aspectRatio =
+                            Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                                    / ASPECT_RATIO_ROUND;
+                    if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
+                            || (oldAspectRatio < 1 && aspectRatio > 1)) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
+                        oldAspectRatio = aspectRatio;
+                        return;
+                    }
+                }
+            }
+
+            LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
+        }
     };
+
 }

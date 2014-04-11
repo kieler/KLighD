@@ -31,18 +31,33 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
 
     private static final long serialVersionUID = -5635072164749313580L;
 
-    /** the property for a viewer provider. */
+    /** property denoting a desired viewer provider. */
     public static final IProperty<String> REQUESTED_VIEWER_PROVIDER = new Property<String>(
             "klighd.viewerProvider");
 
-    /** the property for a path of transformations (can contain gaps). */
+    /** property denoting a desired diagram synthesis. */
     public static final IProperty<String> REQUESTED_DIAGRAM_SYNTHESIS = new Property<String>(
             "klighd.synthesis");
 
-    /** the property for an update strategy. */
+    /** property denoting a desired update strategy. */
     public static final IProperty<String> REQUESTED_UPDATE_STRATEGY = new Property<String>(
             "klighd.updateStrategy");
-    
+
+    /** property denoting a desired side bar handling. */
+    public static final IProperty<SideBarHandling> REQUESTED_SIDE_BAR_HANDLING =
+            new Property<SideBarHandling>("klighd.sideBarHandling", SideBarHandling.UNDEFINED);
+
+    /**
+     * Defines the possible diagram side bar initialization options. 
+     */
+    public static enum SideBarHandling {
+        /** Forces the diagram viewer to show the side bar. */
+        EXPAND,
+        /** Forces the diagram viewer to hide the side bar. */
+        COLLAPSE,
+        /** The initialization of the side bar is done according to the related preference setting. */
+        UNDEFINED
+    }
 
     /**
      * Immutable singleton instance of {@link KlighdSynthesisProperties}.  
@@ -115,6 +130,27 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      */
     public KlighdSynthesisProperties useViewer(final String id) {
         this.setProperty(REQUESTED_VIEWER_PROVIDER, id);
+        return this;
+    }
+    
+    /**
+     * Configures the initial visibility of the diagram side bar in the diagram viewer to be opened.
+     * 
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties expandSideBar() {
+        this.setProperty(REQUESTED_SIDE_BAR_HANDLING, SideBarHandling.EXPAND);
+        return this;
+    }
+
+    /**
+     * Configures the initial invisibility of the diagram side bar in the diagram viewer to be
+     * opened.
+     * 
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties collapseSideBar() {
+        this.setProperty(REQUESTED_SIDE_BAR_HANDLING, SideBarHandling.COLLAPSE);
         return this;
     }
 }

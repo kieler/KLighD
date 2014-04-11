@@ -39,21 +39,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author chsch
  */
 public final class NodeUtil {
-    
-    /**
-     * A {@link PNode} property change event key indicating dispose
-     * {@link org.eclipse.swt.graphics.Device}-dependent SWT objects.
-     */
-    public static final String DISPOSE = "dispose";
-    
-    /**
-     * The property change event code related to {@link #DISPOSE} events.<br>
-     * It is set to zero since this code is only used for deciding whether to propagate such events
-     * to the parent nodes, too. This, however, is not necessary and even not valid in context of
-     * {@link #DISPOSE} events. (see {@link PNode#firePropertyChange(int, String, Object, Object)}
-     * for details).
-     */
-    public static final int DISPOSE_CODE = 0;
 
     /** the attribute key for the activity. */
     private static final Object ACTIVITY_KEY = "activity";
@@ -64,7 +49,7 @@ public final class NodeUtil {
     private NodeUtil() {
         // do nothing
     }
-    
+
     /**
      * Casts a custom {@link PNode} object that implements {@link IGraphElement} to
      * {@link IGraphElement}, the <b>type check is omitted for performance reasons</b>.

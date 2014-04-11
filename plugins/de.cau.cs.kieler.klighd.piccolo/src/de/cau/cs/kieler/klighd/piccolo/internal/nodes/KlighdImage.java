@@ -13,16 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.InputStream;
-import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -30,10 +27,10 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * A special {@link PNode} for integrating images in KLighD diagrams. The implementation is inspired
- * by that of {@link edu.umd.cs.piccolox.swt.PSWTImage}, some major differences wrt to design
+ * by that of {@link edu.umd.cs.piccolox.swt.PSWTImage}, some major differences wrt. design
  * requirements led to this new implementation. These differences involve the non-dependency to any
  * specific canvas implementation as well as to {@link org.eclipse.swt.widgets.Display Display}
- * being a specific {@link Device}.<br>
+ * being a specific {@link org.eclipse.swt.graphics.Device Device}.<br>
  * <br>
  * In contrast to {@link edu.umd.cs.piccolox.swt.PSWTImage} the bounds of nodes of this type are not
  * set while setting the image object to be displayed. Doing so results in flickering, at least
@@ -54,7 +51,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public class KlighdImage extends PNode {
+public class KlighdImage extends PNode implements IResourceEmployer {
 
     private static final long serialVersionUID = 7201328608113593385L;
     
@@ -63,6 +60,13 @@ public class KlighdImage extends PNode {
     // This is useful for efficient drawing on SWT and non-SWT-based canvases.
     private transient Image image;
     private transient ImageData imageData;
+    
+    /**
+     * Common private constructor.
+     */
+    private KlighdImage() {
+        this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+    }
 
     /**
      * Constructor.
@@ -70,8 +74,8 @@ public class KlighdImage extends PNode {
      *            image to be displayed by this {@link KlighdImage}
      */
     public KlighdImage(final Image image) {
+        this();
         setImage(image);
-        addDisposeListener();
     }
 
     /**
@@ -80,8 +84,8 @@ public class KlighdImage extends PNode {
      *            image to be displayed by this {@link KlighdImage}
      */
     public KlighdImage(final ImageData image) {
+        this();
         setImage(image);
-        addDisposeListener();
     }
 
     /**
@@ -90,36 +94,22 @@ public class KlighdImage extends PNode {
      *            stream providing the image, will be read and converted to an Image internally
      */
     public KlighdImage(final InputStream input) {
+        this();
         setImage(input);
-        addDisposeListener();
-    }
-    
-    /**
-     * Adds a lister to this node being in charge of disposing {@link #image} in case this node
-     * (or one of its parents) is removed from its parent, which basically means that this node
-     * has been removed.
-     */
-    private void addDisposeListener() {
-        final PropertyChangeListener disposeListener = new PropertyChangeListener() {
-            public void propertyChange(final PropertyChangeEvent event) {
-                if (event.getNewValue() == null) {
-                    if (event.getNewValue() == null && image != null) {
-                        image.dispose();
-                        image = null;
-                    }
-                    
-                    @SuppressWarnings("unchecked")
-                    final List<PNode> children = KlighdImage.this.getChildrenReference();
-                    for (PNode p : children) {
-                        p.firePropertyChange(NodeUtil.DISPOSE_CODE, NodeUtil.DISPOSE, this, null);
-                    }
-                }
-            }
-        };
-        this.addPropertyChangeListener(PNode.PROPERTY_PARENT, disposeListener);
-        this.addPropertyChangeListener(NodeUtil.DISPOSE, disposeListener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void disposeSWTResource() {
+        if (image != null) {
+            image.dispose();
+            image = null;
+        }
+        // Do not release 'imageData' here as a new Image may has to be
+        //  created based on them later on 
+    }
+    
     /**
      * Getter.
      * 

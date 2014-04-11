@@ -16,6 +16,8 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import org.eclipse.emf.ecore.EObject;
+
 import com.google.common.base.Predicate;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -27,7 +29,8 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
  * A graph data implementation for storing context information about elements in a
  * visualization of a KGraph with attached KRendering data.
  * 
- * @author mri, chsch (moved it here from klighd.piccolo to be referenced in layout and compare stuff)
+ * @author mri
+ * @author chsch (moved it here from klighd.piccolo to be referenced in layout and compare stuff)
  */
 public class RenderingContextData extends KGraphDataImpl {
 
@@ -47,7 +50,35 @@ public class RenderingContextData extends KGraphDataImpl {
         }
         return data;
     }
-    
+
+    /**
+     * Removes the (first) {@link RenderingContextData} instance from its container if any exists.
+     * 
+     * @param element
+     *            the element whose associated instance of {@link RenderingContextData} is to be
+     *            removed
+     */
+    public static void removeFrom(final KGraphElement element) {
+        if (element == null) {
+            return;
+        }
+
+        final RenderingContextData data = element.getData(RenderingContextData.class);
+        if (data != null) {
+            data.remove();
+        }
+    }
+
+    /**
+     * Removes <code>this</code> instance from its container.
+     */
+    public void remove() {
+        final EObject container = this.eContainer();
+        if (container != null) {
+            ((KGraphElement) container).getData().remove(this);
+        }
+    }
+
     /**
      * Returns true if <code>property</code> has been defined for <code>this</code> instance.
      * 
