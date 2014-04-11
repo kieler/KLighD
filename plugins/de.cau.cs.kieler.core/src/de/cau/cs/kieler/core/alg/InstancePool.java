@@ -29,9 +29,9 @@ public class InstancePool<T> {
     public static final int INFINITE = -1;
     
     /** the instance factory to use for this pool. */
-    private IFactory<T> factory;
+    private final IFactory<T> factory;
     /** the list of currently held instances. */
-    private LinkedList<T> instances = new LinkedList<T>();
+    private final LinkedList<T> instances = new LinkedList<T>();
     /** the configured instance limit. */
     private int limit;
     

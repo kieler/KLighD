@@ -32,7 +32,7 @@ public class BasicProgressMonitor implements IKielerProgressMonitor {
     /** indicates whether the monitor has been closed. */
     private boolean closed = false;
     /** list of child monitors. */
-    private List<IKielerProgressMonitor> children = new LinkedList<IKielerProgressMonitor>();
+    private final List<IKielerProgressMonitor> children = new LinkedList<IKielerProgressMonitor>();
     /**
      * the number of work units that will be consumed after completion of the
      * currently active child task.

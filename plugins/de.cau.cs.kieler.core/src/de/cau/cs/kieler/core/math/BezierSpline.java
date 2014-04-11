@@ -32,14 +32,7 @@ public class BezierSpline {
      * internal storage for all pieces, use LinkedList, as there usually is added an arbitrary
      * number of piecewise curves to the end.
      */
-    private LinkedList<BezierCurve> curves;
-
-    /**
-     * Default Constructor.
-     */
-    public BezierSpline() {
-        this.curves = new LinkedList<BezierCurve>();
-    }
+    private final LinkedList<BezierCurve> curves = new LinkedList<BezierCurve>();
 
     /**
      * Add a new piece of bezierCurve to the whole spline.

@@ -41,7 +41,7 @@ public class Property<T> implements IProperty<T>, Comparable<IProperty<?>> {
     };
     
     /** identifier of this property. */
-    private String id;
+    private final String id;
     /** the default value of this property. */
     private T defaultValue;
     /** the lower bound of this property. */
