@@ -27,6 +27,7 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -425,6 +426,11 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
      */
     private ControlListener diagramAreaListener = new ControlListener() {
 
+        /** The aspect ratio is rounded at two decimal places. */
+        private static final float ASPECT_RATIO_ROUND = 100;
+
+        private double oldAspectRatio = -1;
+        
         public void controlResized(final ControlEvent e) {
             if (KlighdPreferences.isZoomOnWorkbenchpartChange()) {
             // assure that the composite's size is settled before we execute the layout
@@ -432,7 +438,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
                     public void run() {
                         if (!DiagramViewPart.this.getViewer().getControl().isDisposed()
                                 && DiagramViewPart.this.getViewer().getControl().isVisible()) {
-                            LightDiagramServices.zoomDiagram(DiagramViewPart.this);
+                            zoomOrRelayout();
                         }
                     }
                 });
@@ -440,6 +446,32 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
         }
 
         public void controlMoved(final ControlEvent e) {
+        }
+        
+        /**
+         * Some layouters (eg KlayLayered) might change the layout based on the aspect ratio of the
+         * canvas. Thus, when the aspect ratio passes 1 we re-layout the diagram instead of just
+         * triggering a re-zoom.
+         */
+        private void zoomOrRelayout() {
+            // it makes only sense to do something if we have a viewcontext, ie a viewmodel
+            if (getViewer().getViewContext() != null) {
+                // calculate the aspect ratio of the current canvas
+                Point size = getViewer().getControl().getSize();
+                if (size.x > 0 && size.y > 0) {
+                    Float aspectRatio =
+                            Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                                    / ASPECT_RATIO_ROUND;
+                    if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
+                            || (oldAspectRatio < 1 && aspectRatio > 1)) {
+                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                        oldAspectRatio = aspectRatio;
+                        return;
+                    }
+                }
+            }
+
+            LightDiagramServices.zoomDiagram(DiagramViewPart.this);
         }
     };
 }
