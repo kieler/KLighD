@@ -23,6 +23,8 @@ import java.awt.geom.Point2D;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PActivity;
 import edu.umd.cs.piccolo.activities.PActivity.PActivityDelegate;
@@ -286,5 +288,35 @@ public final class NodeUtil {
             p = p.getParent();
         }
         return nodeBounds;
+    }
+    
+    /**
+     * Tests whether the given <code>node</code> is contained in the <code>camera</code>'s displayed
+     * {@link INode}'s children sub tree.
+     * 
+     * @param node
+     *            the PNode to be tested
+     * @param camera
+     *            the camera the test is based on
+     * @return <code>true</code> if node is contained in <code>camera</code>'s displayed
+     *         {@link INode}'s deep children, <code>false</code> otherwise.
+     */
+    public static boolean isDisplayed(final PNode node, final KlighdMainCamera camera) {
+        if (camera == null) {
+            throw new IllegalArgumentException(
+                    "KLighD: 'camera' in NodeUtil.isDisplayed(...) must not be 'null'");
+        }
+        final PLayer displayedLayer = camera.getDisplayedLayer();
+
+        PNode parent = node;
+        
+        while (parent != null) {
+            if (parent == displayedLayer) {
+                return true;
+            } else {
+                parent = parent.getParent();
+            }
+        }        
+        return false;
     }
 }
