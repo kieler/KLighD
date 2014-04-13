@@ -107,30 +107,83 @@ public interface IViewer<T> {
     /* ----------------------------- */
     
     /**
-     * Provides the visibility state of the given element's representation, assuming the parent of
-     * {@link Object}'s representative is visible. A recursive invisibility check along the
-     * containment hierarchy is omitted for performance reasons. Thus, given nested diagram nodes A
-     * contains B contains C with B collapsed this method may return <code>true</code> for C.
+     * Provides the displaying state of the given element's representing diagram element. A diagram
+     * element is said to be displayed if it is part of the currently depicted diagram
+     * <b>regardless</b> of the currently visible diagram excerpt (viewport).<br>
+     * <br>
+     * Note that a recursive displaying check along the containment hierarchy is done only if
+     * <code>checkContainment</code> is <code>true</code>. Otherwise that is omitted for performance
+     * reasons. Thus, given the nested diagram nodes A contains B contains C with A collapsed this
+     * method may return <code>true</code> for C if <code>checkContainment</code> is
+     * <code>false</code>.
      * 
      * @param semanticElement
-     *            being visualized by a {@link KGraphElement}
+     *            the domain element being visualized by a {@link KGraphElement}
+     * @param checkParents
+     *            whether the parent (containment) hierarchy is to be checked, too
      * @return <code>true</code> if the {@link KGraphElement} related to
      *         <code>semanticElement</code> is visible, <code>false</code> otherwise.
      */
-    boolean isVisible(Object semanticElement);
+    boolean isDisplayed(Object semanticElement, boolean checkParents);
     
     /**
-     * Provides the visibility state of the given diagram element, assuming the parent
-     * {@link KGraphElement} is visible. A recursive invisibility check along the containment
-     * hierarchy is omitted for performance reasons. Thus, given nested diagram nodes A contains B
-     * contains C with B collapsed this method may return <code>true</code> for C.
+     * Provides the displaying state of the given diagram element. A diagram element is said to be
+     * displayed if it is part of the currently depicted diagram <b>regardless</b> of the currently
+     * visible diagram excerpt (viewport).<br>
+     * <br>
+     * Note that a recursive displaying check along the containment hierarchy is done only if
+     * <code>checkContainment</code> is <code>true</code>. Otherwise that is omitted for performance
+     * reasons. Thus, given the nested diagram nodes A contains B contains C with A collapsed this
+     * method may return <code>true</code> for C if <code>checkContainment</code> is
+     * <code>false</code>.
      * 
      * @param diagramElement
      *            a {@link KGraphElement}
+     * @param checkParents
+     *            whether the parent (containment) hierarchy is to be checked, too
      * @return <code>true</code> if the {@link KGraphElement} <code>diagramElement</code> is
      *         visible, <code>false</code> otherwise.
      */
-    boolean isVisible(KGraphElement diagramElement);
+    boolean isDisplayed(KGraphElement diagramElement, boolean checkParents);
+     
+    /**
+     * Provides the visibility state of the given element's representing diagram element. A diagram
+     * element is said to be visible if it is drawn in the currently depicted diagram excerpt
+     * (viewport).<br>
+     * <br>
+     * Note that a recursive visibility check along the containment hierarchy is done only if
+     * <code>checkContainment</code> is <code>true</code>. Otherwise that is omitted for performance
+     * reasons. Thus, given the nested diagram nodes A contains B contains C with A collapsed this
+     * method may return <code>true</code> for C if <code>checkContainment</code> is
+     * <code>false</code>.
+     * 
+     * @param semanticElement
+     *            the domain element being visualized by a {@link KGraphElement}
+     * @param checkParents
+     *            whether the parent (containment) hierarchy is to be checked, too
+     * @return <code>true</code> if the {@link KGraphElement} related to
+     *         <code>semanticElement</code> is visible, <code>false</code> otherwise.
+     */
+    boolean isVisible(Object semanticElement, boolean checkParents);
+    
+    /**
+     * Provides the visibility state of the given diagram element. A diagram element is said to be
+     * visible if it is drawn in the currently depicted diagram excerpt (viewport).<br>
+     * <br>
+     * Note that a recursive visibility check along the containment hierarchy is done only if
+     * <code>checkContainment</code> is <code>true</code>. Otherwise that is omitted for performance
+     * reasons. Thus, given the nested diagram nodes A contains B contains C with A collapsed this
+     * method may return <code>true</code> for C if <code>checkContainment</code> is
+     * <code>false</code>.
+     * 
+     * @param diagramElement
+     *            a {@link KGraphElement}
+     * @param checkParents
+     *            whether the parent (containment) hierarchy is to be checked, too
+     * @return <code>true</code> if the {@link KGraphElement} <code>diagramElement</code> is
+     *         visible, <code>false</code> otherwise.
+     */
+    boolean isVisible(KGraphElement diagramElement, boolean checkParents);
      
     /**
      * Reveals the representation of the given semantic element over the specified duration.

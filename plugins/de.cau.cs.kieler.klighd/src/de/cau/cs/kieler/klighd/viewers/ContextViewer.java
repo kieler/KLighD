@@ -279,11 +279,11 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
-    public boolean isVisible(final Object semanticElement) {
+    public boolean isDisplayed(final Object semanticElement, final boolean checkParents) {
         final EObject diagramNode =
                 getViewContext().getTargetElement(semanticElement, KNode.class);
         if (diagramNode instanceof KGraphElement) {
-            return currentViewer.isVisible((KGraphElement) diagramNode);
+            return currentViewer.isDisplayed((KGraphElement) diagramNode, checkParents);
         } else {
             return false;
         }
@@ -292,8 +292,28 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
-    public boolean isVisible(final KGraphElement diagramElement) {
-        return this.currentViewer.isVisible(diagramElement);
+    public boolean isDisplayed(final KGraphElement diagramElement, final boolean checkParents) {
+        return this.currentViewer.isDisplayed(diagramElement, checkParents);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final Object semanticElement, final boolean checkParents) {
+        final EObject diagramNode =
+                getViewContext().getTargetElement(semanticElement, KNode.class);
+        if (diagramNode instanceof KGraphElement) {
+            return currentViewer.isVisible((KGraphElement) diagramNode, checkParents);
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final KGraphElement diagramElement, final boolean checkParents) {
+        return this.currentViewer.isVisible(diagramElement, checkParents);
     }
     
     /**

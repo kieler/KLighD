@@ -139,8 +139,15 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public boolean isVisible(final Object semanticElement) {
-        return getContextViewer().isVisible(semanticElement);
+    public boolean isDisplayed(final Object semanticElement, final boolean checkParents) {
+        return getContextViewer().isVisible(semanticElement, false);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final Object semanticElement, final boolean checkParents) {
+        return getContextViewer().isVisible(semanticElement, false);
     }
 
     /**
