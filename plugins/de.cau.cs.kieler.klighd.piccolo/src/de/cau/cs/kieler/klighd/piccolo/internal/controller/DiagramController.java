@@ -256,13 +256,28 @@ public class DiagramController {
     }
 
     /**
+     * Returns the Piccolo2D representation for the given diagram element.
+     * 
+     * @param <T> the concrete type of the diagramElement
+     * @param diagramElement
+     *            the diagram element
+     * @return the Piccolo2D representation
+     */
+    public <T extends KGraphElement> IGraphElement<T> getRepresentation(final T diagramElement) {
+        @SuppressWarnings("unchecked")
+        final IGraphElement<T> result =
+                (IGraphElement<T>) RenderingContextData.get(diagramElement).getProperty(REP);
+        return result;
+    }
+
+    /**
      * Collapses the representation of the given node.
      * 
      * @param node
      *            the node
      */
     public void collapse(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
+        INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().setExpanded(false);
         }
@@ -277,7 +292,7 @@ public class DiagramController {
      *            the node
      */
     public void expand(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
+        INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().setExpanded(true);
         }
@@ -291,7 +306,7 @@ public class DiagramController {
      * @return true if this node is expanded.
      */
     public boolean isExpanded(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
+        INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             return nodeRep.getChildAreaNode().isExpanded();
         }
@@ -305,7 +320,7 @@ public class DiagramController {
      *            the node
      */
     public void toggleExpansion(final KNode node) {
-        INode nodeRep = RenderingContextData.get(node).getProperty(REP);
+        INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().toggleExpansion();
         }
@@ -315,21 +330,36 @@ public class DiagramController {
 
     /**
      * Provides the visibility state of the given diagram element, assuming the parent
-     * {@link KGraphElement} is visible. A recursive invisibility check along the containment
-     * hierarchy is omitted for performance reasons. Thus, given nested diagram nodes A contains
-     * B contains C with A collapsed this method may return <code>true</code> for C.
+     * {@link KGraphElement} is visible. A node is said to be visible if it is drawn in the
+     * currently depicted diagram excerpt (viewport). <br>
+     * <br>
+     * Note that a recursive visibility check along the containment hierarchy is done only if
+     * <code>checkContainment</code> is <code>true</code>. Otherwise that is omitted for performance
+     * reasons. Thus, given the nested diagram nodes A contains B contains C with A collapsed this
+     * method may return <code>true</code> for C if <code>checkContainment</code> is
+     * <code>false</code>.
      * 
      * @param diagramElement
      *            a {@link KGraphElement}
+     * @param checkContainment
+     *            whether the parent (containment) hierarchy is to be checked, too
      * @return <code>true</code> if the {@link KGraphElement} <code>diagramElement</code> is
      *         visible, <code>false</code> otherwise.
      */
-    public boolean isVisible(final KGraphElement diagramElement) {
-        PNode p = (PNode) RenderingContextData.get(diagramElement).getProperty(REP);
-        if (p == topNode) {
+    public boolean isVisible(final KGraphElement diagramElement, final boolean checkContainment) {
+        PNode p = (PNode) getRepresentation(diagramElement);
+        if (p == canvasCamera.getDisplayedLayer()) {
             return true;
         } else if (p == null || p.getParent() == null) {
             return false;
+        }
+
+        if (checkContainment) {
+            if (!NodeUtil.isDisplayed(p, canvasCamera)) {
+                // this way we check whether p is (transitively) part of the diagram's currently
+                //  visible PNode network
+                return false;
+            }
         }
 
         final INode clip = getClipNode();
@@ -452,21 +482,6 @@ public class DiagramController {
      */
     public void zoomToLevel(final float newZoomLevel, final int duration) {
         zoomController.zoomToLevel(newZoomLevel, duration);
-    }
-
-    /**
-     * Returns the Piccolo2D representation for the given diagram element.
-     * 
-     * @param <T> the concrete type of the diagramElement
-     * @param diagramElement
-     *            the diagram element
-     * @return the Piccolo2D representation
-     */
-    public <T extends KGraphElement> IGraphElement<T> getRepresentation(final T diagramElement) {
-        @SuppressWarnings("unchecked")
-        final IGraphElement<T> result =
-                (IGraphElement<T>) RenderingContextData.get(diagramElement).getProperty(REP);
-        return result;
     }
 
     /* --------------------------------------------- */
