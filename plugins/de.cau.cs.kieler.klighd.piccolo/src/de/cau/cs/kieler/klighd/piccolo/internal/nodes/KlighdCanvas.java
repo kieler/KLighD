@@ -176,6 +176,17 @@ public class KlighdCanvas extends PSWTCanvas {
     }
 
     /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This specialization simply deactivates the inherited behavior. Since we do not (have
+     * opportunities to?) change the rendering quality, there is no need repaint the whole visible
+     * diagram area after user interaction.
+     */
+    @Override
+    public void setInteracting(final boolean isInteracting) {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
