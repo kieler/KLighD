@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.Graphics2D;
+import java.awt.event.InputEvent;
 
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -162,7 +163,29 @@ public class KlighdCanvas extends PSWTCanvas {
         this.addDragDetectListener(mouseListener);
         this.addGestureListener(mouseListener);
     }
-    
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This specialization simply changes visibility to 'public' in order to be used in
+     * {@link KlighdMouseEventListener}, for example.
+     */
+    @Override
+    public void sendInputEventToInputManager(final InputEvent awtEvent, final int type) {
+        super.sendInputEventToInputManager(awtEvent, type);
+    }
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This specialization simply deactivates the inherited behavior. Since we do not (have
+     * opportunities to?) change the rendering quality, there is no need repaint the whole visible
+     * diagram area after user interaction.
+     */
+    @Override
+    public void setInteracting(final boolean isInteracting) {
+    }
+
     /**
      * {@inheritDoc}
      */

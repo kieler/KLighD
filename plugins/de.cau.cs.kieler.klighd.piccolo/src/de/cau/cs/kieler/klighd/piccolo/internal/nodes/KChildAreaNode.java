@@ -39,6 +39,7 @@ public class KChildAreaNode extends KDisposingLayer {
      */
     public static final String PROPERTY_EXPANSION = "expansion";
 
+    private final INode containingINode;
     /** the node layer. */
     private final PLayer nodeLayer;
     
@@ -60,7 +61,8 @@ public class KChildAreaNode extends KDisposingLayer {
     public KChildAreaNode(final INode containingNode) {
         super();
         this.setPickable(false);
-
+        this.containingINode = containingNode; 
+        
         this.nodeLayer = new KDisposingLayer();
         super.addChild(nodeLayer);
         this.edgeLayer = new KDisposingLayer();
@@ -85,6 +87,7 @@ public class KChildAreaNode extends KDisposingLayer {
      */
     public void addNode(final KNodeNode node) {
         nodeLayer.addChild(node);
+        node.setParentNode(containingINode);
     }
     
     /**

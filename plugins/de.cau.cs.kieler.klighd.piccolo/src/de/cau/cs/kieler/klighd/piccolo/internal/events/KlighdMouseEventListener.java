@@ -28,6 +28,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.TypedEvent;
+import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerEx.IKlighdInputEvent;
@@ -43,6 +44,12 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  */
 public class KlighdMouseEventListener implements MouseListener, MouseMoveListener, MouseTrackListener,
         MouseWheelListener, DragDetectListener, GestureListener {
+    
+    /**
+     * Dedicated event type constant, reuses {@link SWT#Iconify} in hope that choice will never lead
+     * to any conflict...
+     */
+    public static final int MouseClick = SWT.Iconify; // SUPPRESS CHECKSTYLE Name
 
     private KlighdCanvas canvas = null;
     
@@ -61,116 +68,122 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
      * {@inheritDoc}
      */
     public void mouseEnter(final MouseEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseEnter),
-                        java.awt.event.MouseEvent.MOUSE_ENTERED, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseEnter),
+                java.awt.event.MouseEvent.MOUSE_ENTERED);
     }
 
     /**
      * {@inheritDoc}
      */
     public void mouseExit(final MouseEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseExit),
-                        java.awt.event.MouseEvent.MOUSE_EXITED, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseExit),
+                java.awt.event.MouseEvent.MOUSE_EXITED);
     }
 
     /**
      * {@inheritDoc}
      */
     public void mouseHover(final MouseEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseHover),
-                        KlighdInputManager.MOUSE_HOVERED, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseHover),
+                KlighdInputManager.MOUSE_HOVERED);
     }
 
     /**
      * {@inheritDoc}
      */
     public void mouseMove(final MouseEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseMove),
-                        java.awt.event.MouseEvent.MOUSE_MOVED, this.canvas.getCamera());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void mouseDoubleClick(final MouseEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseDoubleClick),
-                        java.awt.event.MouseEvent.MOUSE_CLICKED, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseMove),
+                java.awt.event.MouseEvent.MOUSE_MOVED);
     }
 
     /**
      * {@inheritDoc}
      */
     public void mouseDown(final MouseEvent e) {
+
+        lastSingleClickConfig[0] = Boolean.FALSE;
+
         if (Platform.getOS().equals(Platform.OS_WIN32)) {
             canvas.setFocus();
         }
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseDown),
-                        java.awt.event.MouseEvent.MOUSE_PRESSED, this.canvas.getCamera());
+
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseDown),
+                java.awt.event.MouseEvent.MOUSE_PRESSED);
     }
+
+    private boolean[] lastSingleClickConfig = new boolean[] { Boolean.FALSE };
+
+    private long doubleClickDeadLine = System.currentTimeMillis();
+    private boolean doubleClicked = false;
 
     /**
      * {@inheritDoc}
      */
     public void mouseUp(final MouseEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.MouseUp),
-                        java.awt.event.MouseEvent.MOUSE_RELEASED, this.canvas.getCamera());
+        final long currentTime = System.currentTimeMillis();
+        
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseUp),
+                java.awt.event.MouseEvent.MOUSE_RELEASED);
+
+        if (doubleClicked && currentTime < doubleClickDeadLine) {
+            // i.e. a doubleClick event occurred and it did before the deadline
+            // suppress the propagation of the mouse up
+            doubleClicked = false;
+            return;
+        } 
+        
+        final Display display = this.canvas.getDisplay();
+        final int doubleClickTime = display.getDoubleClickTime();
+        
+        final boolean[] singleClick = new boolean[] { Boolean.TRUE };
+        lastSingleClickConfig = singleClick;
+        
+        display.timerExec(doubleClickTime, new Runnable() {
+
+            public void run() {
+                if (singleClick[0]) {
+                    KlighdMouseEventListener.this.canvas.sendInputEventToInputManager(
+                            new KlighdMouseEvent(e, MouseClick),
+                            java.awt.event.MouseEvent.MOUSE_CLICKED);
+                }
+            }
+        });
+
+        doubleClickDeadLine = System.currentTimeMillis() + doubleClickTime;
     }
 
     /**
      * {@inheritDoc}
      */
+    public void mouseDoubleClick(final MouseEvent e) {
+        doubleClicked = true;
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseDoubleClick),
+                KlighdInputManager.MOUSE_DOUBLE_CLICKED);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void dragDetected(final DragDetectEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdMouseEvent(e, SWT.DragDetect),
-                        java.awt.event.MouseEvent.MOUSE_DRAGGED, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.DragDetect),
+                java.awt.event.MouseEvent.MOUSE_DRAGGED);
     }
 
     /**
      * {@inheritDoc}
      */
     public void gesture(final GestureEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdGestureEvent(e, SWT.Gesture),
-                        KlighdInputManager.MOUSE_GESTURE, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdGestureEvent(e, SWT.Gesture),
+                        KlighdInputManager.MOUSE_GESTURE);
     }
     
     /**
      * {@inheritDoc}
      */
     public void mouseScrolled(final MouseEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(
-                        new KlighdMouseWheelEvent(e, SWT.MouseVerticalWheel,
-                                MouseWheelEvent.WHEEL_UNIT_SCROLL),
-                        java.awt.event.MouseEvent.MOUSE_WHEEL, this.canvas.getCamera());
-
+        this.canvas.sendInputEventToInputManager(new KlighdMouseWheelEvent(e,
+                SWT.MouseVerticalWheel, MouseWheelEvent.WHEEL_UNIT_SCROLL),
+                java.awt.event.MouseEvent.MOUSE_WHEEL);
     }
 
 
@@ -202,7 +215,9 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
          *            the event type
          */
         public KlighdMouseEvent(final MouseEvent me, final int type) {
-            super(dummySrc, 0, me.time, 0, me.x, me.y, 0, false, me.button);
+            super(dummySrc, 0, me.time, 0, me.x, me.y, 0, false, me.button > BUTTON3 ? 0 : me.button);
+            // the BUTTON3 check has been introduced as the super constructor will throw an exception
+            //  in such cases
             this.mouseEvent = me;
             this.eventType = type;
             this.helper = new KlighdEventHelper(me);
@@ -223,12 +238,68 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         }
         
         /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String paramString() {
+            StringBuffer str = new StringBuffer();
+
+            switch(eventType) {
+              case SWT.MouseDown:
+                  str.append("MouseDown");
+                  break;
+              case SWT.MouseUp:
+                  str.append("MouseUp");
+                  break;
+              case SWT.MouseEnter:
+                  str.append("MouseEnter");
+                  break;
+              case SWT.MouseExit:
+                  str.append("MouseExit");
+                  break;
+              case SWT.MouseMove:
+                  str.append("MouseMove");
+                  break;
+              case SWT.MouseWheel:
+                  str.append("MouseWheel");
+                  break;
+              case MouseClick:
+                  str.append("MouseClick");
+                  break;
+              case SWT.MouseDoubleClick:
+                  str.append("MouseDoubleClick");
+                  break;
+               default:
+                  str.append("unknown type");
+            }
+
+            // (x,y) coordinates
+            str.append(",(").append(getX()).append(",").append(getY()).append(")");
+            str.append(",absolute(").append(getXOnScreen()).append(",").append(getYOnScreen())
+                    .append(")");
+
+            str.append(",button=").append(getButton());
+
+            if (getModifiers() != 0) {
+                str.append(",modifiers=").append(getMouseModifiersText(getModifiers()));
+            }
+
+            if (getModifiersEx() != 0) {
+                str.append(",extModifiers=").append(getModifiersExText(getModifiers()));
+            }
+
+            str.append(",clickCount=").append(getClickCount());
+
+            return str.toString(); 
+        }
+        
+        /**
          * Provides the MouseEventType translated into values of {@link Trigger}.
          * 
          * @return the event {@link Trigger} or <code>null</code> if event type is not supported.
          */
         public Trigger getTrigger() {
-            if (eventType == SWT.MouseUp) {
+            if (eventType == MouseClick) {
                 if (mouseEvent.button == 1) {
                     return Trigger.SINGLECLICK;
                 } else if (mouseEvent.button == 2) {
