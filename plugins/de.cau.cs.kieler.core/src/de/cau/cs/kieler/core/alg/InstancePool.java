@@ -16,7 +16,11 @@ package de.cau.cs.kieler.core.alg;
 import java.util.LinkedList;
 
 /**
- * A pool for class instances.
+ * A pool for class instances. The pool can hold a configurable number of instances of the class. Note
+ * that the number of instances created can well exceed the capacity of this pool. The capacity only
+ * influences how many of those instances can be kept for later reuse.
+ * 
+ * <p>All of the instance methods in this class are thread-safe.</p>
  *
  * @param <T> the type of instances that are held by this pool
  * @author msp
@@ -34,6 +38,8 @@ public class InstancePool<T> {
     private final LinkedList<T> instances = new LinkedList<T>();
     /** the configured instance limit. */
     private int limit;
+    /** lock used for synchronization. */
+    private final Object lock = new Object();
     
     /**
      * Create an instance pool with an infinite capacity. 
@@ -61,35 +67,41 @@ public class InstancePool<T> {
      * 
      * @return a class instance
      */
-    public synchronized T fetch() {
-        if (instances.isEmpty()) {
-            return factory.create();
+    public T fetch() {
+        synchronized (lock) {
+            if (instances.isEmpty()) {
+                return factory.create();
+            }
+            return instances.removeFirst();
         }
-        return instances.removeFirst();
     }
     
     /**
-     * Release an instance into the pool to be used again. Only instances that are still usable
-     * may be released.
+     * Release an instance into the pool to be used again unless the pool's capacity is already reached.
+     * Only instances that are still usable may be released.
      * 
      * @param obj a class instance
      */
-    public synchronized void release(final T obj) {
-        if (limit < 0 || instances.size() < limit) {
-            instances.addLast(obj);
-        } else {
-            factory.destroy(obj);
+    public void release(final T obj) {
+        synchronized (lock) {
+            if (limit < 0 || instances.size() < limit) {
+                instances.addLast(obj);
+            } else {
+                factory.destroy(obj);
+            }
         }
     }
     
     /**
      * Clear the instance pool by disposing all instances that are currently held.
      */
-    public synchronized void clear() {
-        for (T obj : instances) {
-            factory.destroy(obj);
+    public void clear() {
+        synchronized (lock) {
+            for (T obj : instances) {
+                factory.destroy(obj);
+            }
+            instances.clear();
         }
-        instances.clear();
     }
 
 }
