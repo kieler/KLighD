@@ -801,7 +801,7 @@ public class DiagramController {
                 return;
             }
 
-            nodeNode = new KNodeNode(node, parent);
+            nodeNode = new KNodeNode(node);
             contextData.setProperty(REP, nodeNode);
 
             updateRendering(nodeNode);
