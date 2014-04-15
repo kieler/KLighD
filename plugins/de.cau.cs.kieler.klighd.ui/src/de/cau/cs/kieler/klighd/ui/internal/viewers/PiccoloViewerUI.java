@@ -34,11 +34,9 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
@@ -116,7 +114,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      */
     public PiccoloViewerUI(final ContextViewer parentViewer, final Composite parent, final int style) {
         super(parentViewer, parent);
-        
+
         // registers a print action by means of the global action bars
         final IActionBars actions;
         final IDiagramWorkbenchPart part = getViewContext().getDiagramWorkbenchPart();
@@ -143,8 +141,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 }
             });
         }
-        
-        
+
         this.getCanvas().getCamera().addInputEventListener(new KlighdTextInputHandler());
         addTextInput(parentViewer);
     }
@@ -177,7 +174,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 textinput.setVisible(false);
             }
         };
-        
+
         parentViewer.addSelectionChangedListener(selectionListener);
         textinput.addDisposeListener(new DisposeListener() {
             public void widgetDisposed(final DisposeEvent e) {
@@ -202,35 +199,41 @@ public class PiccoloViewerUI extends PiccoloViewer {
         });
         textinput.setEditable(false);
 
-        // create a additional (context) menu manager, ... 
+        // create a additional (context) menu manager, ...
         final MenuManager menu = new MenuManager();
 
-        // ... install it on the text input control, and ... 
+        // ... install it on the text input control, and ...
         textinput.setMenu(menu.createContextMenu(textinput));
 
-        // ... and register it in the workbench part site, in order to let the work bench populate it!
+        // ... and register it in the workbench part site, in order to let the work bench populate
+        // it!
         IWorkbenchPartSite site = parentViewer.getViewContext().getDiagramWorkbenchPart().getSite();
-        site.registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, new ISelectionProvider() {
+        site.registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu,
+                new ISelectionProvider() {
 
-            // Note that this selection provider is not registered in part site as such,
-            //  the selection provided by this method is, thus, not propagated into the global selection.
-            // Instead, it is considered the 'activeMenuSelection' (ISources#ACTIVE_MENU_SELECTION_NAME).
-            // Therefore, it cannot obtained, e.g., via HandlerUtil.getCurrentSelection(...),
-            //  but, e.g., via HandlerUtil.getActiveMenuSelection(...)!
+                    // Note that this selection provider is not registered in part site as such,
+                    // the selection provided by this method is, thus, not propagated into the
+                    // global selection.
+                    // Instead, it is considered the 'activeMenuSelection'
+                    // (ISources#ACTIVE_MENU_SELECTION_NAME).
+                    // Therefore, it cannot obtained, e.g., via
+                    // HandlerUtil.getCurrentSelection(...),
+                    // but, e.g., via HandlerUtil.getActiveMenuSelection(...)!
 
-            public void setSelection(final ISelection selection) {
-            }
+                    public void setSelection(final ISelection selection) {
+                    }
 
-            public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
-            }
+                    public void removeSelectionChangedListener(
+                            final ISelectionChangedListener listener) {
+                    }
 
-            public ISelection getSelection() {
-                return new StructuredSelection(textinput.getText());
-            }
+                    public ISelection getSelection() {
+                        return new StructuredSelection(textinput.getText());
+                    }
 
-            public void addSelectionChangedListener(final ISelectionChangedListener listener) {
-            }
-        });
+                    public void addSelectionChangedListener(final ISelectionChangedListener listener) {
+                    }
+                });
     }
 
     /**
@@ -268,15 +271,15 @@ public class PiccoloViewerUI extends PiccoloViewer {
             if (node == null) {
                 return;
             }
-            
+
             if (textinput.getText().equals(node.getText())) {
                 return;
             }
-            
+
             final ViewContext viewContext = PiccoloViewerUI.this.getViewContext();
             final ISynthesis synth = viewContext.getDiagramSynthesis();
             final Function<String, Void> f = synth.getTextUpdateFunction(node, element);
-            
+
             if (f == null) {
                 return;
             }
@@ -367,7 +370,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 final KLabelNode labelNode = (KLabelNode) n;
                 element = labelNode.getGraphElement().getParent();
 
-                kText = Iterables.getFirst(ModelingUtil.eAllContentsOfType(
+                kText =
+                        Iterables.getFirst(ModelingUtil.eAllContentsOfType(
                                 labelNode.getGraphElement(), KText.class), null);
 
                 if (kText != null) {
@@ -394,7 +398,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 element = null;
             }
 
-            if ((kText == null || !kText.isCursorSelectable()) || (textinput.getSelectionCount() > 0)) {
+            if ((kText == null || !kText.isCursorSelectable())
+                    || (textinput.getSelectionCount() > 0)) {
                 // set input widget invisible if mouse is not over a text element
                 if (!textinput.getEditable() && !(textinput.getSelectionCount() > 0)) {
                     textinput.setVisible(false);
@@ -405,23 +410,31 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
             // determine text value
             if (text == null) {
-                return;
+                if (kText != null && kText.getText() != null) {
+                    textinput.setText(kText.getText());
+                } else {
+                    return;
+                }
+            } else {
+                textinput.setText(text);
             }
-            textinput.setText(text);
 
             // determine global position of the text element
-            Rectangle2D bounds = NodeUtil.clipRelativeGlobalBoundsOf(n,
-                    PiccoloViewerUI.this.getCanvas().getCamera().getDisplayedINode());
+            Rectangle2D bounds =
+                    NodeUtil.clipRelativeGlobalBoundsOf(n, PiccoloViewerUI.this.getCanvas()
+                            .getCamera().getDisplayedINode());
             PiccoloViewerUI.this.getCanvas().getCamera().getViewTransformReference()
                     .transform(bounds, bounds);
             textinput.setLocation((int) bounds.getX(), (int) bounds.getY());
 
             // determine font data (i.e. font size)
             FontData fd = new FontData(styledText.getFontData().toString());
-            //fd.height = (float) (styledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas().getCamera().getViewScale());
-            float height = (float) (styledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas()
-                            .getCamera().getViewScale());
-            //fd = FontData.win32_new(fd.data, height);               
+            // fd.height = (float) (styledText.getFontData().getHeight() *
+            // PiccoloViewerUI.this.getCanvas().getCamera().getViewScale());
+            float height =
+                    (float) (styledText.getFontData().getHeight() * PiccoloViewerUI.this
+                            .getCanvas().getCamera().getViewScale());
+            // fd = FontData.win32_new(fd.data, height);
             fd.setHeight(Math.round(height));
             textinput.setFont(new Font(textinput.getDisplay(), fd));
             textinput.setSize(textinput.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -436,7 +449,6 @@ public class PiccoloViewerUI extends PiccoloViewer {
             textinput.setVisible(true);
         }
     }
-
 
     /**
      * A subclass of the {@link PiccoloOutlinePage} that implements the required
