@@ -43,7 +43,7 @@ public interface IKlighdInputEventHandlerEx {
      *            {@link PInputEvent#getSourceSwingEvent()}, it is supposed to by an instance of
      *            {@link KlighdInputManager.IKlighdInputEvent}
      */
-    void mousemouseDoubleClicked(final PInputEvent event);
+    void mouseDoubleClicked(final PInputEvent event);
 
     /**
      * Method is invoked when the mouse rests at a position for some time.<br>
