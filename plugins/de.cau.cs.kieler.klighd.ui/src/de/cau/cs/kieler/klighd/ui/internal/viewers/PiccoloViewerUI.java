@@ -407,10 +407,12 @@ public class PiccoloViewerUI extends PiccoloViewer {
             if (text == null) {
                 if (kText != null && kText.getText() != null) {
                     textinput.setText(kText.getText());
+                } else {
+                    return;
                 }
-                return;
+            } else {
+                textinput.setText(text);
             }
-            textinput.setText(text);
 
             // determine global position of the text element
             Rectangle2D bounds = NodeUtil.clipRelativeGlobalBoundsOf(n,
