@@ -402,9 +402,12 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 return;
             }
             String text = styledText.getText();
-
+            
             // determine text value
             if (text == null) {
+                if (kText != null && kText.getText() != null) {
+                    textinput.setText(kText.getText());
+                }
                 return;
             }
             textinput.setText(text);
