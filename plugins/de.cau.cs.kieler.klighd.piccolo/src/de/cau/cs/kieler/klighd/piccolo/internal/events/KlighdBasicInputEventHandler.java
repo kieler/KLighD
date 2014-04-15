@@ -129,9 +129,13 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
             delegate.mouseExited(event);
             break;
 
+        case KlighdMouseEventListener.MouseClick:
+            delegate.mouseClicked(event);
+            break;
+
         case SWT.MouseDoubleClick:
             if (delegate instanceof IKlighdInputEventHandlerEx) {
-                ((IKlighdInputEventHandlerEx) delegate).mousemouseDoubleClicked(event);
+                ((IKlighdInputEventHandlerEx) delegate).mouseDoubleClicked(event);
             }
             break;
 
@@ -173,7 +177,7 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
     /**
      * {@inheritDoc}
      */
-    public void mousemouseDoubleClicked(final PInputEvent event) {
+    public void mouseDoubleClicked(final PInputEvent event) {
     }
 
     /**

@@ -49,10 +49,10 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
     //SUPPRESS CHECKSTYLE NEXT 25 MagicNumber
     
     /**
-     * The "mouse double clicked " event type. Such events are fired if the mouse has been clicked
-     * doubly.
+     * The "mouse double clicked" event type. Such events are fired if the mouse has been double
+     * clicked.
      */
-    public static final int MOUSE_DOUBLY_CLICKED = 8 + MouseEvent.MOUSE_FIRST;
+    public static final int MOUSE_DOUBLE_CLICKED = 8 + MouseEvent.MOUSE_FIRST;
     
     /**
      * The "mouse hovered" event type. Such events are fired if the mouse stays at a position for a
@@ -108,8 +108,8 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
     /**
      * {@inheritDoc}
      */
-    public void mousemouseDoubleClicked(final PInputEvent event) {
-        this.dispatchEventToListener(event, MOUSE_DOUBLY_CLICKED, getMouseOver());
+    public void mouseDoubleClicked(final PInputEvent event) {
+        this.dispatchEventToListener(event, MOUSE_DOUBLE_CLICKED, getMouseOver());
     }
 
     /**
