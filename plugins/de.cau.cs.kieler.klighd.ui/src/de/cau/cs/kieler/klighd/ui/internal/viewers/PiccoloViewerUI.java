@@ -404,6 +404,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
             String text = styledText.getText();
 
             // determine text value
+            if (text == null) {
+                return;
+            }
             textinput.setText(text);
 
             // determine global position of the text element
