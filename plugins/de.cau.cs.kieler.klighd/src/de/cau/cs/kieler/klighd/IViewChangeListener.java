@@ -139,7 +139,7 @@ public interface IViewChangeListener {
         public Iterator<KGraphElement> visibleDiagramNodes() {
             final KNode clip = activeViewer.getClip();
 
-            if (!activeViewer.isVisible(clip)) {
+            if (!activeViewer.isVisible(clip, false)) {
                 return Iterators.emptyIterator();
 
             } else {
@@ -155,7 +155,7 @@ public interface IViewChangeListener {
                                 new Predicate<KNode>() {
 
                             public boolean apply(final KNode input) {
-                                return activeViewer.isVisible(input);
+                                return activeViewer.isVisible(input, false);
                             }
                         });
                     }
@@ -177,7 +177,7 @@ public interface IViewChangeListener {
         public Iterator<KGraphElement> visibleDiagramsElements() {
             final KNode clip = activeViewer.getClip();
 
-            if (!activeViewer.isVisible(clip)) {
+            if (!activeViewer.isVisible(clip, false)) {
                 return Iterators.emptyIterator();
 
             } else {
@@ -210,7 +210,7 @@ public interface IViewChangeListener {
 
                         public boolean apply(final EObject input) {
                             return input instanceof KGraphElement
-                                    && activeViewer.isVisible((KGraphElement) input);
+                                    && activeViewer.isVisible((KGraphElement) input, false);
                         }
                     };
                 };

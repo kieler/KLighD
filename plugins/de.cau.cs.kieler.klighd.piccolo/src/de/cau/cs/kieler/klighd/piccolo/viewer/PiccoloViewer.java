@@ -21,6 +21,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.Timer;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -28,9 +30,13 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewChangeType;
@@ -38,6 +44,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramZoomController;
@@ -49,6 +56,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandl
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdShowLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
@@ -280,8 +289,52 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     /**
      * {@inheritDoc}
      */
-    public boolean isVisible(final KGraphElement diagramElement) {
-        return controller.isVisible(diagramElement);
+    public boolean isDisplayed(final KGraphElement diagramElement, final boolean checkParents) {
+        final RenderingContextData contextData = RenderingContextData.basicGet(diagramElement);
+        if (contextData == null || !contextData.isActive(diagramElement)) {
+            // in this case either node rendering figure exists as of now or it has been
+            //  removed from the diagram due to node collapse or a hide execution 
+            return false;
+        }
+
+        if (checkParents) {
+            // TODO implementation to be fine-tuned wrt. performance etc.
+            final PNode node = (PNode) controller.getRepresentation(diagramElement);
+            return node != null && NodeUtil.isDisplayed(node, this.canvas.getCamera());
+
+        } else {
+            // beyond testing for the 'active' flag I want to at least test the display of the
+            //  corresponding parent node in case of labels and ports (and their labels)
+            
+            if (diagramElement instanceof KNode) {
+                // nothing to do
+                return true;
+            } 
+
+            if (diagramElement instanceof KEdge) {
+                // edges are handled explicitly at removal of nodes (see DiagramController) so we don't
+                //  test their source and target node explicitly here.
+                return true;
+            }
+
+            if (diagramElement instanceof KPort) {
+                return isDisplayed(((KPort) diagramElement).getNode(), false);
+            }
+
+            if (diagramElement instanceof KLabel) {
+                return isDisplayed(((KLabel) diagramElement).getParent(), false);
+            }
+
+            // the required default case, should never be executed!
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final KGraphElement diagramElement, final boolean checkContainment) {
+        return controller.isVisible(diagramElement, checkContainment);
     }
 
     /**
@@ -300,27 +353,74 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         controller.zoom(style, duration);
     }
 
+    private static final String NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG =
+            "KLighD: There is no figure represtation (PNode) of diagramElement XX!";
+    
+    private static final String NOT_IN_CURRENT_CLIP_ERROR_MSG =
+            "KLighD: The figure representation of diagram element XX is not"
+            + " displayed in the current diagram clipping!";
+    
+    private static final String NOT_IN_CURRENT_CLIP_REVEAL_ERROR_MSG =
+            NOT_IN_CURRENT_CLIP_ERROR_MSG + " It thus cannot be revealed.";
+    
     /**
      * {@inheritDoc}
      */
     public void reveal(final KGraphElement diagramElement, final int duration) {
-        PNode node = getRepresentation(diagramElement);
-        if (node != null) {
-            // move the camera so it includes the bounds of the node
-            PCamera camera = canvas.getCamera();
-            camera.animateViewToPanToBounds(node.getFullBounds(), duration);
+        final PNode node = getRepresentation(diagramElement);
+        if (node == null) {
+            StatusManager.getManager().handle(
+                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                            NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG).replace("XX",
+                            diagramElement.toString())));
+        } else {
+            final PCamera camera = canvas.getCamera();
+            final PBounds destBounds =
+                    NodeUtil.clipRelativeGlobalBoundsOf(node, this.canvas.getCamera()
+                            .getDisplayedINode());
+            
+            if (destBounds != null) {
+                // move the camera so it includes the bounds of the node
+                camera.animateViewToPanToBounds(destBounds, duration);
+
+            } else {
+                StatusManager.getManager().handle(
+                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                                NOT_IN_CURRENT_CLIP_REVEAL_ERROR_MSG).replace("XX",
+                                diagramElement.toString())));
+            }
         }
     }
 
+    private static final String NOT_IN_CURRENT_CLIP_CENTER_ON_ERROR_MSG =
+            NOT_IN_CURRENT_CLIP_ERROR_MSG + " Thus the diagram cannot be centered on that element.";
+    
     /**
      * {@inheritDoc}
      */
     public void centerOn(final KGraphElement diagramElement, final int duration) {
-        PNode node = getRepresentation(diagramElement);
-        if (node != null) {
-            // center the camera on the node
-            PCamera camera = canvas.getCamera();
-            camera.animateViewToCenterBounds(node.getGlobalFullBounds(), false, duration);
+        final PNode node = getRepresentation(diagramElement);
+        if (node == null) {
+            StatusManager.getManager().handle(
+                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                            NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG).replace("XX",
+                            diagramElement.toString())));
+        } else {
+            final PCamera camera = canvas.getCamera();
+            final PBounds destBounds =
+                    NodeUtil.clipRelativeGlobalBoundsOf(node, this.canvas.getCamera()
+                            .getDisplayedINode());
+            
+            if (destBounds != null) {
+                // center the camera on the node
+                camera.animateViewToCenterBounds(destBounds, false, duration);
+
+            } else {
+                StatusManager.getManager().handle(
+                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                                NOT_IN_CURRENT_CLIP_CENTER_ON_ERROR_MSG).replace("XX",
+                                diagramElement.toString())));
+            }
         }
     }
 
@@ -426,8 +526,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      *            the diagram element
      * @return the Piccolo2D representation
      */
-    public PNode getRepresentation(final KGraphElement diagramElement) {
-        PNode node = (PNode) controller.getRepresentation(diagramElement);
+    protected PNode getRepresentation(final KGraphElement diagramElement) {
+        final PNode node = (PNode) controller.getRepresentation(diagramElement);
         if (node != null && node.getRoot() == canvas.getRoot()) {
             return node;
         }

@@ -127,14 +127,28 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
-    public boolean isVisible(final Object semanticElement) {
+    public boolean isDisplayed(final Object semanticElement, final boolean checkParents) {
         return false;
     }
     
     /**
      * {@inheritDoc}
      */
-    public boolean isVisible(final KGraphElement diagramElement) {
+    public boolean isDisplayed(final KGraphElement diagramElement, final boolean checkContainment) {
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final Object semanticElement, final boolean checkParents) {
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isVisible(final KGraphElement diagramElement, final boolean checkContainment) {
         return false;
     }
     

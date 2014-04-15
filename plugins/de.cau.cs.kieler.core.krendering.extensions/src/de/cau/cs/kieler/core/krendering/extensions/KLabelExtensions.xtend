@@ -460,33 +460,15 @@ class KLabelExtensions {
     /* --------------------------------- */
     /*  edge label configurators/adders  */
     /* --------------------------------- */
-
-    /**
-     * Configures a central (main) edge label, e.g. a state transition guard/effect label!
-     * 
-     * @deprecated Use {@link #configureCenteralEdgeLabel(KLabel, String, int, String)} instead!
-     */
-    def KLabel configureCenteralLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        return configureCenteralEdgeLabel(label, labelText, fontSize, fontName);
-    }
     
     /**
      * Configures a central (main) edge label, e.g. a state transition guard/effect label!
      */
-    def KLabel configureCenteralEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
+    def KLabel configureCenterEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
         return label => [
             it.basicConfigureLabel(labelText, fontSize, fontName);
             it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::CENTER);
         ];
-    }
-    
-    /**
-     * Configures a head edge label, e.g. the cardinality of a relation in an class diagram!
-     * 
-     * @deprecated Use {@link #configureHeadEdgeLabel(KLabel, String, int, String)} instead!
-     */
-    def KLabel configureHeadLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        return configureHeadEdgeLabel(label, labelText, fontSize, fontName);
     }
 
     /**
@@ -497,15 +479,6 @@ class KLabelExtensions {
             it.basicConfigureLabel(labelText, fontSize, fontName);
             it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::HEAD);
         ];
-    }
-    
-    /**
-     * Configures a tail edge label, e.g. the cardinality of a relation in an class diagram!
-     * 
-     * @deprecated Use {@link #configureTailEdgeLabel(KLabel, String, int, String)} instead!
-     */
-    def KLabel configureTailLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        return configureTailEdgeLabel(label, labelText, fontSize, fontName);
     }
 
     /**

@@ -29,7 +29,7 @@ import java.util.List;
 public class ForkedOutputStream extends OutputStream {
 
     /** the list of output streams to which this stream will write. */
-    private List<OutputStream> outputStreams;
+    private final List<OutputStream> outputStreams;
     
     /**
      * Creates a forked output stream that writes to all output streams

@@ -38,7 +38,7 @@ public class PropertyHolderComparator<T extends Comparable<T>> implements Compar
     }
     
     /** the property used for comparing. */
-    private IProperty<T> property;
+    private final IProperty<T> property;
     
     /**
      * Create a property holder comparator for the given property.

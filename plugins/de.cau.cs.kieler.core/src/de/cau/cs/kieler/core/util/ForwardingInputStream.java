@@ -27,9 +27,9 @@ import java.io.OutputStream;
 public class ForwardingInputStream extends InputStream {
 
     /** the input stream that is wrapped by this instance. */
-    private InputStream inputStream;
+    private final InputStream inputStream;
     /** the output stream to which all read data is forwarded. */
-    private OutputStream outputStream;
+    private final OutputStream outputStream;
     
     /**
      * Creates a forwarding input stream with the given input and output streams.
