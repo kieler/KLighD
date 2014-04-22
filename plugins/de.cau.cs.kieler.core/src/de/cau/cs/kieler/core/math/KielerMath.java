@@ -13,13 +13,12 @@
  */
 package de.cau.cs.kieler.core.math;
 
-import java.util.List;
 import java.util.ListIterator;
 
 /**
  * Mathematics utility class for the KIELER projects.
  * 
- * @kieler.design proposed 2012-11-02 cds
+ * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
  */
@@ -76,7 +75,7 @@ public final class KielerMath {
         } else if (x < FACT_TABLE.length) {
             return FACT_TABLE[x];
         } else {
-            return Math.sqrt(2.0 * Math.PI * x) * (pow(x, x) / pow(Math.E, x));
+            return Math.sqrt(2.0 * Math.PI * x) * (powf(x, x) / powd(Math.E, x));
         }
     }
 
@@ -145,7 +144,7 @@ public final class KielerMath {
      *            the exponent
      * @return a to the power of b
      */
-    public static double pow(final double a, final int b) {
+    public static double powd(final double a, final int b) {
         double result = 1.0;
         double base = a;
         int exp = (b >= 0 ? b : -b);
@@ -174,7 +173,7 @@ public final class KielerMath {
      *            the exponent
      * @return a to the power of b
      */
-    public static float pow(final float a, final int b) {
+    public static float powf(final float a, final int b) {
         float result = 1.0f;
         float base = a;
         int exp = (b >= 0 ? b : -b);
@@ -195,50 +194,17 @@ public final class KielerMath {
     }
 
     /**
-     * Calculates a number of points on the Bezier curve defined by the given control points. The
-     * degree of the curve is derived from the number of control points. The array of resulting
-     * curve points includes the target point, but does not include the source point of the curve.
+     * Compute a number of approximation points on the Bezier curve defined by the given control
+     * points. The degree of the curve is derived from the number of control points. The array of
+     * resulting curve points includes the target point, but does not include the source point of
+     * the curve.
      * 
-     * @param controlPoints
-     *            list of control points
-     * @param resultSize
-     *            number of returned curve points
+     * @param controlPoints the control points
+     * @param resultSize number of returned curve points
      * @return points on the curve defined by the given control points
      */
-    public static KVector[] calcBezierPoints(final List<KVector> controlPoints, final int resultSize) {
-        if (resultSize <= 0) {
-            return new KVector[0];
-        }
-        KVector[] result = new KVector[resultSize];
-        int n = controlPoints.size() - 1;
-        double dt = (1.0 / resultSize);
-        double t = 0;
-        for (int i = 0; i < resultSize; i++) {
-            t += dt;
-            KVector v = new KVector();
-            for (int j = 0; j <= n; j++) {
-                KVector p = controlPoints.get(j);
-                double factor = binomiald(n, j) * pow(1 - t, n - j) * pow(t, j);
-                v.x += p.x * factor;
-                v.y += p.y * factor;
-            }
-            result[i] = v;
-        }
-        return result;
-    }
-
-    /**
-     * Calculate a number of points on the Bezier curve defined by the given control points. The
-     * degree of the curve is derived from the number of control points. The array of resulting
-     * curve points includes the target point, but does not include the source point of the curve.
-     * 
-     * @param controlPoints
-     *            the control points
-     * @param resultSize
-     *            number of returned curve points
-     * @return points on the curve defined by the given control points
-     */
-    public static KVector[] calcBezierPoints(final int resultSize, final KVector... controlPoints) {
+    public static KVector[] approximateBezierSegment(final int resultSize,
+            final KVector... controlPoints) {
         if (resultSize <= 0) {
             return new KVector[0];
         }
@@ -251,7 +217,7 @@ public final class KielerMath {
             KVector v = new KVector();
             for (int j = 0; j <= n; j++) {
                 KVector p = controlPoints[j];
-                double factor = binomiald(n, j) * pow(1 - t, n - j) * pow(t, j);
+                double factor = binomiald(n, j) * powd(1 - t, n - j) * powd(t, j);
                 v.x += p.x * factor;
                 v.y += p.y * factor;
             }
@@ -261,31 +227,30 @@ public final class KielerMath {
     }
 
     /**
-     * Calculate a number of points on the Bezier curve defined by the given control points. The
-     * degree of the curve is derived from the number of control points. The array of resulting
-     * curve points includes the target point, but does not include the source point of the curve.
-     * The number of approximation points is derived from the given control points.
+     * Compute a number of approximation points on the Bezier curve defined by the given control
+     * points. The degree of the curve is derived from the number of control points. The array of
+     * resulting curve points includes the target point, but does not include the source point of
+     * the curve. The number of approximation points is derived from the given control points.
      * 
-     * @param controlPoints
-     *            the control points
+     * @param controlPoints the control points
      * @return points on the curve defined by the given control points
      */
-    public static KVector[] calcBezierPoints(final KVector... controlPoints) {
+    public static KVector[] approximateBezierSegment(final KVector... controlPoints) {
         // The number of approximation points simply equals the number of control points.
         // Although there might be more accurate approximations, this approach is the fastest.
         int approximationCount = controlPoints.length + 1;
-        return calcBezierPoints(approximationCount, controlPoints);
+        return approximateBezierSegment(approximationCount, controlPoints);
     }
 
     /**
-     * Computes an approximation for the spline that is defined by the given control points. The
+     * Compute an approximation for the spline that is defined by the given control points. The
      * control points are interpreted as a series of cubic Bezier curves.
      * 
      * @param controlPoints
      *            control points of a piecewise cubic spline
      * @return a vector chain that approximates the spline
      */
-    public static KVectorChain approximateSpline(final KVectorChain controlPoints) {
+    public static KVectorChain approximateBezierSpline(final KVectorChain controlPoints) {
         int ctrlPtCount = controlPoints.size();
         KVectorChain spline = new KVectorChain();
         ListIterator<KVector> controlIter = controlPoints.listIterator();
@@ -297,13 +262,14 @@ public final class KielerMath {
                 spline.add(controlIter.next());
             } else if (remainingPoints == 2) {
                 // calculate a quadratic bezier curve
-                spline.addAll(calcBezierPoints(currentPoint, controlIter.next(), controlIter.next()));
+                spline.addAll(approximateBezierSegment(currentPoint, controlIter.next(),
+                        controlIter.next()));
             } else {
                 // calculate a cubic bezier curve
                 KVector control1 = controlIter.next();
                 KVector control2 = controlIter.next();
                 KVector nextPoint = controlIter.next();
-                spline.addAll(calcBezierPoints(currentPoint, control1, control2, nextPoint));
+                spline.addAll(approximateBezierSegment(currentPoint, control1, control2, nextPoint));
                 currentPoint = nextPoint;
             }
         }
@@ -314,7 +280,7 @@ public final class KielerMath {
     private static final int W_DEGREE = 5;
 
     /**
-     * Calculate the distance from a cubic spline curve to the point needle.
+     * Calculate the distance from a cubic spline curve to the point {@code needle}.
      * 
      * @param start
      *            starting point
@@ -328,7 +294,7 @@ public final class KielerMath {
      *            point to look for
      * @return distance from needle to curve
      */
-    public static double distanceFromSpline(final KVector start, final KVector c1,
+    public static double distanceFromBezierSegment(final KVector start, final KVector c1,
             final KVector c2, final KVector end, final KVector needle) {
         double[] tCandidate = new double[W_DEGREE]; // possible roots
         KVector[] v = { start, c1, c2, end };
@@ -827,7 +793,7 @@ public final class KielerMath {
      * @param upper the upper limit
      * @return if x is beyond the limits, return the limit, otherwise just return x
      */
-    public static int limit(final int x, final int lower, final int upper) {
+    public static int boundi(final int x, final int lower, final int upper) {
         if (x <= lower) {
             return lower;
         } else if (x >= upper) {
@@ -844,7 +810,7 @@ public final class KielerMath {
      * @param upper the upper limit
      * @return if x is beyond the limits, return the limit, otherwise just return x
      */
-    public static long limit(final long x, final long lower, final long upper) {
+    public static long boundl(final long x, final long lower, final long upper) {
         if (x <= lower) {
             return lower;
         } else if (x >= upper) {
@@ -861,7 +827,7 @@ public final class KielerMath {
      * @param upper the upper limit
      * @return if x is beyond the limits, return the limit, otherwise just return x
      */
-    public static float limit(final float x, final float lower, final float upper) {
+    public static float boundf(final float x, final float lower, final float upper) {
         if (x <= lower) {
             return lower;
         } else if (x >= upper) {
@@ -878,7 +844,7 @@ public final class KielerMath {
      * @param upper the upper limit
      * @return if x is beyond the limits, return the limit, otherwise just return x
      */
-    public static double limit(final double x, final double lower, final double upper) {
+    public static double boundd(final double x, final double lower, final double upper) {
         if (x <= lower) {
             return lower;
         } else if (x >= upper) {

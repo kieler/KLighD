@@ -364,7 +364,7 @@ public class RandomGraphGenerator {
      */
     private void generateBipartite(final KNode parent, final int n, final int m,
             final float minPartition, final float maxPartition, final int hierarchyLevel) {
-        int n2 = KielerMath.limit(Math.round(n * (minPartition + random.nextFloat()
+        int n2 = KielerMath.boundi(Math.round(n * (minPartition + random.nextFloat()
                 * (maxPartition - minPartition))), 1, n - 1);
         int n1 = n - n2;
         KNode[] nodes1 = new KNode[n1];

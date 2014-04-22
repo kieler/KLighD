@@ -24,11 +24,11 @@ import de.cau.cs.kieler.core.util.IDataObject;
 /**
  * A chain of vectors. Can be used to describe polylines or similar constructs.
  * 
- * @kieler.design proposed 2012-11-02 cds
+ * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @kieler.rating 2011-01-13 proposed yellow msp
  * @author msp
  */
-public class KVectorChain extends LinkedList<KVector> implements IDataObject {
+public final class KVectorChain extends LinkedList<KVector> implements IDataObject {
 
     /** the serial version UID. */
     private static final long serialVersionUID = -7978287459602078559L;
@@ -56,7 +56,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * @param vectors
      *            an array of vectors
      */
-    public KVectorChain(final KVector[] vectors) {
+    public KVectorChain(final KVector... vectors) {
         super();
         addAll(vectors);
     }
@@ -175,7 +175,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * @param vectors
      *            a vector array
      */
-    public void addAll(final KVector[] vectors) {
+    public void addAll(final KVector... vectors) {
         for (KVector vector : vectors) {
             add(vector);
         }
@@ -203,7 +203,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            scaling factor
      * @return this
      */
-    public final KVectorChain scale(final double scale) {
+    public KVectorChain scale(final double scale) {
         for (KVector vector : this) {
             vector.scale(scale);
         }
@@ -219,7 +219,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            the y scaling factor
      * @return this
      */
-    public final KVectorChain scale(final double scalex, final double scaley) {
+    public KVectorChain scale(final double scalex, final double scaley) {
         for (KVector vector : this) {
             vector.scale(scalex, scaley);
         }
@@ -233,7 +233,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            the offset to add to the vectors.
      * @return this
      */
-    public KVectorChain translate(final KVector offset) {
+    public KVectorChain offset(final KVector offset) {
         for (KVector vector : this) {
             vector.add(offset);
         }
@@ -249,9 +249,9 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            y value to add.
      * @return this
      */
-    public KVectorChain translate(final double dx, final double dy) {
+    public KVectorChain offset(final double dx, final double dy) {
         for (KVector vector : this) {
-            vector.translate(dx, dy);
+            vector.add(dx, dy);
         }
         return this;
     }
@@ -261,14 +261,14 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * 
      * @return the total length
      */
-    public double getLength() {
+    public double totalLength() {
         double length = 0;
         if (size() >= 2) {
             Iterator<KVector> iter = iterator();
             KVector point1 = iter.next();
             do {
                 KVector point2 = iter.next();
-                length += KVector.distance(point1, point2);
+                length += point1.distance(point2);
                 point1 = point2;
             } while (iter.hasNext());
         }
@@ -280,7 +280,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * 
      * @return true if one of the vectors is NaN
      */
-    public boolean isNaN() {
+    public boolean hasNaN() {
         for (KVector v : this) {
             if (v.isNaN()) {
                 return true;
@@ -294,7 +294,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      * 
      * @return true if one of the vectors is infinite
      */
-    public boolean isInfinite() {
+    public boolean hasInfinite() {
         for (KVector v : this) {
             if (v.isInfinite()) {
                 return true;
@@ -313,7 +313,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            the distance from the first point (if positive) or the last point (if negative)
      * @return a point on the vector chain
      */
-    public KVector getPointOnLine(final double dist) {
+    public KVector pointOnLine(final double dist) {
         if (size() >= 2) {
             double absDistance = Math.abs(dist);
             double distanceSum = 0;
@@ -324,13 +324,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                 do {
                     double oldDistanceSum = distanceSum;
                     KVector nextPoint = iter.next();
-                    double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
+                    double additionalDistanceToNext = currentPoint.distance(nextPoint);
                     if (additionalDistanceToNext > 0) {
                         distanceSum += additionalDistanceToNext;
                         if (distanceSum >= absDistance) {
                             double thisRelative = (absDistance - oldDistanceSum)
                                     / additionalDistanceToNext;
-                            KVector result = nextPoint.differenceCreate(currentPoint);
+                            KVector result = nextPoint.clone().sub(currentPoint);
                             result.scale(thisRelative);
                             result.add(currentPoint);
                             return result;
@@ -346,13 +346,13 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                 do {
                     double oldDistanceSum = distanceSum;
                     KVector nextPoint = iter.previous();
-                    double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
+                    double additionalDistanceToNext = currentPoint.distance(nextPoint);
                     if (additionalDistanceToNext > 0) {
                         distanceSum += additionalDistanceToNext;
                         if (distanceSum >= absDistance) {
                             double thisRelative = (absDistance - oldDistanceSum)
                                     / additionalDistanceToNext;
-                            KVector result = nextPoint.differenceCreate(currentPoint);
+                            KVector result = nextPoint.clone().sub(currentPoint);
                             result.scale(thisRelative);
                             result.add(currentPoint);
                             return result;
@@ -380,7 +380,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
      *            the distance from the first point (if positive) or the last point (if negative)
      * @return an angle on the vector chain in radians
      */
-    public double getAngleOnLine(final double dist) {
+    public double angleOnLine(final double dist) {
         if (size() >= 2) {
             double absDistance = Math.abs(dist);
             double distanceSum = 0;
@@ -392,7 +392,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                 do {
                     currentPoint = nextPoint;
                     nextPoint = iter.next();
-                    double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
+                    double additionalDistanceToNext = currentPoint.distance(nextPoint);
                     if (additionalDistanceToNext > 0) {
                         distanceSum += additionalDistanceToNext;
                         if (distanceSum >= absDistance) {
@@ -401,7 +401,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                         }
                     }
                 } while (iter.hasNext());
-                return KVector.diff(nextPoint, currentPoint).toRadians();
+                return nextPoint.clone().sub(currentPoint).toRadians();
             } else {
                 // traverse the points in reversed direction
                 ListIterator<KVector> iter = listIterator(size() - 1);
@@ -410,7 +410,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                 do {
                     currentPoint = nextPoint;
                     nextPoint = iter.previous();
-                    double additionalDistanceToNext = KVector.distance(currentPoint, nextPoint);
+                    double additionalDistanceToNext = currentPoint.distance(nextPoint);
                     if (additionalDistanceToNext > 0) {
                         distanceSum += additionalDistanceToNext;
                         if (distanceSum >= absDistance) {
@@ -419,7 +419,7 @@ public class KVectorChain extends LinkedList<KVector> implements IDataObject {
                         }
                     }
                 } while (iter.hasPrevious());
-                return KVector.diff(nextPoint, currentPoint).toRadians();
+                return nextPoint.clone().sub(currentPoint).toRadians();
             }
         } else {
             throw new IllegalStateException("Need at least two points to determine an angle.");

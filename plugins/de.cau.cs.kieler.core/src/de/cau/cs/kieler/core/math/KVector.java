@@ -20,7 +20,7 @@ import de.cau.cs.kieler.core.util.IDataObject;
 /**
  * A simple 2D vector class which supports translation, scaling, normalization etc.
  * 
- * @kieler.design proposed 2012-11-02 cds
+ * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @kieler.rating 2011-01-13 proposed yellow msp
  * @author uru
  * @author owo
@@ -36,9 +36,6 @@ public final class KVector implements IDataObject, Cloneable {
     /** y coordinate. */
     public double y;
     // CHECKSTYLEON VisibilityModifier
-
-    /** one full turn in a circle in degrees (360°). */
-    public static final double FULL_CIRCLE = 360;
 
     /**
      * Create vector with default coordinates (0,0).
@@ -75,16 +72,11 @@ public final class KVector implements IDataObject, Cloneable {
     /**
      * Creates a normalized vector for the passed angle in degree.
      * 
-     * @param alpha
-     *            angle in [0, 360)
+     * @param angle
+     *            angle in degrees
      */
-    public KVector(final double alpha) {
-        if (alpha < 0 || alpha >= FULL_CIRCLE) {
-            throw new IllegalArgumentException(
-                    "Value for angle has to be within [0, 360)! Given Value: " + alpha);
-        }
-
-        double rad = Math.toRadians(alpha);
+    public KVector(final double angle) {
+        double rad = Math.toRadians(angle);
         this.x = Math.sin(rad);
         this.y = Math.cos(rad);
     }
@@ -133,7 +125,7 @@ public final class KVector implements IDataObject, Cloneable {
      * 
      * @return Math.sqrt(x*x + y*y)
      */
-    public double getLength() {
+    public double length() {
         return Math.sqrt(x * x + y * y);
     }
 
@@ -142,7 +134,7 @@ public final class KVector implements IDataObject, Cloneable {
      * 
      * @return x*x + y*y
      */
-    public double getSquareLength() {
+    public double squareLength() {
         return x * x + y * y;
     }
 
@@ -167,6 +159,21 @@ public final class KVector implements IDataObject, Cloneable {
     public KVector add(final KVector v) {
         this.x += v.x;
         this.y += v.y;
+        return this;
+    }
+
+    /**
+     * Translate the vector by adding the given amount.
+     * 
+     * @param dx
+     *            the x offset
+     * @param dy
+     *            the y offset
+     * @return {@code this}
+     */
+    public KVector add(final double dx, final double dy) {
+        this.x += dx;
+        this.y += dy;
         return this;
     }
 
@@ -199,16 +206,18 @@ public final class KVector implements IDataObject, Cloneable {
     }
 
     /**
-     * Returns the subtraction of the two given vectors as a new vector instance.
+     * Translate the vector by subtracting the given amount.
      * 
-     * @param v1
-     *            first vector
-     * @param v2
-     *            second vector
-     * @return new vector first - second
+     * @param dx
+     *            the x offset
+     * @param dy
+     *            the y offset
+     * @return {@code this}
      */
-    public static KVector diff(final KVector v1, final KVector v2) {
-        return new KVector(v1.x - v2.x, v1.y - v2.y);
+    public KVector sub(final double dx, final double dy) {
+        this.x -= dx;
+        this.y -= dy;
+        return this;
     }
 
     /**
@@ -240,27 +249,12 @@ public final class KVector implements IDataObject, Cloneable {
     }
 
     /**
-     * Translate the vector.
-     * 
-     * @param dx
-     *            the x offset
-     * @param dy
-     *            the y offset
-     * @return {@code this}
-     */
-    public KVector translate(final double dx, final double dy) {
-        this.x += dx;
-        this.y += dy;
-        return this;
-    }
-
-    /**
      * Normalize the vector.
      * 
      * @return {@code this}
      */
     public KVector normalize() {
-        double length = this.getLength();
+        double length = this.length();
         if (length > 0) {
             this.x /= length;
             this.y /= length;
@@ -307,7 +301,7 @@ public final class KVector implements IDataObject, Cloneable {
      * @return value within [0,2*pi)
      */
     public double toRadians() {
-        double length = this.getLength();
+        double length = this.length();
         assert length > 0;
 
         if (x >= 0 && y >= 0) {  // 1st quadrant
@@ -333,48 +327,6 @@ public final class KVector implements IDataObject, Cloneable {
     }
 
     /**
-     * Create a scaled version of this vector.
-     * 
-     * @param lambda
-     *            scaling factor
-     * @return new vector which is {@code this} scaled by {@code lambda}
-     */
-    public KVector scaledCreate(final double lambda) {
-        return new KVector(this).scale(lambda);
-    }
-
-    /**
-     * Create a normalized version of this vector.
-     * 
-     * @return normalized copy of {@code this}
-     */
-    public KVector normalizedCreate() {
-        return new KVector(this).normalize();
-    }
-
-    /**
-     * Create a sum from this vector and another vector.
-     * 
-     * @param v
-     *            second addend
-     * @return new vector which is the sum of {@code this} and {@code v}
-     */
-    public KVector sumCreate(final KVector v) {
-        return new KVector(this).add(v);
-    }
-
-    /**
-     * Create a difference from this vector and another vector.
-     * 
-     * @param v
-     *            subtrahend
-     * @return new vector which is the difference between {@code this} and {@code v}
-     */
-    public KVector differenceCreate(final KVector v) {
-        return new KVector(this).sub(v);
-    }
-
-    /**
      * Returns the distance between two vectors.
      * 
      * @param v2
@@ -388,42 +340,14 @@ public final class KVector implements IDataObject, Cloneable {
     }
 
     /**
-     * Returns the distance between two vectors.
-     * 
-     * @param v1
-     *            first vector
-     * @param v2
-     *            second vector
-     * @return distance between first and second
-     */
-    public static double distance(final KVector v1, final KVector v2) {
-        double dx = v1.x - v2.x;
-        double dy = v1.y - v2.y;
-        return Math.sqrt((dx * dx) + (dy * dy));
-    }
-
-    /**
      * Returns the dot product of the two given vectors.
      * 
      * @param v2
      *            second vector
      * @return (this.x * this.x) + (v1.y * v2.y)
      */
-    public double productDot(final KVector v2) {
+    public double dotProduct(final KVector v2) {
         return ((this.x * v2.x) + (this.y * v2.y));
-    }
-
-    /**
-     * Returns the dot product of the two given vectors.
-     * 
-     * @param v1
-     *            first vector
-     * @param v2
-     *            second vector
-     * @return (this.x * this.x) + (v1.y * v2.y)
-     */
-    public static double productDot(final KVector v1, final KVector v2) {
-        return ((v1.x * v2.x) + (v1.y * v2.y));
     }
 
     /**
@@ -441,7 +365,7 @@ public final class KVector implements IDataObject, Cloneable {
      * @throws IllegalArgumentException
      *             if highx < lowx or highy < lowy
      */
-    public KVector applyBounds(final double lowx, final double lowy, final double highx,
+    public KVector bound(final double lowx, final double lowy, final double highx,
             final double highy) {
         if (highx < lowx || highy < lowy) {
             throw new IllegalArgumentException(

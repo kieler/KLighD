@@ -240,7 +240,7 @@ public class LayoutOptionControlFactory {
                     SliderListener sliderListener = (SliderListener) control.getData(
                             DATA_SELECTION_LISTENER);
                     if (sliderListener != null) {
-                        float initialValue = KielerMath.limit(((Number) defaultValue).floatValue(),
+                        float initialValue = KielerMath.boundf(((Number) defaultValue).floatValue(),
                                 sliderListener.minFloat, sliderListener.maxFloat);
                         int selection = Math.round((initialValue - sliderListener.minFloat)
                                 / (sliderListener.maxFloat - sliderListener.minFloat)
@@ -330,7 +330,7 @@ public class LayoutOptionControlFactory {
                 // set initial value for the slider
                 float initialValue = ((Number) defaultLayoutConfig.getOptionValue(optionData,
                         defaultLayoutContext)).floatValue();
-                initialValue = KielerMath.limit(initialValue, sliderListener.minFloat,
+                initialValue = KielerMath.boundf(initialValue, sliderListener.minFloat,
                         sliderListener.maxFloat);
                 sliderListener.setOptionValue(initialValue);
                 int selection = Math.round((initialValue - sliderListener.minFloat)

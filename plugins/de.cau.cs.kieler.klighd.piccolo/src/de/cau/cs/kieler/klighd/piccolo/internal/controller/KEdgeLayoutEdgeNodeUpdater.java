@@ -133,7 +133,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
                 == EdgeRouting.SPLINES;
         // in other cases an approximation is used // SUPPRESS CHECKSTYLE NEXT MagicNumber
         if (renderedAsPolyline && layoutedAsSpline && bendPoints.size() >= 4) {
-            bendPoints = KielerMath.approximateSpline(bendPoints);
+            bendPoints = KielerMath.approximateBezierSpline(bendPoints);
         }
 
         // build the bend point array

@@ -89,8 +89,8 @@ public class CubicSplineInterpolator implements ISplineInterpolator {
 
         // add all pieces to the piecewise bezier spline
         for (int i = 0; i < n; i++) {
-            spline.addCurve(points[i], KVector.sum(d[i], points[i]), KVector.diff(
-                    points[(i + 1) % n], d[(i + 1) % n]), points[(i + 1) % n]);
+            spline.addCurve(points[i], KVector.sum(d[i], points[i]), points[(i + 1) % n].clone().sub(
+                    d[(i + 1) % n]), points[(i + 1) % n]);
         }
 
         return spline;
@@ -106,8 +106,8 @@ public class CubicSplineInterpolator implements ISplineInterpolator {
      * @return piecewise bezier spline
      */
     private BezierSpline calculateOpenBezierSpline(final KVector[] points) {
-        return calculateOpenBezierSpline(points, KVector.diff(points[1], points[0]).normalize(),
-                KVector.diff(points[points.length - 2], points[points.length - 1]).normalize(),
+        return calculateOpenBezierSpline(points, points[1].clone().sub(points[0]).normalize(),
+                points[points.length - 2].clone().sub(points[points.length - 1]).normalize(),
                 false);
     }
 
@@ -143,19 +143,19 @@ public class CubicSplineInterpolator implements ISplineInterpolator {
         double endScale = 1;
         if (tangentScale) {
             if (points.length == 2) {
-                startScale = KVector.distance(points[0], points[1]) * TANGENT_SCALE;
+                startScale = points[0].distance(points[1]) * TANGENT_SCALE;
                 endScale = startScale;
             } else {
-                startScale = KVector.distance(points[0], points[1]) * TANGENT_SCALE;
-                endScale = KVector.distance(points[n - 1], points[n]) * TANGENT_SCALE;
+                startScale = points[0].distance(points[1]) * TANGENT_SCALE;
+                endScale = points[n - 1].distance(points[n]) * TANGENT_SCALE;
             }
         } 
-        d[0] = startTan.scaledCreate(startScale);
-        d[n] = endTan.scaledCreate(endScale);
+        d[0] = startTan.clone().scale(startScale);
+        d[n] = endTan.clone().scale(endScale);
 
         // set first and last t
         t[0] = KVector.sum(points[0], d[0]);
-        t[n] = KVector.diff(points[n], d[n]);
+        t[n] = points[n].clone().sub(d[n]);
 
         // extend t
         for (int i = 1; i < n; i++) {
@@ -181,7 +181,7 @@ public class CubicSplineInterpolator implements ISplineInterpolator {
         // create all bezier spline segments
         for (int i = 0; i < n; i++) {
             KVector bend1 = KVector.sum(points[i], d[i]);
-            KVector bend2 = KVector.diff(points[i + 1], d[i + 1]);
+            KVector bend2 = points[i + 1].clone().sub(d[i + 1]);
             spline.addCurve(points[i], bend1, bend2, points[i + 1]);
         }
 
