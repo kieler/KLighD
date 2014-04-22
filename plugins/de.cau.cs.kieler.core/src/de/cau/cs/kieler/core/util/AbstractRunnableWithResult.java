@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2012 by
+ * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -14,21 +14,30 @@
 package de.cau.cs.kieler.core.util;
 
 /**
- * Extension of {@link Runnable} that may be ask for a result, inspired by
- * {@link org.eclipse.emf.transaction.RunnableWithResult}.
+ * A simple standard implementation of {@link RunnableWithResult}.
  * 
  * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
- * @kieler.rating 2012-11-02 proposed yellow cds
  * @param <T> the type of the result
  * @author chsch
  */
-public interface RunnableWithResult<T> extends Runnable {
-
+public abstract class AbstractRunnableWithResult<T> implements RunnableWithResult<T> {
+    
+    private T result = null;
+    
     /**
-     * Returns a result computed by my {@link Runnable#run()} method.
-     * 
-     * @return my result, or {@code null} if none
+     * {@inheritDoc}
      */
-    T getResult();
+    public final T getResult() {
+        return this.result;
+    }
+    
+    /**
+     * Setter to be called by subclasses' run methods.
+     * 
+     * @param theResult the result to be delivered to the caller of the {@link Runnable}.
+     */
+    protected final void setResult(final T theResult) {
+        this.result = theResult;
+    }
     
 }

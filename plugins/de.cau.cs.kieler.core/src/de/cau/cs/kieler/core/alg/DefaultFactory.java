@@ -20,10 +20,10 @@ import de.cau.cs.kieler.core.WrappedException;
  *
  * @param <T> type of instances that are created by this factory
  * @author msp
- * @kieler.design proposed 2012-11-02 cds
+ * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @kieler.rating proposed yellow 2012-07-10 msp
  */
-public class DefaultFactory<T> implements IFactory<T> {
+public final class DefaultFactory<T> implements IFactory<T> {
 
     /** the class for which instances shall be created. */
     private final Class<? extends T> clazz;

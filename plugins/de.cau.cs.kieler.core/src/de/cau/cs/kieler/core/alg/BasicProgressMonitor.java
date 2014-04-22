@@ -21,7 +21,7 @@ import java.util.List;
  * execution time measurement, keeps track of the amount of completed work, and
  * handles sub-tasks properly.
  * 
- * @kieler.design proposed 2012-11-02 cds
+ * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
  */

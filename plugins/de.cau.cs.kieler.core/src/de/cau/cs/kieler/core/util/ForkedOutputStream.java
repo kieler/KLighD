@@ -15,14 +15,14 @@ package de.cau.cs.kieler.core.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * An output stream that can be used to send the same output to multiple
  * output streams.
  * 
- * @kieler.design proposed 2012-11-02 cds
+ * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @author msp
  */
@@ -32,8 +32,7 @@ public class ForkedOutputStream extends OutputStream {
     private final List<OutputStream> outputStreams;
     
     /**
-     * Creates a forked output stream that writes to all output streams
-     * in the given list.
+     * Creates a forked output stream that writes to all output streams in the given list.
      * 
      * @param theoutputStreams list of output streams
      */
@@ -42,16 +41,12 @@ public class ForkedOutputStream extends OutputStream {
     }
     
     /**
-     * Creates a forked output stream that writes to the two given output
-     * streams.
+     * Creates a forked output stream that writes to all given output streams.
      * 
-     * @param stream1 an output stream
-     * @param stream2 an output stream
+     * @param streams an array of output streams
      */
-    public ForkedOutputStream(final OutputStream stream1, final OutputStream stream2) {
-        this.outputStreams = new LinkedList<OutputStream>();
-        outputStreams.add(stream1);
-        outputStreams.add(stream2);
+    public ForkedOutputStream(final OutputStream... streams) {
+        this.outputStreams = Arrays.asList(streams);
     }
     
     /**
