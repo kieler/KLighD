@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.core.util;
 
-import java.util.AbstractCollection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -56,12 +55,12 @@ import java.util.NoSuchElementException;
  * </pre>
  * </p>
  * 
- * @kieler.design proposed 2012-11-02 cds
+ * @kieler.design 2014-04-17 reviewed by cds, chsch, tit, uru
  * @kieler.rating 2009-12-11 proposed yellow msp
  * @param <T> type of contained object
  * @author msp
  */
-public class Maybe<T> extends AbstractCollection<T> {
+public final class Maybe<T> implements Iterable<T> {
     
     /**
      * Create a maybe with inferred generic type.
@@ -151,13 +150,6 @@ public class Maybe<T> extends AbstractCollection<T> {
     /**
      * {@inheritDoc}
      */
-    public int size() {
-        return object == null ? 0 : 1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Iterator<T> iterator() {
         return new Iterator<T>() {
             private boolean visited = false;
@@ -180,39 +172,20 @@ public class Maybe<T> extends AbstractCollection<T> {
         };
     }
 
-     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean add(final T e) {
-        if (object != null) {
-            throw new IllegalStateException();
-        }
-        if (e == null) {
-            throw new NullPointerException();
-        }
-        object = e;
-        return true;
-    }
-
     /**
-     * {@inheritDoc}
+     * Clear any contained object.
      */
-    @Override
-    public boolean remove(final Object o) {
-        if (object != null && o.equals(object)) {
-            object = null;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void clear() {
         object = null;
+    }
+    
+    /**
+     * Determine whether any object is contained.
+     * 
+     * @return false if an object instance is contained, true otherwise
+     */
+    public boolean isEmpty() {
+        return object == null;
     }
     
 }

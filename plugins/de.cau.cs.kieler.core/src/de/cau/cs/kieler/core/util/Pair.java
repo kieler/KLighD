@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.core.util;
 
 import java.io.Serializable;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -43,7 +42,7 @@ import java.util.Map.Entry;
  *            type of second contained object
  * @author msp
  */
-public class Pair<F, S> extends AbstractCollection<Object> {
+public final class Pair<F, S> implements Iterable<Object> {
     
     /**
      * Constructs a pair with {@code null} elements.
@@ -235,19 +234,6 @@ public class Pair<F, S> extends AbstractCollection<Object> {
         return second;
     }
     
-
-    /**
-     * {@inheritDoc}
-     */
-    public int size() {
-        if (first == null && second == null) {
-            return 0;
-        } else if (first == null || second == null) {
-            return 1;
-        }
-        return 2;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -279,26 +265,9 @@ public class Pair<F, S> extends AbstractCollection<Object> {
         };
     }
 
-     /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean add(final Object e) {
-        if (first != null) {
-            first = (F) e;
-            return true;
-        } else if (second != null) {
-            second = (S) e;
-            return true;
-        }
-        throw new IllegalStateException();
-    }
-
     /**
-     * {@inheritDoc}
+     * Clear any contained object, both the first and the second.
      */
-    @Override
     public void clear() {
         first = null;
         second = null;
