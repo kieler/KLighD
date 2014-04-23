@@ -360,7 +360,7 @@ class KLabelExtensions {
      * Adds an outside top centrally-aligned node label!
      */
     def KLabel addOutsideTopCenteredNodeLabel(KNode node, String labelText, int fontSize, String fontName) {
-        return node.createLabel().configureOutsideBottomCenteredNodeLabel(labelText, fontSize, fontName);
+        return node.createLabel().configureOutsideTopCenteredNodeLabel(labelText, fontSize, fontName);
     }
 
     /**
