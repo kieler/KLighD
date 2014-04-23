@@ -17,6 +17,10 @@ import de.cau.cs.kieler.core.krendering.KColor
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 
 /**
+ * 
+ * @author chsch
+ * @author ssm
+ *  
  * @containsExtensions
  */
 class KColorExtensions {
@@ -50,6 +54,13 @@ class KColorExtensions {
         // if a rgb color is given, convert it 
         if (name.startsWith("#")) {
             try {
+                if (name.length == 4) {
+                    // CSS style short color format
+                    name.substring(1,2) => [ color.setRed(Integer::valueOf(it+it, 16)) ] 
+                    name.substring(2,3) => [ color.setGreen(Integer::valueOf(it+it, 16)) ] 
+                    name.substring(3,4) => [ color.setBlue(Integer::valueOf(it+it, 16)) ]
+                    return color 
+                }
                 color.setRed(Integer::valueOf(name.substring(1, 3), 16))
                 color.setGreen(Integer::valueOf(name.substring(3, 5), 16))
                 color.setBlue(Integer::valueOf(name.substring(5, 7), 16))
