@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -34,14 +35,18 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.krendering.KArc;
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KImage;
+import de.cau.cs.kieler.core.krendering.KPlacementData;
+import de.cau.cs.kieler.core.krendering.KPointPlacementData;
 import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
@@ -50,6 +55,7 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
@@ -63,6 +69,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
@@ -611,6 +618,10 @@ final class KGERenderingControllerHelper {
         imageNode.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
         parent.addChild(imageNode);
 
+        if (image.getClipShape() != null) {
+            imageNode.setClip(createClipShape(image.getClipShape(), initialBounds));
+        }
+
         // handle children
         if (image.getChildren().size() > 0) {
             controller.handleChildren(image.getChildren(), image.getChildPlacement(),
@@ -624,6 +635,61 @@ final class KGERenderingControllerHelper {
                 NodeUtil.applySmartBounds(getNode(), bounds);
             }
         };
+    }
+    
+    /**
+     * Constructs an AWT {@link Shape} being used for configuring the clip while drawing the
+     * corresponding {@link KlighdImage}.
+     * 
+     * @param rendering
+     *            a {@link KRectangle}, {@link KEllipse}, or {@link KRenderingRef} pointing to a
+     *            rendering of the former types
+     * @param imageBounds
+     *            the computed bounds of the image to be drawn on the diagram
+     * @return the desired clip denoting {@link Shape}
+     */
+    private static Shape createClipShape(final KRendering rendering, final Bounds imageBounds) {
+        // resolve the KRendering (if 'rendering' is a KRenderingRef)
+        final KRendering clipRendering = KRenderingUtil.dereference(rendering);
+        
+        final KPlacementData pcd = KRenderingUtil.getPlacementData(clipRendering);
+        final KAreaPlacementData apd = KRenderingUtil.asAreaPlacementData(pcd);
+        final KPointPlacementData ppd = KRenderingUtil.asPointPlacementData(pcd);
+
+        // calculate the clip's bounds based on the image's bounds and the provided placement data
+        final Bounds bounds;
+
+        if (ppd != null) {
+            bounds = PlacementUtil.evaluatePointPlacement(ppd,
+                    PlacementUtil.estimateSize(clipRendering, Bounds.of(0, 0)),
+                    imageBounds);
+
+        } else if (apd != null) {
+            bounds = PlacementUtil.evaluateAreaPlacement(apd, imageBounds);
+
+        } else {
+            bounds = Bounds.of(imageBounds.getWidth(), imageBounds.getHeight());
+        }
+
+        // now build up the clip shape based on the revealed KRendering's type
+        final Shape clipShape;
+
+        if (clipRendering instanceof KRectangle) {
+            clipShape = bounds.toRectangle2D();
+
+        } else if (clipRendering instanceof KEllipse) {
+            clipShape = bounds.toEllipse2D();
+
+        } else if (clipRendering instanceof KPolygon) {
+            final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(
+                    (KPolygon) clipRendering, imageBounds);
+            clipShape = PolylineUtil.createPolygonPath(null, points);
+
+        } else {
+            clipShape = null;
+        }
+        
+        return clipShape;
     }
 
     /**

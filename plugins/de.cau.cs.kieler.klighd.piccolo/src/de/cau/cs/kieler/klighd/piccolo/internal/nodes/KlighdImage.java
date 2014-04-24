@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import java.awt.Shape;
 import java.io.InputStream;
 
 import org.eclipse.swt.graphics.Image;
@@ -60,6 +61,11 @@ public class KlighdImage extends PNode implements IResourceEmployer {
     // This is useful for efficient drawing on SWT and non-SWT-based canvases.
     private transient Image image;
     private transient ImageData imageData;
+    
+    /**
+     * The shape defining the clip area to be applied to this image.
+     */
+    private Shape clip;
     
     /**
      * Common private constructor.
@@ -129,7 +135,17 @@ public class KlighdImage extends PNode implements IResourceEmployer {
     public void setImage(final InputStream input) {
         setImage(new ImageData(input));
     }
-    
+
+    /**
+     * Set the clip shape to be applied to this image, removes the existing clip
+     * if <code>clip</code> is <code>null</code>.
+     * 
+     * @param clip the clip to set, may be <code>null</code>
+     */
+    public void setClip(final Shape clip) {
+        this.clip = clip;
+    }
+
     /**
      * Sets the image to be displayed by this node.
      *  
@@ -177,7 +193,18 @@ public class KlighdImage extends PNode implements IResourceEmployer {
                 this.image = new Image(graphics.getDevice(), this.imageData);
             }
             if (image != null) {
+                final boolean setClip = clip != null;
+                final Shape prevClip = graphics.getClip();
+                
+                if (setClip) {
+                    graphics.clip(clip);
+                }
+
                 graphics.drawImage(image, b.width, b.height);
+
+                if (setClip) {
+                    graphics.setClip(prevClip);
+                }
             }
         } else {
             // without any device we have to draw the raw image data
@@ -185,7 +212,18 @@ public class KlighdImage extends PNode implements IResourceEmployer {
                 this.imageData = image.getImageData();
             }
             if (imageData != null) {
+                final boolean setClip = clip != null;
+                final Shape prevClip = graphics.getClip();
+                
+                if (setClip) {
+                    graphics.clip(clip);
+                }
+
                 graphics.drawImage(imageData, b.width, b.height);
+
+                if (setClip) {
+                    graphics.setClip(prevClip);
+                }
             }
         }
     }

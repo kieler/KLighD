@@ -27,7 +27,9 @@ import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -765,6 +767,19 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             // final Rectangle clipping = gc.getClipping();
             // this.swtClipRect.intersect(clipping);
             // this.gc.setClipping(this.swtClipRect);
+
+        } else if (clip instanceof Ellipse2D) {
+            // TODO the following is not correct wrt the specification of this method (see method doc)
+            //  I however don't know an efficient way to intersect arbitrary shapes at the moment
+            final Ellipse2D ellipse = (Ellipse2D) ((Ellipse2D) clip).clone();
+            this.setClip(ellipse);
+
+        } else if (clip instanceof Path2D) {
+            // TODO the following is not correct wrt the specification of this method (see method doc)
+            //  I however don't know an efficient way to intersect arbitrary shapes at the moment
+            final Path2D polygon = (Path2D) ((Path2D) clip).clone();
+            this.setClip(polygon);
+
         } else {
             throw new UnsupportedOperationException();
         }
