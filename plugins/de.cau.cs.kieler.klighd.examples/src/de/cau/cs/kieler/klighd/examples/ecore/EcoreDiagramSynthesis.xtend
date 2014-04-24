@@ -248,7 +248,8 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                 ];
                             } else {
                                 it.addImage("de.cau.cs.kieler.klighd.examples", "icons/Class.png")
-                                    .setPointPlacementData(LEFT, 20, 0, TOP, 0, 0.5f, H_CENTRAL, V_CENTRAL, 10, 10, 20, 20);
+                                    .setPointPlacementData(LEFT, 20, 0, TOP, 0, 0.5f, H_CENTRAL, V_CENTRAL, 10, 10, 20, 20)
+                                    .addEllipticalClip; //.setAreaPlacementData.from(LEFT, 3, 0, TOP, 3, 0).to(RIGHT, 3, 0, BOTTOM, 3, 0);
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
                                     it.fontSize = 15;
                                     it.fontBold = true;
