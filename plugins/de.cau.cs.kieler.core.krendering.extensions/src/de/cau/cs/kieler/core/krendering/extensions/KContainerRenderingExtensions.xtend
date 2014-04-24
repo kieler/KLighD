@@ -158,6 +158,58 @@ class KContainerRenderingExtensions {
         ];
     }
 
+    /**
+     * Sets a {@link KRectangle} clip shape on the provided <code>image</code>.<br>
+     * Set area or point placement data on this (returned) rectangle as usual in order
+     * to determine the clip area.
+     *  
+     * @extensionCategory composition
+     * 
+     * @example
+     * ...addImage(...).addRectangularClip
+     *          .addAreaPlacementData.from(LEFT, 3, 0, TOP, 3, 0).to(RIGHT, 3, 0, BOTTOM, 3, 0);
+     */
+    def KRectangle addRectangularClip(KImage image) {
+        val rect = createKRectangle;
+        image.clipShape = rect;
+        return rect;
+    }
+
+    /**
+     * Sets a {@link KEllipse} clip shape on the provided <code>image</code>.<br>
+     * Set area or point placement data on this (returned) ellipse as usual in order
+     * to determine the clip area. 
+     *  
+     * @extensionCategory composition
+     * 
+     * @example
+     * ...addImage(...).addEllipticalClip
+     *          .addAreaPlacementData.from(LEFT, 3, 0, TOP, 3, 0).to(RIGHT, 3, 0, BOTTOM, 3, 0);
+     */
+    def KEllipse addEllipticalClip(KImage image) {
+        val ellipse = createKEllipse;
+        image.clipShape = ellipse;
+        return ellipse;
+    }
+
+    /**
+     * Sets a {@link KPolygon} clip shape on the provided <code>image</code>.<br>
+     * Add {@link KPosition KPositions} on this (returned) polygon as usual in order
+     * to determine the clip area. 
+     *  
+     * @extensionCategory composition
+     * 
+     * @example
+     * ..addImage(...).addPolygonClip.addKPosition(LEFT, 3, 0, TOP, 3, 0)
+     *          .addKPosition(RIGHT, 3, 0, TOP, 3, 0)
+     *          .addKPosition(LEFT, 0, 0.5f, BOTTOM, 3, 0);
+     */
+    def KPolygon addPolygonClip(KImage image) {
+        val polygon = createKPolygon;
+        image.clipShape = polygon
+        return polygon;      
+    }
+
     def KCustomRendering addCustomRendering(KContainerRendering cr) {
         return createKCustomRendering => [
             cr.children += it;
