@@ -29,6 +29,7 @@ package de.cau.cs.kieler.core.krendering;
  *   <li>{@link de.cau.cs.kieler.core.krendering.KImage#getBundleName <em>Bundle Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KImage#getImagePath <em>Image Path</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KImage#getImageObject <em>Image Object</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KImage#getClipShape <em>Clip Shape</em>}</li>
  * </ul>
  * </p>
  *
@@ -123,5 +124,33 @@ public interface KImage extends KContainerRendering {
      * @generated
      */
     void setImageObject(Object value);
+
+    /**
+     * Returns the value of the '<em><b>Clip Shape</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * This {@link KRendering} will determine the clip applied to the image. It will not be drawn!
+     * Valid {@link KRendering KRenderings} are {@link KRectangle KRectangles}, {@link KEllipse KEllipses},
+     * {@link KPolygon KPolygons}, and {@link KRenderingRef KRenderingRefs} pointing to a rendering of the former types.
+     * Other values are ignored.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Clip Shape</em>' containment reference.
+     * @see #setClipShape(KRendering)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKImage_ClipShape()
+     * @model containment="true"
+     * @generated
+     */
+    KRendering getClipShape();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KImage#getClipShape <em>Clip Shape</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Clip Shape</em>' containment reference.
+     * @see #getClipShape()
+     * @generated
+     */
+    void setClipShape(KRendering value);
 
 } // KImage

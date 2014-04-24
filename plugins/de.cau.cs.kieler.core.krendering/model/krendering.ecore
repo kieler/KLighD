@@ -152,6 +152,12 @@
         <details key="documentation" value="the image to be used as JavaObject"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clipShape" eType="#//KRendering"
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This {@link KRendering} will determine the clip applied to the image. It will not be drawn!&#xA;Valid {@link KRendering KRenderings} are {@link KRectangle KRectangles}, {@link KEllipse KEllipses},&#xA;{@link KPolygon KPolygons}, and {@link KRenderingRef KRenderingRefs} pointing to a rendering of the former types.&#xA;Other values are ignored."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KDecoratorPlacementData" eSuperTypes="#//KPlacementData">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
