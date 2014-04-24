@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.math.KVector;
@@ -248,6 +249,15 @@ public class Bounds {
      */
     public Rectangle2D toRectangle2D() {
         return new Rectangle2D.Float(this.x, this.y, this.width, this.height);
+    }
+
+    /**
+     * Transforms the current {@link Bounds} object in an AWT geometry {@link Ellipse2D}.
+     * 
+     * @return a related {@link Ellipse2D}
+     */
+    public Ellipse2D toEllipse2D() {
+        return new Ellipse2D.Float(this.x, this.y, this.width, this.height);
     }
 
     /**
