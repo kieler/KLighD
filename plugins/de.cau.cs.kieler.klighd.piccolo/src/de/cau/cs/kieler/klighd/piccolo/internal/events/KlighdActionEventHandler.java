@@ -44,7 +44,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
 
 /**
- * Initial draft of an event handler that invokes actions associated with KRenderings.
+ * Event handler that invokes actions associated with KRenderings on corresponding mouse click events.
  * 
  * @author chsch
  */
@@ -167,17 +167,11 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  first make sure that the scenario described below is not enabled again.
         inputEvent.setHandled(true);
         
-        final boolean zoomToFit = result.getZoomToFit() != null
-                ? result.getZoomToFit() : context.getViewContext().isZoomToFit();
-        final boolean zoomToFocus = result.getZoomToFocus() != null
-                ? result.getZoomToFocus()
-                        : context.getViewContext().getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
-
         // remember the desired zoom style in the view context
         final ViewContext vc = viewer.getViewContext();
-        vc.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
 
         final boolean animate = result.getAnimateLayout();
+        final ZoomStyle zoomStyle = ZoomStyle.create(result, vc);
         final List<ILayoutConfig> layoutConfigs = result.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager
@@ -191,7 +185,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  flag of 'inputEvent' properly.
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                LightDiagramServices.layoutDiagram(vc, animate, zoomToFit, layoutConfigs);
+                LightDiagramServices.layoutDiagram(vc, animate, zoomStyle, layoutConfigs);
             }
         });
         

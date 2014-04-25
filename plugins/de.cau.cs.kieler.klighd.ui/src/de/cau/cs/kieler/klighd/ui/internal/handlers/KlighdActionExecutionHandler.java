@@ -122,22 +122,10 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         final ActionResult result = Iterables.getFirst(results, ActionResult.createResult(false));
 
         if (anyActionPerformed) {
-            final boolean zoomToFit =
-                    result.getZoomToFit() != null ? result.getZoomToFit() : viewContext
-                            .isZoomToFit();
-            final boolean zoomToFocus =
-                    result.getZoomToFocus() != null ? result.getZoomToFocus() : viewContext
-                            .getZoomStyle() == ZoomStyle.ZOOM_TO_FOCUS;
-
-            // remember the desired zoom style in the view context
-            viewContext.setZoomStyle(ZoomStyle.create(zoomToFit, zoomToFocus));
-
-            LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(), zoomToFit,
-                    result.getLayoutConfigs());
-
+            LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
+                    ZoomStyle.create(result, viewContext), result.getLayoutConfigs());
         } else {
-            viewContext.setZoomStyle(ZoomStyle.NONE);
-            viewContext.getLayoutRecorder().stopRecording(0);
+            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, 0);
         }
         
         return null;
