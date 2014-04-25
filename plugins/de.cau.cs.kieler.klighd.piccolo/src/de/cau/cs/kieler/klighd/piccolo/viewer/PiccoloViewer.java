@@ -44,6 +44,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
@@ -249,11 +250,18 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      * {@inheritDoc}
      */
     public void stopRecording(final int animationTime) {
+        final ViewContext viewContext = this.getViewContext();
         final ZoomStyle zoomStyle;
         
-        if (this.getViewContext() != null) {
-            // get the zoomStyle
-            zoomStyle = this.getViewContext().getZoomStyle();
+        // get the zoomStyle
+        if (viewContext != null) {
+            final ZoomStyle nzs = viewContext.getProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE);
+            if (nzs != null) {
+                zoomStyle = nzs;
+                viewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE, null);
+            } else {
+                zoomStyle = this.getViewContext().getZoomStyle();
+            }
         } else {
             zoomStyle = ZoomStyle.NONE;
         }
