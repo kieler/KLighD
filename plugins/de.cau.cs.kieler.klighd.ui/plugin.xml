@@ -262,7 +262,7 @@
                </reference>
             </visibleWhen>
          </command>
-         <command
+         <!-- command
                commandId="org.eclipse.ui.edit.copy"
                label="hugo"
                style="push">
@@ -276,7 +276,7 @@
                      </equals></iterate>
                </with>
             </visibleWhen>
-         </command>
+         </command -->
       </menuContribution>
    </extension>
    <extension
