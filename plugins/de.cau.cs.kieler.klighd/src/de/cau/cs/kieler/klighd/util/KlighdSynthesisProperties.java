@@ -93,9 +93,24 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      *            a variable number of {@link IPropertyHolder IPropertyHolders} allowing providing
      *            configurations
      * 
+     * @deprecated use {@link #create(IPropertyHolder...)}
+     * 
      * @return a new instance of {@link KlighdSynthesisProperties}.
      */
     public static KlighdSynthesisProperties newInstance(final IPropertyHolder... propertyHolders) {
+        return create(propertyHolders);
+    }
+
+    /**
+     * Factory method.
+     * 
+     * @param propertyHolders
+     *            a variable number of {@link IPropertyHolder IPropertyHolders} allowing providing
+     *            configurations
+     * 
+     * @return a new instance of {@link KlighdSynthesisProperties}.
+     */
+    public static KlighdSynthesisProperties create(final IPropertyHolder... propertyHolders) {
         if (propertyHolders == null || propertyHolders.length == 0) {
             return new KlighdSynthesisProperties();
             
@@ -111,6 +126,36 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     }
     
     /**
+     * Sets a property value and returns <code>this</code> {@link IPropertyHolder} for convenience.
+     * 
+     * @param <T> type of property
+     * @param property the property to set
+     * @param value the new value
+     * 
+     * @see IPropertyHolder#setProperty(IProperty, Object)
+     *
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public <T> KlighdSynthesisProperties setProperty2(final IProperty<? super T> property,
+            final T value) {
+        super.setProperty(property, value);
+        return this;
+    }
+    
+    /**
+     * Configures the {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategy} to be employed
+     * by means of the id it is registered via KLighD's 'extensions' extension point.
+     * 
+     * @param id
+     *            the id the desired {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategy}
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties useUpdateStrategy(final String id) {
+        this.setProperty(REQUESTED_UPDATE_STRATEGY, id);
+        return this;
+    }
+    
+    /**
      * Configures a 'use simple update strategy' setting.
      * 
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
@@ -121,11 +166,11 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     }
     
     /**
-     * Configures the {@link de.cau.cs.kieler.klighd.IViewer IViewer} to be employed by means of the
-     * id it is registered via KLighD's 'extensions' extension point.
+     * Configures the {@link de.cau.cs.kieler.klighd.IViewerProvider IViewerProvider} to be employed
+     * by means of the id it is registered via KLighD's 'extensions' extension point.
      * 
      * @param id
-     *            the id the desired {@link de.cau.cs.kieler.klighd.IViewer IViewer}
+     *            the id the desired {@link de.cau.cs.kieler.klighd.IViewerProvider IViewerProvider}
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties useViewer(final String id) {
