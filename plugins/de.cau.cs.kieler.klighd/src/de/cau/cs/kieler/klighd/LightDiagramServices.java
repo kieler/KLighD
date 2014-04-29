@@ -13,9 +13,11 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.google.common.base.Predicates;
@@ -635,7 +637,7 @@ public final class LightDiagramServices {
     public static ViewContext translateModel2(final Object model, final ViewContext otherVC,
             final IPropertyHolder... propertyHolders) {
         final ViewContext vc = new ViewContext(otherVC, model).configure(
-                KlighdSynthesisProperties.newInstance(propertyHolders));
+                KlighdSynthesisProperties.create(propertyHolders));
         vc.update(model);
         return vc;
     }
@@ -650,10 +652,38 @@ public final class LightDiagramServices {
      *            the model to be translated into a diagram
      * @param format
      *            the desired diagram format
+     * @param output
+     *            the OutputStream to write the rendered diagram to, e.g. a
+     *            {@link java.io.FileOutputStream FileOutputStream}
      * @return the {@link String} representation of the desired diagram, or <code>null</code> if no
      *         matching off-screen renderer of diagram synthesis exists
      */
-    public static String renderOffScreen(final Object model, final String format) {
+    public static IStatus renderOffScreen(final Object model, final String format,
+            final OutputStream output) {
+        return renderOffScreen(model, format, output, null);
+    }
+
+    /**
+     * Translates the given <code>model</code> by means of the known diagram synthesis translations
+     * and renders it off-screen into the given format, if a matching {@link IOffscreenRenderer} is
+     * available.<br>
+     * 
+     * @param model
+     *            the model to be translated into a diagram
+     * @param format
+     *            the desired diagram format
+     * @param output
+     *            the OutputStream to write the rendered diagram to, e.g. a
+     *            {@link java.io.FileOutputStream FileOutputStream}
+     * @param properties
+     *            an {@link IPropertyHolder} containing configurations in terms of the properties
+     *            defined in {@link IOffscreenRenderer}
+     * @return the {@link String} representation of the desired diagram, or <code>null</code> if no
+     *         matching off-screen renderer of diagram synthesis exists
+     */
+    public static IStatus renderOffScreen(final Object model, final String format,
+            final OutputStream output, final IPropertyHolder properties) {
+
         if (model == null) {
             throw new NullPointerException(
                     "KLighD offscreen rendering: The provided model must not be 'null'!");
@@ -662,7 +692,7 @@ public final class LightDiagramServices {
                     "KLighD offscreen rendering: The provided format must not be 'null'!");
         } else if (format.isEmpty()) {
             throw new RuntimeException(
-                    "KLighD offscreen rendering: The provided format must not be the empty string!");
+                    "KLighD offscreen rendering: The provided format must not be an empty string!");
         }
         
         // look for a matching IOffscreeenRenderer
@@ -686,7 +716,7 @@ public final class LightDiagramServices {
         }
 
         // finally render the diagram and return the result
-        final String result = renderer.render(viewContext, null);
+        final IStatus result = renderer.render(viewContext, output, properties);
         return result;
     }
 }

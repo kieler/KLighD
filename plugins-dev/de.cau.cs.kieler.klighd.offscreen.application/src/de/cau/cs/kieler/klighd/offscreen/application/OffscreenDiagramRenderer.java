@@ -15,9 +15,10 @@
 package de.cau.cs.kieler.klighd.offscreen.application;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -76,12 +77,17 @@ public class OffscreenDiagramRenderer implements IApplication {
             return;
         }
 
-        final String diagram = LightDiagramServices.renderOffScreen(eo, "svg");
+        final FileOutputStream output = new FileOutputStream(targetFile);
         
-        final FileWriter fw = new FileWriter(targetFile);
-        fw.write(diagram);
-        fw.close();
-        System.out.println("Generated file " + targetFile);
+        final IStatus result = LightDiagramServices.renderOffScreen(eo, "svg", output);
+
+        output.close();
+        
+        if (result.getCode() == IStatus.OK) {
+            System.out.println("Generated file " + targetFile);
+        } else {
+            System.out.println("Generation of diagram to stored in " + targetFile + " failed.");
+        }
     }
 
     /**
@@ -89,5 +95,4 @@ public class OffscreenDiagramRenderer implements IApplication {
      */
     public void stop() {
     }
-
 }

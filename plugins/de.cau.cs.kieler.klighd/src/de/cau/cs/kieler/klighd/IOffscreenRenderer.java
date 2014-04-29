@@ -13,8 +13,11 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
+
+import org.eclipse.core.runtime.IStatus;
 
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
@@ -62,12 +65,16 @@ public interface IOffscreenRenderer {
      * 
      * @param viewContext
      *            the view context describing the diagram to be rendered
+     * @param output
+     *            the OutputStream to write the rendered diagram to, e.g. a
+     *            {@link java.io.FileOutputStream FileOutputStream}
      * @param properties
      *            an {@link IPropertyHolder}, e.g. a
      *            {@link de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
      *            KlighdSynthesisProperties} instance, declaring the {@link #OUTPUT_FORMAT}, for
      *            example.
-     * @return the {@link String} representation of the desired diagram
+     * @return an {@link IStatus} indicating success or failure of the diagram rendering, in case of
+     *         a failure the return {@link IStatus} is supposed to contain detailed information
      */
-    String render(ViewContext viewContext, IPropertyHolder properties);
+    IStatus render(ViewContext viewContext, OutputStream output, IPropertyHolder properties);
 }

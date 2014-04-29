@@ -13,58 +13,51 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.svg;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
-import de.cau.cs.kieler.klighd.IOffscreenRenderer;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.export.AbstractOffscreenRenderer;
 
 /**
- * An {@link IOffscreenRenderer} producing SVG diagrams.
+ * An implementation of {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}
+ * producing SVG diagrams.
  * 
  * @author chsch
  */
-public class SVGOffscreenRenderer implements IOffscreenRenderer {
+public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
+    /** this plugin's id. */
+    public static final String PLUGIN_ID = KlighdPiccoloPlugin.PLUGIN_ID + ".svg";
+    
     /**
      * {@inheritDoc}
      */
-    public String render(final ViewContext viewContext, final IPropertyHolder properties) {
+    public IStatus render(final ViewContext viewContext, final OutputStream output,
+            final IPropertyHolder properties) {
         final KlighdSVGCanvas canvas = new KlighdSVGCanvas(true);
         
-        // create a controller for the graph
-        // since the controller attaches the 'ACTIVE' and 'POPULATED' flags that are examined
-        //  by the KlighdLayoutManager we need to do this before arranging the diagram
-        final DiagramController c =
-                new DiagramController(viewContext.getViewModel(), canvas.getCamera(), true);
+        buildUpDiagram(viewContext, canvas.getCamera(), properties);
 
-        if (properties == null) {
-            // layout the diagram
-            DiagramLayoutEngine.INSTANCE.layout(null, viewContext);
-            
-        } else {
-            // expand the desired elements... 
-            for (Object o : properties.getProperty(IOffscreenRenderer.EXPANDED_ELEMENTS)) {
-                final KNode node = viewContext.getTargetElement(o, KNode.class);
-                if (node != null) {
-                    c.expand(node);
-                }
-            }
-            
-            // and collapse the desired elements, respectively
-            for (Object o : properties.getProperty(IOffscreenRenderer.COLLAPSED_ELEMENTS)) {
-                final KNode node = viewContext.getTargetElement(o, KNode.class);
-                if (node != null) {
-                    c.collapse(node);
-                }
-            }
-            
-            if (!properties.getProperty(IOffscreenRenderer.NO_LAYOUT)) {
-                // layout the diagram
-                DiagramLayoutEngine.INSTANCE.layout(null, viewContext);
-            }
+        canvas.setDiagramBounds(viewContext.getViewModel());
+
+        final String svg = canvas.render();
+        
+        try {
+            Writer writer = new OutputStreamWriter(output);
+            writer.write(svg);
+            writer.flush();
+        } catch (IOException e) {
+            return new Status(IStatus.ERROR, PLUGIN_ID, EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
-        return canvas.setDiagramBounds(viewContext.getViewModel()).render();
+        
+        return Status.OK_STATUS; 
     }
 }

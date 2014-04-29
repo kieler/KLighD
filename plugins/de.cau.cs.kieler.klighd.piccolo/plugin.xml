@@ -31,6 +31,11 @@
             id="de.cau.cs.kieler.klighd.piccolo.exporter.bmp"
             subFormat="bmp">
       </exporter>
+      <offscreenRenderer
+            class="de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer"
+            id="de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer"
+            supportedFormats="bmp, jpeg, png">
+      </offscreenRenderer>
    </extension>
 
 </plugin>
