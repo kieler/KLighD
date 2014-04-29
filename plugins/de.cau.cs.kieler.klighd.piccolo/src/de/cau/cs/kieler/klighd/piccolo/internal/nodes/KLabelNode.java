@@ -14,10 +14,8 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
@@ -48,10 +46,6 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
      */
     public KLabelNode(final KLabel label) {
         this.label = label;
-
-        Boolean b = label.getData(KShapeLayout.class).getProperty(
-                KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
-        setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
     }
 
     /**
