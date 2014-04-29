@@ -108,6 +108,17 @@ public final class KlighdProperties {
             "de.cau.cs.kieler.klighd.clip");
 
     /**
+     * Property determining the selectability of a certain
+     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.core.krendering.KText KText}. If it is set to <code>true</code> that
+     * particular diagram element cannot be selected, and the (geometrically) underlying element will
+     * be selected if possible.<br>
+     * If a {@link KNode} is not selectable the selection attempt is stopped!
+     */
+    public static final IProperty<Boolean> NOT_SELECTABLE = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.suppressSelectability", false);
+
+    /**
      * Property providing a URI to semantic elements to be depicted but that are to be loaded lazily.
      * This is property is currently to be attached to the nodes shape layout data during the view
      * synthesis process. 
@@ -117,6 +128,8 @@ public final class KlighdProperties {
     /**
      * Property of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} indicating that the containing
      * node is not pickable in a KLighD diagram. Can be used to mask auxiliary encapsulating nodes.
+     * 
+     * @deprecated use {@link #NOT_SELECTABLE}
      */
     public static final IProperty<Boolean> KLIGHD_SELECTION_UNPICKABLE = new Property<Boolean>(
             "klighd.selection.unpickable", false);

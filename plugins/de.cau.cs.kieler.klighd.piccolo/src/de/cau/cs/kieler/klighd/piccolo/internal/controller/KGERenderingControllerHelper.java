@@ -71,7 +71,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -297,10 +296,6 @@ final class KGERenderingControllerHelper {
         // create the text
         KlighdStyledText textNode = new KlighdStyledText(text);
         controller.initializeRenderingNode(textNode);
-
-        // supplement (chsch)
-        Boolean b = text.getProperty(KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
-        textNode.setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
 
         // create the alignment node wrapping the text
         final PAlignmentNode alignmentNode = new PAlignmentNode();
