@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
-import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The Piccolo node for representing a {@code KLabel}.
@@ -63,9 +62,9 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
         if (controller == null || controller instanceof KLabelRenderingController) {
             this.renderingController = (KLabelRenderingController) controller;
         } else {
-            String s = "KLighD: Fault occured while building up a concrete KLabel rendering: KLabelNodes"
-                    + " are supposed to be controlled by KLabelRenderingControllers rather than "
-                    + controller.getClass().getCanonicalName();
+            final String s = "KLighD: Fault occured while building up a concrete KLabel rendering: "
+                    + "KLabelNodes are supposed to be controlled by KLabelRenderingControllers rather "
+                    + "than " + controller.getClass().getCanonicalName();
             throw new IllegalArgumentException(s);
         }
     }
@@ -95,18 +94,5 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
      */
     public String getText() {
         return text;
-    }
-
-    /**
-     * {@inheritDoc}.<br>
-     * <br>
-     * By means of this configuration the {@link KLabelNode KLabelNodes} themselves are pickable
-     * rather then their children (KText renderings). This allows reduction of the tracing
-     * information needed in order to link view and (source) model.
-     * 
-     * @return true since we can abstract the pick of a concrete text rendering node this way.
-     */
-    protected boolean pick(final PPickPath pickPath) {
-        return true;
     }
 }

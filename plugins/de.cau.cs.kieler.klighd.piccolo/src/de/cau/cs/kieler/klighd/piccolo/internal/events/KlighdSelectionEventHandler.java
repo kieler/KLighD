@@ -114,6 +114,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                 graphElement = ((ITracingElement<?>) selectedNode).getGraphElement();
             } else {
                 graphElement = null;
+                continue;
             }
             
             // check whether that one is allowed to be selected
