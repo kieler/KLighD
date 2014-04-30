@@ -120,6 +120,14 @@
                values="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdActionExecutionHandler$IActionParameterValues">
          </commandParameter>
       </command>
+      <command
+            category=" "
+            categoryId="de.cau.cs.kieler.klighd.ui"
+            defaultHandler="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdSaveKGraphHandler"
+            description="Allows to write the view model KGraph to a file."
+            id="de.cau.cs.kieler.klighd.ui.savekgraph"
+            name="Save Underlying KGraph">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -255,6 +263,17 @@
                   name="de.cau.cs.kieler.klighd.ui.action"
                   value="de.cau.cs.kieler.klighd.actions.ScaleResetAction">
             </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.cau.cs.kieler.klighd.ui.savekgraph"
+               label="Save Underlying KGraph"
+               style="push">
             <visibleWhen
                   checkEnabled="false">
                <reference
