@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ISelection;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -133,6 +134,17 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         }
     }
 
+
+    /**
+     * Forwards the given <code>selection</code> to the employed {@link ContextViewer} that is in
+     * charge of broadcasting it into the platform and the registered selection listeners.
+     * 
+     * @param selection
+     *            the new {@link ISelection}
+     */
+    protected void updateSelection(final ISelection selection) {
+        this.getContextViewer().notifySelectionListeners(selection);
+    }
 
     /* ----------------------------- */
     /*   the view manipulation API   */
@@ -267,8 +279,15 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public KlighdTreeSelection getSelection() {
+    public ISelection getSelection() {
         return getContextViewer().getSelection();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KlighdTreeSelection getDiagramSelection() {
+        return getContextViewer().getDiagramSelection();
     }
     
     /**

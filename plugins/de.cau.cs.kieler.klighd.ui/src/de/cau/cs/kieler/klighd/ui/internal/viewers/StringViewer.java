@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -345,7 +346,14 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
-    public KlighdTreeSelection getSelection() {
+    public ISelection getSelection() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KlighdTreeSelection getDiagramSelection() {
         return null;
     }
 

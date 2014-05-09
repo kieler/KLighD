@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -467,7 +468,15 @@ public interface IViewer<T> {
      *  
      * @return the current {@link org.eclipse.jface.viewers.ISelection}
      */
-    KlighdTreeSelection getSelection();
+    ISelection getSelection();
+    
+    /**
+     * Provides the current {@link KlighdTreeSelection} provided by the diagram viewer.
+     * 
+     * @return the current {@link KlighdTreeSelection} or <code>null</code> if the current selection
+     *         is not of type {@link KlighdTreeSelection}
+     */
+    KlighdTreeSelection getDiagramSelection();
     
     /**
      * Adds or removes the representative of the provided element to/from the current selection

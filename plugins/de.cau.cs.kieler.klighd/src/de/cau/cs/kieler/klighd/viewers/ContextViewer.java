@@ -703,9 +703,9 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      * {@inheritDoc}
      */
     public void toggleSelectionOfDiagramElements(final Set<? extends EObject> toBeToggled) {
-        final List<EObject> theSelection = newArrayList(this.getSelection());
-        for (EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
-            boolean removed = theSelection.remove(diagramElement);
+        final List<EObject> theSelection = newArrayList(this.getDiagramSelection());
+        for (final EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
+            final boolean removed = theSelection.remove(diagramElement);
             if (!removed) {
                 theSelection.add(diagramElement);
             }
@@ -779,15 +779,15 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     private void updateSelection(final Iterable<? extends EObject> diagramElements) {
         // here the selected elements are assumed to be diagram elements, i.e. KGraph elements or KTexts
         
-        final List<EObject> currentlySelected = newArrayList(getSelection());
+        final List<EObject> currentlySelected = newArrayList(getDiagramSelection());
         final List<EObject> toBeSelected = newArrayList(filter(diagramElements, Predicates.notNull())); 
         
-        for (KRendering r : concat(transform(filter(currentlySelected, notIn(toBeSelected)),
+        for (final KRendering r : concat(transform(filter(currentlySelected, notIn(toBeSelected)),
                 AS_RENDERING))) {
             r.setProperty(KlighdInternalProperties.SELECTED, false);
         }
         
-        for (KRendering r : concat(transform(toBeSelected, AS_RENDERING))) {
+        for (final KRendering r : concat(transform(toBeSelected, AS_RENDERING))) {
             r.setProperty(KlighdInternalProperties.SELECTED, true);
         }
 
@@ -812,7 +812,10 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /* -------------------------------------------------- */
 
     /** the current selection. */
-    private KlighdTreeSelection selection = KlighdTreeSelection.EMPTY;
+    private KlighdTreeSelection diagramSelection = KlighdTreeSelection.EMPTY;
+
+    /** alternative generic selection, required for providing next selections by KLighD's UI parts. */
+    private ISelection selection = diagramSelection;
 
     /** the selection listeners registered on this view. */
     private Set<ISelectionChangedListener> selectionListeners = Sets.newLinkedHashSet();
@@ -824,18 +827,35 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      * ISelectionService}.
      * 
      * @param theSelection
+     *            the selection to be broadcasted
      */
-    private void notifySelectionListeners(final KlighdTreeSelection theSelection) {
-        this.selection = theSelection;
+    void notifySelectionListeners(final ISelection theSelection) {
+        // method is package protected as it is called in AbstractViewer, too
+
         synchronized (selectionListeners) {
+            this.selection = theSelection;
+            
+            if (theSelection instanceof KlighdTreeSelection) {
+                this.diagramSelection = (KlighdTreeSelection) theSelection;
+            } else {
+                this.diagramSelection = null;
+            }
+
             if (!selectionListeners.isEmpty()) {
                 final SelectionChangedEvent event = new SelectionChangedEvent(this, theSelection);
 
-                for (ISelectionChangedListener listener : selectionListeners) {
+                for (final ISelectionChangedListener listener : selectionListeners) {
                     listener.selectionChanged(event);
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KlighdTreeSelection getDiagramSelection() {
+        return this.diagramSelection;
     }
 
 
@@ -846,7 +866,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
-    public KlighdTreeSelection getSelection() {
+    public ISelection getSelection() {
         return this.selection;
     }
 
@@ -855,6 +875,9 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      */
     public void setSelection(final ISelection selection) {
         // not supported yet
+        final String msg = "KLighD: Setting the selection "
+                + "in KLighD viewers via ISelectionProvider.setSelection(...) is not supported.";
+        throw new UnsupportedOperationException(msg);
     }
 
     /**
