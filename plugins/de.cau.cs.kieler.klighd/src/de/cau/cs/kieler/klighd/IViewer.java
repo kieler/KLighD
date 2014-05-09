@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -184,7 +185,31 @@ public interface IViewer<T> {
      *         visible, <code>false</code> otherwise.
      */
     boolean isVisible(KGraphElement diagramElement, boolean checkParents);
-     
+
+    /**
+     * Creates an {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} providing the
+     * {@link KNode KNodes} visible at the moment of iterating (lazy evaluation)!<br>
+     * <br>
+     * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
+     * reasons. 
+     * 
+     * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
+     */
+    Iterator<KNode> getVisibleDiagramNodes();
+    
+    /**
+     * Creates an {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} providing the
+     * {@link KGraphElement KGraphElements} visible at the moment of iterating (lazy
+     * evaluation)!<br>
+     * <br>
+     * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
+     * reasons. {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} are likely to be returned
+     * twice, as both outgoing as well as incoming edges of a {@link KNode} must be considered.
+     * 
+     * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
+     */
+    Iterator<KGraphElement> getVisibleDiagramElements();
+    
     /**
      * Reveals the representation of the given semantic element over the specified duration.
      * 

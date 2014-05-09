@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.viewers;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -24,6 +25,7 @@ import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
@@ -72,7 +74,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         final ViewChangeType[] types =
                 eventTypes != null && eventTypes.length != 0 ? eventTypes : ViewChangeType.values();
         
-        for (ViewChangeType t : types) {
+        for (final ViewChangeType t : types) {
             viewChangeListeners.put(t, listener);
         }
     }
@@ -126,7 +128,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         
         final ViewChange change = new ViewChange(this, type, affectedElement, viewPort, diagramScale);
 
-        for (IViewChangeListener l : viewChangeListeners.get(type)) {
+        for (final IViewChangeListener l : viewChangeListeners.get(type)) {
             l.viewChanged(change);
         }
     }
@@ -148,6 +150,20 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
      */
     public boolean isVisible(final Object semanticElement, final boolean checkParents) {
         return getContextViewer().isVisible(semanticElement, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<KNode> getVisibleDiagramNodes() {
+        return getContextViewer().getVisibleDiagramNodes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<KGraphElement> getVisibleDiagramElements() {
+        return getContextViewer().getVisibleDiagramElements();
     }
 
     /**

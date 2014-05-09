@@ -22,9 +22,11 @@ import static de.cau.cs.kieler.klighd.util.KlighdPredicates.notIn;
 import static java.util.Collections.singleton;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.AbstractTreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -32,9 +34,13 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -316,6 +322,97 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         return this.currentViewer.isVisible(diagramElement, checkParents);
     }
     
+    private static final String NON_DISPLAY_ERROR_MSG =
+            "KLighD: Application attempted to traverse an Iterator provided by "
+            + "IViewer.##. Evaluations of those Iterators must be "
+            + "performed by the display (UI) thread for integrity reasons.";
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<KNode> getVisibleDiagramNodes() {
+        // SUPPRESS CHECKSTYLE PREVIOUS 4 Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
+
+        final IViewer<?> activeViewer = getActiveViewer();
+        final KNode clip = activeViewer.getClip();
+
+        if (!activeViewer.isVisible(clip, false)) {
+            return Iterators.emptyIterator();
+
+        } else {
+            return new AbstractTreeIterator<KNode>(clip) {
+                private static final long serialVersionUID = 1021356500841593549L;
+
+                @Override
+                protected Iterator<? extends KNode> getChildren(final Object object) {
+                    if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
+                        throw new RuntimeException(NON_DISPLAY_ERROR_MSG.replace("##",
+                                "getVisibleDiagramNodes()"));
+                    }
+                    return Iterators.filter(((KNode) object).getChildren().iterator(),
+                            new Predicate<KNode>() {
+
+                        public boolean apply(final KNode input) {
+                            return activeViewer.isVisible(input, false);
+                        }
+                    });
+                }
+            };
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public Iterator<KGraphElement> getVisibleDiagramElements() {
+        // SUPPRESS CHECKSTYLE PREVIOUS 4 Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
+        
+        final IViewer<?> activeViewer = getActiveViewer();
+        final KNode clip = activeViewer.getClip();
+
+        if (!activeViewer.isVisible(clip, false)) {
+            return Iterators.emptyIterator();
+
+        } else {
+            return new AbstractTreeIterator<KGraphElement>(clip) {
+                private static final long serialVersionUID = 1021356500841593549L;
+
+                @Override
+                protected Iterator<? extends KGraphElement> getChildren(final Object object) {
+                    if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
+                        throw new RuntimeException(NON_DISPLAY_ERROR_MSG.replace("##",
+                                "getVisibleDiagramElements()"));
+                    }
+
+                    final Iterator<EObject> candidates;
+                    if (object instanceof KNode) {
+                        candidates =
+                                Iterators.concat(((EObject) object).eContents().iterator(),
+                                        ((KNode) object).getIncomingEdges().iterator());
+                    } else {
+                        candidates = ((EObject) object).eContents().iterator();
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    final
+                    Iterator<? extends KGraphElement> res = (Iterator<KGraphElement>) (Iterator<?>)
+                            Iterators.filter(candidates, filter);
+
+                    return res; 
+                }
+
+                private Predicate<EObject> filter = new Predicate<EObject>() {
+
+                    public boolean apply(final EObject input) {
+                        return input instanceof KGraphElement
+                                && activeViewer.isVisible((KGraphElement) input, false);
+                    }
+                };
+            };
+        }
+    }
+
+
     /**
      * {@inheritDoc}
      */
