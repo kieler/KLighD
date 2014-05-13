@@ -28,6 +28,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PDimension;
 
@@ -78,30 +79,62 @@ public class DiagramZoomController {
      */
     public void zoom(final ZoomStyle style, final int duration) {
         switch (style) {
+        case ZOOM_TO_ACTUAL_SIZE:
+            zoomToActualSize(duration);
+            break;
+
         case ZOOM_TO_FIT:
             zoomToFit(duration);
             break;
+
         case ZOOM_TO_FOCUS:
             KNode focus = focusNode != null ? focusNode : topNode.getGraphElement();
             zoomToFocus(focus, duration);
             break;
+
         default:
             // nothing
         }
     }
+
+    /**
+     * 
+     * 
+     * @param duration
+     *            time to animate in ms
+     */
+    private void zoomToActualSize(final int duration) {
+        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
+        final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
+
+        if (nodeLayout == null) {
+            final String msg = "KLighD DiagramController: "
+                    + "Failed to apply 'zoom to actual size' as the displayed node's layout data are "
+                    + "unavailable. This is most likely due to a failed incremental update before.";
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
+                    StatusManager.LOG);
+            return;
+        }
+        
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
+
+        this.canvasCamera.animateViewToTransform(
+                PAffineTransform.getTranslateInstance(-newBounds.x, -newBounds.y), duration);
+    }
     
     /**
      * @param duration
-     *            time to animate
+     *            time to animate in ms
      */
     private void zoomToFit(final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
         final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
 
         if (nodeLayout == null) {
-            String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to fit' as the topNode's layout data are unavailable. "
-                    + "This is most likely due to a failed incremental update before.";
+            final String msg = "KLighD DiagramController: "
+                    + "Failed to apply 'zoom to fit' as the displayed node's layout data are "
+                    + "unavailable. This is most likely due to a failed incremental update before.";
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
                     StatusManager.LOG);
@@ -165,6 +198,18 @@ public class DiagramZoomController {
 
         // fetch bounds of the whole diagram
         final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
+        final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
+
+        if (nodeLayout == null) {
+            final String msg = "KLighD DiagramController: "
+                    + "Failed to apply 'zoom to focus' as the displayed node's layout data are "
+                    + "unavailable. This is most likely due to a failed incremental update before.";
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
+                    StatusManager.LOG);
+            return;
+        }
+
         final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
         
         boolean fullyContains = viewBounds.getWidth() > newBounds.getWidth()
@@ -196,8 +241,8 @@ public class DiagramZoomController {
 
         if (topNodeLayout == null) {
             final String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to one' as the topNode's layout data are unavailable. "
-                    + "This is most likely due to a failed incremental update before.";
+                    + "Failed to apply 'zoom to level' as the displayed node's layout data are "
+                    + "unavailable. This is most likely due to a failed incremental update before.";
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
                     StatusManager.LOG);

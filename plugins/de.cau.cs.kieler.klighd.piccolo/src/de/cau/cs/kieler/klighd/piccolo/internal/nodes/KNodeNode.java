@@ -22,11 +22,9 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -97,12 +95,6 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
         this.addChild(childAreaCamera);
         this.addChild(portLayer);
         this.addChild(labelLayer);
-
-        final KLayoutData layoutData = node.getData(KLayoutData.class);
-        if (layoutData != null) {
-            final Boolean b = layoutData.getProperty(KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
-            this.setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
-        }
 
         this.addPropertyChangeListener(PLayer.PROPERTY_CAMERAS, new PropertyChangeListener() {
             // this property change listener reacts on changes in the cameras list

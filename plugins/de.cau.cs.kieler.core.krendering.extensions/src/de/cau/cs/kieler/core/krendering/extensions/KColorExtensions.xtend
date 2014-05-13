@@ -56,9 +56,9 @@ class KColorExtensions {
             try {
                 if (name.length == 4) {
                     // CSS style short color format
-                    name.substring(1,2) => [ color.setRed(Integer::valueOf(it+it, 16)) ] 
-                    name.substring(2,3) => [ color.setGreen(Integer::valueOf(it+it, 16)) ] 
-                    name.substring(3,4) => [ color.setBlue(Integer::valueOf(it+it, 16)) ]
+                    name.substring(1,2) => [ color.setRed(Integer::valueOf(it.concat(it), 16)) ] 
+                    name.substring(2,3) => [ color.setGreen(Integer::valueOf(it+concat(it), 16)) ] 
+                    name.substring(3,4) => [ color.setBlue(Integer::valueOf(it+concat(it), 16)) ]
                     return color 
                 }
                 color.setRed(Integer::valueOf(name.substring(1, 3), 16))

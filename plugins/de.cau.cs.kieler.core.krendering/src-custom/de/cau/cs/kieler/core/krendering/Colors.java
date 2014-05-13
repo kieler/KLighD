@@ -13,6 +13,10 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import java.util.HashMap;
+
+import com.google.common.collect.Maps;
+
 /**
  * An color library containing a huge collection named colors.<br>
  * The list of literals have been extracted from http://www.farb-tabelle.de/de/farbtabelle.htm.  
@@ -1736,5 +1740,28 @@ public enum Colors {
      */
     public int getBlue() {
         return blueComponent;
+    }
+
+    private static HashMap<String, Colors> fastColorLookup = Maps.newHashMap();    
+
+    /**
+     * Provides the color with the name <code>name</code>. Besides it builds up a {@link HashMap} of
+     * {@link String} to {@link Colors} relations for fast access.
+     * 
+     * @param name
+     *            the name of desired color
+     * @return the desired color with name <code>name</code> if anyone exists
+     */
+    public static Colors getColorByName(final String name) {
+        Colors result = fastColorLookup.get(name);
+        if (result == null) {
+            for (Colors color : values()) {
+                if (color.getName().toLowerCase().equals(name)) {
+                    fastColorLookup.put(name, color);
+                    result = color;
+                }
+            }
+        }
+        return result;
     }
 }

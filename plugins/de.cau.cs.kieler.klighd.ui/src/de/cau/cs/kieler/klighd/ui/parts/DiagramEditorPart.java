@@ -596,7 +596,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 final ViewContext vc =
                         DiagramEditorPart.this.getViewer().getViewContext();
                 if (vc != null) {
-                    vc.setZoomStyle(ZoomStyle.create(this.isChecked(), false));
+                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked(), false));
 
                     // perform zoom to fit upon activation of the toggle button
                     if (this.isChecked()) {
@@ -633,7 +633,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             public void run() {
                 final ViewContext vc = DiagramEditorPart.this.getViewer().getViewContext();
                 if (vc != null) {
-                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked()));
+                    vc.setZoomStyle(ZoomStyle.create(false, false, this.isChecked()));
 
                     // perform zoom to focus upon activation of the toggle button
                     if (this.isChecked()) {

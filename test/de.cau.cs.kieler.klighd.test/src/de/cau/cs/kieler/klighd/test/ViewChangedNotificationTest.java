@@ -132,7 +132,7 @@ public class ViewChangedNotificationTest {
                 // since the VIEW_PORT notifications are timer-triggered 
                 //  wait for some time before continuing
                 Thread.sleep(100);
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 // nothing
             }
         }
@@ -163,11 +163,11 @@ public class ViewChangedNotificationTest {
         public void viewChanged(final ViewChange change) {
             
             final Iterable<KGraphElement> l = Sets.newHashSet(
-                    countNodesOnly ? change.visibleDiagramNodes() : change.visibleDiagramsElements());
+                    countNodesOnly ? change.visibleDiagramNodes() : change.visibleDiagramElements());
             try {
                 Assert.assertThat(l,
                         IsIterableWithSize.<KGraphElement>iterableWithSize(expectedElementsNumber));
-            } catch (AssertionError e) {
+            } catch (final AssertionError e) {
                 failure = e;
             }
 

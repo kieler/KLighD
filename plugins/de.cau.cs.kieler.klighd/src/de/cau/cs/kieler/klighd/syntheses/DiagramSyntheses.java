@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.syntheses;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -148,5 +149,31 @@ public final class DiagramSyntheses {
             throw new RuntimeException(NO_VIEWCONTEXT_ERROR_MSG);
         }
         return node;
+    }
+
+    /**
+     * Deactivates the selectability of given {@link KGraphElement}.<br>
+     * If done the {@link KGraphElement} can't be selected anymore, other event handling like
+     * associated action evaluation will not be affected.
+     * 
+     * @param kge the {@link KGraphElement} to configure
+     * @return the <code>kge</code> for convenience 
+     */
+    public static KGraphElement suppressSelectability(final KGraphElement kge) {
+        kge.getData(KLayoutData.class).setProperty(KlighdProperties.NOT_SELECTABLE, true);
+        return kge;
+    }
+
+    /**
+     * Deactivates the selectability of given {@link KText}.<br>
+     * If done the {@link KText} can't be selected anymore, other event handling like
+     * associated action evaluation will not be affected.
+     * 
+     * @param kText the {@link KText} to configure
+     * @return the <code>kText</code> for convenience 
+     */
+    public static KText suppressSelectability(final KText kText) {
+        kText.setProperty(KlighdProperties.NOT_SELECTABLE, true);
+        return kText;
     }
 }

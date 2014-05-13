@@ -14,10 +14,8 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -44,9 +42,6 @@ public class KPortNode extends PEmptyNode implements ILabeledGraphElement<KPort>
     public KPortNode(final KPort port) {
         super();
         this.port = port;
-        Boolean b = port.getData(KShapeLayout.class).getProperty(
-                KlighdProperties.KLIGHD_SELECTION_UNPICKABLE);
-        setPickable(b != null && b.equals(Boolean.TRUE) ? false : true);
     }
     
     /**
