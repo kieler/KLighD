@@ -63,7 +63,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 
 /**
- * Common superclass for SVG generators using a {@link Graphics2D} to produce svgs.
+ * Common superclass for SVG generators using a {@link Graphics2D} to produce svg images.
  * 
  * Subclasses are registered via the {@link SVGGeneratorManager#EXTP_ID_SVGGENERATORS} extension
  * point. All implementing classes have to provide a two-argument constructor for {@code bounds} (
@@ -72,8 +72,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
  * Instances of one of the generators can be retrieved using the
  * {@link SVGGeneratorManager#createGraphics(String, Rectangle2D, boolean)} method.
  * 
- * 
  * @author uru
+ * @author chsch
  */
 public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements KlighdSWTGraphicsEx {
 
@@ -170,10 +170,13 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
      */
     public void setLineAttributes(final LineAttributes attributes) {
         lineAttributes = attributes;
-        Stroke s =
-                new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
-                        lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
-                        lineAttributes.dashOffset);
+
+        final float[] dash = lineAttributes.dash == null
+                ? null : lineAttributes.dash.length == 0 ? null : lineAttributes.dash;
+
+        final Stroke s = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
+                lineAttributes.join - 1, lineAttributes.miterLimit, dash, lineAttributes.dashOffset);
+
         graphics.setStroke(s);
     }
 
@@ -189,11 +192,6 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
      */
     public void setAlpha(final int alpha) {
         this.alpha = alpha;
-
-        // in awt the alpha is encoded in the color
-        Color c = graphics.getColor();
-        Color c2 = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
-        graphics.setColor(c2);
     }
 
     /**
@@ -265,14 +263,14 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
      * {@inheritDoc}
      */
     public void setUnderline(final int theUnderlining, final RGB color) {
-        // TODO Auto-generated method stub
+        // toBeDone: Auto-generated method stub
     }
 
     /**
      * {@inheritDoc}
      */
     public void setStrikeout(final boolean theStrikeout, final RGB color) {
-        // TODO Auto-generated method stub
+        // toBeDone: Auto-generated method stub
     }
 
     /**
@@ -297,6 +295,16 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     @Override
     public void transform(final AffineTransform transform) {
         graphics.transform(transform);
+    }
+
+    @Override
+    public void translate(final int x, final int y) {
+        graphics.translate(x, y);
+    }
+
+    @Override
+    public void translate(final double tx, final double ty) {
+        graphics.translate(tx, ty);
     }
 
     /**
@@ -347,6 +355,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void fill(final Shape s) {
         final Paint p =
                 this.fillColor != null ? rgb2Color(this.fillColor, this.alpha)
@@ -405,14 +414,14 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
         // SVG 1.2 supports a textArea with automatic wrapping, however this is not supported by all
         // browsers.
         int y = 0;
-        int fontHeight =
+        final int fontHeight =
                 graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getDescent();
 
         // translate by the font height as the reference point for drawing text in svg seems to be
         // at the bottom left corner, SWT has it as the top left corner.
         translate(0, fontHeight);
 
-        for (String line : string.split("\\r?\\n|\\r")) {
+        for (final String line : string.split("\\r?\\n|\\r")) {
             graphics.drawString(line, 0, y);
             y += fontHeight;
         }
@@ -440,7 +449,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     private static GradientPaint rgb2Pattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        GradientPaint gp =
+        final GradientPaint gp =
                 new GradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(), rgb2Color(
                         gradient.getColor1(), gradient.getAlpha1()), (float) bounds.getMaxX(),
                         (float) bounds.getMaxY(), rgb2Color(gradient.getColor2(),
@@ -453,7 +462,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
         final BufferedImage bufferedImage;
 
         ColorModel colorModel = null;
-        PaletteData palette = data.palette;
+        final PaletteData palette = data.palette;
         if (palette.isDirect) {
             colorModel =
                     new DirectColorModel(data.depth, palette.redMask, palette.greenMask,
@@ -463,20 +472,20 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
                             data.width, data.height), false, null);
             for (int y = 0; y < data.height; y++) {
                 for (int x = 0; x < data.width; x++) {
-                    int pixel = data.getPixel(x, y);
-                    RGB rgb = palette.getRGB(pixel);
+                    final int pixel = data.getPixel(x, y);
+                    final RGB rgb = palette.getRGB(pixel);
                     // CHECKSTYLEOFF Magic Numbers
                     bufferedImage.setRGB(x, y, rgb.red << 16 | rgb.green << 8 | rgb.blue);
                     // CHECKSTYLEON Magic Numbers
                 }
             }
         } else {
-            RGB[] rgbs = palette.getRGBs();
-            byte[] red = new byte[rgbs.length];
-            byte[] green = new byte[rgbs.length];
-            byte[] blue = new byte[rgbs.length];
+            final RGB[] rgbs = palette.getRGBs();
+            final byte[] red = new byte[rgbs.length];
+            final byte[] green = new byte[rgbs.length];
+            final byte[] blue = new byte[rgbs.length];
             for (int i = 0; i < rgbs.length; i++) {
-                RGB rgb = rgbs[i];
+                final RGB rgb = rgbs[i];
                 red[i] = (byte) rgb.red;
                 green[i] = (byte) rgb.green;
                 blue[i] = (byte) rgb.blue;
@@ -491,11 +500,11 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
             bufferedImage =
                     new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(
                             data.width, data.height), false, null);
-            WritableRaster raster = bufferedImage.getRaster();
-            int[] pixelArray = new int[1];
+            final WritableRaster raster = bufferedImage.getRaster();
+            final int[] pixelArray = new int[1];
             for (int y = 0; y < data.height; y++) {
                 for (int x = 0; x < data.width; x++) {
-                    int pixel = data.getPixel(x, y);
+                    final int pixel = data.getPixel(x, y);
                     pixelArray[0] = pixel;
                     raster.setPixel(x, y, pixelArray);
                 }
@@ -546,54 +555,54 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     /* ------------------------------------------------ */
-    /* legacy methods due to inheritance of Graphics2D */
-    /* that are not supported by this implementation */
+    /* legacy methods due to inheritance of Graphics2D  */
+    /* that are not supported by this implementation    */
     /* ------------------------------------------------ */
 
-    // CHECKSTYLEOFF Parameter
+    // CHECKSTYLEOFF Parameter|LineLength
 
     @Override
-    public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
+    public void drawImage(final BufferedImage img, final BufferedImageOp op, final int x, final int y) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
+    public void drawRenderedImage(final RenderedImage img, final AffineTransform xform) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
+    public void drawRenderableImage(final RenderableImage img, final AffineTransform xform) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawString(String str, int x, int y) {
+    public void drawString(final String str, final int x, final int y) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawString(String str, float x, float y) {
+    public void drawString(final String str, final float x, final float y) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawString(AttributedCharacterIterator iterator, int x, int y) {
+    public void drawString(final AttributedCharacterIterator iterator, final int x, final int y) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawString(AttributedCharacterIterator iterator, float x, float y) {
+    public void drawString(final AttributedCharacterIterator iterator, final float x, final float y) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawGlyphVector(GlyphVector g, float x, float y) {
+    public void drawGlyphVector(final GlyphVector g, final float x, final float y) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean hit(java.awt.Rectangle rect, Shape s, boolean onStroke) {
+    public boolean hit(final java.awt.Rectangle rect, final Shape s, final boolean onStroke) {
         throw new UnsupportedOperationException();
     }
 
@@ -603,27 +612,27 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     @Override
-    public void setPaint(Paint paint) {
+    public void setPaint(final Paint paint) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setStroke(Stroke s) {
+    public void setStroke(final Stroke s) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object getRenderingHint(Key hintKey) {
+    public Object getRenderingHint(final Key hintKey) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setRenderingHints(Map<?, ?> hints) {
+    public void setRenderingHints(final Map<?, ?> hints) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void addRenderingHints(Map<?, ?> hints) {
+    public void addRenderingHints(final Map<?, ?> hints) {
         throw new UnsupportedOperationException();
     }
 
@@ -633,32 +642,22 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     @Override
-    public void translate(int x, int y) {
-        graphics.translate(x, y);
-    }
-
-    @Override
-    public void translate(double tx, double ty) {
-        graphics.translate(tx, ty);
-    }
-
-    @Override
-    public void rotate(double theta) {
+    public void rotate(final double theta) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void rotate(double theta, double x, double y) {
+    public void rotate(final double theta, final double x, final double y) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void scale(double sx, double sy) {
+    public void scale(final double sx, final double sy) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void shear(double shx, double shy) {
+    public void shear(final double shx, final double shy) {
         throw new UnsupportedOperationException();
     }
 
@@ -698,7 +697,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     @Override
-    public void setXORMode(java.awt.Color c1) {
+    public void setXORMode(final java.awt.Color c1) {
         throw new UnsupportedOperationException();
     }
 
@@ -708,12 +707,12 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     @Override
-    public void setFont(java.awt.Font font) {
+    public void setFont(final java.awt.Font font) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public FontMetrics getFontMetrics(java.awt.Font f) {
+    public FontMetrics getFontMetrics(final java.awt.Font f) {
         throw new UnsupportedOperationException();
     }
 
@@ -723,111 +722,111 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     @Override
-    public void clipRect(int x, int y, int width, int height) {
+    public void clipRect(final int x, final int y, final int width, final int height) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setClip(int x, int y, int width, int height) {
+    public void setClip(final int x, final int y, final int width, final int height) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void copyArea(int x, int y, int width, int height, int dx, int dy) {
+    public void copyArea(final int x, final int y, final int width, final int height, final int dx, final int dy) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawLine(int x1, int y1, int x2, int y2) {
+    public void drawLine(final int x1, final int y1, final int x2, final int y2) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void clearRect(int x, int y, int width, int height) {
+    public void clearRect(final int x, final int y, final int width, final int height) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
+    public void drawRoundRect(final int x, final int y, final int width, final int height, final int arcWidth, final int arcHeight) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
+    public void fillRoundRect(final int x, final int y, final int width, final int height, final int arcWidth, final int arcHeight) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawOval(int x, int y, int width, int height) {
+    public void drawOval(final int x, final int y, final int width, final int height) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void fillOval(int x, int y, int width, int height) {
+    public void fillOval(final int x, final int y, final int width, final int height) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+    public void drawArc(final int x, final int y, final int width, final int height, final int startAngle, final int arcAngle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+    public void fillArc(final int x, final int y, final int width, final int height, final int startAngle, final int arcAngle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
+    public void drawPolyline(final int[] xPoints, final int[] yPoints, final int nPoints) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
+    public void drawPolygon(final int[] xPoints, final int[] yPoints, final int nPoints) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
+    public void fillPolygon(final int[] xPoints, final int[] yPoints, final int nPoints) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean drawImage(java.awt.Image img, AffineTransform xform, ImageObserver obs) {
+    public boolean drawImage(final java.awt.Image img, final AffineTransform xform, final ImageObserver obs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean drawImage(java.awt.Image img, int x, int y, ImageObserver observer) {
+    public boolean drawImage(final java.awt.Image img, final int x, final int y, final ImageObserver observer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean drawImage(java.awt.Image img, int x, int y, int width, int height,
-            ImageObserver observer) {
+    public boolean drawImage(final java.awt.Image img, final int x, final int y, final int width, final int height,
+            final ImageObserver observer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean drawImage(java.awt.Image img, int x, int y, Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(final java.awt.Image img, final int x, final int y, final Color bgcolor, final ImageObserver observer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean drawImage(java.awt.Image img, int x, int y, int width, int height,
-            Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(final java.awt.Image img, final int x, final int y, final int width, final int height,
+            final Color bgcolor, final ImageObserver observer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1,
-            int sy1, int sx2, int sy2, ImageObserver observer) {
+    public boolean drawImage(final java.awt.Image img, final int dx1, final int dy1, final int dx2, final int dy2, final int sx1,
+            final int sy1, final int sx2, final int sy2, final ImageObserver observer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1,
-            int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(final java.awt.Image img, final int dx1, final int dy1, final int dx2, final int dy2, final int sx1,
+            final int sy1, final int sx2, final int sy2, final Color bgcolor, final ImageObserver observer) {
         throw new UnsupportedOperationException();
     }
 
