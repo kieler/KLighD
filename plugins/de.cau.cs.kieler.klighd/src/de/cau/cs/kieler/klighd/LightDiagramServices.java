@@ -13,11 +13,14 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.google.common.base.Predicates;
@@ -170,7 +173,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final boolean zoomToFit, final List<ILayoutConfig> options) {
-        IViewer<KNode> diagramViewer = viewContext.getViewer();
+        final IViewer<KNode> diagramViewer = viewContext.getViewer();
         
         layoutDiagram(viewContext.getDiagramWorkbenchPart(), diagramViewer, animate, zoomToFit, options);
     }
@@ -642,6 +645,74 @@ public final class LightDiagramServices {
         return vc;
     }
 
+
+    /* ---------------------------------------- */
+    /*     Off-screen diagram rendering API     */
+    /* ---------------------------------------- */
+    
+    /**
+     * Translates the given <code>model</code> by means of the known diagram synthesis translations
+     * and renders it off-screen into the given format, if a matching {@link IOffscreenRenderer} is
+     * available.<br>
+     * <b>Caution:</b> If the target file already exists it is likely to be overwritten!
+     * 
+     * @param model
+     *            the model to be translated into a diagram
+     * @param format
+     *            the desired diagram format
+     * @param targetFileName
+     *            the name of the file to write the rendered diagram to
+     * @return the {@link String} representation of the desired diagram, or <code>null</code> if no
+     *         matching off-screen renderer of diagram synthesis exists
+     */
+    public static IStatus renderOffScreen(final Object model, final String format,
+            final String targetFileName) {
+        return renderOffScreen(model, format, targetFileName, null);
+    }
+
+    /**
+     * Translates the given <code>model</code> by means of the known diagram synthesis translations
+     * and renders it off-screen into the given format, if a matching {@link IOffscreenRenderer} is
+     * available.<br>
+     * <b>Caution:</b> If the target file already exists it is likely to be overwritten!
+     * 
+     * @param model
+     *            the model to be translated into a diagram
+     * @param format
+     *            the desired diagram format
+     * @param targetFileName
+     *            the name of the file to write the rendered diagram to
+     * @param properties
+     *            an {@link IPropertyHolder} containing configurations in terms of the properties
+     *            defined in {@link IOffscreenRenderer}
+     * @return the {@link String} representation of the desired diagram, or <code>null</code> if no
+     *         matching off-screen renderer of diagram synthesis exists
+     */
+    public static IStatus renderOffScreen(final Object model, final String format,
+            final String targetFileName, final IPropertyHolder properties) {
+
+        final FileOutputStream output;
+        try {
+            output = new FileOutputStream(targetFileName);
+        } catch (final Exception e) {
+            final String msg = "KLighD: Target image file " + targetFileName
+                    + " cannot be created or accessed." + KlighdPlugin.LINE_SEPARATOR
+                    + "Is the (absolute or relative) path correct? Are the permissions sufficient?";
+            return new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e);
+        }
+
+        final IStatus result = renderOffScreen(model, format, output, properties);
+
+        try {
+            output.close();
+        } catch (final IOException e) {
+            final String msg = "KLighD: Error occurred while closing the output stream employed "
+                    + "for writing file " + targetFileName + ".";
+            return new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e);
+        }
+
+        return result;
+    }
 
     /**
      * Translates the given <code>model</code> by means of the known diagram synthesis translations
