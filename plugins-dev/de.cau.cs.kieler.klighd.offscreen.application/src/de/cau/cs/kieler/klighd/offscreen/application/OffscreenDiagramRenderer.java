@@ -31,6 +31,8 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 
 /**
  * An initial draft of an off-screen diagram rendering application generating SVG outputs.<br>
+ * This application takes the names of the input files as arguments and optional switches like
+ * "-consoleLog".<br> 
  * <br>
  * <b>Note:</b> On MacOS X make sure to add "-Djava.awt.headless=true" to the vmargs!
  * Otherwise the application will freeze! 
@@ -78,10 +80,13 @@ public class OffscreenDiagramRenderer implements IApplication {
         
         final IStatus result = LightDiagramServices.renderOffScreen(eo, "svg", targetFile);
         
-        if (result.getCode() == IStatus.OK) {
-            System.out.println("Generated file " + targetFile);
+        if (result != null && result.getCode() == IStatus.OK) {
+            System.out.println("Generated file " + targetFile);            
         } else {
             System.out.println("Generation of diagram to stored in " + targetFile + " failed.");
+            if (result != null && result.getException() != null) {
+                result.getException().printStackTrace();
+            }
         }
     }
 
