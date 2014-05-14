@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
+import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
@@ -765,7 +766,7 @@ public final class LightDiagramServices {
             throw new RuntimeException(
                     "KLighD offscreen rendering: The provided format must not be an empty string!");
         }
-        
+
         // look for a matching IOffscreeenRenderer
         final IOffscreenRenderer renderer = Iterables.getFirst(
                 KlighdDataManager.getInstance().getOffscreenRenderersByFormat(format), null);
@@ -786,8 +787,18 @@ public final class LightDiagramServices {
             return null;
         }
 
+        final IPropertyHolder theProperties;
+        if (properties != null) {
+            theProperties = properties;
+        } else {
+            theProperties = new MapPropertyHolder();
+        }
+
+        theProperties.setProperty(IOffscreenRenderer.OUTPUT_FORMAT, format);
+
         // finally render the diagram and return the result
-        final IStatus result = renderer.render(viewContext, output, properties);
+        final IStatus result = renderer.render(viewContext, output, theProperties);
+
         return result;
     }
 }
