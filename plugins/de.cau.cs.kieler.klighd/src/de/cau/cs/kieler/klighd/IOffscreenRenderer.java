@@ -32,10 +32,12 @@ import de.cau.cs.kieler.core.properties.Property;
 public interface IOffscreenRenderer {
 
     /**
-     * Property definition for declaring the desired rendering format.
+     * Property definition for declaring the desired rendering format.<br>
+     * Its configuration is only required if multiple formats are supported by a concrete
+     * {@link IOffscreenRenderer}.
      */
     IProperty<String> OUTPUT_FORMAT = new Property<String>(
-            "de.cau.cs.kieler.klighd.offscreenRendering.format");
+            "de.cau.cs.kieler.klighd.offscreenRendering.outputFormat");
 
     /**
      * Property definition for suppressing the automatic layout run.
