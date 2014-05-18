@@ -79,9 +79,9 @@ public final class SVGGeneratorManager {
      * @return a instance of a svg generator initialized with the passed parameters.
      */
     @SuppressWarnings("unchecked")
-    public KlighdAbstractSVGGraphics createGraphics(final String id, final Rectangle2D bounds,
+    public static KlighdAbstractSVGGraphics createGraphics(final String id, final Rectangle2D bounds,
             final boolean textAsShapes, final boolean embedFonts) {
-        final String graphicsClass = generatorsMap.get(id);
+        final String graphicsClass = getInstance().generatorsMap.get(id);
 
         try {
             final Class<? extends KlighdAbstractSVGGraphics> clazz =
@@ -95,7 +95,7 @@ public final class SVGGeneratorManager {
                                 Boolean.class);
                 graphics = constr.newInstance(bounds, textAsShapes, embedFonts);
 
-            } catch (NoSuchMethodException e0) {
+            } catch (final NoSuchMethodException e0) {
                 // nothing
             }
             
@@ -108,7 +108,7 @@ public final class SVGGeneratorManager {
                         clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class);
                 graphics = constr.newInstance(bounds, textAsShapes);
                 
-            } catch (NoSuchMethodException e1) {
+            } catch (final NoSuchMethodException e1) {
                 // nothing
             }
             
@@ -120,7 +120,7 @@ public final class SVGGeneratorManager {
                     + id + " because of a missing constructor with signature "
                     + "(Rectangle2D, Boolean) or (Reactangle2D, Boolean, Boolean)");
             
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Could not instantiate svg graphics object for id "
                     + id, e);
@@ -129,16 +129,16 @@ public final class SVGGeneratorManager {
 
     private void loadSvgGenerators() {
         // read the extension point
-        IConfigurationElement[] extensions =
+        final IConfigurationElement[] extensions =
                 Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_SVGGENERATORS);
-        for (IConfigurationElement element : extensions) {
+        for (final IConfigurationElement element : extensions) {
             try {
                 // store the generator
-                String id = element.getAttribute("id");
-                String graphics = element.getAttribute("class");
+                final String id = element.getAttribute("id");
+                final String graphics = element.getAttribute("class");
 
                 generatorsMap.put(id, graphics);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 reportError(EXTP_ID_SVGGENERATORS, element, e);
             }
 
@@ -147,12 +147,13 @@ public final class SVGGeneratorManager {
 
     private static void reportError(final String extensionPoint,
             final IConfigurationElement element, final Exception exception) {
-        String message =
+        final String message =
                 "Extension point " + extensionPoint + ": Invalid entry in element "
                         + element.getName() + ", contributed by "
                         + element.getContributor().getName();
-        IStatus status = new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, 0, message, exception);
-        Bundle kp = Platform.getBundle(KlighdPlugin.PLUGIN_ID);
+        final IStatus status =
+                new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, 0, message, exception);
+        final Bundle kp = Platform.getBundle(KlighdPlugin.PLUGIN_ID);
         Platform.getLog(kp).log(status);
     }
 }
