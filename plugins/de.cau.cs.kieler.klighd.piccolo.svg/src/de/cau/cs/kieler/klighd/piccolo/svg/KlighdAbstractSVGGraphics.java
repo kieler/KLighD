@@ -41,6 +41,8 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.RenderableImage;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
@@ -129,6 +131,15 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
      * Clear the whole drawing area.
      */
     public abstract void clear();
+
+    /**
+     * Submits the desired SVG data via the provided {@link OutputStream} <code>output</code>.
+     * 
+     * @param output
+     *            the {@link OutputStream} to dump the SVG data into
+     * @throws IOException a
+     */
+    public abstract void stream(final OutputStream output) throws IOException;
 
     /**
      * {@inheritDoc}

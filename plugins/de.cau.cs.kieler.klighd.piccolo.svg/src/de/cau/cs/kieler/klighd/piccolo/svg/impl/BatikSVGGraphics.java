@@ -19,6 +19,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 
 import org.apache.batik.dom.svg.SVGDOMImplementation;
@@ -133,7 +136,7 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
         // create and configure the graphics object
         graphicsDelegate = new SVGGraphics2D(ctx, textAsShapes);
         graphicsDelegate.setSVGCanvasSize(
-                new Dimension((int) bounds.getWidth(), (int) bounds.getHeight()));
+                new Dimension((int) Math.ceil(bounds.getWidth()), (int) Math.ceil(bounds.getHeight())));
         
         // IMPORTANT
         super.setGraphicsDelegate(graphicsDelegate);
@@ -163,7 +166,7 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
 //            StreamResult result = new StreamResult(sw);
 //            transformer.transform(source, result);
             graphicsDelegate.stream(sw, true);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
 
@@ -180,6 +183,11 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
         return sw.toString();
     }
 
+    @Override
+    public void stream(final OutputStream out) throws IOException {
+        graphicsDelegate.stream(new OutputStreamWriter(out));
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -189,5 +197,4 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
         // call it just to be sure
         getSVG();
     }
-
 }
