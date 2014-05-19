@@ -15,7 +15,6 @@
 package de.cau.cs.kieler.klighd.offscreen.application;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.IStatus;
@@ -32,6 +31,8 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 
 /**
  * An initial draft of an off-screen diagram rendering application generating SVG outputs.<br>
+ * This application takes the names of the input files as arguments and optional switches like
+ * "-consoleLog".<br> 
  * <br>
  * <b>Note:</b> On MacOS X make sure to add "-Djava.awt.headless=true" to the vmargs!
  * Otherwise the application will freeze! 
@@ -51,7 +52,7 @@ public class OffscreenDiagramRenderer implements IApplication {
         
         set.getLoadOptions().put(XMIResource.OPTION_RECORD_UNKNOWN_FEATURE, true);
         
-        for (String arg: appArgs) {
+        for (final String arg: appArgs) {
             if (!new File(arg).exists()) {
                 continue;
             }
@@ -62,7 +63,7 @@ public class OffscreenDiagramRenderer implements IApplication {
         return IApplication.EXIT_OK;
     }
     
-    private void renderDiagramOf(String fileName) throws IOException {
+    private void renderDiagramOf(final String fileName) throws IOException {
         
         final String targetFile = fileName.replaceFirst("\\p{Punct}\\w*\\z", ".svg"); 
         new File(targetFile).delete();
@@ -76,17 +77,16 @@ public class OffscreenDiagramRenderer implements IApplication {
         if (eo == null) {
             return;
         }
-
-        final FileOutputStream output = new FileOutputStream(targetFile);
         
-        final IStatus result = LightDiagramServices.renderOffScreen(eo, "svg", output);
-
-        output.close();
+        final IStatus result = LightDiagramServices.renderOffScreen(eo, "svg", targetFile);
         
-        if (result.getCode() == IStatus.OK) {
-            System.out.println("Generated file " + targetFile);
+        if (result != null && result.getCode() == IStatus.OK) {
+            System.out.println("Generated file " + targetFile);            
         } else {
             System.out.println("Generation of diagram to stored in " + targetFile + " failed.");
+            if (result != null && result.getException() != null) {
+                result.getException().printStackTrace();
+            }
         }
     }
 

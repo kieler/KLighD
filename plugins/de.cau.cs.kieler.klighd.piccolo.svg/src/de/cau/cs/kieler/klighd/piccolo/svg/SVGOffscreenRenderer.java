@@ -42,7 +42,11 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
      */
     public IStatus render(final ViewContext viewContext, final OutputStream output,
             final IPropertyHolder properties) {
-        final KlighdSVGCanvas canvas = new KlighdSVGCanvas(true);
+        
+        final boolean textAsShapes = properties != null
+                ? properties.getProperty(TEXT_AS_SHAPES) : TEXT_AS_SHAPES.getDefault();
+
+        final KlighdSVGCanvas canvas = new KlighdSVGCanvas(textAsShapes);
         
         buildUpDiagram(viewContext, canvas.getCamera(), properties);
 
@@ -51,10 +55,10 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
         final String svg = canvas.render();
         
         try {
-            Writer writer = new OutputStreamWriter(output);
+            final Writer writer = new OutputStreamWriter(output);
             writer.write(svg);
             writer.flush();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return new Status(IStatus.ERROR, PLUGIN_ID, EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
         
