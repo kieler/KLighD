@@ -54,17 +54,17 @@ public class SVGExporter extends KlighdCanvasExporter {
         final KlighdMainCamera camera = canvas.getCamera();
 
         // ... an determine the bounds of the diagram to be exported
-        final PBounds bounds = getExportedBounds(camera, cameraViewport);
+        final PBounds bounds = this.getExportedBounds(camera, cameraViewport);
         
         // initialize a graphics object that 'collects' all the drawing instructions 
         final KlighdAbstractSVGGraphics graphics =
                 SVGGeneratorManager.createGraphics(subFormatId, bounds, textAsShapes, embedFonts);
 
-        // do the action diagram drawing work
-        drawDiagram(camera, cameraViewport, graphics, bounds); 
+        // do the actual diagram drawing work
+        this.drawDiagram(camera, cameraViewport, graphics, bounds); 
 
         try {
-            // dump out the SVG description via the provided output stream
+            // dump out the resulting SVG description via the provided output stream
             graphics.stream(stream);
 
         } catch (final IOException e) {
