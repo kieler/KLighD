@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.svg;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IStatus;
@@ -67,23 +66,29 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
         //  (the basic PRoot is sufficient as this canvas doesn't rely on any SWT stuff)
         new PRoot().addChild(camera);
 
-        // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
-        this.buildUpDiagram(viewContext, camera, properties);
+        try {
+            // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
+            this.buildUpDiagram(viewContext, camera, properties);
+            
+        } catch (final RuntimeException e) {
+            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
+                    BUILDING_UP_FIGURES_FAILURE_MSG, e);
+        }
         
         // determine the bounds of the diagram to be exported
         final PBounds bounds = getExportedBounds(camera, false);
 
-        // create a new graphics object
-        final KlighdAbstractSVGGraphics graphics =
-                SVGGeneratorManager.createGraphics(generator, bounds, textAsShapes, embedFonts);
-
-        // do the actual diagram drawing work
-        this.drawDiagram(camera, false, graphics, bounds);
-
         try {
+            // create a new graphics object
+            final KlighdAbstractSVGGraphics graphics =
+                    SVGGeneratorManager.createGraphics(generator, bounds, textAsShapes, embedFonts);
+            
+            // do the actual diagram drawing work
+            this.drawDiagram(camera, false, graphics, bounds);
+            
             // dump out the resulting SVG description via the provided output stream
             graphics.stream(output);
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             return new Status(IStatus.ERROR, PLUGIN_ID, EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
 
