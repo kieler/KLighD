@@ -65,6 +65,12 @@ public interface IOffscreenRenderer {
             "de.cau.cs.kieler.klighd.offscreenRendering.textAsShapes", false);
 
     /**
+     * Property definition for instructing vector image exporters to embed used fonts into the ouput.
+     */
+    IProperty<Boolean> EMBED_FONTS = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.embedFonts", false);
+
+    /**
      * Renders the provided <code>viewModel</code> into the (standard) diagram format supported by
      * <code>this</code> {@link IOffscreenRenderer} and returns a {@link String}-based
      * representation.<br>
