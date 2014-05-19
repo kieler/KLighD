@@ -40,7 +40,7 @@ public final class SVGGeneratorManager {
      * Id of the svgGenerators extension point.
      */
     public static final String EXTP_ID_SVGGENERATORS =
-            "de.cau.cs.kieler.klighd.piccolo.svg.svgGenerators";
+            "de.cau.cs.kieler.klighd.piccolo.svgGenerators";
 
     private static SVGGeneratorManager instance;
 

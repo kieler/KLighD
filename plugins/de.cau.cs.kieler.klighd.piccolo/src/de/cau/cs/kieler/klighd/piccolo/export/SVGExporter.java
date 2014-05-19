@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -69,7 +70,7 @@ public class SVGExporter extends KlighdCanvasExporter {
                     + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
                     + " the stream instance is " + stream.toString();
             StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, SVGOffscreenRenderer.PLUGIN_ID, msg, e));
+                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e));
         }
     }
 }

@@ -35,15 +35,12 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
-    /** this plugin's id. */
-    public static final String PLUGIN_ID = KlighdPiccoloPlugin.PLUGIN_ID + ".svg";
-    
     /**
      * Property definition for declaring the desired SVG generator.<br>
      */
     public static final IProperty<String> GENERATOR = new Property<String>(
             "de.cau.cs.kieler.klighd.piccolo.svg.generator",
-            "de.cau.cs.kieler.klighd.piccolo.svg.batik");
+            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEP");
 
     /**
      * {@inheritDoc}
@@ -88,7 +85,8 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
             // dump out the resulting SVG description via the provided output stream
             graphics.stream(output);
         } catch (final Exception e) {
-            return new Status(IStatus.ERROR, PLUGIN_ID, EXPORT_DIAGRAM_FAILURE_MSG, e);
+            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
+                    EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
 
         return Status.OK_STATUS; 
