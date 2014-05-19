@@ -25,6 +25,9 @@ import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.export.AbstractOffscreenRenderer;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import edu.umd.cs.piccolo.PRoot;
+import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * An implementation of {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}
@@ -52,15 +55,34 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
         final boolean textAsShapes = properties != null
                 ? properties.getProperty(TEXT_AS_SHAPES) : TEXT_AS_SHAPES.getDefault();
+        final boolean embedFonts = properties != null
+                ? properties.getProperty(EMBED_FONTS) : EMBED_FONTS.getDefault();
         final String generator = properties != null
                 ? properties.getProperty(GENERATOR) : GENERATOR.getDefault();
 
-        final KlighdSVGCanvas canvas = new KlighdSVGCanvas(generator, textAsShapes);
+        // Construct a KLighD main camera ... 
+        final KlighdMainCamera camera = new KlighdMainCamera();
 
-        buildUpDiagram(viewContext, canvas.getCamera(), properties);
+        // add it to a Piccolo2D root figure
+        //  (the basic PRoot is sufficient as this canvas doesn't rely on any SWT stuff)
+        new PRoot().addChild(camera);
+
+        // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
+        this.buildUpDiagram(viewContext, camera, properties);
+        
+        // determine the bounds of the diagram to be exported
+        final PBounds bounds = getExportedBounds(camera, false);
+
+        // create a new graphics object
+        final KlighdAbstractSVGGraphics graphics =
+                SVGGeneratorManager.createGraphics(generator, bounds, textAsShapes, embedFonts);
+
+        // do the actual diagram drawing work
+        this.drawDiagram(camera, false, graphics, bounds);
 
         try {
-            canvas.render(output);
+            // dump out the resulting SVG description via the provided output stream
+            graphics.stream(output);
         } catch (final IOException e) {
             return new Status(IStatus.ERROR, PLUGIN_ID, EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
