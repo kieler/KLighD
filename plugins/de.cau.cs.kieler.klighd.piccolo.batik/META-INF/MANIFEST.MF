@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Batik
+Bundle-Name: KIELER Light-Weight Diagrams Vector Graphics Export Powered by Batik
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.batik;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
