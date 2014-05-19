@@ -98,8 +98,8 @@ public final class DiagramViewManager implements IPartListener {
      *            the diagram view identifier (can be null for the default view)
      * @return the diagram view or null if no view with the given identifier exists
      */
-    public IDiagramWorkbenchPart getDiagramWorkbenchPart(final String id) {
-        return idPartMapping.get(id);
+    public static IDiagramWorkbenchPart getDiagramWorkbenchPart(final String id) {
+        return getInstance().idPartMapping.get(id);
     }
 
     /**
@@ -257,8 +257,8 @@ public final class DiagramViewManager implements IPartListener {
      *            the {@link ViewContext} of the diagram to be updated
      * @return the view with the identifier or null on failure
      */
-    public IDiagramWorkbenchPart updateView(final ViewContext viewContext) {
-        return this.updateView(viewContext, null);
+    public static IDiagramWorkbenchPart updateView(final ViewContext viewContext) {
+        return updateView(viewContext, null);
     }
 
     /**
@@ -273,7 +273,7 @@ public final class DiagramViewManager implements IPartListener {
      *            the new model, if <code>null</code> the current input model is taken
      * @return the view with the identifier or null on failure
      */
-    public IDiagramWorkbenchPart updateView(final ViewContext viewContext, final Object model) {
+    public static IDiagramWorkbenchPart updateView(final ViewContext viewContext, final Object model) {
         // update the view context
         
         final IDiagramWorkbenchPart diagramView = viewContext.getDiagramWorkbenchPart();
@@ -492,13 +492,13 @@ public final class DiagramViewManager implements IPartListener {
      * 
      * @author chsch
      */
-    public boolean closeView(final String id) {
+    public static boolean closeView(final String id) {
         if (id.equals("")) {
             return false;
         }
         try {
             final DiagramViewPart view;
-            final IDiagramWorkbenchPart part = this.idPartMapping.get(id);
+            final IDiagramWorkbenchPart part = getInstance().idPartMapping.get(id);
             if (part instanceof DiagramEditorPart) {
                 return false;
             } else if (part instanceof DiagramViewPart) {
@@ -508,7 +508,7 @@ public final class DiagramViewManager implements IPartListener {
             }
             
             if (view != null) {
-                unregisterViewContexts(view);
+                getInstance().unregisterViewContexts(view);
                 view.getSite().getPage().hideView(view);
                 return true;
             } else {
