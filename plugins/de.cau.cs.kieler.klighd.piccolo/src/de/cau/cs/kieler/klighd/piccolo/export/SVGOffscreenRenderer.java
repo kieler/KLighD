@@ -40,7 +40,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
      */
     public static final IProperty<String> GENERATOR = new Property<String>(
             "de.cau.cs.kieler.klighd.piccolo.svg.generator",
-            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEP");
+            "de.cau.cs.kieler.klighd.piccolo.svggen.batik");
 
     /**
      * {@inheritDoc}
