@@ -36,6 +36,11 @@
             id="de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer"
             supportedFormats="bmp, jpeg, png">
       </offscreenRenderer>
+      <offscreenRenderer
+            class="de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer"
+            id="de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer"
+            supportedFormats="svg">
+      </offscreenRenderer>
    </extension>
 
 </plugin>

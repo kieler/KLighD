@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg;
+package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.io.OutputStream;
 
@@ -23,7 +23,6 @@ import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.export.AbstractOffscreenRenderer;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.util.PBounds;

@@ -34,7 +34,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
+import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
 
 /**
  * A wrapper for batik's {@link SVGGraphics2D} svg generator. Allows to render the contents of
@@ -50,9 +50,6 @@ import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
 public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
 
     private SVGGraphics2D graphicsDelegate;
-//    private Document document;
-
-//    private Rectangle2D bounds;
 
     /**
      * Constructor.<br>
@@ -78,7 +75,6 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
     public BatikSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes,
             final Boolean embedFonts) {
         super(null);
-//        this.bounds = bounds;
 
         // Get a DOMImplementation.
         final DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();

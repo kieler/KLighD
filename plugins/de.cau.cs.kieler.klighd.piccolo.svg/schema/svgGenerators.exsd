@@ -62,7 +62,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics:"/>
+                  <meta.attribute kind="java" basedOn="de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics:"/>
                </appinfo>
             </annotation>
          </attribute>

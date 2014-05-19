@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.svg.export;
+package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,12 +21,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.piccolo.export.KlighdCanvasExporter;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import de.cau.cs.kieler.klighd.piccolo.svg.KlighdAbstractSVGGraphics;
-import de.cau.cs.kieler.klighd.piccolo.svg.SVGGeneratorManager;
-import de.cau.cs.kieler.klighd.piccolo.svg.SVGOffscreenRenderer;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
