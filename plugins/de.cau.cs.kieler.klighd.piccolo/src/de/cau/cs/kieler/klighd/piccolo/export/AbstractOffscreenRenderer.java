@@ -28,7 +28,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
  * 
  * @author chsch
  */
-public abstract class AbstractOffscreenRenderer implements IOffscreenRenderer {
+public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter implements
+        IOffscreenRenderer {
     
     /** Error msg to be delivered in case of figure composition failures. */
     protected static final String BUILDING_UP_FIGURES_FAILURE_MSG = 
@@ -73,7 +74,7 @@ public abstract class AbstractOffscreenRenderer implements IOffscreenRenderer {
 
         } else {
             // expand the desired elements...
-            for (Object o : properties.getProperty(IOffscreenRenderer.EXPANDED_ELEMENTS)) {
+            for (final Object o : properties.getProperty(IOffscreenRenderer.EXPANDED_ELEMENTS)) {
                 final KNode node = viewContext.getTargetElement(o, KNode.class);
                 if (node != null) {
                     c.expand(node);
@@ -81,7 +82,7 @@ public abstract class AbstractOffscreenRenderer implements IOffscreenRenderer {
             }
 
             // and collapse the desired elements, respectively
-            for (Object o : properties.getProperty(IOffscreenRenderer.COLLAPSED_ELEMENTS)) {
+            for (final Object o : properties.getProperty(IOffscreenRenderer.COLLAPSED_ELEMENTS)) {
                 final KNode node = viewContext.getTargetElement(o, KNode.class);
                 if (node != null) {
                     c.collapse(node);

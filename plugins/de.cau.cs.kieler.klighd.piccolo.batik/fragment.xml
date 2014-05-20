@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="de.cau.cs.kieler.klighd.piccolo.svgGenerators">
+      <svgGenerator
+            class="de.cau.cs.kieler.klighd.piccolo.batik.BatikSVGGraphics"
+            id="de.cau.cs.kieler.klighd.piccolo.svggen.batik">
+      </svgGenerator>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <exporter
+            class="de.cau.cs.kieler.klighd.piccolo.export.SVGExporter"
+            description="Batik"
+            extension="svg"
+            id="de.cau.cs.kieler.klighd.piccolo.export.batik.svg"
+            subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.batik">
+      </exporter>
+   </extension>
+
+
+</fragment>

@@ -32,10 +32,12 @@ import de.cau.cs.kieler.core.properties.Property;
 public interface IOffscreenRenderer {
 
     /**
-     * Property definition for declaring the desired rendering format.
+     * Property definition for declaring the desired rendering format.<br>
+     * Its configuration is only required if multiple formats are supported by a concrete
+     * {@link IOffscreenRenderer}.
      */
     IProperty<String> OUTPUT_FORMAT = new Property<String>(
-            "de.cau.cs.kieler.klighd.offscreenRendering.format");
+            "de.cau.cs.kieler.klighd.offscreenRendering.outputFormat");
 
     /**
      * Property definition for suppressing the automatic layout run.
@@ -61,6 +63,12 @@ public interface IOffscreenRenderer {
      */
     IProperty<Boolean> TEXT_AS_SHAPES = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.offscreenRendering.textAsShapes", false);
+
+    /**
+     * Property definition for instructing vector image exporters to embed used fonts into the ouput.
+     */
+    IProperty<Boolean> EMBED_FONTS = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.embedFonts", false);
 
     /**
      * Renders the provided <code>viewModel</code> into the (standard) diagram format supported by

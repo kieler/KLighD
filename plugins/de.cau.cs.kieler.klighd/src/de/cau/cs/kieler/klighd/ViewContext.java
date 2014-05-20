@@ -201,7 +201,7 @@ public class ViewContext extends MapPropertyHolder {
         
         if (this.diagramSynthesis != null) {
             this.synthesisOptions.addAll(this.diagramSynthesis.getDisplayedSynthesisOptions());
-            for (SynthesisOption option: this.synthesisOptions) {
+            for (final SynthesisOption option: this.synthesisOptions) {
                 if (!this.synthesisOptionConfig.containsKey(option)) {
                     this.configureOption(option, option.getInitialValue());
                 }
@@ -238,7 +238,7 @@ public class ViewContext extends MapPropertyHolder {
         public boolean apply(final ISynthesis synthesis) {
             try {
                 return synthesis.supports(ViewContext.this.businessModel, ViewContext.this);
-            } catch (WrappedException e) {
+            } catch (final WrappedException e) {
                 StatusManager.getManager().handle(
                         new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(),
                                 e.getCause()), StatusManager.LOG);
@@ -300,15 +300,15 @@ public class ViewContext extends MapPropertyHolder {
      * 
      * @param sourceModel
      *            the initial, updated, or replaced input model, may be <code>null</code>
-     * @param propertyHolder
-     *            a property holder that might influence the diagram update, currently only
-     *            the {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY} property is evaluated
+     * @param properties
+     *            a property holder that might influence the diagram update, e.g. via the
+     *            {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY} property configuration
      */
-    public void update(final Object sourceModel, final IPropertyHolder propertyHolder) {
+    public void update(final Object sourceModel, final IPropertyHolder properties) {
         final IUpdateStrategy strategy;
-        if (propertyHolder != null) {
+        if (properties != null) {
             final String usId =
-                    propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
+                    properties.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
             strategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
             
         } else {
@@ -330,15 +330,43 @@ public class ViewContext extends MapPropertyHolder {
      *            the updateStrategy to use during this update, must not be <code>null</code>
      */
     public void update(final Object model, final IUpdateStrategy theUpdateStrategy) {
-        final Object sourceModel = model != null ? model : this.businessModel;
-        
+        update(model, theUpdateStrategy, KlighdSynthesisProperties.emptyConfig());
+    }
+
+    /**
+     * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
+     * the view model by applying the configured {@link IUpdateStrategy}. In case the former
+     * input/source model has been replaced by a new one of compatible type this new one must be
+     * provided, otherwise <code>model</code> may by <code>null</code>.
+     * 
+     * @param model
+     *            the initial, updated, or replaced input model, may be <code>null</code>
+     * @param theUpdateStrategy
+     *            the updateStrategy to use during this update, must not be <code>null</code>
+     * @param properties
+     *            a property holder that might influence the diagram update in case type of
+     *            <code>model</code> differs from the current business model's type
+     */
+    public void update(final Object model, final IUpdateStrategy theUpdateStrategy,
+            final IPropertyHolder properties) {
+
+        if (model != null) {
+            this.businessModel = model;
+
+            if (!diagramSynthesis.getSourceClass().isAssignableFrom(model.getClass())) {
+                this.configure(properties);
+            }
+        }
+
+        final Object sourceModel = this.businessModel;
+
         final KNode newViewModel;
         if (this.diagramSynthesis != null
                 && diagramSynthesis.getSourceClass().isAssignableFrom(sourceModel.getClass())) {
-            
+
             try {
                 newViewModel = this.diagramSynthesis.transform(sourceModel, this);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 final String msg = "";
                 StatusManager.getManager().handle(
                         new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
@@ -349,24 +377,21 @@ public class ViewContext extends MapPropertyHolder {
             if (this.duplicator == null) {
                 this.duplicator = new DuplicatingDiagramSynthesis();
             }
-            
+
             newViewModel = duplicator.transform(sourceModel, this);
-            
+
         } else {
             final String msg = "KLighD: Could not create a diagram of provided input model "
                     + sourceModel + ".";
-            // TODO: extend error msg
             StatusManager.getManager().handle(new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
             return;
         }
-        
+
         if (theUpdateStrategy != null) {
             theUpdateStrategy.update(this.viewModel, newViewModel, this);
         } else {
             this.updateStrategy.update(this.viewModel, newViewModel, this);
         }
-        
-        this.businessModel = sourceModel;
 
         final KNode clipNode = this.getProperty(KlighdProperties.CLIP);
         if (clipNode != null && this.getViewer() != null) {            
@@ -421,9 +446,9 @@ public class ViewContext extends MapPropertyHolder {
             return null;
         }
         try {
-            IWorkbenchPart part = this.sourceWorkbenchPart;
+            final IWorkbenchPart part = this.sourceWorkbenchPart;
             return (Viewer) part.getClass().getMethod("getViewer").invoke(part);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             StatusManager.getManager().addLoggedStatus(
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                             "KLighD: Determination of a viewer widget (beyond the KLighD viewer) "
@@ -440,7 +465,7 @@ public class ViewContext extends MapPropertyHolder {
      * @return the current model to be represented.
      */
     public Object getInputModel() {
-        RunnableWithResult<?> modelAccess = this.getProperty(KlighdProperties.MODEL_ACCESS);
+        final RunnableWithResult<?> modelAccess = this.getProperty(KlighdProperties.MODEL_ACCESS);
         if (modelAccess != null) {
             modelAccess.run();
             return modelAccess.getResult();
@@ -611,7 +636,7 @@ public class ViewContext extends MapPropertyHolder {
         } else {
             if (ofType == null) {
                 @SuppressWarnings("unchecked")
-                final T res = (T) (EObject) Iterables.getFirst(targetCollection, null);
+                final T res = (T) Iterables.getFirst(targetCollection, null);
                 return res; 
             } else {
                 return Iterables.getFirst(Iterables.filter(targetCollection, ofType), null);

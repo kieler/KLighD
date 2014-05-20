@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -43,16 +42,14 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
         final Shell shell = new Shell();
         final KlighdCanvas canvas = new KlighdCanvas(shell, 0);
 
-        final KShapeLayout size;
         try {
-            size = this.buildUpDiagram(viewContext, canvas.getCamera(), properties);
+            // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
+            this.buildUpDiagram(viewContext, canvas.getCamera(), properties);
             
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
                     BUILDING_UP_FIGURES_FAILURE_MSG, e);
         }
-
-        shell.setSize((int) Math.round(size.getWidth()), (int) Math.round(size.getHeight()));
 
         try {
             final String format =
@@ -60,7 +57,7 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
                             : BitmapExporter.SUB_FORMAT_PNG;
             new BitmapExporter().export(output, canvas, false, 1, false, false, format);
 
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
                     EXPORT_DIAGRAM_FAILURE_MSG, e);
         }

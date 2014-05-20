@@ -31,12 +31,12 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * Thus, it treats the {@link Control} in
  * {@link #export(OutputStream, Control, boolean, int, boolean, boolean, String)} as a
  * {@link KlighdCanvas} and redirects to
- * {@link #export(OutputStream, KlighdCanvas, boolean, int, boolean, boolean, String)}, which has to be
- * implemented by concrete subclasses.
+ * {@link #export(OutputStream, KlighdCanvas, boolean, int, boolean, boolean, String)}, which has to
+ * be implemented by concrete subclasses.
  * 
  * @author chsch
  */
-public abstract class KlighdCanvasExporter implements IDiagramExporter {
+public abstract class KlighdCanvasExporter extends AbstractDiagramExporter implements IDiagramExporter {
     
     /**
      * {@inheritDoc}
