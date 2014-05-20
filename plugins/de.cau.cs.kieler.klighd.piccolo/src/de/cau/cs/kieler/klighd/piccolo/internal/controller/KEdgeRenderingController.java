@@ -42,6 +42,8 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PAffineTransform;
+import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * An {@link AbstractKGERenderingController} for {@link KEdge KEdges} generating the rendering
@@ -83,7 +85,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         final KRendering currentRendering = getCurrentRendering();
         
         if (currentRendering == null) {
-            return handleEdgeRendering(createDefaultRendering(), (KEdgeNode) repNode);
+            return handleEdgeRendering(createDefaultRendering(), repNode);
         } 
         
         final PNode renderingNode;
@@ -94,14 +96,14 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         case KRenderingPackage.KPOLYLINE:
         case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
         case KRenderingPackage.KSPLINE:
-            renderingNode = handleEdgeRendering((KPolyline) currentRendering, (KEdgeNode) repNode);
+            renderingNode = handleEdgeRendering((KPolyline) currentRendering, repNode);
             break;
             
         case KRenderingPackage.KCUSTOM_RENDERING:
             final KCustomRendering customRendering = (KCustomRendering) currentRendering;
             if (customRendering.getFigureObject()  == null 
                     || customRendering.getFigureObject() instanceof KCustomConnectionFigureNode) {
-                renderingNode = handleEdgeRendering(customRendering, (KEdgeNode) repNode);
+                renderingNode = handleEdgeRendering(customRendering, repNode);
                 break;
             } else {
                 // FIXME why is the status manager used here, while below a runtime exception is thrown?
@@ -121,10 +123,10 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             // TODO this is only a preliminary support of references for edge renderings
             final KRenderingRef renderingRef = (KRenderingRef) currentRendering;
             if (renderingRef.getRendering() == null) {
-                return handleEdgeRendering(createDefaultRendering(), (KEdgeNode) repNode);
+                return handleEdgeRendering(createDefaultRendering(), repNode);
             } else if (renderingRef.getRendering() instanceof KPolyline) {
                 renderingNode = handleEdgeRendering((KPolyline) renderingRef.getRendering(),
-                        (KEdgeNode) repNode);
+                        repNode);
             } else {
                 throw new RuntimeException("KLighD: llegal KRendering is attached to graph edge.");
             }
@@ -269,7 +271,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         // add further ones respectively
         for (int i = 0; i < missingJuncts; i++) {
-            final PCamera cam = new PCamera();
+            final PCamera cam = new JunctionPointCamera();
 
             // set the camera non-pickable as the junction points can be panned locally :-) 
             cam.setPickable(false);
@@ -288,7 +290,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         }
 
         @SuppressWarnings("unchecked")
-        final List<PNode> cams = (List<PNode>) displayedJunctions.getChildrenReference();
+        final List<PNode> cams = displayedJunctions.getChildrenReference();
         
         // update the position of the cameras to the given coordinates by modifying their transform
         //  (their local bounds need not to be touched)
@@ -297,7 +299,35 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             cams.get(i).setOffset(p.getX(), p.getY());
         }
     }
-    
+
+    /**
+     * A specialized {@link PCamera} behaving exactly as {@link PCamera} except for touching the
+     * configured drawing clip configured on the employed graphics (/canvas).
+     * 
+     * @author chsch
+     */
+    private static class JunctionPointCamera extends PCamera {
+
+        private static final long serialVersionUID = -1724430297849001050L;
+
+        @Override
+        protected void paint(final PPaintContext paintContext) {
+            super.paint(paintContext);
+            
+            final PAffineTransform viewTransform = getViewTransformReference();
+
+            // paintContext.pushClip(getBoundsReference());
+            paintContext.pushTransform(viewTransform);
+
+            paintCameraView(paintContext);
+            paintDebugInfo(paintContext);
+
+            paintContext.popTransform(viewTransform);
+            // paintContext.popClip(getBoundsReference());
+        }        
+    }
+
+
     /**
      * Creates the Piccolo node for a rendering of a {@code KEdge} inside a parent Piccolo node.<br>
      * <br>
@@ -340,6 +370,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * 
      * @return the rendering
      */
+    @Override
     protected KPolyline createDefaultRendering() {
         // create the default rendering model
         return KRenderingFactory.eINSTANCE.createKPolyline();
