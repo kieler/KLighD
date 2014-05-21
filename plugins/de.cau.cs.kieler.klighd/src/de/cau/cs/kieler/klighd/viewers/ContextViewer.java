@@ -22,6 +22,7 @@ import static de.cau.cs.kieler.klighd.util.KlighdPredicates.notIn;
 import static java.util.Collections.singleton;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -779,7 +780,10 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     private void updateSelection(final Iterable<? extends EObject> diagramElements) {
         // here the selected elements are assumed to be diagram elements, i.e. KGraph elements or KTexts
         
-        final List<EObject> currentlySelected = newArrayList(getDiagramSelection());
+        final KlighdTreeSelection diagSelection = getDiagramSelection();
+        
+        final List<EObject> currentlySelected = diagSelection != null
+                ? newArrayList(diagSelection) : Collections.<EObject>emptyList();
         final List<EObject> toBeSelected = newArrayList(filter(diagramElements, Predicates.notNull())); 
         
         for (final KRendering r : concat(transform(filter(currentlySelected, notIn(toBeSelected)),
