@@ -13,22 +13,27 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.io.OutputStream;
-import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
-import edu.umd.cs.piccolo.PCamera;
-import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.util.PAffineTransform;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * Generic {@link IViewExporter} for bitmap formats, e.g., png and jpeg.
@@ -40,6 +45,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * <li>png</li>
  * </ul>
  * 
+ * @author chsch
  * @author uru
  */
 public class BitmapExporter extends KlighdCanvasExporter {
@@ -59,6 +65,38 @@ public class BitmapExporter extends KlighdCanvasExporter {
             final boolean cameraViewport, final int scale, final boolean textAsShapes,
             final boolean embedFonts, final String subFormatId) {
 
+        // reveal the canvas' camera ...
+        final KlighdMainCamera camera = canvas.getCamera();
+
+        // ... an determine the bounds of the diagram to be exported
+        final PBounds bounds = getExportedBounds(camera, cameraViewport);
+
+        // determine the employed image's size
+        final int width = (int) Math.ceil(scale * bounds.width);
+        final int height = (int) Math.ceil(scale * bounds.height);
+
+        // initialize an SWT Image that serves as the pixel 'canvas'
+        final Image image = new Image(canvas.getDisplay(), width, height);
+        final GC gc = new GC(image);
+
+        // initialize a graphics object that 'collects' all the drawing instructions 
+        final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
+
+        // apply the scale factor to the employed graphics object
+        //  by means of a corresponding affine transform
+        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
+
+        // do the action diagram drawing work
+        drawDiagram(camera, cameraViewport, graphics, bounds); 
+
+        // create an image loader to save the image
+        // although the API differently suggests:
+        //  the ImageData array below must contain exactly 1 element,
+        //   see the implementations of FileFormat.unloadIntoByteStream(ImageLoader) 
+        final ImageLoader loader = new ImageLoader();
+        loader.data = new ImageData[] { image.getImageData() };
+
+        // translate the requested format identifier
         final int format;
         if (subFormatId.equals(SUB_FORMAT_JPEG)) {
             format = SWT.IMAGE_JPEG;
@@ -69,62 +107,21 @@ public class BitmapExporter extends KlighdCanvasExporter {
             format = SWT.IMAGE_BMP;
         }
 
-        final PCamera camera = canvas.getCamera();
-
-        // create the target image and a linked graphics context
-        final PBounds bounds;
-        if (cameraViewport) {
-            bounds = camera.getFullBounds();
-        } else {
-            bounds = camera.getUnionOfLayerFullBounds();
+        // dump out the binary image data via the provided output stream
+        try {
+            loader.save(stream, format);
+        } catch (final SWTError e) {
+            final String msg = "KLighD bitmap export: "
+                    + "Failed to write bitmap data into the provided OutputStream of type "
+                    + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
+                    + " the stream instance is " + stream.toString();
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e));
         }
 
-        // construct an affine transform for applying the scale factor
-        // and apply it to the camera's bounds
-        final PAffineTransform transform = new PAffineTransform();
-        transform.scale(scale, scale);
-        transform.transform(bounds, bounds);
-
-        // reveal the size and respect the indentation imposed by x/y on both sides
-        // in order to avoid clippings of root figure drawings
-        final int width = (int) (bounds.width + 2 * bounds.x);
-        final int height = (int) (bounds.height + 2 * bounds.y);
-
-        // let Piccolo render onto a image GC
-        final Image image = new Image(canvas.getDisplay(), width, height);
-        final GC gc = new GC(image);
-
-        final PPaintContext paintContext =
-                new PPaintContext(new KlighdSWTGraphicsImpl(gc, canvas.getDisplay()));
-
-        // apply scaling translation to the paint context, too, for actually scaling the diagram
-        paintContext.pushTransform(transform);
-
-        if (cameraViewport) {
-            camera.fullPaint(paintContext);
-        } else {
-            fullPaintLayers(paintContext, camera);
-        }
-        paintContext.popTransform(transform);
-
-        // create an image loader to save the image
-        final ImageLoader loader = new ImageLoader();
-        loader.data = new ImageData[] { image.getImageData() };
-        loader.save(stream, format);
-        
         // release all native resources
-        paintContext.getGraphics().dispose();
+        ((Graphics2D) graphics).dispose();
         gc.dispose();
         image.dispose();
     }
-
-    @SuppressWarnings("unchecked")
-    private static void fullPaintLayers(final PPaintContext paintContext, final PCamera camera) {
-        paintContext.pushCamera(camera);
-        for (PLayer layer : (List<PLayer>) camera.getLayersReference()) {
-            layer.fullPaint(paintContext);
-        }
-        paintContext.popCamera();
-    }
-
 }

@@ -49,27 +49,15 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 public class SourceModelTrackingAdapter extends EContentAdapter {
 
     private static final Predicate<Object> CANDIDATES = KlighdPredicates.instanceOf(
-            KGraphElement.class, KLayoutData.class, KRendering.class
-            , IPropertyToObjectMapImpl.class
-            );
+            KGraphElement.class, KLayoutData.class, KRendering.class,
+            IPropertyToObjectMapImpl.class);
     
     private static final IProperty<Object> MODEL_ELEMENT = KlighdInternalProperties.MODEL_ELEMEMT;
-
-//    private final ViewContext viewContext;
 
     private Object mapsMonitor = this;
     private Multimap<Object, EObject> sourceTargetsMap = ArrayListMultimap.create();
     private Map<EObject, Object> targetSourceMap = Maps.newHashMap();
 
-//    /**
-//     * Constructor.
-//     * 
-//     * @param theViewContext
-//     *            the {@link ViewContext} <code>this</code> Adapter is associated to
-//     */
-//    public SourceModelTracingAdapter(final ViewContext theViewContext) {
-//        this.viewContext = theViewContext;
-//    }
 
     /**
      * Returns the element in the input model that is represented by the given <code>viewElement</code>
@@ -132,8 +120,9 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
                         : ((InternalEList<? extends Notifier>) newTarget.eContents())
                                 .basicIterator();
 
-        for (Iterator<? extends Notifier> i = Iterators.filter(eContents, CANDIDATES); i.hasNext();) {
-            Notifier notifier = i.next();
+        for (final Iterator<? extends Notifier> i
+                = Iterators.filter(eContents, CANDIDATES); i.hasNext();) {
+            final Notifier notifier = i.next();
             addAdapter(notifier);
         }
     }
@@ -183,14 +172,28 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
             }
             break;
         case Notification.ADD_MANY:
-        case Notification.REMOVE_MANY:
-            final Object oldValues = notification.getOldValue();
-            final Object newValues = notification.getNewValue();
+            // this case has been copied from the super implementation and augmented by the filter
 
-            if (oldValues instanceof Iterable && Iterables.all((Iterable<?>) oldValues, CANDIDATES)
-                    || newValues instanceof Iterable
-                    && Iterables.all((Iterable<?>) newValues, CANDIDATES)) {
-                super.handleContainment(notification);
+            @SuppressWarnings("unchecked")
+            final Iterable<Notifier> newValues =
+                    (Iterable<Notifier>) Iterables.filter((Iterable<?>) notification.getNewValue(),
+                            CANDIDATES);
+
+            for (final Notifier newOne : newValues) {
+                this.addAdapter(newOne);
+            }
+            break;
+            
+        case Notification.REMOVE_MANY:
+            // this case has been copied from the super implementation and augmented by the filter
+
+            @SuppressWarnings("unchecked")
+            final Iterable<Notifier> oldValues =
+                    (Iterable<Notifier>) Iterables.filter((Iterable<?>) notification.getOldValue(),
+                            CANDIDATES);
+
+            for (final Notifier oldOne : oldValues) {
+                this.removeAdapter(oldOne);
             }
         }
     }
@@ -282,7 +285,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(viewElement)) {
             model = ((KGraphData) viewElement).getProperty(MODEL_ELEMENT);
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(viewElement)) {
-            KLayoutData layoutData = ((KGraphElement) viewElement).getData(KLayoutData.class);
+            final KLayoutData layoutData = ((KGraphElement) viewElement).getData(KLayoutData.class);
             if (layoutData != null) {
                 model = layoutData.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
             } else {

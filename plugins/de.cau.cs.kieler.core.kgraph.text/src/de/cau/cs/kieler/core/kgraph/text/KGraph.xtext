@@ -427,10 +427,8 @@ terminal TFLOAT returns ecore::EFloat:
 terminal NATURAL returns ecore::EInt:
 	('0'..'9')+;
 terminal ID:
-    // chsch: the optional leading '^' is the implicit keyword escape character
     '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 terminal STRING :
-    // chsch: added '\'' alternative! 
     '"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\''|'\\') | !('\\'|'"') )* '"';
 
 terminal ML_COMMENT    : '/*' -> '*/';

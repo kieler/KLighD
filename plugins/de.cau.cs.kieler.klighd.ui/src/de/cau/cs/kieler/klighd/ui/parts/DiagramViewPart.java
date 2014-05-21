@@ -200,8 +200,10 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
         final IToolBarManager toolBar = getViewSite().getActionBars().getToolBarManager();
         toolBar.add(new Action("Refresh diagram", KlighdPlugin
                 .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
+
+            @Override
             public void run() {
-                DiagramViewManager.getInstance().updateView(DiagramViewPart.this.getPartId());
+                DiagramViewManager.updateView(DiagramViewPart.this.getPartId());
             }
         });
         
@@ -217,7 +219,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
-                    ZoomStyle style = ZoomStyle.valueOf(
+                    final ZoomStyle style = ZoomStyle.valueOf(
                             preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
                     setChecked(style == ZoomStyle.ZOOM_TO_FIT);
                 }
@@ -250,7 +252,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
-                    ZoomStyle style = ZoomStyle.valueOf(
+                    final ZoomStyle style = ZoomStyle.valueOf(
                             preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
                     setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
                 }
@@ -295,14 +297,17 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
                         .getImageDescriptor("icons/menu16/kieler-arrange.gif"));
             }
 
+            @Override
             public void run() {
                 LightDiagramServices.layoutDiagram(DiagramViewPart.this);
             }
         });
         
         // reset the layout options set over the side pane
-        IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+        final IMenuManager menu = getViewSite().getActionBars().getMenuManager();
         resetLayoutOptionsAction = new Action("Reset Layout Options") {
+
+            @Override
             public void run() {
                 sideBar.resetLayoutOptionsToDefaults();
             }
@@ -369,7 +374,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
      * Installs a handler for dropping resources on the view.
      */
     private void installDropHandler(final Composite parent) {
-        DropTarget target = new DropTarget(parent, DND.DROP_COPY | DND.DROP_DEFAULT);
+        final DropTarget target = new DropTarget(parent, DND.DROP_COPY | DND.DROP_DEFAULT);
         final ResourceTransfer resourceTransfer = ResourceTransfer.getInstance();
         target.setTransfer(new Transfer[] { resourceTransfer });
         target.addDropListener(new DropTargetListener() {
@@ -377,7 +382,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             public void drop(final DropTargetEvent event) {
                 if (resourceTransfer.isSupportedType(event.currentDataType)
                         && event.data instanceof IResource[]) {
-                    IResource[] resources = (IResource[]) event.data;
+                    final IResource[] resources = (IResource[]) event.data;
                     if (resources.length > 0) {
                         KlighdPlugin.getTrigger().triggerDrop(getViewSite().getSecondaryId(),
                                 resources[0]);
@@ -457,10 +462,10 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             // it makes only sense to do something if we have a viewcontext, ie a viewmodel
             if (getViewer().getViewContext() != null) {
                 // calculate the aspect ratio of the current canvas
-                Point size = getViewer().getControl().getSize();
+                final Point size = getViewer().getControl().getSize();
                 if (size.x > 0 && size.y > 0) {
-                    Float aspectRatio =
-                            Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                    final Float aspectRatio =
+                            Math.round(ASPECT_RATIO_ROUND * size.x / size.y)
                                     / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {

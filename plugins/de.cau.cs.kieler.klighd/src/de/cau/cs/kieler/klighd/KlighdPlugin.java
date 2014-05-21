@@ -30,6 +30,9 @@ public class KlighdPlugin extends AbstractUIPlugin {
     /** the plug-in ID. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd";
 
+    /** A definition place of the platform-specific line separator. */
+    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
     /** the shared instance. */
     private static KlighdPlugin plugin;
 
@@ -103,7 +106,7 @@ public class KlighdPlugin extends AbstractUIPlugin {
                 final String className = PLUGIN_ID + ".kivi.internal.KlighdTrigger";
                 statusTrigger = (IKlighdTrigger) Class.forName(className).newInstance();
                 // .getMethod("getInstance").invoke(null);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 statusTrigger = new IKlighdTrigger.NullTrigger();
             }
         }
