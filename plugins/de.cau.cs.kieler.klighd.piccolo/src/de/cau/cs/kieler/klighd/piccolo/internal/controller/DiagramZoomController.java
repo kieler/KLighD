@@ -88,7 +88,7 @@ public class DiagramZoomController {
             break;
 
         case ZOOM_TO_FOCUS:
-            KNode focus = focusNode != null ? focusNode : topNode.getGraphElement();
+            final KNode focus = focusNode != null ? focusNode : topNode.getGraphElement();
             zoomToFocus(focus, duration);
             break;
 
@@ -162,7 +162,7 @@ public class DiagramZoomController {
      * @param duration
      *            duration of the animation
      */
-    private void zoomToFocus(final KNode focus, final int duration) {
+    public void zoomToFocus(final KNode focus, final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement(); 
         final PBounds newBounds = toPBoundsIncludingPortsAndLabels(focus);
 
@@ -172,7 +172,7 @@ public class DiagramZoomController {
         if (focus != displayedKNode) {
             KNode parent = focus.getParent();
             while (parent != null && parent != displayedKNode.getParent()) {
-                KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
+                final KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
                 newBounds.moveBy(parentLayout.getXpos(), parentLayout.getYpos());
                 parent = parent.getParent();
             }
@@ -193,7 +193,7 @@ public class DiagramZoomController {
 
         // check if we need to scale the view in order for the view to
         // contain the whole focus
-        boolean scale = viewBounds.getWidth() < focus.getWidth()
+        final boolean scale = viewBounds.getWidth() < focus.getWidth()
                 || viewBounds.getHeight() < focus.getHeight();
 
         // fetch bounds of the whole diagram
@@ -212,7 +212,7 @@ public class DiagramZoomController {
 
         final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
         
-        boolean fullyContains = viewBounds.getWidth() > newBounds.getWidth()
+        final boolean fullyContains = viewBounds.getWidth() > newBounds.getWidth()
                 && viewBounds.getHeight() > newBounds.getHeight();
 
         // if the viewport can fully accommodate the diagram, we perform zoom to fit 
@@ -329,7 +329,7 @@ public class DiagramZoomController {
 
         boolean includedElement = false;
         
-        for (KGraphElement element : Iterables.concat(node.getPorts(), node.getLabels())) {
+        for (final KGraphElement element : Iterables.concat(node.getPorts(), node.getLabels())) {
             final KShapeLayout pL = element.getData(KShapeLayout.class);
             float val;
 
