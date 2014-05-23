@@ -462,6 +462,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
         final Rectangle2D bounds =
                 NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, PiccoloViewerUI.this.getCanvas()
                         .getCamera().getDisplayedINode());
+        if (bounds == null) {
+            return;
+        }
+        
         PiccoloViewerUI.this.getCanvas().getCamera().getViewTransformReference()
                 .transform(bounds, bounds);
         textinput.setLocation((int) Math.round(bounds.getX()), (int) Math.round(bounds.getY()));
