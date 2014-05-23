@@ -468,7 +468,25 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         
         return model;
     }
-    
+
+    /**
+     * Getter, provides access to the input model to subclasses.
+     * 
+     * @return the model
+     */
+    protected Object getModel() {
+        return model;
+    }
+
+    /**
+     * Setter, allows to change the input model in subclass implementations.
+     * 
+     * @param model the model to set
+     */
+    protected void setModel(final Object model) {
+        this.model = model;
+    }
+
     /**
      * Configures the given resource set. The default implementation does nothing.
      * 
