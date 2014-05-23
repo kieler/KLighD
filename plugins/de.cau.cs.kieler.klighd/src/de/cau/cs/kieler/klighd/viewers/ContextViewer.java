@@ -413,6 +413,23 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final Object semanticElement, final int duration) {
+        final EObject diagramNode =
+                getViewContext().getTargetElement(semanticElement, KNode.class);
+        if (diagramNode instanceof KNode) {
+            currentViewer.zoomToFocus((KNode) diagramNode, duration);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final KNode diagramElement, final int duration) {
+        currentViewer.zoomToFocus(diagramElement, duration);
+    }
 
     /**
      * {@inheritDoc}
@@ -651,6 +668,35 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     public void centerOn(final KGraphElement diagramElement, final int duration) {
         if (currentViewer != null) {
             currentViewer.centerOn(diagramElement, duration);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final Object semanticElement, final int duration) {
+        final EObject diagramElement =
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
+        if (diagramElement instanceof KGraphElement) {
+            currentViewer.panToTopLeftCorner(diagramElement, duration);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final KNode diagramElement, final int duration) {
+        if (currentViewer != null) {
+            currentViewer.panToTopLeftCorner(diagramElement, duration);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panDiagramToTopLeftCorner(final int duration) {
+        if (currentViewer != null) {
+            currentViewer.panDiagramToTopLeftCorner(duration);
         }
     }
 

@@ -181,8 +181,37 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
+    public void reveal(final Object semanticElement, final int duration) {
+        getContextViewer().reveal(semanticElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void centerOn(final Object semanticElement, final int duration) {
+        getContextViewer().centerOn(semanticElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final Object semanticElement, final int duration) {
+        getContextViewer().panToTopLeftCorner(semanticElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void zoomToLevel(final float zoomLevel, final int duration) {
         getContextViewer().zoomToLevel(zoomLevel, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final Object semanticElement, final int duration) {
+        getContextViewer().zoomToFocus(semanticElement, duration);
+        
     }
 
     /**
@@ -254,21 +283,6 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     public float getScale(final Object semanticElement) {
         return getContextViewer().getScale(semanticElement);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void reveal(final Object semanticElement, final int duration) {
-        getContextViewer().reveal(semanticElement, duration);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void centerOn(final Object semanticElement, final int duration) {
-        getContextViewer().centerOn(semanticElement, duration);
-    }
-    
 
     /* ---------------------------------------------------------- */
     /*   the selection setting API                                */

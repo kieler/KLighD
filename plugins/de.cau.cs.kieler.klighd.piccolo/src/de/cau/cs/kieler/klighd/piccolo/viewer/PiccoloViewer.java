@@ -157,6 +157,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         //  being in charge of notifying the registered view change listeners of new view port bounds.
         this.canvas.addControlListener(new ControlAdapter() {
             
+            @Override
             public void controlResized(final ControlEvent e) {
                 timer.restart();
             }
@@ -350,15 +351,22 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     @Override
     public void zoomToLevel(final float zoomLevel, final int duration) {
-        controller.zoomToLevel(zoomLevel, duration);
+        controller.getZoomController().zoomToLevel(zoomLevel, duration);
     }
 
     /**
      * {@inheritDoc}
      */
+    public void zoomToFocus(final KNode diagramElement, final int duration) {
+        controller.getZoomController().zoomToFocus(diagramElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void zoom(final ZoomStyle style, final int duration) {
-        controller.zoom(style, duration);
+        controller.getZoomController().zoom(style, duration);
     }
 
     private static final String NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG =
@@ -432,6 +440,61 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         }
     }
 
+    private static final String NOT_IN_CURRENT_CLIP_TO_TOP_LEFT_ERROR_MSG =
+            NOT_IN_CURRENT_CLIP_ERROR_MSG + " Thus the diagram cannot be panned to align"
+                    + " that node with the visible area's top left corner.";
+
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final KNode diagramElement, final int duration) {
+        final PNode node = getRepresentation(diagramElement);
+        if (node == null) {
+            StatusManager.getManager().handle(
+                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                            NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG).replace("XX",
+                            diagramElement.toString())));
+        } else {
+            final KlighdMainCamera camera = canvas.getCamera();
+
+            final PBounds destBounds =
+                    NodeUtil.clipRelativeGlobalBoundsOf(node, this.canvas.getCamera()
+                            .getDisplayedINode());
+
+            if (destBounds != null) {
+                final double scale = camera.getViewTransformReference().getScale();
+
+                // compose a new affine transform describing the desired camera view ... 
+                final AffineTransform t = AffineTransform.getScaleInstance(scale, scale);
+                t.translate(-destBounds.x, -destBounds.y);
+                
+                // ... and trigger the change 
+                camera.animateViewToTransform(t, duration);
+            } else {
+                StatusManager.getManager().handle(
+                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                                NOT_IN_CURRENT_CLIP_TO_TOP_LEFT_ERROR_MSG).replace("XX",
+                                diagramElement.toString())));
+            }
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panDiagramToTopLeftCorner(final int duration) {
+        final KlighdMainCamera camera = canvas.getCamera();
+
+        final double scale = camera.getViewTransformReference().getScale();
+        final AffineTransform t = AffineTransform.getScaleInstance(scale, scale);
+
+        final PBounds destBounds =
+                NodeUtil.clipRelativeGlobalBoundsOf(camera.getDisplayedLayer(),
+                        camera.getDisplayedINode());
+        t.translate(-destBounds.x, -destBounds.y);
+        camera.animateViewToTransform(t, duration);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -503,7 +566,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      * {@inheritDoc}
      */
     public void scale(final KNode diagramElement, final float factor) {
-        KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
+        final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
         if (layoutData != null) {
             layoutData.setProperty(LayoutOptions.SCALE_FACTOR, factor);
         }
@@ -519,7 +582,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      * {@inheritDoc}
      */
     public float getScale(final KNode diagramElement) {
-        KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
+        final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
         if (layoutData != null) {
             return layoutData.getProperty(LayoutOptions.SCALE_FACTOR);
         } else {
