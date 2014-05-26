@@ -51,7 +51,7 @@ import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
- * A view which is able to display models in light-weight diagrams.
+ * A view which is able to display models in lightweight diagrams.
  * 
  * @author mri
  * @author chsch

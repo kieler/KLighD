@@ -85,7 +85,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
- * An editor which is able to display models in light-weight diagrams.
+ * An editor which is able to display models in lightweight diagrams.
  *
  * @author msp
  * @author uru

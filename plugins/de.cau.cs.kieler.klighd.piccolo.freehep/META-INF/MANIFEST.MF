@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: KIELER Light-Weight Diagrams Vector Graphics Export Powered by FreeHEP
+Bundle-Name: KIELER Lightweight Diagrams Vector Graphics Export Powered by FreeHEP
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.freehep;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
