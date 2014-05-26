@@ -89,6 +89,8 @@ public final class DiagramSideBar {
     
     private boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
     
+    private boolean expanded = initiallyExpanded;
+    
     /** The layout configurator that stores the values set by the layout option controls. */
     private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
     
@@ -107,7 +109,7 @@ public final class DiagramSideBar {
     private Form sideToolbarForm;
     
     /** The form that holds the zoom buttons in the canvas. */
-//    private Composite canvasToolbarForm;
+    private Composite canvasToolbarForm;
 
     /** The form that holds synthesis options. */
     private Form synthesisOptionsForm;
@@ -186,6 +188,7 @@ public final class DiagramSideBar {
             initiallyExpanded = false;
             horizontalPos = -SASH_WIDTH;
         }
+        expanded = initiallyExpanded;
         
         sideBarParent.setLayout(new FormLayout());
         
@@ -234,18 +237,17 @@ public final class DiagramSideBar {
         initializeToolbar(toolbarContainer, viewContext);
         
         // on the canvas
-//        canvasToolbarForm = new Composite(diagramContainer, SWT.NO_BACKGROUND | SWT.TRANSPARENT);
+        canvasToolbarForm = new Composite(sideBarParent, SWT.NO_BACKGROUND | SWT.TRANSPARENT);
+        canvasToolbarForm.setVisible(false);
 //        if (!(diagramContainer.getLayout() instanceof StackLayout)) {
 //            diagramContainer.setLayout(new StackLayout());
 //        }
 //        ((StackLayout) diagramContainer.getLayout()).topControl = canvasToolbarForm;
-//        canvasToolbarForm.setVisible(!initiallyExpanded);
-//        canvasToolbarForm.setLayout();
-//        final Composite canvasToolbarContainer = new Composite(canvasToolbarForm, SWT.NONE);
+        initializeToolbar(canvasToolbarForm, viewContext);
         
-//        canvasToolbarContainer.addPaintListener(new PaintListener() {
+//        canvasToolbarForm.addPaintListener(new PaintListener() {
 //            
-//            public void paintControl(PaintEvent e) {
+//            public void paintControl(final PaintEvent e) {
 //                e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_RED));
 //                e.gc.fillRectangle(e.x, e.y, e.width, e.height);
 //            }
@@ -282,16 +284,16 @@ public final class DiagramSideBar {
         
         // prepare the form layout data for each of the above created widgets
         final FormData diagramContainerLayoutData = new FormData();
-        diagramContainerLayoutData.top = new FormAttachment(0);
+        diagramContainerLayoutData.top = new FormAttachment(canvasToolbarForm);
         diagramContainerLayoutData.bottom = new FormAttachment(FULL);
         diagramContainerLayoutData.left = new FormAttachment(0); 
         diagramContainerLayoutData.right = new FormAttachment(sash); 
         diagramContainer.setLayoutData(diagramContainerLayoutData);
         
-//        final FormData canvasToolbarFormLayoutData = new FormData();
-//        canvasToolbarFormLayoutData.top = new FormAttachment(0);
-//        canvasToolbarFormLayoutData.right = new FormAttachment(sash);
-//        canvasToolbarContainer.setLayoutData(canvasToolbarFormLayoutData);
+        final FormData canvasToolbarFormLayoutData = new FormData();
+        canvasToolbarFormLayoutData.top = new FormAttachment(0);
+        canvasToolbarFormLayoutData.right = new FormAttachment(sash);
+        canvasToolbarForm.setLayoutData(canvasToolbarFormLayoutData);
         
         final FormData arrowsContainerLayoutData = new FormData();
         arrowsContainerLayoutData.top = new FormAttachment(0);
@@ -341,7 +343,8 @@ public final class DiagramSideBar {
         // register the sash moving handler for resizing the options pane
         sash.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent event) {
-//                canvasToolbarForm.setVisible(false);
+                expanded = true;
+                updateToolbar(viewContext);
                 final int maxDiagSize = sideBarParent.getClientArea().width - MINIMAL_OPTIONS_FORM_WIDTH;
                 if (maxDiagSize > event.x) {
                     sashLayoutData.left.numerator = FULL;
@@ -366,7 +369,8 @@ public final class DiagramSideBar {
         // register actions for the collapse / expand labels
         rightArrowLabel.addMouseListener(new MouseAdapter() {
             public void mouseUp(final MouseEvent event) {
-//                canvasToolbarForm.setVisible(true);
+                expanded = false;
+                updateToolbar(viewContext);
                 sashLayoutData.left.numerator = FULL;
                 sashLayoutData.left.offset = -sashLayoutData.width;
                 lastXpos[0] = sideBarParent.getClientArea().width - sash.getBounds().x;
@@ -377,7 +381,8 @@ public final class DiagramSideBar {
         });
         leftArrowLabel.addMouseListener(new MouseAdapter() {
             public void mouseUp(final MouseEvent event) {
-//                canvasToolbarForm.setVisible(false);
+                expanded = true;
+                updateToolbar(viewContext);
                 sashLayoutData.left.numerator = FULL;
                 sashLayoutData.left.offset = -lastXpos[0];
                 horizontalPos = sashLayoutData.left.offset;
@@ -434,7 +439,7 @@ public final class DiagramSideBar {
         zoomToFocusBtn.addSelectionListener(new SelectionAdapter() {
     
             public void widgetSelected(final SelectionEvent e) {
-                viewContext.setZoomStyle(ZoomStyle.create(false, zoomToFocusBtn.getSelection(), false));
+                viewContext.setZoomStyle(ZoomStyle.create(false, false, zoomToFocusBtn.getSelection()));
                 // perform zoom to focus upon activation of the toggle button
                 if (zoomToFocusBtn.getSelection()) {
                     LightDiagramServices.layoutAndZoomDiagram(viewContext.getDiagramWorkbenchPart());
@@ -556,14 +561,21 @@ public final class DiagramSideBar {
     }
 
     /**
-     * @param viewContext 
+     * @param viewContext
      * 
      */
     private void updateToolbar(final ViewContext viewContext) {
-        updateToolbar(viewContext, sideToolbarForm.getBody());
-        Composite toolbarContainer = new Composite(viewContext.getViewer().getControl().getParent(), SWT.TRANSPARENT | SWT.NO_BACKGROUND);
-//        initializeToolbar(toolbarContainer, viewContext);
-//        updateToolbar(viewContext, canvasToolbarForm);
+        canvasToolbarForm.setVisible(!expanded);
+        if (expanded) {
+            updateToolbar(viewContext, sideToolbarForm.getBody());
+        } else {
+            updateToolbar(viewContext, canvasToolbarForm);
+            // Composite toolbarContainer =
+            // new Composite(viewContext.getViewer().getControl().getParent(), SWT.TRANSPARENT |
+            // SWT.NO_BACKGROUND);
+            // initializeToolbar(toolbarContainer, viewContext);
+            // updateToolbar(viewContext, canvasToolbarForm);
+        }
     }
     
     private void updateToolbar(final ViewContext viewContext, final Composite container) {
