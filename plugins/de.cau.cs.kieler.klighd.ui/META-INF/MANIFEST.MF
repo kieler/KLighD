@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: KIELER Light-Weight Diagrams UI Components
+Bundle-Name: KIELER Lightweight Diagrams UI Components
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui;singleton:=true
 Bundle-Version: 0.4.0.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.ui.KlighdUIPlugin
