@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.internal;
+package de.cau.cs.kieler.klighd.ui.internal.handlers;
 
 import java.io.File;
 import java.util.Collections;
@@ -50,6 +50,7 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 import de.cau.cs.kieler.klighd.ExporterManager;
 import de.cau.cs.kieler.klighd.ExporterManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
+import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
 /**
  * The 'save-as-image' dialog for Piccolo2D.
