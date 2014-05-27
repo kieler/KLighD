@@ -174,8 +174,12 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     }
     
     /**
+     * (Re-)Evaluates the diagram (synthesis) and layout options registered in the employed
+     * {@link ViewContext} and populates the diagram side bar accordingly. For internal use only!
      * 
-     * @param fitSpace a;
+     * @param fitSpace
+     *            if <code>true</code> a {@link ZoomStyle#ZOOM_TO_FIT} will applied to the diagram
+     *            in order to fit into the remaining space
      */
     public void updateOptions(final boolean fitSpace) {
         this.sideBar.updateOptions(diagramComposite, this.viewer.getViewContext(), fitSpace);
