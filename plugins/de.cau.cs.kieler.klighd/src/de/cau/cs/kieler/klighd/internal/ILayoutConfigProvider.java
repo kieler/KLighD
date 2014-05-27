@@ -32,4 +32,9 @@ public interface ILayoutConfigProvider {
      * @return the {@link ILayoutConfig} provided by the implementing class
      */
     ILayoutConfig getLayoutConfig();
+
+    /**
+     * Drops all layout configurations in the employed {@link ILayoutConfig}.
+     */
+    void resetLayoutConfig();
 }

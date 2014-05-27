@@ -269,7 +269,16 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public ILayoutConfig getLayoutConfig() {
         return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetLayoutConfig() {
+        if (this.sideBar != null) {
+            this.sideBar.resetLayoutOptionsToDefaults();
+        }
+    }
+
     /**
      * {@inheritDoc}
      */

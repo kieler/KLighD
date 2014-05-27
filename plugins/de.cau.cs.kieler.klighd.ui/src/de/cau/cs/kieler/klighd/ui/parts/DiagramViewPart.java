@@ -144,7 +144,16 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     public ILayoutConfig getLayoutConfig() {
         return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetLayoutConfig() {
+        if (this.sideBar != null) {
+            this.sideBar.resetLayoutOptionsToDefaults();
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
