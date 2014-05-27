@@ -155,10 +155,10 @@ public final class NodeUtil {
      * @return the smart bounds
      */
     public static PBounds determineSmartBounds(final PNode node) {
-        PBounds bounds = node.getBounds();
+        final PBounds bounds = node.getBounds();
 
         // get the translation
-        PAffineTransform transform = node.getTransformReference(true);
+        final PAffineTransform transform = node.getTransformReference(true);
         bounds.setOrigin(transform.getTranslateX(), transform.getTranslateY());
 
         return bounds;
@@ -176,9 +176,9 @@ public final class NodeUtil {
      *            the primary activity
      */
     public static void schedulePrimaryActivity(final PNode node, final PActivity activity) {
-        Object attribute = node.getAttribute(ACTIVITY_KEY);
+        final Object attribute = node.getAttribute(ACTIVITY_KEY);
         if (attribute instanceof PActivity) {
-            PActivity oldActivity = (PActivity) attribute;
+            final PActivity oldActivity = (PActivity) attribute;
             oldActivity.terminate();
         }
         node.addAttribute(ACTIVITY_KEY, activity);
@@ -205,9 +205,9 @@ public final class NodeUtil {
      *            the node
      */
     public static void unschedulePrimaryActivity(final PNode node) {
-        Object attribute = node.getAttribute(ACTIVITY_KEY);
+        final Object attribute = node.getAttribute(ACTIVITY_KEY);
         if (attribute instanceof PActivity) {
-            PActivity oldActivity = (PActivity) attribute;
+            final PActivity oldActivity = (PActivity) attribute;
             oldActivity.terminate();
         }
     }
@@ -259,7 +259,7 @@ public final class NodeUtil {
     public static AffineTransform inverse(final AffineTransform transform) {
         try {
             return transform.createInverse();
-        } catch (NoninvertibleTransformException e) {
+        } catch (final NoninvertibleTransformException e) {
             return new AffineTransform();
         }
     }
@@ -275,19 +275,30 @@ public final class NodeUtil {
      *            the {@link PNode} to compute the bounds for
      * @param clipNode
      *            the INode the diagram is currently clipped to (for convenience)
-     * @return <code>node's</code> global bounds relative to the current clip
+     * @return <code>node's</code> global bounds relative to the current clip, or <code>null</code>
+     *         if <code>node</code> is not a (recursive) child of <code>clipNode</code>
      */
     public static PBounds clipRelativeGlobalBoundsOf(final PNode node, final INode clipNode) {
-        final PBounds nodeBounds = node.getBounds();
-        PNode p = node;
+        // determine the closure of node's bounds and all recursively contained children's bounds
+        final PBounds nodeBounds = node.getFullBounds();
+
+        if (node == clipNode) {
+            return nodeBounds;
+        }
+
+        // since the fullBounds are already adjusted wrt. to node's transform
+        //  start with node's parent here!
+        PNode p = node.getParent();
         while (p != null && p.getParent() != null) {
             p.localToParent(nodeBounds);
             if (p == clipNode) {
-                break;
+                return nodeBounds;
             }
             p = p.getParent();
         }
-        return nodeBounds;
+
+        // node seems not to be (recursively) contained by clipNode, so ...
+        return null;
     }
     
     /**

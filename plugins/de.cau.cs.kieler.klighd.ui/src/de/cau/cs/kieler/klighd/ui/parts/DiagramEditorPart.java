@@ -85,7 +85,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
- * An editor which is able to display models in light-weight diagrams.
+ * An editor which is able to display models in lightweight diagrams.
  *
  * @author msp
  * @author uru
@@ -202,8 +202,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                             return;
                         }
                         
-                        LightDiagramServices.layoutDiagram(viewContext, false, false);
-
+                        LightDiagramServices.layoutDiagram(viewContext, false, ZoomStyle.NONE);
+                        
                         if (control.isDisposed()) {
                             return;
                         }
@@ -227,7 +227,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
             // since no initial selection is set in the view context/context viewer implementation,
             //  define some here by selection the root of the view model representing the diagram canvas!
-            viewer.resetSelectionTo(viewContext.getViewModel());
+            viewer.resetSelectionTo(getViewer().getClip());
         } else {
             viewer.setModel("The selected file does not contain any supported model.", false);
         }
@@ -257,7 +257,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      * @return true if the layout shall be (re-) computed while opening the diagram.
      */
     public boolean requiresInitialLayout(final ViewContext viewContext) {
-        final KNode viewModel = (KNode) viewContext.getViewModel();
+        final KNode viewModel = viewContext.getViewModel();
         final KShapeLayout diagramLayout = viewModel.getData(KShapeLayout.class);
         
         return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0;
@@ -295,6 +295,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public Object getAdapter(final Class type) {
         if (type == IContentOutlinePage.class && viewer instanceof IDiagramOutlinePage.Provider) {
@@ -377,7 +378,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             unregisterResourceChangeListener();
             
             // save all opened resources
-            for (Resource resource : resourceSet.getResources()) {
+            for (final Resource resource : resourceSet.getResources()) {
                 resource.save(Collections.emptyMap());
             }
             
@@ -385,7 +386,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             registerResourceChangeListener();
             
             setDirty(false);
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new WrappedException(exception);
         }
     }
@@ -417,21 +418,21 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // get a URI or an input stream from the editor input
         URI uri = null;
         InputStream inputStream = null;
-        IEditorInput input = getEditorInput();
+        final IEditorInput input = getEditorInput();
         if (input instanceof IFileEditorInput) {
-            IFile file = ((IFileEditorInput) input).getFile();
+            final IFile file = ((IFileEditorInput) input).getFile();
             uri = URI.createPlatformResourceURI(file.getFullPath().toString(), false);
         } else if (input instanceof IURIEditorInput) {
-            java.net.URI inputUri = ((IURIEditorInput) input).getURI();
+            final java.net.URI inputUri = ((IURIEditorInput) input).getURI();
             uri = URI.createURI(inputUri.toString());
         } else if (input instanceof IPathEditorInput) {
-            IPath path = ((IPathEditorInput) input).getPath();
+            final IPath path = ((IPathEditorInput) input).getPath();
             uri = URI.createFileURI(path.toString());
         } else if (input instanceof IStorageEditorInput) {
             try {
-                IStorage storage = ((IStorageEditorInput) input).getStorage();
+                final IStorage storage = ((IStorageEditorInput) input).getStorage();
                 inputStream = storage.getContents();
-            } catch (CoreException exception) {
+            } catch (final CoreException exception) {
                 throw new PartInitException("An error occurred while accessing the storage.",
                         exception);
             }
@@ -452,9 +453,9 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 // load a URI-based resource
                 resource = resourceSet.getResource(uri, true);
             }
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new PartInitException("An error occurred while loading the resource.", exception);
-        } catch (WrappedException exception) {
+        } catch (final WrappedException exception) {
             throw new PartInitException("An error occurred while loading the resource.",
                     exception.getCause());
         }
@@ -467,7 +468,25 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         
         return model;
     }
-    
+
+    /**
+     * Getter, provides access to the input model to subclasses.
+     * 
+     * @return the model
+     */
+    protected Object getModel() {
+        return model;
+    }
+
+    /**
+     * Setter, allows to change the input model in subclass implementations.
+     * 
+     * @param model the model to set
+     */
+    protected void setModel(final Object model) {
+        this.model = model;
+    }
+
     /**
      * Configures the given resource set. The default implementation does nothing.
      * 
@@ -484,7 +503,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
      * @return KLighD configuration.
      */
     protected IPropertyHolder configureKlighdProperties() {
-        MapPropertyHolder props = new MapPropertyHolder();
+        final MapPropertyHolder props = new MapPropertyHolder();
         props.setProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
         return props;
     }
@@ -504,8 +523,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 model = resource.getContents().get(0);
                 viewer.getViewContext().update(model);
 
-            } catch (IOException exception) {
-                IStatus status = new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
+            } catch (final IOException exception) {
+                final IStatus status = new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                         "Failed to update " + resource.getURI().toString(), exception);
                 StatusManager.getManager().handle(status);
             }
@@ -562,7 +581,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                         return true;
                     }
                 });
-            } catch (CoreException exception) {
+            } catch (final CoreException exception) {
                 StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
             }
         }
@@ -585,7 +604,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 if (vc != null) {
                     setChecked(vc.isZoomToFit());
                 } else {
-                    ZoomStyle style = ZoomStyle.valueOf(
+                    final ZoomStyle style = ZoomStyle.valueOf(
                             preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
                     setChecked(style == ZoomStyle.ZOOM_TO_FIT);
                 }
@@ -623,7 +642,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 if (vc != null) {
                     setChecked(vc.isZoomToFocus());
                 } else {
-                    ZoomStyle style = ZoomStyle.valueOf(
+                    final ZoomStyle style = ZoomStyle.valueOf(
                             preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
                     setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
                 }
@@ -650,7 +669,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         zoomToFocusItem = new ActionContributionItem(zoomToFocusAction);
         
         // zoom to one ...
-        Action zoomToOne = new Action("Zoom to Original Size", IAction.AS_PUSH_BUTTON) {
+        final Action zoomToOne = new Action("Zoom to Original Size", IAction.AS_PUSH_BUTTON) {
             {
                 setImageDescriptor(KlighdPlugin
                         .getImageDescriptor("icons/kieler-zoomtoone.gif"));
@@ -746,10 +765,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             // it makes only sense to do something if we have a viewcontext, ie a viewmodel
             if (getViewer().getViewContext() != null) {
                 // calculate the aspect ratio of the current canvas
-                Point size = getViewer().getControl().getSize();
+                final Point size = getViewer().getControl().getSize();
                 if (size.x > 0 && size.y > 0) {
-                    Float aspectRatio =
-                            Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                    final Float aspectRatio =
+                            Math.round(ASPECT_RATIO_ROUND * size.x / size.y)
                                     / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {

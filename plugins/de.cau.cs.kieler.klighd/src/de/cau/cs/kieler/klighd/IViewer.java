@@ -252,6 +252,57 @@ public interface IViewer<T> {
     void centerOn(KGraphElement diagramElement, int duration);
     
     /**
+     * Pans the diagram s.t. the representation of the given semantic element is depicted in the top
+     * left corner of the visible area (over the specified duration).
+     * 
+     * @param semanticElement
+     *            the semantic element to refer to
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void panToTopLeftCorner(Object semanticElement, int duration);
+    
+    /**
+     * Pans the diagram s.t. the given diagram element is depicted in the top left corner of the
+     * visible area (over the specified duration).
+     * 
+     * @param diagramElement
+     *            the diagram element
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void panToTopLeftCorner(KNode diagramElement, int duration);
+    
+    /**
+     * Pans the diagram s.t. the depicted content is aligned to the to left corner of diagram widget
+     * (over the specified duration).
+     * 
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void panDiagramToTopLeftCorner(int duration);
+    
+    /**
+     * Centers on the representation of the given semantic element over the specified duration.
+     * 
+     * @param semanticElement
+     *            the semantic element to center on
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void zoomToFocus(Object semanticElement, int duration);
+    
+    /**
+     * Centers on the given diagram element over the specified duration.
+     * 
+     * @param diagramElement
+     *            the diagram element
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void zoomToFocus(KNode diagramElement, int duration);
+    
+    /**
      * Zooms to the given zoom level over the specified duration.
      * 
      * @param zoomLevel

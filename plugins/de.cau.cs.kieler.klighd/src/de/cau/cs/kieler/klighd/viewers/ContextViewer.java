@@ -22,6 +22,7 @@ import static de.cau.cs.kieler.klighd.util.KlighdPredicates.notIn;
 import static java.util.Collections.singleton;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -412,6 +413,23 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final Object semanticElement, final int duration) {
+        final EObject diagramNode =
+                getViewContext().getTargetElement(semanticElement, KNode.class);
+        if (diagramNode instanceof KNode) {
+            currentViewer.zoomToFocus((KNode) diagramNode, duration);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final KNode diagramElement, final int duration) {
+        currentViewer.zoomToFocus(diagramElement, duration);
+    }
 
     /**
      * {@inheritDoc}
@@ -653,6 +671,35 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final Object semanticElement, final int duration) {
+        final EObject diagramElement =
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
+        if (diagramElement instanceof KGraphElement) {
+            currentViewer.panToTopLeftCorner(diagramElement, duration);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final KNode diagramElement, final int duration) {
+        if (currentViewer != null) {
+            currentViewer.panToTopLeftCorner(diagramElement, duration);
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panDiagramToTopLeftCorner(final int duration) {
+        if (currentViewer != null) {
+            currentViewer.panDiagramToTopLeftCorner(duration);
+        }
+    }
+
 
     /* ----------------------------- */
     /*   the selection setting API   */
@@ -779,7 +826,10 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     private void updateSelection(final Iterable<? extends EObject> diagramElements) {
         // here the selected elements are assumed to be diagram elements, i.e. KGraph elements or KTexts
         
-        final List<EObject> currentlySelected = newArrayList(getDiagramSelection());
+        final KlighdTreeSelection diagSelection = getDiagramSelection();
+        
+        final List<EObject> currentlySelected = diagSelection != null
+                ? newArrayList(diagSelection) : Collections.<EObject>emptyList();
         final List<EObject> toBeSelected = newArrayList(filter(diagramElements, Predicates.notNull())); 
         
         for (final KRendering r : concat(transform(filter(currentlySelected, notIn(toBeSelected)),

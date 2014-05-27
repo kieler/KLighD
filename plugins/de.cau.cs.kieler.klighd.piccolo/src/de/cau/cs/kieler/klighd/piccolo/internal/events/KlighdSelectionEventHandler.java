@@ -27,6 +27,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -85,7 +86,8 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         //  movements (e.g. panning) abort the selection
         if (!event.isLeftMouseButton()
                 || !event.getCanvasPosition().equals(thePreviousPoint)
-                || !(event.getPickedNode() == thePressedNode)) {
+                || !(event.getPickedNode() == thePressedNode)
+                || ((KlighdMouseEvent) event.getSourceSwingEvent()).getEvent().count != 1) {
             return;
         }
 
