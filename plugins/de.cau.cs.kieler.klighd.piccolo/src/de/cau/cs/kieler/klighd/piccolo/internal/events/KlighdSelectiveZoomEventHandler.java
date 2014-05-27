@@ -46,6 +46,11 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
      */
     private KlighdPath previewRectangle = null;
 
+    /**
+     * Transparancy value used for the preview rectangle.
+     */
+    private static final int PREVIEW_RECTANGLE_ALPHA = 50;
+    
     @Override
     protected void startDrag(final PInputEvent event) {
         super.startDrag(event);
@@ -59,7 +64,7 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
                     KlighdPaths.createRectangle((int) local.getX(), (int) local.getY(),
                             0, 0);
             previewRectangle.setStrokeColor(new RGB(0, 0, 0));
-            previewRectangle.setPaintAlpha(50);
+            previewRectangle.setPaintAlpha(PREVIEW_RECTANGLE_ALPHA);
             event.getTopCamera().addChild(previewRectangle);
 
         }
@@ -81,7 +86,7 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
     /**
      * Duration of the animation of the zoom.
      */
-    private static int zoomAnimationTime = 400;
+    private static final int ZOOM_ANIMATION_TIME = 400;
     
     @Override
     protected void endDrag(final PInputEvent event) {
@@ -90,7 +95,7 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
         event.getTopCamera().removeChild(previewRectangle);
                 
         event.getTopCamera().animateViewToCenterBounds(this.getRectangle(start, event.getPosition()),
-                true, zoomAnimationTime);
+                true, ZOOM_ANIMATION_TIME);
     }
 
     @Override

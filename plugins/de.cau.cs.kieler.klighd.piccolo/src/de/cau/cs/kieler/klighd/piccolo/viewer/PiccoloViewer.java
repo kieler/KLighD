@@ -128,7 +128,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdShowLensEventHandler(camera));
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
-        camera.addInputEventListener(new KlighdSelectiveZoomEventHandler());
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(new KlighdSelectiveZoomEventHandler()));
         camera.addInputEventListener(new KlighdBasicInputEventHandler(new KlighdPanEventHandler(
                 canvas)));
         camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
