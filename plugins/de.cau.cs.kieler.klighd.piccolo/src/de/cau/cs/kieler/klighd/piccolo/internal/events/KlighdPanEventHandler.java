@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
-import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -61,12 +60,6 @@ public class KlighdPanEventHandler extends PPanEventHandler {
     protected void pan(final PInputEvent event) {
         // The reason for overriding this method is the replacement of 'event.getCamera()' by
         //  'event.getTopCamera()'.
-
-        // if ctrl is pressed we don't want to pan and the KlighdSelectiveZoomEventHandler 
-        //will take over so stop doing things here.
-        if ((event.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
-            return;
-        }
 
         final PCamera cam = event.getTopCamera();
         final PDimension delta = new PDimension();

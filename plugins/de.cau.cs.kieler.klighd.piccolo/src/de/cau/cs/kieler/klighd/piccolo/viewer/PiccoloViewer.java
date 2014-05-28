@@ -128,9 +128,9 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.addInputEventListener(new KlighdShowLensEventHandler(camera));
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
+                new KlighdPanEventHandler(canvas)));
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(
                 new KlighdSelectiveZoomEventHandler()));
-        camera.addInputEventListener(new KlighdBasicInputEventHandler(new KlighdPanEventHandler(
-                canvas)));
         camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
         // add a node for the rubber band selection marquee
         // final PEmptyNode marqueeParent = new PEmptyNode();
