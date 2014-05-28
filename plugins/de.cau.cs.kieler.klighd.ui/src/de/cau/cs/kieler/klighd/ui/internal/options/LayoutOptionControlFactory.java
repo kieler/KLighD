@@ -262,7 +262,7 @@ public class LayoutOptionControlFactory {
                             }
                             return false;
                         }
-                    });
+                    }, null);
                     for (Control c : composite.getChildren()) {
                         ((Button) c).setSelection(c == selection);
                     }
