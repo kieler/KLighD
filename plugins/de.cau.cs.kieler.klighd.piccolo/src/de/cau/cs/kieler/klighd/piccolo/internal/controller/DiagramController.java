@@ -133,12 +133,6 @@ public class DiagramController {
 
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
-
-    /** type of zoom style applied after layout. */
-    private ZoomStyle zoomStyle = ZoomStyle.NONE;
-    
-    /** duration of a possible animation. */
-    private int animationTime = 0;
     
     /** the layout changes to graph elements while recording. */
     private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
@@ -165,7 +159,7 @@ public class DiagramController {
         final RenderingContextData contextData = RenderingContextData.get(graph);
         contextData.setProperty(REP, topNode);
 
-        this.zoomController = new DiagramZoomController(topNode, canvasCamera);
+        this.zoomController = new DiagramZoomController(topNode, canvasCamera, this);
 
         canvasCamera.getRoot().addChild(topNode);
         canvasCamera.setDisplayedNode(topNode);
@@ -236,22 +230,19 @@ public class DiagramController {
     }
 
     /**
-     * @param theZoomStyle
+     * @param zoomStyle
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
-     * @param theAnimationTime
+     * @param animationTime
      *            duration of the animated layout
      * 
      * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, int)
      *      ILayoutRecorder#stopRecording(ZoomStyle, int)
      */
-    public void stopRecording(final ZoomStyle theZoomStyle, final int theAnimationTime) {
+    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
         if (record) {
-            zoomStyle = theZoomStyle;
-            animationTime = theAnimationTime;
-
             record = false;
 
-            handleRecordedChanges();
+            handleRecordedChanges(zoomStyle, animationTime);
         }
     }
 
@@ -511,7 +502,7 @@ public class DiagramController {
     /**
      * Applies the recorded layout changes by creating appropriate activities.
      */
-    private void handleRecordedChanges() {
+    private void handleRecordedChanges(final ZoomStyle zoomStyle, final int animationTime) {
 
         // create activities to apply all recorded changes
         for (final Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {

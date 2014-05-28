@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -42,9 +43,16 @@ public class DiagramZoomController {
     /** the main camera that determines the actually drawn picture. */
     private final KlighdMainCamera canvasCamera;
 
-    private KNodeTopNode topNode;
-    private KNode focusNode = null;
+    private final KNodeTopNode topNode;
 
+    private final DiagramController diagramController;
+    
+    private final Predicate<KGraphElement> visibilityFilter = new Predicate<KGraphElement>() {
+
+        public boolean apply(final KGraphElement input) {
+            return diagramController.isVisible(input, false);
+        }
+    };
 
     /**
      * Constructor.
@@ -53,11 +61,17 @@ public class DiagramZoomController {
      *            the employed {@link KNodeTopNode}
      * @param theCanvasCamera
      *            the employed {@link KlighdMainCamera}
+     * @param theDiagramController
+     *            the employed {@link DiagramController}
      */
-    public DiagramZoomController(final KNodeTopNode theTopNode, final KlighdMainCamera theCanvasCamera) {
+    public DiagramZoomController(final KNodeTopNode theTopNode,
+            final KlighdMainCamera theCanvasCamera, final DiagramController theDiagramController) {
         this.canvasCamera = theCanvasCamera;
         this.topNode = theTopNode;
+        this.diagramController = theDiagramController;
     }
+
+    private KNode focusNode = null;
 
     /**
      * Sets the node to be focused during next 'zoom to focus' run.
@@ -302,7 +316,7 @@ public class DiagramZoomController {
      *            the node
      * @return the corresponding {@link PBounds}
      */
-    public static PBounds toPBoundsIncludingPortsAndLabels(final KNode node) {
+    public PBounds toPBoundsIncludingPortsAndLabels(final KNode node) {
         return includePortAndLabelBounds(toPBounds(node), node);
     }    
 
@@ -318,7 +332,7 @@ public class DiagramZoomController {
      *            the {@link KNode} to be evaluated for ports and labels
      * @return the updated <code>nodeBounds</code> for convenience
      */
-    private static PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
+    private PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
         double maxX = nodeBounds.getWidth();
         double maxY = nodeBounds.getHeight();
         final float scale = node.getData(KShapeLayout.class).getProperty(LayoutOptions.SCALE_FACTOR); 
@@ -329,7 +343,10 @@ public class DiagramZoomController {
 
         boolean includedElement = false;
         
-        for (final KGraphElement element : Iterables.concat(node.getPorts(), node.getLabels())) {
+        // incorporate only those contained ports & labels that are actually visible
+        //  others may not have reasonable positions
+        for (final KGraphElement element : Iterables.filter(
+                Iterables.concat(node.getPorts(), node.getLabels()), visibilityFilter)) {
             final KShapeLayout pL = element.getData(KShapeLayout.class);
             float val;
 
