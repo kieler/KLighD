@@ -26,19 +26,28 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * Input event handler contributing a rubber band like selection of the diagram area to zoom to.
  * Use ctrl/cmd + drag to define the desired view port area.
  * 
- * @author ckru
  * @author chsch
+ * @author ckru
  */
 public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
 
+    /** Transparency value used for the preview rectangle. */
+    private static final int PREVIEW_RECTANGLE_ALPHA = 100;
+    
     /** The rectangle that acts as a preview for the area to zoom to. */
-    private KlighdPath previewRectangle = new KlighdPath();
+    private final KlighdPath previewRectangle;
 
     /** Starting point of the drag operation. */
     private Point2D.Float canvasStart;
 
-    /** Transparency value used for the preview rectangle. */
-    private static final int PREVIEW_RECTANGLE_ALPHA = 50;
+    /**
+     * Constructor.
+     */
+    public KlighdSelectiveZoomEventHandler() {
+        previewRectangle = new KlighdPath();
+        previewRectangle.setPaintAlpha(PREVIEW_RECTANGLE_ALPHA);
+        previewRectangle.setPaint(KlighdConstants.WHITE);
+    }
 
     @Override
     protected boolean shouldStartDragInteraction(final PInputEvent event) {
@@ -51,9 +60,7 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
 
         final Point2D.Double pos = (Point2D.Double) event.getCanvasPosition();
         canvasStart = new Point2D.Float((float) pos.x, (float) pos.y);
-
         previewRectangle.setPathToRectangle(canvasStart.x, canvasStart.y, 0, 0);
-        previewRectangle.setPaintAlpha(PREVIEW_RECTANGLE_ALPHA);
 
         event.getTopCamera().addChild(previewRectangle);
         event.setHandled(true);
