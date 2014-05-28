@@ -124,6 +124,10 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         final KlighdMainCamera camera = canvas.getCamera();
 
         // install the required event handlers, they rely on SWT event type codes
+        // the order of registering them DOES MATTER,
+        //  the first has lowest priority, the last highest
+        // make sure those handlers properly execute 'event.setHandled(true);'
+        //  in order to skip invoking the less priority handlers
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdShowLensEventHandler(camera));
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
@@ -131,10 +135,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
                 new KlighdPanEventHandler(canvas)));
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
                 new KlighdSelectiveZoomEventHandler()));
-        camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
-        // add a node for the rubber band selection marquee
-        // final PEmptyNode marqueeParent = new PEmptyNode();
-        // camera.getLayer(1).addChild(marqueeParent);
+        camera.addInputEventListener(
+                new KlighdSelectionEventHandler(theParentViewer));
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
