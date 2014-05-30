@@ -38,7 +38,7 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
     private final KlighdPath previewRectangle;
 
     /** Starting point of the drag operation. */
-    private Point2D.Float canvasStart;
+    private Point2D.Double canvasStart;
 
     /**
      * Constructor.
@@ -58,9 +58,8 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
     protected void startDrag(final PInputEvent event) {
         super.startDrag(event);
 
-        final Point2D.Double pos = (Point2D.Double) event.getCanvasPosition();
-        canvasStart = new Point2D.Float((float) pos.x, (float) pos.y);
-        previewRectangle.setPathToRectangle(canvasStart.x, canvasStart.y, 0, 0);
+        canvasStart = (Point2D.Double) event.getCanvasPosition();
+        previewRectangle.setPathToRectangle((float) canvasStart.x, (float) canvasStart.y, 0, 0);
 
         event.getTopCamera().addChild(previewRectangle);
         event.setHandled(true);
@@ -70,10 +69,8 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
     protected void drag(final PInputEvent event) {
         super.drag(event);
 
-        final Point2D.Double pos = (Point2D.Double) event.getCanvasPosition();
-
         final Rectangle2D.Float bounds = new Rectangle2D.Float();
-        bounds.setFrameFromDiagonal(canvasStart, pos);
+        bounds.setFrameFromDiagonal(canvasStart, event.getCanvasPosition());
         previewRectangle.setPathToRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
 
         event.setHandled(true);
@@ -84,11 +81,11 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
         super.endDrag(event);
 
         final PCamera topCamera = event.getTopCamera();
-        topCamera.removeChild(previewRectangle);
 
-        final Rectangle2D.Float bounds = new Rectangle2D.Float();
+        final Rectangle2D bounds = new Rectangle2D.Double();
         bounds.setFrameFromDiagonal(topCamera.localToView(canvasStart), event.getPosition());
 
+        topCamera.removeChild(previewRectangle);
         topCamera.animateViewToCenterBounds(bounds, true, KlighdConstants.DEFAULT_ANIMATION_TIME);
 
         event.setHandled(true);
