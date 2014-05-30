@@ -35,6 +35,12 @@ import edu.umd.cs.piccolo.util.PDimension;
  */
 public class KlighdPanEventHandler extends PPanEventHandler {
 
+    /** Our minimal autopan speed as opposed to {@link PPanEventHandler#DEFAULT_MIN_AUTOPAN_SPEED}. */
+    private static final int KLIGHD_MIN_AUTOPAN_SPEED = 100;
+
+    /** Our maximal autopan speed as opposed to {@link PPanEventHandler#DEFAULT_MAX_AUTOPAN_SPEED}. */
+    private static final int KLIGHD_MAX_AUTOPAN_SPEED = 2000;
+
     /**
      * Constructor.
      * 
@@ -44,6 +50,10 @@ public class KlighdPanEventHandler extends PPanEventHandler {
      */
     public KlighdPanEventHandler(final Widget widget) {
         super();
+
+        this.setMinAutopanSpeed(KLIGHD_MIN_AUTOPAN_SPEED);
+        this.setMaxAutopanSpeed(KLIGHD_MAX_AUTOPAN_SPEED);
+
         setAutopan(KlighdPreferences.isAdvancedPanningMode());
 
         KlighdPreferences.registerPrefChangeListener(widget, new IPropertyChangeListener() {
@@ -58,58 +68,53 @@ public class KlighdPanEventHandler extends PPanEventHandler {
     
     @Override
     protected void pan(final PInputEvent event) {
-        // The reason for overriding this method is the replacement of 'event.getCamera()' by
-        //  'event.getTopCamera()'.
+        // The reason for overriding this method is the replacement of
+        //  'event.getCamera()' by 'event.getTopCamera()' and
+        //  'event.getDelta' by 'event.getCanvasDelta()' -> 'cam.localToView(delta)'
 
         final PCamera cam = event.getTopCamera();
-        final PDimension delta = new PDimension();
-        
         final Point2D cp = event.getInputManager().getCurrentCanvasPosition();
-        final Point2D lcp = event.getInputManager().getLastCanvasPosition();
-//        final KlighdCanvas c = (KlighdCanvas) event.getComponent();
-        
-//        if (lcp.getX() < c.getSize().x && cp.getX() < c.getSize().x) {
-            delta.width = cp.getX() - lcp.getX();
-            delta.height = cp.getY() - lcp.getY();
 
-            event.getPath().canvasToLocal(delta, cam);
+        if (cam.getBoundsReference().contains(cp)) {
+            final PDimension delta = event.getCanvasDelta();
+
             cam.localToView(delta);
             cam.translateView(delta.width, delta.height);
-//        }
-        
-        
+        }
     }
 
     
     @Override
     protected void dragActivityStep(final PInputEvent event) {
-        // This method is only required in case 'autopan' is set to 'true'.
-        // The reason for overriding it is the replacement of
+        // Beyond the following check the reason for overriding this method is the replacement of
         //  'event.getCamera()' by 'event.getTopCamera()'.
+        // Besides some simplification have been done as our top camera always starts at (x,y) = (0,0).
+
         if (!getAutopan()) {
             return;
         }
 
         final PCamera c = event.getTopCamera();
         final PBounds b = c.getBoundsReference();
-        final Point2D l = event.getPositionRelativeTo(c);
+        final Point2D.Double l = (Point2D.Double) event.getCanvasPosition();
+        
         final int outcode = b.outcode(l);
         final PDimension delta = new PDimension();
         
         // SUPPRESS CHECKSTYLE NEXT 15 MagicNumber
 
         if ((outcode & Rectangle2D.OUT_TOP) != 0) {
-            delta.height = validatePanningSpeed(-1.0 - 0.5 * Math.abs(l.getY() - b.getY()));
+            delta.height = validatePanningSpeed(-1.0 - 0.5 * Math.abs(l.y));
+
         } else if ((outcode & Rectangle2D.OUT_BOTTOM) != 0) {
-            delta.height = validatePanningSpeed(1.0 + 0.5 * Math.abs(
-                    l.getY() - (b.getY() + b.getHeight())));
+            delta.height = validatePanningSpeed(1.0 + 0.5 * Math.abs(l.y - b.width));
         }
 
         if ((outcode & Rectangle2D.OUT_RIGHT) != 0) {
-            delta.width = validatePanningSpeed(1.0 + 0.5 * Math.abs(
-                    l.getX() - (b.getX() + b.getWidth())));
+            delta.width = validatePanningSpeed(1.0 + 0.5 * Math.abs(l.x - b.width));
+
         } else if ((outcode & Rectangle2D.OUT_LEFT) != 0) {
-            delta.width = validatePanningSpeed(-1.0 - 0.5 * Math.abs(l.getX() - b.getX()));
+            delta.width = validatePanningSpeed(-1.0 - 0.5 * Math.abs(l.x));
         }
 
         c.localToView(delta);
