@@ -107,7 +107,7 @@ public class KlighdPanEventHandler extends PPanEventHandler {
             delta.height = validatePanningSpeed(-1.0 - 0.5 * Math.abs(l.y));
 
         } else if ((outcode & Rectangle2D.OUT_BOTTOM) != 0) {
-            delta.height = validatePanningSpeed(1.0 + 0.5 * Math.abs(l.y - b.width));
+            delta.height = validatePanningSpeed(1.0 + 0.5 * Math.abs(l.y - b.height));
         }
 
         if ((outcode & Rectangle2D.OUT_RIGHT) != 0) {
