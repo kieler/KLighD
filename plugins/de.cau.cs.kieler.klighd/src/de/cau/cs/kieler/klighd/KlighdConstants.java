@@ -107,6 +107,14 @@ public final class KlighdConstants {
             Platform.getOS().equals(Platform.OS_WIN32) ? "Arial" : Font.SANS_SERIF;
 
     /**
+     * A platform independent font name identifier for a default monospaced font.
+     * 
+     * Note: This is a AWT constant!
+     */
+    public static final String DEFAULT_MONOSPACE_FONT_NAME =
+            Platform.getOS().equals(Platform.OS_WIN32) ? "Consolas" : Font.MONOSPACED;
+
+    /**
      * This font size is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no
      * related {@link de.cau.cs.kieler.core.krendering.KFontSize KFontSize} style is attached.
      */
