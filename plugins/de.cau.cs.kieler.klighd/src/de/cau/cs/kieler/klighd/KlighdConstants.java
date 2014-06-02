@@ -112,7 +112,8 @@ public final class KlighdConstants {
      * Note: This is a AWT constant!
      */
     public static final String DEFAULT_MONOSPACE_FONT_NAME =
-            Platform.getOS().equals(Platform.OS_WIN32) ? "Consolas" : Font.MONOSPACED;
+            Platform.getOS().equals(Platform.OS_WIN32) ? "Consolas"
+                    : Platform.getOS().equals(Platform.OS_MACOSX) ? "Monaco" : "Monospace";
 
     /**
      * This font size is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no
