@@ -192,6 +192,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
             text.addListener(SWT.MouseDoubleClick, this);
             text.addListener(SWT.KeyDown, this);
             text.addListener(SWT.MouseUp, this);
+            text.addListener(SWT.KeyDown, this);
+            text.addListener(SWT.KeyUp, this);
         }
 
         private String prevSelection = null;
@@ -224,7 +226,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 break;
 
             case SWT.KeyUp:
-                if ((char) event.keyCode == SWT.SHIFT) {
+                System.out.println(event.keyCode + " " + SWT.SHIFT);
+                if (event.keyCode == SWT.SHIFT) {
                     final String selection = labelTextWidget.getSelectionText();
                     if (!selection.equals(prevSelection)) {
                         thisViewer.updateSelection(new KlighdTextSelection(selection, false, false));
@@ -245,7 +248,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     @Override
     protected void updateSelection(final ISelection selection) {
         super.updateSelection(selection);
-        System.out.println("Selection changed: " + selection);
+        System.out.println("Selection changed: "); // + selection);
     }
 
     /**

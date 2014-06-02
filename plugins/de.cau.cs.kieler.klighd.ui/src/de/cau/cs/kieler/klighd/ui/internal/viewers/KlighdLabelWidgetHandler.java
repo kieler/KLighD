@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.internal.viewers;
 
+import java.awt.event.InputEvent;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -27,10 +28,10 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Widget;
 
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
@@ -83,14 +84,34 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
         };
     }
 
+
+    private boolean widgetPrepared = false;
+    
+    private void setWidgetPrepared() {
+        widgetPrepared = true;
+        System.out.println("'widgetPrepared' set");
+        labelWidget.getDisplay().timerExec(500, r);
+    }
+    
+    private Runnable r = new Runnable() {
+        
+        public void run() {
+            System.out.println("'widgetPrepared' unset");
+            widgetPrepared = false;
+        }
+    }; 
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void mouseMoved(final PInputEvent event) {
-        if (flag) {
-            flag = false;
-        }
+//        System.out.println("Move");
+//        if (widgetPrepared) {
+//            System.out.println("Forward Move");
+//            forwardEventToLabel(event.getSourceSwingEvent());
+//            event.setHandled(true);
+//        } else
         if (event.getPickedNode() instanceof KlighdStyledText) {
             updateTextInput(event, false);
         } else if (labelWidget.getSelectionCount() == 0) {
@@ -103,14 +124,10 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
      */
     @Override
     public void mousePressed(final PInputEvent event) {
-        if (flag) {            
-            final IKlighdInputEvent ke = (IKlighdInputEvent) event.getSourceSwingEvent();
-            final MouseEvent me = (MouseEvent) ke.getEvent();
-            labelWidget.getDisplay().post(createMouseEvent(labelWidget, SWT.MouseDown, me));
-            System.out.println("Forward press");
-            flag = false;
-        } else
-        if (labelWidget.isVisible() && labelWidget.getSelectionCount() != 0) {
+        if (widgetPrepared) {            
+            forwardEventToLabel(event.getSourceSwingEvent());
+
+        } else if (labelWidget.isVisible() && labelWidget.getSelectionCount() != 0) {
             if (event.getPickedNode() instanceof KlighdStyledText) {
                 final boolean widgetVisible = updateTextInput(event, true);
 
@@ -120,73 +137,75 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
                 }
                 
                 event.setHandled(true);
-
-                final IKlighdInputEvent ke = (IKlighdInputEvent) event.getSourceSwingEvent();
-                final MouseEvent me = (MouseEvent) ke.getEvent();
-
-                final Event mouseDown = createEvent(labelWidget, SWT.MouseDown);
-                mouseDown.button = me.button;
-
-                flag = true;
                 
-                System.out.println("flag set");
+                injectMoveEvent(event.getSourceSwingEvent());
+
+                setWidgetPrepared();
                 
-                labelWidget.getDisplay().post(mouseDown);
+                forwardEventToLabel(event.getSourceSwingEvent());
             }
+
         } else if (!labelWidget.isVisible()) {
-            final boolean res = this.updateTextInput(event, true);
-            if (res) {
-                flag = true;
+            final boolean widgetVisible = this.updateTextInput(event, true);
+            if (widgetVisible) {
                 event.setHandled(true);
+
+                setWidgetPrepared();
             }
         }
     }
-    
-    private boolean flag = false;
     
     /**
      * {@inheritDoc}
      */
     @Override
     public void mouseReleased(final PInputEvent event) {
-        if (flag) {
-            final IKlighdInputEvent ke = (IKlighdInputEvent) event.getSourceSwingEvent();
-            final MouseEvent me = (MouseEvent) ke.getEvent();
-            
+        if (widgetPrepared) {
             event.setHandled(true);
 
-            labelWidget.getDisplay().post(createMouseEvent(labelWidget, SWT.MouseUp, me));
-            System.out.println("Forward release");
+            forwardEventToLabel(event.getSourceSwingEvent());
+//            System.out.println("Forward release");
         }
     }
-
-    private Event createEvent(final Widget widget, final int type) {
+    
+    private void injectMoveEvent(final InputEvent input) {
+        final KlighdMouseEvent kme = (KlighdMouseEvent) input;
+        final MouseEvent sourceEvent = kme.getEvent();
+        
+        final Point loc = ((Control) labelWidget.getParent()).toDisplay(0, 0);
         final Event event = new Event();
-        event.type = type;
-        event.widget = widget;
-        event.display = widget.getDisplay();
-        return event;
+        event.type = SWT.MouseMove;
+        event.widget = labelWidget;
+        event.x = loc.x + sourceEvent.x - 1;
+        event.y = loc.y + sourceEvent.y - 1;
+
+//        System.out.println("Move left");
+        labelWidget.getDisplay().post(event);
+        
     }
     
-    private Event createMouseEvent(final Control widget, final int type, final MouseEvent sourceEvent) {
-        final Event result = createEvent(widget, type);
-        
+    private void forwardEventToLabel(final InputEvent input) {
+        final KlighdMouseEvent kme = (KlighdMouseEvent) input;
+        final MouseEvent sourceEvent = kme.getEvent();
+        final int eventType = kme.getEventType();
+
         final Point loc;
-        if (type == SWT.MouseMove) {
-            loc = ((Control) sourceEvent.widget).toDisplay(0, 0);            
+        if (eventType == SWT.MouseMove) {
+            loc = ((Control) labelWidget).toDisplay(0, 0);            
         } else {
             loc = new Point(0, 0);
         }
-        
-        result.x = sourceEvent.x + loc.x;
-        result.y = sourceEvent.y + loc.y;
-        result.button = sourceEvent.button;
-        result.stateMask = sourceEvent.stateMask;
-        result.count = sourceEvent.count;
-        
-        return result;
-    }
 
+        final Event event = new Event();
+        event.button = sourceEvent.button;
+        event.display = labelWidget.getDisplay();
+        event.type = eventType;
+        event.widget = labelWidget;
+        event.x = sourceEvent.x + loc.x;
+        event.y = sourceEvent.y + loc.y;
+
+        labelWidget.getDisplay().post(event);
+    }
 
     /**
      * Sets position, style and text of the text input widget to the text element the mouse
@@ -194,6 +213,8 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
      * 
      * @param event
      *            the event that triggered this update.
+     * @return <code>true</code> if the text widget has been updated successfully,
+     *         <code>false</code> if the update has been aborted
      */
     private boolean updateTextInput(final PInputEvent event, final boolean force) {
         final PNode n = event.getPickedNode();
