@@ -75,11 +75,13 @@ public class KlighdPanEventHandler extends PPanEventHandler {
         final PCamera cam = event.getTopCamera();
         final Point2D cp = event.getInputManager().getCurrentCanvasPosition();
 
-        if (cam.getBoundsReference().contains(cp)) {
+        if (!getAutopan() || cam.getBoundsReference().contains(cp)) {
             final PDimension delta = event.getCanvasDelta();
 
             cam.localToView(delta);
             cam.translateView(delta.width, delta.height);
+
+            event.setHandled(true);
         }
     }
 
