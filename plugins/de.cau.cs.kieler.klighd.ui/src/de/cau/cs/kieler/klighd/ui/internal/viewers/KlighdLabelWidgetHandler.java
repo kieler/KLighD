@@ -61,7 +61,7 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
      */
     public KlighdLabelWidgetHandler(final PiccoloViewerUI viewer, final StyledText labelWidget) {
         super();
-        // this.viewer = viewer;
+
         this.labelWidget = labelWidget;
         this.camera = viewer.getCanvas().getCamera();
 
@@ -85,35 +85,21 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
     }
 
 
-    private boolean widgetPrepared = false;
-    
-    private void setWidgetPrepared() {
-        widgetPrepared = true;
-        System.out.println("'widgetPrepared' set");
-        labelWidget.getDisplay().timerExec(500, r);
-    }
-    
-    private Runnable r = new Runnable() {
-        
-        public void run() {
-            System.out.println("'widgetPrepared' unset");
-            widgetPrepared = false;
-        }
-    }; 
+    private boolean widgetJustPrepared = false;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void mouseMoved(final PInputEvent event) {
-//        System.out.println("Move");
-//        if (widgetPrepared) {
-//            System.out.println("Forward Move");
-//            forwardEventToLabel(event.getSourceSwingEvent());
-//            event.setHandled(true);
-//        } else
-        if (event.getPickedNode() instanceof KlighdStyledText) {
+        if (widgetJustPrepared) {
+            // System.out.println("Forward Move");
+            forwardEventToLabel(event.getSourceSwingEvent());
+            event.setHandled(true);
+
+        } else if (event.getPickedNode() instanceof KlighdStyledText) {
             updateTextInput(event, false);
+
         } else if (labelWidget.getSelectionCount() == 0) {
             labelWidget.setVisible(false);
         }
@@ -124,7 +110,7 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
      */
     @Override
     public void mousePressed(final PInputEvent event) {
-        if (widgetPrepared) {            
+        if (widgetJustPrepared) {            
             forwardEventToLabel(event.getSourceSwingEvent());
 
         } else if (labelWidget.isVisible() && labelWidget.getSelectionCount() != 0) {
@@ -132,25 +118,19 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
                 final boolean widgetVisible = updateTextInput(event, true);
 
                 if (!widgetVisible) {
-                    System.out.println("Return");
                     return;
                 }
                 
                 event.setHandled(true);
                 
-                injectMoveEvent(event.getSourceSwingEvent());
-
-                setWidgetPrepared();
-                
+                injectMoveLeftEvent(event.getSourceSwingEvent());
                 forwardEventToLabel(event.getSourceSwingEvent());
             }
 
         } else if (!labelWidget.isVisible()) {
-            final boolean widgetVisible = this.updateTextInput(event, true);
+            final boolean widgetVisible = this.updateTextInput(event, false);
             if (widgetVisible) {
                 event.setHandled(true);
-
-                setWidgetPrepared();
             }
         }
     }
@@ -160,52 +140,43 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
      */
     @Override
     public void mouseReleased(final PInputEvent event) {
-        if (widgetPrepared) {
+        if (widgetJustPrepared) {
             event.setHandled(true);
-
             forwardEventToLabel(event.getSourceSwingEvent());
-//            System.out.println("Forward release");
         }
     }
-    
-    private void injectMoveEvent(final InputEvent input) {
-        final KlighdMouseEvent kme = (KlighdMouseEvent) input;
-        final MouseEvent sourceEvent = kme.getEvent();
-        
-        final Point loc = ((Control) labelWidget.getParent()).toDisplay(0, 0);
+
+
+    private void injectMoveLeftEvent(final InputEvent input) {
+        final MouseEvent sourceEvent = ((KlighdMouseEvent) input).getEvent();
+        final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);
+
         final Event event = new Event();
         event.type = SWT.MouseMove;
-        event.widget = labelWidget;
-        event.x = loc.x + sourceEvent.x - 1;
-        event.y = loc.y + sourceEvent.y - 1;
+        event.x = canvasLocation.x + sourceEvent.x - 1;
+        event.y = canvasLocation.y + sourceEvent.y;
 
-//        System.out.println("Move left");
-        labelWidget.getDisplay().post(event);
-        
+        sourceEvent.display.post(event);
     }
-    
+
     private void forwardEventToLabel(final InputEvent input) {
         final KlighdMouseEvent kme = (KlighdMouseEvent) input;
         final MouseEvent sourceEvent = kme.getEvent();
         final int eventType = kme.getEventType();
 
-        final Point loc;
-        if (eventType == SWT.MouseMove) {
-            loc = ((Control) labelWidget).toDisplay(0, 0);            
-        } else {
-            loc = new Point(0, 0);
-        }
-
         final Event event = new Event();
         event.button = sourceEvent.button;
-        event.display = labelWidget.getDisplay();
         event.type = eventType;
-        event.widget = labelWidget;
-        event.x = sourceEvent.x + loc.x;
-        event.y = sourceEvent.y + loc.y;
 
-        labelWidget.getDisplay().post(event);
+        if (eventType == SWT.MouseMove) {
+            final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);            
+            event.x = sourceEvent.x + canvasLocation.x;
+            event.y = sourceEvent.y + canvasLocation.y;
+        }
+
+        sourceEvent.display.post(event);
     }
+
 
     /**
      * Sets position, style and text of the text input widget to the text element the mouse
@@ -237,11 +208,11 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
 
         // determine text value
         if (text == null) {
-            if (kText != null && kText.getText() != null) {
-                labelWidget.setText(kText.getText());
-            } else {
+//            if (kText != null && kText.getText() != null) {
+//                labelWidget.setText(kText.getText());
+//            } else {
                 return false;
-            }
+//            }
         } else {
             labelWidget.setText(text);
         }
@@ -255,6 +226,8 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
         oldColor.dispose();
 
         labelWidget.setVisible(true);
+        labelWidget.setFocus();
+        setWidgetPrepared();
 
         return true;
     }
@@ -339,9 +312,27 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
         final FontData fd = new FontData(fontConfig.replaceFirst(FONT_HEIGHT_PATTERN,
                         "|" + Float.toString(givenHeight * curViewScale) + "|"));
 
+        final Font previousFont = labelWidget.getFont();
+
         // ... dispose the previous Font, configure the new one, and update the text widget's size 
-//        labelWidget.getFont().dispose();        
         labelWidget.setFont(new Font(labelWidget.getDisplay(), fd));
         labelWidget.setSize(labelWidget.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+        previousFont.dispose();        
     }
+
+    private void setWidgetPrepared() {
+        widgetJustPrepared = true;
+        // System.out.println("'widgetPrepared' set");
+
+        // SUPPRESS CHECKSTYLE NEXT MagicNumber
+        labelWidget.getDisplay().timerExec(250, resetWidgetJustPrepared);
+    }
+
+    private final Runnable resetWidgetJustPrepared = new Runnable() {
+        public void run() {
+            widgetJustPrepared = false;
+            // System.out.println("'widgetPrepared' reset");
+        }
+    };
 }
