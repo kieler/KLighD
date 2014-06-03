@@ -17,7 +17,8 @@ import java.awt.event.InputEvent;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -44,7 +45,12 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 
 /**
  * A dedicated {@link KlighdBasicInputEventHandler} in charge of putting the text label widget in
- * place and updating it.
+ * place and updating it.<br>
+ * <br>
+ * The text label shall be as smoothly as possible integrated into the diagram meaning that there
+ * should be as little as possible additional clicks required in order to select the text (or parts
+ * of it) and copy it, for example. This however requires quite some event handling magic like
+ * duplicating SWT events.
  * 
  * @author chsch
  */
@@ -197,40 +203,10 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
     }
 
 
-    private void injectMoveLeftEvent(final InputEvent input) {
-        final MouseEvent sourceEvent = ((KlighdMouseEvent) input).getEvent();
-        final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);
-
-        final Event event = new Event();
-        event.type = SWT.MouseMove;
-        event.x = canvasLocation.x + sourceEvent.x - 1;
-        event.y = canvasLocation.y + sourceEvent.y;
-
-        sourceEvent.display.post(event);
-    }
-
-    private void forwardEventToLabel(final InputEvent input) {
-        final KlighdMouseEvent kme = (KlighdMouseEvent) input;
-        final MouseEvent sourceEvent = kme.getEvent();
-        final int eventType = kme.getEventType();
-
-        final Event event = new Event();
-        event.button = sourceEvent.button;
-        event.type = eventType;
-
-        if (eventType == SWT.MouseMove) {
-            final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);            
-            event.x = sourceEvent.x + canvasLocation.x;
-            event.y = sourceEvent.y + canvasLocation.y;
-        }
-
-        sourceEvent.display.post(event);
-    }
-
-
     /**
-     * Sets position, style and text of the text input widget to the text element the mouse
-     * currently hovers over.
+     * Configures the text label widget to exhibit the text content in case event's picked node is a
+     * {@link KlighdStyledText} that is configured to be cursorSelectable and its text is non-
+     * <code>null</code>.
      * 
      * @param event
      *            the event that triggered this update.
@@ -282,17 +258,25 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
 
 
     /** String key for caching the KlighdStyledText in the labelWidget's data list. */
+    // this field is package protected by intention
     static final String STYLED_TEXT_FIGURE_KEY = "STYLED_TEXT_FIGURE_KEY";
 
     /** String key for caching the font scale factor in the labelWidget's data list. */
-    static final String FONT_SCALE_FACTOR_KEY = "FONT_SCALE_FACTOR_KEY";
+    private static final String FONT_SCALE_FACTOR_KEY = "FONT_SCALE_FACTOR_KEY";
     
-    /** example ...|11.0|.. */
-    static final String FONT_HEIGHT_PATTERN = "\\|\\d*\\p{Punct}\\d*\\|";
+    /** Example: ...|11.0|.. */
+    private static final String FONT_HEIGHT_PATTERN_REGEX = "\\|\\d*\\p{Punct}\\d*\\|";
+
+    /** The pattern employed in configuring the fonts, is kept in order to avoid re-compilations. */
+    private static Pattern fontHeightPattern = null;
+
 
     /**
+     * Aligns the label text widget to the given <code>styledText</code> in terms of position, font
+     * size, and size.
      * 
      * @param styledText
+     *            the {@link KlighdStyledText} the text label widget is to be aligned to
      */
     private void updateWidgetBounds(final KlighdStyledText styledText) {
 
@@ -338,27 +322,23 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
 
         // ... and compose the updated FontData by means of a String-based configuration
         final String fontConfig = theStyledText.getFontData().toString();
-        final StringTokenizer tokenizer = new StringTokenizer(fontConfig, "|", false);
 
-        if (tokenizer.hasMoreTokens()) {
-            // returns the version
-            tokenizer.nextToken();
+        if (fontHeightPattern == null) {
+            fontHeightPattern = Pattern.compile(FONT_HEIGHT_PATTERN_REGEX);
         }
-        if (tokenizer.hasMoreTokens()) {
-            // returns the font name 
-            tokenizer.nextToken();
-        }
+
+        final Matcher matcher = fontHeightPattern.matcher(fontConfig);
 
         final float givenHeight;
-        if (tokenizer.hasMoreTokens()) {
-            givenHeight = Float.valueOf(tokenizer.nextToken());
+        if (matcher.find()) {
+            givenHeight = Float.valueOf(fontConfig.substring(matcher.start() + 1, matcher.end() - 1));
         } else {
             givenHeight = theStyledText.getFontData().getHeight();
         }
 
         // Create the updated FontData ...
-        final FontData fd = new FontData(fontConfig.replaceFirst(FONT_HEIGHT_PATTERN,
-                        "|" + Float.toString(givenHeight * curViewScale) + "|"));
+        final FontData fd = new FontData(
+                matcher.replaceFirst("|" + Float.toString(givenHeight * curViewScale) + "|"));
 
         final Font previousFont = labelWidget.getFont();
 
@@ -383,4 +363,47 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
             // System.out.println("'widgetPrepared' reset");
         }
     };
+
+    /**
+     * Fires an additional {@link SWT#MouseMove MouseMove} {@link Event} one unit in left of the
+     * position given in <code>inputEvent</code>.<br>
+     * <br>
+     * See {@link org.eclipse.swt.widgets.Display#post(Event) Display#post(Event)} for details on that.
+     */
+    private void injectMoveLeftEvent(final InputEvent inputEvent) {
+        final MouseEvent sourceEvent = ((KlighdMouseEvent) inputEvent).getEvent();
+        final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);
+
+        final Event event = new Event();
+        event.type = SWT.MouseMove;
+        event.x = canvasLocation.x + sourceEvent.x - 1;
+        event.y = canvasLocation.y + sourceEvent.y;
+
+        sourceEvent.display.post(event);
+    }
+
+    /**
+     * Fires an additional {@link Event} event one unit at the position given in
+     * <code>inputEvent</code>. This is used for "forwarding" events delivered to the canvas to the
+     * label text widget.<br>
+     * <br>
+     * See {@link org.eclipse.swt.widgets.Display#post(Event) Display#post(Event)} for details on that.
+     */
+    private void forwardEventToLabel(final InputEvent input) {
+        final KlighdMouseEvent kme = (KlighdMouseEvent) input;
+        final MouseEvent sourceEvent = kme.getEvent();
+        final int eventType = kme.getEventType();
+
+        final Event event = new Event();
+        event.button = sourceEvent.button;
+        event.type = eventType;
+
+        if (eventType == SWT.MouseMove) {
+            final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);            
+            event.x = sourceEvent.x + canvasLocation.x;
+            event.y = sourceEvent.y + canvasLocation.y;
+        }
+
+        sourceEvent.display.post(event);
+    }    
 }
