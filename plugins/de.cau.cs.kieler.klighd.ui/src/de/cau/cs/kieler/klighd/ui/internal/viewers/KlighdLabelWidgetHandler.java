@@ -29,6 +29,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 
+import com.google.common.base.Strings;
+
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
@@ -88,59 +90,107 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
     private boolean widgetJustPrepared = false;
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<br>
+     * <br>
+     * This method triggers the preparation of the text label widget if it's not blocked due to a
+     * text selection and the mouse moved over a text figure node, and hides the widget if the mouse
+     * moved over a non-text figure and no text selection was defined. 
      */
     @Override
     public void mouseMoved(final PInputEvent event) {
         if (widgetJustPrepared) {
-            // System.out.println("Forward Move");
+            // This special case is active if the text widget is been prepared some milliseconds ago.
+            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
+            //  and "forward" it to the label widget.
+            
             forwardEventToLabel(event.getSourceSwingEvent());
+            
+            // Don't let any further event handler evaluate 'event'.
+            //  This works fine since this handler is supposed to be the last one in the row of
+            //  registered handlers and is, therefore, called first
             event.setHandled(true);
 
         } else if (event.getPickedNode() instanceof KlighdStyledText) {
             updateTextInput(event, false);
+            
+            // event.setHandled(true) is skipped here by intention
+            //  - other handlers might want to react on it
 
         } else if (labelWidget.getSelectionCount() == 0) {
             labelWidget.setVisible(false);
+
+            // event.setHandled(true) is skipped here by intention
+            //  - other handlers might want to react on it
         }
     }
     
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<br>
+     * <br>
+     * This method triggers the preparation of the text label widget if the user clicked on it,
+     * regardless whether the widget is blocked due to text selection.
      */
     @Override
     public void mousePressed(final PInputEvent event) {
         if (widgetJustPrepared) {            
+            // This special case is active if the text widget is been prepared some milliseconds ago.
+            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
+            //  and "forward" it to the label widget.
+            
             forwardEventToLabel(event.getSourceSwingEvent());
+            
+            // Don't let any further event handler evaluate 'event'.
+            //  This works fine since this handler is supposed to be the last one in the row of
+            //  registered handlers and is, therefore, called first
+            event.setHandled(true);
 
         } else if (labelWidget.isVisible() && labelWidget.getSelectionCount() != 0) {
-            if (event.getPickedNode() instanceof KlighdStyledText) {
-                final boolean widgetVisible = updateTextInput(event, true);
+            // if the widget is shown and blocked by a text selection try to steel the text label
+            //  widget and reset it to the picked styled text (indicated by 'true')
 
-                if (!widgetVisible) {
-                    return;
-                }
-                
-                event.setHandled(true);
-                
-                injectMoveLeftEvent(event.getSourceSwingEvent());
-                forwardEventToLabel(event.getSourceSwingEvent());
+            final boolean widgetVisible = updateTextInput(event, true);
+            if (!widgetVisible) {
+                // stop in case the widget couldn't be brought to the picked figure, since it is
+                //  not a text figure for example
+                return;
             }
 
+            // otherwise prevent other handler from evaluating this event 
+            event.setHandled(true);
+
+            // fire a small mouse movement that helps much in capturing the first character of a
+            //  line in case a mouse-press-and-move-selection event
+            injectMoveLeftEvent(event.getSourceSwingEvent());
+
+            // "forward" the mouse pressed event to the label widget in order to initiate the
+            //  selection process
+            forwardEventToLabel(event.getSourceSwingEvent());
+
         } else if (!labelWidget.isVisible()) {
+            // if the widget is not visible and try to prepare the label text widget,
+            //  this is helpful in case the whole tool was inactive and, therefore, no move events
+            //  are propagated to the canvas widget
             final boolean widgetVisible = this.updateTextInput(event, false);
             if (widgetVisible) {
                 event.setHandled(true);
+
+                // "forward" the mouse pressed event to the label widget in order to initiate the
+                //  selection process if required
+                forwardEventToLabel(event.getSourceSwingEvent());
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void mouseReleased(final PInputEvent event) {
         if (widgetJustPrepared) {
+            // This special case is active if the text widget is been prepared some milliseconds ago.
+            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
+            //  and "forward" it to the label widget in order to enable immediate double clicks
+
             event.setHandled(true);
             forwardEventToLabel(event.getSourceSwingEvent());
         }
@@ -208,11 +258,9 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
 
         // determine text value
         if (text == null) {
-//            if (kText != null && kText.getText() != null) {
-//                labelWidget.setText(kText.getText());
-//            } else {
-                return false;
-//            }
+            return false;
+        } else if (Strings.isNullOrEmpty(text)) {
+            labelWidget.setText(" ");
         } else {
             labelWidget.setText(text);
         }
