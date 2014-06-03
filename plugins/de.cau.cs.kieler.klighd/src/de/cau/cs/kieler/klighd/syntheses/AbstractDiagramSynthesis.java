@@ -112,7 +112,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
         // try to find a method with one parameter which returns KNode
         // takes the first matching method with parameter 0 != Object
         Method transformMethod = null;
-        for (Method method : getClass().getDeclaredMethods()) {
+        for (final Method method : getClass().getDeclaredMethods()) {
             if (method.getParameterTypes().length == 1
                     && method.getReturnType().equals(KNode.class)
                     && method.getName().equals(TRANSFORM_METHOD_NAME)) {
@@ -451,16 +451,18 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     }
 
     /**
-     * Initializes the transformation run.
-     * Currently, just keeps the context to be used
-     * (allowing to neglect it in the concrete transformation methods).
-     * Initializes the transformation run. Currently, just keeps the context to be used (allowing to
-     * neglect it in the concrete transformation methods' interfaces (parameters)).
+     * Initializes the {@link ViewContext} being used within this diagram synthesis allowing to
+     * neglect it in the concrete diagram synthesis methods' interfaces (parameters).<br>
+     * <br>
+     * In common case this method need not to be called by application code but only if delegate
+     * diagram syntheses are employed by means of a {@link com.google.inject.Provider Provider}, see
+     * {@link ReinitializingDiagramSynthesisProxy#ViewSynthesisScope ViewSynthesisScope} for
+     * details.
      * 
      * @param viewContext
      *            the context to be used during the current run
      */
-    private void use(final ViewContext viewContext) {
+    public void use(final ViewContext viewContext) {
         this.currentContext = viewContext;
     }
     

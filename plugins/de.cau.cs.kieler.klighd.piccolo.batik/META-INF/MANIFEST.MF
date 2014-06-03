@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER Lightweight Diagrams Vector Graphics Export Powered by Batik
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.batik;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Fragment-Host: de.cau.cs.kieler.klighd.piccolo;bundle-version="0.4.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .,
+ lib/batik.jar,
+ lib/lib/batik-dom.jar,
+ lib/lib/batik-ext.jar,
+ lib/lib/batik-svg-dom.jar,
+ lib/lib/batik-svggen.jar,
+ lib/lib/batik-util.jar,
+ lib/lib/batik-awt-util.jar,
+ lib/lib/batik-css.jar,
+ lib/lib/xml-apis-ext.jar,
+ lib/lib/xml-apis.jar,
+ lib/lib/batik-xml.jar,
+ lib/lib/batik-parser.jar,
+ lib/lib/batik-anim.jar,
+ lib/lib/batik-bridge.jar,
+ lib/lib/batik-codec.jar,
+ lib/lib/batik-extension.jar,
+ lib/lib/batik-gui-util.jar,
+ lib/lib/batik-gvt.jar,
+ lib/lib/batik-script.jar,
+ lib/lib/batik-swing.jar,
+ lib/lib/batik-transcoder.jar,
+ lib/lib/js.jar,
+ lib/lib/pdf-transcoder.jar,
+ lib/lib/xalan-2.6.0.jar,
+ lib/lib/xerces_2_5_0.jar

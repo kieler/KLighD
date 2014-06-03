@@ -108,26 +108,26 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Object getContextValue(final IProperty<?> property, final LayoutContext context) {
-        KGraphElement element = null;
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
-        if (diagramPart instanceof KGraphElement) {
-            element = (KGraphElement) diagramPart;
-        } else {
+        if (!(diagramPart instanceof KGraphElement)) {
             IViewer<?> contextViewer = getContextViewer(context);
             if (contextViewer != null) {
-                element = contextViewer.getViewContext().getViewModel();
+                diagramPart = contextViewer.getViewContext().getViewModel();
+            } else {
+                diagramPart = null;
             }
         }
         
-        if (element != null) {
-            KLayoutData elementLayout = element.getData(KLayoutData.class);
+        KGraphElement sourceElement = getAffectedElement(context);
+        if (sourceElement != null && diagramPart != null) {
+            KGraphElement viewElement = (KGraphElement) diagramPart;
 
             if (property.equals(LayoutContext.DIAGRAM_PART)) {
-                return element;
+                return viewElement;
                 
             } else if (property.equals(LayoutContext.CONTAINER_DIAGRAM_PART)) {
                 // find the parent node for the selected graph element
-                return getParentNode(element);
+                return getParentNode(viewElement);
                 
             } else if (property.equals(LayoutContext.DOMAIN_MODEL)) {
                 // determine the domain model element
@@ -135,13 +135,13 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 if (contextViewer != null) {
                     ViewContext viewContext = contextViewer.getViewContext();
                     if (viewContext != null) {
-                        return viewContext.getSourceElement(element);
+                        return viewContext.getSourceElement(viewElement);
                     }
                 }
                 
             } else if (property.equals(LayoutContext.CONTAINER_DOMAIN_MODEL)) {
                 // determine the domain model element of the parent node
-                KNode parentNode = getParentNode(element);
+                KNode parentNode = getParentNode(viewElement);
                 IViewer<?> contextViewer = getContextViewer(context);
                 if (parentNode != null && contextViewer != null) {
                     ViewContext viewContext = contextViewer.getViewContext();
@@ -149,15 +149,19 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                         return viewContext.getSourceElement(parentNode);
                     }
                 }
+                Object domainModel = context.getProperty(LayoutContext.DOMAIN_MODEL);
+                if (domainModel instanceof KGraphElement) {
+                    return getParentNode((KGraphElement) domainModel);
+                }
                 
             } else if (property.equals(LayoutContext.OPT_TARGETS)) {
                 // add layout option target types
-                return new DefaultLayoutConfig.OptionTargetSwitch().doSwitch(element);
+                return new DefaultLayoutConfig.OptionTargetSwitch().doSwitch(sourceElement);
                 
             } else if (property.equals(DefaultLayoutConfig.HAS_PORTS)) {
                 // determine whether the graph element is a node with ports
-                if (element instanceof KNode) {
-                    return !((KNode) element).getPorts().isEmpty();
+                if (sourceElement instanceof KNode) {
+                    return !((KNode) sourceElement).getPorts().isEmpty();
                 }
                 
             } else if (property.equals(EclipseLayoutConfig.ASPECT_RATIO)) {
@@ -192,15 +196,20 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(DefaultLayoutConfig.CONTENT_HINT)) {
                 // check whether a hint for the layout algorithm has been set
+                KLayoutData elementLayout = sourceElement.getData(KLayoutData.class);
                 if (elementLayout != null) {
-                    elementLayout.getProperty(LayoutOptions.ALGORITHM);
+                    return elementLayout.getProperty(LayoutOptions.ALGORITHM);
                 }
                 
             } else if (property.equals(DefaultLayoutConfig.CONTAINER_HINT)) {
                 // check whether a hint for the layout algorithm has been set on the parent node
-                KNode parentNode = getParentNode(element);
-                if (parentNode != null) {
-                    KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
+                Object parentElement = context.getProperty(LayoutContext.CONTAINER_DOMAIN_MODEL);
+                if (!(parentElement instanceof KGraphElement)) {
+                    parentElement = getParentNode(viewElement);                    
+                }
+                if (parentElement != null) {
+                    KShapeLayout parentLayout = ((KGraphElement) parentElement).getData(
+                            KShapeLayout.class);
                     if (parentLayout != null) {
                         return parentLayout.getProperty(LayoutOptions.ALGORITHM);
                     }
@@ -232,9 +241,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Object getOptionValue(final LayoutOptionData optionData, final LayoutContext context) {
-        Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
-        if (diagramPart instanceof KGraphElement) {
-            KLayoutData elementLayout = ((KGraphElement) diagramPart).getData(KLayoutData.class);
+        KGraphElement element = getAffectedElement(context);
+        if (element != null) {
+            KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
                 Object value = elementLayout.getProperties().get(optionData);
                 if (value instanceof IPropertyValueProxy) {
@@ -246,10 +255,10 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                             ExpansionAwareLayoutOption.OPTION);
                     if (ealo != null) {
                         KNode node = null;
-                        if (diagramPart instanceof KNode) {
-                            node = (KNode) diagramPart; 
-                        } else if (diagramPart instanceof KPort) {
-                            node = ((KPort) diagramPart).getNode();
+                        if (element instanceof KNode) {
+                            node = (KNode) element; 
+                        } else if (element instanceof KPort) {
+                            node = ((KPort) element).getNode();
                         }
                         RenderingContextData rcd = RenderingContextData.get(node);
                         boolean expanded = !node.getChildren().isEmpty()
@@ -268,10 +277,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Collection<IProperty<?>> getAffectedOptions(final LayoutContext context) {
-        Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
+        KGraphElement element = getAffectedElement(context);
         List<IProperty<?>> options = new LinkedList<IProperty<?>>();
-        if (diagramPart instanceof KGraphElement) {
-            KGraphElement element = (KGraphElement) diagramPart;
+        if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
                 Set<Map.Entry<IProperty<?>, Object>> entrySet = elementLayout.getAllProperties()
@@ -309,12 +317,12 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     }
     
     /**
-     * Returns the model that shall be subject to modifications by this layout configurator.
+     * Returns the graph element that shall be subject to modifications by this layout configurator.
      * 
      * @param context a layout context
      * @return the graph element that shall be modified in the given context, or {@code null}
      */
-    private KGraphElement getModificationModel(final LayoutContext context) {
+    private KGraphElement getAffectedElement(final LayoutContext context) {
         Object domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
         if (domainElement instanceof KGraphElement) {
             return (KGraphElement) domainElement;
@@ -323,6 +331,11 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
             return (KGraphElement) diagramPart;
+        }
+        
+        IViewer<?> contextViewer = getContextViewer(context);
+        if (contextViewer != null) {
+            return contextViewer.getViewContext().getViewModel();
         }
         
         return null;
@@ -374,7 +387,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      */
     public void setOptionValue(final LayoutOptionData optionData, final LayoutContext context,
             final Object value) {
-        KGraphElement element = getModificationModel(context);
+        KGraphElement element = getAffectedElement(context);
         if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout == null) {
@@ -394,7 +407,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public boolean isSet(final LayoutOptionData optionData, final LayoutContext context) {
-        KGraphElement element = getModificationModel(context);
+        KGraphElement element = getAffectedElement(context);
         if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
@@ -408,7 +421,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public void clearOptionValues(final LayoutContext context) {
-        KGraphElement element = getModificationModel(context);
+        KGraphElement element = getAffectedElement(context);
         if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {

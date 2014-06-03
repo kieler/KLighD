@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.ui.internal.viewers;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.widgets.Composite;
@@ -23,8 +22,6 @@ import org.eclipse.ui.contexts.IContextService;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
-import de.cau.cs.kieler.klighd.ui.internal.Messages;
-import de.cau.cs.kieler.klighd.ui.internal.SaveAsImageAction;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -75,6 +72,7 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public synchronized void setModel(final Object model, final boolean sync) {
         // if the model is a view context adapt the viewer to the given context if possible
         if (model instanceof ViewContext) {
@@ -94,10 +92,6 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
                 //  as it is completely covered by the active viewer's canvas!
                 control.setMenu(menuManager.createContextMenu(control));
 
-                final Action saveAsImageAction =
-                        new SaveAsImageAction(this, Messages.UiContextViewer_save_as_image_text);
-                menuManager.add(saveAsImageAction);
-                
                 // register the context menu in the current work bench part site
                 //  this enables the population with entries contributed via extension points
                 ((ViewContext) model).getDiagramWorkbenchPart().getSite()

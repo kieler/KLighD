@@ -133,12 +133,6 @@ public class DiagramController {
 
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
-
-    /** type of zoom style applied after layout. */
-    private ZoomStyle zoomStyle = ZoomStyle.NONE;
-    
-    /** duration of a possible animation. */
-    private int animationTime = 0;
     
     /** the layout changes to graph elements while recording. */
     private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
@@ -165,7 +159,7 @@ public class DiagramController {
         final RenderingContextData contextData = RenderingContextData.get(graph);
         contextData.setProperty(REP, topNode);
 
-        this.zoomController = new DiagramZoomController(topNode, canvasCamera);
+        this.zoomController = new DiagramZoomController(topNode, canvasCamera, this);
 
         canvasCamera.getRoot().addChild(topNode);
         canvasCamera.setDisplayedNode(topNode);
@@ -236,22 +230,19 @@ public class DiagramController {
     }
 
     /**
-     * @param theZoomStyle
+     * @param zoomStyle
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
-     * @param theAnimationTime
+     * @param animationTime
      *            duration of the animated layout
      * 
      * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, int)
      *      ILayoutRecorder#stopRecording(ZoomStyle, int)
      */
-    public void stopRecording(final ZoomStyle theZoomStyle, final int theAnimationTime) {
+    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
         if (record) {
-            zoomStyle = theZoomStyle;
-            animationTime = theAnimationTime;
-
             record = false;
 
-            handleRecordedChanges();
+            handleRecordedChanges(zoomStyle, animationTime);
         }
     }
 
@@ -277,7 +268,7 @@ public class DiagramController {
      *            the node
      */
     public void collapse(final KNode node) {
-        INode nodeRep = (INode) getRepresentation(node);
+        final INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().setExpanded(false);
         }
@@ -292,7 +283,7 @@ public class DiagramController {
      *            the node
      */
     public void expand(final KNode node) {
-        INode nodeRep = (INode) getRepresentation(node);
+        final INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().setExpanded(true);
         }
@@ -306,7 +297,7 @@ public class DiagramController {
      * @return true if this node is expanded.
      */
     public boolean isExpanded(final KNode node) {
-        INode nodeRep = (INode) getRepresentation(node);
+        final INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             return nodeRep.getChildAreaNode().isExpanded();
         }
@@ -320,7 +311,7 @@ public class DiagramController {
      *            the node
      */
     public void toggleExpansion(final KNode node) {
-        INode nodeRep = (INode) getRepresentation(node);
+        final INode nodeRep = (INode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().toggleExpansion();
         }
@@ -347,7 +338,7 @@ public class DiagramController {
      *         visible, <code>false</code> otherwise.
      */
     public boolean isVisible(final KGraphElement diagramElement, final boolean checkContainment) {
-        PNode p = (PNode) getRepresentation(diagramElement);
+        final PNode p = (PNode) getRepresentation(diagramElement);
         if (p == canvasCamera.getDisplayedLayer()) {
             return true;
         } else if (p == null || p.getParent() == null) {
@@ -365,7 +356,7 @@ public class DiagramController {
         final INode clip = getClipNode();
         final PBounds camBounds = canvasCamera.getViewBounds();
         final PBounds elemFullBounds = NodeUtil.clipRelativeGlobalBoundsOf(p, clip);
-        return elemFullBounds.intersects(camBounds);
+        return elemFullBounds != null && elemFullBounds.intersects(camBounds);
     }
 
     /**
@@ -378,7 +369,7 @@ public class DiagramController {
      *            the {@link KGraphElement} to hide from the diagram
      */
     public void hide(final KGraphElement diagramElement) {
-        KGraphElement parent = (KGraphElement) diagramElement.eContainer();
+        final KGraphElement parent = (KGraphElement) diagramElement.eContainer();
         if (parent == null) {
             return;
         }
@@ -396,7 +387,7 @@ public class DiagramController {
      *            the {@link KGraphElement} to (re-) show in the diagram
      */
     public void show(final KGraphElement diagramElement) {
-        KGraphElement parent = (KGraphElement) diagramElement.eContainer();
+        final KGraphElement parent = (KGraphElement) diagramElement.eContainer();
         if (parent == null) {
             return;
         }
@@ -456,34 +447,6 @@ public class DiagramController {
         return node.getGraphElement();
     }
 
-    /**
-     * Performs a zooming depending on the specified style.
-     * 
-     * @param style
-     *            the desired style
-     * @param duration
-     *            time to animate
-     */
-    public void zoom(final ZoomStyle style, final int duration) {
-        zoomController.zoom(style, duration);
-    }
-
-    /**
-     * Sets the zoom level to {@code newZoomLevel}. A value below 1 results in smaller elements than
-     * in the original diagram, a value greater than 1 in a bigger elements than in the original.
-     * 
-     * The method tries retain the center point, i.e., to center over the currently centered point,
-     * however, it is assured that at least some parts of the underlying diagram are visible.
-     * 
-     * @param newZoomLevel
-     *            the new zoom level
-     * @param duration
-     *            time to animate
-     */
-    public void zoomToLevel(final float newZoomLevel, final int duration) {
-        zoomController.zoomToLevel(newZoomLevel, duration);
-    }
-
     /* --------------------------------------------- */
     /* internal part */
     /* --------------------------------------------- */
@@ -528,7 +491,7 @@ public class DiagramController {
                     copy = ImmutableSet.copyOf(dirtyDiagramElements);
                     dirtyDiagramElements.clear();
                 }
-                for (AbstractKGERenderingController<?, ?> ctrl : copy) {
+                for (final AbstractKGERenderingController<?, ?> ctrl : copy) {
                     ctrl.updateRenderingInUi();
                 }
             }
@@ -539,10 +502,10 @@ public class DiagramController {
     /**
      * Applies the recorded layout changes by creating appropriate activities.
      */
-    private void handleRecordedChanges() {
+    private void handleRecordedChanges(final ZoomStyle zoomStyle, final int animationTime) {
 
         // create activities to apply all recorded changes
-        for (Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
+        for (final Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
             // create the activity to apply the change
             PInterpolatingActivity activity;
             final PNode shapeNode;
@@ -555,8 +518,8 @@ public class DiagramController {
                 @SuppressWarnings("unchecked")
                 final Pair<Point2D[], Point2D[]> value =
                         (Pair<Point2D[], Point2D[]>) recordedChange.getValue();
-                final Point2D[] bends = (Point2D[]) value.getFirst();
-                final Point2D[] junctions = (Point2D[]) value.getSecond(); 
+                final Point2D[] bends = value.getFirst();
+                final Point2D[] junctions = value.getSecond(); 
 
                 if (!edgeNode.getVisible()) {
                     // the visibility is set to false for newly introduced edges in #addEdge
@@ -569,8 +532,8 @@ public class DiagramController {
                 }
             } else {
                 // shape layout changed
-                shapeNode = (PNode) recordedChange.getKey();
-                PBounds bounds = (PBounds) recordedChange.getValue();
+                shapeNode = recordedChange.getKey();
+                final PBounds bounds = (PBounds) recordedChange.getValue();
 
                 final float scale;
                 if (shapeNode instanceof KNodeNode) {
@@ -605,7 +568,7 @@ public class DiagramController {
         recordedChanges.clear();
 
         // apply a proper zoom handling if requested
-        zoom(zoomStyle, animationTime);
+        getZoomController().zoom(zoomStyle, animationTime);
     }
 
     /**
@@ -615,7 +578,7 @@ public class DiagramController {
      *            the node representation
      */
     private void addExpansionListener(final INode nodeNode) {
-        KChildAreaNode childAreaNode = nodeNode.getChildAreaNode();
+        final KChildAreaNode childAreaNode = nodeNode.getChildAreaNode();
         if (childAreaNode != null) {
             final KNode node = nodeNode.getGraphElement();
 
@@ -747,7 +710,7 @@ public class DiagramController {
         final KNode parent = parentNode.getGraphElement();
 
         // create the nodes
-        for (KNode child : parent.getChildren()) {
+        for (final KNode child : parent.getChildren()) {
             addNode(parentNode, child, false);
         }
 
@@ -808,7 +771,7 @@ public class DiagramController {
             
             addExpansionListener(nodeNode);
 
-            boolean expand = data == null || data.getProperty(KlighdProperties.EXPAND);
+            final boolean expand = data == null || data.getProperty(KlighdProperties.EXPAND);
             // in case the EXPAND property is not set the default value 'true' is returned
             nodeNode.getChildAreaNode().setExpanded(expand);
             
@@ -843,7 +806,7 @@ public class DiagramController {
      *            the parent KNode
      */
     private void removeChildren(final KNode parent) {
-        for (KNode child : parent.getChildren()) {
+        for (final KNode child : parent.getChildren()) {
             removeNode(child, false);
         }
         RenderingContextData.get(parent).setProperty(KlighdInternalProperties.POPULATED, false);
@@ -888,12 +851,12 @@ public class DiagramController {
         }
             
         // remove all incoming edges
-        for (KEdge incomingEdge : node.getIncomingEdges()) {
+        for (final KEdge incomingEdge : node.getIncomingEdges()) {
             removeEdge(incomingEdge, releaseControllers);
         }
 
         // remove all outgoing edges
-        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+        for (final KEdge outgoingEdge : node.getOutgoingEdges()) {
             removeEdge(outgoingEdge, releaseControllers);
         }
 
@@ -929,15 +892,15 @@ public class DiagramController {
      *            the node representation
      */
     private void handleEdges(final KNodeNode nodeNode) {
-        KNode node = nodeNode.getGraphElement();
+        final KNode node = nodeNode.getGraphElement();
 
         // add all incoming edges
-        for (KEdge incomingEdge : node.getIncomingEdges()) {
+        for (final KEdge incomingEdge : node.getIncomingEdges()) {
             addEdge(incomingEdge, false);
         }
         
         // add all outgoing edges
-        for (KEdge outgoingEdge : node.getOutgoingEdges()) {
+        for (final KEdge outgoingEdge : node.getOutgoingEdges()) {
             addEdge(outgoingEdge, false);
         }
         
@@ -1068,10 +1031,10 @@ public class DiagramController {
      *            the node representation
      */
     private void handlePorts(final KNodeNode nodeNode) {
-        KNode node = nodeNode.getGraphElement();
+        final KNode node = nodeNode.getGraphElement();
 
         // create the ports
-        for (KPort port : node.getPorts()) {
+        for (final KPort port : node.getPorts()) {
             addPort(nodeNode, port, false);
         }
 
@@ -1182,7 +1145,7 @@ public class DiagramController {
      */
     private void handleLabels(final ILabeledGraphElement<?> labeledNode,
             final KLabeledGraphElement labeledElement) {
-        for (KLabel label : labeledElement.getLabels()) {
+        for (final KLabel label : labeledElement.getLabels()) {
             addLabel(labeledNode, label, false);
         }
 
@@ -1429,7 +1392,7 @@ public class DiagramController {
         final KEdge edge = edgeRep.getGraphElement();
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
-            KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
+            final KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
             final boolean renderedAsPolyline = rendering instanceof KPolyline
                     && !(rendering instanceof KSpline);
             
@@ -1552,6 +1515,7 @@ public class DiagramController {
             this.nodeRep = theNodeRep;
         }
         
+        @Override
         public void notifyChanged(final Notification notification) {
 
             if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
@@ -1569,7 +1533,7 @@ public class DiagramController {
                     @SuppressWarnings("unchecked")
                     final List<KNode> addedNodes = (List<KNode>) notification.getNewValue();
 
-                    for (KNode addedNode : addedNodes) {
+                    for (final KNode addedNode : addedNodes) {
                         addNode(nodeRep, addedNode, false);
                     }
                     break;
@@ -1582,7 +1546,7 @@ public class DiagramController {
                     //  incoming edges, as in case of interlevel ones their representing
                     //  KEdgeNodes are attached to one of n's parent representatives, which might
                     //  be one of removedNode's parent representatives.
-                    for (KNode n : Iterables2.toIterable(Iterators.filter(
+                    for (final KNode n : Iterables2.toIterable(Iterators.filter(
                             removedNode.eAllContents(), KNode.class))) {
                         removeNode(n, true);
                     }
@@ -1592,14 +1556,14 @@ public class DiagramController {
                     @SuppressWarnings("unchecked")
                     final List<KNode> removedNodes = (List<KNode>) notification.getOldValue();
 
-                    for (KNode removedNode : removedNodes) {
+                    for (final KNode removedNode : removedNodes) {
                         removeNode(removedNode, true);
 
                         // Removing all contained nodes is required to remove all outgoing or
                         //  incoming edges, as in case of interlevel ones their representing
                         //  KEdgeNodes are attached to one of n's parent representatives, which might
                         //  be one of removedNode's parent representatives.
-                        for (KNode n : Iterables2.toIterable(Iterators.filter(
+                        for (final KNode n : Iterables2.toIterable(Iterators.filter(
                                 removedNode.eAllContents(), KNode.class))) {
                             removeNode(n, true);
                         }
@@ -1626,6 +1590,7 @@ public class DiagramController {
      */
     private final class EdgeSyncAdapter extends AdapterImpl {
 
+        @Override
         public void notifyChanged(final Notification notification) {
             final int featureId = notification.getFeatureID(KNode.class);
 
@@ -1648,7 +1613,7 @@ public class DiagramController {
                     @SuppressWarnings("unchecked")
                     final List<KEdge> addedEdges = (List<KEdge>) notification.getNewValue();
 
-                    for (KEdge addedEdge : addedEdges) {
+                    for (final KEdge addedEdge : addedEdges) {
                         addEdge(addedEdge, false);
                     }
                     break;
@@ -1662,7 +1627,7 @@ public class DiagramController {
                     @SuppressWarnings("unchecked")
                     final List<KEdge> removedEdges = (List<KEdge>) notification.getOldValue();
 
-                    for (KEdge removedEdge : removedEdges) {
+                    for (final KEdge removedEdge : removedEdges) {
                         removeEdge(removedEdge, releaseChildrenAndControllers);
                     }
                     break;
@@ -1692,6 +1657,7 @@ public class DiagramController {
             this.nodeRep = theNodeRep;
         }
         
+        @Override
         public void notifyChanged(final Notification notification) {
             if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__PORTS) {
                 if (UIExecRequired()) {
@@ -1708,7 +1674,7 @@ public class DiagramController {
                     @SuppressWarnings("unchecked")
                     final List<KPort> addedPorts = (List<KPort>) notification.getNewValue();
 
-                    for (KPort addedPort : addedPorts) {
+                    for (final KPort addedPort : addedPorts) {
                         addPort(nodeRep, addedPort, false);
                     }
                     break;
@@ -1722,7 +1688,7 @@ public class DiagramController {
                     @SuppressWarnings("unchecked")
                     final List<KPort> removedPorts = (List<KPort>) notification.getOldValue();
 
-                    for (KPort removedPort : removedPorts) {
+                    for (final KPort removedPort : removedPorts) {
                         removePort(removedPort, true);
                     }
                     break;
@@ -1752,6 +1718,7 @@ public class DiagramController {
             this.labeledNode = theLabeledNode;
         }
         
+        @Override
         public void notifyChanged(final Notification notification) {
             
             if (notification.getFeatureID(KLabeledGraphElement.class)
@@ -1770,7 +1737,7 @@ public class DiagramController {
                     @SuppressWarnings("unchecked")
                     final List<KLabel> addedLabels = (List<KLabel>) notification.getNewValue();
 
-                    for (KLabel addedLabel : addedLabels) {
+                    for (final KLabel addedLabel : addedLabels) {
                         addLabel(labeledNode, addedLabel, false);
                     }
                     break;
@@ -1785,7 +1752,7 @@ public class DiagramController {
                     final List<KLabel> removedLabels = (List<KLabel>) notification
                             .getOldValue();
 
-                    for (KLabel removedLabel : removedLabels) {
+                    for (final KLabel removedLabel : removedLabels) {
                         removeLabel(removedLabel, true);
                     }
                     break;
@@ -1812,6 +1779,7 @@ public class DiagramController {
             this.labelRep = theLabelRep;
         }
 
+        @Override
         public void notifyChanged(final Notification notification) {
             if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
 

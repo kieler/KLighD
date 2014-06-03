@@ -14,9 +14,11 @@
 package de.cau.cs.kieler.klighd.viewers;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ISelection;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -24,6 +26,7 @@ import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
@@ -72,7 +75,7 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         final ViewChangeType[] types =
                 eventTypes != null && eventTypes.length != 0 ? eventTypes : ViewChangeType.values();
         
-        for (ViewChangeType t : types) {
+        for (final ViewChangeType t : types) {
             viewChangeListeners.put(t, listener);
         }
     }
@@ -126,11 +129,22 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         
         final ViewChange change = new ViewChange(this, type, affectedElement, viewPort, diagramScale);
 
-        for (IViewChangeListener l : viewChangeListeners.get(type)) {
+        for (final IViewChangeListener l : viewChangeListeners.get(type)) {
             l.viewChanged(change);
         }
     }
 
+
+    /**
+     * Forwards the given <code>selection</code> to the employed {@link ContextViewer} that is in
+     * charge of broadcasting it into the platform and the registered selection listeners.
+     * 
+     * @param selection
+     *            the new {@link ISelection}
+     */
+    protected void updateSelection(final ISelection selection) {
+        this.getContextViewer().notifySelectionListeners(selection);
+    }
 
     /* ----------------------------- */
     /*   the view manipulation API   */
@@ -153,8 +167,51 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
+    public Iterator<KNode> getVisibleDiagramNodes() {
+        return getContextViewer().getVisibleDiagramNodes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<KGraphElement> getVisibleDiagramElements() {
+        return getContextViewer().getVisibleDiagramElements();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reveal(final Object semanticElement, final int duration) {
+        getContextViewer().reveal(semanticElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void centerOn(final Object semanticElement, final int duration) {
+        getContextViewer().centerOn(semanticElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final Object semanticElement, final int duration) {
+        getContextViewer().panToTopLeftCorner(semanticElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     public void zoomToLevel(final float zoomLevel, final int duration) {
         getContextViewer().zoomToLevel(zoomLevel, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final Object semanticElement, final int duration) {
+        getContextViewer().zoomToFocus(semanticElement, duration);
+        
     }
 
     /**
@@ -227,21 +284,6 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
         return getContextViewer().getScale(semanticElement);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void reveal(final Object semanticElement, final int duration) {
-        getContextViewer().reveal(semanticElement, duration);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void centerOn(final Object semanticElement, final int duration) {
-        getContextViewer().centerOn(semanticElement, duration);
-    }
-    
-
     /* ---------------------------------------------------------- */
     /*   the selection setting API                                */
     /*    it is completely implemented by the ContextViewer,      */
@@ -251,8 +293,15 @@ public abstract class AbstractViewer<T> implements IViewer<T> {
     /**
      * {@inheritDoc}
      */
-    public KlighdTreeSelection getSelection() {
+    public ISelection getSelection() {
         return getContextViewer().getSelection();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KlighdTreeSelection getDiagramSelection() {
+        return getContextViewer().getDiagramSelection();
     }
     
     /**

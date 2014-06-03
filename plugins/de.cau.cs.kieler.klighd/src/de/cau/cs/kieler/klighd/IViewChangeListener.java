@@ -16,14 +16,6 @@ package de.cau.cs.kieler.klighd;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import org.eclipse.emf.common.util.AbstractTreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 
@@ -55,7 +47,6 @@ public interface IViewChangeListener {
         private final IViewer<?> activeViewer;
         private final ViewChangeType changeType;
         private final KGraphElement affectedElement;
-//        private final Rectangle2D visibleViewPort;
         private final double diagramScale;
         
         /**
@@ -77,7 +68,6 @@ public interface IViewChangeListener {
             this.activeViewer = viewer;
             this.changeType = type;
             this.affectedElement = element;
-//            this.visibleViewPort = viewPort;
             this.diagramScale = diagramScale;
         }
         
@@ -122,11 +112,6 @@ public interface IViewChangeListener {
             return diagramScale;
         }
 
-        private static final String MSG =
-                "KLighD: Application attempted to traverse an Iterator provided by "
-                + "ViewChange#visibleDiagramsElements. Evaluations of those Iterators must be "
-                + "performed by the display (UI) thread for integrity reasons.";
-
         /**
          * Creates an {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} providing the
          * {@link KNode KNodes} visible at the moment of iterating (lazy evaluation)!<br>
@@ -136,31 +121,8 @@ public interface IViewChangeListener {
          * 
          * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
          */
-        public Iterator<KGraphElement> visibleDiagramNodes() {
-            final KNode clip = activeViewer.getClip();
-
-            if (!activeViewer.isVisible(clip, false)) {
-                return Iterators.emptyIterator();
-
-            } else {
-                return new AbstractTreeIterator<KGraphElement>(clip) {
-                    private static final long serialVersionUID = 1021356500841593549L;
-
-                    @Override
-                    protected Iterator<? extends KGraphElement> getChildren(final Object object) {
-                        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
-                            throw new RuntimeException(MSG);
-                        }
-                        return Iterators.filter(((KNode) object).getChildren().iterator(),
-                                new Predicate<KNode>() {
-
-                            public boolean apply(final KNode input) {
-                                return activeViewer.isVisible(input, false);
-                            }
-                        });
-                    }
-                };
-            }
+        public Iterator<KNode> visibleDiagramNodes() {
+            return activeViewer.getVisibleDiagramNodes();
         }
 
         /**
@@ -170,51 +132,12 @@ public interface IViewChangeListener {
          * <br>
          * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
          * reasons. {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} are likely to be returned
-         * twice as both outgoing as well as incoming edges of a {@link KNode} must be considered.
+         * twice, as both outgoing as well as incoming edges of a {@link KNode} must be considered.
          * 
          * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
          */
-        public Iterator<KGraphElement> visibleDiagramsElements() {
-            final KNode clip = activeViewer.getClip();
-
-            if (!activeViewer.isVisible(clip, false)) {
-                return Iterators.emptyIterator();
-
-            } else {
-                return new AbstractTreeIterator<KGraphElement>(clip) {
-                    private static final long serialVersionUID = 1021356500841593549L;
-
-                    @Override
-                    protected Iterator<? extends KGraphElement> getChildren(final Object object) {
-                        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
-                            throw new RuntimeException(MSG);
-                        }
-                        
-                        final Iterator<EObject> candidates;
-                        if (object instanceof KNode) {
-                            candidates =
-                                    Iterators.concat(((EObject) object).eContents().iterator(),
-                                            ((KNode) object).getIncomingEdges().iterator());
-                        } else {
-                            candidates = ((EObject) object).eContents().iterator();
-                        }
-
-                        @SuppressWarnings("unchecked")
-                        Iterator<? extends KGraphElement> res = (Iterator<KGraphElement>) (Iterator<?>)
-                                Iterators.filter(candidates, filter);
-                        
-                        return res; 
-                    }
-
-                    private Predicate<EObject> filter = new Predicate<EObject>() {
-
-                        public boolean apply(final EObject input) {
-                            return input instanceof KGraphElement
-                                    && activeViewer.isVisible((KGraphElement) input, false);
-                        }
-                    };
-                };
-            }
+        public Iterator<KGraphElement> visibleDiagramElements() {
+            return activeViewer.getVisibleDiagramElements();
         }
     }    
 }

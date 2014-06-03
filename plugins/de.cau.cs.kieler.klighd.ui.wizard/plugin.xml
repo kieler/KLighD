@@ -5,7 +5,7 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="de.cau.cs.kieler.klighd"
-            name="KIELER Light-weight Diagrams">
+            name="KIELER Lightweight Diagrams">
       </category>
       <wizard
             category="de.cau.cs.kieler.klighd"

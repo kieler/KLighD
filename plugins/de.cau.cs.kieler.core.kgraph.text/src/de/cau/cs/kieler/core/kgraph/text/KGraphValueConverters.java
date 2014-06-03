@@ -13,15 +13,11 @@
  */
 package de.cau.cs.kieler.core.kgraph.text;
 
-import java.util.Collections;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
 import org.eclipse.xtext.conversion.IValueConverter;
-import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.conversion.ValueConverter;
 import org.eclipse.xtext.conversion.ValueConverterException;
 import org.eclipse.xtext.conversion.impl.AbstractDeclarativeValueConverterService;
@@ -59,8 +55,7 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         return idValueConverter;
     }
     
-    @Inject
-    private QualifiedIDValueConverter qualifiedIdValueConverter;
+    private QualifiedIDValueConverter qualifiedIdValueConverter = new QualifiedIDValueConverter();
 
     /**
      * Create a converter for the QualifiedID rule.
@@ -194,25 +189,28 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
     /**
      * Value converter for qualified identifiers.
      */
-    private static class QualifiedIDValueConverter extends IDValueConverter {
+    private class QualifiedIDValueConverter extends IDValueConverter {
 
-        @Inject
-        private IValueConverterService valueConverter;
-
+        @Override
         public String toString(final String s) {
-            String res = "";
-            for (Object ss : Collections.list(new StringTokenizer(s, "."))) {
-                res += "." + valueConverter.toString(ss, "ID");
-            }            
-            return res.substring(1);
+            // Escape each ID with the converter for identifiers
+            StringBuilder result = new StringBuilder();
+            String[] idarray = s.split("\\.");
+            for (int i = 0; i < idarray.length; i++) {
+                if (i > 0) {
+                    result.append('.');
+                }
+                result.append(idValueConverter.toString(idarray[i]));
+            }
+            return result.toString();
         }
         
+        @Override
         public String toValue(final String string, final INode node) {
-            String res = super.toValue(string, node);
-            if (res != null) {
-                return res.replace(".^", ".");
+            if (string == null) {
+                return null;
             }
-            return null;
+            return string.replace("^", "");
         }
     }
     
@@ -323,10 +321,18 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
      */
     private class PropertyValueConverter extends AbstractNullSafeConverter<String> {
         /**
-         * Regular expression pattern that matches instances of the QualifiedName rule.
+         * Regular expression pattern that matches instances of the QualifiedName rule,
+         * without keyword escapes.
          */
         private Pattern qualifiedNamePattern = Pattern.compile(
                 "[a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*");
+        
+        /**
+         * Regular expression pattern that matches instances of the QualifiedName rule,
+         * including keyword escapes (^).
+         */
+        private Pattern keywordEscapedQualifiedNamePattern = Pattern.compile(
+                "\\^?[a-zA-Z_][a-zA-Z0-9_]*(\\.\\^?[a-zA-Z_][a-zA-Z0-9_]*)*");
         
         @Override
         protected String internalToString(final String value) {
@@ -339,10 +345,9 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
             }
             
             // Check if the value is an instance of the QualifiedName rule
-            Matcher matcher = qualifiedNamePattern.matcher(value);
-            if (matcher.matches()) {
-                // No need to escape anything since qualified names are simple
-                return value;
+            if (qualifiedNamePattern.matcher(value).matches()) {
+                // Apply the qualified ID value converter
+                return qualifiedIdValueConverter.toString(value);
             }
             
             // It's a String; surround with quotation marks
@@ -355,10 +360,17 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
             // that the string passed to the method either has both, a leading and a trailing quotation
             // mark, or none; but even though we should be able to assume that, we decide to program
             // defensively)
-            int begin = string.startsWith("\"") ? 1 : 0;
-            int end = string.length() - (string.endsWith("\"") ? 1 : 0);
-            
-            return Strings.convertFromJavaString(string.substring(begin, end), true);
+            boolean stringStart = string.startsWith("\"");
+            boolean stringEnd = string.endsWith("\"");
+            if (stringStart || stringEnd) {
+                int begin = stringStart ? 1 : 0;
+                int end = string.length() - (stringEnd ? 1 : 0);
+                return Strings.convertFromJavaString(string.substring(begin, end), true);
+            } else if (keywordEscapedQualifiedNamePattern.matcher(string).matches()) {
+                return qualifiedIdValueConverter.toValue(string, node);
+            } else {
+                return string;
+            }
         }
     }
 }

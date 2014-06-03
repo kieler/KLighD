@@ -13,9 +13,11 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -184,7 +186,31 @@ public interface IViewer<T> {
      *         visible, <code>false</code> otherwise.
      */
     boolean isVisible(KGraphElement diagramElement, boolean checkParents);
-     
+
+    /**
+     * Creates an {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} providing the
+     * {@link KNode KNodes} visible at the moment of iterating (lazy evaluation)!<br>
+     * <br>
+     * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
+     * reasons. 
+     * 
+     * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
+     */
+    Iterator<KNode> getVisibleDiagramNodes();
+    
+    /**
+     * Creates an {@link org.eclipse.emf.common.util.TreeIterator TreeIterator} providing the
+     * {@link KGraphElement KGraphElements} visible at the moment of iterating (lazy
+     * evaluation)!<br>
+     * <br>
+     * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
+     * reasons. {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} are likely to be returned
+     * twice, as both outgoing as well as incoming edges of a {@link KNode} must be considered.
+     * 
+     * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
+     */
+    Iterator<KGraphElement> getVisibleDiagramElements();
+    
     /**
      * Reveals the representation of the given semantic element over the specified duration.
      * 
@@ -224,6 +250,57 @@ public interface IViewer<T> {
      *            the duration over which the panning animation is done
      */
     void centerOn(KGraphElement diagramElement, int duration);
+    
+    /**
+     * Pans the diagram s.t. the representation of the given semantic element is depicted in the top
+     * left corner of the visible area (over the specified duration).
+     * 
+     * @param semanticElement
+     *            the semantic element to refer to
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void panToTopLeftCorner(Object semanticElement, int duration);
+    
+    /**
+     * Pans the diagram s.t. the given diagram element is depicted in the top left corner of the
+     * visible area (over the specified duration).
+     * 
+     * @param diagramElement
+     *            the diagram element
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void panToTopLeftCorner(KNode diagramElement, int duration);
+    
+    /**
+     * Pans the diagram s.t. the depicted content is aligned to the to left corner of diagram widget
+     * (over the specified duration).
+     * 
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void panDiagramToTopLeftCorner(int duration);
+    
+    /**
+     * Centers on the representation of the given semantic element over the specified duration.
+     * 
+     * @param semanticElement
+     *            the semantic element to center on
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void zoomToFocus(Object semanticElement, int duration);
+    
+    /**
+     * Centers on the given diagram element over the specified duration.
+     * 
+     * @param diagramElement
+     *            the diagram element
+     * @param duration
+     *            the duration over which the panning animation is done
+     */
+    void zoomToFocus(KNode diagramElement, int duration);
     
     /**
      * Zooms to the given zoom level over the specified duration.
@@ -442,7 +519,15 @@ public interface IViewer<T> {
      *  
      * @return the current {@link org.eclipse.jface.viewers.ISelection}
      */
-    KlighdTreeSelection getSelection();
+    ISelection getSelection();
+    
+    /**
+     * Provides the current {@link KlighdTreeSelection} provided by the diagram viewer.
+     * 
+     * @return the current {@link KlighdTreeSelection} or <code>null</code> if the current selection
+     *         is not of type {@link KlighdTreeSelection}
+     */
+    KlighdTreeSelection getDiagramSelection();
     
     /**
      * Adds or removes the representative of the provided element to/from the current selection

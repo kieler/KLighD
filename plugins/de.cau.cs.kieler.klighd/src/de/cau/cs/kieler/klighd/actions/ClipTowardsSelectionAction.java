@@ -38,7 +38,7 @@ public class ClipTowardsSelectionAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {
-        final KlighdTreeSelection selection = context.getContextViewer().getSelection();
+        final KlighdTreeSelection selection = context.getContextViewer().getDiagramSelection();
         final IViewer<?> contextViewer = context.getContextViewer();
         
         final Object first = selection.getFirstElement();

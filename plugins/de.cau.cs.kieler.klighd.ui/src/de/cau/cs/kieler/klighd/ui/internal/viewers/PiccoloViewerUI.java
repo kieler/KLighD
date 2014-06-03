@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.ui.internal.viewers;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -28,7 +27,6 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
@@ -40,17 +38,16 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KText;
@@ -58,10 +55,8 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
@@ -69,7 +64,6 @@ import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PrintAction;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.modifymodel.ModelModificationHandlerProvider;
-import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
@@ -81,13 +75,14 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * by the PiccoloViewerProvider.
  * 
  * @author ckru
+ * @author chsch
  */
 public class PiccoloViewerUI extends PiccoloViewer {
 
     /**
      * SWT text element that acts as an overlay for labels in some situations.
      */
-    private StyledText textinput;
+    private Text textinput;
 
     /**
      * Listens to text inputs and applies changes accordingly.
@@ -140,6 +135,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new Action() {
                 private final PrintAction printer = new PrintAction(thisViewer);
 
+                @Override
                 public void run() {
                     printer.run();
                 }
@@ -147,6 +143,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         }
 
         this.getCanvas().getCamera().addInputEventListener(new KlighdTextInputHandler());
+
         addTextInput(parentViewer);
     }
 
@@ -162,7 +159,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      *            the viewer to which to add the text widget
      */
     private void addTextInput(final ContextViewer parentViewer) {
-        textinput = new StyledText(this.getCanvas(), SWT.MULTI);
+        textinput = new Text(this.getCanvas(), SWT.MULTI);
         textinput.setDoubleClickEnabled(false);
         
         textinput.addListener(SWT.MouseUp, new Listener() {
@@ -187,6 +184,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
             }
         });
 
+        // add a selection changed listener to the diagram viewer in order to deactivate
+        //  the cursor selection text widget on diagram selections
         final ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
             public void selectionChanged(final SelectionChangedEvent event) {
                 textinputlistener.handleEvent(null);
@@ -195,8 +194,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 textinput.setVisible(false);
             }
         };
-
         parentViewer.addSelectionChangedListener(selectionListener);
+
         textinput.addDisposeListener(new DisposeListener() {
             public void widgetDisposed(final DisposeEvent e) {
                 parentViewer.removeSelectionChangedListener(selectionListener);
@@ -234,10 +233,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
                     }
                 });
 
-        // ... and register it in the workbench part site, in order to let the work bench populate
-        // it!
-        IWorkbenchPartSite site = parentViewer.getViewContext().getDiagramWorkbenchPart().getSite();
-        site.registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu,
+        // ... and register it in the workbench part site, in order to let the work bench populate it!
+        final IWorkbenchPart part = parentViewer.getViewContext().getDiagramWorkbenchPart();
+        part.getSite().registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu,
                 new ISelectionProvider() {
 
                     // Note that this selection provider is not registered in part site as such,
@@ -321,7 +319,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 } else {
                     f.apply(textinput.getText());
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 final String msg =
                         "KLighD: An error occured while applying the updated string value in "
                                 + viewContext.getDiagramWorkbenchPart().getPartId() + "!";
@@ -350,6 +348,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void mouseMoved(final PInputEvent event) {
             updateTextInput(event);
         }
@@ -357,6 +356,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void mouseDragged(final PInputEvent event) {
             updateTextInput(event);
         }
@@ -369,7 +369,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
          * @return the element thats linked to the KGraph.
          */
         private ITracingElement<?> getParentTracingElement(final PNode n) {
-            PNode parent = n.getParent();
+            final PNode parent = n.getParent();
             if (parent != null) {
                 if (parent instanceof ITracingElement<?>) {
                     return (ITracingElement<?>) parent;
@@ -394,29 +394,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
             final KlighdStyledText styledText;
 
             final KGraphElement element;
-            if (n instanceof KLabelNode) {
-                final KLabelNode labelNode = (KLabelNode) n;
-                element = labelNode.getGraphElement().getParent();
-
-                kText = Iterables.getFirst(ModelingUtil.eAllContentsOfType(
-                                labelNode.getGraphElement(), KText.class), null);
-
-                if (kText != null) {
-                    final Collection<PNodeController<?>> controllers =
-                            labelNode.getRenderingController().getPNodeController(kText);
-                    if (!controllers.isEmpty()) {
-                        styledText = (KlighdStyledText) controllers.iterator().next().getNode();
-                    } else {
-                        kText = null;
-                        styledText = null;
-                    }
-                } else {
-                    styledText = null;
-                }
-
-            } else if (n instanceof KlighdStyledText) {
+            if (n instanceof KlighdStyledText) {
                 styledText = (KlighdStyledText) n;
-                Object o = this.getParentTracingElement(n).getGraphElement();
+                final Object o = this.getParentTracingElement(n).getGraphElement();
                 if (o instanceof KGraphElement) {
                     element = (KGraphElement) o;
                 } else {
@@ -479,18 +459,22 @@ public class PiccoloViewerUI extends PiccoloViewer {
         }
 
         // determine global position of the text element
-        Rectangle2D bounds =
+        final Rectangle2D bounds =
                 NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, PiccoloViewerUI.this.getCanvas()
                         .getCamera().getDisplayedINode());
+        if (bounds == null) {
+            return;
+        }
+        
         PiccoloViewerUI.this.getCanvas().getCamera().getViewTransformReference()
                 .transform(bounds, bounds);
         textinput.setLocation((int) Math.round(bounds.getX()), (int) Math.round(bounds.getY()));
 
         // determine font data (i.e. font size)
-        FontData fd = new FontData(theStyledText.getFontData().toString());
+        final FontData fd = new FontData(theStyledText.getFontData().toString());
         // fd.height = (float) (styledText.getFontData().getHeight() *
         // PiccoloViewerUI.this.getCanvas().getCamera().getViewScale());
-        float height =
+        final float height =
                 (float) (theStyledText.getFontData().getHeight() * PiccoloViewerUI.this.getCanvas()
                         .getCamera().getViewScale());
         // fd = FontData.win32_new(fd.data, height);

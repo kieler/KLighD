@@ -72,7 +72,7 @@ public class SynthesisOptionControlFactory {
         this.formToolkit = formToolkit;
         
         // configure the parent's layout
-        GridLayout gl = new GridLayout(1, false);
+        final GridLayout gl = new GridLayout(1, false);
         gl.verticalSpacing = MAJOR_VERTICAL_SPACING;
         this.parent.setLayout(gl);
     }
@@ -81,7 +81,7 @@ public class SynthesisOptionControlFactory {
      * Clear the previously created option controls.
      */
     public void clear() {
-        for (Control c : controls) {
+        for (final Control c : controls) {
             c.dispose();
         }
         controls.clear();
@@ -96,11 +96,11 @@ public class SynthesisOptionControlFactory {
     public void createSeparator(final String labelText) {
         // Check if the separator is supposed to have a label
         if (labelText == null || labelText.isEmpty()) {
-            Label separator = formToolkit.createSeparator(parent, SWT.HORIZONTAL);
+            final Label separator = formToolkit.createSeparator(parent, SWT.HORIZONTAL);
             controls.add(separator);
             GridDataFactory.fillDefaults().grab(true, false).applyTo(separator);
         } else {
-            Label label = formToolkit.createLabel(parent, labelText);
+            final Label label = formToolkit.createLabel(parent, labelText);
             controls.add(label);
             label.setForeground(formToolkit.getColors().getColor(IFormColors.TITLE));
             GridDataFactory.fillDefaults()
@@ -117,7 +117,6 @@ public class SynthesisOptionControlFactory {
      * @param option the 'check' option
      * @param context the related {@link ViewContext} the option is declared in
      */
-//    * @param viewId the id of the current view, is required used for invoking the diagram update. 
     public void createCheckOptionControl(final SynthesisOption option,
             final ViewContext context) {
 
@@ -139,7 +138,7 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        DiagramViewManager.getInstance().updateView(context);
+                        DiagramViewManager.updateView(context);
                     }
                 });
             }
@@ -152,7 +151,6 @@ public class SynthesisOptionControlFactory {
      * @param option the 'choice' option
      * @param context the related {@link ViewContext} the option is declared in
      */
-//    * @param viewId the id of the current view, is required used for invoking the diagram update. 
     public void createChoiceOptionControl(final SynthesisOption option, final ViewContext context) {
         
         final GridLayout gl = new GridLayout();
@@ -176,7 +174,7 @@ public class SynthesisOptionControlFactory {
             vGd.horizontalIndent = MINOR_HORIZONTAL_MARGIN;
             
             // create the button ...
-            Button button = formToolkit.createButton(valuesContainer, value.toString(), SWT.RADIO);
+            final Button button = formToolkit.createButton(valuesContainer, value.toString(), SWT.RADIO);
             button.setToolTipText(value.toString());
             button.setLayoutData(vGd);
 
@@ -192,7 +190,7 @@ public class SynthesisOptionControlFactory {
                         // trigger the diagram update
                         Display.getCurrent().asyncExec(new Runnable() {
                             public void run() {
-                                DiagramViewManager.getInstance().updateView(context);
+                                DiagramViewManager.updateView(context);
                             }
                         });
                     }
@@ -210,7 +208,6 @@ public class SynthesisOptionControlFactory {
      * @param option the 'range' option
      * @param context the related {@link ViewContext} the option is declared in
      */
-//    * @param viewId the id of the current view, is required used for invoking the diagram update. 
     public void createRangeOptionControl(final SynthesisOption option, final ViewContext context) {
         
         final GridLayout gl = new GridLayout();
@@ -275,7 +272,7 @@ public class SynthesisOptionControlFactory {
                 final Scale scale = (Scale) event.widget;
                 
                 // determine the actually selected value
-                Double value = minShifted + scalerStepSize * ((double) scale.getSelection());
+                Double value = minShifted + scalerStepSize * (scale.getSelection());
                 
                 // round it wrt the required step size
                 value = min + Math.floor((value - min) / stepSize) * stepSize;
@@ -305,7 +302,7 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        DiagramViewManager.getInstance().updateView(context);
+                        DiagramViewManager.updateView(context);
                     }
                 });
             }

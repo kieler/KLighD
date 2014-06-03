@@ -302,7 +302,7 @@ public final class DiagramSideBar {
         sashLayoutData.width = SASH_WIDTH;
         sash.setLayoutData(sashLayoutData);
         
-        if (TOOLBAR_ACTIVE){
+        if (TOOLBAR_ACTIVE) {
             final FormData toolbarFormLayoutData = new FormData();
             toolbarFormLayoutData.top = new FormAttachment(0);
             toolbarFormLayoutData.left = new FormAttachment(sash);
@@ -310,8 +310,9 @@ public final class DiagramSideBar {
             sideToolbarForm.setLayoutData(toolbarFormLayoutData);
         }
 
-        final FormData formRootLayoutData = new FormData();        
-        formRootLayoutData.top = TOOLBAR_ACTIVE ? new FormAttachment(sideToolbarForm) : new FormAttachment(0);
+        final FormData formRootLayoutData = new FormData();
+        formRootLayoutData.top =
+                TOOLBAR_ACTIVE ? new FormAttachment(sideToolbarForm) : new FormAttachment(0);
         formRootLayoutData.bottom = new FormAttachment(FULL);
         formRootLayoutData.left = new FormAttachment(sash); 
         formRootLayoutData.right = new FormAttachment(FULL); 
