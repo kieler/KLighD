@@ -18,7 +18,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -38,7 +37,6 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -51,7 +49,7 @@ import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
- * A view which is able to display models in light-weight diagrams.
+ * A view which is able to display models in lightweight diagrams.
  * 
  * @author mri
  * @author chsch
@@ -144,7 +142,16 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     public ILayoutConfig getLayoutConfig() {
         return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetLayoutConfig() {
+        if (this.sideBar != null) {
+            this.sideBar.resetLayoutOptionsToDefaults();
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -165,8 +172,12 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     }
     
     /**
+     * (Re-)Evaluates the diagram (synthesis) and layout options registered in the employed
+     * {@link ViewContext} and populates the diagram side bar accordingly. For internal use only!
      * 
-     * @param fitSpace a;
+     * @param fitSpace
+     *            if <code>true</code> a {@link ZoomStyle#ZOOM_TO_FIT} will applied to the diagram
+     *            in order to fit into the remaining space
      */
     public void updateOptions(final boolean fitSpace) {
         this.sideBar.updateOptions(diagramComposite, this.viewer.getViewContext(), fitSpace);
@@ -196,96 +207,98 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     /**
      * Add the buttons to the tool bar.
      */
-    private void addButtons() {
+    protected void addButtons() {
         final IToolBarManager toolBar = getViewSite().getActionBars().getToolBarManager();
         toolBar.add(new Action("Refresh diagram", KlighdPlugin
                 .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
+
+            @Override
             public void run() {
-                DiagramViewManager.getInstance().updateView(DiagramViewPart.this.getPartId());
+                DiagramViewManager.updateView(DiagramViewPart.this.getPartId());
             }
         });
         
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+//        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
 
-        // toggle zoom to fit behavior
-        zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
-            // Constructor
-            {
-                setImageDescriptor(KlighdPlugin
-                        .getImageDescriptor("icons/kieler-zoomtofit.gif"));
-                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    setChecked(vc.isZoomToFit());
-                } else {
-                    ZoomStyle style = ZoomStyle.valueOf(
-                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
-                    setChecked(style == ZoomStyle.ZOOM_TO_FIT);
-                }
-            }
-
-            @Override
-            public void run() {
-                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked(), false));
-
-                    // perform zoom to fit upon activation of the toggle button
-                    if (this.isChecked()) {
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
-                        
-                        zoomToFocusAction.setChecked(false);
-                    }
-
-                }
-            }
-        };
-        toolBar.add(zoomToFitAction);
+//        // toggle zoom to fit behavior
+//        zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
+//            // Constructor
+//            {
+//                setImageDescriptor(KlighdPlugin
+//                        .getImageDescriptor("icons/kieler-zoomtofit.gif"));
+//                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
+//                if (vc != null) {
+//                    setChecked(vc.isZoomToFit());
+//                } else {
+//                    final ZoomStyle style = ZoomStyle.valueOf(
+//                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+//                    setChecked(style == ZoomStyle.ZOOM_TO_FIT);
+//                }
+//            }
+//
+//            @Override
+//            public void run() {
+//                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
+//                if (vc != null) {
+//                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked(), false));
+//
+//                    // perform zoom to fit upon activation of the toggle button
+//                    if (this.isChecked()) {
+//                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+//                        
+//                        zoomToFocusAction.setChecked(false);
+//                    }
+//
+//                }
+//            }
+//        };
+//        toolBar.add(zoomToFitAction);
         
-        zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
-            // Constructor
-            {
-                setImageDescriptor(KlighdPlugin
-                        .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
-                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    setChecked(vc.isZoomToFocus());
-                } else {
-                    ZoomStyle style = ZoomStyle.valueOf(
-                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
-                    setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
-                }
-            }
+//        zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
+//            // Constructor
+//            {
+//                setImageDescriptor(KlighdPlugin
+//                        .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
+//                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
+//                if (vc != null) {
+//                    setChecked(vc.isZoomToFocus());
+//                } else {
+//                    final ZoomStyle style = ZoomStyle.valueOf(
+//                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
+//                    setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
+//                }
+//            }
+//
+//            @Override
+//            public void run() {
+//                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
+//                if (vc != null) {
+//                    vc.setZoomStyle(ZoomStyle.create(false, false, this.isChecked()));
+//
+//                    // perform zoom to focus upon activation of the toggle button
+//                    if (this.isChecked()) {
+//                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+//                        
+//                        // uncheck the zoom to fit button
+//                        zoomToFitAction.setChecked(false);
+//                    }
+//
+//                }
+//            }
+//        };
+//        toolBar.add(zoomToFocusAction);
 
-            @Override
-            public void run() {
-                final ViewContext vc = DiagramViewPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    vc.setZoomStyle(ZoomStyle.create(false, false, this.isChecked()));
-
-                    // perform zoom to focus upon activation of the toggle button
-                    if (this.isChecked()) {
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
-                        
-                        // uncheck the zoom to fit button
-                        zoomToFitAction.setChecked(false);
-                    }
-
-                }
-            }
-        };
-        toolBar.add(zoomToFocusAction);
-
-        toolBar.add(new Action("Zoom to Original Size", IAction.AS_PUSH_BUTTON) {
-            {
-                setImageDescriptor(KlighdPlugin
-                        .getImageDescriptor("icons/kieler-zoomtoone.gif"));
-            }
-            @Override
-            public void run() {
-                DiagramViewPart.this.getViewer().zoomToLevel(1, 
-                        KlighdConstants.DEFAULT_ANIMATION_TIME);
-            }
-        });
+//        toolBar.add(new Action("Zoom to Original Size", IAction.AS_PUSH_BUTTON) {
+//            {
+//                setImageDescriptor(KlighdPlugin
+//                        .getImageDescriptor("icons/kieler-zoomtoone.gif"));
+//            }
+//            @Override
+//            public void run() {
+//                DiagramViewPart.this.getViewer().zoomToLevel(1, 
+//                        KlighdConstants.DEFAULT_ANIMATION_TIME);
+//            }
+//        });
         
         // automatic layout button
         toolBar.add(new Action("Arrange", IAction.AS_PUSH_BUTTON) {
@@ -295,14 +308,17 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
                         .getImageDescriptor("icons/menu16/kieler-arrange.gif"));
             }
 
+            @Override
             public void run() {
                 LightDiagramServices.layoutDiagram(DiagramViewPart.this);
             }
         });
         
         // reset the layout options set over the side pane
-        IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+        final IMenuManager menu = getViewSite().getActionBars().getMenuManager();
         resetLayoutOptionsAction = new Action("Reset Layout Options") {
+
+            @Override
             public void run() {
                 sideBar.resetLayoutOptionsToDefaults();
             }
@@ -369,7 +385,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
      * Installs a handler for dropping resources on the view.
      */
     private void installDropHandler(final Composite parent) {
-        DropTarget target = new DropTarget(parent, DND.DROP_COPY | DND.DROP_DEFAULT);
+        final DropTarget target = new DropTarget(parent, DND.DROP_COPY | DND.DROP_DEFAULT);
         final ResourceTransfer resourceTransfer = ResourceTransfer.getInstance();
         target.setTransfer(new Transfer[] { resourceTransfer });
         target.addDropListener(new DropTargetListener() {
@@ -377,7 +393,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             public void drop(final DropTargetEvent event) {
                 if (resourceTransfer.isSupportedType(event.currentDataType)
                         && event.data instanceof IResource[]) {
-                    IResource[] resources = (IResource[]) event.data;
+                    final IResource[] resources = (IResource[]) event.data;
                     if (resources.length > 0) {
                         KlighdPlugin.getTrigger().triggerDrop(getViewSite().getSecondaryId(),
                                 resources[0]);
@@ -457,10 +473,10 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
             // it makes only sense to do something if we have a viewcontext, ie a viewmodel
             if (getViewer().getViewContext() != null) {
                 // calculate the aspect ratio of the current canvas
-                Point size = getViewer().getControl().getSize();
+                final Point size = getViewer().getControl().getSize();
                 if (size.x > 0 && size.y > 0) {
-                    Float aspectRatio =
-                            Math.round(ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                    final Float aspectRatio =
+                            Math.round(ASPECT_RATIO_ROUND * size.x / size.y)
                                     / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {

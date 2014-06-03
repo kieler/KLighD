@@ -32,13 +32,14 @@ import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -58,6 +59,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
@@ -86,6 +88,15 @@ public final class DiagramSideBar {
     
     /** Constant value denoting 100%. */
     private static final int FULL = 100;
+
+    /** Right and top offset for the toolbar buttons shown in the canvas. */
+    private static final int CANVAS_TOOLBAR_OFFSET = 3;
+
+    /**
+     * Disables the toolbar-buttons completely if set to false.
+     * Preparation for later use with preferences page.
+     */
+    private static final boolean TOOLBAR_ACTIVE = true;
     
     private boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
     
@@ -108,8 +119,8 @@ public final class DiagramSideBar {
     /** The form that holds the zoom buttons in the sidebar. */
     private Form sideToolbarForm;
     
-    /** The form that holds the zoom buttons in the canvas. */
-    private Composite canvasToolbarForm;
+    /** The composite that holds the zoom buttons in the canvas. */
+    private Composite canvasToolbarContainer;
 
     /** The form that holds synthesis options. */
     private Form synthesisOptionsForm;
@@ -226,33 +237,16 @@ public final class DiagramSideBar {
 
         optionsformToolkit = new FormToolkit(sideBarParent.getDisplay());
 
-        // create toolbar buttons
-        
-        // in the sidebar
-        sideToolbarForm = optionsformToolkit.createForm(sideBarParent);
-        sideToolbarForm.setText(null);
-        sideBarControls.add(sideToolbarForm);
-        final Composite toolbarContainer = sideToolbarForm.getBody();
-        
-        initializeToolbar(toolbarContainer, viewContext);
-        
-        // on the canvas
-        canvasToolbarForm = new Composite(sideBarParent, SWT.NO_BACKGROUND | SWT.TRANSPARENT);
-        canvasToolbarForm.setVisible(false);
-//        if (!(diagramContainer.getLayout() instanceof StackLayout)) {
-//            diagramContainer.setLayout(new StackLayout());
-//        }
-//        ((StackLayout) diagramContainer.getLayout()).topControl = canvasToolbarForm;
-        initializeToolbar(canvasToolbarForm, viewContext);
-        
-//        canvasToolbarForm.addPaintListener(new PaintListener() {
-//            
-//            public void paintControl(final PaintEvent e) {
-//                e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_RED));
-//                e.gc.fillRectangle(e.x, e.y, e.width, e.height);
-//            }
-//        });
-        
+        if (TOOLBAR_ACTIVE) {
+            // create toolbar buttons in the sidebar
+            sideToolbarForm = optionsformToolkit.createForm(sideBarParent);
+            sideToolbarForm.setText(null);
+            sideBarControls.add(sideToolbarForm);
+            final Composite toolbarContainer = sideToolbarForm.getBody();
+
+            initializeToolbar(toolbarContainer, viewContext);
+        }
+
         final ScrolledForm formRootScroller = optionsformToolkit.createScrolledForm(sideBarParent);
         formRootScroller.setText(null);
         sideBarControls.add(formRootScroller);
@@ -284,16 +278,11 @@ public final class DiagramSideBar {
         
         // prepare the form layout data for each of the above created widgets
         final FormData diagramContainerLayoutData = new FormData();
-        diagramContainerLayoutData.top = new FormAttachment(canvasToolbarForm);
+        diagramContainerLayoutData.top = new FormAttachment(0);
         diagramContainerLayoutData.bottom = new FormAttachment(FULL);
         diagramContainerLayoutData.left = new FormAttachment(0); 
         diagramContainerLayoutData.right = new FormAttachment(sash); 
         diagramContainer.setLayoutData(diagramContainerLayoutData);
-        
-        final FormData canvasToolbarFormLayoutData = new FormData();
-        canvasToolbarFormLayoutData.top = new FormAttachment(0);
-        canvasToolbarFormLayoutData.right = new FormAttachment(sash);
-        canvasToolbarForm.setLayoutData(canvasToolbarFormLayoutData);
         
         final FormData arrowsContainerLayoutData = new FormData();
         arrowsContainerLayoutData.top = new FormAttachment(0);
@@ -313,14 +302,16 @@ public final class DiagramSideBar {
         sashLayoutData.width = SASH_WIDTH;
         sash.setLayoutData(sashLayoutData);
         
-        final FormData toolbarFormLayoutData = new FormData();
-        toolbarFormLayoutData.top = new FormAttachment(0);
-        toolbarFormLayoutData.left = new FormAttachment(sash);
-        toolbarFormLayoutData.right = new FormAttachment(FULL);
-        sideToolbarForm.setLayoutData(toolbarFormLayoutData);
+        if (TOOLBAR_ACTIVE){
+            final FormData toolbarFormLayoutData = new FormData();
+            toolbarFormLayoutData.top = new FormAttachment(0);
+            toolbarFormLayoutData.left = new FormAttachment(sash);
+            toolbarFormLayoutData.right = new FormAttachment(FULL);
+            sideToolbarForm.setLayoutData(toolbarFormLayoutData);
+        }
 
         final FormData formRootLayoutData = new FormData();        
-        formRootLayoutData.top = new FormAttachment(sideToolbarForm);
+        formRootLayoutData.top = TOOLBAR_ACTIVE ? new FormAttachment(sideToolbarForm) : new FormAttachment(0);
         formRootLayoutData.bottom = new FormAttachment(FULL);
         formRootLayoutData.left = new FormAttachment(sash); 
         formRootLayoutData.right = new FormAttachment(FULL); 
@@ -357,7 +348,8 @@ public final class DiagramSideBar {
                     event.x = maxDiagSize;
                 }
                 horizontalPos = sashLayoutData.left.offset;
-                sideBarParent.layout(true);
+                arrowLabelContainerLayout.topControl = rightArrowLabel;
+                sideBarParent.layout(true, true);
             }
         });
         
@@ -395,27 +387,33 @@ public final class DiagramSideBar {
     
     
     /**
+     * Initialize the toolbar, that is create the three buttons and register selectionlisteners.
+     * 
      * @param parent
+     *            the {@link Composite} to which the buttons are being added
      * @param viewContext
+     *            the current {@link ViewContext}
      */
     private void initializeToolbar(final Composite parent, final ViewContext viewContext) {
-        parent.setLayout(new GridLayout(3, false));
-        final GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-        final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
-        final Button zoomToFocusBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
-        final Button zoomToOneBtn = new Button(parent, SWT.PUSH | SWT.FLAT);
-        
+        if (!TOOLBAR_ACTIVE) {
+            return;
+        }
+        parent.setLayout(new RowLayout());
+        final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE);
+        final Button zoomToFocusBtn = new Button(parent, SWT.TOGGLE);
+        final Button zoomToOneBtn = new Button(parent, SWT.PUSH);
+
         // Zoom to Fit
-        zoomToFitBtn.setLayoutData(gridData);
         Image zoomToFitImage =
                 KlighdPlugin.getImageDescriptor("icons/kieler-zoomtofit.gif").createImage();
         resources.add(zoomToFitImage);
         zoomToFitBtn.setImage(zoomToFitImage);
         zoomToFitBtn.setToolTipText("Toggle Zoom to Fit");
+        // set extra data to identify the buttons while updating later
         zoomToFitBtn.setData("type", "zoomToFit");
         zoomToFitBtn.setSelection(viewContext.isZoomToFit());
         zoomToFitBtn.addSelectionListener(new SelectionAdapter() {
-    
+
             public void widgetSelected(final SelectionEvent e) {
                 viewContext.setZoomStyle(ZoomStyle.create(false, zoomToFitBtn.getSelection(), false));
                 // perform zoom to fit upon activation of the toggle button
@@ -426,20 +424,21 @@ public final class DiagramSideBar {
                 }
             }
         });
-    
+
         // Zoom to focus
-        zoomToFocusBtn.setLayoutData(gridData);
         Image zoomToFocusImage =
                 KlighdPlugin.getImageDescriptor("icons/kieler-zoomtofocus.gif").createImage();
         resources.add(zoomToFocusImage);
         zoomToFocusBtn.setImage(zoomToFocusImage);
         zoomToFocusBtn.setToolTipText("Toggle Zoom to Focus");
+        // set extra data to identify the buttons while updating later
         zoomToFocusBtn.setData("type", "zoomToFocus");
         zoomToFocusBtn.setSelection(viewContext.isZoomToFocus());
         zoomToFocusBtn.addSelectionListener(new SelectionAdapter() {
-    
+
             public void widgetSelected(final SelectionEvent e) {
-                viewContext.setZoomStyle(ZoomStyle.create(false, false, zoomToFocusBtn.getSelection()));
+                viewContext.setZoomStyle(ZoomStyle.create(false, false,
+                        zoomToFocusBtn.getSelection()));
                 // perform zoom to focus upon activation of the toggle button
                 if (zoomToFocusBtn.getSelection()) {
                     LightDiagramServices.layoutAndZoomDiagram(viewContext.getDiagramWorkbenchPart());
@@ -448,21 +447,21 @@ public final class DiagramSideBar {
                 }
             }
         });
-    
+
         // Zoom to one
-        zoomToOneBtn.setLayoutData(gridData);
         Image zoomToOneImage =
                 KlighdPlugin.getImageDescriptor("icons/kieler-zoomtoone.gif").createImage();
         resources.add(zoomToOneImage);
         zoomToOneBtn.setImage(zoomToOneImage);
         zoomToOneBtn.setToolTipText("Zoom to Original Size");
         zoomToOneBtn.addSelectionListener(new SelectionAdapter() {
-    
+
             public void widgetSelected(final SelectionEvent e) {
-                viewContext.getViewer()
-                        .zoomToLevel(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
+                viewContext.getViewer().zoomToLevel(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         });
+
+        parent.pack();
     }
 
     /**
@@ -561,24 +560,68 @@ public final class DiagramSideBar {
     }
 
     /**
-     * @param viewContext
+     * Update the toolbar buttons. In case the canvas-toolbar is not yet initialized, initialze it
+     * (see {@link DiagramSideBar#initializeToolbar(Composite, ViewContext)}).
      * 
+     * @param viewContext
+     *            the current {@link ViewContext}
      */
     private void updateToolbar(final ViewContext viewContext) {
-        canvasToolbarForm.setVisible(!expanded);
+        if (!TOOLBAR_ACTIVE) {
+            return;
+        }
+        // Set the visibility only if the canvasToolbar is already initialized.
+        if (canvasToolbarContainer != null) {
+            canvasToolbarContainer.setVisible(!expanded);
+        }
+
         if (expanded) {
-            updateToolbar(viewContext, sideToolbarForm.getBody());
+            // Sidebar is expanded: simply update the selections status of the buttons.
+            updateToolbar(sideToolbarForm.getBody(), viewContext);
         } else {
-            updateToolbar(viewContext, canvasToolbarForm);
-            // Composite toolbarContainer =
-            // new Composite(viewContext.getViewer().getControl().getParent(), SWT.TRANSPARENT |
-            // SWT.NO_BACKGROUND);
-            // initializeToolbar(toolbarContainer, viewContext);
-            // updateToolbar(viewContext, canvasToolbarForm);
+            // Sidebar is hidden: if required, initialize the canvas toolbar.
+            // Finally update the selection status.
+            if (viewContext.getViewer().getControl() instanceof KlighdCanvas
+                    && canvasToolbarContainer == null) {
+                final KlighdCanvas canvas = (KlighdCanvas) viewContext.getViewer().getControl();
+
+                canvasToolbarContainer = new Composite(canvas, SWT.NONE);
+
+                initializeToolbar(canvasToolbarContainer, viewContext);
+                canvasToolbarContainer.pack();
+
+                new Listener() {
+                    // Constructor
+                    {
+                        canvas.addListener(SWT.Resize, this);
+                    }
+
+                    public void handleEvent(final Event event) {
+                        final Point canvasSize = canvas.getSize();
+                        final Point buttonBarSize = canvasToolbarContainer.getSize();
+
+                        // Take care of the positioning of the canvasToolbar because the KlightCanvas
+                        // has no Layout set.
+                        canvasToolbarContainer.setLocation(
+                                canvasSize.x - buttonBarSize.x - CANVAS_TOOLBAR_OFFSET,
+                                CANVAS_TOOLBAR_OFFSET);
+                    }
+                };
+            }
+
+            updateToolbar(canvasToolbarContainer, viewContext);
         }
     }
     
-    private void updateToolbar(final ViewContext viewContext, final Composite container) {
+    /**
+     * Update the selection-status of the toolbar buttons.
+     * 
+     * @param container
+     *            the {@link Composite} the buttons are contained in
+     * @param viewContext
+     *            the current {@link ViewContext}
+     */
+    private void updateToolbar(final Composite container, final ViewContext viewContext) {
         for (Control button : container.getChildren()) {
             Object type = button.getData("type");
             if ("zoomToFit".equals(type)) {
