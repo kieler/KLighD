@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
@@ -238,6 +240,7 @@ public final class DiagramSideBar {
         optionsformToolkit = new FormToolkit(sideBarParent.getDisplay());
 
         if (TOOLBAR_ACTIVE) {
+            System.out.println("sidebartoolbarcontainer created");
             // create toolbar buttons in the sidebar
             sideToolbarForm = optionsformToolkit.createForm(sideBarParent);
             sideToolbarForm.setText(null);
@@ -245,6 +248,12 @@ public final class DiagramSideBar {
             final Composite toolbarContainer = sideToolbarForm.getBody();
 
             initializeToolbar(toolbarContainer, viewContext);
+            toolbarContainer.addDisposeListener(new DisposeListener() {
+                
+                public void widgetDisposed(DisposeEvent e) {
+                    System.out.println("siddebartoolbarcontainer disposed");
+                }
+            });
         }
 
         final ScrolledForm formRootScroller = optionsformToolkit.createScrolledForm(sideBarParent);
@@ -584,12 +593,35 @@ public final class DiagramSideBar {
             // Finally update the selection status.
             if (viewContext.getViewer().getControl() instanceof KlighdCanvas
                     && canvasToolbarContainer == null) {
+                System.out.println("canvastoolbarcontainer created");
                 final KlighdCanvas canvas = (KlighdCanvas) viewContext.getViewer().getControl();
+                canvas.addDisposeListener(new DisposeListener() {
+                    
+                    public void widgetDisposed(DisposeEvent e) {
+                        System.out.println("klighcanvas disposed");
+                        canvasToolbarContainer = null;
+                    }
+                });
 
                 canvasToolbarContainer = new Composite(canvas, SWT.NONE);
 
                 initializeToolbar(canvasToolbarContainer, viewContext);
+                canvasToolbarContainer.addDisposeListener(new DisposeListener() {
+                    
+                    public void widgetDisposed(DisposeEvent e) {
+                        System.out.println("canvastoolbarcontainer disposed");
+                    }
+                });
                 canvasToolbarContainer.pack();
+
+                final Point canvasSize = canvas.getSize();
+                final Point buttonBarSize = canvasToolbarContainer.getSize();
+
+                // Take care of the positioning of the canvasToolbar because the KlightCanvas
+                // has no Layout set.
+                canvasToolbarContainer.setLocation(
+                        canvasSize.x - buttonBarSize.x - CANVAS_TOOLBAR_OFFSET,
+                        CANVAS_TOOLBAR_OFFSET);
 
                 new Listener() {
                     // Constructor
