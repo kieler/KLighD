@@ -417,14 +417,14 @@ public final class KVector implements IDataObject, Cloneable {
         if (start >= end) {
             throw new IllegalArgumentException("The given string does not contain any numbers.");
         }
-        String[] tokens = string.substring(start, end).split(",|;| |\t|\r|\n");
+        String[] tokens = string.substring(start, end).split(",|;|\r|\n");
         if (tokens.length != 2) {
             throw new IllegalArgumentException("Exactly two numbers are expected, "
                     + tokens.length + " were found.");
         }
         try {
-            x = Double.parseDouble(tokens[0]);
-            y = Double.parseDouble(tokens[1]);
+            x = Double.parseDouble(tokens[0].trim());
+            y = Double.parseDouble(tokens[1].trim());
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException(
                     "The given string contains parts that cannot be parsed as numbers." + exception);
