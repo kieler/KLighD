@@ -19,7 +19,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -32,7 +31,6 @@ import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
@@ -556,8 +554,6 @@ final class KGERenderingControllerHelper {
         };
     }
     
-    private static final Map<String, ImageData> IMAGE_BUFFER = Maps.newHashMap();
-
     /**
      * Creates a representation for the {@link KImage}.
      * 
@@ -580,46 +576,61 @@ final class KGERenderingControllerHelper {
 
         final KlighdImage imageNode;
 
+        // create the image, the bounds of imageNode are set within the KlighdImage implementation
         if (image.getImageObject() instanceof Image) {
             imageNode = new KlighdImage((Image) image.getImageObject());
 
         } else if (image.getImageObject() instanceof ImageData) {
             imageNode = new KlighdImage((ImageData) image.getImageObject());
 
+        } else if (image.getBundleName() == null) {
+            final String msg =
+                    "KLighD: Error occurred while loading an image from a bundle "
+                    + "('imageObject' == null): 'bundleName' is null, too, which is not expected!";
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+            return createDummy(parent, initialBounds);
+
         } else {
+            // determine the containing bundle,
+            // trim potentially leading and trailing quotation marks
+            final String bundleName = image.getBundleName().replace("\"", "");
             
-            final String id = image.getBundleName() + "#" + image.getImagePath();
-            ImageData imageData = IMAGE_BUFFER.get(id);
-            
-            if (imageData == null) {
-                Bundle bundle = null;
-                if (image.getBundleName() != null) {
-                    // determine the containing bundle,
-                    //  trim potentially leading and trailing quotation marks
-                    bundle = Platform.getBundle(image.getBundleName().replace("\"", ""));
-                }
-                if (bundle == null) {
-                    return createDummy(parent, initialBounds);
-                }
+            final Bundle bundle = Platform.getBundle(bundleName);
+
+            if (bundle == null) {
+                final String msg = "KLighD: Error occurred while loading an image from bundle "
+                        + image.getBundleName()
+                        + " : Bundle is not available!";
+                StatusManager.getManager().handle(new Status(
+                        IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+                return createDummy(parent, initialBounds);
+
+            } else if (image.getImagePath() == null) {
+                final String msg = "KLighD: Error occurred while loading an image from bundle "
+                        + bundleName + " : 'imagePath' is null!" + KlighdPlugin.LINE_SEPARATOR
+                        + "Provide a valid bundle relative path of the image!";
+                StatusManager.getManager().handle(new Status(
+                        IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+                return createDummy(parent, initialBounds);
+
+            } else {
+                final String imagePath = image.getImagePath().replace("\"", "");
+                final URL entry = bundle.getEntry(imagePath);
                 
-                // get the bundle and actual image,
-                //  trim potentially leading and trailing quotation marks
-                final URL entry = bundle.getEntry(image.getImagePath().replace("\"", ""));
-                try {
-                    imageData = new ImageData(entry.openStream());
-                    IMAGE_BUFFER.put(id, imageData);
-                } catch (final Exception e) {
-                    final String msg = "KLighD: Error occurred while loading the image "
-                            + image.getImagePath() + " in bundle " + image.getBundleName();
-                    StatusManager.getManager().handle(
-                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
-                            StatusManager.LOG);
-                    return createDummy(parent, initialBounds);
+                if (entry == null) {
+                    final String msg = "KLighD: Error occurred while loading an image from bundle "
+                            + bundleName + " : No entry could be found on path " + imagePath
+                            + KlighdPlugin.LINE_SEPARATOR
+                            + "Provide a valid bundle relative path of the image!";
+                    StatusManager.getManager().handle(new Status(
+                            IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
+                    return createDummy(parent, initialBounds);                        
+                    
+                } else {
+                    imageNode = new KlighdImage(bundleName, imagePath);
                 }
             }
-
-            // create the image, the bounds of imageNode are set within the KlighdImage implementation
-            imageNode = new KlighdImage(imageData);
         }
 
         // initialize the node

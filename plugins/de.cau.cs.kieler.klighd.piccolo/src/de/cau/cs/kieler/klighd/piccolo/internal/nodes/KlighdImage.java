@@ -15,10 +15,22 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.Shape;
 import java.io.InputStream;
+import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.ui.statushandlers.StatusManager;
+import org.osgi.framework.Bundle;
 
+import com.google.common.collect.Lists;
+
+import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
 import edu.umd.cs.piccolo.PNode;
@@ -56,11 +68,17 @@ public class KlighdImage extends PNode implements IResourceEmployer {
 
     private static final long serialVersionUID = 7201328608113593385L;
     
+    private static final ImageRegistry IMAGE_REGISTRY = 
+            KlighdPiccoloPlugin.getDefault().getImageRegistry();
+    
     // These two fields are to be kept consistent,
     //  i.e. both shall denote the same image.
     // This is useful for efficient drawing on SWT and non-SWT-based canvases.
     private transient Image image;
     private transient ImageData imageData;
+    
+    private String imageKey = null;
+    private List<String> formerImages = null;
     
     /**
      * The shape defining the clip area to be applied to this image.
@@ -76,6 +94,7 @@ public class KlighdImage extends PNode implements IResourceEmployer {
 
     /**
      * Constructor.
+     * 
      * @param image
      *            image to be displayed by this {@link KlighdImage}
      */
@@ -86,6 +105,7 @@ public class KlighdImage extends PNode implements IResourceEmployer {
 
     /**
      * Constructor.
+     * 
      * @param image
      *            image to be displayed by this {@link KlighdImage}
      */
@@ -96,24 +116,28 @@ public class KlighdImage extends PNode implements IResourceEmployer {
 
     /**
      * Constructor.
+     * 
+     * @param bundleName
+     *            name of the {@link Bundle} to load the image from, must be a valid name of an
+     *            existing bundle (perform checks before calling this constructor!)
+     * @param path
+     *            the image's path within <code>bundle</code>, must be a valid path within the given
+     *            bundle (perform checks before calling this constructor!)
+     */
+    public KlighdImage(final String bundleName, final String path) {
+        this();
+        setImage(bundleName, path);
+     }
+
+    /**
+     * Constructor.
+     * 
      * @param input
      *            stream providing the image, will be read and converted to an Image internally
      */
     public KlighdImage(final InputStream input) {
         this();
         setImage(input);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void disposeSWTResource() {
-        if (image != null) {
-            image.dispose();
-            image = null;
-        }
-        // Do not release 'imageData' here as a new Image may has to be
-        //  created based on them later on 
     }
     
     /**
@@ -123,44 +147,6 @@ public class KlighdImage extends PNode implements IResourceEmployer {
      */
     public Image getImage() {
         return image;
-    }
-
-    /**
-     * Sets the image to be displayed by this node by delegating to
-     * {@link ImageData#ImageData(InputStream)} and {@link #setImage(ImageData)}.
-     * 
-     * @param input
-     *            stream providing the image data
-     */
-    public void setImage(final InputStream input) {
-        setImage(new ImageData(input));
-    }
-
-    /**
-     * Set the clip shape to be applied to this image, removes the existing clip
-     * if <code>clip</code> is <code>null</code>.
-     * 
-     * @param clip the clip to set, may be <code>null</code>
-     */
-    public void setClip(final Shape clip) {
-        this.clip = clip;
-    }
-
-    /**
-     * Sets the image to be displayed by this node.
-     *  
-     * @param newImageData the image to be displayed, may be null
-     */
-    public void setImage(final ImageData newImageData) {
-        final Image old = this.image;
-        this.image = null;
-        this.imageData = newImageData;
-
-        if (old != null) {
-            old.dispose();
-        }
-
-        firePropertyChange(PImage.PROPERTY_CODE_IMAGE, PImage.PROPERTY_IMAGE, old, imageData);
     }
 
     /**
@@ -181,49 +167,139 @@ public class KlighdImage extends PNode implements IResourceEmployer {
     }
 
     /**
+     * Sets the image to be displayed by this node.
+     *  
+     * @param newImageData the image to be displayed, may be null
+     */
+    public void setImage(final ImageData newImageData) {
+        final Image old = this.image;
+        this.image = null;
+        this.imageData = newImageData;
+
+        if (old != null) {
+            old.dispose();
+        }
+
+        firePropertyChange(PImage.PROPERTY_CODE_IMAGE, PImage.PROPERTY_IMAGE, old, imageData);
+    }
+
+    /**
+     * Sets the image to be displayed by this node by delegating to
+     * {@link ImageData#ImageData(InputStream)} and {@link #setImage(ImageData)}.
+     * 
+     * @param input
+     *            stream providing the image data
+     */
+    public void setImage(final InputStream input) {
+        setImage(new ImageData(input));
+    }
+
+    /**
+     * Sets the image to be displayed by this node.
+     * 
+     * @param bundleName
+     *            name of the {@link Bundle} to load the image from, must be a valid name of an
+     *            existing bundle (perform checks before calling this constructor!)
+     * @param path
+     *            the image's path within <code>bundle</code>, must be a valid path within the given
+     *            bundle (perform checks before calling this constructor!)
+     */
+    public void setImage(final String bundleName, final String path) {
+        if (imageKey != null) {
+            if (formerImages == null) {
+                formerImages = Lists.newArrayList();
+            }
+            formerImages.add(imageKey);
+        }
+        
+        imageKey = bundleName + '#' + path;
+        final ImageDescriptor descr = IMAGE_REGISTRY.getDescriptor(imageKey);
+
+        if (descr != null) {
+            setImage(descr.getImageData());
+
+        } else {
+            // determine the containing bundle,
+            final Bundle bundle = Platform.getBundle(bundleName);
+            
+            // get the bundle and actual image,
+            try {
+                setImage(bundle.getEntry(path).openStream());
+                
+                KlighdPiccoloPlugin.getDefault().getImageRegistry()
+                        .put(imageKey, ImageDescriptor.createFromImageData(imageData));
+                
+            } catch (final Exception e) {
+                final String msg =
+                        "KLighD: Error occurred while loading the image " + path + " in bundle "
+                                + bundleName;
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e), StatusManager.LOG);
+            }
+        }
+    }
+
+    /**
+     * Set the clip shape to be applied to this image, removes the existing clip
+     * if <code>clip</code> is <code>null</code>.
+     * 
+     * @param clip the clip to set, may be <code>null</code>
+     */
+    public void setClip(final Shape clip) {
+        this.clip = clip;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    public void disposeSWTResource() {
+        if (image != null) {
+            image.dispose();
+            image = null;
+        }
+
+        if (imageKey != null) {
+            IMAGE_REGISTRY.remove(imageKey);
+        }
+
+        if (formerImages != null) {
+            for (final String key : formerImages) {
+                IMAGE_REGISTRY.remove(key);
+            }
+        }
+
+        // Do not release 'imageData' here as a new Image may has to be
+        //  created based on them later on 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void paint(final PPaintContext paintContext) {
         final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
         final PBounds b = getBoundsReference();
 
-        if (graphics.getDevice() != null) {
-            // within an SWT environment
-            if (this.image == null && this.imageData != null) {
-                this.image = new Image(graphics.getDevice(), this.imageData);
+        if (image != null && imageData == null) {
+            // if this KlighdImage has been initialized with an Image object
+            //  take the corresponding ImageData for drawing the image 
+            this.imageData = image.getImageData();            
+        }
+
+        if (imageData != null) {
+            final boolean setClip = clip != null;
+            final Shape prevClip = graphics.getClip();
+            
+            if (setClip) {
+                graphics.clip(clip);
             }
-            if (image != null) {
-                final boolean setClip = clip != null;
-                final Shape prevClip = graphics.getClip();
-                
-                if (setClip) {
-                    graphics.clip(clip);
-                }
 
-                graphics.drawImage(image, b.width, b.height);
+            // we here rely on the imageData as the graphics layer is supposed to create
+            //  appropriate platform specific images and dispose them properly
+            graphics.drawImage(imageData, b.width, b.height);
 
-                if (setClip) {
-                    graphics.setClip(prevClip);
-                }
-            }
-        } else {
-            // without any device we have to draw the raw image data
-            if (image != null && imageData == null) {
-                this.imageData = image.getImageData();
-            }
-            if (imageData != null) {
-                final boolean setClip = clip != null;
-                final Shape prevClip = graphics.getClip();
-                
-                if (setClip) {
-                    graphics.clip(clip);
-                }
-
-                graphics.drawImage(imageData, b.width, b.height);
-
-                if (setClip) {
-                    graphics.setClip(prevClip);
-                }
+            if (setClip) {
+                graphics.setClip(prevClip);
             }
         }
     }
