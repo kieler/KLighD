@@ -34,11 +34,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -51,11 +46,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IURIEditorInput;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -69,7 +62,6 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -86,14 +78,14 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * An editor which is able to display models in lightweight diagrams.
- *
+ * 
  * @author msp
  * @author chsch
  * @author uru
  */
-public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart.IDiagramEditorPart,
-        ILayoutConfigProvider {
-    
+public class DiagramEditorPart extends EditorPart implements
+        IDiagramWorkbenchPart.IDiagramEditorPart, ILayoutConfigProvider {
+
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
 
@@ -105,18 +97,6 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
     /** the dirty status of the editor. */
     private boolean dirty;
-
-    /** the global, common toolbar for all editors. */
-    private IToolBarManager toolBar;
-
-    /** a zoomToFit toolbar button exclusively for one instance of this editor part. */
-    private ActionContributionItem zoomToFitItem;
-    private Action zoomToFitAction;
-    private ActionContributionItem zoomToFocusItem;
-    private Action zoomToFocusAction;
-
-    /** a zoomToOne button. */
-    private ActionContributionItem zoomToOneItem;
 
     /** the composite into which the sidebar is placed. */
     private Composite diagramComposite;
@@ -157,7 +137,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     }
 
     private DiagramSideBar sideBar;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -165,67 +145,67 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public void createPartControl(final Composite parent) {
         // set the part name
         setPartName(getEditorInput().getName());
-        
+
         // introduce a new Composite that accommodates the visualized content
         diagramComposite = new Composite(parent, SWT.NONE);
         diagramComposite.setLayout(new FillLayout());
-        
+
         // create a context viewer
         viewer = new UiContextViewer(diagramComposite, this);
-        
+
         // create a view context carrying all data required for building up the diagram
         final ViewContext viewContext =
                 new ViewContext(this, model).configure(configureKlighdProperties());
 
         // create the options pane
         sideBar = DiagramSideBar.createSideBar(parent, diagramComposite, viewContext);
-        
+
         if (viewContext != null) {
             viewer.setModel(viewContext);
-            
+
             // do an initial update of the view context
             viewContext.update(model);
-            
+
             // register this editor part in the DiagramViewManager in order to
-            //  obtain it based in the ViewContext, e.g. for performing the layout,
-            //  see e.g. LightDiagramServices#layoutDiagram(IDiagramWorkbenchPart,
-            //          de.cau.cs.kieler.klighd.IViewer, boolean, boolean, java.util.List)
+            // obtain it based in the ViewContext, e.g. for performing the layout,
+            // see e.g. LightDiagramServices#layoutDiagram(IDiagramWorkbenchPart,
+            // de.cau.cs.kieler.klighd.IViewer, boolean, boolean, java.util.List)
             DiagramViewManager.getInstance().registerView(this);
-            
+
             if (requiresInitialLayout(viewContext)) {
                 // in order to avoid flickering we set the viewer's control
-                //  (the canvas) invisible, the canvas of a potentially created outline
-                //  page is invisible after initialization, too.
+                // (the canvas) invisible, the canvas of a potentially created outline
+                // page is invisible after initialization, too.
                 viewer.getControl().setVisible(false);
-                
+
                 // it is important to wait with the layout call until the #createPartControl
                 // method has finished and the widget toolkit has applied proper bounds
-                // to the parent composite via a Composite#layout call. 
+                // to the parent composite via a Composite#layout call.
                 // Otherwise a possible zoomToFit after the layout will fail since the
                 // view bounds are empty and no 'view area' to which to zoom can be
                 // determined. The async call here hopefully assures this.
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
                         final Control control = viewer.getControl();
-                        
+
                         // In case of the editor initialization at start of the tool (due
-                        //  to foregoing tool exit without closing the editor)
+                        // to foregoing tool exit without closing the editor)
                         // and some startup logic closing all "leftover" editor parts
-                        //  the viewer's control (the canvas) may have been disposed in the
-                        //  meantime of schedule this runnable and executing it.
+                        // the viewer's control (the canvas) may have been disposed in the
+                        // meantime of schedule this runnable and executing it.
                         // Thus check disposition here, and for cautiousness below, too.
                         // (further Display activities may be schedule during the layout run
-                        //  while waiting for the layouters to finish).
+                        // while waiting for the layouters to finish).
                         if (control.isDisposed()) {
                             return;
                         }
-                        
+
                         LightDiagramServices.layoutDiagram(viewContext, false, ZoomStyle.NONE);
-                        
+
                         if (control.isDisposed()) {
                             return;
                         }
-                        
+
                         // now the editor's and outline page's canvas can be set visible
                         control.setVisible(true);
                         if (toBeFocussed) {
@@ -244,22 +224,14 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             sideBar.updateOptions(diagramComposite, viewContext, false);
 
             // since no initial selection is set in the view context/context viewer implementation,
-            //  define some here by selection the root of the view model representing the diagram canvas!
+            // define some here by selection the root of the view model representing the diagram
+            // canvas!
             viewer.resetSelectionTo(getViewer().getClip());
         } else {
             viewer.setModel("The selected file does not contain any supported model.", false);
         }
-        
-        // the configuration of the context menu, selection provider,
-        //  and UI (key binding) context activation is done in the UiContextViewer
-        
-        // add buttons to the editor toolbar
-        //  requires non-null 'viewer' field!!
-        toolBar = this.getEditorSite().getActionBars().getToolBarManager();
-        createButtons();
-        getEditorSite().getWorkbenchWindow().getPartService().addPartListener(toolBarListener);
-      
-        // listen to any changes of the diagram area's size and re-zoom the diagram if  
+
+        // listen to any changes of the diagram area's size and re-zoom the diagram if
         // a zoom style is defined
         // note that it is enough to register the listener on the composite containing the sidebar
         // as this is resized simultaneously with the main window
@@ -277,10 +249,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public boolean requiresInitialLayout(final ViewContext viewContext) {
         final KNode viewModel = viewContext.getViewModel();
         final KShapeLayout diagramLayout = viewModel.getData(KShapeLayout.class);
-        
+
         return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -304,21 +276,21 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public void dispose() {
         DiagramViewManager.getInstance().unregisterViewContexts(this);
         unregisterResourceChangeListener();
-        getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
+        // getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
 
         if (!diagramComposite.isDisposed()) {
             diagramComposite.removeControlListener(diagramAreaListener);
         }
-        
+
         if (this.sideBar != null) {
             this.sideBar.dispose();
         }
-        
+
         super.dispose();
     }
-    
+
     private IDiagramOutlinePage currentOutlinePage = null;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -330,7 +302,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             currentOutlinePage = ((IDiagramOutlinePage.Provider) viewer).getDiagramOutlinePage();
             if (currentOutlinePage != null) {
                 // if the main canvas is visible we can assume the presence of a properly
-                //  initialized and arrange diagram (see #createPartControl() above),
+                // initialized and arrange diagram (see #createPartControl() above),
                 // otherwise leave the outline canvas invisible, thus...
                 currentOutlinePage.setVisible(viewer.getControl().isVisible()
                         || !requiresInitialLayout(viewer.getViewContext()));
@@ -346,14 +318,14 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public String getPartId() {
         return "diagramEditor:" + getEditorInput().toString();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public IViewer<?> getViewer() {
         return viewer;
     }
-    
+
     /**
      * {@inheritDoc}
      * 
@@ -362,9 +334,9 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public ContextViewer getContextViewer() {
         return viewer;
     }
-    
+
     private boolean toBeFocussed = false;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -385,7 +357,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public boolean isDirty() {
         return dirty;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -400,18 +372,18 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     @Override
     public void doSave(final IProgressMonitor monitor) {
         try {
-            
+
             // stop listening so the resource saving won't cause a model update
             unregisterResourceChangeListener();
-            
+
             // save all opened resources
             for (final Resource resource : resourceSet.getResources()) {
                 resource.save(Collections.emptyMap());
             }
-            
+
             // restart listening to future resource updates
             registerResourceChangeListener();
-            
+
             setDirty(false);
         } catch (final IOException exception) {
             throw new WrappedException(exception);
@@ -433,11 +405,12 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public void doSaveAs() {
         throw new UnsupportedOperationException();
     }
-    
+
     /**
      * Load a model from the editor input. The result is put into {@link #model}.
      * 
-     * @throws PartInitException if loading the model fails
+     * @throws PartInitException
+     *             if loading the model fails
      * 
      * @return the loaded model for convenience
      */
@@ -466,7 +439,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         } else {
             throw new PartInitException("The given editor input is not supported.");
         }
-        
+
         final Resource resource;
         try {
             resourceSet = new ResourceSetImpl();
@@ -486,13 +459,13 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
             throw new PartInitException("An error occurred while loading the resource.",
                     exception.getCause());
         }
-        
+
         if (resource.getContents().isEmpty()) {
             throw new PartInitException("The resource is empty.");
         }
         // default behavior: get the first element in the resource
         model = resource.getContents().get(0);
-        
+
         return model;
     }
 
@@ -508,7 +481,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /**
      * Setter, allows to change the input model in subclass implementations.
      * 
-     * @param model the model to set
+     * @param model
+     *            the model to set
      */
     protected void setModel(final Object model) {
         this.model = model;
@@ -517,29 +491,31 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     /**
      * Configures the given resource set. The default implementation does nothing.
      * 
-     * @param set the resource set to be configured.
+     * @param set
+     *            the resource set to be configured.
      */
     protected void configureResourceSet(final ResourceSet set) {
-        
+
     }
 
     /**
-     * Returns a configuration for the KLighD view. Override this method to use a custom configuration.
-     * The default implementation configures KLighD to use the simple update strategy.
+     * Returns a configuration for the KLighD view. Override this method to use a custom
+     * configuration. The default implementation configures KLighD to use the simple update
+     * strategy.
      * 
      * @return KLighD configuration.
      */
     protected IPropertyHolder configureKlighdProperties() {
         final MapPropertyHolder props = new MapPropertyHolder();
-        props.setProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy.ID);
+        props.setProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY,
+                SimpleUpdateStrategy.ID);
         return props;
     }
 
+    /* ---------------------------------- */
+    /* resource change listener stuff */
+    /* ---------------------------------- */
 
-    /* ---------------------------------- */
-    /*   resource change listener stuff   */
-    /* ---------------------------------- */
-    
     /**
      * A resource change listener that updates the editor when resources are removed or changed.
      */
@@ -578,8 +554,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         }
 
         /**
-         * A dedicated {@link IResourceDeltaVisitor}, introduced as named class in order to clean
-         * up the spaghetti code of anonymous interface implementations.
+         * A dedicated {@link IResourceDeltaVisitor}, introduced as named class in order to clean up
+         * the spaghetti code of anonymous interface implementations.
          */
         private class DeltaVisitor implements IResourceDeltaVisitor {
 
@@ -611,8 +587,8 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 // this won't work if the resource was loaded from an absolute path
 
                 final Resource resource =
-                        resourceSet.getResource(
-                                URI.createPlatformResourceURI(fullPath, true), false);
+                        resourceSet.getResource(URI.createPlatformResourceURI(fullPath, true),
+                                false);
 
                 if (resource == null) {
                     return;
@@ -629,7 +605,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                     }
                 });
             }
-            
+
             private void reloadModel(final Resource resource) {
                 if (resource.isLoaded()) {
                     resource.unload();
@@ -641,8 +617,10 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                         viewer.getViewContext().update(model);
 
                     } catch (final IOException exception) {
-                        final String msg = this.getClass().getSimpleName() + " : Failed to reload "
-                                + resource.getURI().toString() + " after it has been changed.";
+                        final String msg =
+                                this.getClass().getSimpleName() + " : Failed to reload "
+                                        + resource.getURI().toString()
+                                        + " after it has been changed.";
 
                         StatusManager.getManager().handle(
                                 new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, exception));
@@ -652,147 +630,6 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         }
     }
 
-
-    /**
-     * Add the buttons to the tool bar.
-     */
-    private void createButtons() {
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-
-        // zoom to fit
-        zoomToFitAction = new Action("Toggle Zoom to Fit", IAction.AS_CHECK_BOX) {
-            // Constructor
-            {
-                setImageDescriptor(KlighdPlugin
-                        .getImageDescriptor("icons/kieler-zoomtofit.gif"));
-                final ViewContext vc =
-                        DiagramEditorPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    setChecked(vc.isZoomToFit());
-                } else {
-                    final ZoomStyle style = ZoomStyle.valueOf(
-                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
-                    setChecked(style == ZoomStyle.ZOOM_TO_FIT);
-                }
-            }
-
-            @Override
-            public void run() {
-                final ViewContext vc =
-                        DiagramEditorPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    vc.setZoomStyle(ZoomStyle.create(false, this.isChecked(), false));
-
-                    // perform zoom to fit upon activation of the toggle button
-                    if (this.isChecked()) {
-                        // uncheck the zoom to focus button
-                        zoomToFocusAction.setChecked(false);
-
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
-                    }
-
-                }
-            }
-        };
-        zoomToFitAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFit.h" + hashCode());
-        // create the contribution item
-        zoomToFitItem = new ActionContributionItem(zoomToFitAction);
-        
-        // zoom to focus
-        zoomToFocusAction = new Action("Toggle Zoom to Focus", IAction.AS_CHECK_BOX) {
-            // Constructor
-            {
-                setImageDescriptor(KlighdPlugin
-                        .getImageDescriptor("icons/kieler-zoomtofocus.gif"));
-                final ViewContext vc = DiagramEditorPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    setChecked(vc.isZoomToFocus());
-                } else {
-                    final ZoomStyle style = ZoomStyle.valueOf(
-                            preferenceStore.getString(KlighdPreferences.ZOOM_STYLE));
-                    setChecked(style == ZoomStyle.ZOOM_TO_FOCUS);
-                }
-            }
-
-            @Override
-            public void run() {
-                final ViewContext vc = DiagramEditorPart.this.getViewer().getViewContext();
-                if (vc != null) {
-                    vc.setZoomStyle(ZoomStyle.create(false, false, this.isChecked()));
-
-                    // perform zoom to focus upon activation of the toggle button
-                    if (this.isChecked()) {
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
-                        
-                        // uncheck the zoom to fit button
-                        zoomToFitAction.setChecked(false);
-                    }
-
-                }
-            }
-        };
-        zoomToFocusAction.setId("de.cau.cs.kieler.klighd.editor.zoomToFocus.h" + hashCode());
-        zoomToFocusItem = new ActionContributionItem(zoomToFocusAction);
-        
-        // zoom to one ...
-        final Action zoomToOne = new Action("Zoom to Original Size", IAction.AS_PUSH_BUTTON) {
-            {
-                setImageDescriptor(KlighdPlugin
-                        .getImageDescriptor("icons/kieler-zoomtoone.gif"));
-            }
-            @Override
-            public void run() {
-                DiagramEditorPart.this.getViewer().zoomToLevel(1,
-                        KlighdConstants.DEFAULT_ANIMATION_TIME);
-            }
-        };
-        zoomToOne.setId("de.cau.cs.kieler.klighd.editor.zoomToOne.h" + hashCode());
-        zoomToOneItem = new ActionContributionItem(zoomToOne);
-    }
-
-    /**
-     * For edit parts only one common toolbar exists, hence we have to remove the buttons of one
-     * editor as soon as a different editor is activated and add our own buttons.
-     * 
-     * TODO fix this. When closing an editor, the toolbar of the new editor is greyed out.
-     * The toolbar itself and its items are enabled however. This might be due
-     * to the partClosed event being invoked after the partActivate event.
-     */
-    private IPartListener toolBarListener = new IPartListener() {
-
-        public void partOpened(final IWorkbenchPart part) {
-        }
-
-        public void partDeactivated(final IWorkbenchPart part) {
-            remove(part);
-        }
-
-        public void partClosed(final IWorkbenchPart part) {
-            remove(part);
-        }
-
-        public void partBroughtToTop(final IWorkbenchPart part) {
-        }
-
-        public void partActivated(final IWorkbenchPart part) {
-            if (part.equals(DiagramEditorPart.this)) {
-                toolBar.add(zoomToFitItem);
-                toolBar.add(zoomToFocusItem);
-                toolBar.add(zoomToOneItem);
-                toolBar.update(true);
-            }
-        }
-        
-        private void remove(final IWorkbenchPart part) {
-            if (part.equals(DiagramEditorPart.this)) {
-                toolBar.remove(zoomToFitItem);
-                toolBar.remove(zoomToFocusItem);
-                toolBar.remove(zoomToOneItem);
-                toolBar.update(true);
-            }
-        }
-    };
-    
     /**
      * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
      * defined.
@@ -834,8 +671,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
                 final Point size = getViewer().getControl().getSize();
                 if (size.x > 0 && size.y > 0) {
                     final Float aspectRatio =
-                            Math.round(ASPECT_RATIO_ROUND * size.x / size.y)
-                                    / ASPECT_RATIO_ROUND;
+                            Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {
                         LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);

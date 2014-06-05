@@ -47,6 +47,12 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         preferenceStore.setDefault(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE,
                 KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE_DEFAULT);
 
+        preferenceStore.setDefault(KlighdPreferences.EXPAND_SIDE_BAR,
+                KlighdPreferences.EXPAND_SIDE_BAR_DEFAULT);
+        
+        preferenceStore.setDefault(KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS,
+                KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS_DEFAULT);
+
         // Magnification lens settings
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_ENABLED,
                 KlighdPreferences.MAGNIFICATION_LENS_ENABLED_DEFAULT);
@@ -59,9 +65,5 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_SCALE,
                 KlighdPreferences.MAGNIFICATION_LENS_SCALE_DEFAULT);
-        
-        
-        preferenceStore.setDefault(KlighdPreferences.EXPAND_SIDE_BAR,
-                KlighdPreferences.EXPAND_SIDE_BAR_DEFAULT);
     }
 }
