@@ -75,15 +75,13 @@ public class KlighdPath extends PNode implements IResourceEmployer {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
-    private static final RGB DEFAULT_STROKE_PAINT = new RGB(0, 0, 0);
-
     private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap();
 
     private LineAttributes lineAttributes = new LineAttributes(1f);
     private BasicStroke stroke = new BasicStroke();
 
     private int strokeAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
-    private RGB strokePaint = DEFAULT_STROKE_PAINT;
+    private RGB strokePaint = KlighdConstants.BLACK;
     private RGBGradient strokePaintGradient = null;
 
     private int paintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
@@ -424,6 +422,7 @@ public class KlighdPath extends PNode implements IResourceEmployer {
      *            bounds being tested for intersection
      * @return true if path visibly crosses bounds
      */
+    @Override
     public boolean intersects(final Rectangle2D aBounds) {
         if (super.intersects(aBounds)) {
             final Rectangle2D srcBounds = aBounds;
@@ -533,6 +532,7 @@ public class KlighdPath extends PNode implements IResourceEmployer {
      * 
      * @author chsch
      */
+    @Override
     public PBounds getFullBoundsReference() {
         PBounds curBounds = super.getFullBoundsReference();
         if (shadow != null) {
@@ -568,7 +568,7 @@ public class KlighdPath extends PNode implements IResourceEmployer {
             drawShadow(graphics, swt);
         }
         final int currentAlpha = graphics.getAlpha();
-        final float currentAlphaFloat = (float) currentAlpha;
+        final float currentAlphaFloat = currentAlpha;
 
         // draw the background if possible and required
         if (!isLine()) {
@@ -650,8 +650,8 @@ public class KlighdPath extends PNode implements IResourceEmployer {
 
         
         // determine the movement of the shape coordinates by means of an affine transform
-        AffineTransform t = graphics.getTransform();
-        AffineTransform tc = new AffineTransform(t);
+        final AffineTransform t = graphics.getTransform();
+        final AffineTransform tc = new AffineTransform(t);
         tc.translate(shadowExtendX, shadowExtendY);
 
         // configure the graphics layer
@@ -660,12 +660,12 @@ public class KlighdPath extends PNode implements IResourceEmployer {
         // a sufficiently small number unequal to 0
         graphics.setLineAttributes(new LineAttributes(0.0001f)); // SUPPRESS CHECKSTYLE MagicNumber
         graphics.setAlpha(
-                (int) ((float) currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
+                (int) (currentAlpha * shadowAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
 
         // use the maximal value for the loop
-        int maxShadowExtend = (int) Math.ceil(Math.max(shadowExtendX, shadowExtendY));
-        boolean xIsBigger = shadowExtendX > shadowExtendY;
-        double ratio =
+        final int maxShadowExtend = (int) Math.ceil(Math.max(shadowExtendX, shadowExtendY));
+        final boolean xIsBigger = shadowExtendX > shadowExtendY;
+        final double ratio =
                 xIsBigger ? (shadowExtendY / shadowExtendX) : (shadowExtendX / shadowExtendY);
         // draw a bunch of shape copies, each of them is moved a bit towards the original position
         for (int i = 0; i < maxShadowExtend; i++) {
@@ -813,7 +813,7 @@ public class KlighdPath extends PNode implements IResourceEmployer {
         }
 
         this.isSpline = true;
-        Path2D spline = PolylineUtil.createSplinePath(new Path2D.Float(), points);
+        final Path2D spline = PolylineUtil.createSplinePath(new Path2D.Float(), points);
         this.linePoints = PolylineUtil.createSplineApproximationPath(spline);
         this.setShape(spline);
     }

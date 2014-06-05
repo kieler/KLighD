@@ -85,7 +85,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
- * An editor which is able to display models in light-weight diagrams.
+ * An editor which is able to display models in lightweight diagrams.
  *
  * @author msp
  * @author uru
@@ -269,7 +269,16 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
     public ILayoutConfig getLayoutConfig() {
         return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetLayoutConfig() {
+        if (this.sideBar != null) {
+            this.sideBar.resetLayoutOptionsToDefaults();
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -468,7 +477,25 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         
         return model;
     }
-    
+
+    /**
+     * Getter, provides access to the input model to subclasses.
+     * 
+     * @return the model
+     */
+    protected Object getModel() {
+        return model;
+    }
+
+    /**
+     * Setter, allows to change the input model in subclass implementations.
+     * 
+     * @param model the model to set
+     */
+    protected void setModel(final Object model) {
+        this.model = model;
+    }
+
     /**
      * Configures the given resource set. The default implementation does nothing.
      * 

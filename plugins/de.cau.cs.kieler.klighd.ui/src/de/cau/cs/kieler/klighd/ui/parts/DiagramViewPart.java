@@ -51,7 +51,7 @@ import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
- * A view which is able to display models in light-weight diagrams.
+ * A view which is able to display models in lightweight diagrams.
  * 
  * @author mri
  * @author chsch
@@ -144,7 +144,16 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     public ILayoutConfig getLayoutConfig() {
         return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetLayoutConfig() {
+        if (this.sideBar != null) {
+            this.sideBar.resetLayoutOptionsToDefaults();
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -165,8 +174,12 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart, 
     }
     
     /**
+     * (Re-)Evaluates the diagram (synthesis) and layout options registered in the employed
+     * {@link ViewContext} and populates the diagram side bar accordingly. For internal use only!
      * 
-     * @param fitSpace a;
+     * @param fitSpace
+     *            if <code>true</code> a {@link ZoomStyle#ZOOM_TO_FIT} will applied to the diagram
+     *            in order to fit into the remaining space
      */
     public void updateOptions(final boolean fitSpace) {
         this.sideBar.updateOptions(diagramComposite, this.viewer.getViewContext(), fitSpace);

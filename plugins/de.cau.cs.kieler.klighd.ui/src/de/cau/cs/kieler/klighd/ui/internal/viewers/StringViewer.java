@@ -199,7 +199,42 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
+    public void panToTopLeftCorner(final Object semanticElement, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final KNode diagramElement, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void panDiagramToTopLeftCorner(final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void zoomToLevel(final float zoomLevel, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final Object semanticElement, final int duration) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void zoomToFocus(final KNode diagramElement, final int duration) {
         // do nothing
     }
 

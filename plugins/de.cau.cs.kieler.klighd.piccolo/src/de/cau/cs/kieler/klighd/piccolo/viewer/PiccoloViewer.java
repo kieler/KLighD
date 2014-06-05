@@ -48,12 +48,12 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramZoomController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdPanEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdShowLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -113,7 +113,8 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public PiccoloViewer(final ContextViewer theParentViewer, final Composite parent,
             final int style) {
         if (parent.isDisposed()) {
-            final String msg = "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
+            final String msg =
+                    "KLighD (piccolo): A 'PiccoloViewer' has been tried to attach to a"
                             + "disposed 'Composite' widget.";
             throw new IllegalArgumentException(msg);
         }
@@ -123,21 +124,23 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         final KlighdMainCamera camera = canvas.getCamera();
 
         // install the required event handlers, they rely on SWT event type codes
+        // the order of registering them DOES MATTER,
+        //  the first has lowest priority, the last highest
+        // make sure those handlers properly execute 'event.setHandled(true);'
+        //  in order to skip invoking the less priority handlers
         camera.addInputEventListener(new KlighdActionEventHandler(this));
         camera.addInputEventListener(new KlighdShowLensEventHandler(camera));
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
                 new KlighdPanEventHandler(canvas)));
-        camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
-
-        // add a node for the rubber band selection marquee
-        // final PEmptyNode marqueeParent = new PEmptyNode();
-        // camera.getLayer(1).addChild(marqueeParent);
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(
+                new KlighdSelectiveZoomEventHandler()));
+        camera.addInputEventListener(
+                new KlighdSelectionEventHandler(theParentViewer));
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
 
-        
         // A timer being in charge of buffering and thus aggregating a bunch of single
         // view transform changes occurring closely after each other to a single view
         // change notification. Once the time elapsed without restarting it in the
@@ -154,16 +157,18 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         timer.setRepeats(false);
 
         // Install a listener sensitive to canvas size changes, i.e. view port changes,
-        //  being in charge of notifying the registered view change listeners of new view port bounds.
+        // being in charge of notifying the registered view change listeners of new view port
+        // bounds.
         this.canvas.addControlListener(new ControlAdapter() {
-            
+            @Override
             public void controlResized(final ControlEvent e) {
                 timer.restart();
             }
         });
 
         // Install a listener sensitive to view transform changes, i.e. view port changes,
-        //  being in charge of notifying the registered view change listeners of new view port bounds.
+        // being in charge of notifying the registered view change listeners of new view port
+        // bounds.
         camera.addPropertyChangeListener(PCamera.PROPERTY_VIEW_TRANSFORM,
                 new PropertyChangeListener() {
 
@@ -188,7 +193,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         }
         return outlinePage;
     }
-    
+
     /**
      * Factory method for creation of a corresponding outline page.<br>
      * To be overridden by subclasses in order to inject specialized outline pages, see e.g.
@@ -199,7 +204,6 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     protected PiccoloOutlinePage createDiagramOutlinePage() {
         return new PiccoloOutlinePage();
     }
-
 
     /**
      * {@inheritDoc}
@@ -245,14 +249,13 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public void startRecording() {
         controller.startRecording();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void stopRecording(final int animationTime) {
         final ViewContext viewContext = this.getViewContext();
         final ZoomStyle zoomStyle;
-        
         // get the zoomStyle
         if (viewContext != null) {
             final ZoomStyle nzs = viewContext.getProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE);
@@ -265,7 +268,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         } else {
             zoomStyle = ZoomStyle.NONE;
         }
-        
+
         stopRecording(zoomStyle, animationTime);
     }
 
@@ -275,11 +278,12 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
         controller.stopRecording(zoomStyle, animationTime);
     }
-    
+
     /**
      * Convenience method simplifying the notification call.
      * 
-     * @see #notifyViewChangeListeners(ViewChangeType, KGraphElement, java.awt.geom.Rectangle2D, float)
+     * @see #notifyViewChangeListeners(ViewChangeType, KGraphElement, java.awt.geom.Rectangle2D,
+     *      float)
      * 
      * @param type
      *            the corresponding {@link ViewChangeType}
@@ -301,7 +305,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         final RenderingContextData contextData = RenderingContextData.basicGet(diagramElement);
         if (contextData == null || !contextData.isActive(diagramElement)) {
             // in this case either node rendering figure exists as of now or it has been
-            //  removed from the diagram due to node collapse or a hide execution 
+            // removed from the diagram due to node collapse or a hide execution
             return false;
         }
 
@@ -312,16 +316,17 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
 
         } else {
             // beyond testing for the 'active' flag I want to at least test the display of the
-            //  corresponding parent node in case of labels and ports (and their labels)
-            
+            // corresponding parent node in case of labels and ports (and their labels)
+
             if (diagramElement instanceof KNode) {
                 // nothing to do
                 return true;
-            } 
+            }
 
             if (diagramElement instanceof KEdge) {
-                // edges are handled explicitly at removal of nodes (see DiagramController) so we don't
-                //  test their source and target node explicitly here.
+                // edges are handled explicitly at removal of nodes (see DiagramController) so we
+                // don't
+                // test their source and target node explicitly here.
                 return true;
             }
 
@@ -350,27 +355,34 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     @Override
     public void zoomToLevel(final float zoomLevel, final int duration) {
-        controller.zoomToLevel(zoomLevel, duration);
+        controller.getZoomController().zoomToLevel(zoomLevel, duration);
     }
 
     /**
      * {@inheritDoc}
      */
+    public void zoomToFocus(final KNode diagramElement, final int duration) {
+        controller.getZoomController().zoomToFocus(diagramElement, duration);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void zoom(final ZoomStyle style, final int duration) {
-        controller.zoom(style, duration);
+        controller.getZoomController().zoom(style, duration);
     }
 
     private static final String NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG =
             "KLighD: There is no figure represtation (PNode) of diagramElement XX!";
-    
+
     private static final String NOT_IN_CURRENT_CLIP_ERROR_MSG =
             "KLighD: The figure representation of diagram element XX is not"
-            + " displayed in the current diagram clipping!";
-    
+                    + " displayed in the current diagram clipping!";
+
     private static final String NOT_IN_CURRENT_CLIP_REVEAL_ERROR_MSG =
             NOT_IN_CURRENT_CLIP_ERROR_MSG + " It thus cannot be revealed.";
-    
+
     /**
      * {@inheritDoc}
      */
@@ -386,7 +398,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
             final PBounds destBounds =
                     NodeUtil.clipRelativeGlobalBoundsOf(node, this.canvas.getCamera()
                             .getDisplayedINode());
-            
+
             if (destBounds != null) {
                 // move the camera so it includes the bounds of the node
                 camera.animateViewToPanToBounds(destBounds, duration);
@@ -402,7 +414,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
 
     private static final String NOT_IN_CURRENT_CLIP_CENTER_ON_ERROR_MSG =
             NOT_IN_CURRENT_CLIP_ERROR_MSG + " Thus the diagram cannot be centered on that element.";
-    
+
     /**
      * {@inheritDoc}
      */
@@ -418,7 +430,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
             final PBounds destBounds =
                     NodeUtil.clipRelativeGlobalBoundsOf(node, this.canvas.getCamera()
                             .getDisplayedINode());
-            
+
             if (destBounds != null) {
                 // center the camera on the node
                 camera.animateViewToCenterBounds(destBounds, false, duration);
@@ -430,6 +442,61 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
                                 diagramElement.toString())));
             }
         }
+    }
+
+    private static final String NOT_IN_CURRENT_CLIP_TO_TOP_LEFT_ERROR_MSG =
+            NOT_IN_CURRENT_CLIP_ERROR_MSG + " Thus the diagram cannot be panned to align"
+                    + " that node with the visible area's top left corner.";
+
+    /**
+     * {@inheritDoc}
+     */
+    public void panToTopLeftCorner(final KNode diagramElement, final int duration) {
+        final PNode node = getRepresentation(diagramElement);
+        if (node == null) {
+            StatusManager.getManager().handle(
+                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                            NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG).replace("XX",
+                            diagramElement.toString())));
+        } else {
+            final KlighdMainCamera camera = canvas.getCamera();
+
+            final PBounds destBounds =
+                    NodeUtil.clipRelativeGlobalBoundsOf(node, this.canvas.getCamera()
+                            .getDisplayedINode());
+
+            if (destBounds != null) {
+                final double scale = camera.getViewTransformReference().getScale();
+
+                // compose a new affine transform describing the desired camera view ... 
+                final AffineTransform t = AffineTransform.getScaleInstance(scale, scale);
+                t.translate(-destBounds.x, -destBounds.y);
+                
+                // ... and trigger the change 
+                camera.animateViewToTransform(t, duration);
+            } else {
+                StatusManager.getManager().handle(
+                        new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, new String(
+                                NOT_IN_CURRENT_CLIP_TO_TOP_LEFT_ERROR_MSG).replace("XX",
+                                diagramElement.toString())));
+            }
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void panDiagramToTopLeftCorner(final int duration) {
+        final KlighdMainCamera camera = canvas.getCamera();
+
+        final double scale = camera.getViewTransformReference().getScale();
+        final AffineTransform t = AffineTransform.getScaleInstance(scale, scale);
+
+        final PBounds destBounds =
+                NodeUtil.clipRelativeGlobalBoundsOf(camera.getDisplayedLayer(),
+                        camera.getDisplayedINode());
+        t.translate(-destBounds.x, -destBounds.y);
+        camera.animateViewToTransform(t, duration);
     }
 
     /**
@@ -503,15 +570,15 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      * {@inheritDoc}
      */
     public void scale(final KNode diagramElement, final float factor) {
-        KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
+        final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
         if (layoutData != null) {
             layoutData.setProperty(LayoutOptions.SCALE_FACTOR, factor);
         }
-        
+
         if (isExpanded(diagramElement)) {
             controller.getZoomController().setFocusNode(diagramElement);
         }
-        
+
         this.notifyViewChangeListeners(ViewChangeType.SCALE, diagramElement);
     }
 
@@ -519,7 +586,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      * {@inheritDoc}
      */
     public float getScale(final KNode diagramElement) {
-        KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
+        final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
         if (layoutData != null) {
             return layoutData.getProperty(LayoutOptions.SCALE_FACTOR);
         } else {
@@ -581,7 +648,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
                 controller.getMainCamera().getDisplayedINode().getGraphElement();
 
         final PBounds newBounds =
-                DiagramZoomController.toPBoundsIncludingPortsAndLabels(displayedNode);
+                controller.getZoomController().toPBoundsIncludingPortsAndLabels(displayedNode);
         camera.animateViewToCenterBounds(newBounds, true, 0);
 
         // set up a new paint context and paint the camera
