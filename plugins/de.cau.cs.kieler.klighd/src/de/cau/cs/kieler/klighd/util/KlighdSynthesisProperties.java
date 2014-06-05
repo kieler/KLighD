@@ -58,7 +58,24 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         /** The initialization of the side bar is done according to the related preference setting. */
         UNDEFINED
     }
+    
+    /** property denoting a desired zoom buttons handling. */
+    public static final IProperty<ZoomConfigButtonsHandling> REQUESTED_ZOOM_CONFIG_BUTTONS_HANDLING =
+            new Property<ZoomConfigButtonsHandling>("klighd.zoomConfigButtonsHandling",
+                    ZoomConfigButtonsHandling.UNDEFINED);
 
+    /**
+     * Defines the possible zoom buttons visibility options. 
+     */
+    public static enum ZoomConfigButtonsHandling {
+        /** Forces the diagram viewer to show the zoom buttons. */
+        SHOW,
+        /** Forces the diagram viewer to hide the zoom buttons. */
+        HIDE,
+        /** The visibility of the zoom buttons is set according to the related preference setting. */
+        UNDEFINED
+    }
+    
     /**
      * Immutable singleton instance of {@link KlighdSynthesisProperties}.  
      */

@@ -87,7 +87,6 @@ public final class KlighdPreferences {
     /** Default advanced panning mode setting. */
     public static final boolean ADVANCED_PANNING_MODE_DEFAULT = false;
 
-
     /** ID of the expand side bar preference. */
     public static final String EXPAND_SIDE_BAR =
             "de.cau.cs.kieler.klighd.preferences.expandSideBar";
@@ -95,8 +94,12 @@ public final class KlighdPreferences {
     /** Default expand side bar setting. */
     public static final boolean EXPAND_SIDE_BAR_DEFAULT = true;
     
+    /** ID of the show zoom buttons preference. */
+    public static final String SHOW_ZOOM_CONFIG_BUTTONS =
+            "de.cau.cs.kieler.klighd.preferences.showZoomConfigButtons";
     
-
+    /** Default zoom buttons visibility. */
+    public static final boolean SHOW_ZOOM_CONFIG_BUTTONS_DEFAULT = true;
 
     /** The {@link IPreferenceStore} used for KLighD-specific preferences. */
     public static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
@@ -124,6 +127,16 @@ public final class KlighdPreferences {
      */
     public static boolean isExpandSideBar() {
         return STORE.getBoolean(EXPAND_SIDE_BAR);
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return <code>true</code> if zoom buttons should be shown in the side bar or on the diagram
+     *         canvas respectively, <code>false</code> otherwise.
+     */
+    public static boolean isShowZoomConfigButtons() {
+        return STORE.getBoolean(SHOW_ZOOM_CONFIG_BUTTONS);
     }
 
     /**

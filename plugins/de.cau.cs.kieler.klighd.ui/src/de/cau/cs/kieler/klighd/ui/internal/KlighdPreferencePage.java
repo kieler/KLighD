@@ -52,6 +52,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     /** checkbox for expand side bar on initializing diagrams. */
     private Button expandSideBar;
     
+    /** checkbox for show zoom buttons on initializing diagrams. */
+    private Button showZoomConfigButtons;
+    
     private static final String ADVANCED_PANNING_TOOLTIP =
             "If enabled diagram panning continues when mouse pointer leaves the diagram area and stops,"
             + " until it returns to diagram area or the mouse button is released.";
@@ -59,6 +62,10 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     private static final String EXPAND_SIDE_BAR_TOOLTIP =
             "Diagram side bars accommodate the controls for diagram options and layout options."
             + " If deactivated the side bars must be expanded manually.";
+    
+    private static final String SHOW_ZOOM_CONFIG_BUTTONS_TOOLTIP =
+            "Zoom buttons provides options to set the zoom behavior."
+            + " If deactivated the zoom buttons are not visible.";
 
     /** checkbox for 'zoom on workbench part change'. */
     private Button zoomOnWorkbenchpartChange;
@@ -108,6 +115,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         preferenceStore.setValue(KlighdPreferences.EXPAND_SIDE_BAR,
                 expandSideBar.getSelection());
         
+        preferenceStore.setValue(KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS,
+                showZoomConfigButtons.getSelection());
+        
         preferenceStore.setValue(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE,
                 zoomOnWorkbenchpartChange.getSelection());
         
@@ -141,6 +151,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         
         expandSideBar.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.EXPAND_SIDE_BAR));
+        
+        showZoomConfigButtons.setSelection(preferenceStore
+                .getDefaultBoolean(KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS));
         
         zoomOnWorkbenchpartChange.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE));
@@ -220,6 +233,12 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         expandSideBar.setToolTipText(EXPAND_SIDE_BAR_TOOLTIP);
         expandSideBar.setSelection(getPreferenceStore().getBoolean(
                 KlighdPreferences.EXPAND_SIDE_BAR));
+
+        showZoomConfigButtons = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
+        showZoomConfigButtons.setText("Show zoom buttons");
+        showZoomConfigButtons.setToolTipText(SHOW_ZOOM_CONFIG_BUTTONS_TOOLTIP);
+        showZoomConfigButtons.setSelection(getPreferenceStore().getBoolean(
+                KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS));
 
         return generalGroup;
     }
