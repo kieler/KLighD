@@ -88,6 +88,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * An editor which is able to display models in lightweight diagrams.
  *
  * @author msp
+ * @author chsch
  * @author uru
  */
 public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPart.IDiagramEditorPart,
@@ -119,12 +120,29 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
 
     /** the composite into which the sidebar is placed. */
     private Composite diagramComposite;
-    
+
     /**
-     * Creates a diagram editor part.
+     * Creates a diagram editor part.<br>
+     * Besides, an {@link IResourceChangeListener} will be installed on the workspace, which is in
+     * charge updating the diagram if the related editor input is changed.
      */
     public DiagramEditorPart() {
+        this(true);
+    }
+
+    /**
+     * Creates a diagram editor part.
+     * 
+     * @param installResourceChangeListener
+     *            if <code>true</code> an {@link IResourceChangeListener} will be installed on the
+     *            workspace, which is in charge updating the diagram if the related editor input is
+     *            changed.
+     */
+    protected DiagramEditorPart(final boolean installResourceChangeListener) {
         super();
+        if (installResourceChangeListener) {
+            resourceChangeListener = new KlighdResourceChangeListener();
+        }
     }
 
     /**
@@ -247,7 +265,7 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         // as this is resized simultaneously with the main window
         diagramComposite.addControlListener(diagramAreaListener);
     }
-    
+
     /**
      * Tester that decides on the need for computing the diagram layout while opening the diagram.<br>
      * May be overridden by subclasses.
@@ -517,85 +535,124 @@ public class DiagramEditorPart extends EditorPart implements IDiagramWorkbenchPa
         return props;
     }
 
-    /**
-     * Update the viewed model using the given resource.
-     * 
-     * @param resource a resource
-     */
-    private void updateModel(final Resource resource) {
-        if (resource.isLoaded()) {
-            resource.unload();
-            try {
-                resource.load(Collections.EMPTY_MAP);
 
-                // default behavior: get the first element in the resource
-                model = resource.getContents().get(0);
-                viewer.getViewContext().update(model);
-
-            } catch (final IOException exception) {
-                final IStatus status = new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                        "Failed to update " + resource.getURI().toString(), exception);
-                StatusManager.getManager().handle(status);
-            }
-        }
-    }
-    
-    /**
-     * Register the resource change listener.
-     */
-    private void registerResourceChangeListener() {
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener,
-                IResourceChangeEvent.POST_CHANGE);
-    }
-    
-    /**
-     * Unregister the resource change listener.
-     */
-    private void unregisterResourceChangeListener() {
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
-    }
+    /* ---------------------------------- */
+    /*   resource change listener stuff   */
+    /* ---------------------------------- */
     
     /**
      * A resource change listener that updates the editor when resources are removed or changed.
      */
-    private IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
+    private IResourceChangeListener resourceChangeListener;
+
+    /**
+     * Register the resource change listener.
+     */
+    private void registerResourceChangeListener() {
+        if (resourceChangeListener != null) {
+            ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener,
+                    IResourceChangeEvent.POST_CHANGE);
+        }
+    }
+
+    /**
+     * Unregister the resource change listener.
+     */
+    private void unregisterResourceChangeListener() {
+        if (resourceChangeListener != null) {
+            ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+        }
+    }
+
+    /**
+     * A resource change listener that updates the editor when resources are removed or changed.
+     */
+    private class KlighdResourceChangeListener implements IResourceChangeListener {
+
         public void resourceChanged(final IResourceChangeEvent event) {
             try {
-                event.getDelta().accept(new IResourceDeltaVisitor() {
-                    public boolean visit(final IResourceDelta delta) {
-                        if (delta.getResource().getType() == IResource.FILE) {
-                            if (delta.getKind() == IResourceDelta.REMOVED
-                                    || delta.getKind() == IResourceDelta.CHANGED
-                                    && delta.getFlags() != IResourceDelta.MARKERS) {
-                                // this won't work if the resource was loaded from an absolute path
-                                final Resource resource = resourceSet.getResource(
-                                        URI.createPlatformResourceURI(
-                                        delta.getFullPath().toString(), true), false);
-                                if (resource != null) {
-                                    getSite().getShell().getDisplay().asyncExec(new Runnable() {
-                                        public void run() {
-                                            if (delta.getKind() == IResourceDelta.REMOVED) {
-                                                // a required resource was removed, so close the editor
-                                                getSite().getPage().closeEditor(
-                                                        DiagramEditorPart.this, false);
-                                            } else {
-                                                updateModel(resource);
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        }
-    
-                        return true;
-                    }
-                });
+                event.getDelta().accept(new DeltaVisitor());
             } catch (final CoreException exception) {
                 StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
             }
         }
-    };
-          
+
+        /**
+         * A dedicated {@link IResourceDeltaVisitor}, introduced as named class in order to clean
+         * up the spaghetti code of anonymous interface implementations.
+         */
+        private class DeltaVisitor implements IResourceDeltaVisitor {
+
+            public boolean visit(final IResourceDelta delta) {
+
+                if (delta.getResource().getType() != IResource.FILE) {
+                    // does that make sense - I'm not sure...
+                    return true;
+                }
+
+                if (delta.getKind() == IResourceDelta.REMOVED) {
+                    update(delta.getFullPath().toString(), true);
+
+                } else if (delta.getKind() == IResourceDelta.CHANGED
+                        && delta.getFlags() != IResourceDelta.MARKERS) {
+                    update(delta.getFullPath().toString(), false);
+                }
+                // this the update is done on file level,
+                // don't evaluate potential children of delta
+                // thus ...
+                return false;
+            }
+
+            private void update(final String fullPath, final boolean remove) {
+                // checking whether the changed resource is used by
+                // 'DiagramEditorPart.this' is implicitly done by the following
+                // getResource(...) statement as the 'loadOnDemand' parameter is 'false'
+                // thus only resources that are already loaded are returned
+                // this won't work if the resource was loaded from an absolute path
+
+                final Resource resource =
+                        resourceSet.getResource(
+                                URI.createPlatformResourceURI(fullPath, true), false);
+
+                if (resource == null) {
+                    return;
+                }
+
+                getSite().getShell().getDisplay().asyncExec(new Runnable() {
+                    public void run() {
+                        if (remove) {
+                            // a required resource was removed, so close the editor
+                            getSite().getPage().closeEditor(DiagramEditorPart.this, false);
+                        } else {
+                            reloadModel(resource);
+                        }
+                    }
+                });
+            }
+            
+            private void reloadModel(final Resource resource) {
+                if (resource.isLoaded()) {
+                    resource.unload();
+                    try {
+                        resource.load(Collections.EMPTY_MAP);
+
+                        // default behavior: get the first element in the resource
+                        model = resource.getContents().get(0);
+                        viewer.getViewContext().update(model);
+
+                    } catch (final IOException exception) {
+                        final String msg = this.getClass().getSimpleName() + " : Failed to reload "
+                                + resource.getURI().toString() + " after it has been changed.";
+
+                        StatusManager.getManager().handle(
+                                new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, exception));
+                    }
+                }
+            }
+        }
+    }
+
+
     /**
      * Add the buttons to the tool bar.
      */
