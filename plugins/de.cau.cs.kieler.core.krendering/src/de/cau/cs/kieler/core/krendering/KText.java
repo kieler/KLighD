@@ -28,6 +28,7 @@ package de.cau.cs.kieler.core.krendering;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KText#getText <em>Text</em>}</li>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KText#isCursorSelectable <em>Cursor Selectable</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KText#isEditable <em>Editable</em>}</li>
  * </ul>
  * </p>
  *
@@ -75,7 +76,7 @@ public interface KText extends KRendering {
      * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Makes this text selectable similar to a text document so that the whole text or parts of it can be copied.
+     * Determines the interactive selectability of the text string similar to the text selectability in text, table, or tree viewers.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Cursor Selectable</em>' attribute.
      * @see #setCursorSelectable(boolean)
@@ -94,5 +95,31 @@ public interface KText extends KRendering {
      * @generated
      */
     void setCursorSelectable(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Editable</b></em>' attribute.
+     * The default value is <code>"false"</code>.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Determines the interactive editability of the text string similar to that in text, table, or tree viewers. Requires 'cursorSelectable' to be set to <code>true</code>.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Editable</em>' attribute.
+     * @see #setEditable(boolean)
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKText_Editable()
+     * @model default="false"
+     * @generated
+     */
+    boolean isEditable();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.core.krendering.KText#isEditable <em>Editable</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Editable</em>' attribute.
+     * @see #isEditable()
+     * @generated
+     */
+    void setEditable(boolean value);
 
 } // KText

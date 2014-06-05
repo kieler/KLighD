@@ -297,7 +297,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cursorSelectable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Makes this text selectable similar to a text document so that the whole text or parts of it can be copied."/>
+        <details key="documentation" value="Determines the interactive selectability of the text string similar to the text selectability in text, table, or tree viewers."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="editable" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Determines the interactive editability of the text string similar to that in text, table, or tree viewers. Requires 'cursorSelectable' to be set to &lt;code>true&lt;/code>."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
