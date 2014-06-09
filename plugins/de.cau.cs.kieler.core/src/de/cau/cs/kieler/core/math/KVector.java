@@ -70,15 +70,14 @@ public final class KVector implements IDataObject, Cloneable {
     }
 
     /**
-     * Creates a normalized vector for the passed angle in degree.
+     * Creates a normalized vector for the passed angle in radians.
      * 
      * @param angle
-     *            angle in degrees
+     *            angle in radians.
      */
     public KVector(final double angle) {
-        double rad = Math.toRadians(angle);
-        this.x = Math.sin(rad);
-        this.y = Math.cos(rad);
+        this.x = Math.cos(angle);
+        this.y = Math.sin(angle);
     }
 
     /**
