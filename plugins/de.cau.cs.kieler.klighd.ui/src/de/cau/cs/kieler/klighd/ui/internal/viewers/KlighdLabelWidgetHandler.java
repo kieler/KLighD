@@ -241,6 +241,8 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
             labelWidget.setText(text);
         }
 
+        labelWidget.setEditable(kText.isEditable());
+
         updateWidgetBounds(styledText);
 
         // determine text color

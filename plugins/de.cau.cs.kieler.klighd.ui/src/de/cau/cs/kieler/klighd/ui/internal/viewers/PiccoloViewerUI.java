@@ -22,8 +22,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -147,35 +145,37 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
         labelTextWidget.setDoubleClickEnabled(false);
 
-        this.getCanvas().getCamera()
-                .addInputEventListener(new KlighdLabelWidgetHandler(this, labelTextWidget));        
+        this.getCanvas().getCamera().addInputEventListener(
+                new KlighdLabelWidgetHandler(this, labelTextWidget));        
 
-        final PiccoloViewerUI thisViewer = this;
+        // final PiccoloViewerUI thisViewer = this;
 
         // add a selection changed listener to the diagram viewer in order to deactivate
         //  the cursor selection text widget on diagram selections
         final ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
+
             public void selectionChanged(final SelectionChangedEvent event) {
                 if (event.getSelection() instanceof KlighdTextSelection) {
                     return;
                 }
-                updateModelAfterTextChange(labelTextWidget, thisViewer.getViewContext());
-                labelTextWidget.setEditable(false);
+                // chsch: deactivated the following line as it doesn't make sense to me
+                //   triggering model updates after switching the selection is IMO
+                //   in general not desirable
+                // updateModelAfterTextChange(labelTextWidget, thisViewer.getViewContext());
                 labelTextWidget.setSelection(0, 0);
                 labelTextWidget.setVisible(false);
             }
         };
         parentViewer.addSelectionChangedListener(selectionListener);
 
-        labelTextWidget.addDisposeListener(new DisposeListener() {
-            public void widgetDisposed(final DisposeEvent e) {
+        labelTextWidget.addListener(SWT.Dispose, new Listener() {
+            public void handleEvent(final Event event) {
                 parentViewer.removeSelectionChangedListener(selectionListener);
             }
         });
 
         // create and register (in constructor) a dedicated SWT event listener on the labelTextWidget
         new LabelTextWidgetListener();
-
     }
 
     /**
@@ -190,7 +190,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         public LabelTextWidgetListener() {
             final StyledText text = labelTextWidget;
             text.addListener(SWT.MouseDoubleClick, this);
-            text.addListener(SWT.KeyDown, this);
+            text.addListener(SWT.MouseDown, this);
             text.addListener(SWT.MouseUp, this);
             text.addListener(SWT.KeyDown, this);
             text.addListener(SWT.KeyUp, this);
@@ -238,6 +238,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             case SWT.MouseUp:
                 final String selection = text.getSelectionText();
                 thisViewer.updateSelection(new KlighdTextSelection(selection, false, false));
+                break;
             }
         }
     }
@@ -276,10 +277,16 @@ public class PiccoloViewerUI extends PiccoloViewer {
         // determine whether 'textNode' is contained by a KLabelNode and if so reveal that label node
         //  this is done based on the PNodes since potential KRenderingRefs are resolved while
         //  building up the PNode network,
-        // identifying the corresponding KLabel on the KGraph/KRendering will be much more difficult!
+        // identifying the corresponding KLabel on the KGraph/KRendering will be much more difficult
+        //  due to potentially involved KRenderingRefs!
         PNode node = textNode;
         while (true) {
             node = node.getParent();
+            if (node == null) {
+                // this may happen if the text was selected while the diagram was updated,
+                //  thus 'node' may be removed from the diagram's figure tree
+                return;
+            }
 
             if (node instanceof INode) {
                 // the textNode appears not to be contained in a KLabelNode but
