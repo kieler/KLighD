@@ -375,4 +375,12 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         // create the default rendering model
         return KRenderingFactory.eINSTANCE.createKPolyline();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bringToFront() {
+        this.getRepresentation().moveToFront();
+    }
 }
