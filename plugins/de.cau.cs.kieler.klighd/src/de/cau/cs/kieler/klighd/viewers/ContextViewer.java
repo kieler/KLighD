@@ -836,7 +836,12 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
                 AS_RENDERING))) {
             r.setProperty(KlighdInternalProperties.SELECTED, false);
         }
-        
+
+        // in the following loop 'filter(toBeSelected, notIn(currentlySelected))' is skipped by intention
+        //  leading to repeated property settings to 'true'
+        // this has the positive effect that unselected edges will automatically go to background since
+        //  the still selected ones will be brought to front again
+        // that should be the only side effect, except some addition performance waste ;-)
         for (final KRendering r : concat(transform(toBeSelected, AS_RENDERING))) {
             r.setProperty(KlighdInternalProperties.SELECTED, true);
         }
