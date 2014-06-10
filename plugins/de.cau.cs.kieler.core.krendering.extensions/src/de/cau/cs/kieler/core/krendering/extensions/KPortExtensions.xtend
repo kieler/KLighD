@@ -124,6 +124,13 @@ class KPortExtensions {
     }
     
     /**
+     * A convenience method to create a KPort without relating it to a business object.  
+     */
+    def KPort createPort() {
+        return KimlUtil.createInitializedPort;
+    }
+    
+    /**
      * An alias of {@link #getPort(Object o1)} allowing to express in business that the KPort will
      * be created at this place. It is just syntactic sugar.  
      */
