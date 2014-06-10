@@ -189,9 +189,17 @@ public class KlighdPath extends PNode implements IResourceEmployer {
             return;
         }
         this.lineAttributes = theLineAttributes;
+        flushAttributes();
+    }
+
+    /**
+     * Triggers a re-evaluation of the attached {@link LineAttributes}, must be called after
+     * manipulating the {@link LineAttributes} obtained via {@link #getLineAttributes()}.
+     */
+    public void flushAttributes() {
         this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
-                lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
-                lineAttributes.dashOffset);
+                lineAttributes.join - 1, lineAttributes.miterLimit);
+                //, lineAttributes.dash, lineAttributes.dashOffset);
         updateBoundsFromPath();
         updateShape();
     }
@@ -217,8 +225,8 @@ public class KlighdPath extends PNode implements IResourceEmployer {
         }
         this.lineAttributes.width = width;
         this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
-                lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
-                lineAttributes.dashOffset);
+                lineAttributes.join - 1, lineAttributes.miterLimit);
+                // , lineAttributes.dash, lineAttributes.dashOffset);
         updateBoundsFromPath();
         updateShape();
     }
