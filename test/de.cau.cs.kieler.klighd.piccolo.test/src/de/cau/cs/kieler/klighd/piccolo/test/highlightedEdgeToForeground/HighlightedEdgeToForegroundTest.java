@@ -52,6 +52,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author chsch
  */
 public class HighlightedEdgeToForegroundTest {
+    
+    private static final int SECOND = 1000;
 
     private static HighlightedEdgeToForegroundTestModelGen testModelGen;
     private static ViewContext viewContext;
@@ -91,8 +93,9 @@ public class HighlightedEdgeToForegroundTest {
         zeroPoint = canvas.toDisplay(0, 0);
     }
 
+
     /**
-     * The first test.
+     * Tests the highlighting of overlapped interlevel edges connected to same source.
      */
     @Test
     public void test01() throws InterruptedException {
@@ -106,31 +109,32 @@ public class HighlightedEdgeToForegroundTest {
                 .getData(KShapeLayout.class);
         final int firstWPortLayoutCenterYPos = Math.round(firstWPortLayout.getYpos()) + 3;
 
-        Thread.sleep(1000);
+        final int sampleXPos = 50;
 
-        clickOn(5 + 100 + 1, // port width + border spacing + edge spacing factor * spacing + 1
+        Thread.sleep(SECOND);
+
+        clickOn(5 + 100 + 1,
+            // port width + border spacing + edge spacing factor * spacing + 1
             firstChildNodeYPos);
 
-        Thread.sleep(1000);
+        Thread.sleep(SECOND);
 
-        moveTo(50, firstWPortLayoutCenterYPos);
+        moveTo(sampleXPos, firstWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, firstWPortLayoutCenterYPos)));        
 
-        Thread.sleep(1000);
-
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(50, firstWPortLayoutCenterYPos)));
+        Thread.sleep(SECOND);
 
         clickOn(200, firstWPortLayoutCenterYPos);
 
-        Thread.sleep(1000);
+        Thread.sleep(SECOND);
 
-        moveTo(50, firstWPortLayoutCenterYPos);
-
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(50, firstWPortLayoutCenterYPos)));
+        moveTo(sampleXPos, firstWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, firstWPortLayoutCenterYPos)));
     }
 
 
     /**
-     * The second test.
+     * Tests the highlighting of overlapped interlevel edges connected to same target.
      */
     @Test
     public void test02() throws InterruptedException {
@@ -144,26 +148,70 @@ public class HighlightedEdgeToForegroundTest {
                 .getData(KShapeLayout.class);
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
-        Thread.sleep(1000);
+        final int sampleXPos = 120;
 
-        clickOn(5 + 100 + 1, // port width + border spacing + edge spacing factor * spacing + 1
+        Thread.sleep(SECOND);
+
+        clickOn(5 + 100 + 1,
+            // port width + border spacing + edge spacing factor * spacing + 1
             firstChildNodeYPos);
         
-        Thread.sleep(1000);
+        Thread.sleep(SECOND);
 
-        moveTo(120, secondWPortLayoutCenterYPos);
+        moveTo(sampleXPos, secondWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));        
         
-        Thread.sleep(1000);
+        Thread.sleep(SECOND);
 
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(120, secondWPortLayoutCenterYPos)));
-        
         clickOn(50, secondWPortLayoutCenterYPos);
         
-        Thread.sleep(1000);
+        Thread.sleep(SECOND);
 
-        moveTo(120, secondWPortLayoutCenterYPos);
+        moveTo(sampleXPos, secondWPortLayoutCenterYPos);        
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));
+    }
+
+
+    /**
+     * Tests the highlighting of overlapped equal-level edge and interlevel edge
+     */
+    @Test
+    public void test03() throws InterruptedException {
+        final KShapeLayout firstChildNodeLayout =
+                viewContext.getViewModel().getChildren().get(0).getChildren().get(0)
+                        .getData(KShapeLayout.class);
+        final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());  
+
+        final KShapeLayout secondWPortLayout =
+                viewContext.getViewModel().getChildren().get(0).getPorts().get(0)
+                .getData(KShapeLayout.class);
+        final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
+
+        final int sampleXPos = 350;
+
+        Thread.sleep(SECOND);
+
+        clickOn(5 + 50 + 100 + 5 + 100 + 5
+                 + Math.round(1f/2f * 100f) + 1,
+            // port width + border spacing + spacing + port width + node with + port width
+            //   + edge spacing factor * spacing + 1
+            firstChildNodeYPos);
         
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(120, secondWPortLayoutCenterYPos)));
+        Thread.sleep(SECOND);
+
+        moveTo(sampleXPos, secondWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));        
+        
+        Thread.sleep(SECOND);
+
+        clickOn(5 + 50 + 100 + 5 + 100 + 5 + 20,
+            // port width + border spacing + spacing + port width + node with + port width + 20
+            secondWPortLayoutCenterYPos);
+        
+        Thread.sleep(SECOND);
+
+        moveTo(sampleXPos, secondWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));
     }
 
 
@@ -173,7 +221,7 @@ public class HighlightedEdgeToForegroundTest {
     @AfterClass
     public static void cleanup() {
         final Display display = shell.getDisplay();
-        display.timerExec(1000, new Runnable() {
+        display.timerExec(SECOND, new Runnable() {
             public void run() {
                 shell.close();
             }
