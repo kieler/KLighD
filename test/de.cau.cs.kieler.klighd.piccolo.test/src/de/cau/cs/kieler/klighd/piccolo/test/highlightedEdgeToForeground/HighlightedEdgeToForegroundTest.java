@@ -51,7 +51,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 /**
  * @author chsch
  */
-public class HightlightedEdgeToForegroundTest {
+public class HighlightedEdgeToForegroundTest {
 
     private static HighlightedEdgeToForegroundTestModelGen testModelGen;
     private static ViewContext viewContext;
@@ -172,22 +172,23 @@ public class HightlightedEdgeToForegroundTest {
      */
     @AfterClass
     public static void cleanup() {
-        Display.getCurrent().timerExec(1000, new Runnable() {
+        final Display display = shell.getDisplay();
+        display.timerExec(1000, new Runnable() {
             public void run() {
                 shell.close();
             }
         });
         
         while (!shell.isDisposed()) {
-            if (!Display.getCurrent().readAndDispatch()) {
-                Display.getDefault().sleep();
+            if (!display.readAndDispatch()) {
+                display.sleep();
             }
         }
     }
 
 
     private void moveTo(final int x, final int y) {
-        final Display d = Display.getCurrent();
+        final Display d = shell.getDisplay();
 
         final Event moveTo = new Event();
         moveTo.type = SWT.MouseMove;
@@ -199,7 +200,7 @@ public class HightlightedEdgeToForegroundTest {
     }
     
     private void clickOn(final int x, final int y) {
-        final Display d = Display.getCurrent();
+        final Display d = shell.getDisplay();
 
         moveTo(x, y);
 
@@ -219,7 +220,7 @@ public class HightlightedEdgeToForegroundTest {
     }
 
     private RGB getColorAt(final int x, final int y) {
-        final Image image = new Image(canvas.getDisplay(), 1, 1);
+        final Image image = new Image(shell.getDisplay(), 1, 1);
         final GC gc = new GC(canvas);
         gc.copyArea(image, x, y);
         gc.dispose();
