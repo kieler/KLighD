@@ -138,14 +138,23 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
     /**
      * Provides the currently set pen color.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
-     * selection, see
-     * {@link de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer.KlighdTextInputHandler
-     * PiccoloViewer.KlighdTextInputHandler}.
+     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
      * 
      * @return the current pen color {@link RGB}.
      */
     public RGB getPenColor() {
         return penColor;
+    }
+
+    /**
+     * Provides the currently set background color.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * 
+     * @return the current background color {@link RGB}.
+     */
+    public RGB getBackgroundColor() {
+        return paint;
     }
 
     /**
@@ -315,7 +324,7 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         final KlighdSWTGraphics graphics = (KlighdSWTGraphics) ppc.getGraphics();
 
         final int currentAlpha = graphics.getAlpha();
-        final float currentAlphaFloat = (float) currentAlpha;
+        final float currentAlphaFloat = currentAlpha;
 
         if (this.paintGradient != null) {
             graphics.setFillPattern(this.paintGradient, getBounds());
