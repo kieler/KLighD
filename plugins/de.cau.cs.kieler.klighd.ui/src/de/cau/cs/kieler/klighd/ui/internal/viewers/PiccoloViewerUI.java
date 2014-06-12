@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -132,6 +133,15 @@ public class PiccoloViewerUI extends PiccoloViewer {
     private void addLabelTextWidget(final ContextViewer parentViewer) {
         labelTextWidget = new StyledText(this.getCanvas(), SWT.MULTI);
         labelTextWidget.setEditable(false);
+        labelTextWidget.setVisible(false);
+
+        // Configures a new font since on win32 the initially employed font
+        //  is used in most other widget of the UI, too!
+        // Thus, disposing that font, as done in
+        //  KlighdLabelWidgetHandler#updateWidgetBounds(), is not allowed
+        //  and we prevent that by initially setting a new one with the same font data ;-)
+        labelTextWidget.setFont(
+                new Font(labelTextWidget.getDisplay(), labelTextWidget.getFont().getFontData()));
 
         // create a additional (context) menu manager, ...
         final MenuManager menu = new MenuManager();
