@@ -184,7 +184,7 @@ public class DiagramEditorPart extends EditorPart implements
                 // Otherwise a possible zoomToFit after the layout will fail since the
                 // view bounds are empty and no 'view area' to which to zoom can be
                 // determined. The async call here hopefully assures this.
-                Display.getCurrent().asyncExec(new Runnable() {
+                parent.getDisplay().asyncExec(new Runnable() {
                     public void run() {
                         final Control control = viewer.getControl();
 
@@ -200,7 +200,8 @@ public class DiagramEditorPart extends EditorPart implements
                             return;
                         }
 
-                        LightDiagramServices.layoutDiagram(viewContext, false, ZoomStyle.NONE);
+                        LightDiagramServices.layoutDiagram(viewContext, false,
+                                getInitialZoomStyle());
 
                         if (control.isDisposed()) {
                             return;
@@ -246,11 +247,21 @@ public class DiagramEditorPart extends EditorPart implements
      *            provides context data that might be incorporated in the decision
      * @return true if the layout shall be (re-) computed while opening the diagram.
      */
-    public boolean requiresInitialLayout(final ViewContext viewContext) {
+    protected boolean requiresInitialLayout(final ViewContext viewContext) {
         final KNode viewModel = viewContext.getViewModel();
         final KShapeLayout diagramLayout = viewModel.getData(KShapeLayout.class);
 
         return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0;
+    }
+
+    /**
+     * Provides the initial {@link ZoomStyle}, which is {@link ZoomStyle#NONE NONE} by default.
+     * May be overridden by sub classes.
+     * 
+     * @return the {@link ZoomStyle} being applied during initial layout application.
+     */
+    protected ZoomStyle getInitialZoomStyle() {
+        return ZoomStyle.NONE;
     }
 
     /**
