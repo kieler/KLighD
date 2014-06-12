@@ -35,6 +35,9 @@ import com.google.common.base.Strings;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
@@ -123,7 +126,7 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
             //  - other handlers might want to react on it
 
         } else if (labelWidget.getSelectionCount() == 0) {
-            labelWidget.setVisible(false);
+            deactivateLabelWidget();
 
             // event.setHandled(true) is skipped here by intention
             //  - other handlers might want to react on it
@@ -243,19 +246,98 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
 
         labelWidget.setEditable(kText.isEditable());
 
+        attachTextParentListener(styledText);
         updateWidgetBounds(styledText);
 
-        // determine text color
+        // determine text color ...
         final Color oldColor = labelWidget.getForeground();
         final Color newColor = new Color(labelWidget.getDisplay(), styledText.getPenColor());
         labelWidget.setForeground(newColor);
         oldColor.dispose();
+
+        // ... and the text's background color ...
+        final Color oldBackground = labelWidget.getBackground();
+        final Color newBackground = new Color(labelWidget.getDisplay(), styledText.getBackgroundColor());
+        labelWidget.setBackground(newBackground);
+        oldBackground.dispose();
 
         labelWidget.setVisible(true);
         labelWidget.setFocus();
         setWidgetPrepared();
 
         return true;
+    }
+
+
+    /** String key for caching the KlighdStyledText in the labelWidget's data list. */
+    // this field is package protected by intention
+    static final String STYLED_TEXT_PARENTS_KEY = "STYLED_TEXT_PARENTS_KEY";
+    
+    private PropertyChangeListener parentRemovalListener = null;    
+
+    private void attachTextParentListener(final KlighdStyledText text) {
+
+        PNode parent = getParentGraphNode(text);
+        if (parent == null) {
+            return;
+        }
+        
+        if (parentRemovalListener == null) {
+            parentRemovalListener = new PropertyChangeListener() {
+                public void propertyChange(final PropertyChangeEvent evt) {
+                    if (evt.getNewValue() == null) {
+                        deactivateLabelWidget();
+                    }
+                }
+            };            
+        }
+
+        final PNode[] parents = new PNode[] {null, null, null};
+
+        int i = 0;
+        if (parent instanceof KLabelNode) {
+            parent.addPropertyChangeListener(PNode.PROPERTY_PARENT, parentRemovalListener);
+            parents[i++] = parent;
+
+            parent = getParentGraphNode(parent);
+        }
+        if (parent != null && !(parent instanceof KNodeNode)) {
+            // hence KEdgeNode or KPortNode
+            parent.addPropertyChangeListener(PNode.PROPERTY_PARENT, parentRemovalListener);
+            parents[i++] = parent;
+
+            parent = getParentGraphNode(parent);
+        }
+        if (parent != null) {
+            // must now be a KNodeNode
+            parent.addPropertyChangeListener(PNode.PROPERTY_PARENT, parentRemovalListener);
+            parents[i] = parent;
+        }
+
+        labelWidget.setData(STYLED_TEXT_PARENTS_KEY, parents);
+    }
+
+    // this method is static and package protected by intention
+    static PNode getParentGraphNode(final PNode node) {
+        PNode parent = node;
+        do {
+            parent = parent.getParent();
+        } while (!(parent == null || parent instanceof IGraphElement));
+        return parent;
+    }
+
+    private void deactivateLabelWidget() {
+        labelWidget.setVisible(false);
+
+        final PNode[] observedNodes = (PNode[]) labelWidget.getData(STYLED_TEXT_PARENTS_KEY);
+        if (observedNodes == null) {            
+            return;
+        }
+        // otherwise parentRemovalListener is supposed to be initialized, too!
+        
+        for (final PNode node : observedNodes) {
+            node.removePropertyChangeListener(parentRemovalListener);
+        }
     }
 
 

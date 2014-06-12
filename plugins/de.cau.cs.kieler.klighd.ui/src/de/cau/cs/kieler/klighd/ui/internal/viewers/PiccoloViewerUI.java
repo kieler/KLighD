@@ -40,6 +40,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
@@ -211,7 +212,12 @@ public class PiccoloViewerUI extends PiccoloViewer {
         public void handleEvent(final Event event) {
             final PiccoloViewerUI thisViewer = PiccoloViewerUI.this;
             final StyledText text = labelTextWidget;
+            final IGraphElement<?> graphNode =
+                    (IGraphElement<?>) KlighdLabelWidgetHandler
+                            .getParentGraphNode((KlighdStyledText) text
+                                    .getData(KlighdLabelWidgetHandler.STYLED_TEXT_FIGURE_KEY));
 
+            final String selection;
             switch (event.type) {
             case SWT.MouseDoubleClick:
                 text.selectAll();
@@ -221,7 +227,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 text.getAccessible().textSelectionChanged();
                 
                 thisViewer.updateSelection(
-                        new KlighdTextSelection(text.getText(), true, true));
+                        new KlighdTextSelection(text.getText(), 0, true, true, graphNode));
                 break;
 
             case SWT.KeyDown:
@@ -236,18 +242,34 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 break;
 
             case SWT.KeyUp:
-                System.out.println(event.keyCode + " " + SWT.SHIFT);
-                if (event.keyCode == SWT.SHIFT) {
-                    final String selection = labelTextWidget.getSelectionText();
-                    if (!selection.equals(prevSelection)) {
-                        thisViewer.updateSelection(new KlighdTextSelection(selection, false, false));
-                    }
+                if (event.keyCode != SWT.SHIFT) {
+                    break;
+                }
+                selection = labelTextWidget.getSelectionText();
+                if (selection.equals(prevSelection)) {
+                    break;
+                }
+                thisViewer.updateSelection(new KlighdTextSelection(selection, labelTextWidget
+                        .getSelection().x, false, false, graphNode));
+                break;
+
+            case SWT.MouseDown:
+                if (event.button == 1 && (event.stateMask & SWT.SHIFT) == 0) {
+                    // button 1 has been pressed and shift key is not pressed
+                    prevSelection = labelTextWidget.getSelectionText();
                 }
                 break;
 
             case SWT.MouseUp:
-                final String selection = text.getSelectionText();
-                thisViewer.updateSelection(new KlighdTextSelection(selection, false, false));
+                if (event.button != 1) {
+                    break;
+                }
+                selection = text.getSelectionText();
+                if (selection.equals(prevSelection)) {
+                    break;
+                }
+                thisViewer.updateSelection(new KlighdTextSelection(selection, labelTextWidget
+                        .getSelection().x, false, false, graphNode));
                 break;
             }
         }
