@@ -57,40 +57,64 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
         }
 
         @SuppressWarnings("unchecked")
-        final List<IGraphElement<?>> graphNodes =
-                (List<IGraphElement<?>>) labelWidget
-                        .getData(KlighdLabelWidgetHandler.STYLED_TEXT_PARENTS_KEY);
-        
+        final List<IGraphElement<?>> graphNodes = (List<IGraphElement<?>>) labelWidget.getData(
+                KlighdLabelWidgetHandler.STYLED_TEXT_PARENTS_KEY);
+
         switch (change.getType()) {
         case VIEW_PORT:
             // this case is handled by the PropertyChangeListener above so do nothing here
             break;
+        case COLLAPSE:
+            handleCollapse(change, graphNodes);
+            break;
         case HIDE:
-            handleHide(change.getAffectedElement(), graphNodes);
+            handleHide(change, graphNodes);
             break;
         case CLIP:
-            handleClip((KNode) change.getAffectedElement(), graphNodes);
+            handleClip(change, graphNodes);
             break;
         // to be continued...
-        default:
-            
+        default:            
         }
-            
+    }
+
+
+    private void handleCollapse(final ViewChange change, final List<IGraphElement<?>> graphNodes) {
+        final KNode collapsedElement = (KNode) change.getAffectedElement();
+
+        // the last graphNode is supposed to be a KNodeNode pointing to the related KNode
+        final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getGraphElement();
+
+        // create an iterator providing parentKNode's containers ...
+        final Iterator<KNode> it =
+                Iterators.filter(ModelingUtil.eAllContainers(parentKNode), KNode.class);
+
+        final KNode clip = change.getViewer().getClip();
+        
+        // ... and traverse them until the current diagram clip node
+        for (KNode node = it.next(); node != clip && it.hasNext(); node = it.next()) {
+            if (node == collapsedElement) {
+                // if we meet the hidden node hide the labelWidget and stop
+                viewer.deactivateLabelWidget();
+                return;
+            }
+        }
     }
     
-    private void handleHide(final KGraphElement affectedElement,
-            final List<IGraphElement<?>> graphNodes) {
+    
+    private void handleHide(final ViewChange change, final List<IGraphElement<?>> graphNodes) {
+        final KGraphElement hiddenElement = change.getAffectedElement();
 
         // check whether the potentially container KLabel, KPort/KEdge, and/or KNode got hidden
         for (final IGraphElement<?> node : graphNodes) {
-            if (node.getGraphElement() == affectedElement) {
+            if (node.getGraphElement() == hiddenElement) {
                 viewer.deactivateLabelWidget();
                 return;
             }
         }
 
         // if any other KLabel, KPort, or KEdge got hidden stop here
-        if (!(affectedElement instanceof KNode)) {
+        if (!(hiddenElement instanceof KNode)) {
             return;
         }
 
@@ -101,11 +125,11 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
         final Iterator<KNode> it =
                 Iterators.filter(ModelingUtil.eAllContainers(parentKNode), KNode.class);
 
-        final KNode clip = viewer.getClip();
+        final KNode clip = change.getViewer().getClip();
         
         // ... and traverse them until the current diagram clip node
         for (KNode node = it.next(); node != clip && it.hasNext(); node = it.next()) {
-            if (node == affectedElement) {
+            if (node == hiddenElement) {
                 // if we meet the hidden node hide the labelWidget and stop
                 viewer.deactivateLabelWidget();
                 return;
@@ -113,10 +137,12 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
         }
     }
     
-    private void handleClip(final KNode newClip, final List<IGraphElement<?>> graphNodes) {
+    private void handleClip(final ViewChange change, final List<IGraphElement<?>> graphNodes) {
+        final KNode newClip = (KNode) change.getAffectedElement();
+
         // the last graphNode is supposed to be a KNodeNode pointing to the related KNode
         final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getGraphElement();
-        
+
         // create an iterator providing parentKNode's containers ...
         final Iterator<KNode> it =
                 Iterators.filter(ModelingUtil.eAllContainers(parentKNode), KNode.class);
