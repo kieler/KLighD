@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.DisposeEvent;
@@ -28,6 +29,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Resource;
@@ -409,6 +411,10 @@ public final class DiagramSideBar {
         if (!zoomButtonsVisible) {
             return;
         }
+        
+        Color white = new Color(null, 255, 255, 255); // SUPPRESS CHECKSTYLE MagicNumber
+        resources.add(white);
+        parent.setBackground(white);
 
         parent.setLayout(new RowLayout());
         final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
@@ -571,8 +577,11 @@ public final class DiagramSideBar {
 
         final IDiagramWorkbenchPart part = viewContext.getDiagramWorkbenchPart();
         if (part instanceof DiagramViewPart) {
-            ((DiagramViewPart) part).getAction(DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS)
-                    .setEnabled(layoutOptionsAvailable);
+            final IAction action = ((DiagramViewPart) part).getAction(
+                    DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS);
+            if (action != null) {
+                action.setEnabled(layoutOptionsAvailable);
+            }
         }
     }
 
