@@ -13,9 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.ui;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
@@ -23,11 +29,14 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 /**
  * KLighD-specific implementation of {@link ITextSelection}.<br>
  * Its aim is to broadcast the selection of cursor selectable label's text to platform's
- * {@link org.eclipse.ui.ISelectionService ISelectionService}.
+ * {@link org.eclipse.ui.ISelectionService ISelectionService}.<br>
+ * In order to let the Properties View also react on this type of selection this class
+ * also implements {@link IStructuredSelection} by providing itself as the only element.<br>
+ * Be aware of the risk of recursion!
  * 
  * @author chsch
  */
-public class KlighdTextSelection implements ITextSelection {
+public class KlighdTextSelection implements IStructuredSelection, ITextSelection {
 
     private final String text;
     
@@ -38,7 +47,6 @@ public class KlighdTextSelection implements ITextSelection {
     private final boolean completeLabel;
     
     private final KGraphElement kgraphElement;
-    
 
     /**
      * Standard Constructor.
@@ -65,30 +73,12 @@ public class KlighdTextSelection implements ITextSelection {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return text;
-    }
-
-
-    /**
-     * @return the text
-     */
-    public String getText() {
-        return text;
-    }
-
-
-    /**
      * @deprecated this method may still return wrong values
      * @return the completeLine
      */
     public boolean isCompleteLine() {
         return completeLine;
     }
-
 
     /**
      * @return the completeLabel
@@ -97,7 +87,6 @@ public class KlighdTextSelection implements ITextSelection {
         return completeLabel;
     }
 
-
     /**
      * @return the kraphElement
      */
@@ -105,6 +94,25 @@ public class KlighdTextSelection implements ITextSelection {
         return kgraphElement;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "KLighdTextSelection: " + text;
+    }
+
+
+    /* -------------------------------- */
+    /*   ITextSelection methods         */
+    /* -------------------------------- */
+
+    /**
+     * @return the text
+     */
+    public String getText() {
+        return text;
+    }
 
     /**
      * {@inheritDoc}
@@ -139,11 +147,50 @@ public class KlighdTextSelection implements ITextSelection {
     }
 
 
+    /* -------------------------------- */
+    /*   IStructuredSelection methods   */
+    /* -------------------------------- */
+    
     /**
      * {@inheritDoc}
      * @deprecated this method still simply returns zero
      */
     public int getEndLine() {
         return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object getFirstElement() {
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<KlighdTextSelection> iterator() {
+        return Iterators.singletonIterator(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int size() {
+        return 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KlighdTextSelection[] toArray() {
+        return new KlighdTextSelection[] { this };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<KlighdTextSelection> toList() {
+        return Collections.singletonList(this);
     }
 }
