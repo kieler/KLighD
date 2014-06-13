@@ -167,7 +167,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         labelWidget.setDoubleClickEnabled(false);
 
         this.getCanvas().getCamera().addInputEventListener(
-                new KlighdLabelWidgetHandler(this, labelWidget));        
+                new KlighdLabelWidgetEventHandler(this, labelWidget));        
 
         // final PiccoloViewerUI thisViewer = this;
 
@@ -223,7 +223,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             final PiccoloViewerUI thisViewer = PiccoloViewerUI.this;
             final StyledText text = labelWidget;
             final IGraphElement<?> graphNode =
-                    (IGraphElement<?>) KlighdLabelWidgetHandler.getParentGraphNode(
+                    (IGraphElement<?>) KlighdLabelWidgetEventHandler.getParentGraphNode(
                             (KlighdStyledText) text.getData(STYLED_TEXT_FIGURE_KEY));
 
             final String selection;

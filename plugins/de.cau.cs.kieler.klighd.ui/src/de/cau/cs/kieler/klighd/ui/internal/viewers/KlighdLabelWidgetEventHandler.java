@@ -53,7 +53,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * 
  * @author chsch
  */
-public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
+public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler {
 
     private final PiccoloViewerUI viewer;
     private final KlighdMainCamera camera;
@@ -67,7 +67,7 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
      * @param labelWidget
      *            the employed labelWidget
      */
-    public KlighdLabelWidgetHandler(final PiccoloViewerUI viewer, final StyledText labelWidget) {
+    public KlighdLabelWidgetEventHandler(final PiccoloViewerUI viewer, final StyledText labelWidget) {
         super();
 
         this.viewer = viewer;

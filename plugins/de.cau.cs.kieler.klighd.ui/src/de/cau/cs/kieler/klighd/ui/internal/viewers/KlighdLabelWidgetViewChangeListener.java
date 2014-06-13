@@ -58,7 +58,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
 
         @SuppressWarnings("unchecked")
         final List<IGraphElement<?>> graphNodes = (List<IGraphElement<?>>) labelWidget.getData(
-                KlighdLabelWidgetHandler.STYLED_TEXT_PARENTS_KEY);
+                KlighdLabelWidgetEventHandler.STYLED_TEXT_PARENTS_KEY);
 
         switch (change.getType()) {
         case VIEW_PORT:
