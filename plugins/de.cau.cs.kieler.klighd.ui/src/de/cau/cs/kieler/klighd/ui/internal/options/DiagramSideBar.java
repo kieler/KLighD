@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.DisposeEvent;
@@ -571,8 +572,11 @@ public final class DiagramSideBar {
 
         final IDiagramWorkbenchPart part = viewContext.getDiagramWorkbenchPart();
         if (part instanceof DiagramViewPart) {
-            ((DiagramViewPart) part).getAction(DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS)
-                    .setEnabled(layoutOptionsAvailable);
+            final IAction action = ((DiagramViewPart) part).getAction(
+                    DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS);
+            if (action != null) {
+                action.setEnabled(layoutOptionsAvailable);
+            }
         }
     }
 
