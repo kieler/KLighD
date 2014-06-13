@@ -29,6 +29,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Resource;
@@ -410,6 +411,10 @@ public final class DiagramSideBar {
         if (!zoomButtonsVisible) {
             return;
         }
+        
+        Color white = new Color(null, 255, 255, 255); // SUPPRESS CHECKSTYLE MagicNumber
+        resources.add(white);
+        parent.setBackground(white);
 
         parent.setLayout(new RowLayout());
         final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
