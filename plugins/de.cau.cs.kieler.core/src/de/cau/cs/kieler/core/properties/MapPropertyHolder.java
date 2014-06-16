@@ -102,6 +102,9 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
      * @param newProperties the properties that shall be checked
      */
     public void checkProperties(final IProperty<?> ... newProperties) {
+        if (propertyMap == null) {
+            return;
+        }
         for (IProperty<?> property : newProperties) {
             Object value = propertyMap.get(property);
             if (value != null) {
