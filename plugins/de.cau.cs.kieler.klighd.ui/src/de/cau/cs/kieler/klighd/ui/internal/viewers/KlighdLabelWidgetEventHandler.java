@@ -255,10 +255,12 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
         oldColor.dispose();
 
         // ... and the text's background color ...
-        final Color oldBackground = labelWidget.getBackground();
-        final Color newBackground = new Color(labelWidget.getDisplay(), styledText.getBackgroundColor());
-        labelWidget.setBackground(newBackground);
-        oldBackground.dispose();
+        if (styledText.getBackgroundColor() != null) {
+            final Color oldBackground = labelWidget.getBackground();
+            final Color newBackground = new Color(labelWidget.getDisplay(), styledText.getBackgroundColor());
+            labelWidget.setBackground(newBackground);
+            oldBackground.dispose();
+        }
 
         labelWidget.setVisible(true);
         labelWidget.setFocus();
