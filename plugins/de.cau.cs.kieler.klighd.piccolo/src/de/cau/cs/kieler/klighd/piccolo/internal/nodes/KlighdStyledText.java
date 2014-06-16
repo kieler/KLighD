@@ -30,6 +30,7 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.nodes.PText;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
@@ -147,7 +148,19 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
     }
 
     /**
-     * Provides the currently set background color.<br>
+     * Provides the currently set pen color's alpha value.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * 
+     * @return the current pen color's alpha value
+     */
+    public int getPenAlpha() {
+        return penAlpha;
+    }
+
+    /**
+     * Provides the currently set background color or <code>null</code>, if no background coloring
+     * or a background gradient is set.<br>
      * It's currently used in order configure the text widget enabling the cursor-based text
      * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
      * 
@@ -158,30 +171,45 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
     }
 
     /**
+     * Provides the currently set background color's alpha value.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * 
+     * @return the current background color's alpha value
+     */
+    public int getBackgroundAlpha() {
+        return paintAlpha;
+    }
+
+    /**
+     * Provides the currently set background gradient configuration or <code>null</code>, if no
+     * background coloring or a single background color is set.<br>
+     * It's currently used in order configure the text widget enabling the cursor-based text
+     * selection, see {@link de.cau.cs.kieler.klighd.ui.internal.viewers.KlighdLabelWidgetHandler}.
+     * 
+     * @return the current background color's alpha value
+     */
+    public RGBGradient getBackgroundGradient() {
+        return paintGradient;
+    }
+
+    /**
      * Sets the current pen color.
      * 
      * @param color
      *            use this color.
-     */
-    public void setPenColor(final RGB color) {
-        if (penColor.equals(color)) {
-            return;
-        }        
-        // Object oldPaint = penColor;
-        penColor = color;
-        // repaint();
-        // firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
-    }
-
-    /**
-     * Sets the current pen color alpha.
-     * 
      * @param alpha
      *            use this alpha.
      */
-    public void setPenAlpha(final int alpha) {
+    public void setPenColor(final RGB color, final int alpha) {
+        if (penColor.equals(color) && penAlpha == alpha) {
+            return;
+        }
+        final Object oldPaint = penColor;
+        penColor = color;
         penAlpha = alpha;
         // repaint();
+        firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
     }
 
     private static final String TEXT_GRADIENT_MESSAGE = "KLighD (Piccolo2D): A color gradient has been"
@@ -199,54 +227,42 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
                 new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, TEXT_GRADIENT_MESSAGE),
                 StatusManager.LOG);
     }
-    
+
     /**
      * Sets the current pen paint.
      * 
      * @param color
      *            use this color.
-     */
-    public void setPaint(final RGB color) {
-        if (paint != null && paint.equals(color)) {
-            return;
-        }        
-        // Object oldPaint = penPaint;
-        paintGradient = null;
-        paint = color;
-        // repaint();
-        // firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaint);
-    }
-
-    /**
-     * Sets the current pen paint alpha.
-     * 
      * @param alpha
      *            use this alpha.
      */
-    public void setPaintAlpha(final int alpha) {
+    public void setPaint(final RGB color, final int alpha) {
+        if (paint != null && paint.equals(color) && paintAlpha == alpha) {
+            return;
+        }        
+        final Object oldPaint = paintGradient != null ? paintGradient : paint;
+        paintGradient = null;
+        paint = color;
         paintAlpha = alpha;
         // repaint();
+        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, color);
     }
-    
+
     /**
      * Set the paint used to paint this node, which may be null.
      * 
-     * @param newPaint paint that this node should use when painting itself.
+     * @param gradient paint that this node should use when painting itself.
      */
-    public void setPaint(final RGBGradient newPaint) {        
-        if (paintGradient != null && paintGradient.equals(newPaint)) {
+    public void setPaint(final RGBGradient gradient) {        
+        if (paintGradient != null && paintGradient.equals(gradient)) {
             return;
         }
-        // Object oldPaint = null;
-        // if (penPaintGradient != null) {
-        //      oldPaint = penPaintGradient;   
-        // } else if (penPaint != null) {
-        //      oldPaint = penPaint;
+        final Object oldPaint = paintGradient != null ? paintGradient : paint;
         paint = null;
-        // }
-        paintGradient = newPaint;
+        paintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
+        paintGradient = gradient;
         // repaint();
-        // firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, penPaintGradient);
+        firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, gradient);
     }
 
     /**
@@ -269,8 +285,11 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
      *            the desired {@link FontData}, must not be <code>null<code>
      */
     public void setFont(final FontData theFont) {
+        final Object oldFont = this.fontData;
         this.fontData = theFont;
         this.updateBounds();
+        // repaint();
+        firePropertyChange(PText.PROPERTY_CODE_FONT, PText.PROPERTY_FONT, oldFont, theFont);
     }
 
     /**
