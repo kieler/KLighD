@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Event;
 import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
@@ -41,6 +42,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.nodes.PText;
 
 /**
  * A dedicated {@link KlighdBasicInputEventHandler} in charge of putting the text label widget in
@@ -58,6 +60,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
     private final PiccoloViewerUI viewer;
     private final KlighdMainCamera camera;
     private StyledText labelWidget;
+    private PropertyChangeListener labelWidgetStylingEventListener;
     
     /**
      * Constructor that just calls super.
@@ -89,6 +92,17 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
                 } else if (NodeDisposeListener.DISPOSE.equals(propName)) {
                     camera.removePropertyChangeListener(this);
                 }
+            }
+        };
+
+        labelWidgetStylingEventListener = new PropertyChangeListener() {
+            {
+                labelWidget.setData(PiccoloViewerUI.TEXT_STYLING_CHANGE_LISTENER_KEY, this);
+            }
+
+            public void propertyChange(final PropertyChangeEvent evt) {
+                KlighdLabelWidgetEventHandler.this.updateTextInputColoringAndSize(
+                        (KlighdStyledText) evt.getSource());
             }
         };
         
@@ -245,28 +259,43 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
 
         labelWidget.setEditable(kText.isEditable());
 
+        updateTextInputColoringAndSize(styledText);
+
+        styledText.addPropertyChangeListener(PText.PROPERTY_FONT, labelWidgetStylingEventListener);
+        styledText.addPropertyChangeListener(PText.PROPERTY_TEXT_PAINT, labelWidgetStylingEventListener);
+        styledText.addPropertyChangeListener(PNode.PROPERTY_PAINT, labelWidgetStylingEventListener);
+
         attachTextsParentInformation(styledText);
-        viewer.updateWidgetBounds(styledText);
-
-        // determine text color ...
-        final Color oldColor = labelWidget.getForeground();
-        final Color newColor = new Color(labelWidget.getDisplay(), styledText.getPenColor());
-        labelWidget.setForeground(newColor);
-        oldColor.dispose();
-
-        // ... and the text's background color ...
-        if (styledText.getBackgroundColor() != null) {
-            final Color oldBackground = labelWidget.getBackground();
-            final Color newBackground = new Color(labelWidget.getDisplay(), styledText.getBackgroundColor());
-            labelWidget.setBackground(newBackground);
-            oldBackground.dispose();
-        }
 
         labelWidget.setVisible(true);
         labelWidget.setFocus();
         setWidgetPrepared();
 
         return true;
+    }
+
+
+    private void updateTextInputColoringAndSize(final KlighdStyledText styledText) {
+
+        viewer.updateWidgetBounds(styledText);
+
+        // determine text color ...
+        final Color oldColor = labelWidget.getForeground();
+        labelWidget.setForeground(new Color(labelWidget.getDisplay(), styledText.getPenColor()));
+        oldColor.dispose();
+
+        // ... and the text's background color ...
+        final Color oldBackground = labelWidget.getBackground();
+
+        if (styledText.getBackgroundColor() != null) {
+            labelWidget.setBackground(
+                    new Color(labelWidget.getDisplay(), styledText.getBackgroundColor()));
+            oldBackground.dispose();
+
+        } else if (!oldBackground.getRGB().equals(KlighdConstants.WHITE)) {
+            labelWidget.setBackground(new Color(labelWidget.getDisplay(), KlighdConstants.WHITE));
+            oldBackground.dispose();
+        }
     }
 
 
