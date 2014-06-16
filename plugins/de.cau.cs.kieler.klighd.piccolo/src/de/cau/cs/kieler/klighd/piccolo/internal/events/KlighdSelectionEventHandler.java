@@ -32,6 +32,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
 
@@ -55,9 +56,12 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
      */
     public KlighdSelectionEventHandler(final IViewer<?> theContextViewer) {
         this.viewer = theContextViewer;
+        this.multiSelection =
+                viewer.getViewContext().getProperty(KlighdSynthesisProperties.MULTI_SELECTION);
     }
     
     private final IViewer<?> viewer;
+    private final boolean multiSelection; 
     private PNode pressedNode = null;
     private Point2D point = null;
     
@@ -151,8 +155,8 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         if (graphElement == null) {
             return;
         }
-        
-        if (event.isControlDown()) {
+
+        if (multiSelection && event.isControlDown()) {
             this.viewer.toggleSelectionOfDiagramElements(Collections.singleton(graphElement));
         } else {
             this.viewer.resetSelectionToDiagramElements(Collections.singleton(graphElement));

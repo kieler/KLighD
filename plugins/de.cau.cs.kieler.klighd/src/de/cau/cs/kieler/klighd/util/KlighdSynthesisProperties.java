@@ -47,6 +47,10 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     public static final IProperty<SideBarHandling> REQUESTED_SIDE_BAR_HANDLING =
             new Property<SideBarHandling>("klighd.sideBarHandling", SideBarHandling.UNDEFINED);
 
+    /** property denoting the support of selecting multiple diagram elements. */
+    public static final IProperty<Boolean> MULTI_SELECTION = new Property<Boolean>(
+            "klighd.multiSelection", true);
+    
     /**
      * Defines the possible diagram side bar initialization options. 
      */
@@ -85,10 +89,12 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         private final String msg =
                 "KLighD: Empty KlighdSynthesisProperties config must not be changed.";
         
+        @Override
         public <T> void setProperty(final IProperty<? super T> property, final T value) {
             throw new UnsupportedOperationException(msg);
         }
         
+        @Override
         public void copyProperties(final IPropertyHolder other) {
             throw new UnsupportedOperationException(msg);
         }
@@ -134,7 +140,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         } else {
             final KlighdSynthesisProperties sp = new KlighdSynthesisProperties();
             
-            for (IPropertyHolder p : propertyHolders) {
+            for (final IPropertyHolder p : propertyHolders) {
                 sp.copyProperties(p);
             }
             
@@ -213,6 +219,16 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      */
     public KlighdSynthesisProperties collapseSideBar() {
         this.setProperty(REQUESTED_SIDE_BAR_HANDLING, SideBarHandling.COLLAPSE);
+        return this;
+    }
+
+    /**
+     * Configures the diagram viewer's support for selecting multiple diagram elements.
+     * 
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties suppressMultiSelection() {
+        this.setProperty(MULTI_SELECTION, false);
         return this;
     }
 }
