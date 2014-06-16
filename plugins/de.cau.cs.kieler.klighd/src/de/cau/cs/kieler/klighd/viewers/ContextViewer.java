@@ -893,6 +893,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
             if (theSelection instanceof KlighdTreeSelection) {
                 this.diagramSelection = (KlighdTreeSelection) theSelection;
             } else {
+                resetSelectionHighlighting();
                 this.diagramSelection = null;
             }
 
@@ -902,6 +903,18 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
                 for (final ISelectionChangedListener listener : selectionListeners) {
                     listener.selectionChanged(event);
                 }
+            }
+        }
+    }
+
+    /**
+     * Resets the highlighting of the currently selected diagram elements.
+     */
+    private void resetSelectionHighlighting() {
+        final Iterable<EObject> currentSelection = getDiagramSelection();
+        if (currentSelection != null) {
+            for (final KRendering r : concat(transform(currentSelection, AS_RENDERING))) {
+                r.setProperty(KlighdInternalProperties.SELECTED, false);
             }
         }
     }
