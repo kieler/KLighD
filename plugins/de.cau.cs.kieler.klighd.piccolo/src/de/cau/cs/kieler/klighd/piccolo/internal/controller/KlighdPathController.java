@@ -174,6 +174,6 @@ public abstract class KlighdPathController extends PNodeController<KlighdPath> {
         super.applyChanges(styles);
 
         // this simply flushes the internal update of the line attributes
-        getNode().setLineAttributes(getNode().getLineAttributes());
+        getNode().flushAttributes();
     }
 }

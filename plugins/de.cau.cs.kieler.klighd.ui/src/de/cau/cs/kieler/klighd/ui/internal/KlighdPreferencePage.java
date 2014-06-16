@@ -52,6 +52,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     /** checkbox for expand side bar on initializing diagrams. */
     private Button expandSideBar;
     
+    /** checkbox for show zoom buttons on initializing diagrams. */
+    private Button showZoomConfigButtons;
+    
     private static final String ADVANCED_PANNING_TOOLTIP =
             "If enabled diagram panning continues when mouse pointer leaves the diagram area and stops,"
             + " until it returns to diagram area or the mouse button is released.";
@@ -59,6 +62,10 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     private static final String EXPAND_SIDE_BAR_TOOLTIP =
             "Diagram side bars accommodate the controls for diagram options and layout options."
             + " If deactivated the side bars must be expanded manually.";
+    
+    private static final String SHOW_ZOOM_CONFIG_BUTTONS_TOOLTIP =
+            "Zoom buttons provides options to set the zoom behavior."
+            + " If deactivated the zoom buttons are not visible.";
 
     /** checkbox for 'zoom on workbench part change'. */
     private Button zoomOnWorkbenchpartChange;
@@ -108,10 +115,13 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         preferenceStore.setValue(KlighdPreferences.EXPAND_SIDE_BAR,
                 expandSideBar.getSelection());
         
+        preferenceStore.setValue(KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS,
+                showZoomConfigButtons.getSelection());
+        
         preferenceStore.setValue(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE,
                 zoomOnWorkbenchpartChange.getSelection());
         
-        ZoomStyle zoomStyle = getZoomStyleFromSelection();
+        final ZoomStyle zoomStyle = getZoomStyleFromSelection();
         preferenceStore.setValue(KlighdPreferences.ZOOM_STYLE, zoomStyle.name());
         
         preferenceStore.setValue(KlighdPreferences.MAGNIFICATION_LENS_ENABLED,
@@ -142,6 +152,9 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         expandSideBar.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.EXPAND_SIDE_BAR));
         
+        showZoomConfigButtons.setSelection(preferenceStore
+                .getDefaultBoolean(KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS));
+        
         zoomOnWorkbenchpartChange.setSelection(preferenceStore
                 .getDefaultBoolean(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE));
 
@@ -171,19 +184,19 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
     @Override
     protected Control createContents(final Composite parent) {
 
-        Composite composite = new Composite(parent, SWT.NONE);
+        final Composite composite = new Composite(parent, SWT.NONE);
 
-        GridLayout compositeLayout = new GridLayout(1, false);
+        final GridLayout compositeLayout = new GridLayout(1, false);
         compositeLayout.verticalSpacing = 10;
         composite.setLayout(compositeLayout);
 
-        Group generalGroup = createGeneralGroup(composite);
+        final Group generalGroup = createGeneralGroup(composite);
         generalGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-        Group zoomGroup = createZoomToFitGroup(composite);
+        final Group zoomGroup = createZoomToFitGroup(composite);
         zoomGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
         
-        Group magnificationLensGroup = createMagnificationLensGroup(composite);
+        final Group magnificationLensGroup = createMagnificationLensGroup(composite);
         magnificationLensGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         
         return composite;
@@ -228,13 +241,19 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         // zoom styles
         
         final Group zoomGroup = new Group(parent, SWT.NONE);
-        zoomGroup.setText("Zoom Style");
+        zoomGroup.setText("Diagram Zoom Options");
         zoomGroup.setLayout(new RowLayout(SWT.VERTICAL));
         ((RowLayout) zoomGroup.getLayout()).spacing = 5;
         
+        final Label zoomSettingsLabel = new Label(zoomGroup, SWT.NONE);
+        zoomSettingsLabel.setText("Initial diagram zoom style configuration:");
+        
+        final RowLayout zoomStyleGroupLayout = new RowLayout(SWT.HORIZONTAL);
+        zoomStyleGroupLayout.marginLeft = 0;
+        zoomStyleGroupLayout.marginTop = 0;
+        zoomStyleGroupLayout.marginBottom = 5;
         final Composite zoomStyleGroup = new Composite(zoomGroup, SWT.NONE); 
-        zoomStyleGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
-        ((RowLayout) zoomStyleGroup.getLayout()).marginLeft = 0;
+        zoomStyleGroup.setLayout(zoomStyleGroupLayout); 
 
         // Zoom-to-Fit
         zoomToFit = new Button(zoomStyleGroup, SWT.RADIO | SWT.LEFT);
@@ -255,8 +274,15 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         setZoomStyleSelection(ZoomStyle.valueOf(getPreferenceStore().getString(
                 KlighdPreferences.ZOOM_STYLE)));
 
+        showZoomConfigButtons = new Button(zoomGroup, SWT.CHECK | SWT.LEFT);
+        showZoomConfigButtons.setText("Show zoom configuration buttons in diagram");
+        showZoomConfigButtons.setToolTipText(SHOW_ZOOM_CONFIG_BUTTONS_TOOLTIP);
+        showZoomConfigButtons.setSelection(getPreferenceStore().getBoolean(
+                KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS));
+
         zoomOnWorkbenchpartChange = new Button(zoomGroup, SWT.CHECK | SWT.LEFT);
-        zoomOnWorkbenchpartChange.setText("Apply zoom on diagram workbench part resizes");
+        zoomOnWorkbenchpartChange.setText(
+                "Update layout and zoom after diagram window size changes");
         zoomOnWorkbenchpartChange.setSelection(getPreferenceStore().getBoolean(
                 KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE));
 

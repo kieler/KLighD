@@ -260,7 +260,6 @@ public class ViewContext extends MapPropertyHolder {
      * @return the created viewer or <code>null</code> on failure
      */
     public IViewer<?> createViewer(final ContextViewer parentViewer, final Composite parent) {
-
         if (this.viewerProvider != null) {
             // create the new viewer
             this.viewer = this.viewerProvider.createViewer(parentViewer, parent);
@@ -353,7 +352,8 @@ public class ViewContext extends MapPropertyHolder {
         if (model != null) {
             this.businessModel = model;
 
-            if (!diagramSynthesis.getSourceClass().isAssignableFrom(model.getClass())) {
+            if (diagramSynthesis == null
+                    || !diagramSynthesis.getSourceClass().isAssignableFrom(model.getClass())) {
                 this.configure(properties);
             }
         }

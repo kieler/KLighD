@@ -1589,13 +1589,22 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT__CURSOR_SELECTABLE = KRENDERING_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Editable</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT__EDITABLE = KRENDERING_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>KText</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KTEXT_FEATURE_COUNT = KRENDERING_FEATURE_COUNT + 2;
+    int KTEXT_FEATURE_COUNT = KRENDERING_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.
@@ -4784,6 +4793,17 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKText_CursorSelectable();
 
     /**
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.core.krendering.KText#isEditable <em>Editable</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Editable</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KText#isEditable()
+     * @see #getKText()
+     * @generated
+     */
+    EAttribute getKText_Editable();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6396,6 +6416,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EAttribute KTEXT__CURSOR_SELECTABLE = eINSTANCE.getKText_CursorSelectable();
+
+        /**
+         * The meta object literal for the '<em><b>Editable</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KTEXT__EDITABLE = eINSTANCE.getKText_Editable();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.KPlacement <em>KPlacement</em>}' class.

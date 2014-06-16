@@ -14,18 +14,15 @@
 package de.cau.cs.kieler.klighd.ui.internal.viewers;
 
 import java.awt.event.InputEvent;
-import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -35,10 +32,12 @@ import com.google.common.base.Strings;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -54,8 +53,9 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * 
  * @author chsch
  */
-public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
+public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler {
 
+    private final PiccoloViewerUI viewer;
     private final KlighdMainCamera camera;
     private StyledText labelWidget;
     
@@ -67,11 +67,12 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
      * @param labelWidget
      *            the employed labelWidget
      */
-    public KlighdLabelWidgetHandler(final PiccoloViewerUI viewer, final StyledText labelWidget) {
+    public KlighdLabelWidgetEventHandler(final PiccoloViewerUI viewer, final StyledText labelWidget) {
         super();
 
-        this.labelWidget = labelWidget;
+        this.viewer = viewer;
         this.camera = viewer.getCanvas().getCamera();
+        this.labelWidget = labelWidget;
 
         new PropertyChangeListener() {
             {
@@ -83,15 +84,16 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
                 final String propName = event.getPropertyName();
 
                 if (PCamera.PROPERTY_VIEW_TRANSFORM.equals(propName)) {
-                    KlighdLabelWidgetHandler.this.updateWidgetBounds(null);
+                    viewer.updateWidgetBounds(null);
 
                 } else if (NodeDisposeListener.DISPOSE.equals(propName)) {
                     camera.removePropertyChangeListener(this);
                 }
             }
         };
+        
+        viewer.addViewChangedListener(new KlighdLabelWidgetViewChangeListener(viewer, labelWidget));
     }
-
 
     private boolean widgetJustPrepared = false;
 
@@ -123,7 +125,7 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
             //  - other handlers might want to react on it
 
         } else if (labelWidget.getSelectionCount() == 0) {
-            labelWidget.setVisible(false);
+            viewer.deactivateLabelWidget();
 
             // event.setHandled(true) is skipped here by intention
             //  - other handlers might want to react on it
@@ -241,13 +243,24 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
             labelWidget.setText(text);
         }
 
-        updateWidgetBounds(styledText);
+        labelWidget.setEditable(kText.isEditable());
 
-        // determine text color
+        attachTextsParentInformation(styledText);
+        viewer.updateWidgetBounds(styledText);
+
+        // determine text color ...
         final Color oldColor = labelWidget.getForeground();
         final Color newColor = new Color(labelWidget.getDisplay(), styledText.getPenColor());
         labelWidget.setForeground(newColor);
         oldColor.dispose();
+
+        // ... and the text's background color ...
+        if (styledText.getBackgroundColor() != null) {
+            final Color oldBackground = labelWidget.getBackground();
+            final Color newBackground = new Color(labelWidget.getDisplay(), styledText.getBackgroundColor());
+            labelWidget.setBackground(newBackground);
+            oldBackground.dispose();
+        }
 
         labelWidget.setVisible(true);
         labelWidget.setFocus();
@@ -259,95 +272,46 @@ public class KlighdLabelWidgetHandler extends KlighdBasicInputEventHandler {
 
     /** String key for caching the KlighdStyledText in the labelWidget's data list. */
     // this field is package protected by intention
-    static final String STYLED_TEXT_FIGURE_KEY = "STYLED_TEXT_FIGURE_KEY";
+    static final String STYLED_TEXT_PARENTS_KEY = "STYLED_TEXT_PARENTS_KEY";
 
-    /** String key for caching the font scale factor in the labelWidget's data list. */
-    private static final String FONT_SCALE_FACTOR_KEY = "FONT_SCALE_FACTOR_KEY";
-    
-    /** Example: ...|11.0|.. */
-    private static final String FONT_HEIGHT_PATTERN_REGEX = "\\|\\d*\\p{Punct}\\d*\\|";
+    private void attachTextsParentInformation(final KlighdStyledText text) {
 
-    /** The pattern employed in configuring the fonts, is kept in order to avoid re-compilations. */
-    private static Pattern fontHeightPattern = null;
-
-
-    /**
-     * Aligns the label text widget to the given <code>styledText</code> in terms of position, font
-     * size, and size.
-     * 
-     * @param styledText
-     *            the {@link KlighdStyledText} the text label widget is to be aligned to
-     */
-    private void updateWidgetBounds(final KlighdStyledText styledText) {
-
-        final KlighdStyledText theStyledText;
-        if (styledText != null) {
-            labelWidget.setData(STYLED_TEXT_FIGURE_KEY, styledText);
-            theStyledText = styledText;
-        } else {
-            theStyledText = (KlighdStyledText) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
-            if (theStyledText == null) {
-                return;
-            }
-        }
-
-        // determine global position of the text element
-        //  although 'clipRelativeGlobalBoundsOf' may return null that should never happen here as
-        //  this is method is supposed to be only called for 'styledText' element that are contained
-        //  in the current clip
-        final Rectangle2D bounds =
-                NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedINode());
-        
-        if (bounds == null) {
-            return;
-        }
-        
-        camera.getViewTransformReference().transform(bounds, bounds);
-
-        labelWidget.setLocation((int) Math.round(bounds.getX()), (int) Math.round(bounds.getY()));
-
-        final Float prevFontScale = (Float) labelWidget.getData(FONT_SCALE_FACTOR_KEY);
-        final float curViewScale = (float) camera.getViewScale();
-
-        // in case styledText = null, i.e. this method has been called due to a view transform change
-        //  and the widget is not moved to another text field,
-        //  and the previously applied scale factor is configured and is equal to the current one
-        // skip the resizing of the widget, it is not required.
-        if (styledText == null && prevFontScale != null && prevFontScale.floatValue() == curViewScale) {
+        PNode parent = getParentGraphNode(text);
+        if (parent == null) {
             return;
         }
 
-        // backup the current view/font scale ...
-        labelWidget.setData(FONT_SCALE_FACTOR_KEY, Float.valueOf(curViewScale));
+        final List<PNode> parents = new ArrayList<PNode>(3);
 
-        // ... and compose the updated FontData by means of a String-based configuration
-        final String fontConfig = theStyledText.getFontData().toString();
+        if (parent instanceof KLabelNode) {
+            parents.add(parent);
 
-        if (fontHeightPattern == null) {
-            fontHeightPattern = Pattern.compile(FONT_HEIGHT_PATTERN_REGEX);
+            parent = getParentGraphNode(parent);
+        }
+        if (parent != null && !(parent instanceof KNodeNode)) {
+            // hence KEdgeNode or KPortNode
+            parents.add(parent);
+
+            parent = getParentGraphNode(parent);
+        }
+        if (parent != null) {
+            // must now be a KNodeNode
+            parents.add(parent);
         }
 
-        final Matcher matcher = fontHeightPattern.matcher(fontConfig);
-
-        final float givenHeight;
-        if (matcher.find()) {
-            givenHeight = Float.valueOf(fontConfig.substring(matcher.start() + 1, matcher.end() - 1));
-        } else {
-            givenHeight = theStyledText.getFontData().getHeight();
-        }
-
-        // Create the updated FontData ...
-        final FontData fd = new FontData(
-                matcher.replaceFirst("|" + Float.toString(givenHeight * curViewScale) + "|"));
-
-        final Font previousFont = labelWidget.getFont();
-
-        // ... dispose the previous Font, configure the new one, and update the text widget's size 
-        labelWidget.setFont(new Font(labelWidget.getDisplay(), fd));
-        labelWidget.setSize(labelWidget.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-
-        previousFont.dispose();        
+        labelWidget.setData(STYLED_TEXT_PARENTS_KEY, parents);
     }
+
+    // this method is static and package protected by intention
+    static PNode getParentGraphNode(final PNode node) {
+        PNode parent = node;
+        do {
+            parent = parent.getParent();
+        } while (!(parent == null || parent instanceof IGraphElement));
+        return parent;
+    }
+
+
 
     private void setWidgetPrepared() {
         widgetJustPrepared = true;

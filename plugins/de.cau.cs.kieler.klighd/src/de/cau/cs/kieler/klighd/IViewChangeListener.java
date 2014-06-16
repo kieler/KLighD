@@ -70,14 +70,14 @@ public interface IViewChangeListener {
             this.affectedElement = element;
             this.diagramScale = diagramScale;
         }
-        
+
         /**
-         * Provides the view change type.
+         * Provides the {@link IViewer} the change occurred in.
          * 
-         * @return a element of {@link ViewChangeType} denoting view change type.  
+         * @return the {@link IViewer} the change occurred in.
          */
-        public ViewChangeType getType() {
-            return this.changeType;
+        public IViewer<?> getViewer() {
+            return this.activeViewer;
         }
 
         /**
@@ -91,6 +91,15 @@ public interface IViewChangeListener {
             } else {
                 return null;
             }
+        }
+        
+        /**
+         * Provides the view change type.
+         * 
+         * @return a element of {@link ViewChangeType} denoting view change type.  
+         */
+        public ViewChangeType getType() {
+            return this.changeType;
         }
 
         /**

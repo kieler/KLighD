@@ -65,7 +65,6 @@ import de.cau.cs.kieler.core.krendering.VerticalAlignment
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 
 /**
-/**
  * This class contains lots of convenient helper functions for configuring KRendering-based view models, 
  * and it does not claim to be complete ;-).<br>
  * In order to be consistent with the further extension classes the extension methods are non-static
@@ -840,6 +839,14 @@ class KRenderingExtensions {
         ];
     }
     
+    def <T extends KRendering> T setSelectionForeground(T rendering, Colors color) {
+        return rendering => [
+            it.styles += createKForeground.setColor(color) => [
+                it.selection = true;
+            ];
+        ];
+    }
+
     def <T extends KRendering>  T setForeground(T rendering, Colors color, int alpha){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [
@@ -847,6 +854,14 @@ class KRenderingExtensions {
         ];
     }
     
+    def <T extends KRendering> T setSelectionForeground(T rendering, Colors color, int alpha) {
+        return rendering => [
+            it.styles += createKForeground.setColor(color, alpha) => [
+                it.selection = true;
+            ];
+        ];
+    }
+
     def <T extends KRendering>  T setForegroundColor(T rendering, int red, int green, int blue){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
         return rendering => [

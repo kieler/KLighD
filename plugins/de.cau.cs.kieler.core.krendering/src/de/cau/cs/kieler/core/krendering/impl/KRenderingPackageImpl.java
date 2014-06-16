@@ -1034,6 +1034,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getKText_Editable() {
+        return (EAttribute)kTextEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getKPlacement() {
         return kPlacementEClass;
     }
@@ -2119,6 +2128,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kTextEClass = createEClass(KTEXT);
         createEAttribute(kTextEClass, KTEXT__TEXT);
         createEAttribute(kTextEClass, KTEXT__CURSOR_SELECTABLE);
+        createEAttribute(kTextEClass, KTEXT__EDITABLE);
 
         kPlacementEClass = createEClass(KPLACEMENT);
 
@@ -2467,6 +2477,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kTextEClass, KText.class, "KText", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKText_Text(), ecorePackage.getEString(), "text", null, 0, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKText_CursorSelectable(), ecorePackage.getEBoolean(), "cursorSelectable", "false", 0, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKText_Editable(), ecorePackage.getEBoolean(), "editable", "false", 0, 1, KText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPlacementEClass, KPlacement.class, "KPlacement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
