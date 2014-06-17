@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.viewers;
 
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -289,6 +290,11 @@ public class PiccoloViewerUI extends PiccoloViewer {
     // this field is package protected by intention
     static final String STYLED_TEXT_FIGURE_KEY = "STYLED_TEXT_FIGURE_KEY";
 
+    /** String key for caching the {@link PropertyChangeListener}
+     * used for keeping the labelWidget's styling up to date. */
+    // this field is package protected by intention
+    static final String TEXT_STYLING_CHANGE_LISTENER_KEY = "TEXT_STYLING_CHANGE_LISTENER_KEY";
+
     /** String key for caching the font scale factor in the labelWidget's data list. */
     private static final String FONT_SCALE_FACTOR_KEY = "FONT_SCALE_FACTOR_KEY";
     
@@ -382,6 +388,12 @@ public class PiccoloViewerUI extends PiccoloViewer {
     
     void deactivateLabelWidget() {
         labelWidget.setVisible(false);
+
+        final PNode node = (PNode) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
+        if (node != null) {
+            node.removePropertyChangeListener(
+                    (PropertyChangeListener) labelWidget.getData(TEXT_STYLING_CHANGE_LISTENER_KEY));
+        }
     }
 
 
