@@ -24,7 +24,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
  * KLighD-specific implementation of {@link ITextSelection}.<br>
@@ -92,6 +94,14 @@ public class KlighdTextSelection implements IStructuredSelection, ITextSelection
      */
     public KGraphElement getKGraphElement() {
         return kgraphElement;
+    }
+
+    /**
+     * @return the the parent {@link KNode} of {@link #getKGraphElement()} or <code>null</code>
+     */
+    public KNode getKNode() {
+        return kgraphElement == null
+                ? null : ModelingUtil.eContainerOfType(kgraphElement, KNode.class);
     }
 
     /**

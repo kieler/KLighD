@@ -39,7 +39,10 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
     public IStatus render(final ViewContext viewContext, final OutputStream output,
             final IPropertyHolder properties) {
 
-        final Shell shell = new Shell();
+        final int imageScale = properties != null
+                ? properties.getProperty(IMAGE_SCALE) : IMAGE_SCALE.getDefault();
+
+                final Shell shell = new Shell();
         final KlighdCanvas canvas = new KlighdCanvas(shell, 0);
 
         try {
@@ -52,10 +55,9 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
         }
 
         try {
-            final String format =
-                    properties != null ? properties.getProperty(OUTPUT_FORMAT)
-                            : BitmapExporter.SUB_FORMAT_PNG;
-            new BitmapExporter().export(output, canvas, false, 1, false, false, format);
+            final String format = properties != null
+                    ? properties.getProperty(OUTPUT_FORMAT) : BitmapExporter.SUB_FORMAT_PNG;
+            new BitmapExporter().export(output, canvas, false, imageScale, false, false, format);
 
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

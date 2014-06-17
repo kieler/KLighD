@@ -58,6 +58,13 @@ public interface IOffscreenRenderer {
             "de.cau.cs.kieler.klighd.offscreenRendering.collapsedElements", Collections.emptyList());
 
     /**
+     * Property definition for instructing bitmap image exporters to render to apply the given scale
+     * factor to the diagram before rendering it into an image.
+     */
+    IProperty<Integer> IMAGE_SCALE = new Property<Integer>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.imageScale", 1);
+
+    /**
      * Property definition for instructing vector image exporters to render text strings as polyline
      * shapes.
      */
