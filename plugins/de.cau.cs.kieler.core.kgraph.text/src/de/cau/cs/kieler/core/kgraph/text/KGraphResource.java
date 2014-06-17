@@ -24,7 +24,10 @@ import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.SaveOptions;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
@@ -41,16 +44,25 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 public class KGraphResource extends LazyLinkingResource {
 
     /**
+     * Default values for {@link KGraphElement}'s, see
+     * {@link de.cau.cs.kieler.klighd.xtext.transformations.KGraphDiagramSynthesis
+     * KGraphDiagramSynthesis}
+     */
+    private static final IProperty<Boolean> DEFAULTS =
+            new Property<Boolean>("de.cau.cs.kieler.kgraphsynthesis.defaults", false);
+    
+    /**
      * {@inheritDoc}<br>
      * This customized implementation delegates to {@link LazyLinkingResource#doLoad}.
      */
     protected void doLoad(final InputStream inputStream, final Map<?, ?> options) throws IOException {
         super.doLoad(inputStream, options);
+        
         if (!this.getContents().isEmpty()) {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 // parse persisted key-value pairs using KIML's layout data service
-                KimlUtil.loadDataElements((KNode) o);
+                KimlUtil.loadDataElements((KNode) o, DEFAULTS);
                 // validate layout data and references and fill in missing data
                 KimlUtil.validate((KNode) o);
             }
@@ -73,7 +85,7 @@ public class KGraphResource extends LazyLinkingResource {
         KNode node = (KNode) EcoreUtil2.getRootContainer(refreshed);
         if (node != null) {
             // parse persisted key-value pairs using KIML's layout data service
-            KimlUtil.loadDataElements(node);
+            KimlUtil.loadDataElements(node, DEFAULTS);
             // validate layout data and references and fill in missing data
             KimlUtil.validate(node);
         }
