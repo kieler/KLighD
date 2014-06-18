@@ -29,12 +29,15 @@ import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.util.Strings;
 
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
+import de.cau.cs.kieler.core.kgraph.text.KGraphResource;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.LayoutAlgorithmData;
 import de.cau.cs.kieler.kiml.LayoutMetaDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.LayoutOptionData.Type;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.kiml.ui.LayoutOptionLabelProvider;
 
 /**
@@ -230,45 +233,66 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
         // create and register the completion proposal for every element in the list
         for (LayoutOptionData optionData : layoutServices.getOptionData()) {
-            StyledString displayString = new StyledString(optionData.toString(),
-                    (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
+            StyledString displayString =
+                    new StyledString(optionData.toString(),
+                            (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
             displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
             String proposal = getValueConverter().toString(optionData.getId(),
-                    grammmarAccess.getQualifiedIDRule().getName());
-            
+                                grammmarAccess.getQualifiedIDRule().getName());
+
             LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
             Image image = labelProvider.getImage(optionData.getDefault());
-            
-            if (isValidProposal(proposal, context.getPrefix(), context)) {
-                // accept the proposal with unmodified prefix
-                acceptor.accept(doCreateProposal(proposal, displayString, image,
-                        getPriorityHelper().getDefaultPriority(), context));
-            } else {
-                int lastDotIndex = optionData.getId().lastIndexOf('.');
-                if (lastDotIndex >= 0) {
-                    // accept the proposal with enhanced prefix
-                    StringBuilder prefix = new StringBuilder(
-                            optionData.getId().substring(0, lastDotIndex + 1));
-                    prefix.append(context.getPrefix());
-                    // add escape characters as required
-                    for (int i = 0; i < proposal.length(); i++) {
-                        if (i >= prefix.length()) {
+
+            handleKeyProposal(context, acceptor, optionData.getId(), proposal, displayString, image);
+        }
+
+        // additional properties as specified for the kgraph text format
+        // note that we do not support suffix only here
+        for (IProperty<?> p : KGraphResource.ADDITIONAL_PROPERTIES) {
+            String proposal =
+                    getValueConverter().toString(p.getId(),
+                            grammmarAccess.getQualifiedIDRule().getName());
+            StyledString displayString = new StyledString(proposal);
+            Image image = KimlUiPlugin.getDefault().getImages().getPropText();
+
+            handleKeyProposal(context, acceptor, p.getId(), proposal, displayString, image);
+        }
+
+    }
+    
+    private void handleKeyProposal(final ContentAssistContext context,
+            final ICompletionProposalAcceptor acceptor, final String id, final String proposal,
+            final StyledString displayString, final Image image) {
+        
+        if (isValidProposal(proposal, context.getPrefix(), context)) {
+            // accept the proposal with unmodified prefix
+            acceptor.accept(doCreateProposal(proposal, displayString, image, getPriorityHelper()
+                    .getDefaultPriority(), context));
+        } else {
+            int lastDotIndex = id.lastIndexOf('.');
+            if (lastDotIndex >= 0) {
+                // accept the proposal with enhanced prefix
+                StringBuilder prefix =
+                        new StringBuilder(id.substring(0, lastDotIndex + 1));
+                prefix.append(context.getPrefix());
+                // add escape characters as required
+                for (int i = 0; i < proposal.length(); i++) {
+                    if (i >= prefix.length()) {
+                        break;
+                    }
+                    if (proposal.charAt(i) != prefix.charAt(i)) {
+                        if (proposal.charAt(i) == '^') {
+                            prefix.insert(i, '^');
+                        } else {
                             break;
                         }
-                        if (proposal.charAt(i) != prefix.charAt(i)) {
-                            if (proposal.charAt(i) == '^') {
-                                prefix.insert(i, '^');
-                            } else {
-                                break;
-                            }
-                        }
                     }
-                    if (isValidProposal(proposal, prefix.toString(), context)) {
-                        // accept the proposal with unmodified prefix
-                        acceptor.accept(doCreateProposal(proposal, displayString, image,
-                                getPriorityHelper().getDefaultPriority(), context));
-                    }
+                }
+                if (isValidProposal(proposal, prefix.toString(), context)) {
+                    // accept the proposal with unmodified prefix
+                    acceptor.accept(doCreateProposal(proposal, displayString, image,
+                            getPriorityHelper().getDefaultPriority(), context));
                 }
             }
         }
