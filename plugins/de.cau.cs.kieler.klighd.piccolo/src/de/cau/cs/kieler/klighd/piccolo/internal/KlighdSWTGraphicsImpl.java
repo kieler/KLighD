@@ -839,6 +839,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         for (final Image image : images.values()) {
             image.dispose();
         }
+        images.clear();
     }
 
 

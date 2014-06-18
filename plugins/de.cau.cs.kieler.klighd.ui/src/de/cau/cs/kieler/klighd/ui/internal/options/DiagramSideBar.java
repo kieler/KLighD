@@ -412,7 +412,7 @@ public final class DiagramSideBar {
             return;
         }
         
-        Color white = new Color(null, 255, 255, 255); // SUPPRESS CHECKSTYLE MagicNumber
+        final Color white = new Color(parent.getDisplay(), KlighdConstants.WHITE);
         resources.add(white);
         parent.setBackground(white);
 

@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.Shape;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -130,14 +131,20 @@ public class KlighdImage extends PNode implements IResourceEmployer {
      }
 
     /**
-     * Constructor.
+     * Constructor.<br>
+     * <br>
+     * <b>Closes the provided {@link InputStream} by calling {@link InputStream#close()}.</b>
      * 
      * @param input
      *            stream providing the image, will be read and converted to an Image internally
      */
     public KlighdImage(final InputStream input) {
         this();
-        setImage(input);
+        try {
+            setImage(input).close();
+        } catch (final IOException e) {
+            this.setVisible(false);
+        }
     }
     
     /**
@@ -185,13 +192,17 @@ public class KlighdImage extends PNode implements IResourceEmployer {
 
     /**
      * Sets the image to be displayed by this node by delegating to
-     * {@link ImageData#ImageData(InputStream)} and {@link #setImage(ImageData)}.
+     * {@link ImageData#ImageData(InputStream)} and {@link #setImage(ImageData)}.<br>
+     * <br>
+     * <b><font color="red">Make sure to close the {@link InputStream} afterwards!</font></b>
      * 
      * @param input
      *            stream providing the image data
+     * @return the provided {@link InputStream} for convenience
      */
-    public void setImage(final InputStream input) {
+    public InputStream setImage(final InputStream input) {
         setImage(new ImageData(input));
+        return input;
     }
 
     /**
@@ -224,8 +235,8 @@ public class KlighdImage extends PNode implements IResourceEmployer {
             
             // get the bundle and actual image,
             try {
-                setImage(bundle.getEntry(path).openStream());
-                
+                setImage(bundle.getEntry(path).openStream()).close();
+
                 KlighdPiccoloPlugin.getDefault().getImageRegistry()
                         .put(imageKey, ImageDescriptor.createFromImageData(imageData));
                 
