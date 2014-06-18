@@ -24,6 +24,8 @@ import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.SaveOptions;
 
+import com.google.common.collect.ImmutableList;
+
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IProperty;
@@ -52,6 +54,13 @@ public class KGraphResource extends LazyLinkingResource {
             new Property<Boolean>("de.cau.cs.kieler.kgraphsynthesis.defaults", false);
     
     /**
+     * Additional properties known to the kgraph text format that are no layout options. However,
+     * they are made available through content assist and are parsed properly.
+     */
+    public static final IProperty<?>[] ADDITIONAL_PROPERTIES = ImmutableList.of(DEFAULTS).toArray(
+            new IProperty<?>[1]);
+
+    /**
      * {@inheritDoc}<br>
      * This customized implementation delegates to {@link LazyLinkingResource#doLoad}.
      */
@@ -62,7 +71,7 @@ public class KGraphResource extends LazyLinkingResource {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 // parse persisted key-value pairs using KIML's layout data service
-                KimlUtil.loadDataElements((KNode) o, DEFAULTS);
+                KimlUtil.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
                 // validate layout data and references and fill in missing data
                 KimlUtil.validate((KNode) o);
             }
@@ -85,7 +94,7 @@ public class KGraphResource extends LazyLinkingResource {
         KNode node = (KNode) EcoreUtil2.getRootContainer(refreshed);
         if (node != null) {
             // parse persisted key-value pairs using KIML's layout data service
-            KimlUtil.loadDataElements(node, DEFAULTS);
+            KimlUtil.loadDataElements(node, ADDITIONAL_PROPERTIES);
             // validate layout data and references and fill in missing data
             KimlUtil.validate(node);
         }
