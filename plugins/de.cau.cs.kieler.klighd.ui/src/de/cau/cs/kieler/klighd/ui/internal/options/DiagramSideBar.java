@@ -760,7 +760,7 @@ public final class DiagramSideBar {
             res.dispose();
         }
         resources.clear();
-    }
-    
 
+        viewContext = null;
+    }
 }
