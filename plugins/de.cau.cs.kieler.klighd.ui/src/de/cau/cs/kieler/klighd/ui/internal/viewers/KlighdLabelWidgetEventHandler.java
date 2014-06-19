@@ -100,9 +100,19 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
                 labelWidget.setData(PiccoloViewerUI.TEXT_STYLING_CHANGE_LISTENER_KEY, this);
             }
 
-            public void propertyChange(final PropertyChangeEvent evt) {
-                KlighdLabelWidgetEventHandler.this.updateTextInputColoringAndSize(
-                        (KlighdStyledText) evt.getSource());
+            public void propertyChange(final PropertyChangeEvent event) {
+                final String propName = event.getPropertyName();
+
+                // although strings are compared here I used '==' since 'propName' is expected
+                //  to be exactly one of the mentioned constant definitions!
+                final boolean update =
+                        PNode.PROPERTY_PAINT == propName || PText.PROPERTY_FONT == propName
+                                || PText.PROPERTY_TEXT_PAINT == propName;
+
+                if (update) {
+                    KlighdLabelWidgetEventHandler.this
+                            .updateTextInputColoringAndSize((KlighdStyledText) event.getSource());
+                }
             }
         };
         
@@ -261,9 +271,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
 
         updateTextInputColoringAndSize(styledText);
 
-        styledText.addPropertyChangeListener(PText.PROPERTY_FONT, labelWidgetStylingEventListener);
-        styledText.addPropertyChangeListener(PText.PROPERTY_TEXT_PAINT, labelWidgetStylingEventListener);
-        styledText.addPropertyChangeListener(PNode.PROPERTY_PAINT, labelWidgetStylingEventListener);
+        styledText.addPropertyChangeListener(labelWidgetStylingEventListener);
 
         attachTextsParentInformation(styledText);
 
