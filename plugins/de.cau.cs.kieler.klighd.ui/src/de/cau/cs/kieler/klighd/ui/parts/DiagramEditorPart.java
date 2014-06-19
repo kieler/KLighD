@@ -166,12 +166,6 @@ public class DiagramEditorPart extends EditorPart implements
             // do an initial update of the view context
             viewContext.update(model);
 
-            // register this editor part in the DiagramViewManager in order to
-            // obtain it based in the ViewContext, e.g. for performing the layout,
-            // see e.g. LightDiagramServices#layoutDiagram(IDiagramWorkbenchPart,
-            // de.cau.cs.kieler.klighd.IViewer, boolean, boolean, java.util.List)
-            DiagramViewManager.getInstance().registerView(this);
-
             if (requiresInitialLayout(viewContext)) {
                 // in order to avoid flickering we set the viewer's control
                 // (the canvas) invisible, the canvas of a potentially created outline
@@ -285,9 +279,7 @@ public class DiagramEditorPart extends EditorPart implements
      */
     @Override
     public void dispose() {
-        DiagramViewManager.getInstance().unregisterViewContexts(this);
         unregisterResourceChangeListener();
-        // getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
 
         if (!diagramComposite.isDisposed()) {
             diagramComposite.removeControlListener(diagramAreaListener);
