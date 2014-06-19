@@ -200,6 +200,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
                 /**
                  * {@inheritDoc}
                  */
+                @Override
                 public String toString() {
                     // implementation derived from com.google.Scopes.SINGLETON
                     return String.format("%s[%s]", unscoped, ViewSynthesisScope.this);
@@ -210,6 +211,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
         /**
          * {@inheritDoc}
          */
+        @Override
         public String toString() {
             return "KLighD.ViewSynthesisShared";
         }
@@ -231,7 +233,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
         try {
             res = Guice.createInjector(this.transformationClassBinding).getInstance(
                             this.transformationClass);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             final String nl = KlighdDataManager.NEW_LINE;
             final String msg =
                     "KLighD: Cannot instantiate " + this.transformationClass.getCanonicalName()
@@ -271,8 +273,12 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
      * Delegates to the 'delegate' object.
      */
     public KNode transform(final Object model, final ViewContext viewContext) {
-        this.transformationDelegate = getNewDelegateInstance(); 
-        return this.transformationDelegate.transform(model, viewContext);
+        this.transformationDelegate = getNewDelegateInstance();        
+        final KNode result = this.transformationDelegate.transform(model, viewContext);
+
+        // release the actual transformation in order avoid unnecessary memory waste
+        this.transformationDelegate = null;
+        return result; 
     }
 
 
@@ -320,6 +326,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return this.getClass().getSimpleName() + "(" + getNewDelegateInstance() + ")";
     }

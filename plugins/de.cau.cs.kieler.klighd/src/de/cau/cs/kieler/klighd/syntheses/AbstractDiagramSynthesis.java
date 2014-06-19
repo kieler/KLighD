@@ -178,9 +178,17 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     public final KNode transform(final Object model, final ViewContext viewContext) {
         use(viewContext);
+
         @SuppressWarnings("unchecked")
-        final S input = (S) model; 
-        return transform(input);
+        final S input = (S) model;
+        final KNode result = transform(input);
+
+        // clear the reference to ViewContext in order to allow the garbage collector to dispose
+        //  view model, the source model and other memory consuming components once the
+        //  corresponding viewer or diagram workbench part is closed (instances of this class are
+        //  kept for the life-time of the tool in case they are employed without Google Guice).
+        use(null);
+        return result;
     }
 
     /**
@@ -457,7 +465,11 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * In common case this method need not to be called by application code but only if delegate
      * diagram syntheses are employed by means of a {@link com.google.inject.Provider Provider}, see
      * {@link ReinitializingDiagramSynthesisProxy#ViewSynthesisScope ViewSynthesisScope} for
-     * details.
+     * details.<br>
+     * <br>
+     * Make sure to reset the reference by calling <code>use(null)</code> after calling
+     * {@link #transform(Object)} in order safely let the garbage collect dispose the given view
+     * context and its referenced data if possible. Otherwise this can result in a memory leak!
      * 
      * @param viewContext
      *            the context to be used during the current run
