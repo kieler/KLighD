@@ -685,7 +685,7 @@ public class DiagramEditorPart extends EditorPart implements
                             Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
+                        LightDiagramServices.layoutDiagram(DiagramEditorPart.this);
                         oldAspectRatio = aspectRatio;
                         return;
                     }

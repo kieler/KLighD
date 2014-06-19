@@ -407,7 +407,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
                             Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                        LightDiagramServices.layoutDiagram(DiagramViewPart.this);
                         oldAspectRatio = aspectRatio;
                         return;
                     }
