@@ -3439,9 +3439,31 @@ ruleKImage returns [EObject current=null]
 	    }
 
 )
-)	otherlv_6=')' 
+)(	otherlv_6='clipShape' 
     {
-    	newLeafNode(otherlv_6, grammarAccess.getKImageAccess().getRightParenthesisKeyword_2_3());
+    	newLeafNode(otherlv_6, grammarAccess.getKImageAccess().getClipShapeKeyword_2_3_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKImageAccess().getClipShapeKRenderingParserRuleCall_2_3_1_0()); 
+	    }
+		lv_clipShape_7_0=ruleKRendering		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKImageRule());
+	        }
+       		set(
+       			$current, 
+       			"clipShape",
+        		lv_clipShape_7_0, 
+        		"KRendering");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?	otherlv_8=')' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKImageAccess().getRightParenthesisKeyword_2_4());
     }
 )?)
 ;

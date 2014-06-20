@@ -156,7 +156,8 @@ KCustomRendering returns KCustomRendering:
 
 KImage returns KImage:
 	{KImage}
-	'kimage' ('(' (bundleName=QualifiedID ':')? imagePath=STRING ')')?;
+	'kimage' ('(' (bundleName=QualifiedID ':')? imagePath=STRING
+		('clipShape' clipShape=KRendering)? ')')?;
 
 KPolyline returns KPolyline:
 	(KSimplePolyline | KPolygon | KRoundedBendsPolyline | KSpline)
