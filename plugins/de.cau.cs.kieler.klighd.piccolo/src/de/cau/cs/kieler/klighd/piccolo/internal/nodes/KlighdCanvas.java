@@ -35,6 +35,7 @@ import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PPanEventHandler;
 import edu.umd.cs.piccolo.event.PZoomEventHandler;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolo.util.PPickPath;
 import edu.umd.cs.piccolox.swt.PSWTCanvas;
 import edu.umd.cs.piccolox.swt.PSWTRoot;
 
@@ -65,6 +66,9 @@ public class KlighdCanvas extends PSWTCanvas {
     public KlighdCanvas(final Composite parent, final int style) {
         super(parent, style);
 
+        // make sure this canvas is not stored in this horrible static reference!
+        PSWTCanvas.CURRENT_CANVAS = null;
+
         // remove the original event handlers as they require AWT event type codes
         //  instances of this class are augmented with SWT-based event handlers
         //  e.g. in PiccoloViewer or PiccoloOutlinePage
@@ -85,9 +89,14 @@ public class KlighdCanvas extends PSWTCanvas {
 
                 NodeDisposeListener.disposePNode(thisCanvas.getCamera().getRoot());
 
-                // this way the backbuffer image will be disposed!
+                // this horrible static reference may preserve a pick path containing
+                //  a reference to the camera containing a reference to ...,
+                //  thus. preventing the gc from disposing almost every diagram data
+                PPickPath.CURRENT_PICK_PATH = null;
+
+                // this way the back buffer image will be disposed!
                 thisCanvas.setDoubleBuffered(false);
-                
+
                 if (thisCanvas.graphics != null) {
                     thisCanvas.graphics.dispose();
                 }
@@ -213,6 +222,7 @@ public class KlighdCanvas extends PSWTCanvas {
      * This specialized method checks the validity of the canvas
      * before something is painted in order to avoid the 'Widget is disposed' errors.
      */
+    @Override
     public void repaint(final PBounds bounds) {
         if (!this.isDisposed()) {
             super.repaint(bounds);
