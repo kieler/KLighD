@@ -183,7 +183,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         if (outlineCanvas == null) {
             this.topNode = newTopNode;
             return;
-        } 
+        }
 
         if (topNode != null && topNode != newTopNode) {
             // detach the propertyListener from the previously observed top node
@@ -196,6 +196,10 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
             this.topNode.getDiagramMainCamera().removePropertyChangeListener(propertyListener);
             this.outlineCanvas.getCamera().removeChild(this.topNode);
+
+            if (nodeLayoutAdapter != null) {
+                this.topNode.getGraphElement().eAdapters().remove(nodeLayoutAdapter);
+            }
         }
         
         this.topNode = newTopNode;
@@ -238,7 +242,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                     return;
                 }
                 
-                int featureId = notification.getFeatureID(KShapeLayout.class);
+                final int featureId = notification.getFeatureID(KShapeLayout.class);
                 if (featureId == KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH
                         || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
                         || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__XPOS
@@ -286,8 +290,8 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         // always reveal the current shape layout - it may be exchanged over the diagram's life time
         final KShapeLayout layoutData = rootNode.getData(KShapeLayout.class);
 
-        float width = Math.max(layoutData.getWidth(), MIN_SIZE);
-        float height = Math.max(layoutData.getHeight(), MIN_SIZE);
+        final float width = Math.max(layoutData.getWidth(), MIN_SIZE);
+        final float height = Math.max(layoutData.getHeight(), MIN_SIZE);
         outlineCanvas.getCamera().setViewBounds(
                 new Rectangle2D.Double(layoutData.getXpos(), layoutData.getYpos(), width, height));
     }
@@ -314,21 +318,6 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
         // schedule a repaint
         outlineCanvas.getCamera().invalidatePaint();
-//
-//        if (!this.outlineCanvas.isVisible() && bounds.width != 0) {
-//            new Job("") {
-//                @Override
-//                protected IStatus run(final IProgressMonitor monitor) {
-//                    PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-//                        
-//                        public void run() {
-//                            PiccoloOutlinePage.this.outlineCanvas.setVisible(true);
-//                        }
-//                    });
-//                    return Status.OK_STATUS;
-//                }
-//            } .schedule(100);
-//        }
     }
 
 
@@ -347,31 +336,33 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      * {@inheritDoc}
      */
     public void dispose() {
-        final PCamera originalCamera = topNode.getDiagramMainCamera();
-
-        outlineRectTimer = null;
-
-        if (originalCamera != null) {
-            // remove all the listeners!
-            originalCamera.removePropertyChangeListener(propertyListener);
+        if (topNode != null) {
+            this.outlineCanvas.getCamera().removeLayer(this.topNode);
+            
+            final PCamera originalCamera = topNode.getDiagramMainCamera();
+            if (originalCamera != null) {
+                originalCamera.removePropertyChangeListener(propertyListener);
+            }
         }
+        topNode = null;
+        propertyListener = null;
 
         if (rootNode != null) {
             rootNode.eAdapters().remove(nodeLayoutAdapter);
-            rootNode = null;
-            nodeLayoutAdapter = null;
         }
-        if (canvasResizeListener != null) {
-            if (!outlineCanvas.isDisposed()) {
-                outlineCanvas.removeControlListener(canvasResizeListener);
-            }
-            canvasResizeListener = null;
-        }
+        rootNode = null;
+        nodeLayoutAdapter = null;
+
         
         // the canvas, which is accessible by the platform via #getControl()
-        //  is disposed separately by the platform
+        //  is disposed separately by the platform, ...
+        outlineCanvas = null;
+        outlineRectTimer = null;
+        
+        // afterwards the canvasResizeListener can't be removed anymore (SWT exception)
+        canvasResizeListener = null;
 
-        this.disposed = true;
+        disposed = true;
     }
 
 
@@ -409,12 +400,12 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
             // if the user clicks outside the outline rect,
             // center it on this point before dragging starts
-            boolean withinRect = outlineRectBounds.contains(event.getPosition());
+            final boolean withinRect = outlineRectBounds.contains(event.getPosition());
             if (!withinRect) {
                 // translate the camera by the delta between click
                 // and current center point of the bounds
-                Point2D center = outlineRectBounds.getCenter2D();
-                Point2D delta =
+                final Point2D center = outlineRectBounds.getCenter2D();
+                final Point2D delta =
                         new Point2D.Double(center.getX() - event.getPosition().getX(),
                                 center.getY() - event.getPosition().getY());
                 originalCamera.translateView(delta.getX(), delta.getY());
@@ -428,8 +419,8 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         @Override
         protected void drag(final PInputEvent event) {
             super.drag(event);
-            Point2D pos = event.getPosition();
-            Point2D delta = new Point2D.Double(pos.getX() - last.getX(), pos.getY() - last.getY());
+            final Point2D pos = event.getPosition();
+            final Point2D delta = new Point2D.Double(pos.getX() - last.getX(), pos.getY() - last.getY());
             topNode.getDiagramMainCamera().translateView(-delta.getX(), -delta.getY());
             last = pos;
         }
