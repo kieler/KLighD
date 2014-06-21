@@ -164,7 +164,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      */
     @Override
     public void dispose() {
-        super.dispose();
+        DiagramViewManager.getInstance().unregisterViewContexts(this);
 
         if (!diagramComposite.isDisposed()) {
             diagramComposite.removeControlListener(diagramAreaListener);
@@ -173,9 +173,14 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         if (this.sideBar != null) {
             this.sideBar.dispose();
         }
+        this.sideBar = null;
 
-        disposed = true;
-        DiagramViewManager.getInstance().unregisterViewContexts(this);
+        this.getSite().setSelectionProvider(null);
+        this.viewer = null;
+
+        this.disposed = true;
+
+        super.dispose();
     }
 
     /**

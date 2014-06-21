@@ -70,7 +70,6 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
-import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -288,6 +287,12 @@ public class DiagramEditorPart extends EditorPart implements
         if (this.sideBar != null) {
             this.sideBar.dispose();
         }
+        this.sideBar = null;
+
+        this.getSite().setSelectionProvider(null);
+        this.viewer = null;
+
+        this.currentOutlinePage = null;
 
         super.dispose();
     }

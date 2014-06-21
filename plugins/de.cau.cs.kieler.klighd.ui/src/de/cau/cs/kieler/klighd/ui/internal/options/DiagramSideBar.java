@@ -762,5 +762,7 @@ public final class DiagramSideBar {
         resources.clear();
 
         viewContext = null;
+        layoutOptionControlFactory = null;
+        synthesisOptionControlFactory = null;
     }
 }
