@@ -13,16 +13,26 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.statushandlers.StatusManager;
+import org.eclipse.ui.wizards.newresource.BasicNewFileResourceWizard;
 
 /**
  * The new-wizard for creating empty KGraphs.
- *
+ * 
  * @author msp
+ * @author uru
  */
 public class EmptyGraphWizard extends Wizard implements INewWizard {
 
@@ -30,14 +40,17 @@ public class EmptyGraphWizard extends Wizard implements INewWizard {
     private IStructuredSelection selection;
     /** the new file page. */
     private WizardNewFileCreationPage newFilePage;
-    
+    /** the current workbench. */
+    private IWorkbench workbench;
+
     /**
      * {@inheritDoc}
      */
-    public void init(final IWorkbench workbench, final IStructuredSelection theselection) {
+    public void init(final IWorkbench theworkbench, final IStructuredSelection theselection) {
         this.selection = theselection;
+        this.workbench = theworkbench;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -56,7 +69,29 @@ public class EmptyGraphWizard extends Wizard implements INewWizard {
      */
     @Override
     public boolean performFinish() {
-        newFilePage.createNewFile();
+
+        // try to show the new file wherever possible and open it in an editor
+        // code copied from {@link org.eclipse.ui.wizards.newresource.BasicNewFileResourceWizard}
+
+        IWorkbenchWindow dw = workbench.getActiveWorkbenchWindow();
+        IFile file = newFilePage.createNewFile();
+
+        BasicNewFileResourceWizard.selectAndReveal(file, workbench.getActiveWorkbenchWindow());
+
+        // Open editor on new file.
+        try {
+            if (dw != null) {
+                IWorkbenchPage page = dw.getActivePage();
+                if (page != null) {
+                    IDE.openEditor(page, file, true);
+                }
+            }
+        } catch (PartInitException e) {
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KGraphUiModule.PLUGIN_ID, e.getMessage(), e),
+                    StatusManager.SHOW);
+        }
+
         return true;
     }
 
