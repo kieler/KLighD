@@ -76,7 +76,7 @@ public class EmptyGraphWizard extends Wizard implements INewWizard {
         IWorkbenchWindow dw = workbench.getActiveWorkbenchWindow();
         IFile file = newFilePage.createNewFile();
 
-        BasicNewFileResourceWizard.selectAndReveal(file, workbench.getActiveWorkbenchWindow());
+        BasicNewFileResourceWizard.selectAndReveal(file, dw);
 
         // Open editor on new file.
         try {
