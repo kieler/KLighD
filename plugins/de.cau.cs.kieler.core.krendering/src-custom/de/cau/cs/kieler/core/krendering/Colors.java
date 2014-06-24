@@ -1753,11 +1753,12 @@ public enum Colors {
      * @return the desired color with name <code>name</code> if anyone exists
      */
     public static Colors getColorByName(final String name) {
-        Colors result = fastColorLookup.get(name);
+        String lowerCaseName = name.toLowerCase();
+        Colors result = fastColorLookup.get(lowerCaseName);
         if (result == null) {
             for (Colors color : values()) {
-                if (color.getName().toLowerCase().equals(name)) {
-                    fastColorLookup.put(name, color);
+                if (color.getName().toLowerCase().equals(lowerCaseName)) {
+                    fastColorLookup.put(lowerCaseName, color);
                     result = color;
                 }
             }
