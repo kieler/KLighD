@@ -810,7 +810,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	/**
 	 * Constraint:
 	 *     (
-	 *         (bundleName=QualifiedID? imagePath=STRING)? 
+	 *         (bundleName=QualifiedID? imagePath=STRING clipShape=KRendering?)? 
 	 *         id=QualifiedID? 
 	 *         persistentEntries+=Property* 
 	 *         (styles+=KStyle* actions+=KAction* placementData=KPlacementData? childPlacement=KPlacement? children+=KRendering*)?
@@ -1049,7 +1049,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     ((bundleName=QualifiedID? imagePath=STRING)?)
+	 *     ((bundleName=QualifiedID? imagePath=STRING clipShape=KRendering?)?)
 	 */
 	protected void sequence_KImage(EObject context, KImage semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

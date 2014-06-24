@@ -70,7 +70,6 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
-import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -165,12 +164,6 @@ public class DiagramEditorPart extends EditorPart implements
 
             // do an initial update of the view context
             viewContext.update(model);
-
-            // register this editor part in the DiagramViewManager in order to
-            // obtain it based in the ViewContext, e.g. for performing the layout,
-            // see e.g. LightDiagramServices#layoutDiagram(IDiagramWorkbenchPart,
-            // de.cau.cs.kieler.klighd.IViewer, boolean, boolean, java.util.List)
-            DiagramViewManager.getInstance().registerView(this);
 
             if (requiresInitialLayout(viewContext)) {
                 // in order to avoid flickering we set the viewer's control
@@ -285,9 +278,7 @@ public class DiagramEditorPart extends EditorPart implements
      */
     @Override
     public void dispose() {
-        DiagramViewManager.getInstance().unregisterViewContexts(this);
         unregisterResourceChangeListener();
-        // getEditorSite().getWorkbenchWindow().getPartService().removePartListener(toolBarListener);
 
         if (!diagramComposite.isDisposed()) {
             diagramComposite.removeControlListener(diagramAreaListener);
@@ -296,6 +287,12 @@ public class DiagramEditorPart extends EditorPart implements
         if (this.sideBar != null) {
             this.sideBar.dispose();
         }
+        this.sideBar = null;
+
+        this.getSite().setSelectionProvider(null);
+        this.viewer = null;
+
+        this.currentOutlinePage = null;
 
         super.dispose();
     }
@@ -685,7 +682,7 @@ public class DiagramEditorPart extends EditorPart implements
                             Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramEditorPart.this);
+                        LightDiagramServices.layoutDiagram(DiagramEditorPart.this);
                         oldAspectRatio = aspectRatio;
                         return;
                     }

@@ -438,7 +438,7 @@ public final class DiagramSideBar {
                 viewContext.setZoomStyle(ZoomStyle.create(false, zoomToFitBtn.getSelection(), false));
                 // perform zoom to fit upon activation of the toggle button
                 if (zoomToFitBtn.getSelection()) {
-                    LightDiagramServices.layoutAndZoomDiagram(viewContext.getDiagramWorkbenchPart());
+                    LightDiagramServices.layoutDiagram(viewContext);
                     // uncheck the zoom to focus button
                     zoomToFocusBtn.setSelection(false);
                 }
@@ -462,7 +462,7 @@ public final class DiagramSideBar {
                         zoomToFocusBtn.getSelection()));
                 // perform zoom to focus upon activation of the toggle button
                 if (zoomToFocusBtn.getSelection()) {
-                    LightDiagramServices.layoutAndZoomDiagram(viewContext.getDiagramWorkbenchPart());
+                    LightDiagramServices.layoutDiagram(viewContext);
                     // uncheck the zoom to fit button
                     zoomToFitBtn.setSelection(false);
                 }
@@ -760,7 +760,9 @@ public final class DiagramSideBar {
             res.dispose();
         }
         resources.clear();
-    }
-    
 
+        viewContext = null;
+        layoutOptionControlFactory = null;
+        synthesisOptionControlFactory = null;
+    }
 }

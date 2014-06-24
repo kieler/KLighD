@@ -14,10 +14,12 @@
 package de.cau.cs.kieler.klighd.ui.parts;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -32,9 +34,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
+import org.osgi.framework.Bundle;
 
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -57,6 +59,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  */
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         ILayoutConfigProvider {
+
+    /** The KIML UI plug-in's id, used for avoiding a hard dependency for just revealing the image. */
+    public static final String KIML_UI_PLUGIN_ID = "de.cau.cs.kieler.kiml.ui";
 
     /** The id this {@link ViewPart} is registered with in the extension point. */
     public static final String VIEW_ID = "de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart";
@@ -159,7 +164,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      */
     @Override
     public void dispose() {
-        super.dispose();
+        DiagramViewManager.getInstance().unregisterViewContexts(this);
 
         if (!diagramComposite.isDisposed()) {
             diagramComposite.removeControlListener(diagramAreaListener);
@@ -168,9 +173,14 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         if (this.sideBar != null) {
             this.sideBar.dispose();
         }
+        this.sideBar = null;
 
-        disposed = true;
-        DiagramViewManager.getInstance().unregisterViewContexts(this);
+        this.getSite().setSelectionProvider(null);
+        this.viewer = null;
+
+        this.disposed = true;
+
+        super.dispose();
     }
 
     /**
@@ -178,8 +188,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      * {@link ViewContext} and populates the diagram side bar accordingly. For internal use only!
      * 
      * @param fitSpace
-     *            if <code>true</code> a {@link ZoomStyle#ZOOM_TO_FIT} will applied to the diagram
-     *            in order to fit into the remaining space
+     *            if <code>true</code> a {@link de.cau.cs.kieler.klighd.ZoomStyle#ZOOM_TO_FIT
+     *            ZoomStyle#ZOOM_TO_FIT} will applied to the diagram in order to fit into the
+     *            remaining space
      */
     public void updateOptions(final boolean fitSpace) {
         this.sideBar.updateOptions(diagramComposite, this.viewer.getViewContext(), fitSpace);
@@ -222,8 +233,11 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         toolBar.add(new Action("Arrange", IAction.AS_PUSH_BUTTON) {
             // Constructor
             {
-                setImageDescriptor(KimlUiPlugin
-                        .getImageDescriptor("icons/menu16/kieler-arrange.gif"));
+                final Bundle kimlUI = Platform.getBundle(KIML_UI_PLUGIN_ID);
+                if (kimlUI != null) {
+                    setImageDescriptor(ImageDescriptor.createFromURL(
+                        kimlUI.getEntry("icons/menu16/kieler-arrange.gif")));
+                }
             }
 
             @Override
@@ -398,7 +412,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
                             Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
                     if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                             || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                        LightDiagramServices.layoutAndZoomDiagram(DiagramViewPart.this);
+                        LightDiagramServices.layoutDiagram(DiagramViewPart.this);
                         oldAspectRatio = aspectRatio;
                         return;
                     }

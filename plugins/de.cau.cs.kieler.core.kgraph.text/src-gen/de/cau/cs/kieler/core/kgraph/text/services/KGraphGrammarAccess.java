@@ -1952,13 +1952,17 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cColonKeyword_2_1_1 = (Keyword)cGroup_2_1.eContents().get(1);
 		private final Assignment cImagePathAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
 		private final RuleCall cImagePathSTRINGTerminalRuleCall_2_2_0 = (RuleCall)cImagePathAssignment_2_2.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Group cGroup_2_3 = (Group)cGroup_2.eContents().get(3);
+		private final Keyword cClipShapeKeyword_2_3_0 = (Keyword)cGroup_2_3.eContents().get(0);
+		private final Assignment cClipShapeAssignment_2_3_1 = (Assignment)cGroup_2_3.eContents().get(1);
+		private final RuleCall cClipShapeKRenderingParserRuleCall_2_3_1_0 = (RuleCall)cClipShapeAssignment_2_3_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
 		
 		//KImage:
-		//	{KImage} "kimage" ("(" (bundleName=QualifiedID ":")? imagePath=STRING ")")?;
+		//	{KImage} "kimage" ("(" (bundleName=QualifiedID ":")? imagePath=STRING ("clipShape" clipShape=KRendering)? ")")?;
 		public ParserRule getRule() { return rule; }
 
-		//{KImage} "kimage" ("(" (bundleName=QualifiedID ":")? imagePath=STRING ")")?
+		//{KImage} "kimage" ("(" (bundleName=QualifiedID ":")? imagePath=STRING ("clipShape" clipShape=KRendering)? ")")?
 		public Group getGroup() { return cGroup; }
 
 		//{KImage}
@@ -1967,7 +1971,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//"kimage"
 		public Keyword getKimageKeyword_1() { return cKimageKeyword_1; }
 
-		//("(" (bundleName=QualifiedID ":")? imagePath=STRING ")")?
+		//("(" (bundleName=QualifiedID ":")? imagePath=STRING ("clipShape" clipShape=KRendering)? ")")?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"("
@@ -1991,8 +1995,20 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getImagePathSTRINGTerminalRuleCall_2_2_0() { return cImagePathSTRINGTerminalRuleCall_2_2_0; }
 
+		//("clipShape" clipShape=KRendering)?
+		public Group getGroup_2_3() { return cGroup_2_3; }
+
+		//"clipShape"
+		public Keyword getClipShapeKeyword_2_3_0() { return cClipShapeKeyword_2_3_0; }
+
+		//clipShape=KRendering
+		public Assignment getClipShapeAssignment_2_3_1() { return cClipShapeAssignment_2_3_1; }
+
+		//KRendering
+		public RuleCall getClipShapeKRenderingParserRuleCall_2_3_1_0() { return cClipShapeKRenderingParserRuleCall_2_3_1_0; }
+
 		//")"
-		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
+		public Keyword getRightParenthesisKeyword_2_4() { return cRightParenthesisKeyword_2_4; }
 	}
 
 	public class KPolylineElements extends AbstractParserRuleElementFinder {
@@ -5351,7 +5367,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KImage:
-	//	{KImage} "kimage" ("(" (bundleName=QualifiedID ":")? imagePath=STRING ")")?;
+	//	{KImage} "kimage" ("(" (bundleName=QualifiedID ":")? imagePath=STRING ("clipShape" clipShape=KRendering)? ")")?;
 	public KImageElements getKImageAccess() {
 		return (pKImage != null) ? pKImage : (pKImage = new KImageElements());
 	}
@@ -5973,13 +5989,13 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		return (tNATURAL != null) ? tNATURAL : (tNATURAL = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "NATURAL"));
 	} 
 
-	//terminal ID: // chsch: the optional leading '^' is the implicit keyword escape character
+	//terminal ID:
 	//	"^"? ("a".."z" | "A".."Z" | "_") ("a".."z" | "A".."Z" | "_" | "0".."9")*;
 	public TerminalRule getIDRule() {
 		return (tID != null) ? tID : (tID = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ID"));
 	} 
 
-	//terminal STRING: // chsch: added '\'' alternative! 
+	//terminal STRING:
 	//	"\"" ("\\" ("b" | "t" | "n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\""))* "\"";
 	public TerminalRule getSTRINGRule() {
 		return (tSTRING != null) ? tSTRING : (tSTRING = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "STRING"));

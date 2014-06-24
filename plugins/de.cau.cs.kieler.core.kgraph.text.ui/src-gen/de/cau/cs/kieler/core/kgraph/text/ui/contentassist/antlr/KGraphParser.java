@@ -148,6 +148,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKImageAccess().getGroup(), "rule__KImage__Group__0");
 					put(grammarAccess.getKImageAccess().getGroup_2(), "rule__KImage__Group_2__0");
 					put(grammarAccess.getKImageAccess().getGroup_2_1(), "rule__KImage__Group_2_1__0");
+					put(grammarAccess.getKImageAccess().getGroup_2_3(), "rule__KImage__Group_2_3__0");
 					put(grammarAccess.getKPolylineAccess().getGroup(), "rule__KPolyline__Group__0");
 					put(grammarAccess.getKPolylineAccess().getGroup_2(), "rule__KPolyline__Group_2__0");
 					put(grammarAccess.getKPolylineAccess().getGroup_3(), "rule__KPolyline__Group_3__0");
@@ -335,6 +336,7 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKCustomRenderingAccess().getClassNameAssignment_2_2(), "rule__KCustomRendering__ClassNameAssignment_2_2");
 					put(grammarAccess.getKImageAccess().getBundleNameAssignment_2_1_0(), "rule__KImage__BundleNameAssignment_2_1_0");
 					put(grammarAccess.getKImageAccess().getImagePathAssignment_2_2(), "rule__KImage__ImagePathAssignment_2_2");
+					put(grammarAccess.getKImageAccess().getClipShapeAssignment_2_3_1(), "rule__KImage__ClipShapeAssignment_2_3_1");
 					put(grammarAccess.getKPolylineAccess().getIdAssignment_1(), "rule__KPolyline__IdAssignment_1");
 					put(grammarAccess.getKPolylineAccess().getPersistentEntriesAssignment_2_1(), "rule__KPolyline__PersistentEntriesAssignment_2_1");
 					put(grammarAccess.getKPolylineAccess().getPointsAssignment_3_1_0_2_0(), "rule__KPolyline__PointsAssignment_3_1_0_2_0");
