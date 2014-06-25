@@ -760,4 +760,48 @@ public final class KRenderingUtil {
         }
     }
         
+    /**
+     * Convenient creation of color objects. Allows several names (red, blue, black, etc) and hex
+     * strings (#00ff00).
+     * 
+     * @param colorString
+     *            either a name or a css style hex string.
+     * @return a corresponding {@link KColor} instance.
+     */
+    public static KColor getColor(final String colorString) {
+        // SUPPRESS CHECKSTYLE NEXT 50 MagicNumber
+        // if a rgb color is given, convert it
+        if (colorString.startsWith("#")) {
+
+            KColor kcolor = KRenderingFactory.eINSTANCE.createKColor();
+            try {
+                if (colorString.length() == 4) {
+                    // CSS style short color format
+                    String r = colorString.substring(1, 2);
+                    kcolor.setRed(Integer.valueOf(r + r, 16));
+                    String g = colorString.substring(2, 3);
+                    kcolor.setGreen(Integer.valueOf(g + g, 16));
+                    String b = colorString.substring(3, 4);
+                    kcolor.setBlue(Integer.valueOf(b + b, 16));
+                    return kcolor;
+                }
+                kcolor.setRed(Integer.valueOf(colorString.substring(1, 3), 16));
+                kcolor.setGreen(Integer.valueOf(colorString.substring(3, 5), 16));
+                kcolor.setBlue(Integer.valueOf(colorString.substring(5, 7), 16));
+                return kcolor;
+            } catch (Exception nfe) {
+                // silent
+            }
+
+        } else {
+
+            // from name
+            Colors c = Colors.getColorByName(colorString);
+            if (c != null) {
+                return KRenderingFactory.eINSTANCE.createKColor().setColor(c);
+            }
+        }
+
+        return null;
+    }
 }
