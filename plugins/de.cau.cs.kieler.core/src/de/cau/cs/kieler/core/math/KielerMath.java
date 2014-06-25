@@ -852,5 +852,28 @@ public final class KielerMath {
         }
         return x;
     }
+    
+    /**
+     * Clip the given vector to a rectangular box of given size.
+     * 
+     * @param v vector relative to the center of the box
+     * @param width width of the rectangular box
+     * @param height height of the rectangular box
+     * 
+     * @return {@code v}.
+     */
+    public static KVector clipVector(final KVector v, final double width, final double height) {
+        double wh = width / 2, hh = height / 2;
+        double absx = Math.abs(v.x), absy = Math.abs(v.y);
+        double xscale = 1, yscale = 1;
+        if (absx > wh) {
+            xscale = wh / absx;
+        }
+        if (absy > hh) {
+            yscale = hh / absy;
+        }
+        v.scale(Math.min(xscale, yscale));
+        return v;
+    }
 
 }
