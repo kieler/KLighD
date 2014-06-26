@@ -720,7 +720,16 @@ public final class DiagramSideBar {
                 c.setVisible(false);
             }
             if (this.sashLayoutData != null) {
-                this.horizontalPos = this.sashLayoutData.left.offset;
+                if (this.sashLayoutData.left.offset != 0) {
+                    // The horizontal position of the side bar's sash should only be saved 
+                    // if it is visible in current view.
+                    // It' propose is to avoid the re-initialization of the side bar's size 
+                    // in case a different model has been assigned to the current view.
+                    // But if a sequence of models is displayed where only some of them have a sidebar
+                    // The problem appears that horizontalPos may be set to 0 which permanently
+                    // hides the sidebar and thus this zero check is needed.
+                    this.horizontalPos = this.sashLayoutData.left.offset;
+                }
                 this.sashLayoutData.left.numerator = FULL;
                 this.sashLayoutData.left.offset = 0;
             }
