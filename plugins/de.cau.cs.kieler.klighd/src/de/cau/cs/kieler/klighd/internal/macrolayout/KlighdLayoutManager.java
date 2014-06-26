@@ -537,6 +537,10 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // ... and apply the layout
         if (recorder != null) {
+            IViewer<?> viewer = (IViewer<?>) recorder;
+            if (viewer.getControl() != null && viewer.getControl().isDisposed()) {
+                return;
+            }
             recorder.startRecording();
             applyLayout(mapping);
             recorder.stopRecording(animationTime);

@@ -24,6 +24,7 @@ import com.google.common.collect.Iterators;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
+import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
@@ -52,7 +53,9 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
     }
 
     public void viewChanged(final ViewChange change) {
-        if (!labelWidget.isVisible()) {
+        if (change.getType() == ViewChangeType.VIEW_PORT
+                || labelWidget.isDisposed()
+                || !labelWidget.isVisible()) {
             return;
         }
 

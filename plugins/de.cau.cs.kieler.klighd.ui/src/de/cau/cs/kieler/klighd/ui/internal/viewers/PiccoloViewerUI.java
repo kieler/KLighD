@@ -321,6 +321,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
             labelWidget.setData(STYLED_TEXT_FIGURE_KEY, styledText);
             theStyledText = styledText;
         } else {
+            if (labelWidget.isDisposed()) {
+                return;
+            }
+
             theStyledText = (KlighdStyledText) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
             if (theStyledText == null) {
                 return;
