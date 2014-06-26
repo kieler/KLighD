@@ -13,10 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 
 /**
@@ -50,6 +55,10 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /** property denoting the support of selecting multiple diagram elements. */
     public static final IProperty<Boolean> MULTI_SELECTION = new Property<Boolean>(
             "klighd.multiSelection", true);
+
+    /** property denoting pre-definition of diagram {@link SynthesisOption} values. */
+    public static final IProperty<Map<SynthesisOption, Object>> SYNTHESIS_OPTION_CONFIG =
+            new Property<Map<SynthesisOption, Object>>("klighd.synthesisOptionConfig");
     
     /**
      * Defines the possible diagram side bar initialization options. 
@@ -229,6 +238,46 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      */
     public KlighdSynthesisProperties suppressMultiSelection() {
         this.setProperty(MULTI_SELECTION, false);
+        return this;
+    }
+
+    /**
+     * Configures diagram {@link SynthesisOption} values beyond the default value definitions.
+     * 
+     * @param option
+     *            the singleton {@link SynthesisOption} object
+     * @param value
+     *            the value to be configured for <code>option</code>
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties configureSynthesisOptionValue(
+            final SynthesisOption option, final Object value) {
+        Map<SynthesisOption, Object> optionConfig = this.getProperty(SYNTHESIS_OPTION_CONFIG);
+        if (optionConfig == null) {
+            optionConfig = Maps.newHashMap();
+            this.setProperty(SYNTHESIS_OPTION_CONFIG, optionConfig);
+        }
+        optionConfig.put(option, value);
+        return this;
+    }
+
+
+    /**
+     * Configures diagram {@link SynthesisOption} values beyond the default value definitions.
+     * 
+     * @param options
+     *            a {@link Map} of singleton {@link SynthesisOption} objects and their desired
+     *            values
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties configureSynthesisOptionValues(
+            final Map<SynthesisOption, Object> options) {
+        Map<SynthesisOption, Object> optionConfig = this.getProperty(SYNTHESIS_OPTION_CONFIG);
+        if (optionConfig == null) {
+            optionConfig = Maps.newHashMap();
+            this.setProperty(SYNTHESIS_OPTION_CONFIG, optionConfig);
+        }
+        optionConfig.putAll(options);
         return this;
     }
 }
