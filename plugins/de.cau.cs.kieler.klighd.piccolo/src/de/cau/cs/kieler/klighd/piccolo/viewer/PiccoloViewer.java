@@ -296,6 +296,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         final PCamera camera = canvas.getCamera();
         super.notifyViewChangeListeners(type, affectedElement, camera.getViewBounds(),
                 camera.getViewScale());
+                
     }
 
     /**
@@ -372,6 +373,14 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public void zoom(final ZoomStyle style, final int duration) {
         controller.getZoomController().zoom(style, duration);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getZoomLevel() {
+        return (float) canvas.getCamera().getViewScale();
+    }
+
 
     private static final String NO_DIAGRAM_ELEMENT_REPRESENTATION_ERROR_MSG =
             "KLighD: There is no figure represtation (PNode) of diagramElement XX!";

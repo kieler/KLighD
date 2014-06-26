@@ -248,6 +248,13 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
+    public float getZoomLevel() {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isExpanded(final Object semanticElement) {
         return false;
     }

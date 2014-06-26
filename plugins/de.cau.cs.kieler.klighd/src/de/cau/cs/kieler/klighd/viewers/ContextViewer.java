@@ -452,6 +452,17 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
+    public float getZoomLevel() {
+        if (currentViewer != null) {
+            return currentViewer.getZoomLevel();
+        } else {
+            return 1f;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isExpanded(final Object semanticElement) {
         final EObject diagramNode =
                 getViewContext().getTargetElement(semanticElement, KNode.class);
