@@ -18,5 +18,23 @@
             subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEP">
       </exporter>
    </extension>
+   
+      <extension
+         point="de.cau.cs.kieler.klighd.piccolo.svgGenerators">
+      <svgGenerator
+            class="de.cau.cs.kieler.klighd.piccolo.freehep.SemanticFreeHEPSVGGraphics"
+            id="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic">
+      </svgGenerator>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <exporter
+            class="de.cau.cs.kieler.klighd.piccolo.export.SVGExporter"
+            description="FreeHEP (Semantic)"
+            extension="svg"
+            id="de.cau.cs.kieler.klighd.piccolo.export.freeHEP.svgSemantic"
+            subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic">
+      </exporter>
+   </extension>
 
 </fragment>
