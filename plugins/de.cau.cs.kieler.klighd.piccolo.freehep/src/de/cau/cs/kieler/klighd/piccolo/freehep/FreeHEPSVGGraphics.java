@@ -19,8 +19,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.freehep.graphicsbase.util.UserProperties;
 import org.freehep.graphicsio.svg.SVGGraphics2D;
-import org.freehep.util.UserProperties;
 
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
 
