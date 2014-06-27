@@ -32,11 +32,14 @@ import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -613,6 +616,12 @@ public class KlighdPath extends PNode implements IResourceEmployer {
             if (swt && shapePath == null && (strokePaint != null || strokePaintGradient != null)) {
                 shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), graphics.getDevice());
             }
+            
+            // FIXME not working for rendering refs
+            KRendering rendering =
+                    (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
+            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+            
             
             if (strokePaint != null) {
                 graphics.setAlpha(
