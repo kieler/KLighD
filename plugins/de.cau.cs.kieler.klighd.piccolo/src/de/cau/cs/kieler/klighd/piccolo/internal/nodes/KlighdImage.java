@@ -30,10 +30,13 @@ import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -305,6 +308,10 @@ public class KlighdImage extends PNode implements IResourceEmployer {
                 graphics.clip(clip);
             }
 
+            KRendering rendering =
+                    (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
+            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+            
             // we here rely on the imageData as the graphics layer is supposed to create
             //  appropriate platform specific images and dispose them properly
             graphics.drawImage(imageData, b.width, b.height);

@@ -567,7 +567,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         result.append(image.getWidth());
         result.append("\" " + "height=\"");
         result.append(image.getHeight());
-        result.append("\" " + "xlink:href=\"");
+        result.append("\" " + attributes());
+        result.append(" xlink:href=\"");
 
         String writeAs = getProperty(WRITE_IMAGES_AS);
         boolean isTransparent = image.getColorModel().hasAlpha()
@@ -635,6 +636,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             result.append(";base64,");
 
             StringWriter writer = new StringWriter();
+            @SuppressWarnings("resource") // closing a StringWriter has no effect
             Base64OutputStream b64 = new Base64OutputStream(
                     new WriterOutputStream(writer));
             b64.write(imageBytes);
@@ -656,8 +658,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         // str = FontEncoder.getEncodedString(str, getFont().getName());
 
         if (isProperty(EMBED_FONTS)) {
-            // FIXME not supported yet
-            //fontTable.addGlyphs(str, getFont());
+            // FIXME not supported yet, the #addGlyphs method is protected
+            // fontTable.addGlyphs(str, getFont());
+            throw new UnsupportedOperationException("Embedding fonts is not supported.");
         }
 
         // font transformation should _not_ transform string position
@@ -699,6 +702,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                         "<text "
                             // style
                             + style(style)
+                            // semantic data
+                            + attributes()
                             // coordiantes
                             + " x=\"0\" y=\"0\">"
                             // text

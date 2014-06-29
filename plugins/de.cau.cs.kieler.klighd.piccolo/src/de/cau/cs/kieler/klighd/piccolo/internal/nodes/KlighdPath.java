@@ -581,6 +581,22 @@ public class KlighdPath extends PNode implements IResourceEmployer {
         final int currentAlpha = graphics.getAlpha();
         final float currentAlphaFloat = currentAlpha;
 
+        
+        // We attach semantic data favored to the foreground element
+        // however, if no foreground exists, we attach it to the background
+        // FIXME not working for rendering refs
+        final boolean drawForeground = (lineAttributes.width != 0f)
+                        && (strokePaint != null || strokePaintGradient != null);
+        final boolean drawBackground = !isLine() && (paint != null || paintGradient != null);
+
+        final KRendering rendering =
+                (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
+        
+        // if not even a background is painted, don't attach the semantic data at all
+        if (!drawForeground && drawBackground) {
+            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+        }
+        
         // draw the background if possible and required
         if (!isLine()) {
             if (swt && shapePath == null && (paint != null || paintGradient != null)) {
@@ -608,6 +624,10 @@ public class KlighdPath extends PNode implements IResourceEmployer {
             }
         }
 
+        if (drawForeground) {
+            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+        }
+
         // draw the foreground if required
         //  in case of a line width of zero we can skip this  
         if (lineAttributes.width != 0f) {
@@ -616,12 +636,6 @@ public class KlighdPath extends PNode implements IResourceEmployer {
             if (swt && shapePath == null && (strokePaint != null || strokePaintGradient != null)) {
                 shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), graphics.getDevice());
             }
-            
-            // FIXME not working for rendering refs
-            KRendering rendering =
-                    (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
-            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
-            
             
             if (strokePaint != null) {
                 graphics.setAlpha(
