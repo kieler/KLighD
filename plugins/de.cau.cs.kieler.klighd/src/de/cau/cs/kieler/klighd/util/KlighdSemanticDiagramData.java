@@ -13,21 +13,19 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-
-import de.cau.cs.kieler.core.util.Pair;
+import com.google.common.collect.Maps;
 
 /**
  * Container for semantic data that are attached to the rendered diagram elements. Note that not all
  * rendering mechanisms support this kind of data.
  * 
- * Internally, two maps are employed to store either a String as value or a Function that returns a
+ * Internally, two lists are employed to store either a String as value or a Function that returns a
  * String as value. The key sets of the two maps are kept free of duplicates. Thus, if a key is
  * added to both maps, only the last insertion is retained.
  * 
@@ -35,8 +33,8 @@ import de.cau.cs.kieler.core.util.Pair;
  */
 public class KlighdSemanticDiagramData {
 
-    private List<Pair<String, String>> strStr = null;
-    private List<Pair<String, Function<Void, String>>> strFun = null;
+    private Map<String, String> strStr = null;
+    private Map<String, Function<Void, String>> strFun = null;
 
     /**
      * @param keyValues
@@ -57,15 +55,18 @@ public class KlighdSemanticDiagramData {
      *            the key
      * @param value
      *            the value as String
+     *  @return this.
      */
-    public void put(final String key, final String value) {
+    public KlighdSemanticDiagramData put(final String key, final String value) {
         if (strStr == null) {
-            strStr = Lists.newArrayList();
+            strStr = Maps.newHashMap();
         }
-        if (strFun != null && strFun.contains(key)) {
+        if (strFun != null && strFun.containsKey(key)) {
             strFun.remove(key);
         }
-        strStr.add(Pair.of(key, value));
+        strStr.put(key, value);
+        
+        return this;
     }
 
     /**
@@ -74,40 +75,43 @@ public class KlighdSemanticDiagramData {
      * @param fun
      *            a function returning a String value. The function is evaluated every time the
      *            key's value is requested.
+     *            
+     *            @return this.
      */
-    public void put(final String key, final Function<Void, String> fun) {
+    public KlighdSemanticDiagramData put(final String key, final Function<Void, String> fun) {
         if (strFun == null) {
-            strFun = Lists.newArrayList();
+            strFun =  Maps.newHashMap();
         }
-        if (strStr != null && strStr.contains(key)) {
+        if (strStr != null && strStr.containsKey(key)) {
             strStr.remove(key);
         }
-        strFun.add(Pair.of(key, fun));
+        strFun.put(key, fun);
+        
+        return this;
     }
-
+    
     /**
      * @return an iterator over all stored key/value pairs. The function values is are evaluated
      *         upon the respective call to {@code next}.
      */
-    public Iterator<Pair<String, String>> iterator() {
-        Iterator<Pair<String, String>> lazyIt = null;
+    public Iterator<Entry<String, String>> iterator() {
+        Iterator<Entry<String, String>> lazyIt = null;
         if (strFun != null) {
-            lazyIt = new Iterator<Pair<String, String>>() {
-                private int pos = 0;
-
+            final Iterator<Entry<String, Function<Void, String>>> it = strFun.entrySet().iterator();
+            lazyIt = new Iterator<Entry<String, String>>() {
                 /**
                  * {@inheritDoc}
                  */
                 public boolean hasNext() {
-                    return pos < strFun.size();
+                    return it.hasNext();
                 }
 
                 /**
                  * {@inheritDoc}
                  */
-                public Pair<String, String> next() {
-                    Pair<String, Function<Void, String>> pair = strFun.get(pos);
-                    return Pair.of(pair.getFirst(), pair.getSecond().apply(null));
+                public Entry<String, String> next() {
+                    Entry<String, Function<Void, String>> e = it.next();
+                    return Maps.immutableEntry(e.getKey(), e.getValue().apply(null));
                 }
 
                 /**
@@ -120,13 +124,13 @@ public class KlighdSemanticDiagramData {
         }
 
         if (strFun != null && strStr != null) {
-            return Iterators.concat(strStr.iterator(), lazyIt);
+            return Iterators.concat(strStr.entrySet().iterator(), lazyIt);
         } else if (strFun != null) {
             return lazyIt;
         } else if (strStr != null) {
-            return strStr.iterator();
+            return strStr.entrySet().iterator();
         } else {
-            return Collections.emptyIterator();
+            return Iterators.emptyIterator();
         }
     }
 }

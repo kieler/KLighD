@@ -27,10 +27,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.AttributedCharacterIterator.Attribute;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.AttributedCharacterIterator.Attribute;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
@@ -38,6 +38,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Stack;
 import java.util.zip.GZIPOutputStream;
@@ -56,7 +57,6 @@ import org.freehep.graphicsio.svg.SVGFontTable;
 import org.freehep.util.io.Base64OutputStream;
 import org.freehep.util.io.WriterOutputStream;
 
-import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
@@ -1215,17 +1215,17 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     private String attributes() {
         StringBuffer sb = new StringBuffer(" ");
         if (semanticData != null) {
-            Iterator<Pair<String, String>> it = semanticData.iterator();
+            Iterator<Entry<String, String>> it = semanticData.iterator();
             while (it.hasNext()) {
-                Pair<String, String> e = it.next();
+                Entry<String, String> e = it.next();
 
                 // special tags
-                if (e.getFirst().equals("__id")) {
-                    sb.append("id" + "=\"" + e.getSecond() + "\"");
-                } else if (e.getFirst().equals("__class")) {
-                    sb.append("class" + "=\"" + e.getSecond() + "\"");
+                if (e.getKey().equals("__id")) {
+                    sb.append("id" + "=\"" + e.getValue() + "\"");
+                } else if (e.getKey().equals("__class")) {
+                    sb.append("class" + "=\"" + e.getValue() + "\"");
                 } else {
-                    sb.append("klighd:" + e.getFirst() + "=\"" + e.getSecond() + "\"");
+                    sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
                 }
                 sb.append(" ");
             }
