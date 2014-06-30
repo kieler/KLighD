@@ -35,10 +35,10 @@ import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 
 /**
  * Generic handler implementation executing {@link IAction IActions} on view models and re-arranging
@@ -89,7 +89,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         final IAction action;
         try {
             action = (IAction) event.getObjectParameterForExecution(ACTION_PARAMETER_ID);
-        } catch (ExecutionException e) {
+        } catch (final ExecutionException e) {
             return null;
         }
         
@@ -107,7 +107,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         
         viewContext.getLayoutRecorder().startRecording();
 
-        for (KGraphElement kge : Iterables.filter(selection, KGraphElement.class)) {
+        for (final KGraphElement kge : Iterables.filter(selection, KGraphElement.class)) {
             final ActionContext context =
                     new ActionContext(selection.getContextViewer().getActiveViewer(), null, kge,
                             null);
@@ -123,9 +123,10 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
 
         if (anyActionPerformed) {
             LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
-                    ZoomStyle.create(result, viewContext), result.getLayoutConfigs());
+                    ZoomStyle.create(result, viewContext), result.getFocusNode(),
+                    result.getLayoutConfigs());
         } else {
-            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, 0);
+            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
         }
         
         return null;

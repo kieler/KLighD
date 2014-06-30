@@ -43,8 +43,6 @@ public class DiagramZoomController {
     /** the main camera that determines the actually drawn picture. */
     private final KlighdMainCamera canvasCamera;
 
-    private final KNodeTopNode topNode;
-
     private final DiagramController diagramController;
     
     private final Predicate<KGraphElement> visibilityFilter = new Predicate<KGraphElement>() {
@@ -67,7 +65,6 @@ public class DiagramZoomController {
     public DiagramZoomController(final KNodeTopNode theTopNode,
             final KlighdMainCamera theCanvasCamera, final DiagramController theDiagramController) {
         this.canvasCamera = theCanvasCamera;
-        this.topNode = theTopNode;
         this.diagramController = theDiagramController;
     }
 
@@ -86,13 +83,16 @@ public class DiagramZoomController {
     /**
      * Performs a zooming depending on the specified style.
      * 
-     * @param style
+     * @param zoomStyle
      *            the desired style
+     * @param desiredFocusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
      * @param duration
      *            time to animate
      */
-    public void zoom(final ZoomStyle style, final int duration) {
-        switch (style) {
+    public void zoom(final ZoomStyle zoomStyle, final KNode desiredFocusNode, final int duration) {
+        switch (zoomStyle) {
         case ZOOM_TO_ACTUAL_SIZE:
             zoomToActualSize(duration);
             break;
@@ -102,7 +102,9 @@ public class DiagramZoomController {
             break;
 
         case ZOOM_TO_FOCUS:
-            final KNode focus = focusNode != null ? focusNode : topNode.getGraphElement();
+            final KNode focus = desiredFocusNode != null
+                    ? desiredFocusNode : focusNode != null
+                            ? focusNode : diagramController.getClip();
             zoomToFocus(focus, duration);
             break;
 

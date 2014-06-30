@@ -126,7 +126,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  record view model changes, which is done once an action is actually executed
         boolean anyActionPerformed = false;
         
-        for (KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
+        for (final KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
             if (!action.getTrigger().equals(me.getTrigger()) || !guardsMatch(action, me)) {
                 continue;
             }
@@ -148,7 +148,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             result = actionImpl.execute(context);
 
             if (result == null) {
-                viewer.stopRecording(ZoomStyle.NONE, 0);
+                viewer.stopRecording(ZoomStyle.NONE, null, 0);
                 final String msg = "KLighD action event handler: Execution of "
                         + actionImpl.getClass()
                         + " returned 'null', expected an IAction.ActionResult.";
@@ -172,6 +172,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
         final boolean animate = result.getAnimateLayout();
         final ZoomStyle zoomStyle = ZoomStyle.create(result, vc);
+        final KNode focusNode = zoomStyle == ZoomStyle.ZOOM_TO_FOCUS ? result.getFocusNode() : null;
+        
         final List<ILayoutConfig> layoutConfigs = result.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager
@@ -185,7 +187,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  flag of 'inputEvent' properly.
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                LightDiagramServices.layoutDiagram(vc, animate, zoomStyle, layoutConfigs);
+                LightDiagramServices.layoutDiagram(vc, animate, zoomStyle, focusNode, layoutConfigs);
             }
         });
         

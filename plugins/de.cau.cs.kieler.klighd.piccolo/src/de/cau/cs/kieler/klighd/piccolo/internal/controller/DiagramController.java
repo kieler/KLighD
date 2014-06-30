@@ -135,7 +135,7 @@ public class DiagramController {
     private boolean record = false;
     
     /** the layout changes to graph elements while recording. */
-    private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
+    private final Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
 
 
     /**
@@ -220,7 +220,7 @@ public class DiagramController {
      * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
+     * Executing {@link #stopRecording(ZoomStyle, KNode, int)} applies all recorded layout changes.
      * 
      * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#startRecording()
      *      ILayoutRecorder#startRecording()
@@ -232,17 +232,21 @@ public class DiagramController {
     /**
      * @param zoomStyle
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
      * @param animationTime
      *            duration of the animated layout
      * 
-     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, int)
-     *      ILayoutRecorder#stopRecording(ZoomStyle, int)
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     *      ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
      */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
+    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
+            final int animationTime) {
         if (record) {
             record = false;
 
-            handleRecordedChanges(zoomStyle, animationTime);
+            handleRecordedChanges(zoomStyle, focusNode, animationTime);
         }
     }
 
@@ -455,7 +459,7 @@ public class DiagramController {
         recordedChanges.put(node, change);
     }
     
-    private Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = Sets.newHashSet();
+    private final Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = Sets.newHashSet();
 
     void scheduleRenderingUpdate(final AbstractKGERenderingController<?, ?> controller) {
         renderingUpdater.cancel();
@@ -502,7 +506,8 @@ public class DiagramController {
     /**
      * Applies the recorded layout changes by creating appropriate activities.
      */
-    private void handleRecordedChanges(final ZoomStyle zoomStyle, final int animationTime) {
+    private void handleRecordedChanges(final ZoomStyle zoomStyle, final KNode focusNode,
+            final int animationTime) {
 
         // create activities to apply all recorded changes
         for (final Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
@@ -568,7 +573,7 @@ public class DiagramController {
         recordedChanges.clear();
 
         // apply a proper zoom handling if requested
-        getZoomController().zoom(zoomStyle, animationTime);
+        getZoomController().zoom(zoomStyle, focusNode, animationTime);
     }
 
     /**

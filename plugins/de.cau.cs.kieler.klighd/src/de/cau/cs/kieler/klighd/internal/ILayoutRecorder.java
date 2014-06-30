@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.internal;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**
@@ -31,7 +32,7 @@ public interface ILayoutRecorder {
      * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
+     * Executing {@link #stopRecording(ZoomStyle, KNode, int)} applies all recorded layout changes.
      */
     void startRecording();
     
@@ -47,9 +48,12 @@ public interface ILayoutRecorder {
      * Stops to record layout changes, initialized by {@link #startRecording()}.
      * 
      * @param zoomStyle
-     *            the style used to zoom, eg zoom to fit or zoom to focus
+     *            the style used to zoom, e.g. zoom to fit or zoom to focus
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
      * @param animationTime
      *            duration of the animated layout
      */
-    void stopRecording(final ZoomStyle zoomStyle, final int animationTime);
+    void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode, final int animationTime);
 }

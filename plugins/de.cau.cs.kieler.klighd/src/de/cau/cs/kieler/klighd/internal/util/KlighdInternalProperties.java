@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.internal.util;
 
 import com.google.common.base.Predicate;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -89,6 +90,13 @@ public final class KlighdInternalProperties {
     /** the zoom style to be applied during upcoming diagram layout. */
     public static final IProperty<ZoomStyle> NEXT_ZOOM_STYLE = new Property<ZoomStyle>(
             "klighd.zoom.nextZoomStyle");
+    
+    /**
+     * The {@link KNode} to be focus during upcoming diagram layout if {@link #NEXT_ZOOM_STYLE} is
+     * {@link ZoomStyle#ZOOM_TO_FOCUS}.
+     */
+    public static final IProperty<KNode> NEXT_FOCUS_NODE = new Property<KNode>(
+            "klighd.zoom.nextFocusNode");
     
     /**
      * Property to be attached to the {@link de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
