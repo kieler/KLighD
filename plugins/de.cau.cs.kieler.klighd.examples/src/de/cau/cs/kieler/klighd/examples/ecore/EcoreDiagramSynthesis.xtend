@@ -25,11 +25,15 @@ import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.core.util.Pair
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData
 import de.cau.cs.kieler.kiml.options.Direction
 import de.cau.cs.kieler.kiml.options.EdgeType
 import de.cau.cs.kieler.kiml.options.LayoutOptions
+import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
+import de.cau.cs.kieler.klighd.util.KlighdProperties
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
 import java.util.List
 import javax.inject.Inject
 import org.eclipse.emf.ecore.EAttribute
@@ -219,6 +223,9 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	def createClassifierFigures(Iterable<EClassifier> classes, KNode rootNode) {
 		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().putToLookUpWith(clazz) => [
+                // add semantic information
+                it.getData(typeof(KLayoutData)).setProperty(KlighdProperties.SEMANTIC_DATA, 
+                        KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "classifier"))
                 it.addRectangle => [
                     it.lineWidth = 2;
                     it.setBackgroundGradient("white".color, "lemon".color, 0)
@@ -251,6 +258,9 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                     .setPointPlacementData(LEFT, 20, 0, TOP, 0, 0.5f, H_CENTRAL, V_CENTRAL, 10, 10, 20, 20)
                                     .addEllipticalClip; //.setAreaPlacementData.from(LEFT, 3, 0, TOP, 3, 0).to(RIGHT, 3, 0, BOTTOM, 3, 0);
                                 it.addText(clazz.name.nullToEmpty).putToLookUpWith(clazz) => [
+                                    // add semantic data to a rendering
+                                    it.setProperty(KlighdProperties.SEMANTIC_DATA, 
+                                        KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "classifierText"))
                                     it.fontSize = 15;
                                     it.fontBold = true;
                                     it.cursorSelectable = true;
@@ -323,6 +333,9 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	    ref.createEdge() => [
     		it.source = ref.eContainer.node;
 	       	it.target = ref.EType.node;
+	       	// add semantic data
+	       	it.getData(typeof(KLayoutData)).setProperty(KlighdProperties.SEMANTIC_DATA, 
+                        KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "association"))
 	        it.addPolyline() => [
 	            it.lineWidth = 2;
 	            it.foreground = "gray25".color
@@ -353,6 +366,9 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	def createInheritanceConnection(EClass child, EClass parent) {
 		new Pair(child, parent).createEdge() => [
             it.addLayoutParam(LayoutOptions::EDGE_TYPE, EdgeType::GENERALIZATION);
+            // add semantic data
+            it.getData(typeof(KLayoutData)).setProperty(KlighdProperties.SEMANTIC_DATA, 
+                        KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "inheritence"))
     	    it.source = child.node;
 	        it.target = parent.node;
 	        it.data addPolyline() => [
