@@ -26,8 +26,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * An initial draft of an off-screen diagram rendering application generating SVG outputs.<br>
@@ -38,8 +41,14 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
  * Otherwise the application will freeze! 
  * 
  * @author chsch
+ * @author uru
  */
 public class OffscreenDiagramRenderer implements IApplication {
+    
+    public final static String GENERATOR_SVG_FREEHEP =
+            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEP";
+    public final static String GENERATOR_SVG_FREEHEP_SEMANTIC =
+            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic";
     
     private final ResourceSet set = new ResourceSetImpl();
 
@@ -49,6 +58,8 @@ public class OffscreenDiagramRenderer implements IApplication {
     public Object start(final IApplicationContext context) throws Exception {
         final String[] appArgs =
                 (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
+        
+        Display.getDefault();
         
         set.getLoadOptions().put(XMIResource.OPTION_RECORD_UNKNOWN_FEATURE, true);
         
@@ -67,7 +78,8 @@ public class OffscreenDiagramRenderer implements IApplication {
         
         final String targetFile = fileName.replaceFirst("\\p{Punct}\\w*\\z", ".svg"); 
         new File(targetFile).delete();
-        
+
+        // load the source model
         final Resource res = set.getResource(URI.createFileURI(fileName), true);
         if (res.getContents().isEmpty()) {
             return;
@@ -78,8 +90,17 @@ public class OffscreenDiagramRenderer implements IApplication {
             return;
         }
         
-        final IStatus result = LightDiagramServices.renderOffScreen(eo, "svg", targetFile);
-        
+        // execute klighd and render using
+        final IStatus result =
+                LightDiagramServices.renderOffScreen(
+                        eo,
+                        "svg",
+                        targetFile,
+                        // select the specific generator
+                        KlighdSynthesisProperties.create().setProperty2(
+                                SVGOffscreenRenderer.GENERATOR,
+                                GENERATOR_SVG_FREEHEP_SEMANTIC));
+
         if (result != null && result.getCode() == IStatus.OK) {
             System.out.println("Generated file " + targetFile);            
         } else {
