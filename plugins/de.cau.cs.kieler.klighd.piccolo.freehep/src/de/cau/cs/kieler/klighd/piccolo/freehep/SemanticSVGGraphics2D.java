@@ -57,6 +57,7 @@ import org.freehep.graphicsio.svg.SVGFontTable;
 import org.freehep.util.io.Base64OutputStream;
 import org.freehep.util.io.WriterOutputStream;
 
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
@@ -1220,9 +1221,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 Entry<String, String> e = it.next();
 
                 // special tags
-                if (e.getKey().equals("__id")) {
+                if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
                     sb.append("id" + "=\"" + e.getValue() + "\"");
-                } else if (e.getKey().equals("__class")) {
+                } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_CLASS)) {
                     sb.append("class" + "=\"" + e.getValue() + "\"");
                 } else {
                     sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");

@@ -174,9 +174,11 @@ public final class KlighdProperties {
      * rendering mechanisms support this feature. 
      * An example would be to add 'id' elements to svg elements.
      * 
-     * @see KlighdConstants
+     * @see KlighdConstants#SEMANTIC_DATA_ID
+     * @see KlighdConstants#SEMANTIC_DATA_CLASS
      */
     public static final IProperty<KlighdSemanticDiagramData> SEMANTIC_DATA =
             new Property<KlighdSemanticDiagramData>("klighd.semanticData", null);
+    
 
 }

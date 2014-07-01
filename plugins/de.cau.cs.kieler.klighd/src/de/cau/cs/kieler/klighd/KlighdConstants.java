@@ -178,6 +178,24 @@ public final class KlighdConstants {
     public static final int SIDE_BAR_LAYOUT_CONFIG_PRIORITY = VolatileLayoutConfig.DEFAULT_PRIORITY - 25;
 
     /**
+     * Special type of semantic data that represents an 'id'. A specified value should be mapped to
+     * rendering specific id elements, i.e. for SVGs a {@code <tag id="xyz" />} attribute should be
+     * generated.
+     * 
+     * @see de.cau.cs.kieler.klighd.util.KlighdProperties#SEMANTIC_DATA KlighdProperties#SEMANTIC_DATA
+     */
+    public static final String SEMANTIC_DATA_ID = "__id";
+    
+    /**
+     * Special type of semantic data that represents a 'class'. A specified value should be mapped
+     * to rendering specific class elements, i.e. for SVGs a {@code <tag class="xyz" />} attribute
+     * should be generated.
+     * 
+     * @see de.cau.cs.kieler.klighd.util.KlighdProperties#SEMANTIC_DATA KlighdProperties#SEMANTIC_DATA
+     */
+    public static final String SEMANTIC_DATA_CLASS = "__class";
+
+    /**
      * Hidden default constructor.
      */
     private KlighdConstants() {
