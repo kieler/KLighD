@@ -32,11 +32,11 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.cau.cs.kieler.klighd.ExporterManager;
-import de.cau.cs.kieler.klighd.ExporterManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdDataManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
@@ -128,7 +128,7 @@ public class SaveAsImageHandler extends AbstractHandler {
 
         // retrieve the exporter from the central registry
         final IDiagramExporter exporter =
-                ExporterManager.getInstance().getExporter(exporterDescr.getExporterId());
+                KlighdDataManager.getInstance().getExporter(exporterDescr.getExporterId());
         // execute the export process
         exporter.export(stream, control, cameraViewport, scale, textAsShapes,
                 embedFonts, exporterDescr.getSubFormatId());

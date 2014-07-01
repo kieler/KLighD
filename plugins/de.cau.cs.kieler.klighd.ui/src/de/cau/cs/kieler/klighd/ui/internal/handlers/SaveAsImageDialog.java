@@ -47,8 +47,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
-import de.cau.cs.kieler.klighd.ExporterManager;
-import de.cau.cs.kieler.klighd.ExporterManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdDataManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
@@ -140,7 +140,7 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
 
         // get the available descriptors
-        descriptors = ExporterManager.getInstance().getAvailableExporters();
+        descriptors = KlighdDataManager.getInstance().getAvailableExporters();
         // sort by name
         Collections.sort(descriptors, new Comparator<ExporterDescriptor>() {
             /**
