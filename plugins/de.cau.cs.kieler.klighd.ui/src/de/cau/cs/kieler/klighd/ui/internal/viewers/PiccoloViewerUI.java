@@ -30,6 +30,7 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IActionBars;
@@ -236,8 +237,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 //  it will not have direct functional effect
                 text.getAccessible().textSelectionChanged();
                 
-                thisViewer.updateSelection(new KlighdTextSelection(text.getText(), 0, true, true,
-                        graphNode, thisViewer));
+                thisViewer.updateSelection(event.display,
+                        new KlighdTextSelection(text.getText(), 0, true, true, graphNode, thisViewer));
                 break;
 
             case SWT.KeyDown:
@@ -259,8 +260,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 if (selection.equals(prevSelection)) {
                     break;
                 }
-                thisViewer.updateSelection(new KlighdTextSelection(selection, labelWidget
-                        .getSelection().x, false, false, graphNode, thisViewer));
+                thisViewer.updateSelection(event.display, new KlighdTextSelection(selection,
+                        labelWidget.getSelection().x, false, false, graphNode, thisViewer));
                 break;
 
             case SWT.MouseDown:
@@ -278,13 +279,24 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 if (selection.equals(prevSelection)) {
                     break;
                 }
-                thisViewer.updateSelection(new KlighdTextSelection(selection, labelWidget
-                        .getSelection().x, false, false, graphNode, thisViewer));
+                thisViewer.updateSelection(event.display, new KlighdTextSelection(selection,
+                        labelWidget.getSelection().x, false, false, graphNode, thisViewer));
                 break;
             }
         }
     }
 
+    /**
+     * Asynchronously executes {@link #updateSelection(ISelection)} in order to let the calling
+     * method terminate quickly and do not block any display modifications.
+     */
+    private void updateSelection(final Display display, final ISelection selection) {
+        display.asyncExec(new Runnable() {
+            public void run() {
+                PiccoloViewerUI.this.updateSelection(selection);
+            }
+        });
+    }
 
     /** String key for caching the KlighdStyledText in the labelWidget's data list. */
     // this field is package protected by intention
