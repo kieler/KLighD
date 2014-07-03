@@ -17,9 +17,12 @@ import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
+import de.cau.cs.kieler.core.util.AbstractRunnableWithResult;
+import de.cau.cs.kieler.core.util.RunnableWithResult;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -33,16 +36,45 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  */
 public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
 
+    private static final String DISPLAY_ACCESS_FAILURE =
+            "KLighD offscreen diagram export: "
+                    + "A display is required for creating raster images (BMP, JPEG, PNG)!";
+
     /**
      * {@inheritDoc}
      */
     public IStatus render(final ViewContext viewContext, final OutputStream output,
             final IPropertyHolder properties) {
 
+        final RunnableWithResult<IStatus> runnable = new AbstractRunnableWithResult<IStatus>() {
+            public void run() {
+                setResult(doRender(viewContext, output, properties));
+            };
+        };
+
+        if (Display.getCurrent() != null) {
+            runnable.run();
+        } else {
+            try {
+                // Note that the proper termination of this statement requires an
+                //  event loop calling "Display.getCurrent().readAndDispatch();" repeatedly
+                Display.getDefault().syncExec(runnable);                
+            } catch (final Throwable e) {
+                return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
+                        DISPLAY_ACCESS_FAILURE, e);
+            }
+        }
+
+        return runnable.getResult();
+    }
+
+    private IStatus doRender(final ViewContext viewContext, final OutputStream output,
+            final IPropertyHolder properties) {
+        
         final int imageScale = properties != null
                 ? properties.getProperty(IMAGE_SCALE) : IMAGE_SCALE.getDefault();
 
-                final Shell shell = new Shell();
+        final Shell shell = new Shell();
         final KlighdCanvas canvas = new KlighdCanvas(shell, 0);
 
         try {
