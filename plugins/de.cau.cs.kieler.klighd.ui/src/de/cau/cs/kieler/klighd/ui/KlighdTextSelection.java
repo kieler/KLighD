@@ -153,7 +153,7 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
     /**
      * {@inheritDoc}
      */
-    public Iterator<EObject> diagramElementsiterator() {
+    public Iterator<EObject> diagramElementsIterator() {
         return Iterators.<EObject>singletonIterator(determineKGraphElement());
     }
     

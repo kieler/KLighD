@@ -48,5 +48,5 @@ public interface IKlighdSelection extends ISelection {
      *         {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} and
      *         {@link de.cau.cs.kieler.core.krendering.KText KTexts}
      */
-    Iterator<EObject> diagramElementsiterator();
+    Iterator<EObject> diagramElementsIterator();
 }

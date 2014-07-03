@@ -111,7 +111,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         viewContext.getLayoutRecorder().startRecording();
 
         final Iterator<KGraphElement> kges =
-                Iterators.filter(selection.diagramElementsiterator(), KGraphElement.class);
+                Iterators.filter(selection.diagramElementsIterator(), KGraphElement.class);
 
         for (final KGraphElement kge : Iterables2.toIterable(kges)) {
             final ActionContext context = new ActionContext(viewContext.getViewer(), null, kge, null);

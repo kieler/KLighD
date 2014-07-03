@@ -119,7 +119,7 @@ public class KlighdTreeSelection extends TreeSelection implements IKlighdSelecti
     /**
      * {@inheritDoc}
      */
-    public Iterator<EObject> diagramElementsiterator() {
+    public Iterator<EObject> diagramElementsIterator() {
         return this.iterator();
     }
 
