@@ -43,11 +43,12 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import com.google.common.base.Function;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
@@ -223,9 +224,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
         public void handleEvent(final Event event) {
             final PiccoloViewerUI thisViewer = PiccoloViewerUI.this;
             final StyledText text = labelWidget;
-            final IGraphElement<?> graphNode =
-                    (IGraphElement<?>) KlighdLabelWidgetEventHandler.getParentGraphNode(
-                            (KlighdStyledText) text.getData(STYLED_TEXT_FIGURE_KEY));
+            final ITracingElement<KText> graphNode =
+                    (KlighdStyledText) text.getData(STYLED_TEXT_FIGURE_KEY);
 
             final String selection;
             switch (event.type) {
@@ -236,8 +236,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 //  it will not have direct functional effect
                 text.getAccessible().textSelectionChanged();
                 
-                thisViewer.updateSelection(
-                        new KlighdTextSelection(text.getText(), 0, true, true, graphNode));
+                thisViewer.updateSelection(new KlighdTextSelection(text.getText(), 0, true, true,
+                        graphNode, thisViewer));
                 break;
 
             case SWT.KeyDown:
@@ -260,7 +260,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                     break;
                 }
                 thisViewer.updateSelection(new KlighdTextSelection(selection, labelWidget
-                        .getSelection().x, false, false, graphNode));
+                        .getSelection().x, false, false, graphNode, thisViewer));
                 break;
 
             case SWT.MouseDown:
@@ -279,7 +279,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                     break;
                 }
                 thisViewer.updateSelection(new KlighdTextSelection(selection, labelWidget
-                        .getSelection().x, false, false, graphNode));
+                        .getSelection().x, false, false, graphNode, thisViewer));
                 break;
             }
         }

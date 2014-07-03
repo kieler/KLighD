@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
@@ -24,9 +25,16 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.IKlighdSelection;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
+import edu.umd.cs.piccolo.PNode;
 
 /**
  * KLighD-specific implementation of {@link ITextSelection}.<br>
@@ -38,7 +46,15 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * 
  * @author chsch
  */
-public class KlighdTextSelection implements IStructuredSelection, ITextSelection {
+public class KlighdTextSelection implements IKlighdSelection, IStructuredSelection, ITextSelection {
+
+    private final ITracingElement<?> tracingNode;
+
+    private final IViewer<?> viewer;
+
+    private final KText diagramElement;
+    
+    private KGraphElement kgraphElement;
 
     private final String text;
     
@@ -47,8 +63,7 @@ public class KlighdTextSelection implements IStructuredSelection, ITextSelection
     private final boolean completeLine;
 
     private final boolean completeLabel;
-    
-    private final KGraphElement kgraphElement;
+
 
     /**
      * Standard Constructor.
@@ -61,17 +76,21 @@ public class KlighdTextSelection implements IStructuredSelection, ITextSelection
      *            <code>true</code> if whole line is selected
      * @param isCompleteLabel
      *            <code>true</code> if whole label is selected
-     * @param graphNode
+     * @param tracingElement
      *            the underlying {@link KGraphElement} containing the selected text
+     * @param theViewer 
      */
     public KlighdTextSelection(final String theText, final int theOffset,
             final boolean isCompleteLine, final boolean isCompleteLabel,
-            final IGraphElement<?> graphNode) {
+            final ITracingElement<KText> tracingElement, final IViewer<?> theViewer) {
+        this.viewer = theViewer;
         this.text = theText;
         this.offset = theOffset;
         this.completeLine = isCompleteLine;
         this.completeLabel = isCompleteLabel;
-        this.kgraphElement = graphNode == null ? null : graphNode.getGraphElement();
+        this.tracingNode = tracingElement;
+        this.diagramElement = tracingElement == null ? null : tracingElement.getGraphElement();
+        this.kgraphElement = null;
     }
 
     /**
@@ -90,18 +109,66 @@ public class KlighdTextSelection implements IStructuredSelection, ITextSelection
     }
 
     /**
-     * @return the kraphElement
+     * @return the viewer
      */
-    public KGraphElement getKGraphElement() {
-        return kgraphElement;
+    public IViewer<?> getViewer() {
+        return viewer;
     }
 
     /**
-     * @return the the parent {@link KNode} of {@link #getKGraphElement()} or <code>null</code>
+     * @return the {@link ViewContext}
+     */
+    public ViewContext getViewContext() {
+        return viewer.getViewContext();
+    }
+
+    /**
+     * @return the corresponding {@link KText} instance.
+     */
+    public KText getViewElement() {
+        return diagramElement;
+    }
+
+    /**
+     * @return the corresponding {@link KGraphElement} instance.
+     */
+    public KGraphElement getKGraphElement() {
+        return determineKGraphElement();
+    }
+
+    /**
+     * @return the corresponding {@link KLabel} instance, may be <code>null</code>.
+     */
+    public KLabel getKLabel() {
+        return determineKGraphElement() instanceof KLabel ? (KLabel) kgraphElement : null;
+    }
+
+    /**
+     * @return the parent {@link KNode} of {@link #getKGraphElement()}
      */
     public KNode getKNode() {
-        return kgraphElement == null
-                ? null : ModelingUtil.eContainerOfType(kgraphElement, KNode.class);
+        return ModelingUtil.eContainerOfType(determineKGraphElement(), KNode.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<EObject> diagramElementsiterator() {
+        return Iterators.<EObject>singletonIterator(determineKGraphElement());
+    }
+    
+    private KGraphElement determineKGraphElement() {
+        if (kgraphElement == null) {
+            PNode node = (PNode) tracingNode;
+            while (node != null) {
+                if (node instanceof IGraphElement<?>) {
+                    kgraphElement = ((IGraphElement<?>) node).getGraphElement();
+                    break;
+                }
+                node = node.getParent();
+            }
+        }
+        return kgraphElement;
     }
 
     /**
