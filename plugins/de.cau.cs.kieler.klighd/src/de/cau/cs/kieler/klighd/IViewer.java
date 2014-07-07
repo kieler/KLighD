@@ -321,7 +321,15 @@ public interface IViewer<T> {
      *            the duration
      */
     void zoom(ZoomStyle style, int duration);
-    
+
+    /**
+     * Provides the current diagram zoom level.
+     * 
+     * @return the current diagram zoom level normalized to <code>1.0f</code>, or <code>0</code> if
+     *         viewer doesn't support zooming.
+     */
+    float getZoomLevel();
+
     /**
      * Provides the expansion state of the given element's representation.
      * 

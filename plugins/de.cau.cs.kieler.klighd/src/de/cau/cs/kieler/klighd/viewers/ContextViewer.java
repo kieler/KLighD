@@ -174,10 +174,10 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
-    public void stopRecording(final ZoomStyle zoomStyle,
+    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
             final int animationTime) {
         if (layoutRecorder != null) {
-            layoutRecorder.stopRecording(zoomStyle, animationTime);
+            layoutRecorder.stopRecording(zoomStyle, focusNode, animationTime);
         }
     }
 
@@ -446,6 +446,17 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     public void zoom(final ZoomStyle style, final int duration) {
         if (currentViewer != null) {
             currentViewer.zoom(style, duration);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public float getZoomLevel() {
+        if (currentViewer != null) {
+            return currentViewer.getZoomLevel();
+        } else {
+            return 1f;
         }
     }
 

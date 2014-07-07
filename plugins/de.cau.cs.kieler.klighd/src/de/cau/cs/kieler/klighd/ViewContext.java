@@ -358,6 +358,16 @@ public class ViewContext extends MapPropertyHolder {
             }
         }
 
+        if (properties != null) {
+            final Map<SynthesisOption, Object> config =
+                    properties.getProperty(KlighdSynthesisProperties.SYNTHESIS_OPTION_CONFIG);
+            if (config != null) {
+                for (final Map.Entry<SynthesisOption, Object> entry : config.entrySet()) {
+                    this.configureOption(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
         final Object sourceModel = this.businessModel;
 
         final KNode newViewModel;

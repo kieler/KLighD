@@ -170,6 +170,7 @@ public interface IAction {
         private Boolean zoomToActualSize = null;
         private Boolean zoomToFit = null;
         private Boolean zoomToFocus = null;
+        private KNode focus = null;
         
         private ActionResult(final boolean theActionPerformed) {
             this.actionPerformed = theActionPerformed;
@@ -272,6 +273,21 @@ public interface IAction {
         }
         
         /**
+         * Schedule zoomToFocus during the subsequent automatic layout run.
+         * 
+         * @param focusNode
+         *            the {@link KNode} to focus
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doZoomToFocus(final KNode focusNode) {
+            this.zoomToActualSize = null;
+            this.zoomToFit = null;
+            this.zoomToFocus = true;
+            this.focus = focusNode;
+            return this;
+        }
+        
+        /**
          * Suppress zoomToFocus during the subsequent automatic layout run. 
          * 
          * @return <code>this</code> {@link ActionResult}
@@ -352,6 +368,15 @@ public interface IAction {
          */
         public Boolean getZoomToFocus() {
             return this.zoomToFocus;
+        }
+
+        /**
+         * Getter.
+         * 
+         * @return the {@link KNode} to focus on
+         */
+        public KNode getFocusNode() {
+            return focus;
         }
     }
 }

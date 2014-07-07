@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
@@ -84,7 +83,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext,
             final List<ILayoutConfig> options) {
-        layoutDiagram(null, null, viewContext, null, null, options);
+        layoutDiagram(null, null, viewContext, null, null, null, options);
     }
 
     /**
@@ -117,7 +116,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final List<ILayoutConfig> options) {
-        layoutDiagram(null, null, viewContext, animate, null, options);
+        layoutDiagram(null, null, viewContext, animate, null, null, options);
     }
 
     /**
@@ -131,7 +130,7 @@ public final class LightDiagramServices {
      *            the {@link ZoomStyle} to be applied during this layout update
      */
     public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle) {
-        layoutDiagram(viewContext, zoomStyle, null);
+        layoutDiagram(viewContext, zoomStyle, null, null);
     }
     
     /**
@@ -148,7 +147,45 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle,
             final List<ILayoutConfig> options) {
-        layoutDiagram(null, null, viewContext, null, zoomStyle, options);
+        layoutDiagram(null, null, viewContext, null, zoomStyle, null, options);
+    }
+
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configurations of 'animate' is taken from the preference settings.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     */
+    public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle,
+            final KNode focusNode) {
+        layoutDiagram(viewContext, zoomStyle, focusNode, null);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configurations of 'animate' is taken from the preference settings.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     * @param options
+     *            an optional list of layout options
+     */
+    public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle,
+            final KNode focusNode, final List<ILayoutConfig> options) {
+        layoutDiagram(null, null, viewContext, null, zoomStyle, focusNode, options);
     }
     
     /**
@@ -163,7 +200,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final ZoomStyle zoomStyle) {
-        layoutDiagram(viewContext, animate, zoomStyle, null);
+        layoutDiagram(viewContext, animate, zoomStyle, (List<ILayoutConfig>) null);
     }
     
     /**
@@ -180,9 +217,47 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final ZoomStyle zoomStyle, final List<ILayoutConfig> options) {
-        layoutDiagram(null, null, viewContext, animate, zoomStyle, options);
+        layoutDiagram(null, null, viewContext, animate, zoomStyle, null, options);
     }
 
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param animate
+     *            layout with or without animation
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     */
+    public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
+            final ZoomStyle zoomStyle, final KNode focusNode) {
+        layoutDiagram(viewContext, animate, zoomStyle, focusNode, null);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.
+     * 
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param animate
+     *            layout with or without animation
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     * @param options
+     *            an optional list of layout options
+     */
+    public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
+            final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
+        layoutDiagram(null, null, viewContext, animate, zoomStyle, focusNode, options);
+    }
+    
 
     /**
      * Performs the automatic layout on the diagram represented by the given
@@ -212,7 +287,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart,
             final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, null, null, null, null, options);
+        layoutDiagram(viewPart, null, null, null, null, null, options);
     }
 
 
@@ -248,9 +323,8 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, null, null, animate, null, options);
-    }    
-
+        layoutDiagram(viewPart, null, null, animate, null, null, options);
+    }
 
     /**
      * Performs the automatic layout on the diagram represented by the given
@@ -264,7 +338,7 @@ public final class LightDiagramServices {
      *            the {@link ZoomStyle} to be applied during this layout update
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final ZoomStyle zoomStyle) {
-        layoutDiagram(viewPart, zoomStyle, null);
+        layoutDiagram(viewPart, zoomStyle, null, null);
     }
 
     /**
@@ -282,9 +356,46 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final ZoomStyle zoomStyle,
             final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, null, null, null, zoomStyle, Collections.<ILayoutConfig>emptyList());
+        layoutDiagram(viewPart, null, null, null, zoomStyle, null, null);
     }
 
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configurations of 'animate' is taken from the preference settings.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     */
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart,
+            final ZoomStyle zoomStyle, final KNode focusNode) {
+        layoutDiagram(viewPart, zoomStyle, focusNode, null);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.<br>
+     * <br>
+     * The configurations of 'animate' is taken from the preference settings.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     * @param options
+     *            an optional list of layout options
+     */
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart,
+            final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
+        layoutDiagram(viewPart, null, null, null, zoomStyle, focusNode, null);
+    }
 
     /**
      * Performs the automatic layout on the diagram represented by the given
@@ -299,7 +410,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final ZoomStyle zoomStyle) {
-        layoutDiagram(viewPart, animate, zoomStyle, null);
+        layoutDiagram(viewPart, animate, zoomStyle, null, null);
     }    
 
     /**
@@ -317,9 +428,47 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final ZoomStyle zoomStyle, final List<ILayoutConfig> options) {
-        layoutDiagram(viewPart, null, null, animate, zoomStyle, options);
+        layoutDiagram(viewPart, null, null, animate, zoomStyle, null, options);
     }    
 
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     */
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final ZoomStyle zoomStyle, final KNode focusNode) {
+        layoutDiagram(viewPart, null, null, animate, zoomStyle, focusNode, null);
+    }
+    
+    /**
+     * Performs the automatic layout on the diagram represented by the given view context.
+     * 
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            layout with or without animation
+     * @param zoomStyle
+     *            the {@link ZoomStyle} to be applied during this layout update
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     * @param options
+     *            an optional list of layout options
+     */
+    public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
+            final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
+        layoutDiagram(viewPart, null, null, animate, zoomStyle, focusNode, options);
+    }
+    
 
     /**
      * Performs the automatic layout on the diagram represented by the given
@@ -335,12 +484,16 @@ public final class LightDiagramServices {
      *            layout with or without animation
      * @param zoomStyle
      *            the {@link ZoomStyle} to be applied, may be <code>null</code>
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
      * @param options
      *            an optional list of layout options
      */
     private static void layoutDiagram(final IDiagramWorkbenchPart workbenchPart,
             final IViewer<?> diagramViewer, final ViewContext viewContext,
-            final Boolean animate, final ZoomStyle zoomStyle, final List<ILayoutConfig> options) {
+            final Boolean animate, final ZoomStyle zoomStyle, final KNode focusNode,
+            final List<ILayoutConfig> options) {
         
         final IDiagramWorkbenchPart thePart;
         final IViewer<?> theViewer;
@@ -386,6 +539,7 @@ public final class LightDiagramServices {
         
         if (layoutData != null) {
             theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE, zoomStyle);
+            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE, focusNode);
 
             // Activate the KIML Service plug-in so all layout options are loaded
             KimlServicePlugin.getDefault();
@@ -421,7 +575,7 @@ public final class LightDiagramServices {
             }
         } else {
             if (diagramViewer instanceof ILayoutRecorder) {
-                ((ILayoutRecorder) diagramViewer).stopRecording(zoomStyle, 0);
+                ((ILayoutRecorder) diagramViewer).stopRecording(zoomStyle, null, 0);
             }
         }
     }

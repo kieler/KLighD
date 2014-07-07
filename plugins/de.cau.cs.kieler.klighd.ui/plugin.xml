@@ -145,11 +145,19 @@
                <reference
                      definitionId="de.cau.cs.kieler.klighd.ui.isKlighdContext">
                </reference>
-               <iterate>
-                  <instanceof
-                        value="de.cau.cs.kieler.core.kgraph.KGraphElement">
-                  </instanceof>
-               </iterate>
+                    <or>
+                   <with
+                         variable="selection">
+                      <instanceof
+                            value="de.cau.cs.kieler.klighd.ui.KlighdTextSelection">
+                      </instanceof>
+                   </with>
+                   <iterate>
+                      <instanceof
+                            value="de.cau.cs.kieler.core.kgraph.KGraphElement">
+                      </instanceof>
+                   </iterate>
+                    </or>
             </and>
          </enabledWhen>
       </handler>
