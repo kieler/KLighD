@@ -129,11 +129,14 @@ public class DiagramController {
     private final DiagramZoomController zoomController;
     
     /** whether to sync the representation with the graph model. */
-    private boolean sync = false;
+    private final boolean sync;
+
+    /** whether edges are drawn before nodes, i.e. nodes have priority over edges. */
+    private final boolean edgesFirst;
 
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
-    
+
     /** the layout changes to graph elements while recording. */
     private final Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
 
@@ -148,14 +151,20 @@ public class DiagramController {
      * @param sync
      *            true if the visualization should be synchronized with the graph; false otherwise<br>
      *            <b>Hint</b>: setting to false will prevent the application of automatic layout
+     * @param edgesFirst
+     *            determining whether edges are drawn before nodes, i.e. nodes have priority over
+     *            edges
      */
-    public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync) {
+    public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
+            final boolean edgesFirst) {
         DiagramControllerHelper.resetGraphElement(graph);
 
         this.sync = sync;
+        this.edgesFirst = edgesFirst;
+        
         this.canvasCamera = camera;
 
-        this.topNode = new KNodeTopNode(graph);
+        this.topNode = new KNodeTopNode(graph, edgesFirst);
         final RenderingContextData contextData = RenderingContextData.get(graph);
         contextData.setProperty(REP, topNode);
 
@@ -769,7 +778,7 @@ public class DiagramController {
                 return;
             }
 
-            nodeNode = new KNodeNode(node);
+            nodeNode = new KNodeNode(node, edgesFirst);
             contextData.setProperty(REP, nodeNode);
 
             updateRendering(nodeNode);

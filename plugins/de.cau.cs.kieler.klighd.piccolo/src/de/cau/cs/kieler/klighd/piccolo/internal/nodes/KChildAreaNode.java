@@ -57,16 +57,28 @@ public class KChildAreaNode extends KDisposingLayer {
      * 
      * @param containingNode
      *            the node containing this child area
+     * @param edgesFirst
+     *            determining whether edges are drawn before nodes, i.e. nodes have priority over
+     *            edges
      */
-    public KChildAreaNode(final INode containingNode) {
+    public KChildAreaNode(final INode containingNode, final boolean edgesFirst) {
         super();
         this.setPickable(false);
         this.containingINode = containingNode; 
-        
+
         this.nodeLayer = new KDisposingLayer();
-        super.addChild(nodeLayer);
         this.edgeLayer = new KDisposingLayer();
-        super.addChild(edgeLayer);
+
+        if (edgesFirst) {
+            // this non-usual case required by a customer ;-)
+            super.addChild(edgeLayer);
+            super.addChild(nodeLayer);
+
+        } else {
+            // the regular (preferred) case
+            super.addChild(nodeLayer);
+            super.addChild(edgeLayer);
+        }
     }
 
     /**
@@ -189,9 +201,9 @@ public class KChildAreaNode extends KDisposingLayer {
                 pickPath.pushNode(this);
                 pickPath.pushTransform(getTransformReference(false));
 
-                int count = getChildrenCount();
+                final int count = getChildrenCount();
                 for (int i = count - 1; i >= 0; i--) {
-                    PNode child = getChild(i);
+                    final PNode child = getChild(i);
                     if (child.fullPick(pickPath)) {
                         return true;
                     }
