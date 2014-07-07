@@ -112,7 +112,7 @@ public class KlighdTest {
         KPort nextport = this.addport(next);
         KLabel nextlabel = next.getLabels().get(0);
         // create a controller for the graph
-        DiagramController controller = new DiagramController(root, camera, true);
+        DiagramController controller = new DiagramController(root, camera, true, false);
 
         // node layout
         KShapeLayout nodelayout = next.getData(KShapeLayout.class);
@@ -164,7 +164,7 @@ public class KlighdTest {
         l.setText("rootnode");
         makeTestGraph(root);
         // create a controller for the graph
-        DiagramController controller = new DiagramController(root, camera, true);
+        DiagramController controller = new DiagramController(root, camera, true, false);
         INode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
@@ -180,7 +180,7 @@ public class KlighdTest {
         KNode root = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true);
+        DiagramController controller = new DiagramController(root, camera, true, false);
         controller.collapse(root);
         makeTestGraph(root);
 
@@ -201,7 +201,7 @@ public class KlighdTest {
         KNode root = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true);
+        DiagramController controller = new DiagramController(root, camera, true, false);
         controller.collapse(root);
         makeTestGraph(root);
         controller.expand(root);
@@ -222,7 +222,7 @@ public class KlighdTest {
         KNode root = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true);
+        DiagramController controller = new DiagramController(root, camera, true, false);
         KNode child = makeTestGraph(root);
         // create a controller for the graph
         controller.getNode();
@@ -241,7 +241,7 @@ public class KlighdTest {
         KNode root = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true);
+        DiagramController controller = new DiagramController(root, camera, true, false);
         KNode child = makeTestGraph(root);
         controller.collapse(child);
         KNode cc = this.addchild(child);
@@ -265,7 +265,7 @@ public class KlighdTest {
         KNode root = KimlUtil.createInitializedNode();
         KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true);
+        DiagramController controller = new DiagramController(root, camera, true, false);
         KNode child = makeTestGraph(root);
         controller.collapse(child);
         KNode cc = this.addchild(child);
