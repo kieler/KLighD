@@ -67,8 +67,9 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void activityStarted() {
-        this.sourceBounds = NodeUtil.determineSmartBounds(node);
+        this.sourceBounds = NodeUtil.determineBounds(node);
         this.deltaBounds = new PBounds(targetBounds.x - sourceBounds.x, targetBounds.y
                 - sourceBounds.y, targetBounds.width - sourceBounds.width, targetBounds.height
                 - sourceBounds.height);
@@ -88,18 +89,18 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
         if (zeroToOne == 1.0f) {
             // when the activity completes set the target bounds
             node.setScale(targetScale);
-            NodeUtil.applySmartBounds(node, targetBounds);
+            NodeUtil.applyBounds(node, targetBounds);
         } else {
             // as long as the activity is not completed use the delta values
             node.setScale(sourceScale + zeroToOne * deltaScale);
-            NodeUtil.applySmartBounds(node, sourceBounds.getX() + zeroToOne * deltaBounds.getX(),
+            NodeUtil.applyBounds(node, sourceBounds.getX() + zeroToOne * deltaBounds.getX(),
                     sourceBounds.getY() + zeroToOne * deltaBounds.getY(), sourceBounds.getWidth()
                             + zeroToOne * deltaBounds.getWidth(), sourceBounds.getHeight()
                             + zeroToOne * deltaBounds.getHeight());
         }
         if (!stylesModified && zeroToOne > 1f / 2f) {
             stylesModified = true;
-            IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+            final IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
             if (gE.getRenderingController() != null) {
                 gE.getRenderingController().modifyStyles();
             }
@@ -112,12 +113,13 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
      * <br>
      * This customization puts the desired bounds to the node.
      */
+    @Override
     public void activityFinished() {
         node.setScale(targetScale);
-        NodeUtil.applySmartBounds(node, targetBounds);
+        NodeUtil.applyBounds(node, targetBounds);
         if (!stylesModified) {
             stylesModified = true;
-            IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+            final IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
             if (gE.getRenderingController() != null) {
                 gE.getRenderingController().modifyStyles();
             }

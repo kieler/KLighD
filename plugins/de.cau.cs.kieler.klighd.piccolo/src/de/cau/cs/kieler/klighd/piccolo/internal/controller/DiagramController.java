@@ -1311,8 +1311,7 @@ public class DiagramController {
  
         final KShapeLayout shapeLayout = nodeNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(nodeNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
+            NodeUtil.applyBounds(nodeNode, shapeLayout);
         }
     }
 
@@ -1342,9 +1341,7 @@ public class DiagramController {
 
         final KShapeLayout shapeLayout = portNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(portNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
-
+            NodeUtil.applyBounds(portNode, shapeLayout);
         }
     }
 
@@ -1374,8 +1371,7 @@ public class DiagramController {
 
         final KShapeLayout shapeLayout = labelNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(labelNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
+            NodeUtil.applyBounds(labelNode, shapeLayout);
         }
     }
 

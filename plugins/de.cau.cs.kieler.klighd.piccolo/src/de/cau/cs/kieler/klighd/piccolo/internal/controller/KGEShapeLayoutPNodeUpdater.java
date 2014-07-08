@@ -106,40 +106,39 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
 
         } else {
             if (newLayoutData) {
-                NodeUtil.applySmartBounds(nodeRep, shL.getXpos(), shL.getYpos(),
-                        shL.getWidth(), shL.getHeight());
-                
+                NodeUtil.applyBounds(nodeRep, shL);
+
             } else {
                 final Point2D offset = nodeRep.getOffset();
                 
                 switch (notification.getFeatureID(KShapeLayout.class)) {
                 case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                    double oldX = offset.getX();
-                    double newX = shL.getXpos();
+                    final double oldX = offset.getX();
+                    final double newX = shL.getXpos();
                     if (newX != oldX) {
                         nodeRep.setOffset(newX, offset.getY());
                     }
                     break;
                 }
                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                    double oldY = offset.getY();
-                    double newY = shL.getYpos();
+                    final double oldY = offset.getY();
+                    final double newY = shL.getYpos();
                     if (newY != oldY) {
                         nodeRep.setOffset(offset.getX(), newY);
                     }
                     break;
                 }
                 case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
-                    double oldWidth = nodeRep.getWidth();
-                    double newWidth = shL.getWidth();
+                    final double oldWidth = nodeRep.getWidth();
+                    final double newWidth = shL.getWidth();
                     if (oldWidth != newWidth) {
                         nodeRep.setWidth(newWidth);
                     }
                     break;
                 }
                 case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
-                    double oldHeight = nodeRep.getHeight();
-                    double newHeight = shL.getHeight();
+                    final double oldHeight = nodeRep.getHeight();
+                    final double newHeight = shL.getHeight();
                     if (oldHeight != newHeight) {
                         nodeRep.setHeight(newHeight);
                     }

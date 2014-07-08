@@ -94,13 +94,15 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
         //  Caution: Changing the bounds of a childArea must not happen if the childArea is
         //  not contained in any other PNode as this will influence the positioning of KEdgeNodes,
         //  which synchronize on the container childAreas and their parents 
-        NodeUtil.applySmartBounds(childAreaNode, initialBounds);
+        NodeUtil.applyBounds(childAreaNode, initialBounds);
 
         // create a controller for the child area and return it
         return new PNodeController<PNode>(childAreaNode) {
+
+            @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                NodeUtil.applySmartBounds(getNode(), bounds);
+                NodeUtil.applyBounds(getNode(), bounds);
             }
         };
     }
@@ -113,7 +115,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      */
     private void createDefaultChildArea(final PNode parent) {
         // determine the initial bounds
-        Bounds bounds = PlacementUtil.evaluateAreaPlacement(null, parent.getBoundsReference());
+        final Bounds bounds = PlacementUtil.evaluateAreaPlacement(null, parent.getBoundsReference());
 
         // configure the child area
         final PNodeController<?> controller = createChildArea(parent, bounds);
@@ -123,7 +125,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
                 new PropertyChangeListener() {
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds of the rendering
-                        Bounds bounds = PlacementUtil.evaluateAreaPlacement(null,
+                        final Bounds bounds = PlacementUtil.evaluateAreaPlacement(null,
                                 parent.getBoundsReference());
                         // use the controller to apply the new bounds
                         controller.setBounds(bounds);
@@ -136,6 +138,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      * 
      * @return the rendering
      */
+    @Override
     protected KRendering createDefaultRendering() {
         // create the default rendering model
         return KRenderingFactory.eINSTANCE.createKRectangle();

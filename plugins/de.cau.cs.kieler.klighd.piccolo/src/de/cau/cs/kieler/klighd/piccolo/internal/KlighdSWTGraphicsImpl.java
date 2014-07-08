@@ -76,7 +76,7 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
  */
 public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphicsEx {
 
-    // SUPPRESS CHECKSTYLE NEXT 25 Visibility
+    // SUPPRESS CHECKSTYLE NEXT 30 Visibility
     
     /** The {@link Device} to draw on. */
     protected Device device;
@@ -86,6 +86,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     
     /** An internal SWT {@link Rectangle} used for clip handling computations. */
     protected Transform swtTransform;
+
+    /** The bit position of {@link GC#DRAW_OFFSET} required for avoiding Eclipse bug 335769. */
+    private static final int DRAW_OFFSET_BIT = 9;
     
     /** A {@link TextLayout} used to draw styled texts (e.g. those with underline and/or strikeout). */
     protected TextLayout textLayout;
@@ -433,6 +436,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         final Path path = KlighdPaths.createSWTPath(shape.getPathIterator(null), this.device);
 
         gc.setTransform(this.swtTransform);
+        gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
+
         gc.drawPath(path);
 
         path.dispose();
@@ -445,6 +450,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     public void draw(final Path path) {
         gc.setTransform(this.swtTransform);
+        gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
+
         gc.drawPath(path);
     }
     
@@ -456,6 +463,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         final Path path = KlighdPaths.createSWTPath(shape.getPathIterator(null), this.device);
 
         gc.setTransform(this.swtTransform);
+        gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
+
         gc.fillPath(path);
         
         path.dispose();
@@ -466,6 +475,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      */
     public void fill(final Path path) {
         gc.setTransform(this.swtTransform);
+        gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
+
         gc.fillPath(path);
     }
     
@@ -476,6 +487,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public void drawImage(final Image image, final double width, final double height) {
         final Rectangle bounds = image.getBounds();
         gc.setTransform(swtTransform);
+        gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
+
         gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, (int) width, (int) height);
     }
     
@@ -502,12 +515,16 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         if (!useTextStyle) {
             gc.setFont(curFont);
             gc.setTransform(swtTransform);
+            gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
+
             gc.drawText(text, 0, 0, SWT.DRAW_DELIMITER | SWT.DRAW_TRANSPARENT);
             gc.setTransform(null);
         } else {
             this.textLayout.setText(text);
             this.textLayout.setStyle(curTextStyle, 0, text.length() - 1);            
             gc.setTransform(swtTransform);
+            gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
+
             this.textLayout.draw(gc, 0, 0);
             gc.setTransform(null);
         }
