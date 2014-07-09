@@ -58,6 +58,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdShowLensEventHandle
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -231,8 +232,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void setModel(final KNode model, final boolean sync) {
 
+        final boolean edgesFirst =
+                getViewContext().getProperty(KlighdProperties.EDGES_FIRST).booleanValue();
+
         // create a controller for the graph
-        controller = new DiagramController(model, canvas.getCamera(), sync);
+        controller = new DiagramController(model, canvas.getCamera(), sync, edgesFirst);
 
         // update the outline page
         if (outlinePage != null && !outlinePage.isDisposed()) {

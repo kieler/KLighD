@@ -168,5 +168,11 @@ public final class KlighdProperties {
      * The property holds a tooltip that is displayed upon a mouse hover of the respective element.
      */
     public static final IProperty<String> TOOLTIP = new Property<String>("klighd.tooltip", null);
-    
+
+    /**
+     * Property for globally determining whether edges should be drawn before nodes, leading to
+     * the effect of overpainting edges by nodes with background color.
+     */
+    public static final IProperty<Boolean> EDGES_FIRST = new Property<Boolean>(
+            "klighd.edgesFirst", false);
 }

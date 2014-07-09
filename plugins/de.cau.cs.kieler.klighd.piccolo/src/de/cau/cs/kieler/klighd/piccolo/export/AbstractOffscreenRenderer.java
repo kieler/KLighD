@@ -21,6 +21,7 @@ import de.cau.cs.kieler.klighd.IOffscreenRenderer;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * Abstract implementation of {@link IOffscreenRenderer} providing common functionalities of
@@ -66,7 +67,8 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
         // since the controller attaches the 'ACTIVE' and 'POPULATED' flags that are examined
         // by the KlighdLayoutManager we need to do this before arranging the diagram
         final DiagramController c =
-                new DiagramController(viewContext.getViewModel(), camera, true);
+                new DiagramController(viewContext.getViewModel(), camera, true,
+                        viewContext.getProperty(KlighdProperties.EDGES_FIRST).booleanValue());
 
         if (properties == null) {
             // layout the diagram

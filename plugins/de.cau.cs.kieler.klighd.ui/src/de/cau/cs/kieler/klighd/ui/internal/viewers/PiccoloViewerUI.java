@@ -187,7 +187,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 //   in general not desirable
                 // updateModelAfterTextChange(labelTextWidget, thisViewer.getViewContext());
                 labelWidget.setSelection(0, 0);
-                labelWidget.setVisible(false);
+                PiccoloViewerUI.this.deactivateLabelWidget();
             }
         };
         parentViewer.addSelectionChangedListener(selectionListener);
@@ -405,10 +405,12 @@ public class PiccoloViewerUI extends PiccoloViewer {
     void deactivateLabelWidget() {
         labelWidget.setVisible(false);
 
-        final PNode node = (PNode) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
+        final PNode node = (PNode) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);        
         if (node != null) {
+            node.setVisible(true);
             node.removePropertyChangeListener(
                     (PropertyChangeListener) labelWidget.getData(TEXT_STYLING_CHANGE_LISTENER_KEY));
+
         }
     }
 
