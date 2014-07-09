@@ -223,9 +223,8 @@ public abstract class PNodeController<T extends PNode> {
         if (prevRotationAnchor.equals(theAnchor)) {
             point = PlacementUtil.evaluateKPosition(theAnchor, getNode()
                     .getBoundsReference(), true);
-            final Point2D.Double d = new Point2D.Double(point.getX(), point.getY());
             getNode().getTransformReference(true).rotate(Math.toRadians(rotation - prevRotation),
-                    d.getX(), d.getY());
+                    point.getX(), point.getY());
         } else {
             getNode().rotateAboutPoint(Math.toRadians(-prevRotation),
                     prevRotationPoint.getX(), prevRotationPoint.getY());
