@@ -244,7 +244,8 @@ public abstract class PNodeController<T extends PNode> {
     }
 
     /**
-     * 
+     * Re-applies the last rotation to the controlled {@link #getNode() node}.<br>
+     * This method is just for internal use and not to be called by application code.
      */
     public void applyRotation() {
         final float rotation = prevRotation;
