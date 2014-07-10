@@ -1432,12 +1432,20 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRotation" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="rotates element clockwise around the top left point of a parent rendering"/>
+      <details key="documentation" value="Specifies the (clockwise) rotation of the corresponding {@link KRendering}."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rotation" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" defaultValueLiteral="0.0"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" defaultValueLiteral="0.0">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Determines the rotation angle value in degrees."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rotationAnchor" eType="#//KPosition"
-        containment="true"/>
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Determines the rotation anchor wrt. the bounds of the corresponding {@link KRendering};&#xA;may be &lt;code>null&lt;/code>, the center position will be used in that case."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="LineCap">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
