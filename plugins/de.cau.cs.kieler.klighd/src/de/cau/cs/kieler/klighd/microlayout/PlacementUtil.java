@@ -553,6 +553,12 @@ public final class PlacementUtil {
      * This method basically applies the area/point placement data of the clip shape to the already
      * determined size of the KImage in order to avoid the extension of the, e.g., node to the
      * complete bounds of the image.<br>
+     * <br>
+     * <b>Note</b> that the general assumption of the size estimation assuming the bounds of a child
+     * figure being completely encompassed by the bounds of the parent figure is not applied here!
+     * Instead, the size estimation of images is supposed to cope with negative values of, at least,
+     * the absolute positioning components.<br>
+     * <br>
      * If no clip shape is defined it simply returns <code>imageSize</code>.
      * 
      * @param image
