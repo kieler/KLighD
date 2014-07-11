@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.microlayout;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
 
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.util.Pair;
@@ -261,6 +262,18 @@ public class Bounds {
     }
 
     /**
+     * Updates the coordinates of <code>shape</code> according to those of <code>this</code>.
+     * 
+     * @param shape
+     *            the {@link RectangularShape} to be updated
+     * @return <code>shape</code> for convenience
+     */
+    public RectangularShape setBoundsOf(final RectangularShape shape) {
+        shape.setFrame(this.x, this.y, this.width, this.height);
+        return shape;
+    }
+
+    /**
      * Getter to access the Insets of this Bounds.
      * 
      * @return width
@@ -272,6 +285,7 @@ public class Bounds {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "(" + this.x + "," + this.y + "|" + this.width + "," + this.height + ")"; 
     }
@@ -304,8 +318,8 @@ public class Bounds {
      * @return a {@link Pair} of {@link Boolean} denoting the width and height equality
      */
     public static Pair<Boolean, Boolean> compare(final Bounds b1, final Bounds b2, final float delta) {
-        boolean widthEqual = Math.abs(b1.width - b2.width) <= delta;
-        boolean heightEqual = Math.abs(b1.height - b2.height) <= delta;
+        final boolean widthEqual = Math.abs(b1.width - b2.width) <= delta;
+        final boolean heightEqual = Math.abs(b1.height - b2.height) <= delta;
 
         return Pair.of(widthEqual, heightEqual); 
     }
@@ -462,6 +476,7 @@ public class Bounds {
 
         private static final String MSG = "This bounds object is immutable! Modifying is not allowed.";
         
+        @Override
         void setBounds(final Bounds bounds) {
             throw new UnsupportedOperationException(MSG);
         }
