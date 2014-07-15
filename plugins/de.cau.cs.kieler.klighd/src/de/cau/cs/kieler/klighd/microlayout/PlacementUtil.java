@@ -579,9 +579,23 @@ public final class PlacementUtil {
             
             if (pdType == KRenderingPackage.KPOINT_PLACEMENT_DATA) {
                 // if the image is placed by means of point placement data
-                //  just take the pre-calculated imageSize
-                //  to calculate the bounds of the clip shape
-                return calculateBounds(null, imageSize, null, clipShape);
+                
+                final KPlacementData cpd = clipShape.getPlacementData();
+                final int cpdType = cpd == null ? 0 : cpd.eClass().getClassifierID();
+                
+                if (cpdType == KRenderingPackage.KPOINT_PLACEMENT_DATA) {
+                    return estimatePointPlacedChildSize(clipShape, (KPointPlacementData) cpd);
+                    
+                } else if (cpdType == KRenderingPackage.KAREA_PLACEMENT_DATA) {
+                    // if the image clip is determined by means of point placement data
+                    //  just take the (minimal) size specified in image's placement data  
+                    //  to calculate the bounds of the clip shape
+                    final KPointPlacementData ppd = (KPointPlacementData) pd;
+                    return calculateBounds(null, Bounds.of(ppd.getMinWidth(), ppd.getMinHeight()),
+                            null, clipShape);
+                } else {
+                    return imageSize;
+                }
 
             } else if (pdType ==  KRenderingPackage.KAREA_PLACEMENT_DATA) {
                 // if the image is placed by means of point placement data ...
