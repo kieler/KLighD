@@ -78,7 +78,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
         }
 
         final ViewContext viewContext = selection.getViewContext();
-        if (viewContext != null) {
+        if (viewContext == null) {
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
                             "Could not determine ViewContext."), StatusManager.SHOW);
