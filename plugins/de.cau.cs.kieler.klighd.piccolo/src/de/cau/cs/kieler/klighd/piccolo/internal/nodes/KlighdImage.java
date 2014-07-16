@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.Shape;
+import java.awt.geom.RectangularShape;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -88,6 +89,7 @@ public class KlighdImage extends PNode implements IResourceEmployer {
      * The shape defining the clip area to be applied to this image.
      */
     private Shape clip;
+    private RectangularShape rectClip;
     
     /**
      * Common private constructor.
@@ -254,6 +256,19 @@ public class KlighdImage extends PNode implements IResourceEmployer {
     }
 
     /**
+     * Returns the currently configured clip shape if it is a {@link RectangularShape},
+     * <code>null</code> otherwise. This allows the update of the clip shape's coordinates
+     * instead of releasing it and creating a new one, which however only makes sense for
+     * {@link RectangularShape RectangularShapes}.
+     * 
+     * @return the currently configured clip shape if it is a {@link RectangularShape},
+     *         <code>null</code> otherwise.
+     */
+    public RectangularShape getClip() {
+        return this.rectClip;
+    }
+
+    /**
      * Set the clip shape to be applied to this image, removes the existing clip
      * if <code>clip</code> is <code>null</code>.
      * 
@@ -261,6 +276,9 @@ public class KlighdImage extends PNode implements IResourceEmployer {
      */
     public void setClip(final Shape clip) {
         this.clip = clip;
+        if (clip instanceof RectangularShape) {
+            this.rectClip = (RectangularShape) clip;
+        }
     }
 
     /**

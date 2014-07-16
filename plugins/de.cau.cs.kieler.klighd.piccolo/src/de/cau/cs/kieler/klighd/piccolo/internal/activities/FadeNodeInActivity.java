@@ -63,13 +63,14 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
      * This customization initializes the new node's position, set it transparent, and releases the
      * invisibility.
      */
+    @Override
     public void activityStarted() {
-        IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+        final IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
         if (gE.getRenderingController() != null) {
             gE.getRenderingController().modifyStyles();
         }
         node.setScale(targetScale);
-        NodeUtil.applySmartBounds(node, targetBounds);
+        NodeUtil.applyBounds(node, targetBounds);
         node.setTransparency(0);
         node.setVisible(true);
         super.activityStarted();
@@ -91,6 +92,7 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
      * <br>
      * This customization fully exposes the given node.
      */
+    @Override
     public void activityFinished() {
         node.setTransparency(1);
         super.activityFinished();

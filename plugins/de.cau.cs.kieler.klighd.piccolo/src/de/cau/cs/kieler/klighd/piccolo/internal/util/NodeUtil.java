@@ -20,7 +20,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -81,14 +83,14 @@ public final class NodeUtil {
      *            
      * @author mri, chsch
      */
-    public static void applySmartBounds(final PNode node, final double x, final double y,
+    public static void applyBounds(final PNode node, final double x, final double y,
             final double width, final double height) {
         // apply the layout;
-        // positions the node at the given coordinates (taken from the related shape layout)
-        node.setOffset(x, y);
-
         // sets the size of the node, does not influence the above determined position
         node.setBounds(0, 0, width, height);
+
+        // positions the node at the given coordinates (taken from the related shape layout)
+        applyTranslation(node, x, y);
     }
 
     /**
@@ -99,8 +101,8 @@ public final class NodeUtil {
      * @param bounds
      *            the bounds
      */
-    public static void applySmartBounds(final PNode node, final Bounds bounds) {
-        applySmartBounds(node, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    public static void applyBounds(final PNode node, final PBounds bounds) {
+        applyBounds(node, bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     /**
@@ -111,8 +113,54 @@ public final class NodeUtil {
      * @param bounds
      *            the bounds
      */
-    public static void applySmartBounds(final PNode node, final PBounds bounds) {
-        applySmartBounds(node, bounds.x, bounds.y, bounds.width, bounds.height);
+    public static void applyBounds(final PNode node, final Bounds bounds) {
+        applyBounds(node, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    }
+
+    /**
+     * Applies the bounds to the given node using the node's translation and its bounds.
+     * 
+     * @param node
+     *            the node
+     * @param bounds
+     *            the bounds
+     */
+    public static void applyBounds(final PNode node, final KShapeLayout bounds) {
+        applyBounds(node, bounds.getXpos(), bounds.getYpos(), bounds.getWidth(), bounds.getHeight());
+    }
+
+    /**
+     * (Re-)Applies the translation (x,y) and size (w, h) given in <code>bounds</code> and last
+     * rotation configuration to the node controller by <code>controller</code>.
+     * 
+     * @param controller
+     *            the {@link PNodeController}
+     * @param bounds
+     *            the {@link Bounds}
+     */
+    public static void applyBounds(final PNodeController<?> controller, final Bounds bounds) {
+        controller.getNode().setBounds(0, 0,  bounds.getWidth(), bounds.getHeight());
+        
+        applyTranslation(controller, bounds);
+    }
+
+    /**
+     * (Re-)Applies the translation (x,y) given in <code>bounds</code> and last rotation
+     * configuration to the node controller by <code>controller</code>.
+     * 
+     * @param controller
+     *            the {@link PNodeController}
+     * @param bounds
+     *            the {@link Bounds}
+     */
+    public static void applyTranslation(final PNodeController<?> controller, final Bounds bounds) {
+        // apply the translation
+        final PNode node = controller.getNode();
+        node.getTransformReference(true).setToIdentity();
+
+        controller.applyRotation();
+
+        node.translate(bounds.getX(), bounds.getY());
     }
 
     /**
@@ -154,7 +202,7 @@ public final class NodeUtil {
      *            the node
      * @return the smart bounds
      */
-    public static PBounds determineSmartBounds(final PNode node) {
+    public static PBounds determineBounds(final PNode node) {
         final PBounds bounds = node.getBounds();
 
         // get the translation

@@ -206,6 +206,13 @@ public class ViewContext extends MapPropertyHolder {
                     this.configureOption(option, option.getInitialValue());
                 }
             }
+            final Map<SynthesisOption, Object> config =
+                    propertyHolder.getProperty(KlighdSynthesisProperties.SYNTHESIS_OPTION_CONFIG);
+            if (config != null) {
+                for (final Map.Entry<SynthesisOption, Object> entry : config.entrySet()) {
+                    this.configureOption(entry.getKey(), entry.getValue());
+                }
+            }
         }
         
         final String updateStrategyId =
@@ -355,6 +362,16 @@ public class ViewContext extends MapPropertyHolder {
             if (diagramSynthesis == null
                     || !diagramSynthesis.getSourceClass().isAssignableFrom(model.getClass())) {
                 this.configure(properties);
+            }
+        }
+
+        if (properties != null) {
+            final Map<SynthesisOption, Object> config =
+                    properties.getProperty(KlighdSynthesisProperties.SYNTHESIS_OPTION_CONFIG);
+            if (config != null) {
+                for (final Map.Entry<SynthesisOption, Object> entry : config.entrySet()) {
+                    this.configureOption(entry.getKey(), entry.getValue());
+                }
             }
         }
 
@@ -691,6 +708,14 @@ public class ViewContext extends MapPropertyHolder {
      *            the value of the {@link SynthesisOption}
      */
     public void configureOption(final SynthesisOption option, final Object value) {
+
+        // Configuring separator "pseudo" options is senseless and
+        //  since those options are not required to be singleton object
+        //  their re-configuration will even fail!
+        // Thus we skip them here.
+        if (option != null && option.isSeparator()) {
+            return;
+        }
 
         if (option == null || !this.synthesisOptions.contains(option)) {
             throw new IllegalArgumentException("KLighD transformation option handling: "

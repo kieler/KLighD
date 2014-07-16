@@ -58,6 +58,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdShowLensEventHandle
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -231,8 +232,11 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     public void setModel(final KNode model, final boolean sync) {
 
+        final boolean edgesFirst =
+                getViewContext().getProperty(KlighdProperties.EDGES_FIRST).booleanValue();
+
         // create a controller for the graph
-        controller = new DiagramController(model, canvas.getCamera(), sync);
+        controller = new DiagramController(model, canvas.getCamera(), sync, edgesFirst);
 
         // update the outline page
         if (outlinePage != null && !outlinePage.isDisposed()) {
@@ -256,27 +260,39 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     public void stopRecording(final int animationTime) {
         final ViewContext viewContext = this.getViewContext();
         final ZoomStyle zoomStyle;
+        final KNode focusNode;
+
         // get the zoomStyle
         if (viewContext != null) {
             final ZoomStyle nzs = viewContext.getProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE);
             if (nzs != null) {
                 zoomStyle = nzs;
+                
+                // in case 'nzs' is unequal to ZOOM_TO_FOCUS, the NEXT_FOCUS_NODE is likely to be null,
+                //  otherwise it may be null, or may denote to a KNode
+                //  - both cases have to be handled properly!
+                focusNode = viewContext.getProperty(KlighdInternalProperties.NEXT_FOCUS_NODE);
+
                 viewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE, null);
+                viewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE, null);
             } else {
                 zoomStyle = this.getViewContext().getZoomStyle();
+                focusNode = null;
             }
         } else {
             zoomStyle = ZoomStyle.NONE;
+            focusNode = null;
         }
 
-        stopRecording(zoomStyle, animationTime);
+        stopRecording(zoomStyle, focusNode, animationTime);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
-        controller.stopRecording(zoomStyle, animationTime);
+    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
+            final int animationTime) {
+        controller.stopRecording(zoomStyle, focusNode, animationTime);
     }
 
     /**
@@ -371,7 +387,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
      */
     @Override
     public void zoom(final ZoomStyle style, final int duration) {
-        controller.getZoomController().zoom(style, duration);
+        controller.getZoomController().zoom(style, null, duration);
     }
 
     /**

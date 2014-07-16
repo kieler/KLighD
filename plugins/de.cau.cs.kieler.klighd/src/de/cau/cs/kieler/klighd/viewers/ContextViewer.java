@@ -174,10 +174,10 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     /**
      * {@inheritDoc}
      */
-    public void stopRecording(final ZoomStyle zoomStyle,
+    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
             final int animationTime) {
         if (layoutRecorder != null) {
-            layoutRecorder.stopRecording(zoomStyle, animationTime);
+            layoutRecorder.stopRecording(zoomStyle, focusNode, animationTime);
         }
     }
 

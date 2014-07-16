@@ -255,7 +255,11 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
                 && labelWidget.getSelectionCount() > 0) {
             return false;
         }
-        
+
+        // this call is required in order to re-enable the visibility of the formerly corresponding
+        //  text figure and to remove any listeners from that figure 
+        this.viewer.deactivateLabelWidget();
+
         final String text = styledText.getText();
 
         // determine text value
@@ -275,6 +279,11 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
 
         attachTextsParentInformation(styledText);
 
+        // due to rounding issues in the font size handling the label widget does not completely
+        //  overlap the text figure so we set that one invisible here
+        // note that this also affects the outline view (if existing)!
+        styledText.setVisible(false);
+        
         labelWidget.setVisible(true);
         labelWidget.setFocus();
         setWidgetPrepared();

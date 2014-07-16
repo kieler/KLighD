@@ -81,14 +81,17 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
      * 
      * @param node
      *            the node
+     * @param edgesFirst
+     *            determining whether edges are drawn before nodes, i.e. nodes have priority over
+     *            edges
      */
-    public KNodeNode(final KNode node) {
+    public KNodeNode(final KNode node, final boolean edgesFirst) {
         super();
 
         this.node = node;
         this.portLayer = new KDisposingLayer();
         this.labelLayer = new KDisposingLayer();
-        this.childArea = new KChildAreaNode(this);
+        this.childArea = new KChildAreaNode(this, edgesFirst);
 
         this.childAreaCamera = new PCamera();
 
@@ -171,9 +174,9 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
         if (controller == null || controller instanceof KNodeRenderingController) {
             this.renderingController = (KNodeRenderingController) controller;
         } else {
-            String s = "KLighD: Fault occured while building up a concrete KNode rendering: KNodeNodes"
-                    + " are supposed to be controlled by KNodeRenderingControllers rather than "
-                    + controller.getClass().getCanonicalName();
+            final String s = "KLighD: Fault occured while building up a concrete KNode rendering: "
+                + "KNodeNodes are supposed to be controlled by KNodeRenderingControllers rather than "
+                + controller.getClass().getCanonicalName();
             throw new IllegalArgumentException(s);
         }
     }

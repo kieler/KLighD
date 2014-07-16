@@ -179,6 +179,11 @@ public final class KlighdProperties {
      */
     public static final IProperty<KlighdSemanticDiagramData> SEMANTIC_DATA =
             new Property<KlighdSemanticDiagramData>("klighd.semanticData", null);
-    
 
+    /**
+     * Property for globally determining whether edges should be drawn before nodes, leading to
+     * the effect of overpainting edges by nodes with background color.
+     */
+    public static final IProperty<Boolean> EDGES_FIRST = new Property<Boolean>(
+            "klighd.edgesFirst", false);
 }

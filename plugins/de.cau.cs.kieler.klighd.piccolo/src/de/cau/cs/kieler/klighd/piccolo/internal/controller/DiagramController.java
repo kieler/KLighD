@@ -129,13 +129,16 @@ public class DiagramController {
     private final DiagramZoomController zoomController;
     
     /** whether to sync the representation with the graph model. */
-    private boolean sync = false;
+    private final boolean sync;
+
+    /** whether edges are drawn before nodes, i.e. nodes have priority over edges. */
+    private final boolean edgesFirst;
 
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
-    
+
     /** the layout changes to graph elements while recording. */
-    private Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
+    private final Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
 
 
     /**
@@ -148,14 +151,20 @@ public class DiagramController {
      * @param sync
      *            true if the visualization should be synchronized with the graph; false otherwise<br>
      *            <b>Hint</b>: setting to false will prevent the application of automatic layout
+     * @param edgesFirst
+     *            determining whether edges are drawn before nodes, i.e. nodes have priority over
+     *            edges
      */
-    public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync) {
+    public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
+            final boolean edgesFirst) {
         DiagramControllerHelper.resetGraphElement(graph);
 
         this.sync = sync;
+        this.edgesFirst = edgesFirst;
+        
         this.canvasCamera = camera;
 
-        this.topNode = new KNodeTopNode(graph);
+        this.topNode = new KNodeTopNode(graph, edgesFirst);
         final RenderingContextData contextData = RenderingContextData.get(graph);
         contextData.setProperty(REP, topNode);
 
@@ -220,7 +229,7 @@ public class DiagramController {
      * Starts to record layout changes in the model instead of instantly applying them to the
      * visualization.<br>
      * <br>
-     * Executing {@link #stopRecording(ZoomStyle, int)} applies all recorded layout changes.
+     * Executing {@link #stopRecording(ZoomStyle, KNode, int)} applies all recorded layout changes.
      * 
      * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#startRecording()
      *      ILayoutRecorder#startRecording()
@@ -232,17 +241,21 @@ public class DiagramController {
     /**
      * @param zoomStyle
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
+     * @param focusNode
+     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
      * @param animationTime
      *            duration of the animated layout
      * 
-     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, int)
-     *      ILayoutRecorder#stopRecording(ZoomStyle, int)
+     * @see de.cau.cs.kieler.klighd.internal.ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
+     *      ILayoutRecorder#stopRecording(ZoomStyle, KNode, int)
      */
-    public void stopRecording(final ZoomStyle zoomStyle, final int animationTime) {
+    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
+            final int animationTime) {
         if (record) {
             record = false;
 
-            handleRecordedChanges(zoomStyle, animationTime);
+            handleRecordedChanges(zoomStyle, focusNode, animationTime);
         }
     }
 
@@ -455,7 +468,7 @@ public class DiagramController {
         recordedChanges.put(node, change);
     }
     
-    private Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = Sets.newHashSet();
+    private final Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = Sets.newHashSet();
 
     void scheduleRenderingUpdate(final AbstractKGERenderingController<?, ?> controller) {
         renderingUpdater.cancel();
@@ -502,7 +515,8 @@ public class DiagramController {
     /**
      * Applies the recorded layout changes by creating appropriate activities.
      */
-    private void handleRecordedChanges(final ZoomStyle zoomStyle, final int animationTime) {
+    private void handleRecordedChanges(final ZoomStyle zoomStyle, final KNode focusNode,
+            final int animationTime) {
 
         // create activities to apply all recorded changes
         for (final Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
@@ -568,7 +582,7 @@ public class DiagramController {
         recordedChanges.clear();
 
         // apply a proper zoom handling if requested
-        getZoomController().zoom(zoomStyle, animationTime);
+        getZoomController().zoom(zoomStyle, focusNode, animationTime);
     }
 
     /**
@@ -764,7 +778,7 @@ public class DiagramController {
                 return;
             }
 
-            nodeNode = new KNodeNode(node);
+            nodeNode = new KNodeNode(node, edgesFirst);
             contextData.setProperty(REP, nodeNode);
 
             updateRendering(nodeNode);
@@ -1297,8 +1311,7 @@ public class DiagramController {
  
         final KShapeLayout shapeLayout = nodeNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(nodeNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
+            NodeUtil.applyBounds(nodeNode, shapeLayout);
         }
     }
 
@@ -1328,9 +1341,7 @@ public class DiagramController {
 
         final KShapeLayout shapeLayout = portNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(portNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
-
+            NodeUtil.applyBounds(portNode, shapeLayout);
         }
     }
 
@@ -1360,8 +1371,7 @@ public class DiagramController {
 
         final KShapeLayout shapeLayout = labelNode.getGraphElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
-            NodeUtil.applySmartBounds(labelNode, shapeLayout.getXpos(), shapeLayout.getYpos(),
-                    shapeLayout.getWidth(), shapeLayout.getHeight());
+            NodeUtil.applyBounds(labelNode, shapeLayout);
         }
     }
 

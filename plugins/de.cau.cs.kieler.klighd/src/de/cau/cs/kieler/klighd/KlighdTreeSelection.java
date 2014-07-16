@@ -40,7 +40,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * 
  * @author chsch
  */
-public class KlighdTreeSelection extends TreeSelection implements Iterable<EObject> {
+public class KlighdTreeSelection extends TreeSelection implements IKlighdSelection, Iterable<EObject> {
     
     /**
      * Empty singleton instance of {@link KlighdTreeSelection}.
@@ -83,7 +83,16 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<EObje
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public IViewer<?> getViewer() {
+        return viewContext.getViewer().getContextViewer();
+    }
+
+    /**
      * Getter.
+     * 
+     * @deprecated use {@link #getViewer()}
      * 
      * @return the {@link ContextViewer} providing this selection.
      */
@@ -92,9 +101,7 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<EObje
     }
 
     /**
-     * Getter.
-     * 
-     * @return the {@link ViewContext} of the diagram the selection has been performed in.
+     * {@inheritDoc}
      */
     public ViewContext getViewContext() {
         return this.viewContext;
@@ -105,17 +112,17 @@ public class KlighdTreeSelection extends TreeSelection implements Iterable<EObje
         // the aim of this method is only to apply the cast and avoid the warning on class level
         
         @SuppressWarnings("unchecked")
-        final Iterator<EObject> iterator = (Iterator<EObject>) super.iterator();
+        final Iterator<EObject> iterator = super.iterator();
         return iterator;
     }
-    
-//  // this convenience method is package protected by intention as it is used in the ContextViewer only 
-//    Iterator<? extends EObject> eIterator() {
-//        @SuppressWarnings("unchecked")
-//        Iterator<? extends EObject> iterator = (Iterator<? extends EObject>) this.iterator();
-//        return iterator;
-//    }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public Iterator<EObject> diagramElementsIterator() {
+        return this.iterator();
+    }
+
     /**
      * Analogously to {@link #iterator()} this methods returns an {@link Iterator} providing the
      * source model elements associated with the selected view elements.

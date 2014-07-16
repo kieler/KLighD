@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import java.awt.geom.RectangularShape;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
@@ -126,7 +127,8 @@ final class KGERenderingControllerHelper {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToEllipse(0, 0, bounds.getWidth(), bounds.getHeight());
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+
+                NodeUtil.applyTranslation(this, bounds);
             }
         };
     }
@@ -171,7 +173,8 @@ final class KGERenderingControllerHelper {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 getNode().setPathToRectangle(0, 0, bounds.getWidth(), bounds.getHeight());
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+
+                NodeUtil.applyTranslation(this, bounds);
             }
         };
     }
@@ -220,7 +223,8 @@ final class KGERenderingControllerHelper {
                 // apply the bounds
                 getNode().setPathToRoundRectangle(0, 0, bounds.getWidth(), bounds.getHeight(),
                         cornerWidth, cornerHeight);
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+
+                NodeUtil.applyTranslation(this, bounds);
             }
         };
     }
@@ -269,7 +273,8 @@ final class KGERenderingControllerHelper {
                 // apply the bounds
                 getNode().setPathToArc(0, 0, bounds.getWidth(), bounds.getHeight(),
                         arc.getStartAngle(), arc.getArcAngle(), arc.getArcType().getValue());
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+
+                NodeUtil.applyTranslation(this, bounds);
             }
         };
     }
@@ -317,7 +322,7 @@ final class KGERenderingControllerHelper {
         return new KlighdTextController(textNode) {
             @Override
             public void setBounds(final Bounds bounds) {
-                NodeUtil.applySmartBounds(alignmentNode, bounds);
+                NodeUtil.applyBounds(alignmentNode, bounds);
             }
 
             @Override
@@ -390,11 +395,11 @@ final class KGERenderingControllerHelper {
                 // create a proxy parent for the children without decorator placement data
                 final PNode proxyParent = new PEmptyNode();
                 path.addChild(proxyParent);
-                NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                NodeUtil.applyBounds(proxyParent, path.getBoundsReference());
                 controller.addListener(PNode.PROPERTY_BOUNDS, path, proxyParent,
                         new PropertyChangeListener() {
                             public void propertyChange(final PropertyChangeEvent arg0) {
-                                NodeUtil.applySmartBounds(proxyParent, path.getBoundsReference());
+                                NodeUtil.applyBounds(proxyParent, path.getBoundsReference());
                             }
                         });
 
@@ -423,7 +428,7 @@ final class KGERenderingControllerHelper {
                     getNode().setPathToPolyline(points);
                 }
 
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+                NodeUtil.applyTranslation(this, bounds);
             }
         };
     }
@@ -494,7 +499,7 @@ final class KGERenderingControllerHelper {
                 // apply the bounds
                 getNode().setPathToPolygon(
                         (PiccoloPlacementUtil.evaluatePolylinePlacement(polygon, bounds)));
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+                NodeUtil.applyTranslation(this, bounds);
             }
         };
     }
@@ -640,7 +645,7 @@ final class KGERenderingControllerHelper {
         parent.addChild(imageNode);
 
         if (image.getClipShape() != null) {
-            imageNode.setClip(createClipShape(image.getClipShape(), initialBounds));
+            imageNode.setClip(updateClipShape(image.getClipShape(), initialBounds, null));
         }
 
         // handle children
@@ -650,11 +655,17 @@ final class KGERenderingControllerHelper {
         }
 
         // create a standard default node controller
-        return new PNodeController<PNode>(imageNode) {
+        return new PNodeController<KlighdImage>(imageNode) {
+
             @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                NodeUtil.applySmartBounds(getNode(), bounds);
+                NodeUtil.applyBounds(this, bounds);
+                
+                final KRendering clip = image.getClipShape();
+                if (clip != null) {
+                    updateClipShape(image.getClipShape(), bounds, getNode().getClip());
+                }
             }
         };
     }
@@ -670,7 +681,8 @@ final class KGERenderingControllerHelper {
      *            the computed bounds of the image to be drawn on the diagram
      * @return the desired clip denoting {@link Shape}
      */
-    private static Shape createClipShape(final KRendering rendering, final Bounds imageBounds) {
+    private static Shape updateClipShape(final KRendering rendering, final Bounds imageBounds,
+            final RectangularShape currentClip) {
         // resolve the KRendering (if 'rendering' is a KRenderingRef)
         final KRendering clipRendering = KRenderingUtil.dereference(rendering);
         
@@ -696,7 +708,10 @@ final class KGERenderingControllerHelper {
         // now build up the clip shape based on the revealed KRendering's type
         final Shape clipShape;
 
-        if (clipRendering instanceof KRectangle) {
+        if (currentClip != null) {
+            return bounds.setBoundsOf(currentClip);
+
+        } else if (clipRendering instanceof KRectangle) {
             clipShape = bounds.toRectangle2D();
 
         } else if (clipRendering instanceof KEllipse) {
@@ -780,8 +795,7 @@ final class KGERenderingControllerHelper {
             @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                getNode().setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
-                NodeUtil.applyTranslation(getNode(), bounds.getX(), bounds.getY());
+                NodeUtil.applyBounds(this, bounds);
             }
         };
     }
@@ -797,12 +811,13 @@ final class KGERenderingControllerHelper {
      */
     static PNodeController<?> createDummy(final PNode parent, final Bounds initialBounds) {
         final PNode dummyChild = new PEmptyNode();
-        NodeUtil.applySmartBounds(dummyChild, initialBounds);
+        NodeUtil.applyBounds(dummyChild, initialBounds);
         parent.addChild(dummyChild);
         return new PNodeController<PNode>(dummyChild) {
+
             @Override
             public void setBounds(final Bounds bounds) {
-                NodeUtil.applySmartBounds(dummyChild, bounds);
+                NodeUtil.applyBounds(this, bounds);
             }
         };
     }

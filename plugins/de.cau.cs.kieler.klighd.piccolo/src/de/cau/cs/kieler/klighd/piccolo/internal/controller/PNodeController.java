@@ -191,7 +191,7 @@ public abstract class PNodeController<T extends PNode> {
 
     private static final KPosition CENTER = new Function<Void, KPosition>() {
         public KPosition apply(final Void v) {
-            KPosition res = KRenderingFactory.eINSTANCE.createKPosition();
+            final KPosition res = KRenderingFactory.eINSTANCE.createKPosition();
             res.setX(KRenderingFactory.eINSTANCE.createKLeftPosition());
             res.getX().setRelative(0.5f);       // SUPPRESS CHECKSTYLE MagicNumber
             res.setY(KRenderingFactory.eINSTANCE.createKTopPosition());
@@ -217,7 +217,7 @@ public abstract class PNodeController<T extends PNode> {
             return;
         }
         
-        KPosition theAnchor = anchor != null ? anchor : CENTER;
+        final KPosition theAnchor = anchor != null ? anchor : CENTER;
         
         Point2D point;
         if (prevRotationAnchor.equals(theAnchor)) {
@@ -241,6 +241,16 @@ public abstract class PNodeController<T extends PNode> {
         prevRotation = rotation;
         prevRotationAnchor = theAnchor;
         prevRotationPoint = point;
+    }
+
+    /**
+     * Re-applies the last rotation to the controlled {@link #getNode() node}.<br>
+     * This method is just for internal use and not to be called by application code.
+     */
+    public void applyRotation() {
+        final float rotation = prevRotation;
+        prevRotation = 0;
+        setRotation(rotation, prevRotationAnchor);
     }
 
     /**
@@ -358,8 +368,8 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply foreground coloring
         if (styles.foreground != null) {
-            KColor color = styles.foreground.getColor();
-            KColor targetColor = styles.foreground.getTargetColor();
+            final KColor color = styles.foreground.getColor();
+            final KColor targetColor = styles.foreground.getTargetColor();
             if (targetColor != null && color != null) {
                 this.setForegroundGradient(toRGBGradient(styles.foreground));
             } else if (color != null) {
@@ -374,8 +384,8 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply background coloring
         if (styles.background != null) {
-            KColor color = styles.background.getColor();
-            KColor targetColor = styles.background.getTargetColor();
+            final KColor color = styles.background.getColor();
+            final KColor targetColor = styles.background.getTargetColor();
 
             if (targetColor != null && color != null) {
                 this.setBackgroundGradient(toRGBGradient(styles.background));
@@ -535,9 +545,9 @@ public abstract class PNodeController<T extends PNode> {
             return null;
         }
         
-        int red = color.getRed() < maxValue ? color.getRed() : maxValue;
-        int green = color.getGreen() < maxValue ? color.getGreen() : maxValue;
-        int blue = color.getBlue() < maxValue ? color.getBlue() : maxValue;
+        final int red = color.getRed() < maxValue ? color.getRed() : maxValue;
+        final int green = color.getGreen() < maxValue ? color.getGreen() : maxValue;
+        final int blue = color.getBlue() < maxValue ? color.getBlue() : maxValue;
         
         return new RGB(red, green, blue);
     }

@@ -47,12 +47,15 @@ public class KNodeTopNode extends KDisposingLayer implements INode {
      * 
      * @param node
      *            the KNode
+     * @param edgesFirst
+     *            determining whether edges are drawn before nodes, i.e. nodes have priority over
+     *            edges
      */
-    public KNodeTopNode(final KNode node) {
+    public KNodeTopNode(final KNode node, final boolean edgesFirst) {
         this.setPickable(true);        
         this.node = node;
-        
-        childArea = new KChildAreaNode(this);
+
+        childArea = new KChildAreaNode(this, edgesFirst);
         childArea.setPickable(true);
         childArea.setClip(false);
         
@@ -92,7 +95,7 @@ public class KNodeTopNode extends KDisposingLayer implements INode {
      */
     public void setRenderingController(
             final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
-        String s = "KLighD: Invalid access occured: invoking setRenderingController()"
+        final String s = "KLighD: Invalid access occured: invoking setRenderingController()"
                 + "is not allowed for KNodeTopNodes!";
         throw new UnsupportedOperationException(s);
     }
@@ -101,7 +104,7 @@ public class KNodeTopNode extends KDisposingLayer implements INode {
      * {@inheritDoc}
      */
     public AbstractKGERenderingController<KNode, KNodeNode> getRenderingController() {
-        String s = "KLighD: Invalid access occured: calling getRenderingController()"
+        final String s = "KLighD: Invalid access occured: calling getRenderingController()"
                         + "is not allowed for KNodeTopNodes!";
         throw new UnsupportedOperationException(s);
     }
