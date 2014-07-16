@@ -357,6 +357,15 @@ public abstract class PNodeController<T extends PNode> {
      */
     // SUPPRESS CHECKSTYLE NEXT Length
     public void applyChanges(final Styles styles) {
+
+        // apply rotation first since it should be applied even if the node is not visible
+        //  (application of other styles will be skipped in that case - see below)
+        if (styles.rotation != null) {
+            this.setRotation(styles.rotation.getRotation(), styles.rotation.getRotationAnchor());
+        } else {
+            this.setRotation(0, null);
+        }
+
         // apply invisibility
         if (styles.invisibility != null) {
             this.setInvisible(styles.invisibility.isInvisible());
@@ -438,13 +447,6 @@ public abstract class PNodeController<T extends PNode> {
         } else {
             this.setLineJoin(LineJoin.get(0), (Float) KRenderingPackage.eINSTANCE
                     .getKLineJoin_MiterLimit().getDefaultValue());
-        }
-
-        // apply rotation
-        if (styles.rotation != null) {
-            this.setRotation(styles.rotation.getRotation(), styles.rotation.getRotationAnchor());
-        } else {
-            this.setRotation(0, null);
         }
 
         // apply shadow
