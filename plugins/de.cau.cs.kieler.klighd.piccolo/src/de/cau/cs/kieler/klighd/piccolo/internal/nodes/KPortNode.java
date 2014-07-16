@@ -14,9 +14,14 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * The Piccolo2D node for representing a {link KPort}.
@@ -95,5 +100,28 @@ public class KPortNode extends PEmptyNode implements ILabeledGraphElement<KPort>
             //  so the following is justified
             super.addChild(0, child);
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paint(final PPaintContext paintContext) {
+        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        KlighdSemanticDiagramData sd =
+                getGraphElement().getData(KLayoutData.class).getProperty(
+                        KlighdProperties.SEMANTIC_DATA);
+        g2.startGroup(sd);
+        super.paint(paintContext);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintAfterChildren(final PPaintContext paintContext) {
+        super.paintAfterChildren(paintContext);
+        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        g2.endGroup();
     }
 }

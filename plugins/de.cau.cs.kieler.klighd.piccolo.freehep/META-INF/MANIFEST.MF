@@ -7,9 +7,9 @@ Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Fragment-Host: de.cau.cs.kieler.klighd.piccolo;bundle-version="0.5.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
- lib/freehep-graphics2d-2.1.1.jar,
- lib/freehep-graphicsio-2.1.1.jar,
- lib/freehep-graphicsio-svg-2.1.1.jar,
- lib/freehep-io-2.0.2.jar,
- lib/freehep-util-2.0.2.jar,
- lib/freehep-xml-2.1.1.jar
+ lib/freehep-graphics2d-2.3.jar,
+ lib/freehep-graphicsbase-2.3.jar,
+ lib/freehep-graphicsio-2.3.jar,
+ lib/freehep-graphicsio-svg-2.3.jar,
+ lib/freehep-graphicsio-tests-2.3.jar,
+ lib/freehep-io-2.2.2.jar

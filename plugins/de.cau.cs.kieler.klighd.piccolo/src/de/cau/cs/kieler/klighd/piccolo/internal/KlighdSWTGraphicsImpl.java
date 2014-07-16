@@ -64,6 +64,7 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolox.swt.SWTShapeManager;
 
@@ -1154,5 +1155,18 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             final int dy2, final int sx1, final int sy1, final int sx2, final int sy2,
             final java.awt.Color bgcolor, final ImageObserver observer) {
         throw new UnsupportedOperationException();
+    }
+    
+    /* --------------------- Semantic Data ---------------------*/
+    
+    // CHECKSTYLEOFF Javadoc
+    // unsupported for the SWT graphics
+    public void addSemanticData(KlighdSemanticDiagramData semanticData) {
+    }
+
+    public void startGroup(KlighdSemanticDiagramData semanticData) {
+    }
+
+    public void endGroup() {
     }
 }

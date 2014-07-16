@@ -23,12 +23,15 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Strings;
 
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PText;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -377,6 +380,9 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
             graphics.setFont(KlighdConstants.DEFAULT_FONT);
         }
 
+        KRendering rendering =
+                (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
+        graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
         graphics.drawText(text);
         
         graphics.setAlpha(currentAlpha);

@@ -14,8 +14,13 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
+import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * The Piccolo node for representing a {@code KLabel}.
@@ -94,5 +99,28 @@ public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
      */
     public String getText() {
         return text;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paint(final PPaintContext paintContext) {
+        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        KlighdSemanticDiagramData sd =
+                getGraphElement().getData(KLayoutData.class).getProperty(
+                        KlighdProperties.SEMANTIC_DATA);
+        g2.startGroup(sd);
+        super.paint(paintContext);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintAfterChildren(final PPaintContext paintContext) {
+        super.paintAfterChildren(paintContext);
+        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        g2.endGroup();
     }
 }

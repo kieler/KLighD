@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import java.awt.geom.RectangularShape;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
@@ -644,7 +645,7 @@ final class KGERenderingControllerHelper {
         parent.addChild(imageNode);
 
         if (image.getClipShape() != null) {
-            imageNode.setClip(createClipShape(image.getClipShape(), initialBounds));
+            imageNode.setClip(updateClipShape(image.getClipShape(), initialBounds, null));
         }
 
         // handle children
@@ -654,12 +655,17 @@ final class KGERenderingControllerHelper {
         }
 
         // create a standard default node controller
-        return new PNodeController<PNode>(imageNode) {
+        return new PNodeController<KlighdImage>(imageNode) {
 
             @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 NodeUtil.applyBounds(this, bounds);
+                
+                final KRendering clip = image.getClipShape();
+                if (clip != null) {
+                    updateClipShape(image.getClipShape(), bounds, getNode().getClip());
+                }
             }
         };
     }
@@ -675,7 +681,8 @@ final class KGERenderingControllerHelper {
      *            the computed bounds of the image to be drawn on the diagram
      * @return the desired clip denoting {@link Shape}
      */
-    private static Shape createClipShape(final KRendering rendering, final Bounds imageBounds) {
+    private static Shape updateClipShape(final KRendering rendering, final Bounds imageBounds,
+            final RectangularShape currentClip) {
         // resolve the KRendering (if 'rendering' is a KRenderingRef)
         final KRendering clipRendering = KRenderingUtil.dereference(rendering);
         
@@ -701,7 +708,10 @@ final class KGERenderingControllerHelper {
         // now build up the clip shape based on the revealed KRendering's type
         final Shape clipShape;
 
-        if (clipRendering instanceof KRectangle) {
+        if (currentClip != null) {
+            return bounds.setBoundsOf(currentClip);
+
+        } else if (clipRendering instanceof KRectangle) {
             clipShape = bounds.toRectangle2D();
 
         } else if (clipRendering instanceof KEllipse) {

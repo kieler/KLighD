@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2013 by
+ * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -23,6 +23,7 @@ import org.freehep.graphicsbase.util.UserProperties;
 import org.freehep.graphicsio.svg.SVGGraphics2D;
 
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
  * Wrapper for the FreeHEP {@link SVGGraphics2D} class.
@@ -32,10 +33,10 @@ import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
  * @see <a href="http://java.freehep.org/vectorgraphics/">
  *      http://java.freehep.org/vectorgraphics/</a>
  */
-public class FreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
+public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
 
     private ByteArrayOutputStream baos;
-    private SVGGraphics2D graphicsDelegate;
+    private SemanticSVGGraphics2D graphicsDelegate;
 
     private Rectangle2D bounds;
     private boolean textAsShapes;
@@ -49,7 +50,7 @@ public class FreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      * @param embedFonts
      *            whether the texts' fonts shall be embedded in the output
      */
-    public FreeHEPSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes,
+    public SemanticFreeHEPSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes,
             final Boolean embedFonts) {
         super(null);
         this.bounds = bounds;
@@ -63,7 +64,7 @@ public class FreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
         baos = new ByteArrayOutputStream();
 
         // create graphics object
-        graphicsDelegate = new SVGGraphics2D(baos, new Dimension(
+        graphicsDelegate = new SemanticSVGGraphics2D(baos, new Dimension(
                 (int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight())));
 
         // some settings
@@ -112,5 +113,29 @@ public class FreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
         graphicsDelegate.endExport();
 
         baos.writeTo(out);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addSemanticData(KlighdSemanticDiagramData semanticData) {
+        graphicsDelegate.addSemanticData(semanticData);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void startGroup(KlighdSemanticDiagramData semanticData) {
+        graphicsDelegate.startGroup(semanticData);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void endGroup() {
+        graphicsDelegate.endGroup();
     }
 }

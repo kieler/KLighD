@@ -130,7 +130,8 @@ public final class NodeUtil {
     }
 
     /**
-     * Applies the bounds to the given node using the node's translation and its bounds.
+     * (Re-)Applies the translation (x,y) and size (w, h) given in <code>bounds</code> and last
+     * rotation configuration to the node controller by <code>controller</code>.
      * 
      * @param controller
      *            the {@link PNodeController}
@@ -144,7 +145,8 @@ public final class NodeUtil {
     }
 
     /**
-     * Applies the translation to the given node.
+     * (Re-)Applies the translation (x,y) given in <code>bounds</code> and last rotation
+     * configuration to the node controller by <code>controller</code>.
      * 
      * @param controller
      *            the {@link PNodeController}

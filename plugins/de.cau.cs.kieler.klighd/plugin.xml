@@ -21,6 +21,10 @@
             class="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy"
             id="de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy">
       </updateStrategy>
+      <styleModifier
+            class="de.cau.cs.kieler.klighd.modifiers.PortRotationModifier"
+            id="de.cau.cs.kieler.klighd.modifiers.PortRotationModifier">
+      </styleModifier>
       <action
             class="de.cau.cs.kieler.klighd.actions.CollapseExpandAction"
             id="de.cau.cs.kieler.klighd.actions.CollapseExpandAction">

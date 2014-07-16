@@ -32,11 +32,14 @@ import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.collect.Maps;
 
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -578,6 +581,22 @@ public class KlighdPath extends PNode implements IResourceEmployer {
         final int currentAlpha = graphics.getAlpha();
         final float currentAlphaFloat = currentAlpha;
 
+        
+        // We attach semantic data favored to the foreground element
+        // however, if no foreground exists, we attach it to the background
+        // FIXME not working for rendering refs
+        final boolean drawForeground = (lineAttributes.width != 0f)
+                        && (strokePaint != null || strokePaintGradient != null);
+        final boolean drawBackground = !isLine() && (paint != null || paintGradient != null);
+
+        final KRendering rendering =
+                (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
+        
+        // if not even a background is painted, don't attach the semantic data at all
+        if (!drawForeground && drawBackground) {
+            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+        }
+        
         // draw the background if possible and required
         if (!isLine()) {
             if (swt && shapePath == null && (paint != null || paintGradient != null)) {
@@ -603,6 +622,10 @@ public class KlighdPath extends PNode implements IResourceEmployer {
                     graphics.fill(shape);
                 }
             }
+        }
+
+        if (drawForeground) {
+            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
         }
 
         // draw the foreground if required

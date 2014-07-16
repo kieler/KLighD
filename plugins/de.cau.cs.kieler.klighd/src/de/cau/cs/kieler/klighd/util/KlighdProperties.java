@@ -168,6 +168,17 @@ public final class KlighdProperties {
      * The property holds a tooltip that is displayed upon a mouse hover of the respective element.
      */
     public static final IProperty<String> TOOLTIP = new Property<String>("klighd.tooltip", null);
+    
+    /**
+     * A map of string/string pairs that will be added to the generated rendering. Note that not all
+     * rendering mechanisms support this feature. 
+     * An example would be to add 'id' elements to svg elements.
+     * 
+     * @see KlighdConstants#SEMANTIC_DATA_ID
+     * @see KlighdConstants#SEMANTIC_DATA_CLASS
+     */
+    public static final IProperty<KlighdSemanticDiagramData> SEMANTIC_DATA =
+            new Property<KlighdSemanticDiagramData>("klighd.semanticData", null);
 
     /**
      * Property for globally determining whether edges should be drawn before nodes, leading to

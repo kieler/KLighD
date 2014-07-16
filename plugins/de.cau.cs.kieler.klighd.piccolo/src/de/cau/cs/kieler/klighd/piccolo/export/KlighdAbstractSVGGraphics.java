@@ -63,6 +63,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
  * Common superclass for SVG generators using a {@link Graphics2D} to produce svg images.
@@ -844,5 +845,15 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     @Override
     public void dispose() {
         throw new UnsupportedOperationException();
+    }
+    
+    // CHECKSTYLEOFF Javadoc
+    public void addSemanticData(KlighdSemanticDiagramData semanticData) {
+    }
+
+    public void startGroup(KlighdSemanticDiagramData semanticData) {
+    }
+
+    public void endGroup() {
     }
 }

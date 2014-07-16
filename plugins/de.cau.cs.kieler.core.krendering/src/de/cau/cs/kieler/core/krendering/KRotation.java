@@ -20,7 +20,7 @@ package de.cau.cs.kieler.core.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * rotates element clockwise around the top left point of a parent rendering
+ * Specifies the (clockwise) rotation of the corresponding {@link KRendering}.
  * <!-- end-model-doc -->
  *
  * <p>
@@ -40,11 +40,10 @@ public interface KRotation extends KStyle {
      * Returns the value of the '<em><b>Rotation</b></em>' attribute.
      * The default value is <code>"0.0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Rotation</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Determines the rotation angle value in degrees.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Rotation</em>' attribute.
      * @see #setRotation(float)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRotation_Rotation()
@@ -66,11 +65,11 @@ public interface KRotation extends KStyle {
     /**
      * Returns the value of the '<em><b>Rotation Anchor</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Rotation Anchor</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Determines the rotation anchor wrt. the bounds of the corresponding {@link KRendering};
+     * may be <code>null</code>, the center position will be used in that case.
+     * <!-- end-model-doc -->
      * @return the value of the '<em>Rotation Anchor</em>' containment reference.
      * @see #setRotationAnchor(KPosition)
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKRotation_RotationAnchor()

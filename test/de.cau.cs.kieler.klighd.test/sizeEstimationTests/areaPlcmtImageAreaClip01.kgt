@@ -1,0 +1,23 @@
+knode {
+    properties:
+    klighd.testing.expected.^width = "462.5"
+    klighd.testing.expected.^height = "733"
+    
+    krectangle {        
+        krectangle {
+            areaData:
+            topLeftAnchor = left 20, top 10
+            bottomRightAnchor = right 20, bottom 10 
+    
+            kimage (de.cau.cs.kieler.core.^kgraph:"model/kgraph.png"
+                clipShape krectangle {
+                    areaData: topLeftAnchor = left 30%, top bottomRightAnchor = left 70%, bottom
+                }
+            ) {
+               areaData:
+                    topLeftAnchor = left -317.5, top
+                    bottomRightAnchor = left 740, top 713
+            }
+        }
+    }
+}

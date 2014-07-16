@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
@@ -26,7 +27,9 @@ import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
  * This interface defines methods to be used by custom {@link edu.umd.cs.piccolo.PNode PNode}
@@ -372,4 +375,38 @@ public interface KlighdSWTGraphics {
      *            the text to be drawn on the canvas
      */
     void drawText(final String string);
+    
+    
+    /* --------------------- Semantic Data ---------------------*/
+    
+    /**
+     * If supported, start a new group and add the passed semantic data to the group.
+     * 
+     * For instance, for an SVG exporter, create a new group and add the semantic data as
+     * attributes. {@code <g class="node">}.
+     * 
+     * The method must be used in conjunction with {@link #endGroup()}.
+     * 
+     * @param semanticData
+     *            the semantic data to be added.
+     */
+    void startGroup(final KlighdSemanticDiagramData semanticData);
+    
+    /**
+     * If supported, finish a previously opened group (see
+     * {@link #startGroup(KlighdSemanticDiagramData)}).
+     */
+    void endGroup();
+    
+    /**
+     * If supported, add the passed semantic data to the <b>next</b> element that is drawn by any
+     * paint method.
+     * 
+     * For example for an SVG exporter, if {@link #draw(Path)} is called next, create a
+     * {@code <path>} element with the specified semantic data as attributes.
+     * 
+     * @param semanticData
+     *            the semantic data to be added.
+     */
+    void addSemanticData(final KlighdSemanticDiagramData semanticData);
 }

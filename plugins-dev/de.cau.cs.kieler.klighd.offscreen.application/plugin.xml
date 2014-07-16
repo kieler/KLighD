@@ -13,5 +13,17 @@
          </run>
       </application>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="de.cau.cs.kieler.klighd.offscreen.application.OffscreenDiagramRenderer"
+            name="offRen">
+         <property
+               name="appName"
+               value="offRen">
+         </property>
+      </product>
+   </extension>
 
 </plugin>
