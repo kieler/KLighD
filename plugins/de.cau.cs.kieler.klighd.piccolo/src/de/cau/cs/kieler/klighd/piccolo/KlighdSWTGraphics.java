@@ -379,9 +379,34 @@ public interface KlighdSWTGraphics {
     
     /* --------------------- Semantic Data ---------------------*/
     
+    /**
+     * If supported, start a new group and add the passed semantic data to the group.
+     * 
+     * For instance, for an SVG exporter, create a new group and add the semantic data as
+     * attributes. {@code <g class="node">}.
+     * 
+     * The method must be used in conjunction with {@link #endGroup()}.
+     * 
+     * @param semanticData
+     *            the semantic data to be added.
+     */
     void startGroup(final KlighdSemanticDiagramData semanticData);
     
+    /**
+     * If supported, finish a previously opened group (see
+     * {@link #startGroup(KlighdSemanticDiagramData)}).
+     */
     void endGroup();
     
+    /**
+     * If supported, add the passed semantic data to the <b>next</b> element that is drawn by any
+     * paint method.
+     * 
+     * For example for an SVG exporter, if {@link #draw(Path)} is called next, create a
+     * {@code <path>} element with the specified semantic data as attributes.
+     * 
+     * @param semanticData
+     *            the semantic data to be added.
+     */
     void addSemanticData(final KlighdSemanticDiagramData semanticData);
 }
