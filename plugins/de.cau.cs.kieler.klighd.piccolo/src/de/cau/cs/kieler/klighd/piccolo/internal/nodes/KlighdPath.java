@@ -624,7 +624,7 @@ public class KlighdPath extends PNode implements IResourceEmployer {
             }
         }
 
-        if (drawForeground) {
+        if (rendering != null && drawForeground) {
             graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
         }
 
@@ -866,7 +866,7 @@ public class KlighdPath extends PNode implements IResourceEmployer {
         this.isRoundedBendsPolyline = true;
         this.linePoints = points;
         this.setShape(
-                PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius));
+            PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius, this));
     }
 
 

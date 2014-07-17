@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
@@ -71,7 +70,7 @@ public final class PolylineUtil {
      */
     public static Path2D createPolygonPath(final Path2D thePath, final int[] points) {
 
-        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        final Path2D path = thePath != null ? thePath : new Path2D.Float();
         
         path.reset();
         path.moveTo(points[0], points[1]);
@@ -96,7 +95,7 @@ public final class PolylineUtil {
      */
     public static Path2D createPolygonPath(final Path2D thePath, final Point2D[] points) {
 
-        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        final Path2D path = thePath != null ? thePath : new Path2D.Float();
         
         path.reset();
         path.moveTo(points[0].getX(), points[0].getY());
@@ -121,7 +120,7 @@ public final class PolylineUtil {
      */
     public static Path2D createPolylinePath(final Path2D thePath, final int[] points) {
 
-        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        final Path2D path = thePath != null ? thePath : new Path2D.Float();
         
         path.reset();
         path.moveTo(points[0], points[1]);
@@ -145,7 +144,7 @@ public final class PolylineUtil {
      */
     public static Path2D createPolylinePath(final Path2D thePath, final Point2D[] points) {
 
-        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        final Path2D path = thePath != null ? thePath : new Path2D.Float();
         
         path.reset();
         path.moveTo((float) points[0].getX(), (float) points[0].getY());
@@ -169,10 +168,10 @@ public final class PolylineUtil {
      */
     public static Path2D createSplinePath(final Path2D thePath, final Point2D[] points) {
 
-        Path2D path = thePath != null ? thePath : new Path2D.Float();
+        final Path2D path = thePath != null ? thePath : new Path2D.Float();
         
         path.reset();
-        int size = points.length;
+        final int size = points.length;
         
         if (size < 1) {
             return path; // nothing to do
@@ -218,9 +217,9 @@ public final class PolylineUtil {
      */
     public static Point2D[] createSplineApproximationPath(final Path2D path) {
         
-        float[] coords = new float[2];
-        ArrayList<Point2D> approxPoints2 = Lists.newArrayList();
-        PathIterator pi = path.getPathIterator(null, MAX_APPROX_DISTANCE);
+        final float[] coords = new float[2];
+        final ArrayList<Point2D> approxPoints2 = Lists.newArrayList();
+        final PathIterator pi = path.getPathIterator(null, MAX_APPROX_DISTANCE);
 
         while (!pi.isDone()) {
             pi.currentSegment(coords);
@@ -247,8 +246,31 @@ public final class PolylineUtil {
     public static Path2D createRoundedBendsPolylinePath(final Path2D thePath, final Point2D[] points,
             final float bendRadius) {
         
-        Path2D path = thePath != null ? thePath : new Path2D.Float();
-        createRoundedBendPoints(path, points, bendRadius, null);
+        return createRoundedBendsPolylinePath(thePath, points, bendRadius, null);
+    }
+
+    /**
+     * Resets the given <code>thePath</code> and adds the required segments for drawing a rounded
+     * bends polyline. If <code>thePath</code> is <code>null</code> a new path object is created.<br>
+     * <code>pathNode</code> is required to be unequal to <code>null</code> only if debug
+     * visualizations of the bend points' control points are to be added to the diagram.
+     * 
+     * @param thePath
+     *            the path object to put the segments into, may be <code>null</code>
+     * @param points
+     *            an array of AWT Geometry {@link Point2D Point2Ds}
+     * @param bendRadius
+     *            the bend curve radius as determined in the KRendering description
+     * @param pathNode
+     *            the KlighdPath to attach the debugging visualization points, may be
+     *            <code>null</code> if no debugging information is required
+     * @return the path object containing the required segments
+     */
+    public static Path2D createRoundedBendsPolylinePath(final Path2D thePath, final Point2D[] points,
+            final float bendRadius, final KlighdPath pathNode) {
+        
+        final Path2D path = thePath != null ? thePath : new Path2D.Float();
+        createRoundedBendPoints(path, points, bendRadius, pathNode);
         return path;
     }
 
@@ -285,8 +307,8 @@ public final class PolylineUtil {
         // for all of the bend points (not start and end point)...
         for (int i = 1; i < points.length - 1; i++) {
 
-            double dx = points[i + 1].getX() - points[i].getX();
-            double dy = points[i + 1].getY() - points[i].getY();
+            final double dx = points[i + 1].getX() - points[i].getX();
+            final double dy = points[i + 1].getY() - points[i].getY();
 
             // examine whether two bend points (this one and the next one) are located within a
             // distance of less than twice the radius, and there is still one more point available
@@ -295,7 +317,7 @@ public final class PolylineUtil {
                     && Math.abs(dy) < 2 * bendRadius) {
 
                 // if so, apply the short distance approximation
-                double[] cPoints = PolylineUtil.getShortDistanceApproximationPoints(points[i - 1],
+                final double[] cPoints = PolylineUtil.getShortDistanceApproximationPoints(points[i - 1],
                         points[i], points[i + 1], points[i + 2]);
 
                 // draw a straight line to the start of the curve
@@ -319,7 +341,7 @@ public final class PolylineUtil {
             } else {
                 
                 // determine the curve points for the rounded arc
-                double[] cPoints = PolylineUtil.getRoundedBendControlPoints(points[i - 1],
+                final double[] cPoints = PolylineUtil.getRoundedBendControlPoints(points[i - 1],
                         points[i], points[i + 1], bendRadius);
 
                 // draw a straight line to the start of the curve
@@ -377,7 +399,7 @@ public final class PolylineUtil {
             final Point2D p0, final Point2D p1, final Point2D p2,
             final double bendRadius) {
         
-        double[] result = new double[8];
+        final double[] result = new double[8];
         
         final double px1 = p1.getX();
         final double py1 = p1.getY();
@@ -387,8 +409,8 @@ public final class PolylineUtil {
         final double dy2 = p2.getY() - py1;
         
         // caution: the angles are given in range of [-pi/2, pi/2) (or maybe (-pi/2, pi/2] ...)
-        double angle1 = Math.atan(dy1 / dx1);
-        double angle2 = Math.atan(dy2 / dx2);
+        final double angle1 = Math.atan(dy1 / dx1);
+        final double angle2 = Math.atan(dy2 / dx2);
 
         if (dx1 < 0) {
             result[0] = px1 + bendRadius * Math.cos(angle1);
@@ -462,21 +484,21 @@ public final class PolylineUtil {
      */
     public static void visualizeRoundedBendControlPoints(final KlighdPath path,
             final double px, final double py, final double[] cPoints) {
-        KlighdPath e = KlighdPaths.createEllipse((float) px, (float) py, 2, 2);
+        final KlighdPath e = KlighdPaths.createEllipse((float) px, (float) py, 2, 2);
         path.addChild(e);
-        KlighdPath a = KlighdPaths.createEllipse((float) cPoints[0], (float) cPoints[1],
+        final KlighdPath a = KlighdPaths.createEllipse((float) cPoints[0], (float) cPoints[1],
                 2, 2);
         a.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_RED).getRGB());
         path.addChild(a);
-        KlighdPath b = KlighdPaths.createEllipse((float) cPoints[2], (float) cPoints[3],
+        final KlighdPath b = KlighdPaths.createEllipse((float) cPoints[2], (float) cPoints[3],
                 2, 2);
         b.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_GREEN).getRGB());
         path.addChild(b);
-        KlighdPath c = KlighdPaths.createEllipse((float) cPoints[4], (float) cPoints[5],
+        final KlighdPath c = KlighdPaths.createEllipse((float) cPoints[4], (float) cPoints[5],
                 2, 2);
         c.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_BLUE).getRGB());
         path.addChild(c);
-        KlighdPath d = KlighdPaths.createEllipse((float) cPoints[6], (float) cPoints[7],
+        final KlighdPath d = KlighdPaths.createEllipse((float) cPoints[6], (float) cPoints[7],
                 2, 2);
         d.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW).getRGB());
         path.addChild(d);
@@ -515,7 +537,7 @@ public final class PolylineUtil {
      */
     public static double[] getShortDistanceApproximationPoints(final Point2D p0, final Point2D p1,
             final Point2D p2, final Point2D p3) {
-        double[] result = new double[8];
+        final double[] result = new double[8];
         
         final double px0 = p0.getX();
         final double py0 = p0.getY();
@@ -526,19 +548,19 @@ public final class PolylineUtil {
         final double px3 = p3.getX();
         final double py3 = p3.getY();
 
-        double dx1 = px1 - px0;
-        double dy1 = py1 - py0;
-        double dx2 = px2 - px1;
-        double dy2 = py2 - py1;
-        double dx3 = px3 - px2;
-        double dy3 = py3 - py2;
+        final double dx1 = px1 - px0;
+        final double dy1 = py1 - py0;
+        final double dx2 = px2 - px1;
+        final double dy2 = py2 - py1;
+        final double dx3 = px3 - px2;
+        final double dy3 = py3 - py2;
 
         // Pythagorean theorem
-        double radius = Math.sqrt(dx2 * dx2 + dy2 * dy2) / 2d;
+        final double radius = Math.sqrt(dx2 * dx2 + dy2 * dy2) / 2d;
 
         // caution: the angles are given in range of [-pi/2, pi/2) (or maybe (-pi/2, pi/2] ...)
-        double angle1 = Math.atan(dy1 / dx1);
-        double angle3 = Math.atan(dy3 / dx3);
+        final double angle1 = Math.atan(dy1 / dx1);
+        final double angle3 = Math.atan(dy3 / dx3);
 
         if (dx1 < 0) {
             result[0] = px1 + radius * Math.cos(angle1);
@@ -598,19 +620,19 @@ public final class PolylineUtil {
      */
     public static void visualizeShortDistanceApproximationPoints(final KlighdPath path,
             final double[] cPoints) {
-        KlighdPath a = KlighdPaths.createEllipse((float) cPoints[0], (float) cPoints[1],
+        final KlighdPath a = KlighdPaths.createEllipse((float) cPoints[0], (float) cPoints[1],
                 2, 2);
         a.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_RED).getRGB());
         path.addChild(a);
-        KlighdPath b = KlighdPaths.createEllipse((float) cPoints[2], (float) cPoints[3],
+        final KlighdPath b = KlighdPaths.createEllipse((float) cPoints[2], (float) cPoints[3],
                 2, 2);
         b.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_GREEN).getRGB());
         path.addChild(b);
-        KlighdPath c = KlighdPaths.createEllipse((float) cPoints[4], (float) cPoints[5],
+        final KlighdPath c = KlighdPaths.createEllipse((float) cPoints[4], (float) cPoints[5],
                 2, 2);
         c.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_BLUE).getRGB());
         path.addChild(c);
-        KlighdPath d = KlighdPaths.createEllipse((float) cPoints[6], (float) cPoints[7],
+        final KlighdPath d = KlighdPaths.createEllipse((float) cPoints[6], (float) cPoints[7],
                 2, 2);
         d.setStrokeColor(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW).getRGB());
         path.addChild(d);
