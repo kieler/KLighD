@@ -380,9 +380,11 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
             graphics.setFont(KlighdConstants.DEFAULT_FONT);
         }
 
-        KRendering rendering =
+        final KRendering rendering =
                 (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
-        graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+        if (rendering != null) {
+            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+        }
         graphics.drawText(text);
         
         graphics.setAlpha(currentAlpha);
