@@ -21,7 +21,6 @@ import org.eclipse.ui.PlatformUI;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -40,6 +39,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PInputEventListener;
 
@@ -93,21 +93,32 @@ public class KlighdActionEventHandler implements PInputEventListener {
             return;
         }
 
-        KRendering rendering = (KRendering) inputEvent.getPickedNode().getAttribute(
-                AbstractKGERenderingController.ATTR_KRENDERING);
+        final PNode pickedNode = inputEvent.getPickedNode();
+
+        KRendering rendering =
+                (KRendering) pickedNode.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
 
         if (rendering == null) {
-            // in case no KRendering has been found,
-            //  check whether the top node has been picked
+            // in case no KRendering has been found ...
 
-            if (inputEvent.getPickedNode() instanceof KNodeTopNode) {
+            // ... check whether a KNode's representative has been picked,
+            //  which happens if a click or double click occurred on the canvas, for example 
+            if (pickedNode instanceof INode) {
+                final INode iNode = (INode) pickedNode;
 
-                // if so reveal the represented KNode and check for a dummy KRendering element
-                //  which might contain KActions...
-                final KNode node = ((INode) inputEvent.getPickedNode()).getGraphElement();
+                // if so test whether the diagram's top node has been picked ...
+                if (pickedNode instanceof KNodeTopNode) {
+                    // and if so reveal the represented KNode and look for a dummy KRendering element
+                    //  that might contain KActions
+                    rendering = iNode.getGraphElement().getData(KRendering.class);
 
-                if (node != null) {
-                    rendering = node.getData(KRendering.class);
+                } else {
+                    // Otherwise we assume that a nested KNode's representative has been picked,
+                    //  which may happen if the diagram has been clipped to that particular KNode.
+                    
+                    // in that case ask the associated KGE rendering controller for the currently
+                    //  displayed KRendering
+                    rendering = iNode.getRenderingController().getCurrentRenderingReference();
                 }
 
                 if (rendering == null) {
