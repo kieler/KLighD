@@ -74,7 +74,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decora
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
@@ -186,45 +185,45 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
-     * Determines and returns the rendering currently managed by this controller.<br>
+     * Determines and returns the {@link KRendering} currently managed by <code>this</code>
+     * controller.<br>
      * As a side effect this method puts the returned rendering into the 'currentRendering' field.
      * 
-     * @return the rendering
+     * @return the (potentially) updated {@link KRendering} managed by <code>this</code> controller
      */
     public KRendering getCurrentRendering() {
         if (this.element instanceof KNode) {
             final Iterable<KRendering> renderings =
                     Iterables.filter(element.getData(), KRendering.class);
-            
-//            // in case the node to be depicted has no children (yet - might be added lazily)
-//            // look for a rendering marked as 'collapsed' one,
-//            //  and if none exists simply take the first one
-//            if (((KNode) element).getChildren().isEmpty()) {   
-//                currentRendering = Iterables.getFirst(
-//                        Iterables.filter(renderings, IS_COLLAPSED_RENDERING),
-//                        Iterables.getFirst(renderings, null));
-//            } else
-                
-            // in case the node to be depicted has children and is populated,
-            //  i.e. children are depicted in the diagram
-            // look for a rendering marked as 'expanded' one,
-            //  and if none exists take the first one that is not marked as 'collapsed' one
+
+            // in case the node to be depicted is tagged as 'populated',
+            //  i.e. children are depicted in the diagram ...
             if (RenderingContextData.get(this.element).getProperty(
                     KlighdInternalProperties.POPULATED)) {
+                // ... look for a rendering tagged as 'expanded', ...
                 currentRendering = Iterables.getFirst(
-                        Iterables.filter(renderings, IS_EXPANDED_RENDERING),
-                        Iterables.getFirst(Iterables.filter(renderings,
-                                Predicates.not(IS_COLLAPSED_RENDERING)), null));
+                        Iterables.filter(renderings, KlighdPredicates.isExpandedRendering()), null);
 
-            // in case the node to be depicted has children and is not populated,
-            //  i.e. no children are visible in the diagram
-            // look for a rendering marked as 'collapsed' one,
-            //  and if none exists take the first one that is not marked as 'expanded' one
+                // ... and if none exists ...
+                if (currentRendering == null) {
+                    // ... take the first one that is not marked as 'collapsed' one
+                    Iterables.getFirst(Iterables.filter(renderings,
+                            Predicates.not(KlighdPredicates.isCollapsedRendering())), null);
+                }
+
             } else {
+                // in case the node to be depicted is tagged as 'not populated',
+                //  i.e. no children are visible in the diagram
+                // look for a rendering marked as 'collapsed' one, ...
                 currentRendering = Iterables.getFirst(
-                        Iterables.filter(renderings, IS_COLLAPSED_RENDERING),
-                        Iterables.getFirst(Iterables.filter(renderings,
-                                Predicates.not(IS_EXPANDED_RENDERING)), null));
+                        Iterables.filter(renderings, KlighdPredicates.isCollapsedRendering()), null);
+
+                // ... and if none exists ...
+                if (currentRendering == null) {
+                    // ... take the first one that is not marked as 'expanded' one
+                    Iterables.getFirst(Iterables.filter(renderings,
+                            Predicates.not(KlighdPredicates.isExpandedRendering())), null);
+                }
             }
 
         } else {
@@ -236,6 +235,16 @@ public abstract class AbstractKGERenderingController
         }
         
         return currentRendering;
+    }
+
+    /**
+     * Returns the {@link KRendering} currently managed by <code>this</code> controller without any
+     * side effect.
+     * 
+     * @return the {@link KRendering} currently managed by <code>this</code> controller
+     */
+    public KRendering getCurrentRenderingReference() {
+        return this.currentRendering;
     }
 
     /**
@@ -295,28 +304,6 @@ public abstract class AbstractKGERenderingController
     // ---------------------------------------------------------------------------------- //
     //  internal part
     
-    /**
-     * A predicate used to identify the KRendering of a KNode in case the node is collapsed.
-     * This predicate is also used by the {@link DiagramController} and thus marked
-     * 'package protected' (no modifier).
-     */
-    static final Predicate<KRendering> IS_COLLAPSED_RENDERING = new Predicate<KRendering>() {
-        public boolean apply(final KRendering rendering) {
-            return rendering.getProperty(KlighdProperties.COLLAPSED_RENDERING);
-        }
-    };
-    
-    /**
-     * A predicate used to identify the KRendering of a KNode in case the node is expanded.
-     * This predicate is also used by the {@link DiagramController} and thus marked
-     * 'package protected' (no modifier).
-     */
-    static final Predicate<KRendering> IS_EXPANDED_RENDERING = new Predicate<KRendering>() {
-        public boolean apply(final KRendering rendering) {
-            return rendering.getProperty(KlighdProperties.EXPANDED_RENDERING);
-        }
-    };
-
     /**
      * Updates the rendering by removing the current rendering and evaluating the rendering data
      * attached to the graph element.

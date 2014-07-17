@@ -619,9 +619,7 @@ public class DiagramController {
                             //  are given the rendering needs to be updated/exchanged after changing the
                             //  expansion state, so ...
                             if (Iterables.any(Iterables.filter(node.getData(), KRendering.class),
-                                    Predicates.or(
-                                            AbstractKGERenderingController.IS_COLLAPSED_RENDERING,
-                                            AbstractKGERenderingController.IS_EXPANDED_RENDERING))) {
+                                    KlighdPredicates.isCollapsedOrExpandedRendering())) {
                                 nodeNode.getRenderingController().updateRenderingInUi();
                             }
                         }

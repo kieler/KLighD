@@ -13,6 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.COLLAPSED_RENDERING;
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.EXPANDED_RENDERING;
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.NOT_SELECTABLE;
+
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -27,8 +31,10 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -96,9 +102,9 @@ public final class KlighdPredicates {
         return new Predicate<S>() {
             public boolean apply(final S node) {
 
-                KLayoutData data = node.getData(KLayoutData.class);
+                final KLayoutData data = node.getData(KLayoutData.class);
                 if (data != null) {
-                    T value = data.getProperty(property);
+                    final T value = data.getProperty(property);
                     if (value != null) {
                         return value.equals(expected);
                     } else {
@@ -119,9 +125,14 @@ public final class KlighdPredicates {
         
         private final EClass kgraphElement = KGraphPackage.eINSTANCE.getKGraphElement();
         private final EClass ktext = KRenderingPackage.eINSTANCE.getKText();
+        
+        private final Predicate<KGraphElement> kgeSelectableTest = propertyPredicate(
+                NOT_SELECTABLE, false, true);
 
         public boolean apply(final EObject input) {
-            return input == null ? false : kgraphElement.isInstance(input) || ktext.isInstance(input);
+            return input == null ? false
+                : (kgraphElement.isInstance(input) && kgeSelectableTest.apply((KGraphElement) input))
+                    || (ktext.isInstance(input) && !((KText) input).getProperty(NOT_SELECTABLE));
         }
     };
     
@@ -149,14 +160,77 @@ public final class KlighdPredicates {
     };
 
     /**
-     * A.
+     * Provides a static predicate for testing a {@link KStyle} for its {@link KStyle#isSelection()
+     * selection flag} set to <code>true</code>.
      * 
-     * @return the dedicated predicate instance (singleton)
+     * @return a static predicate testing the provided {@link KStyle} for its selection flag set to
+     *         <code>true</code>
      */
     public static Predicate<KStyle> isSelection() {
         return IS_SELECTION;
     }
-    
+
+    /**
+     * A predicate for testing a {@link KRendering} (of a {@link KNode}) for being tagged as the
+     * <i>collapsed state</i> rendering definition.
+     */
+    private static final Predicate<KRendering> IS_COLLAPSED_RENDERING = new Predicate<KRendering>() {
+        public boolean apply(final KRendering rendering) {
+            return rendering.getProperty(COLLAPSED_RENDERING);
+        }
+    };
+
+    /**
+     * Provides a static predicate for testing a {@link KRendering} (of a {@link KNode}) for being
+     * tagged as the <i>collapsed state</i> rendering definition.
+     * 
+     * @return a static predicate testing the provided {@link KRendering} for a <i>collapsed
+     *         state<i> tag.
+     */
+    public static Predicate<KRendering> isCollapsedRendering() {
+        return IS_COLLAPSED_RENDERING;
+    }
+
+    /**
+     * A predicate for testing a {@link KRendering} (of a {@link KNode}) for being tagged as the
+     * <i>expanded state</i> rendering definition.
+     */
+    private static final Predicate<KRendering> IS_EXPANDED_RENDERING = new Predicate<KRendering>() {
+        public boolean apply(final KRendering rendering) {
+            return rendering.getProperty(EXPANDED_RENDERING);
+        }
+    };
+
+    /**
+     * Provides a static predicate for testing a {@link KRendering} (of a {@link KNode}) for being
+     * tagged as the <i>expanded state</i> rendering definition.
+     * 
+     * @return a static predicate testing the provided {@link KRendering} for a <i>expanded
+     *         state<i> tag.
+     */
+    public static Predicate<KRendering> isExpandedRendering() {
+        return IS_EXPANDED_RENDERING;
+    }
+
+    /**
+     * A predicate for testing a {@link KRendering} (of a {@link KNode}) for being tagged as the
+     * <i>collapsed</i> or <i>expanded state</i> rendering definition.
+     */
+    private static final Predicate<KRendering> IS_COLLAPSED_OR_EXPANDED_RENDERING = 
+            Predicates.or(IS_COLLAPSED_RENDERING, IS_EXPANDED_RENDERING);
+
+    /**
+     * Provides a static predicate for testing a {@link KRendering} (of a {@link KNode}) for being
+     * explicitly tagged as the <i>collapsed</i> or <i>expanded state</i> rendering definition.<br>
+     * This predicate returns <code>false</code> if no markers are available.
+     * 
+     * @return a static predicate testing the provided {@link KRendering} for a <i>collapsed</i> or
+     *         <i>expanded state<i> tag.
+     */
+    public static Predicate<KRendering> isCollapsedOrExpandedRendering() {
+        return IS_COLLAPSED_OR_EXPANDED_RENDERING;
+    }
+
     /**
      * An abbreviation of {@link Predicates#not(Predicate) Predicates.not}(
      * {@link Predicates#in(Collection) Predicates.in}(...)).
