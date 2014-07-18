@@ -207,7 +207,7 @@ public abstract class AbstractKGERenderingController
                 // ... and if none exists ...
                 if (currentRendering == null) {
                     // ... take the first one that is not marked as 'collapsed' one
-                    Iterables.getFirst(Iterables.filter(renderings,
+                    currentRendering = Iterables.getFirst(Iterables.filter(renderings,
                             Predicates.not(KlighdPredicates.isCollapsedRendering())), null);
                 }
 
@@ -221,7 +221,7 @@ public abstract class AbstractKGERenderingController
                 // ... and if none exists ...
                 if (currentRendering == null) {
                     // ... take the first one that is not marked as 'expanded' one
-                    Iterables.getFirst(Iterables.filter(renderings,
+                    currentRendering = Iterables.getFirst(Iterables.filter(renderings,
                             Predicates.not(KlighdPredicates.isExpandedRendering())), null);
                 }
             }
