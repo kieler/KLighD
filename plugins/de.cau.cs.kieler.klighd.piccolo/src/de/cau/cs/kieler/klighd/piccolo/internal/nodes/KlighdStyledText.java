@@ -23,13 +23,11 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Strings;
 
-import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
@@ -364,7 +362,7 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
 
         graphics.setUnderline(underlining, underlineColor);
         graphics.setStrikeout(strikeout, strikeoutColor);
-        
+
         if (this.penColor != null) {
             graphics.setAlpha(
                     (int) (penAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
@@ -373,20 +371,19 @@ public class KlighdStyledText extends PNode implements ITracingElement<KText> {
         } else {
             graphics.setStrokeColor(KlighdConstants.BLACK);
         }
-        
+
         if (fontData != null) {
             graphics.setFont(fontData);
         } else {
             graphics.setFont(KlighdConstants.DEFAULT_FONT);
         }
 
-        final KRendering rendering =
-                (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
-        if (rendering != null) {
-            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+        if (kText != null) {
+            graphics.addSemanticData(kText.getProperty(KlighdProperties.SEMANTIC_DATA));
         }
+
         graphics.drawText(text);
-        
+
         graphics.setAlpha(currentAlpha);
     }
 }
