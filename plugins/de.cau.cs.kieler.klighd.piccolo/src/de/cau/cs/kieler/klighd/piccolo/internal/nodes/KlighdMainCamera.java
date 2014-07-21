@@ -15,10 +15,15 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.AffineTransform;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * This specialized {@link PCamera} type describes the diagram root cameras.<br>
@@ -108,7 +113,7 @@ public class KlighdMainCamera extends PCamera {
      */
     public void exchangeDisplayedNode(final PLayer node) {
         
-        final PNode prevNode = (PNode) this.getLayer(0);
+        final PNode prevNode = this.getLayer(0);
         
         if (prevNode == node) {
             return;
@@ -129,5 +134,25 @@ public class KlighdMainCamera extends PCamera {
 
         this.getViewTransformReference().concatenate(t);
         this.addLayer(0, node);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void fullPaint(final PPaintContext paintContext) {
+        try {
+            // In case the following call fails the SWT components employed in
+            //  PSWCanvas#paintComponent(...) may end up in an inconsistent state.
+            // Hence, this try catch block is added here in order to let (at least)
+            //  this#fullPaint(...) return properly. 
+            super.fullPaint(paintContext);
+
+        } catch (final Throwable t) {
+            final String msg = "KLighD (MainCamera): Drawing diagram failed due to exception: ";
+            KlighdPiccoloPlugin.getDefault().getLog()
+                    .log(new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, t));
+        }
     }
 }
