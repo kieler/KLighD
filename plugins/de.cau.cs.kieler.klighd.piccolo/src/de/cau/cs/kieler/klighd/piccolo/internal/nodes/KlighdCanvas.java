@@ -229,6 +229,8 @@ public class KlighdCanvas extends PSWTCanvas {
         }
     }
 
+    private boolean resize = false;
+
     @Override
     public void setBounds(final int x, final int y, final int newWidth, final int newHeight) {
         // extracted the following check from the super implementation
@@ -238,8 +240,24 @@ public class KlighdCanvas extends PSWTCanvas {
             //  and/or height of zero that results in an exception later on. 
             return;
         } else {
+            final PBounds bounds = getCamera().getBoundsReference();
+            resize = bounds.width != newWidth || bounds.height != newHeight;
+
             super.setBounds(x, y, newWidth, newHeight);
         }
+    }
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * In contrast to the super method this specialized method forces a back buffer recreation even
+     * if the canvas size has been decreased, e.g., after a KLighD diagram view as been maximized
+     * and "re-normalized". Otherwise the oversized back buffer image will be kept until the diagram
+     * is closed.
+     */
+    @Override
+    protected boolean backBufferNeedsResizing(final int newWidth, final int newHeight) {
+        return resize && getDoubleBuffered();
     }
 
     @Override
