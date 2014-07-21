@@ -95,7 +95,13 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
 
         this.childAreaCamera = new PCamera();
 
-        this.childAreaCamera.setPickable(true);
+        // the childAreaCamera is set unpickable because it would disturb the "click on canvas"
+        //  feature in case the diagram is clipped to this kNodeNode
+        // without the pickable setting this kNodeNode will be picked in the clipping case,
+        //  see #fullPick(...) below and KlighdActionEventHandler, l.105ff
+        this.childAreaCamera.setPickable(false);
+        this.childAreaCamera.setChildrenPickable(true);
+
         this.childAreaCamera.setVisible(false);
         this.childAreaCamera.addLayer(this.childArea);
 
@@ -286,6 +292,10 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
     public boolean fullPick(final PPickPath pickPath) {
         final boolean fullPick = super.fullPick(pickPath);
         
+        // in case the diagram is clipped to this kNodeNode (isRootLayer == true)
+        //  and the user clicked outside the bounds of this (expanded) kNodeNode
+        //  the above call would return 'false', which is not intended in that case
+        // instead we want this kNodeNode be the picked node anyway so, ...
         if (!fullPick && isRootLayer) {
             pickPath.pushNode(this);
             pickPath.pushTransform(getTransform());
@@ -364,8 +374,8 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        KlighdSemanticDiagramData sd =
+        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        final KlighdSemanticDiagramData sd =
                 getGraphElement().getData(KLayoutData.class).getProperty(
                         KlighdProperties.SEMANTIC_DATA);
         g2.startGroup(sd);
@@ -378,7 +388,7 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
     @Override
     protected void paintAfterChildren(final PPaintContext paintContext) {
         super.paintAfterChildren(paintContext);
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         g2.endGroup();
     }
     
