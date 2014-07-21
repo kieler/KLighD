@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
@@ -216,6 +217,14 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     }
 
     /**
+     * Static predicate definition avoiding the recurring creation and disposal of instances of the
+     * filter predicate.
+     */
+    private static final Predicate<KNode> NODE_FILTER = Predicates.and(
+            RenderingContextData.IS_ACTIVE,
+            KlighdPredicates.kgePropertyPredicate(LayoutOptions.NO_LAYOUT, false, true));
+
+    /**
      * Processes all child nodes of the given parent node.
      * 
      * @param mapping
@@ -229,11 +238,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             final KNode parent, final KNode layoutParent) {
         // iterate through the parent's active children and put copies in the layout graph;
         //  a child is active if it contains RenderingContextData and the 'true' value wrt.
-        //  the property KlighdConstants.ACTIVE, see the predicate definition below
+        //  the property KlighdConstants.ACTIVE, see the predicate definition above
         // furthermore, all nodes that have the LAYOUT_IGNORE property set are ignored
-        for (KNode node : Iterables.filter(parent.getChildren(), Predicates.and(
-                RenderingContextData.IS_ACTIVE,
-                KlighdPredicates.propertyPredicate(LayoutOptions.NO_LAYOUT, false, true)))) {
+        for (KNode node : Iterables.filter(parent.getChildren(), NODE_FILTER)) {
             createNode(mapping, node, layoutParent);
         }
     }

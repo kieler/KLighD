@@ -36,6 +36,7 @@ import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 
@@ -83,6 +84,41 @@ public final class KlighdPredicates {
 
     /**
      * @param <S>
+     *            The actual type of the {@link IPropertyHolder} whose property <code>property</code>
+     *            is to be examined. This parameter is required to infer the most precise return type
+     *            in case a method call is part of a varArgs method parameter.
+     * @param <T>
+     *            The type of the properties value.
+     * @param property
+     *            the property to check
+     * @param expected
+     *            the expected value
+     * @param unsetEqualsTrue
+     *            if set to true, the predicate evaluates to true if the property is not set.
+     * @return a {@link Predicate} that tests if the specified property equals the expected value.
+     *         If the property is not set, the predicate evaluates to false.
+     */
+    public static <S extends IPropertyHolder, T> Predicate<S> propertyPredicate(
+            final IProperty<T> property, final T expected, final boolean unsetEqualsTrue) {
+        return new Predicate<S>() {
+            public boolean apply(final S properties) {
+
+                if (properties != null) {
+                    final T value = properties.getProperty(property);
+                    if (value != null) {
+                        return value.equals(expected);
+                    } else {
+                        return unsetEqualsTrue;
+                    }
+                }
+
+                return false;
+            }
+        };
+    }
+
+    /**
+     * @param <S>
      *            The actual type of the {@link KGraphElement} whose property <code>property</code>
      *            is to be examined. This parameter is required to infer the most precise return type
      *            in case a method call is part of a varArgs method parameter.
@@ -97,7 +133,7 @@ public final class KlighdPredicates {
      * @return a {@link Predicate} that tests if the specified property equals the expected value.
      *         If the property is not set, the predicate evaluates to false.
      */
-    public static <S extends KGraphElement, T> Predicate<S> propertyPredicate(
+    public static <S extends KGraphElement, T> Predicate<S> kgePropertyPredicate(
             final IProperty<T> property, final T expected, final boolean unsetEqualsTrue) {
         return new Predicate<S>() {
             public boolean apply(final S node) {
@@ -126,7 +162,7 @@ public final class KlighdPredicates {
         private final EClass kgraphElement = KGraphPackage.eINSTANCE.getKGraphElement();
         private final EClass ktext = KRenderingPackage.eINSTANCE.getKText();
         
-        private final Predicate<KGraphElement> kgeSelectableTest = propertyPredicate(
+        private final Predicate<KGraphElement> kgeSelectableTest = kgePropertyPredicate(
                 NOT_SELECTABLE, false, true);
 
         public boolean apply(final EObject input) {
