@@ -27,7 +27,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * 
  * @author mri
  */
-public class KLabelNode extends PEmptyNode implements IGraphElement<KLabel> {
+public class KLabelNode extends KlighdNode implements IGraphElement<KLabel> {
 
     private static final long serialVersionUID = -3999806360081871118L;
 

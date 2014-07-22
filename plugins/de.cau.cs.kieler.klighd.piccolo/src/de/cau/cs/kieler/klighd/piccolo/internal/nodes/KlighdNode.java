@@ -2,7 +2,7 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * Copyright 2011 by
+ * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -15,19 +15,27 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * The base class for nodes with no visual representation besides child nodes.
+ * Common base class of KLighD-specific {@link PNode PNodes}.
  * 
- * @author mri, chsch
+ * @author chsch
  */
-public class PEmptyNode extends PNode {
+public class KlighdNode extends PNode {
 
-    private static final long serialVersionUID = 6335184700871752958L;
+    private static final long serialVersionUID = 6876586117083105843L;
 
     /**
      * Constructor.
      */
-    public PEmptyNode() {
+    public KlighdNode() {
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean getPickable() {
+        return super.getPickable() && !getOccluded();
     }
 
     /**
@@ -37,5 +45,4 @@ public class PEmptyNode extends PNode {
     protected void paint(final PPaintContext paintContext) {
         // do nothing
     }
-    
 }

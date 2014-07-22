@@ -30,13 +30,12 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PText;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * The KLighD-specific {@link PNode} implementation for displaying text strings supporting
- * {@link org.eclipse.swt.graphics.TextStyle TextStyles}.<br>
+ * The KLighD-specific {@link edu.umd.cs.piccolo.PNode PNode} implementation for displaying text
+ * strings supporting {@link org.eclipse.swt.graphics.TextStyle TextStyles}.<br>
  * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTText PSWTText} and is
  * tailored/extended to those features required by KLighD.<br>
  * <br>
@@ -45,16 +44,18 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * <br>
  * <b>Note:</b> All <code>invalidate...</code> and <code>repaint</code> calls are deactivated in
  * order to avoid superfluous repaint activities. The repaint events are fired by
- * {@link #addChild(PNode)}/{@link #removeChild(PNode)} in case of rendering changes, by
- * {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of pure
- * style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} rendering
- * controllers ({@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController
- * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and style
- * changes are performed.
+ * {@link #addChild(edu.umd.cs.piccolo.PNode) addChild(PNode)}/
+ * {@link #removeChild(edu.umd.cs.piccolo.PNode) removeChild(PNode)} in case of rendering changes,
+ * by {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of
+ * pure style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}
+ * rendering controllers ({@link
+ * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController #updateStyles()
+ * AbstractKGERenderingController#updateStyles()}) after all rendering and style changes are
+ * performed.
  * 
  * @author chsch
  */
-public class KlighdStyledText extends PNode implements ITracingElement<KText> {
+public class KlighdStyledText extends KlighdNode implements ITracingElement<KText> {
 
     private static final long serialVersionUID = -4463204146476543138L;
 

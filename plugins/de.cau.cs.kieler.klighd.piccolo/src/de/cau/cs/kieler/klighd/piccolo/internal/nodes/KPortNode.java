@@ -29,7 +29,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class KPortNode extends PEmptyNode implements ILabeledGraphElement<KPort> {
+public class KPortNode extends KlighdNode implements ILabeledGraphElement<KPort> {
 
     private static final long serialVersionUID = 6016725932024647084L;
 

@@ -31,7 +31,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author mri
  */
-public class PAlignmentNode extends PEmptyNode implements PropertyChangeListener {
+public class PAlignmentNode extends KlighdNode implements PropertyChangeListener {
 
     private static final long serialVersionUID = -2514462331029707306L;
 

@@ -38,25 +38,26 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * A special {@link PNode} for integrating images in KLighD diagrams. The implementation is inspired
- * by that of {@link edu.umd.cs.piccolox.swt.PSWTImage}, some major differences wrt. design
- * requirements led to this new implementation. These differences involve the non-dependency to any
- * specific canvas implementation as well as to {@link org.eclipse.swt.widgets.Display Display}
- * being a specific {@link org.eclipse.swt.graphics.Device Device}.<br>
+ * A special {@link edu.umd.cs.piccolo.PNode PNode} for integrating images in KLighD diagrams. The
+ * implementation is inspired by that of {@link edu.umd.cs.piccolox.swt.PSWTImage}, some major
+ * differences wrt. design requirements led to this new implementation. These differences involve
+ * the non-dependency to any specific canvas implementation as well as to
+ * {@link org.eclipse.swt.widgets.Display Display} being a specific
+ * {@link org.eclipse.swt.graphics.Device Device}.<br>
  * <br>
  * In contrast to {@link edu.umd.cs.piccolox.swt.PSWTImage} the bounds of nodes of this type are not
  * set while setting the image object to be displayed. Doing so results in flickering, at least
  * while drawing diagrams without animation. Instead the bounds are set top down by KlighD, see
  * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.KGERenderingControllerHelper#createImage(
  * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController,
- * de.cau.cs.kieler.core.krendering.KImage, java.util.List, PNode,
- * de.cau.cs.kieler.klighd.microlayout.Bounds) KGERenderingControllerHelper#createImage(...)}.<br>
+ * de.cau.cs.kieler.core.krendering.KImage, java.util.List, edu.umd.cs.piccolo.PNode,
+ * de.cau.cs.kieler.klighd.microlayout.Bounds)
+ * KGERenderingControllerHelper#createImage(...)}.<br>
  * <br>
  * If the amount of instances of {@link Image} created while drawing diagrams, e.g. such with lots
  * of copies of the same icon will lead to performance/memory issues, one might introduce a further
@@ -69,7 +70,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public class KlighdImage extends PNode implements IResourceEmployer {
+public class KlighdImage extends KlighdNode implements IResourceEmployer {
 
     private static final long serialVersionUID = 7201328608113593385L;
     
@@ -95,7 +96,8 @@ public class KlighdImage extends PNode implements IResourceEmployer {
      * Common private constructor.
      */
     private KlighdImage() {
-        this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+        // this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+        super();
     }
 
     /**
@@ -326,7 +328,7 @@ public class KlighdImage extends PNode implements IResourceEmployer {
                 graphics.clip(clip);
             }
 
-            KRendering rendering =
+            final KRendering rendering =
                     (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
             graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
             

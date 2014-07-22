@@ -40,20 +40,20 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResou
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * The KLighD-specific {@link PNode} implementation for displaying primitive figures.<br>
+ * The KLighD-specific {@link edu.umd.cs.piccolo.PNode PNode} implementation for displaying
+ * primitive figures.<br>
  * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTPath PSWTPath} and is
  * tailored/extended to those features required by KLighD.<br>
  * <br>
  * {@link KlighdPath} instances require a {@link KlighdSWTGraphics} while drawing (i.e. in
  * {@link #paint(PPaintContext)}). In case the available implementation provides an SWT
- * {@link Device} SWT {@link Path} objects are created and drawn, and disposed if they got out-dated.
- * Otherwise the internally used AWT {@link Shape Shapes} are used for drawing.<br>
+ * {@link Device} SWT {@link Path} objects are created and drawn, and disposed if they got
+ * out-dated. Otherwise the internally used AWT {@link Shape Shapes} are used for drawing.<br>
  * <br>
  * The stroke lines of closed figures like rectangles, ellipses, and arcs (although arcs are usually
  * not closed), i.e. those whose size is determined by a rectangular bounding box, do not violate
@@ -65,16 +65,18 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * <br>
  * <b>Note:</b> All <code>invalidate...</code> and <code>repaint</code> calls are deactivated in
  * order to avoid superfluous repaint activities. The repaint events are fired by
- * {@link #addChild(PNode)}/{@link #removeChild(PNode)} in case of rendering changes, by
- * {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of pure
- * style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} rendering
- * controllers ({@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController
- * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and style changes
- * are performed.
+ * {@link #addChild(edu.umd.cs.piccolo.PNode) addChild(PNode)}/
+ * {@link #removeChild(edu.umd.cs.piccolo.PNode) removeChild(PNode)} in case of rendering changes,
+ * by {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of
+ * pure style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}
+ * rendering controllers ({@link
+ * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController #updateStyles()
+ * AbstractKGERenderingController#updateStyles()}) after all rendering and style changes are
+ * performed.
  * 
  * @author chsch, mri
  */
-public class KlighdPath extends PNode implements IResourceEmployer {
+public class KlighdPath extends KlighdNode implements IResourceEmployer {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
@@ -127,7 +129,9 @@ public class KlighdPath extends PNode implements IResourceEmployer {
      * Creates an empty {@link KlighdPath}.
      */
     public KlighdPath() {
-        this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+        // this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+        super();
+        
         // reacting on event of PROPERTY_BOUNDS seems to be not necessary as that will lead to
         //  a call of one of the 'setPathTo...' methods below that in turn will lead to a call of
         //  'updateShape', which calls 'disposeSWTResource', too!

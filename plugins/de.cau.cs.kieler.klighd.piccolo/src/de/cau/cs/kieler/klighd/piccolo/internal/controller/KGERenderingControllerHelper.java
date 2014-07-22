@@ -16,8 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.RectangularShape;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.List;
 
@@ -59,13 +57,13 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNod
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PEmptyNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
@@ -392,19 +390,21 @@ final class KGERenderingControllerHelper {
 
             // handle children without decorator placement data if any
             if (restChildren.size() > 0) {
+                // chsch: Why is that proxy node needed. Don't see the point... 
+                // 
                 // create a proxy parent for the children without decorator placement data
-                final PNode proxyParent = new PEmptyNode();
-                path.addChild(proxyParent);
-                NodeUtil.applyBounds(proxyParent, path.getBoundsReference());
-                controller.addListener(PNode.PROPERTY_BOUNDS, path, proxyParent,
-                        new PropertyChangeListener() {
-                            public void propertyChange(final PropertyChangeEvent arg0) {
-                                NodeUtil.applyBounds(proxyParent, path.getBoundsReference());
-                            }
-                        });
+                // final PNode proxyParent = new KlighdNode();
+                // path.addChild(proxyParent);
+                // NodeUtil.applyBounds(proxyParent, path.getBoundsReference());
+                // controller.addListener(PNode.PROPERTY_BOUNDS, path, proxyParent,
+                //        new PropertyChangeListener() {
+                //            public void propertyChange(final PropertyChangeEvent arg0) {
+                //                NodeUtil.applyBounds(proxyParent, path.getBoundsReference());
+                //            }
+                //        });
 
                 controller.handleChildren(restChildren, line.getChildPlacement(), propagatedStyles,
-                        proxyParent);
+                        path); //proxyParent);
             }
         }
 
@@ -810,7 +810,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<?> createDummy(final PNode parent, final Bounds initialBounds) {
-        final PNode dummyChild = new PEmptyNode();
+        final PNode dummyChild = new KlighdNode();
         NodeUtil.applyBounds(dummyChild, initialBounds);
         parent.addChild(dummyChild);
         return new PNodeController<PNode>(dummyChild) {

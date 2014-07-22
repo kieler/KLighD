@@ -23,7 +23,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author mri
  */
-public class PChildRepresentedNode extends PEmptyNode {
+public class PChildRepresentedNode extends KlighdNode {
 
     private static final long serialVersionUID = -2199744336722936653L;
 
