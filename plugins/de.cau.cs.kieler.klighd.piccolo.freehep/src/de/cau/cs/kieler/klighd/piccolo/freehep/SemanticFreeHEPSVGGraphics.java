@@ -55,6 +55,9 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
         super(null);
         this.bounds = bounds;
         this.textAsShapes = textAsShapes;
+        if (!textAsShapes) {
+            this.setCanHandleMultiline(true);
+        }
         this.embedFonts = embedFonts.booleanValue();
 
         init();
