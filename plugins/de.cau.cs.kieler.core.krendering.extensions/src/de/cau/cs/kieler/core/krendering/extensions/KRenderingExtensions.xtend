@@ -292,6 +292,9 @@ class KRenderingExtensions {
     
     def <T extends KRendering> T setStyleRef(T rendering, KStyleHolder styleHolder) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KStyleRef)).toList);
+        if (styleHolder == null) {
+            return rendering;
+        }
         return rendering => [
             it.styles += createKStyleRef() => [
                 it.styleHolder = styleHolder;
@@ -301,6 +304,9 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setSelectionStyleRef(T rendering, KStyleHolder styleHolder) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KStyleRef)).toList);
+        if (styleHolder == null) {
+            return rendering;
+        }
         return rendering => [
             it.styles += createKStyleRef() => [
                 it.selection = true;
@@ -310,6 +316,9 @@ class KRenderingExtensions {
     }
  
     def <T extends KRendering> T addStyleRef(T rendering, KStyleHolder styleHolder) {
+        if (styleHolder == null) {
+            return rendering;
+        }
         return rendering => [
             it.styles += createKStyleRef() => [
                 it.styleHolder = styleHolder;
@@ -318,6 +327,9 @@ class KRenderingExtensions {
     }
  
     def <T extends KRendering> T addSelectionStyleRef(T rendering, KStyleHolder styleHolder) {
+        if (styleHolder == null) {
+            return rendering;
+        }
         return rendering => [
             it.styles += createKStyleRef() => [
                 it.selection = true;
