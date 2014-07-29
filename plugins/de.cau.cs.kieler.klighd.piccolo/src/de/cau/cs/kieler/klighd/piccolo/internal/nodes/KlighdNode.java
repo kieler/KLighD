@@ -187,10 +187,13 @@ public class KlighdNode extends PNode {
          */
         public void setRendering(final T rendering) {
             this.rendering = rendering;
-            this.lowerScaleBound = rendering.getProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND)
-                    .floatValue();
-            this.upperScaleBound = rendering.getProperty(KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND)
-                    .floatValue();
+            
+            if (rendering != null) {
+                this.lowerScaleBound = rendering.getProperty(
+                        KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
+                this.upperScaleBound = rendering.getProperty(
+                        KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND).floatValue();
+            }
         }
 
         /**
