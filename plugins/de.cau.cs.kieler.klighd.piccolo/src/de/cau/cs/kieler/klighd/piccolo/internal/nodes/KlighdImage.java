@@ -31,13 +31,12 @@ import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -70,7 +69,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public class KlighdImage extends KlighdNode implements IResourceEmployer {
+public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements IResourceEmployer {
 
     private static final long serialVersionUID = 7201328608113593385L;
     
@@ -96,7 +95,6 @@ public class KlighdImage extends KlighdNode implements IResourceEmployer {
      * Common private constructor.
      */
     private KlighdImage() {
-        // this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
         super();
     }
 
@@ -311,8 +309,14 @@ public class KlighdImage extends KlighdNode implements IResourceEmployer {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
-        final PBounds b = getBoundsReference();
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        // first test whether this figure shall be drawn at all
+        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+            return;
+        }
+
+        final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
 
         if (image != null && imageData == null) {
             // if this KlighdImage has been initialized with an Image object
@@ -323,17 +327,16 @@ public class KlighdImage extends KlighdNode implements IResourceEmployer {
         if (imageData != null) {
             final boolean setClip = clip != null;
             final Shape prevClip = graphics.getClip();
-            
+
             if (setClip) {
                 graphics.clip(clip);
             }
 
-            final KRendering rendering =
-                    (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
-            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
-            
+            addSemanticData(kpc);
+
             // we here rely on the imageData as the graphics layer is supposed to create
             //  appropriate platform specific images and dispose them properly
+            final PBounds b = getBoundsReference();
             graphics.drawImage(imageData, b.width, b.height);
 
             if (setClip) {

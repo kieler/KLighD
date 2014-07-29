@@ -109,7 +109,7 @@ final class KGERenderingControllerHelper {
 
         final KlighdPath path = KlighdPaths.createEllipse(0, 0, initialBounds.getWidth(),
                 initialBounds.getHeight());
-        controller.initializeRenderingNode(path);
+        controller.initializeRenderingNode(path, ellipse);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
 
@@ -155,7 +155,7 @@ final class KGERenderingControllerHelper {
         // create the rectangle
         final KlighdPath path = KlighdPaths.createRectangle(0, 0, initialBounds.getWidth(),
                 initialBounds.getHeight());
-        controller.initializeRenderingNode(path);
+        controller.initializeRenderingNode(path, rect);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
 
@@ -204,7 +204,7 @@ final class KGERenderingControllerHelper {
         // create the rounded rectangle
         final KlighdPath path = KlighdPaths.createRoundRectangle(0, 0, initialBounds.getWidth(),
                 initialBounds.getHeight(), cornerWidth, cornerHeight);
-        controller.initializeRenderingNode(path);
+        controller.initializeRenderingNode(path, rect);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
 
@@ -254,7 +254,7 @@ final class KGERenderingControllerHelper {
                 .getHeight(), arc.getStartAngle(), arc.getArcAngle(), arc.getArcType().getValue());
 
         path.setPaint((RGB) null);
-        controller.initializeRenderingNode(path);
+        controller.initializeRenderingNode(path, arc);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
 
@@ -300,7 +300,7 @@ final class KGERenderingControllerHelper {
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         // create the text
         final KlighdStyledText textNode = new KlighdStyledText(text);
-        controller.initializeRenderingNode(textNode);
+        controller.initializeRenderingNode(textNode, text);
 
         // re-enable the pickability of textNode as
         //  the selection and cursor selection will not work otherwise
@@ -308,7 +308,7 @@ final class KGERenderingControllerHelper {
 
         // create the alignment node wrapping the text
         final PAlignmentNode alignmentNode = new PAlignmentNode();
-        controller.initializeRenderingNode(alignmentNode);
+        controller.initializeRenderingNode(alignmentNode, null);
         alignmentNode.translate(initialBounds.getX(), initialBounds.getY());
         alignmentNode.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
         alignmentNode.addChild(textNode);
@@ -373,7 +373,7 @@ final class KGERenderingControllerHelper {
             path = KlighdPaths.createPolyline(points);
         }
 
-        controller.initializeRenderingNode(path);
+        controller.initializeRenderingNode(path, line);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
 
@@ -457,7 +457,7 @@ final class KGERenderingControllerHelper {
         // create the polygon
         final KlighdPath path = KlighdPaths.createPolygon(PiccoloPlacementUtil
                 .evaluatePolylinePlacement(polygon, initialBounds));
-        controller.initializeRenderingNode(path);
+        controller.initializeRenderingNode(path, polygon);
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
 
@@ -639,7 +639,7 @@ final class KGERenderingControllerHelper {
         }
 
         // initialize the node
-        controller.initializeRenderingNode(imageNode);
+        controller.initializeRenderingNode(imageNode, image);
         imageNode.translate(initialBounds.getX(), initialBounds.getY());
         imageNode.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
         parent.addChild(imageNode);
@@ -779,7 +779,7 @@ final class KGERenderingControllerHelper {
         node.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
 
         // initialize the node
-        controller.initializeRenderingNode(node);
+        controller.initializeRenderingNode(node, customRendering);
         node.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(node);
 

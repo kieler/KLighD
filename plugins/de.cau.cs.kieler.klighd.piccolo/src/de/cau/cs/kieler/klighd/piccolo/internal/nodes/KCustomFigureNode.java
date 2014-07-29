@@ -13,8 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import de.cau.cs.kieler.core.krendering.KCustomRendering;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
-import edu.umd.cs.piccolo.PNode;
 
 /**
  * Abstract class of all Piccolo2D nodes that are supposed to wrap figures of other 2D
@@ -22,7 +22,7 @@ import edu.umd.cs.piccolo.PNode;
  * 
  * @author chsch
  */
-public abstract class KCustomFigureNode extends PNode {
+public abstract class KCustomFigureNode extends KlighdNode.KlighdFigureNode<KCustomRendering> {
 
     private static final long serialVersionUID = -7601315964455163260L;
 
@@ -38,5 +38,4 @@ public abstract class KCustomFigureNode extends PNode {
      *            applied to the actual custom figure
      */
     public abstract void applyStyles(final Styles styles);
-
 }

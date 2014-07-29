@@ -67,6 +67,7 @@ import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
@@ -984,7 +985,6 @@ public abstract class AbstractKGERenderingController
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, decorator,
                 decoration.getBounds());
-        decorator.setRepresentationNode(controller.getNode());
 
         // apply the initial rotation
         decorator.setRotation(decoration.getRotation());
@@ -1105,10 +1105,16 @@ public abstract class AbstractKGERenderingController
     /**
      * Sets default values for the given Piccolo2D node used as representation for a rendering.
      * 
+     * @param <R>
+     *            <code>kRendering</code>'s concrete type
      * @param node
      *            the Piccolo2D node
+     * @param kRendering
+     *            the corresponding {@link KRendering} element
      */
-    protected void initializeRenderingNode(final PNode node) {
+    protected <R extends KRendering> void initializeRenderingNode(final KlighdFigureNode<R> node,
+            final R kRendering) {
+        node.setRendering(kRendering);
         node.setVisible(true);
         node.setPickable(false);
     }

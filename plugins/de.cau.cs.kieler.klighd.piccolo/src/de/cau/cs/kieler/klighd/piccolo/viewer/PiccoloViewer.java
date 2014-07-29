@@ -57,6 +57,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventH
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdShowLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -677,7 +678,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.animateViewToCenterBounds(newBounds, true, 0);
 
         // set up a new paint context and paint the camera
-        final PPaintContext paintContext = new PPaintContext(g2);
+        final KlighdPaintContext paintContext = new KlighdPaintContext(g2, true);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
         camera.fullPaint(paintContext);
         g2.dispose();

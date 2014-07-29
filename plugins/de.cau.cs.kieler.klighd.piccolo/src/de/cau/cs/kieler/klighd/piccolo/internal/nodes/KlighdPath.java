@@ -35,11 +35,10 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResourceEmployer;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -76,7 +75,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * 
  * @author chsch, mri
  */
-public class KlighdPath extends KlighdNode implements IResourceEmployer {
+public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implements IResourceEmployer {
 
     private static final long serialVersionUID = 8034306769936734586L;
 
@@ -568,7 +567,14 @@ public class KlighdPath extends KlighdNode implements IResourceEmployer {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        final KlighdSWTGraphics graphics = (KlighdSWTGraphics) paintContext.getGraphics();
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        // first test whether this figure shall be drawn at all
+        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+            return;
+        }
+
+        final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
         final Device device = graphics.getDevice();
         
         // flag indicating whether we can construct SWT Paths and rely on
@@ -593,12 +599,9 @@ public class KlighdPath extends KlighdNode implements IResourceEmployer {
                         && (strokePaint != null || strokePaintGradient != null);
         final boolean drawBackground = !isLine() && (paint != null || paintGradient != null);
 
-        final KRendering rendering =
-                (KRendering) this.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
-        
         // if not even a background is painted, don't attach the semantic data at all
         if (!drawForeground && drawBackground) {
-            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+            addSemanticData(kpc);
         }
         
         // draw the background if possible and required
@@ -628,8 +631,8 @@ public class KlighdPath extends KlighdNode implements IResourceEmployer {
             }
         }
 
-        if (rendering != null && drawForeground) {
-            graphics.addSemanticData(rendering.getProperty(KlighdProperties.SEMANTIC_DATA));
+        if (drawForeground) {
+            addSemanticData(kpc);
         }
 
         // draw the foreground if required

@@ -28,8 +28,8 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.nodes.PText;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -55,11 +55,9 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * 
  * @author chsch
  */
-public class KlighdStyledText extends KlighdNode implements ITracingElement<KText> {
+public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
 
     private static final long serialVersionUID = -4463204146476543138L;
-
-    private KText kText = null;
 
     private String text = "";
     
@@ -85,7 +83,7 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
      */
     public KlighdStyledText(final KText theKText) {
         this(theKText.getText(), KlighdConstants.DEFAULT_FONT);
-        this.kText = theKText;
+        this.setRendering(theKText);
     }
 
     /**
@@ -129,13 +127,6 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
     public void setText(final String theText) {
         this.text = theText;
         updateBounds();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KText getGraphElement() {
-        return this.kText;
     }
 
     /**
@@ -337,12 +328,19 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
     private static final Rectangle2D BACKGROUND = new Rectangle2D.Double();
 
     @Override
-    public void paint(final PPaintContext ppc) {
+    public void paint(final PPaintContext paintContext) {
         if (Strings.isNullOrEmpty(this.text)) {
             return;
         }
 
-        final KlighdSWTGraphics graphics = (KlighdSWTGraphics) ppc.getGraphics();
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        // first test whether this figure shall be drawn at all
+        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+            return;
+        }
+
+        final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
 
         final int currentAlpha = graphics.getAlpha();
         final float currentAlphaFloat = currentAlpha;
@@ -379,9 +377,7 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
             graphics.setFont(KlighdConstants.DEFAULT_FONT);
         }
 
-        if (kText != null) {
-            graphics.addSemanticData(kText.getProperty(KlighdProperties.SEMANTIC_DATA));
-        }
+        addSemanticData(kpc);
 
         graphics.drawText(text);
 
