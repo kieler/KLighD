@@ -645,7 +645,7 @@ public abstract class AbstractKGERenderingController
         for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
             final PNode node = nodeController.getNode();
             if (node != null) {
-                node.invalidatePaint();
+                node.repaint();
             }
         }
     }
