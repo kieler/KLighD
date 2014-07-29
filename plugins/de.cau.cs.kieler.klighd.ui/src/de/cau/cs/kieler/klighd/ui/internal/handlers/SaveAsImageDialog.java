@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo.TilingInfo;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdDataManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
@@ -61,13 +62,14 @@ import de.cau.cs.kieler.klighd.ui.internal.Messages;
  * 
  * @author mri
  * @author uru
+ * @author csp
  */
 public class SaveAsImageDialog extends Dialog {
 
     /** the default dialog width. */
     private static final int DEFAULT_WIDTH = 500;
     /** the default dialog height. */
-    private static final int DEFAULT_HEIGHT = 300;
+    private static final int DEFAULT_HEIGHT = 330;
 
     /** the preference key for the file path. */
     private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
@@ -86,7 +88,12 @@ public class SaveAsImageDialog extends Dialog {
         = "saveAsImageDialog.textAsShapes"; //$NON-NLS-1$
     /** the preference key for the embed fonts property. */
     private static final String PREFERENCE_EMBED_FONTS 
-        = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
+    = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
+    /** the preference keys for the tiling information. */
+    private static final String PREFERENCE_TILING_IS_MAXSIZE = 
+            "saveAsImageDialog.tilingIsMaxsize"; //$NON-NLS-1$
+    private static final String PREFERENCE_TILING_X = "saveAsImageDialog.tilingX"; //$NON-NLS-1$
+    private static final String PREFERENCE_TILING_Y = "saveAsImageDialog.tilingY"; //$NON-NLS-1$
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -97,6 +104,10 @@ public class SaveAsImageDialog extends Dialog {
     private Button workspacePathCheckbox;
     /** the file format combo. */
     private Combo imageFormatCombo;
+    /** the tiling options button. **/
+    private Button tilingOptionsButton;
+    /** the tiling state label. **/
+    private Label tilingStateLabel;
     /** the camera viewport checkbox. */
     private Button cameraViewportCheckbox;
     /** the camera text as shapes checkbox. */
@@ -122,6 +133,8 @@ public class SaveAsImageDialog extends Dialog {
     private boolean embedFonts;
     /** the selected scaleFactor. */
     private int scaleFactor;
+    /** the tilinginfo. **/
+    private TilingInfo tilingInfo;
 
     /** the list of available export descriptors. */
     private List<ExporterDescriptor> descriptors;
@@ -150,6 +163,17 @@ public class SaveAsImageDialog extends Dialog {
                 return e1.getFileExtension().compareTo(e2.getFileExtension());
             }
         });
+        
+        // get the saved tiling info
+        if (preferenceStore.getBoolean(PREFERENCE_TILING_IS_MAXSIZE)) {
+            tilingInfo =
+                    TilingInfo.createMaxSizeTiledInfo(preferenceStore.getInt(PREFERENCE_TILING_X),
+                            preferenceStore.getInt(PREFERENCE_TILING_Y));
+        } else {
+            tilingInfo =
+                    TilingInfo.createTiledInfo(preferenceStore.getInt(PREFERENCE_TILING_X),
+                            preferenceStore.getInt(PREFERENCE_TILING_Y));
+        }
     }
 
     /**
@@ -158,6 +182,7 @@ public class SaveAsImageDialog extends Dialog {
     @Override
     protected Control createContents(final Composite parent) {
         Control control = super.createContents(parent);
+        updateFileText();
         validateFileText();
         return control;
     }
@@ -239,7 +264,7 @@ public class SaveAsImageDialog extends Dialog {
         });
     }
 
-    private static final int IMAGE_FORMAT_GROUP_COLUMNS = 3;
+    private static final int IMAGE_FORMAT_GROUP_COLUMNS = 4;
     private static final int IMAGE_FORMAT_COMBO_WIDTH_HINT = 210;
     private static final int IMAGE_FORMAT_SLIDER_MAX = 16;
 
@@ -271,13 +296,18 @@ public class SaveAsImageDialog extends Dialog {
             public void widgetSelected(final SelectionEvent e) {
                 updateFileText();
                 validateFileText();
+                tilingOptionsButton.setEnabled(descriptors
+                        .get(imageFormatCombo.getSelectionIndex()).supportsTiling());
             }
         });
-        GridData gridData = new GridData(SWT.NONE);
+        GridData gridData;
+        gridData = new GridData(SWT.NONE);
         gridData.widthHint = IMAGE_FORMAT_COMBO_WIDTH_HINT;
-        gridData.horizontalSpan = 2;
+        gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 1;
         imageFormatCombo.setLayoutData(gridData);
-
+        
+        
+        // scaling options
         label = new Label(composite, SWT.NONE);
         label.setText(Messages.SaveAsImageDialog_scale_factor);
 
@@ -289,6 +319,7 @@ public class SaveAsImageDialog extends Dialog {
 
         gridData = new GridData(SWT.LEFT, SWT.CENTER, true, false);
         gridData.minimumWidth = FILE_TEXT_WIDTH_HINT;
+        gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 2;
         scaleSlider.setLayoutData(gridData);
 
         final Label scaleVal = new Label(composite, SWT.BORDER);
@@ -305,6 +336,42 @@ public class SaveAsImageDialog extends Dialog {
             }
         });
 
+        
+        // tiling options
+        label = new Label(composite, SWT.NONE);
+        label.setText(Messages.SaveAsImageDialog_tiling);
+        
+        tilingStateLabel = new Label(composite, SWT.NONE);
+        
+        updateTilingLabel();
+        
+        tilingOptionsButton = new Button(composite, SWT.PUSH);
+        tilingOptionsButton.setText(Messages.SaveAsImageDialog_tiling_options_caption);
+        
+        gridData = new GridData(SWT.RIGHT, SWT.NONE, false, false);
+        gridData.widthHint = BROWSE_WIDTH_HINT;
+        gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 2;
+        tilingOptionsButton.setLayoutData(gridData);
+        
+        tilingOptionsButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent event) {
+                TilingDialog tilingDialog = new TilingDialog(getParentShell(), tilingInfo);
+                tilingDialog.open();
+                tilingInfo = tilingDialog.getTilingInfo();
+                updateTilingLabel();
+            }
+        });
+    }
+
+    private void updateTilingLabel() {
+        if (tilingInfo.isMaxsize()) {
+            tilingStateLabel.setText(tilingInfo.getMaxWidth() + " px x "
+                    + tilingInfo.getMaxHeight() + " px");
+        } else {
+            tilingStateLabel.setText(tilingInfo.getRows() + " row(s) x " + tilingInfo.getCols()
+                    + " column(s)");
+        }
+        tilingStateLabel.getParent().layout();
     }
 
     private void createOptionsGroup(final Composite parent) {
@@ -587,6 +654,13 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     /**
+     * @return the tilingInfo
+     */
+    public TilingInfo getTilingInfo() {
+        return tilingInfo;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -599,6 +673,14 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
         preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_EMBED_FONTS, embedFontsCheckbox.getSelection());
+        preferenceStore.setValue(PREFERENCE_TILING_IS_MAXSIZE, tilingInfo.isMaxsize());
+        if (tilingInfo.isMaxsize()) {
+            preferenceStore.setValue(PREFERENCE_TILING_X, tilingInfo.getMaxWidth());
+            preferenceStore.setValue(PREFERENCE_TILING_Y, tilingInfo.getMaxHeight());
+        } else {
+            preferenceStore.setValue(PREFERENCE_TILING_X, tilingInfo.getRows());
+            preferenceStore.setValue(PREFERENCE_TILING_Y, tilingInfo.getCols());
+        }
         return super.close();
     }
 

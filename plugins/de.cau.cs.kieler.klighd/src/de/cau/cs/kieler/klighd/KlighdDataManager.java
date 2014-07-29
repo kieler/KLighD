@@ -276,10 +276,12 @@ public final class KlighdDataManager {
                         }
                         String extension = element.getAttribute("extension");
                         String descr = element.getAttribute("description");
+                        boolean supportsTiling =
+                                Boolean.parseBoolean(element.getAttribute("supports_tiling"));
 
                         // create the descriptor
                         ExporterDescriptor descriptor =
-                                new ExporterDescriptor(id, subFormat, descr, extension);
+                                new ExporterDescriptor(id, subFormat, descr, extension, supportsTiling);
                         descriptors.add(descriptor);
 
 //                        // create the exporter class
@@ -625,14 +627,16 @@ public final class KlighdDataManager {
         private String subFormatId;
         private String description;
         private String fileExtension;
+        private boolean supportsTiling;
 
         // CHECKSTYLEOFF javadoc
         public ExporterDescriptor(final String exporterId, final String subFormatId,
-                final String description, final String fileExtension) {
+                final String description, final String fileExtension, final boolean supportsTiling) {
             this.exporterId = exporterId;
             this.subFormatId = subFormatId;
             this.description = description;
             this.fileExtension = fileExtension;
+            this.supportsTiling = supportsTiling;
         }
 
         /**
@@ -661,6 +665,13 @@ public final class KlighdDataManager {
          */
         public String getFileExtension() {
             return fileExtension;
+        }
+
+        /**
+         * @return the supports_tiling
+         */
+        public boolean supportsTiling() {
+            return supportsTiling;
         }
     }
 }

@@ -212,6 +212,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="supports_tiling" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

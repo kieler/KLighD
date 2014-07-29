@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.io.OutputStream;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Control;
@@ -29,9 +30,9 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * a {@link KlighdCanvas}.<br>
  * <br>
  * Thus, it treats the {@link Control} in
- * {@link #export(OutputStream, Control, boolean, int, boolean, boolean, String)} as a
+ * {@link #export(de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo))} as a
  * {@link KlighdCanvas} and redirects to
- * {@link #export(OutputStream, KlighdCanvas, boolean, int, boolean, boolean, String)}, which has to
+ * {@link #export(KlighdExportInfo))}, which has to
  * be implemented by concrete subclasses.
  * 
  * @author chsch
@@ -41,14 +42,10 @@ public abstract class KlighdCanvasExporter extends AbstractDiagramExporter imple
     /**
      * {@inheritDoc}
      */
-    public void export(final OutputStream stream, final Control control,
-            final boolean cameraViewport, final int scale, final boolean textAsShapes,
-            final boolean embedFonts, final String subFormatId) {
+    public void export(final ExportInfo info) {
         
-        final KlighdCanvas canvas;
-        if (control instanceof KlighdCanvas) {
-            canvas = (KlighdCanvas) control;
-            export(stream, canvas, cameraViewport, scale, textAsShapes, embedFonts, subFormatId);
+        if (info.getControl() instanceof KlighdCanvas) {
+            export(KlighdExportInfo.fromExportInfo(info));
         } else {
             final String msg = "";
             StatusManager.getManager().handle(
@@ -65,21 +62,53 @@ public abstract class KlighdCanvasExporter extends AbstractDiagramExporter imple
      * of the {@link IDiagramExporter} interface might support multiple sub formats of the same parent
      * format, e.g., bmp and png are both bitmap formats.
      * 
-     * @param stream
-     *            the output stream
-     * @param canvas
-     *            the visible canvas
-     * @param cameraViewport
-     *            should only the visible area be exported?
-     * @param scale
-     *            should the canvas be scaled before exporting
-     * @param textAsShapes
-     *            whether text in vector graphics should be rendered as shapes
-     * @param embedFonts
-     *            whether the texts' fonts shall be embedded in the output
-     * @param subFormatId
-     *            an id for a certain subformat
+     * @param info
+     *          the specified export info
      */
-    public abstract void export(OutputStream stream, KlighdCanvas canvas, boolean cameraViewport,
-            int scale, boolean textAsShapes, boolean embedFonts, String subFormatId);
+    public abstract void export(KlighdExportInfo info);
+    
+    
+    public static class KlighdExportInfo extends ExportInfo{
+
+        public KlighdExportInfo(final IPath path, final boolean isWorkspacePath,
+                final KlighdCanvas canvas, final boolean cameraViewport, final int scale,
+                final boolean textAsShapes, final boolean embedFonts, final String subFormatId) {
+            super(path, isWorkspacePath, canvas, cameraViewport, scale, textAsShapes, embedFonts,
+                    subFormatId);
+        }
+        
+        public KlighdExportInfo(final OutputStream stream, final KlighdCanvas canvas,
+                final boolean cameraViewport, final int scale, final boolean textAsShapes,
+                final boolean embedFonts, final String subFormatId) {
+            super(stream, canvas, cameraViewport, scale, textAsShapes, embedFonts, subFormatId);
+        }
+        
+        public static KlighdExportInfo fromExportInfo(ExportInfo info) {
+            KlighdExportInfo newInfo;
+            if (info.hasPath()) {
+                newInfo =
+                        new KlighdExportInfo(info.getPath(), info.isWorkspacePath(),
+                                (KlighdCanvas) info.getControl(), info.isCameraViewport(),
+                                info.getScale(), info.isTextAsShapes(), info.isEmbedFonts(),
+                                info.getSubFormatId());
+                newInfo.setTilingInfo(info.getTilingInfo());
+            } else {
+                newInfo =
+                        new KlighdExportInfo(info.getStream(),
+                                (KlighdCanvas) info.getControl(), info.isCameraViewport(),
+                                info.getScale(), info.isTextAsShapes(), info.isEmbedFonts(),
+                                info.getSubFormatId());
+            }
+            return newInfo;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public KlighdCanvas getControl() {
+            return (KlighdCanvas) super.getControl();
+        }
+        
+    }
 }

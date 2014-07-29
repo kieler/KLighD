@@ -14,7 +14,9 @@
 package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IStatus;
@@ -27,11 +29,11 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo.TilingInfo;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -61,67 +63,113 @@ public class BitmapExporter extends KlighdCanvasExporter {
      * {@inheritDoc}
      */
     @Override
-    public void export(final OutputStream stream, final KlighdCanvas canvas,
-            final boolean cameraViewport, final int scale, final boolean textAsShapes,
-            final boolean embedFonts, final String subFormatId) {
+    public void export(final KlighdExportInfo info) {
 
         // reveal the canvas' camera ...
-        final KlighdMainCamera camera = canvas.getCamera();
+        final KlighdMainCamera camera = info.getControl().getCamera();
 
-        // ... an determine the bounds of the diagram to be exported
-        final PBounds bounds = getExportedBounds(camera, cameraViewport);
+        // ... and determine the bounds of the diagram to be exported
+        final PBounds bounds = getExportedBounds(camera, info.isCameraViewport());
 
         // determine the employed image's size
-        final int width = (int) Math.ceil(scale * bounds.width);
-        final int height = (int) Math.ceil(scale * bounds.height);
+        int width = (int) Math.ceil(info.getScale() * bounds.width);
+        int height = (int) Math.ceil(info.getScale() * bounds.height);
 
-        // initialize an SWT Image that serves as the pixel 'canvas'
-        final Image image = new Image(canvas.getDisplay(), width, height);
-        final GC gc = new GC(image);
-
-        // initialize a graphics object that 'collects' all the drawing instructions 
-        final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
-
-        // apply the scale factor to the employed graphics object
-        //  by means of a corresponding affine transform
-        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
-
-        // do the action diagram drawing work
-        drawDiagram(camera, cameraViewport, graphics, bounds); 
-
-        // create an image loader to save the image
-        // although the API differently suggests:
-        //  the ImageData array below must contain exactly 1 element,
-        //   see the implementations of FileFormat.unloadIntoByteStream(ImageLoader) 
-        final ImageLoader loader = new ImageLoader();
-        loader.data = new ImageData[] { image.getImageData() };
-
-        // translate the requested format identifier
-        final int format;
-        if (subFormatId.equals(SUB_FORMAT_JPEG)) {
-            format = SWT.IMAGE_JPEG;
-        } else if (subFormatId.equals(SUB_FORMAT_PNG)) {
-            format = SWT.IMAGE_PNG;
-        } else {
-            // default format is bmp
-            format = SWT.IMAGE_BMP;
+        // if export is tiled, compute resp. receive the needed number of rows and columns
+        int rows = 1, cols = 1;
+        if (info.getTilingInfo().isTiled()) {
+            TilingInfo tilingInfo = info.getTilingInfo();
+            if (tilingInfo.isMaxsize()) {
+                rows = (int) Math.ceil(((double) height) / tilingInfo.getMaxHeight());
+                cols = (int) Math.ceil(((double) width) / tilingInfo.getMaxWidth());
+            } else {
+                rows = tilingInfo.getRows();
+                cols = tilingInfo.getCols();
+            }
+            // adapt the tiling
+            width = (int) Math.ceil(((double) width) / cols);
+            height = (int) Math.ceil(((double) height) / rows);
         }
+        
 
-        // dump out the binary image data via the provided output stream
-        try {
-            loader.save(stream, format);
-        } catch (final SWTError e) {
-            final String msg = "KLighD bitmap export: "
-                    + "Failed to write bitmap data into the provided OutputStream of type "
-                    + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
-                    + " the stream instance is " + stream.toString();
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e));
+        // for each row and columns draw and export the image
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+
+                // initialize an SWT Image that serves as the pixel 'canvas'
+                final Image image = new Image(info.getControl().getDisplay(), width, height);
+                final GC gc = new GC(image);
+
+                // initialize a graphics object that 'collects' all the drawing instructions
+                final KlighdSWTGraphics graphics =
+                        new KlighdSWTGraphicsImpl(gc, info.getControl().getDisplay());
+
+                // apply translation and clipping for tiled export if necessary
+                if (info.getTilingInfo().isTiled()) {
+                    graphics.transform(AffineTransform.getTranslateInstance(-col * width, -row
+                            * height));
+                    graphics.clip(new Rectangle(width, height));
+                }
+                
+                // apply the scale factor to the employed graphics object
+                // by means of a corresponding affine transform
+                graphics.transform(AffineTransform.getScaleInstance(info.getScale(),
+                        info.getScale()));
+
+                // do the action diagram drawing work
+                drawDiagram(camera, info.isCameraViewport(), graphics, bounds);
+
+                // create an image loader to save the image
+                // although the API differently suggests:
+                // the ImageData array below must contain exactly 1 element,
+                // see the implementations of FileFormat.unloadIntoByteStream(ImageLoader)
+                final ImageLoader loader = new ImageLoader();
+                loader.data = new ImageData[] { image.getImageData() };
+
+                // translate the requested format identifier
+                final int format;
+                if (info.getSubFormatId().equals(SUB_FORMAT_JPEG)) {
+                    format = SWT.IMAGE_JPEG;
+                } else if (info.getSubFormatId().equals(SUB_FORMAT_PNG)) {
+                    format = SWT.IMAGE_PNG;
+                } else {
+                    // default format is bmp
+                    format = SWT.IMAGE_BMP;
+                }
+
+                // dump out the binary image data via the provided output stream
+                OutputStream stream = null;
+                try {
+                    if (info.getTilingInfo().isTiled()) {
+                        stream = info.createOutputStream(row, col);
+                    } else {
+                        stream = info.createOutputStream();
+                    }
+                    loader.save(stream, format);
+                    stream.close();
+                } catch (final SWTError e) {
+                    String msg = "KLighD bitmap export: "
+                            + "Failed to write bitmap data";
+                    if (stream != null) {
+                        msg += " into the provided OutputStream of type "
+                                + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
+                                + " the stream instance is " + stream.toString();
+                    }
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e));
+                } catch (IOException e) {
+                    final Status myStatus =
+                            new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID,
+                                    "Failed to render diagram to an image.", e);
+                    StatusManager.getManager().handle(myStatus,
+                            StatusManager.BLOCK | StatusManager.SHOW);
+                }
+
+                // release all native resources
+                ((Graphics2D) graphics).dispose();
+                gc.dispose();
+                image.dispose();
+            }
         }
-
-        // release all native resources
-        ((Graphics2D) graphics).dispose();
-        gc.dispose();
-        image.dispose();
     }
 }
