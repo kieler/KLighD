@@ -58,6 +58,7 @@ import org.freehep.util.io.Base64OutputStream;
 import org.freehep.util.io.WriterOutputStream;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
@@ -702,16 +703,59 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                         getFont().getTransform(),
                         "<text "
                             // style
-                            + style(style)
+                            + addFontHeightUnit(style(style))
                             // semantic data
                             + attributes()
-                            // coordiantes
+                            // Coordinates
                             + " x=\"0\" y=\"0\">"
                             // text
-                            + str
+                            + insertTSpan(str)
                             + "</text>")))));
     }
 
+    
+    /**
+     * Parse the attributes string and add a unit to the font-size attribute. 
+     * @param attributes the text attributes
+     * @return the text attributes with added font-size unit.
+     */
+    private String addFontHeightUnit(final String attributes) {
+        return attributes.replaceFirst("font-size=\"(\\d*)\"", "font-size=\"$1pt\"");
+    }
+    
+    /**
+     * Insert TSpan elements into a multiline text string.
+     * @param text string where lines are indicated by "\n"
+     * @return the string enriched by TSpan elements.
+     */
+    private String insertTSpan(final String text) {
+        float size = this.getFontHeight();
+        String content = "";
+        //blanklines would normally be ignored so we somehow have 
+        //to count them and adjust the offset accordingly
+        int blanklinefactor = 1;
+        for (final String line : text.split("\\r?\\n|\\r")) {
+            if (!line.isEmpty()) {
+                content += "<tspan x=\"0\" dy=\"" + ((size * blanklinefactor) 
+                    + (0.5 * size)) + "\">" + line + "</tspan>" + KlighdPlugin.LINE_SEPARATOR;
+                blanklinefactor = 1;
+            } else {
+                blanklinefactor += 1;
+            }
+        }
+        return content;
+    }
+    
+    /**
+     * Gets the height of the current font.
+     * @return The current font height.
+     */
+    public float getFontHeight() {
+        Font font = this.getFont();
+        Map<?, ?> attributes = FontUtilities.getAttributes(font);
+        return (Float) attributes.get(TextAttribute.SIZE);
+    }
+    
     /**
      * Creates the properties list for the given font.
      * Family, size, bold italic, underline and strikethrough are converted.

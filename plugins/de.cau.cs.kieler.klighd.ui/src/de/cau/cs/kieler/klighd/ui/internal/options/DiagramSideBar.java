@@ -255,6 +255,8 @@ public final class DiagramSideBar {
             sideZoomBtnsForm.setText(null);
             sideBarControls.add(sideZoomBtnsForm);
             final Composite sideZoomBtnsContainer = sideZoomBtnsForm.getBody();
+            sideZoomBtnsForm.setBackground(Display.getCurrent().getSystemColor(
+                    SWT.COLOR_LIST_BACKGROUND));
 
             initializeZoomButtons(sideZoomBtnsContainer);
         }
@@ -411,10 +413,6 @@ public final class DiagramSideBar {
         if (!zoomButtonsVisible) {
             return;
         }
-        
-        final Color white = new Color(parent.getDisplay(), KlighdConstants.WHITE);
-        resources.add(white);
-        parent.setBackground(white);
 
         parent.setLayout(new RowLayout());
         final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
@@ -622,6 +620,9 @@ public final class DiagramSideBar {
             });
 
             canvasZoomBtnsContainer = new Composite(canvas, SWT.NONE);
+            final Color white = new Color(Display.getCurrent(), KlighdConstants.WHITE);
+            resources.add(white);
+            canvasZoomBtnsContainer.setBackground(white);
 
             initializeZoomButtons(canvasZoomBtnsContainer);
             // Pack the Composite's children so a size is calculated.
