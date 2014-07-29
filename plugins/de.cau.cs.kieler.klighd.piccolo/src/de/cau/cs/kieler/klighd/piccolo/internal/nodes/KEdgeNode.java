@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -54,6 +55,8 @@ public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILab
 
     /** the junction points. */
     private Point2D[] junctionPoints = new Point2D[0];
+    
+    private KlighdFigureNode<?> pathNode = null;
 
     /**
      * Constructs a Piccolo2D node for representing a {@link KEdge}.
@@ -154,6 +157,27 @@ public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILab
             return (KChildAreaNode) parent.getParent();
         }
         return null;
+    }
+
+    /**
+     * Configures the representing figure node that is required for properly computing the
+     * intersection of this edge node with any other given bounds, see
+     * {@link #intersects(Rectangle2D)}.<br>
+     * This is required for being able to properly pick edges.
+     * 
+     * @param path
+     *            the {@link KlighdFigureNode} representing this edge
+     */
+    public void setRepresentation(final KlighdFigureNode<?> path) {
+        this.pathNode = path;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean intersects(final Rectangle2D localBounds) {
+        return pathNode != null && pathNode.intersects(localBounds); 
     }
 
     /**

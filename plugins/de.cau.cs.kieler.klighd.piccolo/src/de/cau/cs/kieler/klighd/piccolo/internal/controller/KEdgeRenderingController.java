@@ -167,7 +167,9 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         } else {
             controller.getNode().setPathToPolyline(parent.getBendPoints());
         }
-        
+
+        parent.setRepresentation(controller.getNode());
+
         // add a listener on the parent's bend points
         addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
                 new PropertyChangeListener() {
@@ -346,6 +348,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                 (PNodeController<KCustomConnectionFigureNode>) createRendering(
                         rendering, parent, new Bounds(1, 1));
         controller.getNode().setPoints(parent.getBendPoints());
+
+        parent.setRepresentation(controller.getNode());
 
         // add a listener on the parent's bend points
         addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
