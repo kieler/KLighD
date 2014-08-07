@@ -328,7 +328,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     private static final Rectangle2D BACKGROUND = new Rectangle2D.Double();
 
     @Override
-    public void paint(final PPaintContext paintContext) {
+    protected void paint(final PPaintContext paintContext) {
         if (Strings.isNullOrEmpty(this.text)) {
             return;
         }
