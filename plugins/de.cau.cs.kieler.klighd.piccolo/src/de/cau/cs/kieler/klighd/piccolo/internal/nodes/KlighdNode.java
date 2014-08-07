@@ -71,8 +71,8 @@ public class KlighdNode extends PNode {
      */
     public boolean isNotVisibleOn(final double diagramScale) {
         final double upperBound = getUpperVisibilityBound();
-        return getLowerVisibilityBound() < diagramScale
-                && upperBound != -1 && diagramScale > upperBound;
+        return diagramScale < getLowerVisibilityBound()
+                || upperBound != -1 && diagramScale > upperBound;
     }
     
     /**

@@ -124,7 +124,7 @@ public final class KlighdProperties {
      * corresponding diagram or figure element is not visible anymore.
      */
     public static final IProperty<Number> VISIBILITY_SCALE_UPPER_BOUND = new Property<Number>(
-            "de.cau.cs.kieler.klighd.visibilityScaleUpperBound", 0);
+            "de.cau.cs.kieler.klighd.visibilityScaleUpperBound", -1);
 
     /**
      * Property determining the lower visibility bound of a certain
@@ -134,7 +134,7 @@ public final class KlighdProperties {
      * corresponding diagram or figure element is not visible anymore.
      */
     public static final IProperty<Number> VISIBILITY_SCALE_LOWER_BOUND = new Property<Number>(
-            "de.cau.cs.kieler.klighd.visibilityScaleLowerBound", -1);
+            "de.cau.cs.kieler.klighd.visibilityScaleLowerBound", 0);
 
 //    /**
 //     * Property providing a URI to semantic elements to be depicted but that are to be loaded lazily.
