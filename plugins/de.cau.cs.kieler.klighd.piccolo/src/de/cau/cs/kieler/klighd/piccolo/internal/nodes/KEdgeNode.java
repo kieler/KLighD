@@ -20,11 +20,9 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * The Piccolo2D node for representing a {@link KEdge}.<br>
@@ -194,15 +192,5 @@ public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILab
                 localBounds.x - 1, localBounds.y - 1, localBounds.width + 2, localBounds.height + 2);
         }
         super.repaintFrom(localBounds, childOrThis);
-    }
-
-    @Override
-    public void fullPaint(final PPaintContext paintContext) {
-        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-        final double zoomScale = kpc.getCameraZoomScale();
-        if (zoomScale <= lowerScaleBound || (upperScaleBound != -1 && zoomScale > upperScaleBound)) {
-            return;
-        }
-        super.fullPaint(paintContext);
     }
 }

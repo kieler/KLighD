@@ -128,6 +128,23 @@ public class KlighdNode extends PNode {
             return graphElement;
         }
 
+
+        /**
+         * {@inheritDoc}<br>
+         * <br>
+         * KLighD contributes a visibility check in this method.<br>
+         * Note that the labels of labeled kgraph elements are currently skipped, too, if the
+         * element itself is masked.
+         */
+        @Override
+        public void fullPaint(final PPaintContext paintContext) {
+            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+            if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+                return;
+            }
+            super.fullPaint(paintContext);
+        }
+
         /**
          * {@inheritDoc}
          */

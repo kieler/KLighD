@@ -16,8 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * The Piccolo2D node for representing a {@code KLabel}.
@@ -88,18 +86,5 @@ public class KLabelNode extends KlighdNode.KlighdGraphNode<KLabel> {
      */
     public String getText() {
         return text;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void fullPaint(final PPaintContext paintContext) {
-        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-        final double zoomScale = kpc.getCameraZoomScale();
-        if (zoomScale <= lowerScaleBound || (upperScaleBound != -1 && zoomScale > upperScaleBound)) {
-            return;
-        }
-        super.fullPaint(paintContext);
     }
 }
