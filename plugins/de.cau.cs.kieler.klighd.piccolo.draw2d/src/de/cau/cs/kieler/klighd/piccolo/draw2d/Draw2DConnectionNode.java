@@ -29,8 +29,9 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.draw2d.Draw2DNode.WrappingUpdateManager;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -72,10 +73,12 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
                 this.setFill(false);
             }
             
+            @Override
             public void setPoints(final PointList pts) {
                 @SuppressWarnings("unchecked")
-                List<IFigure> children = (List<IFigure>) this.getChildren();
-                for (Connection child : Iterables.filter(children, Connection.class)) {
+                final
+                List<IFigure> children = this.getChildren();
+                for (final Connection child : Iterables.filter(children, Connection.class)) {
                     child.setPoints(pts);
                 }
             }
@@ -93,9 +96,9 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
      */
     @Override
     public void setPoints(final Point2D[] points) {
-        int[] iPoints = new int[2 * points.length];
+        final int[] iPoints = new int[2 * points.length];
         int i = 0;
-        for (Point2D point : points) {
+        for (final Point2D point : points) {
             // SUPPRESS CHECKSTYLE NEXT 2 MagicNumber: Rounding!
             iPoints[2 * i++] = (int) (point.getX() + 0.5);
             iPoints[2 * i++] = (int) (point.getY() + 0.5);
@@ -115,10 +118,17 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsImpl) paintContext.getGraphics());
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        // first test whether this figure shall be drawn at all
+        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+            return;
+        }
+
+        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());
         try {
             figure.paint(this.graphics);
-        } catch (Throwable throwable) {
+        } catch (final Throwable throwable) {
             final String msg = "KLighD: Error occurred while drawing the custom connection figure "
                     + this.figure.getClass().getName();
             StatusManager.getManager().handle(
