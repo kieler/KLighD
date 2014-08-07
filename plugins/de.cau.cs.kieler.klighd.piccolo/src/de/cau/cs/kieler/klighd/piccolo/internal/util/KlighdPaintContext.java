@@ -58,7 +58,7 @@ public class KlighdPaintContext extends PPaintContext {
         super.pushCamera(aCamera);
 
         if (aCamera instanceof KlighdMainCamera) {
-            aCamera.getViewTransformReference().getScaleX();
+            cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
         }
     }
 
