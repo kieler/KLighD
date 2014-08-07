@@ -81,7 +81,7 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
                 final PBounds bounds = getBounds();
                 bounds.setRect(bounds.x + 5, bounds.y + 5, bounds.width - 10, bounds.height - 10);
                 
-                for (Object child : getChildrenReference()) {
+                for (final Object child : getChildrenReference()) {
                     ((PNode) child).setBounds(bounds);
                 }
             }            
@@ -153,10 +153,10 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
         final PAffineTransform viewTransform = new PAffineTransform();
         
         // SUPPRESS CHECKSTYLE NEXT MagicNumber -- the preference unit is percent        
-        float scale = STORE.getFloat(KlighdPreferences.MAGNIFICATION_LENS_SCALE) / 100f;
+        final float scale = STORE.getFloat(KlighdPreferences.MAGNIFICATION_LENS_SCALE) / 100f;
         viewTransform.scale(scale, scale);
 
-        double clipScale = mainCamera.getDisplayedLayer().getScale();
+        final double clipScale = mainCamera.getDisplayedLayer().getScale();
         viewTransform.scale(1 / clipScale, 1 / clipScale);
         
         final Point2D pos = event.getPosition();
@@ -177,7 +177,8 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
             lensCamera.getParent().setOffset(determineLensOffset(event));            
             lensCamera.setViewTransform(createViewTransform(event));
 
-            lensCamera.addLayer(mainCamera.getLayer(0));
+            lensCamera.getLayersReference().clear();
+            lensCamera.addLayer(mainCamera.getDisplayedLayer());
             lensVisible = true;
             lensCamera.getParent().setVisible(true);
         }
@@ -197,11 +198,19 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
     
     @Override
     public void mouseMoved(final PInputEvent event) {
-        if (lensVisible) {
+        if (event.isAltDown() && event.isControlDown()) {
             event.setHandled(true);
-            
+
             lensCamera.getParent().setOffset(determineLensOffset(event));            
             lensCamera.setViewTransform(createViewTransform(event));
+        } else if (lensVisible) {
+            // don't set the event to handled because this case is more or less
+            //  exception handling after calls of CTRL+ALT+del on windows machines
+            //  that may activate the lens and leave it open until it is re-called
+
+            lensCamera.getParent().setVisible(false);
+            lensVisible = false;
+            lensCamera.getLayersReference().clear();
         }
     }
 }
