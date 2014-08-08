@@ -12,7 +12,6 @@
  * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.klighd.piccolo.test.highlightedEdgeToForeground;
-// SUPPRESS CHECKSTYLE PREVIOUS Package
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -46,14 +45,21 @@ import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewerProvider;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
-// CHECKSTYLEOFF MagicNumber
-
 /**
+ * The aim of this class is to test the "bring the highlighted edge to foreground" feature.<br>
+ * To this end a small diagram with ports and overlapping edges is build up (composition is out-
+ * sourced to {@link HighlightedEdgeToForegroundTestModelGen}. In order to test not only single
+ * methods but the whole tool a simple diagram viewer is launched and some mouse move and click
+ * events are send to the employed {@link Display} instance. By means of those events edges are
+ * selected and due to corresponding styles their color is switched from black to red.<br>
+ * <br>
+ * In order to assess the correctness of the tool's behavior the color of the diagram is evaluated
+ * at certain positions of the diagram. Since the "measured" color will differ from the expected
+ * one by some units due to anti-aliasing a similarity heuristic is applied.
+ * 
  * @author chsch
  */
 public class HighlightedEdgeToForegroundTest {
-    
-    private static final int SECOND = 1000;
 
     private static HighlightedEdgeToForegroundTestModelGen testModelGen;
     private static ViewContext viewContext;
@@ -110,23 +116,29 @@ public class HighlightedEdgeToForegroundTest {
         final int firstWPortLayoutCenterYPos = Math.round(firstWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 50;
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
+        final int secondClickXPos = 200;
 
-        Thread.sleep(SECOND);
+        waitAsecond();
 
-        clickOn(5 + 100 + 1,
-            // port width + border spacing + edge spacing factor * spacing + 1
-            firstChildNodeYPos);
+        Assert.assertTrue(areSimilar(Colors.BLACK, getColorAt(firstClickXPos, firstChildNodeYPos)));
 
-        Thread.sleep(SECOND);
+        clickOn(firstClickXPos, firstChildNodeYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(firstClickXPos, firstChildNodeYPos)));        
+
+        waitAsecond();
 
         moveTo(sampleXPos, firstWPortLayoutCenterYPos);
         Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, firstWPortLayoutCenterYPos)));        
 
-        Thread.sleep(SECOND);
+        waitAsecond();
 
-        clickOn(200, firstWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.BLACK, getColorAt(secondClickXPos, firstWPortLayoutCenterYPos)));
+        
+        clickOn(secondClickXPos, firstWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(secondClickXPos, firstWPortLayoutCenterYPos)));
 
-        Thread.sleep(SECOND);
+        waitAsecond();
 
         moveTo(sampleXPos, firstWPortLayoutCenterYPos);
         Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, firstWPortLayoutCenterYPos)));
@@ -149,23 +161,29 @@ public class HighlightedEdgeToForegroundTest {
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 120;
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
+        final int secondClickXPos = 50;
 
-        Thread.sleep(SECOND);
+        waitAsecond();
 
-        clickOn(5 + 100 + 1,
-            // port width + border spacing + edge spacing factor * spacing + 1
-            firstChildNodeYPos);
+        Assert.assertTrue(areSimilar(Colors.BLACK, getColorAt(firstClickXPos, firstChildNodeYPos)));
+
+        clickOn(firstClickXPos, firstChildNodeYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(firstClickXPos, firstChildNodeYPos)));
         
-        Thread.sleep(SECOND);
+        waitAsecond();
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
         Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));        
         
-        Thread.sleep(SECOND);
+        waitAsecond();
 
-        clickOn(50, secondWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.BLACK, getColorAt(secondClickXPos, secondWPortLayoutCenterYPos)));
+
+        clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(secondClickXPos, secondWPortLayoutCenterYPos)));
         
-        Thread.sleep(SECOND);
+        waitAsecond();
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);        
         Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));
@@ -188,32 +206,40 @@ public class HighlightedEdgeToForegroundTest {
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 350;
-
-        Thread.sleep(SECOND);
-
-        clickOn(5 + 50 + 100 + 5 + 100 + 5
-                 + Math.round(1f/2f * 100f) + 1,
+        final int firstClickXPos = 5 + 50 + 100 + 5 + 100 + 5
+                + Math.round(1f/2f * 100f);
             // port width + border spacing + spacing + port width + node with + port width
-            //   + edge spacing factor * spacing + 1
-            firstChildNodeYPos);
-        
-        Thread.sleep(SECOND);
+                //   + edge spacing factor * spacing
+        final int secondClickXPos = 5 + 50 + 100 + 5 + 100 + 5 + 20;
+            // port width + border spacing + spacing + port width + node with + port width + 20
+
+        waitAsecond();
+
+        Assert.assertTrue(areSimilar(Colors.BLACK, getColorAt(firstClickXPos, firstChildNodeYPos)));
+
+        clickOn(firstClickXPos, firstChildNodeYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(firstClickXPos, firstChildNodeYPos)));
+
+        waitAsecond();
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
         Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));        
-        
-        Thread.sleep(SECOND);
 
-        clickOn(5 + 50 + 100 + 5 + 100 + 5 + 20,
-            // port width + border spacing + spacing + port width + node with + port width + 20
-            secondWPortLayoutCenterYPos);
-        
-        Thread.sleep(SECOND);
+        waitAsecond();
+
+        Assert.assertTrue(areSimilar(Colors.BLACK, getColorAt(secondClickXPos, secondWPortLayoutCenterYPos)));
+
+        clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
+        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(secondClickXPos, secondWPortLayoutCenterYPos)));
+
+        waitAsecond();
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
         Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));
     }
 
+
+    private static final int SECOND = 1000;
 
     /**
      * Closes the employed shell.
@@ -265,6 +291,14 @@ public class HighlightedEdgeToForegroundTest {
         d.post(release);
 
         while (d.readAndDispatch());        
+    }
+
+    private void waitAsecond() throws InterruptedException {
+        final Display d = shell.getDisplay();
+
+        Thread.sleep(SECOND);
+
+        while (d.readAndDispatch());
     }
 
     private RGB getColorAt(final int x, final int y) {
