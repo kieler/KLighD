@@ -1639,8 +1639,19 @@
     <eLiterals name="LINK" value="5"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KStyleRef" eSuperTypes="#//KStyle">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Special {@link KStyle} allowing to reference the styles of another {@link KRendering} or {@link KStyleHolder} in general."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="styleHolder" lowerBound="1"
         eType="#//KStyleHolder"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="referencedTypes" upperBound="-1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This is list of {@link KStyle} class instances (List&lt;Class&lt;KStyle>>) that used for filtering the styles that are &quot;imported&quot; from &lt;code>styleHolder&lt;/code>; if it is empty all styles of &lt;code>styleHolder&lt;/code> are (transitively) evaluated."/>
+      </eAnnotations>
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaClass">
+        <eTypeArguments eClassifier="#//KStyle"/>
+      </eGenericType>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KTextStrikeout" eSuperTypes="#//KStyle">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

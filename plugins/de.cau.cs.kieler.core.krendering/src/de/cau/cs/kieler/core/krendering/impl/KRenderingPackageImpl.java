@@ -1907,6 +1907,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getKStyleRef_ReferencedTypes() {
+        return (EAttribute)kStyleRefEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getKTextStrikeout() {
         return kTextStrikeoutEClass;
     }
@@ -2260,6 +2269,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         kStyleRefEClass = createEClass(KSTYLE_REF);
         createEReference(kStyleRefEClass, KSTYLE_REF__STYLE_HOLDER);
+        createEAttribute(kStyleRefEClass, KSTYLE_REF__REFERENCED_TYPES);
 
         kTextStrikeoutEClass = createEClass(KTEXT_STRIKEOUT);
         createEAttribute(kTextStrikeoutEClass, KTEXT_STRIKEOUT__STRUCK_OUT);
@@ -2883,6 +2893,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         initEClass(kStyleRefEClass, KStyleRef.class, "KStyleRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKStyleRef_StyleHolder(), this.getKStyleHolder(), null, "styleHolder", null, 1, 1, KStyleRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(this.getKStyle());
+        g1.getETypeArguments().add(g2);
+        initEAttribute(getKStyleRef_ReferencedTypes(), g1, "referencedTypes", null, 0, -1, KStyleRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kTextStrikeoutEClass, KTextStrikeout.class, "KTextStrikeout", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKTextStrikeout_StruckOut(), ecorePackage.getEBooleanObject(), "struckOut", "true", 1, 1, KTextStrikeout.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
