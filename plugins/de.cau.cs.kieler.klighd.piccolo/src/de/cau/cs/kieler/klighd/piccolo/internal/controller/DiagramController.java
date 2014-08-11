@@ -66,7 +66,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.IStartingAndFinishingActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ILabeledGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;

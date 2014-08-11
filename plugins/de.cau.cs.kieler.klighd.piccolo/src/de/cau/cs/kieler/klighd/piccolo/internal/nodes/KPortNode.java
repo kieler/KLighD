@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import edu.umd.cs.piccolo.PNode;
 
 /**
