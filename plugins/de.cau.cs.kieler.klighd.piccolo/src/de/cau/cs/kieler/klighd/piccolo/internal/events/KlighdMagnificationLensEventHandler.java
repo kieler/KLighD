@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.RGB;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PCamera;
@@ -39,7 +40,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author chsch
  */
-public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
+public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHandler {
     
     private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
     private static final int CTRL_CMD = KlighdKeyEventListener.OS_MACOSX ? SWT.COMMAND : SWT.CTRL;
@@ -54,15 +55,15 @@ public class KlighdShowLensEventHandler extends KlighdBasicInputEventHandler {
      *            the {@link KlighdMainCamera} employed in the corresponding diagram canvas for
      *            drawing the diagram.
      */
-    public KlighdShowLensEventHandler(final KlighdMainCamera canvasCamera) {
+    public KlighdMagnificationLensEventHandler(final KlighdMainCamera canvasCamera) {
         this.disabled = !KlighdPreferences.isMagnificationLensEnabled();
         this.mainCamera = canvasCamera;
-        this.lensCamera = new PCamera();
+        this.lensCamera = new KlighdMagnificationLensCamera();
         this.lensCamera.setPickable(false);
-        
+
         final KlighdPath path = new KlighdPath() {
             private static final long serialVersionUID = -4353599895034123565L;
-            
+
             // SUPPRESS CHECKSTYLE NEXT 20 MagicNumber
 
             {

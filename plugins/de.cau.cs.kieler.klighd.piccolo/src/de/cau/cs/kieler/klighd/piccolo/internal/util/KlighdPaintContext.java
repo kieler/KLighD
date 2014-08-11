@@ -14,12 +14,17 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.Graphics2D;
+
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
+ * This is a specialization of {@link PPaintContext} contributing behavior for adding semantic data
+ * into drawn (vector graphics) images or implementing the diagram scale dependent visibility of
+ * diagram figures (or figure parts).
  * 
  * @author chsch
  */
@@ -36,6 +41,8 @@ public class KlighdPaintContext extends PPaintContext {
         this(graphics, false);
     }
 
+    private boolean addSemanticData = false;
+
     /**
      * Constructor.
      * 
@@ -50,8 +57,7 @@ public class KlighdPaintContext extends PPaintContext {
         this.addSemanticData = addSemanticData;
     }
 
-    private double cameraZoomScale;
-    private boolean addSemanticData;
+    private double cameraZoomScale = 1d;
 
     @Override
     public void pushCamera(final PCamera aCamera) {
@@ -59,6 +65,19 @@ public class KlighdPaintContext extends PPaintContext {
 
         if (aCamera instanceof KlighdMainCamera) {
             cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
+        } else if (aCamera instanceof KlighdMagnificationLensCamera) {
+            cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
+        }
+    }
+
+    @Override
+    public void popCamera() {
+        final PCamera aCamera = getCamera();
+        if (aCamera instanceof KlighdMagnificationLensCamera) {
+            super.popCamera();
+            cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
+        } else {
+            super.popCamera();
         }
     }
 
@@ -66,7 +85,7 @@ public class KlighdPaintContext extends PPaintContext {
      * Provides the current diagram zoom factor as determined by the active {@link KlighdMainCamera}'s
      * view {@link java.awt.geom.AffineTransform transform}.
      * 
-     * @return the current diagram zoom factor 
+     * @return the current diagram zoom factor
      */
     public double getCameraZoomScale() {
         return this.cameraZoomScale;

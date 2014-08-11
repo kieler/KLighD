@@ -54,7 +54,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEvent
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdPanEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdShowLensEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMagnificationLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -131,7 +131,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         // make sure those handlers properly execute 'event.setHandled(true);'
         //  in order to skip invoking the less priority handlers
         camera.addInputEventListener(new KlighdActionEventHandler(this));
-        camera.addInputEventListener(new KlighdShowLensEventHandler(camera));
+        camera.addInputEventListener(new KlighdMagnificationLensEventHandler(camera));
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
                 new KlighdPanEventHandler(canvas)));
