@@ -137,6 +137,15 @@ public class PiccoloViewerUI extends PiccoloViewer {
      */
     private StyledText labelWidget;
 
+    /**
+     * Getter providing the employed {@link StyledText} SWT widget, e.g. for installing additional
+     * event {@link Listener Listeners}.
+     * 
+     * @return the employed {@link StyledText} widget.
+     */
+    protected StyledText getLabelTextWidget() {
+        return labelWidget;
+    }
 
     /**
      * Adds a text widget to the viewer that can be used to select and edit texts.
