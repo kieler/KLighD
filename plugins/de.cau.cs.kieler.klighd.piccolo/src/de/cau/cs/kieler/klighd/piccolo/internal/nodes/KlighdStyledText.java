@@ -30,6 +30,7 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.nodes.PText;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -38,9 +39,6 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * strings supporting {@link org.eclipse.swt.graphics.TextStyle TextStyles}.<br>
  * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTText PSWTText} and is
  * tailored/extended to those features required by KLighD.<br>
- * <br>
- * It enables proper view-model-tracing by preserving the related {@link KText} view model element
- * and implementing {@link ITracingElement}.<br>
  * <br>
  * <b>Note:</b> All <code>invalidate...</code> and <code>repaint</code> calls are deactivated in
  * order to avoid superfluous repaint activities. The repaint events are fired by
@@ -107,6 +105,14 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     public KlighdStyledText(final String theText, final FontData theFont) {
         this.text = theText;
         this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSelectable() {
+        return !getRendering().getProperty(KlighdProperties.NOT_SELECTABLE);
     }
 
     /**

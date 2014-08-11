@@ -810,7 +810,7 @@ final class KGERenderingControllerHelper {
      * @return the controller for the created Piccolo node
      */
     static PNodeController<?> createDummy(final PNode parent, final Bounds initialBounds) {
-        final PNode dummyChild = new KlighdNode();
+        final PNode dummyChild = new KlighdNode.KlighdFigureNode<KRendering>();
         NodeUtil.applyBounds(dummyChild, initialBounds);
         parent.addChild(dummyChild);
         return new PNodeController<PNode>(dummyChild) {

@@ -32,7 +32,7 @@ import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import edu.umd.cs.piccolo.PNode;
 
@@ -48,7 +48,7 @@ import edu.umd.cs.piccolo.PNode;
  */
 public class KlighdTextSelection implements IKlighdSelection, IStructuredSelection, ITextSelection {
 
-    private final ITracingElement<?> tracingNode;
+    private final KlighdFigureNode<KText> figureNode;
 
     private final IViewer<?> viewer;
 
@@ -76,20 +76,20 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
      *            <code>true</code> if whole line is selected
      * @param isCompleteLabel
      *            <code>true</code> if whole label is selected
-     * @param tracingElement
+     * @param figureNode
      *            the underlying {@link KGraphElement} containing the selected text
      * @param theViewer 
      */
     public KlighdTextSelection(final String theText, final int theOffset,
             final boolean isCompleteLine, final boolean isCompleteLabel,
-            final ITracingElement<KText> tracingElement, final IViewer<?> theViewer) {
+            final KlighdFigureNode<KText> figureNode, final IViewer<?> theViewer) {
         this.viewer = theViewer;
         this.text = theText;
         this.offset = theOffset;
         this.completeLine = isCompleteLine;
         this.completeLabel = isCompleteLabel;
-        this.tracingNode = tracingElement;
-        this.diagramElement = tracingElement == null ? null : tracingElement.getGraphElement();
+        this.figureNode = figureNode;
+        this.diagramElement = figureNode == null ? null : figureNode.getGraphElement();
         this.kgraphElement = null;
     }
 
@@ -159,7 +159,7 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
     
     private KGraphElement determineKGraphElement() {
         if (kgraphElement == null) {
-            PNode node = (PNode) tracingNode;
+            PNode node = figureNode;
             while (node != null) {
                 if (node instanceof IGraphElement<?>) {
                     kgraphElement = ((IGraphElement<?>) node).getGraphElement();

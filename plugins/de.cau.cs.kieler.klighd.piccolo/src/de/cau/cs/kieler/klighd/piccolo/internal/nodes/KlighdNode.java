@@ -11,6 +11,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import org.eclipse.emf.ecore.EObject;
+
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -21,11 +23,13 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * Common base class of KLighD-specific {@link PNode PNodes}.
+ * Common base class of KLighD-specific {@link PNode PNodes}.<br>
+ * It enables, e.g., proper view-model-tracing by preserving the related {@link KGraphElement}/
+ * {@link KRendering} view model element being accessible via {@link #getGraphElement()}.<br>
  * 
  * @author chsch
  */
-public class KlighdNode extends PNode {
+public abstract class KlighdNode extends PNode {
 
     private static final long serialVersionUID = 6876586117083105843L;
 
@@ -40,6 +44,13 @@ public class KlighdNode extends PNode {
     public KlighdNode() {
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
     }
+
+    /**
+     * Returns the graph element traced by this node.
+     * 
+     * @return the traced view graph element.
+     */
+    public abstract EObject getGraphElement();
 
     /**
      * Returns the declared lower bound of the diagram scale/zoom factor of which this (pseudo)
@@ -92,6 +103,15 @@ public class KlighdNode extends PNode {
     }
 
     /**
+     * Provides the permission of the corresponding {@link KGraphElement}/{@link KRendering} to be
+     * selected.
+     * 
+     * @return <code>true</code> if the corresponding {@link KGraphElement}/{@link KRendering} is
+     *         allowed to be selected, <code>false</code> otherwise.
+     */
+    public abstract boolean isSelectable();
+
+    /**
      * A.
      * 
      * @author chsch
@@ -124,8 +144,19 @@ public class KlighdNode extends PNode {
         /**
          * {@inheritDoc}
          */
+        @Override
         public T getGraphElement() {
             return graphElement;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isSelectable() {
+            final T kge = getGraphElement();
+            return kge != null
+                    && !kge.getData(KLayoutData.class).getProperty(KlighdProperties.NOT_SELECTABLE);
         }
 
 
@@ -180,8 +211,7 @@ public class KlighdNode extends PNode {
      * 
      * @author chsch
      */
-    public static class KlighdFigureNode<T extends KRendering> extends KlighdNode implements
-            ITracingElement<T> {
+    public static class KlighdFigureNode<T extends KRendering> extends KlighdNode {
 
         private static final long serialVersionUID = -3975636790695588901L;
 
@@ -216,8 +246,17 @@ public class KlighdNode extends PNode {
         /**
          * {@inheritDoc}
          */
+        @Override
         public T getGraphElement() {
             return rendering;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isSelectable() {
+            return false;
         }
 
         /**

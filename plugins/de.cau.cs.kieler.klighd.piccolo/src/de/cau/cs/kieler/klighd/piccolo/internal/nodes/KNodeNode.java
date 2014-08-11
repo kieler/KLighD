@@ -42,15 +42,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphElement<KNode> {
+public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
+        ILabeledGraphElement<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
     
     /** the parent {@link INode}. */
     private INode parent;
-
-    /** the represented {@link KNode}. */
-    private KNode node;
 
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
@@ -87,9 +85,8 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
      *            edges
      */
     public KNodeNode(final KNode node, final boolean edgesFirst) {
-        super();
+        super(node);
 
-        this.node = node;
         this.portLayer = new KDisposingLayer();
         this.labelLayer = new KDisposingLayer();
         this.childArea = new KChildAreaNode(this, edgesFirst);
@@ -166,13 +163,6 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public KNode getGraphElement() {
-        return node;
-    }
-    
     /**
      * {@inheritDoc}
      */

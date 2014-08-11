@@ -49,9 +49,9 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
@@ -225,8 +225,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
         public void handleEvent(final Event event) {
             final PiccoloViewerUI thisViewer = PiccoloViewerUI.this;
             final StyledText text = labelWidget;
-            final ITracingElement<KText> graphNode =
-                    (KlighdStyledText) text.getData(STYLED_TEXT_FIGURE_KEY);
+
+            @SuppressWarnings("unchecked")
+            final KlighdFigureNode<KText> graphNode =
+                    (KlighdFigureNode<KText>) text.getData(STYLED_TEXT_FIGURE_KEY);
 
             final String selection;
             switch (event.type) {

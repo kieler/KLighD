@@ -25,7 +25,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingC
  * @param <T>
  *            the type of the graph element
  */
-public interface IGraphElement<T extends KGraphElement> extends ITracingElement<T> {
+public interface IGraphElement<T extends KGraphElement> {
 
     /**
      * Returns the graph element represented by this node.<br>
