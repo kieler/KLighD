@@ -106,6 +106,31 @@ public class HighlightedEdgeToForegroundTest {
 
 
     /**
+     * This is just a "warm up" test since the continuous build's (virtual) display's palette seems
+     * to be very limited. The observed behavior is: If 'black' or 'white' is the first observed
+     * color, only those colors will be obtained subsequently. I interpret this as follows: The
+     * image's color palette then contains only black and white. If the image also contains 'red'
+     * parts before testing the first time for any color the palette than also contains 'red'.
+     * Weird ...
+     */
+    @Test
+    public void test00() throws InterruptedException {
+        final KShapeLayout firstChildNodeLayout =
+                viewContext.getViewModel().getChildren().get(0).getChildren().get(0)
+                        .getData(KShapeLayout.class);
+        final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());  
+
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
+
+        clickOn(firstClickXPos, firstChildNodeYPos);
+        waitAmoment();
+
+        clickOn(4, 4);
+        waitAmoment();
+    }
+
+
+    /**
      * Tests the highlighting of overlapped interlevel edges connected to same source.
      */
     @Test
@@ -123,22 +148,21 @@ public class HighlightedEdgeToForegroundTest {
         final int sampleXPos = 50;
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 200;
-
+        
+        moveTo(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
-
-        moveTo(secondClickXPos, firstWPortLayoutCenterYPos);
-//        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
 
         clickOn(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_RED);
 
         moveTo(sampleXPos, firstWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(sampleXPos, firstWPortLayoutCenterYPos), IS_RED);
 
-        waitAmoment();
-
         moveTo(secondClickXPos, firstWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_BLACK);
         
         clickOn(secondClickXPos, firstWPortLayoutCenterYPos);
@@ -146,7 +170,11 @@ public class HighlightedEdgeToForegroundTest {
         Assert.assertThat(getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_RED);
 
         moveTo(sampleXPos, firstWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(sampleXPos, firstWPortLayoutCenterYPos), IS_RED);
+        
+        clickOn(4, 4);
+        waitAmoment();
     }
 
 
@@ -168,21 +196,21 @@ public class HighlightedEdgeToForegroundTest {
         final int sampleXPos = 120;
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 50;
-
+        
+        moveTo(firstClickXPos, firstChildNodeYPos);        
         waitAmoment();
-
-//        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
 
         clickOn(firstClickXPos, firstChildNodeYPos);        
         waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
         
-        waitAmoment();
-
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
@@ -190,7 +218,11 @@ public class HighlightedEdgeToForegroundTest {
         Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
         
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);        
+        waitAmoment();
         Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
+
+        clickOn(4, 4);
+        waitAmoment();
     }
 
 
@@ -217,20 +249,20 @@ public class HighlightedEdgeToForegroundTest {
         final int secondClickXPos = 5 + 50 + 100 + 5 + 100 + 5 + 20;
             // port width + border spacing + spacing + port width + node with + port width + 20
 
+        moveTo(firstClickXPos, firstChildNodeYPos);        
         waitAmoment();
-
-//        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
 
         clickOn(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);        
 
-        waitAmoment();
-
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
@@ -238,11 +270,14 @@ public class HighlightedEdgeToForegroundTest {
         Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
         Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);        
+
+        clickOn(4, 4);
     }
 
 
-    private static final int HALF_A_SECOND = 500;
+    private static final int A_MOMENT = 750;
 
     /**
      * Closes the employed shell.
@@ -250,7 +285,7 @@ public class HighlightedEdgeToForegroundTest {
     @AfterClass
     public static void cleanup() {
         final Display display = shell.getDisplay();
-        display.timerExec(HALF_A_SECOND, new Runnable() {
+        display.timerExec(A_MOMENT, new Runnable() {
             public void run() {
                 shell.close();
             }
@@ -299,7 +334,7 @@ public class HighlightedEdgeToForegroundTest {
     private void waitAmoment() throws InterruptedException {
         final Display d = shell.getDisplay();
 
-        Thread.sleep(HALF_A_SECOND);
+        Thread.sleep(A_MOMENT);
 
         while (d.readAndDispatch());
     }
