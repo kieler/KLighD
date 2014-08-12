@@ -120,7 +120,7 @@ public final class KlighdProperties {
      * Property determining the upper visibility bound of a certain
      * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
      * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
-     * If the diagram is shown is in strictly higher scale (>) than the determined value the
+     * If the diagram is shown is in equal or higher scale (>=) than the determined value the
      * corresponding diagram or figure element is not visible anymore.
      */
     public static final IProperty<Number> VISIBILITY_SCALE_UPPER_BOUND = new Property<Number>(
@@ -135,22 +135,6 @@ public final class KlighdProperties {
      */
     public static final IProperty<Number> VISIBILITY_SCALE_LOWER_BOUND = new Property<Number>(
             "de.cau.cs.kieler.klighd.visibilityScaleLowerBound", 0);
-
-//    /**
-//     * Property providing a URI to semantic elements to be depicted but that are to be loaded lazily.
-//     * This is property is currently to be attached to the nodes shape layout data during the view
-//     * synthesis process. 
-//     */
-//    public static final IProperty<URI> CHILD_URI = new Property<URI>("klighd.childURI");
-//
-//    /**
-//     * Property of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} indicating that the containing
-//     * node is not pickable in a KLighD diagram. Can be used to mask auxiliary encapsulating nodes.
-//     * 
-//     * @deprecated use {@link #NOT_SELECTABLE}
-//     */
-//    public static final IProperty<Boolean> KLIGHD_SELECTION_UNPICKABLE = new Property<Boolean>(
-//            "klighd.selection.unpickable", false);
 
     /**
      * A pre-defined property to be used for handing over an {@link RunnableWithResult} to the
