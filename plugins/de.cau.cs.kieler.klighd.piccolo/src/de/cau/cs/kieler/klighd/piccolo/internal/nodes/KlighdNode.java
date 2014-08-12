@@ -19,8 +19,10 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
+import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * Common base class of KLighD-specific {@link PNode PNodes}.<br>
@@ -185,6 +187,24 @@ public abstract class KlighdNode extends PNode {
          * element itself is masked.
          */
         @Override
+        public boolean fullPick(final PPickPath pickPath) {
+            final PCamera topCam = pickPath.getTopCamera();
+
+            if (isNotVisibleOn(topCam.getViewTransformReference().getScaleX())) {
+                return false;
+            }
+            
+            return super.fullPick(pickPath);
+        }
+
+        /**
+         * {@inheritDoc}<br>
+         * <br>
+         * KLighD contributes a visibility check in this method.<br>
+         * Note that the labels of labeled kGraph elements are currently skipped, too, if the
+         * element itself is masked.
+         */
+        @Override
         public void fullPaint(final PPaintContext paintContext) {
             final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
             if (isNotVisibleOn(kpc.getCameraZoomScale())) {
@@ -276,6 +296,19 @@ public abstract class KlighdNode extends PNode {
         @Override
         public boolean isSelectable() {
             return false;
+        }
+
+        /**
+         * {@inheritDoc}<br>
+         * <br>
+         * KLighD just contributes a visibility check in this method.
+         */
+        @Override
+        protected boolean pickAfterChildren(final PPickPath pickPath) {
+            if (isNotVisibleOn(pickPath.getTopCamera().getViewTransformReference().getScaleX())) {
+                return false;
+            }
+            return super.pickAfterChildren(pickPath);
         }
 
         /**
