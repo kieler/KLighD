@@ -30,7 +30,7 @@ public interface IKlighdSelection extends ISelection {
      *   
      * @return the {@link IViewer} of the corresponding diagram.
      */
-    IViewer<?> getViewer();
+    IViewer getViewer();
 
     /**
      * Provides the {@link ViewContext} of corresponding diagram.

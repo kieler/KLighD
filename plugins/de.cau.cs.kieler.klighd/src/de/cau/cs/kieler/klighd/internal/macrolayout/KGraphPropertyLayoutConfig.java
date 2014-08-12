@@ -66,7 +66,7 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData;
 public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
 
     /** layout context property for the context viewer. */
-    public static final IProperty<IViewer<?>> CONTEXT_VIEWER = new Property<IViewer<?>>(
+    public static final IProperty<IViewer> CONTEXT_VIEWER = new Property<IViewer>(
             "klighd.contextViewer");
     /** the priority for the property layout layout configuration. */
     public static final int PRIORITY = 20;
@@ -113,7 +113,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     public Object getContextValue(final IProperty<?> property, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (!(diagramPart instanceof KGraphElement)) {
-            final IViewer<?> contextViewer = getContextViewer(context);
+            final IViewer contextViewer = getContextViewer(context);
             if (contextViewer != null) {
                 diagramPart = contextViewer.getViewContext().getViewModel();
             } else {
@@ -134,7 +134,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(LayoutContext.DOMAIN_MODEL)) {
                 // determine the domain model element
-                final IViewer<?> contextViewer = getContextViewer(context);
+                final IViewer contextViewer = getContextViewer(context);
                 if (contextViewer != null) {
                     final ViewContext viewContext = contextViewer.getViewContext();
                     if (viewContext != null) {
@@ -145,7 +145,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             } else if (property.equals(LayoutContext.CONTAINER_DOMAIN_MODEL)) {
                 // determine the domain model element of the parent node
                 final KNode parentNode = getParentNode(viewElement);
-                final IViewer<?> contextViewer = getContextViewer(context);
+                final IViewer contextViewer = getContextViewer(context);
                 if (parentNode != null && contextViewer != null) {
                     final ViewContext viewContext = contextViewer.getViewContext();
                     if (viewContext != null) {
@@ -169,7 +169,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(EclipseLayoutConfig.ASPECT_RATIO)) {
                 // get aspect ratio for the current diagram
-                final IViewer<?> contextViewer = getContextViewer(context);
+                final IViewer contextViewer = getContextViewer(context);
                 if (contextViewer != null) {
                     final Control control = contextViewer.getControl();
                     if (control != null) {
@@ -228,8 +228,8 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * @param context a layout context
      * @return the corresponding KLighD context viewer, or {@code null}
      */
-    private IViewer<?> getContextViewer(final LayoutContext context) {
-        IViewer<?> contextViewer = context.getProperty(CONTEXT_VIEWER);
+    private IViewer getContextViewer(final LayoutContext context) {
+        IViewer contextViewer = context.getProperty(CONTEXT_VIEWER);
         if (contextViewer == null) {
             final IWorkbenchPart workbenchPart = context.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
@@ -350,7 +350,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             return (KGraphElement) diagramPart;
         }
         
-        final IViewer<?> contextViewer = getContextViewer(context);
+        final IViewer contextViewer = getContextViewer(context);
         if (contextViewer != null) {
             return contextViewer.getViewContext().getViewModel();
         }
@@ -366,7 +366,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      */
     private void refreshModel(final KGraphElement element, final LayoutContext layoutContext) {
         if (element == layoutContext.getProperty(LayoutContext.DOMAIN_MODEL)) {
-            final IViewer<?> contextViewer = getContextViewer(layoutContext);
+            final IViewer contextViewer = getContextViewer(layoutContext);
             if (contextViewer == null) {
                 return;
             }

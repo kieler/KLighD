@@ -50,7 +50,7 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
 
     private final KlighdFigureNode<KText> figureNode;
 
-    private final IViewer<?> viewer;
+    private final IViewer viewer;
 
     private final KText diagramElement;
     
@@ -82,7 +82,7 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
      */
     public KlighdTextSelection(final String theText, final int theOffset,
             final boolean isCompleteLine, final boolean isCompleteLabel,
-            final KlighdFigureNode<KText> figureNode, final IViewer<?> theViewer) {
+            final KlighdFigureNode<KText> figureNode, final IViewer theViewer) {
         this.viewer = theViewer;
         this.text = theText;
         this.offset = theOffset;
@@ -111,7 +111,7 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
     /**
      * @return the viewer
      */
-    public IViewer<?> getViewer() {
+    public IViewer getViewer() {
         return viewer;
     }
 

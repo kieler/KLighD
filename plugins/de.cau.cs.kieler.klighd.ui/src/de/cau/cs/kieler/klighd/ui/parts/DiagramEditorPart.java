@@ -330,7 +330,7 @@ public class DiagramEditorPart extends EditorPart implements
     /**
      * {@inheritDoc}
      */
-    public IViewer<?> getViewer() {
+    public IViewer getViewer() {
         return viewer;
     }
 

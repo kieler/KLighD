@@ -44,7 +44,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import com.google.common.base.Function;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
@@ -87,7 +86,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         /**
          * {@inheritDoc}
          */
-        public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
+        public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
             return new PiccoloViewerUI(parentViewer, parent);
         }
     }

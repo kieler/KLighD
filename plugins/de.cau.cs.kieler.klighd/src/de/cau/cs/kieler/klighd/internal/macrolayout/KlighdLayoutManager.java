@@ -123,7 +123,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             return true;
         } else if (object instanceof ViewContext) {
             return true;
-        } else if (object instanceof IViewer<?>) {
+        } else if (object instanceof IViewer) {
             return true;
         } else if (object instanceof IDiagramWorkbenchPart) {
             return true;
@@ -148,8 +148,8 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         } else if (diagramPart instanceof ViewContext) {
             viewContext = (ViewContext) diagramPart;
             graph = viewContext.getViewModel();
-        } else if (diagramPart instanceof IViewer<?>) {
-            viewContext = ((IViewer<?>) diagramPart).getViewContext();
+        } else if (diagramPart instanceof IViewer) {
+            viewContext = ((IViewer) diagramPart).getViewContext();
             graph = viewContext.getViewModel();
         } else if (workbenchPart instanceof IDiagramWorkbenchPart) {
             viewContext = ((IDiagramWorkbenchPart) workbenchPart).getViewer().getViewContext();
@@ -544,7 +544,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // ... and apply the layout
         if (recorder != null) {
-            IViewer<?> viewer = (IViewer<?>) recorder;
+            IViewer viewer = (IViewer) recorder;
             if (viewer.getControl() != null && viewer.getControl().isDisposed()) {
                 return;
             }

@@ -27,7 +27,7 @@ public class ScaleDownAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {
-        final IViewer<?> viewer = context.getActiveViewer();
+        final IViewer viewer = context.getActiveViewer();
         final KNode node = context.getKNode();
 
         final float scale = viewer.getScale(node);

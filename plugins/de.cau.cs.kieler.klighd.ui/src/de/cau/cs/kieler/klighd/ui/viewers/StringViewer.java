@@ -44,7 +44,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author mri
  * @author chsch
  */
-public class StringViewer implements IViewer<String> {
+public class StringViewer implements IViewer {
 
     /** the canvas used to display the message. */
     private Canvas canvas = null;
@@ -86,18 +86,17 @@ public class StringViewer implements IViewer<String> {
     /**
      * {@inheritDoc}
      */
-    public void setModel(final String model) {
+    public void setModel(final Object model) {
         this.setModel(model, false);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setModel(final String model, final boolean sync) {
-        if (model == null) {
-            return;
+    public void setModel(final Object model, final boolean sync) {
+        if (model instanceof String) {
+            message = (String) model;
         }
-        message = model;
     }
 
     
