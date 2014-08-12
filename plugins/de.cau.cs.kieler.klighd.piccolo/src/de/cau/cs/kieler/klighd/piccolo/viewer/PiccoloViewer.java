@@ -39,6 +39,8 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -77,6 +79,27 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  */
 public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder,
         IDiagramOutlinePage.Provider {
+
+    /** The identifier of this viewer type as specified in the extension. */
+    public static final String ID = "de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer";
+
+    /**
+     * The required corresponding provider class.<br>
+     * <br>
+     * This class is not registered via the corresponding extension point within this bundle, but
+     * employed and registered in 'de.cau.cs.kieler.klighd.test'. Instead
+     * <code>PiccoloViewerUI</code> is contributed via a related {@link IViewerProvider} in
+     * <code>de.cau.cs.kieler.klighd.ui</code>.
+     */
+    public static class Provider implements IViewerProvider {
+
+        /**
+         * {@inheritDoc}
+         */
+        public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
+            return new PiccoloViewer(parentViewer, parent);
+        }
+    }
 
     private static final int VIEW_PORT_CHANGE_NOTIFY_DELAY = 250; // ms
 

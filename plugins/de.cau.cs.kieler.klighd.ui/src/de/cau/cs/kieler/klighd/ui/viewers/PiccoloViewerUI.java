@@ -44,9 +44,12 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import com.google.common.base.Function;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
@@ -72,6 +75,23 @@ import edu.umd.cs.piccolo.PNode;
  * @author ckru
  */
 public class PiccoloViewerUI extends PiccoloViewer {
+
+    /** The identifier of this viewer type as specified in the extension. */
+    public static final String ID = "de.cau.cs.kieler.klighd.ui.viewers.PiccoloViewerUI";
+
+    /**
+     * The required corresponding provider class.
+     */
+    public static class Provider implements IViewerProvider {
+
+        /**
+         * {@inheritDoc}
+         */
+        public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
+            return new PiccoloViewerUI(parentViewer, parent);
+        }
+    }
+
 
     private KlighdMainCamera camera;
 

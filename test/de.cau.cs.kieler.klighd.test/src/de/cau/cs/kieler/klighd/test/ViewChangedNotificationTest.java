@@ -43,7 +43,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewerProvider;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -76,7 +76,7 @@ public class ViewChangedNotificationTest {
         shell.setLayout(new StackLayout());
         
         viewContext = new ViewContext((IDiagramWorkbenchPart) null, loadTestModel())
-                .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewerProvider.ID));
+                .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
         new ContextViewer(shell).setModel(viewContext, true);
         

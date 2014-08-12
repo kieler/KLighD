@@ -43,7 +43,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewerProvider;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -87,7 +87,7 @@ public class HighlightedEdgeToForegroundTest {
         shell.setLayout(new FillLayout());
         
         viewContext = new ViewContext((IDiagramWorkbenchPart) null, testModelGen.getTestModel())
-                .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewerProvider.ID));
+                .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
         
         new ContextViewer(shell).setModel(viewContext, true);        
 

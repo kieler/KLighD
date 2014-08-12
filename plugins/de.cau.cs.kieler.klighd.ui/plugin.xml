@@ -4,8 +4,8 @@
    <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <viewer
-            class="de.cau.cs.kieler.klighd.ui.viewers.PiccoloViewerProvider"
-            id="de.cau.cs.kieler.klighd.piccolo.piccoloViewer">
+            class="de.cau.cs.kieler.klighd.ui.viewers.PiccoloViewerUI$Provider"
+            id="de.cau.cs.kieler.klighd.ui.viewers.PiccoloViewerUI">
       </viewer>
    </extension>
    <extension

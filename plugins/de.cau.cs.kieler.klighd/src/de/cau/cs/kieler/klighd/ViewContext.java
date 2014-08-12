@@ -84,7 +84,7 @@ public class ViewContext extends MapPropertyHolder {
     private IDiagramWorkbenchPart diagramWorkbenchPart;
     
     /** the viewer provider. */
-    private transient IViewerProvider<KNode> viewerProvider = null;
+    private transient IViewerProvider viewerProvider = null;
 
     /** the update strategy. */
     private transient IUpdateStrategy updateStrategy = null;

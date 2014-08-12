@@ -22,11 +22,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * The interface for classes which provide a viewer for a model class.
  * 
  * @author mri
- * 
- * @param <T>
- *            the type of the model class
+ * @author chsch
  */
-public interface IViewerProvider<T extends KNode> {
+public interface IViewerProvider {
 
     /**
      * Returns a viewer for models of the provided model class attached to the given composite.
@@ -37,13 +35,5 @@ public interface IViewerProvider<T extends KNode> {
      *            the parent composite
      * @return a viewer for the supported model types
      */
-    IViewer<T> createViewer(ContextViewer parentViewer, Composite parent);
-
-    /**
-     * Returns the class of the models supported by the viewer provided by this viewer provider.
-     * 
-     * @return the class of the supported models
-     */
-    Class<T> getModelClass();
-
+    IViewer<KNode> createViewer(ContextViewer parentViewer, Composite parent);
 }
