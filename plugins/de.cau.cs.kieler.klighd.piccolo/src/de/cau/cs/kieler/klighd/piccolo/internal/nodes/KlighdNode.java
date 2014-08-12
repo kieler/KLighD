@@ -75,7 +75,13 @@ public abstract class KlighdNode extends PNode {
     }
 
     /**
-     * @param diagramScale the diagram scale factor to be applied
+     * Decides whether a {@link KlighdNode} must not be drawn according to given scale-based
+     * visibility definitions. (see
+     * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
+     * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
+     * 
+     * @param diagramScale
+     *            the diagram scale factor to be applied
      * 
      * @return <code>true</code> if this (pseudo) figure should not be drawn on the diagram being
      *         drawn in the given <code>diagramScale</code>
@@ -83,11 +89,17 @@ public abstract class KlighdNode extends PNode {
     public boolean isNotVisibleOn(final double diagramScale) {
         final double upperBound = getUpperVisibilityBound();
         return diagramScale < getLowerVisibilityBound()
-                || upperBound != -1 && diagramScale > upperBound;
+                || upperBound != -1 && diagramScale >= upperBound;
     }
-    
+
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<br>
+     * <br>
+     * This specialization evaluates the occlusion of an element while picking it. It is required as
+     * we're using the occlusion flag for implementing single figure/rendering invisibility and as
+     * we don't use on {@link edu.umd.cs.piccolo.util.PPickPath#nextPickedNode()
+     * PPickPath#nextPickedNode()} (since we don't expected {@link KGraphElement KGraphElements}
+     * occluding each other).
      */
     @Override
     public boolean getPickable() {
@@ -111,10 +123,15 @@ public abstract class KlighdNode extends PNode {
      */
     public abstract boolean isSelectable();
 
+
     /**
-     * A.
-     * 
-     * @author chsch
+     * A common abstract class of {@link KEdgeNode}, {@link KPortNode}, and {@link KLabelNode}
+     * serving the purpose of avoiding code clones. Due to the inheritance of
+     * {@link edu.umd.cs.piccolo.PLayer PLayer} {@link KNodeNode} and {@link KNodeTopNode} cannot inherit
+     * this class, which I regret very much.<br>
+     * This class cares about tracking the corresponding {@link KRendering} element, contributing
+     * semantic model data into drawn (vector graphic) images, and determining the visibility the
+     * pseudo figure wrt. the diagram zoom scale while drawing the diagram.
      */
     public abstract static class KlighdGraphNode<T extends KGraphElement> extends KlighdNode implements
             IGraphElement<T> {
@@ -164,7 +181,7 @@ public abstract class KlighdNode extends PNode {
          * {@inheritDoc}<br>
          * <br>
          * KLighD contributes a visibility check in this method.<br>
-         * Note that the labels of labeled kgraph elements are currently skipped, too, if the
+         * Note that the labels of labeled kGraph elements are currently skipped, too, if the
          * element itself is masked.
          */
         @Override
@@ -207,11 +224,13 @@ public abstract class KlighdNode extends PNode {
     }
 
     /**
-     * B.
-     * 
-     * @author chsch
+     * A common abstract class of {@link KlighdPath}, {@link KlighdImage}, {@link KlighdStyledText},
+     * and {@link KCustomFigureNode} serving the purpose of avoiding code clones.<br>
+     * This class cares about tracking the corresponding {@link KRendering} element, contributing
+     * semantic model data into drawn (vector graphic) images, and determining the visibility the
+     * figure wrt. the diagram zoom scale while drawing the diagram.
      */
-    public static class KlighdFigureNode<T extends KRendering> extends KlighdNode {
+   public static class KlighdFigureNode<T extends KRendering> extends KlighdNode {
 
         private static final long serialVersionUID = -3975636790695588901L;
 
