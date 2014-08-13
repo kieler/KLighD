@@ -54,8 +54,6 @@ public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILab
 
     /** the junction points. */
     private Point2D[] junctionPoints = new Point2D[0];
-    
-    private KlighdFigureNode<?> pathNode = null;
 
     /**
      * Constructs a Piccolo2D node for representing a {@link KEdge}.
@@ -159,24 +157,19 @@ public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILab
     }
 
     /**
-     * Configures the representing figure node that is required for properly computing the
-     * intersection of this edge node with any other given bounds, see
-     * {@link #intersects(Rectangle2D)}.<br>
-     * This is required for being able to properly pick edges.
-     * 
-     * @param path
-     *            the {@link KlighdFigureNode} representing this edge
-     */
-    public void setRepresentation(final KlighdFigureNode<?> path) {
-        this.pathNode = path;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public boolean intersects(final Rectangle2D localBounds) {
-        return pathNode != null && pathNode.intersects(localBounds); 
+        // By our design there should be only one child
+        //  that is an instance of KlighdPath.
+        // However, IMO this way is more precise wrt. the general API
+        for (final Object child : getChildrenReference()) {
+            if (((PNode) child).intersects(localBounds)) {
+                return true;
+            }
+        }
+        return false; 
     }
 
     /**
