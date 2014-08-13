@@ -54,10 +54,10 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     private KNodeRenderingController renderingController;
 
     /** a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.*/
-    private final PLayer portLayer;
+    private PLayer portLayer;
     
     /** a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.*/
-    private final PLayer labelLayer;
+    private PLayer labelLayer;
     
     /** the child area for this node. */
     private final KChildAreaNode childArea;
@@ -87,8 +87,6 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     public KNodeNode(final KNode node, final boolean edgesFirst) {
         super(node);
 
-        this.portLayer = new KDisposingLayer();
-        this.labelLayer = new KDisposingLayer();
         this.childArea = new KChildAreaNode(this, edgesFirst);
 
         this.childAreaCamera = new PCamera() {
@@ -127,8 +125,6 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         this.childAreaCamera.addLayer(this.childArea);
 
         this.addChild(childAreaCamera);
-        this.addChild(portLayer);
-        this.addChild(labelLayer);
 
         this.addPropertyChangeListener(PLayer.PROPERTY_CAMERAS, new PropertyChangeListener() {
             // this property change listener reacts on changes in the cameras list
@@ -207,7 +203,23 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     public KNodeRenderingController getRenderingController() {
         return this.renderingController;
     }
-    
+
+    /**
+     * Get the PortLayer.
+     * @return a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.
+     */
+    public PLayer getPortLayer() {
+        return this.portLayer;
+    }
+
+    /**
+     * Get the LabelLayer.
+     * @return a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.
+     */
+    public PLayer getLabelLayer() {
+        return this.labelLayer;
+    }
+
     /**
      * Adds the representation of a port to this node.
      * 
@@ -215,6 +227,10 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      *            the port representation
      */
     public void addPort(final KPortNode port) {
+        if (portLayer == null) {
+            portLayer = new KDisposingLayer();
+            addChild(labelLayer == null ? getChildrenCount() : getChildrenCount() - 1, portLayer);
+        }
         portLayer.addChild(port);
     }
 
@@ -225,6 +241,10 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      *            the label representation
      */
     public void addLabel(final KLabelNode label) {
+        if (labelLayer == null) {
+            labelLayer = new KDisposingLayer();
+            addChild(labelLayer);
+        }
         labelLayer.addChild(label);
     }
     
@@ -420,22 +440,6 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
             paintContext.popTransparency(getTransparency());
             paintContext.popTransform(getTransformReference(false));
         }
-    }
-    
-    /**
-     * Get the PortLayer.
-     * @return a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.
-     */
-    public PLayer getPortLayer() {
-        return this.portLayer;
-    }
-    
-    /**
-     * Get the LabelLayer.
-     * @return a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.
-     */
-    public PLayer getLabelLayer() {
-        return this.labelLayer;
     }
     
     /**
