@@ -56,6 +56,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author msp
  * @author uru
+ * @author chsch
  */
 public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
@@ -119,6 +120,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         
         outlineCanvas = new KlighdCanvas(container, SWT.NONE);
         outlineCanvas.setVisible(false);
+        
+        // since we don't rely on the picked node in OutlineDragHandler below
+        //  we just set the camera non-pickable in order reduce performance waste
+        outlineCanvas.getCamera().setPickable(false);
+
 
         // add a handler to the outline canvas to allow dragging
         outlineCanvas.addInputEventListener(new KlighdBasicInputEventHandler(new OutlineDragHandler()));
@@ -374,12 +380,17 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     }
 
 
-
     /**
      * A drag handler that allows the user to drag the outline rectangle within the outline view and
-     * propagates the movement to the actual editor part.
+     * propagates the movement to the actual editor part.<br>
+     * <br>
+     * <b>Note:</b> The {@link #outlineCanvas}' camera is set non-pickable in order to reduce
+     * performance waste. However, due to {@link edu.umd.cs.piccolo.PInputManager#processInput()
+     * PInputManager#processInput()} and {@link PCamera#pick(double, double, double)}
+     * <code>event.getPickedNode()</code> is supposed to return the camera, which is absolutely fine :-).
      * 
      * @author uru
+     * @author chsch
      */
     private class OutlineDragHandler extends PDragSequenceEventHandler {
 
