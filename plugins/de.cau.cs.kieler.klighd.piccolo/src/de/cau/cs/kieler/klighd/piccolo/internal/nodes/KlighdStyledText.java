@@ -82,6 +82,10 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     public KlighdStyledText(final KText theKText) {
         this(theKText.getText(), KlighdConstants.DEFAULT_FONT);
         this.setRendering(theKText);
+
+        // re-enable the pickability of textNode as
+        //  the selection and cursor selection will not work otherwise
+        this.setPickable(true);
     }
 
     /**
@@ -103,6 +107,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The SWT {@link FontData} configuration for this text component.
      */
     public KlighdStyledText(final String theText, final FontData theFont) {
+        super();
         this.text = theText;
         this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
     }

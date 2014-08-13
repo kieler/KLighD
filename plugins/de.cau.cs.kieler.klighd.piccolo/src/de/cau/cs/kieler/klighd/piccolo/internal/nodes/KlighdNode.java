@@ -254,6 +254,27 @@ public abstract class KlighdNode extends PNode {
 
         private static final long serialVersionUID = -3975636790695588901L;
 
+        /**
+         * Standard constructor.
+         */
+        public KlighdFigureNode() {
+            super();
+            
+            setVisible(true);
+            setPickable(false);
+        }
+
+        /**
+         * Constructor.
+         * 
+         * @param rendering
+         *            the {@link KRendering} element being represented by this {@link KlighdFigureNode}
+         */
+        public KlighdFigureNode(final T rendering) {
+            this();
+            setRendering(rendering);
+        }
+        
         private T rendering;
 
         /**

@@ -125,16 +125,22 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     private boolean isSpline = false;
 
     /**
-     * Creates an empty {@link KlighdPath}.
+     * Standard constructor.
      */
     public KlighdPath() {
-        // this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
-        super();
-        
-        // reacting on event of PROPERTY_BOUNDS seems to be not necessary as that will lead to
-        //  a call of one of the 'setPathTo...' methods below that in turn will lead to a call of
-        //  'updateShape', which calls 'disposeSWTResource', too!
+        super();        
     }
+
+    /**
+     * Constructor.
+     * 
+     * @param rendering
+     *            the {@link KRendering} element being represented by this {@link KlighdPath}
+     */
+    public KlighdPath(final KRendering rendering) {
+        super(rendering);
+    }
+
 
     /**
      * Changes the underlying shape of this {@link KlighdPath}.
