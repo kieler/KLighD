@@ -17,15 +17,13 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
- * The Piccolo node for representing a {@code KRendering} being treated as an edge decorator.
+ * The Piccolo2D node for representing a {@code KRendering} being treated as an edge decorator.
  * 
  * @author chsch
  */
-public class KDecoratorNode extends PChildRepresentedNode implements ITracingElement<KRendering> {
+public class KDecoratorNode extends KlighdNode.KlighdFigureNode<KRendering> {
 
     private static final long serialVersionUID = -2824069198134013044L;
-
-    private KRendering rendering;
 
     /**
      * Standard constructor.
@@ -34,15 +32,8 @@ public class KDecoratorNode extends PChildRepresentedNode implements ITracingEle
      *            the rendering being represented by this node.
      */
     public KDecoratorNode(final KRendering theRendering) {
-        this.rendering = theRendering;
+        this.setRendering(theRendering);
         this.setPickable(true);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public KRendering getGraphElement() {
-        return this.rendering;
     }
 
     /**
@@ -51,8 +42,8 @@ public class KDecoratorNode extends PChildRepresentedNode implements ITracingEle
      * KDecoratorNodes state greedy picking as it is unlikely that they contain nested pickable
      * elements, e.g. text fields.
      */
+    @Override
     protected boolean pick(final PPickPath pickPath) {
         return true;
     }
-    
 }

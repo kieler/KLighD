@@ -14,28 +14,22 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * The Piccolo node for representing a {@code KLabel}.
+ * The Piccolo2D node for representing a {@code KLabel}.
  * 
  * @author mri
+ * @author chsch
  */
-public class KLabelNode extends KlighdNode implements IGraphElement<KLabel> {
+public class KLabelNode extends KlighdNode.KlighdGraphNode<KLabel> {
 
     private static final long serialVersionUID = -3999806360081871118L;
 
     /** the property name for changes of the label's text. */
     public static final String PROPERTY_TEXT = "labelText";
 
-    /** the represented {@link KLabel}. */
-    private transient KLabel label;
     /** the label rendering controller deployed to manage the rendering of {@link #label}. */
     private KLabelRenderingController renderingController;
 
@@ -43,20 +37,13 @@ public class KLabelNode extends KlighdNode implements IGraphElement<KLabel> {
     private String text = "";
 
     /**
-     * Constructs a Piccolo node for representing a {@code KLabel}.
+     * Constructs a Piccolo2D node for representing a {@code KLabel}.
      * 
      * @param label
      *            the label
      */
     public KLabelNode(final KLabel label) {
-        this.label = label;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KLabel getGraphElement() {
-        return label;
+        super(label);
     }
 
     /**
@@ -99,28 +86,5 @@ public class KLabelNode extends KlighdNode implements IGraphElement<KLabel> {
      */
     public String getText() {
         return text;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paint(final PPaintContext paintContext) {
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
-                        KlighdProperties.SEMANTIC_DATA);
-        g2.startGroup(sd);
-        super.paint(paintContext);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintAfterChildren(final PPaintContext paintContext) {
-        super.paintAfterChildren(paintContext);
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        g2.endGroup();
     }
 }

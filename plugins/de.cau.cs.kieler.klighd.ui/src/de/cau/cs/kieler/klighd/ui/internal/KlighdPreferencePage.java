@@ -64,7 +64,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
             + " If deactivated the side bars must be expanded manually.";
     
     private static final String SHOW_ZOOM_CONFIG_BUTTONS_TOOLTIP =
-            "Zoom buttons provides options to set the zoom behavior."
+            "Zoom buttons are used to change the zooming behavior."
             + " If deactivated the zoom buttons are not visible.";
 
     /** checkbox for 'zoom on workbench part change'. */
@@ -223,7 +223,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
                 KlighdPreferences.ANIMATE_LAYOUT));
         
         advancedPanning = new Button(generalGroup, SWT.CHECK | SWT.LEFT);
-        advancedPanning.setText("Advanced Panning");
+        advancedPanning.setText("Advanced panning");
         advancedPanning.setToolTipText(ADVANCED_PANNING_TOOLTIP);
         advancedPanning.setSelection(getPreferenceStore().getBoolean(
                 KlighdPreferences.ADVANCED_PANNING_MODE));
@@ -246,7 +246,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         ((RowLayout) zoomGroup.getLayout()).spacing = 5;
         
         final Label zoomSettingsLabel = new Label(zoomGroup, SWT.NONE);
-        zoomSettingsLabel.setText("Initial diagram zoom style configuration:");
+        zoomSettingsLabel.setText("When opening a diagram:");
         
         final RowLayout zoomStyleGroupLayout = new RowLayout(SWT.HORIZONTAL);
         zoomStyleGroupLayout.marginLeft = 0;
@@ -345,7 +345,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
         // SUPPRESS CHECKSTYLE NEXT 30 MagicNumber
         
         final Label width = new Label(magnificationLensSizeGroup, SWT.NONE);
-        width.setText("width:");
+        width.setText("Width:");
         magLensWidth = new Spinner(magnificationLensSizeGroup, SWT.NONE);
         magLensWidth.setMinimum(100);
         magLensWidth.setMaximum(1000);
@@ -355,7 +355,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
                 KlighdPreferences.MAGNIFICATION_LENS_WIDTH));
         
         final Label height = new Label(magnificationLensSizeGroup, SWT.NONE);
-        height.setText("height:");
+        height.setText("Height:");
         magLensHeight = new Spinner(magnificationLensSizeGroup, SWT.NONE);
         magLensHeight.setMinimum(100);
         magLensHeight.setMaximum(1000);
@@ -365,7 +365,7 @@ public final class KlighdPreferencePage extends PreferencePage implements IWorkb
                 KlighdPreferences.MAGNIFICATION_LENS_HEIGHT));
         
         final Label scale = new Label(magnificationLensSizeGroup, SWT.NONE);
-        scale.setText("scale:");
+        scale.setText("Scale:");
         magLensScale = new Spinner(magnificationLensSizeGroup, SWT.NONE);
         magLensScale.setMinimum(50);
         magLensScale.setDigits(2);

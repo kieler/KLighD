@@ -13,16 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.List;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * Abstract diagram exporter providing the common methods
@@ -109,7 +108,7 @@ public abstract class AbstractDiagramExporter {
         graphics.setFillColor(KlighdConstants.WHITE);
         graphics.fill(theBounds);
 
-        final PPaintContext paintContext = new PPaintContext((Graphics2D) graphics);
+        final KlighdPaintContext paintContext = new KlighdPaintContext(graphics);
 
         // the following setting contradict the defaults in BatikSVGGraphics
         //  which leads to a blown-up svg file with a huge amount of repeated local style settings

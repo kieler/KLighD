@@ -28,6 +28,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.nodes.PText;
@@ -38,9 +39,6 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * strings supporting {@link org.eclipse.swt.graphics.TextStyle TextStyles}.<br>
  * It is inspired by the Piccolo2D {@link edu.umd.cs.piccolox.swt.PSWTText PSWTText} and is
  * tailored/extended to those features required by KLighD.<br>
- * <br>
- * It enables proper view-model-tracing by preserving the related {@link KText} view model element
- * and implementing {@link ITracingElement}.<br>
  * <br>
  * <b>Note:</b> All <code>invalidate...</code> and <code>repaint</code> calls are deactivated in
  * order to avoid superfluous repaint activities. The repaint events are fired by
@@ -55,11 +53,9 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * 
  * @author chsch
  */
-public class KlighdStyledText extends KlighdNode implements ITracingElement<KText> {
+public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
 
     private static final long serialVersionUID = -4463204146476543138L;
-
-    private KText kText = null;
 
     private String text = "";
     
@@ -85,7 +81,11 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
      */
     public KlighdStyledText(final KText theKText) {
         this(theKText.getText(), KlighdConstants.DEFAULT_FONT);
-        this.kText = theKText;
+        this.setRendering(theKText);
+
+        // re-enable the pickability of textNode as
+        //  the selection and cursor selection will not work otherwise
+        this.setPickable(true);
     }
 
     /**
@@ -107,8 +107,17 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
      *            The SWT {@link FontData} configuration for this text component.
      */
     public KlighdStyledText(final String theText, final FontData theFont) {
+        super();
         this.text = theText;
         this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSelectable() {
+        return !getRendering().getProperty(KlighdProperties.NOT_SELECTABLE);
     }
 
     /**
@@ -129,13 +138,6 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
     public void setText(final String theText) {
         this.text = theText;
         updateBounds();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KText getGraphElement() {
-        return this.kText;
     }
 
     /**
@@ -337,12 +339,19 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
     private static final Rectangle2D BACKGROUND = new Rectangle2D.Double();
 
     @Override
-    public void paint(final PPaintContext ppc) {
+    protected void paint(final PPaintContext paintContext) {
         if (Strings.isNullOrEmpty(this.text)) {
             return;
         }
 
-        final KlighdSWTGraphics graphics = (KlighdSWTGraphics) ppc.getGraphics();
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        // first test whether this figure shall be drawn at all
+        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+            return;
+        }
+
+        final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
 
         final int currentAlpha = graphics.getAlpha();
         final float currentAlphaFloat = currentAlpha;
@@ -379,9 +388,7 @@ public class KlighdStyledText extends KlighdNode implements ITracingElement<KTex
             graphics.setFont(KlighdConstants.DEFAULT_FONT);
         }
 
-        if (kText != null) {
-            graphics.addSemanticData(kText.getProperty(KlighdProperties.SEMANTIC_DATA));
-        }
+        addSemanticData(kpc);
 
         graphics.drawText(text);
 

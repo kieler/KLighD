@@ -21,9 +21,12 @@ import edu.umd.cs.piccolo.util.PPickPath;
 /**
  * A dedicated Piccolo2D node type whose instances represent
  * {@link de.cau.cs.kieler.core.krendering.KChildArea KChildAreas}.<br>
+ * The method {@link #setExpanded(boolean)} simply forwards to {@link #setVisible(boolean)} so in
+ * case the container {@link INode} is collapsed <code>this</code> {@link KChildAreaNode} is just
+ * set invisible.<br>
  * <br>
- * Inherits from PLayer in order to enable its observation by a {@link edu.umd.cs.piccolo.PCamera
- * PCamera}.
+ * Inherits from {@link KDisposingLayer} in order to enable its observation by a
+ * {@link edu.umd.cs.piccolo.PCamera PCamera}.
  * 
  * @author mri
  * @author chsch
@@ -40,15 +43,18 @@ public class KChildAreaNode extends KDisposingLayer {
     public static final String PROPERTY_EXPANSION = "expansion";
 
     private final INode containingINode;
+
+    private final boolean edgesFirst;
+
     /** the node layer. */
-    private final PLayer nodeLayer;
+    private PLayer nodeLayer;
     
     /** the edge layer. */
-    private final PLayer edgeLayer;
+    private PLayer edgeLayer;
 
     /** flag indicating whether to clip nodes and edges. */
     private boolean clip = false;
-    
+
     /** flag indicating whether the child area is expanded. */
     private boolean expanded = false;
 
@@ -64,21 +70,26 @@ public class KChildAreaNode extends KDisposingLayer {
     public KChildAreaNode(final INode containingNode, final boolean edgesFirst) {
         super();
         this.setPickable(false);
-        this.containingINode = containingNode; 
+        this.containingINode = containingNode;
+        this.edgesFirst = edgesFirst;
+    }
 
-        this.nodeLayer = new KDisposingLayer();
-        this.edgeLayer = new KDisposingLayer();
+    /**
+     * Get the EdgeLayer.
+     * 
+     * @return a dedicated layer accommodating all attached {@link KEdgeNode KEdgeNodes}.
+     */
+    public PLayer getEdgeLayer() {
+        return this.edgeLayer;
+    }
 
-        if (edgesFirst) {
-            // this non-usual case required by a customer ;-)
-            super.addChild(edgeLayer);
-            super.addChild(nodeLayer);
-
-        } else {
-            // the regular (preferred) case
-            super.addChild(nodeLayer);
-            super.addChild(edgeLayer);
-        }
+    /**
+     * Get the NodeLayer.
+     * 
+     * @return a dedicated layer accommodating all attached {@link KNodeNode KNodeNodes}.
+     */
+    public PLayer getNodeLayer() {
+        return this.nodeLayer;
     }
 
     /**
@@ -98,10 +109,14 @@ public class KChildAreaNode extends KDisposingLayer {
      *            the node representation
      */
     public void addNode(final KNodeNode node) {
+        if (nodeLayer == null) {
+            nodeLayer = new KDisposingLayer();
+            addChild(edgesFirst ? getChildrenCount() : 0, nodeLayer);
+        }
         nodeLayer.addChild(node);
         node.setParentNode(containingINode);
     }
-    
+
     /**
      * Adds a representation of an edge to this child area.
      * 
@@ -109,6 +124,10 @@ public class KChildAreaNode extends KDisposingLayer {
      *            the edge representation
      */
     public void addEdge(final KEdgeNode edge) {
+        if (edgeLayer == null) {
+            edgeLayer = new KDisposingLayer();
+            addChild(edgesFirst ? 0 : getChildrenCount(), edgeLayer);
+        }
         edgeLayer.addChild(edge);
     }
 
@@ -120,7 +139,7 @@ public class KChildAreaNode extends KDisposingLayer {
     public boolean isExpanded() {
         return expanded;
     }
-    
+
     /**
      * Sets whether this child area is expanded.
      * 
@@ -130,6 +149,9 @@ public class KChildAreaNode extends KDisposingLayer {
     public void setExpanded(final boolean expanded) {
         if (this.expanded != expanded) {
             this.expanded = expanded;
+
+            setVisible(expanded);
+
             firePropertyChange(-1, PROPERTY_EXPANSION, !expanded, expanded);   
         }
     }
@@ -150,8 +172,7 @@ public class KChildAreaNode extends KDisposingLayer {
      * Toggles the expansion state of <code>this</code> {@link KChildAreaNode}.
      */
     public void toggleExpansion() {
-        this.expanded = !this.expanded;
-        firePropertyChange(-1, PROPERTY_EXPANSION, !this.expanded, this.expanded);   
+        setExpanded(!this.expanded);
     }
 
     /**
@@ -163,17 +184,7 @@ public class KChildAreaNode extends KDisposingLayer {
             paintContext.pushClip(getBoundsReference());
         }
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void fullPaint(final PPaintContext paintContext) {
-        if (expanded) {
-            super.fullPaint(paintContext);
-        }
-    }   
-    
+
     /**
      * {@inheritDoc}
      */
@@ -189,11 +200,6 @@ public class KChildAreaNode extends KDisposingLayer {
      */
     @Override
     public boolean fullPick(final PPickPath pickPath) {
-        // if this child area is not expanded don't pick anything
-        if (!expanded) {
-            return false;
-        }
-        
         // special picking when this child area has clipping enabled
         if (clip) {
             // never pick the child area and only pick children in the clipped area
@@ -217,21 +223,4 @@ public class KChildAreaNode extends KDisposingLayer {
         }
         return false;
     }
-    
-    /**
-     * Get the EdgeLayer.
-     * @return a dedicated layer accommodating all attached {@link KEdgeNode KEdgeNodes}.
-     */
-    public PLayer getEdgeLayer() {
-        return this.edgeLayer;
-    }
-    
-    /**
-     * Get the NodeLayer.
-     * @return a dedicated layer accommodating all attached {@link KNodeNode KNodeNodes}.
-     */
-    public PLayer getNodeLayer() {
-        return this.nodeLayer;
-    }
-    
 }

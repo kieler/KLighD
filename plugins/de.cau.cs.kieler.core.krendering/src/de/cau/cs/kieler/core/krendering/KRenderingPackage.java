@@ -4017,13 +4017,22 @@ public interface KRenderingPackage extends EPackage {
     int KSTYLE_REF__STYLE_HOLDER = KSTYLE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Referenced Types</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_REF__REFERENCED_TYPES = KSTYLE_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>KStyle Ref</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KSTYLE_REF_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 1;
+    int KSTYLE_REF_FEATURE_COUNT = KSTYLE_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextStrikeoutImpl <em>KText Strikeout</em>}' class.
@@ -5825,6 +5834,17 @@ public interface KRenderingPackage extends EPackage {
     EReference getKStyleRef_StyleHolder();
 
     /**
+     * Returns the meta object for the attribute list '{@link de.cau.cs.kieler.core.krendering.KStyleRef#getReferencedTypes <em>Referenced Types</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Referenced Types</em>'.
+     * @see de.cau.cs.kieler.core.krendering.KStyleRef#getReferencedTypes()
+     * @see #getKStyleRef()
+     * @generated
+     */
+    EAttribute getKStyleRef_ReferencedTypes();
+
+    /**
      * Returns the meta object for class '{@link de.cau.cs.kieler.core.krendering.KTextStrikeout <em>KText Strikeout</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -7262,6 +7282,14 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EReference KSTYLE_REF__STYLE_HOLDER = eINSTANCE.getKStyleRef_StyleHolder();
+
+        /**
+         * The meta object literal for the '<em><b>Referenced Types</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute KSTYLE_REF__REFERENCED_TYPES = eINSTANCE.getKStyleRef_ReferencedTypes();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.core.krendering.impl.KTextStrikeoutImpl <em>KText Strikeout</em>}' class.

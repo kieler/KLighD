@@ -61,6 +61,7 @@ import de.cau.cs.kieler.core.krendering.LineStyle
 import de.cau.cs.kieler.core.krendering.Trigger
 import de.cau.cs.kieler.core.krendering.Underline
 import de.cau.cs.kieler.core.krendering.VerticalAlignment
+import org.eclipse.emf.ecore.EClass
 
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 
@@ -286,46 +287,190 @@ class KRenderingExtensions {
     private static final (KStyle) => boolean IS_SELECTION = [
         it.selection
     ];
-    
+
+
+    // styleRef definition
+
     // how might a getStyleRef look like?
     //  In case we allow multiple that may refine each other the getter returns an iterator?
-    
+
     def <T extends KRendering> T setStyleRef(T rendering, KStyleHolder styleHolder) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KStyleRef)).toList);
-        return rendering => [
-            it.styles += createKStyleRef() => [
-                it.styleHolder = styleHolder;
-            ];
+
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.styleHolder = styleHolder;
         ];
+        return rendering;
     }
  
     def <T extends KRendering> T setSelectionStyleRef(T rendering, KStyleHolder styleHolder) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KStyleRef)).toList);
-        return rendering => [
-            it.styles += createKStyleRef() => [
-                it.selection = true;
-                it.styleHolder = styleHolder;
-            ];
+
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.selection = true;
+            it.styleHolder = styleHolder;
         ];
+        return rendering;
+    }
+ 
+    def <T extends KRendering> T setStyleRef(T rendering, KStyleHolder styleHolder, Class<KStyle>... styleTypes) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KStyleRef)).toList);
+
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes;
+        ];
+        return rendering;
+    }
+ 
+    def <T extends KRendering> T setSelectionStyleRef(T rendering, KStyleHolder styleHolder, Class<KStyle>... styleTypes) {
+        rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KStyleRef)).toList);
+
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.selection = true;
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes;
+        ];
+        return rendering;
+    }
+ 
+    def <T extends KRendering> T setStyleRef(T rendering, KStyleHolder styleHolder, EClass... styleTypes) {
+        rendering.styles.removeAll(rendering.styles.filter(typeof(KStyleRef)).toList);
+
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes.map[
+                    it.instanceClass
+                ].filter[
+                    typeof(KStyle).isAssignableFrom(it)
+                ] as Iterable<?> as Iterable<Class<KStyle>>;
+        ];
+        return rendering;
+    }
+ 
+    def <T extends KRendering> T setSelectionStyleRef(T rendering, KStyleHolder styleHolder, EClass... styleTypes) {
+        rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KStyleRef)).toList);
+
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.selection = true;
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes.map[
+                    it.instanceClass
+                ].filter[
+                    typeof(KStyle).isAssignableFrom(it)
+                ] as Iterable<?> as Iterable<Class<KStyle>>;
+        ];
+        return rendering;
     }
  
     def <T extends KRendering> T addStyleRef(T rendering, KStyleHolder styleHolder) {
-        return rendering => [
-            it.styles += createKStyleRef() => [
-                it.styleHolder = styleHolder;
-            ];
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.styleHolder = styleHolder;
         ];
+        return rendering;
     }
  
     def <T extends KRendering> T addSelectionStyleRef(T rendering, KStyleHolder styleHolder) {
-        return rendering => [
-            it.styles += createKStyleRef() => [
-                it.selection = true;
-                it.styleHolder = styleHolder;
-            ];
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.selection = true;
+            it.styleHolder = styleHolder;
         ];
+        return rendering;
     }
  
+    def <T extends KRendering> T addStyleRef(T rendering, KStyleHolder styleHolder, Class<KStyle>... styleTypes) {
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes;
+        ];
+        return rendering;
+    }
+ 
+    def <T extends KRendering> T addSelectionStyleRef(T rendering, KStyleHolder styleHolder, Class<KStyle>... styleTypes) {
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.selection = true;
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes;
+        ];
+        return rendering;
+    }
+ 
+    def <T extends KRendering> T addStyleRef(T rendering, KStyleHolder styleHolder, EClass... styleTypes) {
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes.map[
+                    it.instanceClass
+                ].filter[
+                    typeof(KStyle).isAssignableFrom(it)
+                ] as Iterable<?> as Iterable<Class<KStyle>>;
+        ];
+        return rendering;
+    }
+ 
+    def <T extends KRendering> T addSelectionStyleRef(T rendering, KStyleHolder styleHolder, EClass... styleTypes) {
+        if (styleHolder == null) {
+            return rendering;
+        }
+
+        rendering.styles += createKStyleRef() => [
+            it.selection = true;
+            it.styleHolder = styleHolder;
+            it.referencedTypes += styleTypes.map[
+                    it.instanceClass
+                ].filter[
+                    typeof(KStyle).isAssignableFrom(it)
+                ] as Iterable<?> as Iterable<Class<KStyle>>;
+        ];
+        return rendering;
+    }
+
+
+    // invisibility definition
+
     def KInvisibility getInvisible(KRendering rendering) {
         return rendering.styles.filter(typeof(KInvisibility)).last?:(createKInvisibility());
     }

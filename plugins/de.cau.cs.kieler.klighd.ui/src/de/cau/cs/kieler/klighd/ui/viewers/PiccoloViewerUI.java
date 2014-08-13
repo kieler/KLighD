@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.internal.viewers;
+package de.cau.cs.kieler.klighd.ui.viewers;
 
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
@@ -44,14 +44,17 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import com.google.common.base.Function;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
@@ -72,6 +75,23 @@ import edu.umd.cs.piccolo.PNode;
  * @author ckru
  */
 public class PiccoloViewerUI extends PiccoloViewer {
+
+    /** The identifier of this viewer type as specified in the extension. */
+    public static final String ID = "de.cau.cs.kieler.klighd.ui.viewers.PiccoloViewerUI";
+
+    /**
+     * The required corresponding provider class.
+     */
+    public static class Provider implements IViewerProvider {
+
+        /**
+         * {@inheritDoc}
+         */
+        public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
+            return new PiccoloViewerUI(parentViewer, parent);
+        }
+    }
+
 
     private KlighdMainCamera camera;
 
@@ -137,6 +157,15 @@ public class PiccoloViewerUI extends PiccoloViewer {
      */
     private StyledText labelWidget;
 
+    /**
+     * Getter providing the employed {@link StyledText} SWT widget, e.g. for installing additional
+     * event {@link Listener Listeners}.
+     * 
+     * @return the employed {@link StyledText} widget.
+     */
+    protected StyledText getLabelTextWidget() {
+        return labelWidget;
+    }
 
     /**
      * Adds a text widget to the viewer that can be used to select and edit texts.
@@ -225,8 +254,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
         public void handleEvent(final Event event) {
             final PiccoloViewerUI thisViewer = PiccoloViewerUI.this;
             final StyledText text = labelWidget;
-            final ITracingElement<KText> graphNode =
-                    (KlighdStyledText) text.getData(STYLED_TEXT_FIGURE_KEY);
+
+            @SuppressWarnings("unchecked")
+            final KlighdFigureNode<KText> graphNode =
+                    (KlighdFigureNode<KText>) text.getData(STYLED_TEXT_FIGURE_KEY);
 
             final String selection;
             switch (event.type) {

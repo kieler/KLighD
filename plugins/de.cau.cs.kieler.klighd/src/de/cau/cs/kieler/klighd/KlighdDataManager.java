@@ -38,7 +38,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.core.WrappedException;
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
 
@@ -122,7 +121,7 @@ public final class KlighdDataManager {
     private Map<Class<?>, Iterable<ISynthesis>> concreteTypeSynthesisMapping = Maps.newHashMap();
 
     /** the mapping of ids on the associated viewer providers. */
-    private Map<String, IViewerProvider<KNode>> idViewerProviderMapping = Maps.newHashMap();
+    private Map<String, IViewerProvider> idViewerProviderMapping = Maps.newHashMap();
     
     /** the mapping of ids on the associated update strategies. */
     private Map<String, IUpdateStrategy> idUpdateStrategyMapping = Maps.newHashMap();
@@ -212,9 +211,8 @@ public final class KlighdDataManager {
             try {
                 if (ELEMENT_VIEWER.equals(element.getName())) {
                     // initialize viewer provider from the extension point
-                    @SuppressWarnings("unchecked")
-                    IViewerProvider<KNode> viewerProvider = (IViewerProvider<KNode>) element
-                            .createExecutableExtension(ATTRIBUTE_CLASS);
+                    final IViewerProvider viewerProvider =
+                            (IViewerProvider) element.createExecutableExtension(ATTRIBUTE_CLASS);
                     if (viewerProvider != null) {
                         String id = element.getAttribute(ATTRIBUTE_ID);
                         if (id == null || id.length() == 0) {
@@ -457,7 +455,7 @@ public final class KlighdDataManager {
      * 
      * @return an immutable collection of the registered {@link IViewerProvider IViewerProviders}
      */
-    public Collection<IViewerProvider<KNode>> getAvailableViewerProviders() {
+    public Collection<IViewerProvider> getAvailableViewerProviders() {
         return Collections.unmodifiableCollection(idViewerProviderMapping.values());
     }
 
@@ -468,7 +466,7 @@ public final class KlighdDataManager {
      *            the identifier
      * @return the viewer provider or null if there is no viewer provider with the given id
      */
-    public IViewerProvider<KNode> getViewerProviderById(final String id) {
+    public IViewerProvider getViewerProviderById(final String id) {
         if (id == null) {
             return null;
         }

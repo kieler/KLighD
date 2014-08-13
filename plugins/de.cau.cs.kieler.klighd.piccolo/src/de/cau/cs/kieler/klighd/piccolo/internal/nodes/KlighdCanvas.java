@@ -29,6 +29,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdFocusEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdInputManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PInputManager;
 import edu.umd.cs.piccolo.PRoot;
@@ -144,6 +145,11 @@ public class KlighdCanvas extends PSWTCanvas {
         graphics.setDevice(device);
         graphics.setGC(gc);
         return (Graphics2D) graphics;
+    }
+
+    @Override
+    protected KlighdPaintContext getPaintContext(final Graphics2D g2) {
+        return new KlighdPaintContext(graphics, false);
     }
 
     /**

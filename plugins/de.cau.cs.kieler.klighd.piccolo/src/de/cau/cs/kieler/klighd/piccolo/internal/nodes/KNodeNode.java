@@ -26,6 +26,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -41,24 +42,22 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphElement<KNode> {
+public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
+        ILabeledGraphElement<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
     
     /** the parent {@link INode}. */
     private INode parent;
 
-    /** the represented {@link KNode}. */
-    private KNode node;
-
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
 
     /** a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.*/
-    private final PLayer portLayer;
+    private PLayer portLayer;
     
     /** a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.*/
-    private final PLayer labelLayer;
+    private PLayer labelLayer;
     
     /** the child area for this node. */
     private final KChildAreaNode childArea;
@@ -86,28 +85,46 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
      *            edges
      */
     public KNodeNode(final KNode node, final boolean edgesFirst) {
-        super();
+        super(node);
 
-        this.node = node;
-        this.portLayer = new KDisposingLayer();
-        this.labelLayer = new KDisposingLayer();
         this.childArea = new KChildAreaNode(this, edgesFirst);
 
-        this.childAreaCamera = new PCamera();
+        this.childAreaCamera = new PCamera() {
 
-        // the childAreaCamera is set unpickable because it would disturb the "click on canvas"
-        //  feature in case the diagram is clipped to this kNodeNode
-        // without the pickable setting this kNodeNode will be picked in the clipping case,
-        //  see #fullPick(...) below and KlighdActionEventHandler, l.105ff
-        this.childAreaCamera.setPickable(false);
+            private static final long serialVersionUID = 8786761952375611448L;
+
+            // Following method is overridden just for deactivating the 'return true'
+            //  in case #pickCameraView(...) returns 'false'.
+            // Otherwise the "click on canvas" feature would be disturbed in case
+            //  the diagram is clipped to this KNodeNode
+            @Override
+            protected boolean pickAfterChildren(final PPickPath pickPath) {
+                if (intersects(pickPath.getPickBounds())) {
+                    pickPath.pushTransform(getViewTransformReference());
+
+                    if (pickCameraView(pickPath)) {
+                        return true;
+                    }
+
+                    pickPath.popTransform(getViewTransformReference());
+
+                    // The required change compared to super implementation:
+                    // return true;
+                }
+                return false;
+            }
+        };
+
+        // Without this 'pickable' setting this KNodeNode may be picked in the clipping case
+        //  (especially if the child area is nested in figure nodes), and no nested children
+        //  can be picked anymore, see #fullPick(...) below and KlighdActionEventHandler, l.306ff
+        this.childAreaCamera.setPickable(true);
         this.childAreaCamera.setChildrenPickable(true);
 
         this.childAreaCamera.setVisible(false);
         this.childAreaCamera.addLayer(this.childArea);
 
         this.addChild(childAreaCamera);
-        this.addChild(portLayer);
-        this.addChild(labelLayer);
 
         this.addPropertyChangeListener(PLayer.PROPERTY_CAMERAS, new PropertyChangeListener() {
             // this property change listener reacts on changes in the cameras list
@@ -168,13 +185,6 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
     /**
      * {@inheritDoc}
      */
-    public KNode getGraphElement() {
-        return node;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
     public void setRenderingController(
             final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
         if (controller == null || controller instanceof KNodeRenderingController) {
@@ -193,7 +203,23 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
     public KNodeRenderingController getRenderingController() {
         return this.renderingController;
     }
-    
+
+    /**
+     * Get the PortLayer.
+     * @return a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.
+     */
+    public PLayer getPortLayer() {
+        return this.portLayer;
+    }
+
+    /**
+     * Get the LabelLayer.
+     * @return a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.
+     */
+    public PLayer getLabelLayer() {
+        return this.labelLayer;
+    }
+
     /**
      * Adds the representation of a port to this node.
      * 
@@ -201,6 +227,10 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
      *            the port representation
      */
     public void addPort(final KPortNode port) {
+        if (portLayer == null) {
+            portLayer = new KDisposingLayer();
+            addChild(labelLayer == null ? getChildrenCount() : getChildrenCount() - 1, portLayer);
+        }
         portLayer.addChild(port);
     }
 
@@ -211,6 +241,10 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
      *            the label representation
      */
     public void addLabel(final KLabelNode label) {
+        if (labelLayer == null) {
+            labelLayer = new KDisposingLayer();
+            addChild(labelLayer);
+        }
         labelLayer.addChild(label);
     }
     
@@ -290,7 +324,7 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
      */
     @Override
     public boolean fullPick(final PPickPath pickPath) {
-        final boolean fullPick = super.fullPick(pickPath);
+        final boolean fullPick = fullPickOri(pickPath);
         
         // in case the diagram is clipped to this kNodeNode (isRootLayer == true)
         //  and the user clicked outside the bounds of this (expanded) kNodeNode
@@ -305,6 +339,61 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
         return fullPick;
     }
 
+    /**
+     * @see PNode#fullPick(PPickPath)
+     * 
+     * @param pickPath
+     *            the pick path to add the node to if its picked
+     * @return true if this node or one of its descendants was picked.
+     */
+    public boolean fullPickOri(final PPickPath pickPath) {
+        // Unfortunately I had to copy the whole method just for
+        //  introducing the filter in the loop below, since 'PNode#fullPick(...)'
+        //  accesses the child list directly rather via 'getChildrenReference()'.
+        // I guess it's worth a related API change in some future Piccolo2D version. 
+        
+        // The filter is in charge of masking out the rendering while the diagram is
+        //  clipped to this node and it's being drawn via the diagram's main camera!
+        if (getVisible() && (getPickable() || getChildrenPickable())
+                && fullIntersects(pickPath.getPickBounds())) {
+            pickPath.pushNode(this);
+            pickPath.pushTransform(getTransformReference(true));
+
+            final boolean thisPickable = getPickable() && pickPath.acceptsNode(this);
+
+            if (thisPickable && pick(pickPath)) {
+                return true;
+            }
+
+            if (getChildrenPickable()) {
+                final int count = getChildrenCount();
+                for (int i = count - 1; i >= 0; i--) {
+                    final PNode each = (PNode) getChildrenReference().get(i);
+                    
+                    if (i == 0 && this.isRootLayer && each != this.childArea) {
+                        // do not try to pick the node's figure if the main diagram is clipped to
+                        //  this node
+                        //  ('each != this.childArea' implies that 'each' is a KlighdFigureNode)
+                        continue;
+                    }
+                    if (each.fullPick(pickPath)) {
+                        return true;
+                    }
+                }
+            }
+
+            if (thisPickable && pickAfterChildren(pickPath)) {
+                return true;
+            }
+
+            pickPath.popTransform(getTransformReference(false));
+            pickPath.popNode(this);
+        }
+
+        return false;
+    }
+
+    
     /**
      * {@inheritDoc}
      */
@@ -351,22 +440,6 @@ public class KNodeNode extends KDisposingLayer implements INode, ILabeledGraphEl
             paintContext.popTransparency(getTransparency());
             paintContext.popTransform(getTransformReference(false));
         }
-    }
-    
-    /**
-     * Get the PortLayer.
-     * @return a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.
-     */
-    public PLayer getPortLayer() {
-        return this.portLayer;
-    }
-    
-    /**
-     * Get the LabelLayer.
-     * @return a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.
-     */
-    public PLayer getLabelLayer() {
-        return this.labelLayer;
     }
     
     /**

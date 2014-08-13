@@ -29,12 +29,9 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeTopNode extends KDisposingLayer implements INode {
+public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
 
     private static final long serialVersionUID = 8395163186723344696L;
-
-    /** the encapsulated {@link KNode}. */
-    private transient KNode node;
 
     /** the Piccolo2D node representing the child area. */
     private KChildAreaNode childArea;
@@ -52,8 +49,9 @@ public class KNodeTopNode extends KDisposingLayer implements INode {
      *            edges
      */
     public KNodeTopNode(final KNode node, final boolean edgesFirst) {
-        this.setPickable(true);        
-        this.node = node;
+        super(node);
+
+        this.setPickable(true);
 
         childArea = new KChildAreaNode(this, edgesFirst);
         childArea.setPickable(true);
@@ -81,13 +79,6 @@ public class KNodeTopNode extends KDisposingLayer implements INode {
      */
     public KlighdMainCamera getDiagramMainCamera() {
         return this.diagramMainCamera;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KNode getGraphElement() {
-        return node;
     }
 
     /**
@@ -152,8 +143,8 @@ public class KNodeTopNode extends KDisposingLayer implements INode {
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        KlighdSemanticDiagramData sd =
+        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        final KlighdSemanticDiagramData sd =
                 getGraphElement().getData(KLayoutData.class).getProperty(
                         KlighdProperties.SEMANTIC_DATA);
         g2.startGroup(sd);
@@ -166,7 +157,7 @@ public class KNodeTopNode extends KDisposingLayer implements INode {
     @Override
     protected void paintAfterChildren(final PPaintContext paintContext) {
         super.paintAfterChildren(paintContext);
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
+        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         g2.endGroup();
     }
     

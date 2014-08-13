@@ -54,6 +54,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
@@ -65,7 +66,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.IStartingAndFinishingActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ILabeledGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
@@ -352,11 +353,26 @@ public class DiagramController {
      */
     public boolean isVisible(final KGraphElement diagramElement, final boolean checkContainment) {
         final PNode p = (PNode) getRepresentation(diagramElement);
+
+        // first check whether 'diagramElement' is represented by any figure (PNode)
+        //  that is contained by any other figure (and thus hopefully contained in the figure tree)
         if (p == canvasCamera.getDisplayedLayer()) {
             return true;
         } else if (p == null || p.getParent() == null) {
             return false;
         }
+
+        // check whether the lower visibility scale bound is exceeded
+        final float viewScale = (float) canvasCamera.getViewTransformReference().getScaleX();
+        final float lowerBound = diagramElement.getData(KLayoutData.class)
+                .getProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
+
+        if (viewScale < lowerBound) {
+            return false;
+        }
+
+        // the upper visibility scale bound is not checked because I think it is unlikely that a
+        //  label or any other kgraph element is masked if the diagram scale exceeds a certain value
 
         if (checkContainment) {
             if (!NodeUtil.isDisplayed(p, canvasCamera)) {

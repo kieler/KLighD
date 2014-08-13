@@ -68,7 +68,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * Constructs a rendering controller for an edge.
      * 
      * @param edge
-     *            the Piccolo node representing an edge
+     *            the Piccolo2D node representing an edge
      */
     public KEdgeRenderingController(final KEdgeNode edge) {
         super(edge.getGraphElement(), edge);
@@ -138,21 +138,20 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                     + getGraphElement()
                     + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!");
         }
-
         
         return renderingNode;
     }
     
     /**
-     * Creates the Piccolo node for a rendering of a {@code KEdge} inside a parent Piccolo node.<br>
+     * Creates the Piccolo2D node for a rendering of a {@code KEdge} inside a parent Piccolo2D node.<br>
      * <br>
      * The rendering has to be a {@code KPolyline} or the method fails.
      * 
      * @param rendering
      *            the rendering
      * @param parent
-     *            the parent Piccolo edge node
-     * @return the Piccolo node representing the rendering
+     *            the parent Piccolo2D edge node
+     * @return the Piccolo2D node representing the rendering
      */
     private PNode handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) {
         // create the rendering
@@ -168,9 +167,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         } else {
             controller.getNode().setPathToPolyline(parent.getBendPoints());
         }
-        
-        parent.setRepresentationNode(controller.getNode());
-        
+
         // add a listener on the parent's bend points
         addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
                 new PropertyChangeListener() {
@@ -178,7 +175,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                         // let the parent KEdgeNode send a repaint request to the canvas in order to
                         //  get the (now dirty) area covered by the edge by now properly cleared
                         parent.repaint();
-                        
+
                         if (rendering instanceof KSpline) {
                             controller.getNode().setPathToSpline(parent.getBendPoints());
                         } else if (rendering instanceof KRoundedBendsPolyline) {
@@ -187,6 +184,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                         } else {
                             controller.getNode().setPathToPolyline(parent.getBendPoints());
                         }
+
+                        parent.setBounds(controller.getNode().getBoundsReference());
                     }
                 });
 
@@ -329,15 +328,15 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
 
     /**
-     * Creates the Piccolo node for a rendering of a {@code KEdge} inside a parent Piccolo node.<br>
+     * Creates the Piccolo2D node for a rendering of a {@code KEdge} inside a parent Piccolo2D node.<br>
      * <br>
      * The rendering has to be a {@code KPolyline} or the method fails.
      * 
      * @param rendering
      *            the rendering
      * @param parent
-     *            the parent Piccolo edge node
-     * @return the Piccolo node representing the rendering
+     *            the parent Piccolo2D edge node
+     * @return the Piccolo2D node representing the rendering
      */
     private PNode handleEdgeRendering(final KCustomRendering rendering, final KEdgeNode parent) {
 
@@ -348,8 +347,6 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                         rendering, parent, new Bounds(1, 1));
         controller.getNode().setPoints(parent.getBendPoints());
 
-        parent.setRepresentationNode(controller.getNode());
-
         // add a listener on the parent's bend points
         addListener(KEdgeNode.PROPERTY_BEND_POINTS, parent, controller.getNode(),
                 new PropertyChangeListener() {
@@ -357,8 +354,10 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                         // let the parent KEdgeNode send a repaint request to the canvas in order to
                         //  get the (now dirty) area covered by the edge by now properly cleared
                         parent.repaint();
-                        
+
                         controller.getNode().setPoints(parent.getBendPoints());
+
+                        parent.setBounds(controller.getNode().getBoundsReference());
                     }
                 });
 
