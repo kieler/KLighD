@@ -408,16 +408,24 @@ public class KlighdTest {
         if (!piccoloTree.getGraphElement().toString().equals(kgraph.toString())) {
             return false;
         }
-        final PLayer nodeLayer = piccoloTree.getChildAreaNode().getNodeLayer();
+        final PLayer nodeLayer = piccoloTree.getChildAreaNode().getNodeLayer() != null
+                ? piccoloTree.getChildAreaNode().getNodeLayer() : new PLayer();
+                    // chsch: added some hotfix here
+
         PLayer edgeLayer = null;
         if (piccoloTree.getParentNode() != null) {
-            edgeLayer = piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer();
+            edgeLayer = piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer() != null
+                ? piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer() : new PLayer();
+                    // chsch: added some hotfix here
         }
         for (int i = 0; i < kgraph.getChildren().size(); i++) {
             if (piccoloTree instanceof KNodeNode) {
 
                 // check if all ports are included in the piccolo structure
-                final PLayer portLayer = ((KNodeNode) piccoloTree).getPortLayer();
+                final PLayer portLayer = ((KNodeNode) piccoloTree).getPortLayer() != null
+                        ? ((KNodeNode) piccoloTree).getPortLayer() : new PLayer();
+                            // chsch: added some hotfix here
+
                 for (int j = 0; j < kgraph.getPorts().size(); j++) {
                     if (!(kgraph.getPorts().get(j) == ((KlighdNode) portLayer.getChild(j))
                             .getGraphElement())) {
@@ -426,7 +434,10 @@ public class KlighdTest {
                 }
 
                 // check if all labels are included in the piccolo structure
-                final PLayer labelLayer = ((KNodeNode) piccoloTree).getLabelLayer();
+                final PLayer labelLayer = ((KNodeNode) piccoloTree).getLabelLayer() != null
+                        ?  ((KNodeNode) piccoloTree).getLabelLayer() : new PLayer();
+                            // chsch: added some hotfix here
+
                 for (int j = 0; j < kgraph.getLabels().size(); j++) {
                     if (!(kgraph.getLabels().get(j) == ((KlighdNode) labelLayer.getChild(j))
                             .getGraphElement())) {
