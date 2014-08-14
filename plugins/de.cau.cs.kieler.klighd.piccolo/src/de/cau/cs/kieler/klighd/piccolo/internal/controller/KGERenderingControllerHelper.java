@@ -41,6 +41,7 @@ import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPolyline;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
@@ -347,18 +348,24 @@ final class KGERenderingControllerHelper {
             final AbstractKGERenderingController<?, ?> controller, final KPolyline line,
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
+        final KlighdPath path = new KlighdPath(line);
         final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, initialBounds);
 
-        final KlighdPath path = new KlighdPath(line);
+        // use the additional variable while updating the line later on in order to avoid 'instanceof'
+        final int type;
+
         if (line instanceof KSpline) {
             // create the spline
             path.setPathToSpline(points);
+            type = KRenderingPackage.KSPLINE;
         } else if (line instanceof KRoundedBendsPolyline) {
             // create the rounded bends polyline
             path.setPathToRoundedBendPolyline(points, ((KRoundedBendsPolyline) line).getBendRadius());
+            type = KRenderingPackage.KROUNDED_BENDS_POLYLINE;
         } else {
             // create the polyline
             path.setPathToPolyline(points);
+            type = KRenderingPackage.KPOLYLINE;
         }
 
         path.translate(initialBounds.getX(), initialBounds.getY());
@@ -403,10 +410,10 @@ final class KGERenderingControllerHelper {
 
                 final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, bounds);
 
-                if (line instanceof KSpline) {
+                if (type == KRenderingPackage.KSPLINE) {
                     // update spline
                     getNode().setPathToSpline(points);
-                } else if (line instanceof KRoundedBendsPolyline) {
+                } else if (type == KRenderingPackage.KROUNDED_BENDS_POLYLINE) {
                     // update rounded bend polyline
                     getNode().setPathToRoundedBendPolyline(points,
                             ((KRoundedBendsPolyline) line).getBendRadius());
