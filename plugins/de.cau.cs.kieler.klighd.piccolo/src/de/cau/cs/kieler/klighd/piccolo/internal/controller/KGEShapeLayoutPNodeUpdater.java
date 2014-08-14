@@ -123,9 +123,6 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             if (newLayoutData) {
                 NodeUtil.applyBounds(nodeRep, shL);
 
-            } else if (!shL.isModified()) {
-                return;
-
             } else {
                 final AffineTransform localTransform = nodeRep.getTransformReference(true);
                 final double offsetX = localTransform.getTranslateX();

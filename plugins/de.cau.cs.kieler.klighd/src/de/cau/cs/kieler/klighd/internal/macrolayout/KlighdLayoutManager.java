@@ -635,7 +635,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (excludedEdges != null) {
             for (final KEdge edge : excludedEdges) {
                 handleExcludedEdge(edge);
-    }
+            }
         }
     }
 
@@ -697,7 +697,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         }
 
         targetShapeLayout.eSetDeliver(deliver);
-        if (deliver && targetShapeLayout.isModified()) {
+        if (deliver) /* && targetShapeLayout.isModified())*/ {
             targetShapeLayout.eNotify(new ENotificationImpl((InternalEObject) targetShapeLayout,
                     Notification.SET, KLayoutDataPackage.eINSTANCE.getKShapeLayout_Xpos(),
                     LAYOUT_DATA_UPDATE_DUMMY_VALUE, LAYOUT_DATA_UPDATE_DUMMY_VALUE));
