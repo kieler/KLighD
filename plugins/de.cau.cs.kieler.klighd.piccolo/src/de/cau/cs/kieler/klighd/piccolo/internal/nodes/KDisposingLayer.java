@@ -32,6 +32,8 @@ public class KDisposingLayer extends PLayer {
      * Constructor. 
      */
     public KDisposingLayer() {
+        this.setPickable(false);
+        this.setChildrenPickable(true);
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
     }
 
@@ -58,6 +60,7 @@ public class KDisposingLayer extends PLayer {
          */
         public KNodeRepresentingLayer(final KNode node) {
             this.node = node;
+            this.setPickable(true);
         }
 
         /**
