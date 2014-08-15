@@ -90,7 +90,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      * A dummy value used in fired {@link Notification Notifications} indicating a completed update
      * of a {@link KLayoutData} instance.
      */
-    public static final Object LAYOUT_DATA_UPDATE_DUMMY_VALUE = new Object();
+    public static final Object LAYOUT_DATA_CHANGED_VALUE = new Object();
+
+    /**
+     * A dummy value used in fired {@link Notification Notifications} indicating a completed update
+     * of a {@link KLayoutData} instance.
+     */
+    public static final Object LAYOUT_DATA_UNCHANGED_VALUE = new Object();
 
     /** the list of edges found in the graph. */
     private static final IProperty<List<KEdge>> EDGES = new Property<List<KEdge>>(
@@ -696,11 +702,21 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             targetShapeLayout.setSize(sourceShapeLayout.getWidth(), sourceShapeLayout.getHeight());
         }
 
+        // reactivate notifications & fire a notification
+        //  bringing the observing diagram controller to update the displayed diagram
         targetShapeLayout.eSetDeliver(deliver);
-        if (deliver) /* && targetShapeLayout.isModified())*/ {
+        if (deliver) {
+            
+            // for efficiency reasons just fire a single notification with values indicating
+            //  whether actually some change occurred in the shape layout
+            // the information whether 'no change' happened is required for, e.g., updating the
+            //  visibility of elements after the parent KNode has been expanded
+            final Object newValue = targetShapeLayout.isModified()
+                    ? LAYOUT_DATA_CHANGED_VALUE : LAYOUT_DATA_UNCHANGED_VALUE;
+
             targetShapeLayout.eNotify(new ENotificationImpl((InternalEObject) targetShapeLayout,
                     Notification.SET, KLayoutDataPackage.eINSTANCE.getKShapeLayout_Xpos(),
-                    LAYOUT_DATA_UPDATE_DUMMY_VALUE, LAYOUT_DATA_UPDATE_DUMMY_VALUE));
+                    null, newValue));
         }
 
         if (copyInsets) {
@@ -929,8 +945,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // notify the listeners
         edgeLayout.eSetDeliver(deliver);
         edgeLayout.eNotify(new ENotificationImpl((InternalEObject) edgeLayout, Notification.SET,
-                KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS, LAYOUT_DATA_UPDATE_DUMMY_VALUE,
-                LAYOUT_DATA_UPDATE_DUMMY_VALUE));
+                KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS, null, null));
     }
     
     /**

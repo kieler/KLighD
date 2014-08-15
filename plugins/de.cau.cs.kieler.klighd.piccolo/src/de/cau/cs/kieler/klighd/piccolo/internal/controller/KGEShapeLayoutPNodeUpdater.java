@@ -23,6 +23,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PNode;
@@ -80,29 +81,38 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
 
         final KShapeLayout shL;
         final boolean newLayoutData;
+        final boolean unchanged;
+
         if (notification.getNotifier() instanceof KNode
                 && notification.getNewValue() instanceof KShapeLayout) {
             shL = (KShapeLayout) notification.getNewValue();
             newLayoutData = true;
+            unchanged = false;
 
         } else if (notification.getNotifier() instanceof KShapeLayout) {
             shL = (KShapeLayout) notification.getNotifier();
             newLayoutData = false;
 
-            if (notification.getNewValue() == KlighdLayoutManager.LAYOUT_DATA_UPDATE_DUMMY_VALUE) {
-                // just continue and SUPPRESS CHECKSTYLE PREVIOUS EmptyBlock
+            final Object newValue = notification.getNewValue();
+
+            if (newValue == KlighdLayoutManager.LAYOUT_DATA_CHANGED_VALUE) {
+                unchanged = false;
+                
+            } else if (newValue == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+                unchanged = true;
 
             } else if (notification.getFeature() == KGraphPackage.eINSTANCE
                     .getEMapPropertyHolder_Properties()) {
                 return;
 
-            } else if (notification.getNewValue() instanceof Number) {
+            } else if (newValue instanceof Number) {
                 
                 switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
                 case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
                 case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
                 case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
+                    unchanged = false;
                     break;
                 default:
                     return;
@@ -116,12 +126,22 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
         }
 
         if (controller.isRecording()) {
-            controller.recordChange(nodeRep, getBounds(shL));
+            if (unchanged) {
+                // if the layout data did not change, provide that information anyway,
+                //  since nodeRep may be invisible and is set visible by updating the layout data
+                controller.recordChange((IGraphElement<?>) nodeRep,
+                        KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE);
+            } else {
+                controller.recordChange((IGraphElement<?>) nodeRep, getBounds(shL));
+            }
             return;
 
         } else {
             if (newLayoutData) {
                 NodeUtil.applyBounds(nodeRep, shL);
+
+            } else if (unchanged) {
+                return;
 
             } else {
                 final AffineTransform localTransform = nodeRep.getTransformReference(true);

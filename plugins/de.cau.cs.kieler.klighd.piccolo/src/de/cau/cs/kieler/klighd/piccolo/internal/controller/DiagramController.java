@@ -59,6 +59,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplySmartBoundsActivity;
@@ -139,7 +140,7 @@ public class DiagramController {
     private boolean record = false;
 
     /** the layout changes to graph elements while recording. */
-    private final Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
+    private final Map<IGraphElement<?>, Object> recordedChanges = Maps.newLinkedHashMap();
 
 
     /**
@@ -480,7 +481,7 @@ public class DiagramController {
     /* internal part */
     /* --------------------------------------------- */
 
-    void recordChange(final PNode node, final Object change) {
+    void recordChange(final IGraphElement<?> node, final Object change) {
         recordedChanges.put(node, change);
     }
     
@@ -535,7 +536,7 @@ public class DiagramController {
             final int animationTime) {
 
         // create activities to apply all recorded changes
-        for (final Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
+        for (final Map.Entry<IGraphElement<?>, Object> recordedChange : recordedChanges.entrySet()) {
             // create the activity to apply the change
             PInterpolatingActivity activity;
             final PNode shapeNode;
@@ -544,7 +545,10 @@ public class DiagramController {
                 
                 final KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
                 shapeNode = edgeNode;
-                
+
+                // the following case is still to be implemented!
+                // if (recordedChange.getValue() == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+
                 @SuppressWarnings("unchecked")
                 final Pair<Point2D[], Point2D[]> value =
                         (Pair<Point2D[], Point2D[]>) recordedChange.getValue();
@@ -562,8 +566,15 @@ public class DiagramController {
                 }
             } else {
                 // shape layout changed
-                shapeNode = recordedChange.getKey();
-                final PBounds bounds = (PBounds) recordedChange.getValue();
+                shapeNode = (PNode) recordedChange.getKey();
+                final PBounds bounds;
+
+                // check whether an actual bounds change occurred, and if so get the new bounds
+                if (recordedChange.getValue() == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+                    bounds = null;
+                } else {
+                    bounds = (PBounds) recordedChange.getValue();
+                }
 
                 final float scale;
                 if (shapeNode instanceof KNodeNode) {
@@ -574,12 +585,17 @@ public class DiagramController {
                 }
 
                 if (!shapeNode.getVisible()) {
-                    // the visibility is set to false for newly introduced edges in #addNode,
+                    // the visibility is set to false for newly introduced elements in #addNode,
                     //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
                     //  to fade it in
+                    // note the special behavior of FadeNodeInActivity if 'bounds' is 'null',
+                    //  i.e. 'LAYOUT_DATA_UNCHANGED_VALUE' was notified
                     activity = new FadeNodeInActivity(shapeNode, bounds,
                             scale, animationTime > 0 ? animationTime : 1);
-                } else { 
+                } else if (bounds == null) {
+                    continue;
+
+                } else {
                     activity = new ApplySmartBoundsActivity(shapeNode, bounds,
                             scale, animationTime > 0 ? animationTime : 1);
                 }
