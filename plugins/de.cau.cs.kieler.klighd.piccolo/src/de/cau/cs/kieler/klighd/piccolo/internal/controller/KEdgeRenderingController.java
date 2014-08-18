@@ -174,7 +174,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                     public void propertyChange(final PropertyChangeEvent e) {
                         // let the parent KEdgeNode send a repaint request to the canvas in order to
                         //  get the (now dirty) area covered by the edge by now properly cleared
-                        parent.repaint();
+                        parent.invalidateFullBounds();
 
                         if (rendering instanceof KSpline) {
                             controller.getNode().setPathToSpline(parent.getBendPoints());
