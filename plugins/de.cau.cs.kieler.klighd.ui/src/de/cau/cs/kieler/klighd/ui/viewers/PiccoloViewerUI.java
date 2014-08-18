@@ -30,7 +30,6 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IActionBars;
@@ -47,6 +46,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
@@ -196,12 +196,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
         final IWorkbenchPart part = parentViewer.getViewContext().getDiagramWorkbenchPart();
         part.getSite().registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, parentViewer);
 
-        labelWidget.setDoubleClickEnabled(false);
-
         this.getCanvas().getCamera().addInputEventListener(
-                new KlighdLabelWidgetEventHandler(this, labelWidget));        
-
-        // final PiccoloViewerUI thisViewer = this;
+                new KlighdLabelWidgetEventHandler(this, labelWidget));
 
         // add a selection changed listener to the diagram viewer in order to deactivate
         //  the cursor selection text widget on diagram selections
@@ -228,53 +224,101 @@ public class PiccoloViewerUI extends PiccoloViewer {
         });
 
         // create and register (in constructor) a dedicated SWT event listener on the labelTextWidget
-        new LabelTextWidgetListener();
+        attachLabelTextWidgetEventListener(labelWidget);
     }
 
     /**
+     * Extension hook method registering an SWT event {@link Listener} on the employed
+     * <code>textLabelWidget</code>.
+     * 
+     * @param textLabelWidget
+     *            the employed instance of {@link StyledText}
+     */
+    protected void attachLabelTextWidgetEventListener(final StyledText textLabelWidget) {
+        // this listener registers itself within its constructor there's no need to store it somewhere
+        new LabelTextWidgetListener(this, textLabelWidget);
+    }
+
+
+    /**
+     * SWT event {@link Listener} implementation that is dedicated to the creation & propagation of
+     * {@link KlighdTextSelection KlighdTextSelections} after corresponding mouse and key events
+     * notified to the employed label text widget.<br>
+     * <br>
+     * <b>Note:</b> This class may be subclassed. However, make sure to call
+     * <code>super.handleEvent(event)</code> for the event types distinguished in this
+     * implementation. Make also sure to register your subclass for additional event types if necessary,
+     * see {@link #LabelTextWidgetListener(PiccoloViewerUI, StyledText)}.
      * 
      * @author chsch
      */
-    private class LabelTextWidgetListener implements Listener {
-        
+    public static class LabelTextWidgetListener implements Listener {
+
+        private final PiccoloViewerUI diagramViewer;
+        private final StyledText labelWidget;
+
         /**
          * Constructor.
+         * 
+         * @param viewer
+         *            employed instance of {@link PiccoloViewerUI}
+         * @param textLabelWidget
+         *            the employed instance of {@link StyledText}
          */
-        public LabelTextWidgetListener() {
-            final StyledText text = labelWidget;
-            text.addListener(SWT.MouseDoubleClick, this);
-            text.addListener(SWT.MouseDown, this);
-            text.addListener(SWT.MouseUp, this);
-            text.addListener(SWT.KeyDown, this);
-            text.addListener(SWT.KeyUp, this);
+        public LabelTextWidgetListener(final PiccoloViewerUI viewer,
+                final StyledText textLabelWidget) {
+            this.diagramViewer = viewer;
+            this.labelWidget = textLabelWidget;
+
+            textLabelWidget.addListener(SWT.MouseDown, this);
+            textLabelWidget.addListener(SWT.MouseUp, this);
+            textLabelWidget.addListener(SWT.KeyDown, this);
+            textLabelWidget.addListener(SWT.KeyUp, this);
         }
 
-        private String prevSelection = null;
-        
-        public void handleEvent(final Event event) {
-            final PiccoloViewerUI thisViewer = PiccoloViewerUI.this;
-            final StyledText text = labelWidget;
-
+        /**
+         * Provides the {@link KlighdFigureNode} the label text widget is currently attached to.
+         * Make sure to let this method be executed by the UI thread as it relies on
+         * {@link org.eclipse.swt.widgets.Widget#getData() Widget#getData()}.
+         * 
+         * @return the desired {@link KlighdFigureNode}
+         */
+        protected KlighdFigureNode<KText> getFigureNode() {
             @SuppressWarnings("unchecked")
-            final KlighdFigureNode<KText> graphNode =
-                    (KlighdFigureNode<KText>) text.getData(STYLED_TEXT_FIGURE_KEY);
+            final KlighdFigureNode<KText> figureNode =
+                    (KlighdFigureNode<KText>) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
+            return figureNode;
+        }
+
+
+        private String prevSelection = null;
+
+        /**
+         * @return the prevSelection
+         */
+        protected String getPrevSelection() {
+            return prevSelection;
+        }
+
+        /**
+         * @param prevSelection the prevSelection to set
+         */
+        protected void setPrevSelection(final String prevSelection) {
+            this.prevSelection = prevSelection;
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void handleEvent(final Event event) {
+            final StyledText text = labelWidget;
 
             final String selection;
             switch (event.type) {
-            case SWT.MouseDoubleClick:
-                text.selectAll();
-                
-                // the following statement is more or less good will,
-                //  it will not have direct functional effect
-                text.getAccessible().textSelectionChanged();
-                
-                thisViewer.updateSelection(event.display,
-                        new KlighdTextSelection(text.getText(), 0, true, true, graphNode, thisViewer));
-                break;
-
             case SWT.KeyDown:
                 if (((char) event.keyCode == SWT.CR) && ((event.stateMask & SWT.SHIFT) != 0)) {
-                    updateModelAfterTextChange(text, thisViewer.getViewContext());
+                    diagramViewer.updateModelAfterTextChange(text, diagramViewer.getViewContext());
                     text.setEditable(false);
                     text.setVisible(false);
 
@@ -291,8 +335,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 if (selection.equals(prevSelection)) {
                     break;
                 }
-                thisViewer.updateSelection(event.display, new KlighdTextSelection(selection,
-                        labelWidget.getSelection().x, false, false, graphNode, thisViewer));
+                diagramViewer.updateSelection(new KlighdTextSelection(selection,
+                        labelWidget.getSelection().x, false, false, getFigureNode(), diagramViewer));
                 break;
 
             case SWT.MouseDown:
@@ -310,8 +354,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 if (selection.equals(prevSelection)) {
                     break;
                 }
-                thisViewer.updateSelection(event.display, new KlighdTextSelection(selection,
-                        labelWidget.getSelection().x, false, false, graphNode, thisViewer));
+                diagramViewer.updateSelection(new KlighdTextSelection(selection,
+                        labelWidget.getSelection().x, false, false, getFigureNode(), diagramViewer));
                 break;
             }
         }
@@ -320,27 +364,32 @@ public class PiccoloViewerUI extends PiccoloViewer {
     /**
      * Asynchronously executes {@link #updateSelection(ISelection)} in order to let the calling
      * method terminate quickly and do not block any display modifications.
+     * 
+     * @param selection
+     *            the new {@link IKlighdSelection} to be propagated to the selection service.
      */
-    private void updateSelection(final Display display, final ISelection selection) {
-        display.asyncExec(new Runnable() {
+    protected void updateSelection(final IKlighdSelection selection) {
+        getCanvas().getDisplay().asyncExec(new Runnable() {
             public void run() {
                 PiccoloViewerUI.this.updateSelection(selection);
             }
         });
     }
 
-    /** String key for caching the KlighdStyledText in the labelWidget's data list. */
-    // this field is package protected by intention
-    static final String STYLED_TEXT_FIGURE_KEY = "STYLED_TEXT_FIGURE_KEY";
-
-    /** String key for caching the {@link PropertyChangeListener}
-     * used for keeping the labelWidget's styling up to date. */
-    // this field is package protected by intention
+    // the following field is package protected by intention
+    //  since it is used in KlighdLabelWidgetEventHandler, too
+    /**
+     * String key for caching the {@link PropertyChangeListener} used for keeping the labelWidget's
+     * styling up to date.
+     */
     static final String TEXT_STYLING_CHANGE_LISTENER_KEY = "TEXT_STYLING_CHANGE_LISTENER_KEY";
+    
+    /** String key for caching the KlighdStyledText in the labelWidget's data list. */
+    private static final String STYLED_TEXT_FIGURE_KEY = "STYLED_TEXT_FIGURE_KEY";
 
     /** String key for caching the font scale factor in the labelWidget's data list. */
     private static final String FONT_SCALE_FACTOR_KEY = "FONT_SCALE_FACTOR_KEY";
-    
+
     /** Example: ...|11.0|.. */
     private static final String FONT_HEIGHT_PATTERN_REGEX = "\\|\\d*\\p{Punct}\\d*\\|";
 
@@ -356,7 +405,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      *            the {@link KlighdStyledText} the text label widget is to be aligned to
      */
     // method is package protected as it is used in KlighdLabelWidgetEventHander and
-    //  KlighdLabelWidgetViewChangeListener 
+    //  KlighdLabelWidgetViewChangeListener
     void updateWidgetBounds(final KlighdStyledText styledText) {
 
         final KlighdStyledText theStyledText;
@@ -380,11 +429,11 @@ public class PiccoloViewerUI extends PiccoloViewer {
         //  in the current clip
         final Rectangle2D bounds =
                 NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedINode());
-        
+
         if (bounds == null) {
             return;
         }
-        
+
         camera.getViewTransformReference().transform(bounds, bounds);
 
         labelWidget.setLocation((int) Math.round(bounds.getX()), (int) Math.round(bounds.getY()));
@@ -425,23 +474,21 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
         final Font previousFont = labelWidget.getFont();
 
-        // ... dispose the previous Font, configure the new one, and update the text widget's size 
+        // ... dispose the previous Font, configure the new one, and update the text widget's size
         labelWidget.setFont(new Font(labelWidget.getDisplay(), fd));
         labelWidget.setSize(labelWidget.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-        previousFont.dispose();        
+        previousFont.dispose();
     }
 
-    
     void deactivateLabelWidget() {
         labelWidget.setVisible(false);
 
-        final PNode node = (PNode) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);        
+        final PNode node = (PNode) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
         if (node != null) {
             node.setVisible(true);
             node.removePropertyChangeListener(
                     (PropertyChangeListener) labelWidget.getData(TEXT_STYLING_CHANGE_LISTENER_KEY));
-
         }
     }
 
@@ -458,8 +505,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      *            the employed {@link ViewContext}
      */
     private void updateModelAfterTextChange(final StyledText textWidget, final ViewContext viewContext) {
-        final KlighdStyledText textNode = (KlighdStyledText) textWidget
-                        .getData(STYLED_TEXT_FIGURE_KEY);
+        final KlighdStyledText textNode = (KlighdStyledText) textWidget.getData(STYLED_TEXT_FIGURE_KEY);
 
         if (textNode == null) {
             return;
