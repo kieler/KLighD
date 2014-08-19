@@ -95,7 +95,6 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         } catch (final TranscoderException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
