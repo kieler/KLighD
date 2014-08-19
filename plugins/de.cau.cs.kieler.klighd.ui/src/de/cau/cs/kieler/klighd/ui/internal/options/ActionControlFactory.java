@@ -129,7 +129,7 @@ public class ActionControlFactory implements ISelectionChangedListener {
             public void widgetSelected(final SelectionEvent event) {
                 final IAction action =
                         KlighdDataManager.getInstance().getActionById(actionData.actionId);
-                final IViewer<?> viewer = viewContext.getViewer();
+                final IViewer viewer = viewContext.getViewer();
 
                 ActionResult result = null;
 

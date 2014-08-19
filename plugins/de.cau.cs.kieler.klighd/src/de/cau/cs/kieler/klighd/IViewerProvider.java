@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd;
 
 import org.eclipse.swt.widgets.Composite;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -35,5 +34,5 @@ public interface IViewerProvider {
      *            the parent composite
      * @return a viewer for the supported model types
      */
-    IViewer<KNode> createViewer(ContextViewer parentViewer, Composite parent);
+    IViewer createViewer(ContextViewer parentViewer, Composite parent);
 }

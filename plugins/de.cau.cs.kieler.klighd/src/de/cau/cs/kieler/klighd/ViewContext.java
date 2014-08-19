@@ -105,7 +105,7 @@ public class ViewContext extends MapPropertyHolder {
     private KNode viewModel = createViewModel();
     
     /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
-    private IViewer<KNode> viewer = null;
+    private IViewer viewer = null;
     
     /** the {@link #viewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
     private ILayoutRecorder layoutRecorder = null;
@@ -266,7 +266,7 @@ public class ViewContext extends MapPropertyHolder {
      *            the parent {@link Composite} widget
      * @return the created viewer or <code>null</code> on failure
      */
-    public IViewer<?> createViewer(final ContextViewer parentViewer, final Composite parent) {
+    public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
         if (this.viewerProvider != null) {
             // create the new viewer
             this.viewer = this.viewerProvider.createViewer(parentViewer, parent);
@@ -518,7 +518,7 @@ public class ViewContext extends MapPropertyHolder {
     /**
      *  @return the {@link IViewer} being in charge of showing this {@link ViewContext}.
      */
-    public IViewer<KNode> getViewer() {
+    public IViewer getViewer() {
         return viewer;
     }
     

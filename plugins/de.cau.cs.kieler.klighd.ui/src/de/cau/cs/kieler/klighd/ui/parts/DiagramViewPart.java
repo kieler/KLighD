@@ -277,7 +277,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     /**
      * {@inheritDoc}
      */
-    public IViewer<?> getViewer() {
+    public IViewer getViewer() {
         return viewer;
     }
 

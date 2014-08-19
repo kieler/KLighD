@@ -82,14 +82,14 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
  * @author chsch
  * @author msp
  */
-public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelectionProvider,
+public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvider,
         IDiagramOutlinePage.Provider {
 
     /** the parent composite for diagram viewers. */
     private Composite diagramComposite;
 
     /** the current viewer. */
-    private IViewer<Object> currentViewer;
+    private IViewer currentViewer;
 
     /** the current view context. */
     private ViewContext currentViewContext = null;
@@ -114,15 +114,14 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      * @param viewer
      *            the {@link IViewer} to be employed
      */
-    protected synchronized void setViewer(final IViewer<?> viewer) {
+    protected synchronized void setViewer(final IViewer viewer) {
         // remove the current viewer if someone exists
         if (currentViewer != null) {
             currentViewer.getControl().dispose();
             currentViewer = null;
         }
 
-        @SuppressWarnings("unchecked")
-        final IViewer<Object> objViewer = (IViewer<Object>) viewer;
+        final IViewer objViewer = viewer;
         currentViewer = objViewer;
 
         diagramComposite.layout();
@@ -249,7 +248,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
      * 
      * @return the viewer
      */
-    public IViewer<?> getActiveViewer() {
+    public IViewer getActiveViewer() {
         return currentViewer;
     }
 
@@ -334,7 +333,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     public Iterator<KNode> getVisibleDiagramNodes() {
         // SUPPRESS CHECKSTYLE PREVIOUS 4 Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
 
-        final IViewer<?> activeViewer = getActiveViewer();
+        final IViewer activeViewer = getActiveViewer();
         final KNode clip = activeViewer.getClip();
 
         if (!activeViewer.isVisible(clip, false)) {
@@ -368,7 +367,7 @@ public class ContextViewer implements IViewer<Object>, ILayoutRecorder, ISelecti
     public Iterator<KGraphElement> getVisibleDiagramElements() {
         // SUPPRESS CHECKSTYLE PREVIOUS 4 Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
         
-        final IViewer<?> activeViewer = getActiveViewer();
+        final IViewer activeViewer = getActiveViewer();
         final KNode clip = activeViewer.getClip();
 
         if (!activeViewer.isVisible(clip, false)) {

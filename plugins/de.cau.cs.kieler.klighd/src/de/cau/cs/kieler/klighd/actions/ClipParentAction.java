@@ -35,7 +35,7 @@ public class ClipParentAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {        
-        final IViewer<?> activeViewer = context.getActiveViewer();        
+        final IViewer activeViewer = context.getActiveViewer();        
         final KNode clip = activeViewer.getClip();
         
         if (clip != null && clip.getParent() != null) {

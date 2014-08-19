@@ -34,11 +34,8 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * 
  * @author mri
  * @author chsch
- * 
- * @param <T>
- *            the type of the model this viewer accepts
  */
-public interface IViewer<T> {
+public interface IViewer {
 
     /**
      * Returns the control used by this viewer.
@@ -60,7 +57,7 @@ public interface IViewer<T> {
      * @param model
      *            the input model
      */
-    void setModel(T model);
+    void setModel(Object model);
 
     /**
      * Sets the input model for this viewer.<br>
@@ -74,7 +71,7 @@ public interface IViewer<T> {
      * @param sync
      *            true if the viewer should synchronize the visualization with the model; false else
      */
-    void setModel(T model, boolean sync);
+    void setModel(Object model, boolean sync);
 
     /**
      * Returns the {@link ViewContext} that is associated to <code>this</this> viewer.

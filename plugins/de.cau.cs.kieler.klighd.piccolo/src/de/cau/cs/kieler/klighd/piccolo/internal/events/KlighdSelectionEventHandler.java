@@ -48,13 +48,13 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
      * @param theContextViewer
      *            the {@link IViewer} to set the selection on
      */
-    public KlighdSelectionEventHandler(final IViewer<?> theContextViewer) {
+    public KlighdSelectionEventHandler(final IViewer theContextViewer) {
         this.viewer = theContextViewer;
         this.multiSelection =
                 viewer.getViewContext().getProperty(KlighdSynthesisProperties.MULTI_SELECTION);
     }
     
-    private final IViewer<?> viewer;
+    private final IViewer viewer;
     private final boolean multiSelection; 
     private PNode pressedNode = null;
     private Point2D point = null;

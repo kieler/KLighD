@@ -27,7 +27,7 @@ public class ScaleUpAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {
-        final IViewer<?> viewer = context.getActiveViewer();
+        final IViewer viewer = context.getActiveViewer();
         final KNode node = context.getKNode();
 
         viewer.scale(node, viewer.getScale(node) + 1);        

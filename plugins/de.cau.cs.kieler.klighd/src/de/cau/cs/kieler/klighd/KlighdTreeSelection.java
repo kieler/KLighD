@@ -85,7 +85,7 @@ public class KlighdTreeSelection extends TreeSelection implements IKlighdSelecti
     /**
      * {@inheritDoc}
      */
-    public IViewer<?> getViewer() {
+    public IViewer getViewer() {
         return viewContext.getViewer().getContextViewer();
     }
 

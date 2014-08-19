@@ -40,7 +40,7 @@ public class ClipSelectionAction implements IAction {
      */
     public ActionResult execute(final ActionContext context) {
         final Iterable<EObject> selection = context.getContextViewer().getDiagramSelection();
-        final IViewer<?> contextViewer = context.getContextViewer();
+        final IViewer contextViewer = context.getContextViewer();
         
         final Object first = Iterables.getFirst(selection, null);
 

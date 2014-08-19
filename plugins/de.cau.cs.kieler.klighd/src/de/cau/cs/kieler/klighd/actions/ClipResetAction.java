@@ -29,7 +29,7 @@ public class ClipResetAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {        
-        final IViewer<?> activeViewer = context.getActiveViewer();
+        final IViewer activeViewer = context.getActiveViewer();
         final KNode diagramRoot = context.getViewContext().getViewModel();
         
         if (activeViewer.getClip() != diagramRoot) {

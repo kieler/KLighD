@@ -77,7 +77,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder,
+public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         IDiagramOutlinePage.Provider {
 
     /** The identifier of this viewer type as specified in the extension. */
@@ -96,7 +96,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         /**
          * {@inheritDoc}
          */
-        public IViewer<KNode> createViewer(final ContextViewer parentViewer, final Composite parent) {
+        public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
             return new PiccoloViewer(parentViewer, parent);
         }
     }
