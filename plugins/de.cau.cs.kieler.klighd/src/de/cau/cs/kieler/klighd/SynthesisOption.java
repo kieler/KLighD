@@ -48,7 +48,7 @@ public final class SynthesisOption {
     
     /**
      * Static factory method providing a 'Separator' pseudo {@link SynthesisOption} with a label
-     * text. This can be used to partition transformation options into distinct, labelled groups.
+     * text. This can be used to partition transformation options into distinct, labeled groups.
      * 
      * @param label the label text of the separator. If {@code null} or empty, a separator without a
      *              label is created.
@@ -83,7 +83,7 @@ public final class SynthesisOption {
      * 
      * @param name
      *            the name of the option
-     * @return an 'Choice' {@link SynthesisOption}
+     * @return the desired 'Choice' {@link SynthesisOption}
      */
     public static SynthesisOption createChoiceOption(final String name) {
         return new SynthesisOption(name, TransformationOptionType.CHOICE, null);
@@ -101,11 +101,11 @@ public final class SynthesisOption {
      *            the available option values.
      * @param initialValue
      *            the initially selected option value.
-     * @return an 'Choice' {@link SynthesisOption}
+     * @return the desired 'Choice' {@link SynthesisOption}
      */
     public static SynthesisOption createChoiceOption(final String name, final List<?> values,
             final Object initialValue) {
-        SynthesisOption option = new SynthesisOption(name,
+        final SynthesisOption option = new SynthesisOption(name,
                 TransformationOptionType.CHOICE, initialValue);
         option.setValues(values);
         return option;
@@ -131,7 +131,7 @@ public final class SynthesisOption {
      *            the range's upper bound
      * @param initialValue
      *            the initially selected option value.
-     * @return an 'Choice' {@link SynthesisOption}
+     * @return the desired 'Range' {@link SynthesisOption}
      */
     public static <T extends Number> SynthesisOption createRangeOption(
             final String name, final T lowerBound, final T upperBound, final T initialValue) {
@@ -185,7 +185,7 @@ public final class SynthesisOption {
      */
     public static <T extends Number> SynthesisOption createRangeOption(final String name,
             final T lowerBound, final T upperBound, final T stepSize, final T initialValue) {
-        SynthesisOption option = new SynthesisOption(name,
+        final SynthesisOption option = new SynthesisOption(name,
                 TransformationOptionType.RANGE, initialValue);
         option.setValues(Pair.of(lowerBound, upperBound));
         if (!lowerBound.equals(lowerBound.intValue())

@@ -733,6 +733,23 @@ public class ViewContext extends MapPropertyHolder {
     }   
 
     // ---------------------------------------------------------------------------------- //
+    //  Offered action handling    
+
+    /**
+     * Passes the recommended layout options and related values provided by the employed diagram
+     * synthesis.
+     * 
+     * @return a map of options (map keys) and related values (map values)
+     */
+    public List<DisplayedActionData> getDisplayedActions() {
+        if (this.diagramSynthesis != null) {
+            return this.diagramSynthesis.getDisplayedActions();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    // ---------------------------------------------------------------------------------- //
     //  Recommended layout option handling    
     
     /**

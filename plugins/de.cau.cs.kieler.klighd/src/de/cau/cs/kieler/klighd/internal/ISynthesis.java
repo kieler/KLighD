@@ -23,6 +23,7 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 
@@ -74,7 +75,7 @@ public interface ISynthesis {
     KNode transform(Object model, ViewContext viewContext);
 
     /**
-     * Contributes the set of {@link SynthesisOption SynthesisOptions} provided
+     * Contributes the list of {@link SynthesisOption SynthesisOptions} provided
      * in the UI in order to allow users to influence steer the diagram synthesis.
      * 
      * @return the set of {@link SynthesisOption SynthesisOptions}
@@ -91,12 +92,27 @@ public interface ISynthesis {
      * option.
      */
     List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions();
-    
+
     /**
-     * Returns a function that is supposed to apply changes to a text element.
-     * Its returned as a function so that it can be executed within transactional contexts.
-     * @param kText the text element that is supposed to be changed
-     * @param element the graph element whose text is supposed to be changed
+     * Contributes the list of {@link de.cau.cs.kieler.klighd.IActionIAction IActions} provided in
+     * the UI allowing to quickly perform pre-defined actions on the diagram elements. In order to
+     * avoid compile time dependencies on concrete {@link de.cau.cs.kieler.klighd.IAction IAction}
+     * implementations they are referenced by the id used in their registration.
+     * 
+     * @return a {@link List} of {@link Pair Pairs} with each pair containing the id of the denoted
+     *         {@link de.cau.cs.kieler.klighd.IAction IAction} (see registration) and the
+     *         corresponding label shown in the UI
+     */
+    List<DisplayedActionData> getDisplayedActions();
+
+    /**
+     * Returns a function that is supposed to apply changes to a text element. Its returned as a
+     * function so that it can be executed within transaction contexts.
+     * 
+     * @param kText
+     *            the text element that is supposed to be changed
+     * @param element
+     *            the graph element whose text is supposed to be changed
      * @return a method that can change the text in the view as well as its source
      */
     Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element);
