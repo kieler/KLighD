@@ -22,6 +22,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -42,26 +43,26 @@ public class SVGExporter extends KlighdCanvasExporter {
      * {@inheritDoc}
      */
     @Override
-    public void export(final KlighdExportInfo info) {
+    public void export(final ExportData data, final KlighdCanvas canvas) {
 
         // reveal the canvas' camera ...
-        final KlighdMainCamera camera = info.getControl().getCamera();
+        final KlighdMainCamera camera = canvas.getCamera();
 
         // ... an determine the bounds of the diagram to be exported
-        final PBounds bounds = this.getExportedBounds(camera, info.isCameraViewport());
+        final PBounds bounds = this.getExportedBounds(camera, data.isCameraViewport);
         
         // initialize a graphics object that 'collects' all the drawing instructions 
         final KlighdAbstractSVGGraphics graphics =
-                SVGGeneratorManager.createGraphics(info.getSubFormatId(), bounds,
-                        info.isTextAsShapes(), info.isEmbedFonts());
+                SVGGeneratorManager.createGraphics(data.subFormatId, bounds,
+                        data.isTextAsShapes, data.isEmbedFonts);
 
         // do the actual diagram drawing work
-        this.drawDiagram(camera, info.isCameraViewport(), graphics, bounds); 
+        this.drawDiagram(camera, data.isCameraViewport, graphics, bounds); 
 
         OutputStream stream = null;
         try {
             // dump out the resulting SVG description via the provided output stream
-            stream = info.createOutputStream();
+            stream = data.createOutputStream();
             graphics.stream(stream);
             stream.close();
         } catch (final IOException e) {

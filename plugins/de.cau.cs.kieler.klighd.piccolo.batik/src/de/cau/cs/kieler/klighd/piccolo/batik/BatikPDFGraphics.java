@@ -37,6 +37,7 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.util.SVGConstants;
 import org.apache.fop.svg.PDFTranscoder;
 import org.eclipse.swt.graphics.LineAttributes;
+import org.eclipse.swt.widgets.Control;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
@@ -98,12 +99,12 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
     /**
      * {@inheritDoc}
      */
-    public void export(ExportInfo info) {
+    public void export(final ExportData data, final Control control) {
 
-        final PCamera camera = ((KlighdCanvas) info.getControl()).getCamera();
+        final PCamera camera = ((KlighdCanvas) control).getCamera();
 
         Rectangle2D bounds = null;
-        if (info.isCameraViewport()) {
+        if (data.isCameraViewport) {
             bounds = camera.getBounds();
         } else {
             // we want the svg to contain all elements, not just the visible area
@@ -119,7 +120,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
 
         // assemble context
         final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
-        ctx.setEmbeddedFontsOn(info.isEmbedFonts());
+        ctx.setEmbeddedFontsOn(data.isEmbedFonts);
 
         final GraphicContextDefaults defaults = new GraphicContextDefaults();
         ctx.setGraphicContextDefaults(defaults);
@@ -159,7 +160,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // create and configure the graphics object
-        graphicsDelegate = new SVGGraphics2D(ctx, info.isTextAsShapes());
+        graphicsDelegate = new SVGGraphics2D(ctx, data.isTextAsShapes);
         graphicsDelegate.setSVGCanvasSize(new Dimension((int) Math.ceil(bounds.getWidth()),
                 (int) Math.ceil(bounds.getHeight())));
 
@@ -170,7 +171,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
         // perform the painting
-        if (info.isCameraViewport()) {
+        if (data.isCameraViewport) {
             // only render the current viewport
             camera.fullPaint(paintContext);
         } else {
@@ -188,7 +189,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         Reader r = new StringReader(svg);
         TranscoderInput in = new TranscoderInput(r);
         try {
-            OutputStream stream = info.createOutputStream();
+            OutputStream stream = data.createOutputStream();
             TranscoderOutput out = new TranscoderOutput(stream);
             t.transcode(in, out);
             stream.flush();

@@ -46,11 +46,7 @@ import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
  * Singleton for accessing transformations, viewers, update strategies and layout post processors
  * registered with KLighD.
  * 
- * @author mri, chsch, akoc
- */
-/**
- * @author carsten
- *
+ * @author mri, chsch, akoc, csp
  */
 public final class KlighdDataManager {
 
@@ -277,7 +273,7 @@ public final class KlighdDataManager {
                         String extension = element.getAttribute("extension");
                         String descr = element.getAttribute("description");
                         boolean supportsTiling =
-                                Boolean.parseBoolean(element.getAttribute("supports_tiling"));
+                                Boolean.parseBoolean(element.getAttribute("supportsTiling"));
 
                         // create the descriptor
                         ExporterDescriptor descriptor =
@@ -623,13 +619,13 @@ public final class KlighdDataManager {
      * Aggregator for information about an exporter.
      */
     public static class ExporterDescriptor {
-        private String exporterId;
-        private String subFormatId;
-        private String description;
-        private String fileExtension;
-        private boolean supportsTiling;
-
         // CHECKSTYLEOFF javadoc
+        public final String exporterId;
+        public final String subFormatId;
+        public final String description;
+        public final String fileExtension;
+        public final boolean supportsTiling;
+
         public ExporterDescriptor(final String exporterId, final String subFormatId,
                 final String description, final String fileExtension, final boolean supportsTiling) {
             this.exporterId = exporterId;
@@ -637,41 +633,6 @@ public final class KlighdDataManager {
             this.description = description;
             this.fileExtension = fileExtension;
             this.supportsTiling = supportsTiling;
-        }
-
-        /**
-         * @return the formatId
-         */
-        public String getExporterId() {
-            return exporterId;
-        }
-
-        /**
-         * @return the subFormatId
-         */
-        public String getSubFormatId() {
-            return subFormatId;
-        }
-
-        /**
-         * @return the description
-         */
-        public String getDescription() {
-            return description;
-        }
-
-        /**
-         * @return the fileExtension
-         */
-        public String getFileExtension() {
-            return fileExtension;
-        }
-
-        /**
-         * @return the supports_tiling
-         */
-        public boolean supportsTiling() {
-            return supportsTiling;
         }
     }
 }

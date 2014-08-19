@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.util.AbstractRunnableWithResult;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo;
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -90,8 +90,8 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
         try {
             final String format = properties != null
                     ? properties.getProperty(OUTPUT_FORMAT) : BitmapExporter.SUB_FORMAT_PNG;
-            ExportInfo info = new ExportInfo(output, canvas, false, imageScale, false, false, format);
-            new BitmapExporter().export(info);
+            ExportData data = new ExportData(output, false, imageScale, false, false, format);
+            new BitmapExporter().export(data, canvas);
 
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

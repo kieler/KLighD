@@ -29,11 +29,11 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo.TilingInfo;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -63,28 +63,28 @@ public class BitmapExporter extends KlighdCanvasExporter {
      * {@inheritDoc}
      */
     @Override
-    public void export(final KlighdExportInfo info) {
+    public void export(final ExportData data, final KlighdCanvas canvas) {
 
         // reveal the canvas' camera ...
-        final KlighdMainCamera camera = info.getControl().getCamera();
+        final KlighdMainCamera camera = canvas.getCamera();
 
         // ... and determine the bounds of the diagram to be exported
-        final PBounds bounds = getExportedBounds(camera, info.isCameraViewport());
+        final PBounds bounds = getExportedBounds(camera, data.isCameraViewport);
 
         // determine the employed image's size
-        int width = (int) Math.ceil(info.getScale() * bounds.width);
-        int height = (int) Math.ceil(info.getScale() * bounds.height);
+        int width = (int) Math.ceil(data.scale * bounds.width);
+        int height = (int) Math.ceil(data.scale * bounds.height);
 
         // if export is tiled, compute resp. receive the needed number of rows and columns
         int rows = 1, cols = 1;
-        if (info.getTilingInfo().isTiled()) {
-            TilingInfo tilingInfo = info.getTilingInfo();
-            if (tilingInfo.isMaxsize()) {
-                rows = (int) Math.ceil(((double) height) / tilingInfo.getMaxHeight());
-                cols = (int) Math.ceil(((double) width) / tilingInfo.getMaxWidth());
+        if (data.getTilingInfo().isTiled) {
+            TilingData tilingInfo = data.getTilingInfo();
+            if (tilingInfo.isMaxsize) {
+                rows = (int) Math.ceil(((double) height) / tilingInfo.maxHeight);
+                cols = (int) Math.ceil(((double) width) / tilingInfo.maxWidth);
             } else {
-                rows = tilingInfo.getRows();
-                cols = tilingInfo.getCols();
+                rows = tilingInfo.rows;
+                cols = tilingInfo.cols;
             }
             // adapt the tiling
             width = (int) Math.ceil(((double) width) / cols);
@@ -97,15 +97,15 @@ public class BitmapExporter extends KlighdCanvasExporter {
             for (int col = 0; col < cols; col++) {
 
                 // initialize an SWT Image that serves as the pixel 'canvas'
-                final Image image = new Image(info.getControl().getDisplay(), width, height);
+                final Image image = new Image(canvas.getDisplay(), width, height);
                 final GC gc = new GC(image);
 
                 // initialize a graphics object that 'collects' all the drawing instructions
                 final KlighdSWTGraphics graphics =
-                        new KlighdSWTGraphicsImpl(gc, info.getControl().getDisplay());
+                        new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
 
                 // apply translation and clipping for tiled export if necessary
-                if (info.getTilingInfo().isTiled()) {
+                if (data.getTilingInfo().isTiled) {
                     graphics.transform(AffineTransform.getTranslateInstance(-col * width, -row
                             * height));
                     graphics.clip(new Rectangle(width, height));
@@ -113,11 +113,10 @@ public class BitmapExporter extends KlighdCanvasExporter {
                 
                 // apply the scale factor to the employed graphics object
                 // by means of a corresponding affine transform
-                graphics.transform(AffineTransform.getScaleInstance(info.getScale(),
-                        info.getScale()));
+                graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
 
                 // do the action diagram drawing work
-                drawDiagram(camera, info.isCameraViewport(), graphics, bounds);
+                drawDiagram(camera, data.isCameraViewport, graphics, bounds);
 
                 // create an image loader to save the image
                 // although the API differently suggests:
@@ -128,9 +127,9 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
                 // translate the requested format identifier
                 final int format;
-                if (info.getSubFormatId().equals(SUB_FORMAT_JPEG)) {
+                if (data.subFormatId.equals(SUB_FORMAT_JPEG)) {
                     format = SWT.IMAGE_JPEG;
-                } else if (info.getSubFormatId().equals(SUB_FORMAT_PNG)) {
+                } else if (data.subFormatId.equals(SUB_FORMAT_PNG)) {
                     format = SWT.IMAGE_PNG;
                 } else {
                     // default format is bmp
@@ -140,10 +139,10 @@ public class BitmapExporter extends KlighdCanvasExporter {
                 // dump out the binary image data via the provided output stream
                 OutputStream stream = null;
                 try {
-                    if (info.getTilingInfo().isTiled()) {
-                        stream = info.createOutputStream(row, col);
+                    if (data.getTilingInfo().isTiled) {
+                        stream = data.createOutputStream(row, col);
                     } else {
-                        stream = info.createOutputStream();
+                        stream = data.createOutputStream();
                     }
                     loader.save(stream, format);
                     stream.close();

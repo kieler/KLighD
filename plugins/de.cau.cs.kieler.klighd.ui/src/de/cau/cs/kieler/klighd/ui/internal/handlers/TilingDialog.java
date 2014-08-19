@@ -29,16 +29,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo.TilingInfo;
+import de.cau.cs.kieler.klighd.IDiagramExporter.TilingData;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
 /**
+ * Dialog for tiling options, used by the {@link SaveAsImageDialog}.
+ * Gathers all needed information and provides it as a {@link TilingData} object.
+ * 
  * @author csp
- *
  */
 public class TilingDialog extends Dialog {
     
-    private TilingInfo info;
+    private TilingData info;
     private Spinner spinnerX;
     private Spinner spinnerY;
     private Spinner spinnerWidth;
@@ -52,7 +54,7 @@ public class TilingDialog extends Dialog {
      * @param parentShell the parentShell
      * @param info the tilinginfo
      */
-    public TilingDialog(final Shell parentShell, final TilingInfo info) {
+    public TilingDialog(final Shell parentShell, final TilingData info) {
         super(parentShell);
         setShellStyle(SWT.CLOSE | SWT.TITLE | SWT.BORDER | SWT.OK | SWT.APPLICATION_MODAL);
         
@@ -83,7 +85,7 @@ public class TilingDialog extends Dialog {
         
         rowsColsButton = new Button(composite, SWT.RADIO);
         rowsColsButton.setText("Define number of rows and columns");
-        rowsColsButton.setSelection(!info.isMaxsize());
+        rowsColsButton.setSelection(!info.isMaxsize);
         rowsColsButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 updateEnabledState(false);
@@ -99,7 +101,7 @@ public class TilingDialog extends Dialog {
         
         maxSizeButton = new Button(composite, SWT.RADIO);
         maxSizeButton.setText("Define maximum size");
-        maxSizeButton.setSelection(info.isMaxsize());
+        maxSizeButton.setSelection(info.isMaxsize);
         maxSizeButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 updateEnabledState(true);
@@ -116,16 +118,16 @@ public class TilingDialog extends Dialog {
         resetButton.setText("Reset");
         resetButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                info = TilingInfo.createNonTiledInfo();
+                info = TilingData.createNonTiledData();
                 updateSpinnerSelections();
-                rowsColsButton.setSelection(!info.isMaxsize());
-                maxSizeButton.setSelection(info.isMaxsize());
-                updateEnabledState(info.isMaxsize());
+                rowsColsButton.setSelection(!info.isMaxsize);
+                maxSizeButton.setSelection(info.isMaxsize);
+                updateEnabledState(info.isMaxsize);
             }
         });
         
         updateSpinnerSelections();
-        updateEnabledState(info.isMaxsize());
+        updateEnabledState(info.isMaxsize);
         return composite;
     }
     
@@ -145,13 +147,13 @@ public class TilingDialog extends Dialog {
     }
 
     /**
-     * Updates the selected values of the spinners from the local {@link TilingInfo}.
+     * Updates the selected values of the spinners from the local {@link TilingData}.
      */
     private void updateSpinnerSelections() {
-        spinnerX.setSelection(info.getRows());
-        spinnerY.setSelection(info.getCols());
-        spinnerWidth.setSelection(info.getMaxWidth());
-        spinnerHeight.setSelection(info.getMaxHeight());
+        spinnerX.setSelection(info.rows);
+        spinnerY.setSelection(info.cols);
+        spinnerWidth.setSelection(info.maxWidth);
+        spinnerHeight.setSelection(info.maxHeight);
     }
 
     private void addRowsColsGroup(final Composite parent) {
@@ -217,7 +219,7 @@ public class TilingDialog extends Dialog {
     /**
      * @return the tiling information with updated values
      */
-    public TilingInfo getTilingInfo() {
+    public TilingData getTilingInfo() {
         return info;
     }
 
@@ -227,10 +229,10 @@ public class TilingDialog extends Dialog {
     @Override
     protected void okPressed() {
         if (rowsColsButton.getSelection()) {
-            info = TilingInfo.createTiledInfo(spinnerX.getSelection(), spinnerY.getSelection());
+            info = TilingData.createTiledData(spinnerX.getSelection(), spinnerY.getSelection());
         } else {
             info =
-                    TilingInfo.createMaxSizeTiledInfo(spinnerWidth.getSelection(),
+                    TilingData.createMaxSizeTiledData(spinnerWidth.getSelection(),
                             spinnerHeight.getSelection());
         }
         super.okPressed();

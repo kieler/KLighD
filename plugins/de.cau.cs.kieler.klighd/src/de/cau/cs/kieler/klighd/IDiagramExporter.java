@@ -36,17 +36,19 @@ import org.eclipse.swt.widgets.Control;
 public interface IDiagramExporter {
 
     /**
-     * Exports the diagram currently visible on the given {@code canvas} to the passed output
+     * Exports the diagram currently visible on the given {@code control} to the passed output
      * stream. If the {@code cameraViewport} flag is set, only the visible area is exported. The
      * {@code scale} value can be used for instance during the export of bitmap graphics to increase
      * the rendering quality by up-scaling the visible area before exporting. Some implementations
      * of the {@link IDiagramExporter} interface might support multiple sub formats of the same
      * parent format, e.g., bmp and png are both bitmap formats.
      * 
-     * @param info
-     *          the specified export info
+     * @param data
+     *            the specified export info
+     * @param control
+     *            the control to export
      */
-    void export(ExportInfo info);
+    void export(ExportData data, Control control);
 
     /**
      * Capsules the information needed to export a diagram to the filesystem. Merely a record to
@@ -54,19 +56,19 @@ public interface IDiagramExporter {
      * 
      * @author csp
      */
-    public class ExportInfo {
-        
-        private OutputStream stream;
-        private IPath path;
-        private boolean isWorkspacePath;
-        private Control control;
-        private boolean cameraViewport;
-        private int scale;
-        private boolean textAsShapes;
-        private boolean embedFonts;
-        private String subFormatId;
-        
-        private TilingInfo tilingInfo;
+    public class ExportData {
+
+        // CHECKSTYLEOFF javadoc
+        public final OutputStream stream;
+        public final IPath path;
+        public final boolean isWorkspacePath;
+        public final boolean isCameraViewport;
+        public final int scale;
+        public final boolean isTextAsShapes;
+        public final boolean isEmbedFonts;
+        public final String subFormatId;
+
+        private TilingData tilingInfo;
 
         /**
          * @param path
@@ -88,18 +90,18 @@ public interface IDiagramExporter {
          * @param subFormatId
          *            an id for a certain subformat
          */
-        public ExportInfo(final IPath path, final boolean isWorkspacePath, final Control control,
+        public ExportData(final IPath path, final boolean isWorkspacePath,
                 final boolean cameraViewport, final int scale, final boolean textAsShapes,
                 final boolean embedFonts, final String subFormatId) {
+            this.stream = null;
             this.path = path;
             this.isWorkspacePath = isWorkspacePath;
-            this.control = control;
-            this.cameraViewport = cameraViewport;
+            this.isCameraViewport = cameraViewport;
             this.scale = scale;
-            this.textAsShapes = textAsShapes;
-            this.embedFonts = embedFonts;
+            this.isTextAsShapes = textAsShapes;
+            this.isEmbedFonts = embedFonts;
             this.subFormatId = subFormatId;
-            this.tilingInfo = TilingInfo.createNonTiledInfo();
+            this.tilingInfo = TilingData.createNonTiledData();
         }
 
         /**
@@ -119,17 +121,17 @@ public interface IDiagramExporter {
          * @param subFormatId
          *            an id for a certain subformat
          */
-        public ExportInfo(final OutputStream stream, final Control control,
-                final boolean cameraViewport, final int scale, final boolean textAsShapes,
-                final boolean embedFonts, final String subFormatId) {
+        public ExportData(final OutputStream stream, final boolean cameraViewport, final int scale,
+                final boolean textAsShapes, final boolean embedFonts, final String subFormatId) {
             this.stream = stream;
-            this.control = control;
-            this.cameraViewport = cameraViewport;
+            this.path = null;
+            this.isWorkspacePath = false;
+            this.isCameraViewport = cameraViewport;
             this.scale = scale;
-            this.textAsShapes = textAsShapes;
-            this.embedFonts = embedFonts;
+            this.isTextAsShapes = textAsShapes;
+            this.isEmbedFonts = embedFonts;
             this.subFormatId = subFormatId;
-            this.tilingInfo = TilingInfo.createNonTiledInfo();
+            this.tilingInfo = TilingData.createNonTiledData();
         }
 
         /**
@@ -137,7 +139,8 @@ public interface IDiagramExporter {
          * to the given path is created.
          * 
          * @return the outputstream to write the image to.
-         * @throws IOException if there is a problem obtaining an open output stream.
+         * @throws IOException
+         *             if there is a problem obtaining an open output stream.
          */
         public OutputStream createOutputStream() throws IOException {
             if (path == null) {
@@ -146,10 +149,11 @@ public interface IDiagramExporter {
                 return createOutputStream(path);
             }
         }
-        
+
         /**
-         * If a path has been set, a new outputstream is created.
-         * The name of the file is appended by the given row and column.
+         * If a path has been set, a new outputstream is created. The name of the file is appended
+         * by the given row and column.
+         * 
          * @param row
          *            number of current row
          * @param col
@@ -169,7 +173,7 @@ public interface IDiagramExporter {
             IPath aPath = path.removeLastSegments(1).append(name).addFileExtension(ext);
             return createOutputStream(aPath);
         }
-        
+
         private OutputStream createOutputStream(final IPath aPath) throws IOException {
             if (isWorkspacePath) {
                 // workspace path
@@ -185,208 +189,88 @@ public interface IDiagramExporter {
         }
 
         /**
-         * @return the outputstream, if set, {@code null} otherwise
-         */
-        public OutputStream getStream() {
-            return stream;
-        }
-        
-        /**
-         * @return {@code true} if a path has been set
-         */
-        public boolean hasPath() { //TODO call it "tileable" ?
-            return path != null;
-        }
-        
-        /**
-         * @return the path if set, {@code null} otherwise
-         */
-        public IPath getPath() {
-            return path;
-        }
-        
-        /**
-         * @return {@code true} ({@code false}) if the path has been set and is workspace
-         *         (filesystem) relative, {@code null} otherwise
-         */
-        public boolean isWorkspacePath() {
-            return isWorkspacePath;
-        }
-
-        /**
-         * @return the control
-         */
-        public Control getControl() {
-            return control;
-        }
-
-        /**
-         * @return the cameraViewport
-         */
-        public boolean isCameraViewport() {
-            return cameraViewport;
-        }
-
-        /**
-         * @return the scale
-         */
-        public int getScale() {
-            return scale;
-        }
-
-        /**
-         * @return the textAsShapes
-         */
-        public boolean isTextAsShapes() {
-            return textAsShapes;
-        }
-
-        /**
-         * @return the embedFonts
-         */
-        public boolean isEmbedFonts() {
-            return embedFonts;
-        }
-
-        /**
-         * @return the subFormatId
-         */
-        public String getSubFormatId() {
-            return subFormatId;
-        }
-        
-        /**
          * @return the tilingInfo
          */
-        public TilingInfo getTilingInfo() {
+        public TilingData getTilingInfo() {
             return tilingInfo;
         }
 
         /**
-         * @param tilingInfo the tilingInfo to set
+         * @param tilingInfo
+         *            the tilingInfo to set
          */
-        public void setTilingInfo(final TilingInfo tilingInfo) {
+        public void setTilingInfo(final TilingData tilingInfo) {
             if (path == null) {
                 throw new IllegalArgumentException("Not tileable.");
             }
             this.tilingInfo = tilingInfo;
         }
+    }
+
+    /**
+     * Capsules the information needed to tile a diagram for export. Merely a record to hold the
+     * information.
+     * 
+     * @author csp
+     */
+    public static final class TilingData {
+
+        /** Non tiled tiling information. */
+        public static final TilingData NON_TILED = new TilingData();
+
+        // CHECKSTYLEOFF javadoc
+        public final int maxWidth, maxHeight;
+        public final int cols, rows;
+        public final boolean isTiled;
+        public final boolean isMaxsize;
+
+        private TilingData(final int maxWidth, final int maxHeight, final int rows, final int cols,
+                final boolean tiled, final boolean isMaxsize) {
+            this.maxWidth = maxWidth;
+            this.maxHeight = maxHeight;
+            this.rows = rows;
+            this.cols = cols;
+            this.isTiled = tiled;
+            this.isMaxsize = isMaxsize;
+        }
+
+        private TilingData() {
+            this(-1, -1, 1, 1, false, false);
+        }
 
         /**
-         * Capsules the information needed to tile a diagram for export. Merely a record to
-         * hold the information.
-         * 
-         * @author csp
+         * @return non tiled information.
          */
-        public static class TilingInfo {
-            
-            /** Non tiled tiling information. */
-            public static final TilingInfo NON_TILED = new TilingInfo();
-
-            private int maxWidth, maxHeight;
-            private int cols, rows;
-            private boolean tiled;
-            private boolean isMaxsize;
-            
-            /**
-             * @param maxWidth
-             * @param maxHeight
-             * @param cols
-             * @param rows
-             */
-            protected TilingInfo() {
-                this.tiled = false;
-                this.isMaxsize = false;
-                this.maxWidth = -1;
-                this.maxHeight = -1;
-                this.rows = 1;
-                this.cols = 1;
-            }
-
-            /**
-             * @return non tiled information.
-             */
-            public static TilingInfo createNonTiledInfo() {
-                return NON_TILED;
-            }
-            
-            /**
-             * Create tiled information with given numbers of rows and columns.
-             * 
-             * @param rows
-             *            number of rows.
-             * @param cols
-             *            number of columns.
-             * @return the tiled information.
-             */
-            public static TilingInfo createTiledInfo(final int rows, final int cols) {
-                TilingInfo info = new TilingInfo();
-                info.rows = Math.max(1, rows);
-                info.cols = Math.max(1, cols);
-                info.tiled = info.rows > 1 || info.cols > 1;
-                info.isMaxsize = false;
-                return info;
-            }
-
-            /**
-             * Create tiled information with gives maximum size.
-             * 
-             * @param maxWidth
-             *            maximal width.
-             * @param maxHeight
-             *            maximal height.
-             * @return the tiled information.
-             */
-            public static TilingInfo createMaxSizeTiledInfo(final int maxWidth, final int maxHeight) {
-                TilingInfo info = new TilingInfo();
-                info.maxWidth = Math.max(1, maxWidth);
-                info.maxHeight = Math.max(1, maxHeight);
-                info.tiled = true;
-                info.isMaxsize = true;
-                return info;
-            }
-            
-            /**
-             * @return the maxWidth
-             */
-            public int getMaxWidth() {
-                return maxWidth;
-            }
-
-            /**
-             * @return the maxHeight
-             */
-            public int getMaxHeight() {
-                return maxHeight;
-            }
-
-            /**
-             * @return the number of cols
-             */
-            public int getCols() {
-                return cols;
-            }
-
-            /**
-             * @return the number of rows
-             */
-            public int getRows() {
-                return rows;
-            }
-            
-            /**
-             * @return {@code true} if it's tiled
-             */
-            public boolean isTiled() {
-                return tiled;
-            }
-
-            /**
-             * @return {@code true} if a maximum size has been set
-             */
-            public boolean isMaxsize() {
-                return isMaxsize;
-            }
+        public static TilingData createNonTiledData() {
+            return NON_TILED;
         }
+
+        /**
+         * Create tiled information with given numbers of rows and columns.
+         * 
+         * @param rows
+         *            number of rows.
+         * @param cols
+         *            number of columns.
+         * @return the tiled information.
+         */
+        public static TilingData createTiledData(final int rows, final int cols) {
+            return new TilingData(-1, -1, Math.max(1, rows), Math.max(1, cols), rows > 1
+                    || cols > 1, false);
+        }
+
+        /**
+         * Create tiled information with given maximum size.
+         * 
+         * @param maxWidth
+         *            maximal width.
+         * @param maxHeight
+         *            maximal height.
+         * @return the tiled information.
+         */
+        public static TilingData createMaxSizeTiledData(final int maxWidth, final int maxHeight) {
+            return new TilingData(Math.max(1, maxWidth), Math.max(1, maxHeight), 1, 1, true, true);
+        }
+
     }
 }

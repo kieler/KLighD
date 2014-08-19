@@ -13,9 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import java.io.OutputStream;
-
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Control;
@@ -30,22 +27,23 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * a {@link KlighdCanvas}.<br>
  * <br>
  * Thus, it treats the {@link Control} in
- * {@link #export(de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo))} as a
- * {@link KlighdCanvas} and redirects to
- * {@link #export(KlighdExportInfo))}, which has to
- * be implemented by concrete subclasses.
+ * {@link #export(de.cau.cs.kieler.klighd.IDiagramExporter.ExportInfo))} as a {@link KlighdCanvas}
+ * and redirects to {@link #export(KlighdExportInfo))}, which has to be implemented by concrete
+ * subclasses.
  * 
  * @author chsch
  */
-public abstract class KlighdCanvasExporter extends AbstractDiagramExporter implements IDiagramExporter {
-    
+public abstract class KlighdCanvasExporter extends AbstractDiagramExporter implements
+        IDiagramExporter {
+
     /**
      * {@inheritDoc}
      */
-    public void export(final ExportInfo info) {
-        
-        if (info.getControl() instanceof KlighdCanvas) {
-            export(KlighdExportInfo.fromExportInfo(info));
+    public void export(final ExportData data, final Control control) {
+
+        if (control instanceof KlighdCanvas) {
+            KlighdCanvas canvas = (KlighdCanvas) control;
+            export(data, canvas);
         } else {
             final String msg = "";
             StatusManager.getManager().handle(
@@ -59,56 +57,13 @@ public abstract class KlighdCanvasExporter extends AbstractDiagramExporter imple
      * stream. If the {@code cameraViewport} flag is set, only the visible area is exported. The
      * {@code scale} value can be used for instance during the export of bitmap graphics to increase
      * the rendering quality by up-scaling the visible area before exporting. Some implementations
-     * of the {@link IDiagramExporter} interface might support multiple sub formats of the same parent
-     * format, e.g., bmp and png are both bitmap formats.
+     * of the {@link IDiagramExporter} interface might support multiple sub formats of the same
+     * parent format, e.g., bmp and png are both bitmap formats.
      * 
-     * @param info
-     *          the specified export info
+     * @param data
+     *            the specified export data
+     * @param canvas
+     *            the canvas to export
      */
-    public abstract void export(KlighdExportInfo info);
-    
-    
-    public static class KlighdExportInfo extends ExportInfo{
-
-        public KlighdExportInfo(final IPath path, final boolean isWorkspacePath,
-                final KlighdCanvas canvas, final boolean cameraViewport, final int scale,
-                final boolean textAsShapes, final boolean embedFonts, final String subFormatId) {
-            super(path, isWorkspacePath, canvas, cameraViewport, scale, textAsShapes, embedFonts,
-                    subFormatId);
-        }
-        
-        public KlighdExportInfo(final OutputStream stream, final KlighdCanvas canvas,
-                final boolean cameraViewport, final int scale, final boolean textAsShapes,
-                final boolean embedFonts, final String subFormatId) {
-            super(stream, canvas, cameraViewport, scale, textAsShapes, embedFonts, subFormatId);
-        }
-        
-        public static KlighdExportInfo fromExportInfo(ExportInfo info) {
-            KlighdExportInfo newInfo;
-            if (info.hasPath()) {
-                newInfo =
-                        new KlighdExportInfo(info.getPath(), info.isWorkspacePath(),
-                                (KlighdCanvas) info.getControl(), info.isCameraViewport(),
-                                info.getScale(), info.isTextAsShapes(), info.isEmbedFonts(),
-                                info.getSubFormatId());
-                newInfo.setTilingInfo(info.getTilingInfo());
-            } else {
-                newInfo =
-                        new KlighdExportInfo(info.getStream(),
-                                (KlighdCanvas) info.getControl(), info.isCameraViewport(),
-                                info.getScale(), info.isTextAsShapes(), info.isEmbedFonts(),
-                                info.getSubFormatId());
-            }
-            return newInfo;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public KlighdCanvas getControl() {
-            return (KlighdCanvas) super.getControl();
-        }
-        
-    }
+    public abstract void export(ExportData data, KlighdCanvas canvas);
 }
