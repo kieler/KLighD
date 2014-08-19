@@ -23,7 +23,7 @@ Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
 Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.actions,
  de.cau.cs.kieler.klighd.internal;x-friends:="de.cau.cs.kieler.klighd.piccolo,de.cau.cs.kieler.klighd.kivi,de.cau.cs.kieler.klighd.ui",
- de.cau.cs.kieler.klighd.internal.macrolayout;x-friends:="de.cau.cs.kieler.klighdning,de.cau.cs.kieler.klighd.ui",
+ de.cau.cs.kieler.klighd.internal.macrolayout;x-friends:="de.cau.cs.kieler.klighdning,de.cau.cs.kieler.klighd.ui,de.cau.cs.kieler.klighd.piccolo",
  de.cau.cs.kieler.klighd.internal.preferences;x-internal:=true,
  de.cau.cs.kieler.klighd.internal.util;x-friends:="de.cau.cs.kieler.klighd.piccolo,de.cau.cs.kieler.klighd.test,de.cau.cs.kieler.klighd.incremental",
  de.cau.cs.kieler.klighd.krendering,

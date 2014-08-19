@@ -40,7 +40,7 @@ public interface IDiagramWorkbenchPart extends IWorkbenchPart {
      * 
      * @return the viewer
      */
-    IViewer<?> getViewer();
+    IViewer getViewer();
 
     /**
      * Returns the viewer associated with this workbench part.

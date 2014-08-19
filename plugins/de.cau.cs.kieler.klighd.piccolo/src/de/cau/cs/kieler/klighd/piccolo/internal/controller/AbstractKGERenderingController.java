@@ -644,7 +644,7 @@ public abstract class AbstractKGERenderingController
         for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
             final PNode node = nodeController.getNode();
             if (node != null) {
-                node.invalidatePaint();
+                node.repaint();
             }
         }
     }
@@ -984,7 +984,6 @@ public abstract class AbstractKGERenderingController
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, decorator,
                 decoration.getBounds());
-        decorator.setRepresentationNode(controller.getNode());
 
         // apply the initial rotation
         decorator.setRotation(decoration.getRotation());
@@ -1100,17 +1099,6 @@ public abstract class AbstractKGERenderingController
         throw new RuntimeException(
                 "Child area found in graph element which does not support a child area: "
                         + getGraphElement());
-    }
-
-    /**
-     * Sets default values for the given Piccolo2D node used as representation for a rendering.
-     * 
-     * @param node
-     *            the Piccolo2D node
-     */
-    protected void initializeRenderingNode(final PNode node) {
-        node.setVisible(true);
-        node.setPickable(false);
     }
 
     private static final Object PROPERTY_LISTENER_KEY = new Object();

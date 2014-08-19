@@ -44,18 +44,35 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
  * 
  * @author mri
  * @author chsch
- * 
- * @param <T>
- *            the type of the model this viewer accepts
  */
-public abstract class AbstractViewer<T> implements IViewer<T> {
+public abstract class AbstractViewer implements IViewer {
 
     /**
      * {@inheritDoc}
      */
-    public void setModel(final T model) {
+    public void setModel(final Object model) {
         this.setModel(model, false);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setModel(final Object model, final boolean sync) {
+        if (model instanceof KNode) {
+            setModel((KNode) model, sync);
+        }
+    }
+
+    /**
+     * Specialized version of {@link #setModel(Object, boolean)} tailored to {@link KNode} input models.
+     * 
+     * @param model
+     *            the input model
+     * @param sync
+     *            true if the viewer should synchronize the visualization with the model; false else
+     */
+    public abstract void setModel(KNode model, boolean sync);
+
 
     private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListeners;
 

@@ -45,6 +45,7 @@ import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -84,16 +85,17 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
     }
 
     @Override
-    public void stream(OutputStream output) throws IOException {
-        PNGTranscoder t = new PNGTranscoder();
-        Reader r = new StringReader(getSVG());
-        TranscoderInput in = new TranscoderInput(r);
-        TranscoderOutput out = new TranscoderOutput(output);
+    public void stream(final OutputStream output) throws IOException {
+        final PNGTranscoder t = new PNGTranscoder();
+        final Reader r = new StringReader(getSVG());
+        final TranscoderInput in = new TranscoderInput(r);
+        final TranscoderOutput out = new TranscoderOutput(output);
         try {
             t.transcode(in, out);
-        } catch (TranscoderException e) {
+        } catch (final TranscoderException e) {
             e.printStackTrace();
         }
+
     }
 
     /**
@@ -167,7 +169,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         // IMPORTANT
         super.setGraphicsDelegate(graphicsDelegate);
 
-        final PPaintContext paintContext = new PPaintContext(this);
+        final KlighdPaintContext paintContext = new KlighdPaintContext(this, true);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
         // perform the painting
@@ -184,19 +186,19 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         }
 
         // Transcode the image to pdf
-        PDFTranscoder t = new PDFTranscoder();
-        String svg = getSVG();
-        Reader r = new StringReader(svg);
-        TranscoderInput in = new TranscoderInput(r);
+        final PDFTranscoder t = new PDFTranscoder();
+        final String svg = getSVG();
+        final Reader r = new StringReader(svg);
+        final TranscoderInput in = new TranscoderInput(r);
         try {
-            OutputStream stream = data.createOutputStream();
-            TranscoderOutput out = new TranscoderOutput(stream);
+            final OutputStream stream = data.createOutputStream();
+            final TranscoderOutput out = new TranscoderOutput(stream);
             t.transcode(in, out);
             stream.flush();
             stream.close();
-        } catch (TranscoderException e) {
+        } catch (final TranscoderException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }

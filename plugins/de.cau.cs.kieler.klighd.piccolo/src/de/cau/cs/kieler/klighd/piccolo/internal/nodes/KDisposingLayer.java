@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PLayer;
 
 /**
@@ -29,6 +32,50 @@ public class KDisposingLayer extends PLayer {
      * Constructor. 
      */
     public KDisposingLayer() {
+        this.setPickable(false);
+        this.setChildrenPickable(true);
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+    }
+
+
+    /**
+     * An abstract super class of {@link KNodeTopNode} and {@link KNodeNode} contributing common
+     * behavior. The main purpose of it is to reduce code clones that are here anyway since the
+     * inheritance of {@link PLayer} forbids the inheritance of {@link KlighdNode.KlighdGraphNode}.
+     * 
+     * @see KlighdNode.KlighdGraphNode
+     */
+    public abstract static class KNodeRepresentingLayer extends KDisposingLayer implements INode {
+
+        private static final long serialVersionUID = -4486373398530744260L;
+
+        /** the represented {@link KNode}. */
+        private KNode node;
+
+        /**
+         * Constructor.
+         * 
+         * @param node
+         *            the node
+         */
+        public KNodeRepresentingLayer(final KNode node) {
+            this.node = node;
+            this.setPickable(true);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public KNode getGraphElement() {
+            return node;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean isSelectable() {
+            final KLayoutData layoutData = node != null ? node.getData(KLayoutData.class) : null;
+            return layoutData != null && !layoutData.getProperty(KlighdProperties.NOT_SELECTABLE);
+        }
     }
 }

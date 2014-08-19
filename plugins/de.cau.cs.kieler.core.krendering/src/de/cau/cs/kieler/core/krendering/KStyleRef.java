@@ -13,16 +13,23 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>KStyle Ref</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Special {@link KStyle} allowing to reference the styles of another {@link KRendering} or {@link KStyleHolder} in general.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.KStyleRef#getStyleHolder <em>Style Holder</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.KStyleRef#getReferencedTypes <em>Referenced Types</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,5 +63,24 @@ public interface KStyleRef extends KStyle {
      * @generated
      */
     void setStyleHolder(KStyleHolder value);
+
+    /**
+     * Returns the value of the '<em><b>Referenced Types</b></em>' attribute list.
+     * The list contents are of type {@link java.lang.Class}&lt;de.cau.cs.kieler.core.krendering.KStyle>.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Referenced Types</em>' attribute list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * A list of {@link KStyle} class instances (List<Class<KStyle>>) that is looked for in <code>styleHolder</code>; if it is empty all styles are evaluated.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Referenced Types</em>' attribute list.
+     * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleRef_ReferencedTypes()
+     * @model
+     * @generated
+     */
+    EList<Class<KStyle>> getReferencedTypes();
 
 } // KStyleRef

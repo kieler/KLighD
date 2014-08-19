@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
@@ -47,6 +49,7 @@ import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
@@ -63,7 +66,7 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData;
 public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
 
     /** layout context property for the context viewer. */
-    public static final IProperty<IViewer<?>> CONTEXT_VIEWER = new Property<IViewer<?>>(
+    public static final IProperty<IViewer> CONTEXT_VIEWER = new Property<IViewer>(
             "klighd.contextViewer");
     /** the priority for the property layout layout configuration. */
     public static final int PRIORITY = 20;
@@ -85,7 +88,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         } else if (graphElement instanceof KPort) {
             return ((KPort) graphElement).getNode().getParent();
         } else if (graphElement instanceof KLabel) {
-            KLabeledGraphElement labeledGraphElement = ((KLabel) graphElement).getParent();
+            final KLabeledGraphElement labeledGraphElement = ((KLabel) graphElement).getParent();
             if (labeledGraphElement instanceof KNode) {
                 return ((KNode) labeledGraphElement).getParent();
             } else if (labeledGraphElement instanceof KEdge) {
@@ -110,7 +113,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     public Object getContextValue(final IProperty<?> property, final LayoutContext context) {
         Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (!(diagramPart instanceof KGraphElement)) {
-            IViewer<?> contextViewer = getContextViewer(context);
+            final IViewer contextViewer = getContextViewer(context);
             if (contextViewer != null) {
                 diagramPart = contextViewer.getViewContext().getViewModel();
             } else {
@@ -118,9 +121,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             }
         }
         
-        KGraphElement sourceElement = getAffectedElement(context);
+        final KGraphElement sourceElement = getAffectedElement(context);
         if (sourceElement != null && diagramPart != null) {
-            KGraphElement viewElement = (KGraphElement) diagramPart;
+            final KGraphElement viewElement = (KGraphElement) diagramPart;
 
             if (property.equals(LayoutContext.DIAGRAM_PART)) {
                 return viewElement;
@@ -131,9 +134,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(LayoutContext.DOMAIN_MODEL)) {
                 // determine the domain model element
-                IViewer<?> contextViewer = getContextViewer(context);
+                final IViewer contextViewer = getContextViewer(context);
                 if (contextViewer != null) {
-                    ViewContext viewContext = contextViewer.getViewContext();
+                    final ViewContext viewContext = contextViewer.getViewContext();
                     if (viewContext != null) {
                         return viewContext.getSourceElement(viewElement);
                     }
@@ -141,15 +144,15 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(LayoutContext.CONTAINER_DOMAIN_MODEL)) {
                 // determine the domain model element of the parent node
-                KNode parentNode = getParentNode(viewElement);
-                IViewer<?> contextViewer = getContextViewer(context);
+                final KNode parentNode = getParentNode(viewElement);
+                final IViewer contextViewer = getContextViewer(context);
                 if (parentNode != null && contextViewer != null) {
-                    ViewContext viewContext = contextViewer.getViewContext();
+                    final ViewContext viewContext = contextViewer.getViewContext();
                     if (viewContext != null) {
                         return viewContext.getSourceElement(parentNode);
                     }
                 }
-                Object domainModel = context.getProperty(LayoutContext.DOMAIN_MODEL);
+                final Object domainModel = context.getProperty(LayoutContext.DOMAIN_MODEL);
                 if (domainModel instanceof KGraphElement) {
                     return getParentNode((KGraphElement) domainModel);
                 }
@@ -166,21 +169,21 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(EclipseLayoutConfig.ASPECT_RATIO)) {
                 // get aspect ratio for the current diagram
-                IViewer<?> contextViewer = getContextViewer(context);
+                final IViewer contextViewer = getContextViewer(context);
                 if (contextViewer != null) {
                     final Control control = contextViewer.getControl();
                     if (control != null) {
                         final Maybe<Float> result = new Maybe<Float>();
-                        Runnable runnable = new Runnable() {
+                        final Runnable runnable = new Runnable() {
                             public void run() {
                                 try {
-                                    Point size = control.getSize();
+                                    final Point size = control.getSize();
                                     if (size.x > 0 && size.y > 0) {
                                         result.set(Math.round(
-                                                ASPECT_RATIO_ROUND * (float) size.x / size.y)
+                                                ASPECT_RATIO_ROUND * size.x / size.y)
                                                 / ASPECT_RATIO_ROUND);
                                     }
-                                } catch (SWTException exception) {
+                                } catch (final SWTException exception) {
                                     // ignore exception
                                 }
                             }
@@ -196,7 +199,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                 
             } else if (property.equals(DefaultLayoutConfig.CONTENT_HINT)) {
                 // check whether a hint for the layout algorithm has been set
-                KLayoutData elementLayout = sourceElement.getData(KLayoutData.class);
+                final KLayoutData elementLayout = sourceElement.getData(KLayoutData.class);
                 if (elementLayout != null) {
                     return elementLayout.getProperty(LayoutOptions.ALGORITHM);
                 }
@@ -208,7 +211,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                     parentElement = getParentNode(viewElement);                    
                 }
                 if (parentElement != null) {
-                    KShapeLayout parentLayout = ((KGraphElement) parentElement).getData(
+                    final KShapeLayout parentLayout = ((KGraphElement) parentElement).getData(
                             KShapeLayout.class);
                     if (parentLayout != null) {
                         return parentLayout.getProperty(LayoutOptions.ALGORITHM);
@@ -225,10 +228,10 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * @param context a layout context
      * @return the corresponding KLighD context viewer, or {@code null}
      */
-    private IViewer<?> getContextViewer(final LayoutContext context) {
-        IViewer<?> contextViewer = context.getProperty(CONTEXT_VIEWER);
+    private IViewer getContextViewer(final LayoutContext context) {
+        IViewer contextViewer = context.getProperty(CONTEXT_VIEWER);
         if (contextViewer == null) {
-            IWorkbenchPart workbenchPart = context.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
+            final IWorkbenchPart workbenchPart = context.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
                 contextViewer = ((IDiagramWorkbenchPart) workbenchPart).getViewer().getContextViewer();
                 context.setProperty(CONTEXT_VIEWER, contextViewer);
@@ -241,17 +244,17 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Object getOptionValue(final LayoutOptionData optionData, final LayoutContext context) {
-        KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context);
         if (element != null) {
-            KLayoutData elementLayout = element.getData(KLayoutData.class);
+            final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
-                Object value = elementLayout.getProperties().get(optionData);
+                final Object value = elementLayout.getProperties().get(optionData);
                 if (value instanceof IPropertyValueProxy) {
                     return ((IPropertyValueProxy) value).resolveValue(optionData);
                 } else if (value == null) {
                     
                     // check whether an expansion aware layout option set is present
-                    ExpansionAwareLayoutOptionData ealo = elementLayout.getProperty(
+                    final ExpansionAwareLayoutOptionData ealo = elementLayout.getProperty(
                             ExpansionAwareLayoutOption.OPTION);
                     if (ealo != null) {
                         KNode node = null;
@@ -260,8 +263,8 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                         } else if (element instanceof KPort) {
                             node = ((KPort) element).getNode();
                         }
-                        RenderingContextData rcd = RenderingContextData.get(node);
-                        boolean expanded = !node.getChildren().isEmpty()
+                        final RenderingContextData rcd = RenderingContextData.get(node);
+                        final boolean expanded = !node.getChildren().isEmpty()
                                 && rcd.getProperty(KlighdInternalProperties.POPULATED);
                         return ealo.getValue(optionData, expanded);
                     }
@@ -277,16 +280,30 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Collection<IProperty<?>> getAffectedOptions(final LayoutContext context) {
-        KGraphElement element = getAffectedElement(context);
-        List<IProperty<?>> options = new LinkedList<IProperty<?>>();
+        final KGraphElement element = getAffectedElement(context);
+        final List<IProperty<?>> options = new LinkedList<IProperty<?>>();
         if (element != null) {
-            KLayoutData elementLayout = element.getData(KLayoutData.class);
+            final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
-                Set<Map.Entry<IProperty<?>, Object>> entrySet = elementLayout.getAllProperties()
+                final Set<Map.Entry<IProperty<?>, Object>> entrySet = elementLayout.getAllProperties()
                         .entrySet();
-                
+
+                // although I cannot believe it - our customers observed got a null pointer exception
+                //  due to the following situation
+                if (entrySet == null) {
+                    final String msg = "EntrySet empty in KGraphPropertyLayoutConfig:"
+                            + KlighdPlugin.LINE_SEPARATOR + "  elementLayout == " + elementLayout
+                            + KlighdPlugin.LINE_SEPARATOR + "  element == " + element
+                            + KlighdPlugin.LINE_SEPARATOR + "  sourceElement == "
+                            + elementLayout.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+
+                    KlighdPlugin.getDefault().getLog()
+                            .log(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+                    return options;
+                }
+
                 // first handle all expansion aware layout option sets
-                for (Map.Entry<IProperty<?>, Object> entry : entrySet) {
+                for (final Map.Entry<IProperty<?>, Object> entry : entrySet) {
                     if (entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
                         KNode node = null;
                         if (element instanceof KNode) {
@@ -295,18 +312,18 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
                             node = ((KPort) element).getNode();
                         }
                         
-                        ExpansionAwareLayoutOptionData ealo =
+                        final ExpansionAwareLayoutOptionData ealo =
                                 (ExpansionAwareLayoutOptionData) entry.getValue();
-                        RenderingContextData rcd = RenderingContextData.get(node);
+                        final RenderingContextData rcd = RenderingContextData.get(node);
                         
-                        boolean expanded = !node.getChildren().isEmpty()
+                        final boolean expanded = !node.getChildren().isEmpty()
                                 && rcd.getProperty(KlighdInternalProperties.POPULATED);
                         options.addAll(ealo.getValues(expanded).getAllProperties().keySet());
                     }
                 }
                 
                 // then handle all normal layout options
-                for (Map.Entry<IProperty<?>, Object> entry : entrySet) {
+                for (final Map.Entry<IProperty<?>, Object> entry : entrySet) {
                     if (!entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
                         options.add(entry.getKey());
                     }
@@ -323,17 +340,17 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * @return the graph element that shall be modified in the given context, or {@code null}
      */
     private KGraphElement getAffectedElement(final LayoutContext context) {
-        Object domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
+        final Object domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
         if (domainElement instanceof KGraphElement) {
             return (KGraphElement) domainElement;
         }
         
-        Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
+        final Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
         if (diagramPart instanceof KGraphElement) {
             return (KGraphElement) diagramPart;
         }
         
-        IViewer<?> contextViewer = getContextViewer(context);
+        final IViewer contextViewer = getContextViewer(context);
         if (contextViewer != null) {
             return contextViewer.getViewContext().getViewModel();
         }
@@ -349,7 +366,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      */
     private void refreshModel(final KGraphElement element, final LayoutContext layoutContext) {
         if (element == layoutContext.getProperty(LayoutContext.DOMAIN_MODEL)) {
-            final IViewer<?> contextViewer = getContextViewer(layoutContext);
+            final IViewer contextViewer = getContextViewer(layoutContext);
             if (contextViewer == null) {
                 return;
             }
@@ -364,7 +381,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
 
             Display.getDefault().asyncExec(new Runnable() {
                 public void run() {
-                    IWorkbenchPart workbenchPart = layoutContext.getProperty(
+                    final IWorkbenchPart workbenchPart = layoutContext.getProperty(
                             EclipseLayoutConfig.WORKBENCH_PART);
                     if (workbenchPart != null) {
                         // re-apply auto-layout with the new configuration
@@ -387,7 +404,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      */
     public void setOptionValue(final LayoutOptionData optionData, final LayoutContext context,
             final Object value) {
-        KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context);
         if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout == null) {
@@ -407,9 +424,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public boolean isSet(final LayoutOptionData optionData, final LayoutContext context) {
-        KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context);
         if (element != null) {
-            KLayoutData elementLayout = element.getData(KLayoutData.class);
+            final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
                 return elementLayout.getProperties().containsKey(optionData);
             }
@@ -421,9 +438,9 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public void clearOptionValues(final LayoutContext context) {
-        KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context);
         if (element != null) {
-            KLayoutData elementLayout = element.getData(KLayoutData.class);
+            final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
                 elementLayout.getProperties().clear();
                 refreshModel(element, context);

@@ -40,7 +40,7 @@ public class SaveAsImageHandler extends AbstractHandler {
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IWorkbenchPart part = HandlerUtil.getActivePart(event);
         
-        final IViewer<?> viewer;
+        final IViewer viewer;
         if (part instanceof IDiagramWorkbenchPart) {
             viewer = ((IDiagramWorkbenchPart) part).getViewer();
         } else {

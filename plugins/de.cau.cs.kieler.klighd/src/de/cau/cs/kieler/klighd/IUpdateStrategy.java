@@ -31,8 +31,20 @@ public interface IUpdateStrategy {
      * @return the priority
      */
     int getPriority();
-    
-    // SUPPRESS CHECKSTYLE NEXT 10 LineLength
+
+    /**
+     * This method is called by KLighD for deciding whether a new diagram view model is required for
+     * updating the diagram as intended. It is supposed return <code>true</code> in the common case.
+     * However, specialized implementations dedicated to certain forms of diagram update (e.g. just
+     * removal of elements) may return <code>false</code> if no view model re-synthesis is required.
+     * 
+     * @param viewContext
+     *            the current {@link ViewContext} that may be asked during coming to the decision
+     * @return <code>true</code> if a new view model shall be synthesized (common case),
+     *         <code>false</code> if the current one shall be kept
+     */
+    boolean requiresDiagramSynthesisReRun(ViewContext viewContext);
+
     /**
      * Performs an update of the base view model (the view model that is currently being displayed)
      * by equalizing it the (updated) <code>newModel</code>. Implementations of this method may

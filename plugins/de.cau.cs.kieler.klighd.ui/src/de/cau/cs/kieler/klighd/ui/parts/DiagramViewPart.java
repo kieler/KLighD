@@ -46,7 +46,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
-import de.cau.cs.kieler.klighd.ui.internal.viewers.UiContextViewer;
+import de.cau.cs.kieler.klighd.ui.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -277,7 +277,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     /**
      * {@inheritDoc}
      */
-    public IViewer<?> getViewer() {
+    public IViewer getViewer() {
         return viewer;
     }
 

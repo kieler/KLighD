@@ -172,7 +172,9 @@ public class TilingDialog extends Dialog {
         rowsColsGroup.add(spinnerY);
         
         spinnerX.setMinimum(1);
+        spinnerX.setMaximum(Integer.MAX_VALUE);
         spinnerY.setMinimum(1);
+        spinnerY.setMaximum(Integer.MAX_VALUE);
         GridData gridData;
         gridData = new GridData(SWT.NONE);
         gridData.widthHint = SPINNER_WIDTH;
@@ -196,7 +198,9 @@ public class TilingDialog extends Dialog {
         maxSizeGroup.add(spinnerHeight);
         
         spinnerWidth.setMinimum(1);
+        spinnerWidth.setMaximum(Integer.MAX_VALUE);
         spinnerHeight.setMinimum(1);
+        spinnerHeight.setMaximum(Integer.MAX_VALUE);
         GridData gridData;
         gridData = new GridData(SWT.NONE);
         gridData.widthHint = SPINNER_WIDTH;

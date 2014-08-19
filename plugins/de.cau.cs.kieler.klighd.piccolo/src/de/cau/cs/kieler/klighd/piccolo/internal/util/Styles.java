@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -143,7 +144,7 @@ public final class Styles {
         this.applyDefaultSelectionStyles = useDefaultRenderingStyles;
         this.rootRendering = theRootRendering;
         
-        deriveStyles(styleHolder, propagatedStyles);
+        deriveStyles(styleHolder, propagatedStyles, null);
 
         return this;
     }
@@ -153,33 +154,79 @@ public final class Styles {
      * 
      * @param styleList
      *            the list of styles
+     * @param styleTypes
+     *            the list of allowed style types
      */
-    private void deriveStyles(final KStyleHolder styleHolder, final List<KStyle> propagatedStyles) {
-        final Iterable<KStyle> withPropagatedStyle =
-                Iterables.concat(styleHolder.getStyles(), propagatedStyles);
-        
-        final Iterable<KStyle> withDefaultHighlightingStyles;
-        if (styleHolder instanceof KText) {
-            withDefaultHighlightingStyles =
-                    Iterables.any(styleHolder.getStyles(), KlighdPredicates.isSelection())
-                        ? styleHolder.getStyles()
-                            : Iterables.concat(styleHolder.getStyles(), getDefaultTextSelectionStyles());
+    private void deriveStyles(final KStyleHolder styleHolder, final List<KStyle> propagatedStyles,
+            final List<Class<KStyle>> styleTypes) {
+
+        final Iterable<KStyle> filteredStyles;
+
+        // first of all filter the styles of 'styleHolder' if any filter is given,
+        //  i.e. 'styleTypes' contains elements
+        if (styleTypes == null || styleTypes.isEmpty()) {
+            filteredStyles = styleHolder.getStyles();
+
         } else {
-            withDefaultHighlightingStyles =
-                    this.applyDefaultSelectionStyles && styleHolder == this.rootRendering
-                        ? Iterables.concat(withPropagatedStyle, getDefaultNonTextSelectionStyles())
-                            : withPropagatedStyle;
+            // create a filter Predicate doing the instanceof testing of the referenced styles
+            final Predicate<KStyle> styleFilter = new Predicate<KStyle>() {
+
+                public boolean apply(final KStyle input) {
+                    for (final Class<KStyle> styleType : styleTypes) {
+                        if (styleType.isInstance(input)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            };
+            
+            filteredStyles = Iterables.filter(styleHolder.getStyles(), styleFilter);
         }
 
-        for (KStyle style : withDefaultHighlightingStyles) {
+        // afterwards apply propagated styles
+        final Iterable<KStyle> withPropagatedStyles =
+                Iterables.concat(filteredStyles, propagatedStyles);
+
+        // now attach default  
+        final Iterable<KStyle> withDefaultHighlightingStyles;
+
+        // if selection styles are required ... 
+        if (this.applySelectionStyles) {
+            // check whether any default selection highlighting is required;
+            // distinct the cases KText and non-KText since, in addition to KGraphElements,
+            //  KTexts may be independently selectable.
+
+            if (styleHolder instanceof KText) {
+                withDefaultHighlightingStyles =
+                        !Iterables.any(withPropagatedStyles, KlighdPredicates.isSelection())
+                        ? Iterables.concat(withPropagatedStyles, getDefaultTextSelectionStyles())
+                                : withPropagatedStyles;
+            } else {
+                // An case of non-KText renderings default selection styles must be applied
+                //  to the root rendering only!
+                // Note: According to this approach no highlighting will be visible
+                //  if the root rendering is invisible!
+
+                withDefaultHighlightingStyles =
+                        this.applyDefaultSelectionStyles && styleHolder == this.rootRendering
+                        ? Iterables.concat(withPropagatedStyles, getDefaultNonTextSelectionStyles())
+                                : withPropagatedStyles;
+            }
+        } else {
+            withDefaultHighlightingStyles = withPropagatedStyles;
+        }
+
+        // new apply the style - eventually ;-)
+        for (final KStyle style : withDefaultHighlightingStyles) {
             if (!style.isSelection() || this.applySelectionStyles) {
                 kSwitch.doSwitch(style);
             }
         }
     }
-    
+
     private static List<KStyle> defaultNonTextSelectionStyles = null;
-    
+
     private static List<KStyle> getDefaultNonTextSelectionStyles() {
         if (defaultNonTextSelectionStyles != null) {
             return defaultNonTextSelectionStyles;
@@ -202,7 +249,7 @@ public final class Styles {
     }
 
     private static List<KStyle> defaultTextSelectionStyles = null;
-    
+
     private static List<KStyle> getDefaultTextSelectionStyles() {
         if (defaultTextSelectionStyles != null) {
             return defaultTextSelectionStyles;
@@ -225,110 +272,129 @@ public final class Styles {
     }
 
     private KRenderingSwitch<Void> kSwitch = new KRenderingSwitch<Void>() {
-        
+
         // styleRef
+        @Override
         public Void caseKStyleRef(final KStyleRef style) {
-            Styles.this.deriveStyles(style.getStyleHolder(), Collections.<KStyle>emptyList());
+            Styles.this.deriveStyles(style.getStyleHolder(), Collections.<KStyle>emptyList(),
+                    style.getReferencedTypes());
             return null;
         }
 
         // foreground
+        @Override
         public Void caseKForeground(final KForeground f) {
             Styles.this.foreground = f;
             return null;
         }
 
         // background
+        @Override
         public Void caseKBackground(final KBackground b) {
             Styles.this.background = b;
             return null;
         }
 
         // whether the foreground is invisible or not
+        @Override
         public Void caseKInvisibility(final KInvisibility i) {
             Styles.this.invisibility = i;
             return null;
         }
 
         // line width
+        @Override
         public Void caseKLineWidth(final KLineWidth lw) {
             Styles.this.lineWidth = lw;
             return null;
         }
 
         // line style
+        @Override
         public Void caseKLineStyle(final KLineStyle ls) {
             Styles.this.lineStyle = ls;
             return null;
         }
 
         // line cap style
+        @Override
         public Void caseKLineCap(final KLineCap lcs) {
             Styles.this.lineCap = lcs;
             return null;
         }
         
         // line join style
+        @Override
         public Void caseKLineJoin(final KLineJoin ljs) {
             Styles.this.lineJoin = ljs;
             return null;
         }
         
         // rotation
+        @Override
         public Void caseKRotation(final KRotation r) {
             Styles.this.rotation = r;
             return null;
         }
 
         // shadow
+        @Override
         public Void caseKShadow(final KShadow s) {
             Styles.this.shadow = s;
             return null;
         }
 
         // horizontal alignment
+        @Override
         public Void caseKHorizontalAlignment(final KHorizontalAlignment ha) {
             Styles.this.horizontalAlignment = ha;
             return null;
         }
 
         // vertical alignment
+        @Override
         public Void caseKVerticalAlignment(final KVerticalAlignment va) {
             Styles.this.verticalAlignment = va;
             return null;
         }
 
         // font name
+        @Override
         public Void caseKFontName(final KFontName fn) {
             Styles.this.fontName = fn;
             return null;
         }
 
         // font size
+        @Override
         public Void caseKFontSize(final KFontSize fs) {
             Styles.this.fontSize = fs;
             return null;
         }
 
         // italic
+        @Override
         public Void caseKFontItalic(final KFontItalic fi) {
             Styles.this.italic = fi;
             return null;
         }
 
         // bold
+        @Override
         public Void caseKFontBold(final KFontBold fb) {
             Styles.this.bold = fb;
             return null;
         }
 
         // underline
+        @Override
         public Void caseKTextUnderline(final KTextUnderline tu) {
             Styles.this.underline = tu;
             return null;
         }
 
         // strike-out
+        @Override
         public Void caseKTextStrikeout(final KTextStrikeout ts) {
             Styles.this.strikeout = ts;
             return null;

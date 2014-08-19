@@ -135,7 +135,7 @@ public abstract class AbstractKlighdModelModificationHandler implements IModelMo
      *         ContextViewer
      */
     public ContextViewer getDiagramViewPart(final IWorkbenchPart activePart) {
-        IViewer<?> viewer = null;
+        IViewer viewer = null;
         // Object activePart = context.getVariable("org.eclipse.ui.active_activePart");
         if (activePart instanceof DiagramViewPart) {
             viewer = ((DiagramViewPart) activePart).getViewer();

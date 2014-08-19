@@ -84,7 +84,7 @@ public class ViewContext extends MapPropertyHolder {
     private IDiagramWorkbenchPart diagramWorkbenchPart;
     
     /** the viewer provider. */
-    private transient IViewerProvider<KNode> viewerProvider = null;
+    private transient IViewerProvider viewerProvider = null;
 
     /** the update strategy. */
     private transient IUpdateStrategy updateStrategy = null;
@@ -105,7 +105,7 @@ public class ViewContext extends MapPropertyHolder {
     private KNode viewModel = createViewModel();
     
     /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
-    private IViewer<KNode> viewer = null;
+    private IViewer viewer = null;
     
     /** the {@link #viewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
     private ILayoutRecorder layoutRecorder = null;
@@ -266,7 +266,7 @@ public class ViewContext extends MapPropertyHolder {
      *            the parent {@link Composite} widget
      * @return the created viewer or <code>null</code> on failure
      */
-    public IViewer<?> createViewer(final ContextViewer parentViewer, final Composite parent) {
+    public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
         if (this.viewerProvider != null) {
             // create the new viewer
             this.viewer = this.viewerProvider.createViewer(parentViewer, parent);
@@ -375,40 +375,46 @@ public class ViewContext extends MapPropertyHolder {
             }
         }
 
+        final KNode newViewModel;
         final Object sourceModel = this.businessModel;
 
-        final KNode newViewModel;
-        if (this.diagramSynthesis != null
-                && diagramSynthesis.getSourceClass().isAssignableFrom(sourceModel.getClass())) {
+        final IUpdateStrategy chosenUpdateStrategy =
+                theUpdateStrategy != null ? theUpdateStrategy : this.updateStrategy;
 
-            try {
-                newViewModel = this.diagramSynthesis.transform(sourceModel, this);
-            } catch (final Exception e) {
-                final String msg = "";
+        if (chosenUpdateStrategy.requiresDiagramSynthesisReRun(this)) {
+            if (this.diagramSynthesis != null
+                    && diagramSynthesis.getSourceClass().isAssignableFrom(sourceModel.getClass())) {
+
+                try {
+                    newViewModel = this.diagramSynthesis.transform(sourceModel, this);
+                } catch (final Exception e) {
+                    final String msg = "";
+                    StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
+                    return;
+                }
+
+            } else if (sourceModel instanceof KNode) {
+                if (this.duplicator == null) {
+                    this.duplicator = new DuplicatingDiagramSynthesis();
+                }
+
+                newViewModel = duplicator.transform(sourceModel, this);
+
+            } else {
+                final String msg =
+                        "KLighD: Could not create a diagram of provided input model "
+                + sourceModel + ".";
                 StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
+                        new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
                 return;
             }
 
-        } else if (sourceModel instanceof KNode) {
-            if (this.duplicator == null) {
-                this.duplicator = new DuplicatingDiagramSynthesis();
-            }
-
-            newViewModel = duplicator.transform(sourceModel, this);
-
         } else {
-            final String msg = "KLighD: Could not create a diagram of provided input model "
-                    + sourceModel + ".";
-            StatusManager.getManager().handle(new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
-            return;
+            newViewModel = this.viewModel;
         }
 
-        if (theUpdateStrategy != null) {
-            theUpdateStrategy.update(this.viewModel, newViewModel, this);
-        } else {
-            this.updateStrategy.update(this.viewModel, newViewModel, this);
-        }
+        chosenUpdateStrategy.update(this.viewModel, newViewModel, this);
 
         final KNode clipNode = this.getProperty(KlighdProperties.CLIP);
         if (clipNode != null && this.getViewer() != null) {            
@@ -512,7 +518,7 @@ public class ViewContext extends MapPropertyHolder {
     /**
      *  @return the {@link IViewer} being in charge of showing this {@link ViewContext}.
      */
-    public IViewer<KNode> getViewer() {
+    public IViewer getViewer() {
         return viewer;
     }
     
@@ -731,6 +737,23 @@ public class ViewContext extends MapPropertyHolder {
             synthesisOptionConfig.put(option, value);
         }
     }   
+
+    // ---------------------------------------------------------------------------------- //
+    //  Offered action handling    
+
+    /**
+     * Passes the recommended layout options and related values provided by the employed diagram
+     * synthesis.
+     * 
+     * @return a map of options (map keys) and related values (map values)
+     */
+    public List<DisplayedActionData> getDisplayedActions() {
+        if (this.diagramSynthesis != null) {
+            return this.diagramSynthesis.getDisplayedActions();
+        } else {
+            return Collections.emptyList();
+        }
+    }
 
     // ---------------------------------------------------------------------------------- //
     //  Recommended layout option handling    

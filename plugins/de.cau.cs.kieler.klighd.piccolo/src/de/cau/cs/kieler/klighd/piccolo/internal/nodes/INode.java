@@ -33,7 +33,7 @@ public interface INode extends IGraphElement<KNode> {
      * @return the child area
      */
     KChildAreaNode getChildAreaNode();
-    
+
     /**
      * Returns the parent {@link INode} that (deeply) contains this {@link INode}.
      * 
@@ -41,4 +41,13 @@ public interface INode extends IGraphElement<KNode> {
      */
     INode getParentNode();
 
+    /**
+     * Provides the permission of the corresponding {@link KNode} to be selected.
+     * 
+     * @see KlighdNode#isSelectable()
+     * 
+     * @return <code>true</code> if the corresponding {@link KNode} is allowed to be selected,
+     *         <code>false</code> otherwise.
+     */
+    boolean isSelectable();
 }
