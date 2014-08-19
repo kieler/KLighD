@@ -139,16 +139,20 @@ public class KlighdTest {
         final PAffineTransform labeltransform = plabel.getTransform();
         final PAffineTransform nodetransform = pnext.getTransform();
 
-        Assert.assertTrue(nodetransform.getTranslateX() == 12
-                && nodetransform.getTranslateY() == 32);
-        Assert.assertTrue(pnext.getBounds().height == 40 && pnext.getBounds().width == 40);
+        Assert.assertEquals(12, nodetransform.getTranslateX(), 0);
+        Assert.assertEquals(32, nodetransform.getTranslateY(), 0);
+        Assert.assertEquals(40, pnext.getBoundsReference().height, 0);
+        Assert.assertEquals(40, pnext.getBoundsReference().width, 0);
 
-        Assert.assertTrue(labeltransform.getTranslateX() == 2
-                && labeltransform.getTranslateY() == 3);
-        Assert.assertTrue(plabel.getBounds().height == 5 && plabel.getBounds().width == 4);
+        Assert.assertEquals(2, labeltransform.getTranslateX(), 0);
+        Assert.assertEquals(3, labeltransform.getTranslateY(), 0);
+        Assert.assertEquals(5, plabel.getBoundsReference().height, 0);
+        Assert.assertEquals(4, plabel.getBoundsReference().width, 0);
 
-        Assert.assertTrue(porttransform.getTranslateX() == 6 && porttransform.getTranslateY() == 7);
-        Assert.assertTrue(pport.getBounds().height == 5 && pport.getBounds().width == 5);
+        Assert.assertEquals(6, porttransform.getTranslateX(), 0);
+        Assert.assertEquals(7, porttransform.getTranslateY(), 0);
+        Assert.assertEquals(5, pport.getBoundsReference().height, 0);
+        Assert.assertEquals(5, pport.getBoundsReference().width, 0);
     }
 
     /**
