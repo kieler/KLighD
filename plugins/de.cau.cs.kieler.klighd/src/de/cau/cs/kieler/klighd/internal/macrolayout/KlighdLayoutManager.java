@@ -516,28 +516,18 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             // - manipulating the labelLayout may cause immediate glitches in the diagram
             // (through the listeners)
             final KRendering rootRendering = label.getData(KRendering.class);
+
             if (rootRendering != null) {
                 // calculate the minimal size need for the rendering ...
                 final Bounds minSize = PlacementUtil.estimateTextSize(label);
-                // ... and update the node size if it exceeds its size
-                if (minSize.getWidth() > layoutLayout.getWidth()) {
-                    labelLayout.setWidth(minSize.getWidth());
-                    layoutLayout.setWidth(minSize.getWidth());
 
-                    // In order to instruct KIML to not shrink the node beyond the minimal size,
-                    //  e.g. due to less space required by child nodes,
-                    //  configure a related layout option!
-                    // This has to be done on the original node instance, as layout options are
-                    //  transfered by the {@link KGraphPropertyLayoutConfig}.
-                    labelLayout.setProperty(LayoutOptions.MIN_WIDTH, minSize.getWidth());
-                }
-                if (minSize.getHeight() > layoutLayout.getHeight()) {
-                    labelLayout.setHeight(minSize.getHeight());
-                    layoutLayout.setHeight(minSize.getHeight());
-                    // see comment above
-                    labelLayout.setProperty(LayoutOptions.MIN_HEIGHT, minSize.getHeight());
-                }
-                layoutLayout.setInsets(minSize.getInsets());
+                final float minWidth = minSize.getWidth() > layoutLayout.getWidth()
+                        ? minSize.getWidth() : layoutLayout.getWidth();
+                final float minHeight = minSize.getHeight() > layoutLayout.getHeight()
+                        ? minSize.getHeight() : layoutLayout.getHeight();
+
+                // ... and update the node size if it exceeds its size
+                layoutLayout.setSize(minWidth, minHeight);
             }
         }
 
