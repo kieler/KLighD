@@ -43,32 +43,36 @@ public class SVGExporter extends KlighdCanvasExporter {
      * {@inheritDoc}
      */
     @Override
-    public void export(final OutputStream stream, final KlighdCanvas canvas,
-            final boolean cameraViewport, final int scale, final boolean textAsShapes,
-            final boolean embedFonts, final String subFormatId) {
+    public void export(final ExportData data, final KlighdCanvas canvas) {
 
         // reveal the canvas' camera ...
         final KlighdMainCamera camera = canvas.getCamera();
 
         // ... an determine the bounds of the diagram to be exported
-        final PBounds bounds = this.getExportedBounds(camera, cameraViewport);
+        final PBounds bounds = this.getExportedBounds(camera, data.isCameraViewport);
         
         // initialize a graphics object that 'collects' all the drawing instructions 
         final KlighdAbstractSVGGraphics graphics =
-                SVGGeneratorManager.createGraphics(subFormatId, bounds, textAsShapes, embedFonts);
+                SVGGeneratorManager.createGraphics(data.subFormatId, bounds,
+                        data.isTextAsShapes, data.isEmbedFonts);
 
         // do the actual diagram drawing work
-        this.drawDiagram(camera, cameraViewport, graphics, bounds); 
+        this.drawDiagram(camera, data.isCameraViewport, graphics, bounds); 
 
+        OutputStream stream = null;
         try {
             // dump out the resulting SVG description via the provided output stream
+            stream = data.createOutputStream();
             graphics.stream(stream);
-
+            stream.close();
         } catch (final IOException e) {
-            final String msg = "KLighD SVG export: "
-                    + "Failed to write SVG data into the provided OutputStream of type "
-                    + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
-                    + " the stream instance is " + stream.toString();
+            String msg = "KLighD SVG export: "
+                    + "Failed to write SVG data";
+            if (stream != null) {
+                msg += " into the provided OutputStream of type "
+                        + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
+                        + " the stream instance is " + stream.toString();
+            }
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e));
         }

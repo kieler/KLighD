@@ -47,8 +47,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 
-import de.cau.cs.kieler.klighd.ExporterManager;
-import de.cau.cs.kieler.klighd.ExporterManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
+import de.cau.cs.kieler.klighd.IDiagramExporter.TilingData;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdDataManager.ExporterDescriptor;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
@@ -59,15 +61,18 @@ import de.cau.cs.kieler.klighd.ui.internal.Messages;
  * extension point. An additional description of each format is added in parentheses (...), the
  * parentheses are stripped when the file extension is added.
  * 
+ * Provides the gathered information as an {@link ExportData} object.
+ * 
  * @author mri
  * @author uru
+ * @author csp
  */
 public class SaveAsImageDialog extends Dialog {
 
     /** the default dialog width. */
     private static final int DEFAULT_WIDTH = 500;
     /** the default dialog height. */
-    private static final int DEFAULT_HEIGHT = 300;
+    private static final int DEFAULT_HEIGHT = 330;
 
     /** the preference key for the file path. */
     private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
@@ -86,7 +91,12 @@ public class SaveAsImageDialog extends Dialog {
         = "saveAsImageDialog.textAsShapes"; //$NON-NLS-1$
     /** the preference key for the embed fonts property. */
     private static final String PREFERENCE_EMBED_FONTS 
-        = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
+    = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
+    /** the preference keys for the tiling information. */
+    private static final String PREFERENCE_TILING_IS_MAXSIZE = 
+            "saveAsImageDialog.tilingIsMaxsize"; //$NON-NLS-1$
+    private static final String PREFERENCE_TILING_X = "saveAsImageDialog.tilingX"; //$NON-NLS-1$
+    private static final String PREFERENCE_TILING_Y = "saveAsImageDialog.tilingY"; //$NON-NLS-1$
 
     /** the preference store. */
     private IPreferenceStore preferenceStore = null;
@@ -97,6 +107,10 @@ public class SaveAsImageDialog extends Dialog {
     private Button workspacePathCheckbox;
     /** the file format combo. */
     private Combo imageFormatCombo;
+    /** the tiling options button. **/
+    private Button tilingOptionsButton;
+    /** the tiling state label. **/
+    private Label tilingStateLabel;
     /** the camera viewport checkbox. */
     private Button cameraViewportCheckbox;
     /** the camera text as shapes checkbox. */
@@ -113,7 +127,7 @@ public class SaveAsImageDialog extends Dialog {
     /** the selected path. */
     private IPath path;
     /** whether the selected path is workspace relative. */
-    private boolean workspacePath;
+    private boolean isWorkspacePath;
     /** whether to render through the camera view port. */
     private boolean cameraViewport;
     /** whether to transform text to shapes in vector graphics. */
@@ -122,6 +136,8 @@ public class SaveAsImageDialog extends Dialog {
     private boolean embedFonts;
     /** the selected scaleFactor. */
     private int scaleFactor;
+    /** the tilinginfo. **/
+    private TilingData tilingInfo;
 
     /** the list of available export descriptors. */
     private List<ExporterDescriptor> descriptors;
@@ -140,16 +156,27 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
 
         // get the available descriptors
-        descriptors = ExporterManager.getInstance().getAvailableExporters();
+        descriptors = KlighdDataManager.getInstance().getAvailableExporters();
         // sort by name
         Collections.sort(descriptors, new Comparator<ExporterDescriptor>() {
             /**
              * {@inheritDoc}
              */
             public int compare(final ExporterDescriptor e1, final ExporterDescriptor e2) {
-                return e1.getFileExtension().compareTo(e2.getFileExtension());
+                return e1.fileExtension.compareTo(e2.fileExtension);
             }
         });
+        
+        // get the saved tiling info
+        if (preferenceStore.getBoolean(PREFERENCE_TILING_IS_MAXSIZE)) {
+            tilingInfo =
+                    TilingData.createMaxSizeTiledData(preferenceStore.getInt(PREFERENCE_TILING_X),
+                            preferenceStore.getInt(PREFERENCE_TILING_Y));
+        } else {
+            tilingInfo =
+                    TilingData.createTiledData(preferenceStore.getInt(PREFERENCE_TILING_X),
+                            preferenceStore.getInt(PREFERENCE_TILING_Y));
+        }
     }
 
     /**
@@ -158,6 +185,7 @@ public class SaveAsImageDialog extends Dialog {
     @Override
     protected Control createContents(final Composite parent) {
         Control control = super.createContents(parent);
+        updateFileText();
         validateFileText();
         return control;
     }
@@ -173,6 +201,7 @@ public class SaveAsImageDialog extends Dialog {
         createOptionsGroup(composite);
         createMessageGroup(composite);
 
+        updateTilingOptions();
         return composite;
     }
 
@@ -239,7 +268,7 @@ public class SaveAsImageDialog extends Dialog {
         });
     }
 
-    private static final int IMAGE_FORMAT_GROUP_COLUMNS = 3;
+    private static final int IMAGE_FORMAT_GROUP_COLUMNS = 4;
     private static final int IMAGE_FORMAT_COMBO_WIDTH_HINT = 210;
     private static final int IMAGE_FORMAT_SLIDER_MAX = 16;
 
@@ -255,8 +284,8 @@ public class SaveAsImageDialog extends Dialog {
         int i = 0;
         for (ExporterDescriptor descr : descriptors) {
             String descrText =
-                    descr.getDescription() != null ? " (" + descr.getDescription() + ")" : "";
-            imageFormats[i++] = descr.getFileExtension() + descrText;
+                    descr.description != null ? " (" + descr.description + ")" : "";
+            imageFormats[i++] = descr.fileExtension + descrText;
         }
         
         // image formats
@@ -271,13 +300,17 @@ public class SaveAsImageDialog extends Dialog {
             public void widgetSelected(final SelectionEvent e) {
                 updateFileText();
                 validateFileText();
+                updateTilingOptions();
             }
         });
-        GridData gridData = new GridData(SWT.NONE);
+        GridData gridData;
+        gridData = new GridData(SWT.NONE);
         gridData.widthHint = IMAGE_FORMAT_COMBO_WIDTH_HINT;
-        gridData.horizontalSpan = 2;
+        gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 1;
         imageFormatCombo.setLayoutData(gridData);
-
+        
+        
+        // scaling options
         label = new Label(composite, SWT.NONE);
         label.setText(Messages.SaveAsImageDialog_scale_factor);
 
@@ -289,6 +322,7 @@ public class SaveAsImageDialog extends Dialog {
 
         gridData = new GridData(SWT.LEFT, SWT.CENTER, true, false);
         gridData.minimumWidth = FILE_TEXT_WIDTH_HINT;
+        gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 2;
         scaleSlider.setLayoutData(gridData);
 
         final Label scaleVal = new Label(composite, SWT.BORDER);
@@ -305,6 +339,46 @@ public class SaveAsImageDialog extends Dialog {
             }
         });
 
+        
+        // tiling options
+        label = new Label(composite, SWT.NONE);
+        label.setText(Messages.SaveAsImageDialog_tiling);
+        
+        tilingStateLabel = new Label(composite, SWT.NONE);
+        
+        tilingOptionsButton = new Button(composite, SWT.PUSH);
+        tilingOptionsButton.setText(Messages.SaveAsImageDialog_tiling_options_caption);
+        
+        gridData = new GridData(SWT.RIGHT, SWT.NONE, false, false);
+        gridData.widthHint = BROWSE_WIDTH_HINT;
+        gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 2;
+        tilingOptionsButton.setLayoutData(gridData);
+        
+        tilingOptionsButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent event) {
+                TilingDialog tilingDialog = new TilingDialog(getParentShell(), tilingInfo);
+                tilingDialog.open();
+                tilingInfo = tilingDialog.getTilingInfo();
+                updateTilingOptions();
+            }
+        });
+    }
+
+    private void updateTilingOptions() {
+        if (descriptors.get(imageFormatCombo.getSelectionIndex()).supportsTiling) {
+            tilingOptionsButton.setEnabled(true);
+            if (tilingInfo.isMaxsize) {
+                tilingStateLabel.setText(tilingInfo.maxWidth + " px x "
+                        + tilingInfo.maxHeight + " px");
+            } else {
+                tilingStateLabel.setText(tilingInfo.rows + " row(s) x " + tilingInfo.cols
+                        + " column(s)");
+            }
+        } else {
+            tilingOptionsButton.setEnabled(false);
+            tilingStateLabel.setText("No tiling supported");
+        }
+        tilingStateLabel.getParent().layout();
     }
 
     private void createOptionsGroup(final Composite parent) {
@@ -524,66 +598,85 @@ public class SaveAsImageDialog extends Dialog {
         return new Point(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    /**
-     * Returns the selected path.
-     * 
-     * @return the path
-     */
-    public IPath getFilePath() {
-        return path;
-    }
-
-    /**
-     * Returns whether the selected path is workspace relative.
-     * 
-     * @return true if the selected path is workspace relative; false else
-     */
-    public boolean isWorkspacePath() {
-        return workspacePath;
-    }
-
+//    /**
+//     * Returns the selected path.
+//     * 
+//     * @return the path
+//     */
+//    public IPath getFilePath() {
+//        return path;
+//    }
+//
+//    /**
+//     * Returns whether the selected path is workspace relative.
+//     * 
+//     * @return true if the selected path is workspace relative; false else
+//     */
+//    public boolean isWorkspacePath() {
+//        return isWorkspacePath;
+//    }
+//
     /**
      * @return the currentExporter
      */
     public ExporterDescriptor getCurrentExporter() {
         return currentExporter;
     }
+//
+//    /**
+//     * Returns the scale factor to apply to the image while saving.
+//     * 
+//     * @return the the scale factor in range of 1 to {@link #IMAGE_FORMAT_SLIDER_MAX}-1.
+//     */
+//    public int getScaleFactor() {
+//        return scaleFactor;
+//    }
+//
+//    /**
+//     * Returns whether to render the image through the camera viewport.
+//     * 
+//     * @return true to render the image through the camera viewport; false to render the whole scene
+//     *         graph without any view transformation
+//     */
+//    public boolean isCameraViewport() {
+//        return cameraViewport;
+//    }
+//    
+//    /**
+//     * Returns whether text in vector graphics should be rendered as shapes.
+//     * 
+//     * @return true if text should be rendered as shapes in vector graphics.
+//     */
+//    public boolean isTextAsShapes() {
+//        return textAsShapes;
+//    }
+//
+//    /**
+//     * Returns whether the texts' fonts shall be embedded in the output.
+//     * 
+//     * @return true if the texts' fonts shall be embedded in the output.
+//     */
+//    public boolean isEmbedFonts() {
+//        return embedFonts;
+//    }
+//
+//    /**
+//     * @return the tilingInfo
+//     */
+//    public TilingData getTilingInfo() {
+//        return tilingInfo;
+//    }
 
     /**
-     * Returns the scale factor to apply to the image while saving.
-     * 
-     * @return the the scale factor in range of 1 to {@link #IMAGE_FORMAT_SLIDER_MAX}-1.
+     * @return the export information.
      */
-    public int getScaleFactor() {
-        return scaleFactor;
-    }
-
-    /**
-     * Returns whether to render the image through the camera viewport.
-     * 
-     * @return true to render the image through the camera viewport; false to render the whole scene
-     *         graph without any view transformation
-     */
-    public boolean isCameraViewport() {
-        return cameraViewport;
-    }
-    
-    /**
-     * Returns whether text in vector graphics should be rendered as shapes.
-     * 
-     * @return true if text should be rendered as shapes in vector graphics.
-     */
-    public boolean isTextAsShapes() {
-        return textAsShapes;
-    }
-
-    /**
-     * Returns whether the texts' fonts shall be embedded in the output.
-     * 
-     * @return true if the texts' fonts shall be embedded in the output.
-     */
-    public boolean isEmbedFonts() {
-        return embedFonts;
+    public ExportData getExportData() {
+        ExportData data = new ExportData(path, isWorkspacePath, cameraViewport, scaleFactor,
+                textAsShapes, embedFonts, currentExporter.subFormatId);
+        if (currentExporter.supportsTiling && tilingInfo.isTiled) {
+            data.setTilingInfo(tilingInfo);
+        }
+        return data;
     }
 
     /**
@@ -599,6 +692,14 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
         preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_EMBED_FONTS, embedFontsCheckbox.getSelection());
+        preferenceStore.setValue(PREFERENCE_TILING_IS_MAXSIZE, tilingInfo.isMaxsize);
+        if (tilingInfo.isMaxsize) {
+            preferenceStore.setValue(PREFERENCE_TILING_X, tilingInfo.maxWidth);
+            preferenceStore.setValue(PREFERENCE_TILING_Y, tilingInfo.maxHeight);
+        } else {
+            preferenceStore.setValue(PREFERENCE_TILING_X, tilingInfo.rows);
+            preferenceStore.setValue(PREFERENCE_TILING_Y, tilingInfo.cols);
+        }
         return super.close();
     }
 
@@ -612,7 +713,7 @@ public class SaveAsImageDialog extends Dialog {
         // in case the combo is untouched
         updateFileText();
         path = new Path(fileText.getText());
-        workspacePath = workspacePathCheckbox.getSelection();
+        isWorkspacePath = workspacePathCheckbox.getSelection();
         currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex()); 
         cameraViewport = cameraViewportCheckbox.getSelection();
         textAsShapes = textAsShapesCheckbox.getSelection();

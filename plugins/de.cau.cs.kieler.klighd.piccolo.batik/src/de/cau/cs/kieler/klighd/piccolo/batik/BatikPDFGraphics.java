@@ -95,19 +95,17 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         } catch (final TranscoderException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * {@inheritDoc}
      */
-    public void export(final OutputStream stream, final Control control, final boolean cameraViewport, final int scale,
-            final boolean textAsShapes, final boolean embedFonts, final String subFormatId) {
+    public void export(final ExportData data, final Control control) {
 
         final PCamera camera = ((KlighdCanvas) control).getCamera();
 
         Rectangle2D bounds = null;
-        if (cameraViewport) {
+        if (data.isCameraViewport) {
             bounds = camera.getBounds();
         } else {
             // we want the svg to contain all elements, not just the visible area
@@ -123,7 +121,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
 
         // assemble context
         final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
-        ctx.setEmbeddedFontsOn(embedFonts);
+        ctx.setEmbeddedFontsOn(data.isEmbedFonts);
 
         final GraphicContextDefaults defaults = new GraphicContextDefaults();
         ctx.setGraphicContextDefaults(defaults);
@@ -163,7 +161,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // create and configure the graphics object
-        graphicsDelegate = new SVGGraphics2D(ctx, textAsShapes);
+        graphicsDelegate = new SVGGraphics2D(ctx, data.isTextAsShapes);
         graphicsDelegate.setSVGCanvasSize(new Dimension((int) Math.ceil(bounds.getWidth()),
                 (int) Math.ceil(bounds.getHeight())));
 
@@ -174,7 +172,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
         // perform the painting
-        if (cameraViewport) {
+        if (data.isCameraViewport) {
             // only render the current viewport
             camera.fullPaint(paintContext);
         } else {
@@ -191,10 +189,12 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         final String svg = getSVG();
         final Reader r = new StringReader(svg);
         final TranscoderInput in = new TranscoderInput(r);
-        final TranscoderOutput out = new TranscoderOutput(stream);
         try {
+            final OutputStream stream = data.createOutputStream();
+            final TranscoderOutput out = new TranscoderOutput(stream);
             t.transcode(in, out);
             stream.flush();
+            stream.close();
         } catch (final TranscoderException e) {
             e.printStackTrace();
         } catch (final IOException e) {

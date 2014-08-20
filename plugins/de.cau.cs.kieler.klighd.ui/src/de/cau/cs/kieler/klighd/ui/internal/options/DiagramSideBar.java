@@ -439,6 +439,7 @@ public final class DiagramSideBar {
         if (!zoomButtonsVisible) {
             return;
         }
+        
 
         parent.setLayout(new RowLayout());
         final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
