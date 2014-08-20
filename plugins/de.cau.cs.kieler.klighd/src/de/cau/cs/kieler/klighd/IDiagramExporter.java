@@ -24,14 +24,14 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * Interface of diagram exporters like <code>.png</code> or </code>.svg</code> exporters, for
- * instance.
+ * Basic interface of diagram exporters creating images in <code>.png</code> or </code>.svg</code>
+ * format, for instance.
  * 
  * @author uru
  * @author chsch
  * @author csp
  * 
- * @see IDiagramExporter#export(OutputStream, Control, boolean, int, boolean, boolean, String)
+ * @see IDiagramExporter#export(ExportData, Control)
  */
 public interface IDiagramExporter {
 
@@ -41,7 +41,7 @@ public interface IDiagramExporter {
      * {@code scale} value can be used for instance during the export of bitmap graphics to increase
      * the rendering quality by up-scaling the visible area before exporting. Some implementations
      * of the {@link IDiagramExporter} interface might support multiple sub formats of the same
-     * parent format, e.g., bmp and png are both bitmap formats.
+     * parent format, e.g., .bmp and .png are both bitmap formats.
      * 
      * @param data
      *            the specified export info
@@ -51,14 +51,13 @@ public interface IDiagramExporter {
     void export(ExportData data, Control control);
 
     /**
-     * Capsules the information needed to export a diagram to the filesystem. Merely a record to
-     * hold the information.
+     * A data record encapsulating the information needed to export a diagram to the file system.
      * 
      * @author csp
      */
     public class ExportData {
 
-        // CHECKSTYLEOFF javadoc
+        // SUPPRESS CHECKSTYLE NEXT 8 Visibility|Javadoc
         public final OutputStream stream;
         public final IPath path;
         public final boolean isWorkspacePath;
@@ -72,12 +71,10 @@ public interface IDiagramExporter {
 
         /**
          * @param path
-         *            the path to write the image to (either filesystem or workspace)
+         *            the path to write the image to (either file system or workspace)
          * @param isWorkspacePath
-         *            wether the given path should be interpreted as filesystem or workspace
+         *            whether the given path should be interpreted as file system or workspace
          *            relative
-         * @param control
-         *            the canvas
          * @param cameraViewport
          *            true if the scene graph should be rendered through the camera, i.e. only
          *            render what is visible on the canvas; false to render the whole scene graph
@@ -107,8 +104,6 @@ public interface IDiagramExporter {
         /**
          * @param stream
          *            the output stream
-         * @param control
-         *            the canvas
          * @param cameraViewport
          *            true if the scene graph should be rendered through the camera, i.e. only
          *            render what is visible on the canvas; false to render the whole scene graph
@@ -135,10 +130,10 @@ public interface IDiagramExporter {
         }
 
         /**
-         * If an outputstream has been set, it is simply returned. Otherwise, a new stream pointing
-         * to the given path is created.
+         * If an {@link OutputStream} has been configured, it is simply returned. Otherwise, a new
+         * stream pointing to the given path is created.
          * 
-         * @return the outputstream to write the image to.
+         * @return the {@link OutputStream} to write the image to.
          * @throws IOException
          *             if there is a problem obtaining an open output stream.
          */
@@ -151,14 +146,14 @@ public interface IDiagramExporter {
         }
 
         /**
-         * If a path has been set, a new outputstream is created. The name of the file is appended
-         * by the given row and column.
+         * If a path has been set, a new {@link OutputStream} is created. The name of the file is
+         * appended by the given row and column.
          * 
          * @param row
          *            number of current row
          * @param col
          *            number of current column
-         * @return the outputstream to write the image to.
+         * @return the {@link OutputStream} to write the image to.
          * @throws IOException
          *             if there is a problem obtaining an open output stream.
          * @throws IllegalArgumentException
@@ -168,9 +163,9 @@ public interface IDiagramExporter {
             if (path == null) {
                 throw new IllegalArgumentException("Not tileable.");
             }
-            String ext = path.getFileExtension();
-            String name = path.removeFileExtension().lastSegment() + "_" + row + "-" + col;
-            IPath aPath = path.removeLastSegments(1).append(name).addFileExtension(ext);
+            final String ext = path.getFileExtension();
+            final String name = path.removeFileExtension().lastSegment() + "_" + row + "-" + col;
+            final IPath aPath = path.removeLastSegments(1).append(name).addFileExtension(ext);
             return createOutputStream(aPath);
         }
 
@@ -208,7 +203,7 @@ public interface IDiagramExporter {
     }
 
     /**
-     * Capsules the information needed to tile a diagram for export. Merely a record to hold the
+     * Encapsulates the information needed to tile a diagram for export. Merely a record to hold the
      * information.
      * 
      * @author csp
@@ -218,7 +213,7 @@ public interface IDiagramExporter {
         /** Non tiled tiling information. */
         public static final TilingData NON_TILED = new TilingData();
 
-        // CHECKSTYLEOFF javadoc
+        // SUPPRESS CHECKSTYLE NEXT 4 Visibility|Javadoc
         public final int maxWidth, maxHeight;
         public final int cols, rows;
         public final boolean isTiled;
@@ -271,6 +266,5 @@ public interface IDiagramExporter {
         public static TilingData createMaxSizeTiledData(final int maxWidth, final int maxHeight) {
             return new TilingData(Math.max(1, maxWidth), Math.max(1, maxHeight), 1, 1, true, true);
         }
-
     }
 }

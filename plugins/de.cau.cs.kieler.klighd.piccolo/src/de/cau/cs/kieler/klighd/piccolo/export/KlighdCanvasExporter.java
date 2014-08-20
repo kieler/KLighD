@@ -36,16 +36,22 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 public abstract class KlighdCanvasExporter extends AbstractDiagramExporter implements
         IDiagramExporter {
 
+    private static final String IVALID_CONTROL_FAILURE =
+            "KLighD diagram export: "
+                    + "The SWT Control of type ## is not supported by this &&!";
+
     /**
      * {@inheritDoc}
      */
     public void export(final ExportData data, final Control control) {
 
         if (control instanceof KlighdCanvas) {
-            KlighdCanvas canvas = (KlighdCanvas) control;
+            final KlighdCanvas canvas = (KlighdCanvas) control;
             export(data, canvas);
         } else {
-            final String msg = "";
+            final String msg = IVALID_CONTROL_FAILURE
+                    .replace("##", control.getClass().getCanonicalName())
+                    .replace("&&", this.getClass().getCanonicalName());
             StatusManager.getManager().handle(
                     new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, msg));
             return;

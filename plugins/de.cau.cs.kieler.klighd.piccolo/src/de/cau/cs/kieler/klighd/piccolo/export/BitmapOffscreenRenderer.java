@@ -90,8 +90,9 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
         try {
             final String format = properties != null
                     ? properties.getProperty(OUTPUT_FORMAT) : BitmapExporter.SUB_FORMAT_PNG;
-            ExportData data = new ExportData(output, false, imageScale, false, false, format);
-            new BitmapExporter().export(data, canvas);
+
+            new BitmapExporter().export(
+                    new ExportData(output, false, imageScale, false, false, format), canvas);
 
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

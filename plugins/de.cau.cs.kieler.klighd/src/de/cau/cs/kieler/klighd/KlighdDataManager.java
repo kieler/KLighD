@@ -155,7 +155,7 @@ public final class KlighdDataManager {
         instance.loadViewerProviderExtension();
         try {
             instance.loadModelTransformationsExtension();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                             "KLighD: Unexptected failure while loading registered transformations.", e));
@@ -185,7 +185,7 @@ public final class KlighdDataManager {
      */
     private static void reportError(final String extensionPoint,
             final IConfigurationElement element, final String attribute, final Exception exception) {
-        String message =
+        final String message =
                 "KLighD: Element '" + element.getName() + "' extending extension point '"
                         + extensionPoint + "', contributed by '"
                         + element.getContributor().getName()
@@ -200,17 +200,17 @@ public final class KlighdDataManager {
      * corresponding mappings.
      */
     private void loadViewerProviderExtension() {
-        IConfigurationElement[] extensions = Platform.getExtensionRegistry()
+        final IConfigurationElement[] extensions = Platform.getExtensionRegistry()
                 .getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
         
-        for (IConfigurationElement element : extensions) {
+        for (final IConfigurationElement element : extensions) {
             try {
                 if (ELEMENT_VIEWER.equals(element.getName())) {
                     // initialize viewer provider from the extension point
                     final IViewerProvider viewerProvider =
                             (IViewerProvider) element.createExecutableExtension(ATTRIBUTE_CLASS);
                     if (viewerProvider != null) {
-                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        final String id = element.getAttribute(ATTRIBUTE_ID);
                         if (id == null || id.length() == 0) {
                             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
@@ -219,10 +219,10 @@ public final class KlighdDataManager {
                     }
                 } else if (ELEMENT_UPDATE_STRATEGY.equals(element.getName())) {
                     // initialize update strategy from the extension point
-                    IUpdateStrategy updateStrategy = (IUpdateStrategy) element
+                    final IUpdateStrategy updateStrategy = (IUpdateStrategy) element
                             .createExecutableExtension(ATTRIBUTE_CLASS);
                     if (updateStrategy != null) {
-                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        final String id = element.getAttribute(ATTRIBUTE_ID);
                         if (id == null || id.length() == 0) {
                             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
@@ -236,10 +236,10 @@ public final class KlighdDataManager {
                     }
                 } else if (ELEMENT_STYLE_MODIFIER.equals(element.getName())) {
                     // initialize style modifier from the extension point
-                    IStyleModifier styleModifier = (IStyleModifier) element
+                    final IStyleModifier styleModifier = (IStyleModifier) element
                             .createExecutableExtension(ATTRIBUTE_CLASS);
                     if (styleModifier != null) {
-                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        final String id = element.getAttribute(ATTRIBUTE_ID);
                         if (id == null || id.length() == 0) {
                             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
@@ -248,10 +248,10 @@ public final class KlighdDataManager {
                     }
                 } else if (ELEMENT_ACTION.equals(element.getName())) {
                     // initialize style modifier from the extension point
-                    IAction action = (IAction) element
+                    final IAction action = (IAction) element
                             .createExecutableExtension(ATTRIBUTE_CLASS);
                     if (action != null) {
-                        String id = element.getAttribute(ATTRIBUTE_ID);
+                        final String id = element.getAttribute(ATTRIBUTE_ID);
                         if (id == null || id.length() == 0) {
                             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
@@ -260,7 +260,7 @@ public final class KlighdDataManager {
                     }
                 } else if (ELEMENT_EXPORTER.equals(element.getName())) {
                     // store the generator
-                    String id = element.getAttribute(ATTRIBUTE_ID);
+                    final String id = element.getAttribute(ATTRIBUTE_ID);
                     if (id == null || id.length() == 0) {
                         reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                     } else {
@@ -268,13 +268,13 @@ public final class KlighdDataManager {
                         if (subFormat == null) {
                             subFormat = "";
                         }
-                        String extension = element.getAttribute("extension");
-                        String descr = element.getAttribute("description");
-                        boolean supportsTiling =
+                        final String extension = element.getAttribute("extension");
+                        final String descr = element.getAttribute("description");
+                        final boolean supportsTiling =
                                 Boolean.parseBoolean(element.getAttribute("supportsTiling"));
 
                         // create the descriptor
-                        ExporterDescriptor descriptor =
+                        final ExporterDescriptor descriptor =
                                 new ExporterDescriptor(id, subFormat, descr, extension, supportsTiling);
                         descriptors.add(descriptor);
 
@@ -285,7 +285,7 @@ public final class KlighdDataManager {
                         exportersMap.put(id, element);
                     }
                 }
-            } catch (CoreException exception) {
+            } catch (final CoreException exception) {
                 StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
             }
         }
@@ -300,7 +300,7 @@ public final class KlighdDataManager {
         final IConfigurationElement[] extensions = Platform.getExtensionRegistry()
                 .getConfigurationElementsFor(EXTP_ID_DIAGRAM_SYNTHESES);
 
-        for (IConfigurationElement element : extensions) {
+        for (final IConfigurationElement element : extensions) {
             if (ELEMENT_DIAGRAM_SYNTHESIS.equals(element.getName())) {
                 // initialize model transformation from the extension point
                 ISynthesis synthesis = null;
@@ -308,19 +308,19 @@ public final class KlighdDataManager {
                     synthesis =
                             (ISynthesis) element.createExecutableExtension(ATTRIBUTE_CLASS);
 
-                } catch (CoreException exception) {
+                } catch (final CoreException exception) {
                     StatusManager.getManager().handle(
                             new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
                                     CORE_EXCEPTION_ERROR_MSG.replace("<<CLAZZ>>",
                                             element.getAttribute(ATTRIBUTE_CLASS)), exception));
-                } catch (NoClassDefFoundError exception) {
+                } catch (final NoClassDefFoundError exception) {
                     final String msg =
                             NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
                                     element.getAttribute(ATTRIBUTE_CLASS).replaceFirst(
                                             GuiceBasedSynthesisFactory.CLASS_NAME + ":", ""));
                     StatusManager.getManager().handle(
                             new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, exception));
-                } catch (WrappedException exception) {
+                } catch (final WrappedException exception) {
                     final String msg =
                             NO_CLASS_DEF_FOUND_ERROR_MSG.replace("<<CLAZZ>>",
                                     element.getAttribute(ATTRIBUTE_CLASS).replaceFirst(
@@ -331,7 +331,7 @@ public final class KlighdDataManager {
                 }
 
                 if (synthesis != null) {
-                    String id = element.getAttribute(ATTRIBUTE_ID);
+                    final String id = element.getAttribute(ATTRIBUTE_ID);
                     if (id == null || id.length() == 0) {
                         reportError(EXTP_ID_DIAGRAM_SYNTHESES, element, ATTRIBUTE_ID, null);
                     } else {
@@ -339,11 +339,11 @@ public final class KlighdDataManager {
                             idSynthesisMapping.put(id, synthesis);
                             typeSynthesisMapping.put(synthesis.getSourceClass(), synthesis);
 
-                        } catch (WrappedException exception) {
+                        } catch (final WrappedException exception) {
                             StatusManager.getManager().handle(
                                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, exception
                                             .getMessage(), exception.getCause()));
-                        } catch (Exception exception) {
+                        } catch (final Exception exception) {
                             final String msg =
                                     "KLighD: An unexpected exception occured while loading "
                                             + "diagram synthesis " + id
@@ -564,7 +564,7 @@ public final class KlighdDataManager {
                     + id + ".");
         }
         exporter = (IDiagramExporter) element.createExecutableExtension("class");
-        } catch (CoreException exception) {
+        } catch (final CoreException exception) {
             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, exception);
         }
         return exporter;
@@ -582,29 +582,29 @@ public final class KlighdDataManager {
         if (formatOffscreenRendererMapping == null) {
             formatOffscreenRendererMapping = ArrayListMultimap.create();
 
-            IConfigurationElement[] extensions =
+            final IConfigurationElement[] extensions =
                     Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
 
-            for (IConfigurationElement element : extensions) {
+            for (final IConfigurationElement element : extensions) {
                 try {
                     if (ELEMENT_OFFSCREEN_RENDERER.equals(element.getName())) {
                         // initialize style modifier from the extension point
-                        IOffscreenRenderer renderer =
+                        final IOffscreenRenderer renderer =
                                 (IOffscreenRenderer) element
                                         .createExecutableExtension(ATTRIBUTE_CLASS);
                         if (renderer != null) {
-                            String id = element.getAttribute(ATTRIBUTE_ID);
+                            final String id = element.getAttribute(ATTRIBUTE_ID);
                             if (id == null || id.length() == 0) {
                                 reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                             } else {
-                                for (String f : element.getAttribute(ATTRIBUTE_SUPPORTED_FORMATS)
+                                for (final String f : element.getAttribute(ATTRIBUTE_SUPPORTED_FORMATS)
                                         .split("[,\\s]")) {
                                     formatOffscreenRendererMapping.put(f, renderer);
                                 }
                             }
                         }
                     }
-                } catch (CoreException exception) {
+                } catch (final CoreException exception) {
                     StatusManager.getManager().handle(exception, KlighdPlugin.PLUGIN_ID);
                 }
             }
@@ -614,17 +614,18 @@ public final class KlighdDataManager {
     }
 
     /**
-     * Aggregator for information about an exporter.
+     * Data record containing the information about an exporter.
      */
-    public static class ExporterDescriptor {
-        // CHECKSTYLEOFF javadoc
+    public static final class ExporterDescriptor {
+
+        // SUPPRESS CHECKSTYLE NEXT 5 Visibility|Javadoc
         public final String exporterId;
         public final String subFormatId;
         public final String description;
         public final String fileExtension;
         public final boolean supportsTiling;
 
-        public ExporterDescriptor(final String exporterId, final String subFormatId,
+        private ExporterDescriptor(final String exporterId, final String subFormatId,
                 final String description, final String fileExtension, final boolean supportsTiling) {
             this.exporterId = exporterId;
             this.subFormatId = subFormatId;
