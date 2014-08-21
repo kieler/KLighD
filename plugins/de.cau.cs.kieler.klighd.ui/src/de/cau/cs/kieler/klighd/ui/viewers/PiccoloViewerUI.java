@@ -370,7 +370,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     protected void updateSelection(final IKlighdSelection selection) {
         getCanvas().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                PiccoloViewerUI.this.updateSelection(selection);
+                PiccoloViewerUI.super.updateSelection(selection);
             }
         });
     }
