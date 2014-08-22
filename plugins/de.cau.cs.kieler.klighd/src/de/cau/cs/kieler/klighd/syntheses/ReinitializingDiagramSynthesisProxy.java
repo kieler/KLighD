@@ -65,10 +65,11 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis;
  */
 public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
 
-    private Class<AbstractDiagramSynthesis<S>> transformationClass = null;
-    private AbstractDiagramSynthesis<S> transformationDelegate = null;
-    private Module transformationClassBinding = null;
+    private final Class<AbstractDiagramSynthesis<S>> transformationClass;
+    private final Module transformationClassBinding;
+    private final ViewSynthesisScope synthesisScope;
     
+    private AbstractDiagramSynthesis<S> transformationDelegate = null;
 
     /**
      * Package protected constructor.
@@ -76,6 +77,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
      */
     ReinitializingDiagramSynthesisProxy(final Class<AbstractDiagramSynthesis<S>> clazz) {
         this.transformationClass = clazz;
+        this.synthesisScope = new ViewSynthesisScope(clazz);
         
         // The following module definition provides the various features:
         //  * A standard binding of ResourceSet is provided for special uses requiring one.
@@ -92,7 +94,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
             public void configure(final Binder binder) {
                 binder.bind(ResourceSet.class).to(ResourceSetImpl.class);
                 binder.bind(new TypeLiteral<AbstractDiagramSynthesis<?>>() { }).to(clazz);
-                binder.bindScope(ViewSynthesisShared.class, new ViewSynthesisScope(clazz));
+                binder.bindScope(ViewSynthesisShared.class, synthesisScope);
             }
         };
     }
@@ -125,8 +127,8 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
      * 
      * @author chsch
      */
-    public class ViewSynthesisScope implements Scope {
-        
+    private class ViewSynthesisScope implements Scope {
+
         /**
          * Constructor.
          * 
@@ -140,6 +142,10 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
         
         private Class<AbstractDiagramSynthesis<S>> mainTransformationClazz = null;
         private Set<Object> instances = Sets.newHashSet();
+
+        private void clear() {
+            this.instances.clear();
+        }
 
         /**
          * {@inheritDoc}<br>
@@ -279,6 +285,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
 
         // release the actual transformation in order avoid unnecessary memory waste
         this.transformationDelegate = null;
+        this.synthesisScope.clear();
         return result; 
     }
 
