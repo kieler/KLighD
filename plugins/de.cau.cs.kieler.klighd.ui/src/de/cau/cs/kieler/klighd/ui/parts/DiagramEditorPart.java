@@ -283,6 +283,7 @@ public class DiagramEditorPart extends EditorPart implements
         if (!diagramComposite.isDisposed()) {
             diagramComposite.removeControlListener(diagramAreaListener);
         }
+        this.diagramComposite = null;
 
         if (this.sideBar != null) {
             this.sideBar.dispose();
