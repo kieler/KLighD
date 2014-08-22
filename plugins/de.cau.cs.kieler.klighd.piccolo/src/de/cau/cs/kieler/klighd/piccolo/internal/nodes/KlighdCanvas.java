@@ -16,11 +16,14 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
@@ -130,6 +133,13 @@ public class KlighdCanvas extends PSWTCanvas {
                 if (inputManager == null) {
                     inputManager = new KlighdInputManager();
                     addInputSource(inputManager);
+
+                    KlighdCanvas.this.addListener(SWT.Dispose, new Listener() {
+                        public void handleEvent(final Event event) {
+                            removeInputSource(inputManager);
+                            inputManager = null;
+                        }
+                    });
                 }
                 return inputManager;
             }
