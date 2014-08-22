@@ -91,9 +91,6 @@ public class PiccoloViewerUI extends PiccoloViewer {
         }
     }
 
-
-    private KlighdMainCamera camera;
-
     /**
      * Creates a Piccolo2D viewer with default style.
      * 
@@ -104,7 +101,6 @@ public class PiccoloViewerUI extends PiccoloViewer {
      */
     public PiccoloViewerUI(final ContextViewer parentViewer, final Composite parent) {
         this(parentViewer, parent, SWT.None);
-        this.camera = this.getCanvas().getCamera();
     }
 
     /**
@@ -421,6 +417,8 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 return;
             }
         }
+
+        final KlighdMainCamera camera = this.getCanvas().getCamera();
 
         // determine global position of the text element
         //  although 'clipRelativeGlobalBoundsOf' may return null that should never happen here as
