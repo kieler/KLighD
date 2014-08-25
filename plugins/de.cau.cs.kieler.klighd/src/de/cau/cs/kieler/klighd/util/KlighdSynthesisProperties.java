@@ -60,6 +60,15 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     public static final IProperty<Map<SynthesisOption, Object>> SYNTHESIS_OPTION_CONFIG =
             new Property<Map<SynthesisOption, Object>>("klighd.synthesisOptionConfig");
     
+    /** property denoting a desired zoom buttons handling. */
+    public static final IProperty<ZoomConfigButtonsHandling> REQUESTED_ZOOM_CONFIG_BUTTONS_HANDLING =
+            new Property<ZoomConfigButtonsHandling>("klighd.zoomConfigButtonsHandling",
+                    ZoomConfigButtonsHandling.UNDEFINED);
+
+    /** property denoting whether to suppress the automatic size estimation of KNodes. */
+    public static final IProperty<Boolean> SUPPRESS_SIZE_ESTIMATION = new Property<Boolean>(
+            "klighd.suppressSizeEstimation", false);
+    
     /**
      * Defines the possible diagram side bar initialization options. 
      */
@@ -71,11 +80,6 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         /** The initialization of the side bar is done according to the related preference setting. */
         UNDEFINED
     }
-    
-    /** property denoting a desired zoom buttons handling. */
-    public static final IProperty<ZoomConfigButtonsHandling> REQUESTED_ZOOM_CONFIG_BUTTONS_HANDLING =
-            new Property<ZoomConfigButtonsHandling>("klighd.zoomConfigButtonsHandling",
-                    ZoomConfigButtonsHandling.UNDEFINED);
 
     /**
      * Defines the possible zoom buttons visibility options. 

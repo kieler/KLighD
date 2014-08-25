@@ -65,6 +65,7 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
@@ -179,7 +180,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         }
 
         // create the mapping
-        final LayoutMapping<KGraphElement> mapping = buildLayoutGraph(graph);
+        final LayoutMapping<KGraphElement> mapping =
+                buildLayoutGraph(graph,
+                        viewContext.getProperty(KlighdSynthesisProperties.SUPPRESS_SIZE_ESTIMATION));
         mapping.setProperty(EclipseLayoutConfig.ACTIVATION, false);
         if (viewContext != null) {
             mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
@@ -201,9 +204,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      * 
      * @param graph
      *            the graph to build the layout graph from
+     * @param suppressSizeEstimation
+     *            whether the size of compound nodes should be automatically estimated.
      * @return the layout graph mapping
      */
-    public LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph) {
+    public LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph,
+            final boolean suppressSizeEstimation) {
         final LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>();
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
         
@@ -221,7 +227,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         mapping.setLayoutGraph(layoutGraph);
 
         // traverse the children of the layout root
-        processNodes(mapping, graph, layoutGraph);
+        processNodes(mapping, graph, layoutGraph, suppressSizeEstimation);
         // transform all connections in the selected area
         processConnections(mapping);
 
@@ -245,15 +251,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the parent node
      * @param layoutParent
      *            the layout parent node
+     * @param suppressSizeEstimation
+     *            whether the size of compound nodes should be automatically estimated.
      */
     private void processNodes(final LayoutMapping<KGraphElement> mapping,
-            final KNode parent, final KNode layoutParent) {
+            final KNode parent, final KNode layoutParent, final boolean suppressSizeEstimation) {
         // iterate through the parent's active children and put copies in the layout graph;
         //  a child is active if it contains RenderingContextData and the 'true' value wrt.
         //  the property KlighdConstants.ACTIVE, see the predicate definition above
         // furthermore, all nodes that have the LAYOUT_IGNORE property set are ignored
         for (final KNode node : Iterables.filter(parent.getChildren(), NODE_FILTER)) {
-            createNode(mapping, node, layoutParent);
+            createNode(mapping, node, layoutParent, suppressSizeEstimation);
         }
     }
     
@@ -273,9 +281,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the node
      * @param layoutParent
      *            the layout parent node
+     * @param suppressSizeEstimation
+     *            whether the size of compound nodes should be automatically estimated.
      */
     private void createNode(final LayoutMapping<KGraphElement> mapping, final KNode node,
-            final KNode layoutParent) {        
+            final KNode layoutParent, final boolean suppressSizeEstimation) {
         final KNode layoutNode = KimlUtil.createInitializedNode();
         // set the node layout
         // initialize with defaultLayout and try to get specific layout attached to the node
@@ -323,7 +333,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             if (rootRendering != null) {
                 
                 // ... calculate the minimal required size based on the determined 'minSize' bounds
-                size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+                if (suppressSizeEstimation) {
+                    size = minSize;
+                } else {
+                    size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+                }
 
                 // integrate the minimal estimated node size
                 //  in case of a compound node, the minimal node size to be preserved by KIML must be
@@ -358,7 +372,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // process the child as new parent
         if (isCompoundNode) {
-            processNodes(mapping, node, layoutNode);
+            processNodes(mapping, node, layoutNode, suppressSizeEstimation);
         }
 
         // store all the edges to process them later
