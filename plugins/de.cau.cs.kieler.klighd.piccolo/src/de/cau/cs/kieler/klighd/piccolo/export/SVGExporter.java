@@ -57,7 +57,8 @@ public class SVGExporter extends KlighdCanvasExporter {
                         data.isTextAsShapes, data.isEmbedFonts);
 
         // do the actual diagram drawing work
-        this.drawDiagram(camera, data.isCameraViewport, graphics, bounds); 
+        this.drawDiagram(camera, data.isCameraViewport, graphics, bounds,
+                ExportHooks.getExportHooksByFormat(data.subFormatId)); 
 
         OutputStream stream = null;
         try {

@@ -14,10 +14,14 @@
 package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.geom.AffineTransform;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
@@ -35,7 +39,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public abstract class AbstractDiagramExporter {
 
-    
     /**
      * Helper method computing the actual unadjusted bounds of the content of the diagram to be
      * exported.
@@ -43,8 +46,8 @@ public abstract class AbstractDiagramExporter {
      * @param camera
      *            the {@link KlighdMainCamera} whose depicted content is to be exported
      * @param exportViewport
-     *            if <code>true</code> the camera's view port is considered,
-     *            otherwise the closure bounds of the camera's displayed layer is considered 
+     *            if <code>true</code> the camera's view port is considered, otherwise the closure
+     *            bounds of the camera's displayed layer is considered
      * @return a new {@link PBounds} instance containing the requested bounds data
      */
     protected PBounds getExportedBounds(final KlighdMainCamera camera, final boolean exportViewport) {
@@ -58,7 +61,7 @@ public abstract class AbstractDiagramExporter {
 
             if (displayedLayer.getParent() == camera.getRoot()) {
                 // in case the displayed layer is the topNode, invalidate its full bounds
-                //  as they are not required to be up to date for the interactive on screen rendering
+                // as they are not required to be up to date for the interactive on screen rendering
                 displayedLayer.invalidateFullBounds();
                 bounds = displayedLayer.getFullBounds();
 
@@ -67,6 +70,13 @@ public abstract class AbstractDiagramExporter {
             }
         }
         return bounds;
+    }
+    /**
+     * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, Collection)}
+     */
+    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
+            final KlighdSWTGraphics graphics, final PBounds bounds) {
+        drawDiagram(camera, exportViewport, graphics, bounds, Collections.<IExportHook>emptyList());
     }
 
     /**
@@ -86,34 +96,56 @@ public abstract class AbstractDiagramExporter {
      *            the of the diagram to be exported, required for determining the main clip and the
      *            background coloring; may be <code>null</code>,
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
+     * @param hooks
+     *            a {@link Collection} of {@link IExportHook IExportHooks} to apply
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds) {
+            final KlighdSWTGraphics graphics, final PBounds bounds,
+            final Collection<IExportHook> hooks) {
 
         final PBounds theBounds;
         if (bounds != null) {
-            theBounds = bounds; 
+            theBounds = bounds;
         } else {
             theBounds = getExportedBounds(camera, exportViewport);
         }
-
-        // adjust the zero reference point
-        graphics.transform(AffineTransform.getTranslateInstance(-theBounds.getX(), -theBounds.getY()));
+        
+        PBounds preBounds = new PBounds(0, 0, theBounds.width, theBounds.height);
 
         // The global clip setting is required as (in PPaintContext) a default one will be set!
-        // This however will let various  browsers go crazy and don't show anything!
-        graphics.setClip(theBounds);
+        // This however will let various browsers go crazy and don't show anything!
+        graphics.setClip(preBounds);
 
-        // explicitly initialize the white background (required especially for SVG exports)  
+        // explicitly initialize the white background (required especially for SVG exports)
         graphics.setFillColor(KlighdConstants.WHITE);
-        graphics.fill(theBounds);
+        graphics.fill(preBounds);
+        
+        
+        // Save the transform to restore it after hook call.
+        AffineTransform transform = graphics.getTransform();
+
+        // transformation applied by the pre draw hooks
+        AffineTransform preTransform = new AffineTransform();
+        
+        for (IExportHook hook : hooks) {
+            preTransform.concatenate(hook.drawPreDiagram((KlighdSWTGraphicsEx) graphics, preBounds));
+            // Restore the transform in case the hooks changed something.
+            graphics.setTransform(transform);
+        }
+        
+        // apply the pre hook transformation
+        graphics.transform(preTransform);
+
+        // adjust the zero reference point
+        graphics.transform(AffineTransform.getTranslateInstance(-theBounds.getX(),
+                -theBounds.getY()));
 
         final KlighdPaintContext paintContext = new KlighdPaintContext(graphics);
 
         // the following setting contradict the defaults in BatikSVGGraphics
-        //  which leads to a blown-up svg file with a huge amount of repeated local style settings
+        // which leads to a blown-up svg file with a huge amount of repeated local style settings
         // therefore, here and in KlighdAbstractSVGGraphics#setRenderingHint(Key, Object)
-        //  the propagation of such RenderingHints has been suppressed
+        // the propagation of such RenderingHints has been suppressed
 
         // paintContext.setRenderQuality(PPaintContext.LOW_QUALITY_RENDERING);
 
@@ -137,6 +169,15 @@ public abstract class AbstractDiagramExporter {
             for (final PLayer layer : layersReference) {
                 layer.fullPaint(paintContext);
             }
+        }
+
+        // reset the zero point 
+        graphics.setTransform(transform);
+        
+        for (IExportHook hook : hooks) {
+            hook.drawPostDiagram((KlighdSWTGraphicsEx) graphics, preBounds);
+            // Restore the transform in case the hooks changed something.
+            graphics.setTransform(transform);
         }
     }
 }

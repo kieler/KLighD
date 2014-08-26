@@ -90,7 +90,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
             width = (int) Math.ceil(((double) width) / cols);
             height = (int) Math.ceil(((double) height) / rows);
         }
-        
+
         // for each row and columns draw and export the image
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -120,7 +120,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
 
         // do the action diagram drawing work
-        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds);
+        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds,
+                ExportHooks.getExportHooksByFormat(data.subFormatId));
 
         // create an image loader to save the image
         // although the API differently suggests:
