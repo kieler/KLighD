@@ -764,7 +764,19 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /* --------------------- */
 
     /**
-     * Resets the path to a rectangle with the dimensions and position provided.
+     * Resets <code>this</code> path to <code>rect</code>.<br>
+     * <b>Be careful:</b>The given {@link Rectangle2D.Float} instance is used further on so don't
+     * modify it externally!
+     * 
+     * @param rect
+     *            the rectangle determining the new bounds
+     */
+    public void setPathToRectangle(final Rectangle2D.Float rect) {
+        this.setShape(rect);
+    }
+
+    /**
+     * Resets <code>this</code> path to a rectangle with the dimensions and position provided.
      * 
      * @param x
      *            left of the rectangle
@@ -779,9 +791,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
             final float height) {
         this.setShape(new Rectangle2D.Float(x, y, width, height));
     }
-
     /**
-     * Resets the path to a rectangle with the dimensions and position provided.
+     * Resets <code>this</code> path to a rectangle with the dimensions and position provided.
      * 
      * @param x
      *            left of the rectangle
@@ -802,8 +813,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     }
 
     /**
-     * Resets the path to an ellipse positioned at the coordinate provided with the dimensions
-     * provided.
+     * Resets <code>this</code> path to an ellipse positioned at the coordinate provided with the
+     * dimensions provided.
      * 
      * @param x
      *            left of the ellipse
@@ -820,8 +831,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Resets the path to an arc positioned at the coordinate provided with the dimensions, angular
-     * start and angular extent provided.
+     * Resets <code>this</code> path to an arc positioned at the coordinate provided with the
+     * dimensions, angular start and angular extent provided.
      * 
      * @param x
      *            left of the arc
@@ -846,7 +857,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
@@ -864,7 +875,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
@@ -884,7 +895,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
@@ -901,7 +912,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
