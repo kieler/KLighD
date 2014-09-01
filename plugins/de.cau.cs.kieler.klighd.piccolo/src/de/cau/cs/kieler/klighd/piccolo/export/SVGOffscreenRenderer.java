@@ -80,7 +80,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                     SVGGeneratorManager.createGraphics(generator, bounds, textAsShapes, embedFonts);
             
             // do the actual diagram drawing work
-            this.drawDiagram(camera, false, graphics, bounds);
+            this.drawDiagram(camera, false, graphics, bounds, true);
             
             // dump out the resulting SVG description via the provided output stream
             graphics.stream(output);

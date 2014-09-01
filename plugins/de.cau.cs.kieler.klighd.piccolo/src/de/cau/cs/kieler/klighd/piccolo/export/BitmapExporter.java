@@ -139,7 +139,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
         graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
 
         // do the action diagram drawing work
-        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds);
+        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, false);
 
         // create an image loader to save the image
         // although the API differently suggests:
