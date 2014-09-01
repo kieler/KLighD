@@ -36,6 +36,8 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.util.SVGConstants;
 import org.apache.fop.svg.PDFTranscoder;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.widgets.Control;
 import org.w3c.dom.DOMImplementation;
@@ -100,7 +102,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
     /**
      * {@inheritDoc}
      */
-    public void export(final ExportData data, final Control control) {
+    public IStatus export(final ExportData data, final Control control) {
 
         final PCamera camera = ((KlighdCanvas) control).getCamera();
 
@@ -189,16 +191,18 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         final String svg = getSVG();
         final Reader r = new StringReader(svg);
         final TranscoderInput in = new TranscoderInput(r);
+
         try {
             final OutputStream stream = data.createOutputStream();
             final TranscoderOutput out = new TranscoderOutput(stream);
             t.transcode(in, out);
             stream.flush();
             stream.close();
-        } catch (final TranscoderException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
+            return Status.OK_STATUS;
+
+        } catch (final Exception e) {
+            return new Status(IStatus.ERROR, "de.cau.cs.kieler.klighd.piccolo.batik",
+                    "KLighD Batik-based PDF export failed with the following exception", e);
         }
     }
 
