@@ -82,6 +82,22 @@ public abstract class KlighdNode extends PNode {
      * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
      * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
      * 
+     * @param kpc
+     *            the KlighdPaintContext providing the required information
+     * 
+     * @return <code>true</code> if this (pseudo) figure should not be drawn on the diagram being
+     *         drawn in the given <code>diagramScale</code>
+     */
+    public boolean isNotVisibleOn(final KlighdPaintContext kpc) {
+        return isNotVisibleOn(kpc.getCameraZoomScale());
+    }
+
+    /**
+     * Decides whether a {@link KlighdNode} must not be drawn according to given scale-based
+     * visibility definitions. (see
+     * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
+     * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
+     * 
      * @param diagramScale
      *            the diagram scale factor to be applied
      * 
@@ -190,10 +206,12 @@ public abstract class KlighdNode extends PNode {
         public boolean fullPick(final PPickPath pickPath) {
             final PCamera topCam = pickPath.getTopCamera();
 
+            // first test whether this figure is visible at all
+            //  we shamelessly assume that scaleX == scaleY ;-)
             if (isNotVisibleOn(topCam.getViewTransformReference().getScaleX())) {
                 return false;
             }
-            
+
             return super.fullPick(pickPath);
         }
 
@@ -207,7 +225,7 @@ public abstract class KlighdNode extends PNode {
         @Override
         public void fullPaint(final PPaintContext paintContext) {
             final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-            if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+            if (isNotVisibleOn(kpc)) {
                 return;
             }
             super.fullPaint(paintContext);
@@ -274,7 +292,7 @@ public abstract class KlighdNode extends PNode {
             this();
             setRendering(rendering);
         }
-        
+
         private T rendering;
 
         /**
@@ -326,11 +344,39 @@ public abstract class KlighdNode extends PNode {
          */
         @Override
         protected boolean pickAfterChildren(final PPickPath pickPath) {
+            // first test whether this figure is visible at all
+            //  we shamelessly assume that scaleX == scaleY ;-)
             if (isNotVisibleOn(pickPath.getTopCamera().getViewTransformReference().getScaleX())) {
                 return false;
             }
             return super.pickAfterChildren(pickPath);
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void paint(final PPaintContext paintContext) {
+            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+            // first test whether this figure shall be drawn at all
+            if (isNotVisibleOn(kpc)) {
+                return;
+            }
+
+            this.paint((KlighdPaintContext) paintContext);
+        }
+
+        /**
+         * Derivative of {@link #paint(PPaintContext)} requiring a {@link KlighdPaintContext}.
+         * 
+         * @param paintContext
+         *            the paint context to use for drawing the node
+         * @see PNode#paint(PPaintContext)
+         */
+        protected void paint(final KlighdPaintContext paintContext) {
+        }
+
 
         /**
          * A convenience method to be re-used in the {@link #paint(PPaintContext)} methods of

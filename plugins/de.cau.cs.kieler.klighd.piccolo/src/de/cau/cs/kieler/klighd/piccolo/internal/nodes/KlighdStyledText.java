@@ -342,14 +342,13 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     protected void paint(final PPaintContext paintContext) {
         if (Strings.isNullOrEmpty(this.text)) {
             return;
+        } else {
+            super.paint(paintContext);
         }
+    }
 
-        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-
-        // first test whether this figure shall be drawn at all
-        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
-            return;
-        }
+    @Override
+    protected void paint(final KlighdPaintContext kpc) {
 
         final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
 
