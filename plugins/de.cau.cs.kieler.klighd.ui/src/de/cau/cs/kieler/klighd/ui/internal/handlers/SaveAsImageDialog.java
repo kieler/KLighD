@@ -373,7 +373,7 @@ public class SaveAsImageDialog extends Dialog {
             }
         } else {
             tilingOptionsButton.setEnabled(false);
-            tilingStateLabel.setText("No tiling supported");
+            tilingStateLabel.setText("Tiling not supported");
         }
         tilingStateLabel.getParent().layout();
     }

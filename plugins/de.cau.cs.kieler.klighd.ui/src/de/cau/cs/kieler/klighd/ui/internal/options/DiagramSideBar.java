@@ -336,7 +336,7 @@ public final class DiagramSideBar {
         if (zoomButtonsVisible) {
             final FormData toolbarFormLayoutData = new FormData();
             toolbarFormLayoutData.top = new FormAttachment(1);
-            toolbarFormLayoutData.left = new FormAttachment(sash, 3); // SUPPRESS CHECKSTYLE MagicNumber
+            toolbarFormLayoutData.left = new FormAttachment(sash);
             toolbarFormLayoutData.right = new FormAttachment(FULL);
             sideZoomBtnsForm.setLayoutData(toolbarFormLayoutData);
         }
@@ -507,6 +507,16 @@ public final class DiagramSideBar {
                 viewContext.getViewer().zoomToLevel(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         });
+
+        int maxWidth =
+                Math.max(zoomToFitBtn.getBounds().width,
+                        Math.max(zoomToFocusBtn.getBounds().width, zoomToOneBtn.getBounds().width));
+        int maxHeight =
+                Math.max(zoomToFitBtn.getBounds().height,
+                        Math.max(zoomToFocusBtn.getBounds().height, zoomToOneBtn.getBounds().height));
+        zoomToFitBtn.setSize(maxWidth, maxHeight);
+        zoomToFocusBtn.setSize(maxWidth, maxHeight);
+        zoomToOneBtn.setSize(maxWidth, maxHeight);
     }
 
     /**
