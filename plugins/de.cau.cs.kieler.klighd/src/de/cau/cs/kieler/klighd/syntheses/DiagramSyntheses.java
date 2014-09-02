@@ -134,6 +134,56 @@ public final class DiagramSyntheses {
     }
 
     /**
+     * Configures the provided {@link KRendering} to be excluded from the outline diagram view.
+     * 
+     * @param rendering
+     *            the {@link KRendering} to be configured
+     * @return <code>rendering</code> for convenience
+     */
+    public static KRendering excludedFromOutline(final KRendering rendering) {
+        rendering.setProperty(KlighdProperties.OUTLINE_INVISIBLE, true);
+        return rendering;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to be excluded from exported diagram images.
+     * 
+     * @param rendering
+     *            the {@link KRendering} to be configured
+     * @return <code>rendering</code> for convenience
+     */
+    public static KRendering excludedFromExportedImages(final KRendering rendering) {
+        rendering.setProperty(KlighdProperties.EXPORTED_IMAGE_INVISIBLE, true);
+        return rendering;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to be excluded from diagram printouts.
+     * 
+     * @param rendering
+     *            the {@link KRendering} to be configured
+     * @return <code>rendering</code> for convenience
+     */
+    public static KRendering excludedFromPrintouts(final KRendering rendering) {
+        rendering.setProperty(KlighdProperties.PRINTOUT_INVISIBLE, true);
+        return rendering;
+    }
+    
+    /**
+     * Configures the provided {@link KRendering} to be excluded from exported diagram images and
+     * printouts.
+     * 
+     * @param rendering
+     *            the {@link KRendering} to be configured
+     * @return <code>rendering</code> for convenience
+     */
+    public static KRendering excludedFromExportedImagesAndPrintouts(final KRendering rendering) {
+        rendering.setProperty(KlighdProperties.EXPORTED_IMAGE_INVISIBLE, true);
+        rendering.setProperty(KlighdProperties.PRINTOUT_INVISIBLE, true);
+        return rendering;
+    }
+
+    /**
      * Configures the provided {@link KNode} to be shown in the diagram in collapsed fashion.
      * 
      * @param node
