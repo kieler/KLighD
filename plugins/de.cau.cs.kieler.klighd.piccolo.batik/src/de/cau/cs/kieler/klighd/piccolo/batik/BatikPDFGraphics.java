@@ -170,7 +170,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         // IMPORTANT
         super.setGraphicsDelegate(graphicsDelegate);
 
-        final KlighdPaintContext paintContext = new KlighdPaintContext(this, true);
+        final KlighdPaintContext paintContext = KlighdPaintContext.createExportDiagramPaintContext(this);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
         // perform the painting

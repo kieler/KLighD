@@ -31,33 +31,138 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 public class KlighdPaintContext extends PPaintContext {
 
     /**
-     * Constructor.<br>
-     * Addition of semantic data to the created diagram is switch off.
+     * Factory method creating a {@link KlighdPaintContext} configured for on screen (main) diagram
+     * drawing.
      * 
      * @param graphics
-     *            the {@link KlighdSWTGraphics} graphics system abstraction object to be used.
+     *            the {@link KlighdSWTGraphics} to draw on
+     * @return the desired {@link KlighdPaintContext}
      */
-    public KlighdPaintContext(final KlighdSWTGraphics graphics) {
-        this(graphics, false);
+    public static KlighdPaintContext createDiagramPaintContext(final KlighdSWTGraphics graphics) {
+        return new KlighdPaintContext(graphics, false, false, false, false);
     }
 
-    private boolean addSemanticData = false;
+    /**
+     * Factory method creating a {@link KlighdPaintContext} configured for on screen outline diagram
+     * drawing.
+     * 
+     * @param graphics
+     *            the {@link KlighdSWTGraphics} to draw on
+     * @return the desired {@link KlighdPaintContext}
+     */
+    public static KlighdPaintContext createOutlinePaintContext(final KlighdSWTGraphics graphics) {
+        return new KlighdPaintContext(graphics, true, false, false, false);
+    }
+
+    /**
+     * Factory method creating a {@link KlighdPaintContext} configured for exporting the diagram
+     * into an image.
+     * 
+     * @param graphics
+     *            the {@link KlighdSWTGraphics} to draw on
+     * @return the desired {@link KlighdPaintContext}
+     */
+    public static KlighdPaintContext createExportDiagramPaintContext(final KlighdSWTGraphics graphics) {
+        return new KlighdPaintContext(graphics, false, true, false, true);
+    }
+
+    /**
+     * Factory method creating a {@link KlighdPaintContext} configured for printing the diagram.
+     * 
+     * @param graphics
+     *            the {@link KlighdSWTGraphics} to draw on
+     * @return the desired {@link KlighdPaintContext}
+     */
+    public static KlighdPaintContext createPrintoutPaintContext(final KlighdSWTGraphics graphics) {
+        return new KlighdPaintContext(graphics, false, false, true, false);
+    }
+
 
     /**
      * Constructor.
      * 
      * @param graphics
      *            the {@link KlighdSWTGraphics} graphics system abstraction object to be used.
+     * @param outline
+     *            indicates that the outline diagram image is about to be drawn
+     * @param export
+     *            indicates that the diagram is about to be exported into an image
+     * @param printout
+     *            indicates that the diagram is about to be printed
      * @param addSemanticData
      *            flag determining whether semantic data shall be added to the diagram, e.g. while
      *            exporting an SVG based image
      */
-    public KlighdPaintContext(final KlighdSWTGraphics graphics, final boolean addSemanticData) {
+    protected KlighdPaintContext(final KlighdSWTGraphics graphics, final boolean outline,
+            final boolean export, final boolean printout, final boolean addSemanticData) {
         super((Graphics2D) graphics);
+        this.mainDiagram = !(outline || export || printout);
+        this.outline = outline;
+        this.export = export;
+        this.printout = printout;
         this.addSemanticData = addSemanticData;
     }
 
     private double cameraZoomScale = 1d;
+    private final boolean mainDiagram;
+    private final boolean outline;
+    private final boolean export;
+    private final boolean printout;
+    private final boolean addSemanticData;
+
+
+    /**
+     * Provides the current diagram zoom factor as determined by the active {@link KlighdMainCamera}'s
+     * view {@link java.awt.geom.AffineTransform transform}.
+     * 
+     * @return the current diagram zoom factor
+     */
+    public double getCameraZoomScale() {
+        return this.cameraZoomScale;
+    }
+
+    /**
+     * @return <code>true</code> if this {@link KlighdPaintContext} is configured for drawing the
+     *         outline, <code>false</code> otherwise
+     */
+    public boolean isMainDiagram() {
+        return mainDiagram;
+    }
+
+    /**
+     * @return <code>true</code> if this {@link KlighdPaintContext} is configured for drawing the
+     *         outline, <code>false</code> otherwise
+     */
+    public boolean isOutline() {
+        return outline;
+    }
+
+    /**
+     * @return <code>true</code> if this {@link KlighdPaintContext} is configured for creating an
+     *         exported diagram image, <code>false</code> otherwise
+     */
+    public boolean isImageExport() {
+        return export;
+    }
+
+    /**
+     * @return <code>true</code> if this {@link KlighdPaintContext} is configured for creating a
+     *         diagram printout, <code>false</code> otherwise
+     */
+    public boolean isPrintout() {
+        return printout;
+    }
+
+    /**
+     * Returns <code>true</code> if semantic data shall be added to the diagram while drawing, e.g.
+     * while creating an SVG export.
+     * 
+     * @return <code>true</code> if semantic data shall be added to the diagram while drawing,
+     *         <code>false</code> otherwise.
+     */
+    public boolean isAddSemanticData() {
+        return this.addSemanticData;
+    }
 
     @Override
     public void pushCamera(final PCamera aCamera) {
@@ -79,27 +184,6 @@ public class KlighdPaintContext extends PPaintContext {
         } else {
             super.popCamera();
         }
-    }
-
-    /**
-     * Provides the current diagram zoom factor as determined by the active {@link KlighdMainCamera}'s
-     * view {@link java.awt.geom.AffineTransform transform}.
-     * 
-     * @return the current diagram zoom factor
-     */
-    public double getCameraZoomScale() {
-        return this.cameraZoomScale;
-    }
-
-    /**
-     * Returns <code>true</code> if semantic data shall be added to the diagram while drawing, e.g.
-     * while creating an SVG export.
-     * 
-     * @return <code>true</code> if semantic data shall be added to the diagram while drawing,
-     *         <code>false</code> otherwise.
-     */
-    public boolean isAddSemanticData() {
-        return this.addSemanticData;
     }
 
     /**

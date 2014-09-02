@@ -254,6 +254,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setModel(final KNode model, final boolean sync) {
 
         final boolean edgesFirst =
@@ -701,7 +702,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         camera.animateViewToCenterBounds(newBounds, true, 0);
 
         // set up a new paint context and paint the camera
-        final KlighdPaintContext paintContext = new KlighdPaintContext(g2, true);
+        final KlighdPaintContext paintContext = KlighdPaintContext.createPrintoutPaintContext(g2);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
         camera.fullPaint(paintContext);
         g2.dispose();

@@ -111,7 +111,8 @@ public abstract class AbstractDiagramExporter {
         graphics.setFillColor(KlighdConstants.WHITE);
         graphics.fill(theBounds);
 
-        final KlighdPaintContext paintContext = new KlighdPaintContext(graphics, exportSemanticData);
+        final KlighdPaintContext paintContext =
+                KlighdPaintContext.createExportDiagramPaintContext(graphics);
 
         // the following setting contradict the defaults in BatikSVGGraphics
         //  which leads to a blown-up svg file with a huge amount of repeated local style settings

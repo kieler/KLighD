@@ -159,7 +159,7 @@ public class KlighdCanvas extends PSWTCanvas {
 
     @Override
     protected KlighdPaintContext getPaintContext(final Graphics2D g2) {
-        return new KlighdPaintContext(graphics, false);
+        return KlighdPaintContext.createDiagramPaintContext(graphics);
     }
 
     /**
