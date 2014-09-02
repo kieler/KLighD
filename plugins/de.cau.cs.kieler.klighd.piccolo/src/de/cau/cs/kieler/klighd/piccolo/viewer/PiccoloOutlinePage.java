@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -37,11 +38,13 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PCamera;
@@ -112,13 +115,28 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     };
 
     /**
+     * Named subclass of {@link KlighdCanvas} providing outline paint contexts. 
+     */
+    private static final class KlighdOutlineCanvas extends KlighdCanvas {
+
+        public KlighdOutlineCanvas(final Composite parent, final int style) {
+            super(parent, style);
+        }
+
+        @Override
+        protected KlighdPaintContext getPaintContext(final Graphics2D g2) {
+            return KlighdPaintContext.createOutlinePaintContext((KlighdSWTGraphics) g2);
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
         final Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new FillLayout());
         
-        outlineCanvas = new KlighdCanvas(container, SWT.NONE);
+        outlineCanvas = new KlighdOutlineCanvas(container, SWT.NONE);
         outlineCanvas.setVisible(false);
         
         // since we don't rely on the picked node in OutlineDragHandler below
