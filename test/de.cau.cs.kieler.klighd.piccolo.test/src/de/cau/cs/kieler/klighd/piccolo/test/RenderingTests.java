@@ -26,6 +26,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
@@ -33,13 +34,14 @@ import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelPath;
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 
 
 @RunWith(ModelCollectionTestRunner.class)
 @BundleId("de.cau.cs.kieler.klighd.piccolo.test")
-@ModelPath("testmodels/")
+@ModelPath("testModels/")
 @ModelFilter("*.kgt")
 public class RenderingTests {
 
@@ -201,11 +203,15 @@ public class RenderingTests {
             return node;
         } else {
             INode result = null;
-            for (int i = 0; i < node.getChildAreaNode().getNodeLayer().getChildrenCount(); i++) {
-                INode n = (INode) node.getChildAreaNode().getNodeLayer().getChild(i);
-                result = findPNodeById(id, n);
-                if (result != null) {
-                    return result;
+            KChildAreaNode kcan = node.getChildAreaNode();
+            PLayer nlay = kcan.getNodeLayer();
+            if (nlay != null) {
+                for (int i = 0; i < nlay.getChildrenCount(); i++) {
+                    INode n = (INode) nlay.getChild(i);
+                    result = findPNodeById(id, n);
+                    if (result != null) {
+                        return result;
+                    }
                 }
             }
             return null;
