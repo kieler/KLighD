@@ -14,25 +14,29 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * The Piccolo2D node for representing a {@link KEdge}.
+ * The Piccolo2D node for representing a {@link KEdge}.<br>
+ * <b>Note:</b> the bounds of KEdgeNodes are updated in the
+ * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController PNodeController}
+ * implementations in {@link KEdgeRenderingController} that are in charge of updating the attached
+ * polyline/spline figure's bend points. Without that update the picking of edges (and may be even
+ * the correct drawing) will not work correctly.
  * 
  * @author mri
  * @author chsch
  */
-public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphElement<KEdge> {
+public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILabeledGraphElement<KEdge> {
 
     private static final long serialVersionUID = -1867615197736299487L;
 
@@ -41,9 +45,6 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
 
     /** the property name for changes of the edge's bend points. */
     public static final String PROPERTY_JUNCTION_POINTS = "junctionPoints";
-
-    /** the represented {@link KEdge}. */
-    private transient KEdge edge;
 
     /** the edge rendering controller deployed to manage the rendering of {@link #edge}. */
     private KEdgeRenderingController renderingController;
@@ -61,18 +62,13 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
      *            the edge
      */
     public KEdgeNode(final KEdge edge) {
-        this.edge = edge;
+        super(edge);
         setPickable(true);
         setChildrenPickable(true);
         bendPoints[0] = new Point2D.Double();
         bendPoints[1] = new Point2D.Double();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KEdge getGraphElement() {
-        return edge;
+        lowerScaleBound = edge.getData(KLayoutData.class).getProperty(
+                KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
     }
 
     /**
@@ -83,9 +79,9 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
         if (controller == null || controller instanceof KEdgeRenderingController) {
             this.renderingController = (KEdgeRenderingController) controller;
         } else {
-            String s = "KLighD: Fault occured while building up a concrete KEdge rendering: KEdgeNodes"
-                    + " are supposed to be controlled by KEdgeRenderingControllers rather than "
-                    + controller.getClass().getCanonicalName();
+            final String s = "KLighD: Fault occured while building up a concrete KEdge rendering: "
+                    + "KEdgeNodes are supposed to be controlled by KEdgeRenderingControllers rather "
+                    + "than " + controller.getClass().getCanonicalName();
             throw new IllegalArgumentException(s);
         }
     }
@@ -96,14 +92,14 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
     public KEdgeRenderingController getRenderingController() {
         return this.renderingController;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void addLabel(final KLabelNode label) {
         addChild(label);
     }
-    
+
     /**
      * Sets the bend points for the edge.
      * 
@@ -153,13 +149,29 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
      *         area
      */
     public KChildAreaNode getParentChildArea() {
-        PNode parent = getParent();
+        final PNode parent = getParent();
         if (parent != null && parent.getParent() instanceof KChildAreaNode) {
             return (KChildAreaNode) parent.getParent();
         }
         return null;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean intersects(final Rectangle2D localBounds) {
+        // By our design there should be only one child
+        //  that is an instance of KlighdPath.
+        // However, IMO this way is more precise wrt. the general API
+        for (final Object child : getChildrenReference()) {
+            if (((PNode) child).intersects(localBounds)) {
+                return true;
+            }
+        }
+        return false; 
+    }
+
     /**
      * {@inheritDoc}<br>
      * <br>
@@ -174,27 +186,5 @@ public class KEdgeNode extends PChildRepresentedNode implements ILabeledGraphEle
                 localBounds.x - 1, localBounds.y - 1, localBounds.width + 2, localBounds.height + 2);
         }
         super.repaintFrom(localBounds, childOrThis);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    protected void paint(final PPaintContext paintContext) {
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
-                        KlighdProperties.SEMANTIC_DATA);
-        g2.startGroup(sd);
-        super.paint(paintContext);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintAfterChildren(final PPaintContext paintContext) {
-        super.paintAfterChildren(paintContext);
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        g2.endGroup();
     }
 }

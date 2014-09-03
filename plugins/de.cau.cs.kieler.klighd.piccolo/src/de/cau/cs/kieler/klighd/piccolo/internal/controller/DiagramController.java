@@ -54,10 +54,12 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplySmartBoundsActivity;
@@ -65,7 +67,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.IStartingAndFinishingActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ILabeledGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
@@ -138,7 +140,7 @@ public class DiagramController {
     private boolean record = false;
 
     /** the layout changes to graph elements while recording. */
-    private final Map<PNode, Object> recordedChanges = Maps.newLinkedHashMap();
+    private final Map<IGraphElement<?>, Object> recordedChanges = Maps.newLinkedHashMap();
 
 
     /**
@@ -352,11 +354,26 @@ public class DiagramController {
      */
     public boolean isVisible(final KGraphElement diagramElement, final boolean checkContainment) {
         final PNode p = (PNode) getRepresentation(diagramElement);
+
+        // first check whether 'diagramElement' is represented by any figure (PNode)
+        //  that is contained by any other figure (and thus hopefully contained in the figure tree)
         if (p == canvasCamera.getDisplayedLayer()) {
             return true;
         } else if (p == null || p.getParent() == null) {
             return false;
         }
+
+        // check whether the lower visibility scale bound is exceeded
+        final float viewScale = (float) canvasCamera.getViewTransformReference().getScaleX();
+        final float lowerBound = diagramElement.getData(KLayoutData.class)
+                .getProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
+
+        if (viewScale < lowerBound) {
+            return false;
+        }
+
+        // the upper visibility scale bound is not checked because I think it is unlikely that a
+        //  label or any other kgraph element is masked if the diagram scale exceeds a certain value
 
         if (checkContainment) {
             if (!NodeUtil.isDisplayed(p, canvasCamera)) {
@@ -464,7 +481,7 @@ public class DiagramController {
     /* internal part */
     /* --------------------------------------------- */
 
-    void recordChange(final PNode node, final Object change) {
+    void recordChange(final IGraphElement<?> node, final Object change) {
         recordedChanges.put(node, change);
     }
     
@@ -519,7 +536,7 @@ public class DiagramController {
             final int animationTime) {
 
         // create activities to apply all recorded changes
-        for (final Map.Entry<PNode, Object> recordedChange : recordedChanges.entrySet()) {
+        for (final Map.Entry<IGraphElement<?>, Object> recordedChange : recordedChanges.entrySet()) {
             // create the activity to apply the change
             PInterpolatingActivity activity;
             final PNode shapeNode;
@@ -528,7 +545,10 @@ public class DiagramController {
                 
                 final KEdgeNode edgeNode = (KEdgeNode) recordedChange.getKey();
                 shapeNode = edgeNode;
-                
+
+                // the following case is still to be implemented!
+                // if (recordedChange.getValue() == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+
                 @SuppressWarnings("unchecked")
                 final Pair<Point2D[], Point2D[]> value =
                         (Pair<Point2D[], Point2D[]>) recordedChange.getValue();
@@ -546,8 +566,15 @@ public class DiagramController {
                 }
             } else {
                 // shape layout changed
-                shapeNode = recordedChange.getKey();
-                final PBounds bounds = (PBounds) recordedChange.getValue();
+                shapeNode = (PNode) recordedChange.getKey();
+                final PBounds bounds;
+
+                // check whether an actual bounds change occurred, and if so get the new bounds
+                if (recordedChange.getValue() == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+                    bounds = null;
+                } else {
+                    bounds = (PBounds) recordedChange.getValue();
+                }
 
                 final float scale;
                 if (shapeNode instanceof KNodeNode) {
@@ -558,12 +585,17 @@ public class DiagramController {
                 }
 
                 if (!shapeNode.getVisible()) {
-                    // the visibility is set to false for newly introduced edges in #addNode,
+                    // the visibility is set to false for newly introduced elements in #addNode,
                     //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
                     //  to fade it in
+                    // note the special behavior of FadeNodeInActivity if 'bounds' is 'null',
+                    //  i.e. 'LAYOUT_DATA_UNCHANGED_VALUE' was notified
                     activity = new FadeNodeInActivity(shapeNode, bounds,
                             scale, animationTime > 0 ? animationTime : 1);
-                } else { 
+                } else if (bounds == null) {
+                    continue;
+
+                } else {
                     activity = new ApplySmartBoundsActivity(shapeNode, bounds,
                             scale, animationTime > 0 ? animationTime : 1);
                 }

@@ -12,7 +12,6 @@
  * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.klighd.piccolo.test.highlightedEdgeToForeground;
-// SUPPRESS CHECKSTYLE PREVIOUS Package
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -24,6 +23,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -42,18 +43,25 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewerProvider;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
-// CHECKSTYLEOFF MagicNumber
-
 /**
+ * The aim of this class is to test the "bring the highlighted edge to foreground" feature.<br>
+ * To this end a small diagram with ports and overlapping edges is build up (composition is out-
+ * sourced to {@link HighlightedEdgeToForegroundTestModelGen}. In order to test not only single
+ * methods but the whole tool a simple diagram viewer is launched and some mouse move and click
+ * events are send to the employed {@link Display} instance. By means of those events edges are
+ * selected and due to corresponding styles their color is switched from black to red.<br>
+ * <br>
+ * In order to assess the correctness of the tool's behavior the color of the diagram is evaluated
+ * at certain positions of the diagram. Since the "measured" color will differ from the expected
+ * one by some units due to anti-aliasing a similarity heuristic is applied.
+ * 
  * @author chsch
  */
 public class HighlightedEdgeToForegroundTest {
-    
-    private static final int SECOND = 1000;
 
     private static HighlightedEdgeToForegroundTestModelGen testModelGen;
     private static ViewContext viewContext;
@@ -79,7 +87,7 @@ public class HighlightedEdgeToForegroundTest {
         shell.setLayout(new FillLayout());
         
         viewContext = new ViewContext((IDiagramWorkbenchPart) null, testModelGen.getTestModel())
-                .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewerProvider.ID));
+                .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
         
         new ContextViewer(shell).setModel(viewContext, true);        
 
@@ -91,6 +99,34 @@ public class HighlightedEdgeToForegroundTest {
         
         canvas = (KlighdCanvas) viewContext.getViewer().getControl();
         zeroPoint = canvas.toDisplay(0, 0);
+    }
+
+    private static final ColorMatcher IS_BLACK = ColorMatcher.resembles(Colors.BLACK);
+    private static final ColorMatcher IS_RED = ColorMatcher.resembles(Colors.RED);
+
+
+    /**
+     * This is just a "warm up" test since the continuous build's (virtual) display's palette seems
+     * to be very limited. The observed behavior is: If 'black' or 'white' is the first observed
+     * color, only those colors will be obtained subsequently. I interpret this as follows: The
+     * image's color palette then contains only black and white. If the image also contains 'red'
+     * parts before testing the first time for any color the palette than also contains 'red'.
+     * Weird ...
+     */
+    @Test
+    public void test00() throws InterruptedException {
+        final KShapeLayout firstChildNodeLayout =
+                viewContext.getViewModel().getChildren().get(0).getChildren().get(0)
+                        .getData(KShapeLayout.class);
+        final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());  
+
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
+
+        clickOn(firstClickXPos, firstChildNodeYPos);
+        waitAmoment();
+
+        clickOn(4, 4);
+        waitAmoment();
     }
 
 
@@ -110,26 +146,35 @@ public class HighlightedEdgeToForegroundTest {
         final int firstWPortLayoutCenterYPos = Math.round(firstWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 50;
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
+        final int secondClickXPos = 200;
+        
+        moveTo(firstClickXPos, firstChildNodeYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
 
-        Thread.sleep(SECOND);
-
-        clickOn(5 + 100 + 1,
-            // port width + border spacing + edge spacing factor * spacing + 1
-            firstChildNodeYPos);
-
-        Thread.sleep(SECOND);
-
-        moveTo(sampleXPos, firstWPortLayoutCenterYPos);
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, firstWPortLayoutCenterYPos)));        
-
-        Thread.sleep(SECOND);
-
-        clickOn(200, firstWPortLayoutCenterYPos);
-
-        Thread.sleep(SECOND);
+        clickOn(firstClickXPos, firstChildNodeYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_RED);
 
         moveTo(sampleXPos, firstWPortLayoutCenterYPos);
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, firstWPortLayoutCenterYPos)));
+        waitAmoment();
+        Assert.assertThat(getColorAt(sampleXPos, firstWPortLayoutCenterYPos), IS_RED);
+
+        moveTo(secondClickXPos, firstWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_BLACK);
+        
+        clickOn(secondClickXPos, firstWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_RED);
+
+        moveTo(sampleXPos, firstWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(sampleXPos, firstWPortLayoutCenterYPos), IS_RED);
+        
+        clickOn(4, 4);
+        waitAmoment();
     }
 
 
@@ -149,26 +194,35 @@ public class HighlightedEdgeToForegroundTest {
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 120;
-
-        Thread.sleep(SECOND);
-
-        clickOn(5 + 100 + 1,
-            // port width + border spacing + edge spacing factor * spacing + 1
-            firstChildNodeYPos);
+        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
+        final int secondClickXPos = 50;
         
-        Thread.sleep(SECOND);
+        moveTo(firstClickXPos, firstChildNodeYPos);        
+        waitAmoment();
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
+
+        clickOn(firstClickXPos, firstChildNodeYPos);        
+        waitAmoment();
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));        
+        waitAmoment();
+        Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
         
-        Thread.sleep(SECOND);
+        moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
 
-        clickOn(50, secondWPortLayoutCenterYPos);
+        clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
         
-        Thread.sleep(SECOND);
-
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);        
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));
+        waitAmoment();
+        Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
+
+        clickOn(4, 4);
+        waitAmoment();
     }
 
 
@@ -188,32 +242,42 @@ public class HighlightedEdgeToForegroundTest {
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 350;
-
-        Thread.sleep(SECOND);
-
-        clickOn(5 + 50 + 100 + 5 + 100 + 5
-                 + Math.round(1f/2f * 100f) + 1,
+        final int firstClickXPos = 5 + 50 + 100 + 5 + 100 + 5
+                + Math.round(1f/2f * 100f);
             // port width + border spacing + spacing + port width + node with + port width
-            //   + edge spacing factor * spacing + 1
-            firstChildNodeYPos);
-        
-        Thread.sleep(SECOND);
-
-        moveTo(sampleXPos, secondWPortLayoutCenterYPos);
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));        
-        
-        Thread.sleep(SECOND);
-
-        clickOn(5 + 50 + 100 + 5 + 100 + 5 + 20,
+                //   + edge spacing factor * spacing
+        final int secondClickXPos = 5 + 50 + 100 + 5 + 100 + 5 + 20;
             // port width + border spacing + spacing + port width + node with + port width + 20
-            secondWPortLayoutCenterYPos);
-        
-        Thread.sleep(SECOND);
+
+        moveTo(firstClickXPos, firstChildNodeYPos);        
+        waitAmoment();
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
+
+        clickOn(firstClickXPos, firstChildNodeYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_RED);
 
         moveTo(sampleXPos, secondWPortLayoutCenterYPos);
-        Assert.assertTrue(areSimilar(Colors.RED, getColorAt(sampleXPos, secondWPortLayoutCenterYPos)));
+        waitAmoment();
+        Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);        
+
+        moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
+
+        clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_RED);
+
+        moveTo(sampleXPos, secondWPortLayoutCenterYPos);
+        waitAmoment();
+        Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);        
+
+        clickOn(4, 4);
     }
 
+
+    private static final int A_MOMENT = 750;
 
     /**
      * Closes the employed shell.
@@ -221,7 +285,7 @@ public class HighlightedEdgeToForegroundTest {
     @AfterClass
     public static void cleanup() {
         final Display display = shell.getDisplay();
-        display.timerExec(SECOND, new Runnable() {
+        display.timerExec(A_MOMENT, new Runnable() {
             public void run() {
                 shell.close();
             }
@@ -267,6 +331,14 @@ public class HighlightedEdgeToForegroundTest {
         while (d.readAndDispatch());        
     }
 
+    private void waitAmoment() throws InterruptedException {
+        final Display d = shell.getDisplay();
+
+        Thread.sleep(A_MOMENT);
+
+        while (d.readAndDispatch());
+    }
+
     private RGB getColorAt(final int x, final int y) {
         final Image image = new Image(shell.getDisplay(), 1, 1);
         final GC gc = new GC(canvas);
@@ -280,9 +352,47 @@ public class HighlightedEdgeToForegroundTest {
         return pixel;
     }
 
-    private boolean areSimilar(final Colors color, final RGB rgb) {
-        return Math.abs(color.getRed() - rgb.red) < 11
-                && Math.abs(color.getGreen() - rgb.green) < 11
-                && Math.abs(color.getBlue() - rgb.blue) < 11;
+    public static class ColorMatcher extends BaseMatcher<RGB> {
+
+        public static ColorMatcher resembles(final Colors color) {
+            return new ColorMatcher(color);
+        }
+
+        private final Colors color;
+
+        /**
+         * Constructor.
+         */
+        public ColorMatcher(final Colors color) {
+            this.color = color;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void describeTo(final Description description) {
+            description.appendText("Determined color " + color.toStringWithComponents());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void describeMismatch(final Object item, final Description description) {
+            description.appendText("obtained actual color").appendValue(item);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean matches(final Object item) {
+            return item instanceof RGB && areSimilar(color, (RGB) item);
+        }
+
+        private static boolean areSimilar(final Colors color, final RGB rgb) {
+            return Math.abs(color.getRed() - rgb.red) < 11
+                    && Math.abs(color.getGreen() - rgb.green) < 11
+                    && Math.abs(color.getBlue() - rgb.blue) < 11;
+        }
     }
 }

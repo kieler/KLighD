@@ -30,6 +30,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -312,6 +313,17 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     protected Pair<IProperty<?>, List<?>> specifyLayoutOption(final IProperty<?> prop,
             final List<?> values) {
         return Pair.<IProperty<? extends Object>, List<? extends Object>>of(prop, values);
+    }
+
+
+    // ---------------------------------------------------------------------------------- //
+    //  Offered diagram actions handling    
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<DisplayedActionData> getDisplayedActions() {
+        return Collections.emptyList();
     }
 
 

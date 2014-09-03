@@ -11,28 +11,21 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.internal.viewers;
+package de.cau.cs.kieler.klighd.ui.viewers;
 
-import java.awt.event.InputEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 
 import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
@@ -51,7 +44,9 @@ import edu.umd.cs.piccolo.nodes.PText;
  * The text label shall be as smoothly as possible integrated into the diagram meaning that there
  * should be as little as possible additional clicks required in order to select the text (or parts
  * of it) and copy it, for example. This however requires quite some event handling magic like
- * duplicating SWT events.
+ * duplicating SWT events.<br>
+ * <br>
+ * <b>Update:</b> deactivated the magic code as it doesn't work properly on windows setups 
  * 
  * @author chsch
  */
@@ -131,11 +126,11 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
     @Override
     public void mouseMoved(final PInputEvent event) {
         if (widgetJustPrepared) {
-            // This special case is active if the text widget is been prepared some milliseconds ago.
-            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
-            //  and "forward" it to the label widget.
-            
-            forwardEventToLabel(event.getSourceSwingEvent());
+//            // This special case is active if the text widget is been prepared some milliseconds ago.
+//            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
+//            //  and "forward" it to the label widget.
+//            
+//            forwardEventToLabel(event.getSourceSwingEvent());
             
             // Don't let any further event handler evaluate 'event'.
             //  This works fine since this handler is supposed to be the last one in the row of
@@ -165,11 +160,11 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
     @Override
     public void mousePressed(final PInputEvent event) {
         if (widgetJustPrepared) {            
-            // This special case is active if the text widget is been prepared some milliseconds ago.
-            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
-            //  and "forward" it to the label widget.
-            
-            forwardEventToLabel(event.getSourceSwingEvent());
+//            // This special case is active if the text widget is been prepared some milliseconds ago.
+//            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
+//            //  and "forward" it to the label widget.
+//            
+//            forwardEventToLabel(event.getSourceSwingEvent());
             
             // Don't let any further event handler evaluate 'event'.
             //  This works fine since this handler is supposed to be the last one in the row of
@@ -190,13 +185,13 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             // otherwise prevent other handler from evaluating this event 
             event.setHandled(true);
 
-            // fire a small mouse movement that helps much in capturing the first character of a
-            //  line in case a mouse-press-and-move-selection event
-            injectMoveLeftEvent(event.getSourceSwingEvent());
+//            // fire a small mouse movement that helps much in capturing the first character of a
+//            //  line in case a mouse-press-and-move-selection event
+//            injectMoveLeftEvent(event.getSourceSwingEvent());
 
-            // "forward" the mouse pressed event to the label widget in order to initiate the
-            //  selection process
-            forwardEventToLabel(event.getSourceSwingEvent());
+//            // "forward" the mouse pressed event to the label widget in order to initiate the
+//            //  selection process
+//            forwardEventToLabel(event.getSourceSwingEvent());
 
         } else if (!labelWidget.isVisible()) {
             // if the widget is not visible and try to prepare the label text widget,
@@ -206,9 +201,9 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             if (widgetVisible) {
                 event.setHandled(true);
 
-                // "forward" the mouse pressed event to the label widget in order to initiate the
-                //  selection process if required
-                forwardEventToLabel(event.getSourceSwingEvent());
+//                // "forward" the mouse pressed event to the label widget in order to initiate the
+//                //  selection process if required
+//                forwardEventToLabel(event.getSourceSwingEvent());
             }
         }
     }
@@ -224,7 +219,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             //  and "forward" it to the label widget in order to enable immediate double clicks
 
             event.setHandled(true);
-            forwardEventToLabel(event.getSourceSwingEvent());
+//            forwardEventToLabel(event.getSourceSwingEvent());
         }
     }
 
@@ -374,46 +369,46 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
         }
     };
 
-    /**
-     * Fires an additional {@link SWT#MouseMove MouseMove} {@link Event} one unit in left of the
-     * position given in <code>inputEvent</code>.<br>
-     * <br>
-     * See {@link org.eclipse.swt.widgets.Display#post(Event) Display#post(Event)} for details on that.
-     */
-    private void injectMoveLeftEvent(final InputEvent inputEvent) {
-        final MouseEvent sourceEvent = ((KlighdMouseEvent) inputEvent).getEvent();
-        final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);
-
-        final Event event = new Event();
-        event.type = SWT.MouseMove;
-        event.x = canvasLocation.x + sourceEvent.x - 1;
-        event.y = canvasLocation.y + sourceEvent.y;
-
-        sourceEvent.display.post(event);
-    }
-
-    /**
-     * Fires an additional {@link Event} event one unit at the position given in
-     * <code>inputEvent</code>. This is used for "forwarding" events delivered to the canvas to the
-     * label text widget.<br>
-     * <br>
-     * See {@link org.eclipse.swt.widgets.Display#post(Event) Display#post(Event)} for details on that.
-     */
-    private void forwardEventToLabel(final InputEvent input) {
-        final KlighdMouseEvent kme = (KlighdMouseEvent) input;
-        final MouseEvent sourceEvent = kme.getEvent();
-        final int eventType = kme.getEventType();
-
-        final Event event = new Event();
-        event.button = sourceEvent.button;
-        event.type = eventType;
-
-        if (eventType == SWT.MouseMove) {
-            final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);            
-            event.x = sourceEvent.x + canvasLocation.x;
-            event.y = sourceEvent.y + canvasLocation.y;
-        }
-
-        sourceEvent.display.post(event);
-    }    
+//    /**
+//     * Fires an additional {@link SWT#MouseMove MouseMove} {@link Event} one unit in left of the
+//     * position given in <code>inputEvent</code>.<br>
+//     * <br>
+//     * See {@link org.eclipse.swt.widgets.Display#post(Event) Display#post(Event)} for details on that.
+//     */
+//    private void injectMoveLeftEvent(final InputEvent inputEvent) {
+//        final MouseEvent sourceEvent = ((KlighdMouseEvent) inputEvent).getEvent();
+//        final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);
+//
+//        final Event event = new Event();
+//        event.type = SWT.MouseMove;
+//        event.x = canvasLocation.x + sourceEvent.x - 1;
+//        event.y = canvasLocation.y + sourceEvent.y;
+//
+//        sourceEvent.display.post(event);
+//    }
+//
+//    /**
+//     * Fires an additional {@link Event} event one unit at the position given in
+//     * <code>inputEvent</code>. This is used for "forwarding" events delivered to the canvas to the
+//     * label text widget.<br>
+//     * <br>
+//     * See {@link org.eclipse.swt.widgets.Display#post(Event) Display#post(Event)} for details on that.
+//     */
+//    private void forwardEventToLabel(final InputEvent input) {
+//        final KlighdMouseEvent kme = (KlighdMouseEvent) input;
+//        final MouseEvent sourceEvent = kme.getEvent();
+//        final int eventType = kme.getEventType();
+//
+//        final Event event = new Event();
+//        event.button = sourceEvent.button;
+//        event.type = eventType;
+//
+//        if (eventType == SWT.MouseMove) {
+//            final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);            
+//            event.x = sourceEvent.x + canvasLocation.x;
+//            event.y = sourceEvent.y + canvasLocation.y;
+//        }
+//
+//        sourceEvent.display.post(event);
+//    }    
 }

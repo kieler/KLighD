@@ -44,7 +44,7 @@ public interface IViewChangeListener {
      */
     public static class ViewChange {
         
-        private final IViewer<?> activeViewer;
+        private final IViewer activeViewer;
         private final ViewChangeType changeType;
         private final KGraphElement affectedElement;
         private final double diagramScale;
@@ -63,7 +63,7 @@ public interface IViewChangeListener {
          * @param diagramScale
          *            the zoom factor of the currently visible diagram area
          */
-        public ViewChange(final IViewer<?> viewer, final ViewChangeType type,
+        public ViewChange(final IViewer viewer, final ViewChangeType type,
                 final KGraphElement element, final Rectangle2D viewPort, final double diagramScale) {
             this.activeViewer = viewer;
             this.changeType = type;
@@ -76,7 +76,7 @@ public interface IViewChangeListener {
          * 
          * @return the {@link IViewer} the change occurred in.
          */
-        public IViewer<?> getViewer() {
+        public IViewer getViewer() {
             return this.activeViewer;
         }
 

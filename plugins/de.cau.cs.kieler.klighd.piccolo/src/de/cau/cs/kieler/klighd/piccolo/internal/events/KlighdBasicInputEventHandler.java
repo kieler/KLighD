@@ -42,6 +42,8 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
      * Constructor. Is protected as it is to be called by subclasses only.
      */
     protected KlighdBasicInputEventHandler() {
+        this.setEventFilter(null);
+
         this.delegate = this;
     }
 
@@ -53,18 +55,23 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
      *            <code>null</code>.
      */
     public KlighdBasicInputEventHandler(final PBasicInputEventHandler theDelegate) {
+        this.setEventFilter(null);
+
         if (theDelegate == null) {
             final String msg = "KLighD Piccolo viewer: "
                     + "Constructor KlighdBasicInputEventHandler(PBasicInputEventHandler) "
                     + "is being called with a 'null' argument!";
             throw new IllegalArgumentException(msg);
         }
+        theDelegate.setEventFilter(null);
+
         this.delegate = theDelegate;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void processEvent(final PInputEvent event, final int type) {
         if (!(event.getSourceSwingEvent() instanceof IKlighdInputEvent)) {
             return;

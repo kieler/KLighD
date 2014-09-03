@@ -13,13 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import java.io.OutputStream;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.statushandlers.StatusManager;
-
 import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -28,58 +24,46 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * Abstract implementation of {@link IDiagramExporter} supporting the export of diagrams depicted by
  * a {@link KlighdCanvas}.<br>
  * <br>
- * Thus, it treats the {@link Control} in
- * {@link #export(OutputStream, Control, boolean, int, boolean, boolean, String)} as a
- * {@link KlighdCanvas} and redirects to
- * {@link #export(OutputStream, KlighdCanvas, boolean, int, boolean, boolean, String)}, which has to
- * be implemented by concrete subclasses.
+ * Thus, it treats the given {@link Control} as a {@link KlighdCanvas} and redirects to
+ * {@link #export(KlighdExportInfo))}, which must be implemented by concrete subclasses.
  * 
  * @author chsch
  */
-public abstract class KlighdCanvasExporter extends AbstractDiagramExporter implements IDiagramExporter {
-    
+public abstract class KlighdCanvasExporter extends AbstractDiagramExporter implements
+        IDiagramExporter {
+
+    private static final String IVALID_CONTROL_FAILURE =
+            "KLighD diagram export: The SWT Control of type ## is not supported by this &&!";
+
     /**
      * {@inheritDoc}
      */
-    public void export(final OutputStream stream, final Control control,
-            final boolean cameraViewport, final int scale, final boolean textAsShapes,
-            final boolean embedFonts, final String subFormatId) {
-        
-        final KlighdCanvas canvas;
+    public IStatus export(final ExportData data, final Control control) {
+
         if (control instanceof KlighdCanvas) {
-            canvas = (KlighdCanvas) control;
-            export(stream, canvas, cameraViewport, scale, textAsShapes, embedFonts, subFormatId);
+            final KlighdCanvas canvas = (KlighdCanvas) control;
+            return export(data, canvas);
+
         } else {
-            final String msg = "";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, msg));
-            return;
+            final String msg = IVALID_CONTROL_FAILURE
+                    .replace("##", control.getClass().getCanonicalName())
+                    .replace("&&", this.getClass().getCanonicalName());
+
+            return new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, msg);
         }
     }
 
     /**
-     * Exports the diagram currently visible on the given {@code canvas} to the passed output
-     * stream. If the {@code cameraViewport} flag is set, only the visible area is exported. The
-     * {@code scale} value can be used for instance during the export of bitmap graphics to increase
-     * the rendering quality by up-scaling the visible area before exporting. Some implementations
-     * of the {@link IDiagramExporter} interface might support multiple sub formats of the same parent
-     * format, e.g., bmp and png are both bitmap formats.
+     * Exports the diagram depicted by the given <code>control</code>.
      * 
-     * @param stream
-     *            the output stream
+     * @param data
+     *            the specified export info
      * @param canvas
-     *            the visible canvas
-     * @param cameraViewport
-     *            should only the visible area be exported?
-     * @param scale
-     *            should the canvas be scaled before exporting
-     * @param textAsShapes
-     *            whether text in vector graphics should be rendered as shapes
-     * @param embedFonts
-     *            whether the texts' fonts shall be embedded in the output
-     * @param subFormatId
-     *            an id for a certain subformat
+     *            the canvas to export
+     * @return {@link org.eclipse.core.runtime.Status#OK_STATUS Status#OK_STATUS} if the diagram
+     *         export went successfully, an {@link IStatus} providing information on the failure
+     *         otherwise.
+     * @see IDiagramExporter#export(de.cau.cs.kieler.klighd.IDiagramExporter.ExportData, Control)
      */
-    public abstract void export(OutputStream stream, KlighdCanvas canvas, boolean cameraViewport,
-            int scale, boolean textAsShapes, boolean embedFonts, String subFormatId);
+    public abstract IStatus export(ExportData data, KlighdCanvas canvas);
 }

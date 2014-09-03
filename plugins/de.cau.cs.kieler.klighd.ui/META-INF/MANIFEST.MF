@@ -19,6 +19,9 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Export-Package: de.cau.cs.kieler.klighd.ui,
+ de.cau.cs.kieler.klighd.ui.internal;x-internal:=true,
+ de.cau.cs.kieler.klighd.ui.internal.handlers;x-internal:=true,
  de.cau.cs.kieler.klighd.ui.internal.options;x-internal:=true,
+ de.cau.cs.kieler.klighd.ui.viewers,
  de.cau.cs.kieler.klighd.ui.modifymodel,
  de.cau.cs.kieler.klighd.ui.parts

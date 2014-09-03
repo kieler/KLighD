@@ -18,10 +18,10 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
@@ -39,53 +39,57 @@ public class AdapterTests {
 
     @Test
     public void layoutTest() {
-        KlighdMainCamera camera = new KlighdMainCamera();
-        PRoot pRoot = new PRoot();
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
-        KNode root = KimlUtil.createInitializedNode();
-        KLabel l = KimlUtil.createInitializedLabel(root);
+        final KNode root = KimlUtil.createInitializedNode();
+        final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        KNode next = KlighdTestUtil.makeTestGraph(root);
-        KPort nextport = KlighdTestUtil.addport(next);
-        KLabel nextlabel = next.getLabels().get(0);
+        final KNode next = KlighdTestUtil.makeTestGraph(root);
+        final KPort nextport = KlighdTestUtil.addport(next);
+        final KLabel nextlabel = next.getLabels().get(0);
         // create a controller for the graph
-        DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false);
 
         // node layout
-        KShapeLayout nodelayout = next.getData(KShapeLayout.class);
+        final KShapeLayout nodelayout = next.getData(KShapeLayout.class);
         nodelayout.setPos(12, 32);
         nodelayout.setSize(40, 40);
         // port layout
-        KShapeLayout portlayout = nextport.getData(KShapeLayout.class);
+        final KShapeLayout portlayout = nextport.getData(KShapeLayout.class);
         portlayout.setPos(6, 7);
         portlayout.setSize(5, 5);
         // label layout
-        KShapeLayout labellayout = nextlabel.getData(KShapeLayout.class);
+        final KShapeLayout labellayout = nextlabel.getData(KShapeLayout.class);
         labellayout.setPos(2, 3);
         labellayout.setSize(4, 5);
 
-        INode node = controller.getNode();
-        PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
-        PNode pnext = nodeLayer.getChild(0);
-        PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
-        PNode pport = portlayer.getChild(3);
-        PLayer labellayer = ((KNodeNode) pnext).getLabelLayer();
-        PNode plabel = labellayer.getChild(0);
+        final INode node = controller.getNode();
+        final PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
+        final PNode pnext = nodeLayer.getChild(0);
+        final PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
+        final PNode pport = portlayer.getChild(3);
+        final PLayer labellayer = ((KNodeNode) pnext).getLabelLayer();
+        final PNode plabel = labellayer.getChild(0);
 
-        PAffineTransform porttransform = pport.getTransform();
-        PAffineTransform labeltransform = plabel.getTransform();
-        PAffineTransform nodetransform = pnext.getTransform();
+        final PAffineTransform porttransform = pport.getTransform();
+        final PAffineTransform labeltransform = plabel.getTransform();
+        final PAffineTransform nodetransform = pnext.getTransform();
 
-        Assert.assertTrue(nodetransform.getTranslateX() == 12
-                && nodetransform.getTranslateY() == 32);
-        Assert.assertTrue(pnext.getBounds().height == 40 && pnext.getBounds().width == 40);
+        Assert.assertEquals(12, nodetransform.getTranslateX(), 0);
+        Assert.assertEquals(32, nodetransform.getTranslateY(), 0);
+        Assert.assertEquals(40, pnext.getBoundsReference().height, 0);
+        Assert.assertEquals(40, pnext.getBoundsReference().width, 0);
 
-        Assert.assertTrue(labeltransform.getTranslateX() == 2
-                && labeltransform.getTranslateY() == 3);
-        Assert.assertTrue(plabel.getBounds().height == 5 && plabel.getBounds().width == 4);
+        Assert.assertEquals(2, labeltransform.getTranslateX(), 0);
+        Assert.assertEquals(3, labeltransform.getTranslateY(), 0);
+        Assert.assertEquals(5, plabel.getBoundsReference().height, 0);
+        Assert.assertEquals(4, plabel.getBoundsReference().width, 0);
 
-        Assert.assertTrue(porttransform.getTranslateX() == 6 && porttransform.getTranslateY() == 7);
-        Assert.assertTrue(pport.getBounds().height == 5 && pport.getBounds().width == 5);
+        Assert.assertEquals(6, porttransform.getTranslateX(), 0);
+        Assert.assertEquals(7, porttransform.getTranslateY(), 0);
+        Assert.assertEquals(5, pport.getBoundsReference().height, 0);
+        Assert.assertEquals(5, pport.getBoundsReference().width, 0);
     }
   
     /**
@@ -93,16 +97,16 @@ public class AdapterTests {
      */
     @Test
     public void nodeTest() {
-        KlighdMainCamera camera = new KlighdMainCamera();
-        PRoot pRoot = new PRoot();
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
-        KNode root = KimlUtil.createInitializedNode();
-        KLabel l = KimlUtil.createInitializedLabel(root);
+        final KNode root = KimlUtil.createInitializedNode();
+        final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
         KlighdTestUtil.makeTestGraph(root);
         // create a controller for the graph
-        DiagramController controller = new DiagramController(root, camera, true, false);
-        INode topNode = controller.getNode();
+        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final INode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
     
@@ -111,20 +115,40 @@ public class AdapterTests {
      */
     @Test
     public void nodeTestExpanded() {
-        KlighdMainCamera camera = new KlighdMainCamera();
-        PRoot pRoot = new PRoot();
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
 
-        KNode root = KimlUtil.createInitializedNode();
-        KLabel l = KimlUtil.createInitializedLabel(root);
+        final KNode root = KimlUtil.createInitializedNode();
+        final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false);
         controller.collapse(root);
         KlighdTestUtil.makeTestGraph(root);
         controller.expand(root);
         // create a controller for the graph
-        INode topNode = controller.getNode();
+        final INode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
+    }
+    
+    /**
+     * Test adding of elements while node is collapsed.
+     */
+    @Test
+    public void nodeTestCollapsed() {
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
+        pRoot.addChild(camera);
+        final KNode root = KimlUtil.createInitializedNode();
+        final KLabel l = KimlUtil.createInitializedLabel(root);
+        l.setText("rootnode");
+        final DiagramController controller = new DiagramController(root, camera, true, false);
+        controller.collapse(root);
+        KlighdTestUtil.makeTestGraph(root);
+
+        // create a controller for the graph
+        final INode topNode = controller.getNode();
+        Assert.assertFalse(checkStructure(root, topNode));
     }
     
     /**
@@ -132,15 +156,15 @@ public class AdapterTests {
      */
     @Test
     public void adapterTest() {
-        KlighdMainCamera camera = new KlighdMainCamera();
-        PRoot pRoot = new PRoot();
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
 
-        KNode root = KimlUtil.createInitializedNode();
-        KLabel l = KimlUtil.createInitializedLabel(root);
+        final KNode root = KimlUtil.createInitializedNode();
+        final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true, false);
-        KNode child = KlighdTestUtil.makeTestGraph(root);
+        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final KNode child = KlighdTestUtil.makeTestGraph(root);
         // create a controller for the graph
         controller.getNode();
         Assert.assertTrue(checkAdapters(child));
@@ -151,17 +175,17 @@ public class AdapterTests {
      */
     @Test
     public void adapterTestExpanded() {
-        KlighdMainCamera camera = new KlighdMainCamera();
-        PRoot pRoot = new PRoot();
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
 
-        KNode root = KimlUtil.createInitializedNode();
-        KLabel l = KimlUtil.createInitializedLabel(root);
+        final KNode root = KimlUtil.createInitializedNode();
+        final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true, false);
-        KNode child = KlighdTestUtil.makeTestGraph(root);
+        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final KNode child = KlighdTestUtil.makeTestGraph(root);
         controller.collapse(child);
-        KNode cc = KlighdTestUtil.addchild(child);
+        final KNode cc = KlighdTestUtil.addchild(child);
         KlighdTestUtil.addport(cc);
         KlighdTestUtil.addport(cc);
         controller.expand(child);
@@ -205,17 +229,17 @@ public class AdapterTests {
      */
     //@Test
     public void adapterTestCollapsed() {
-        KlighdMainCamera camera = new KlighdMainCamera();
-        PRoot pRoot = new PRoot();
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
 
-        KNode root = KimlUtil.createInitializedNode();
-        KLabel l = KimlUtil.createInitializedLabel(root);
+        final KNode root = KimlUtil.createInitializedNode();
+        final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        DiagramController controller = new DiagramController(root, camera, true, false);
-        KNode child = KlighdTestUtil.makeTestGraph(root);
+        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final KNode child = KlighdTestUtil.makeTestGraph(root);
         controller.collapse(child);
-        KNode cc = KlighdTestUtil.addchild(child);
+        final KNode cc = KlighdTestUtil.addchild(child);
         KlighdTestUtil.addport(cc);
         KlighdTestUtil.addport(cc);
         // create a controller for the graph
@@ -309,27 +333,38 @@ public class AdapterTests {
         if (!piccoloTree.getGraphElement().toString().equals(kgraph.toString())) {
             return false;
         }
-        PLayer nodeLayer = piccoloTree.getChildAreaNode().getNodeLayer();
+        final PLayer nodeLayer = piccoloTree.getChildAreaNode().getNodeLayer() != null
+                ? piccoloTree.getChildAreaNode().getNodeLayer() : new PLayer();
+                    // chsch: added some hotfix here
+
         PLayer edgeLayer = null;
         if (piccoloTree.getParentNode() != null) {
-            edgeLayer = piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer();
+            edgeLayer = piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer() != null
+                ? piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer() : new PLayer();
+                    // chsch: added some hotfix here
         }
         for (int i = 0; i < kgraph.getChildren().size(); i++) {
             if (piccoloTree instanceof KNodeNode) {
 
                 // check if all ports are included in the piccolo structure
-                PLayer portLayer = ((KNodeNode) piccoloTree).getPortLayer();
+                final PLayer portLayer = ((KNodeNode) piccoloTree).getPortLayer() != null
+                        ? ((KNodeNode) piccoloTree).getPortLayer() : new PLayer();
+                            // chsch: added some hotfix here
+
                 for (int j = 0; j < kgraph.getPorts().size(); j++) {
-                    if (!(kgraph.getPorts().get(j) == ((ITracingElement<?>) portLayer.getChild(j))
+                    if (!(kgraph.getPorts().get(j) == ((KlighdNode) portLayer.getChild(j))
                             .getGraphElement())) {
                         return false;
                     }
                 }
 
                 // check if all labels are included in the piccolo structure
-                PLayer labelLayer = ((KNodeNode) piccoloTree).getLabelLayer();
+                final PLayer labelLayer = ((KNodeNode) piccoloTree).getLabelLayer() != null
+                        ?  ((KNodeNode) piccoloTree).getLabelLayer() : new PLayer();
+                            // chsch: added some hotfix here
+
                 for (int j = 0; j < kgraph.getLabels().size(); j++) {
-                    if (!(kgraph.getLabels().get(j) == ((ITracingElement<?>) labelLayer.getChild(j))
+                    if (!(kgraph.getLabels().get(j) == ((KlighdNode) labelLayer.getChild(j))
                             .getGraphElement())) {
                         return false;
                     }
@@ -339,12 +374,13 @@ public class AdapterTests {
 
             // check if all edges are included
             if (edgeLayer != null) {
-                for (KEdge edge : kgraph.getOutgoingEdges()) {
+                for (final KEdge edge : kgraph.getOutgoingEdges()) {
                     boolean edgematch = false;
                     @SuppressWarnings("unchecked")
+                    final
                     ListIterator<KEdgeNode> iter = edgeLayer.getChildrenIterator();
                     while (iter.hasNext()) {
-                        if (((KEdgeNode) iter.next()).getGraphElement() == edge) {
+                        if (iter.next().getGraphElement() == edge) {
                             edgematch = true;
                             break;
                         }
@@ -377,7 +413,6 @@ public class AdapterTests {
     private Predicate<Adapter> getCondition(final String name) {
         return new Predicate<Adapter>() {
             public boolean apply(Adapter arg0) {
-                // TODO Auto-generated method stub
                 return arg0.getClass().getSimpleName().equals(name);
             }
 

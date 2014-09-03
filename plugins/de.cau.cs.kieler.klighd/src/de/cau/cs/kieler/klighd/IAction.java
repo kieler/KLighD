@@ -58,7 +58,7 @@ public interface IAction {
      */
     public static class ActionContext {
         
-        private IViewer<?> viewer = null;
+        private IViewer viewer = null;
         private Trigger trigger = null;
         private KGraphElement kgraphElement = null;
         private KRendering rendering = null;
@@ -75,7 +75,7 @@ public interface IAction {
          * @param r
          *            the rendering the action is invoked on
          */
-        public ActionContext(final IViewer<?> v, final Trigger t, final KGraphElement kge,
+        public ActionContext(final IViewer v, final Trigger t, final KGraphElement kge,
                 final KRendering r) {
             this.viewer = v;
             this.trigger = t;
@@ -86,7 +86,7 @@ public interface IAction {
         /**
          * @return the current actual diagram viewer, usually the PiccoloViewer
          */
-        public IViewer<?> getActiveViewer() {
+        public IViewer getActiveViewer() {
             return viewer;
         }
         

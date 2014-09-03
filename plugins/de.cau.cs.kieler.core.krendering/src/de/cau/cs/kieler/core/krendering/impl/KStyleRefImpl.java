@@ -14,15 +14,19 @@
 package de.cau.cs.kieler.core.krendering.impl;
 
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KStyleHolder;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,6 +36,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl#getStyleHolder <em>Style Holder</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.core.krendering.impl.KStyleRefImpl#getReferencedTypes <em>Referenced Types</em>}</li>
  * </ul>
  * </p>
  *
@@ -47,6 +52,16 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
      * @ordered
      */
     protected KStyleHolder styleHolder;
+
+    /**
+     * The cached value of the '{@link #getReferencedTypes() <em>Referenced Types</em>}' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getReferencedTypes()
+     * @generated
+     * @ordered
+     */
+    protected EList<Class<KStyle>> referencedTypes;
 
     /**
      * <!-- begin-user-doc -->
@@ -110,12 +125,26 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EList<Class<KStyle>> getReferencedTypes() {
+        if (referencedTypes == null) {
+            referencedTypes = new EDataTypeUniqueEList<Class<KStyle>>(Class.class, this, KRenderingPackage.KSTYLE_REF__REFERENCED_TYPES);
+        }
+        return referencedTypes;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
                 if (resolve) return getStyleHolder();
                 return basicGetStyleHolder();
+            case KRenderingPackage.KSTYLE_REF__REFERENCED_TYPES:
+                return getReferencedTypes();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -125,11 +154,16 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
                 setStyleHolder((KStyleHolder)newValue);
+                return;
+            case KRenderingPackage.KSTYLE_REF__REFERENCED_TYPES:
+                getReferencedTypes().clear();
+                getReferencedTypes().addAll((Collection<? extends Class<KStyle>>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -146,6 +180,9 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
             case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
                 setStyleHolder((KStyleHolder)null);
                 return;
+            case KRenderingPackage.KSTYLE_REF__REFERENCED_TYPES:
+                getReferencedTypes().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -160,8 +197,26 @@ public class KStyleRefImpl extends KStyleImpl implements KStyleRef {
         switch (featureID) {
             case KRenderingPackage.KSTYLE_REF__STYLE_HOLDER:
                 return styleHolder != null;
+            case KRenderingPackage.KSTYLE_REF__REFERENCED_TYPES:
+                return referencedTypes != null && !referencedTypes.isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (eIsProxy()) return super.toString();
+
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (referencedTypes: ");
+        result.append(referencedTypes);
+        result.append(')');
+        return result.toString();
     }
 
 } //KStyleRefImpl

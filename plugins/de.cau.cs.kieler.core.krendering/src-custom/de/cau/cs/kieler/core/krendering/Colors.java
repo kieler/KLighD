@@ -1742,6 +1742,14 @@ public enum Colors {
         return blueComponent;
     }
 
+    /**
+     * @return a {@link String} representation containing the colors name and the RGB component
+     *         values
+     */
+    public String toStringWithComponents() {
+        return super.toString() + "(" + redComponent + "," + greenComponent + "," + blueComponent + ")";
+    }
+
     private static HashMap<String, Colors> fastColorLookup = Maps.newHashMap();    
 
     /**
@@ -1753,10 +1761,10 @@ public enum Colors {
      * @return the desired color with name <code>name</code> if anyone exists
      */
     public static Colors getColorByName(final String name) {
-        String lowerCaseName = name.toLowerCase();
+        final String lowerCaseName = name.toLowerCase();
         Colors result = fastColorLookup.get(lowerCaseName);
         if (result == null) {
-            for (Colors color : values()) {
+            for (final Colors color : values()) {
                 if (color.getName().toLowerCase().equals(lowerCaseName)) {
                     fastColorLookup.put(lowerCaseName, color);
                     result = color;

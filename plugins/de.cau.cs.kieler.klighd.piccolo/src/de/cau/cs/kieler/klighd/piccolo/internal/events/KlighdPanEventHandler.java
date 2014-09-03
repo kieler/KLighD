@@ -65,7 +65,12 @@ public class KlighdPanEventHandler extends PPanEventHandler {
             }
         });
     }
-    
+
+    @Override
+    protected boolean shouldStartDragInteraction(final PInputEvent event) {
+        return !event.isControlDown() && super.shouldStartDragInteraction(event);
+    }
+
     @Override
     protected void pan(final PInputEvent event) {
         // The reason for overriding this method is the replacement of

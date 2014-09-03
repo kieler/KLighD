@@ -36,6 +36,8 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.util.SVGConstants;
 import org.apache.fop.svg.PDFTranscoder;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.widgets.Control;
 import org.w3c.dom.DOMImplementation;
@@ -45,6 +47,7 @@ import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -84,29 +87,27 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
     }
 
     @Override
-    public void stream(OutputStream output) throws IOException {
-        PNGTranscoder t = new PNGTranscoder();
-        Reader r = new StringReader(getSVG());
-        TranscoderInput in = new TranscoderInput(r);
-        TranscoderOutput out = new TranscoderOutput(output);
+    public void stream(final OutputStream output) throws IOException {
+        final PNGTranscoder t = new PNGTranscoder();
+        final Reader r = new StringReader(getSVG());
+        final TranscoderInput in = new TranscoderInput(r);
+        final TranscoderOutput out = new TranscoderOutput(output);
         try {
             t.transcode(in, out);
-        } catch (TranscoderException e) {
+        } catch (final TranscoderException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * {@inheritDoc}
      */
-    public void export(OutputStream stream, Control control, boolean cameraViewport, int scale,
-            boolean textAsShapes, boolean embedFonts, String subFormatId) {
+    public IStatus export(final ExportData data, final Control control) {
 
         final PCamera camera = ((KlighdCanvas) control).getCamera();
 
         Rectangle2D bounds = null;
-        if (cameraViewport) {
+        if (data.isCameraViewport) {
             bounds = camera.getBounds();
         } else {
             // we want the svg to contain all elements, not just the visible area
@@ -122,7 +123,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
 
         // assemble context
         final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
-        ctx.setEmbeddedFontsOn(embedFonts);
+        ctx.setEmbeddedFontsOn(data.isEmbedFonts);
 
         final GraphicContextDefaults defaults = new GraphicContextDefaults();
         ctx.setGraphicContextDefaults(defaults);
@@ -162,18 +163,18 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // create and configure the graphics object
-        graphicsDelegate = new SVGGraphics2D(ctx, textAsShapes);
+        graphicsDelegate = new SVGGraphics2D(ctx, data.isTextAsShapes);
         graphicsDelegate.setSVGCanvasSize(new Dimension((int) Math.ceil(bounds.getWidth()),
                 (int) Math.ceil(bounds.getHeight())));
 
         // IMPORTANT
         super.setGraphicsDelegate(graphicsDelegate);
 
-        final PPaintContext paintContext = new PPaintContext(this);
+        final KlighdPaintContext paintContext = KlighdPaintContext.createExportDiagramPaintContext(this);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
         // perform the painting
-        if (cameraViewport) {
+        if (data.isCameraViewport) {
             // only render the current viewport
             camera.fullPaint(paintContext);
         } else {
@@ -186,18 +187,22 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         }
 
         // Transcode the image to pdf
-        PDFTranscoder t = new PDFTranscoder();
-        String svg = getSVG();
-        Reader r = new StringReader(svg);
-        TranscoderInput in = new TranscoderInput(r);
-        TranscoderOutput out = new TranscoderOutput(stream);
+        final PDFTranscoder t = new PDFTranscoder();
+        final String svg = getSVG();
+        final Reader r = new StringReader(svg);
+        final TranscoderInput in = new TranscoderInput(r);
+
         try {
+            final OutputStream stream = data.createOutputStream();
+            final TranscoderOutput out = new TranscoderOutput(stream);
             t.transcode(in, out);
             stream.flush();
-        } catch (TranscoderException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            stream.close();
+            return Status.OK_STATUS;
+
+        } catch (final Exception e) {
+            return new Status(IStatus.ERROR, "de.cau.cs.kieler.klighd.piccolo.batik",
+                    "KLighD Batik-based PDF export failed with the following exception", e);
         }
     }
 

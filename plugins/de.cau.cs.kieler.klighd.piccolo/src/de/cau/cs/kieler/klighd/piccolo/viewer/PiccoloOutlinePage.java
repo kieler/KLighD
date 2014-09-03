@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -37,11 +38,13 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PCamera;
@@ -56,6 +59,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * 
  * @author msp
  * @author uru
+ * @author chsch
  */
 public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
@@ -111,14 +115,34 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     };
 
     /**
+     * Named subclass of {@link KlighdCanvas} providing outline paint contexts. 
+     */
+    private static final class KlighdOutlineCanvas extends KlighdCanvas {
+
+        public KlighdOutlineCanvas(final Composite parent, final int style) {
+            super(parent, style);
+        }
+
+        @Override
+        protected KlighdPaintContext getPaintContext(final Graphics2D g2) {
+            return KlighdPaintContext.createOutlinePaintContext((KlighdSWTGraphics) g2);
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     public void createControl(final Composite parent) {
         final Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new FillLayout());
         
-        outlineCanvas = new KlighdCanvas(container, SWT.NONE);
+        outlineCanvas = new KlighdOutlineCanvas(container, SWT.NONE);
         outlineCanvas.setVisible(false);
+        
+        // since we don't rely on the picked node in OutlineDragHandler below
+        //  we just set the camera non-pickable in order reduce performance waste
+        outlineCanvas.getCamera().setPickable(false);
+
 
         // add a handler to the outline canvas to allow dragging
         outlineCanvas.addInputEventListener(new KlighdBasicInputEventHandler(new OutlineDragHandler()));
@@ -374,12 +398,17 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     }
 
 
-
     /**
      * A drag handler that allows the user to drag the outline rectangle within the outline view and
-     * propagates the movement to the actual editor part.
+     * propagates the movement to the actual editor part.<br>
+     * <br>
+     * <b>Note:</b> The {@link #outlineCanvas}' camera is set non-pickable in order to reduce
+     * performance waste. However, due to {@link edu.umd.cs.piccolo.PInputManager#processInput()
+     * PInputManager#processInput()} and {@link PCamera#pick(double, double, double)}
+     * <code>event.getPickedNode()</code> is supposed to return the camera, which is absolutely fine :-).
      * 
      * @author uru
+     * @author chsch
      */
     private class OutlineDragHandler extends PDragSequenceEventHandler {
 

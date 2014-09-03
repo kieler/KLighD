@@ -491,12 +491,12 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     private static void layoutDiagram(final IDiagramWorkbenchPart workbenchPart,
-            final IViewer<?> diagramViewer, final ViewContext viewContext,
+            final IViewer diagramViewer, final ViewContext viewContext,
             final Boolean animate, final ZoomStyle zoomStyle, final KNode focusNode,
             final List<ILayoutConfig> options) {
         
         final IDiagramWorkbenchPart thePart;
-        final IViewer<?> theViewer;
+        final IViewer theViewer;
         final ViewContext theViewContext;
 
         if (workbenchPart != null) {

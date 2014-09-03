@@ -21,17 +21,20 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import de.cau.cs.kieler.core.krendering.KRendering;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * A Piccolo node that can align its children along the horizontal and vertical axes using
+ * A Piccolo2D node that can align its children along the horizontal and vertical axes using
  * translation.
  * 
  * @author mri
+ * @author chsch
  */
-public class PAlignmentNode extends KlighdNode implements PropertyChangeListener {
+public class PAlignmentNode extends KlighdNode.KlighdFigureNode<KRendering> implements
+        PropertyChangeListener {
 
     private static final long serialVersionUID = -2514462331029707306L;
 
@@ -80,15 +83,15 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
         if (event.getPropertyName().equals(PROPERTY_BOUNDS)) {
             if (event.getSource() == this) {
                 // adjust aligned children
-                for (PNode alignedChild : alignedChildren) {
-                    AlignmentData data = getAlignmentData(alignedChild);
+                for (final PNode alignedChild : alignedChildren) {
+                    final AlignmentData data = getAlignmentData(alignedChild);
                     updateAlignedChildHorizontal(data, alignedChild);
                     updateAlignedChildVertical(data, alignedChild);
                 }
             } else {
                 // adjust the aligned child
-                PNode alignedChild = (PNode) event.getSource();
-                AlignmentData data = getAlignmentData(alignedChild);
+                final PNode alignedChild = (PNode) event.getSource();
+                final AlignmentData data = getAlignmentData(alignedChild);
                 updateAlignedChildHorizontal(data, alignedChild);
                 updateAlignedChildVertical(data, alignedChild);
             }
@@ -109,7 +112,7 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
         }
 
         // apply the alignment
-        AlignmentData data = getAlignmentData(node);
+        final AlignmentData data = getAlignmentData(node);
         data.halignment = halignment;
         addAlignedChild(node);
         updateAlignedChildHorizontal(data, node);
@@ -129,7 +132,7 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
         }
 
         // apply the alignment
-        AlignmentData data = getAlignmentData(node);
+        final AlignmentData data = getAlignmentData(node);
         data.valignment = valignment;
         addAlignedChild(node);
         updateAlignedChildVertical(data, node);
@@ -140,7 +143,7 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
      */
     @Override
     public PNode removeChild(final int index) {
-        PNode node = getChild(index);
+        final PNode node = getChild(index);
         if (node != null) {
             removeAlignedChild(node);
             return super.removeChild(index);
@@ -153,8 +156,8 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
      */
     @Override
     public void removeAllChildren() {
-        List<PNode> removedNodes = Lists.newLinkedList(alignedChildren);
-        for (PNode alignedChild : removedNodes) {
+        final List<PNode> removedNodes = Lists.newLinkedList(alignedChildren);
+        for (final PNode alignedChild : removedNodes) {
             removeAlignedChild(alignedChild);
         }
         super.removeAllChildren();
@@ -170,11 +173,11 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
      */
     private void updateAlignedChildHorizontal(final AlignmentData alignment, final PNode child) {
         // get the bounds of the alignment node
-        PBounds thisBounds = getBoundsReference();
+        final PBounds thisBounds = getBoundsReference();
         // get the bounds of the aligned child
-        PBounds childBounds = child.getBoundsReference();
+        final PBounds childBounds = child.getBoundsReference();
         // adjust the child translation
-        PAffineTransform transform = child.getTransformReference(true);
+        final PAffineTransform transform = child.getTransformReference(true);
         // horizontal
         switch (alignment.halignment) {
         case LEFT:
@@ -201,11 +204,11 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
      */
     private void updateAlignedChildVertical(final AlignmentData alignment, final PNode child) {
         // get the bounds of the alignment node
-        PBounds thisBounds = getBoundsReference();
+        final PBounds thisBounds = getBoundsReference();
         // get the bounds of the aligned child
-        PBounds childBounds = child.getBoundsReference();
+        final PBounds childBounds = child.getBoundsReference();
         // adjust the child translation
-        PAffineTransform transform = child.getTransformReference(true);
+        final PAffineTransform transform = child.getTransformReference(true);
         // vertical
         switch (alignment.valignment) {
         case TOP:
@@ -255,7 +258,7 @@ public class PAlignmentNode extends KlighdNode implements PropertyChangeListener
      * @return the alignment data
      */
     private AlignmentData getAlignmentData(final PNode node) {
-        Object data = node.getAttribute(ALIGNMENT_DATA_KEY);
+        final Object data = node.getAttribute(ALIGNMENT_DATA_KEY);
         AlignmentData alignmentData;
         if (data == null || !(data instanceof AlignmentData)) {
             alignmentData = new AlignmentData(HAlignment.CENTER, VAlignment.CENTER);

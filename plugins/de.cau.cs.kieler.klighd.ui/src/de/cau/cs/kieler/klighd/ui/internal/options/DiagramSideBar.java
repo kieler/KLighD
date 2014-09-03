@@ -55,6 +55,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
+import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -105,6 +106,9 @@ public final class DiagramSideBar {
     
     private final Composite sideBarParent;
 
+    /** the factory for action controls. */
+    private ActionControlFactory actionControlFactory;
+
     /** the factory for diagram synthesis option controls. */
     private SynthesisOptionControlFactory synthesisOptionControlFactory;
 
@@ -119,6 +123,9 @@ public final class DiagramSideBar {
     
     /** The composite that holds the zoom buttons in the canvas. */
     private Composite canvasZoomBtnsContainer;
+
+    /** The form that holds actions. */
+    private Form actionsForm;
 
     /** The form that holds synthesis options. */
     private Form synthesisOptionsForm;
@@ -269,6 +276,16 @@ public final class DiagramSideBar {
         formRoot.setLayout(new FormLayout());
 
         // create container for diagram synthesis options
+        actionsForm = optionsformToolkit.createForm(formRoot);
+        sideBarControls.add(actionsForm);
+        actionsForm.setText("Actions");
+        actionsForm.setVisible(false);
+        final Composite actionsContainer = actionsForm.getBody();
+        
+        // create the factory for diagram synthesis option controls to fill the options container
+        actionControlFactory = new ActionControlFactory(actionsContainer, optionsformToolkit);
+        
+        // create container for diagram synthesis options
         synthesisOptionsForm = optionsformToolkit.createForm(formRoot);
         sideBarControls.add(synthesisOptionsForm);
         synthesisOptionsForm.setText("Diagram Options");
@@ -319,7 +336,7 @@ public final class DiagramSideBar {
         if (zoomButtonsVisible) {
             final FormData toolbarFormLayoutData = new FormData();
             toolbarFormLayoutData.top = new FormAttachment(1);
-            toolbarFormLayoutData.left = new FormAttachment(sash, 3); // SUPPRESS CHECKSTYLE MagicNumber
+            toolbarFormLayoutData.left = new FormAttachment(sash);
             toolbarFormLayoutData.right = new FormAttachment(FULL);
             sideZoomBtnsForm.setLayoutData(toolbarFormLayoutData);
         }
@@ -332,8 +349,15 @@ public final class DiagramSideBar {
         formRootLayoutData.right = new FormAttachment(FULL); 
         formRootScroller.setLayoutData(formRootLayoutData);
         
+        final FormData acionsFormLayoutData = new FormData();        
+        acionsFormLayoutData.top = new FormAttachment(0);
+        acionsFormLayoutData.left = new FormAttachment(0); 
+        acionsFormLayoutData.right = new FormAttachment(FULL); 
+        actionsForm.setLayoutData(acionsFormLayoutData);
+        
         final FormData synthesisOptionsFormLayoutData = new FormData();        
-        synthesisOptionsFormLayoutData.top = new FormAttachment(0);
+        synthesisOptionsFormLayoutData.top = new FormAttachment(
+                actionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
         synthesisOptionsFormLayoutData.left = new FormAttachment(0); 
         synthesisOptionsFormLayoutData.right = new FormAttachment(FULL); 
         synthesisOptionsForm.setLayoutData(synthesisOptionsFormLayoutData);
@@ -386,6 +410,7 @@ public final class DiagramSideBar {
                 sideBarParent.layout(true, true);
             }
         });
+
         leftArrowLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseUp(final MouseEvent event) {
@@ -396,7 +421,8 @@ public final class DiagramSideBar {
                 arrowLabelContainerLayout.topControl = rightArrowLabel;
                 sideBarParent.layout(true, true);
             }
-        });        
+        });
+
         return this;
     }
 
@@ -413,6 +439,7 @@ public final class DiagramSideBar {
         if (!zoomButtonsVisible) {
             return;
         }
+        
 
         parent.setLayout(new RowLayout());
         final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
@@ -480,6 +507,16 @@ public final class DiagramSideBar {
                 viewContext.getViewer().zoomToLevel(1, KlighdConstants.DEFAULT_ANIMATION_TIME);
             }
         });
+
+        int maxWidth =
+                Math.max(zoomToFitBtn.getBounds().width,
+                        Math.max(zoomToFocusBtn.getBounds().width, zoomToOneBtn.getBounds().width));
+        int maxHeight =
+                Math.max(zoomToFitBtn.getBounds().height,
+                        Math.max(zoomToFocusBtn.getBounds().height, zoomToOneBtn.getBounds().height));
+        zoomToFitBtn.setSize(maxWidth, maxHeight);
+        zoomToFocusBtn.setSize(maxWidth, maxHeight);
+        zoomToOneBtn.setSize(maxWidth, maxHeight);
     }
 
     /**
@@ -506,26 +543,56 @@ public final class DiagramSideBar {
      */
     public void updateOptions(final Composite diagramComposite, final ViewContext theViewContext,
             final boolean fitSpace) {
-        
+
         viewContext = theViewContext;
+
+        // register the actionsControlFactory as selection listener in the current context viewer
+        viewContext.getViewer().getContextViewer().addSelectionChangedListener(actionControlFactory);
 
         if (diagramComposite.isDisposed()) {
             return;
         }
-        
+
+        // remove any option controls that have been created before
+        actionControlFactory.clear();
+
+        boolean actionsAvailable = false;
+
+        for (final DisplayedActionData actionData : viewContext.getDisplayedActions()) {
+            actionControlFactory.createActionControl(actionData, theViewContext);
+            actionsAvailable = true;
+        }
+
         // remove any option controls that have been created before
         synthesisOptionControlFactory.clear();
         
+        boolean synthesisOptionsAvailable = false;
+
+        for (final SynthesisOption option : viewContext.getDisplayedSynthesisOptions()) {
+            if (option.isCheckOption()) {
+                synthesisOptionControlFactory.createCheckOptionControl(option, viewContext);
+                synthesisOptionsAvailable = true;
+            } else if (option.isChoiceOption()) {
+                synthesisOptionControlFactory.createChoiceOptionControl(option, viewContext);
+                synthesisOptionsAvailable = true;
+            } else if (option.isRangeOption()) {
+                synthesisOptionControlFactory.createRangeOptionControl(option, viewContext);
+                synthesisOptionsAvailable = true;
+            } else if (option.isSeparator()) {
+                synthesisOptionControlFactory.createSeparator(option.getName());
+            }
+        }
+        
+        
         // remove any option controls that have been created before
         layoutOptionControlFactory.clear();
+
         // initialize a layout configuration for retrieving default values
         layoutOptionControlFactory.initialize(viewContext);
 
-        final List<Pair<IProperty<?>, List<?>>> recommendedOptions =
-                viewContext.getDisplayedLayoutOptions();
-        
         boolean layoutOptionsAvailable = false;
-        for (final Pair<IProperty<?>, List<?>> pair : recommendedOptions) {
+
+        for (final Pair<IProperty<?>, List<?>> pair : viewContext.getDisplayedLayoutOptions()) {
             final Object first;
             final Object second;
             if (pair.getSecond() instanceof Collection) {
@@ -551,25 +618,8 @@ public final class DiagramSideBar {
             }
         }
         
-        boolean synthesisOptionsAvailable = false;
-
-        for (final SynthesisOption option : viewContext.getDisplayedSynthesisOptions()) {
-            if (option.isCheckOption()) {
-                synthesisOptionControlFactory.createCheckOptionControl(option, viewContext);
-                synthesisOptionsAvailable = true;
-            } else if (option.isChoiceOption()) {
-                synthesisOptionControlFactory.createChoiceOptionControl(option, viewContext);
-                synthesisOptionsAvailable = true;
-            } else if (option.isRangeOption()) {
-                synthesisOptionControlFactory.createRangeOptionControl(option, viewContext);
-                synthesisOptionsAvailable = true;
-            } else if (option.isSeparator()) {
-                synthesisOptionControlFactory.createSeparator(option.getName());
-            }
-        }
-        
-        final boolean sideBarEnabled = this.enableOptionsSideBar(
-                fitSpace, synthesisOptionsAvailable, layoutOptionsAvailable);
+        final boolean sideBarEnabled = this.enableOptionsSideBar(fitSpace,
+                actionsAvailable, synthesisOptionsAvailable, layoutOptionsAvailable);
         
         updateZoomButtons(sideBarEnabled);
 
@@ -677,20 +727,24 @@ public final class DiagramSideBar {
      * options to provide in the side bar.
      * 
      * @param zoomToFit
-     *            {@code true} if the diagram shall fit the available space
+     *            <code>true</code> if the diagram shall fit the available space
+     * @param showActions
+     *            <code>true</code> if the actions group should be displayed.
      * @param showSynthesisOptions
-     *            {@code true} if the synthesis options group should be displayed.
+     *            <code>true</code> if the synthesis options group should be displayed.
      * @param showLayoutOptions
-     *            {@code true} if the layout options group should be displayed.
+     *            <code>true</code> if the layout options group should be displayed.
      */
-    private boolean enableOptionsSideBar(final boolean zoomToFit, final boolean showSynthesisOptions,
-            final boolean showLayoutOptions) {
+    private boolean enableOptionsSideBar(final boolean zoomToFit, final boolean showActions,
+            final boolean showSynthesisOptions, final boolean showLayoutOptions) {
         final boolean enabled;
         
-        if (showSynthesisOptions || showLayoutOptions) {
+        if (showActions || showSynthesisOptions || showLayoutOptions) {
             // define the controls (sash, right arrow, form) to be visible
             for (final Control c : this.sideBarControls) {
-                if (c == synthesisOptionsForm) {
+                if (c == actionsForm) {
+                    c.setVisible(showActions);
+                } else if (c == synthesisOptionsForm) {
                     c.setVisible(showSynthesisOptions);
                 } else if (c == layoutOptionsForm) {
                     c.setVisible(showLayoutOptions);
@@ -699,14 +753,30 @@ public final class DiagramSideBar {
                 }
             }
 
-            if (!showSynthesisOptions) {
-                // in case no diagram synthesis options are available
-                // put the layout options form at the top
-                ((FormData) layoutOptionsForm.getLayoutData()).top = new FormAttachment(0);
-            } else {
-                // restore the initial configuration in case such options are available again
+            if (showSynthesisOptions) {
+                if (showActions) {                
+                    // in case actions and diagram options are available ...
+                    ((FormData) synthesisOptionsForm.getLayoutData()).top =
+                            new FormAttachment(actionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
+                } else {
+                    // in case no actions are available
+                    //  put the diagram options form at the top
+                    ((FormData) synthesisOptionsForm.getLayoutData()).top = new FormAttachment(0);
+                }
+
+                // put the layout options form below the diagram options
                 ((FormData) layoutOptionsForm.getLayoutData()).top =
                         new FormAttachment(synthesisOptionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
+            } else {
+                if (showActions) {                
+                    // in case no diagram options but actions and layout options are available ...
+                    ((FormData) layoutOptionsForm.getLayoutData()).top =
+                            new FormAttachment(actionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
+                } else {
+                    // in case only layout options are available
+                    //  put the layout options form at the top
+                    ((FormData) layoutOptionsForm.getLayoutData()).top = new FormAttachment(0);
+                }
             }
 
             if (this.sashLayoutData != null) {

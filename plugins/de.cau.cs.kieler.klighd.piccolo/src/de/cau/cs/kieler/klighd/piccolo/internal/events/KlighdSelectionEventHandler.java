@@ -22,16 +22,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -54,13 +48,13 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
      * @param theContextViewer
      *            the {@link IViewer} to set the selection on
      */
-    public KlighdSelectionEventHandler(final IViewer<?> theContextViewer) {
+    public KlighdSelectionEventHandler(final IViewer theContextViewer) {
         this.viewer = theContextViewer;
         this.multiSelection =
                 viewer.getViewContext().getProperty(KlighdSynthesisProperties.MULTI_SELECTION);
     }
     
-    private final IViewer<?> viewer;
+    private final IViewer viewer;
     private final boolean multiSelection; 
     private PNode pressedNode = null;
     private Point2D point = null;
@@ -99,9 +93,6 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         //  it shall not be evaluated by other event handlers anymore
         event.setHandled(true);
 
-        final KlighdMainCamera camera = (KlighdMainCamera) event.getTopCamera();
-        final INode diagramClip = camera.getDisplayedINode();
-
         // in order to figure out which of the picked elements are selectable
         //  copy the node stack and reverse the copy
         final List<?> pickStack = Lists.newArrayList((List<?>) event.getPath().getNodeStackReference());
@@ -114,42 +105,21 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
 
         while (it.hasNext()) {
             selectedNode = (PNode) it.next();
-            
-            // get the corresponding view model element, i.e. KText or KGraphElement 
-            if (selectedNode instanceof ITracingElement<?>) {
-                graphElement = ((ITracingElement<?>) selectedNode).getGraphElement();
-            } else {
-                graphElement = null;
-                continue;
-            }
-            
-            // check whether that one is allowed to be selected
-            //  if not, i.e. SUPPRESS_SELECTABILITY is set to true, continue searching
-            
-            final boolean selectable;
-            if (graphElement instanceof KText) {
-                selectable = !((KText) graphElement).getProperty(KlighdProperties.NOT_SELECTABLE);
-                
-            } else if (graphElement instanceof KGraphElement) {
-                final KLayoutData layoutData = ((KGraphElement) graphElement).getData(KLayoutData.class);
-                selectable = !layoutData.getProperty(KlighdProperties.NOT_SELECTABLE);
 
-            } else {
-                selectable = false;
-            }
-            
-            if (selectable || graphElement == diagramClip.getGraphElement()) {
-                // here the diagramClip element is assumed to be always selectable!
+            // get the corresponding view model element, i.e. KText or KGraphElement 
+            if (selectedNode instanceof KlighdNode && ((KlighdNode) selectedNode).isSelectable()) {
+                graphElement = ((KlighdNode) selectedNode).getGraphElement();
                 break;
-            } else if (graphElement instanceof KNode) {
+            } else if (selectedNode instanceof INode) {
                 // in case we found a KNode that is marked to be non-selectable
                 //  (and that is expected to not cover any further KGraphElements)
                 //  stop here in order to keep the previous selection,
                 // otherwise the diagramClip node would be selected,
                 //  which seems to be not intuitive
-                graphElement = null;
+                graphElement = ((INode) selectedNode).isSelectable()
+                        ? ((INode) selectedNode).getGraphElement() : null;
                 break;
-            }
+            }            
         }
 
         if (graphElement == null) {

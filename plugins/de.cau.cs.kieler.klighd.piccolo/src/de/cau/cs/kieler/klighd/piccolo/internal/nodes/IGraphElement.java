@@ -14,17 +14,18 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 
 /**
- * The interface for Piccolo nodes representing a {@code KGraphElement}.
+ * The interface for custom Piccolo2D nodes representing a {@link KGraphElement}.
  * 
  * @author mri, chsch
  * 
  * @param <T>
  *            the type of the graph element
  */
-public interface IGraphElement<T extends KGraphElement> extends ITracingElement<T> {
+public interface IGraphElement<T extends KGraphElement> {
 
     /**
      * Returns the graph element represented by this node.<br>
@@ -56,4 +57,23 @@ public interface IGraphElement<T extends KGraphElement> extends ITracingElement<
      * @return the related rendering controller
      */
     AbstractKGERenderingController<T, ? extends IGraphElement<T>> getRenderingController();
+
+    /**
+     * The interface for Piccolo2D nodes representing a {@link KLabeledGraphElement}.
+     * 
+     * @author mri
+     * @author chsch
+     * 
+     * @param <T> the type of the labeled graph element
+     */
+    public interface ILabeledGraphElement<T extends KLabeledGraphElement> extends IGraphElement<T> {
+
+        /**
+         * Adds the representation of a label to this element.
+         * 
+         * @param label
+         *            the label representation
+         */
+        void addLabel(KLabelNode label);
+    }
 }

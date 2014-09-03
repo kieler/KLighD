@@ -212,6 +212,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="supportsTiling" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

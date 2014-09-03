@@ -14,14 +14,10 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * The Piccolo2D node for representing a {link KPort}.
@@ -29,12 +25,10 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class KPortNode extends KlighdNode implements ILabeledGraphElement<KPort> {
+public class KPortNode extends KlighdNode.KlighdGraphNode<KPort> implements ILabeledGraphElement<KPort> {
 
     private static final long serialVersionUID = 6016725932024647084L;
 
-    /** the represented {@link KPort}. */
-    private transient KPort port;
     /** the port rendering controller deployed to manage the rendering of {@link #port}. */
     private KPortRenderingController renderingController;
 
@@ -45,15 +39,7 @@ public class KPortNode extends KlighdNode implements ILabeledGraphElement<KPort>
      *            the port
      */
     public KPortNode(final KPort port) {
-        super();
-        this.port = port;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public KPort getGraphElement() {
-        return port;
+        super(port);
     }
 
     /**
@@ -64,8 +50,8 @@ public class KPortNode extends KlighdNode implements ILabeledGraphElement<KPort>
         if (controller == null || controller instanceof KPortRenderingController) {
             this.renderingController = (KPortRenderingController) controller;
         } else {
-            String s = "KLighD: Fault occured while building up a concrete KPort rendering: KPortNodes"
-                    + " are supposed to be controlled by KPortRenderingController rather than "
+            final String s = "KLighD: Fault occured while building up a concrete KPort rendering: "
+                    + "KPortNodes are supposed to be controlled by KPortRenderingController rather than "
                     + controller.getClass().getCanonicalName();
             throw new IllegalArgumentException(s);
         }
@@ -100,28 +86,5 @@ public class KPortNode extends KlighdNode implements ILabeledGraphElement<KPort>
             //  so the following is justified
             super.addChild(0, child);
         }
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paint(final PPaintContext paintContext) {
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
-                        KlighdProperties.SEMANTIC_DATA);
-        g2.startGroup(sd);
-        super.paint(paintContext);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintAfterChildren(final PPaintContext paintContext) {
-        super.paintAfterChildren(paintContext);
-        KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        g2.endGroup();
     }
 }

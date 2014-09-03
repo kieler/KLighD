@@ -13,21 +13,20 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.List;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * Abstract diagram exporter providing the common methods
  * {@link #getExportedBounds(KlighdMainCamera, boolean)} and
- * {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds)} to be re-used in
+ * {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, boolean)} to be re-used in
  * concrete implementation of {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporter} and
  * {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}, in order to achieve
  * consistent behavior amongst all those implementations.
@@ -87,9 +86,12 @@ public abstract class AbstractDiagramExporter {
      *            the of the diagram to be exported, required for determining the main clip and the
      *            background coloring; may be <code>null</code>,
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
+     * @param exportSemanticData
+     *            if <code>true</code> semantic data that are attached to the diagram's view model
+     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics}) 
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds) {
+            final KlighdSWTGraphics graphics, final PBounds bounds, final boolean exportSemanticData) {
 
         final PBounds theBounds;
         if (bounds != null) {
@@ -109,7 +111,8 @@ public abstract class AbstractDiagramExporter {
         graphics.setFillColor(KlighdConstants.WHITE);
         graphics.fill(theBounds);
 
-        final PPaintContext paintContext = new PPaintContext((Graphics2D) graphics);
+        final KlighdPaintContext paintContext =
+                KlighdPaintContext.createExportDiagramPaintContext(graphics);
 
         // the following setting contradict the defaults in BatikSVGGraphics
         //  which leads to a blown-up svg file with a huge amount of repeated local style settings

@@ -32,9 +32,9 @@ import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * A Piccolo2D node implementation wrapping a Draw2d figure.
@@ -123,6 +123,7 @@ public class Draw2DNode extends KCustomFigureNode {
      * This implementation adapts the bounds of the draw2d figure and delegates to the super
      * implementation as required.
      */
+    @Override
     public boolean setBounds(final double x, final double y, final double width, final double height) {
         // convert the bounds to integer-based ones by means of the smart method
         //  RectangularShape#getBounds() and store them in the Draw2d Rectangle 'singletonRectDraw2d'
@@ -142,7 +143,7 @@ public class Draw2DNode extends KCustomFigureNode {
      */
     @Override
     public void applyStyles(final Styles styles) {
-        IFigure drawnFigure = (IFigure) figure.getChildren().get(0);
+        final IFigure drawnFigure = (IFigure) figure.getChildren().get(0);
         
         //apply background color
         if (styles.background != null) {
@@ -220,13 +221,13 @@ public class Draw2DNode extends KCustomFigureNode {
      * {@inheritDoc}
      */
     @Override
-    protected void paint(final PPaintContext paintContext) {
+    protected void paint(final KlighdPaintContext kpc) {
         // paintContext.pushClip(getBounds());
-
-        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsEx) paintContext.getGraphics());
+        
+        this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());
         try {
             figure.paint(this.graphics);
-        } catch (Throwable throwable) {
+        } catch (final Throwable throwable) {
             final String msg =
                     "KLighD: Error occurred while drawing the diagram figure "
                             + this.figure.getChildren().get(0).getClass().getName();

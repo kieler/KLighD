@@ -13,14 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
-import java.awt.geom.Point2D;
+import java.awt.geom.AffineTransform;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PNode;
@@ -56,6 +59,9 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
     public void notifyChanged(final Notification notification) {
         super.notifyChanged(notification);
 
+        // this method is supposed to be as fast as possible
+        //  so please excuse its confusing structure ;-)
+        
         switch (notification.getEventType()) {
         case Notification.ADD:
         case Notification.SET:
@@ -72,59 +78,89 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             // uninteresting cases - stop executing here
             return;
         }
-        
+
         final KShapeLayout shL;
         final boolean newLayoutData;
+        final boolean unchanged;
+
         if (notification.getNotifier() instanceof KNode
                 && notification.getNewValue() instanceof KShapeLayout) {
             shL = (KShapeLayout) notification.getNewValue();
             newLayoutData = true;
+            unchanged = false;
 
-        } else if (notification.getNotifier() instanceof KShapeLayout
-                && notification.getNewValue() instanceof Number) {
-            
-            switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
-            case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-            case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-            case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-            case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                break;
-            default:
-                return;
-            }
-            
+        } else if (notification.getNotifier() instanceof KShapeLayout) {
             shL = (KShapeLayout) notification.getNotifier();
             newLayoutData = false;
-            
+
+            final Object newValue = notification.getNewValue();
+
+            if (newValue == KlighdLayoutManager.LAYOUT_DATA_CHANGED_VALUE) {
+                unchanged = false;
+                
+            } else if (newValue == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+                unchanged = true;
+
+            } else if (notification.getFeature() == KGraphPackage.eINSTANCE
+                    .getEMapPropertyHolder_Properties()) {
+                return;
+
+            } else if (newValue instanceof Number) {
+                
+                switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
+                case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
+                case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
+                case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
+                case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
+                    unchanged = false;
+                    break;
+                default:
+                    return;
+                }
+            } else {
+                return;
+            }
+
         } else {
             return;
         }
-        
+
         if (controller.isRecording()) {
-            controller.recordChange(nodeRep, getBounds(shL));
+            if (unchanged) {
+                // if the layout data did not change, provide that information anyway,
+                //  since nodeRep may be invisible and is set visible by updating the layout data
+                controller.recordChange((IGraphElement<?>) nodeRep,
+                        KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE);
+            } else {
+                controller.recordChange((IGraphElement<?>) nodeRep, getBounds(shL));
+            }
             return;
 
         } else {
             if (newLayoutData) {
                 NodeUtil.applyBounds(nodeRep, shL);
 
+            } else if (unchanged) {
+                return;
+
             } else {
-                final Point2D offset = nodeRep.getOffset();
-                
+                final AffineTransform localTransform = nodeRep.getTransformReference(true);
+                final double offsetX = localTransform.getTranslateX();
+                final double offsetY = localTransform.getTranslateY();
+
                 switch (notification.getFeatureID(KShapeLayout.class)) {
                 case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
-                    final double oldX = offset.getX();
                     final double newX = shL.getXpos();
-                    if (newX != oldX) {
-                        nodeRep.setOffset(newX, offset.getY());
+                    if (newX != offsetX) {
+                        nodeRep.setOffset(newX, offsetY);
                     }
                     break;
                 }
                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
-                    final double oldY = offset.getY();
+                    final double oldY = offsetY;
                     final double newY = shL.getYpos();
                     if (newY != oldY) {
-                        nodeRep.setOffset(offset.getX(), newY);
+                        nodeRep.setOffset(offsetX, newY);
                     }
                     break;
                 }
@@ -147,6 +183,8 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 default:
                     break;
                 }
+
+                shL.resetModificationFlag();
             }                
 
             final AbstractKGERenderingController<?, ?> nodeController = NodeUtil.asIGraphElement(

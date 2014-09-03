@@ -13,55 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.test;
 
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.ITracingElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.PRoot;
-import edu.umd.cs.piccolo.util.PAffineTransform;
 
 // CHECKSTYLEOFF Javadoc|MagicNumber
 
-/**
- * 
- * Testing the klighd piccolo interface.
- * 
- * @author ckru
- * 
- */
-public class KlighdTest {
-
-    /**
-     * To test: - PNode structure - all adapters set when adding stuff (expanded/collapsed) -
-     * responsive to layoutdata changes
-     */
 
     /*
      * public void test() {
@@ -89,11 +43,3 @@ public class KlighdTest {
      * }
      */
 
-    
-
-    
-
-    
-
-
-}

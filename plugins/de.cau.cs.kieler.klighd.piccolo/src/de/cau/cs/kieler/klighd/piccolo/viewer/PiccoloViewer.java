@@ -39,6 +39,8 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -54,9 +56,10 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEvent
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdPanEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdShowLensEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMagnificationLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -74,8 +77,29 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * @author mri
  * @author chsch
  */
-public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecorder,
+public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         IDiagramOutlinePage.Provider {
+
+    /** The identifier of this viewer type as specified in the extension. */
+    public static final String ID = "de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer";
+
+    /**
+     * The required corresponding provider class.<br>
+     * <br>
+     * This class is not registered via the corresponding extension point within this bundle, but
+     * employed and registered in 'de.cau.cs.kieler.klighd.test'. Instead
+     * <code>PiccoloViewerUI</code> is contributed via a related {@link IViewerProvider} in
+     * <code>de.cau.cs.kieler.klighd.ui</code>.
+     */
+    public static class Provider implements IViewerProvider {
+
+        /**
+         * {@inheritDoc}
+         */
+        public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
+            return new PiccoloViewer(parentViewer, parent);
+        }
+    }
 
     private static final int VIEW_PORT_CHANGE_NOTIFY_DELAY = 250; // ms
 
@@ -130,7 +154,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         // make sure those handlers properly execute 'event.setHandled(true);'
         //  in order to skip invoking the less priority handlers
         camera.addInputEventListener(new KlighdActionEventHandler(this));
-        camera.addInputEventListener(new KlighdShowLensEventHandler(camera));
+        camera.addInputEventListener(new KlighdMagnificationLensEventHandler(camera));
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
                 new KlighdPanEventHandler(canvas)));
@@ -230,6 +254,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setModel(final KNode model, final boolean sync) {
 
         final boolean edgesFirst =
@@ -677,7 +702,7 @@ public class PiccoloViewer extends AbstractViewer<KNode> implements ILayoutRecor
         camera.animateViewToCenterBounds(newBounds, true, 0);
 
         // set up a new paint context and paint the camera
-        final PPaintContext paintContext = new PPaintContext(g2);
+        final KlighdPaintContext paintContext = KlighdPaintContext.createPrintoutPaintContext(g2);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
         camera.fullPaint(paintContext);
         g2.dispose();

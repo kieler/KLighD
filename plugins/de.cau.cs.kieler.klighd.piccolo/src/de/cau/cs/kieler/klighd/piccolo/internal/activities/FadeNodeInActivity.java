@@ -37,13 +37,21 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
     private float targetScale;
     
     /**
-     * Constructs an activity that immediately applies the bounds to a Piccolo2D node and fades it in
-     * over a duration.
+     * Constructs an activity that immediately applies the bounds to a Piccolo2D node and fades it
+     * in over a duration.
      * 
      * @param node
      *            the Piccolo2D node
      * @param bounds
-     *            the bounds
+     *            the bounds, may be <code>null</code> in case <code>node</code> has already non-empty
+     *            bounds (and the scale factor didn't change); that is required if <code>node</code>
+     *            is set invisible while re-adding to the diagram (see
+     *            {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController#addNode(
+     *            de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode,
+     *            de.cau.cs.kieler.core.kgraph.KNode, boolean) DiagramController#addNode(...)}),
+     *            e.g. after expanding the corresponding parent
+     *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode
+     *            KChildAreaNode}
      * @param scaleFactor
      *            the scale factor to be applied to <code>node</code>
      * @param duration
@@ -66,11 +74,17 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
     @Override
     public void activityStarted() {
         final IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+
         if (gE.getRenderingController() != null) {
             gE.getRenderingController().modifyStyles();
         }
+
         node.setScale(targetScale);
-        NodeUtil.applyBounds(node, targetBounds);
+
+        if (targetBounds != null) {
+            NodeUtil.applyBounds(node, targetBounds);
+        }
+
         node.setTransparency(0);
         node.setVisible(true);
         super.activityStarted();

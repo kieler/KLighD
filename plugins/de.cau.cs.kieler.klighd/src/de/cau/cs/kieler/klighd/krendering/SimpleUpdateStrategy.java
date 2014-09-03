@@ -50,15 +50,23 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
     /**
      * {@inheritDoc}
      */
+    public boolean requiresDiagramSynthesisReRun(final ViewContext viewContext) {
+        return true;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
 
-        List<KNode> newChildren = Lists.newArrayList(newModel.getChildren());
-        List<KGraphData> newData = Lists.newArrayList(newModel.getData());
+        final List<KNode> newChildren = Lists.newArrayList(newModel.getChildren());
+        final List<KGraphData> newData = Lists.newArrayList(newModel.getData());
         newModel.getChildren().clear();
         newModel.getData().clear();
         
         // compose a collection of the baseModel's data that are to be replaced by those of newModel
-        List<KGraphData> obsoleteData =
+        final List<KGraphData> obsoleteData =
                 Lists.newArrayList(Iterables.concat(
                         Iterables.filter(baseModel.getData(), KShapeLayout.class),
                         Iterables.filter(baseModel.getData(), KRendering.class),
