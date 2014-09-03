@@ -150,6 +150,13 @@ public class KlighdPath extends KlighdNode implements IResourceEmployer {
         invalidatePaint();
     }
     
+    /**
+     * Gets the underlying shape of this {@link KlighdPath}.
+     * @return the underlying shape
+     */
+    public Shape getShape() {
+        return shape;
+    }
 
     /**
      * Returns the points of the shape.
@@ -412,7 +419,13 @@ public class KlighdPath extends KlighdNode implements IResourceEmployer {
         this.shadowExtendY = yOffset;
     }
    
-
+    /**
+     * Gets the shadow color for this path.
+     * @return the current shadow
+     */
+    public RGB getShadow() {
+        return this.shadow;
+    }
 
     /* ---------------------- */
     /*  bounds related stuff  */
