@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.KeyEvent;
@@ -24,6 +23,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TypedEvent;
 
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerEx.IKlighdInputEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 
@@ -36,7 +36,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  */
 public class KlighdKeyEventListener implements KeyListener {
 
-    static final boolean OS_MACOSX = Platform.getOS().equals(Platform.OS_MACOSX);
+    static final boolean OS_MACOSX = KlighdPlugin.IS_MACOSX;
 
     private KlighdCanvas canvas = null;
     
