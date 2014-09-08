@@ -14,7 +14,6 @@ package de.cau.cs.kieler.klighd.ui.printing.actions;
 import org.eclipse.jface.action.Action;
 
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.preview.PrintPreviewHelper;
 
 /**
  * This is the action for print preview. It opens a dialog showing how the diagram will look when

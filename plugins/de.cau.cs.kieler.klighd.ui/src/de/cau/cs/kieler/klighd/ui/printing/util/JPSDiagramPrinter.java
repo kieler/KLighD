@@ -60,10 +60,10 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.internal.PageData;
+import de.cau.cs.kieler.klighd.ui.printing.internal.PageData.PageMargins;
 import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
 
 /**
@@ -128,7 +128,7 @@ public class JPSDiagramPrinter extends DiagramPrinter implements java.awt.print.
         Shell shell = new Shell();
         try {
             while (it.hasNext()) {
-                IViewer diagram = it.next();
+                PiccoloViewer diagram = it.next();
                 DiagramEditor openedDiagramEditor =
                         DiagramEditorUtil.findOpenedDiagramEditorForID(ViewUtil.getIdStr(diagram));
                 DiagramEditPart dgrmEP =

@@ -24,11 +24,7 @@ import java.beans.PropertyChangeSupport;
 abstract class PrintModelElement {
     protected final PropertyChangeSupport bean = new PropertyChangeSupport(this);
 
-    public PrintModelElement() {
-        super();
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    public void addPropertyChangGeListener(PropertyChangeListener listener) {
         bean.addPropertyChangeListener(listener);
     }
 

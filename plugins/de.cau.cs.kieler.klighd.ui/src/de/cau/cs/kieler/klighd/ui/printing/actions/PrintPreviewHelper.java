@@ -9,7 +9,7 @@
  *    IBM Corporation - initial API and implementation 
  ****************************************************************************/
 
-package de.cau.cs.kieler.klighd.ui.printing.preview;
+package de.cau.cs.kieler.klighd.ui.printing.actions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,6 @@ import org.eclipse.ui.PlatformUI;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import de.cau.cs.kieler.klighd.ui.printing.actions.PrintActionHelper;
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingPluginImages;
 import de.cau.cs.kieler.klighd.ui.printing.internal.PageData.PageMargins;
@@ -142,15 +141,15 @@ public class PrintPreviewHelper {
     protected void initializeToolbarImages() {
         printImage = DiagramUIPrintingPluginImages.DESC_PRINT.createImage();
         disabledPrintImage = DiagramUIPrintingPluginImages.DESC_PRINT_DISABLED.createImage();
-        pageImage = DiagramUIPrintingPluginImages.DESC_PAGE.createImage();
-        leftImage = DiagramUIPrintingPluginImages.DESC_LEFT.createImage();
-        disabledLeftImage = DiagramUIPrintingPluginImages.DESC_LEFT_DISABLED.createImage();
-        rightImage = DiagramUIPrintingPluginImages.DESC_RIGHT.createImage();
-        disabledRightImage = DiagramUIPrintingPluginImages.DESC_RIGHT_DISABLED.createImage();
-        upImage = DiagramUIPrintingPluginImages.DESC_UP.createImage();
-        disabledUpImage = DiagramUIPrintingPluginImages.DESC_UP_DISABLED.createImage();
-        downImage = DiagramUIPrintingPluginImages.DESC_DOWN.createImage();
-        disabledDownImage = DiagramUIPrintingPluginImages.DESC_DOWN_DISABLED.createImage();
+//        pageImage = DiagramUIPrintingPluginImages.DESC_PAGE.createImage();
+//        leftImage = DiagramUIPrintingPluginImages.DESC_LEFT.createImage();
+//        disabledLeftImage = DiagramUIPrintingPluginImages.DESC_LEFT_DISABLED.createImage();
+//        rightImage = DiagramUIPrintingPluginImages.DESC_RIGHT.createImage();
+//        disabledRightImage = DiagramUIPrintingPluginImages.DESC_RIGHT_DISABLED.createImage();
+//        upImage = DiagramUIPrintingPluginImages.DESC_UP.createImage();
+//        disabledUpImage = DiagramUIPrintingPluginImages.DESC_UP_DISABLED.createImage();
+//        downImage = DiagramUIPrintingPluginImages.DESC_DOWN.createImage();
+//        disabledDownImage = DiagramUIPrintingPluginImages.DESC_DOWN_DISABLED.createImage();
         closeImage = DiagramUIPrintingPluginImages.DESC_CLOSE.createImage();
     }
 
@@ -190,13 +189,13 @@ public class PrintPreviewHelper {
 
         Display display = PlatformUI.getWorkbench().getDisplay();
 
-        // check for rtl Torientation...
-        int style = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getStyle();
-        if ((style & SWT.MIRRORED) != 0) {
-            shell =
-                    new Shell(display, SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.BORDER
-                            | SWT.RIGHT_TO_LEFT);
-        } else
+//        // check for rtl Torientation...
+//        int style = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getStyle();
+//        if ((style & SWT.MIRRORED) != 0) {
+//            shell =
+//                    new Shell(display, SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.BORDER
+//                            | SWT.RIGHT_TO_LEFT);
+//        } else
             shell = new Shell(display, SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.BORDER);
 
         shell.setSize(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getSize());
@@ -242,7 +241,7 @@ public class PrintPreviewHelper {
             }
         });
 
-        if (printActionHelper == null || !enablePrinting) {
+        if (printActionHelper == null) {
             printButton.setEnabled(false);
             printButton.setImage(disabledPrintImage);
         }
@@ -566,7 +565,7 @@ public class PrintPreviewHelper {
         composite = new Composite(body, SWT.NULL);
         composite.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 
-        refreshComposite();
+        updateComposite();
 
         shell.open();
         while (!shell.isDisposed()) {
@@ -771,16 +770,6 @@ public class PrintPreviewHelper {
     }
 
     /**
-     * A convenience method for refreshing the displayed image in the preview.
-     */
-    private void refreshComposite() {
-
-        updateComposite();
-
-        updateLeftRightUpDownButtonsForToolbar();
-    }
-
-    /**
      * Draw the composite centered on the body based on the number of columns. Also calls the method
      * to make the images and insert them into the composite.
      * 
@@ -827,7 +816,7 @@ public class PrintPreviewHelper {
         MediaSize size = MediaSize.getMediaSizeForName(MediaSizeName.ISO_A4);
 
         // width / height
-        float printerRatio = size.getX(MediaSize.MM) / size.getY(MediaSize.MM);
+        float printerRatio = size.getY(MediaSize.MM) / size.getX(MediaSize.MM);
 
         if (imageHeight * printerRatio < imageWidth) {
             // round down
@@ -883,36 +872,6 @@ public class PrintPreviewHelper {
         compositeBounds.y =
                 (shell.getSize().y - buttonBarHeight - BORDER_SIZE - BORDER_SIZE - BORDER_SIZE - compositeBounds.height) / 2;
         composite.setBounds(compositeBounds);
-    }
-
-    /**
-     * Update the enabled and disabled states for the toolbar
-     */
-    protected void updateLeftRightUpDownButtonsForToolbar() {
-//        if (userX == 0) {
-//            leftTool.setEnabled(false);
-//        } else {
-//            leftTool.setEnabled(true);
-//        }
-//
-//        // should be (user + 1) + (display - 1), the +1 and -1 can be taken out
-//        if (userX + numberOfColumnsToDisplay + 1 > getTotalNumberOfColumns()) {
-//            rightTool.setEnabled(false);
-//        } else {
-//            rightTool.setEnabled(true);
-//        }
-//
-//        if (userY == 0) {
-//            upTool.setEnabled(false);
-//        } else {
-//            upTool.setEnabled(true);
-//        }
-//
-//        if (userY + numberOfRowsToDisplay + 1 > getTotalNumberOfRows()) {
-//            downTool.setEnabled(false);
-//        } else {
-//            downTool.setEnabled(true);
-//        }
     }
 
     /**

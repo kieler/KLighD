@@ -17,11 +17,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
+import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.util.JPSDiagramPrinter;
 import de.cau.cs.kieler.klighd.ui.printing.util.JPSDiagramPrinterHelper;
 
@@ -54,6 +57,12 @@ public class PrintActionHelper {
         } else {
             throw new IllegalArgumentException("Invalid IWorkbenchPart.");
         }
+        
+
+        // receive the preference store
+        IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
+        
+        PrintOptions options = new PrintOptions(preferenceStore);
 
 //        IDiagramGraphicalViewer viewer = diagramPart.getDiagramGraphicalViewer(); 
 //        RootEditPart rootEP = (viewer == null)?  null : viewer.getRootEditPart();

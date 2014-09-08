@@ -19,9 +19,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.klighd.ui.printing.actions.PrintActionHelper;
+import de.cau.cs.kieler.klighd.ui.printing.actions.PrintPreviewHelper;
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
-import de.cau.cs.kieler.klighd.ui.printing.preview.PrintPreviewHelper;
 
 /**
  * A section of the JPS print dialog that handles extra actions. In this case, we contribute print

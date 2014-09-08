@@ -13,6 +13,8 @@ package de.cau.cs.kieler.klighd.ui.printing.options;
 
 import java.util.List;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+
 /**
  * This class is used as part of the infrastructure required for data-bindings used with the JPS
  * dialog.
@@ -23,7 +25,6 @@ import java.util.List;
 public class PrintOptions extends PrintModelElement {
     public static String PROPERTY_DESTINATION = "destination"; //$NON-NLS-1$
 
-//    public static String PROPERTY_PERCENT_SCALING = "percentScaling"; //$NON-NLS-1$
     public static String PROPERTY_SCALE_FACTOR = "scaleFactor"; //$NON-NLS-1$
     public static String PROPERTY_FIT_TO_WIDTH = "fitToPagesWidth"; //$NON-NLS-1$
     public static String PROPERTY_FIT_TO_HEIGHT = "fitToPagesHeight"; //$NON-NLS-1$
@@ -52,7 +53,6 @@ public class PrintOptions extends PrintModelElement {
 
     private PrintDestination destination;
 
-//    private boolean percentScaling;
     private int scaleFactor;
     private int fitToPagesWidth;
     private int fitToPagesHeight;
@@ -88,6 +88,27 @@ public class PrintOptions extends PrintModelElement {
         scaleFactor = 100;
         fitToPagesHeight = 1;
         fitToPagesWidth = 1;
+
+        setAllPages(true);
+        setRangeFrom(1);
+        setRangeTo(1);
+
+        setCopies(1);
+        setCollate(false);
+
+        setQualityHigh(true);
+        setSideOneSided(true);
+        setChromaticityColor(true);
+
+        setDiagramCurrent(true);
+    }
+
+    /**
+     * @param preferenceStore
+     */
+    public PrintOptions(IPreferenceStore preferenceStore) {
+        this();
+        
     }
 
     public PrintDestination getDestination() {
@@ -192,30 +213,30 @@ public class PrintOptions extends PrintModelElement {
         return scaleFactor;
     }
 
-    public boolean setScaleFactor(int scaleFactor) {
-        if (scaleFactor > 0 && scaleFactor <= 100) {
+    public void setScaleFactor(int scaleFactor) {
+//        if (scaleFactor > 0 && scaleFactor <= 100) {
             int oldFactor = this.scaleFactor;
             this.scaleFactor = scaleFactor;
             firePropertyChange(PROPERTY_SCALE_FACTOR, oldFactor, scaleFactor);
-            return true;
-        } else {
-            return false;
-        }
+//            return true;
+//        } else {
+//            return false;
+//        }
     }
 
     public int getFitToPagesWidth() {
         return fitToPagesWidth;
     }
 
-    public boolean setFitToPagesWidth(int fitToPagesWidth) {
-        if (fitToPagesWidth > 0) {
+    public void setFitToPagesWidth(int fitToPagesWidth) {
+//        if (fitToPagesWidth > 0) {
             int oldWidth = this.fitToPagesWidth;
             this.fitToPagesWidth = fitToPagesWidth;
             firePropertyChange(PROPERTY_FIT_TO_WIDTH, oldWidth, fitToPagesWidth);
-            return true;
-        } else {
-            return false;
-        }
+//            return true;
+//        } else {
+//            return false;
+//        }
     }
 
     public int getFitToPagesHeight() {
