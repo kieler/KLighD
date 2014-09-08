@@ -59,16 +59,18 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /** property denoting pre-definition of diagram {@link SynthesisOption} values. */
     public static final IProperty<Map<SynthesisOption, Object>> SYNTHESIS_OPTION_CONFIG =
             new Property<Map<SynthesisOption, Object>>("klighd.synthesisOptionConfig");
-    
+
     /** property denoting a desired zoom buttons handling. */
     public static final IProperty<ZoomConfigButtonsHandling> REQUESTED_ZOOM_CONFIG_BUTTONS_HANDLING =
             new Property<ZoomConfigButtonsHandling>("klighd.zoomConfigButtonsHandling",
                     ZoomConfigButtonsHandling.UNDEFINED);
 
-    /** property denoting whether to suppress the automatic size estimation of KNodes. */
+    /** property denoting whether to suppress the automatic size estimation of
+     * {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} and
+     * {@link de.cau.cs.kieler.core.kgraph.KLabel KLabels}. */
     public static final IProperty<Boolean> SUPPRESS_SIZE_ESTIMATION = new Property<Boolean>(
             "klighd.suppressSizeEstimation", false);
-    
+
     /**
      * Defines the possible diagram side bar initialization options. 
      */
@@ -92,7 +94,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         /** The visibility of the zoom buttons is set according to the related preference setting. */
         UNDEFINED
     }
-    
+
     /**
      * Immutable singleton instance of {@link KlighdSynthesisProperties}.  
      */
@@ -242,6 +244,17 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      */
     public KlighdSynthesisProperties suppressMultiSelection() {
         this.setProperty(MULTI_SELECTION, false);
+        return this;
+    }
+
+    /**
+     * Configures the diagram viewer's support for automatically computing the minimal size of
+     * diagram nodes (especially non-compound ones) and .
+     * 
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties suppressNodeAndLabelSizeEstimation() {
+        this.setProperty(SUPPRESS_SIZE_ESTIMATION, true);
         return this;
     }
 
