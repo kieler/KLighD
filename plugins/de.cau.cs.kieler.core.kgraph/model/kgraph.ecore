@@ -160,13 +160,16 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IPropertyHolder" instanceClassName="de.cau.cs.kieler.core.properties.IPropertyHolder"
       abstract="true" interface="true">
-    <eOperations name="setProperty">
+    <eOperations name="setProperty" eType="#//IPropertyHolder">
+      <eTypeParameters name="T"/>
       <eParameters name="property" lowerBound="1">
         <eGenericType eClassifier="#//IProperty">
-          <eTypeArguments/>
+          <eTypeArguments eTypeParameter="#//IPropertyHolder/setProperty/T"/>
         </eGenericType>
       </eParameters>
-      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value">
+        <eGenericType eTypeParameter="#//IPropertyHolder/setProperty/T"/>
+      </eParameters>
     </eOperations>
     <eOperations name="getProperty">
       <eGenericType eTypeParameter="#//IPropertyHolder/getProperty/T"/>
@@ -177,7 +180,7 @@
         </eGenericType>
       </eParameters>
     </eOperations>
-    <eOperations name="copyProperties">
+    <eOperations name="copyProperties" eType="#//IPropertyHolder">
       <eParameters name="holder" lowerBound="1" eType="#//IPropertyHolder"/>
     </eOperations>
     <eOperations name="getAllProperties" lowerBound="1">

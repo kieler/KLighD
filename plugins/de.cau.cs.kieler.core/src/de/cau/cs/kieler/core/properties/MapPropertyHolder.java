@@ -36,7 +36,7 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
     /**
      * {@inheritDoc}
      */
-    public <T> void setProperty(final IProperty<? super T> property, final T value) {
+    public <T> MapPropertyHolder setProperty(final IProperty<? super T> property, final T value) {
         if (propertyMap == null) {
             propertyMap = new HashMap<IProperty<?>, Object>();
         }
@@ -45,6 +45,8 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
         } else {
             propertyMap.put(property, value);
         }
+        
+        return this;
     }
     
     /**
@@ -70,11 +72,12 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
     /**
      * {@inheritDoc}
      */
-    public void copyProperties(final IPropertyHolder other) {
+    public MapPropertyHolder copyProperties(final IPropertyHolder other) {
         if (other == null) {
-            return;
+            return this;
         }
-        Map<IProperty<?>, Object> otherMap = other.getAllProperties();
+
+        final Map<IProperty<?>, Object> otherMap = other.getAllProperties();
         if (!otherMap.isEmpty()) {
             if (this.propertyMap == null) {
                 propertyMap = new HashMap<IProperty<?>, Object>(otherMap);
@@ -82,6 +85,8 @@ public class MapPropertyHolder implements IPropertyHolder, Serializable {
                 this.propertyMap.putAll(otherMap);
             }
         }
+
+        return this;
     }
     
     /**

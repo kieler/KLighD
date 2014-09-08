@@ -99,16 +99,16 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
                 "KLighD: Empty KlighdSynthesisProperties config must not be changed.";
         
         @Override
-        public <T> void setProperty(final IProperty<? super T> property, final T value) {
+        public <T> MapPropertyHolder setProperty(final IProperty<? super T> property, final T value) {
             throw new UnsupportedOperationException(msg);
         }
         
         @Override
-        public void copyProperties(final IPropertyHolder other) {
+        public MapPropertyHolder copyProperties(final IPropertyHolder other) {
             throw new UnsupportedOperationException(msg);
         }
     };
-    
+
     /**
      * Factory method.
      * 

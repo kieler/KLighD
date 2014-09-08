@@ -31,8 +31,9 @@ public interface IPropertyHolder {
      * @param <T> type of property
      * @param property the property to set
      * @param value the new value
+     * @return <code>this</code> {@link IPropertyHolder} for convenience
      */
-    <T> void setProperty(IProperty<? super T> property, T value);
+    <T> IPropertyHolder setProperty(IProperty<? super T> property, T value);
     
     /**
      * Retrieves a property value. If the property is not set, its default value shall be taken,
@@ -48,8 +49,9 @@ public interface IPropertyHolder {
      * Copy all properties from another property holder to this one.
      * 
      * @param holder another property holder
+     * @return <code>this</code> {@link IPropertyHolder} for convenience
      */
-    void copyProperties(IPropertyHolder holder);
+    IPropertyHolder copyProperties(IPropertyHolder holder);
     
     /**
      * Returns a map of all assigned properties with associated values.
