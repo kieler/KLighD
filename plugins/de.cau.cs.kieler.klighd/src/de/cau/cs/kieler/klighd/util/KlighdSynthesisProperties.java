@@ -105,7 +105,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
                 "KLighD: Empty KlighdSynthesisProperties config must not be changed.";
         
         @Override
-        public <T> MapPropertyHolder setProperty(final IProperty<? super T> property, final T value) {
+        public <T> KlighdSynthesisProperties setProperty(final IProperty<? super T> property, final T value) {
             throw new UnsupportedOperationException(msg);
         }
         
@@ -162,9 +162,23 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
             return sp;
         }
     }
-    
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * @return <code>this</code> {@link KlighdSynthesisProperties} instance for convenience
+     */
+    @Override
+    public <T> KlighdSynthesisProperties setProperty(final IProperty<? super T> property,
+            final T value) {
+        super.setProperty(property, value);
+        return this;
+    }
+
     /**
      * Sets a property value and returns <code>this</code> {@link IPropertyHolder} for convenience.
+     * 
+     * @deprecated use {@link #setProperty(IProperty, Object)}
      * 
      * @param <T> type of property
      * @param property the property to set
