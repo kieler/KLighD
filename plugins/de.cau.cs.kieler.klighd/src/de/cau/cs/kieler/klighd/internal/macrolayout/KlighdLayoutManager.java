@@ -65,6 +65,7 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
@@ -179,7 +180,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         }
 
         // create the mapping
-        final LayoutMapping<KGraphElement> mapping = buildLayoutGraph(graph);
+        final LayoutMapping<KGraphElement> mapping =
+                buildLayoutGraph(graph,
+                        !viewContext.getProperty(KlighdSynthesisProperties.SUPPRESS_SIZE_ESTIMATION));
         mapping.setProperty(EclipseLayoutConfig.ACTIVATION, false);
         if (viewContext != null) {
             mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
@@ -201,9 +204,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      * 
      * @param graph
      *            the graph to build the layout graph from
+     * @param performSizeEstimation
+     *            whether the size of nodes & labels should be automatically estimated.
      * @return the layout graph mapping
      */
-    public LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph) {
+    public LayoutMapping<KGraphElement> buildLayoutGraph(final KNode graph,
+            final boolean performSizeEstimation) {
         final LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>();
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
         
@@ -221,9 +227,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         mapping.setLayoutGraph(layoutGraph);
 
         // traverse the children of the layout root
-        processNodes(mapping, graph, layoutGraph);
+        processNodes(mapping, graph, layoutGraph, performSizeEstimation);
         // transform all connections in the selected area
-        processConnections(mapping);
+        processConnections(mapping, performSizeEstimation);
 
         return mapping;
     }
@@ -245,15 +251,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the parent node
      * @param layoutParent
      *            the layout parent node
+     * @param suppressSizeEstimation
+     *            whether the size of nodes & labels should be automatically estimated.
      */
     private void processNodes(final LayoutMapping<KGraphElement> mapping,
-            final KNode parent, final KNode layoutParent) {
+            final KNode parent, final KNode layoutParent, final boolean suppressSizeEstimation) {
         // iterate through the parent's active children and put copies in the layout graph;
         //  a child is active if it contains RenderingContextData and the 'true' value wrt.
         //  the property KlighdConstants.ACTIVE, see the predicate definition above
         // furthermore, all nodes that have the LAYOUT_IGNORE property set are ignored
         for (final KNode node : Iterables.filter(parent.getChildren(), NODE_FILTER)) {
-            createNode(mapping, node, layoutParent);
+            createNode(mapping, node, layoutParent, suppressSizeEstimation);
         }
     }
     
@@ -273,9 +281,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the node
      * @param layoutParent
      *            the layout parent node
+     * @param performSizeEstimation
+     *            whether the size of the node, its labels, and its attached ports' and edges'
+     *            labels should be automatically estimated.
      */
     private void createNode(final LayoutMapping<KGraphElement> mapping, final KNode node,
-            final KNode layoutParent) {        
+            final KNode layoutParent, final boolean performSizeEstimation) {
         final KNode layoutNode = KimlUtil.createInitializedNode();
         // set the node layout
         // initialize with defaultLayout and try to get specific layout attached to the node
@@ -286,7 +297,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 KlighdInternalProperties.POPULATED)
                 && Iterables.any(node.getChildren(), RenderingContextData.IS_ACTIVE);
 
-        Bounds size = null;
+        final Bounds size;
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
@@ -323,7 +334,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             if (rootRendering != null) {
                 
                 // ... calculate the minimal required size based on the determined 'minSize' bounds
-                size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+                if (performSizeEstimation) {
+                    size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+                } else {
+                    size = minSize;
+                }
 
                 // integrate the minimal estimated node size
                 //  in case of a compound node, the minimal node size to be preserved by KIML must be
@@ -336,7 +351,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     // in case of non-compound nodes the node size is usually taken from the layoutLayout
                     layoutLayout.setSize(size.getWidth(), size.getHeight());
                 }
+
+            } else {
+                size = minSize;
             }
+
+        } else {
+            size = null;
         }
         
         // set insets if available
@@ -348,17 +369,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // process ports
         for (final KPort port : Iterables.filter(node.getPorts(), RenderingContextData.IS_ACTIVE)) {
-            createPort(mapping, port, layoutNode);
+            createPort(mapping, port, layoutNode, performSizeEstimation);
         }
 
         // process labels
         for (final KLabel label : Iterables.filter(node.getLabels(), RenderingContextData.IS_ACTIVE)) {
-            createLabel(mapping, label, layoutNode);
+            createLabel(mapping, label, layoutNode, performSizeEstimation);
         }
 
         // process the child as new parent
         if (isCompoundNode) {
-            processNodes(mapping, node, layoutNode);
+            processNodes(mapping, node, layoutNode, performSizeEstimation);
         }
 
         // store all the edges to process them later
@@ -376,9 +397,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the port
      * @param layoutNode
      *            the layout node
-     */
+     * @param estimateLabelSizes
+     *            if <code>true</code> the minimal sizes of the attached {@link KLabel KLabels} will
+     *            be estimated     */
     private void createPort(final LayoutMapping<KGraphElement> mapping, final KPort port,
-            final KNode layoutNode) {
+            final KNode layoutNode, final boolean estimateLabelSizes) {
         final KPort layoutPort = KimlUtil.createInitializedPort();
 
         // set the port layout
@@ -393,7 +416,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // process labels
         for (final KLabel label : port.getLabels()) {
-            createLabel(mapping, label, layoutPort);
+            createLabel(mapping, label, layoutPort, estimateLabelSizes);
         }
     }
 
@@ -402,8 +425,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      * 
      * @param mapping
      *            the layout mapping
+     * @param estimateLabelSizes
+     *            if <code>true</code> the minimal sizes of the attached {@link KLabel KLabels} will
+     *            be estimated
      */
-    private void processConnections(final LayoutMapping<KGraphElement> mapping) {
+    private void processConnections(final LayoutMapping<KGraphElement> mapping,
+            final boolean estimateLabelSizes) {
         final BiMap<KGraphElement, KGraphElement> graphMap = mapping.getGraphMap().inverse();
 
         // iterate through the list of collected edges
@@ -434,7 +461,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             }
             if (layoutSource != null && layoutTarget != null) {
                 createEdge(mapping, edge, layoutSource, layoutTarget, layoutSourcePort,
-                        layoutTargetPort);
+                        layoutTargetPort, estimateLabelSizes);
             }
         }
     }
@@ -451,10 +478,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the layout source node
      * @param layoutTarget
      *            the layout target node
+     * @param estimateLabelSizes
+     *            if <code>true</code> the minimal sizes of the attached {@link KLabel KLabels} will
+     *            be estimated
      */
     private void createEdge(final LayoutMapping<KGraphElement> mapping, final KEdge edge,
             final KNode layoutSource, final KNode layoutTarget, final KPort layoutSourcePort,
-            final KPort layoutTargetPort) {
+            final KPort layoutTargetPort, final boolean estimateLabelSizes) {
         final KEdge layoutEdge = KimlUtil.createInitializedEdge();
 
         // set the edge layout
@@ -487,7 +517,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // process labels
         for (final KLabel label : Iterables.filter(edge.getLabels(), RenderingContextData.IS_ACTIVE)) {
-            createLabel(mapping, label, layoutEdge);
+            createLabel(mapping, label, layoutEdge, estimateLabelSizes);
         }
     }
 
@@ -500,9 +530,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the label
      * @param layoutLabeledElement
      *            the labeled layout element
+     * @param estimateSize
+     *            if <code>true</code> the minimal size of the {@link KLabel} will be estimated
      */
     private void createLabel(final LayoutMapping<KGraphElement> mapping, final KLabel label,
-            final KLabeledGraphElement layoutLabeledElement) {
+            final KLabeledGraphElement layoutLabeledElement, final boolean estimateSize) {
         final KLabel layoutLabel = KimlUtil.createInitializedLabel(layoutLabeledElement);
 
         // set the label layout
@@ -517,7 +549,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             // (through the listeners)
             final KRendering rootRendering = label.getData(KRendering.class);
 
-            if (rootRendering != null) {
+            if (estimateSize && rootRendering != null) {
                 // calculate the minimal size need for the rendering ...
                 final Bounds minSize = PlacementUtil.estimateTextSize(label);
 

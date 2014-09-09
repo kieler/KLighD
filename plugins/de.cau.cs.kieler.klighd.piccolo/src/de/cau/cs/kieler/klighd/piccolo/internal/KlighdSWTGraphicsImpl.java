@@ -62,6 +62,7 @@ import org.eclipse.swt.widgets.Display;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -88,8 +89,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     /** An internal SWT {@link Rectangle} used for clip handling computations. */
     protected Transform swtTransform;
 
-    /** The bit position of {@link GC#DRAW_OFFSET} required for avoiding Eclipse bug 335769. */
-    private static final int DRAW_OFFSET_BIT = 9;
+    // SUPPRESS CHECKSTYLE NEXT 2 MagicNumber
+    /** The bit position of {@link GC#DRAW_OFFSET} required for avoiding Eclipse bugs 335769 & 253670.*/
+    private static final int DRAW_OFFSET_BIT = KlighdPlugin.IS_WINDOWS ? 14 : 9;
     
     /** A {@link TextLayout} used to draw styled texts (e.g. those with underline and/or strikeout). */
     protected TextLayout textLayout;
@@ -1161,10 +1163,10 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     
     // CHECKSTYLEOFF Javadoc
     // unsupported for the SWT graphics
-    public void addSemanticData(KlighdSemanticDiagramData semanticData) {
+    public void addSemanticData(final KlighdSemanticDiagramData semanticData) {
     }
 
-    public void startGroup(KlighdSemanticDiagramData semanticData) {
+    public void startGroup(final KlighdSemanticDiagramData semanticData) {
     }
 
     public void endGroup() {
