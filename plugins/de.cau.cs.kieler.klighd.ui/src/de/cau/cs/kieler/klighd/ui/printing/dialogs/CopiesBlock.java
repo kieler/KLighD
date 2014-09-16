@@ -14,6 +14,9 @@ package de.cau.cs.kieler.klighd.ui.printing.dialogs;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,6 +45,8 @@ class CopiesBlock extends DialogBlock {
 
     private final Image collateOnImage = DiagramUIPrintingPluginImages.COLLATE_ON.createImage();
     private final Image collateOffImage = DiagramUIPrintingPluginImages.COLLATE_OFF.createImage();
+    private IObservableValue collateObservable;
+    private IValueChangeListener listener;
 
     CopiesBlock(IDialogUnitConverter dluConverter, DataBindingContext bindings, PrintOptions options) {
         super(dluConverter);
@@ -77,24 +82,22 @@ class CopiesBlock extends DialogBlock {
 
         Button collateCheck = check(result, DiagramUIPrintingMessages.JPSPrintDialog_Collate);
 
+        collateObservable = BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
         bindings.bindValue(SWTObservables.observeSelection(collateCheck),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE), null,
+                collateObservable, null,
                 null);
-
-        collateCheck.addSelectionListener(new SelectionListener() {
-
-            public void widgetDefaultSelected(SelectionEvent arg0) {
-                // do nothing
-            }
-
-            public void widgetSelected(SelectionEvent arg0) {
+        
+        listener = new IValueChangeListener() {
+            
+            public void handleValueChange(ValueChangeEvent event) {
                 if (options.isCollate()) {
                     collateImageButton.setImage(collateOnImage);
                 } else {
                     collateImageButton.setImage(collateOffImage);
                 }
             }
-        });
+        };
+        collateObservable.addValueChangeListener(listener);
 
         return result;
     }
@@ -103,6 +106,7 @@ class CopiesBlock extends DialogBlock {
      * Dispose of images.
      */
     public void dispose() {
+        collateObservable.removeValueChangeListener(listener);
         collateOnImage.dispose();
         collateOffImage.dispose();
     }

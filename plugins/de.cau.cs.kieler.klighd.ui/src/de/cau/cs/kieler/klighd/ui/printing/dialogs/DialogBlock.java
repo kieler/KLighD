@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
@@ -35,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
  * @author James Bruck (jbruck)
  */
 abstract class DialogBlock {
-    private final IDialogUnitConverter dluConverter;
+    protected final IDialogUnitConverter dluConverter;
 
     DialogBlock(IDialogUnitConverter dluConverter) {
         this.dluConverter = dluConverter;
@@ -251,7 +250,7 @@ abstract class DialogBlock {
 
     public abstract Control createContents(Composite parent);
 
-    public abstract void dispose();
+    public void dispose(){};
 
     public static interface IDialogUnitConverter {
         int convertHorizontalDLUsToPixels(int dlus);

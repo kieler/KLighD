@@ -19,12 +19,16 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.printing.PrintDialog;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
+import de.cau.cs.kieler.klighd.ui.printing.util.PrintExporter;
 
 /**
  * A dialog that supports platform independent printing based on the Java Printing Service API.
@@ -38,13 +42,10 @@ public class JPSPrintDialog extends TrayDialog {
     private final PrintOptions options;
 
     protected PrinterBlock printerBlock;
-    protected DiagramPrintRangeBlock diagramPrintRangeBlock;
     protected ScalingBlock scalingBlock;
     private RangeBlock rangeBlock;
     private CopiesBlock copiesBlock;
     private ActionsBlock actionsBlock;
-
-    private List<String> allDiagrams;
 
     private final DialogBlock.IDialogUnitConverter dluConverter =
             new DialogBlock.IDialogUnitConverter() {
@@ -60,32 +61,53 @@ public class JPSPrintDialog extends TrayDialog {
 
     public JPSPrintDialog(IShellProvider parentShell, PrintOptions options, List<String> allDiagrams) {
         super(parentShell);
+        setShellStyle(getShellStyle() | SWT.RESIZE);
         this.options = options;
-        this.allDiagrams = allDiagrams;
     }
 
     public JPSPrintDialog(Shell shell, PrintOptions options, List<String> allDiagrams) {
         super(shell);
+        setShellStyle(getShellStyle() | SWT.RESIZE);
         this.options = options;
-        this.allDiagrams = allDiagrams;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * @param shell
      * 
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
-    protected void configureShell(Shell newShell) {
+    private boolean checkPrinterData(Shell shell) {
+        try {
+            new Printer(options.getPrinterData());
+        } catch (Throwable e) {
+            PrintDialog printDialog = new PrintDialog(shell);
+            printDialog.setText("Select a printer");
+            PrinterData data = printDialog.open();
+            if (data != null) {
+                options.setPrinterData(data);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void configureShell(final Shell newShell) {
         super.configureShell(newShell);
 
         newShell.setText(DiagramUIPrintingMessages.JPSPrintDialog_Title);
+        setHelpAvailable(false);
+        setDialogHelpAvailable(false);
+
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
+    @Override
     protected Control createDialogArea(Composite parent) {
         bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
 
@@ -93,26 +115,38 @@ public class JPSPrintDialog extends TrayDialog {
         DialogBlock.layout(result, 2);
 
         createPrinterBlockArea(result);
-        createDiagramPrintRangeBlockArea(result);
         createScalingBlockArea(result);
         createRangeBlockArea(result);
         createCopiesBlockArea(result);
-        createExtensibleBlockArea(result);
         createActionsBlockArea(result);
 
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int open() {
+        if (!checkPrinterData(getParentShell())) {
+            return IDialogConstants.CANCEL_ID;
+        }
+        return super.open();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initializeBounds() {
+        super.initializeBounds();
+        final Shell shell = getShell();
+        shell.setMinimumSize(shell.getSize());
+    }
+
     protected void createPrinterBlockArea(Composite result) {
         printerBlock = new PrinterBlock(dluConverter, bindings, options);
         printerBlock.layoutSpanHorizontal(printerBlock.createContents(result), 2);
-    }
-
-    protected void createDiagramPrintRangeBlockArea(Composite result) {
-        diagramPrintRangeBlock =
-                new DiagramPrintRangeBlock(dluConverter, bindings, options, allDiagrams);
-        diagramPrintRangeBlock.layoutSpanHorizontal(diagramPrintRangeBlock.createContents(result),
-                2);
     }
 
     protected void createScalingBlockArea(Composite result) {
@@ -129,52 +163,43 @@ public class JPSPrintDialog extends TrayDialog {
         copiesBlock = new CopiesBlock(dluConverter, bindings, options);
         copiesBlock.createContents(result);
     }
-    
+
     protected void createExtensibleBlockArea(Composite result) {
         // meant to be overridden by subclasses to add additional blocks.
     }
 
     protected void createActionsBlockArea(Composite result) {
-        actionsBlock = new ActionsBlock(dluConverter, options);
+        actionsBlock = new ActionsBlock(dluConverter, bindings, options, this);
         actionsBlock.layoutSpanHorizontal(actionsBlock.createContents(result), 2);
     }
 
-    protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void buttonPressed(int buttonId) {
         switch (buttonId) {
         case -1:
             break;
+        case IDialogConstants.OK_ID:
+            options.storeToPreferences();
+            // fall through!
         default:
             super.buttonPressed(buttonId);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean close() {
         bindings.dispose();
         copiesBlock.dispose();
         printerBlock.dispose();
-        diagramPrintRangeBlock.dispose();
         scalingBlock.dispose();
         rangeBlock.dispose();
         actionsBlock.dispose();
         return super.close();
-    }
-
-    protected void cancelPressed() {
-        super.cancelPressed();
-    }
-
-    /**
-     * Obtains the user's selected printing options, or <code>null</code> if the user canceled the
-     * print operation.
-     * 
-     * @return the printing options, or <code>null</code> if canceled
-     */
-    public PrintOptions getPrintOptions() {
-        return options;
     }
 }

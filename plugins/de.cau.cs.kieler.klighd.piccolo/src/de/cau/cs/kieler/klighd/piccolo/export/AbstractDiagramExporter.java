@@ -75,8 +75,8 @@ public abstract class AbstractDiagramExporter {
      * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, Collection)}
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds) {
-        drawDiagram(camera, exportViewport, graphics, bounds, Collections.<IExportHook>emptyList());
+            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale) {
+        drawDiagram(camera, exportViewport, graphics, bounds, scale, Collections.<IExportHook>emptyList());
     }
 
     /**
@@ -93,14 +93,14 @@ public abstract class AbstractDiagramExporter {
      * @param graphics
      *            the graphics object to 'draw' the diagram on
      * @param bounds
-     *            the of the diagram to be exported, required for determining the main clip and the
-     *            background coloring; may be <code>null</code>,
+     *            the bounds of the diagram to be exported, required for determining the main clip and
+     *            the background coloring; may be <code>null</code>,
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
      * @param hooks
      *            a {@link Collection} of {@link IExportHook IExportHooks} to apply
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds,
+            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale,
             final Collection<IExportHook> hooks) {
 
         final PBounds theBounds;
@@ -139,6 +139,8 @@ public abstract class AbstractDiagramExporter {
         // adjust the zero reference point
         graphics.transform(AffineTransform.getTranslateInstance(-theBounds.getX(),
                 -theBounds.getY()));
+        
+        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
 
         final KlighdPaintContext paintContext = new KlighdPaintContext(graphics);
 

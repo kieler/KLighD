@@ -16,14 +16,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
+import de.cau.cs.kieler.klighd.ui.printing.dialogs.JPSPrintDialog;
+import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
 
 /**
  * Utility for using the DiagramPrinter to print diagrams after displaying a print dialog box to the
@@ -51,7 +56,6 @@ public class JPSDiagramPrinterHelper extends DiagramPrinterHelper {
      * Prevent instantiation.
      */
     private JPSDiagramPrinterHelper() {
-        super();
     }
 
     /**
@@ -65,53 +69,61 @@ public class JPSDiagramPrinterHelper extends DiagramPrinterHelper {
      *            choose which diagrams to print from a list.
      * @param jpsDiagramPrinter
      *            the diagram printer that does the work of actually printing the diagrams
+     * @param options 
      */
     public void printWithSettings(IDiagramWorkbenchPart editorPart, Map<String, IViewer> diagramMap,
-            JPSDiagramPrinter jpsDiagramPrinter) {
+            JPSDiagramPrinter jpsDiagramPrinter, PrintOptions options) {
 
         Display display =
                 (Display.getCurrent() != null) ? Display.getCurrent() : Display.getDefault();
 
         try {
-            PrintHelper helper = new PrintHelper();
+//            PrintHelper helper = new PrintHelper();
             List<String> diagramNames = new ArrayList<String>(diagramMap.keySet());
-
-            PrinterData printerData =
-                    collectPrintInformation(jpsDiagramPrinter, helper, diagramNames, editorPart,
-                            diagramMap);
-
-            if (printerData != null) {
-
-                jpsDiagramPrinter.setPrinter(printerData.name);
-                jpsDiagramPrinter.setDisplayDPI(display.getDPI());
-                jpsDiagramPrinter.setPrintHelper(helper);
-
-                if (helper.getDlgDiagramPrintRangeCurrent()) {
-                    IViewer viewer = editorPart.getViewer();
-                    if (viewer instanceof PiccoloViewer) {
-                        jpsDiagramPrinter.setDiagrams(Collections
-                                .singletonList(((PiccoloViewer) viewer)));
-                    } else {
-                        throw new IllegalArgumentException("Viewer is not of type <PiccoloViewer>");
-                    }
-                } else if (helper.getDlgDiagramPrintRangeAll()) {
-                    jpsDiagramPrinter.setDiagrams((Collection<PiccoloViewer>) Iterables.filter(
-                            diagramMap.values(), PiccoloViewer.class));
-                } else if (helper.getDlgDiagramPrintRangeSelection()) {
-                    Object obj;
-                    List<PiccoloViewer> list = new ArrayList<PiccoloViewer>();
-                    for (int i = 0; i < diagramNames.size(); i++) {
-                        if (helper.isDlgDiagramSelected(i)) {
-                            obj = diagramMap.get(diagramNames.get(i));
-                            if (obj instanceof PiccoloViewer) {
-                                list.add((PiccoloViewer) obj);
-                            }
-                        }
-                    }
-                    jpsDiagramPrinter.setDiagrams(list);
-                }
-                printDiagrams(jpsDiagramPrinter, helper);
+            
+            JPSPrintDialog dlg = new JPSPrintDialog(PlatformUI.getWorkbench()
+                    .getActiveWorkbenchWindow(), options, diagramNames);
+            
+            if (dlg.open() != IDialogConstants.OK_ID) {
+                return;
             }
+
+//            PrinterData printerData =
+//                    collectPrintInformation(jpsDiagramPrinter, helper, diagramNames, editorPart,
+//                            diagramMap);
+
+//            if (printerData != null) {
+//
+//                jpsDiagramPrinter.setPrinter(printerData.name);
+//                jpsDiagramPrinter.setDisplayDPI(display.getDPI());
+//                jpsDiagramPrinter.setPrintHelper(helper);
+//
+//                if (helper.getDlgDiagramPrintRangeCurrent()) {
+//                    IViewer viewer = editorPart.getViewer();
+//                    if (viewer instanceof PiccoloViewer) {
+//                        jpsDiagramPrinter.setDiagrams(Collections
+//                                .singletonList(((PiccoloViewer) viewer)));
+//                    } else {
+//                        throw new IllegalArgumentException("Viewer is not of type <PiccoloViewer>");
+//                    }
+//                } else if (helper.getDlgDiagramPrintRangeAll()) {
+//                    jpsDiagramPrinter.setDiagrams((Collection<PiccoloViewer>) Iterables.filter(
+//                            diagramMap.values(), PiccoloViewer.class));
+//                } else if (helper.getDlgDiagramPrintRangeSelection()) {
+//                    Object obj;
+//                    List<PiccoloViewer> list = new ArrayList<PiccoloViewer>();
+//                    for (int i = 0; i < diagramNames.size(); i++) {
+//                        if (helper.isDlgDiagramSelected(i)) {
+//                            obj = diagramMap.get(diagramNames.get(i));
+//                            if (obj instanceof PiccoloViewer) {
+//                                list.add((PiccoloViewer) obj);
+//                            }
+//                        }
+//                    }
+//                    jpsDiagramPrinter.setDiagrams(list);
+//                }
+//                printDiagrams(jpsDiagramPrinter, helper);
+//            }
         } catch (Throwable e) {
             e.printStackTrace();
 //            Trace.catching(DiagramPrintingPlugin.getInstance(),

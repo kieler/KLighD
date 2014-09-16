@@ -88,23 +88,6 @@ public class JPSDiagramPrinter extends DiagramPrinter implements java.awt.print.
     // printing calls.
     private PageData[] pages;
 
-    // The print helper contains page information.
-    private PrintHelper printHelper;
-
-//	public JPSDiagramPrinter(PreferencesHint preferencesHint, IMapMode mm) {
-//		super(preferencesHint, mm);
-//		this.preferencesHint = preferencesHint;
-//		this.mapMode = mm;
-//	}
-//
-//	public JPSDiagramPrinter(PreferencesHint preferencesHint) {
-//		this(preferencesHint, MapModeUtil.getMapMode());
-//	}
-
-    public void setPrintHelper(PrintHelper helper) {
-        this.printHelper = helper;
-    }
-
     /**
      * Create a new print service given a printer name.
      * 
@@ -572,7 +555,7 @@ public class JPSDiagramPrinter extends DiagramPrinter implements java.awt.print.
 
             this.graphics.drawImage(image, 0, 0);
 
-            tempMapModeGraphic.dispose();
+            tempMapModeGraphic.disposeImages();
             tempScaledGraphic.dispose();
             tempSWTGraphic.dispose();
             imgGC.dispose();

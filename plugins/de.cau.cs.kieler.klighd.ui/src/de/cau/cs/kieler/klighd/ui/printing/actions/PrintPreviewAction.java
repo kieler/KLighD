@@ -13,6 +13,7 @@ package de.cau.cs.kieler.klighd.ui.printing.actions;
 
 import org.eclipse.jface.action.Action;
 
+import de.cau.cs.kieler.klighd.ui.printing.dialogs.PrintPreviewTray;
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
 
 /**
@@ -39,7 +40,7 @@ public class PrintPreviewAction extends Action {
     /**
      * The <code>PrintPreviewHelper</code> on which <code>doPrintPreview()</code> is called.
      */
-    private PrintPreviewHelper printPreviewHelper;
+    private PrintPreviewTray printPreviewHelper;
 
     /**
      * Creates a new instance.
@@ -51,7 +52,7 @@ public class PrintPreviewAction extends Action {
      *            the helper class that creates that creates the print preview dialog
      */
     protected PrintPreviewAction(PrintActionHelper printActionHelper,
-            PrintPreviewHelper printPreviewHelper) {
+            PrintPreviewTray printPreviewHelper) {
         setId(ID);
         setText(DiagramUIPrintingMessages.PrintPreview_ActionLabel);
         setPrintActionHelper(printActionHelper);
@@ -66,7 +67,7 @@ public class PrintPreviewAction extends Action {
      *            printing if the user were to print from within the print preview dialog.
      */
     public PrintPreviewAction(PrintActionHelper printActionHelper) {
-        this(printActionHelper, new PrintPreviewHelper());
+        this(printActionHelper, new PrintPreviewTray());
     }
 
     /**
@@ -102,7 +103,7 @@ public class PrintPreviewAction extends Action {
      * 
      * @return PrintPreviewHelper the print preview helper.
      */
-    private PrintPreviewHelper getPrintPreviewHelper() {
+    private PrintPreviewTray getPrintPreviewHelper() {
         return printPreviewHelper;
     }
 
@@ -111,7 +112,7 @@ public class PrintPreviewAction extends Action {
      * 
      * @return printPreviewHelper the PrintPreviewHelper
      */
-    protected void setPrintPreviewHelper(PrintPreviewHelper printPreviewHelper) {
+    protected void setPrintPreviewHelper(PrintPreviewTray printPreviewHelper) {
         this.printPreviewHelper = printPreviewHelper;
     }
 

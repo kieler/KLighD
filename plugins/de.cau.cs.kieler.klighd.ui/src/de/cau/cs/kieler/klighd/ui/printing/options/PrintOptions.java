@@ -11,9 +11,10 @@
 
 package de.cau.cs.kieler.klighd.ui.printing.options;
 
-import java.util.List;
-
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.printing.PrinterData;
+
+import de.cau.cs.kieler.klighd.ui.printing.util.PrintExporter;
 
 /**
  * This class is used as part of the infrastructure required for data-bindings used with the JPS
@@ -23,84 +24,50 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @author James Bruck (jbruck)
  */
 public class PrintOptions extends PrintModelElement {
-    public static String PROPERTY_DESTINATION = "destination"; //$NON-NLS-1$
 
-    public static String PROPERTY_SCALE_FACTOR = "scaleFactor"; //$NON-NLS-1$
-    public static String PROPERTY_FIT_TO_WIDTH = "fitToPagesWidth"; //$NON-NLS-1$
-    public static String PROPERTY_FIT_TO_HEIGHT = "fitToPagesHeight"; //$NON-NLS-1$
+    /* printer data */
+    public static String PROPERTY_PRINTER_DATA = "printerData"; //$NON-NLS-1$
+    public static String PROPERTY_PRINTER_NAME = "printerName"; //$NON-NLS-1$
+    public static String PROPERTY_COPIES = "copies"; //$NON-NLS-1$
+    public static String PROPERTY_COLLATE = "collate"; //$NON-NLS-1$
 
     public static String PROPERTY_ALL_PAGES = "allPages"; //$NON-NLS-1$
     public static String PROPERTY_RANGE_FROM = "rangeFrom"; //$NON-NLS-1$
     public static String PROPERTY_RANGE_TO = "rangeTo"; //$NON-NLS-1$
 
-    public static String PROPERTY_COPIES = "copies"; //$NON-NLS-1$
-    public static String PROPERTY_COLLATE = "collate"; //$NON-NLS-1$
+    public static String PROPERTY_DUPLEX = "duplex"; //$NON-NLS-1$
 
-    public static String PROPERTY_QUALITY_HIGH = "qualityHigh"; //$NON-NLS-1$
-    public static String PROPERTY_QUALITY_LOW = "qualityLow"; //$NON-NLS-1$
-    public static String PROPERTY_QUALITY_MED = "qualityMed"; //$NON-NLS-1$
-    public static String PROPERTY_CHROMATICITY_MONO = "chromaticityMono"; //$NON-NLS-1$
-    public static String PROPERTY_CHROMATICITY_COLOR = "chromaticityColor"; //$NON-NLS-1$
-    public static String PROPERTY_SIDES_ONESIDED = "sideOneSided"; //$NON-NLS-1$
-    public static String PROPERTY_SIDES_TUMBLE = "sideTumble"; //$NON-NLS-1$
-    public static String PROPERTY_SIDES_DUPLEX = "sideDuplex"; //$NON-NLS-1$
+    public static String PROPERTY_ORIENTATION = "orientation"; //$NON-NLS-1$
 
-    public static String PROPERTY_JOB_NAME = "jobName"; //$NON-NLS-1$
-    public static String PROPERTY_USER_NAME = "userName"; //$NON-NLS-1$
+    /* other data */
+    public static String PROPERTY_SCALE_FACTOR = "scaleFactor"; //$NON-NLS-1$
+    public static String PROPERTY_FIT_TO_WIDTH = "fitToPagesWidth"; //$NON-NLS-1$
+    public static String PROPERTY_FIT_TO_HEIGHT = "fitToPagesHeight"; //$NON-NLS-1$
 
-    public static String PROPERTY_DIAGRAM_CURRENT = "diagramCurrent"; //$NON-NLS-1$
-    public static String PROPERTY_DIAGRAM_SELECTION = "diagramSelection"; //$NON-NLS-1$
+    /* preference IDs */
+    private static String PREFERENCE_PRINTER_DRIVER = "klighd.printing.driver";
+    private static String PREFERENCE_PRINTER_NAME = "klighd.printing.name";
+    private static String PREFERENCE_PRINTER_SCALE = "klighd.printing.scale";
+    private static String PREFERENCE_PRINTER_PAGES_TALL = "klighd.printing.pagesTall";
+    private static String PREFERENCE_PRINTER_PAGES_WIDE = "klighd.printing.pagesWide";
+    private static String PREFERENCE_PRINTER_ORIENTATION = "klighd.printing.orientation";
+    private static String PREFERENCE_PRINTER_DUPLEX = "klighd.printing.duplex";
 
-    private PrintDestination destination;
+    private IPreferenceStore preferenceStore;
 
-    private int scaleFactor;
+    private PrinterData printerData;
+
+    private double scaleFactor;
     private int fitToPagesWidth;
     private int fitToPagesHeight;
-
-    private boolean allPages;
-    private int rangeFrom;
-    private int rangeTo;
-
-    private int copies;
-    private boolean collate;
-
-    private boolean qualityHigh;
-    private boolean qualityLow;
-    private boolean qualityMed;
-
-    private boolean chromaticityColor;
-    private boolean chromaticityMono;
-
-    private boolean sideOneSided;
-    private boolean sideTumble;
-    private boolean sideDuplex;
-
-    private String jobName;
-    private String userName;
-
-    private boolean diagramCurrent;
-    private boolean diagramSelection;
-
-    private List<String> diagramsToPrint;
+    private PrintExporter exporter;
 
     public PrintOptions() {
         super();
-        scaleFactor = 100;
+        scaleFactor = 1;
         fitToPagesHeight = 1;
         fitToPagesWidth = 1;
 
-        setAllPages(true);
-        setRangeFrom(1);
-        setRangeTo(1);
-
-        setCopies(1);
-        setCollate(false);
-
-        setQualityHigh(true);
-        setSideOneSided(true);
-        setChromaticityColor(true);
-
-        setDiagramCurrent(true);
     }
 
     /**
@@ -108,120 +75,43 @@ public class PrintOptions extends PrintModelElement {
      */
     public PrintOptions(IPreferenceStore preferenceStore) {
         this();
-        
+        this.preferenceStore = preferenceStore;
+        restoreFromPreferences();
     }
 
-    public PrintDestination getDestination() {
-        return destination;
+    public void restoreFromPreferences() {
+        String driver = preferenceStore.getString(PREFERENCE_PRINTER_DRIVER);
+        String name = preferenceStore.getString(PREFERENCE_PRINTER_NAME);
+        printerData = new PrinterData(driver, name);
+        if (printerData != null) {
+            setOrientation(preferenceStore.getInt(PREFERENCE_PRINTER_ORIENTATION));
+            setDuplex(preferenceStore.getInt(PREFERENCE_PRINTER_DUPLEX));
+        }
+        setScaleFactor(preferenceStore.getDouble(PREFERENCE_PRINTER_SCALE));
+        setFitToPagesHeight(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_TALL));
+        setFitToPagesWidth(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
     }
 
-    public void setDestination(PrintDestination destination) {
-        PrintDestination oldDestination = this.destination;
-        this.destination = destination;
-        firePropertyChange(PROPERTY_DESTINATION, oldDestination, destination);
+    public void storeToPreferences() {
+        preferenceStore.setValue(PREFERENCE_PRINTER_DRIVER, printerData.driver);
+        preferenceStore.setValue(PREFERENCE_PRINTER_NAME, printerData.name);
+        preferenceStore.setValue(PREFERENCE_PRINTER_SCALE, scaleFactor);
+        preferenceStore.setValue(PREFERENCE_PRINTER_PAGES_TALL, fitToPagesHeight);
+        preferenceStore.setValue(PREFERENCE_PRINTER_PAGES_WIDE, fitToPagesWidth);
+        preferenceStore.setValue(PREFERENCE_PRINTER_ORIENTATION, printerData.orientation);
+        preferenceStore.setValue(PREFERENCE_PRINTER_DUPLEX, printerData.duplex);
     }
 
-//    public boolean isPercentScaling() {
-//        return percentScaling;
-//    }
-//
-//    public void setPercentScaling(boolean percentScaling) {
-//        boolean oldScaling = this.percentScaling;
-//        this.percentScaling = percentScaling;
-//        firePropertyChange(PROPERTY_PERCENT_SCALING, oldScaling, percentScaling);
-//    }
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String name) {
-        String oldName = this.jobName;
-        this.jobName = name;
-        firePropertyChange(PROPERTY_JOB_NAME, oldName, name);
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String name) {
-        String oldName = this.userName;
-        this.userName = name;
-        firePropertyChange(PROPERTY_USER_NAME, oldName, name);
-    }
-
-    public void setDiagramsToPrint(List<String> diagramsToPrint) {
-        this.diagramsToPrint = diagramsToPrint;
-    }
-
-    public List<String> getDiagramsToPrint() {
-        return diagramsToPrint;
-    }
-
-    public boolean isDiagramCurrent() {
-        return this.diagramCurrent;
-    }
-
-    public void setDiagramCurrent(boolean diagramCurrent) {
-        boolean oldDiagramCurrent = this.diagramCurrent;
-        this.diagramCurrent = diagramCurrent;
-        firePropertyChange(PROPERTY_DIAGRAM_CURRENT, oldDiagramCurrent, diagramCurrent);
-    }
-
-    public boolean isDiagramSelection() {
-        return this.diagramSelection;
-    }
-
-    public void setDiagramSelection(boolean diagramSelection) {
-        boolean oldDiagramSelection = this.diagramSelection;
-        this.diagramSelection = diagramSelection;
-        firePropertyChange(PROPERTY_DIAGRAM_SELECTION, oldDiagramSelection, diagramSelection);
-    }
-
-    public boolean isQualityHigh() {
-        return this.qualityHigh;
-    }
-
-    public void setQualityHigh(boolean qualityHigh) {
-        boolean oldQualityHigh = this.qualityHigh;
-        this.qualityHigh = qualityHigh;
-        firePropertyChange(PROPERTY_QUALITY_HIGH, oldQualityHigh, qualityHigh);
-    }
-
-    public boolean isQualityLow() {
-        return this.qualityLow;
-    }
-
-    public void setQualityLow(boolean qualityLow) {
-        boolean oldQualityLow = this.qualityLow;
-        this.qualityLow = qualityLow;
-        firePropertyChange(PROPERTY_QUALITY_LOW, oldQualityLow, this.qualityLow);
-    }
-
-    public boolean isQualityMed() {
-        return this.qualityMed;
-    }
-
-    public void setQualityMed(boolean qualityMed) {
-        boolean oldQualityMed = this.qualityMed;
-        this.qualityMed = qualityMed;
-        firePropertyChange(PROPERTY_QUALITY_MED, oldQualityMed, this.qualityMed);
-    }
-
-    public int getScaleFactor() {
+    public double getScaleFactor() {
         return scaleFactor;
     }
 
-    public void setScaleFactor(int scaleFactor) {
-//        if (scaleFactor > 0 && scaleFactor <= 100) {
-            int oldFactor = this.scaleFactor;
+    public void setScaleFactor(double scaleFactor) {
+        double oldFactor = this.scaleFactor;
+        if (scaleFactor > 0) {
             this.scaleFactor = scaleFactor;
-            firePropertyChange(PROPERTY_SCALE_FACTOR, oldFactor, scaleFactor);
-//            return true;
-//        } else {
-//            return false;
-//        }
+        }
+        firePropertyChange(PROPERTY_SCALE_FACTOR, oldFactor, this.scaleFactor);
     }
 
     public int getFitToPagesWidth() {
@@ -229,129 +119,134 @@ public class PrintOptions extends PrintModelElement {
     }
 
     public void setFitToPagesWidth(int fitToPagesWidth) {
-//        if (fitToPagesWidth > 0) {
-            int oldWidth = this.fitToPagesWidth;
+        int oldWidth = this.fitToPagesWidth;
+        if (fitToPagesWidth > 0) {
             this.fitToPagesWidth = fitToPagesWidth;
-            firePropertyChange(PROPERTY_FIT_TO_WIDTH, oldWidth, fitToPagesWidth);
-//            return true;
-//        } else {
-//            return false;
-//        }
+        }
+        firePropertyChange(PROPERTY_FIT_TO_WIDTH, oldWidth, this.fitToPagesWidth);
     }
 
     public int getFitToPagesHeight() {
         return fitToPagesHeight;
     }
 
-    public boolean setFitToPagesHeight(int fitToPagesHeight) {
+    public void setFitToPagesHeight(int fitToPagesHeight) {
+        int oldHeight = this.fitToPagesHeight;
         if (fitToPagesHeight > 0) {
-            int oldHeight = this.fitToPagesHeight;
             this.fitToPagesHeight = fitToPagesHeight;
-            firePropertyChange(PROPERTY_FIT_TO_HEIGHT, oldHeight, fitToPagesHeight);
-            return true;
-        } else {
-            return false;
         }
+        firePropertyChange(PROPERTY_FIT_TO_HEIGHT, oldHeight, this.fitToPagesHeight);
     }
 
     public boolean isAllPages() {
-        return allPages;
+        return printerData.scope == PrinterData.ALL_PAGES;
     }
 
     public void setAllPages(boolean allPages) {
-        boolean oldAll = this.allPages;
-        this.allPages = allPages;
-        firePropertyChange(PROPERTY_ALL_PAGES, oldAll, allPages);
+        boolean oldAll = printerData.scope == PrinterData.ALL_PAGES;
+        printerData.scope = allPages ? PrinterData.ALL_PAGES : PrinterData.PAGE_RANGE;
+        firePropertyChange(PROPERTY_ALL_PAGES, oldAll, printerData.scope == PrinterData.ALL_PAGES);
     }
 
     public int getRangeFrom() {
-        return rangeFrom;
+        return printerData.startPage;
     }
 
     public void setRangeFrom(int rangeFrom) {
-        int oldFrom = this.rangeFrom;
-        this.rangeFrom = rangeFrom;
+        int oldFrom = printerData.startPage;
+        printerData.startPage = rangeFrom;
         firePropertyChange(PROPERTY_RANGE_FROM, oldFrom, rangeFrom);
     }
 
     public int getRangeTo() {
-        return rangeTo;
+        return printerData.endPage;
     }
 
     public void setRangeTo(int rangeTo) {
-        int oldTo = this.rangeTo;
-        this.rangeTo = rangeTo;
+        int oldTo = printerData.endPage;
+        printerData.endPage = rangeTo;
         firePropertyChange(PROPERTY_RANGE_TO, oldTo, rangeTo);
     }
 
     public int getCopies() {
-        return copies;
+        return printerData.copyCount;
     }
 
     public void setCopies(int copies) {
-        int oldCopies = this.copies;
-        this.copies = copies;
+        int oldCopies = printerData.copyCount;
+        printerData.copyCount = copies;
         firePropertyChange(PROPERTY_COPIES, oldCopies, copies);
     }
 
     public boolean isCollate() {
-        return collate;
+        return printerData.collate;
     }
 
     public void setCollate(boolean collate) {
-        boolean oldCollate = this.collate;
-        this.collate = collate;
+        boolean oldCollate = printerData.collate;
+        printerData.collate = collate;
         firePropertyChange(PROPERTY_COLLATE, oldCollate, collate);
     }
 
-    public boolean isChromaticityColor() {
-        return this.chromaticityColor;
+    public int getDuplex() {
+        return printerData.duplex;
     }
 
-    public void setChromaticityColor(boolean chromaticityColor) {
-        boolean oldChromaticityColor = this.chromaticityColor;
-        this.chromaticityColor = chromaticityColor;
-        firePropertyChange(PROPERTY_CHROMATICITY_COLOR, oldChromaticityColor,
-                this.chromaticityColor);
+    public void setDuplex(int duplex) {
+        int oldDuplex = printerData.duplex;
+        printerData.duplex = duplex;
+        firePropertyChange(PROPERTY_DUPLEX, oldDuplex, printerData.duplex);
     }
 
-    public boolean isChromaticityMono() {
-        return this.chromaticityMono;
+    public PrinterData getPrinterData() {
+        return this.printerData;
     }
 
-    public void setChromaticityMono(boolean chromaticityMono) {
-        boolean oldChromaticityMono = this.chromaticityMono;
-        this.chromaticityMono = chromaticityMono;
-        firePropertyChange(PROPERTY_CHROMATICITY_MONO, oldChromaticityMono, this.chromaticityMono);
+    public void setPrinterData(PrinterData printerData) {
+        PrinterData oldPrinterData = this.printerData;
+        this.printerData = printerData;
+        firePropertyChange(PROPERTY_PRINTER_DATA, oldPrinterData, printerData);
+        firePropertyChange(PROPERTY_PRINTER_NAME, oldPrinterData.name, printerData.name);
+        firePropertyChange(PROPERTY_COPIES, oldPrinterData.copyCount, printerData.copyCount);
+        firePropertyChange(PROPERTY_COLLATE, oldPrinterData.collate, printerData.collate);
+        firePropertyChange(PROPERTY_ALL_PAGES, oldPrinterData.scope == PrinterData.ALL_PAGES,
+                printerData.scope == PrinterData.ALL_PAGES);
+        firePropertyChange(PROPERTY_RANGE_FROM, oldPrinterData.startPage, printerData.startPage);
+        firePropertyChange(PROPERTY_RANGE_TO, oldPrinterData.endPage, printerData.endPage);
+        firePropertyChange(PROPERTY_DUPLEX, oldPrinterData.duplex, printerData.duplex);
+        firePropertyChange(PROPERTY_ORIENTATION, oldPrinterData.orientation,
+                printerData.orientation);
     }
 
-    public boolean isSideOneSided() {
-        return this.sideOneSided;
+    public int getOrientation() {
+        return printerData.orientation;
     }
 
-    public void setSideOneSided(boolean sideOneSided) {
-        boolean oldSideOneSided = this.sideOneSided;
-        this.sideOneSided = sideOneSided;
-        firePropertyChange(PROPERTY_SIDES_ONESIDED, oldSideOneSided, this.sideOneSided);
+    public void setOrientation(int orientation) {
+        int oldOrientation = printerData.orientation;
+        printerData.orientation = orientation;
+        firePropertyChange(PROPERTY_ORIENTATION, oldOrientation, printerData.orientation);
     }
 
-    public boolean isSideTumble() {
-        return this.sideTumble;
+    public String getPrinterName() {
+        return printerData.name;
     }
 
-    public void setSideTumble(boolean sideTumble) {
-        boolean oldSideTumble = this.sideTumble;
-        this.sideTumble = sideTumble;
-        firePropertyChange(PROPERTY_SIDES_TUMBLE, oldSideTumble, this.sideTumble);
+    /**
+     * @param exporter
+     */
+    public void setExporter(PrintExporter exporter) {
+        this.exporter = exporter;
     }
 
-    public boolean isSideDuplex() {
-        return this.sideDuplex;
+    /**
+     * @return the exporter
+     */
+    public PrintExporter getExporter() {
+        return exporter;
     }
 
-    public void setSideDuplex(boolean sideDuplex) {
-        boolean oldSideDuplex = this.sideDuplex;
-        this.sideDuplex = sideDuplex;
-        firePropertyChange(PROPERTY_SIDES_DUPLEX, oldSideDuplex, this.sideDuplex);
-    }
+//    public void setPrinterName(String name) {
+//        setPrinterData(new );
+//    }
 }

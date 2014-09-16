@@ -11,22 +11,28 @@
 
 package de.cau.cs.kieler.klighd.ui.printing.actions;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
+import de.cau.cs.kieler.klighd.ui.printing.dialogs.JPSPrintDialog;
 import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
-import de.cau.cs.kieler.klighd.ui.printing.util.JPSDiagramPrinter;
-import de.cau.cs.kieler.klighd.ui.printing.util.JPSDiagramPrinterHelper;
+import de.cau.cs.kieler.klighd.ui.printing.util.PrintExporter;
 
 /**
  * Enhanced printing. The doPrint() method will invoke a dialog prompting the user to choose options
@@ -49,45 +55,80 @@ public class PrintActionHelper {
      *            the workbenchPart containing the diagram to print
      */
 
-    public void doPrint(IWorkbenchPart workbenchPart) {
-        IDiagramWorkbenchPart diagramPart = null;
-
-        if (workbenchPart instanceof IDiagramWorkbenchPart) {
-            diagramPart = (IDiagramWorkbenchPart) workbenchPart;
-        } else {
-            throw new IllegalArgumentException("Invalid IWorkbenchPart.");
-        }
-        
+    public void doPrint(PiccoloViewer viewer) {
+//        IDiagramWorkbenchPart diagramPart = null;
+//
+//        if (workbenchPart instanceof IDiagramWorkbenchPart) {
+//            diagramPart = (IDiagramWorkbenchPart) workbenchPart;
+//        } else {
+//            throw new IllegalArgumentException("Invalid IWorkbenchPart.");
+//        }
 
         // receive the preference store
         IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
-        
+
         PrintOptions options = new PrintOptions(preferenceStore);
 
-//        IDiagramGraphicalViewer viewer = diagramPart.getDiagramGraphicalViewer(); 
-//        RootEditPart rootEP = (viewer == null)?  null : viewer.getRootEditPart();
+//        JPSDiagramPrinterHelper.getDiagramPrinterHelper().printWithSettings(diagramPart,
+//                createDiagramMap(), new JPSDiagramPrinter(), options);
 //        
-//        //splitting the instanceof checks for readability, DiagramRootEditPart implements IDiagramPreferenceSupport 
-//        
-//        //try to get actual preferences, if not then use default of PreferencesHint.USE_DEFAULTS
-//        PreferencesHint preferencesHint = (rootEP instanceof IDiagramPreferenceSupport) ? ((IDiagramPreferenceSupport) rootEP)
-//            .getPreferencesHint()
-//            : PreferencesHint.USE_DEFAULTS;
-//        
-//        //get actual map mode, default is MapModeUtil.getMapMode()
-//        IMapMode mapMode = (rootEP instanceof DiagramRootEditPart) ? ((DiagramRootEditPart) rootEP)
-//                .getMapMode()
-//                : MapModeUtil.getMapMode();             
-//                            
-//        if (Platform.getOS().startsWith(Platform.OS_WIN32) 
-//                && Platform.getOSArch().equals(Platform.ARCH_X86)) {
-//            DiagramPrinterUtil.printWithSettings(diagramPart,
-//                    createDiagramMap(), new RenderedDiagramPrinter(
-//                            preferencesHint, mapMode));
-//        } else {
-        JPSDiagramPrinterHelper.getDiagramPrinterHelper().printWithSettings(diagramPart,
-                createDiagramMap(), new JPSDiagramPrinter());
-//        }
+        Map<String, IViewer> diagramMap = createDiagramMap();
+
+        List<String> diagramNames = new ArrayList<String>(diagramMap.keySet());
+
+        PrintExporter exporter = new PrintExporter(viewer);
+        options.setExporter(exporter);
+//
+        JPSPrintDialog dlg =
+                new JPSPrintDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), options,
+                        diagramNames);
+
+        if (dlg.open() != IDialogConstants.OK_ID) {
+            return;
+        }
+
+        if (options.getPrinterData() != null) {
+
+            options.getPrinterData().duplex = PrinterData.DUPLEX_NONE;
+            options.getPrinterData().orientation = PrinterData.LANDSCAPE;
+
+            // evaluate the user specified informations
+            final Printer p = new Printer(options.getPrinterData());
+//            final Rectangle trim = p.computeTrim(0, 0, 0, 0);
+
+            // start the print job
+            p.startJob(diagramNames.get(0));
+
+            double scale = options.getScaleFactor();
+
+//            int totalWidth = (int) (options.getFitToPagesWidth() * pageBounds.width * userScale);
+//            int totalHeight = (int) (options.getFitToPagesHeight() * pageBounds.height * userScale);
+
+            for (int i = 0; i < options.getFitToPagesHeight(); i++) {
+                for (int j = 0; j < options.getFitToPagesWidth(); j++) {
+                    p.startPage();
+
+                    // create and scale the GC according to dpis
+                    exporter.exportPrint(j, i, scale, p);
+//                    Transform t = new Transform(gc.getDevice());
+//                    gc.getTransform(t);
+////                    t.translate(-trim.x, -trim.y);
+//                    t.translate(-j * pageBounds.width, -i * pageBounds.height);
+//                    gc.setTransform(t);
+//
+//                    gc.setClipping(new Rectangle(j * pageBounds.width, i * pageBounds.height,
+//                            pageBounds.width, pageBounds.height));
+//
+//                    viewer.renderOffscreen(gc, new Rectangle(0, 0, totalWidth, totalHeight));
+
+                    p.endPage();
+                }
+            }
+
+            // finish and cleanup
+            p.endJob();
+            p.dispose();
+        }
     }
 
     /**
@@ -100,15 +141,8 @@ public class PrintActionHelper {
     protected Map<String, IViewer> createDiagramMap() {
 
         Map<String, IViewer> diagramMap = new HashMap<String, IViewer>();
-
-        // get all diagram editors with the matching id
-//        for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
-//            for (IWorkbenchPage page : window.getPages()) {
-//                for (IEditorReference editor : page.getEditorReferences()) {
-//                    editor.
-//                }
-//            }
-//        }
+        // TODO List all possible KlighD parts for printing;
+        // currently only the active part
         List<IWorkbenchPart> diagramEditors =
                 Collections.singletonList(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                         .getActivePage().getActivePart());
@@ -118,30 +152,8 @@ public class PrintActionHelper {
             Object obj = it.next();
 
             if (obj instanceof IDiagramWorkbenchPart) {
-                IDiagramWorkbenchPart dEditor = (IDiagramWorkbenchPart) obj;
 
-//                String diagramName = null;
-//
-//                IEditorInput editorInput = dEditor.get
-//
-//                // try to be more descriptive and get the IFile path which includes the project
-//                IFile file = (IFile) (editorInput.getAdapter(IFile.class));
-//                if (file != null) {
-//                    diagramName = file.getFullPath().toOSString();
-//                } else {
-//                    // otherwise we can only get the editor title or part name
-//                    diagramName = dEditor.getPartName();
-//
-//                    if (diagramName == null) {
-//                        diagramName = dEditor.getTitle();
-//                    }
-//                }
-//
-//                if (diagramName == null) {
-//                    // the last choice is to use the actual name of the diagram
-//                    // this has to exist!
-//                    diagramName = dEditor.getDiagram().getName();
-//                }
+                IDiagramWorkbenchPart dEditor = (IDiagramWorkbenchPart) obj;
 
                 diagramMap.put(dEditor.getTitle(), dEditor.getViewer());
 
@@ -149,4 +161,12 @@ public class PrintActionHelper {
         }
         return diagramMap;
     }
+
+    public static Rectangle getPrinterBounds(Printer printer) {
+        Rectangle pageArea = printer.getClientArea();
+        Rectangle trim = printer.computeTrim(0, 0, 0, 0);
+        return new Rectangle(-trim.x, -trim.y, pageArea.width, pageArea.height);
+//        return pageArea;
+    }
+
 }

@@ -58,7 +58,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PrintAction;
 import de.cau.cs.kieler.klighd.ui.KlighdTextSelection;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.modifymodel.ModelModificationHandlerProvider;
@@ -133,7 +132,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
         // register print action
         if (actions != null) {
-//            final PiccoloViewer thisViewer = this;
+            final PiccoloViewer thisViewer = this;
 
             actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new Action() {
 //                private final PrintAction printer = new PrintAction(thisViewer);
@@ -141,7 +140,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 @Override
                 public void run() {
 //                    printer.run();
-                    new PrintActionHelper().doPrint(part);
+                    new PrintActionHelper().doPrint(thisViewer);
                 }
             });
         }

@@ -98,8 +98,7 @@ public abstract class DiagramPrinter implements Runnable {
      * Calculates the column in a grid, given a page number.
      * | 1 | 2 | 3 |
      * | 4 | 5 | 6 |
-     * | 7 | 8 | 9
-     * |
+     * | 7 | 8 | 9 |
      * 
      * Given pageNum=5 and totalNumColumns=3, will return 2 (2nd column).
      * 
