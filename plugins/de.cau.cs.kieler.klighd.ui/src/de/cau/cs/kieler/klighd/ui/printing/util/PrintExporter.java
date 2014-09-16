@@ -13,50 +13,65 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing.util;
 
-import java.awt.geom.AffineTransform;
-
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.export.AbstractDiagramExporter;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import de.cau.cs.kieler.klighd.ui.printing.actions.PrintActionHelper;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * @author carsten
+ * Exporter providing methods for printing and print previews.
  * 
+ * @author csp
  */
 
 public class PrintExporter extends AbstractDiagramExporter {
 
     private PiccoloViewer viewer;
 
-    public PrintExporter(PiccoloViewer viewer) {
+    /**
+     * Create new exporter using the given viewer.
+     * 
+     * @param viewer
+     *            the viewer to print
+     */
+    public PrintExporter(final PiccoloViewer viewer) {
         this.viewer = viewer;
     }
 
+    /**
+     * Get the diagram bounds.
+     * 
+     * @return the diagram bounds
+     */
     public PBounds getDiagramBounds() {
         return getExportedBounds(viewer.getCanvas().getCamera(), false);
     }
 
     /**
-     * @param clip
-     * @param scale
+     * Export preview. Can export the diagram in tiles to print on multiple pages.
+     * 
+     * @param column
+     *            the column of the tile to export
+     * @param row
+     *            the row of the tile to export
      * @param width
+     *            the width of the tile to export
      * @param height
-     * @return
+     *            the height of the tile to export
+     * @param scale
+     *            the scale factor
+     * @return the image
      */
-    public Image exportPreview(int column, int row, int width, int height, double scale) {
+    public Image exportPreview(final int column, final int row, final int width, final int height,
+            final double scale) {
 
         Display display =
                 (Display.getCurrent() != null) ? Display.getCurrent() : Display.getDefault();
@@ -67,43 +82,50 @@ public class PrintExporter extends AbstractDiagramExporter {
         return image;
     }
 
-    public void exportPrint(int column, int row, double scale, Printer printer) {
+    /**
+     * Export print. Can export the diagram in tiles to print on multiple pages.
+     * 
+     * @param column
+     *            the column of the tile to export
+     * @param row
+     *            the row of the tile to export
+     * @param scale
+     *            the scale factor
+     * @param printer
+     *            the printer to print to
+     */
+    public void exportPrint(final int column, final int row, final double scale,
+            final Printer printer) {
 
         GC gc = new GC(printer);
-        final Rectangle pageBounds = PrintActionHelper.getPrinterBounds(printer);
+        final Rectangle pageBounds = PrintExporter.getPrinterBounds(printer);
         export(column, row, pageBounds, scale, gc, printer);
         gc.dispose();
     }
 
-    private void export(int column, int row, Rectangle bounds, double scale, GC gc, Device device) {
+    private void export(final int column, final int row, final Rectangle bounds,
+            final double scale, final GC gc, final Device device) {
 
         KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, device);
 
-//            Transform transform = new Transform(gc.getDevice());
-//            gc.getTransform(transform);
-//            transform.translate(-clip.x, -clip.y);
-//            gc.setTransform(transform);
-        //
-//            gc.setClipping(clip);
+        drawDiagram(viewer.getCanvas().getCamera(), false, graphics, new PBounds(bounds.x + column
+                * (bounds.width), bounds.y + row * (bounds.height), bounds.width, bounds.height),
+                scale);
+    }
 
-//        graphics.transform(AffineTransform.getTranslateInstance(bounds.x, bounds.y));
-//        graphics.transform(AffineTransform.getTranslateInstance(
-//                -column * (bounds.width), -row * (bounds.height)));
-//        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
-//            graphics.setClip(clip);
-
-//        PiccoloViewer viewer =
-//                ((PiccoloViewer) ((IDiagramWorkbenchPart) PlatformUI.getWorkbench()
-//                        .getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewer()
-//                        .getContextViewer().getActiveViewer());
-
-        drawDiagram(viewer.getCanvas().getCamera(), false, graphics, new PBounds(bounds.x + column * (bounds.width),
-                bounds.y + row * (bounds.height), bounds.width, bounds.height), scale);
-
-//            ((PiccoloViewer) ((IDiagramWorkbenchPart) PlatformUI.getWorkbench()
-//                    .getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewer()
-//                    .getContextViewer().getActiveViewer()).renderOffscreen(gc, new Rectangle(0, 0,
-//                    totalWidth, totalHeight));
+    /**
+     * Gets the printer bounds.
+     * x and y denote the top left point of the printable area.
+     * width and height are width and height of the printable area.
+     * 
+     * @param printer
+     *            the printer
+     * @return the printer bounds
+     */
+    public static Rectangle getPrinterBounds(final Printer printer) {
+        Rectangle pageArea = printer.getClientArea();
+        Rectangle trim = printer.computeTrim(0, 0, 0, 0);
+        return new Rectangle(-trim.x, -trim.y, pageArea.width, pageArea.height);
     }
 
 }

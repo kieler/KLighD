@@ -115,12 +115,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
             graphics.clip(new Rectangle(width, height));
         }
 
-        // apply the scale factor to the employed graphics object
-        //  by means of a corresponding affine transform
-        graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
-
         // do the action diagram drawing work
-        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds,
+        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, data.scale,
                 ExportHooks.getExportHooksByFormat(data.subFormatId));
 
         // create an image loader to save the image

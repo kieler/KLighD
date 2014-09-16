@@ -1,3 +1,4 @@
+// SUPPRESS CHECKSTYLE NEXT Header
 /******************************************************************************
  * Copyright (c) 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,7 +9,19 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation 
  ****************************************************************************/
-
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2014 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.klighd.ui.printing.dialogs;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -19,8 +32,6 @@ import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -33,12 +44,13 @@ import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingPluginImage
 import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
 
 /**
- * A section of the JPS print dialog that handles the number of copies of a diagram to print.
+ * A section of the KlighD print dialog that handles the number of copies of a diagram to print.
  * 
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
+ * @author csp
  */
-class CopiesBlock extends DialogBlock {
+class CopiesBlock implements DialogBlock {
 
     private final DataBindingContext bindings;
     private final PrintOptions options;
@@ -48,28 +60,23 @@ class CopiesBlock extends DialogBlock {
     private IObservableValue collateObservable;
     private IValueChangeListener listener;
 
-    CopiesBlock(IDialogUnitConverter dluConverter, DataBindingContext bindings, PrintOptions options) {
-        super(dluConverter);
-
+    CopiesBlock(final DataBindingContext bindings, final PrintOptions options) {
         this.bindings = bindings;
         this.options = options;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.gmf.runtime.common.ui.printing.internal.dialogs.DialogBlock#createContents(org
-     * .eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
-    public Control createContents(Composite parent) {
+    public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
-        Composite result = group(parent, DiagramUIPrintingMessages.JPSPrintDialog_Copies);
-        layout(result, 2);
+        Composite result =
+                DialogUtil.group(parent, DiagramUIPrintingMessages.PrintDialog_Copies);
+        DialogUtil.layout(result, 2);
 
-        label(result, DiagramUIPrintingMessages.JPSPrintDialog_NumberOfCopies);
-        Spinner copiesSpinner = spinner(result, 1, 999);
+        DialogUtil.label(result, DiagramUIPrintingMessages.PrintDialog_NumberOfCopies);
+        Spinner copiesSpinner = DialogUtil.spinner(result, 1, Integer.MAX_VALUE);
 
         bindings.bindValue(SWTObservables.observeSelection(copiesSpinner),
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES), null,
@@ -77,19 +84,20 @@ class CopiesBlock extends DialogBlock {
 
         final Label collateImageButton = new Label(result, SWT.CENTER | SWT.SHADOW_NONE);
 
-        layoutAlignRight(collateImageButton);
+        DialogUtil.layoutAlignRight(collateImageButton);
         collateImageButton.setImage(collateOffImage);
 
-        Button collateCheck = check(result, DiagramUIPrintingMessages.JPSPrintDialog_Collate);
+        Button collateCheck =
+                DialogUtil.check(result, DiagramUIPrintingMessages.PrintDialog_Collate);
 
-        collateObservable = BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
-        bindings.bindValue(SWTObservables.observeSelection(collateCheck),
-                collateObservable, null,
+        collateObservable =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
+        bindings.bindValue(SWTObservables.observeSelection(collateCheck), collateObservable, null,
                 null);
-        
+
         listener = new IValueChangeListener() {
-            
-            public void handleValueChange(ValueChangeEvent event) {
+
+            public void handleValueChange(final ValueChangeEvent event) {
                 if (options.isCollate()) {
                     collateImageButton.setImage(collateOnImage);
                 } else {
@@ -103,7 +111,7 @@ class CopiesBlock extends DialogBlock {
     }
 
     /**
-     * Dispose of images.
+     * {@inheritDoc}
      */
     public void dispose() {
         collateObservable.removeValueChangeListener(listener);

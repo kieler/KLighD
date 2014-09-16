@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -36,6 +35,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * consistent behavior amongst all those implementations.
  * 
  * @author chsch
+ * @author csp
  */
 public abstract class AbstractDiagramExporter {
 
@@ -71,12 +71,35 @@ public abstract class AbstractDiagramExporter {
         }
         return bounds;
     }
+
+    // SUPPRESS CHECKSTYLE NEXT 5 LineLength|Javadoc
     /**
-     * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, Collection)}
+     * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, double, Collection)}
+     */
+    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
+            final KlighdSWTGraphics graphics, final PBounds bounds) {
+        drawDiagram(camera, exportViewport, graphics, bounds, 1,
+                Collections.<IExportHook>emptyList());
+    }
+
+    // SUPPRESS CHECKSTYLE NEXT 5 LineLength|Javadoc
+    /**
+     * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, double, Collection)}
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds, final double scale) {
-        drawDiagram(camera, exportViewport, graphics, bounds, scale, Collections.<IExportHook>emptyList());
+        drawDiagram(camera, exportViewport, graphics, bounds, scale,
+                Collections.<IExportHook>emptyList());
+    }
+
+    // SUPPRESS CHECKSTYLE NEXT 6 LineLength|Javadoc
+    /**
+     * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, double, Collection)}
+     */
+    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
+            final KlighdSWTGraphics graphics, final PBounds bounds,
+            final Collection<IExportHook> hooks) {
+        drawDiagram(camera, exportViewport, graphics, bounds, 1, hooks);
     }
 
     /**
@@ -93,9 +116,12 @@ public abstract class AbstractDiagramExporter {
      * @param graphics
      *            the graphics object to 'draw' the diagram on
      * @param bounds
-     *            the bounds of the diagram to be exported, required for determining the main clip and
+     *            the bounds of the diagram part to be exported, required for determining the main
+     *            clip and
      *            the background coloring; may be <code>null</code>,
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
+     * @param scale
+     *            the scaling factor
      * @param hooks
      *            a {@link Collection} of {@link IExportHook IExportHooks} to apply
      */

@@ -1,3 +1,4 @@
+// SUPPRESS CHECKSTYLE NEXT Header
 /******************************************************************************
  * Copyright (c) 2002, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,7 +9,19 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation 
  ****************************************************************************/
-
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2014 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.klighd.ui.printing.dialogs;
 
 import java.util.ArrayList;
@@ -34,19 +47,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
-import de.cau.cs.kieler.klighd.ui.printing.actions.PrintActionHelper;
 import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.util.PrintExporter;
 
 /**
- * Print Preview Action to display the Print Preview dialog. There are no static methods, so you
- * must create an instance of this class.
+ * A PrintPreview to be displayed as a dialog tray, e.g. used by {@link KlighdPrintDialog}.
  * 
- * Call doPrintPreview() after you've made an instance.
- * 
- * This class should be combined with the DiagramPrinter to reuse functionality.
- * 
- * @author Wayne Diu, wdiu
+ * @author csp
  */
 public class PrintPreviewTray extends DialogTray {
 
@@ -55,17 +62,12 @@ public class PrintPreviewTray extends DialogTray {
 
     /* SWT interface variables */
 
-    /** Body of the shell. */
-    protected Composite body;
-
-    /** Composite for the pages */
-    protected Composite composite;
-
-    /* Toolbar items */
+    private Composite body;
+    private Composite composite;
 
     /* Images */
 
-    /** List of images to dispose */
+    /* List of images to dispose */
     private List<Image> imageList = new ArrayList<Image>();
 
     /* Observables to remove listeners from */
@@ -75,38 +77,36 @@ public class PrintPreviewTray extends DialogTray {
     private IObservableValue delayedResize;
     private IObservableValue printerData;
 
-    /** Listener to be removed from observables. */
+    /* Listener to be removed from observables. */
     private IValueChangeListener listener;
-    private PrintExporter exporter;
+    
+    /** Minimal tile size. */
+    protected static final int MINIMAL_TILE_SIZE = 4;
 
-    /** Border size */
+    /** Border size. */
     protected static final int BORDER_SIZE = 20;
 
-    /** delay of scale and pages tall/wide observables */
+    /** delay of scale and pages tall/wide observables. */
     protected static final int OBSERVABLE_DELAY = 100;
 
-    /** the background color */
+    /** Background color. */
     private static final Color BACKGROUND_COLOR = new Color(Display.getDefault(), 124, 124, 124);
 
-    /**
-     * @param dluConverter
-     */
-    PrintPreviewTray(DataBindingContext bindings, PrintOptions options, PrintExporter exporter) {
+    PrintPreviewTray(final DataBindingContext bindings, final PrintOptions options) {
         this.bindings = bindings;
         this.options = options;
-        this.exporter = exporter;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Control createContents(Composite parent) {
+    public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
         listener = new IValueChangeListener() {
 
-            public void handleValueChange(ValueChangeEvent event) {
+            public void handleValueChange(final ValueChangeEvent event) {
                 updateComposite();
             }
         };
@@ -148,15 +148,8 @@ public class PrintPreviewTray extends DialogTray {
     }
 
     /**
-     * Draw the composite centered on the body based on the number of columns. Also calls the method
-     * to make the images and insert them into the composite.
-     * 
-     * @param numberOfRows
-     *            the number of rows that the composite should contain. I need this to figure out
-     *            the height of the image.
-     * @param numberOfColumns
-     *            the number of columns that the composite should contain. I need this to figure out
-     *            the width of the image.
+     * Draw the composite centered on the body. Also calls the method to make the images and insert
+     * them into the composite.
      */
     public void updateComposite() {
         if (composite == null || composite.isDisposed()) {
@@ -183,20 +176,20 @@ public class PrintPreviewTray extends DialogTray {
         // ( body height - top border - bottom border -
         // ((# of rows - 1) x border between images) ) / # of rows
         int imageHeight =
-                (body.getSize().y - BORDER_SIZE - BORDER_SIZE - ((options.getFitToPagesHeight() - 1) * BORDER_SIZE))
-                        / options.getFitToPagesHeight();
+                (body.getSize().y - BORDER_SIZE - BORDER_SIZE - ((options.getFitToPagesHeight() - 1)
+                        * BORDER_SIZE)) / options.getFitToPagesHeight();
 
         // ( body width - left border - right border -
         // ((# of columns - 1) x border between images) ) / # of columns
         int imageWidth =
-                (body.getSize().x - BORDER_SIZE - BORDER_SIZE - ((options.getFitToPagesWidth() - 1) * BORDER_SIZE))
-                        / options.getFitToPagesWidth();
+                (body.getSize().x - BORDER_SIZE - BORDER_SIZE - ((options.getFitToPagesWidth() - 1)
+                        * BORDER_SIZE)) / options.getFitToPagesWidth();
 
         // now adjust to the limiting one based on aspect ratio
 
         Printer p = new Printer(options.getPrinterData());
 
-        Rectangle pageBounds = PrintActionHelper.getPrinterBounds(p);
+        Rectangle pageBounds = PrintExporter.getPrinterBounds(p);
 
         // width / height
         float printerRatio = ((float) pageBounds.width) / ((float) pageBounds.height);
@@ -210,18 +203,19 @@ public class PrintPreviewTray extends DialogTray {
         }
 
         // make sure height and width are not 0, if too small <4, don't bother
-        if (!(imageHeight <= 4 || imageWidth <= 4)) {
+        if (!(imageHeight <= MINIMAL_TILE_SIZE || imageWidth <= MINIMAL_TILE_SIZE)) {
 
             double scale = options.getScaleFactor();
 
+            // Adjust the scale according to relation between preview and printing size.
             scale = scale * imageWidth / pageBounds.width;
 
             for (int i = 0; i < options.getFitToPagesHeight(); i++) {
                 for (int j = 0; j < options.getFitToPagesWidth(); j++) {
                     Label label = new Label(composite, SWT.NULL);
-                    Image pageImg = exporter.exportPreview(j, i, imageWidth, imageHeight, scale);
-//                            makeImage(scaledWidth, scaledHeight, new java.awt.Rectangle(imageWidth * j
-//                                    - offsetX, imageHeight * i - offsetY, imageWidth, imageHeight));
+                    Image pageImg =
+                            options.getExporter().exportPreview(j, i, imageWidth, imageHeight,
+                                    scale);
                     label.setImage(pageImg);
                     imageList.add(pageImg);
                 }
@@ -230,7 +224,7 @@ public class PrintPreviewTray extends DialogTray {
 
         composite.pack();
 
-        // Manually center the compisite
+        // Manually center the composite
         Rectangle compositeBounds = composite.getBounds();
 
         compositeBounds.x = (body.getSize().x - compositeBounds.width) / 2;
@@ -242,18 +236,19 @@ public class PrintPreviewTray extends DialogTray {
     }
 
     /**
-     * Safely dispose an image
+     * Safely dispose an image.
      * 
      * @param image
      *            the Image to dispose.
      */
-    private void safeDisposeImage(Image image) {
-        if (image != null && !image.isDisposed())
+    private void safeDisposeImage(final Image image) {
+        if (image != null && !image.isDisposed()) {
             image.dispose();
+        }
     }
 
     /**
-     * Dispose resources.
+     * Dispose images.
      */
     public void disposeImages() {
         for (Image image : imageList) {
@@ -263,7 +258,7 @@ public class PrintPreviewTray extends DialogTray {
     }
 
     /**
-     * 
+     * Dispose resources.
      */
     public void dispose() {
         disposeImages();
@@ -272,6 +267,7 @@ public class PrintPreviewTray extends DialogTray {
         delayedPagesWide.removeValueChangeListener(listener);
         delayedPagesTall.removeValueChangeListener(listener);
         printerData.removeValueChangeListener(listener);
+        BACKGROUND_COLOR.dispose();
     }
 
 }

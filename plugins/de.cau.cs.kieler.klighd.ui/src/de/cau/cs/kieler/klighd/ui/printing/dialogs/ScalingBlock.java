@@ -1,3 +1,4 @@
+// SUPPRESS CHECKSTYLE NEXT Header
 /******************************************************************************
  * Copyright (c) 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -8,7 +9,19 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation 
  ****************************************************************************/
-
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2014 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
 package de.cau.cs.kieler.klighd.ui.printing.dialogs;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -32,83 +45,91 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.klighd.ui.printing.actions.PrintActionHelper;
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
+import de.cau.cs.kieler.klighd.ui.printing.util.PrintExporter;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * A section of the JPS print dialog that adds scaling support.
+ * A section of the KlighD print dialog that adds scaling support.
+ * 
+ * @author csp
  * 
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  */
-class ScalingBlock extends DialogBlock {
+class ScalingBlock implements DialogBlock {
+
     private final DataBindingContext bindings;
     private final PrintOptions options;
 
-    ScalingBlock(IDialogUnitConverter dluConverter, DataBindingContext bindings,
-            PrintOptions options) {
-        super(dluConverter);
-
+    ScalingBlock(final DataBindingContext bindings, final PrintOptions options) {
         this.bindings = bindings;
         this.options = options;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.gmf.runtime.common.ui.printing.internal.dialogs.DialogBlock#createContents(org
-     * .eclipse.swt.widgets.Composite)
+    private static final int MAX_PAGES = 100;
+    private static final int BUTTONS_GROUP_COLUMNS = 3;
+    private static final int PAGES_GROUP_COLUMNS = 5;
+    private static final int SCALING_GROUP_COLUMNS = 4;
+    private static final int SPINNER_WIDTH = 20;
+
+    /**
+     * {@inheritDoc}
      */
-    public Control createContents(Composite parent) {
+    public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
-        Composite result = group(parent, DiagramUIPrintingMessages.JPSPrintDialog_Scaling);
-        layout(result, 1);
+        Composite result = DialogUtil.group(parent, DiagramUIPrintingMessages.PrintDialog_Scaling);
+        DialogUtil.layout(result, 1);
 
         Composite buttonsGroup = new Composite(result, SWT.NONE);
-        layoutFillHorizontal(buttonsGroup);
-        buttonsGroup.setLayout(new GridLayout(3, false));
+        DialogUtil.layoutFillHorizontal(buttonsGroup, true);
+        buttonsGroup.setLayout(new GridLayout(BUTTONS_GROUP_COLUMNS, false));
 
-        Button oneToOneBtn = button(buttonsGroup, "Scale 100%");
+        Button oneToOneBtn =
+                DialogUtil
+                        .button(buttonsGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_to100);
         oneToOneBtn.addSelectionListener(new SelectionAdapter() {
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(final SelectionEvent e) {
                 options.setScaleFactor(1);
             }
         });
 
-        Button fitToPagesBtn = button(buttonsGroup, "Fit to pages");
+        Button fitToPagesBtn =
+                DialogUtil.button(buttonsGroup,
+                        DiagramUIPrintingMessages.PrintDialog_Scaling_fitPages);
         fitToPagesBtn.addSelectionListener(new SelectionAdapter() {
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(final SelectionEvent e) {
                 int width =
-                        PrintActionHelper.getPrinterBounds(new Printer(options.getPrinterData())).width;
+                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData())).width;
                 options.setScaleFactor(((double) width) * options.getFitToPagesWidth()
                         / options.getExporter().getDiagramBounds().width);
             }
         });
 
-        Button adjustPagesBtn = button(buttonsGroup, "Adjust pages");
+        Button adjustPagesBtn =
+                DialogUtil.button(buttonsGroup,
+                        DiagramUIPrintingMessages.PrintDialog_Scaling_adjustPages);
         adjustPagesBtn.addSelectionListener(new SelectionAdapter() {
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(final SelectionEvent e) {
                 Rectangle bounds =
-                        PrintActionHelper.getPrinterBounds(new Printer(options.getPrinterData()));
+                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
                 PBounds size = options.getExporter().getDiagramBounds();
                 options.setFitToPagesWidth((int) Math.ceil(size.width * options.getScaleFactor()
                         / bounds.width));
@@ -118,28 +139,17 @@ class ScalingBlock extends DialogBlock {
         });
 
         Composite scalingGroup = new Composite(result, SWT.NONE);
-        layoutFillHorizontal(scalingGroup);
-        scalingGroup.setLayout(new GridLayout(4, false));
+        DialogUtil.layoutFillHorizontal(scalingGroup, true);
+        scalingGroup.setLayout(new GridLayout(SCALING_GROUP_COLUMNS, false));
 
-        label(scalingGroup, "Scale diagram to");
-        final Scale scaleFactor = scale(scalingGroup, 1, 200);
+        DialogUtil.label(scalingGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_scaleTo);
+        final Scale scaleFactor = DialogUtil.scale(scalingGroup, 1, 200);
 //        layoutSpanHorizontal(scaleFactor, 2);
-        layoutFillHorizontal(scaleFactor);
-        Label labelScale = label(scalingGroup, "");
+        DialogUtil.layoutFillHorizontal(scaleFactor, true);
+        Label labelScale = DialogUtil.label(scalingGroup, "");
         GC gc = new GC(labelScale);
-        layoutWidth(labelScale, gc.textExtent("500").x);
-        label(scalingGroup, "percent of");
-
-//        Button adjustRadio = radio(result, DiagramUIPrintingMessages.JPSPrintDialog_Adjust);
-//        layoutSpanHorizontal(adjustRadio, 2);
-//        Text textScale = text(result, 20);
-//        layoutSpanHorizontal(blank(result), 2);
-
-//        final IObservableValue scalingValue =
-//                BeansObservables
-//                        .observeValue(realm, options, PrintOptions.PROPERTY_PERCENT_SCALING);
-
-//        bindings.bindValue(SWTObservables.observeSelection(adjustRadio), scalingValue, null, null);
+        DialogUtil.layoutWidth(labelScale, gc.textExtent("500").x);
+        DialogUtil.label(scalingGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_percent);
 
         IObservableValue scaleValue =
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR);
@@ -149,40 +159,33 @@ class ScalingBlock extends DialogBlock {
             @Override
             protected Object calculate() {
                 Integer value = (Integer) scaleSelectionRaw.getValue();
-                if (value < 100)
+                // TODO find better scaling control (maybe something logarithmic)
+                // SUPPRESS CHECKSTYLE NEXT 4 MagicNumber
+                if (value < 100) {
                     return value / 100f;
-                else
+                } else {
                     return (value - 80) * 5 / 100f;
+                }
             }
         };
         bindings.bindValue(scaleSelection, scaleValue, null, null);
         bindings.bindValue(SWTObservables.observeText(labelScale), scaleValue, null, null);
 
-//        Button fitToRadio = radio(result, DiagramUIPrintingMessages.JPSPrintDialog_FitTo);
-//
-//        IObservableValue fitToValue = new ComputedValue(realm) {
-//            protected Object calculate() {
-//                return Boolean.valueOf(!((Boolean) scalingValue.getValue()).booleanValue());
-//            }
-//        };
-
-//        bindings.bindValue(SWTObservables.observeSelection(fitToRadio), fitToValue, null, null);
-
-//        blank(result);
-
         Composite pagesGroup = new Composite(result, SWT.NONE);
-        layoutFillHorizontal(pagesGroup);
-        pagesGroup.setLayout(new GridLayout(4, false));
+        DialogUtil.layoutFillHorizontal(pagesGroup, true);
+        pagesGroup.setLayout(new GridLayout(PAGES_GROUP_COLUMNS, false));
 
-        Spinner spinnerWide = spinner(pagesGroup, 1, 100);
-        layoutWidth(spinnerWide, 20);
+        DialogUtil.label(pagesGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_printTo);
 
-        label(pagesGroup, "Pages wide by");
+        Spinner spinnerWide = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
+        DialogUtil.layoutWidth(spinnerWide, SPINNER_WIDTH);
 
-        Spinner spinnerTall = spinner(pagesGroup, 1, 100);
-        layoutWidth(spinnerTall, 20);
+        DialogUtil.label(pagesGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_pagesWide);
 
-        label(pagesGroup, "Pages tall");
+        Spinner spinnerTall = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
+        DialogUtil.layoutWidth(spinnerTall, SPINNER_WIDTH);
+
+        DialogUtil.label(pagesGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_pagesTall);
 
         bindings.bindValue(SWTObservables.observeSelection(spinnerWide),
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_FIT_TO_WIDTH),
@@ -195,8 +198,10 @@ class ScalingBlock extends DialogBlock {
         return result;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public void dispose() {
-        // nothing special to dispose currently
+        // nothing to dispose
     }
 }

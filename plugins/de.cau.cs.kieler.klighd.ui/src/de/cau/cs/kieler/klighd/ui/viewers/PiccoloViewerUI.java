@@ -135,12 +135,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
             final PiccoloViewer thisViewer = this;
 
             actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new Action() {
-//                private final PrintAction printer = new PrintAction(thisViewer);
 
                 @Override
                 public void run() {
-//                    printer.run();
-                    new PrintActionHelper().doPrint(thisViewer);
+                    new PrintActionHelper().print(thisViewer);
                 }
             });
         }
