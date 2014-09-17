@@ -18,7 +18,6 @@ import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -43,7 +42,7 @@ public class SVGExporter extends KlighdCanvasExporter {
      * {@inheritDoc}
      */
     @Override
-    public void export(final ExportData data, final KlighdCanvas canvas) {
+    public IStatus export(final ExportData data, final KlighdCanvas canvas) {
 
         // reveal the canvas' camera ...
         final KlighdMainCamera camera = canvas.getCamera();
@@ -53,12 +52,12 @@ public class SVGExporter extends KlighdCanvasExporter {
         
         // initialize a graphics object that 'collects' all the drawing instructions 
         final KlighdAbstractSVGGraphics graphics =
-                SVGGeneratorManager.createGraphics(data.subFormatId, bounds,
+                SVGGeneratorManager.createGraphics(data.format, bounds,
                         data.isTextAsShapes, data.isEmbedFonts);
 
         // do the actual diagram drawing work
         this.drawDiagram(camera, data.isCameraViewport, graphics, bounds,
-                ExportHooks.getExportHooksByFormat(data.subFormatId)); 
+                ExportHooks.getExportHooksByFormat(data.format), true); 
 
         OutputStream stream = null;
         try {
@@ -66,6 +65,7 @@ public class SVGExporter extends KlighdCanvasExporter {
             stream = data.createOutputStream();
             graphics.stream(stream);
             stream.close();
+            return Status.OK_STATUS;
         } catch (final IOException e) {
             String msg = "KLighD SVG export: "
                     + "Failed to write SVG data";
@@ -74,8 +74,7 @@ public class SVGExporter extends KlighdCanvasExporter {
                         + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR
                         + " the stream instance is " + stream.toString();
             }
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e));
-        }
+            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+        }        
     }
 }

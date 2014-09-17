@@ -66,6 +66,8 @@ public class PrintOptions extends PrintModelElement {
 
     /** Observables ID for scale factor. */
     public static final String PROPERTY_SCALE_FACTOR = "scaleFactor"; //$NON-NLS-1$
+    /** Observables ID for displaying the scale factor. */
+    public static final String PROPERTY_SCALE_PERCENT = "scalePercent"; //$NON-NLS-1$
     /** Observables ID for number of pages wide. */
     public static final String PROPERTY_FIT_TO_WIDTH = "fitToPagesWidth"; //$NON-NLS-1$
     /** Observables ID for number of pages tall. */
@@ -174,6 +176,8 @@ public class PrintOptions extends PrintModelElement {
     public double getScaleFactor() {
         return scaleFactor;
     }
+    
+    private static final double PERCENT_FACTOR = 100.0;
 
     /**
      * Sets the scale factor.
@@ -186,6 +190,32 @@ public class PrintOptions extends PrintModelElement {
             this.scaleFactor = scaleFactor;
         }
         firePropertyChange(PROPERTY_SCALE_FACTOR, oldFactor, this.scaleFactor);
+        firePropertyChange(PROPERTY_SCALE_PERCENT, (int) (oldFactor * PERCENT_FACTOR),
+                (int) (this.scaleFactor * PERCENT_FACTOR));
+    }
+
+    /**
+     * Gets the scale percent.
+     *
+     * @return the scale in percent
+     */
+    public int getScalePercent() {
+        return (int) (scaleFactor * PERCENT_FACTOR);
+    }
+
+    /**
+     * Sets the scale percent.
+     *
+     * @param scalePercent the new scale in percent
+     */
+    public void setScalePercent(final int scalePercent) {
+        double oldFactor = this.scaleFactor;
+        if (scalePercent > 0) {
+            this.scaleFactor = scalePercent / PERCENT_FACTOR;
+        }
+        firePropertyChange(PROPERTY_SCALE_FACTOR, oldFactor, this.scaleFactor);
+        firePropertyChange(PROPERTY_SCALE_PERCENT, (int) (oldFactor * PERCENT_FACTOR),
+                (int) (this.scaleFactor * PERCENT_FACTOR));
     }
 
     /**

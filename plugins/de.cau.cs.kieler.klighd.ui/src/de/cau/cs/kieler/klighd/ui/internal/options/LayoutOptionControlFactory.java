@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.ui.internal.options;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
@@ -309,7 +310,7 @@ public class LayoutOptionControlFactory {
 //         
 //            return;
 //        }
-        Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
+        final Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
         label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
         controls.add(label);
         
@@ -320,7 +321,7 @@ public class LayoutOptionControlFactory {
             // the following setting is needed on windows
             slider.setBackground(parent.getBackground());
             slider.setToolTipText(optionData.getDescription());
-            final SliderListener sliderListener = new SliderListener(optionData,
+            final SliderListener sliderListener = new SliderListener(label, optionData,
                     getMinValue(optionData, minValue), getMaxValue(optionData, maxValue));
             final GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
             slider.setLayoutData(gridData);
@@ -332,10 +333,13 @@ public class LayoutOptionControlFactory {
             initialValue = KielerMath.boundf(initialValue, sliderListener.minFloat,
                     sliderListener.maxFloat);
             sliderListener.setOptionValue(initialValue);
+            label.setText(optionData.getName() + ": " + initialValue);
+
             final int selection = Math.round((initialValue - sliderListener.minFloat)
                     / (sliderListener.maxFloat - sliderListener.minFloat)
                     * (slider.getMaximum() - slider.getMinimum())) + slider.getMinimum();
             slider.setSelection(selection);
+            
             // add selection listener for instant layout updates
             slider.addSelectionListener(sliderListener);
             slider.setData(DATA_SELECTION_LISTENER, sliderListener);
@@ -405,10 +409,10 @@ public class LayoutOptionControlFactory {
                 values = availableValues.toArray();
 
             } else {
-                label = new Label(parent, SWT.NONE);
-                label.setText("This option type requires pre-defined values.");
-                label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
-                controls.add(label);
+                final Label errorLabel = new Label(parent, SWT.NONE);
+                errorLabel.setText("This option type requires pre-defined values.");
+                errorLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+                controls.add(errorLabel);
                 break;
             }
             
@@ -431,10 +435,10 @@ public class LayoutOptionControlFactory {
         }
 
         default:
-            label = new Label(parent, SWT.NONE);
-            label.setText("This option type is not supported");
-            label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
-            controls.add(label);
+            final Label errorLabel = new Label(parent, SWT.NONE);
+            errorLabel.setText("This option type is not supported");
+            errorLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+            controls.add(errorLabel);
         }
     }
     
@@ -503,28 +507,34 @@ public class LayoutOptionControlFactory {
         }
         return builder.toString();
     }
+
+    private static final Pattern MAX_2_DIGITS = Pattern.compile("(.*\\.\\d[^0]?)\\d*");
+    private static final String FIRST_GROUP = "$1";
     
     /**
      * A listener for sliders.
      */
     private class SliderListener extends SelectionAdapter {
         
+        /** the corresponding name label used updating the selected value. */
+        private final Label correspondingLabel;
         /** the layout option that is affected by the slider. */
-        private LayoutOptionData optionData;
+        private final LayoutOptionData optionData;
         /** the maximal value. */
-        private float minFloat;
+        private final float minFloat;
         /** the minimal value. */
-        private float maxFloat;
-        
+        private final float maxFloat;
+
         /**
          * Create a slider listener.
-         * 
+         * @param textLabel the corresponding name label used updating the selected value
          * @param optionData the layout option that is affected by the slider
          * @param minFloat the maximal value
          * @param maxFloat the minimal value
          */
-        SliderListener(final LayoutOptionData optionData, final float minFloat,
-                final Float maxFloat) {
+        SliderListener(final Label textLabel, final LayoutOptionData optionData,
+                final float minFloat, final Float maxFloat) {
+            this.correspondingLabel = textLabel;
             this.optionData = optionData;
             this.minFloat = minFloat;
             if (maxFloat <= minFloat) {
@@ -541,6 +551,9 @@ public class LayoutOptionControlFactory {
                     / (slider.getMaximum() - slider.getMinimum());
             final float optionValue = minFloat + sliderValue * (maxFloat - minFloat);
             setOptionValue(optionValue);
+            correspondingLabel.setText(optionData.getName() + ": "
+                    + MAX_2_DIGITS.matcher(String.valueOf(optionValue)).replaceFirst(FIRST_GROUP));
+            correspondingLabel.getParent().layout(true);
             
             // trigger a new layout on the displayed diagram
             refreshLayout(false);

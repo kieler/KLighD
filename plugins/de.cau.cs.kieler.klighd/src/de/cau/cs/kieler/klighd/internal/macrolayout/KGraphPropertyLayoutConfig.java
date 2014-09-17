@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -282,25 +283,36 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
     public Collection<IProperty<?>> getAffectedOptions(final LayoutContext context) {
         final KGraphElement element = getAffectedElement(context);
         final List<IProperty<?>> options = new LinkedList<IProperty<?>>();
+
         if (element != null) {
             final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
-                final Set<Map.Entry<IProperty<?>, Object>> entrySet = elementLayout.getAllProperties()
-                        .entrySet();
 
-                // although I cannot believe it - our customers observed got a null pointer exception
-                //  due to the following situation
-                if (entrySet == null) {
-                    final String msg = "EntrySet empty in KGraphPropertyLayoutConfig:"
-                            + KlighdPlugin.LINE_SEPARATOR + "  elementLayout == " + elementLayout
-                            + KlighdPlugin.LINE_SEPARATOR + "  element == " + element
-                            + KlighdPlugin.LINE_SEPARATOR + "  sourceElement == "
-                            + elementLayout.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+                Map<IProperty<?>, Object> allProperties = null;
 
-                    KlighdPlugin.getDefault().getLog()
-                            .log(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
-                    return options;
+                // chsch: we do have a concurrency issue here that leads to
+                //  'elementLayout.getAllProperties() == null', and which I don't understand entirely
+                // thus I added this retry routine that in addition catches
+                //  ConcurrentModificationExceptions, which IMO may occur as well due to the loop in
+                //   EMapPropertyHolder#getAllProperties()
+                while (allProperties == null) {
+                    try {
+                        allProperties = elementLayout.getAllProperties();
+
+                    } catch (final ConcurrentModificationException e) {
+                        // add an info to the log and retry...
+                        final String msg = "Concurrent modification in KGraphPropertyLayoutConfig:"
+                                + KlighdPlugin.LINE_SEPARATOR + "  elementLayout == " + elementLayout
+                                + KlighdPlugin.LINE_SEPARATOR + "  element == " + element
+                                + KlighdPlugin.LINE_SEPARATOR + "  sourceElement == "
+                                + elementLayout.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+                        
+                        KlighdPlugin.getDefault().getLog()
+                                .log(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+                    }
                 }
+
+                final Set<Map.Entry<IProperty<?>, Object>> entrySet = allProperties.entrySet();
 
                 // first handle all expansion aware layout option sets
                 for (final Map.Entry<IProperty<?>, Object> entry : entrySet) {

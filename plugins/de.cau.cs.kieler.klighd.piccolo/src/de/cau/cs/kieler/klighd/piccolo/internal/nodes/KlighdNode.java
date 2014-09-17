@@ -35,8 +35,12 @@ public abstract class KlighdNode extends PNode {
 
     private static final long serialVersionUID = 6876586117083105843L;
 
-    // SUPPRESS CHECKSTYLE NEXT 3 Visibility -- fields are package protected in order to be accessed
+    // SUPPRESS CHECKSTYLE NEXT 7 Visibility -- fields are package protected in order to be accessed
     //  for initialization, see inner sub classes
+    boolean outlineInvisible = false;
+    boolean exportedImageInvisible = false;
+    boolean printoutInvisible = false;
+
     float lowerScaleBound = 0;
     float upperScaleBound = -1;
 
@@ -53,6 +57,31 @@ public abstract class KlighdNode extends PNode {
      * @return the traced view graph element.
      */
     public abstract EObject getGraphElement();
+
+
+    /**
+     * @return <code>true</code> in order to suppress the drawing of this {@link KlighdNode} on the
+     *         outline diagram, <code>false</code> in the normal case
+     */
+    public boolean isOutlineInvisible() {
+        return outlineInvisible;
+    }
+
+    /**
+     * @return <code>true</code> in order to suppress the drawing of this {@link KlighdNode} to
+     *         exported diagram images, <code>false</code> in the normal case
+     */
+    public boolean isExportedImageInvisible() {
+        return exportedImageInvisible;
+    }
+
+    /**
+     * @return <code>true</code> in order to suppress the drawing of this {@link KlighdNode} to
+     *         diagram printouts, <code>false</code> in the normal case
+     */
+    public boolean isPrintOutInvisible() {
+        return printoutInvisible;
+    }    
 
     /**
      * Returns the declared lower bound of the diagram scale/zoom factor of which this (pseudo)
@@ -74,6 +103,40 @@ public abstract class KlighdNode extends PNode {
      */
     public double getUpperVisibilityBound() {
         return upperScaleBound;
+    }
+
+    /**
+     * Decides whether a {@link KlighdNode} must not be drawn according to given scale-based
+     * visibility definitions. (see
+     * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
+     * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
+     * 
+     * @param kpc
+     *            the KlighdPaintContext providing the required information
+     * 
+     * @return <code>true</code> if this (pseudo) figure should not be drawn on the diagram being
+     *         drawn in the given <code>diagramScale</code>
+     */
+    public boolean isNotVisibleOn(final KlighdPaintContext kpc) {
+        // this method must be as fast as possible in the 'main diagram case'
+        //  therefore ...
+
+        if (kpc.isMainDiagram()) {
+            return isNotVisibleOn(kpc.getCameraZoomScale());
+
+        } else if (kpc.isOutline()) {
+            return isOutlineInvisible() || isNotVisibleOn(kpc.getCameraZoomScale());
+
+        } else if (kpc.isImageExport()) {
+            return isExportedImageInvisible() || isNotVisibleOn(kpc.getCameraZoomScale());
+
+        } else if (kpc.isPrintout()) {
+            return isPrintOutInvisible() || isNotVisibleOn(kpc.getCameraZoomScale());
+
+        } else {
+            // default case, should never by reached
+            return false;
+        }
     }
 
     /**
@@ -190,10 +253,12 @@ public abstract class KlighdNode extends PNode {
         public boolean fullPick(final PPickPath pickPath) {
             final PCamera topCam = pickPath.getTopCamera();
 
+            // first test whether this figure is visible at all
+            //  we shamelessly assume that scaleX == scaleY ;-)
             if (isNotVisibleOn(topCam.getViewTransformReference().getScaleX())) {
                 return false;
             }
-            
+
             return super.fullPick(pickPath);
         }
 
@@ -207,7 +272,7 @@ public abstract class KlighdNode extends PNode {
         @Override
         public void fullPaint(final PPaintContext paintContext) {
             final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-            if (isNotVisibleOn(kpc.getCameraZoomScale())) {
+            if (isNotVisibleOn(kpc)) {
                 return;
             }
             super.fullPaint(paintContext);
@@ -274,7 +339,7 @@ public abstract class KlighdNode extends PNode {
             this();
             setRendering(rendering);
         }
-        
+
         private T rendering;
 
         /**
@@ -296,6 +361,13 @@ public abstract class KlighdNode extends PNode {
             this.rendering = rendering;
             
             if (rendering != null) {
+                this.outlineInvisible = rendering.getProperty(
+                        KlighdProperties.OUTLINE_INVISIBLE);
+                this.exportedImageInvisible = rendering.getProperty(
+                        KlighdProperties.EXPORTED_IMAGE_INVISIBLE);
+                this.printoutInvisible = rendering.getProperty(
+                        KlighdProperties.PRINTOUT_INVISIBLE);
+
                 this.lowerScaleBound = rendering.getProperty(
                         KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
                 this.upperScaleBound = rendering.getProperty(
@@ -326,11 +398,39 @@ public abstract class KlighdNode extends PNode {
          */
         @Override
         protected boolean pickAfterChildren(final PPickPath pickPath) {
+            // first test whether this figure is visible at all
+            //  we shamelessly assume that scaleX == scaleY ;-)
             if (isNotVisibleOn(pickPath.getTopCamera().getViewTransformReference().getScaleX())) {
                 return false;
             }
             return super.pickAfterChildren(pickPath);
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void paint(final PPaintContext paintContext) {
+            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+            // first test whether this figure shall be drawn at all
+            if (isNotVisibleOn(kpc)) {
+                return;
+            }
+
+            this.paint((KlighdPaintContext) paintContext);
+        }
+
+        /**
+         * Derivative of {@link #paint(PPaintContext)} requiring a {@link KlighdPaintContext}.
+         * 
+         * @param paintContext
+         *            the paint context to use for drawing the node
+         * @see PNode#paint(PPaintContext)
+         */
+        protected void paint(final KlighdPaintContext paintContext) {
+        }
+
 
         /**
          * A convenience method to be re-used in the {@link #paint(PPaintContext)} methods of

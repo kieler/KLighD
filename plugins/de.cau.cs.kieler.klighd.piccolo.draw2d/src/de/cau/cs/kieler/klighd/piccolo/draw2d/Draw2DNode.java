@@ -35,7 +35,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * A Piccolo2D node implementation wrapping a Draw2d figure.
@@ -222,14 +221,7 @@ public class Draw2DNode extends KCustomFigureNode {
      * {@inheritDoc}
      */
     @Override
-    protected void paint(final PPaintContext paintContext) {
-        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-
-        // first test whether this figure shall be drawn at all
-        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
-            return;
-        }
-
+    protected void paint(final KlighdPaintContext kpc) {
         // paintContext.pushClip(getBounds());
         
         this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());

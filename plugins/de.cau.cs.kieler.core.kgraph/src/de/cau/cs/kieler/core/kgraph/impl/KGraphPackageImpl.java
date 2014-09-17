@@ -661,12 +661,14 @@ public class KGraphPackageImpl extends EPackageImpl implements KGraphPackage {
 
         initEClass(iPropertyHolderEClass, IPropertyHolder.class, "IPropertyHolder", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-        op = addEOperation(iPropertyHolderEClass, null, "setProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
+        op = addEOperation(iPropertyHolderEClass, this.getIPropertyHolder(), "setProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
+        t1 = addETypeParameter(op, "T");
         g1 = createEGenericType(this.getIProperty());
-        g2 = createEGenericType();
+        g2 = createEGenericType(t1);
         g1.getETypeArguments().add(g2);
         addEParameter(op, g1, "property", 1, 1, IS_UNIQUE, IS_ORDERED);
-        addEParameter(op, ecorePackage.getEJavaObject(), "value", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(t1);
+        addEParameter(op, g1, "value", 0, 1, IS_UNIQUE, IS_ORDERED);
 
         op = addEOperation(iPropertyHolderEClass, null, "getProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
         t1 = addETypeParameter(op, "T");
@@ -677,7 +679,7 @@ public class KGraphPackageImpl extends EPackageImpl implements KGraphPackage {
         g1 = createEGenericType(t1);
         initEOperation(op, g1);
 
-        op = addEOperation(iPropertyHolderEClass, null, "copyProperties", 0, 1, IS_UNIQUE, IS_ORDERED);
+        op = addEOperation(iPropertyHolderEClass, this.getIPropertyHolder(), "copyProperties", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, this.getIPropertyHolder(), "holder", 1, 1, IS_UNIQUE, IS_ORDERED);
 
         op = addEOperation(iPropertyHolderEClass, null, "getAllProperties", 1, 1, IS_UNIQUE, IS_ORDERED);

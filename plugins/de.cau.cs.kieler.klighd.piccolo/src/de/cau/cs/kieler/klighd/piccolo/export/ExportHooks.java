@@ -29,7 +29,7 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 
 /**
- * 
+ * Utility class to retrieve suitable export hooks according to the selected export format.
  *
  * @author csp
  */
@@ -53,7 +53,9 @@ public final class ExportHooks {
     /** the mapping of formats and the supporting export hooks. */
     private static Multimap<String, IExportHook> formatExportHookMapping = null;
     
-    private ExportHooks(){}
+    private ExportHooks() {
+        // prevent instantiation
+    }
 
     /**
      * Returns the collection of registered {@link IExportHook IExportHooks} with the given

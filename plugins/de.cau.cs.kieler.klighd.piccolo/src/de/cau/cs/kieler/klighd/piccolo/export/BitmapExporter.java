@@ -27,7 +27,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -59,11 +58,12 @@ public class BitmapExporter extends KlighdCanvasExporter {
     /** the png format. */
     public static final String SUB_FORMAT_PNG = "png";
 
+    private static final String ERROR_MSG_PREFIX = "KLighD bitmap export: ";
     /**
      * {@inheritDoc}
      */
     @Override
-    public void export(final ExportData data, final KlighdCanvas canvas) {
+    public IStatus export(final ExportData data, final KlighdCanvas canvas) {
 
         // reveal the canvas' camera ...
         final KlighdMainCamera camera = canvas.getCamera();
@@ -90,20 +90,35 @@ public class BitmapExporter extends KlighdCanvasExporter {
             width = (int) Math.ceil(((double) width) / cols);
             height = (int) Math.ceil(((double) height) / rows);
         }
-
+        
         // for each row and columns draw and export the image
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                exportTile(data, canvas, bounds, row, col, width, height);
+                final IStatus res = exportTile(data, canvas, bounds, row, col, width, height);
+                if (res != Status.OK_STATUS) {
+                    return res;
+                }
             }
         }
+
+        return Status.OK_STATUS;
     }
 
-    private void exportTile(final ExportData data, final KlighdCanvas canvas, final PBounds bounds,
+
+    private IStatus exportTile(final ExportData data, final KlighdCanvas canvas, final PBounds bounds,
             final int row, final int col, final int width, final int height) {
 
         // initialize an SWT Image that serves as the pixel 'canvas'
-        final Image image = new Image(canvas.getDisplay(), width, height);
+        final Image image;
+        try {
+            image = new Image(canvas.getDisplay(), width, height);
+
+        } catch (final OutOfMemoryError e) {
+            System.gc();
+
+            final String msg = ERROR_MSG_PREFIX + "Out of heap space memory!";
+            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+        }
         final GC gc = new GC(image);
 
         // initialize a graphics object that 'collects' all the drawing instructions
@@ -115,9 +130,13 @@ public class BitmapExporter extends KlighdCanvasExporter {
             graphics.clip(new Rectangle(width, height));
         }
 
+        // apply the scale factor to the employed graphics object
+        //  by means of a corresponding affine transform
+        graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
+
         // do the action diagram drawing work
         drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, data.scale,
-                ExportHooks.getExportHooksByFormat(data.subFormatId));
+                ExportHooks.getExportHooksByFormat(data.format), false);
 
         // create an image loader to save the image
         // although the API differently suggests:
@@ -128,9 +147,9 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
         // translate the requested format identifier
         final int format;
-        if (data.subFormatId.equals(SUB_FORMAT_JPEG)) {
+        if (data.format.equals(SUB_FORMAT_JPEG)) {
             format = SWT.IMAGE_JPEG;
-        } else if (data.subFormatId.equals(SUB_FORMAT_PNG)) {
+        } else if (data.format.equals(SUB_FORMAT_PNG)) {
             format = SWT.IMAGE_PNG;
         } else {
             // default format is bmp
@@ -139,6 +158,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
         // dump out the binary image data via the provided output stream
         OutputStream stream = null;
+        IStatus status;
         try {
 
             if (data.getTilingInfo().isTiled) {
@@ -148,27 +168,34 @@ public class BitmapExporter extends KlighdCanvasExporter {
             }
             loader.save(stream, format);
             stream.close();
+            status = Status.OK_STATUS;
 
         } catch (final SWTError e) {
-            String msg = "KLighD bitmap export: " + "Failed to write bitmap data";
+            String msg = ERROR_MSG_PREFIX + "Failed to write bitmap data";
             if (stream != null) {
                 msg += " into the provided OutputStream of type "
                         + stream.getClass().getCanonicalName()
                         + KlighdPlugin.LINE_SEPARATOR + " the stream instance is "
                         + stream.toString();
             }
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e));
+            status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
         } catch (final IOException e) {
-            final Status myStatus =
-                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID,
-                            "Failed to render diagram to an image.", e);
-            StatusManager.getManager().handle(myStatus, StatusManager.BLOCK | StatusManager.SHOW);
+            final String msg;
+            if (stream == null) {
+                msg = ERROR_MSG_PREFIX + "Failed to create output stream to write the image to.";
+            } else {
+                msg = ERROR_MSG_PREFIX + "Closing the employed output stream failed.";
+            }
+            status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+
+        } catch (final Throwable t) {
+            status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, t.getMessage(), t);
         }
 
         // release all native resources
         ((Graphics2D) graphics).dispose();
         gc.dispose();
         image.dispose();
+        return status;
     }
 }

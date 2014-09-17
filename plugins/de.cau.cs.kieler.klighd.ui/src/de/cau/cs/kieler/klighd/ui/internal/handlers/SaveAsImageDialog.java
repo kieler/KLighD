@@ -124,18 +124,9 @@ public class SaveAsImageDialog extends Dialog {
 
     private Scale scaleSlider;
 
-    /** the selected path. */
-    private IPath path;
-    /** whether the selected path is workspace relative. */
-    private boolean isWorkspacePath;
-    /** whether to render through the camera view port. */
-    private boolean cameraViewport;
-    /** whether to transform text to shapes in vector graphics. */
-    private boolean textAsShapes;
-    /** whether the texts' fonts shall be embedded in the output. */
-    private boolean embedFonts;
-    /** the selected scaleFactor. */
-    private int scaleFactor;
+    /** the export data recorded created based on the form data. **/
+    private ExportData exportData;
+
     /** the tilinginfo. **/
     private TilingData tilingInfo;
 
@@ -184,7 +175,7 @@ public class SaveAsImageDialog extends Dialog {
      */
     @Override
     protected Control createContents(final Composite parent) {
-        Control control = super.createContents(parent);
+        final Control control = super.createContents(parent);
         updateFileText();
         validateFileText();
         return control;
@@ -195,7 +186,7 @@ public class SaveAsImageDialog extends Dialog {
      */
     @Override
     protected Control createDialogArea(final Composite parent) {
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
         createFileGroup(composite);
         createImageFormatGroup(composite);
         createOptionsGroup(composite);
@@ -210,10 +201,10 @@ public class SaveAsImageDialog extends Dialog {
     private static final int BROWSE_WIDTH_HINT = 150;
 
     private void createFileGroup(final Composite parent) {
-        Composite composite = createComposite(parent, FILE_GROUP_COLUMNS);
+        final Composite composite = createComposite(parent, FILE_GROUP_COLUMNS);
 
         // label
-        Label label = new Label(composite, SWT.NONE);
+        final Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.SaveAsImageDialog_file_caption);
 
         // file path text
@@ -236,6 +227,7 @@ public class SaveAsImageDialog extends Dialog {
         gridData.widthHint = BROWSE_WIDTH_HINT;
         button.setLayoutData(gridData);
         button.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(final SelectionEvent event) {
                 handleWorkspaceBrowse();
             }
@@ -250,6 +242,7 @@ public class SaveAsImageDialog extends Dialog {
         // load option from preference store
         workspacePathCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_WORKSPACE_PATH));
         workspacePathCheckbox.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(final SelectionEvent event) {
                 validateFileText();
             }
@@ -262,6 +255,7 @@ public class SaveAsImageDialog extends Dialog {
         gridData.widthHint = BROWSE_WIDTH_HINT;
         button.setLayoutData(gridData);
         button.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(final SelectionEvent event) {
                 handleFileSystemBrowse();
             }
@@ -280,10 +274,10 @@ public class SaveAsImageDialog extends Dialog {
         label.setText(Messages.SaveAsImageDialog_image_format_caption);
 
         // assemble the file extension descriptions
-        String[] imageFormats = new String[descriptors.size()];
+        final String[] imageFormats = new String[descriptors.size()];
         int i = 0;
-        for (ExporterDescriptor descr : descriptors) {
-            String descrText =
+        for (final ExporterDescriptor descr : descriptors) {
+            final String descrText =
                     descr.description != null ? " (" + descr.description + ")" : "";
             imageFormats[i++] = descr.fileExtension + descrText;
         }
@@ -297,6 +291,7 @@ public class SaveAsImageDialog extends Dialog {
         index = index < 0 || index >= imageFormats.length ? 0 : index;
         imageFormatCombo.setText(imageFormats[index]);
         imageFormatCombo.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(final SelectionEvent e) {
                 updateFileText();
                 validateFileText();
@@ -331,9 +326,10 @@ public class SaveAsImageDialog extends Dialog {
         scaleVal.setLayoutData(gridData);
 
         scaleSlider.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(final SelectionEvent e) {
-                Scale s = ((Scale) e.widget);
-                int n = s.getSelection();
+                final Scale s = ((Scale) e.widget);
+                final int n = s.getSelection();
                 scaleVal.setText(String.valueOf(n));
                 composite.layout();
             }
@@ -355,8 +351,9 @@ public class SaveAsImageDialog extends Dialog {
         tilingOptionsButton.setLayoutData(gridData);
         
         tilingOptionsButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(final SelectionEvent event) {
-                TilingDialog tilingDialog = new TilingDialog(getParentShell(), tilingInfo);
+                final TilingDialog tilingDialog = new TilingDialog(getParentShell(), tilingInfo);
                 tilingDialog.open();
                 tilingInfo = tilingDialog.getTilingInfo();
                 updateTilingOptions();
@@ -382,7 +379,7 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     private void createOptionsGroup(final Composite parent) {
-        Composite composite = createComposite(parent, 1);
+        final Composite composite = createComposite(parent, 1);
 
         // viewport
         cameraViewportCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
@@ -403,8 +400,9 @@ public class SaveAsImageDialog extends Dialog {
         textAsShapesCheckbox.addSelectionListener(new SelectionAdapter() {
             private boolean prevEmbedFonts = embedFontsCheckbox.getSelection();
             
+            @Override
             public void widgetSelected(final SelectionEvent e) {
-                boolean selected = ((Button) e.widget).getSelection();
+                final boolean selected = ((Button) e.widget).getSelection();
                 if (selected) {
                     prevEmbedFonts = embedFontsCheckbox.getSelection();
                 }
@@ -426,12 +424,12 @@ public class SaveAsImageDialog extends Dialog {
     private static final int MESSAGE_LABEL_WIDTH_HINT = 300;
 
     private void createMessageGroup(final Composite parent) {
-        Composite composite = createComposite(parent, 2);
+        final Composite composite = createComposite(parent, 2);
         messageImageLabel = new Label(composite, SWT.NONE);
         messageImageLabel.setImage(JFaceResources.getImage(DLG_IMG_MESSAGE_ERROR));
         messageImageLabel.setVisible(false);
         messageLabel = new Label(composite, SWT.NONE);
-        GridData gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
+        final GridData gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
         gridData.widthHint = MESSAGE_LABEL_WIDTH_HINT;
         messageLabel.setLayoutData(gridData);
         messageLabel.setVisible(false);
@@ -439,8 +437,8 @@ public class SaveAsImageDialog extends Dialog {
 
     private void validateFileText() {
         if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
-            IPath filePath = new Path(fileText.getText());
-            IPath containerPath = filePath.removeLastSegments(1);
+            final IPath filePath = new Path(fileText.getText());
+            final IPath containerPath = filePath.removeLastSegments(1);
             if (filePath.hasTrailingSeparator()) {
                 // file describes a folder
                 setErrorStatus(Messages.SaveAsImageDialog_path_is_not_valid_error);
@@ -453,7 +451,7 @@ public class SaveAsImageDialog extends Dialog {
                     setErrorStatus(Messages.SaveAsImageDialog_file_outside_project_error);
                     return;
                 }
-                IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+                final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
                 IResource resource = root.findMember(filePath);
                 if (resource != null && resource.exists() && resource instanceof IContainer) {
                     // file path exists but describes a folder
@@ -467,13 +465,13 @@ public class SaveAsImageDialog extends Dialog {
                     return;
                 }
             } else {
-                File file = new File(filePath.toString());
+                final File file = new File(filePath.toString());
                 if (file.isDirectory()) {
                     // file path exists but describes a folder
                     setErrorStatus(Messages.SaveAsImageDialog_path_is_not_valid_error);
                     return;
                 }
-                File container = new File(containerPath.toString());
+                final File container = new File(containerPath.toString());
                 if (!container.exists()) {
                     // container does not exist
                     setErrorStatus(Messages.SaveAsImageDialog_container_not_exist_error);
@@ -488,7 +486,7 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     private void handleFileSystemBrowse() {
-        FileDialog fileDialog = new FileDialog(getShell(), SWT.SAVE);
+        final FileDialog fileDialog = new FileDialog(getShell(), SWT.SAVE);
         // FIXME this does not always work ... if the dialog concats the
         // extension it does not check if that file exists
         fileDialog.setOverwrite(true);
@@ -498,11 +496,11 @@ public class SaveAsImageDialog extends Dialog {
         if (ext.contains("(")) {
             ext = ext.substring(0, ext.indexOf("(")).trim();
         }
-        String[] extensions = { "*." + ext }; //$NON-NLS-1$
+        final String[] extensions = { "*." + ext }; //$NON-NLS-1$
         fileDialog.setFilterExtensions(extensions);
         fileDialog.setText(Messages.SaveAsImageDialog_save_as_caption);
         // open the dialog
-        String selectedFile = fileDialog.open();
+        final String selectedFile = fileDialog.open();
         // dialog has not been canceled
         if (selectedFile != null) {
             workspacePathCheckbox.setSelection(false);
@@ -513,11 +511,11 @@ public class SaveAsImageDialog extends Dialog {
     private void handleWorkspaceBrowse() {
         // TODO a better workspace selection dialog would be good, but it seems
         // such a thing does not exist in Eclipse for some reason
-        SaveAsDialog fileDialog = new SaveAsDialog(getShell());
-        int status = fileDialog.open();
+        final SaveAsDialog fileDialog = new SaveAsDialog(getShell());
+        final int status = fileDialog.open();
         if (status == SaveAsDialog.OK) {
-            IPath filePath = fileDialog.getResult();
-            String ext = filePath.getFileExtension();
+            final IPath filePath = fileDialog.getResult();
+            final String ext = filePath.getFileExtension();
             workspacePathCheckbox.setSelection(true);
             if (ext != null && ext.length() > 0) {
                 fileText.setText(filePath.toString());
@@ -535,7 +533,7 @@ public class SaveAsImageDialog extends Dialog {
 
     private void updateFileText() {
         if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
-            IPath filePath = new Path(fileText.getText());
+            final IPath filePath = new Path(fileText.getText());
             String ext = imageFormatCombo.getText().toLowerCase();
             // remove any details contained in parentheses
             if (ext.contains("(")) {
@@ -570,12 +568,12 @@ public class SaveAsImageDialog extends Dialog {
     }
 
     private Composite createComposite(final Composite parent, final int columns) {
-        Composite composite = new Composite(parent, SWT.NONE);
-        GridLayout gridLayout = new GridLayout(columns, false);
+        final Composite composite = new Composite(parent, SWT.NONE);
+        final GridLayout gridLayout = new GridLayout(columns, false);
         gridLayout.marginHeight = 0;
         gridLayout.marginWidth = 0;
 
-        GridData data = new GridData(SWT.FILL, SWT.NONE, true, false);
+        final GridData data = new GridData(SWT.FILL, SWT.NONE, true, false);
         composite.setLayoutData(data);
         composite.setLayout(gridLayout);
         return composite;
@@ -598,85 +596,18 @@ public class SaveAsImageDialog extends Dialog {
         return new Point(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-//    /**
-//     * Returns the selected path.
-//     * 
-//     * @return the path
-//     */
-//    public IPath getFilePath() {
-//        return path;
-//    }
-//
-//    /**
-//     * Returns whether the selected path is workspace relative.
-//     * 
-//     * @return true if the selected path is workspace relative; false else
-//     */
-//    public boolean isWorkspacePath() {
-//        return isWorkspacePath;
-//    }
-//
     /**
      * @return the currentExporter
      */
     public ExporterDescriptor getCurrentExporter() {
         return currentExporter;
     }
-//
-//    /**
-//     * Returns the scale factor to apply to the image while saving.
-//     * 
-//     * @return the the scale factor in range of 1 to {@link #IMAGE_FORMAT_SLIDER_MAX}-1.
-//     */
-//    public int getScaleFactor() {
-//        return scaleFactor;
-//    }
-//
-//    /**
-//     * Returns whether to render the image through the camera viewport.
-//     * 
-//     * @return true to render the image through the camera viewport; false to render the whole scene
-//     *         graph without any view transformation
-//     */
-//    public boolean isCameraViewport() {
-//        return cameraViewport;
-//    }
-//    
-//    /**
-//     * Returns whether text in vector graphics should be rendered as shapes.
-//     * 
-//     * @return true if text should be rendered as shapes in vector graphics.
-//     */
-//    public boolean isTextAsShapes() {
-//        return textAsShapes;
-//    }
-//
-//    /**
-//     * Returns whether the texts' fonts shall be embedded in the output.
-//     * 
-//     * @return true if the texts' fonts shall be embedded in the output.
-//     */
-//    public boolean isEmbedFonts() {
-//        return embedFonts;
-//    }
-//
-//    /**
-//     * @return the tilingInfo
-//     */
-//    public TilingData getTilingInfo() {
-//        return tilingInfo;
-//    }
 
     /**
      * @return the export information.
      */
     public ExportData getExportData() {
-        ExportData data = new ExportData(path, isWorkspacePath, cameraViewport, scaleFactor,
-                textAsShapes, embedFonts, currentExporter.subFormatId);
-        if (currentExporter.supportsTiling && tilingInfo.isTiled) {
-            data.setTilingInfo(tilingInfo);
-        }
-        return data;
+        return exportData;
     }
 
     /**
@@ -712,13 +643,17 @@ public class SaveAsImageDialog extends Dialog {
         // chsch: to make sure a valid extension is attached to the file name
         // in case the combo is untouched
         updateFileText();
-        path = new Path(fileText.getText());
-        isWorkspacePath = workspacePathCheckbox.getSelection();
+        
         currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex()); 
-        cameraViewport = cameraViewportCheckbox.getSelection();
-        textAsShapes = textAsShapesCheckbox.getSelection();
-        embedFonts = embedFontsCheckbox.getSelection();
-        scaleFactor = scaleSlider.getSelection();
+        exportData = new ExportData(currentExporter.subFormatId, new Path(fileText.getText()),
+                workspacePathCheckbox.getSelection(), cameraViewportCheckbox.getSelection(),
+                scaleSlider.getSelection(), textAsShapesCheckbox.getSelection(),
+                embedFontsCheckbox.getSelection());
+
+        if (currentExporter.supportsTiling && tilingInfo.isTiled) {
+            exportData.setTilingInfo(tilingInfo);
+        }
+
         // has to be last because it disposes the dialog
         super.okPressed();
     }

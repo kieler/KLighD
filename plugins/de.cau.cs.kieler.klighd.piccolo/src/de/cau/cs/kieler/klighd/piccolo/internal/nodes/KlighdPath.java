@@ -41,7 +41,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * The KLighD-specific {@link edu.umd.cs.piccolo.PNode PNode} implementation for displaying
@@ -50,7 +49,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * tailored/extended to those features required by KLighD.<br>
  * <br>
  * {@link KlighdPath} instances require a {@link KlighdSWTGraphics} while drawing (i.e. in
- * {@link #paint(PPaintContext)}). In case the available implementation provides an SWT
+ * {@link #paint(KlighdPaintContext)}). In case the available implementation provides an SWT
  * {@link Device} SWT {@link Path} objects are created and drawn, and disposed if they got
  * out-dated. Otherwise the internally used AWT {@link Shape Shapes} are used for drawing.<br>
  * <br>
@@ -474,7 +473,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      * This method realizes the adjustment of the shape bounds according to stroke line width.
      * To this end, the initial shape definition, which is kept in {@link #origShape} is replicated
      * with adjusted bounds. This replicate is stored in {@link #shape} and drawn on the canvas
-     * in {@link #paint(PPaintContext)}.<br>
+     * in {@link #paint(KlighdPaintContext)}.<br>
      * <br>
      * In case of lines and polygons the {@link #origShape} is put into {@link #shape}, too, and
      * thus used while drawing.
@@ -572,13 +571,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      * {@inheritDoc}
      */
     @Override
-    protected void paint(final PPaintContext paintContext) {
-        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-
-        // first test whether this figure shall be drawn at all
-        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
-            return;
-        }
+    protected void paint(final KlighdPaintContext kpc) {
 
         final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
         final Device device = graphics.getDevice();
@@ -764,7 +757,19 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /* --------------------- */
 
     /**
-     * Resets the path to a rectangle with the dimensions and position provided.
+     * Resets <code>this</code> path to <code>rect</code>.<br>
+     * <b>Be careful:</b>The given {@link Rectangle2D.Float} instance is used further on so don't
+     * modify it externally!
+     * 
+     * @param rect
+     *            the rectangle determining the new bounds
+     */
+    public void setPathToRectangle(final Rectangle2D.Float rect) {
+        this.setShape(rect);
+    }
+
+    /**
+     * Resets <code>this</code> path to a rectangle with the dimensions and position provided.
      * 
      * @param x
      *            left of the rectangle
@@ -779,9 +784,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
             final float height) {
         this.setShape(new Rectangle2D.Float(x, y, width, height));
     }
-
     /**
-     * Resets the path to a rectangle with the dimensions and position provided.
+     * Resets <code>this</code> path to a rectangle with the dimensions and position provided.
      * 
      * @param x
      *            left of the rectangle
@@ -802,8 +806,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     }
 
     /**
-     * Resets the path to an ellipse positioned at the coordinate provided with the dimensions
-     * provided.
+     * Resets <code>this</code> path to an ellipse positioned at the coordinate provided with the
+     * dimensions provided.
      * 
      * @param x
      *            left of the ellipse
@@ -820,8 +824,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Resets the path to an arc positioned at the coordinate provided with the dimensions, angular
-     * start and angular extent provided.
+     * Resets <code>this</code> path to an arc positioned at the coordinate provided with the
+     * dimensions, angular start and angular extent provided.
      * 
      * @param x
      *            left of the arc
@@ -846,7 +850,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
@@ -864,7 +868,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
@@ -884,7 +888,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path
@@ -901,7 +905,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
 
     /**
-     * Sets the path to a sequence of segments described by the points.
+     * Sets <code>this</code> path to a sequence of segments described by the points.
      * 
      * @param points
      *            points to that lie along the generated path

@@ -39,7 +39,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener.IResou
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * A special {@link edu.umd.cs.piccolo.PNode PNode} for integrating images in KLighD diagrams. The
@@ -308,13 +307,7 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
      * {@inheritDoc}
      */
     @Override
-    protected void paint(final PPaintContext paintContext) {
-        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-
-        // first test whether this figure shall be drawn at all
-        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
-            return;
-        }
+    protected void paint(final KlighdPaintContext kpc) {
 
         final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
 

@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.base.Function;

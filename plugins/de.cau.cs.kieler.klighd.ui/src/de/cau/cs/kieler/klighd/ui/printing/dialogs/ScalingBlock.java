@@ -27,22 +27,17 @@ package de.cau.cs.kieler.klighd.ui.printing.dialogs;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
@@ -111,7 +106,8 @@ class ScalingBlock implements DialogBlock {
              */
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                Rectangle printerBounds = PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
+                Rectangle printerBounds =
+                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
                 PBounds diagramBounds = options.getExporter().getDiagramBounds();
                 double scaleX =
                         ((double) printerBounds.width) * options.getFitToPagesWidth()
@@ -148,33 +144,13 @@ class ScalingBlock implements DialogBlock {
         scalingGroup.setLayout(new GridLayout(SCALING_GROUP_COLUMNS, false));
 
         DialogUtil.label(scalingGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_scaleTo);
-        final Scale scaleFactor = DialogUtil.scale(scalingGroup, 1, 200);
-//        layoutSpanHorizontal(scaleFactor, 2);
-        DialogUtil.layoutFillHorizontal(scaleFactor, true);
-        Label labelScale = DialogUtil.label(scalingGroup, "");
-        GC gc = new GC(labelScale);
-        DialogUtil.layoutWidth(labelScale, gc.textExtent("0.00").x);
+        Spinner scaleSpinner = DialogUtil.spinner(scalingGroup, 1, Integer.MAX_VALUE);
+        DialogUtil.layoutFillHorizontal(scaleSpinner, true);
         DialogUtil.label(scalingGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_percent);
 
         IObservableValue scaleValue =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR);
-        final ISWTObservableValue scaleSelectionRaw = SWTObservables.observeSelection(scaleFactor);
-
-        ComputedValue scaleSelection = new ComputedValue(realm) {
-            @Override
-            protected Object calculate() {
-                Integer value = (Integer) scaleSelectionRaw.getValue();
-                // TODO find better scaling control (maybe something logarithmic)
-                // SUPPRESS CHECKSTYLE NEXT 4 MagicNumber
-                if (value < 100) {
-                    return value / 100f;
-                } else {
-                    return (value - 80) * 5 / 100f;
-                }
-            }
-        };
-        bindings.bindValue(scaleSelection, scaleValue, null, null);
-        bindings.bindValue(SWTObservables.observeText(labelScale), scaleValue, null, null);
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_PERCENT);
+        bindings.bindValue(SWTObservables.observeSelection(scaleSpinner), scaleValue, null, null);
 
         Composite pagesGroup = new Composite(result, SWT.NONE);
         DialogUtil.layoutFillHorizontal(pagesGroup, true);

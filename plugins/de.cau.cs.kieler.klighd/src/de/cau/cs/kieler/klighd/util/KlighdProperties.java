@@ -115,6 +115,32 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> NOT_SELECTABLE = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.suppressSelectability", false);
+    
+    /**
+     * Property determining the visibility of a certain
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in the outline diagram view.
+     * If it is set to <code>true</code> that particular rendering element is not shown in the
+     * outline.
+     */
+    public static final IProperty<Boolean> OUTLINE_INVISIBLE = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.outlineInvisible", false);
+    
+    /**
+     * Property determining the visibility of a certain
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in exported diagram diagram
+     * images. If it is set to <code>true</code> that particular rendering element is not shown in
+     * exported images.
+     */
+    public static final IProperty<Boolean> EXPORTED_IMAGE_INVISIBLE = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.exportedImageInvisible", false);
+    
+    /**
+     * Property determining the visibility of a certain
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in diagram printouts. If it is
+     * set to <code>true</code> that particular rendering element is not shown in diagram printouts.
+     */
+    public static final IProperty<Boolean> PRINTOUT_INVISIBLE = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.printoutInvisible", false);
 
     /**
      * Property determining the upper visibility bound of a certain

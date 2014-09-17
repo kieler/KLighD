@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterators.filter;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asAreaPlacementData;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asPointPlacementData;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.getPlacementData;
@@ -186,9 +188,9 @@ public final class PlacementUtil {
      */
     public static class Triple<A, B, C> {
 
-        private A a;
-        private B b;
-        private C c;
+        private final A a;
+        private final B b;
+        private final C c;
 
         /**
          * Constructor.
@@ -672,7 +674,10 @@ public final class PlacementUtil {
      * @return the minimal bounds for the {@link KLabel}
      */
     public static Bounds estimateTextSize(final KLabel kLabel) {
-        return estimateTextSize(kLabel.getData(KText.class), kLabel.getText());
+        final KText text = Iterators.getNext(filter(
+                ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class), KText.class), null);
+
+        return estimateTextSize(text, kLabel.getText());
     }
 
     private static final Predicate<KStyle> FILTER = new Predicate<KStyle>() {
@@ -723,13 +728,13 @@ public final class PlacementUtil {
             final List<KStyle> styles = Lists.newLinkedList(kText.getStyles());            
             for (final KRendering k : Iterables2.toIterable(Iterators.filter(
                     ModelingUtil.eAllContainers(kText), KRendering.class))) {
-                Iterables.addAll(styles, Iterables.filter(k.getStyles(), FILTER));
+                Iterables.addAll(styles, filter(k.getStyles(), FILTER));
             }
             
-            kFontName = Iterables.getLast(Iterables.filter(styles, KFontName.class), null);
-            kFontSize = Iterables.getLast(Iterables.filter(styles, KFontSize.class), null);
-            kFontBold = Iterables.getLast(Iterables.filter(styles, KFontBold.class), null);
-            kFontItalic = Iterables.getLast(Iterables.filter(styles, KFontItalic.class), null);
+            kFontName = Iterables.getLast(filter(styles, KFontName.class), null);
+            kFontSize = Iterables.getLast(filter(styles, KFontSize.class), null);
+            kFontBold = Iterables.getLast(filter(styles, KFontBold.class), null);
+            kFontItalic = Iterables.getLast(filter(styles, KFontItalic.class), null);
         }
 
         final String fontName = kFontName != null
@@ -797,7 +802,6 @@ public final class PlacementUtil {
             if (gc == null) {
                 gc = new GC(Display.getDefault());
                 gc.setAntialias(SWT.OFF);
-                gc.getFontMetrics();
             }
 
             Font font = FONT_CACHE.get(fontData);

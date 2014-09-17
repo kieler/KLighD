@@ -52,11 +52,11 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMagnificationLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdPanEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMagnificationLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -254,6 +254,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setModel(final KNode model, final boolean sync) {
 
         final boolean edgesFirst =
@@ -701,7 +702,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         camera.animateViewToCenterBounds(newBounds, true, 0);
 
         // set up a new paint context and paint the camera
-        final KlighdPaintContext paintContext = new KlighdPaintContext(g2, true);
+        final KlighdPaintContext paintContext = KlighdPaintContext.createPrintoutPaintContext(g2);
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
         camera.fullPaint(paintContext);
         g2.dispose();

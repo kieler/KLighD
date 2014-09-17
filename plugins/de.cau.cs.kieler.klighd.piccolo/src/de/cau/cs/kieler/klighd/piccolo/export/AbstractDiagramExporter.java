@@ -39,6 +39,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public abstract class AbstractDiagramExporter {
 
+    
     /**
      * Helper method computing the actual unadjusted bounds of the content of the diagram to be
      * exported.
@@ -46,8 +47,8 @@ public abstract class AbstractDiagramExporter {
      * @param camera
      *            the {@link KlighdMainCamera} whose depicted content is to be exported
      * @param exportViewport
-     *            if <code>true</code> the camera's view port is considered, otherwise the closure
-     *            bounds of the camera's displayed layer is considered
+     *            if <code>true</code> the camera's view port is considered,
+     *            otherwise the closure bounds of the camera's displayed layer is considered 
      * @return a new {@link PBounds} instance containing the requested bounds data
      */
     protected PBounds getExportedBounds(final KlighdMainCamera camera, final boolean exportViewport) {
@@ -61,7 +62,7 @@ public abstract class AbstractDiagramExporter {
 
             if (displayedLayer.getParent() == camera.getRoot()) {
                 // in case the displayed layer is the topNode, invalidate its full bounds
-                // as they are not required to be up to date for the interactive on screen rendering
+                //  as they are not required to be up to date for the interactive on screen rendering
                 displayedLayer.invalidateFullBounds();
                 bounds = displayedLayer.getFullBounds();
 
@@ -77,9 +78,9 @@ public abstract class AbstractDiagramExporter {
      * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, double, Collection)}
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds) {
+            final KlighdSWTGraphics graphics, final PBounds bounds, final boolean exportSemanticData) {
         drawDiagram(camera, exportViewport, graphics, bounds, 1,
-                Collections.<IExportHook>emptyList());
+                Collections.<IExportHook>emptyList(), exportSemanticData);
     }
 
     // SUPPRESS CHECKSTYLE NEXT 5 LineLength|Javadoc
@@ -87,9 +88,9 @@ public abstract class AbstractDiagramExporter {
      * @see {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds, double, Collection)}
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale) {
+            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale, final boolean exportSemanticData) {
         drawDiagram(camera, exportViewport, graphics, bounds, scale,
-                Collections.<IExportHook>emptyList());
+                Collections.<IExportHook>emptyList(), exportSemanticData);
     }
 
     // SUPPRESS CHECKSTYLE NEXT 6 LineLength|Javadoc
@@ -98,10 +99,9 @@ public abstract class AbstractDiagramExporter {
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds,
-            final Collection<IExportHook> hooks) {
-        drawDiagram(camera, exportViewport, graphics, bounds, 1, hooks);
+            final Collection<IExportHook> hooks, final boolean exportSemanticData) {
+        drawDiagram(camera, exportViewport, graphics, bounds, 1, hooks, exportSemanticData);
     }
-
     /**
      * Does the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}.<br>
      * This method is supposed to be used by all registered
@@ -124,10 +124,13 @@ public abstract class AbstractDiagramExporter {
      *            the scaling factor
      * @param hooks
      *            a {@link Collection} of {@link IExportHook IExportHooks} to apply
+     * @param exportSemanticData
+     *            if <code>true</code> semantic data that are attached to the diagram's view model
+     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics}) 
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds, final double scale,
-            final Collection<IExportHook> hooks) {
+            final Collection<IExportHook> hooks, final boolean exportSemanticData) {
 
         final PBounds theBounds;
         if (bounds != null) {
@@ -135,7 +138,7 @@ public abstract class AbstractDiagramExporter {
         } else {
             theBounds = getExportedBounds(camera, exportViewport);
         }
-        
+
         PBounds preBounds = new PBounds(0, 0, theBounds.width, theBounds.height);
 
         // The global clip setting is required as (in PPaintContext) a default one will be set!
@@ -168,7 +171,8 @@ public abstract class AbstractDiagramExporter {
         
         graphics.transform(AffineTransform.getScaleInstance(scale, scale));
 
-        final KlighdPaintContext paintContext = new KlighdPaintContext(graphics);
+        final KlighdPaintContext paintContext =
+                KlighdPaintContext.createExportDiagramPaintContext(graphics);
 
         // the following setting contradict the defaults in BatikSVGGraphics
         // which leads to a blown-up svg file with a huge amount of repeated local style settings

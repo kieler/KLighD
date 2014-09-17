@@ -64,6 +64,7 @@ import de.cau.cs.kieler.core.krendering.VerticalAlignment
 import org.eclipse.emf.ecore.EClass
 
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
+import de.cau.cs.kieler.core.krendering.KPointPlacementData
 
 /**
  * This class contains lots of convenient helper functions for configuring KRendering-based view models, 
@@ -226,25 +227,25 @@ class KRenderingExtensions {
     }
     
     def <T extends KRendering> T addAction(T rendering, Trigger trigger, String actionId) {
-        return rendering => [
-            it.actions += createKAction() => [
-                it.trigger = trigger;
-                it.actionId = actionId;
-            ];
+
+        rendering.actions += createKAction() => [
+            it.trigger = trigger;
+            it.actionId = actionId;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T addAction(T rendering, Trigger trigger, String actionId,
             boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
-        return rendering => [
-            it.actions += createKAction() => [
-                it.trigger = trigger;
-                it.actionId = actionId;
-                it.altPressed = altPressed;
-                it.ctrlCmdPressed = ctrlCmdPressed;
-                it.shiftPressed = shiftPressed;
-            ];
+
+        rendering.actions += createKAction() => [
+            it.trigger = trigger;
+            it.actionId = actionId;
+            it.altPressed = altPressed;
+            it.ctrlCmdPressed = ctrlCmdPressed;
+            it.shiftPressed = shiftPressed;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T addSingleClickAction(T rendering, String actionId) {
@@ -267,27 +268,27 @@ class KRenderingExtensions {
 
 
     def <T extends KRendering> T with(T rendering, KPlacementData pd) {
-        return rendering => [
-            it.placementData = pd
-        ];
+        rendering.placementData = pd
+        return rendering;
     }
  
     def <T extends KRendering> T with(T rendering, KStyle style) {
-        return rendering => [
-            it.styles += style;
-        ];
+        rendering.styles += style;
+        return rendering;
     }
  
     def <T extends KRendering> T withCopyOf(T rendering, KStyle style) {
-        return rendering => [
-            it.styles += style.copy;
-        ];
+        rendering.styles += style.copy;
+        return rendering;
     }
     
     private static final (KStyle) => boolean IS_SELECTION = [
         it.selection
     ];
 
+    private static final (KStyle) => void SET_SELECTION = [
+        it.selection = true;
+    ];
 
     // styleRef definition
 
@@ -483,21 +484,21 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setInvisible(T rendering, boolean invisible) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KInvisibility)).toList);
-        return rendering => [
-            it.styles += createKInvisibility() => [
-                it.setInvisible(invisible);
-            ]
+
+        rendering.styles += createKInvisibility() => [
+            it.setInvisible(invisible);
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionInvisible(T rendering, boolean invisible) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KInvisibility)).toList);
-        return rendering => [
-            it.styles += createKInvisibility() => [
-                it.selection = true;
-                it.setInvisible(invisible);
-            ]
+
+        rendering.styles += createKInvisibility() => [
+            it.selection = true;
+            it.setInvisible(invisible);
         ];
+        return rendering;
     }
     
     def KLineWidth getLineWidth(KRendering rendering) {
@@ -511,27 +512,27 @@ class KRenderingExtensions {
             lineWidth = 1f
         ])).lineWidth;
     }
- 
+
     /**
      * @extensionCategory style  
      */
     def <T extends KRendering> T setLineWidth(T rendering, float width) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineWidth)).toList);
-        return rendering => [
-            it.styles += createKLineWidth() => [
-                it.setLineWidth(width);
-            ]
+
+        rendering.styles += createKLineWidth() => [
+            it.setLineWidth(width);
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionLineWidth(T rendering, float width) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KLineWidth)).toList);
-        return rendering => [
-            it.styles += createKLineWidth() => [
-                it.selection = true;
-                it.setLineWidth(width);
-            ]
+
+        rendering.styles += createKLineWidth() => [
+            it.selection = true;
+            it.setLineWidth(width);
         ];
+        return rendering;
     }
     
     /**
@@ -551,21 +552,21 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setLineStyle(T rendering, LineStyle style) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineStyle)).toList);
-        return rendering => [
-            it.styles += createKLineStyle => [
-                it.setLineStyle(style);
-            ];
+
+        rendering.styles += createKLineStyle => [
+            it.setLineStyle(style);
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionLineStyle(T rendering, LineStyle style) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KLineStyle)).toList);
-        return rendering => [
-            it.styles += createKLineStyle => [
-                it.selection = true;
-                it.setLineStyle(style);
-            ];
+
+        rendering.styles += createKLineStyle => [
+            it.selection = true;
+            it.setLineStyle(style);
         ];
+        return rendering;
     }
     
     def KLineCap getLineCap(KRendering rendering) {
@@ -582,21 +583,21 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setLineCap(T rendering, LineCap style) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineCap)).toList);
-        return rendering => [
-            it.styles += createKLineCap => [
-                it.lineCap = style;
-            ];
+
+        rendering.styles += createKLineCap => [
+            it.lineCap = style;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionLineCap(T rendering, LineCap style) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KLineCap)).toList);
-        return rendering => [
-            it.styles += createKLineCap => [
-                it.selection = true;
-                it.lineCap = style;
-            ];
+
+        rendering.styles += createKLineCap => [
+            it.selection = true;
+            it.lineCap = style;
         ];
+        return rendering;
     }
     
     def KLineJoin getLineJoin(KRendering rendering) {
@@ -613,42 +614,40 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setLineJoin(T rendering, LineJoin style) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineJoin)).toList);
-        return rendering => [
-            it.styles += createKLineJoin => [
-                it.lineJoin = style;
-            ];
+
+        rendering.styles += createKLineJoin => [
+            it.lineJoin = style;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionLineJoin(T rendering, LineJoin style) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KLineJoin)).toList);
-        return rendering => [
-            it.styles += createKLineJoin => [
+
+        rendering.styles += createKLineJoin => [
                 it.selection = true;
                 it.lineJoin = style;
             ];
-        ];
+        return rendering;
     }
     
     def <T extends KRendering> T setLineJoin(T rendering, LineJoin style, float miterLimit) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KLineJoin)).toList);
-        return rendering => [
-            it.styles += createKLineJoin => [
+        rendering.styles += createKLineJoin => [
                 it.lineJoin = style;
                 it.miterLimit = miterLimit;
             ];
-        ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionLineJoin(T rendering, LineJoin style, float miterLimit) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KLineJoin)).toList);
-        return rendering => [
-            it.styles += createKLineJoin => [
+        rendering.styles += createKLineJoin => [
                 it.selection = true;
                 it.lineJoin = style;
                 it.miterLimit = miterLimit;
             ];
-        ];
+        return rendering;
     }
     
     def KRotation getRotation(KRendering rendering) {
@@ -663,21 +662,19 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setRotation(T rendering, Float rotation) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KRotation)).toList);
-        return rendering => [
-            it.styles += createKRotation => [
+        rendering.styles += createKRotation => [
                 it.setRotation(rotation);
             ];
-        ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionRotation(T rendering, Float rotation) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KRotation)).toList);
-        return rendering => [
-            it.styles += createKRotation => [
+        rendering.styles += createKRotation => [
                 it.selection = true;
                 it.setRotation(rotation);
             ];
-        ];
+        return rendering;
     }
     
     def KBackground getBackground(KRendering rendering){
@@ -688,240 +685,149 @@ class KRenderingExtensions {
     
     def <T extends KRendering> T setBackground(T rendering, KColoring<?> coloring) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground => [
-                it.alpha = coloring.alpha;
-                it.color = coloring.color.copy;
-                it.targetAlpha = coloring.targetAlpha;
-                it.targetColor = coloring.targetColor.copy;
-                it.gradientAngle = coloring.gradientAngle;
-                it.modifierId = coloring.modifierId;
-                it.propagateToChildren = coloring.propagateToChildren;
-            ];
+        rendering.styles += createKBackground.setColor2(coloring.color.copy, coloring.alpha)
+                    .setTargetColor2(coloring.targetColor.copy, coloring.targetAlpha)
+                    .setGradientAngle2(coloring.gradientAngle) => [
+            it.modifierId = coloring.modifierId;
+            it.propagateToChildren = coloring.propagateToChildren;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionBackground(T rendering, KColoring<?> coloring) {
-        return rendering => [
-            it.styles += createKBackground => [
-                it.alpha = coloring.alpha;
-                it.color = coloring.color.copy;
-                it.targetAlpha = coloring.targetAlpha;
-                it.targetColor = coloring.targetColor.copy;
-                it.gradientAngle = coloring.gradientAngle;
+        rendering.styles += createKBackground.setColor2(coloring.color.copy, coloring.alpha)
+                    .setTargetColor2(coloring.targetColor.copy, coloring.targetAlpha)
+                    .setGradientAngle2(coloring.gradientAngle) => [
                 it.modifierId = coloring.modifierId;
                 it.propagateToChildren = coloring.propagateToChildren;
                 it.selection = true;
             ];
-        ];
+        return rendering;
     }
     
     def <T extends KRendering> T setBackground(T rendering, KColor color) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color.copy;
-            ];
-        ];
+
+        rendering.styles += createKBackground.setColor2(color.copy);
+        return rendering;
     }
 
     def <T extends KRendering> T setSelectionBackground(T rendering, KColor color) {
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color.copy;
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKBackground.setColor2(color.copy) => SET_SELECTION;
+        return rendering;
     }
 
     def <T extends KRendering> T setBackground(T rendering, KColor color, int alpha) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color.copy;
-                it.alpha = alpha;
-            ];
-        ];
+
+        rendering.styles += createKBackground.setColor2(color.copy, alpha);
+        return rendering;
     }
 
     def <T extends KRendering> T setSelectionBackground(T rendering, KColor color, int alpha) {
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color.copy;
-                it.alpha = alpha;
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKBackground.setColor2(color.copy, alpha) => SET_SELECTION;
+        return rendering;
     }
 
     def <T extends KRendering> T setBackground(T rendering, Colors color) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground.setColor(color);
-        ];
+
+        rendering.styles += createKBackground.setColor(color);
+        return rendering;
     }
 
     def <T extends KRendering> T setSelectionBackground(T rendering, Colors color) {
-        return rendering => [
-            it.styles += createKBackground.setColor(color) => [
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKBackground.setColor(color) => SET_SELECTION;
+        return rendering;
     }
 
     def <T extends KRendering> T setBackground(T rendering, Colors color, int alpha) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground.setColor(color, alpha);
-        ];
+
+        rendering.styles += createKBackground.setColor(color, alpha);
+        return rendering;
     }
 
     def <T extends KRendering> T setSelectionBackground(T rendering, Colors color, int alpha) {
-        return rendering => [
-            it.styles += createKBackground.setColor(color, alpha) => [
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKBackground.setColor(color, alpha) => SET_SELECTION;
+        return rendering;
     }
 
     def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = createKColor => [
-                    it.red = red;
-                    it.green = green;
-                    it.blue = blue;
-                ];
-            ];
-        ];
+
+        rendering.styles += createKBackground.setColor(red, green, blue);
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionBackgroundColor(T rendering, int red, int green, int blue){
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = createKColor => [
-                    it.red = red;
-                    it.green = green;
-                    it.blue = blue;
-                ];
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKBackground.setColor(red, green, blue) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setBackgroundColor(T rendering, int red, int green, int blue, int alpha){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground => [
-                it.alpha = alpha;
-                it.color = createKColor => [
-                    it.red = red;
-                    it.green = green;
-                    it.blue = blue;
-                ];
-            ];
-        ];
+
+        rendering.styles += createKBackground.setColor(red, green, blue, alpha);
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionBackgroundColor(T rendering, int red, int green, int blue, int alpha){
-        return rendering => [
-            it.styles += createKBackground => [
-                it.alpha = alpha;
-                it.color = createKColor => [
-                    it.red = red;
-                    it.green = green;
-                    it.blue = blue;
-                ];
-                it.selection = true;
-            ];
-        ];
+
+        rendering.styles += createKBackground.setColor(red, green, blue, alpha) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setBackgroundGradient(T rendering, KColor color1, KColor color2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color1;                
-                it.targetColor = color2;
-                it.gradientAngle = angle;
-            ];
-        ];
+
+        rendering.styles += createKBackground.setColors(color1, color2, angle);
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionBackgroundGradient(T rendering, KColor color1, KColor color2, float angle) {
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color1;                
-                it.targetColor = color2;
-                it.gradientAngle = angle;
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKBackground.setColors(color1, color2, angle) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setBackgroundGradient(T rendering,
             KColor color1, int alpha1, KColor color2, int alpha2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color1;
-                it.alpha = alpha1;                
-                it.targetColor = color2;
-                it.targetAlpha = alpha2;
-                it.gradientAngle = angle;
-            ];
-        ];
+
+        rendering.styles += createKBackground.setColors(color1, alpha1, color2, alpha2, angle);
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionBackgroundGradient(T rendering,
             KColor color1, int alpha1, KColor color2, int alpha2, float angle) {
-        return rendering => [
-            it.styles += createKBackground => [
-                it.color = color1;
-                it.alpha = alpha1;                
-                it.targetColor = color2;
-                it.targetAlpha = alpha2;
-                it.gradientAngle = angle;
-                it.selection = true
-            ];
-        ];
+        rendering.styles += createKBackground.setColors(color1, alpha1, color2, alpha2, angle) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setBackgroundGradient(T rendering, Colors color1, Colors color2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground.setColors(color1, color2).gradientAngle2 = angle
-        ];
+
+        rendering.styles += createKBackground.setColors(color1, color2, angle)
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionBackgroundGradient(T rendering, Colors color1, Colors color2, float angle) {
-        return rendering => [
-            it.styles += createKBackground.setColors(color1, color2) => [
-                it.gradientAngle2 = angle
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKBackground.setColors(color1, color2, angle) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setBackgroundGradient(T rendering, Colors color1, int alpha1,
-        Colors color2,  int alpha2, float angle
-    ) {
+        Colors color2,  int alpha2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KBackground)).toList);
-        return rendering => [
-            it.styles += createKBackground.setColors(color1, alpha1, color2, alpha2).gradientAngle2 = angle
-        ];
+
+        rendering.styles += createKBackground.setColors(color1, alpha1, color2, alpha2, angle)
+        return rendering;
     }
 
     def <T extends KRendering> T setSelectionBackgroundGradient(T rendering, Colors color1, int alpha1,
-        Colors color2,  int alpha2, float angle
-    ) {
-        return rendering => [
-            it.styles += createKBackground.setColors(color1, alpha1, color2, alpha2) => [
-                it.gradientAngle2 = angle;
-                it.selection = true;
-            ];
-        ];
+        Colors color2,  int alpha2, float angle) {
+        rendering.styles += createKBackground.setColors(color1, alpha1, color2, alpha2, angle) => SET_SELECTION;
+        return rendering;
     }
 
     
@@ -945,137 +851,139 @@ class KRenderingExtensions {
 
     def <T extends KRendering>  T setForeground(T rendering, KColoring<?> coloring){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground => [
-                it.alpha = coloring.alpha;
-                it.color = coloring.color.copy;
-                it.targetAlpha = coloring.targetAlpha;
-                it.targetColor = coloring.targetColor.copy;
-                it.gradientAngle = coloring.gradientAngle;
-                it.modifierId = coloring.modifierId;
-                it.propagateToChildren = coloring.propagateToChildren;
-            ];
+
+        rendering.styles += createKForeground.setColors(
+            coloring.color.copy, coloring.alpha, coloring.targetColor.copy, coloring.targetAlpha, coloring.gradientAngle
+        ) => [
+            it.modifierId = coloring.modifierId;
+            it.propagateToChildren = coloring.propagateToChildren;
         ];
+        return rendering;
     }
     
     def <T extends KRendering>  T setForeground(T rendering, KColor color){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground() => [
-                it.color = color.copy;
-            ];
-        ];
+
+        rendering.styles += createKForeground().setColor2(color);
+        return rendering;
+    }
+    
+    def <T extends KRendering>  T setSelectionForeground(T rendering, KColor color){
+        rendering.styles += createKForeground().setColor2(color) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering>  T setForeground(T rendering, KColor color, int alpha){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground() => [
-                it.color = color.copy;
-                it.alpha = alpha;
-            ];
-        ];
+
+        rendering.styles += createKForeground().setColor2(color, alpha);
+        return rendering;
+    }
+    
+    def <T extends KRendering>  T setSelectionForeground(T rendering, KColor color, int alpha){
+        rendering.styles += createKForeground().setColor2(color, alpha) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering>  T setForeground(T rendering, Colors color){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground().setColor(color);
-        ];
+
+        rendering.styles += createKForeground().setColor(color);
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionForeground(T rendering, Colors color) {
-        return rendering => [
-            it.styles += createKForeground.setColor(color) => [
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKForeground.setColor(color) => SET_SELECTION;
+        return rendering;
     }
 
     def <T extends KRendering>  T setForeground(T rendering, Colors color, int alpha){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground().setColor(color, alpha);
-        ];
+
+        rendering.styles += createKForeground().setColor(color, alpha);
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionForeground(T rendering, Colors color, int alpha) {
-        return rendering => [
-            it.styles += createKForeground.setColor(color, alpha) => [
-                it.selection = true;
-            ];
-        ];
+        rendering.styles += createKForeground.setColor(color, alpha) => SET_SELECTION;
+        return rendering;
     }
 
     def <T extends KRendering>  T setForegroundColor(T rendering, int red, int green, int blue){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground() => [
-                it.color = createKColor() => [
-                    it.red = red;
-                    it.green = green;
-                    it.blue = blue;
-                ];
-            ];
-        ];
+
+        rendering.styles += createKForeground().setColor(red, green, blue);
+        return rendering;
+    }
+    
+    def <T extends KRendering>  T setSelectionForegroundColor(T rendering, int red, int green, int blue){
+        rendering.styles += createKForeground().setColor(red, green, blue) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering>  T setForegroundColor(T rendering, int red, int green, int blue, int alpha){
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground() => [
-                it.alpha = alpha;
-                it.color = createKColor() => [
-                    it.red = red;
-                    it.green = green;
-                    it.blue = blue;
-                ];
-            ];
-        ];
+
+        rendering.styles += createKForeground().setColor(red, green, blue, alpha)
+        return rendering;
+    }
+    
+    def <T extends KRendering>  T setSelectionForegroundColor(T rendering, int red, int green, int blue, int alpha){
+        rendering.styles += createKForeground().setColor(red, green, blue, alpha) => SET_SELECTION
+        return rendering;
     }
     
     def <T extends KRendering> T setForegroundGradient(T rendering, KColor color1, KColor color2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground => [
-                it.color = color1;                
-                it.targetColor = color2;
-                it.gradientAngle = angle;
-            ];
-        ];
+
+        rendering.styles += createKForeground.setColors(color1, color2, angle);
+        return rendering;
+    }
+    
+    def <T extends KRendering> T setSelectionForegroundGradient(T rendering, KColor color1, KColor color2, float angle) {
+        rendering.styles += createKForeground.setColors(color1, color2, angle) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setForegroundGradient(T rendering, KColor color1, int alpha1,
-        KColor color2, int alpha2, float angle
-    ) {
+        KColor color2, int alpha2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground => [
-                it.color = color1;
-                it.alpha = alpha1;                
-                it.targetColor = color2;
-                it.targetAlpha = alpha2;
-                it.gradientAngle = angle;
-            ];
-        ];
+
+        rendering.styles += createKForeground.setColors(color1, alpha1, color2, alpha2, angle);
+        return rendering;
+    }
+    
+    def <T extends KRendering> T setSelectionForegroundGradient(T rendering, KColor color1, int alpha1,
+        KColor color2, int alpha2, float angle) {
+        rendering.styles += createKForeground.setColors(color1, alpha1, color2, alpha2, angle) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setForegroundGradient(T rendering, Colors color1, Colors color2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground.setColors(color1, color2).gradientAngle2 = angle
-        ];
+
+        rendering.styles += createKForeground.setColors(color1, color2, angle)
+        return rendering;
+    }
+    
+    def <T extends KRendering> T setSelectionForegroundGradient(T rendering, Colors color1, Colors color2, float angle) {
+        rendering.styles += createKForeground.setColors(color1, color2, angle) => SET_SELECTION;
+        return rendering;
     }
     
     def <T extends KRendering> T setForegroundGradient(T rendering, Colors color1, int alpha1,
-        Colors color2,  int alpha2, float angle
-    ) {
+        Colors color2,  int alpha2, float angle) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KForeground)).toList);
-        return rendering => [
-            it.styles += createKForeground.setColors(color1, alpha1, color2, alpha2).gradientAngle2 = angle
-        ];
+
+        rendering.styles += createKForeground.setColors(color1, alpha1, color2, alpha2, angle);
+        return rendering;
     }
 
+    def <T extends KRendering> T setSelectionForegroundGradient(T rendering, Colors color1, int alpha1,
+        Colors color2,  int alpha2, float angle) {
+        rendering.styles += createKForeground.setColors(color1, alpha1, color2, alpha2, angle) => SET_SELECTION;
+        return rendering;
+    }
 
     def <T extends KRendering> T setForegroundInvisible(T rendering, boolean invisible) {
         return rendering => [
@@ -1088,17 +996,17 @@ class KRenderingExtensions {
             ];
         ];
     }
-        
+
 //TODO: maybe add setters/getters for single components of KForeground/KBackground or simply a method 
 //that allows sticking additional Foreground/Background information to the list without removing 
 //already defined styles first        
-    
+
     val defaultShadowSize = 4;
     
     def KShadow getShadow(KRendering rendering){
         return rendering.styles.filter(typeof(KShadow)).last?:null;
     }
-
+    
     def <T extends KRendering> T setShadow(T rendering, KColor color) {
         setShadow(rendering, color, defaultShadowSize)
     }
@@ -1109,14 +1017,14 @@ class KRenderingExtensions {
 
     def <T extends KRendering> T setShadow(T rendering, KColor color, float xOffset, float yOffset) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KShadow)).toList);
-        return rendering => [
-            it.styles += createKShadow() => [
-                rendering.styles += it; 
-                it.color = color;
-                it.XOffset = xOffset;
-                it.YOffset = yOffset;
-            ];
+
+        rendering.styles += createKShadow() => [
+            rendering.styles += it; 
+            it.color = color;
+            it.XOffset = xOffset;
+            it.YOffset = yOffset;
         ];
+        return rendering;
     }
 
     
@@ -1134,11 +1042,11 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setFontSize(T rendering, int size) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontSize)).toList);
-        return rendering => [
-            it.styles += createKFontSize => [
-                it.setSize(size);
-            ];
-        ];      
+
+        rendering.styles += createKFontSize => [
+            it.setSize(size);
+        ];
+        return rendering;      
     }
     
     def KFontName getFontName(KRendering rendering) {
@@ -1155,11 +1063,11 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setFontName(T rendering, String name) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontName)).toList);
-        return rendering => [
-            it.styles += createKFontName => [
-                it.setName(name);
-            ];
-        ];      
+
+        rendering.styles += createKFontName => [
+            it.setName(name);
+        ];
+        return rendering;      
     }
 
     def KFontBold getFontBold(KRendering rendering) {
@@ -1172,21 +1080,21 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setFontBold(T rendering, boolean bold) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontBold)).toList);
-        return rendering => [
-            it.styles += createKFontBold() => [
-                it.setBold(bold);
-            ];
-        ];        
+
+        rendering.styles += createKFontBold() => [
+            it.setBold(bold);
+        ];
+        return rendering;        
     }
     
     def <T extends KRendering> T setSelectionFontBold(T rendering, boolean bold) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KFontBold)).toList);
-        return rendering => [
-            it.styles += createKFontBold() => [
-                it.selection = true;
-                it.setBold(bold);
-            ];
-        ];        
+
+        rendering.styles += createKFontBold() => [
+            it.selection = true;
+            it.setBold(bold);
+        ];
+        return rendering;        
     }
     
     def KFontItalic getFontItalic(KRendering rendering) {
@@ -1199,11 +1107,11 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setFontItalic(T rendering, boolean italic) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KFontItalic)).toList);
-        return rendering => [
-            it.styles += createKFontItalic => [
-                it.setItalic(italic);
-            ];
+
+        rendering.styles += createKFontItalic => [
+            it.setItalic(italic);
         ];
+        return rendering;
     }
     
     def KTextUnderline getTextUnderline(KRendering rendering) {
@@ -1220,21 +1128,21 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setTextUnderline(T rendering, Underline underline) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KTextUnderline)).toList);
-        return rendering => [
-            it.styles += createKTextUnderline() => [
-                it.underline = underline;
-            ];
+
+        rendering.styles += createKTextUnderline() => [
+            it.underline = underline;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionTextUnderline(T rendering, Underline underline) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KTextUnderline)).toList);
-        return rendering => [
-            it.styles += createKTextUnderline() => [
-                it.selection = true;
-                it.underline = underline;
-            ];
+
+        rendering.styles += createKTextUnderline() => [
+            it.selection = true;
+            it.underline = underline;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setTextUnderlineColor(T rendering, KColor color) {
@@ -1268,21 +1176,21 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setTextStrikeout(T rendering, boolean struckOut) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KTextStrikeout)).toList);
-        return rendering => [
-            it.styles += createKTextStrikeout() => [
-                it.struckOut = struckOut;
-            ];
+
+        rendering.styles += createKTextStrikeout() => [
+            it.struckOut = struckOut;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setSelectionTextStrikeout(T rendering, boolean struckOut) {
         rendering.styles.removeAll(rendering.styles.filter(IS_SELECTION).filter(typeof(KTextStrikeout)).toList);
-        return rendering => [
-            it.styles += createKTextStrikeout() => [
-                it.selection = true;
-                it.struckOut = struckOut;
-            ];
+
+        rendering.styles += createKTextStrikeout() => [
+            it.selection = true;
+            it.struckOut = struckOut;
         ];
+        return rendering;
     }
     
     def <T extends KRendering> T setTextStrikeoutColor(T rendering, KColor color) {
@@ -1314,11 +1222,11 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setHorizontalAlignment(T rendering, HorizontalAlignment ha) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KHorizontalAlignment)).toList);
-        return rendering => [
-            it.styles += createKHorizontalAlignment => [
-                it.setHorizontalAlignment(ha);
-            ];
-        ];        
+
+        rendering.styles += createKHorizontalAlignment => [
+            it.setHorizontalAlignment(ha);
+        ];
+        return rendering;        
     }
     
     public val VerticalAlignment V_TOP = VerticalAlignment::TOP; 
@@ -1333,11 +1241,11 @@ class KRenderingExtensions {
  
     def <T extends KRendering> T setVerticalAlignment(T rendering, VerticalAlignment va) {
         rendering.styles.removeAll(rendering.styles.filter(typeof(KVerticalAlignment)).toList);
-        return rendering => [
-            it.styles += createKVerticalAlignment => [
-                it.setVerticalAlignment(va);
-            ];
+
+        rendering.styles += createKVerticalAlignment => [
+            it.setVerticalAlignment(va);
         ];
+        return rendering;
     }
     
     
@@ -1358,12 +1266,11 @@ class KRenderingExtensions {
     }
 
     def <T extends KRendering> T setAreaPlacementData(T rendering, KPosition topLeft, KPosition bottomRight){
-        return rendering => [
-            rendering.placementData = createKAreaPlacementData() => [
-                it.setTopLeft(topLeft);
-                it.setBottomRight(bottomRight);
-            ];
+        rendering.placementData = createKAreaPlacementData() => [
+            it.setTopLeft(topLeft);
+            it.setBottomRight(bottomRight);
         ];
+        return rendering;
     }
     
     def KAreaPlacementData setAreaPlacementData(KRendering rendering) {
@@ -1541,6 +1448,7 @@ class KRenderingExtensions {
 
     def <T extends KRendering> T setRightBottomAlignedPointPlacementData(T rendering,
         float leftMargin, float topMargin, float rightMargin, float bottomMargin) {
+
         return rendering.setLeftTopAlignedPointPlacementData(
             rightMargin, 0, bottomMargin, 0, leftMargin, topMargin, 0, 0
         );
@@ -1550,6 +1458,7 @@ class KRenderingExtensions {
         float absoluteLR, float relativeLR,
         float absoluteTB, float relativeTB,
         float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
+
         return rendering.setPointPlacementData(
             RIGHT, absoluteLR, relativeLR, BOTTOM, absoluteTB, relativeTB, H_RIGHT, V_BOTTOM, 0, 0, 0, 0
         );
@@ -1557,51 +1466,108 @@ class KRenderingExtensions {
 
     def <T extends KRendering> T setPointPlacementData(T rendering,
         PositionReferenceX px, float absoluteLR, float relativeLR,
+        PositionReferenceY py, float absoluteTB, float relativeTB) {
+
+        rendering.placementData = createKPointPlacementData => [
+            it.referencePoint = createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
+        ];
+        return rendering
+    }
+
+    def <T extends KRendering> KPointPlacementData setPointPlacementData(T rendering) {
+        return createKPointPlacementData => [
+            rendering.placementData = it; 
+        ];
+    }
+
+    def KPointPlacementData at(KPointPlacementData ppd, KPosition pos) {
+
+        ppd.referencePoint = pos;
+        return ppd;
+    }
+
+    def KPointPlacementData at(KPointPlacementData ppd, PositionReferenceX px, float absoluteLR, float relativeLR,
+        PositionReferenceY py, float absoluteTB, float relativeTB) {
+
+        ppd.referencePoint = createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
+        return ppd;
+    }
+
+    def KPointPlacementData setAlignment(KPointPlacementData ppd,
+        HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment) {
+
+        ppd.horizontalAlignment = horizontalAlignment;
+        ppd.verticalAlignment = verticalAlignment;
+        return ppd;
+    }
+
+    def KPointPlacementData setMargins(KPointPlacementData ppd,
+        float horizontalMargin, float verticalMargin) {
+
+        ppd.horizontalMargin = horizontalMargin;
+        ppd.verticalMargin = verticalMargin;
+        return ppd;
+    }
+
+    def KPointPlacementData setMinimalSize(KPointPlacementData ppd,
+        float minWidth, float minHeight) {
+
+        ppd.minWidth = minWidth;
+        ppd.minHeight = minHeight;
+        return ppd;
+    }
+
+    def KRendering finish(KPointPlacementData ppd) {
+        return ppd.eContainer as KRendering
+    }
+
+    def <T extends KRendering> T setPointPlacementData(T rendering,
+        PositionReferenceX px, float absoluteLR, float relativeLR,
         PositionReferenceY py, float absoluteTB, float relativeTB,
         HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
         float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
-        return rendering => [
-            rendering.placementData = createKPointPlacementData => [
-                it.referencePoint = createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
-                it.horizontalAlignment = horizontalAlignment;
-                it.verticalAlignment = verticalAlignment;
-                it.horizontalMargin = horizontalMargin;
-                it.verticalMargin = verticalMargin;
-                it.minWidth = minWidth;
-                it.minHeight = minHeight;
-            ];
+
+        rendering.placementData = createKPointPlacementData => [
+            it.referencePoint = createKPosition(px, absoluteLR, relativeLR, py, absoluteTB, relativeTB);
+            it.horizontalAlignment = horizontalAlignment;
+            it.verticalAlignment = verticalAlignment;
+            it.horizontalMargin = horizontalMargin;
+            it.verticalMargin = verticalMargin;
+            it.minWidth = minWidth;
+            it.minHeight = minHeight;
         ];
+        return rendering;
     }
 
     def <T extends KRendering> T setPointPlacementData(T rendering, KPosition referencePoint,
         HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
         float horizontalMargin, float verticalMargin, float minWidth, float minHeight) {
-        return rendering => [
-            rendering.placementData = createKPointPlacementData => [
-                it.referencePoint = referencePoint;
-                it.horizontalAlignment = horizontalAlignment;
-                it.verticalAlignment = verticalAlignment;
-                it.horizontalMargin = horizontalMargin;
-                it.verticalMargin = verticalMargin;
-                it.minWidth = minWidth;
-                it.minHeight = minHeight;
-            ];
+
+        rendering.placementData = createKPointPlacementData => [
+            it.referencePoint = referencePoint;
+            it.horizontalAlignment = horizontalAlignment;
+            it.verticalAlignment = verticalAlignment;
+            it.horizontalMargin = horizontalMargin;
+            it.verticalMargin = verticalMargin;
+            it.minWidth = minWidth;
+            it.minHeight = minHeight;
         ];
+        return rendering;
     }
 
     def <T extends KRendering> T setDecoratorPlacementData(T rendering, float width,
             float height, float posAbsolute, float posRelative, boolean rotateWithLine) {
-        return rendering => [
-            rendering.placementData = createKDecoratorPlacementData() => [
-                it.width = width;
-                it.height = height;
-                it.absolute = posAbsolute;
-                it.relative = posRelative;
-                it.rotateWithLine = rotateWithLine;
-                it.XOffset = -width/2;
-                it.YOffset = -height/2;
-            ];
+
+        rendering.placementData = createKDecoratorPlacementData() => [
+            it.width = width;
+            it.height = height;
+            it.absolute = posAbsolute;
+            it.relative = posRelative;
+            it.rotateWithLine = rotateWithLine;
+            it.XOffset = -width/2;
+            it.YOffset = -height/2;
         ];
+        return rendering;
     }
     
     public val PositionReferenceX LEFT = PositionReferenceX::LEFT;

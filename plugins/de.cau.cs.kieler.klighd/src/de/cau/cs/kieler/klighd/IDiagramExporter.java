@@ -19,12 +19,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * Basic interface of diagram exporters creating images in <code>.png</code> or </code>.svg</code>
+ * Basic interface of diagram exporters creating images in <code>png</code> or </code>svg</code>
  * format, for instance.
  * 
  * @author uru
@@ -36,28 +37,27 @@ import org.eclipse.swt.widgets.Control;
 public interface IDiagramExporter {
 
     /**
-     * Exports the diagram currently visible on the given {@code control} to the passed output
-     * stream. If the {@code cameraViewport} flag is set, only the visible area is exported. The
-     * {@code scale} value can be used for instance during the export of bitmap graphics to increase
-     * the rendering quality by up-scaling the visible area before exporting. Some implementations
-     * of the {@link IDiagramExporter} interface might support multiple sub formats of the same
-     * parent format, e.g., .bmp and .png are both bitmap formats.
+     * Exports the diagram depicted by the given <code>control</code>.
      * 
      * @param data
      *            the specified export info
      * @param control
      *            the control to export
+     * @return {@link org.eclipse.core.runtime.Status#OK_STATUS Status#OK_STATUS} if the diagram
+     *         export went successfully, an {@link IStatus} providing information on the failure
+     *         otherwise.
      */
-    void export(ExportData data, Control control);
+    IStatus export(ExportData data, Control control);
 
     /**
-     * A data record encapsulating the information needed to export a diagram to the file system.
+     * A data record encapsulating the information needed to export a diagram to the file system.<br>
      * 
      * @author csp
      */
     public class ExportData {
 
         // SUPPRESS CHECKSTYLE NEXT 8 Visibility|Javadoc
+        public final String format;
         public final OutputStream stream;
         public final IPath path;
         public final boolean isWorkspacePath;
@@ -65,31 +65,34 @@ public interface IDiagramExporter {
         public final int scale;
         public final boolean isTextAsShapes;
         public final boolean isEmbedFonts;
-        public final String subFormatId;
 
         private TilingData tilingInfo;
 
         /**
+         * Constructor.
+         * 
+         * @param format
+         *            id of the format to transform the diagram into
          * @param path
          *            the path to write the image to (either file system or workspace)
          * @param isWorkspacePath
          *            whether the given path should be interpreted as file system or workspace
          *            relative
          * @param cameraViewport
-         *            true if the scene graph should be rendered through the camera, i.e. only
-         *            render what is visible on the canvas; false to render the whole scene graph
+         *            if <code>true</code> only the actually visible area is to be exported,
+         *            otherwise export the whole diagram
          * @param scale
-         *            the scale factor to apply while constructing the image
+         *            the scale factor to apply while constructing the image, is usually only valid
+         *            in case of raster (bitmap) images
          * @param textAsShapes
-         *            whether text in vector graphics should be rendered as shapes
+         *            whether text should be rendered as shapes (only vector images)
          * @param embedFonts
-         *            whether the texts' fonts shall be embedded in the output
-         * @param subFormatId
-         *            an id for a certain subformat
+         *            whether the texts' fonts shall be embedded in the output (only vector images)
          */
-        public ExportData(final IPath path, final boolean isWorkspacePath,
-                final boolean cameraViewport, final int scale, final boolean textAsShapes,
-                final boolean embedFonts, final String subFormatId) {
+        public ExportData(final String format, final IPath path,
+                final boolean isWorkspacePath, final boolean cameraViewport, final int scale,
+                final boolean textAsShapes, final boolean embedFonts) {
+            this.format = format;
             this.stream = null;
             this.path = path;
             this.isWorkspacePath = isWorkspacePath;
@@ -97,27 +100,30 @@ public interface IDiagramExporter {
             this.scale = scale;
             this.isTextAsShapes = textAsShapes;
             this.isEmbedFonts = embedFonts;
-            this.subFormatId = subFormatId;
             this.tilingInfo = TilingData.createNonTiledData();
         }
 
         /**
+         * Constructor.
+         * 
+         * @param format
+         *            id of the format to transform the diagram into
          * @param stream
          *            the output stream
          * @param cameraViewport
-         *            true if the scene graph should be rendered through the camera, i.e. only
-         *            render what is visible on the canvas; false to render the whole scene graph
+         *            if <code>true</code> only the actually visible area is to be exported,
+         *            otherwise export the whole diagram
          * @param scale
-         *            the scale factor to apply while constructing the image
+         *            the scale factor to apply while constructing the image, is usually only valid
+         *            in case of raster (bitmap) images
          * @param textAsShapes
-         *            whether text in vector graphics should be rendered as shapes
+         *            whether text should be rendered as shapes (only vector images)
          * @param embedFonts
-         *            whether the texts' fonts shall be embedded in the output
-         * @param subFormatId
-         *            an id for a certain subformat
+         *            whether the texts' fonts shall be embedded in the output (only vector images)
          */
-        public ExportData(final OutputStream stream, final boolean cameraViewport, final int scale,
-                final boolean textAsShapes, final boolean embedFonts, final String subFormatId) {
+        public ExportData(final String format, final OutputStream stream, final boolean cameraViewport,
+                final int scale, final boolean textAsShapes, final boolean embedFonts) {
+            this.format = format;
             this.stream = stream;
             this.path = null;
             this.isWorkspacePath = false;
@@ -125,7 +131,6 @@ public interface IDiagramExporter {
             this.scale = scale;
             this.isTextAsShapes = textAsShapes;
             this.isEmbedFonts = embedFonts;
-            this.subFormatId = subFormatId;
             this.tilingInfo = TilingData.createNonTiledData();
         }
 

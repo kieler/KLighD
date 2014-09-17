@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 import java.awt.geom.Point2D;
 
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 
 /**

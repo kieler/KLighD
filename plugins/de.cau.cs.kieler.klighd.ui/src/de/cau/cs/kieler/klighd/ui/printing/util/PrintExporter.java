@@ -62,10 +62,8 @@ public class PrintExporter extends AbstractDiagramExporter {
      *            the column of the tile to export
      * @param row
      *            the row of the tile to export
-     * @param width
-     *            the width of the tile to export
-     * @param height
-     *            the height of the tile to export
+     * @param bounds
+     *            the bounds of the diagrampart to be exported
      * @param scale
      *            the scale factor
      * @return the image
@@ -110,7 +108,7 @@ public class PrintExporter extends AbstractDiagramExporter {
 
         drawDiagram(viewer.getCanvas().getCamera(), false, graphics, new PBounds(bounds.x + column
                 * (bounds.width), bounds.y + row * (bounds.height), bounds.width, bounds.height),
-                scale);
+                scale, false);
     }
 
     /**

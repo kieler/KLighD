@@ -33,7 +33,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * A Piccolo2D node implementation wrapping a Draw2d connections.<br>
@@ -117,13 +116,7 @@ public class Draw2DConnectionNode extends KCustomConnectionFigureNode {
      * {@inheritDoc}
      */
     @Override
-    protected void paint(final PPaintContext paintContext) {
-        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-
-        // first test whether this figure shall be drawn at all
-        if (isNotVisibleOn(kpc.getCameraZoomScale())) {
-            return;
-        }
+    protected void paint(final KlighdPaintContext kpc) {
 
         this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());
         try {

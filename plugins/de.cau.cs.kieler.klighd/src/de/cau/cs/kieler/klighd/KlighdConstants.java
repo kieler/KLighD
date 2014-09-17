@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd;
 
 import java.awt.Font;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.LineAttributes;
@@ -103,17 +102,13 @@ public final class KlighdConstants {
      * 
      * Note: This is a AWT constant!
      */
-    public static final String DEFAULT_FONT_NAME =
-            Platform.getOS().equals(Platform.OS_WIN32) ? "Arial" : Font.SANS_SERIF;
+    public static final String DEFAULT_FONT_NAME = KlighdPlugin.IS_WINDOWS ? "Arial" : Font.SANS_SERIF;
 
     /**
      * A platform independent font name identifier for a default monospaced font.
-     * 
-     * Note: This is a AWT constant!
      */
-    public static final String DEFAULT_MONOSPACE_FONT_NAME =
-            Platform.getOS().equals(Platform.OS_WIN32) ? "Consolas"
-                    : Platform.getOS().equals(Platform.OS_MACOSX) ? "Monaco" : "Monospace";
+    public static final String DEFAULT_MONOSPACE_FONT_NAME = KlighdPlugin.IS_WINDOWS ? "Consolas"
+            : KlighdPlugin.IS_MACOSX ? "Monaco" : "Monospace";
 
     /**
      * This font size is used for {@link de.cau.cs.kieler.core.krendering.KText KTexts}, if no

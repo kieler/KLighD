@@ -164,12 +164,14 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
      * <!-- end-user-doc -->
      * @generated NOT
      */
-    public <T> void setProperty(final IProperty<? super T> property, final T value) {
+    public <T> IPropertyHolder setProperty(final IProperty<? super T> property, final T value) {
         if (value == null) {
             getProperties().removeKey(property);
         } else {
             getProperties().put(property, value);
         }
+        
+        return this;
     }
 
     /**
@@ -205,7 +207,11 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
      * <!-- end-user-doc -->
      * @generated NOT
      */
-    public void copyProperties(IPropertyHolder holder) {
+    public IPropertyHolder copyProperties(IPropertyHolder holder) {
+        if (holder == null) {
+            return this;
+        }
+
         if (holder instanceof EMapPropertyHolder) {
             EMapPropertyHolder other = (EMapPropertyHolder) holder;
             EMap<IProperty<?>, Object> ourProps = this.getProperties();
@@ -224,6 +230,8 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
         } else {
             this.getProperties().putAll(holder.getAllProperties());
         }
+
+        return this;
     }
 
     /**
