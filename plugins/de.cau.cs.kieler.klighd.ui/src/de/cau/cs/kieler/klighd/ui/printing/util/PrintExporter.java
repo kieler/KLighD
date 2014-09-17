@@ -70,14 +70,14 @@ public class PrintExporter extends AbstractDiagramExporter {
      *            the scale factor
      * @return the image
      */
-    public Image exportPreview(final int column, final int row, final int width, final int height,
+    public Image exportPreview(final int column, final int row, final Rectangle bounds,
             final double scale) {
 
         Display display =
                 (Display.getCurrent() != null) ? Display.getCurrent() : Display.getDefault();
-        Image image = new Image(display, width, height);
+        Image image = new Image(display, bounds.width, bounds.height);
         GC gc = new GC(image);
-        export(column, row, new Rectangle(0, 0, width, height), scale, gc, display);
+        export(column, row, bounds, scale, gc, display);
         gc.dispose();
         return image;
     }

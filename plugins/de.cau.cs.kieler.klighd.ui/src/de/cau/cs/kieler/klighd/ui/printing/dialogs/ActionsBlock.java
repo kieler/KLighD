@@ -60,15 +60,20 @@ class ActionsBlock implements DialogBlock {
         @Override
         public void widgetSelected(final SelectionEvent e) {
             try {
+                printDialog.closeTray();
+                tray.dispose();
+                tray = null;
+                printPreview.setText(DiagramUIPrintingMessages.PrintDialog_Button_PrintPreview
+                        + " >>");
+            } catch (IllegalStateException ex) {
+                if (tray != null) {
+                    tray.dispose();
+                    tray = null;
+                }
                 tray = new PrintPreviewTray(bindings, options);
                 printDialog.openTray(tray);
                 printPreview.setText(DiagramUIPrintingMessages.PrintDialog_Button_PrintPreview
                         + " <<");
-            } catch (Exception ex) {
-                tray.dispose();
-                printDialog.closeTray();
-                printPreview.setText(DiagramUIPrintingMessages.PrintDialog_Button_PrintPreview
-                        + " >>");
             }
         }
     };

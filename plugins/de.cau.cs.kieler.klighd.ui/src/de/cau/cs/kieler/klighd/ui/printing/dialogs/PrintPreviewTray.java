@@ -79,7 +79,7 @@ public class PrintPreviewTray extends DialogTray {
 
     /* Listener to be removed from observables. */
     private IValueChangeListener listener;
-    
+
     /** Minimal tile size. */
     protected static final int MINIMAL_TILE_SIZE = 4;
 
@@ -187,9 +187,9 @@ public class PrintPreviewTray extends DialogTray {
 
         // now adjust to the limiting one based on aspect ratio
 
-        Printer p = new Printer(options.getPrinterData());
+        Printer printer = new Printer(options.getPrinterData());
 
-        Rectangle pageBounds = PrintExporter.getPrinterBounds(p);
+        Rectangle pageBounds = PrintExporter.getPrinterBounds(printer);
 
         // width / height
         float printerRatio = ((float) pageBounds.width) / ((float) pageBounds.height);
@@ -201,21 +201,23 @@ public class PrintPreviewTray extends DialogTray {
             // round down
             imageHeight = (int) (imageWidth * (1.0f / printerRatio));
         }
+        
+        // Adjust the scale according to relation between preview and printing size.
+        double previewScale = (double) (imageWidth) / pageBounds.width;
+
+        Rectangle scaledBounds =
+                new Rectangle((int) (pageBounds.x * previewScale),
+                        (int) (pageBounds.y * previewScale), imageWidth, imageHeight);
 
         // make sure height and width are not 0, if too small <4, don't bother
         if (!(imageHeight <= MINIMAL_TILE_SIZE || imageWidth <= MINIMAL_TILE_SIZE)) {
-
-            double scale = options.getScaleFactor();
-
-            // Adjust the scale according to relation between preview and printing size.
-            scale = scale * imageWidth / pageBounds.width;
 
             for (int i = 0; i < options.getFitToPagesHeight(); i++) {
                 for (int j = 0; j < options.getFitToPagesWidth(); j++) {
                     Label label = new Label(composite, SWT.NULL);
                     Image pageImg =
-                            options.getExporter().exportPreview(j, i, imageWidth, imageHeight,
-                                    scale);
+                            options.getExporter().exportPreview(j, i, scaledBounds,
+                                    options.getScaleFactor() * previewScale);
                     label.setImage(pageImg);
                     imageList.add(pageImg);
                 }
@@ -250,7 +252,7 @@ public class PrintPreviewTray extends DialogTray {
     /**
      * Dispose images.
      */
-    public void disposeImages() {
+    private void disposeImages() {
         for (Image image : imageList) {
             safeDisposeImage(image);
         }
@@ -258,16 +260,27 @@ public class PrintPreviewTray extends DialogTray {
     }
 
     /**
+     * Safely removes the listener from the given observable.
+     * 
+     * @param observable
+     *            the observable to remove the listener from
+     */
+    private void safeRemoveListener(final IObservableValue observable) {
+        if (observable != null) {
+            observable.removeValueChangeListener(listener);
+        }
+    }
+
+    /**
      * Dispose resources.
      */
     public void dispose() {
         disposeImages();
-        delayedResize.removeValueChangeListener(listener);
-        delayedScale.removeValueChangeListener(listener);
-        delayedPagesWide.removeValueChangeListener(listener);
-        delayedPagesTall.removeValueChangeListener(listener);
-        printerData.removeValueChangeListener(listener);
-        BACKGROUND_COLOR.dispose();
+        safeRemoveListener(delayedResize);
+        safeRemoveListener(delayedScale);
+        safeRemoveListener(delayedPagesWide);
+        safeRemoveListener(delayedPagesTall);
+        safeRemoveListener(printerData);
     }
 
 }

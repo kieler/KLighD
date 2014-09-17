@@ -111,10 +111,15 @@ class ScalingBlock implements DialogBlock {
              */
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                int width =
-                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData())).width;
-                options.setScaleFactor(((double) width) * options.getFitToPagesWidth()
-                        / options.getExporter().getDiagramBounds().width);
+                Rectangle printerBounds = PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
+                PBounds diagramBounds = options.getExporter().getDiagramBounds();
+                double scaleX =
+                        ((double) printerBounds.width) * options.getFitToPagesWidth()
+                                / diagramBounds.width;
+                double scaleY =
+                        ((double) printerBounds.height) * options.getFitToPagesHeight()
+                                / diagramBounds.height;
+                options.setScaleFactor(Math.min(scaleX, scaleY));
             }
         });
 
@@ -148,7 +153,7 @@ class ScalingBlock implements DialogBlock {
         DialogUtil.layoutFillHorizontal(scaleFactor, true);
         Label labelScale = DialogUtil.label(scalingGroup, "");
         GC gc = new GC(labelScale);
-        DialogUtil.layoutWidth(labelScale, gc.textExtent("500").x);
+        DialogUtil.layoutWidth(labelScale, gc.textExtent("0.00").x);
         DialogUtil.label(scalingGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_percent);
 
         IObservableValue scaleValue =

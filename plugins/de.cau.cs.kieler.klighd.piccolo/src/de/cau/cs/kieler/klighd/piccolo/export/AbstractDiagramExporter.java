@@ -163,8 +163,8 @@ public abstract class AbstractDiagramExporter {
         graphics.transform(preTransform);
 
         // adjust the zero reference point
-        graphics.transform(AffineTransform.getTranslateInstance(-theBounds.getX(),
-                -theBounds.getY()));
+        graphics.transform(AffineTransform.getTranslateInstance(-theBounds.x,
+                -theBounds.y));
         
         graphics.transform(AffineTransform.getScaleInstance(scale, scale));
 
