@@ -52,11 +52,11 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdActionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMagnificationLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelZoomEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdPanEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMagnificationLensEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -104,9 +104,11 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     private static final int VIEW_PORT_CHANGE_NOTIFY_DELAY = 250; // ms
 
     /** the canvas used for drawing. */
-    private KlighdCanvas canvas;
+    private final KlighdCanvas canvas;
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
+    /** the event handler contributing the magnifying lens. */
+    private final KlighdMagnificationLensEventHandler magnificationLensHandler;
 
     /** the parent viewer. */
     private ContextViewer parentViewer;
@@ -147,6 +149,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         this.canvas = new KlighdCanvas(parent, style);
 
         final KlighdMainCamera camera = canvas.getCamera();
+        magnificationLensHandler = new KlighdMagnificationLensEventHandler(camera);
 
         // install the required event handlers, they rely on SWT event type codes
         // the order of registering them DOES MATTER,
@@ -154,14 +157,16 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         // make sure those handlers properly execute 'event.setHandled(true);'
         //  in order to skip invoking the less priority handlers
         camera.addInputEventListener(new KlighdActionEventHandler(this));
-        camera.addInputEventListener(new KlighdMagnificationLensEventHandler(camera));
+        camera.addInputEventListener(magnificationLensHandler);
         camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
                 new KlighdPanEventHandler(canvas)));
+
+        // caution: the selection handler currently marks most of the 'mouse release'
+        //  events as handled; thus all handlers registered above will not get those events!
+        camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
-                new KlighdSelectiveZoomEventHandler()));
-        camera.addInputEventListener(
-                new KlighdSelectionEventHandler(theParentViewer));
+                new KlighdSelectiveZoomEventHandler(this)));
 
         // add a tooltip element
         new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
@@ -206,6 +211,17 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                         timer.restart();
                     }
                 });
+    }
+
+    /**
+     * Provides the visibility state of the magnifying lens.<br>
+     * This is evaluated by particular Klighd...EventHandlers that are inactive in case the
+     * lens is shown.
+     * 
+     * @return the visibility state of the magnifying lens.
+     */
+    public boolean isMagnificationLensVisible() {
+        return magnificationLensHandler.isLensVisible();
     }
 
     /**

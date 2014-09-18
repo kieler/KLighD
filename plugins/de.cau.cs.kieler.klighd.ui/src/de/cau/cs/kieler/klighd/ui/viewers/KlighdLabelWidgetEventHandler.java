@@ -137,6 +137,9 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             //  registered handlers and is, therefore, called first
             event.setHandled(true);
 
+        } else if (viewer.isMagnificationLensVisible()) {
+            return;
+
         } else if (event.getPickedNode() instanceof KlighdStyledText) {
             updateTextInput(event, false);
             
@@ -170,6 +173,9 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             //  This works fine since this handler is supposed to be the last one in the row of
             //  registered handlers and is, therefore, called first
             event.setHandled(true);
+
+        } else if (viewer.isMagnificationLensVisible()) {
+            return;
 
         } else if (labelWidget.isVisible() && labelWidget.getSelectionCount() != 0) {
             // if the widget is shown and blocked by a text selection try to steel the text label
