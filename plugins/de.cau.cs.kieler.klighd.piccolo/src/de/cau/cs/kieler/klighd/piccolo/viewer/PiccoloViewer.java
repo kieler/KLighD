@@ -29,7 +29,6 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
@@ -249,7 +248,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     /**
      * {@inheritDoc}
      */
-    public Control getControl() {
+    public KlighdCanvas getControl() {
         return canvas;
     }
 
@@ -675,14 +674,6 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         return null;
     }
 
-    /**
-     * Returns the canvas used to render the scene graph.
-     * 
-     * @return the canvas
-     */
-    public KlighdCanvas getCanvas() {
-        return canvas;
-    }
 
     /**
      * Renders this viewer's contents to the passed gc with the targeted bounds.

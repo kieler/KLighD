@@ -43,7 +43,7 @@ public class PrintAction implements Runnable {
     public void run() {
         
         // open a dialog, ask for print information!
-        PrintDialog printDialog = new PrintDialog(viewer.getCanvas().getShell(), SWT.NONE);
+        PrintDialog printDialog = new PrintDialog(viewer.getControl().getShell(), SWT.NONE);
         printDialog.setText("Print KlighD View");
 
         PrinterData printerData = printDialog.open();

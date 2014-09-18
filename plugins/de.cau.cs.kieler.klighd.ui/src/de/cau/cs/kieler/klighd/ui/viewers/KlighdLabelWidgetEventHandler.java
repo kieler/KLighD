@@ -69,7 +69,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
         super();
 
         this.viewer = viewer;
-        this.camera = viewer.getCanvas().getCamera();
+        this.camera = viewer.getControl().getCamera();
         this.labelWidget = labelWidget;
 
         new PropertyChangeListener() {
