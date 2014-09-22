@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import java.awt.Component;
 import java.awt.event.MouseWheelEvent;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DragDetectEvent;
 import org.eclipse.swt.events.DragDetectListener;
@@ -31,6 +30,7 @@ import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.core.krendering.Trigger;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerEx.IKlighdInputEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener.KlighdEventHelper;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -103,7 +103,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
 
         lastSingleClickConfig[0] = Boolean.FALSE;
 
-        if (Platform.getOS().equals(Platform.OS_WIN32)) {
+        if (KlighdPlugin.IS_WINDOWS) {
             canvas.setFocus();
         }
 

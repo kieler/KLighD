@@ -13,10 +13,29 @@
  */
 package de.cau.cs.kieler.klighd.syntheses;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
+
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
+import de.cau.cs.kieler.core.krendering.KBackground;
+import de.cau.cs.kieler.core.krendering.KBottomPosition;
+import de.cau.cs.kieler.core.krendering.KContainerRendering;
+import de.cau.cs.kieler.core.krendering.KInvisibility;
+import de.cau.cs.kieler.core.krendering.KLeftPosition;
+import de.cau.cs.kieler.core.krendering.KLineStyle;
+import de.cau.cs.kieler.core.krendering.KLineWidth;
+import de.cau.cs.kieler.core.krendering.KPosition;
+import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRightPosition;
+import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.KTopPosition;
+import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -341,5 +360,135 @@ public final class DiagramSyntheses {
     public static KRendering setTooltip(final KRendering rendering, final String tooltip) {
         rendering.setProperty(KlighdProperties.TOOLTIP, tooltip);
         return rendering;
+    }
+    
+    /**
+     * Wraps the given rendering in a rendering displayed on selection and adds that to the given KGraph
+     * element. The selection rendering is returned to be modified further and is the one obtained by
+     * calling {@link #wrapWithStandardNodeSelectionRendering(ren)}.
+     * 
+     * @param kge the KGraph element the rendering should be added to.
+     * @param ren the rendering to be wrapped. May be {@code null}, in which case no rendering is added
+     *            to the selection rendering.
+     * @return the selection rendering.
+     */
+    public static KContainerRendering addRenderingWithStandardSelectionWrapper(final KGraphElement kge,
+            final KRendering ren) {
+        
+        KContainerRendering selectionRendering = wrapWithStandardNodeSelectionRendering(ren);
+        kge.getData().add(selectionRendering);
+        return selectionRendering;
+    }
+
+    /** Corner size of the rounded rectangle used to display selections. */
+    private static final float SELECTION_RECTANGLE_CORNER_SIZE = 3.0f;
+    /** How much larger the selection rectangle should be than the original rendering. */
+    private static final float SELECTION_RECTANGLE_ENLARGEMENT = 3.0f;
+    /** Red component of the standard selection color. */
+    private static final int SELECTION_COLOR_R = 180;
+    /** Green component of the standard selection color. */
+    private static final int SELECTION_COLOR_G = 213;
+    /** Blue component of the standard selection color. */
+    private static final int SELECTION_COLOR_B = 255;
+    
+    /**
+     * Creates a rendering displayed when an element is selected and wraps the given rendering with it.
+     * The selection rendering's color is retrieved from the operating system's colors and defaults to a
+     * standard color if the application is run headlessly.
+     * 
+     * @param ren the rendering to be wrapped by the selection wrapper. May be {@code null}, in which
+     *            case the raw selection rendering is returned.
+     * @return the selection rendering.
+     */
+    public static KContainerRendering wrapWithStandardNodeSelectionRendering(final KRendering ren) {
+        // Retrieve the color to be used for selections (this is done here instead of just once
+        // statically to handle system color changes)
+        int selectionR = SELECTION_COLOR_R;
+        int selectionG = SELECTION_COLOR_G;
+        int selectionB = SELECTION_COLOR_B;
+        
+        Display display = Display.getCurrent();
+        if (display != null) {
+            Color selectionColor = display.getSystemColor(SWT.COLOR_LIST_SELECTION);
+            selectionR = selectionColor.getRed();
+            selectionG = selectionColor.getGreen();
+            selectionB = selectionColor.getBlue();
+        }
+        
+        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
+        KRectangle containerRendering = factory.createKRectangle();
+        
+        // Make container rectangle invisible
+        KInvisibility containerInvisibility = factory.createKInvisibility();
+        containerInvisibility.setInvisible(true);
+        containerRendering.getStyles().add(containerInvisibility);
+        
+        // Rounded rectangle used to display the selection
+        KRoundedRectangle selectionRectangle = factory.createKRoundedRectangle();
+        selectionRectangle.setCornerWidth(SELECTION_RECTANGLE_CORNER_SIZE);
+        selectionRectangle.setCornerHeight(SELECTION_RECTANGLE_CORNER_SIZE);
+        containerRendering.getChildren().add(selectionRectangle);
+        
+        // Background color of the rounded rectangle
+        KBackground selectionRectangleBackground = factory.createKBackground();
+        selectionRectangleBackground.setColor(selectionR, selectionG, selectionB);
+        selectionRectangle.getStyles().add(selectionRectangleBackground);
+        
+        // Line style and with of the rounded rectangle
+        KLineStyle selectionRectangleLineStyle = factory.createKLineStyle();
+        selectionRectangleLineStyle.setLineStyle(LineStyle.DASH);
+        selectionRectangle.getStyles().add(selectionRectangleLineStyle);
+        
+        KLineWidth selectionRectangleLineWidth = factory.createKLineWidth();
+        selectionRectangleLineWidth.setLineWidth(1.0f);
+        selectionRectangle.getStyles().add(selectionRectangleLineWidth);
+        
+        // Make selection rectangle only visible on selection
+        KInvisibility selectionVisibility = factory.createKInvisibility();
+        selectionVisibility.setInvisible(true);
+        selectionRectangle.getStyles().add(selectionVisibility);
+        
+        selectionVisibility = factory.createKInvisibility();
+        selectionVisibility.setInvisible(false);
+        selectionVisibility.setSelection(true);
+        selectionRectangle.getStyles().add(selectionVisibility);
+        
+        // Make the selection rectangle a bit larger than the original rendering
+        KTopPosition topPosition = factory.createKTopPosition();
+        topPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
+        topPosition.setRelative(0);
+
+        KLeftPosition leftPosition = factory.createKLeftPosition();
+        leftPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
+        leftPosition.setRelative(0);
+        
+        KPosition topLeftPosition = factory.createKPosition();
+        topLeftPosition.setY(topPosition);
+        topLeftPosition.setX(leftPosition);
+        
+        KBottomPosition bottomPosition = factory.createKBottomPosition();
+        bottomPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
+        bottomPosition.setRelative(0);
+
+        KRightPosition rightPosition = factory.createKRightPosition();
+        rightPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
+        rightPosition.setRelative(0);
+        
+        KPosition bottomRightPosition = factory.createKPosition();
+        bottomRightPosition.setY(bottomPosition);
+        bottomRightPosition.setX(rightPosition);
+        
+        KAreaPlacementData areaPlacementData = factory.createKAreaPlacementData();
+        areaPlacementData.setTopLeft(topLeftPosition);
+        areaPlacementData.setBottomRight(bottomRightPosition);
+        
+        selectionRectangle.setPlacementData(areaPlacementData);
+        
+        // Add the original rendering to the container rendering
+        if (ren != null) {
+            containerRendering.getChildren().add(ren);
+        }
+        
+        return containerRendering;
     }
 }

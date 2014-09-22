@@ -112,10 +112,17 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
             }
         });
     }
-    
+
     private boolean disabled = true;
-    
+
     private boolean lensVisible = false;
+
+    /**
+     * @return the visibility state of the magnifying lens
+     */
+    public boolean isLensVisible() {
+        return lensVisible;
+    }
 
     /**
      * Determines the lens position (especially its midpoint) based on the <code>event</code>'s
@@ -164,8 +171,8 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
         viewTransform.translate(-pos.getX(), -pos.getY());
         return viewTransform;
     }
-    
-    
+
+
     @Override
     public void keyPressed(final PInputEvent event) {
         if (disabled || lensVisible) {

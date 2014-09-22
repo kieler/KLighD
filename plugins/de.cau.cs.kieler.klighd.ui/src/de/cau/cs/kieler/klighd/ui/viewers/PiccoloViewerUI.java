@@ -169,7 +169,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      *            the viewer to which to add the text widget
      */
     private void addLabelTextWidget(final ContextViewer parentViewer) {
-        labelWidget = new StyledText(this.getCanvas(), SWT.MULTI);
+        labelWidget = new StyledText(this.getControl(), SWT.MULTI);
         labelWidget.setEditable(false);
         labelWidget.setVisible(false);
 
@@ -191,7 +191,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         final IWorkbenchPart part = parentViewer.getViewContext().getDiagramWorkbenchPart();
         part.getSite().registerContextMenu(KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, parentViewer);
 
-        this.getCanvas().getCamera().addInputEventListener(
+        this.getControl().getCamera().addInputEventListener(
                 new KlighdLabelWidgetEventHandler(this, labelWidget));
 
         // add a selection changed listener to the diagram viewer in order to deactivate
@@ -364,7 +364,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      *            the new {@link IKlighdSelection} to be propagated to the selection service.
      */
     protected void updateSelection(final IKlighdSelection selection) {
-        getCanvas().getDisplay().asyncExec(new Runnable() {
+        getControl().getDisplay().asyncExec(new Runnable() {
             public void run() {
                 PiccoloViewerUI.super.updateSelection(selection);
             }
@@ -418,7 +418,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             }
         }
 
-        final KlighdMainCamera camera = this.getCanvas().getCamera();
+        final KlighdMainCamera camera = this.getControl().getCamera();
 
         // determine global position of the text element
         //  although 'clipRelativeGlobalBoundsOf' may return null that should never happen here as
