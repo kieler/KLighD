@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    IBM Corporation - initial API and implementation 
+ *    IBM Corporation - initial API and implementation
  ****************************************************************************/
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
@@ -22,7 +22,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.printing.dialogs;
+package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -40,24 +40,32 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
-import de.cau.cs.kieler.klighd.ui.printing.util.PrintExporter;
+import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
+import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
+import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A section of the KlighD print dialog that adds scaling support.
  * 
- * @author csp
- * 
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
+ * @author csp
  */
-class ScalingBlock implements DialogBlock {
+final class ScalingBlock implements IDialogBlock {
 
     private final DataBindingContext bindings;
     private final PrintOptions options;
 
+    /**
+     * Instantiates a new scaling block.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
+     * 
+     * @param bindings
+     *            the bindings used for observables
+     * @param options
+     *            the current print options
+     */
     ScalingBlock(final DataBindingContext bindings, final PrintOptions options) {
         this.bindings = bindings;
         this.options = options;
@@ -75,16 +83,24 @@ class ScalingBlock implements DialogBlock {
     public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
-        Composite result = DialogUtil.group(parent, DiagramUIPrintingMessages.PrintDialog_Scaling);
+        // create group
+        final Composite result = DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Scaling);
         DialogUtil.layout(result, 1);
 
-        Composite buttonsGroup = new Composite(result, SWT.NONE);
+        // This group contains three composites to be independent from the gridlayout's columns in
+        // each row.
+
+        // Group containing 3 buttons:
+        // - scale to 100%
+        // - scale to fit pages
+        // - adjust number of pages to fit diagram
+        final Composite buttonsGroup = new Composite(result, SWT.NONE);
         DialogUtil.layoutFillHorizontal(buttonsGroup, true);
         buttonsGroup.setLayout(new GridLayout(BUTTONS_GROUP_COLUMNS, false));
 
-        Button oneToOneBtn =
+        final Button oneToOneBtn =
                 DialogUtil
-                        .button(buttonsGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_to100);
+                .button(buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
         oneToOneBtn.addSelectionListener(new SelectionAdapter() {
 
             /**
@@ -96,9 +112,9 @@ class ScalingBlock implements DialogBlock {
             }
         });
 
-        Button fitToPagesBtn =
+        final Button fitToPagesBtn =
                 DialogUtil.button(buttonsGroup,
-                        DiagramUIPrintingMessages.PrintDialog_Scaling_fitPages);
+                        KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
         fitToPagesBtn.addSelectionListener(new SelectionAdapter() {
 
             /**
@@ -106,22 +122,24 @@ class ScalingBlock implements DialogBlock {
              */
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                Rectangle printerBounds =
+                // Calculate the minimum of necessary horizontal and vertical scale factors to fit the
+                // whole diagram on the selected amount of pages.
+                final Rectangle printerBounds =
                         PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
-                PBounds diagramBounds = options.getExporter().getDiagramBounds();
-                double scaleX =
-                        ((double) printerBounds.width) * options.getFitToPagesWidth()
-                                / diagramBounds.width;
-                double scaleY =
-                        ((double) printerBounds.height) * options.getFitToPagesHeight()
-                                / diagramBounds.height;
+                final PBounds diagramBounds = options.getExporter().getDiagramBounds();
+                final double scaleX =
+                        ((double) printerBounds.width) * options.getPagesWide()
+                        / diagramBounds.width;
+                final double scaleY =
+                        ((double) printerBounds.height) * options.getPagesTall()
+                        / diagramBounds.height;
                 options.setScaleFactor(Math.min(scaleX, scaleY));
             }
         });
 
-        Button adjustPagesBtn =
+        final Button adjustPagesBtn =
                 DialogUtil.button(buttonsGroup,
-                        DiagramUIPrintingMessages.PrintDialog_Scaling_adjustPages);
+                        KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
         adjustPagesBtn.addSelectionListener(new SelectionAdapter() {
 
             /**
@@ -129,51 +147,56 @@ class ScalingBlock implements DialogBlock {
              */
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                Rectangle bounds =
+                // Calculate for both horizontal and vertical directions how many pages are necessary
+                // to fit the diagram in.
+                final Rectangle bounds =
                         PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
-                PBounds size = options.getExporter().getDiagramBounds();
-                options.setFitToPagesWidth((int) Math.ceil(size.width * options.getScaleFactor()
+                final PBounds size = options.getExporter().getDiagramBounds();
+                options.setPagesWide((int) Math.ceil(size.width * options.getScaleFactor()
                         / bounds.width));
-                options.setFitToPagesHeight((int) Math.ceil(size.height * options.getScaleFactor()
+                options.setPagesTall((int) Math.ceil(size.height * options.getScaleFactor()
                         / bounds.height));
             }
         });
 
-        Composite scalingGroup = new Composite(result, SWT.NONE);
+        // Group containing a spinner and some textlabels for scale settings.
+        final Composite scalingGroup = new Composite(result, SWT.NONE);
         DialogUtil.layoutFillHorizontal(scalingGroup, true);
         scalingGroup.setLayout(new GridLayout(SCALING_GROUP_COLUMNS, false));
 
-        DialogUtil.label(scalingGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_scaleTo);
-        Spinner scaleSpinner = DialogUtil.spinner(scalingGroup, 1, Integer.MAX_VALUE);
+        DialogUtil.label(scalingGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_scaleTo);
+        final Spinner scaleSpinner = DialogUtil.spinner(scalingGroup, 1, Integer.MAX_VALUE);
         DialogUtil.layoutFillHorizontal(scaleSpinner, true);
-        DialogUtil.label(scalingGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_percent);
+        DialogUtil.label(scalingGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_percent);
 
-        IObservableValue scaleValue =
+        final IObservableValue scaleValue =
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_PERCENT);
         bindings.bindValue(SWTObservables.observeSelection(scaleSpinner), scaleValue, null, null);
 
-        Composite pagesGroup = new Composite(result, SWT.NONE);
+        // Group containing two spinner (and describing labels) to set the number of pages tall and
+        // wide to print on.
+        final Composite pagesGroup = new Composite(result, SWT.NONE);
         DialogUtil.layoutFillHorizontal(pagesGroup, true);
         pagesGroup.setLayout(new GridLayout(PAGES_GROUP_COLUMNS, false));
 
-        DialogUtil.label(pagesGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_printTo);
+        DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_printTo);
 
-        Spinner spinnerWide = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
+        final Spinner spinnerWide = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
         DialogUtil.layoutWidth(spinnerWide, SPINNER_WIDTH);
 
-        DialogUtil.label(pagesGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_pagesWide);
+        DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesWide);
 
-        Spinner spinnerTall = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
+        final Spinner spinnerTall = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
         DialogUtil.layoutWidth(spinnerTall, SPINNER_WIDTH);
 
-        DialogUtil.label(pagesGroup, DiagramUIPrintingMessages.PrintDialog_Scaling_lbl_pagesTall);
+        DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesTall);
 
         bindings.bindValue(SWTObservables.observeSelection(spinnerWide),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_FIT_TO_WIDTH),
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE),
                 null, null);
 
         bindings.bindValue(SWTObservables.observeSelection(spinnerTall),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_FIT_TO_HEIGHT),
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL),
                 null, null);
 
         return result;

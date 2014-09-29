@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -61,7 +60,7 @@ import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.KlighdTextSelection;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.modifymodel.ModelModificationHandlerProvider;
-import de.cau.cs.kieler.klighd.ui.printing.actions.PrintActionHelper;
+import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PNode;
 
@@ -132,15 +131,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
         // register print action
         if (actions != null) {
-            final PiccoloViewer thisViewer = this;
-
-            actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new Action() {
-
-                @Override
-                public void run() {
-                    new PrintActionHelper().print(thisViewer);
-                }
-            });
+            actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new PrintAction(this));
         }
 
         addLabelTextWidget(parentViewer);
@@ -280,7 +271,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         protected KlighdFigureNode<KText> getFigureNode() {
             @SuppressWarnings("unchecked")
             final KlighdFigureNode<KText> figureNode =
-                    (KlighdFigureNode<KText>) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
+            (KlighdFigureNode<KText>) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
             return figureNode;
         }
 
@@ -377,7 +368,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      * styling up to date.
      */
     static final String TEXT_STYLING_CHANGE_LISTENER_KEY = "TEXT_STYLING_CHANGE_LISTENER_KEY";
-    
+
     /** String key for caching the KlighdStyledText in the labelWidget's data list. */
     private static final String STYLED_TEXT_FIGURE_KEY = "STYLED_TEXT_FIGURE_KEY";
 
@@ -597,7 +588,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      * @author chsch
      */
     private static class PiccoloContentOutlinePage extends PiccoloOutlinePage implements
-            IContentOutlinePage {
+    IContentOutlinePage {
 
         /**
          * {@inheritDoc}

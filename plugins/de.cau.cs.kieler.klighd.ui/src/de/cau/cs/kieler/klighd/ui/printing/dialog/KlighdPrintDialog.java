@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    IBM Corporation - initial API and implementation 
+ *    IBM Corporation - initial API and implementation
  ****************************************************************************/
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
@@ -22,7 +22,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.printing.dialogs;
+package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jface.databinding.swt.SWTObservables;
@@ -37,17 +37,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
+import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
+import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A dialog that supports platform independent printing options.
- * A printpreview can be shown in the tray.
- * 
- * @author csp
+ * A printpreview can be shown in the tray.<br>
+ * To add own GUI elements, you may override any of the
+ * {@code create*BlockArea(Composite)} methods to change or omit the corresponding controls. Or you
+ * may override the {@link #createDialogArea(Composite)} method and call the needed
+ * {@code create*BlockArea(Composite)} methods.<br>
+ * <br>
+ * The implementation is inspired by
+ * {@link org.eclipse.gmf.runtime.diagram.ui.printing.render.dialogs.JPSPrintDialog
+ * JPSPrintDialog} of the GMF project.
  * 
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
+ * @author csp
  */
 public class KlighdPrintDialog extends TrayDialog {
 
@@ -67,6 +74,7 @@ public class KlighdPrintDialog extends TrayDialog {
      *            the object that returns the current parent shell
      * @param options
      *            the options to configure the print job
+     * @see PrintOptions
      */
     public KlighdPrintDialog(final IShellProvider parentShell, final PrintOptions options) {
         super(parentShell);
@@ -81,6 +89,7 @@ public class KlighdPrintDialog extends TrayDialog {
      *            the parent shell, or <code>null</code> to create a top-level shell
      * @param options
      *            the options to configure the print job
+     * @see PrintOptions
      */
     public KlighdPrintDialog(final Shell shell, final PrintOptions options) {
         super(shell);
@@ -89,23 +98,14 @@ public class KlighdPrintDialog extends TrayDialog {
     }
 
     /**
-     * @param shell
-     * 
+     * {@inheritDoc}
      */
-    private boolean checkPrinterData(final Shell shell) {
-        try {
-            new Printer(options.getPrinterData());
-        } catch (Throwable e) {
-            PrintDialog printDialog = new PrintDialog(shell);
-            printDialog.setText("Select a printer");
-            PrinterData data = printDialog.open();
-            if (data != null) {
-                options.setPrinterData(data);
-            } else {
-                return false;
-            }
+    @Override
+    public final int open() {
+        if (!checkPrinterData()) {
+            return IDialogConstants.CANCEL_ID;
         }
-        return true;
+        return super.open();
     }
 
     /**
@@ -114,8 +114,7 @@ public class KlighdPrintDialog extends TrayDialog {
     @Override
     protected void configureShell(final Shell newShell) {
         super.configureShell(newShell);
-
-        newShell.setText(DiagramUIPrintingMessages.PrintDialog_Title);
+        newShell.setText(KlighdUIPrintingMessages.PrintDialog_Title);
         setHelpAvailable(false);
         setDialogHelpAvailable(false);
 
@@ -128,27 +127,17 @@ public class KlighdPrintDialog extends TrayDialog {
     protected Control createDialogArea(final Composite parent) {
         bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
 
-        Composite result = new Composite(parent, SWT.NONE);
+        final Composite result = new Composite(parent, SWT.NONE);
         DialogUtil.layout(result, 2);
 
         createPrinterBlockArea(result);
         createScalingBlockArea(result);
         createRangeBlockArea(result);
         createCopiesBlockArea(result);
+        createExtensibleBlockArea(result);
         createActionsBlockArea(result);
 
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int open() {
-        if (!checkPrinterData(getParentShell())) {
-            return IDialogConstants.CANCEL_ID;
-        }
-        return super.open();
     }
 
     /**
@@ -226,8 +215,6 @@ public class KlighdPrintDialog extends TrayDialog {
     @Override
     protected void buttonPressed(final int buttonId) {
         switch (buttonId) {
-        case -1:
-            break;
         case IDialogConstants.OK_ID:
             options.storeToPreferences();
             // fall through!
@@ -248,5 +235,26 @@ public class KlighdPrintDialog extends TrayDialog {
         rangeBlock.dispose();
         actionsBlock.dispose();
         return super.close();
+    }
+
+    /**
+     * Checks whether the printer data in the current print options are valid (i.e. a printer can be
+     * created from it). If not, the system's native print dialog is opened to let the user choose a
+     * valid printer.
+     */
+    private boolean checkPrinterData() {
+        try {
+            new Printer(options.getPrinterData());
+        } catch (final Throwable e) {
+            final PrintDialog printDialog = new PrintDialog(getParentShell());
+            printDialog.setText("Select a printer");
+            final PrinterData data = printDialog.open();
+            if (data != null) {
+                options.setPrinterData(data);
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 }

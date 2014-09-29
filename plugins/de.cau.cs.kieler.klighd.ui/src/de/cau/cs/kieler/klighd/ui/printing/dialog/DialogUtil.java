@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    IBM Corporation - initial API and implementation 
+ *    IBM Corporation - initial API and implementation
  ****************************************************************************/
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
@@ -22,7 +22,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.printing.dialogs;
+package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
@@ -44,28 +44,26 @@ import org.eclipse.swt.widgets.Text;
  * @author James Bruck (jbruck)
  * @author csp
  */
-/**
- * @author csp
- * 
- */
-public final class DialogUtil {
+final class DialogUtil {
 
     private DialogUtil() {
         // Prevent instantiation.
     }
 
-    /** the vertical indent. */
+    /** the vertical default indent. */
     private static final int VERTICAL_INDENT = 15;
-    /** the horizontal indent. */
+    /** the horizontal default indent. */
     private static final int HORIZONTAL_INDENT = 15;
 
     /**
      * Sets a {@link GridLayout} with given number of columns on the composite.
      * the following uniform margins are set:
-     * <li>left: 6
-     * <li>right: 6
-     * <li>top: 6
-     * <li>bottom: 3
+     * <ul>
+     *   <li>left: 6</li>
+     *   <li>right: 6</li>
+     *   <li>top: 6</li>
+     *   <li>bottom: 3</li>
+     * </ul>
      * 
      * @param composite
      *            the composite to set the layout on
@@ -73,14 +71,14 @@ public final class DialogUtil {
      *            the number of columns
      * @return the given composite
      */
-    public static Composite layout(final Composite composite, final int columns) {
-        GridLayout g = new GridLayout(columns, false);
+    static Composite layout(final Composite composite, final int columns) {
+        final GridLayout gridLayout = new GridLayout(columns, false);
         // SUPPRESS CHECKSTYLE NEXT 4 MagicNumber
-        g.marginLeft = 6;
-        g.marginRight = 6;
-        g.marginTop = 6;
-        g.marginBottom = 3;
-        composite.setLayout(g);
+        gridLayout.marginLeft = 6;
+        gridLayout.marginRight = 6;
+        gridLayout.marginTop = 6;
+        gridLayout.marginBottom = 3;
+        composite.setLayout(gridLayout);
 
         return composite;
     }
@@ -92,7 +90,7 @@ public final class DialogUtil {
      *            the control to get the layout data from.
      * @return the layout data
      */
-    public static GridData getLayoutData(final Control control) {
+    static GridData getLayoutData(final Control control) {
         GridData result = (GridData) control.getLayoutData();
 
         if (result == null) {
@@ -113,8 +111,8 @@ public final class DialogUtil {
      *            whether to grab excess horizontal space
      * @return the given control
      */
-    public static Control layoutFillHorizontal(final Control control, final boolean grab) {
-        GridData data = getLayoutData(control);
+    static Control layoutFillHorizontal(final Control control, final boolean grab) {
+        final GridData data = getLayoutData(control);
 
         data.horizontalAlignment = SWT.FILL;
         data.grabExcessHorizontalSpace = grab;
@@ -130,8 +128,8 @@ public final class DialogUtil {
      *            the control to set the vertical fill on
      * @return the given control
      */
-    public static Control layoutFillVertical(final Control control) {
-        GridData data = getLayoutData(control);
+    static Control layoutFillVertical(final Control control) {
+        final GridData data = getLayoutData(control);
 
         data.verticalAlignment = SWT.FILL;
         data.grabExcessVerticalSpace = true;
@@ -147,8 +145,8 @@ public final class DialogUtil {
      *            the control to align left
      * @return the given control
      */
-    public static Control layoutAlignLeft(final Control control) {
-        GridData data = getLayoutData(control);
+    static Control layoutAlignLeft(final Control control) {
+        final GridData data = getLayoutData(control);
 
         data.horizontalAlignment = SWT.BEGINNING;
         data.grabExcessHorizontalSpace = false;
@@ -164,8 +162,8 @@ public final class DialogUtil {
      *            the control to align right
      * @return the given control
      */
-    public static Control layoutAlignRight(final Control control) {
-        GridData data = getLayoutData(control);
+    static Control layoutAlignRight(final Control control) {
+        final GridData data = getLayoutData(control);
 
         data.horizontalAlignment = SWT.END;
         data.grabExcessHorizontalSpace = false;
@@ -182,8 +180,8 @@ public final class DialogUtil {
      *            the control to set the fill on
      * @return the given control
      */
-    public static Control layoutFillBoth(final Control control) {
-        GridData data = getLayoutData(control);
+    static Control layoutFillBoth(final Control control) {
+        final GridData data = getLayoutData(control);
 
         data.horizontalAlignment = SWT.FILL;
         data.grabExcessHorizontalSpace = true;
@@ -203,8 +201,8 @@ public final class DialogUtil {
      *            the number of columns to span
      * @return the given control
      */
-    public static Control layoutSpanHorizontal(final Control control, final int span) {
-        GridData data = getLayoutData(control);
+    static Control layoutSpanHorizontal(final Control control, final int span) {
+        final GridData data = getLayoutData(control);
 
         data.horizontalSpan = span;
 
@@ -219,7 +217,7 @@ public final class DialogUtil {
      *            the control to set the indent on
      * @return the given control
      */
-    public static Control layoutHorizontalIndent(final Control control) {
+    static Control layoutHorizontalIndent(final Control control) {
         layoutHorizontalIndent(control, HORIZONTAL_INDENT);
 
         return control;
@@ -235,8 +233,8 @@ public final class DialogUtil {
      *            the indent to set
      * @return the given control
      */
-    public static Control layoutHorizontalIndent(final Control control, final int indent) {
-        GridData data = getLayoutData(control);
+    static Control layoutHorizontalIndent(final Control control, final int indent) {
+        final GridData data = getLayoutData(control);
         data.horizontalIndent = indent;
 
         return control;
@@ -250,7 +248,7 @@ public final class DialogUtil {
      *            the control to set the indent on
      * @return the given control
      */
-    public static Control layoutVerticalIndent(final Control control) {
+    static Control layoutVerticalIndent(final Control control) {
         layoutVerticalIndent(control, VERTICAL_INDENT);
 
         return control;
@@ -266,8 +264,8 @@ public final class DialogUtil {
      *            the indent to set
      * @return the given control
      */
-    public static Control layoutVerticalIndent(final Control control, final int indent) {
-        GridData data = getLayoutData(control);
+    static Control layoutVerticalIndent(final Control control, final int indent) {
+        final GridData data = getLayoutData(control);
         data.verticalIndent = indent;
 
         return control;
@@ -276,6 +274,7 @@ public final class DialogUtil {
     /**
      * Set the width.
      * If no layout data is set, a new is created.
+     * If the width is less or equal zero, this method has no effect.
      * 
      * @param control
      *            the control to set the width on
@@ -283,9 +282,9 @@ public final class DialogUtil {
      *            the width to set
      * @return the given control
      */
-    public static Control layoutWidth(final Control control, final int width) {
+    static Control layoutWidth(final Control control, final int width) {
         if (width > 0) {
-            GridData data = getLayoutData(control);
+            final GridData data = getLayoutData(control);
             data.widthHint = width;
         }
 
@@ -295,6 +294,7 @@ public final class DialogUtil {
     /**
      * Set the height.
      * If no layout data is set, a new is created.
+     * If the height is less or equal zero, this method has no effect.
      * 
      * @param control
      *            the control to set the height on
@@ -302,9 +302,9 @@ public final class DialogUtil {
      *            the height to set
      * @return the given control
      */
-    public static Control layoutHeight(final Control control, final int height) {
+    static Control layoutHeight(final Control control, final int height) {
         if (height > 0) {
-            GridData data = getLayoutData(control);
+            final GridData data = getLayoutData(control);
             data.heightHint = height;
         }
 
@@ -320,8 +320,8 @@ public final class DialogUtil {
      *            the title
      * @return the group
      */
-    public static Group group(final Composite parent, final String text) {
-        Group result = new Group(parent, SWT.NONE);
+    static Group group(final Composite parent, final String text) {
+        final Group result = new Group(parent, SWT.NONE);
         result.setText(text);
         layoutFillBoth(result);
         return result;
@@ -336,8 +336,8 @@ public final class DialogUtil {
      *            the label text
      * @return the label
      */
-    public static Label label(final Composite parent, final String text) {
-        Label result = new Label(parent, SWT.NONE);
+    static Label label(final Composite parent, final String text) {
+        final Label result = new Label(parent, SWT.NONE);
         result.setText(text);
         return result;
     }
@@ -351,8 +351,8 @@ public final class DialogUtil {
      *            the width
      * @return the text field
      */
-    public static Text text(final Composite parent, final int width) {
-        Text result = new Text(parent, SWT.SINGLE | SWT.BORDER);
+    static Text text(final Composite parent, final int width) {
+        final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER);
         layoutFillHorizontal(result, false);
         layoutWidth(result, width);
 
@@ -366,8 +366,8 @@ public final class DialogUtil {
      *            the parent
      * @return the combobox
      */
-    public static ComboViewer combo(final Composite parent) {
-        ComboViewer result = new ComboViewer(parent);
+    static ComboViewer combo(final Composite parent) {
+        final ComboViewer result = new ComboViewer(parent);
         return result;
     }
 
@@ -382,8 +382,8 @@ public final class DialogUtil {
      *            the maximum value
      * @return the scale
      */
-    public static Scale scale(final Composite parent, final int min, final int max) {
-        Scale result = new Scale(parent, SWT.HORIZONTAL);
+    static Scale scale(final Composite parent, final int min, final int max) {
+        final Scale result = new Scale(parent, SWT.HORIZONTAL);
         result.setMinimum(min);
         result.setMaximum(max);
         return result;
@@ -398,8 +398,8 @@ public final class DialogUtil {
      *            the text
      * @return the button
      */
-    public static Button button(final Composite parent, final String text) {
-        Button result = new Button(parent, SWT.PUSH);
+    static Button button(final Composite parent, final String text) {
+        final Button result = new Button(parent, SWT.PUSH);
         result.setText(text);
         return result;
     }
@@ -413,8 +413,8 @@ public final class DialogUtil {
      *            the text
      * @return the button
      */
-    public static Button radio(final Composite parent, final String text) {
-        Button result = new Button(parent, SWT.RADIO);
+    static Button radio(final Composite parent, final String text) {
+        final Button result = new Button(parent, SWT.RADIO);
         result.setText(text);
         return result;
     }
@@ -428,8 +428,8 @@ public final class DialogUtil {
      *            the text
      * @return the checkbox
      */
-    public static Button check(final Composite parent, final String text) {
-        Button result = new Button(parent, SWT.CHECK);
+    static Button check(final Composite parent, final String text) {
+        final Button result = new Button(parent, SWT.CHECK);
         result.setText(text);
         return result;
     }
@@ -445,8 +445,8 @@ public final class DialogUtil {
      *            the maximum value
      * @return the spinner
      */
-    public static Spinner spinner(final Composite parent, final int min, final int max) {
-        Spinner result = new Spinner(parent, SWT.BORDER);
+    static Spinner spinner(final Composite parent, final int min, final int max) {
+        final Spinner result = new Spinner(parent, SWT.BORDER);
         result.setMinimum(min);
         result.setMaximum(max);
 
@@ -460,8 +460,8 @@ public final class DialogUtil {
      *            the parent
      * @return the label
      */
-    public static Control blank(final Composite parent) {
-        Label result = new Label(parent, SWT.NONE);
+    static Control blank(final Composite parent) {
+        final Label result = new Label(parent, SWT.NONE);
         return result;
     }
 }

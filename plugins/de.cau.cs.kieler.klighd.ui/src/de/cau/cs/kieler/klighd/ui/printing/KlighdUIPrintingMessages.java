@@ -22,7 +22,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.printing.internal;
+package de.cau.cs.kieler.klighd.ui.printing;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -30,12 +30,13 @@ import org.eclipse.osgi.util.NLS;
  * An accessor class for externalized strings.
  * 
  * @author cmahoney
+ * @author csp
  */
-public final class DiagramUIPrintingMessages extends NLS {
+public final class KlighdUIPrintingMessages extends NLS {
 
     private static final String BUNDLE_NAME =
-            "de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages"; //$NON-NLS-1$
-    
+            "de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages"; //$NON-NLS-1$
+
     // SUPPRESS CHECKSTYLE NEXT 22 Name|Visibility|Javadoc
     public static String PrintDialog_Button_PrintPreview;
     public static String PrintDialog_Copies;
@@ -60,11 +61,11 @@ public final class DiagramUIPrintingMessages extends NLS {
     public static String PrintDialog_Scaling_lbl_pagesWide;
     public static String PrintDialog_Scaling_lbl_pagesTall;
 
-    private DiagramUIPrintingMessages() {
+    private KlighdUIPrintingMessages() {
         // Do not instantiate
     }
 
     static {
-        NLS.initializeMessages(BUNDLE_NAME, DiagramUIPrintingMessages.class);
+        NLS.initializeMessages(BUNDLE_NAME, KlighdUIPrintingMessages.class);
     }
 }

@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.printing.dialogs;
+package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Control;
  * 
  * @author csp
  */
-public interface DialogBlock {
+interface IDialogBlock {
 
     /**
      * Create the contents of this block.

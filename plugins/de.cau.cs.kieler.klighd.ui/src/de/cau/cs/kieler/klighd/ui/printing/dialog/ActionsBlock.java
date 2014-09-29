@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    IBM Corporation - initial API and implementation 
+ *    IBM Corporation - initial API and implementation
  ****************************************************************************/
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
@@ -22,7 +22,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.printing.dialogs;
+package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.swt.SWT;
@@ -33,8 +33,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import de.cau.cs.kieler.klighd.ui.printing.internal.DiagramUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
+import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
+import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A section of the KlighD print dialog that handles extra actions. In this case,
@@ -44,13 +44,13 @@ import de.cau.cs.kieler.klighd.ui.printing.options.PrintOptions;
  * @author James Bruck (jbruck)
  * @author csp
  */
-class ActionsBlock implements DialogBlock {
+final class ActionsBlock implements IDialogBlock {
     private final PrintOptions options;
+    private final DataBindingContext bindings;
+    private final KlighdPrintDialog printDialog;
 
-    private DataBindingContext bindings;
-    private KlighdPrintDialog printDialog;
     private Button printPreview;
-    private SelectionListener printPreviewButtonListener = new SelectionAdapter() {
+    private final SelectionListener printPreviewButtonListener = new SelectionAdapter() {
 
         private PrintPreviewTray tray;
 
@@ -63,21 +63,32 @@ class ActionsBlock implements DialogBlock {
                 printDialog.closeTray();
                 tray.dispose();
                 tray = null;
-                printPreview.setText(DiagramUIPrintingMessages.PrintDialog_Button_PrintPreview
+                printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview
                         + " >>");
-            } catch (IllegalStateException ex) {
+            } catch (final IllegalStateException ex) {
                 if (tray != null) {
                     tray.dispose();
                     tray = null;
                 }
                 tray = new PrintPreviewTray(bindings, options);
                 printDialog.openTray(tray);
-                printPreview.setText(DiagramUIPrintingMessages.PrintDialog_Button_PrintPreview
+                printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview
                         + " <<");
             }
         }
     };
 
+    /**
+     * Instantiates a new actions block.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
+     * 
+     * @param bindings
+     *            the bindings used for observables
+     * @param options
+     *            the current print options
+     * @param printDialog
+     *            the print dialog to execute the actions on (e.g. show preview)
+     */
     ActionsBlock(final DataBindingContext bindings, final PrintOptions options,
             final KlighdPrintDialog printDialog) {
         this.options = options;
@@ -89,9 +100,8 @@ class ActionsBlock implements DialogBlock {
      * {@inheritDoc}
      */
     public Control createContents(final Composite parent) {
-
         printPreview = new Button(parent, SWT.PUSH);
-        printPreview.setText(DiagramUIPrintingMessages.PrintDialog_Button_PrintPreview + " >>");
+        printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + " >>");
         DialogUtil.layoutAlignRight(printPreview);
         printPreview.addSelectionListener(printPreviewButtonListener);
 
@@ -102,7 +112,7 @@ class ActionsBlock implements DialogBlock {
      * {@inheritDoc}
      */
     public void dispose() {
-        PrintPreviewTray printPreviewTray = (PrintPreviewTray) printDialog.getTray();
+        final PrintPreviewTray printPreviewTray = (PrintPreviewTray) printDialog.getTray();
         if (printPreviewTray != null) {
             printPreviewTray.dispose();
         }

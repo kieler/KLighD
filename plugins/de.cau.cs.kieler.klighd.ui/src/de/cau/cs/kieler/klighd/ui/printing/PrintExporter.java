@@ -11,14 +11,13 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.ui.printing.util;
+package de.cau.cs.kieler.klighd.ui.printing;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.Printer;
-import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.export.AbstractDiagramExporter;
@@ -34,7 +33,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 public class PrintExporter extends AbstractDiagramExporter {
 
-    private PiccoloViewer viewer;
+    private final PiccoloViewer viewer;
 
     /**
      * Create new exporter using the given viewer.
@@ -71,11 +70,9 @@ public class PrintExporter extends AbstractDiagramExporter {
     public Image exportPreview(final int column, final int row, final Rectangle bounds,
             final double scale) {
 
-        Display display =
-                (Display.getCurrent() != null) ? Display.getCurrent() : Display.getDefault();
-        Image image = new Image(display, bounds.width, bounds.height);
-        GC gc = new GC(image);
-        export(column, row, bounds, scale, gc, display);
+        final Image image = new Image(viewer.getControl().getDisplay(), bounds.width, bounds.height);
+        final GC gc = new GC(image);
+        export(column, row, bounds, scale, gc, viewer.getControl().getDisplay());
         gc.dispose();
         return image;
     }
@@ -95,7 +92,7 @@ public class PrintExporter extends AbstractDiagramExporter {
     public void exportPrint(final int column, final int row, final double scale,
             final Printer printer) {
 
-        GC gc = new GC(printer);
+        final GC gc = new GC(printer);
         final Rectangle pageBounds = PrintExporter.getPrinterBounds(printer);
         export(column, row, pageBounds, scale, gc, printer);
         gc.dispose();
@@ -104,7 +101,7 @@ public class PrintExporter extends AbstractDiagramExporter {
     private void export(final int column, final int row, final Rectangle bounds,
             final double scale, final GC gc, final Device device) {
 
-        KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, device);
+        final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, device);
 
         drawDiagram(viewer.getCanvas().getCamera(), false, graphics, new PBounds(bounds.x + column
                 * (bounds.width), bounds.y + row * (bounds.height), bounds.width, bounds.height),
@@ -121,8 +118,8 @@ public class PrintExporter extends AbstractDiagramExporter {
      * @return the printer bounds
      */
     public static Rectangle getPrinterBounds(final Printer printer) {
-        Rectangle pageArea = printer.getClientArea();
-        Rectangle trim = printer.computeTrim(0, 0, 0, 0);
+        final Rectangle pageArea = printer.getClientArea();
+        final Rectangle trim = printer.computeTrim(0, 0, 0, 0);
         return new Rectangle(-trim.x, -trim.y, pageArea.width, pageArea.height);
     }
 
