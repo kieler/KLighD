@@ -18,6 +18,7 @@ import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -55,7 +56,8 @@ public class SVGExporter extends KlighdCanvasExporter {
                         data.isTextAsShapes, data.isEmbedFonts);
 
         // do the actual diagram drawing work
-        this.drawDiagram(camera, data.isCameraViewport, graphics, bounds, true); 
+        this.drawDiagram(camera, data.isCameraViewport, graphics, bounds,
+                ExportHooks.getExportHooksByFormat(data.format), true); 
 
         OutputStream stream = null;
         try {
@@ -64,7 +66,6 @@ public class SVGExporter extends KlighdCanvasExporter {
             graphics.stream(stream);
             stream.close();
             return Status.OK_STATUS;
-
         } catch (final IOException e) {
             String msg = "KLighD SVG export: "
                     + "Failed to write SVG data";

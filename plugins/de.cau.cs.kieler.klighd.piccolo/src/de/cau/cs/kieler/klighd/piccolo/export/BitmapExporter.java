@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
@@ -52,16 +53,12 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
     /** the bmp format. */
     public static final String SUB_FORMAT_BMP = "bmp";
-
     /** the jpeg format. */
     public static final String SUB_FORMAT_JPEG = "jpeg";
-
     /** the png format. */
     public static final String SUB_FORMAT_PNG = "png";
 
     private static final String ERROR_MSG_PREFIX = "KLighD bitmap export: ";
-
-
     /**
      * {@inheritDoc}
      */
@@ -93,7 +90,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
             width = (int) Math.ceil(((double) width) / cols);
             height = (int) Math.ceil(((double) height) / rows);
         }
-
+        
         // for each row and columns draw and export the image
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -122,7 +119,6 @@ public class BitmapExporter extends KlighdCanvasExporter {
             final String msg = ERROR_MSG_PREFIX + "Out of heap space memory!";
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
         }
-
         final GC gc = new GC(image);
 
         // initialize a graphics object that 'collects' all the drawing instructions
@@ -139,7 +135,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
 
         // do the action diagram drawing work
-        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, false);
+        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, data.scale,
+                ExportHooks.getExportHooksByFormat(data.format), false);
 
         // create an image loader to save the image
         // although the API differently suggests:
@@ -162,14 +159,13 @@ public class BitmapExporter extends KlighdCanvasExporter {
         // dump out the binary image data via the provided output stream
         OutputStream stream = null;
         IStatus status;
-
         try {
+
             if (data.getTilingInfo().isTiled) {
                 stream = data.createOutputStream(row, col);
             } else {
                 stream = data.createOutputStream();
             }
-
             loader.save(stream, format);
             stream.close();
             status = Status.OK_STATUS;
@@ -178,13 +174,11 @@ public class BitmapExporter extends KlighdCanvasExporter {
             String msg = ERROR_MSG_PREFIX + "Failed to write bitmap data";
             if (stream != null) {
                 msg += " into the provided OutputStream of type "
-                    + stream.getClass().getCanonicalName()
-                    + KlighdPlugin.LINE_SEPARATOR + " the stream instance is "
-                    + stream.toString();
+                        + stream.getClass().getCanonicalName()
+                        + KlighdPlugin.LINE_SEPARATOR + " the stream instance is "
+                        + stream.toString();
             }
-
             status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
-
         } catch (final IOException e) {
             final String msg;
             if (stream == null) {
@@ -202,7 +196,6 @@ public class BitmapExporter extends KlighdCanvasExporter {
         ((Graphics2D) graphics).dispose();
         gc.dispose();
         image.dispose();
-
         return status;
     }
 }

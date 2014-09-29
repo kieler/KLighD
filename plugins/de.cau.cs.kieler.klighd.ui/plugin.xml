@@ -82,6 +82,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"
+            contributorClass="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart$ActionContributor"
             default="false"
             icon="icons/klighd.gif"
             id="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"

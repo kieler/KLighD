@@ -335,7 +335,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 
                 // ... calculate the minimal required size based on the determined 'minSize' bounds
                 if (performSizeEstimation) {
-                    size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+                size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
                 } else {
                     size = minSize;
                 }
@@ -351,11 +351,9 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     // in case of non-compound nodes the node size is usually taken from the layoutLayout
                     layoutLayout.setSize(size.getWidth(), size.getHeight());
                 }
-
             } else {
                 size = minSize;
             }
-
         } else {
             size = null;
         }
