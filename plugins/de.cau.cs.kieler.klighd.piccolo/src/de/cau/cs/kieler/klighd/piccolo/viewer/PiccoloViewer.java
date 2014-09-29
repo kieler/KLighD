@@ -163,7 +163,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
 
         // caution: the selection handler currently marks most of the 'mouse release'
         //  events as handled; thus all handlers registered above will not get those events!
-        camera.addInputEventListener(new KlighdSelectionEventHandler(theParentViewer));
+        camera.addInputEventListener(new KlighdSelectionEventHandler(this));
         camera.addInputEventListener(new KlighdBasicInputEventHandler(
                 new KlighdSelectiveZoomEventHandler(this)));
 
