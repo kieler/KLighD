@@ -125,13 +125,16 @@ public final class PrintOptions {
         final String driver = preferenceStore.getString(PREFERENCE_PRINTER_DRIVER);
         final String name = preferenceStore.getString(PREFERENCE_PRINTER_NAME);
         printerData = new PrinterData(driver, name);
+
         if (printerData != null) {
             setOrientation(preferenceStore.getInt(PREFERENCE_PRINTER_ORIENTATION));
             setDuplex(preferenceStore.getInt(PREFERENCE_PRINTER_DUPLEX));
+
+            final double scale = preferenceStore.getDouble(PREFERENCE_PRINTER_SCALE);
+            setScaleFactor(scale == 0.0 ? 1d : scale);
+            setPagesTall(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_TALL));
+            setPagesWide(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
         }
-        setScaleFactor(preferenceStore.getDouble(PREFERENCE_PRINTER_SCALE));
-        setPagesTall(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_TALL));
-        setPagesWide(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
     }
 
     /**
