@@ -113,8 +113,6 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         // put some default actions into the view menu
         fillViewMenu(getViewSite().getActionBars().getMenuManager());
 
-        registerPrintSupport();
-
         // install a drop handler for the view (XXX this could be omitted)
         installDropHandler(parent);
 
@@ -140,12 +138,13 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     public void setViewContext(final ViewContext viewContext) {
         // create the options pane
         if (sideBar == null) {
-            sideBar =
-                    DiagramSideBar.createSideBar(diagramComposite.getParent(), diagramComposite,
-                            viewContext);
+            sideBar = DiagramSideBar.createSideBar(
+                diagramComposite.getParent(), diagramComposite, viewContext);
         }
 
         this.getViewer().getContextViewer().setModel(viewContext);
+
+        registerPrintSupport();
     }
 
     /**

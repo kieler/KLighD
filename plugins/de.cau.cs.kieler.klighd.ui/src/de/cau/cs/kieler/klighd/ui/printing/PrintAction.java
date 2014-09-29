@@ -77,7 +77,7 @@ public final class PrintAction extends Action {
         } else {
             final IViewer aViewer = viewer.getContextViewer().getActiveViewer();
             if (aViewer instanceof PiccoloViewer) {
-                this.viewer = (PiccoloViewer) viewer;
+                this.viewer = (PiccoloViewer) aViewer;
 
             } else {
                 final String msg = "KLighD PrintAction: "
