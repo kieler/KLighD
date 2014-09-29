@@ -26,22 +26,50 @@ import de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog;
 /**
  * An {@link Action} to show a system independent print dialog with print preview.
  * This class can be registered as an action handler. It denotes the main entry point to the KlighD
- * printing infrastructure.
+ * printing infrastructure.<br>
+ * <br>
+ * Note: A PiccoloViewer must be set to successfully execute the <code>run()</code> method.
  * 
  * @author csp
  */
 public final class PrintAction extends Action {
 
-    private final PiccoloViewer viewer;
+    private PiccoloViewer viewer;
 
     /**
-     * Instantiates a new print action. The diagram contained by the given viewer gets printed.
+     * Create a new PrintAction. A viewer must be set separately.
+     */
+    public PrintAction() {
+        super();
+    }
+
+    /**
+     * Creates a new PrintAction using the given viewer while printing.
      * 
      * @param viewer
-     *            the viewer to print
+     *            the viewer to print.
      */
     public PrintAction(final PiccoloViewer viewer) {
         super();
+        this.viewer = viewer;
+    }
+
+    /**
+     * Returns the viewer used while printing.
+     * 
+     * @return the viewer to print
+     */
+    public PiccoloViewer getViewer() {
+        return viewer;
+    }
+
+    /**
+     * Set a new viewer to use while printing.
+     * 
+     * @param viewer
+     *            the new viewer to print
+     */
+    public void setViewer(final PiccoloViewer viewer) {
         this.viewer = viewer;
     }
 
@@ -50,6 +78,9 @@ public final class PrintAction extends Action {
      */
     @Override
     public void run() {
+        if (viewer == null) {
+            throw new IllegalArgumentException("PrintAction: Viewer not set!");
+        }
         final IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
         final PrintOptions options = new PrintOptions(preferenceStore);
         final PrintExporter exporter = new PrintExporter(viewer);

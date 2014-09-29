@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
@@ -119,10 +118,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         final IActionBars actions;
         final IDiagramWorkbenchPart part = getViewContext().getDiagramWorkbenchPart();
 
-        if (part instanceof IEditorPart) {
-            actions = ((IEditorPart) part).getEditorSite().getActionBars();
-
-        } else if (getViewContext().getDiagramWorkbenchPart() instanceof IViewPart) {
+        if (getViewContext().getDiagramWorkbenchPart() instanceof IViewPart) {
             actions = ((IViewPart) part).getViewSite().getActionBars();
 
         } else {
