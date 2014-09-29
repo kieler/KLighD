@@ -22,15 +22,16 @@ import org.eclipse.swt.printing.Printer;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.export.AbstractDiagramExporter;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * Exporter providing methods for printing and print previews.
+ * Diagram printing exporter providing methods for creating previews and the final printout.
  * 
  * @author csp
+ * @author chsch
  */
-
 public class PrintExporter extends AbstractDiagramExporter {
 
     private final PiccoloViewer viewer;
@@ -52,6 +53,14 @@ public class PrintExporter extends AbstractDiagramExporter {
      */
     public PBounds getDiagramBounds() {
         return getExportedBounds(viewer.getControl().getCamera(), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics) {
+        return KlighdPaintContext.createPrintoutPaintContext(graphics);
     }
 
     /**
@@ -101,11 +110,13 @@ public class PrintExporter extends AbstractDiagramExporter {
     private void export(final int column, final int row, final Rectangle bounds,
             final double scale, final GC gc, final Device device) {
 
-        final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, device);
+        final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, device);
 
         drawDiagram(viewer.getControl().getCamera(), false, graphics, new PBounds(bounds.x + column
                 * (bounds.width), bounds.y + row * (bounds.height), bounds.width, bounds.height),
                 scale, false);
+
+        graphics.dispose();
     }
 
     /**
