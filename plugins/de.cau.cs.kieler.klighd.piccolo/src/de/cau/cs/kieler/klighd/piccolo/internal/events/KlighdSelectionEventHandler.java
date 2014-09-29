@@ -26,6 +26,7 @@ import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -45,16 +46,18 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
     /**
      * Constructor.
      * 
-     * @param theContextViewer
+     * @param theDiagramViewer
      *            the {@link IViewer} to set the selection on
      */
-    public KlighdSelectionEventHandler(final IViewer theContextViewer) {
-        this.viewer = theContextViewer;
+    public KlighdSelectionEventHandler(final PiccoloViewer theDiagramViewer) {
+        this.viewer = theDiagramViewer.getContextViewer();
+        this.diagramViewer = theDiagramViewer;
         this.multiSelection =
                 viewer.getViewContext().getProperty(KlighdSynthesisProperties.MULTI_SELECTION);
     }
     
     private final IViewer viewer;
+    private final PiccoloViewer diagramViewer;
     private final boolean multiSelection; 
     private PNode pressedNode = null;
     private Point2D point = null;
@@ -79,6 +82,10 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         final Point2D thePreviousPoint = this.point;
         this.pressedNode = null;
         this.point = null;
+
+        if (diagramViewer.isMagnificationLensVisible()) {
+            return;
+        }
 
         // if other events occurred in the mean time like other button hits,
         //  movements (e.g. panning) abort the selection

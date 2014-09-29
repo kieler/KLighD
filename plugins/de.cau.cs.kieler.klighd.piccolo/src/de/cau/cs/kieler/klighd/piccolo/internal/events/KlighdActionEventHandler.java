@@ -72,7 +72,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             return action.getTrigger() != null && !Strings.isNullOrEmpty(action.getActionId());
         }
     };
-    
+
 
     /**
      * {@inheritDoc}
@@ -81,6 +81,10 @@ public class KlighdActionEventHandler implements PInputEventListener {
         // don't modify the evaluation of the 'handled' flag in an ad-hoc way,
         //  first make sure that the scenario described below is not enabled again.
         if (inputEvent.isHandled()) {
+            return;
+        }
+
+        if (this.viewer.isMagnificationLensVisible()) {
             return;
         }
 

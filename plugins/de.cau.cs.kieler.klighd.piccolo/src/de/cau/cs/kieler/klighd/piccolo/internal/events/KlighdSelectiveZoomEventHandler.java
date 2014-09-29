@@ -21,6 +21,7 @@ import org.eclipse.swt.SWT;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener.KlighdKeyEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -40,14 +41,20 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
     /** Minimal drag distance required for initiating the selective zooming. */
     private static final int MINIMAL_DRAG_DISTANCE = 5;
 
+    private final PiccoloViewer viewer;
+    
     /** The rectangle that acts as a preview for the area to zoom to. */
     private final KlighdPath previewRectangle;
 
     /**
      * Constructor.
+     * 
+     * @param theViewer
+     *            the {@link PiccoloViewer} it is attached to
      */
-    public KlighdSelectiveZoomEventHandler() {
+    public KlighdSelectiveZoomEventHandler(final PiccoloViewer theViewer) {
         setMinDragStartDistance(MINIMAL_DRAG_DISTANCE);
+        viewer = theViewer;
         previewRectangle = new KlighdPath();
         previewRectangle.setPaintAlpha(PREVIEW_RECTANGLE_ALPHA);
         previewRectangle.setPaint(KlighdConstants.WHITE);
@@ -55,7 +62,8 @@ public class KlighdSelectiveZoomEventHandler extends PDragSequenceEventHandler {
 
     @Override
     protected boolean shouldStartDragInteraction(final PInputEvent event) {
-        return event.isControlDown() && super.shouldStartDragInteraction(event);
+        return event.isControlDown() && !viewer.isMagnificationLensVisible()
+                && super.shouldStartDragInteraction(event);
     }
 
     @Override
