@@ -88,7 +88,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author uru
  */
 public class DiagramEditorPart extends EditorPart implements
-IDiagramWorkbenchPart.IDiagramEditorPart, ILayoutConfigProvider {
+        IDiagramWorkbenchPart.IDiagramEditorPart, ILayoutConfigProvider {
 
     /**
      * ActionBarContributor providing the print action for DiagramEditorParts.
