@@ -147,9 +147,9 @@ public final class PolylineUtil {
         final Path2D path = thePath != null ? thePath : new Path2D.Float();
         
         path.reset();
-        path.moveTo((float) points[0].getX(), (float) points[0].getY());
+        path.moveTo(points[0].getX(), points[0].getY());
         for (int i = 1; i < points.length; i++) {
-            path.lineTo((float) points[i].getX(), (float) points[i].getY());
+            path.lineTo(points[i].getX(), points[i].getY());
         }
 
         return path;
@@ -302,7 +302,10 @@ public final class PolylineUtil {
         path.reset();
 
         // start from the first point
-        path.moveTo((float) points[0].getX(), (float) points[0].getY());
+        path.moveTo(points[0].getX(), points[0].getY());
+        
+        final int lastPointIndex = points.length - 1;
+        final int penulatimatePointIndex = lastPointIndex - 1;
 
         // for all of the bend points (not start and end point)...
         for (int i = 1; i < points.length - 1; i++) {
@@ -317,20 +320,20 @@ public final class PolylineUtil {
                     && Math.abs(dy) < 2 * bendRadius) {
 
                 // if so, apply the short distance approximation
-                final double[] cPoints = PolylineUtil.getShortDistanceApproximationPoints(points[i - 1],
+                final double[] cPoints = getShortDistanceApproximationPoints(points[i - 1],
                         points[i], points[i + 1], points[i + 2]);
 
                 // draw a straight line to the start of the curve
-                path.lineTo((float) cPoints[0], (float) cPoints[1]);
+                path.lineTo(cPoints[0], cPoints[1]);
 
                 // draw the curve according to the determined points
-                path.curveTo((float) cPoints[2], (float) cPoints[3], (float) cPoints[4],
-                        (float) cPoints[5], (float) cPoints[6], (float) cPoints[7]);
+                path.curveTo(cPoints[2], cPoints[3], cPoints[4],
+                        cPoints[5], cPoints[6], cPoints[7]);
                 
                 if (DEBUG) {
                     if (pnode != null) {
                         // and provide visualizations of the determined points
-                        PolylineUtil.visualizeShortDistanceApproximationPoints(pnode, cPoints);
+                        visualizeShortDistanceApproximationPoints(pnode, cPoints);
                     }
                 }
                 
@@ -339,10 +342,24 @@ public final class PolylineUtil {
                 continue;
 
             } else {
-                
+
+                float theBendRadius = bendRadius;
+
+                // update the bend radius to be applied in case we're treating the first or last
+                //  bend point if the distance between the adjacent is less than the given radius
+                if (i == 1) {                    
+                    theBendRadius = Math.min(theBendRadius,
+                            (float) points[0].distance(points[1]));
+                }
+
+                if (i == penulatimatePointIndex) {
+                    theBendRadius = Math.min(theBendRadius,
+                            (float) points[penulatimatePointIndex].distance(points[lastPointIndex]));
+                }
+
                 // determine the curve points for the rounded arc
-                final double[] cPoints = PolylineUtil.getRoundedBendControlPoints(points[i - 1],
-                        points[i], points[i + 1], bendRadius);
+                final double[] cPoints = getRoundedBendControlPoints(
+                        points[i - 1], points[i], points[i + 1], theBendRadius);
 
                 // draw a straight line to the start of the curve
                 path.lineTo(cPoints[0], cPoints[1]);
@@ -353,16 +370,16 @@ public final class PolylineUtil {
                 if (DEBUG) {
                     if (pnode != null) {
                         // and provide visualizations of the determined points
-                        PolylineUtil.visualizeRoundedBendControlPoints(pnode, points[i].getX(),
-                                points[i].getY(), cPoints);
+                        visualizeRoundedBendControlPoints(
+                                pnode, points[i].getX(), points[i].getY(), cPoints);
                     }
                 }
             }
         }
         
         // draw the line to the final (target) point
-        path.lineTo((float) points[points.length - 1].getX(),
-                (float) points[points.length - 1].getY());
+        path.lineTo(points[points.length - 1].getX(),
+                points[points.length - 1].getY());
     }
 
     /**
