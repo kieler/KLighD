@@ -51,7 +51,7 @@ public class PrintExporter extends AbstractDiagramExporter {
      * @return the diagram bounds
      */
     public PBounds getDiagramBounds() {
-        return getExportedBounds(viewer.getCanvas().getCamera(), false);
+        return getExportedBounds(viewer.getControl().getCamera(), false);
     }
 
     /**
@@ -103,7 +103,7 @@ public class PrintExporter extends AbstractDiagramExporter {
 
         final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, device);
 
-        drawDiagram(viewer.getCanvas().getCamera(), false, graphics, new PBounds(bounds.x + column
+        drawDiagram(viewer.getControl().getCamera(), false, graphics, new PBounds(bounds.x + column
                 * (bounds.width), bounds.y + row * (bounds.height), bounds.width, bounds.height),
                 scale, false);
     }
