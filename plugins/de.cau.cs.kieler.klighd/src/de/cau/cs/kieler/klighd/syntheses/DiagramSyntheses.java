@@ -454,29 +454,19 @@ public final class DiagramSyntheses {
         selectionRectangle.getStyles().add(selectionVisibility);
         
         // Make the selection rectangle a bit larger than the original rendering
-        KTopPosition topPosition = factory.createKTopPosition();
-        topPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        topPosition.setRelative(0);
-
-        KLeftPosition leftPosition = factory.createKLeftPosition();
-        leftPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        leftPosition.setRelative(0);
+        KTopPosition topPosition = factory.createKTopPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        KLeftPosition leftPosition = factory.createKLeftPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        KPosition topLeftPosition = factory.createKPosition()
+                .setPositions(leftPosition, topPosition);
         
-        KPosition topLeftPosition = factory.createKPosition();
-        topLeftPosition.setY(topPosition);
-        topLeftPosition.setX(leftPosition);
-        
-        KBottomPosition bottomPosition = factory.createKBottomPosition();
-        bottomPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        bottomPosition.setRelative(0);
-
-        KRightPosition rightPosition = factory.createKRightPosition();
-        rightPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        rightPosition.setRelative(0);
-        
-        KPosition bottomRightPosition = factory.createKPosition();
-        bottomRightPosition.setY(bottomPosition);
-        bottomRightPosition.setX(rightPosition);
+        KBottomPosition bottomPosition = factory.createKBottomPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        KRightPosition rightPosition = factory.createKRightPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        KPosition bottomRightPosition = factory.createKPosition()
+                .setPositions(rightPosition, bottomPosition);
         
         KAreaPlacementData areaPlacementData = factory.createKAreaPlacementData();
         areaPlacementData.setTopLeft(topLeftPosition);
