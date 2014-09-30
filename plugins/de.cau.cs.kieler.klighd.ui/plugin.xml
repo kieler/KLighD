@@ -55,6 +55,12 @@
       </definition>
    </extension>
    <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.cau.cs.kieler.klighd.ui.printing.PrintOptions$Initializer">
+      </initializer>
+   </extension>
+   <extension
          point="org.eclipse.ui.contexts">
       <context
             id="de.cau.cs.kieler.klighd.ui.context"
