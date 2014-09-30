@@ -21,7 +21,15 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
     private static final String BUNDLE_NAME = "de.cau.cs.kieler.klighd.ui.internal.messages"; //$NON-NLS-1$
 
-
+    public static String KlighdPreferencePage_animateLayout_text;
+    public static String KlighdPreferencePage_animateLayout_tooltip;
+    public static String KlighdPreferencePage_generalOptions;
+    public static String KlighdPreferencePage_zoomToFit_text;
+    public static String KlighdPreferencePage_zoomToFit_tooltip;
+    public static String KlighdPreferencePage_zoomToFocus_text;
+    public static String KlighdPreferencePage_zoomToFocus_tooltip;
+    public static String KlighdPreferencePage_zoomNone_text;
+    public static String KlighdPreferencePage_zoomNone_tooltip;
 
     
     public static String UiContextViewer_save_as_image_text;
