@@ -95,6 +95,14 @@ public class PrintPreviewTray extends DialogTray {
     public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
+        body = new Composite(parent, SWT.NONE);
+        body.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+        body.setSize(parent.getSize());
+
+        composite = new Composite(body, SWT.NULL);
+
+        updateComposite();
+
         listener = new IValueChangeListener() {
 
             public void handleValueChange(final ValueChangeEvent event) {
@@ -120,20 +128,12 @@ public class PrintPreviewTray extends DialogTray {
 
         delayedResize =
                 Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                        SWTObservables.observeSize(parent));
+                        SWTObservables.observeSize(body));
         delayedResize.addValueChangeListener(listener);
 
         printerData =
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA);
         printerData.addValueChangeListener(listener);
-
-        body = new Composite(parent, SWT.NONE);
-        body.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-        body.setSize(parent.getSize());
-
-        composite = new Composite(body, SWT.NULL);
-
-        updateComposite();
 
         return body;
     }
