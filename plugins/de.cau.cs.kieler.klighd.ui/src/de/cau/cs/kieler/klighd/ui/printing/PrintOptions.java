@@ -27,8 +27,11 @@ package de.cau.cs.kieler.klighd.ui.printing;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.printing.PrinterData;
+
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
  * This class is used as part of the infrastructure required for data-bindings used with the JPS
@@ -36,8 +39,11 @@ import org.eclipse.swt.printing.PrinterData;
  * 
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
+ * @author chsch
  */
 public final class PrintOptions {
+    
+    private static final IPreferenceStore PREF_STORE = KlighdUIPlugin.getDefault().getPreferenceStore();
 
     /* printer data */
 
@@ -93,7 +99,26 @@ public final class PrintOptions {
     /** The Constant PREFERENCE_PRINTER_DUPLEX. */
     private static final String PREFERENCE_PRINTER_DUPLEX = "klighd.printing.duplex";
 
-    private final IPreferenceStore preferenceStore;
+    /**
+     * Preference initializer making sure the required data contain valid values. 
+     * 
+     * @author chsch
+     */
+    public static class Initializer extends AbstractPreferenceInitializer {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void initializeDefaultPreferences() {
+            PREF_STORE.setDefault(PREFERENCE_PRINTER_SCALE, 1f);
+            PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_TALL, 1);
+            PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_WIDE, 1);
+            PREF_STORE.setDefault(PREFERENCE_PRINTER_ORIENTATION, PrinterData.PORTRAIT);
+            PREF_STORE.setDefault(PREFERENCE_PRINTER_DUPLEX, PrinterData.DUPLEX_NONE);
+        }
+    }
+    
 
     /** The property change support. */
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -105,16 +130,9 @@ public final class PrintOptions {
     private PrintExporter exporter;
 
     /**
-     * Create new print options loaded from the given preference store.
-     * 
-     * @param preferenceStore
-     *            the preference store to load the options from
+     * Constructor.
      */
-    public PrintOptions(final IPreferenceStore preferenceStore) {
-        this.preferenceStore = preferenceStore;
-        scaleFactor = 1;
-        pagesTall = 1;
-        pagesWide = 1;
+    public PrintOptions() {
         restoreFromPreferences();
     }
 
@@ -122,18 +140,16 @@ public final class PrintOptions {
      * Restore the options from preference store.
      */
     public void restoreFromPreferences() {
-        final String driver = preferenceStore.getString(PREFERENCE_PRINTER_DRIVER);
-        final String name = preferenceStore.getString(PREFERENCE_PRINTER_NAME);
+        final String driver = PREF_STORE.getString(PREFERENCE_PRINTER_DRIVER);
+        final String name = PREF_STORE.getString(PREFERENCE_PRINTER_NAME);
         printerData = new PrinterData(driver, name);
 
         if (printerData != null) {
-            setOrientation(preferenceStore.getInt(PREFERENCE_PRINTER_ORIENTATION));
-            setDuplex(preferenceStore.getInt(PREFERENCE_PRINTER_DUPLEX));
-
-            final double scale = preferenceStore.getDouble(PREFERENCE_PRINTER_SCALE);
-            setScaleFactor(scale == 0.0 ? 1d : scale);
-            setPagesTall(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_TALL));
-            setPagesWide(preferenceStore.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
+            setScaleFactor(PREF_STORE.getDouble(PREFERENCE_PRINTER_SCALE));
+            setPagesTall(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_TALL));
+            setPagesWide(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
+            setOrientation(PREF_STORE.getInt(PREFERENCE_PRINTER_ORIENTATION));
+            setDuplex(PREF_STORE.getInt(PREFERENCE_PRINTER_DUPLEX));
         }
     }
 
@@ -141,13 +157,13 @@ public final class PrintOptions {
      * Store the options in the preference store.
      */
     public void storeToPreferences() {
-        preferenceStore.setValue(PREFERENCE_PRINTER_DRIVER, printerData.driver);
-        preferenceStore.setValue(PREFERENCE_PRINTER_NAME, printerData.name);
-        preferenceStore.setValue(PREFERENCE_PRINTER_SCALE, scaleFactor);
-        preferenceStore.setValue(PREFERENCE_PRINTER_PAGES_TALL, pagesTall);
-        preferenceStore.setValue(PREFERENCE_PRINTER_PAGES_WIDE, pagesWide);
-        preferenceStore.setValue(PREFERENCE_PRINTER_ORIENTATION, printerData.orientation);
-        preferenceStore.setValue(PREFERENCE_PRINTER_DUPLEX, printerData.duplex);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_DRIVER, printerData.driver);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_NAME, printerData.name);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_SCALE, scaleFactor);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_TALL, pagesTall);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_WIDE, pagesWide);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_ORIENTATION, printerData.orientation);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_DUPLEX, printerData.duplex);
     }
 
     /**
