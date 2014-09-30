@@ -49,6 +49,8 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
  * Collection of KGraph/KRendering view model configuration methods.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
  */
 public final class DiagramSyntheses {
 

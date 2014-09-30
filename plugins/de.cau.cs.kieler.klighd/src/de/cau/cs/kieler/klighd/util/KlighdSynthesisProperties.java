@@ -31,6 +31,8 @@ import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
  * To be continued ... :-
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
  */
 public class KlighdSynthesisProperties extends MapPropertyHolder {
 
@@ -105,7 +107,8 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
                 "KLighD: Empty KlighdSynthesisProperties config must not be changed.";
         
         @Override
-        public <T> KlighdSynthesisProperties setProperty(final IProperty<? super T> property, final T value) {
+        public <T> KlighdSynthesisProperties setProperty(final IProperty<? super T> property,
+                final T value) {
             throw new UnsupportedOperationException(msg);
         }
         
@@ -164,8 +167,8 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     }
 
     /**
-     * {@inheritDoc}<br>
-     * <br>
+     * {@inheritDoc}
+     * 
      * @return <code>this</code> {@link KlighdSynthesisProperties} instance for convenience
      */
     @Override

@@ -27,6 +27,8 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
  * implementations.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
  */
 public final class KlighdProperties {
 

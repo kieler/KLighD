@@ -45,6 +45,8 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
  * To be continued :-)
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
  */
 public final class KlighdPredicates {
 
