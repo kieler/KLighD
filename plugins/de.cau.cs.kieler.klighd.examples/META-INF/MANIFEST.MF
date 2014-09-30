@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Visualization Examples
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.examples;singleton:=true
-Bundle-Version: 0.2.4.qualifier
+Bundle-Version: 0.2.5.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.examples.KLighDExamplesPlugin
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Require-Bundle: javax.inject;bundle-version="1.0.0",
