@@ -22,6 +22,9 @@ import org.eclipse.jface.viewers.ISelection;
  * A common interface of KLighD-specific implementations of {@link ISelection}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public interface IKlighdSelection extends ISelection {
 

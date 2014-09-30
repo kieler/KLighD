@@ -180,7 +180,7 @@ public final class DisplayedActionData {
         return new DisplayedActionData(actionId, displayedName, tooltipText, image, enablement);
     }
 
-
+    // we don't getters since the following fields are final so we can set them 'public' and state...
     // SUPPRESS CHECKSTYLE NEXT 6 Visibility|Javadoc
 
     public final String actionId;

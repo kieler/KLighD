@@ -25,6 +25,9 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
  * {@link de.cau.cs.kieler.klighd.IViewer IViewers}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public interface ILayoutRecorder {
 

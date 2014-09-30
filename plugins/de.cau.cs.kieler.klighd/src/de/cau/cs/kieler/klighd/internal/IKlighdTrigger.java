@@ -23,6 +23,9 @@ import de.cau.cs.kieler.klighd.ViewContext;
  * them work without KIVi.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public interface IKlighdTrigger {
 

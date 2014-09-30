@@ -35,6 +35,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * created only.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public interface IAction {
     

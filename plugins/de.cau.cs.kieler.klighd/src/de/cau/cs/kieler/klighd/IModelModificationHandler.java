@@ -17,20 +17,23 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.base.Function;
 
 /**
- * An interface that is used by KSBasE and Klighd to retrieve selections and perform
+ * An interface that is used by KSBasE and KLighD to retrieve selections and perform
  * transformations. The {@link KSBasECombination} uses the {@link ModifyModelHandlerProvider} to
  * find the best fitting handler for the current context (via the
  * {@link ModifyModelHandlerProvider#getFittingKSBasEHandler(IWorkbenchPart)} method).
  * 
  * All handlers have to be registered via the de.cau.cs.kieler.ksbase.ui.handlers extension point.
  * 
- * @author uru, ckru
+ * @author uru
+ * @author ckru
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public interface IModelModificationHandler {
 
@@ -39,7 +42,7 @@ public interface IModelModificationHandler {
      * given the given IWorkbenchPart.
      * 
      * @param workbenchPart
-     *            the workbench part to be tested, eg, a {@link IEditorPart}
+     *            the workbench part to be tested, eg, a {@link org.eclipse.ui.IEditorPart IEditorPart}
      * @return true if this handler is able to handle the editor and selection
      */
     boolean canHandle(final IWorkbenchPart workbenchPart);
@@ -48,7 +51,8 @@ public interface IModelModificationHandler {
      * Gets the selected EObjects out of a selection of undefined objects.
      * 
      * @param workbenchPart
-     *            the workbench part for which to retrieve the selection, eg, a {@link IEditorPart}
+     *            the workbench part for which to retrieve the selection, eg, a
+     *            {@link org.eclipse.ui.IEditorPart IEditorPart}
      * @param selection
      *            the selection within the passed workbenchPart
      * @return the currently selected eobjects
@@ -61,14 +65,14 @@ public interface IModelModificationHandler {
      * 
      * @param workbenchPart
      *            the IWorkbenchPart of the source for this view.
-     * @param m
-     *            the method to execute
+     * @param method
+     *            the Java method to be executed via reflection
      * @param classObject
      *            the class the given method belongs to
      * @param params
      *            the parameters to be given to the method
      */
-    void execute(final IWorkbenchPart workbenchPart, final Method m, final Object classObject,
+    void execute(final IWorkbenchPart workbenchPart, final Method method, final Object classObject,
             final List<Object> params);
 
     /**
@@ -77,12 +81,12 @@ public interface IModelModificationHandler {
      * 
      * @param workbenchPart
      *            the IWorkbenchPart of the source for this view.
-     * @param m
+     * @param function
      *            the function to be executed
      * @param param
      *            the parameter to be given to the function
      */
-    void execute(final IWorkbenchPart workbenchPart, final Function<String, Void> m,
+    void execute(final IWorkbenchPart workbenchPart, final Function<String, Void> function,
             final String param);
 
     /**

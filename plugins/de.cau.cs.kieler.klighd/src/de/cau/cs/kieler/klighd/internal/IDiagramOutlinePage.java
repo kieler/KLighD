@@ -30,6 +30,9 @@ import org.eclipse.ui.part.IPage;
  * to implement {@link IDiagramOutlinePage.Provider}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public interface IDiagramOutlinePage extends IPage {
     

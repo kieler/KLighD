@@ -17,15 +17,19 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 
 /**
- * The interface for classes implementing a style modifier updating
+ * The interface for classes implementing a style modifier that update
  * {@link de.cau.cs.kieler.core.krendering.KStyle KStyles} after the automatic layout application.
- * This way we can realize specialties like the layout dependent visibility of SyncCharts region
- * separator lines.<br>
+ * This way we can realize specialties like the layout dependent visibility of swim lane-like
+ * separator lines, for example.<br>
  * <br>
  * {@link #modify(StyleModificationContext)} is supposed to return {@code true} if a modification
  * has been performed, and {@code false} otherwise.
  * 
- * @author akoc, chsch
+ * @author chsch
+ * @author akoc
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public interface IStyleModifier {
     

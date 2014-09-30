@@ -25,6 +25,9 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @author cds
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public final class KlighdPreferences {
     

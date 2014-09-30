@@ -30,6 +30,9 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
  * This class contains definitions of initial & default values.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public final class KlighdConstants {
 
