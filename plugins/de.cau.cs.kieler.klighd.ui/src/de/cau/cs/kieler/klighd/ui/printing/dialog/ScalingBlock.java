@@ -13,12 +13,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -47,7 +47,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A section of the KlighD print dialog that adds scaling support.
- * 
+ *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
@@ -60,7 +60,7 @@ final class ScalingBlock implements IDialogBlock {
     /**
      * Instantiates a new scaling block.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
-     * 
+     *
      * @param bindings
      *            the bindings used for observables
      * @param options
@@ -129,10 +129,10 @@ final class ScalingBlock implements IDialogBlock {
                 final PBounds diagramBounds = options.getExporter().getDiagramBounds();
                 final double scaleX =
                         ((double) printerBounds.width) * options.getPagesWide()
-                        / diagramBounds.width;
+                                / (diagramBounds.width + 2 * diagramBounds.x);
                 final double scaleY =
                         ((double) printerBounds.height) * options.getPagesTall()
-                        / diagramBounds.height;
+                                / (diagramBounds.height + 2 * diagramBounds.y);
                 options.setScaleFactor(Math.min(scaleX, scaleY));
             }
         });

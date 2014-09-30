@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -45,7 +45,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * {@link org.eclipse.gmf.runtime.diagram.ui.printing.internal.printpreview.PrintPreviewHelper
  * PrintPreviewHelper} of the GMF project, esp.
  * <code>PrintPreviewHelper.updateCompositeForNumberOfColumns(int, int)</code>.
- * 
+ *
  * @author csp
  */
 public class PrintPreviewTray extends DialogTray {
@@ -196,8 +196,7 @@ public class PrintPreviewTray extends DialogTray {
         final double previewScale = (double) (imageWidth) / pageBounds.width;
 
         final Rectangle scaledBounds =
-                new Rectangle((int) (pageBounds.x * previewScale),
-                        (int) (pageBounds.y * previewScale), imageWidth, imageHeight);
+                new Rectangle(0, 0, imageWidth, imageHeight);
 
         // make sure height and width are not 0, if too small <4, don't bother
         if (!(imageHeight <= MINIMAL_TILE_SIZE || imageWidth <= MINIMAL_TILE_SIZE)) {
@@ -228,7 +227,7 @@ public class PrintPreviewTray extends DialogTray {
 
     /**
      * Safely dispose an image.
-     * 
+     *
      * @param image
      *            the Image to dispose.
      */
@@ -250,7 +249,7 @@ public class PrintPreviewTray extends DialogTray {
 
     /**
      * Safely removes the listener from the given observable.
-     * 
+     *
      * @param observable
      *            the observable to remove the listener from
      */
