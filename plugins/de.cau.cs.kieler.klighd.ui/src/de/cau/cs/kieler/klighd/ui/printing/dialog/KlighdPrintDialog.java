@@ -37,6 +37,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.base.Strings;
+
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
@@ -117,7 +119,6 @@ public class KlighdPrintDialog extends TrayDialog {
         newShell.setText(KlighdUIPrintingMessages.PrintDialog_Title);
         setHelpAvailable(false);
         setDialogHelpAvailable(false);
-
     }
 
     /**
@@ -239,22 +240,31 @@ public class KlighdPrintDialog extends TrayDialog {
 
     /**
      * Checks whether the printer data in the current print options are valid (i.e. a printer can be
-     * created from it). If not, the system's native print dialog is opened to let the user choose a
-     * valid printer.
+     * created based on them). In addition, the pre-loaded printer name is checked to be non-empty
+     * (as, at least on OSX, a printer can be properly instantiated based on the default printer data).
+     *  
+     * If those checks are not passed properly
+     *  the system's native print dialog is opened to let the user choose a valid printer.
      */
     private boolean checkPrinterData() {
         try {
             new Printer(options.getPrinterData());
-        } catch (final Throwable e) {
-            final PrintDialog printDialog = new PrintDialog(getParentShell());
-            printDialog.setText("Select a printer");
-            final PrinterData data = printDialog.open();
-            if (data != null) {
-                options.setPrinterData(data);
-            } else {
-                return false;
+            if (!Strings.isNullOrEmpty(options.getPrinterName())) {
+                return true;
             }
+        } catch (final Throwable e) {
+            // nothing
         }
-        return true;
+
+        final PrintDialog printDialog = new PrintDialog(getParentShell());
+        printDialog.setText("Select a printer");
+        final PrinterData data = printDialog.open();
+
+        if (data != null) {
+            options.setPrinterData(data);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

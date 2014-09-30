@@ -73,7 +73,6 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
-import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.ui.viewers.UiContextViewer;
@@ -88,7 +87,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author uru
  */
 public class DiagramEditorPart extends EditorPart implements
-IDiagramWorkbenchPart.IDiagramEditorPart, ILayoutConfigProvider {
+        IDiagramWorkbenchPart.IDiagramEditorPart, ILayoutConfigProvider {
 
     /**
      * ActionBarContributor providing the print action for DiagramEditorParts.
@@ -108,12 +107,13 @@ IDiagramWorkbenchPart.IDiagramEditorPart, ILayoutConfigProvider {
         @Override
         public void setActiveEditor(final IEditorPart targetEditor) {
             super.setActiveEditor(targetEditor);
+
             final IActionBars bars = getActionBars();
             if (bars == null) {
                 return;
             }
-            action.setViewer((PiccoloViewer) ((ContextViewer) ((DiagramEditorPart) (targetEditor))
-                    .getViewer()).getActiveViewer());
+
+            action.setViewer(((DiagramEditorPart) targetEditor).getViewer());
             bars.setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
             bars.updateActionBars();
         }

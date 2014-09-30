@@ -29,14 +29,10 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
-import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
-import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
-// SUPPRESS CHECKSTYLE PREVIOUS LineLength
 
 /**
  * The abstract base class for KLighD diagram synthesis implementations.<br>
@@ -407,8 +403,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     protected final <R extends KGraphElement, T> R setLayoutOption(final R element,
             final IProperty<T> option, final T value) {
-        element.getData(KLayoutData.class).setProperty(option, value);
-        return element;
+
+        return DiagramSyntheses.setLayoutOption(element, option, value);
     }
     
     /**
@@ -430,11 +426,9 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     protected final <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        final KLayoutData sl = node.getData(KLayoutData.class);
-        if (sl != null) {
-            ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
-        }
-        return node;
+
+        return DiagramSyntheses.setExpansionAwareLayoutOption(
+                node, option, collapsedValue, expandedValue);
     }
 
     /**
@@ -457,17 +451,9 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     protected final <T> KPort setExpansionAwareLayoutOption(final KPort port,
             final IProperty<T> option, final T collapsedValue, final T expandedValue) {
-        final KLayoutData sl = port.getData(KLayoutData.class); 
-        ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
-        
-        if (data == null) {
-            data = new ExpansionAwareLayoutOptionData();
-            sl.setProperty(ExpansionAwareLayoutOption.OPTION, data);
-        }
-        
-        data.setProperty(option, collapsedValue, expandedValue);
-                
-        return port;
+
+        return DiagramSyntheses.setExpansionAwareLayoutOption(
+                port, option, collapsedValue, expandedValue);
     }
 
     /**

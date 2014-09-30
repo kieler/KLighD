@@ -19,6 +19,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.ui.PlatformUI;
 
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog;
@@ -49,9 +50,9 @@ public final class PrintAction extends Action {
      * @param viewer
      *            the viewer to print.
      */
-    public PrintAction(final PiccoloViewer viewer) {
+    public PrintAction(final IViewer viewer) {
         super();
-        this.viewer = viewer;
+        setViewer(viewer);
     }
 
     /**
@@ -69,8 +70,21 @@ public final class PrintAction extends Action {
      * @param viewer
      *            the new viewer to print
      */
-    public void setViewer(final PiccoloViewer viewer) {
-        this.viewer = viewer;
+    public void setViewer(final IViewer viewer) {
+        if (viewer instanceof PiccoloViewer) {
+            this.viewer = (PiccoloViewer) viewer;
+            
+        } else {
+            final IViewer aViewer = viewer.getContextViewer().getActiveViewer();
+            if (aViewer instanceof PiccoloViewer) {
+                this.viewer = (PiccoloViewer) aViewer;
+
+            } else {
+                final String msg = "KLighD PrintAction: "
+                        + "provided IViewer must be/contain an instance of PiccoloViewer!";
+                throw new IllegalArgumentException(msg);
+            }
+        }
     }
 
     /**

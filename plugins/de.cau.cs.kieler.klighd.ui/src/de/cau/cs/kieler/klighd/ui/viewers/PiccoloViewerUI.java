@@ -31,10 +31,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
@@ -42,7 +39,6 @@ import com.google.common.base.Function;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -59,7 +55,6 @@ import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.KlighdTextSelection;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.modifymodel.ModelModificationHandlerProvider;
-import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PNode;
 
@@ -113,22 +108,6 @@ public class PiccoloViewerUI extends PiccoloViewer {
      */
     public PiccoloViewerUI(final ContextViewer parentViewer, final Composite parent, final int style) {
         super(parentViewer, parent);
-
-        // registers a print action by means of the global action bars
-        final IActionBars actions;
-        final IDiagramWorkbenchPart part = getViewContext().getDiagramWorkbenchPart();
-
-        if (getViewContext().getDiagramWorkbenchPart() instanceof IViewPart) {
-            actions = ((IViewPart) part).getViewSite().getActionBars();
-
-        } else {
-            actions = null;
-        }
-
-        // register print action
-        if (actions != null) {
-            actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new PrintAction(this));
-        }
 
         addLabelTextWidget(parentViewer);
     }
