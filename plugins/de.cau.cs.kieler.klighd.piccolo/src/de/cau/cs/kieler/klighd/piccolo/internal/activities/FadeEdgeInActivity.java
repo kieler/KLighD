@@ -20,8 +20,8 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 
 /**
  * A custom {@link edu.umd.cs.piccolo.activities.PInterpolatingActivity PInterpolatingActivity} that
- * fades {@link PNode PNodes} representing {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} into
- * diagrams.
+ * fades {@link edu.umd.cs.piccolo.PNode PNodes} representing
+ * {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} into diagrams.
  * 
  * @author chsch
  */
@@ -63,6 +63,7 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
      * This customization initializes the new node's position, set it transparent, and releases the
      * invisibility.
      */
+    @Override
     public void activityStarted() {
         if (edgeNode.getRenderingController() != null) {
             edgeNode.getRenderingController().modifyStyles();
@@ -89,6 +90,7 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
      * <br>
      * This customization fully exposes the given edge.
      */
+    @Override
     public void activityFinished() {
         edgeNode.setTransparency(1);
         super.activityFinished();

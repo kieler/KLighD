@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,7 +26,7 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
 
     /** The plug-in ID. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.ui"; //$NON-NLS-1$
-    
+
     /** Menu id of the floating text widget's context menu. */
     public static final String FLOATING_TEXT_MENU_ID = PLUGIN_ID + ".popupMenu.floatingText";
 
@@ -57,5 +58,17 @@ public class KlighdUIPlugin extends AbstractUIPlugin {
     public void stop(final BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
+    }
+
+    /**
+     * Returns an image descriptor for the image file at the given plug-in
+     * relative path.
+     * 
+     * @param path
+     *            the path
+     * @return the image descriptor
+     */
+    public static ImageDescriptor getImageDescriptor(final String path) {
+        return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 }

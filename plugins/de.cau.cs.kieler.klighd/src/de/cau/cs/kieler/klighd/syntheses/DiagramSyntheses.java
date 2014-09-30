@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KBottomPosition;
@@ -36,10 +37,13 @@ import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 
 /**
  * Collection of KGraph/KRendering view model configuration methods.
@@ -52,6 +56,87 @@ public final class DiagramSyntheses {
      * Hidden standard constructor.
      */
     private DiagramSyntheses() {
+    }
+
+    /**
+     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
+     * 
+     * @param <R>
+     *            the concrete type of <code>element</code>
+     * @param <T>
+     *            the property value type
+     * @param element
+     *            the element to set the layout option on
+     * @param option
+     *            the particular layout option, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param value
+     *            the option value
+     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     */
+    public static <R extends KGraphElement, T> R setLayoutOption(final R element,
+            final IProperty<T> option, final T value) {
+        element.getData(KLayoutData.class).setProperty(option, value);
+        return element;
+    }
+
+    /**
+     * Convenience method for defining collapse/expand state dependent layout options for
+     * {@link KNode KNodes}.
+     * 
+     * @param <T>
+     *            the property value type
+     * @param node
+     *            the node to set the layout option on
+     * @param option
+     *            the particular layout option, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param collapsedValue
+     *            the value in case <code>node</code> is collapsed
+     * @param expandedValue
+     *            the value in case <code>node</code> is expanded
+     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     */
+    public static <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
+            final T collapsedValue, final T expandedValue) {
+        final KLayoutData sl = node.getData(KLayoutData.class);
+        if (sl != null) {
+            ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
+        }
+        return node;
+    }
+
+    /**
+     * Convenience method for defining collapse/expand state dependent layout options for
+     * {@link KPort KPorts}. The collapse/expand state refers to that of the {@link KNode}
+     * containing the {@link KPort}.
+     * 
+     * @param <T>
+     *            the property value type
+     * @param port
+     *            the port to set the layout option on
+     * @param option
+     *            the particular layout option, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param collapsedValue
+     *            the value in case <code>port</code>'s container node is collapsed
+     * @param expandedValue
+     *            the value in case <code>port</code>'s container node is expanded
+     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     */
+    public static <T> KPort setExpansionAwareLayoutOption(final KPort port,
+            final IProperty<T> option, final T collapsedValue, final T expandedValue) {
+        final KLayoutData sl = port.getData(KLayoutData.class); 
+        ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
+        
+        if (data == null) {
+            data = new ExpansionAwareLayoutOptionData();
+            sl.setProperty(ExpansionAwareLayoutOption.OPTION, data);
+        }
+        
+        data.setProperty(option, collapsedValue, expandedValue);
+                
+        return port;
     }
 
     /**
@@ -375,7 +460,7 @@ public final class DiagramSyntheses {
     public static KContainerRendering addRenderingWithStandardSelectionWrapper(final KGraphElement kge,
             final KRendering ren) {
         
-        KContainerRendering selectionRendering = wrapWithStandardNodeSelectionRendering(ren);
+        final KContainerRendering selectionRendering = wrapWithStandardNodeSelectionRendering(ren);
         kge.getData().add(selectionRendering);
         return selectionRendering;
     }
@@ -407,39 +492,39 @@ public final class DiagramSyntheses {
         int selectionG = SELECTION_COLOR_G;
         int selectionB = SELECTION_COLOR_B;
         
-        Display display = Display.getCurrent();
+        final Display display = Display.getCurrent();
         if (display != null) {
-            Color selectionColor = display.getSystemColor(SWT.COLOR_LIST_SELECTION);
+            final Color selectionColor = display.getSystemColor(SWT.COLOR_LIST_SELECTION);
             selectionR = selectionColor.getRed();
             selectionG = selectionColor.getGreen();
             selectionB = selectionColor.getBlue();
         }
         
-        KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        KRectangle containerRendering = factory.createKRectangle();
+        final KRenderingFactory factory = KRenderingFactory.eINSTANCE;
+        final KRectangle containerRendering = factory.createKRectangle();
         
         // Make container rectangle invisible
-        KInvisibility containerInvisibility = factory.createKInvisibility();
+        final KInvisibility containerInvisibility = factory.createKInvisibility();
         containerInvisibility.setInvisible(true);
         containerRendering.getStyles().add(containerInvisibility);
         
         // Rounded rectangle used to display the selection
-        KRoundedRectangle selectionRectangle = factory.createKRoundedRectangle();
+        final KRoundedRectangle selectionRectangle = factory.createKRoundedRectangle();
         selectionRectangle.setCornerWidth(SELECTION_RECTANGLE_CORNER_SIZE);
         selectionRectangle.setCornerHeight(SELECTION_RECTANGLE_CORNER_SIZE);
         containerRendering.getChildren().add(selectionRectangle);
         
         // Background color of the rounded rectangle
-        KBackground selectionRectangleBackground = factory.createKBackground();
+        final KBackground selectionRectangleBackground = factory.createKBackground();
         selectionRectangleBackground.setColor(selectionR, selectionG, selectionB);
         selectionRectangle.getStyles().add(selectionRectangleBackground);
         
         // Line style and with of the rounded rectangle
-        KLineStyle selectionRectangleLineStyle = factory.createKLineStyle();
+        final KLineStyle selectionRectangleLineStyle = factory.createKLineStyle();
         selectionRectangleLineStyle.setLineStyle(LineStyle.DASH);
         selectionRectangle.getStyles().add(selectionRectangleLineStyle);
         
-        KLineWidth selectionRectangleLineWidth = factory.createKLineWidth();
+        final KLineWidth selectionRectangleLineWidth = factory.createKLineWidth();
         selectionRectangleLineWidth.setLineWidth(1.0f);
         selectionRectangle.getStyles().add(selectionRectangleLineWidth);
         
@@ -454,31 +539,21 @@ public final class DiagramSyntheses {
         selectionRectangle.getStyles().add(selectionVisibility);
         
         // Make the selection rectangle a bit larger than the original rendering
-        KTopPosition topPosition = factory.createKTopPosition();
-        topPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        topPosition.setRelative(0);
-
-        KLeftPosition leftPosition = factory.createKLeftPosition();
-        leftPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        leftPosition.setRelative(0);
+        final KTopPosition topPosition = factory.createKTopPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        final KLeftPosition leftPosition = factory.createKLeftPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        final KPosition topLeftPosition = factory.createKPosition()
+                .setPositions(leftPosition, topPosition);
         
-        KPosition topLeftPosition = factory.createKPosition();
-        topLeftPosition.setY(topPosition);
-        topLeftPosition.setX(leftPosition);
+        final KBottomPosition bottomPosition = factory.createKBottomPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        final KRightPosition rightPosition = factory.createKRightPosition()
+                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
+        final KPosition bottomRightPosition = factory.createKPosition()
+                .setPositions(rightPosition, bottomPosition);
         
-        KBottomPosition bottomPosition = factory.createKBottomPosition();
-        bottomPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        bottomPosition.setRelative(0);
-
-        KRightPosition rightPosition = factory.createKRightPosition();
-        rightPosition.setAbsolute(-SELECTION_RECTANGLE_ENLARGEMENT);
-        rightPosition.setRelative(0);
-        
-        KPosition bottomRightPosition = factory.createKPosition();
-        bottomRightPosition.setY(bottomPosition);
-        bottomRightPosition.setX(rightPosition);
-        
-        KAreaPlacementData areaPlacementData = factory.createKAreaPlacementData();
+        final KAreaPlacementData areaPlacementData = factory.createKAreaPlacementData();
         areaPlacementData.setTopLeft(topLeftPosition);
         areaPlacementData.setBottomRight(bottomRightPosition);
         

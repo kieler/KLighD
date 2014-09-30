@@ -32,6 +32,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.Bundle;
@@ -46,6 +48,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
+import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.ui.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -135,12 +138,13 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     public void setViewContext(final ViewContext viewContext) {
         // create the options pane
         if (sideBar == null) {
-            sideBar =
-                    DiagramSideBar.createSideBar(diagramComposite.getParent(), diagramComposite,
-                            viewContext);
+            sideBar = DiagramSideBar.createSideBar(
+                diagramComposite.getParent(), diagramComposite, viewContext);
         }
 
         this.getViewer().getContextViewer().setModel(viewContext);
+
+        registerPrintSupport();
     }
 
     /**
@@ -212,7 +216,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      * @param menuManager
      *            the menu manager
      */
-    private void fillViewMenu(final IMenuManager menuManager) {
+    protected void fillViewMenu(final IMenuManager menuManager) {
     }
 
     /**
@@ -259,6 +263,18 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         menu.add(resetLayoutOptionsAction);
     }
 
+    /**
+     * Registers the default print support, may be overriden if necessary.
+     */
+    protected void registerPrintSupport() {
+
+        // registers the print action by means of the action bars
+        final IActionBars actions = this.getViewSite().getActionBars();
+        if (actions != null) {
+            actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new PrintAction(getViewer()));
+        }
+    }
+    
     /**
      * {@inheritDoc}
      */

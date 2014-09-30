@@ -42,6 +42,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -50,6 +51,8 @@ import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -71,6 +74,7 @@ import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
+import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.ui.viewers.UiContextViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -84,6 +88,37 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  */
 public class DiagramEditorPart extends EditorPart implements
         IDiagramWorkbenchPart.IDiagramEditorPart, ILayoutConfigProvider {
+
+    /**
+     * ActionBarContributor providing the print action for DiagramEditorParts.
+     */
+    public static class ActionContributor extends EditorActionBarContributor {
+
+        /** The print action. */
+        private final PrintAction action = new PrintAction();
+
+        /**
+         * Sets the active editor for the contributor.
+         * Updates the print action to reflect the the editor change.
+         * 
+         * @param targetEditor
+         *            the new active editor.
+         */
+        @Override
+        public void setActiveEditor(final IEditorPart targetEditor) {
+            super.setActiveEditor(targetEditor);
+
+            final IActionBars bars = getActionBars();
+            if (bars == null) {
+                return;
+            }
+
+            action.setViewer(((DiagramEditorPart) targetEditor).getViewer());
+            bars.setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
+            bars.updateActionBars();
+        }
+
+    }
 
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
@@ -340,6 +375,7 @@ public class DiagramEditorPart extends EditorPart implements
      * 
      * @deprecated Use {@link #getViewer()}.
      */
+    @Deprecated
     public ContextViewer getContextViewer() {
         return viewer;
     }
@@ -643,7 +679,7 @@ public class DiagramEditorPart extends EditorPart implements
      * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
      * defined.
      */
-    private ControlListener diagramAreaListener = new ControlListener() {
+    private final ControlListener diagramAreaListener = new ControlListener() {
 
         /** The aspect ratio is rounded at two decimal places. */
         private static final float ASPECT_RATIO_ROUND = 100;

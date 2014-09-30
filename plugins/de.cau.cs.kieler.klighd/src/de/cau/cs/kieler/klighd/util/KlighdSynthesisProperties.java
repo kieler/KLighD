@@ -59,7 +59,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     /** property denoting pre-definition of diagram {@link SynthesisOption} values. */
     public static final IProperty<Map<SynthesisOption, Object>> SYNTHESIS_OPTION_CONFIG =
             new Property<Map<SynthesisOption, Object>>("klighd.synthesisOptionConfig");
-
+    
     /** property denoting a desired zoom buttons handling. */
     public static final IProperty<ZoomConfigButtonsHandling> REQUESTED_ZOOM_CONFIG_BUTTONS_HANDLING =
             new Property<ZoomConfigButtonsHandling>("klighd.zoomConfigButtonsHandling",
@@ -70,7 +70,6 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * {@link de.cau.cs.kieler.core.kgraph.KLabel KLabels}. */
     public static final IProperty<Boolean> SUPPRESS_SIZE_ESTIMATION = new Property<Boolean>(
             "klighd.suppressSizeEstimation", false);
-
     /**
      * Defines the possible diagram side bar initialization options. 
      */
@@ -82,6 +81,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         /** The initialization of the side bar is done according to the related preference setting. */
         UNDEFINED
     }
+    
 
     /**
      * Defines the possible zoom buttons visibility options. 
@@ -94,7 +94,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         /** The visibility of the zoom buttons is set according to the related preference setting. */
         UNDEFINED
     }
-
+    
     /**
      * Immutable singleton instance of {@link KlighdSynthesisProperties}.  
      */
@@ -114,7 +114,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
             throw new UnsupportedOperationException(msg);
         }
     };
-
+    
     /**
      * Factory method.
      * 
@@ -174,7 +174,7 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         super.setProperty(property, value);
         return this;
     }
-
+    
     /**
      * Sets a property value and returns <code>this</code> {@link IPropertyHolder} for convenience.
      * 
