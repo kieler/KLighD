@@ -29,11 +29,15 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * <br>
  * It updates the {@link KRotation#getRotation() rotation} value of the {@link KRotation} style this
  * class is associated with (by entering {@link #ID} in the styles
- * {@link de.cau.cs.kieler.core.krendering.KStyle#getModifierId() modifier} field).<br>
+ * {@link de.cau.cs.kieler.core.krendering.KStyle#getModifierId() modifier} field) after each update
+ * of the diagram layout.<br>
  * <br>
- * This class is also registered in the plugin.xml, it is called after each layout update by KLighD.
+ * This class is also registered in the plugin.xml.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public class PortRotationModifier implements IStyleModifier {
 

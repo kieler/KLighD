@@ -46,6 +46,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  * type is compatible to the other type.
  * 
  * @author chsch
+ * 
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
@@ -93,7 +94,7 @@ public final class KCustomRenderingWrapperFactory {
         // filter them, retain the ones named like EXTENSION_NAME
         //  this is actually not necessary right now but might be
         //  if the extension point definition will be extended in future
-        Iterable<IConfigurationElement> wrappers = new Iterable<IConfigurationElement>() {
+        final Iterable<IConfigurationElement> wrappers = new Iterable<IConfigurationElement>() {
             public Iterator<IConfigurationElement> iterator() {
                 return Iterators.filter(Iterators.forArray(configurations),
                         new Predicate<IConfigurationElement>() {
@@ -105,7 +106,7 @@ public final class KCustomRenderingWrapperFactory {
         };
 
         // examine the extensions and register the data in the 'typeWrapperMap'
-        for (IConfigurationElement element : wrappers) {
+        for (final IConfigurationElement element : wrappers) {
             Class<?> figureClass = null;
             Class<?> wrapperClass = null;
             Bundle host = null;
@@ -118,14 +119,14 @@ public final class KCustomRenderingWrapperFactory {
                 wrapperClass = host.loadClass(element.getAttribute(WRAPPER_CLASS_ENTRY_NAME));
                 this.registerWrapper(figureClass, wrapperClass);
 
-            } catch (InvalidRegistryObjectException e) {
+            } catch (final InvalidRegistryObjectException e) {
                 // I hope this will never happen ;-)
                 final String msg = "An extension of " + KlighdDataManager.EXTP_ID_EXTENSIONS + " in "
                     + host + " could not be examined properly and appears to be invalid in some way.";
                 StatusManager.getManager().handle(
                         new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e),
                         StatusManager.LOG);
-            } catch (ClassNotFoundException e) {
+            } catch (final ClassNotFoundException e) {
                 String msg;
                 if (figureClass == null) {
                     msg = "Failed to load figure class "
@@ -151,7 +152,7 @@ public final class KCustomRenderingWrapperFactory {
      *            the wrapper type enabling the integration and drawing of renderingType
      */
     public void registerWrapper(final Class<?> renderingType, final Class<?> wrapperType) {
-        this.typeWrapperMap.put(renderingType, (Class<?>) wrapperType);
+        this.typeWrapperMap.put(renderingType, wrapperType);
     }
     
     
@@ -201,7 +202,7 @@ public final class KCustomRenderingWrapperFactory {
         try {
             // load the figure class 
             clazz = bundle.loadClass(renderingTypeName);
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             final String msg = "KLighD custom rendering wrapper factory: Error occurred while"
                     + "loading the custom rendering class " + renderingTypeName
                     + ((bundle != null) ? (" in bundle " + bundleName) : "") + ".";
@@ -239,7 +240,7 @@ public final class KCustomRenderingWrapperFactory {
         S figure = null;
         try {
             figure = renderingType.newInstance();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             final String msg = "KLighD custom rendering wrapper factory: An error occured while "
                     + "instantiating the requested custom figure type " + renderingType.getName() + ".";
             StatusManager.getManager().handle(
@@ -311,7 +312,7 @@ public final class KCustomRenderingWrapperFactory {
             try {
                 // ... create an instance, otherwise, and return that one
                 return (T) renderingType.newInstance();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 final String msg = "KLighD custom rendering wrapper factory: An error occured while "
                         + "instantiating the requested custom figure type "
                         + renderingType.getName() + ".";
@@ -323,7 +324,7 @@ public final class KCustomRenderingWrapperFactory {
         }
 
         // otherwise look into the map for a fitting wrapper
-        Map.Entry<Class<?>, Class<?>> entry = Iterables.getFirst(
+        final Map.Entry<Class<?>, Class<?>> entry = Iterables.getFirst(
                 Maps.filterEntries(this.typeWrapperMap, new Predicate<Entry<Class<?>, Class<?>>>() {
                     public boolean apply(final Entry<Class<?>, Class<?>> entry) {
                         return entry.getKey().isAssignableFrom(renderingType)
@@ -336,7 +337,7 @@ public final class KCustomRenderingWrapperFactory {
                 // due to the 2nd part of the filter condition
                 // the cast in the next line is generally valid
                 return (T) entry.getValue().getConstructor(entry.getKey()).newInstance(figure);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 final String msg = "KLighD custom rendering wrapper factory: An error occured while "
                         + "instantiating the required wrapper figure for the requested figure type "
                         + renderingType.getName() + ".";

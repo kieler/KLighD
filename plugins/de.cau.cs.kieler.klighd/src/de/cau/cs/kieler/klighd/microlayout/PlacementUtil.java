@@ -85,7 +85,12 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
 /**
  * A utility class for evaluating the micro layout of KRenderings.
  * 
- * @author chsch, sgu, akoc
+ * @author chsch
+ * @author sgu
+ * @author akoc
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public final class PlacementUtil {
 

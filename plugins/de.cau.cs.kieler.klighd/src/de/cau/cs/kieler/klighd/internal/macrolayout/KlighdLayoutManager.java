@@ -84,6 +84,9 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData;
  * @author mri
  * @author chsch
  * @author msp
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement> {
 

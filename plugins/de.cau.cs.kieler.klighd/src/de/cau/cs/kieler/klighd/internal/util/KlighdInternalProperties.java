@@ -28,6 +28,9 @@ import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
  * IProperties}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public final class KlighdInternalProperties {
 

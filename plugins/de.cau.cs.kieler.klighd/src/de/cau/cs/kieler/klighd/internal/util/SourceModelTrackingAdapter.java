@@ -45,6 +45,9 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  * of {@link Map Maps}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public class SourceModelTrackingAdapter extends EContentAdapter {
 

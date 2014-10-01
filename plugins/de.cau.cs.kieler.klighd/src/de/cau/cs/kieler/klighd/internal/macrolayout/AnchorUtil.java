@@ -45,6 +45,9 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * @author msp
  * @author chsch
  * @author cds
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public final class AnchorUtil {
 
@@ -98,7 +101,7 @@ public final class AnchorUtil {
         if (rendering != null) {
             switch (rendering.eClass().getClassifierID()) {
             case KRenderingPackage.KROUNDED_RECTANGLE:
-                KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
+                final KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
                 
                 double cornerWidth = roundedRectangle.getCornerWidth() * scale;
                 cornerWidth = 2 * cornerWidth <= width ? cornerWidth : width / 2;
@@ -130,7 +133,7 @@ public final class AnchorUtil {
     private static KVector nearestBorderPointRectangle(final KVector point, final double width,
             final double height) {
         
-        KVector result = new KVector(point);
+        final KVector result = new KVector(point);
         
         if (point.x < 0) {
             result.x = 0;
@@ -270,7 +273,7 @@ public final class AnchorUtil {
             case KRenderingPackage.KELLIPSE:
                 return collideTowardsEllipseCenter(point, width, height);
             case KRenderingPackage.KPOLYGON:
-                KPolygon polygon = (KPolygon) rendering;
+                final KPolygon polygon = (KPolygon) rendering;
                 return collideTowardsPolygonCenter(point, width, height, polygon.getPoints());
             default:
                 return collideTowardsRectangleCenter(point, width, height);
@@ -296,7 +299,7 @@ public final class AnchorUtil {
         assert height >= 0 : "height = " + height;
         
         KVector result;
-        KVector center = new KVector(width / 2.0, height / 2.0);
+        final KVector center = new KVector(width / 2.0, height / 2.0);
         
         // Check if the point is outside of the rectangle's bounds (only then do we need to calculate
         // an intersection point)
@@ -348,19 +351,19 @@ public final class AnchorUtil {
         
         // An ellipse can be defined by the equation x^2 / a^2 + y^2 / b^2 = 1, with the center being
         // at coordinate (0,0)
-        double a = width * 0.5;
-        double b = height * 0.5;
+        final double a = width * 0.5;
+        final double b = height * 0.5;
         
         // Since we're assuming (0,0) to be the center of the ellipse instead of its top left corner,
         // we will need to offset the point accordingly
-        KVector offsetPoint = new KVector(point.x - a, point.y - b);
+        final KVector offsetPoint = new KVector(point.x - a, point.y - b);
         
         // We will describe our line through (0,0) and offsetPoint by two equations:
         //   x(t) = offsetPoint.x * t
         //   y(t) = offsetPoint.y * t
         // The goal is to find 0 <= t0 <= 1 such, that (x(t0), y(t0)) is the intersection between
         // the ellipse and the line
-        double determinant = offsetPoint.x * offsetPoint.x / (a * a)
+        final double determinant = offsetPoint.x * offsetPoint.x / (a * a)
                 + offsetPoint.y * offsetPoint.y / (b * b);
         if (determinant == 0) {
             // This can only happen if offsetPoint == (0,0)
@@ -368,7 +371,7 @@ public final class AnchorUtil {
         }
         
         // Find t0
-        double t0 = 1.0 / Math.sqrt(determinant);
+        final double t0 = 1.0 / Math.sqrt(determinant);
         
         // The result is the intersection point, corrected by the offset we put on offsetPoint earlier
         return new KVector(offsetPoint.x * t0 + a, offsetPoint.y * t0 + b);
@@ -392,7 +395,7 @@ public final class AnchorUtil {
         assert width >= 0 : "width = " + width;
         assert height >= 0 : "height = " + height;
         
-        Bounds figureBounds = new Bounds(width, height);
+        final Bounds figureBounds = new Bounds(width, height);
         
         // We need at least three points to define a proper polygon
         if (polygonPoints.size() < 3) {
@@ -405,8 +408,8 @@ public final class AnchorUtil {
         KVector result = new KVector(width / 2, height / 2);
         
         // Iterate over the polygon points, remembering the last two
-        Iterator<KPosition> polygonPointsIterator = polygonPoints.iterator();
-        KVector firstPoint = PlacementUtil.evaluateKPosition(
+        final Iterator<KPosition> polygonPointsIterator = polygonPoints.iterator();
+        final KVector firstPoint = PlacementUtil.evaluateKPosition(
                 polygonPointsIterator.next(), figureBounds, true).toKVector();
         
         KVector segmentStart = null;
@@ -419,7 +422,7 @@ public final class AnchorUtil {
                     polygonPointsIterator.next(), figureBounds, true).toKVector();
             
             // Check if there is an intersection between the current segment and (point->result)
-            KVector intersection = intersectLines(
+            final KVector intersection = intersectLines(
                     segmentStart.x, segmentStart.y, segmentEnd.x, segmentEnd.y,
                     point.x, point.y, result.x, result.y);
             
@@ -430,7 +433,7 @@ public final class AnchorUtil {
         
         // We now have the last point of the polygon's points in segmentEnd, but we have not yet checked
         // the last segment (segmentEnd -> polygonPoints.get(0)) for an intersection
-        KVector intersection = intersectLines(
+        final KVector intersection = intersectLines(
                 firstPoint.x, firstPoint.y, segmentEnd.x, segmentEnd.y,
                 point.x, point.y, result.x, result.y);
         
@@ -458,6 +461,7 @@ public final class AnchorUtil {
      * @param y4 y coordinate of the second line's end point.
      * @return the point where the two lines intersect, or {@code null} if they don't.
      */
+    // SUPPRESS CHECKSTYLE NEXT ParameterNumber -- we need the 8 points here
     private static KVector intersectLines(final double x1, final double y1, final double x2,
             final double y2, final double x3, final double y3, final double x4, final double y4) {
         
@@ -467,7 +471,7 @@ public final class AnchorUtil {
          */
         
         // Calculate the divisor
-        double divisor = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        final double divisor = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
         
         // If the divisor is 0, the lines are parallel
         if (divisor == 0.0) {
@@ -475,11 +479,11 @@ public final class AnchorUtil {
         }
         
         // Calculate a few values that are used often
-        double x1y2minusy1x2 = x1 * y2 - y1 * x2;
-        double x3y4minusy3x4 = x3 * y4 - y3 * x4;
+        final double x1y2minusy1x2 = x1 * y2 - y1 * x2;
+        final double x3y4minusy3x4 = x3 * y4 - y3 * x4;
         
         // Calculate the coordinates of the intersection
-        KVector result = new KVector(
+        final KVector result = new KVector(
                 (x1y2minusy1x2 * (x3 - x4) - (x1 - x2) * x3y4minusy3x4) / divisor,
                 (x1y2minusy1x2 * (y3 - y4) - (y1 - y2) * x3y4minusy3x4) / divisor);
         
