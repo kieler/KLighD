@@ -18,8 +18,12 @@ import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
 
 /**
+ * Scales the chosen {@link KNode} up by (roughly) one unit, i.e. 100 percent points.
+ * 
  * @author chsch
- *
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class ScaleUpAction implements IAction {
 

@@ -22,6 +22,9 @@ import com.google.common.base.Predicate;
  * {@link de.cau.cs.kieler.klighd.IAction IAction}'s offered in the UI's side bar.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public final class DisplayedActionData {
     

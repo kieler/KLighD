@@ -24,6 +24,9 @@ import de.cau.cs.kieler.klighd.KlighdPreferences;
  * 
  * @author cds
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
@@ -32,7 +35,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
      */
     @Override
     public void initializeDefaultPreferences() {
-        IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
+        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
         
         // Set default option values
         preferenceStore.setDefault(KlighdPreferences.ANIMATE_LAYOUT,
