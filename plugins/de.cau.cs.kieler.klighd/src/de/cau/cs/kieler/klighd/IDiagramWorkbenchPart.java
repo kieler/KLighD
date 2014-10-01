@@ -46,15 +46,6 @@ public interface IDiagramWorkbenchPart extends IWorkbenchPart {
     IViewer getViewer();
 
     /**
-     * Returns the viewer associated with this workbench part.
-     * 
-     * @deprecated Use {@link #getViewer()}.
-     * 
-     * @return the viewer
-     */
-    ContextViewer getContextViewer();
-    
-    /**
      * Extended interface for editor parts implemented by KLighD.
      */
     public interface IDiagramEditorPart extends IDiagramWorkbenchPart, IEditorPart {

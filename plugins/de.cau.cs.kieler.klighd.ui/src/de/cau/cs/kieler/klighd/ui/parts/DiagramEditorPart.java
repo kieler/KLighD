@@ -370,16 +370,6 @@ public class DiagramEditorPart extends EditorPart implements
         return viewer;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @deprecated Use {@link #getViewer()}.
-     */
-    @Deprecated
-    public ContextViewer getContextViewer() {
-        return viewer;
-    }
-
     private boolean toBeFocussed = false;
 
     /**

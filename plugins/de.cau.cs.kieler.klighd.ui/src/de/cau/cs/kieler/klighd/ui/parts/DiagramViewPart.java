@@ -298,15 +298,6 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     }
 
     /**
-     * {@inheritDoc}
-     * 
-     * @deprecated Use {@link #getViewer()}.
-     */
-    public ContextViewer getContextViewer() {
-        return viewer;
-    }
-
-    /**
      * Retrieve an action with the specified identifier.
      * 
      * @param id
