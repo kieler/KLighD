@@ -2,17 +2,17 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
 /**
- * 
+ *
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
@@ -38,7 +38,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * <br>
  * In the context of this utility class the term 'smart bounds' refers to a bounds instance, which
  * origin is the translation of an associated node instead of a static offset.
- * 
+ *
  * @author mri
  * @author chsch
  */
@@ -57,7 +57,7 @@ public final class NodeUtil {
     /**
      * Casts a custom {@link PNode} object that implements {@link IGraphElement} to
      * {@link IGraphElement}, the <b>type check is omitted for performance reasons</b>.
-     * 
+     *
      * @param node
      *            a custom {@link PNode} implementing {@link IGraphElement}
      * @return node typed as {@link IGraphElement}
@@ -69,7 +69,7 @@ public final class NodeUtil {
 
     /**
      * Applies the bounds to the given node using the node's translation and its bounds.
-     * 
+     *
      * @param node
      *            the node
      * @param x
@@ -80,7 +80,7 @@ public final class NodeUtil {
      *            the width
      * @param height
      *            the height
-     *            
+     *
      * @author mri, chsch
      */
     public static void applyBounds(final PNode node, final double x, final double y,
@@ -95,7 +95,7 @@ public final class NodeUtil {
 
     /**
      * Applies the bounds to the given node using the node's translation and its bounds.
-     * 
+     *
      * @param node
      *            the node
      * @param bounds
@@ -107,7 +107,7 @@ public final class NodeUtil {
 
     /**
      * Applies the bounds to the given node using the node's translation and its bounds.
-     * 
+     *
      * @param node
      *            the node
      * @param bounds
@@ -119,7 +119,7 @@ public final class NodeUtil {
 
     /**
      * Applies the bounds to the given node using the node's translation and its bounds.
-     * 
+     *
      * @param node
      *            the node
      * @param bounds
@@ -132,7 +132,7 @@ public final class NodeUtil {
     /**
      * (Re-)Applies the translation (x,y) and size (w, h) given in <code>bounds</code> and last
      * rotation configuration to the node controller by <code>controller</code>.
-     * 
+     *
      * @param controller
      *            the {@link PNodeController}
      * @param bounds
@@ -140,14 +140,14 @@ public final class NodeUtil {
      */
     public static void applyBounds(final PNodeController<?> controller, final Bounds bounds) {
         controller.getNode().setBounds(0, 0,  bounds.getWidth(), bounds.getHeight());
-        
+
         applyTranslation(controller, bounds);
     }
 
     /**
      * (Re-)Applies the translation (x,y) given in <code>bounds</code> and last rotation
      * configuration to the node controller by <code>controller</code>.
-     * 
+     *
      * @param controller
      *            the {@link PNodeController}
      * @param bounds
@@ -165,29 +165,33 @@ public final class NodeUtil {
 
     /**
      * Applies the translation to the given node.
-     * 
+     *
      * @param node
      *            the node
      * @param x
      *            the x-translation
      * @param y
      *            the y-translation
-     *            
+     *
      * @author mri, chsch
      */
     public static void applyTranslation(final PNode node, final double x, final double y) {
-        // apply the translation
-        node.setOffset(x, y);
+        final AffineTransform t = node.getTransformReference(true);
+
+        if (t.getTranslateX() != x || t.getTranslateY() != y) {
+            // apply the translation
+            node.setOffset(x, y);
+        }
     }
 
     /**
      * Applies the translation to the given node.
-     * 
+     *
      * @param node
      *            the node
      * @param translation
      *            the translation
-     *            
+     *
      * @author mri, chsch
      */
     public static void applyTranslation(final PNode node, final Point2D translation) {
@@ -197,7 +201,7 @@ public final class NodeUtil {
 
     /**
      * Determines the smart bounds of the given node.
-     * 
+     *
      * @param node
      *            the node
      * @return the smart bounds
@@ -217,7 +221,7 @@ public final class NodeUtil {
      * primary activity for any node at any given time.<br>
      * <br>
      * This method uses the activities delegate slot.
-     * 
+     *
      * @param node
      *            the node
      * @param activity
@@ -248,7 +252,7 @@ public final class NodeUtil {
 
     /**
      * Removes a formerly scheduled primary activity of the given from the schedule if any exists.
-     * 
+     *
      * @param node
      *            the node
      */
@@ -259,7 +263,7 @@ public final class NodeUtil {
             oldActivity.terminate();
         }
     }
-    
+
     /**
      * Recursively concatenates the {@link AffineTransform AffineTransforms} of all {@link PNode
      * PNodes} in the containment hierarchy between <code>ancestor</code> and <code>child</code>
@@ -267,7 +271,7 @@ public final class NodeUtil {
      * (<code>ancestor</code>'s transform is not considered).<br>
      * If <code>ancestor</code> is actually not an ancestor of <code>child</code>, this method
      * concatenates all transforms of <code>child</code>' ancestors and that of<code>child</code>.
-     * 
+     *
      * @param child
      *            the child {@link PNode}
      * @param ancestor
@@ -279,26 +283,26 @@ public final class NodeUtil {
         if (child == null || child == ancestor) {
             return new PAffineTransform();
         }
-        
+
         final PNode childsParent = child.getParent();
         final PAffineTransform transform;
 
         if (childsParent != null) {
             transform = localToParent(childsParent, ancestor);
         } else {
-            return child.getTransform(); 
+            return child.getTransform();
         }
 
         transform.concatenate(child.getTransformReference(true));
         return transform;
     }
-    
+
     /**
      * This method simply wraps {@link AffineTransform#createInverse()} in order to encapsulate its
      * required try-catch-block. <br>
      * The method can be used without any doubts if the provided <code>transform</code>
      * only consists of <i>translate</i> data. <b>Otherwise be careful!</b>
-     * 
+     *
      * @param transform
      *            the transform to invert
      * @return the inverted transform, or an <b>empty transform if <code>transform</code> is not
@@ -318,7 +322,7 @@ public final class NodeUtil {
      * <br>
      * It is used in {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController
      * DiagramController#isVisible(de.cau.cs.kieler.core.kgraph.KGraphElement)}, for example.
-     * 
+     *
      * @param node
      *            the {@link PNode} to compute the bounds for
      * @param clipNode
@@ -348,11 +352,11 @@ public final class NodeUtil {
         // node seems not to be (recursively) contained by clipNode, so ...
         return null;
     }
-    
+
     /**
      * Tests whether the given <code>node</code> is contained in the <code>camera</code>'s displayed
      * {@link INode}'s children sub tree.
-     * 
+     *
      * @param node
      *            the PNode to be tested
      * @param camera
@@ -368,14 +372,14 @@ public final class NodeUtil {
         final PLayer displayedLayer = camera.getDisplayedLayer();
 
         PNode parent = node;
-        
+
         while (parent != null) {
             if (parent == displayedLayer) {
                 return true;
             } else {
                 parent = parent.getParent();
             }
-        }        
+        }
         return false;
     }
 }
