@@ -14,17 +14,16 @@
 package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
-import edu.umd.cs.piccolo.util.PBounds;
-
 
 /**
  * @author csp
  */
 public interface IExportHook {
-    // SUPPRESS CHECKSTYLE NEXT 2 Javadoc
-    AffineTransform drawPreDiagram(KlighdSWTGraphicsEx graphics, PBounds bounds);
-    void drawPostDiagram(KlighdSWTGraphicsEx graphics, PBounds bounds);
 
+    AffineTransform drawPreDiagram(KlighdSWTGraphicsEx graphics, Rectangle2D bounds);
+
+    void drawPostDiagram(KlighdSWTGraphicsEx graphics, Rectangle2D bounds);
 }

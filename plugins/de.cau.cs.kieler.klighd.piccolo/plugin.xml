@@ -47,13 +47,13 @@
             supportedFormats="svg">
       </offscreenRenderer>
    </extension>
-   <extension
+   <!-- extension
          point="de.cau.cs.kieler.klighd.piccolo.exportHooks">
       <exportHook
             class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
             id="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
             supportedFormats="bmp, jpeg, png, svg, pdf">
       </exportHook>
-   </extension>
+   </extension -->
 
 </plugin>
