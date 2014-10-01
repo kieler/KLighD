@@ -21,7 +21,6 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -457,29 +456,6 @@ public class ViewContext extends MapPropertyHolder {
      */
     public ISynthesis getDiagramSynthesis() {
         return diagramSynthesis;
-    }
-
-    /**
-     * Returns the source workbench part viewer (experimental).
-     *
-     * @return the source workbench part viewer(viewer the source model has been chosen in)
-     */
-    public Viewer getSourceWorkbenchPartViewer() {
-        if (this.sourceWorkbenchPart == null) {
-            return null;
-        }
-        try {
-            final IWorkbenchPart part = this.sourceWorkbenchPart;
-            return (Viewer) part.getClass().getMethod("getViewer").invoke(part);
-        } catch (final Exception e) {
-            final String msg = "KLighD: Determination of a viewer widget (beyond the KLighD viewer) "
-                    + "showing the currently depicted model failed." + KlighdPlugin.LINE_SEPARATOR
-                    + "This error may occured while trying to focus a depicted model "
-                    + "element in a related editor.";
-            StatusManager.getManager().addLoggedStatus(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
-        }
-        return null;
     }
 
     /**
