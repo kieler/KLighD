@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -22,64 +22,64 @@ import org.eclipse.swt.widgets.Widget;
 
 /**
  * IDs and default values of preferences defined by KLighD and stored in the preference store.
- * 
+ *
  * @author cds
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
 public final class KlighdPreferences {
-    
+
     /** ID of the Animate Layout preference. */
     public static final String ANIMATE_LAYOUT =
             "de.cau.cs.kieler.klighd.preferences.animateLayout"; //$NON-NLS-1$
-    
+
     /** Default value of the Animate Layout preference. */
     public static final boolean ANIMATE_LAYOUT_DEFAULT = true;
-    
+
     /** ID of the Zoom-style preference. */
     public static final String ZOOM_STYLE =
             "de.cau.cs.kieler.klighd.preferences.zoomStyle"; //$NON-NLS-1$
-    
+
     /** Default zoom style value. */
     public static final String ZOOM_STYLE_DEFAULT = ZoomStyle.ZOOM_TO_FIT.name();
 
     /** ID of the 'zoom on workbench part change' preference. */
     public static final String ZOOM_ON_WORKBENCHPART_CHANGE =
             "de.cau.cs.kieler.klighd.preferences.zoomOnWorkBenchPartChange";
-    
+
     /** Default 'zoom on workbench part change' value. */
     public static final boolean ZOOM_ON_WORKBENCHPART_CHANGE_DEFAULT = false;
-    
+
     /** ID of the magnification lens enablement preference. */
     public static final String MAGNIFICATION_LENS_ENABLED =
             "de.cau.cs.kieler.klighd.preferences.magnificationLensEnabled";
-    
+
     /** Default magnification lens enablement value. */
     public static final boolean MAGNIFICATION_LENS_ENABLED_DEFAULT = true;
-    
+
     /** ID of the magnification lens width preference. */
     public static final String MAGNIFICATION_LENS_WIDTH =
             "de.cau.cs.kieler.klighd.preferences.magnificationLensWidth";
-    
+
     /** Default magnification lens width value. */
     public static final int MAGNIFICATION_LENS_WIDTH_DEFAULT = 400;
-    
+
     /** ID of the magnification lens height preference. */
     public static final String MAGNIFICATION_LENS_HEIGHT =
             "de.cau.cs.kieler.klighd.preferences.magnificationLensHeight";
-    
+
     /** Default magnification lens height value. */
     public static final int MAGNIFICATION_LENS_HEIGHT_DEFAULT = 400;
-    
+
     /** ID of the magnification lens scale preference, unit is percent. */
     public static final String MAGNIFICATION_LENS_SCALE =
             "de.cau.cs.kieler.klighd.preferences.magnificationLensScale";
-    
+
     /** Default magnification lens scale value in percent. */
     public static final int MAGNIFICATION_LENS_SCALE_DEFAULT = 200;
-    
+
     /**
      * ID of the advanced panning mode preference; advanced panning means diagram panning continues
      * if cursor leaves diagram area until in re-enters or button is released.
@@ -93,14 +93,14 @@ public final class KlighdPreferences {
     /** ID of the expand side bar preference. */
     public static final String EXPAND_SIDE_BAR =
             "de.cau.cs.kieler.klighd.preferences.expandSideBar";
-    
+
     /** Default expand side bar setting. */
     public static final boolean EXPAND_SIDE_BAR_DEFAULT = true;
-    
+
     /** ID of the show zoom buttons preference. */
     public static final String SHOW_ZOOM_CONFIG_BUTTONS =
             "de.cau.cs.kieler.klighd.preferences.showZoomConfigButtons";
-    
+
     /** Default zoom buttons visibility. */
     public static final boolean SHOW_ZOOM_CONFIG_BUTTONS_DEFAULT = true;
 
@@ -111,12 +111,20 @@ public final class KlighdPreferences {
      * This class cannot be instantiated.
      */
     private KlighdPreferences() {
-        
     }
-    
+
     /**
      * Getter.
-     * 
+     *
+     * @return the preferred {@link ZoomStyle}
+     */
+    public static ZoomStyle getPreferredZoomStyle() {
+        return ZoomStyle.valueOf(STORE.getString(ZOOM_STYLE));
+    }
+
+    /**
+     * Getter.
+     *
      * @return <code>true</code> if advanced panning is active, <code>false</code> otherwise.
      */
     public static boolean isAdvancedPanningMode() {
@@ -125,7 +133,7 @@ public final class KlighdPreferences {
 
     /**
      * Getter.
-     * 
+     *
      * @return <code>true</code> if expand side bar is active, <code>false</code> otherwise.
      */
     public static boolean isExpandSideBar() {
@@ -134,7 +142,7 @@ public final class KlighdPreferences {
 
     /**
      * Getter.
-     * 
+     *
      * @return <code>true</code> if zoom buttons should be shown in the side bar or on the diagram
      *         canvas respectively, <code>false</code> otherwise.
      */
@@ -144,7 +152,7 @@ public final class KlighdPreferences {
 
     /**
      * Getter.
-     * 
+     *
      * @return <code>true</code> if the magnification lens is enabled, <code>false</code> otherwise.
      */
     public static boolean isMagnificationLensEnabled() {
@@ -153,7 +161,7 @@ public final class KlighdPreferences {
 
     /**
      * Getter.
-     * 
+     *
      * @return <code>true</code> if the magnification lens is enabled, <code>false</code> otherwise.
      */
     public static boolean isZoomOnWorkbenchpartChange() {
@@ -162,7 +170,7 @@ public final class KlighdPreferences {
 
 
     /**
-     * 
+     *
      * @param widget
      *            an SWT {@link Widget} onto which a {@link DisposeListener} is installed to for
      *            properly removing the preference change listener once it is not required anymore,
@@ -173,13 +181,13 @@ public final class KlighdPreferences {
     public static void registerPrefChangeListener(final Widget widget,
             final IPropertyChangeListener listener) {
         KlighdPreferences.STORE.addPropertyChangeListener(listener);
-        
+
         if (widget == null) {
             return;
         }
-        
+
         widget.addDisposeListener(new DisposeListener() {
-            
+
             public void widgetDisposed(final DisposeEvent e) {
                 KlighdPreferences.STORE.removePropertyChangeListener(listener);
                 e.widget.removeDisposeListener(this);
