@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -54,7 +54,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * A view which is able to display models in lightweight diagrams.
- * 
+ *
  * @author mri
  * @author chsch
  * @author msp
@@ -131,7 +131,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     /**
      * Sets the {@link ViewContext} to be used by this view part.<br>
      * Note that this method may be called multiple times in life of a part instance.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} to be displayed
      */
@@ -145,6 +145,13 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         this.getViewer().getContextViewer().setModel(viewContext);
 
         registerPrintSupport();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ViewContext getViewContext() {
+        return viewer.getViewContext();
     }
 
     /**
@@ -190,7 +197,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     /**
      * (Re-)Evaluates the diagram (synthesis) and layout options registered in the employed
      * {@link ViewContext} and populates the diagram side bar accordingly. For internal use only!
-     * 
+     *
      * @param fitSpace
      *            if <code>true</code> a {@link de.cau.cs.kieler.klighd.ZoomStyle#ZOOM_TO_FIT
      *            ZoomStyle#ZOOM_TO_FIT} will applied to the diagram in order to fit into the
@@ -203,7 +210,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     /**
      * Returns true if this {@link ViewPart} is disposed. Since the {@link DiagramViewManager}
      * tracks created views it needs to test whether those views are still alive.
-     * 
+     *
      * @return whether {@link #dispose()} has been called on this {@link ViewPart}
      */
     public boolean isDisposed() {
@@ -212,7 +219,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
     /**
      * Fill the view menu with some contributions.
-     * 
+     *
      * @param menuManager
      *            the menu manager
      */
@@ -274,7 +281,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
             actions.setGlobalActionHandler(ActionFactory.PRINT.getId(), new PrintAction(getViewer()));
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -299,7 +306,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
     /**
      * Retrieve an action with the specified identifier.
-     * 
+     *
      * @param id
      *            an action identifier
      * @return the corresponding action
@@ -313,7 +320,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
     /**
      * Sets a new name for the view.
-     * 
+     *
      * @param name
      *            the name
      */
