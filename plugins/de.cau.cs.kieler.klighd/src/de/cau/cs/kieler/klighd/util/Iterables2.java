@@ -25,6 +25,9 @@ import com.google.common.collect.Lists;
  * {@link com.google.common.collect.Iterables Iterables}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public final class Iterables2 {
 

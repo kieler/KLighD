@@ -28,6 +28,7 @@ import de.cau.cs.kieler.core.util.Pair;
  * synthesis option instance.
  * 
  * @author chsch
+ * 
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */

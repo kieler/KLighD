@@ -30,6 +30,9 @@ import de.cau.cs.kieler.core.kgraph.KNode;
  * <br>
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public class DuplicatingDiagramSynthesis extends AbstractDiagramSynthesis<KNode> {
 

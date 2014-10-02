@@ -22,6 +22,9 @@ import com.google.common.base.Predicate;
  * {@link de.cau.cs.kieler.klighd.IAction IAction}'s offered in the UI's side bar.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public final class DisplayedActionData {
     
@@ -180,7 +183,7 @@ public final class DisplayedActionData {
         return new DisplayedActionData(actionId, displayedName, tooltipText, image, enablement);
     }
 
-
+    // we don't getters since the following fields are final so we can set them 'public' and state...
     // SUPPRESS CHECKSTYLE NEXT 6 Visibility|Javadoc
 
     public final String actionId;

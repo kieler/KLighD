@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -81,7 +81,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * An editor which is able to display models in lightweight diagrams.
- * 
+ *
  * @author msp
  * @author chsch
  * @author uru
@@ -100,7 +100,7 @@ public class DiagramEditorPart extends EditorPart implements
         /**
          * Sets the active editor for the contributor.
          * Updates the print action to reflect the the editor change.
-         * 
+         *
          * @param targetEditor
          *            the new active editor.
          */
@@ -146,7 +146,7 @@ public class DiagramEditorPart extends EditorPart implements
 
     /**
      * Creates a diagram editor part.
-     * 
+     *
      * @param installResourceChangeListener
      *            if <code>true</code> an {@link IResourceChangeListener} will be installed on the
      *            workspace, which is in charge updating the diagram if the related editor input is
@@ -270,7 +270,7 @@ public class DiagramEditorPart extends EditorPart implements
     /**
      * Tester that decides on the need for computing the diagram layout while opening the diagram.<br>
      * May be overridden by subclasses.
-     * 
+     *
      * @param viewContext
      *            provides context data that might be incorporated in the decision
      * @return true if the layout shall be (re-) computed while opening the diagram.
@@ -285,7 +285,7 @@ public class DiagramEditorPart extends EditorPart implements
     /**
      * Provides the initial {@link ZoomStyle}, which is {@link ZoomStyle#NONE NONE} by default.
      * May be overridden by sub classes.
-     * 
+     *
      * @return the {@link ZoomStyle} being applied during initial layout application.
      */
     protected ZoomStyle getInitialZoomStyle() {
@@ -372,12 +372,9 @@ public class DiagramEditorPart extends EditorPart implements
 
     /**
      * {@inheritDoc}
-     * 
-     * @deprecated Use {@link #getViewer()}.
      */
-    @Deprecated
-    public ContextViewer getContextViewer() {
-        return viewer;
+    public ViewContext getViewContext() {
+        return viewer.getViewContext();
     }
 
     private boolean toBeFocussed = false;
@@ -453,10 +450,10 @@ public class DiagramEditorPart extends EditorPart implements
 
     /**
      * Load a model from the editor input. The result is put into {@link #model}.
-     * 
+     *
      * @throws PartInitException
      *             if loading the model fails
-     * 
+     *
      * @return the loaded model for convenience
      */
     protected Object loadModel() throws PartInitException {
@@ -516,7 +513,7 @@ public class DiagramEditorPart extends EditorPart implements
 
     /**
      * Getter, provides access to the input model to subclasses.
-     * 
+     *
      * @return the model
      */
     protected Object getModel() {
@@ -525,7 +522,7 @@ public class DiagramEditorPart extends EditorPart implements
 
     /**
      * Setter, allows to change the input model in subclass implementations.
-     * 
+     *
      * @param model
      *            the model to set
      */
@@ -535,7 +532,7 @@ public class DiagramEditorPart extends EditorPart implements
 
     /**
      * Configures the given resource set. The default implementation does nothing.
-     * 
+     *
      * @param set
      *            the resource set to be configured.
      */
@@ -547,7 +544,7 @@ public class DiagramEditorPart extends EditorPart implements
      * Returns a configuration for the KLighD view. Override this method to use a custom
      * configuration. The default implementation configures KLighD to use the simple update
      * strategy.
-     * 
+     *
      * @return KLighD configuration.
      */
     protected IPropertyHolder configureKlighdProperties() {

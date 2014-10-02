@@ -31,6 +31,9 @@ import de.cau.cs.kieler.klighd.ViewContext;
  *
  * @author mri
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public class SimpleUpdateStrategy implements IUpdateStrategy {
 

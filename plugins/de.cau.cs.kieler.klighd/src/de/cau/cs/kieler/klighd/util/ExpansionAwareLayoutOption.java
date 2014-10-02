@@ -30,6 +30,9 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
  * collapsed/expanded state of the {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public final class ExpansionAwareLayoutOption {
     
@@ -132,6 +135,7 @@ public final class ExpansionAwareLayoutOption {
             //  in order to avoid the return of the property's default value!
             // That would prevent evaluation of further layout configs
             @SuppressWarnings("unchecked")
+            final
             T res = expanded ? (T) expandedValues.getAllProperties().get(property)
                             : (T) collapsedValues.getAllProperties().get(property);
             return res;
@@ -210,7 +214,7 @@ public final class ExpansionAwareLayoutOption {
         private String toString(final IPropertyHolder properties) {
             String result = new String();
             
-            for (Map.Entry<IProperty<?>, Object> p : properties.getAllProperties().entrySet()) {
+            for (final Map.Entry<IProperty<?>, Object> p : properties.getAllProperties().entrySet()) {
                 result += p.getKey().getId() + " = " + p.getValue().toString() + ",, ";
             }
 

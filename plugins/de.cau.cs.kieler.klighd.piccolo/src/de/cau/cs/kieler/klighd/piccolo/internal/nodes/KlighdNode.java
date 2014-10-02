@@ -241,6 +241,20 @@ public abstract class KlighdNode extends PNode {
                     && !kge.getData(KLayoutData.class).getProperty(KlighdProperties.NOT_SELECTABLE);
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void setScale(final double scale) {
+            final double curScale = getScale();
+
+            if (scale == curScale) {
+                return;
+            } else if (scale == 0) {
+                throw new RuntimeException("Can't set scale to 0");
+            }
+            scale(scale / curScale);
+        }
 
         /**
          * {@inheritDoc}<br>

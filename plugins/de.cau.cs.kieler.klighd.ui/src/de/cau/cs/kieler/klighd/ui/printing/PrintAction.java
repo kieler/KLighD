@@ -15,13 +15,11 @@ package de.cau.cs.kieler.klighd.ui.printing;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.ui.PlatformUI;
 
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
-import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog;
 
 /**
@@ -95,8 +93,7 @@ public final class PrintAction extends Action {
         if (viewer == null) {
             throw new IllegalArgumentException("PrintAction: Viewer not set!");
         }
-        final IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
-        final PrintOptions options = new PrintOptions(preferenceStore);
+        final PrintOptions options = new PrintOptions();
         final PrintExporter exporter = new PrintExporter(viewer);
         options.setExporter(exporter);
 

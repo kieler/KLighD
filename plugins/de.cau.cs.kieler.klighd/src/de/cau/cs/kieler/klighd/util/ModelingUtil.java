@@ -28,6 +28,9 @@ import com.google.common.collect.Iterators;
  * A collection of some modeling related convenience functions.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public final class ModelingUtil {
     
@@ -83,6 +86,7 @@ public final class ModelingUtil {
      */
     public static <T extends EObject> Iterable<T> selfAndEAllContentsOfSameType(final T value) {
         @SuppressWarnings("unchecked")
+        final
         Class<T> clazz = (Class<T>) value.getClass();
         return Iterables2.toIterable(
                 Iterators.concat(

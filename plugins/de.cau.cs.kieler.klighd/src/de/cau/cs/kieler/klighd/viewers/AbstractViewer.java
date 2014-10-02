@@ -44,6 +44,9 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
  * 
  * @author mri
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public abstract class AbstractViewer implements IViewer {
 

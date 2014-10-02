@@ -81,6 +81,9 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
  * @author mri
  * @author chsch
  * @author msp
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvider,
         IDiagramOutlinePage.Provider {

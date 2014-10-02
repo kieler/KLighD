@@ -20,6 +20,9 @@ import de.cau.cs.kieler.klighd.IAction;
  * {@link de.cau.cs.kieler.core.kgraph.KNode KNodes}.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class CollapseExpandAction implements IAction {
     

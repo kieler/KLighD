@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -21,7 +21,6 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -58,7 +57,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * A view context is a data record containing the required configuration information to translate a
  * model into a diagram and draw it on the screen, as well as provide user operations on it.<br>
  * <br>
- * 
+ *
  * ViewContexts contain information on
  * <ul>
  * <li>the business model (input model) that is to be shown,</li>
@@ -68,9 +67,12 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * <li>the resulting view model describing the diagram,</li>
  * <li>the {@link IViewerProvider} that wraps the instantiation of the viewer being used</li>
  * </ul>
- * 
+ *
  * @author mri
  * @author chsch
+ *
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class ViewContext extends MapPropertyHolder {
 
@@ -79,22 +81,22 @@ public class ViewContext extends MapPropertyHolder {
 
     /** the part the source model was selected from (if can reasonably be determined). */
     private transient IWorkbenchPart sourceWorkbenchPart = null;
-    
+
     /** the workbench part for which the viewer is created. */
     private IDiagramWorkbenchPart diagramWorkbenchPart;
-    
+
     /** the viewer provider. */
     private transient IViewerProvider viewerProvider = null;
 
     /** the update strategy. */
     private transient IUpdateStrategy updateStrategy = null;
-    
+
     /** the {@link ISynthesis} being applied. */
     private transient ISynthesis diagramSynthesis = null;
-    
+
     /** a fall-back instance of {@link DuplicatingDiagramSynthesis}, is instantiated if necessary. */
     private transient ISynthesis duplicator = null;
-    
+
     /** the business model to be represented by means of this context. */
     private Object businessModel = null;
 
@@ -103,23 +105,19 @@ public class ViewContext extends MapPropertyHolder {
     /** the view model is initiated while configuring the involved {@link IUpdateStrategy} and kept
      * for the whole life-cycle of the view context, in order to enable proper incremental update. */
     private KNode viewModel = createViewModel();
-    
+
     /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
     private IViewer viewer = null;
-    
+
     /** the {@link #viewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
     private ILayoutRecorder layoutRecorder = null;
-    
-    /**
-     * the view-specific zoom style, initially it is either the value stored in the preference store
-     * or {@link ZoomStyle#NONE} if no value was stored so far.
-     */
-    private ZoomStyle zoomStyle = ZoomStyle.valueOf(KlighdPlugin.getDefault().getPreferenceStore()
-            .getString(KlighdPreferences.ZOOM_STYLE), ZoomStyle.NONE);
+
+    /** the view-specific zoom style, initialized with the value defined in the preference store. */
+    private ZoomStyle zoomStyle = KlighdPreferences.getPreferredZoomStyle();
 
     /**
      * Standard constructor.
-     * 
+     *
      * @param diagramPart
      *            the {@link IDiagramWorkbenchPart} the diagram is shown in
      * @param inputModel
@@ -135,7 +133,7 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Partially copying constructor.
-     * 
+     *
      * @param otherContext
      *            the {@link ViewContext} to take {@link SynthesisOption} settings from, may be
      *            <code>null</code>
@@ -156,19 +154,19 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Helper method called while creating a new instance of this class.
-     * 
+     *
      * @return a new empty view model root node
      */
     private KNode createViewModel() {
         return KimlUtil.createInitializedNode();
     }
-    
+
     /**
      * This method performs the initial configuration of <code>this</code> view context.<br>
      * In case some custom configurations are to be applied {@link #configure(IPropertyHolder)}
      * might be called alternatively. (Currently) only one of these methods shall be called in life
      * of a {@link ViewContext} instance, and only once at that.<br>
-     * 
+     *
      * @return <code>this</code> {@link ViewContext} instance for convenience
      */
     public ViewContext configure() {
@@ -180,25 +178,25 @@ public class ViewContext extends MapPropertyHolder {
      * incorporates the properties given in <code>propertyHolder</code> during that.<br>
      * (Currently) only one of this method and {@link #configure()} shall be called in life of a
      * {@link ViewContext} instance, and only once at that.<br>
-     * 
+     *
      * @param propertyHolder
      *            an {@link IPropertyHolder} that contributes custom configuration instructions
      * @return <code>this</code> {@link ViewContext} instance for convenience
      */
     public ViewContext configure(final IPropertyHolder propertyHolder) {
         final KlighdDataManager data = KlighdDataManager.getInstance();
-        
+
         // get the transformations request
         final String synthesisId =
                 propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_DIAGRAM_SYNTHESIS);
         diagramSynthesis = data.getDiagramSynthesisById(synthesisId);
-        
+
         if (diagramSynthesis == null) {
             diagramSynthesis = Iterables.getFirst(Iterables.filter(
                             data.getAvailableSyntheses(this.businessModel.getClass()),
                             synthesisFilter), null);
         }
-        
+
         if (this.diagramSynthesis != null) {
             this.synthesisOptions.addAll(this.diagramSynthesis.getDisplayedSynthesisOptions());
             for (final SynthesisOption option: this.synthesisOptions) {
@@ -214,30 +212,30 @@ public class ViewContext extends MapPropertyHolder {
                 }
             }
         }
-        
+
         final String updateStrategyId =
                 propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
         updateStrategy = data.getUpdateStrategyById(updateStrategyId);
-        
+
         if (updateStrategy == null) {
             updateStrategy = data.getHighestPriorityUpdateStrategy();
             // updateStrategy is supposed to be non-null since this plug-in registers the
             //  SimpleUpdateStrategy
         }
-        
+
         // get the viewer provider request
         final String viewerProviderId =
                 propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_VIEWER_PROVIDER);
         viewerProvider = data.getViewerProviderById(viewerProviderId);
-        
+
         if (viewerProvider == null) {
             viewerProvider = Iterables.getFirst(data.getAvailableViewerProviders(), null);
         }
-        
+
         // copy the properties from propertyHolder into 'this', e.g. in order to provide them to
         //  to the diagram synthesis
         this.copyProperties(propertyHolder);
-        
+
         return this;
     }
 
@@ -259,7 +257,7 @@ public class ViewContext extends MapPropertyHolder {
      * Creates the wrapped {@link IViewer} instance that is actually in charge of drawing the diagram
      * into the provided SWT {@link Composite} widget <code>parent</code>. Returns <code>null</code>
      * if no fitting {@link IViewerProvider} has been found during configuration.
-     * 
+     *
      * @param parentViewer
      *            the parent {@link ContextViewer}
      * @param parent
@@ -270,14 +268,14 @@ public class ViewContext extends MapPropertyHolder {
         if (this.viewerProvider != null) {
             // create the new viewer
             this.viewer = this.viewerProvider.createViewer(parentViewer, parent);
-            
+
             if (this.viewer instanceof ILayoutRecorder) {
                 this.layoutRecorder = (ILayoutRecorder) viewer;
             }
 
             // set the base model if possible
             this.viewer.setModel(this.viewModel, true);
-            
+
             return this.viewer;
         } else {
             return null;
@@ -290,7 +288,7 @@ public class ViewContext extends MapPropertyHolder {
      * the view model by applying the configured {@link IUpdateStrategy}. In case the former
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
-     * 
+     *
      * @param sourceModel
      *            the initial, updated, or replaced input model, may be <code>null</code>
      */
@@ -303,7 +301,7 @@ public class ViewContext extends MapPropertyHolder {
      * the view model by applying the configured {@link IUpdateStrategy}. In case the former
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
-     * 
+     *
      * @param sourceModel
      *            the initial, updated, or replaced input model, may be <code>null</code>
      * @param properties
@@ -316,11 +314,11 @@ public class ViewContext extends MapPropertyHolder {
             final String usId =
                     properties.getProperty(KlighdSynthesisProperties.REQUESTED_UPDATE_STRATEGY);
             strategy = KlighdDataManager.getInstance().getUpdateStrategyById(usId);
-            
+
         } else {
             strategy = null;
         }
-        
+
         this.update(sourceModel, strategy);
     }
 
@@ -329,7 +327,7 @@ public class ViewContext extends MapPropertyHolder {
      * the view model by applying the configured {@link IUpdateStrategy}. In case the former
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
-     * 
+     *
      * @param model
      *            the initial, updated, or replaced input model, may be <code>null</code>
      * @param theUpdateStrategy
@@ -344,7 +342,7 @@ public class ViewContext extends MapPropertyHolder {
      * the view model by applying the configured {@link IUpdateStrategy}. In case the former
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
-     * 
+     *
      * @param model
      *            the initial, updated, or replaced input model, may be <code>null</code>
      * @param theUpdateStrategy
@@ -417,14 +415,14 @@ public class ViewContext extends MapPropertyHolder {
         chosenUpdateStrategy.update(this.viewModel, newViewModel, this);
 
         final KNode clipNode = this.getProperty(KlighdProperties.CLIP);
-        if (clipNode != null && this.getViewer() != null) {            
+        if (clipNode != null && this.getViewer() != null) {
             this.getViewer().clip(clipNode);
         }
     }
 
     /**
      * Returns the diagram workbench part.
-     * 
+     *
      * @return the {@link IDiagramWorkbenchPart}
      */
     public IDiagramWorkbenchPart getDiagramWorkbenchPart() {
@@ -434,7 +432,7 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Sets the source workbench part (part the source model has been chosen in).
-     * 
+     *
      * @param theSourceWorkbenchPart
      *            the source workbench part (part the source model has been chosen in)
      */
@@ -444,7 +442,7 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Returns the source workbench part.
-     * 
+     *
      * @return the source workbench part (part the source model has been chosen in)
      */
     public IWorkbenchPart getSourceWorkbenchPart() {
@@ -453,38 +451,16 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Returns the synthesis being applied.
+     *
      * @return the synthesis being applied
      */
     public ISynthesis getDiagramSynthesis() {
         return diagramSynthesis;
     }
-    
-    /**
-     * Returns the source workbench part viewer (experimental).
-     * 
-     * @return the source workbench part viewer(viewer the source model has been chosen in)
-     */
-    public Viewer getSourceWorkbenchPartViewer() {
-        if (this.sourceWorkbenchPart == null) {
-            return null;
-        }
-        try {
-            final IWorkbenchPart part = this.sourceWorkbenchPart;
-            return (Viewer) part.getClass().getMethod("getViewer").invoke(part);
-        } catch (final Exception e) {
-            StatusManager.getManager().addLoggedStatus(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID,
-                            "KLighD: Determination of a viewer widget (beyond the KLighD viewer) "
-                                    + "showing the currently depicted model failed.\n"
-                                    + "This error might occured while trying to focus a depicted model "
-                                    + "element in a related editor."));
-        }
-        return null;               
-    }
-    
+
     /**
      * Returns the current model to be represented.
-     * 
+     *
      * @return the current model to be represented.
      */
     public Object getInputModel() {
@@ -498,7 +474,7 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Returns the update strategy used in this view context.
-     * 
+     *
      * @return the update strategy
      */
     public IUpdateStrategy getUpdateStrategy() {
@@ -508,20 +484,20 @@ public class ViewContext extends MapPropertyHolder {
     /**
      * Returns the view model root, which is kept for the whole life-cycle of the view context, in
      * order to enable proper incremental update.
-     * 
+     *
      * @return the view model
      */
     public KNode getViewModel() {
         return viewModel;
     }
-    
+
     /**
      *  @return the {@link IViewer} being in charge of showing this {@link ViewContext}.
      */
     public IViewer getViewer() {
         return viewer;
     }
-    
+
     /**
      * @return the {@link ILayoutRecorder} being in charge of recording the layout for proper animation
      */
@@ -535,24 +511,24 @@ public class ViewContext extends MapPropertyHolder {
     public ZoomStyle getZoomStyle() {
         return zoomStyle;
     }
-    
+
     /**
      * @return whether the zoom style is zoom to fit.
      */
     public boolean isZoomToFit() {
         return zoomStyle == ZoomStyle.ZOOM_TO_FIT;
     }
-    
+
     /**
      * Keep in mind that zoom to focus has a higher priority, thus
      * this can only return false if {@link #isZoomToFit()} returns false.
-     * 
+     *
      * @return whether the zoom style is zoom to focus.
      */
     public boolean isZoomToFocus() {
         return !isZoomToFit() && zoomStyle == ZoomStyle.ZOOM_TO_FOCUS;
     }
-    
+
     /**
      * @param zoomStyle the zoomStyle to set
      */
@@ -567,7 +543,7 @@ public class ViewContext extends MapPropertyHolder {
     /**
      * Associates the given <code>source</code> element, which should be part of the input model,
      * and the given <code>target</code> element, which is assumed to be part of the view model.
-     * 
+     *
      * @param source
      *            a member of the input model, may be <code>null</code>
      * @param target
@@ -579,7 +555,7 @@ public class ViewContext extends MapPropertyHolder {
         }
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(target)) {
             ((KGraphData) target).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
-            
+
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(target)) {
             ((KGraphElement) target).getData(KLayoutData.class).setProperty(
                     KlighdInternalProperties.MODEL_ELEMEMT, source);
@@ -591,7 +567,7 @@ public class ViewContext extends MapPropertyHolder {
      * in the diagram.<br>
      * <b>Note:</b> This method does not check whether <code>viewElement</code> is currently contained
      * in the view model (accessible via {@link #getViewModel()}).
-     * 
+     *
      * @param viewElement
      *            the diagram element whose source element in the input (source, semantic, or
      *            business) model is requested
@@ -602,7 +578,7 @@ public class ViewContext extends MapPropertyHolder {
         if (viewElement == null) {
             return null;
         }
-        
+
         return tracer.getSourceElement(viewElement);
     }
 
@@ -612,18 +588,18 @@ public class ViewContext extends MapPropertyHolder {
      * diagram.<br>
      * <b>Note:</b> This method does not check whether <code>element</code> is currently contained
      * in the input model being represented (accessible via {@link #getInputModel()}).
-     * 
+     *
      * @param element
      *            the object in the input (source, semantic, or business) model
      * @return a {@link Collection} of diagram elements representing the given <code>element</code>
      *         or <code>{@link Collections#emptyList()}</code> if no corresponding view model
      *         elements could be identified
      */
-    public Collection<EObject> getTargetElements(final Object element) {        
+    public Collection<EObject> getTargetElements(final Object element) {
         if (element == null) {
             return Collections.emptyList();
         }
-        
+
         return tracer.getTargetElements(element);
     }
 
@@ -637,7 +613,7 @@ public class ViewContext extends MapPropertyHolder {
      * there isn't any corresponding element (of type <code>ofType</code>).<br>
      * <b>Note:</b> This method does not check whether <code>element</code> is currently contained
      * in the input model being represented (accessible via {@link #getInputModel()}).
-     * 
+     *
      * @param <T>
      *            the type of denoted by <code>type</code>
      * @param element
@@ -651,16 +627,16 @@ public class ViewContext extends MapPropertyHolder {
         if (element == null) {
             return null;
         }
-        
+
         final Collection<EObject> targetCollection = getTargetElements(element);
-        
+
         if (targetCollection == null || targetCollection.isEmpty()) {
             return null;
         } else {
             if (ofType == null) {
                 @SuppressWarnings("unchecked")
                 final T res = (T) Iterables.getFirst(targetCollection, null);
-                return res; 
+                return res;
             } else {
                 return Iterables.getFirst(Iterables.filter(targetCollection, ofType), null);
             }
@@ -669,45 +645,45 @@ public class ViewContext extends MapPropertyHolder {
 
 
     // ---------------------------------------------------------------------------------- //
-    //  Synthesis option handling    
+    //  Synthesis option handling
 
     private List<SynthesisOption> synthesisOptions = Lists.newLinkedList();
-    
+
     /** Memory of the configured transformation options to be evaluated by the transformation. */
     private Map<SynthesisOption, Object> synthesisOptionConfig = Maps.newHashMap();
-        
-    
+
+
     /**
      * Returns the set of {@link SynthesisOption TransformationOptions} declared by the
      * transformation and forward to the users in the UI in order to allow them to influence the
      * transformation result.
-     * 
+     *
      * @return the set of {@link SynthesisOption TransformationOptions}
-     * 
+     *
      * @author chsch
      */
     public List<SynthesisOption> getDisplayedSynthesisOptions() {
         return this.synthesisOptions;
     }
-    
+
     /**
      * Getter.
-     * 
+     *
      * @param option the option to evaluate the configuration state / the configured value.
      * @return the configured value of {@link SynthesisOption} option.
      */
     public Object getOptionValue(final SynthesisOption option) {
-        
+
         if (option == null) {
             throw new IllegalArgumentException("KLighD transformation option handling: "
                     + "The transformation " + this.diagramSynthesis
                     + " attempted to evaluate the transformation option \"null\".");
-        }        
+        }
         return this.synthesisOptionConfig.get(option);
     }
 
     /**
-     * 
+     *
      * @param option
      *            the {@link SynthesisOption} to set
      * @param value
@@ -736,15 +712,15 @@ public class ViewContext extends MapPropertyHolder {
         } else {
             synthesisOptionConfig.put(option, value);
         }
-    }   
+    }
 
     // ---------------------------------------------------------------------------------- //
-    //  Offered action handling    
+    //  Offered action handling
 
     /**
      * Passes the recommended layout options and related values provided by the employed diagram
      * synthesis.
-     * 
+     *
      * @return a map of options (map keys) and related values (map values)
      */
     public List<DisplayedActionData> getDisplayedActions() {
@@ -756,12 +732,12 @@ public class ViewContext extends MapPropertyHolder {
     }
 
     // ---------------------------------------------------------------------------------- //
-    //  Recommended layout option handling    
-    
+    //  Recommended layout option handling
+
     /**
      * Passes the recommended layout options and related values provided by the employed diagram
      * synthesis.
-     * 
+     *
      * @return a map of options (map keys) and related values (map values)
      */
     public List<Pair<IProperty<?>, List<?>>> getDisplayedLayoutOptions() {
@@ -773,12 +749,12 @@ public class ViewContext extends MapPropertyHolder {
     }
 
     // ---------------------------------------------------------------------------------- //
-    //  Additional layout configuration handling    
-    
+    //  Additional layout configuration handling
+
     /**
      * Passes the registered additional layout configurations provided by the employed diagram
      * synthesis.
-     * 
+     *
      * @return a map of options (map keys) and related values (map values)
      */
     public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {

@@ -49,6 +49,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
  * KRendering} objects only.
  * 
  * @author chsch
+ * 
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
@@ -71,6 +72,7 @@ public class LimitedKGraphContentAdapter extends EContentAdapter {
      * This specialization handles the initialization case, i.e. the recursive attachment while
      * adding it to a {@link KGraphElement}.
      */
+    @Override
     protected void setTarget(final EObject target) {
         if (this.target != null) {
             return;
@@ -79,14 +81,14 @@ public class LimitedKGraphContentAdapter extends EContentAdapter {
             basicSetTarget(target);
             
             // check if a shape layout is exists
-            KGraphData layoutData = ((KGraphElement) target).getData(this.layoutDataClass);
+            final KGraphData layoutData = ((KGraphElement) target).getData(this.layoutDataClass);
 
             if (layoutData != null) {
                 // add the adapter to all contents of the shape layout
-                Iterator<? extends Notifier> i = resolve() ? layoutData.eContents().iterator()
+                final Iterator<? extends Notifier> i = resolve() ? layoutData.eContents().iterator()
                         : ((InternalEList<? extends Notifier>) layoutData.eContents())
                                 .basicIterator();
-                Iterator<? extends Notifier> allElements = Iterators.concat(
+                final Iterator<? extends Notifier> allElements = Iterators.concat(
                         Iterators.singletonIterator(layoutData), i);
                 while (allElements.hasNext()) {
                     addAdapter(allElements.next());
@@ -107,6 +109,7 @@ public class LimitedKGraphContentAdapter extends EContentAdapter {
      * elements have been (deeply) added or removed to the root target after the adapter has been
      * added.
      */
+    @Override
     protected void handleContainment(final Notification n) {
         if (getTarget().equals(n.getNotifier())) {
             switch (n.getEventType()) {
@@ -119,6 +122,7 @@ public class LimitedKGraphContentAdapter extends EContentAdapter {
                 
             case Notification.ADD_MANY:                
                 @SuppressWarnings("unchecked")
+                final
                 List<KGraphData> filtered =
                         Lists.newArrayList(Iterables.filter((Iterable<Notifier>) n.getNewValue(),
                                 this.layoutDataClass));

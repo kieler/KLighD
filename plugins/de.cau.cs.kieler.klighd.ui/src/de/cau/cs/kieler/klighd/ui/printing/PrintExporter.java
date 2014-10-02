@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -28,17 +28,18 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * Diagram printing exporter providing methods for creating previews and the final printout.
- * 
+ *
  * @author csp
  * @author chsch
  */
+
 public class PrintExporter extends AbstractDiagramExporter {
 
     private final PiccoloViewer viewer;
 
     /**
      * Create new exporter using the given viewer.
-     * 
+     *
      * @param viewer
      *            the viewer to print
      */
@@ -48,7 +49,7 @@ public class PrintExporter extends AbstractDiagramExporter {
 
     /**
      * Get the diagram bounds.
-     * 
+     *
      * @return the diagram bounds
      */
     public PBounds getDiagramBounds() {
@@ -65,7 +66,7 @@ public class PrintExporter extends AbstractDiagramExporter {
 
     /**
      * Export preview. Can export the diagram in tiles to print on multiple pages.
-     * 
+     *
      * @param column
      *            the column of the tile to export
      * @param row
@@ -88,7 +89,7 @@ public class PrintExporter extends AbstractDiagramExporter {
 
     /**
      * Export print. Can export the diagram in tiles to print on multiple pages.
-     * 
+     *
      * @param column
      *            the column of the tile to export
      * @param row
@@ -112,10 +113,9 @@ public class PrintExporter extends AbstractDiagramExporter {
 
         final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, device);
 
-        drawDiagram(viewer.getControl().getCamera(), false, graphics, new PBounds(bounds.x + column
-                * (bounds.width), bounds.y + row * (bounds.height), bounds.width, bounds.height),
-                scale, false);
-
+        drawDiagram(viewer.getControl().getCamera(), false, graphics, new PBounds(column
+                * bounds.width, row * bounds.height,
+                bounds.width, bounds.height), scale, false);
         graphics.dispose();
     }
 
@@ -123,7 +123,7 @@ public class PrintExporter extends AbstractDiagramExporter {
      * Gets the printer bounds.
      * x and y denote the top left point of the printable area.
      * width and height are width and height of the printable area.
-     * 
+     *
      * @param printer
      *            the printer
      * @return the printer bounds

@@ -32,6 +32,9 @@ import org.eclipse.swt.widgets.Control;
  * @author chsch
  * @author csp
  * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
+ * 
  * @see IDiagramExporter#export(ExportData, Control)
  */
 public interface IDiagramExporter {

@@ -69,6 +69,9 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis;
  * 
  * @author chsch
  * @author uru
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 

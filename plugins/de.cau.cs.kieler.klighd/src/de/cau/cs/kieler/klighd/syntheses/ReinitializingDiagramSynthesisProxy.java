@@ -62,6 +62,9 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis;
  *            type of the input models
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
 

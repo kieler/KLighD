@@ -30,6 +30,9 @@ import com.google.common.collect.Maps;
  * added to both maps, only the last insertion is retained.
  * 
  * @author uru
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class KlighdSemanticDiagramData {
 
@@ -43,7 +46,7 @@ public class KlighdSemanticDiagramData {
      * @return a {@link KlighdSemanticDiagramData} instance with the passed key value pairs.
      */
     public static KlighdSemanticDiagramData of(final String... keyValues) {
-        KlighdSemanticDiagramData data = new KlighdSemanticDiagramData();
+        final KlighdSemanticDiagramData data = new KlighdSemanticDiagramData();
         for (int i = 0; i < keyValues.length - 1; i += 2) {
             data.put(keyValues[i], keyValues[i + 1]);
         }
@@ -110,7 +113,7 @@ public class KlighdSemanticDiagramData {
                  * {@inheritDoc}
                  */
                 public Entry<String, String> next() {
-                    Entry<String, Function<Void, String>> e = it.next();
+                    final Entry<String, Function<Void, String>> e = it.next();
                     return Maps.immutableEntry(e.getKey(), e.getValue().apply(null));
                 }
 

@@ -38,7 +38,11 @@ import de.cau.cs.kieler.core.util.Pair;
 /**
  * A utility class for evaluating the grid micro layout of KRenderings.
  * 
- * @author chsch, akoc
+ * @author chsch
+ * @author akoc
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public final class GridPlacementUtil {
 
@@ -84,7 +88,7 @@ public final class GridPlacementUtil {
     public static Bounds[] evaluateGridPlacement(final KGridPlacement gridPlacement,
             final List<KRendering> children, final Bounds parentBounds) {
         if (parentBounds.isEmpty()) {
-            Bounds[] result = new Bounds[children.size()];
+            final Bounds[] result = new Bounds[children.size()];
             Arrays.fill(result, Bounds.of(0, 0));
             return result;
         }
@@ -96,7 +100,7 @@ public final class GridPlacementUtil {
     /**
      * A helper class to calculate bounds for the elements placed in a grid.
      */
-    public static class GridPlacer {
+    private static class GridPlacer {
 
         private KRendering parent;
         
@@ -144,7 +148,7 @@ public final class GridPlacementUtil {
         
         /**
          * Constructor.
-             *  
+         *  
          * @param gridPlacement
          *            the grid data
          * @param children
@@ -162,7 +166,7 @@ public final class GridPlacementUtil {
             // the following prepares the placer
         
             // determine the required number of columns and rows
-            int setColumns = gridPlacement.getNumColumns();
+            final int setColumns = gridPlacement.getNumColumns();
             this.topLeft = gridPlacement.getTopLeft();
             this.bottomRight = gridPlacement.getBottomRight();
             this.numColumns = setColumns == -1 ? children.size() : setColumns < 1 ? 1 : gridPlacement
@@ -268,11 +272,11 @@ public final class GridPlacementUtil {
                 return bounds;
             }
 
-            GridSizeAssignment estimatedGrid = parent.getProperty(ESTIMATED_GRID_DATA);
-            Pair<Integer, Integer> childAreaPosition = parent.getProperty(CHILD_AREA_POSITION);
+            final GridSizeAssignment estimatedGrid = parent.getProperty(ESTIMATED_GRID_DATA);
+            final Pair<Integer, Integer> childAreaPosition = parent.getProperty(CHILD_AREA_POSITION);
             
             int width = 0, height = 0;
-            float widthScale = 1, heightScale = 1;
+            final float widthScale = 1, heightScale = 1;
             
             
             if (estimatedGrid != null) {
@@ -343,8 +347,8 @@ public final class GridPlacementUtil {
             
             for (int i = 0; i < children.size(); i++) {
                 final KGridPlacementData gpd = asGridPlacementData(getPlacementData(children.get(i)));
-                int column = i % numColumns;
-                int row = i / numColumns;
+                final int column = i % numColumns;
+                final int row = i / numColumns;
 
                 final Bounds cellBounds = Bounds.of(calculatedColumnWidth[column],
                         calculatedRowHeight[row]);
@@ -526,10 +530,10 @@ public final class GridPlacementUtil {
         // the minimum total bound is the sum of the single column widths and row heights
         final Bounds childBounds = new Bounds(0, 0);
 
-        for (float width : minColumnWidths) {
+        for (final float width : minColumnWidths) {
             childBounds.width += width;
         }
-        for (float height : minRowHeights) {
+        for (final float height : minRowHeights) {
             childBounds.height += height;
         }
 
@@ -552,7 +556,7 @@ public final class GridPlacementUtil {
      * @author akoc
      * @author chsch
      */
-    public static class GridSizeAssignment {
+    private static class GridSizeAssignment {
         private float[] calculatedColumnWidths;
         private float[] calculatedRowHeights;
     

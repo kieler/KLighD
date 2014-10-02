@@ -39,6 +39,9 @@ import de.cau.cs.kieler.klighd.ViewContext;
  * order to benefit from the convenience features of that class!
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public interface ISynthesis {
 

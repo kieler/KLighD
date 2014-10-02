@@ -35,9 +35,11 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.core.krendering.KStyle;
 
 /**
+ * @deprecated don't rely on this class anymore, apply {@link KStyle KStyles} directly.
+ * 
  * A helper class allowing to highlight diagram elements.<br>
- * This class is a fork of the KlighdHighlightEffect without the dependency to
- * KIVi's AbstractEffect.
+ * This class is a fork of the KlighdHighlightEffect without the dependency to KIVi's
+ * AbstractEffect.
  * 
  * @author chsch
  */
@@ -251,10 +253,10 @@ public class KlighdHighlightingHelper {
      * Performs the contribution of <code>this</code> highlighting helper instance.
      */
     public void execute() {
-        for (KRendering rendering : getKRenderingsToBeHightlighted()) {
+        for (final KRendering rendering : getKRenderingsToBeHightlighted()) {
             // set foreground color of target element
             if (foregroundColor != null) {
-                KStyle fg = this.getKForeground(foregroundColor);
+                final KStyle fg = this.getKForeground(foregroundColor);
                 rendering.getStyles().add(fg);
                 this.styles.add(fg);
             }
@@ -267,32 +269,32 @@ public class KlighdHighlightingHelper {
     
             // set background color of target element
             if (backgroundColor != null) {
-                KStyle bg = this.getKBackground(backgroundColor);
+                final KStyle bg = this.getKBackground(backgroundColor);
                 rendering.getStyles().add(bg);
                 this.styles.add(bg);
             }
     
             // set line width of target element
             if (lineWidth != 0) {
-                KStyle lw = this.getLineWidth(lineWidth);
+                final KStyle lw = this.getLineWidth(lineWidth);
                 rendering.getStyles().add(lw);
                 this.styles.add(lw);
             }
     
             // highlight labels
             if (targetNode instanceof KLabeledGraphElement) {
-                for (KLabel l : ((KLabeledGraphElement) targetNode).getLabels()) {
-                    KRendering labelRendering = l.getData(KRendering.class);
+                for (final KLabel l : ((KLabeledGraphElement) targetNode).getLabels()) {
+                    final KRendering labelRendering = l.getData(KRendering.class);
                     // set foreground color of target elements label
                     if (labelForegroundColor != null) {
-                        KStyle lfg = this.getKForeground(labelForegroundColor);
+                        final KStyle lfg = this.getKForeground(labelForegroundColor);
                         labelRendering.getStyles().add(lfg);
                         this.styles.add(lfg);
                     }
     
                     // set background color of target elements label
                     if (labelBackgroundColor != null) {
-                        KStyle lbg = this.getKBackground(labelBackgroundColor);
+                        final KStyle lbg = this.getKBackground(labelBackgroundColor);
                         labelRendering.getStyles().add(lbg);
                         this.styles.add(lbg);
                     }
@@ -301,21 +303,21 @@ public class KlighdHighlightingHelper {
     
             // highlight ports
             if (targetNode instanceof KEdge) {
-                KPort sourcePort = ((KEdge) targetNode).getSourcePort();
-                KPort targetPort = ((KEdge) targetNode).getTargetPort();
+                final KPort sourcePort = ((KEdge) targetNode).getSourcePort();
+                final KPort targetPort = ((KEdge) targetNode).getTargetPort();
                 // set foreground color of target elements ports
                 if (portForegroundColor != null) {
                     // highlight source port
                     if (sourcePort != null) {
-                        KRendering portRendering = sourcePort.getData(KRendering.class);
-                        KStyle pfg = this.getKForeground(portForegroundColor);
+                        final KRendering portRendering = sourcePort.getData(KRendering.class);
+                        final KStyle pfg = this.getKForeground(portForegroundColor);
                         portRendering.getStyles().add(pfg);
                         this.styles.add(pfg);
                     }
                     // highlight target port
                     if (targetPort != null) {
-                        KRendering portRendering = targetPort.getData(KRendering.class);
-                        KStyle pfg = this.getKForeground(portForegroundColor);
+                        final KRendering portRendering = targetPort.getData(KRendering.class);
+                        final KStyle pfg = this.getKForeground(portForegroundColor);
                         portRendering.getStyles().add(pfg);
                         this.styles.add(pfg);
                     }
@@ -325,15 +327,15 @@ public class KlighdHighlightingHelper {
                 if (portBackgroundColor != null) {
                     // highlight source port
                     if (sourcePort != null) {
-                        KRendering portRendering = sourcePort.getData(KRendering.class);
-                        KStyle pfg = this.getKBackground(portBackgroundColor);
+                        final KRendering portRendering = sourcePort.getData(KRendering.class);
+                        final KStyle pfg = this.getKBackground(portBackgroundColor);
                         portRendering.getStyles().add(pfg);
                         this.styles.add(pfg);
                     }
                     // highlight target port
                     if (targetPort != null) {
-                        KRendering portRendering = targetPort.getData(KRendering.class);
-                        KStyle pfg = this.getKBackground(portBackgroundColor);
+                        final KRendering portRendering = targetPort.getData(KRendering.class);
+                        final KStyle pfg = this.getKBackground(portBackgroundColor);
                         portRendering.getStyles().add(pfg);
                         this.styles.add(pfg);
                     }
@@ -347,8 +349,8 @@ public class KlighdHighlightingHelper {
      * Reverts the highlighting contributed by <code>this</code> helper instance.
      */
     public void undo() {
-        for (KStyle s : this.styles) {
-            KRendering rendering = (KRendering) s.eContainer();
+        for (final KStyle s : this.styles) {
+            final KRendering rendering = (KRendering) s.eContainer();
             rendering.getStyles().remove(s);
         }
         this.styles.clear();
@@ -360,7 +362,7 @@ public class KlighdHighlightingHelper {
      * @return a new KLineWidth with the given width
      */
     private KLineWidth getLineWidth(final float width) {
-        KLineWidth lw = factory.createKLineWidth();
+        final KLineWidth lw = factory.createKLineWidth();
         lw.setLineWidth(width);
         return lw;
     }
@@ -371,7 +373,7 @@ public class KlighdHighlightingHelper {
      * @return KForeground with the given color
      */
     private KForeground getKForeground(final Color color) {
-        KForeground fg = factory.createKForeground();
+        final KForeground fg = factory.createKForeground();
         fg.setColor(this.kcolorFromSwtcolor(color));
         return fg;
     }
@@ -382,7 +384,7 @@ public class KlighdHighlightingHelper {
      * @return KBackground with the given color
      */
     private KBackground getKBackground(final Color color) {
-        KBackground bg = factory.createKBackground();
+        final KBackground bg = factory.createKBackground();
         bg.setColor(this.kcolorFromSwtcolor(color));
         return bg;
     }
@@ -393,7 +395,7 @@ public class KlighdHighlightingHelper {
      * @return KColor with the same rgb values as given swt color
      */
     private KColor kcolorFromSwtcolor(final Color color) {
-        KColor c = factory.createKColor();
+        final KColor c = factory.createKColor();
         c.setBlue(color.getBlue());
         c.setGreen(color.getGreen());
         c.setRed(color.getRed());

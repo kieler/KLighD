@@ -16,11 +16,14 @@ package de.cau.cs.kieler.klighd;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 
 /**
- * Enum containing possible zoom styles. A possible zoom style might be 'zoomToFit' where the
- * viewport is adapted, translated and scaled, such that the whole diagram is visible.
+ * Enumeration providing possible zoom styles. A possible zoom style is, e.g., 'zoomToFit' that causes
+ * an update of the viewport by translating and scaling such that the whole diagram is visible.
  * 
  * @author uru
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public enum ZoomStyle {
 
@@ -105,7 +108,7 @@ public enum ZoomStyle {
      *         proper result, the specified 'defaultStyle'.
      */
     public static ZoomStyle valueOf(final String value, final ZoomStyle defaultStyle) {
-        ZoomStyle res = ZoomStyle.valueOf(value);
+        final ZoomStyle res = ZoomStyle.valueOf(value);
         if (res == null) {
             return defaultStyle;
         } else {

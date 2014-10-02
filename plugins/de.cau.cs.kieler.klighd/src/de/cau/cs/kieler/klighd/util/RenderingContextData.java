@@ -31,6 +31,9 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
  * 
  * @author mri
  * @author chsch (moved it here from klighd.piccolo to be referenced in layout and compare stuff)
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch 
  */
 public class RenderingContextData extends KGraphDataImpl {
 

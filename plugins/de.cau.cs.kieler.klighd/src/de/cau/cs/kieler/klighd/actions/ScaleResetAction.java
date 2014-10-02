@@ -18,8 +18,12 @@ import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
 
 /**
+ * Sets the chosen {@link KNode}'s scale to one unit, i.e. 100 percent.
+ * 
  * @author chsch
- *
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public class ScaleResetAction implements IAction {
 

@@ -44,9 +44,12 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
- * Singleton for accessing basic KLighD services.
+ * Collection of basic KLighD services.
  * 
  * @author chsch
+ * 
+ * @kieler.design proposed by chsch
+ * @kieler.rating proposed yellow by chsch
  */
 public final class LightDiagramServices {
 
