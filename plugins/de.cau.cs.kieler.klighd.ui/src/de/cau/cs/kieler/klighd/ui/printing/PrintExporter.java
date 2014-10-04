@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -72,7 +75,7 @@ public class PrintExporter extends AbstractDiagramExporter {
      * @param row
      *            the row of the tile to export
      * @param bounds
-     *            the bounds of the diagrampart to be exported
+     *            the bounds of the diagram preview image to be returned
      * @param scale
      *            the scale factor
      * @return the image
@@ -82,7 +85,9 @@ public class PrintExporter extends AbstractDiagramExporter {
 
         final Image image = new Image(viewer.getControl().getDisplay(), bounds.width, bounds.height);
         final GC gc = new GC(image);
+
         export(column, row, bounds, scale, gc, viewer.getControl().getDisplay());
+
         gc.dispose();
         return image;
     }
@@ -113,9 +118,17 @@ public class PrintExporter extends AbstractDiagramExporter {
 
         final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, device);
 
-        drawDiagram(viewer.getControl().getCamera(), false, graphics, new PBounds(column
-                * bounds.width, row * bounds.height,
-                bounds.width, bounds.height), scale, false);
+        // apply translation and clipping for tiled export if necessary
+        graphics.transform(
+                AffineTransform.getTranslateInstance(-column * bounds.width, -row * bounds.height));
+        graphics.clip(new Rectangle2D.Double(0, 0, bounds.width, bounds.height));
+
+        // apply the scale factor to the employed graphics object
+        //  by means of a corresponding affine transform
+        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
+
+        drawDiagram(viewer.getControl().getCamera(), false, graphics, null, scale, false);
+
         graphics.dispose();
     }
 

@@ -124,15 +124,18 @@ final class ScalingBlock implements IDialogBlock {
             public void widgetSelected(final SelectionEvent e) {
                 // Calculate the minimum of necessary horizontal and vertical scale factors to fit the
                 // whole diagram on the selected amount of pages.
-                final Rectangle printerBounds =
-                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
+
+                final Printer printer = new Printer(options.getPrinterData());
+                final Rectangle printerBounds = PrintExporter.getPrinterBounds(printer);
+                printer.dispose();
+
                 final PBounds diagramBounds = options.getExporter().getDiagramBounds();
+
                 final double scaleX =
-                        ((double) printerBounds.width) * options.getPagesWide()
-                                / (diagramBounds.width + 2 * diagramBounds.x);
+                        printerBounds.width * options.getPagesWide() / diagramBounds.width;
                 final double scaleY =
-                        ((double) printerBounds.height) * options.getPagesTall()
-                                / (diagramBounds.height + 2 * diagramBounds.y);
+                        printerBounds.height * options.getPagesTall() / diagramBounds.height;
+
                 options.setScaleFactor(Math.min(scaleX, scaleY));
             }
         });
