@@ -66,6 +66,7 @@ public class KlighdPrintDialog extends TrayDialog {
     private ScalingBlock scalingBlock;
     private RangeBlock rangeBlock;
     private CopiesBlock copiesBlock;
+    private AlignmentBlock alignmentBlock;
     private ActionsBlock actionsBlock;
 
     /**
@@ -128,7 +129,7 @@ public class KlighdPrintDialog extends TrayDialog {
         bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
 
         final Composite result = new Composite(parent, SWT.NONE);
-        DialogUtil.layout(result, 1);
+        DialogUtil.layout(result, 2);
 
         createPrinterBlockArea(result);
         createScalingBlockArea(result);
@@ -140,6 +141,7 @@ public class KlighdPrintDialog extends TrayDialog {
         // Furthermore, I think printing a bunch of copies is not that important.
 
         // createCopiesBlockArea(result);
+        createAlignmentBlockArea(result);
         createExtensibleBlockArea(result);
         createActionsBlockArea(result);
 
@@ -214,6 +216,16 @@ public class KlighdPrintDialog extends TrayDialog {
     protected void createCopiesBlockArea(final Composite parent) {
          copiesBlock = new CopiesBlock(bindings, options);
          copiesBlock.createContents(parent);
+    }
+
+    /**
+     * Creates the copies block area.
+     *
+     * @param parent the parent composite
+     */
+    protected void createAlignmentBlockArea(final Composite parent) {
+         alignmentBlock = new AlignmentBlock(bindings, options);
+         alignmentBlock.createContents(parent);
     }
 
     /**

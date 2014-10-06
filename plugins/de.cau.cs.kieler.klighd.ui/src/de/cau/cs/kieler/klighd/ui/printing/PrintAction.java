@@ -135,7 +135,8 @@ public final class PrintAction extends Action {
                     continue;
 
                 } else if (printer.startPage()) {
-                    exporter.exportPrint(column, row, options.getScaleFactor(), printer);
+                    exporter.print(
+                        printer, column, row, options.getScaleFactor(), options.getCenteringOffset());
                     printer.endPage();
 
                 } else {

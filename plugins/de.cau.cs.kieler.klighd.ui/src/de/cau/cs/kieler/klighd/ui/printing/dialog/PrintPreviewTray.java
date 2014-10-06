@@ -66,6 +66,8 @@ public class PrintPreviewTray extends DialogTray {
     private IObservableValue delayedScale;
     private IObservableValue delayedPagesWide;
     private IObservableValue delayedPagesTall;
+    private IObservableValue delayedHorCentered;
+    private IObservableValue delayedVerCentered;
 
     /** Listener to be removed from observables. */
     private IValueChangeListener listener;
@@ -129,6 +131,15 @@ public class PrintPreviewTray extends DialogTray {
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL));
         delayedPagesTall.addValueChangeListener(listener);
 
+        delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                BeansObservables.observeValue(realm, options,
+                        PrintOptions.PROPERTY_CENTER_HORIZONTALLY));
+        delayedHorCentered.addValueChangeListener(listener);
+
+        delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY));
+        delayedVerCentered.addValueChangeListener(listener);
+
         return body;
     }
 
@@ -188,7 +199,7 @@ public class PrintPreviewTray extends DialogTray {
         // Adjust the scale according to relation between preview and printing size.
         final double previewScale = (double) (imageWidth) / pageBounds.width;
 
-        final Rectangle scaledBounds =
+        final Rectangle imageBounds =
                 new Rectangle(0, 0, imageWidth, imageHeight);
 
         // make sure height and width are not 0, if too small <4, don't bother
@@ -196,9 +207,9 @@ public class PrintPreviewTray extends DialogTray {
             for (int i = 0; i < options.getPagesTall(); i++) {
                 for (int j = 0; j < options.getPagesWide(); j++) {
                     final Label label = new Label(composite, SWT.NULL);
-                    final Image pageImg =
-                            options.getExporter().exportPreview(j, i, scaledBounds,
-                                    options.getScaleFactor() * previewScale);
+                    final Image pageImg = options.getExporter().exportPreview(j, i, imageBounds,
+                            options.getScaleFactor() * previewScale,
+                            options.getCenteringOffset(previewScale));
                     label.setImage(pageImg);
                     imageList.add(pageImg);
                 }
@@ -262,6 +273,8 @@ public class PrintPreviewTray extends DialogTray {
         safeRemoveListener(delayedScale);
         safeRemoveListener(delayedPagesWide);
         safeRemoveListener(delayedPagesTall);
+        safeRemoveListener(delayedHorCentered);
+        safeRemoveListener(delayedVerCentered);
     }
 
 }

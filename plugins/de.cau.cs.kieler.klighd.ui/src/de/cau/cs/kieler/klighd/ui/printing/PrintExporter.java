@@ -14,9 +14,9 @@
 package de.cau.cs.kieler.klighd.ui.printing;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -35,7 +35,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author csp
  * @author chsch
  */
-
 public class PrintExporter extends AbstractDiagramExporter {
 
     private final PiccoloViewer viewer;
@@ -78,15 +77,17 @@ public class PrintExporter extends AbstractDiagramExporter {
      *            the bounds of the diagram preview image to be returned
      * @param scale
      *            the scale factor
+     * @param centeringOffset
+     *            the offset to be applied to centrally align the diagram as requested
      * @return the image
      */
     public Image exportPreview(final int column, final int row, final Rectangle bounds,
-            final double scale) {
+            final double scale, final Point2D centeringOffset) {
 
         final Image image = new Image(viewer.getControl().getDisplay(), bounds.width, bounds.height);
         final GC gc = new GC(image);
 
-        export(column, row, bounds, scale, gc, viewer.getControl().getDisplay());
+        export(gc, column, row, bounds, scale, centeringOffset);
 
         gc.dispose();
         return image;
@@ -94,33 +95,35 @@ public class PrintExporter extends AbstractDiagramExporter {
 
     /**
      * Export print. Can export the diagram in tiles to print on multiple pages.
-     *
+     * @param printer
+     *            the printer to print to
      * @param column
      *            the column of the tile to export
      * @param row
      *            the row of the tile to export
      * @param scale
      *            the scale factor
-     * @param printer
-     *            the printer to print to
+     * @param centeringOffset
+     *            the offset to be applied to centrally align the diagram as requested
      */
-    public void exportPrint(final int column, final int row, final double scale,
-            final Printer printer) {
+    public void print(final Printer printer, final int column, final int row,
+            final double scale, final Point2D centeringOffset) {
 
         final GC gc = new GC(printer);
         final Rectangle pageBounds = getPrinterBounds(printer);
-        export(column, row, pageBounds, scale, gc, printer);
+        export(gc, column, row, pageBounds, scale, centeringOffset);
         gc.dispose();
     }
 
-    private void export(final int column, final int row, final Rectangle bounds,
-            final double scale, final GC gc, final Device device) {
+    private void export(final GC gc, final int column, final int row, final Rectangle bounds,
+            final double scale, final Point2D centeringOffset) {
 
-        final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, device);
+        final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, gc.getDevice());
 
         // apply translation and clipping for tiled export if necessary
-        graphics.transform(
-                AffineTransform.getTranslateInstance(-column * bounds.width, -row * bounds.height));
+        graphics.transform(AffineTransform.getTranslateInstance(
+                -column * bounds.width + centeringOffset.getX(),
+                -row * bounds.height + centeringOffset.getY()));
         graphics.clip(new Rectangle2D.Double(0, 0, bounds.width, bounds.height));
 
         // apply the scale factor to the employed graphics object

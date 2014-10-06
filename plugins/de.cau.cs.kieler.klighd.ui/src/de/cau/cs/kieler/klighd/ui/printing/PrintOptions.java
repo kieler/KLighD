@@ -24,6 +24,8 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -91,6 +93,11 @@ public final class PrintOptions {
     /** Observables ID for number of pages tall. Denotes the number of horizontal pages to print on. */
     public static final String PROPERTY_PAGES_TALL = "pagesTall"; //$NON-NLS-1$
 
+    /** Observables ID for horizontal centering. */
+    public static final String PROPERTY_CENTER_HORIZONTALLY = "horizontallyCentered"; //$NON-NLS-1$
+
+    /** Observables ID for vertical centering. */
+    public static final String PROPERTY_CENTER_VERTICALLY = "verticallyCentered"; //$NON-NLS-1$
 
     /* preference IDs */
 
@@ -117,6 +124,14 @@ public final class PrintOptions {
 
     /** Id of the preference PRINTER_PAGES_END. */
     private static final String PREFERENCE_PRINTER_PAGES_END = "klighd.printing.pagesEnd";
+
+    /** Id of the preference PRINTER_CENTER_HORIZONTALLY. */
+    private static final String PREFERENCE_PRINTER_CENTER_HORIZONTALLY =
+            "klighd.printing.centerHorizontally";
+
+    /** Id of the preference PRINTER_CENTER_VERTICALLY. */
+    private static final String PREFERENCE_PRINTER_CENTER_VERTICALLY =
+            "klighd.printing.centerVertically";
 
     /** Id of the preference PRINTER_ORIENTATION. */
     private static final String PREFERENCE_PRINTER_ORIENTATION = "klighd.printing.orientation";
@@ -146,6 +161,8 @@ public final class PrintOptions {
             PREF_STORE.setDefault(PREFERENCE_PRINTER_SCOPE, PrinterData.ALL_PAGES);
             PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_START, 1);
             PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_END, 1);
+            PREF_STORE.setDefault(PREFERENCE_PRINTER_CENTER_HORIZONTALLY, false);
+            PREF_STORE.setDefault(PREFERENCE_PRINTER_CENTER_VERTICALLY, false);
             PREF_STORE.setDefault(PREFERENCE_PRINTER_ORIENTATION, PrinterData.PORTRAIT);
             PREF_STORE.setDefault(PREFERENCE_PRINTER_DUPLEX, PrinterData.DUPLEX_NONE);
             PREF_STORE.setDefault(PREFERENCE_INITIALLY_SHOW_PREVIEW, false);
@@ -180,11 +197,16 @@ public final class PrintOptions {
     private double scaleFactor;
     private int pagesWide;
     private int pagesTall;
+    private boolean centerHorizontally;
+    private boolean centerVertically;
     private PrintExporter exporter;
 
     // some "cache" fields
     private Printer printer = null;
     private Rectangle printerBounds = null;
+    private Rectangle2D diagramBounds = null;
+    private Point2D centeringOffset = null;
+
 
     /**
      * Constructor.
@@ -217,6 +239,8 @@ public final class PrintOptions {
         setAllPages(PREF_STORE.getInt(PREFERENCE_PRINTER_SCOPE) == PrinterData.ALL_PAGES);
         setRangeFrom(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_START));
         setRangeTo(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_END));
+        setHorizontallyCentered(PREF_STORE.getBoolean(PREFERENCE_PRINTER_CENTER_HORIZONTALLY));
+        setVerticallyCentered(PREF_STORE.getBoolean(PREFERENCE_PRINTER_CENTER_VERTICALLY));
     }
 
     /**
@@ -231,6 +255,8 @@ public final class PrintOptions {
         PREF_STORE.setValue(PREFERENCE_PRINTER_SCOPE, printerData.scope);
         PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_START, printerData.startPage);
         PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_END, printerData.endPage);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_CENTER_HORIZONTALLY, centerHorizontally);
+        PREF_STORE.setValue(PREFERENCE_PRINTER_CENTER_VERTICALLY, centerVertically);
         PREF_STORE.setValue(PREFERENCE_PRINTER_ORIENTATION, printerData.orientation);
         PREF_STORE.setValue(PREFERENCE_PRINTER_DUPLEX, printerData.duplex);
     }
@@ -261,6 +287,7 @@ public final class PrintOptions {
             firePropertyChange(PROPERTY_SCALE_FACTOR, oldFactor, this.scaleFactor);
             firePropertyChange(PROPERTY_SCALE_PERCENT, (int) (oldFactor * PERCENT_FACTOR),
                     (int) (this.scaleFactor * PERCENT_FACTOR));
+            resetCenteringOffset();
         } else {
             throw new IllegalArgumentException("Scale factor out of range: " + scaleFactor
                     + "less or equal zero.");
@@ -294,6 +321,7 @@ public final class PrintOptions {
             firePropertyChange(PROPERTY_SCALE_FACTOR, oldFactor, this.scaleFactor);
             firePropertyChange(PROPERTY_SCALE_PERCENT, (int) (oldFactor * PERCENT_FACTOR),
                     (int) (this.scaleFactor * PERCENT_FACTOR));
+            resetCenteringOffset();
         } else {
             throw new IllegalArgumentException("Scale percent out of range: " + scalePercent
                     + "less or equal 0.");
@@ -322,6 +350,7 @@ public final class PrintOptions {
             final int oldPagesWide = this.pagesWide;
             this.pagesWide = pagesWide;
             firePropertyChange(PROPERTY_PAGES_WIDE, oldPagesWide, this.pagesWide);
+            resetCenteringOffset();
         } else {
             throw new IllegalArgumentException("Pages wide out of range: " + pagesWide
                     + "less or equal 0.");
@@ -350,6 +379,7 @@ public final class PrintOptions {
             final int oldPagesTall = this.pagesTall;
             this.pagesTall = pagesTall;
             firePropertyChange(PROPERTY_PAGES_TALL, oldPagesTall, this.pagesTall);
+            resetCenteringOffset();
         } else {
             throw new IllegalArgumentException("Pages tall out of range: " + pagesTall
                     + "less or equal 0.");
@@ -531,6 +561,7 @@ public final class PrintOptions {
                 printerData.orientation);
 
         disposePrinter();
+        resetCenteringOffset();
     }
 
     /**
@@ -563,6 +594,51 @@ public final class PrintOptions {
         printerData.orientation = orientation;
         firePropertyChange(PROPERTY_ORIENTATION, oldOrientation, printerData.orientation);
         disposePrinter();
+        resetCenteringOffset();
+    }
+
+    /**
+     * Checks whether the diagram is to be centered horizontally.
+     *
+     * @return true, if the diagram is to be centered horizontally
+     */
+    public boolean getHorizontallyCentered() {
+        return this.centerHorizontally;
+    }
+
+    /**
+     * Sets whether to horizontally center the diagram on the page(s).
+     *
+     * @param horCentered
+     *            whether to horizontally center the diagram
+     */
+    public void setHorizontallyCentered(final boolean horCentered) {
+        final boolean oldHorCentered = this.centerHorizontally;
+        this.centerHorizontally = horCentered;
+        firePropertyChange(PROPERTY_CENTER_HORIZONTALLY, oldHorCentered, this.centerHorizontally);
+        resetCenteringOffset();
+    }
+
+    /**
+     * Checks whether the diagram is to be centered vertically.
+     *
+     * @return true, if the diagram is to be centered vertically
+     */
+    public boolean getVerticallyCentered() {
+        return this.centerVertically;
+    }
+
+    /**
+     * Sets whether to vertically center the diagram on the page(s).
+     *
+     * @param verCentered
+     *            whether to vertically center the diagram
+     */
+    public void setVerticallyCentered(final boolean verCentered) {
+        final boolean oldVerCentered = this.centerVertically;
+        this.centerVertically = verCentered;
+        firePropertyChange(PROPERTY_CENTER_VERTICALLY, oldVerCentered, this.centerVertically);
+        resetCenteringOffset();
     }
 
     /**
@@ -630,6 +706,75 @@ public final class PrintOptions {
             }
             return printerBounds;
         }
+        return null;
+    }
+
+    /**
+     * Disposes the existing center offset leading to the re-computation on demand.
+     */
+    private void resetCenteringOffset() {
+        centeringOffset = null;
+    }
+
+    /**
+     * Provides the absolute offset that is required to horizontally and/or vertically center the
+     * diagram on the page(s) as desired (configured).
+     *
+     * @return a {@link Point2D} providing the {@link Point2D#getX() x} and {@link Point2D#getY() y}
+     *         offset
+     */
+    public Point2D getCenteringOffset() {
+        return getCenteringOffset(1d);
+    }
+
+    /**
+     * Provides the absolute offset that is required to horizontally and/or vertically center the
+     * diagram on the page(s) as desired (configured), adjusted by the given {@code scale} factor,
+     * which is be required, e.g., in order to create the print preview properly.
+     *
+     * @param scale
+     *            the scale factor to be applied to the result's x and y components before returning
+     * @return a {@link Point2D} providing the {@link Point2D#getX() x} and {@link Point2D#getY() y}
+     *         offset
+     */
+    public Point2D getCenteringOffset(final double scale) {
+        if (centeringOffset == null) {
+            centeringOffset = updateCenteringOffset();
+        }
+
+        if (centeringOffset == null) {
+            return new Point2D.Double();
+        } else {
+            return new Point2D.Double(
+                    centerHorizontally ? centeringOffset.getX() * scale : 0,
+                    centerVertically ? centeringOffset.getY() * scale : 0);
+        }
+    }
+
+    private Point2D updateCenteringOffset() {
+        if (!centerHorizontally && !centerVertically) {
+            return new Point2D.Double();
+        }
+
+        final Rectangle pBounds = getPrinterBounds();
+
+        if (pBounds != null) {
+            if (diagramBounds == null) {
+                if (exporter == null) {
+                    // in this case we cannot compute the centering offset, should not happen
+                    return null;
+                }
+                diagramBounds = exporter.getDiagramBounds();
+            }
+
+            final Rectangle2D.Double adjustedPrinterBounds = new Rectangle2D.Double(
+                    0, 0, pBounds.width * pagesWide, pBounds.height * pagesTall);
+
+            return new Point2D.Double(
+                    (adjustedPrinterBounds.width - diagramBounds.getWidth() * scaleFactor) / 2,
+                    (adjustedPrinterBounds.height - diagramBounds.getHeight() * scaleFactor) / 2);
+        }
+
         return null;
     }
 

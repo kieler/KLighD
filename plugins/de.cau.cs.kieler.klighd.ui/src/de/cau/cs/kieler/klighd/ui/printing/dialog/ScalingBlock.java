@@ -97,14 +97,11 @@ final class ScalingBlock implements IDialogBlock {
         DialogUtil.layoutFillHorizontal(buttonsGroup, true);
         buttonsGroup.setLayout(new GridLayout(BUTTONS_GROUP_COLUMNS, false));
 
-        final Button oneToOneBtn =
-                DialogUtil
-                .button(buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
+        final Button oneToOneBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
+        
         oneToOneBtn.addSelectionListener(new SelectionAdapter() {
 
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 options.setScaleFactor(1);
