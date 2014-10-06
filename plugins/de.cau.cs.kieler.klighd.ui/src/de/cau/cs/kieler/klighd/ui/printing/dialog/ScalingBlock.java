@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -122,7 +121,7 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate the minimum of necessary horizontal and vertical scale factors to fit the
                 // whole diagram on the selected amount of pages.
 
-                final Rectangle printerBounds = PrintExporter.getPrinterBounds(options.getPrinter());
+                final Rectangle printerBounds = options.getPrinterBounds();
                 final PBounds diagramBounds = options.getExporter().getDiagramBounds();
 
                 final double scaleX =
@@ -144,7 +143,7 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate for both horizontal and vertical directions how many pages are necessary
                 // to fit the diagram in.
 
-                final Rectangle printerBounds = PrintExporter.getPrinterBounds(options.getPrinter());
+                final Rectangle printerBounds = options.getPrinterBounds();
                 final PBounds size = options.getExporter().getDiagramBounds();
 
                 options.setPagesWide(

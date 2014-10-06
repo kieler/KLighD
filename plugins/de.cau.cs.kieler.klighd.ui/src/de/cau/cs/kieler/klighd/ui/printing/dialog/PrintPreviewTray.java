@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
-import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
@@ -46,6 +45,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * <code>PrintPreviewHelper.updateCompositeForNumberOfColumns(int, int)</code>.
  *
  * @author csp
+ * @author chsch
  */
 public class PrintPreviewTray extends DialogTray {
 
@@ -172,7 +172,7 @@ public class PrintPreviewTray extends DialogTray {
 
         // now adjust to the limiting one based on aspect ratio
 
-        final Rectangle pageBounds = PrintExporter.getPrinterBounds(options.getPrinter());
+        final Rectangle pageBounds = options.getPrinterBounds();
 
         // width / height
         final float printerRatio = ((float) pageBounds.width) / ((float) pageBounds.height);

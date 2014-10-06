@@ -29,6 +29,7 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
@@ -180,6 +181,10 @@ public final class PrintOptions {
     private int pagesWide;
     private int pagesTall;
     private PrintExporter exporter;
+
+    // some "cache" fields
+    private Printer printer = null;
+    private Rectangle printerBounds = null;
 
     /**
      * Constructor.
@@ -582,8 +587,6 @@ public final class PrintOptions {
         return exporter;
     }
 
-    private Printer printer = null;
-
     /**
      * Disposes the cached {@link Printer} instance.
      */
@@ -592,6 +595,7 @@ public final class PrintOptions {
             this.printer.dispose();
         }
         this.printer = null;
+        this.printerBounds = null;
     }
 
     /**
@@ -609,6 +613,24 @@ public final class PrintOptions {
         }
 
         return printer;
+    }
+
+    /**
+     * Provides a (cached) {@link Rectangle} containing the bounds of the currently configured
+     * {@link Printer}.
+     *
+     * @return a {@link Rectangle} denoting the printer's bounds, or {@code null} if no valid
+     *         printer configuration is present
+     */
+    public Rectangle getPrinterBounds() {
+        final Printer p = getPrinter();
+        if (p != null) {
+            if (printerBounds == null && exporter != null) {
+                printerBounds = exporter.getPrinterBounds(p);
+            }
+            return printerBounds;
+        }
+        return null;
     }
 
     /**

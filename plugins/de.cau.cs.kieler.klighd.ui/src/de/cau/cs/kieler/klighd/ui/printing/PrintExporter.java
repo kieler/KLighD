@@ -108,7 +108,7 @@ public class PrintExporter extends AbstractDiagramExporter {
             final Printer printer) {
 
         final GC gc = new GC(printer);
-        final Rectangle pageBounds = PrintExporter.getPrinterBounds(printer);
+        final Rectangle pageBounds = getPrinterBounds(printer);
         export(column, row, pageBounds, scale, gc, printer);
         gc.dispose();
     }
@@ -133,18 +133,19 @@ public class PrintExporter extends AbstractDiagramExporter {
     }
 
     /**
-     * Gets the printer bounds.
-     * x and y denote the top left point of the printable area.
-     * width and height are width and height of the printable area.
+     * Provides the printer bounds.<br>
+     * {@link Rectangle#x} and {@link Rectangle#y} denote the top left point of the printable area.
+     * {@link Rectangle#width} and {@link Rectangle#height} are width and height of the printable
+     * area.
      *
      * @param printer
      *            the printer
      * @return the printer bounds
      */
-    public static Rectangle getPrinterBounds(final Printer printer) {
+    // method is set 'package protected' (no modifier) as it is used here and in PrintOptions
+    Rectangle getPrinterBounds(final Printer printer) {
         final Rectangle pageArea = printer.getClientArea();
         final Rectangle trim = printer.computeTrim(0, 0, 0, 0);
         return new Rectangle(-trim.x, -trim.y, pageArea.width, pageArea.height);
     }
-
 }
