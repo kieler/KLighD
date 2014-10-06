@@ -29,7 +29,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -62,11 +61,11 @@ public class PrintPreviewTray extends DialogTray {
     private final List<Image> imageList = new ArrayList<Image>();
 
     /* Observables to remove listeners from */
+    private IObservableValue delayedResize;
+    private IObservableValue delayedPrinterData;
     private IObservableValue delayedScale;
     private IObservableValue delayedPagesWide;
     private IObservableValue delayedPagesTall;
-    private IObservableValue delayedResize;
-    private IObservableValue printerData;
 
     /** Listener to be removed from observables. */
     private IValueChangeListener listener;
@@ -110,30 +109,25 @@ public class PrintPreviewTray extends DialogTray {
             }
         };
 
-        delayedScale =
-                Observables.observeDelayedValue(OBSERVABLE_DELAY, BeansObservables.observeValue(
-                        realm, options, PrintOptions.PROPERTY_SCALE_FACTOR));
-
-        delayedScale.addValueChangeListener(listener);
-
-        delayedPagesWide =
-                Observables.observeDelayedValue(OBSERVABLE_DELAY, BeansObservables.observeValue(
-                        realm, options, PrintOptions.PROPERTY_PAGES_WIDE));
-        delayedPagesWide.addValueChangeListener(listener);
-
-        delayedPagesTall =
-                Observables.observeDelayedValue(OBSERVABLE_DELAY, BeansObservables.observeValue(
-                        realm, options, PrintOptions.PROPERTY_PAGES_TALL));
-        delayedPagesTall.addValueChangeListener(listener);
-
-        delayedResize =
-                Observables.observeDelayedValue(OBSERVABLE_DELAY,
-                        SWTObservables.observeSize(body));
+        delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                SWTObservables.observeSize(body));
         delayedResize.addValueChangeListener(listener);
 
-        printerData =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA);
-        printerData.addValueChangeListener(listener);
+        delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA));
+        delayedPrinterData.addValueChangeListener(listener);
+
+        delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR));
+        delayedScale.addValueChangeListener(listener);
+
+        delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE));
+        delayedPagesWide.addValueChangeListener(listener);
+
+        delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL));
+        delayedPagesTall.addValueChangeListener(listener);
 
         return body;
     }
@@ -178,8 +172,7 @@ public class PrintPreviewTray extends DialogTray {
 
         // now adjust to the limiting one based on aspect ratio
 
-        final Printer printer = new Printer(options.getPrinterData());
-        final Rectangle pageBounds = PrintExporter.getPrinterBounds(printer);
+        final Rectangle pageBounds = PrintExporter.getPrinterBounds(options.getPrinter());
 
         // width / height
         final float printerRatio = ((float) pageBounds.width) / ((float) pageBounds.height);
@@ -265,10 +258,10 @@ public class PrintPreviewTray extends DialogTray {
     public void dispose() {
         disposeImages();
         safeRemoveListener(delayedResize);
+        safeRemoveListener(delayedPrinterData);
         safeRemoveListener(delayedScale);
         safeRemoveListener(delayedPagesWide);
         safeRemoveListener(delayedPagesTall);
-        safeRemoveListener(printerData);
     }
 
 }

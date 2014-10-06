@@ -34,7 +34,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -51,6 +50,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
 final class ScalingBlock implements IDialogBlock {
 
@@ -112,23 +112,17 @@ final class ScalingBlock implements IDialogBlock {
             }
         });
 
-        final Button fitToPagesBtn =
-                DialogUtil.button(buttonsGroup,
-                        KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
+        final Button fitToPagesBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
+
         fitToPagesBtn.addSelectionListener(new SelectionAdapter() {
 
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 // Calculate the minimum of necessary horizontal and vertical scale factors to fit the
                 // whole diagram on the selected amount of pages.
 
-                final Printer printer = new Printer(options.getPrinterData());
-                final Rectangle printerBounds = PrintExporter.getPrinterBounds(printer);
-                printer.dispose();
-
+                final Rectangle printerBounds = PrintExporter.getPrinterBounds(options.getPrinter());
                 final PBounds diagramBounds = options.getExporter().getDiagramBounds();
 
                 final double scaleX =
@@ -140,25 +134,23 @@ final class ScalingBlock implements IDialogBlock {
             }
         });
 
-        final Button adjustPagesBtn =
-                DialogUtil.button(buttonsGroup,
-                        KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
+        final Button adjustPagesBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
+
         adjustPagesBtn.addSelectionListener(new SelectionAdapter() {
 
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 // Calculate for both horizontal and vertical directions how many pages are necessary
                 // to fit the diagram in.
-                final Rectangle bounds =
-                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
+
+                final Rectangle printerBounds = PrintExporter.getPrinterBounds(options.getPrinter());
                 final PBounds size = options.getExporter().getDiagramBounds();
-                options.setPagesWide((int) Math.ceil(size.width * options.getScaleFactor()
-                        / bounds.width));
-                options.setPagesTall((int) Math.ceil(size.height * options.getScaleFactor()
-                        / bounds.height));
+
+                options.setPagesWide(
+                        (int) Math.ceil(size.width * options.getScaleFactor() / printerBounds.width));
+                options.setPagesTall(
+                        (int) Math.ceil(size.height * options.getScaleFactor() / printerBounds.height));
             }
         });
 
