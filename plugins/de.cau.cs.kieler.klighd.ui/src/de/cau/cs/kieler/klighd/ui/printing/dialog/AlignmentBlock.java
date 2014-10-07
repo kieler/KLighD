@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
@@ -56,19 +57,24 @@ final class AlignmentBlock implements IDialogBlock {
     public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
+        final int columns = 3;
+
         // create group
-        final Composite result =
-                DialogUtil.group(parent, "&Alignment...");
-        DialogUtil.layout(result, 1);
+        final Composite result = DialogUtil.layout(
+                DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Alignment), columns);
 
-        final Button horizontallyCentered = DialogUtil.check(result, "center horizontally");
-        final Button verticallyCentered = DialogUtil.check(result, "center vertically");
+        DialogUtil.label(result, "Center diagram");
 
-        bindings.bindValue(SWTObservables.observeSelection(horizontallyCentered),
+        final Button centerHorizontally = DialogUtil.check(result,
+                KlighdUIPrintingMessages.PrintDialog_Alignment_centerHorizontally);
+        final Button centerVertically = DialogUtil.check(result,
+                KlighdUIPrintingMessages.PrintDialog_Alignment_centerVertically);
+
+        bindings.bindValue(SWTObservables.observeSelection(centerHorizontally),
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY),
                 null, null);
 
-        bindings.bindValue(SWTObservables.observeSelection(verticallyCentered),
+        bindings.bindValue(SWTObservables.observeSelection(centerVertically),
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY),
                 null, null);
 
