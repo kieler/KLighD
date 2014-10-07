@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -33,12 +33,14 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PAffineTransform;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The Piccolo2D node for representing a {link KNode}.
- * 
+ *
  * @author mri
  * @author chsch
  */
@@ -46,7 +48,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         ILabeledGraphElement<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
-    
+
     /** the parent {@link INode}. */
     private INode parent;
 
@@ -55,13 +57,13 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     /** a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.*/
     private PLayer portLayer;
-    
+
     /** a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.*/
     private PLayer labelLayer;
-    
+
     /** the child area for this node. */
     private final KChildAreaNode childArea;
-    
+
     /**
      * This camera is used if the diagram is clipped to this node and this node's child area is part
      * of the composite node figure. In this and only this particular case, the camera observing the
@@ -69,7 +71,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      * The latter requirement is implemented in {@link #fullPaint(PPaintContext)} as setting the
      * figure node to invisible will also hide it in the outline diagram.
      */
-    private final PCamera childAreaCamera; 
+    private final PCamera childAreaCamera;
 
     /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
     private boolean isRootLayer = false;
@@ -77,7 +79,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     /**
      * Constructs a Piccolo2D node for representing a <code>KNode</code>.
-     * 
+     *
      * @param node
      *            the node
      * @param edgesFirst
@@ -128,14 +130,14 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
         this.addPropertyChangeListener(PLayer.PROPERTY_CAMERAS, new PropertyChangeListener() {
             // this property change listener reacts on changes in the cameras list
-            
+
             public void propertyChange(final PropertyChangeEvent evt) {
                 final KNodeNode thisNode = KNodeNode.this;
                 if (evt.getNewValue() instanceof List<?>) {
 
                     @SuppressWarnings("unchecked")
                     final List<PCamera> newCameras = (List<PCamera>) evt.getNewValue();
-                    
+
                     // if there is a KlighdMainCamera in the list of observing cameras
                     //  that one is supposed to be the diagram main camera and, thus,
                     //  the diagram is assumed to be clipped to this node
@@ -144,7 +146,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
                     thisNode.isRootLayer = isRoot;
 
                     final PNode childAreaParent = thisNode.childArea.getParent();
-                    
+
                     if (isRoot && childAreaParent != null && childAreaParent != thisNode) {
                         // ... i.e. 'childArea' is somehow buried in the rendering nodes
                         //  set the helper 'childAreaCamera' visible and adjust its view transform
@@ -158,10 +160,10 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
                         thisNode.childAreaCamera.setViewTransform(NodeUtil.localToParent(
                                 thisNode.childArea.getParent(), thisNode));
-                        
+
                         thisNode.childAreaCamera.setVisible(true);
                     } else {
-                        // otherwise switch the helper camera off be setting it invisible 
+                        // otherwise switch the helper camera off be setting it invisible
                         thisNode.childAreaCamera.setVisible(false);
                     }
                 }
@@ -222,7 +224,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     /**
      * Adds the representation of a port to this node.
-     * 
+     *
      * @param port
      *            the port representation
      */
@@ -236,7 +238,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     /**
      * Adds the representation of a label to this node.
-     * 
+     *
      * @param label
      *            the label representation
      */
@@ -247,7 +249,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         }
         labelLayer.addChild(label);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -257,7 +259,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     /**
      * Setter.
-     * 
+     *
      * @param parentINode
      *            the {@link INode} being the new parent in terms of the structural nodes
      */
@@ -280,7 +282,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         super.removeFromParent();
         this.parent = null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -293,12 +295,12 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         //  4: the node's port layer
         //  5: the node's label layer
         // the ordering or 3-5 is build up in the constructor
-        
+
         if (child == childArea) {
             if (getChild(0) == childAreaCamera) {
                 // in this case a KChildArea is the only KRendering of the KNode
                 this.addChild(0, child);
-                
+
             } else {
                 // in this case no KChildArea exists in the KNode's KRendering
                 //  thus another pnode made it already to position zero
@@ -312,7 +314,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
         } else {
             // this case occurs while constructing the PNodes from the current KRendering
-            
+
             // Since there is only one rendering child supposed to be attached to KNodeNodes
             //  the following addition at position zero is justified.
             super.addChild(0, child);
@@ -325,7 +327,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     @Override
     public boolean fullPick(final PPickPath pickPath) {
         final boolean fullPick = fullPickOri(pickPath);
-        
+
         // in case the diagram is clipped to this kNodeNode (isRootLayer == true)
         //  and the user clicked outside the bounds of this (expanded) kNodeNode
         //  the above call would return 'false', which is not intended in that case
@@ -333,7 +335,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         if (!fullPick && isRootLayer) {
             pickPath.pushNode(this);
             pickPath.pushTransform(getTransform());
-            
+
             return true;
         }
         return fullPick;
@@ -341,7 +343,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     /**
      * @see PNode#fullPick(PPickPath)
-     * 
+     *
      * @param pickPath
      *            the pick path to add the node to if its picked
      * @return true if this node or one of its descendants was picked.
@@ -350,8 +352,8 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         // Unfortunately I had to copy the whole method just for
         //  introducing the filter in the loop below, since 'PNode#fullPick(...)'
         //  accesses the child list directly rather via 'getChildrenReference()'.
-        // I guess it's worth a related API change in some future Piccolo2D version. 
-        
+        // I guess it's worth a related API change in some future Piccolo2D version.
+
         // The filter is in charge of masking out the rendering while the diagram is
         //  clipped to this node and it's being drawn via the diagram's main camera!
         if (getVisible() && (getPickable() || getChildrenPickable())
@@ -369,7 +371,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
                 final int count = getChildrenCount();
                 for (int i = count - 1; i >= 0; i--) {
                     final PNode each = (PNode) getChildrenReference().get(i);
-                    
+
                     if (i == 0 && this.isRootLayer && each != this.childArea) {
                         // do not try to pick the node's figure if the main diagram is clipped to
                         //  this node
@@ -393,7 +395,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         return false;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -402,13 +404,13 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         // Unfortunately I had to copy the whole method just for
         //  introducing the filter in the loop below, since 'PNode#fullPaint(...)'
         //  accesses the child list directly rather via 'getChildrenReference()'.
-        // I guess it's worth a related API change in some future Piccolo2D version. 
-        
+        // I guess it's worth a related API change in some future Piccolo2D version.
+
         // The filter is in charge of masking out the rendering while the diagram is
         //  clipped to this node and it's being drawn via the diagram's main camera!
         // In contrast, the rendering figure is supposed to be drawn at all times
         //  while the diagram is drawn via the outline view's camera!
-        
+
         if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
             paintContext.pushTransform(getTransformReference(false));
             paintContext.pushTransparency(getTransparency());
@@ -441,7 +443,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
             paintContext.popTransform(getTransformReference(false));
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -464,5 +466,30 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
         final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         g2.endGroup();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public Rectangle2D getExportedBounds() {
+        final PBounds bounds;
+
+        if (childAreaCamera.getVisible()) {
+            final PAffineTransform t = NodeUtil.localToParent(childArea, this);
+            bounds = new PBounds(t.transform(childArea.getBoundsReference(), null));
+
+        } else {
+            bounds = this.getBounds();
+        }
+
+        if (portLayer != null) {
+            // since hidden ports' KPortNodes are removed from the figure tree the following line works
+            bounds.add(portLayer.getUnionOfChildrenBounds(null));
+        }
+        if (labelLayer != null) {
+            // since hidden labels' KLabelNodes are removed from the figure tree the following line works
+            bounds.add(labelLayer.getUnionOfChildrenBounds(null));
+        }
+
+        return bounds;
+    }
 }

@@ -34,14 +34,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -51,6 +49,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
 final class ScalingBlock implements IDialogBlock {
 
@@ -98,64 +97,56 @@ final class ScalingBlock implements IDialogBlock {
         DialogUtil.layoutFillHorizontal(buttonsGroup, true);
         buttonsGroup.setLayout(new GridLayout(BUTTONS_GROUP_COLUMNS, false));
 
-        final Button oneToOneBtn =
-                DialogUtil
-                .button(buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
+        final Button oneToOneBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
+        
         oneToOneBtn.addSelectionListener(new SelectionAdapter() {
 
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 options.setScaleFactor(1);
             }
         });
 
-        final Button fitToPagesBtn =
-                DialogUtil.button(buttonsGroup,
-                        KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
+        final Button fitToPagesBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
+
         fitToPagesBtn.addSelectionListener(new SelectionAdapter() {
 
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 // Calculate the minimum of necessary horizontal and vertical scale factors to fit the
                 // whole diagram on the selected amount of pages.
-                final Rectangle printerBounds =
-                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
+
+                final Rectangle printerBounds = options.getPrinterBounds();
                 final PBounds diagramBounds = options.getExporter().getDiagramBounds();
+
                 final double scaleX =
-                        ((double) printerBounds.width) * options.getPagesWide()
-                                / (diagramBounds.width + 2 * diagramBounds.x);
+                        printerBounds.width * options.getPagesWide() / diagramBounds.width;
                 final double scaleY =
-                        ((double) printerBounds.height) * options.getPagesTall()
-                                / (diagramBounds.height + 2 * diagramBounds.y);
+                        printerBounds.height * options.getPagesTall() / diagramBounds.height;
+
                 options.setScaleFactor(Math.min(scaleX, scaleY));
             }
         });
 
-        final Button adjustPagesBtn =
-                DialogUtil.button(buttonsGroup,
-                        KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
+        final Button adjustPagesBtn = DialogUtil.button(
+                buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
+
         adjustPagesBtn.addSelectionListener(new SelectionAdapter() {
 
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 // Calculate for both horizontal and vertical directions how many pages are necessary
                 // to fit the diagram in.
-                final Rectangle bounds =
-                        PrintExporter.getPrinterBounds(new Printer(options.getPrinterData()));
+
+                final Rectangle printerBounds = options.getPrinterBounds();
                 final PBounds size = options.getExporter().getDiagramBounds();
-                options.setPagesWide((int) Math.ceil(size.width * options.getScaleFactor()
-                        / bounds.width));
-                options.setPagesTall((int) Math.ceil(size.height * options.getScaleFactor()
-                        / bounds.height));
+
+                options.setPagesWide(
+                        (int) Math.ceil(size.width * options.getScaleFactor() / printerBounds.width));
+                options.setPagesTall(
+                        (int) Math.ceil(size.height * options.getScaleFactor() / printerBounds.height));
             }
         });
 

@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -24,6 +24,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
@@ -33,7 +34,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * concrete implementation of {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporter} and
  * {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}, in order to achieve
  * consistent behavior amongst all those implementations.
- * 
+ *
  * @author chsch
  * @author csp
  */
@@ -42,12 +43,12 @@ public abstract class AbstractDiagramExporter {
     /**
      * Helper method computing the actual unadjusted bounds of the content of the diagram to be
      * exported.
-     * 
+     *
      * @param camera
      *            the {@link KlighdMainCamera} whose depicted content is to be exported
      * @param exportViewport
      *            if <code>true</code> the camera's view port is considered,
-     *            otherwise the closure bounds of the camera's displayed layer is considered 
+     *            otherwise the closure bounds of the camera's displayed layer are returned
      * @return a new {@link PBounds} instance containing the requested bounds data
      */
     protected PBounds getExportedBounds(final KlighdMainCamera camera, final boolean exportViewport) {
@@ -55,20 +56,10 @@ public abstract class AbstractDiagramExporter {
 
         if (exportViewport) {
             bounds = camera.getBounds();
-
         } else {
-            final PLayer displayedLayer = camera.getDisplayedLayer();
-
-            if (displayedLayer.getParent() == camera.getRoot()) {
-                // in case the displayed layer is the topNode, invalidate its full bounds
-                //  as they are not required to be up to date for the interactive on screen rendering
-                displayedLayer.invalidateFullBounds();
-                bounds = displayedLayer.getFullBounds();
-
-            } else {
-                bounds = displayedLayer.getUnionOfChildrenBounds(null);
-            }
+            bounds = new PBounds(camera.getDisplayedINode().getExportedBounds());
         }
+
         return bounds;
     }
 
@@ -79,7 +70,7 @@ public abstract class AbstractDiagramExporter {
      * <br>
      * May be overriden by concrete implementations, base implementation returns a
      * {@link KlighdPaintContext} tailored to diagram image exports.
-     * 
+     *
      * @param graphics
      *            the {@link KlighdSWTGraphics} to draw on
      * @return a {@link KlighdPaintContext} tailored to the type of diagram rendering/export.
@@ -93,7 +84,7 @@ public abstract class AbstractDiagramExporter {
      * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
      * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
      * double, Collection, boolean)}.
-     * 
+     *
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
      * @param exportViewport
@@ -108,7 +99,7 @@ public abstract class AbstractDiagramExporter {
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
      * @param exportSemanticData
      *            if <code>true</code> semantic data that are attached to the diagram's view model
-     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics}) 
+     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics})
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds, final boolean exportSemanticData) {
@@ -121,7 +112,7 @@ public abstract class AbstractDiagramExporter {
      * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
      * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
      * double, Collection, boolean)}.
-     * 
+     *
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
      * @param exportViewport
@@ -151,7 +142,7 @@ public abstract class AbstractDiagramExporter {
      * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
      * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
      * double, Collection, boolean)}.
-     * 
+     *
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
      * @param exportViewport
@@ -183,7 +174,7 @@ public abstract class AbstractDiagramExporter {
      * This method is supposed to be used by all registered
      * {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporters} in order to achieve
      * consistent exporting behavior.
-     * 
+     *
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
      * @param exportViewport
@@ -202,7 +193,7 @@ public abstract class AbstractDiagramExporter {
      *            a {@link Collection} of {@link IExportHook IExportHooks} to apply
      * @param exportSemanticData
      *            if <code>true</code> semantic data that are attached to the diagram's view model
-     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics}) 
+     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics})
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds, final double scale,
@@ -219,33 +210,32 @@ public abstract class AbstractDiagramExporter {
 
         // The global clip setting is required as (in PPaintContext) a default one will be set!
         // This however will let various browsers go crazy and don't show anything!
+        //  (in case of an SVG output)
         graphics.setClip(preBounds);
 
         // explicitly initialize the white background (required especially for SVG exports)
         graphics.setFillColor(KlighdConstants.WHITE);
         graphics.fill(preBounds);
-        
-        
+
         // Save the transform to restore it after hook call.
-        final AffineTransform transform = graphics.getTransform();
+        final PAffineTransform transform = new PAffineTransform(graphics.getTransform());
+        // VERIFYME transform.transform(preBounds, preBounds);
 
         // transformation applied by the pre draw hooks
         final AffineTransform preTransform = new AffineTransform();
-        
+
         for (final IExportHook hook : hooks) {
             preTransform.concatenate(hook.drawPreDiagram((KlighdSWTGraphicsEx) graphics, preBounds));
             // Restore the transform in case the hooks changed something.
             graphics.setTransform(transform);
         }
-        
+
         // apply the pre hook transformation
         graphics.transform(preTransform);
 
-        // adjust the zero reference point
-        graphics.transform(AffineTransform.getTranslateInstance(-theBounds.x,
-                -theBounds.y));
-        
-        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
+        // adjust the zero reference point corresponding to the exported bounds' reference point
+        graphics.transform(
+                AffineTransform.getTranslateInstance(-theBounds.x, -theBounds.y));
 
         final KlighdPaintContext paintContext = createPaintContext(graphics);
 
@@ -278,9 +268,9 @@ public abstract class AbstractDiagramExporter {
             }
         }
 
-        // reset the zero point 
+        // reset the zero point
         graphics.setTransform(transform);
-        
+
         for (final IExportHook hook : hooks) {
             hook.drawPostDiagram((KlighdSWTGraphicsEx) graphics, preBounds);
             // Restore the transform in case the hooks changed something.
