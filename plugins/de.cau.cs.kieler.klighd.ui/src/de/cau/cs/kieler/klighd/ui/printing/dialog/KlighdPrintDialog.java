@@ -32,12 +32,14 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Strings;
 
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
@@ -117,7 +119,7 @@ public class KlighdPrintDialog extends TrayDialog {
     @Override
     protected void configureShell(final Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText(KlighdUIPrintingMessages.PrintDialog_Title);
+        newShell.setText(KlighdUIPrintingMessages.KlighdPrintDialog_Title);
         setHelpAvailable(false);
     }
 
@@ -133,15 +135,9 @@ public class KlighdPrintDialog extends TrayDialog {
 
         createPrinterBlockArea(result);
         createScalingBlockArea(result);
-        createRangeBlockArea(result);
-
-        // I deactivated 'copies' block as this information can be changed in the native dialog
-        //  but it is not delivered back (at least by OSX) within the returned PrinterData.
-        // Thus the 'copies' cannot be updated properly.
-        // Furthermore, I think printing a bunch of copies is not that important.
-
-        // createCopiesBlockArea(result);
         createAlignmentBlockArea(result);
+        createRangeBlockArea(result);
+        createCopiesBlockArea(result);
         createExtensibleBlockArea(result);
         createActionsBlockArea(result);
 
@@ -158,6 +154,21 @@ public class KlighdPrintDialog extends TrayDialog {
         }
 
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Button createButton(final Composite parent, final int id, final String label,
+            final boolean defaultButton) {
+        // method is overridden in order to change the OK button's label
+        if (id == IDialogConstants.OK_ID) {
+            return super.createButton(parent, id,
+                    KlighdUIPrintingMessages.KlighdPrintDialog_OK_label, defaultButton);
+        } else {
+            return super.createButton(parent, id, label, defaultButton);
+        }
     }
 
     /**
@@ -215,7 +226,19 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     protected void createCopiesBlockArea(final Composite parent) {
          copiesBlock = new CopiesBlock(bindings, options);
-         copiesBlock.createContents(parent);
+         final Composite group = (Composite) copiesBlock.createContents(parent);
+
+        if (KlighdPlugin.IS_MACOSX) {
+            // I deactivated 'copies' block as this information can be changed in the native dialog
+            //  but (on OSX) it is not delivered back within the returned PrinterData.
+            // Thus, 'copies' cannot be updated properly.
+            // This, however, seems not to hold for windows and linux.
+            group.setToolTipText(KlighdUIPrintingMessages.KlighdPrintDialog_Copies_OSXToolTip);
+
+            for (final Control con : group.getChildren()) {
+                con.setEnabled(false);
+            }
+        }
     }
 
     /**
@@ -225,7 +248,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     protected void createAlignmentBlockArea(final Composite parent) {
          alignmentBlock = new AlignmentBlock(bindings, options);
-         alignmentBlock.createContents(parent);
+         DialogUtil.layoutSpanHorizontal(alignmentBlock.createContents(parent), 2);
     }
 
     /**
@@ -274,7 +297,7 @@ public class KlighdPrintDialog extends TrayDialog {
     @Override
     public boolean close() {
         bindings.dispose();
-        // copiesBlock.dispose();
+        copiesBlock.dispose();
         printerBlock.dispose();
         scalingBlock.dispose();
         rangeBlock.dispose();
@@ -307,7 +330,7 @@ public class KlighdPrintDialog extends TrayDialog {
         }
 
         final PrintDialog printDialog = new PrintDialog(getParentShell());
-        printDialog.setText("Select a printer");
+        printDialog.setText(KlighdUIPrintingMessages.KlighdPrintDialog_InitialDialog_title);
 
         final PrinterData data = printDialog.open();
         if (data != null) {

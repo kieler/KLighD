@@ -13,12 +13,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -41,7 +41,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A section of the KlighD print dialog that adds print range options.
- * 
+ *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
@@ -53,7 +53,7 @@ final class RangeBlock implements IDialogBlock {
     /**
      * Instantiates a new range block.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
-     * 
+     *
      * @param bindings
      *            the bindings used for observables
      * @param options
@@ -64,7 +64,7 @@ final class RangeBlock implements IDialogBlock {
         this.options = options;
     }
 
-    private static final int COLUMNS = 4;
+    private static final int COLUMNS = 2;
     private static final int TEXT_WIDTH = 20;
     /**
      * {@inheritDoc}
