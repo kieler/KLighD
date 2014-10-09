@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse Rich Client
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -51,18 +51,19 @@ import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.IDiagramExporter.TilingData;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdDataManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
 /**
  * The 'save-as-image' dialog for Piccolo2D.
- * 
+ *
  * The available image formats are retrieved from the {@link ExporterManager#EXTP_ID_EXPORTERS}
  * extension point. An additional description of each format is added in parentheses (...), the
  * parentheses are stripped when the file extension is added.
- * 
+ *
  * Provides the gathered information as an {@link ExportData} object.
- * 
+ *
  * @author mri
  * @author uru
  * @author csp
@@ -77,7 +78,7 @@ public class SaveAsImageDialog extends Dialog {
     /** the preference key for the file path. */
     private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
     /** the preference key for the workspace path. */
-    private static final String PREFERENCE_WORKSPACE_PATH 
+    private static final String PREFERENCE_WORKSPACE_PATH
             = "saveAsImageDialog.workspacePath"; //$NON-NLS-1$
     /** the preference key for the image format. */
     private static final String PREFERENCE_IMAGE_FORMAT = "saveAsImageDialog.imageFormat"; //$NON-NLS-1$
@@ -87,19 +88,25 @@ public class SaveAsImageDialog extends Dialog {
     /** the preference key for the scale factor. */
     private static final String PREFERENCE_SCALE_FACTOR = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
     /** the preference key for the text as shapes property. */
-    private static final String PREFERENCE_TEXT_AS_SHAPES 
+    private static final String PREFERENCE_TEXT_AS_SHAPES
         = "saveAsImageDialog.textAsShapes"; //$NON-NLS-1$
     /** the preference key for the embed fonts property. */
-    private static final String PREFERENCE_EMBED_FONTS 
+    private static final String PREFERENCE_EMBED_FONTS
     = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
     /** the preference keys for the tiling information. */
-    private static final String PREFERENCE_TILING_IS_MAXSIZE = 
+    private static final String PREFERENCE_TILING_IS_MAXSIZE =
             "saveAsImageDialog.tilingIsMaxsize"; //$NON-NLS-1$
     private static final String PREFERENCE_TILING_X = "saveAsImageDialog.tilingX"; //$NON-NLS-1$
     private static final String PREFERENCE_TILING_Y = "saveAsImageDialog.tilingY"; //$NON-NLS-1$
 
     /** the preference store. */
-    private IPreferenceStore preferenceStore = null;
+    private final IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
+
+    /**
+     * the {@link ViewContext} of the diagram to be exported,
+     * required by the {@link ExportData} being provided by this dialog.
+     */
+    private final ViewContext viewContext;
 
     /** the file text. */
     private Text fileText;
@@ -137,27 +144,29 @@ public class SaveAsImageDialog extends Dialog {
 
     /**
      * Constructs the dialog for saving the diagram as an image.
-     * 
+     *
+     * @param viewContext
+     *            the {@link ViewContext} to be injected into the {@link ExportData} being provided
+     *            by this dialog
      * @param parentShell
      *            the parent shell
      */
-    public SaveAsImageDialog(final Shell parentShell) {
+    public SaveAsImageDialog(final ViewContext viewContext, final Shell parentShell) {
         super(parentShell);
-        // receive the preference store
-        preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
+
+        this.viewContext = viewContext;
 
         // get the available descriptors
         descriptors = KlighdDataManager.getInstance().getAvailableExporters();
+
         // sort by name
         Collections.sort(descriptors, new Comparator<ExporterDescriptor>() {
-            /**
-             * {@inheritDoc}
-             */
+
             public int compare(final ExporterDescriptor e1, final ExporterDescriptor e2) {
                 return e1.fileExtension.compareTo(e2.fileExtension);
             }
         });
-        
+
         // get the saved tiling info
         if (preferenceStore.getBoolean(PREFERENCE_TILING_IS_MAXSIZE)) {
             tilingInfo =
@@ -212,6 +221,7 @@ public class SaveAsImageDialog extends Dialog {
         // load path from preference store
         fileText.setText(preferenceStore.getString(PREFERENCE_FILE_PATH));
         fileText.addModifyListener(new ModifyListener() {
+
             public void modifyText(final ModifyEvent e) {
                 validateFileText();
             }
@@ -227,6 +237,7 @@ public class SaveAsImageDialog extends Dialog {
         gridData.widthHint = BROWSE_WIDTH_HINT;
         button.setLayoutData(gridData);
         button.addSelectionListener(new SelectionAdapter() {
+
             @Override
             public void widgetSelected(final SelectionEvent event) {
                 handleWorkspaceBrowse();
@@ -242,6 +253,7 @@ public class SaveAsImageDialog extends Dialog {
         // load option from preference store
         workspacePathCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_WORKSPACE_PATH));
         workspacePathCheckbox.addSelectionListener(new SelectionAdapter() {
+
             @Override
             public void widgetSelected(final SelectionEvent event) {
                 validateFileText();
@@ -281,7 +293,7 @@ public class SaveAsImageDialog extends Dialog {
                     descr.description != null ? " (" + descr.description + ")" : "";
             imageFormats[i++] = descr.fileExtension + descrText;
         }
-        
+
         // image formats
         imageFormatCombo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
         imageFormatCombo.setItems(imageFormats);
@@ -291,6 +303,7 @@ public class SaveAsImageDialog extends Dialog {
         index = index < 0 || index >= imageFormats.length ? 0 : index;
         imageFormatCombo.setText(imageFormats[index]);
         imageFormatCombo.addSelectionListener(new SelectionAdapter() {
+
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 updateFileText();
@@ -303,8 +316,8 @@ public class SaveAsImageDialog extends Dialog {
         gridData.widthHint = IMAGE_FORMAT_COMBO_WIDTH_HINT;
         gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 1;
         imageFormatCombo.setLayoutData(gridData);
-        
-        
+
+
         // scaling options
         label = new Label(composite, SWT.NONE);
         label.setText(Messages.SaveAsImageDialog_scale_factor);
@@ -335,21 +348,21 @@ public class SaveAsImageDialog extends Dialog {
             }
         });
 
-        
+
         // tiling options
         label = new Label(composite, SWT.NONE);
         label.setText(Messages.SaveAsImageDialog_tiling);
-        
+
         tilingStateLabel = new Label(composite, SWT.NONE);
-        
+
         tilingOptionsButton = new Button(composite, SWT.PUSH);
         tilingOptionsButton.setText(Messages.SaveAsImageDialog_tiling_options_caption);
-        
+
         gridData = new GridData(SWT.RIGHT, SWT.NONE, false, false);
         gridData.widthHint = BROWSE_WIDTH_HINT;
         gridData.horizontalSpan = IMAGE_FORMAT_GROUP_COLUMNS - 2;
         tilingOptionsButton.setLayoutData(gridData);
-        
+
         tilingOptionsButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(final SelectionEvent event) {
@@ -385,21 +398,21 @@ public class SaveAsImageDialog extends Dialog {
         cameraViewportCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
         cameraViewportCheckbox.setText(Messages.SaveAsImageDialog_use_camera_viewport_caption);
         cameraViewportCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_CAMERA_VIEWPORT));
-        
+
         // text as shapes
         textAsShapesCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
         textAsShapesCheckbox.setText(Messages.SaveAsImageDialog_text_as_shapes);
         textAsShapesCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_TEXT_AS_SHAPES));
-        
+
         // embed fonts
         embedFontsCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
         embedFontsCheckbox.setText(Messages.SaveAsImageDialog_embed_fonts);
         embedFontsCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_EMBED_FONTS));
-        
+
         updateEmbedFontsCheckbox(textAsShapesCheckbox.getSelection(), embedFontsCheckbox.getSelection());
         textAsShapesCheckbox.addSelectionListener(new SelectionAdapter() {
             private boolean prevEmbedFonts = embedFontsCheckbox.getSelection();
-            
+
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final boolean selected = ((Button) e.widget).getSelection();
@@ -410,7 +423,7 @@ public class SaveAsImageDialog extends Dialog {
             }
         });
     }
-    
+
     private void updateEmbedFontsCheckbox(final boolean disabled, final boolean prevSelection) {
         if (disabled) {
             embedFontsCheckbox.setEnabled(false);
@@ -643,12 +656,12 @@ public class SaveAsImageDialog extends Dialog {
         // chsch: to make sure a valid extension is attached to the file name
         // in case the combo is untouched
         updateFileText();
-        
-        currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex()); 
-        exportData = new ExportData(currentExporter.subFormatId, new Path(fileText.getText()),
-                workspacePathCheckbox.getSelection(), cameraViewportCheckbox.getSelection(),
-                scaleSlider.getSelection(), textAsShapesCheckbox.getSelection(),
-                embedFontsCheckbox.getSelection());
+
+        currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex());
+        exportData = new ExportData(viewContext, currentExporter.subFormatId,
+                new Path(fileText.getText()), workspacePathCheckbox.getSelection(),
+                cameraViewportCheckbox.getSelection(), scaleSlider.getSelection(),
+                textAsShapesCheckbox.getSelection(), embedFontsCheckbox.getSelection());
 
         if (currentExporter.supportsTiling && tilingInfo.isTiled) {
             exportData.setTilingInfo(tilingInfo);

@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
+import java.awt.geom.Point2D;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.printing.Printer;
@@ -117,6 +119,7 @@ public final class PrintAction extends Action {
         printer.startJob("KlighD Printing");
 
         int pageNo = 1;
+        final Point2D centeringOffset = options.getCenteringOffset();
 
         // considering the assumptions to print row by row, i.e. start with all pages of the first row
         //  than proceed to those of the second one etc.
@@ -135,8 +138,7 @@ public final class PrintAction extends Action {
                     continue;
 
                 } else if (printer.startPage()) {
-                    exporter.print(
-                        printer, column, row, options.getScaleFactor(), options.getCenteringOffset());
+                    exporter.print(printer, column, row, options.getScaleFactor(), centeringOffset);
                     printer.endPage();
 
                 } else {

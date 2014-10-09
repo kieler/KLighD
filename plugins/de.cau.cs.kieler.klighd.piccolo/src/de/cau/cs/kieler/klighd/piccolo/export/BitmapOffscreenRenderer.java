@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -32,7 +32,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
  * A concrete implementation of {@link de.cau.cs.kieler.klighd.IOffscreenRenderer
  * IOffscreenRenderer} providing diagram in BMP, JPEG, and PNG format.<br>
  * (see registration in plugin.xml)
- * 
+ *
  * @author chsch
  */
 public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
@@ -59,7 +59,7 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
             try {
                 // Note that the proper termination of this statement requires an
                 //  event loop calling "Display.getCurrent().readAndDispatch();" repeatedly
-                Display.getDefault().syncExec(runnable);                
+                Display.getDefault().syncExec(runnable);
             } catch (final Throwable e) {
                 return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
                         DISPLAY_ACCESS_FAILURE, e);
@@ -71,7 +71,7 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
 
     private IStatus doRender(final ViewContext viewContext, final OutputStream output,
             final IPropertyHolder properties) {
-        
+
         final int imageScale = properties != null
                 ? properties.getProperty(IMAGE_SCALE) : IMAGE_SCALE.getDefault();
 
@@ -81,7 +81,7 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
         try {
             // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
             this.buildUpDiagram(viewContext, canvas.getCamera(), properties);
-            
+
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
                     BUILDING_UP_FIGURES_FAILURE_MSG, e);
@@ -91,8 +91,8 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
             final String format = properties != null
                     ? properties.getProperty(OUTPUT_FORMAT) : BitmapExporter.SUB_FORMAT_PNG;
 
-            new BitmapExporter().export(
-                    new ExportData(format, output, false, imageScale, false, false), canvas);
+            new BitmapExporter().export(canvas,
+                    new ExportData(viewContext, format, output, false, imageScale, false, false));
 
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

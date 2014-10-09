@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -27,39 +27,40 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Basic interface of diagram exporters creating images in <code>png</code> or </code>svg</code>
  * format, for instance.
- * 
+ *
  * @author uru
  * @author chsch
  * @author csp
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
- * 
- * @see IDiagramExporter#export(ExportData, Control)
+ *
+ * @see IDiagramExporter#export(Control, ExportData)
  */
 public interface IDiagramExporter {
 
     /**
      * Exports the diagram depicted by the given <code>control</code>.
-     * 
-     * @param data
-     *            the specified export info
      * @param control
      *            the control to export
+     * @param data
+     *            the specified export info
+     *
      * @return {@link org.eclipse.core.runtime.Status#OK_STATUS Status#OK_STATUS} if the diagram
      *         export went successfully, an {@link IStatus} providing information on the failure
      *         otherwise.
      */
-    IStatus export(ExportData data, Control control);
+    IStatus export(Control control, ExportData data);
 
     /**
      * A data record encapsulating the information needed to export a diagram to the file system.<br>
-     * 
+     *
      * @author csp
      */
     public class ExportData {
 
-        // SUPPRESS CHECKSTYLE NEXT 8 Visibility|Javadoc
+        // SUPPRESS CHECKSTYLE NEXT 9 Visibility|Javadoc
+        public final ViewContext viewContext;
         public final String format;
         public final OutputStream stream;
         public final IPath path;
@@ -73,7 +74,9 @@ public interface IDiagramExporter {
 
         /**
          * Constructor.
-         * 
+         *
+         * @param viewContext
+         *            the {@link ViewContext} providing access to the diagram' view & source model
          * @param format
          *            id of the format to transform the diagram into
          * @param path
@@ -91,10 +94,11 @@ public interface IDiagramExporter {
          *            whether text should be rendered as shapes (only vector images)
          * @param embedFonts
          *            whether the texts' fonts shall be embedded in the output (only vector images)
-         */
-        public ExportData(final String format, final IPath path,
+         */ // SUPPRESS CHECKSTYLE NEXT Number -- we need all these data
+        public ExportData(final ViewContext viewContext, final String format, final IPath path,
                 final boolean isWorkspacePath, final boolean cameraViewport, final int scale,
                 final boolean textAsShapes, final boolean embedFonts) {
+            this.viewContext = viewContext;
             this.format = format;
             this.stream = null;
             this.path = path;
@@ -108,7 +112,9 @@ public interface IDiagramExporter {
 
         /**
          * Constructor.
-         * 
+         *
+         * @param viewContext
+         *            the {@link ViewContext} providing access to the diagram' view & source model
          * @param format
          *            id of the format to transform the diagram into
          * @param stream
@@ -124,8 +130,10 @@ public interface IDiagramExporter {
          * @param embedFonts
          *            whether the texts' fonts shall be embedded in the output (only vector images)
          */
-        public ExportData(final String format, final OutputStream stream, final boolean cameraViewport,
-                final int scale, final boolean textAsShapes, final boolean embedFonts) {
+        public ExportData(final ViewContext viewContext, final String format,
+                final OutputStream stream, final boolean cameraViewport, final int scale,
+                final boolean textAsShapes, final boolean embedFonts) {
+            this.viewContext = viewContext;
             this.format = format;
             this.stream = stream;
             this.path = null;
@@ -140,7 +148,7 @@ public interface IDiagramExporter {
         /**
          * If an {@link OutputStream} has been configured, it is simply returned. Otherwise, a new
          * stream pointing to the given path is created.
-         * 
+         *
          * @return the {@link OutputStream} to write the image to.
          * @throws IOException
          *             if there is a problem obtaining an open output stream.
@@ -156,7 +164,7 @@ public interface IDiagramExporter {
         /**
          * If a path has been set, a new {@link OutputStream} is created. The name of the file is
          * appended by the given row and column.
-         * 
+         *
          * @param row
          *            number of current row
          * @param col
@@ -213,7 +221,7 @@ public interface IDiagramExporter {
     /**
      * Encapsulates the information needed to tile a diagram for export. Merely a record to hold the
      * information.
-     * 
+     *
      * @author csp
      */
     public static final class TilingData {
@@ -250,7 +258,7 @@ public interface IDiagramExporter {
 
         /**
          * Create tiled information with given numbers of rows and columns.
-         * 
+         *
          * @param rows
          *            number of rows.
          * @param cols
@@ -264,7 +272,7 @@ public interface IDiagramExporter {
 
         /**
          * Create tiled information with given maximum size.
-         * 
+         *
          * @param maxWidth
          *            maximal width.
          * @param maxHeight

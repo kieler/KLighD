@@ -102,7 +102,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
     /**
      * {@inheritDoc}
      */
-    public IStatus export(final ExportData data, final Control control) {
+    public IStatus export(final Control control, final ExportData data) {
 
         final PCamera camera = ((KlighdCanvas) control).getCamera();
 
