@@ -423,7 +423,19 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             final Point2D pos = event.getPosition();
 
             final KlighdMainCamera originalCamera = topNode.getDiagramMainCamera();
-            final Point2D clipOffset = originalCamera.getDisplayedLayer().getGlobalTranslation();
+
+            // In clipped diagrams the accumulated 'translate' offset ((x,y) positions)
+            //  of the displayed inode's parent pnodes (!) must be applied the determined
+            //  view bounds in order to get the "actual" click position.
+            // Note however that the displayed inode's translate (x,y) must not be taken
+            //  into account because it is not contained in 'originalCamera.getViewBounds()'!
+            // Since PCamera.paintCameraView() calls 'fullPaint(...)' on each displayed PLayer
+            //  the transforms of those layers are applied on top of the camera's view transform!
+            // For that reason the global translation of
+            //  'originalCamera.getDisplayedLayer().getParent()' is calculated. This way an
+            //  optional translation of the parent inode's child area is also respected!
+            final Point2D clipOffset =
+                    originalCamera.getDisplayedLayer().getParent().getGlobalTranslation();
 
             final PBounds outlineRectBounds =
                     originalCamera.getViewBounds().moveBy(clipOffset.getX(), clipOffset.getY());
