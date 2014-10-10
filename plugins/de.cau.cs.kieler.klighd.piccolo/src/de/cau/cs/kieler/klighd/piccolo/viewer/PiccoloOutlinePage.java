@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -53,10 +53,11 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolo.util.PDimension;
 
 /**
  * A content outline page for the Piccolo2D viewer.
- * 
+ *
  * @author msp
  * @author uru
  * @author chsch
@@ -115,7 +116,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     };
 
     /**
-     * Named subclass of {@link KlighdCanvas} providing outline paint contexts. 
+     * Named subclass of {@link KlighdCanvas} providing outline paint contexts.
      */
     private static final class KlighdOutlineCanvas extends KlighdCanvas {
 
@@ -135,10 +136,10 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     public void createControl(final Composite parent) {
         final Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new FillLayout());
-        
+
         outlineCanvas = new KlighdOutlineCanvas(container, SWT.NONE);
         outlineCanvas.setVisible(false);
-        
+
         // since we don't rely on the picked node in OutlineDragHandler below
         //  we just set the camera non-pickable in order reduce performance waste
         outlineCanvas.getCamera().setPickable(false);
@@ -182,11 +183,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     }
 
     /** A flag for tracking the visibility state until the {@link #outlineCanvas} is created. */
-    private boolean visible = false; 
+    private boolean visible = false;
 
     /**
      * Sets the visibility property of the employed {@link KlighdCanvas}.
-     * 
+     *
      * @param isVisible the visibility state
      */
     public void setVisible(final boolean isVisible) {
@@ -199,7 +200,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
     /**
      * Update the content of the outline page.
-     * 
+     *
      * @param newTopNode
      *            the {@link KNodeTopNode} to be displayed
      */
@@ -225,24 +226,24 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 this.topNode.getGraphElement().eAdapters().remove(nodeLayoutAdapter);
             }
         }
-        
+
         this.topNode = newTopNode;
-        
+
         final PCamera diagramMainCamera = topNode.getDiagramMainCamera();
-        
+
         // listen to view transformations
         diagramMainCamera.addPropertyChangeListener(propertyListener);
 
         final KlighdMainCamera camera = outlineCanvas.getCamera();
-        
-        // install the outlineCanvas' camera into the given (new) topNode 
+
+        // install the outlineCanvas' camera into the given (new) topNode
         camera.addLayer(topNode);
 
         // add a further layer to the camera
         //  that contains a rectangle indicating the visible part of the model
         final PLayer overlayLayer = new PLayer();
         camera.addLayer(overlayLayer);
-        
+
         // initialize & configure the outline rectangle
         //  the concrete path data are set later on in #adjustOutlineRect()
         //  when the timer expires the first time (it's started in constructor)
@@ -254,18 +255,18 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         // add listeners to layout changes and canvas resizing
         rootNode = topNode.getGraphElement();
         nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
-           
+
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                
+
                 if (notification.getNotifier() == rootNode) {
                     // in case anything is changed on the node, e.g. the node's shape layout
                     //  is removed or a new one is added by the simple update strategy
-                    //  don't do anything!! 
+                    //  don't do anything!!
                     return;
                 }
-                
+
                 final int featureId = notification.getFeatureID(KShapeLayout.class);
                 if (featureId == KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH
                         || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
@@ -275,13 +276,13 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 }
             }
         };
-        
+
         rootNode.eAdapters().add(nodeLayoutAdapter);
         outlineCanvas.addControlListener(canvasResizeListener);
-        
+
         adjustCamera();
         adjustOutlineRect();
-        
+
         outlineCanvas.setVisible(visible);
     }
 
@@ -349,20 +350,20 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
     /**
      * Getter.
-     * 
+     *
      * @return <code>true</code> if {@link #dispose()} has been called on this outline page
      */
     public boolean isDisposed() {
         return disposed;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void dispose() {
         if (topNode != null) {
             this.outlineCanvas.getCamera().removeLayer(this.topNode);
-            
+
             final PCamera originalCamera = topNode.getDiagramMainCamera();
             if (originalCamera != null) {
                 originalCamera.removePropertyChangeListener(propertyListener);
@@ -377,12 +378,12 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         rootNode = null;
         nodeLayoutAdapter = null;
 
-        
+
         // the canvas, which is accessible by the platform via #getControl()
         //  is disposed separately by the platform, ...
         outlineCanvas = null;
         outlineRectTimer = null;
-        
+
         // afterwards the canvasResizeListener can't be removed anymore (SWT exception)
         canvasResizeListener = null;
 
@@ -406,14 +407,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      * performance waste. However, due to {@link edu.umd.cs.piccolo.PInputManager#processInput()
      * PInputManager#processInput()} and {@link PCamera#pick(double, double, double)}
      * <code>event.getPickedNode()</code> is supposed to return the camera, which is absolutely fine :-).
-     * 
+     *
      * @author uru
      * @author chsch
      */
     private class OutlineDragHandler extends PDragSequenceEventHandler {
-
-        /** reference point for the drag motion. */
-        private Point2D last = null;
 
         /**
          * {@inheritDoc}
@@ -422,24 +420,23 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         protected void startDrag(final PInputEvent event) {
             isDragging = true;
             super.startDrag(event);
-            last = event.getPosition();
+            final Point2D pos = event.getPosition();
 
-            final PCamera originalCamera = topNode.getDiagramMainCamera();
-            final PBounds outlineRectBounds = originalCamera.getViewBounds();
+            final KlighdMainCamera originalCamera = topNode.getDiagramMainCamera();
+            final Point2D clipOffset = originalCamera.getDisplayedLayer().getGlobalTranslation();
+
+            final PBounds outlineRectBounds =
+                    originalCamera.getViewBounds().moveBy(clipOffset.getX(), clipOffset.getY());
 
             // if the user clicks outside the outline rect,
             // center it on this point before dragging starts
-            final boolean withinRect = outlineRectBounds.contains(event.getPosition());
+            final boolean withinRect = outlineRectBounds.contains(pos);
             if (!withinRect) {
                 // translate the camera by the delta between click
                 // and current center point of the bounds
                 final Point2D center = outlineRectBounds.getCenter2D();
-                final Point2D delta =
-                        new Point2D.Double(center.getX() - event.getPosition().getX(),
-                                center.getY() - event.getPosition().getY());
-                originalCamera.translateView(delta.getX(), delta.getY());
+                originalCamera.translateView(center.getX() - pos.getX(), center.getY() - pos.getY());
             }
-
         }
 
         /**
@@ -448,10 +445,8 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         @Override
         protected void drag(final PInputEvent event) {
             super.drag(event);
-            final Point2D pos = event.getPosition();
-            final Point2D delta = new Point2D.Double(pos.getX() - last.getX(), pos.getY() - last.getY());
-            topNode.getDiagramMainCamera().translateView(-delta.getX(), -delta.getY());
-            last = pos;
+            final PDimension delta = event.getDelta();
+            topNode.getDiagramMainCamera().translateView(-delta.getWidth(), -delta.getHeight());
         }
 
         /**
@@ -460,7 +455,6 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         @Override
         protected void endDrag(final PInputEvent event) {
             super.endDrag(event);
-            last = null;
             isDragging = false;
         }
     }
