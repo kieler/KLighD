@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -27,14 +27,14 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * This specialized {@link PCamera} type describes the diagram root cameras.<br>
- * It is not intended to be used for any other purpose! 
- * 
+ * It is not intended to be used for any other purpose!
+ *
  * @author chsch
  */
 public class KlighdMainCamera extends PCamera {
 
     private static final long serialVersionUID = -1769999483311436492L;
-    
+
     /**
      * Constructor.
      */
@@ -44,19 +44,23 @@ public class KlighdMainCamera extends PCamera {
 
     /**
      * Getter.
-     * 
+     *
      * @return the currently displayed {@link INode}
      */
     public INode getDisplayedINode() {
         return (INode) getDisplayedLayer();
     }
-    
+
     /**
      * Getter.
-     * 
+     *
      * @return the currently displayed {@link INode} casted to {@link PLayer}.
      */
     public PLayer getDisplayedLayer() {
+        if (this.getLayersReference().isEmpty()) {
+            return null;
+        }
+
         final PLayer res = this.getLayer(0);
         if (res instanceof INode) {
             return res;
@@ -64,11 +68,11 @@ public class KlighdMainCamera extends PCamera {
             return null;
         }
     }
-    
+
     /**
      * Sets the {@link INode} to be displayed on the canvas if it is a {@link PLayer}; does nothing
      * otherwise.
-     * 
+     *
      * @param node
      *            the {@link INode} to displayed
      */
@@ -81,20 +85,20 @@ public class KlighdMainCamera extends PCamera {
             ((KNodeTopNode) node).setDiagramMainCamera(this);
         }
     }
-    
+
     /**
      * Sets the {@link PLayer} to be displayed on the canvas.
-     * 
+     *
      * @param node the {@link PLayer} to displayed
      */
     private void setDisplayedNode(final PLayer node) {
         this.addLayer(0, node);
     }
-    
+
     /**
      * Re-targets <code>this</code> camera to the given <code>node</code> by detaching the currently
      * displayed {@link PLayer}, if the <code>node</code> is a {@link PLayer}; does nothing otherwise.
-     * 
+     *
      * @param node
      *            the {@link INode} to be now displayed
      */
@@ -107,18 +111,18 @@ public class KlighdMainCamera extends PCamera {
     /**
      * Detaches the currently configures displayed {@link PLayer} and re-target to the given
      * <code>node</code>.
-     * 
+     *
      * @param node
      *            the {@link PLayer} to be now displayed
      */
     public void exchangeDisplayedNode(final PLayer node) {
-        
+
         final PNode prevNode = this.getLayer(0);
-        
+
         if (prevNode == node) {
             return;
         }
-        
+
         this.removeLayer(0);
 
         final AffineTransform t;
@@ -146,7 +150,7 @@ public class KlighdMainCamera extends PCamera {
             // In case the following call fails the SWT components employed in
             //  PSWCanvas#paintComponent(...) may end up in an inconsistent state.
             // Hence, this try catch block is added here in order to let (at least)
-            //  this#fullPaint(...) return properly. 
+            //  this#fullPaint(...) return properly.
             super.fullPaint(paintContext);
 
         } catch (final Throwable t) {

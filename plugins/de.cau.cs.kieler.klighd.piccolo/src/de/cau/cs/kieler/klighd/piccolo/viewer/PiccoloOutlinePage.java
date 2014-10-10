@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.viewer;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,17 +28,24 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.Colors;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -64,34 +70,78 @@ import edu.umd.cs.piccolo.util.PDimension;
  */
 public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
+    // Properties for the appearance of the outline rectangle.
+    private static final int VIEWPORT_OUTLINE_LINEWIDTH = 2;
+    private static final int VIEWPORT_OUTLINE_ROUNDNESS = 5;
+    private static final Colors VIEWPORT_OUTLINE_COLOR = Colors.BLUE_3;
+    private static final int VIEWPORT_OUTLINE_ALPHA = 25;
+
+    private static final Colors CLIP_OUTLINE_COLOR = Colors.MEDIUM_PURPLE_4;
+    private static final int CLIP_OVERLAY_ALPHA = 50;
+
+    // Delay of the timed repaint.
+    private static final int REPAINT_DELAY = 200;
+
     /** the canvas used for drawing. */
     private KlighdCanvas outlineCanvas;
 
     /** the graph layer to display. */
     private KNodeTopNode topNode;
 
-    /** the observed knode. */
+    /** the observed {@link KNode}. */
     private KNode rootNode;
 
     /** the adapter listening to layout changes. */
     private Adapter nodeLayoutAdapter;
 
-    /** the element that holds the outline rectangle. */
-    private KlighdPath outlineRect;
+    /** the viewport outline rectangle. */
+    private KlighdPath viewportOutlineRect;
 
-    // Properties for the appearance of the outline rectangle.
-    private static final int OUTLINE_EDGE_ROUNDNESS = 5;
-    private static final int OUTLINE_EDGE_OPACITY = 25;
-    private static final Color OUTLINE_EDGE_COLOR = new Color(0, 0, 200);
-
-    // Delay of the timed repaint.
-    private static final int REPAINT_DELAY = 200;
+    /** the clip outline overlay. */
+    private KlighdPath clipOutlineOverlay;
 
     /** Indicates whether a drag action on the outline canvas is in progress. */
     private boolean isDragging = false;
 
     /** A timer to reduce the load during panning of the original canvas. */
     private Timer outlineRectTimer;
+
+    /**
+     * Configuration hook for customizing the viewport outline rectangle's fill color.
+     *
+     * @return a {@link Pair} of an {@link RGB} record determining the color and an {@link Integer}
+     *         denoting the opacity (alpha value).
+     */
+    public Pair<RGB, Integer> getViewportOutlineRectPaint() {
+        return Pair.of(toRGB(VIEWPORT_OUTLINE_COLOR), VIEWPORT_OUTLINE_ALPHA);
+    }
+
+    /**
+     * Configuration hook for customizing the diagram clip overlay's fill color.<br>
+     * This overlay cover's the whole diagram except the {@link KNode} the diagram is clipped to.
+     *
+     * @return a {@link Pair} of an {@link RGB} record determining the color and an {@link Integer}
+     *         denoting the opacity (alpha value).
+     */
+    public Pair<RGB, Integer> getClipOutlineOverlayPaint() {
+        return Pair.of(toRGB(CLIP_OUTLINE_COLOR), CLIP_OVERLAY_ALPHA);
+    }
+
+    /**
+     * Convenience converter of {@link Colors} into {@link RGB} objects.
+     *
+     * @param color
+     *            the {@link Colors} element to convert
+     * @return the desired {@link RGB}
+     */
+    protected RGB toRGB(final Colors color) {
+        if (color == null) {
+            return null;
+        } else {
+            return new RGB(color.getRed(), color.getGreen(), color.getBlue());
+        }
+    }
+
 
     /**
      * Property Listener that listens to changes on the original canvas and triggers a redraw of the
@@ -111,6 +161,14 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                         outlineRectTimer.restart();
                     }
                 }
+            } else if (evt.getPropertyName().equals(PCamera.PROPERTY_LAYERS)
+                    && evt.getNewValue() != null) {
+                // listening to the layers is required for enabling/disabling the clip outline overlay
+                //  immediately without any flickering
+
+                clipOutlineOverlay.setVisible(
+                        ((KlighdMainCamera) evt.getSource()).getDisplayedINode() instanceof KNodeNode);
+                clipOutlineOverlay.repaint();
             }
         }
     };
@@ -229,7 +287,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
         this.topNode = newTopNode;
 
-        final PCamera diagramMainCamera = topNode.getDiagramMainCamera();
+        final KlighdMainCamera diagramMainCamera = topNode.getDiagramMainCamera();
 
         // listen to view transformations
         diagramMainCamera.addPropertyChangeListener(propertyListener);
@@ -247,10 +305,61 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         // initialize & configure the outline rectangle
         //  the concrete path data are set later on in #adjustOutlineRect()
         //  when the timer expires the first time (it's started in constructor)
-        outlineRect = new KlighdPath();
-        outlineRect.setPaint(OUTLINE_EDGE_COLOR);
-        outlineRect.setPaintAlpha(OUTLINE_EDGE_OPACITY);
-        overlayLayer.addChild(outlineRect);
+        viewportOutlineRect = new KlighdPath();
+
+        final Pair<RGB, Integer> viewportOutlineRectColoring = getViewportOutlineRectPaint();
+        viewportOutlineRect.setLineWidth(VIEWPORT_OUTLINE_LINEWIDTH);
+        viewportOutlineRect.setPaint(viewportOutlineRectColoring.getFirst());
+        viewportOutlineRect.setPaintAlpha(viewportOutlineRectColoring.getSecond());
+        overlayLayer.addChild(viewportOutlineRect);
+
+        // initialize & configure the outline rectangle
+        //  its size is updated by the PropertyChangeListener on the BOUNDS of 'camera'
+        clipOutlineOverlay = new KlighdPath() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void paint(final KlighdPaintContext kpc) {
+
+                final KlighdSWTGraphicsEx graphics = ((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());
+
+                final Rectangle2D globalClipBounds =
+                        topNode.getDiagramMainCamera().getDisplayedLayer().getGlobalFullBounds();
+
+                final Region clip = new Region(graphics.getDevice());
+                clip.add(toSWTRectangle(clipOutlineOverlay.getBoundsReference().getBounds()));
+
+                final Rectangle diagramClip = toSWTRectangle(
+                        outlineCanvas.getCamera().getViewTransformReference()
+                                .transform(globalClipBounds, null).getBounds());
+
+                clip.subtract(diagramClip);
+
+                graphics.getGC().setClipping(clip);
+                super.paint(kpc);
+            }
+
+            private Rectangle toSWTRectangle(final java.awt.Rectangle rect) {
+                return new Rectangle(rect.x, rect.y, rect.width, rect.height);
+            }
+        };
+
+        final Pair<RGB, Integer> clipOutlineOverlayColoring = getClipOutlineOverlayPaint();
+        clipOutlineOverlay.setStrokeColor((RGB) null);
+        clipOutlineOverlay.setPaint(clipOutlineOverlayColoring.getFirst());
+        clipOutlineOverlay.setPaintAlpha(clipOutlineOverlayColoring.getSecond());
+        clipOutlineOverlay.setVisible(diagramMainCamera.getDisplayedINode() instanceof KNodeNode);
+        // ... implies to switch it off if displayedNode is a KNodeTopNode.
+
+        camera.addChild(clipOutlineOverlay);
+
+        camera.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, new PropertyChangeListener() {
+
+            public void propertyChange(final PropertyChangeEvent evt) {
+                clipOutlineOverlay.setPathToRectangle((Rectangle2D) evt.getNewValue());
+            }
+        });
+
 
         // add listeners to layout changes and canvas resizing
         rootNode = topNode.getGraphElement();
@@ -337,9 +446,9 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         final PBounds bounds = originalCamera.getViewBounds();
         NodeUtil.localToParent(displayedNode.getParent(), topNode).transform(bounds, bounds);
 
-        outlineRect.setPathToRoundRectangle((float) bounds.x, (float) bounds.y,
-                (float) bounds.width, (float) bounds.height, OUTLINE_EDGE_ROUNDNESS,
-                OUTLINE_EDGE_ROUNDNESS);
+        viewportOutlineRect.setPathToRoundRectangle((float) bounds.x, (float) bounds.y,
+                (float) bounds.width, (float) bounds.height, VIEWPORT_OUTLINE_ROUNDNESS,
+                VIEWPORT_OUTLINE_ROUNDNESS);
 
         // schedule a repaint
         outlineCanvas.getCamera().invalidatePaint();
