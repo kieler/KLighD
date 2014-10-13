@@ -7,15 +7,23 @@ knode targetnode {
 	}
 	knode child1 {
 		size: width = 25 height = 25
+		kpolygon {
+			points: left 0 , top 0; left 20 , top 0; left 20, top 20
+			styles: rotation = 45
+		}
+		
+
 	}
 	knode child2 {
 		size: width = 25 height = 25
 		krectangle {
 			styles:
-				background = 50g, 255b,100a
+				
+				background = 50g, 255b,255a->180r,100g,255a//(180)
 				shadow = 0r, 0g, 0b
 				foreground = 42r, 255g, 42b
-		} 
+				rotation = 24
+		}
 	} 
 }
 

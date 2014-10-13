@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.test;
 
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
@@ -27,6 +28,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KForeground;
+import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
@@ -40,6 +42,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;
@@ -50,16 +53,16 @@ import edu.umd.cs.piccolo.PRoot;
 
 /**
  * 
- * Tests that check whether styles and shapes that are defined in the KGraph 
- * also show up equivalently in the underlying piccolo graph.
+ * Tests that check whether styles and shapes that are defined in the KGraph also show up
+ * equivalently in the underlying piccolo graph.
  * 
  * @author ckru
- *
+ * 
  */
 @RunWith(ModelCollectionTestRunner.class)
 @BundleId("de.cau.cs.kieler.klighd.piccolo.test")
 @ModelPath("testModels/")
-@ModelFilter("*.kgt")
+@ModelFilter("KlighdRenderingTestModel.kgt")
 public class RenderingTests {
 
     private static KNode graph;
@@ -85,35 +88,75 @@ public class RenderingTests {
     /**
      * Test whether the test graphs styles are the same in KGraph notation as well as in the piccolo
      * results.
-     * @param node test kgraph
+     * 
+     * @param node
+     *            test kgraph
      */
     @Test
     public void renderingStyleTest(final KNode node) {
-        initialize(node);
-        KNode target = findKNodeById("child2", graph);
-        INode targetNode = findPNodeById("child2", controller.getNode());
+        Boolean initializer = false;
+        if (controller == null) {
+            initialize(node);
+            initializer = true;
+        }
+        String id = getKNodeId(node);
+        
+        INode targetNode = findPNodeById(id, controller.getNode());
         KlighdPath path = getKlighdPath(targetNode);
-        KRendering ren = target.getData(KRendering.class);
-        compareStyle(path, ren);
-
+        KRendering ren = node.getData(KRendering.class);
+        if (path != null && ren != null) {
+            compareStyle(path, ren, node);
+        }
+        for (KNode child: node.getChildren()) {
+            renderingStyleTest(child);
+        }
+        if (initializer) {
+            controller = null;
+            graph = null;
+        }
     }
 
     /**
      * Test whether the test graphs shapes are the same in KGraph notation as well as in the piccolo
      * results.
-     * @param node test kgraph
+     * 
+     * @param node
+     *            test kgraph
      */
     @Test
     public void renderingShapeTest(final KNode node) {
-        initialize(node);
-        compareShape(getKlighdPath(findPNodeById("child2", controller.getNode())),
-                findKNodeById("child2", graph).getData(KRendering.class));
-        compareShape(getKlighdPath(findPNodeById("sourcenode2", controller.getNode())),
-                findKNodeById("sourcenode2", graph).getData(KRendering.class));
-        compareShape(getKlighdPath(findPNodeById("sourcenode1", controller.getNode())),
-                findKNodeById("sourcenode1", graph).getData(KRendering.class));
+        Boolean initializer = false;
+        if (controller == null) {
+            initialize(node);
+            initializer = true;
+        }
+        
+        String id = getKNodeId(node);
+        INode targetNode = findPNodeById(id, controller.getNode());
+        KlighdPath path = getKlighdPath(targetNode);
+        KRendering ren = node.getData(KRendering.class);
+        if (path != null && ren != null) {
+            compareShape(path, ren, node);
+        }
+        for (KNode child: node.getChildren()) {
+            renderingShapeTest(child);
+        }
+
+        if (initializer) {
+            controller = null;
+            graph = null;
+        }
     }
 
+    private String getKNodeId(final KNode node) {
+        KIdentifier ki = node.getData(KIdentifier.class);
+        String id = "?";
+        if (ki != null) {
+            id = ki.getId();
+        }
+        return id;
+    }
+    
     /**
      * Compare the shape of given renderings from a KNode and a PNode.
      * 
@@ -122,13 +165,15 @@ public class RenderingTests {
      * @param ren
      *            KGraph object
      */
-    private void compareShape(final KlighdPath path, final KRendering ren) {
+    private void compareShape(final KlighdPath path, final KRendering ren, final KNode node) {
+        String id = getKNodeId(node);
         Assert.assertTrue(
-                "Shape mismatched",
+                "Shape mismatched on node " + id,
                 (ren instanceof KRectangle && path.getShape() instanceof Rectangle2D)
                         || (ren instanceof KEllipse && path.getShape() instanceof Ellipse2D)
                         || (ren instanceof KRoundedRectangle 
-                                && path.getShape() instanceof RoundRectangle2D));
+                                && path.getShape() instanceof RoundRectangle2D)
+                        || (ren instanceof KPolygon && path.getShape() instanceof Path2D));
     }
 
     /**
@@ -139,26 +184,49 @@ public class RenderingTests {
      * @param ren
      *            object holding styles for KGraph
      */
-    private void compareStyle(final KlighdPath path, final KRendering ren) {
+    private void compareStyle(final KlighdPath path, final KRendering ren, final KNode node) {
         List<KStyle> styles = ren.getStyles();
         KBackground bg = (KBackground) getStyle(styles, KBackground.class);
         KForeground fg = (KForeground) getStyle(styles, KForeground.class);
         KShadow sh = (KShadow) getStyle(styles, KShadow.class);
         RGB shadow = path.getShadow();
         RGB paint = path.getSWTPaint();
+        RGBGradient paintGradient = path.getSWTPaintGradient();
         RGB strokepaint = path.getStrokePaint();
-
-        Assert.assertTrue("Background color mismatched",
-                (bg == null && paint == null)
-                        || ((bg.getColor().getRed() == paint.red)
-                                && (bg.getColor().getBlue() == paint.blue) && (bg.getColor()
-                                .getGreen() == paint.green)));
-        Assert.assertTrue("Foreground color mismatched",
-                (fg == null && strokepaint == KlighdConstants.BLACK)
-                        || ((fg.getColor().getRed() == strokepaint.red)
-                                && (fg.getColor().getBlue() == strokepaint.blue) && (fg.getColor()
-                                .getGreen() == strokepaint.green)));
-        Assert.assertTrue("Shadow mismatched",
+        RGBGradient strokeGradient = path.getStrokePaintGradient();
+        
+        String id = getKNodeId(node);
+        if (!(bg != null && paint == null)) {
+            Assert.assertTrue("Background color mismatched on node " + id,
+                    (bg == null && paint == null)
+                            || ((bg.getColor().getRed() == paint.red)
+                                    && (bg.getColor().getBlue() == paint.blue) && (bg.getColor()
+                                    .getGreen() == paint.green)));
+        } else {
+            Assert.assertTrue("Background gradient color missing on node " + id, (paintGradient != null));
+            Assert.assertTrue("Gradient color mismatch on node " + id, ((bg.getColor().getRed() == paintGradient.getColor1().red)
+                                    && (bg.getColor().getBlue() == paintGradient.getColor1().blue) && (bg.getColor()
+                                    .getGreen() == paintGradient.getColor1().green)));
+            Assert.assertTrue("Gradient target color mismatch on node " + id, ((bg.getTargetColor().getRed() == paintGradient.getColor2().red)
+                    && (bg.getTargetColor().getBlue() == paintGradient.getColor2().blue) && (bg.getTargetColor()
+                    .getGreen() == paintGradient.getColor2().green)));
+        }
+        if (!(fg != null && strokepaint == null)) {
+            Assert.assertTrue("Foreground color mismatched on node " + id,
+                    (fg == null && strokepaint == KlighdConstants.BLACK)
+                            || ((fg.getColor().getRed() == strokepaint.red)
+                                    && (fg.getColor().getBlue() == strokepaint.blue) && (fg.getColor()
+                                    .getGreen() == strokepaint.green)));
+        } else {
+            Assert.assertTrue("Background gradient color missing on node " + id, (strokeGradient != null));
+            Assert.assertTrue("Gradient stroke color mismatch on node " + id, ((fg.getColor().getRed() == strokeGradient.getColor1().red)
+                    && (fg.getColor().getBlue() == strokeGradient.getColor1().blue) && (fg.getColor()
+                    .getGreen() == strokeGradient.getColor1().green)));
+            Assert.assertTrue("Gradient stroke target color mismatch on node " + id, ((fg.getTargetColor().getRed() == strokeGradient.getColor2().red)
+                && (fg.getTargetColor().getBlue() == strokeGradient.getColor2().blue) && (fg.getTargetColor()
+                        .getGreen() == strokeGradient.getColor2().green)));
+        }
+        Assert.assertTrue("Shadow mismatched on node " + id,
                 (sh == null && shadow == null)
                         || ((sh.getColor().getRed() == shadow.red)
                                 && (sh.getColor().getBlue() == shadow.blue) && (sh.getColor()
@@ -236,30 +304,4 @@ public class RenderingTests {
             return null;
         }
     }
-
-    /**
-     * Finds a knode with the given id in a given kgraph.
-     * 
-     * @param id
-     *            the id to search for
-     * @param node
-     *            the kgraph in which to search
-     * @return the knode if found or null
-     */
-    private KNode findKNodeById(final String id, final KNode node) {
-        KIdentifier nodeID = node.getData(KIdentifier.class);
-        if ((nodeID != null) && nodeID.getId().equals(id)) {
-            return node;
-        } else {
-            KNode result = null;
-            for (KNode n : node.getChildren()) {
-                result = findKNodeById(id, n);
-                if (result != null) {
-                    return result;
-                }
-            }
-            return null;
-        }
-    }
-
 }
