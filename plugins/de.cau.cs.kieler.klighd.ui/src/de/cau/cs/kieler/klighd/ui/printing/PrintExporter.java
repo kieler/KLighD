@@ -17,6 +17,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.eclipse.swt.graphics.Drawable;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -24,6 +25,8 @@ import org.eclipse.swt.printing.Printer;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.export.AbstractDiagramExporter;
+import de.cau.cs.kieler.klighd.piccolo.export.ExportHooks;
+import de.cau.cs.kieler.klighd.piccolo.export.IExportHook;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
@@ -85,16 +88,26 @@ public class PrintExporter extends AbstractDiagramExporter {
             final double scale, final Point2D centeringOffset) {
 
         final Image image = new Image(viewer.getControl().getDisplay(), bounds.width, bounds.height);
-        final GC gc = new GC(image);
 
-        export(gc, column, row, bounds, scale, centeringOffset);
+        export(image, column, row, new Rectangle2D.Double(0, 0, bounds.width, bounds.height),
+                scale, centeringOffset);
 
-        gc.dispose();
         return image;
+    }
+
+    private Rectangle2D imageSize = null;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Rectangle2D getBufferImageSize() {
+        return imageSize;
     }
 
     /**
      * Export print. Can export the diagram in tiles to print on multiple pages.
+     *
      * @param printer
      *            the printer to print to
      * @param column
@@ -108,31 +121,47 @@ public class PrintExporter extends AbstractDiagramExporter {
      */
     public void print(final Printer printer, final int column, final int row,
             final double scale, final Point2D centeringOffset) {
-
-        final GC gc = new GC(printer);
         final Rectangle pageBounds = getPrinterBounds(printer);
-        export(gc, column, row, pageBounds, scale, centeringOffset);
-        gc.dispose();
+
+        export(printer, column, row, new Rectangle2D.Double(0, 0, pageBounds.width,
+                pageBounds.height), scale, centeringOffset);
     }
 
-    private void export(final GC gc, final int column, final int row, final Rectangle bounds,
-            final double scale, final Point2D centeringOffset) {
+    /**
+     *
+     * @param drawable
+     * @param column
+     * @param row
+     * @param bounds
+     * @param scale
+     * @param centeringOffset
+     */
+    private void export(final Drawable drawable, final int column, final int row,
+            final Rectangle2D bounds, final double scale, final Point2D centeringOffset) {
 
+        final Iterable<IExportHook> hooks =
+                ExportHooks.getExportHooksByFormat("printout", viewer.getViewContext());
+
+        final GC gc = new GC(drawable);
         final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, gc.getDevice());
 
-        // apply translation and clipping for tiled export if necessary
-        graphics.transform(AffineTransform.getTranslateInstance(
-                -column * bounds.width + centeringOffset.getX(),
-                -row * bounds.height + centeringOffset.getY()));
-        graphics.clip(new Rectangle2D.Double(0, 0, bounds.width, bounds.height));
+        // initial clip definition
+        graphics.setClip(bounds);
+        imageSize = bounds;
+
+        // apply translation for tiled export if necessary
+        graphics.setTransform(AffineTransform.getTranslateInstance(
+                -column * bounds.getWidth() + centeringOffset.getX(),
+                -row * bounds.getHeight() + centeringOffset.getY()));
 
         // apply the scale factor to the employed graphics object
         //  by means of a corresponding affine transform
         graphics.transform(AffineTransform.getScaleInstance(scale, scale));
 
-        drawDiagram(viewer.getControl().getCamera(), false, graphics, null, scale, false);
+        drawDiagram(viewer.getControl().getCamera(), false, graphics, null, false, hooks);
 
         graphics.dispose();
+        gc.dispose();
     }
 
     /**

@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -71,7 +71,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController #updateStyles()
  * AbstractKGERenderingController#updateStyles()}) after all rendering and style changes are
  * performed.
- * 
+ *
  * @author chsch, mri
  */
 public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implements IResourceEmployer {
@@ -101,10 +101,10 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     // default initialization that avoids null pointer faults in case of failing setPathTo... calls
     private Shape origShape = new Rectangle2D.Float();
     private Shape shape = null;
-    
+
     private Path shapePath = null;
 
-    
+
     // A field to keep the list of points line points in mind. They are required while determining
     //  the rotation of edge decorators. By remembering them a re-extraction from the {@link Path2D
     //  Path2D} is avoided.
@@ -127,12 +127,12 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      * Standard constructor.
      */
     public KlighdPath() {
-        super();        
+        super();
     }
 
     /**
      * Constructor.
-     * 
+     *
      * @param rendering
      *            the {@link KRendering} element being represented by this {@link KlighdPath}
      */
@@ -143,7 +143,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Changes the underlying shape of this {@link KlighdPath}.
-     * 
+     *
      * @param newShape
      *            new associated shape of this {@link KlighdPath}
      */
@@ -164,7 +164,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Returns the points of the shape.
-     * 
+     *
      * @return the points or <code>null</code> if path is not a line or is not initialized properly.
      */
     public Point2D[] getShapePoints() {
@@ -173,7 +173,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Provides the information whether is path is a simple line or a shape with a closed periphery.
-     * 
+     *
      * @return true if the path is a polyline, rounded bend point polyline, or a spline; false
      *         otherwise.
      */
@@ -189,7 +189,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /**
      * Returns the attached line attributes record denoting stroke configuration w.r.t. line cap,
      * join, style, and width.
-     * 
+     *
      * @return the line related {@link LineAttributes}.
      */
     public LineAttributes getLineAttributes() {
@@ -198,7 +198,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets a new line attributes record.
-     * 
+     *
      * @param theLineAttributes
      *            the desired {@link LineAttributes} record.
      */
@@ -224,7 +224,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Returns the line width of the path.
-     * 
+     *
      * @return the line width
      */
     public double getLineWidth() {
@@ -233,7 +233,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets the line width of the path.
-     * 
+     *
      * @param width
      *            the line width
      */
@@ -251,7 +251,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Returns the paint to use when drawing the stroke of the shape.
-     * 
+     *
      * @return path's stroke paint
      */
     public RGB getStrokePaint() {
@@ -260,7 +260,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Returns the stroke paint gradient used while painting this node. This value may be null.
-     * 
+     *
      * @return the stroke paint gradient used while painting this node.
      */
     public RGBGradient getStrokePaintGradient() {
@@ -269,7 +269,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets the paint to use when drawing the stroke of the shape.
-     * 
+     *
      * @param strokeColor
      *            new stroke color
      */
@@ -284,7 +284,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Set the alpha used to draw the stroke of the shape.
-     * 
+     *
      * @param alpha
      *            the alpha value
      */
@@ -294,7 +294,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets the paint to use when drawing the stroke of the shape.
-     * 
+     *
      * @param strokeGradient
      *            new stroke color
      */
@@ -317,7 +317,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Returns the paint used while painting this node. This value may be null.
-     * 
+     *
      * @return the paint used while painting this node.
      */
     public RGB getSWTPaint() {
@@ -326,7 +326,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Returns the paint gradient used while painting this node. This value may be null.
-     * 
+     *
      * @return the paint gradient used while painting this node.
      */
     public RGBGradient getSWTPaintGradient() {
@@ -335,7 +335,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Set the paint used to paint this node, which may be null.
-     * 
+     *
      * @param newPaint
      *            paint that this node should use when painting itself.
      */
@@ -357,7 +357,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Set the alpha used to paint this node.
-     * 
+     *
      * @param alpha
      *            the alpha value
      */
@@ -367,7 +367,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Set the paint used to paint this node, which may be null.
-     * 
+     *
      * @param newPaint
      *            paint that this node should use when painting itself.
      */
@@ -389,7 +389,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Set the paint used to paint this node, which may be null.
-     * 
+     *
      * @param newPaint
      *            paint that this node should use when painting itself.
      */
@@ -405,7 +405,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /**
      * Sets the shadow color for this path. Note that this definition will be ignored for non-closed
      * shapes, i.e. polylines and curves.
-     * 
+     *
      * @param color
      *            the color of the attached shadow
      * @param xOffset
@@ -442,14 +442,14 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     protected void internalUpdateBounds(final double x, final double y, final double width,
             final double height) {
         // unused (left it the for the case it might be helpful in future,
-        //  should not sink into obscurity) 
+        //  should not sink into obscurity)
         // if it is used again one have to make sure that no recursive cycles occur with
         //  #updateBoundsFromPath
     }
 
     /**
      * Returns true if path crosses the provided bounds. Takes visibility of path into account.
-     * 
+     *
      * @param aBounds
      *            bounds being tested for intersection
      * @return true if path visibly crosses bounds
@@ -481,7 +481,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         return false;
     }
 
-    
+
     /**
      * This method realizes the adjustment of the shape bounds according to stroke line width.
      * To this end, the initial shape definition, which is kept in {@link #origShape} is replicated
@@ -490,7 +490,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      * <br>
      * In case of lines and polygons the {@link #origShape} is put into {@link #shape}, too, and
      * thus used while drawing.
-     * 
+     *
      * @author chsch
      */
     private void updateShape() {
@@ -498,7 +498,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
         if (isLine() || isPolygon) {
             shape = origShape;
-            
+
         } else {
             final float lW = lineAttributes.width;
             final float halfLW = lineAttributes.width / 2;
@@ -513,7 +513,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
                 //  actually covered area's bounds; since, in addition, this call is rather expensive
                 //  for arcs it is only performed for ellipses, rectangles, and rounded rectangles
                 final Rectangle2D.Float b = (Rectangle2D.Float) origShape.getBounds2D();
-                
+
                 if (origShape instanceof Ellipse2D) {
                     shape = new Ellipse2D.Float(b.x + halfLW, b.y + halfLW, b.width - lW, b.height - lW);
                 } else if (origShape instanceof Rectangle2D) {
@@ -538,11 +538,11 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         if (isLine() || isPolygon) {
             final Rectangle2D b = shape.getBounds2D();
             final float halfLW = lineAttributes.width / 2;
-            
+
             // By means of the following setting it's guaranteed that the line width is incorporated
             //  in determining the bounding box of horizontal and vertical lines.
-            // This is important for being able to pick them, for instance. 
-            
+            // This is important for being able to pick them, for instance.
+
             super.setBounds(b.getX() - halfLW, b.getY() - halfLW,
                     b.getWidth() + lineAttributes.width,
                     b.getHeight() + lineAttributes.width);
@@ -561,7 +561,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      * <i>I'm not sure whether it is better to do that this way or by providing a specialized
      * <code>repaint()</code> method.</i><br>
      * This should be observed and changed if necessary.
-     * 
+     *
      * @author chsch
      */
     @Override
@@ -588,7 +588,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
         final KlighdSWTGraphics graphics = kpc.getKlighdGraphics();
         final Device device = graphics.getDevice();
-        
+
         // flag indicating whether we can construct SWT Paths and rely on
         //  KlighdSWTGraphics#draw(Path) & KlighdSWTGraphics#fill(Path)
         final boolean swt = device != null;
@@ -603,7 +603,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         final int currentAlpha = graphics.getAlpha();
         final float currentAlphaFloat = currentAlpha;
 
-        
+
         // We attach semantic data favored to the foreground element
         // however, if no foreground exists, we attach it to the background
         // FIXME not working for rendering refs
@@ -615,13 +615,13 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         if (!drawForeground && drawBackground) {
             addSemanticData(kpc);
         }
-        
+
         // draw the background if possible and required
         if (!isLine()) {
             if (swt && shapePath == null && (paint != null || paintGradient != null)) {
                 shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), device);
             }
-            
+
             if (paint != null) {
                 graphics.setAlpha(
                         (int) (paintAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
@@ -648,14 +648,14 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         }
 
         // draw the foreground if required
-        //  in case of a line width of zero we can skip this  
+        //  in case of a line width of zero we can skip this
         if (lineAttributes.width != 0f) {
             graphics.setLineAttributes(lineAttributes);
-            
+
             if (swt && shapePath == null && (strokePaint != null || strokePaintGradient != null)) {
                 shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), graphics.getDevice());
             }
-            
+
             if (strokePaint != null) {
                 graphics.setAlpha(
                         (int) (strokeAlpha * (currentAlphaFloat / KlighdConstants.ALPHA_FULL_OPAQUE)));
@@ -666,7 +666,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
                     graphics.draw(shape);
                 }
             }
-    
+
             if (strokePaintGradient != null) {
                 graphics.setStrokePattern(strokePaintGradient, getBoundsReference());
                 if (swt) {
@@ -683,7 +683,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Draws the shadow of the current shape.
-     * 
+     *
      * @param graphics
      *            the {@link KlighdSWTGraphics} to draw on.
      * @param swt
@@ -698,7 +698,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         // note that the alpha values of stacked shapes will kind of accumulate
         final float shadowAlpha = 25f;
 
-        
+
         // determine the movement of the shape coordinates by means of an affine transform
         final AffineTransform t = graphics.getTransform();
         final AffineTransform tc = new AffineTransform(t);
@@ -706,7 +706,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
         // configure the graphics layer
         graphics.setFillColor(shadow);
-        
+
         // a sufficiently small number unequal to 0
         graphics.setLineAttributes(new LineAttributes(0.0001f)); // SUPPRESS CHECKSTYLE MagicNumber
         graphics.setAlpha(
@@ -771,9 +771,22 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Resets <code>this</code> path to <code>rect</code>.<br>
+     * In doing to a copy of the given {@link Rectangle2D} is created.
+     *
+     * @param rect
+     *            the rectangle determining the new bounds
+     */
+    public void setPathToRectangle(final Rectangle2D rect) {
+        final Rectangle2D rectFloat = new Rectangle2D.Float();
+        rectFloat.setFrame(rect);
+        this.setShape(rectFloat);
+    }
+
+    /**
+     * Resets <code>this</code> path to <code>rect</code>.<br>
      * <b>Be careful:</b>The given {@link Rectangle2D.Float} instance is used further on so don't
      * modify it externally!
-     * 
+     *
      * @param rect
      *            the rectangle determining the new bounds
      */
@@ -783,7 +796,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Resets <code>this</code> path to a rectangle with the dimensions and position provided.
-     * 
+     *
      * @param x
      *            left of the rectangle
      * @param y
@@ -799,7 +812,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     }
     /**
      * Resets <code>this</code> path to a rectangle with the dimensions and position provided.
-     * 
+     *
      * @param x
      *            left of the rectangle
      * @param y
@@ -821,7 +834,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /**
      * Resets <code>this</code> path to an ellipse positioned at the coordinate provided with the
      * dimensions provided.
-     * 
+     *
      * @param x
      *            left of the ellipse
      * @param y
@@ -839,7 +852,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /**
      * Resets <code>this</code> path to an arc positioned at the coordinate provided with the
      * dimensions, angular start and angular extent provided.
-     * 
+     *
      * @param x
      *            left of the arc
      * @param y
@@ -864,7 +877,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets <code>this</code> path to a sequence of segments described by the points.
-     * 
+     *
      * @param points
      *            points to that lie along the generated path
      */
@@ -882,7 +895,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets <code>this</code> path to a sequence of segments described by the points.
-     * 
+     *
      * @param points
      *            points to that lie along the generated path
      * @param bendRadius
@@ -892,7 +905,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         if (points.length == 0) {
             return;
         }
-        
+
         this.isRoundedBendsPolyline = true;
         this.linePoints = points;
         this.setShape(
@@ -902,7 +915,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets <code>this</code> path to a sequence of segments described by the points.
-     * 
+     *
      * @param points
      *            points to that lie along the generated path
      */
@@ -910,7 +923,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         if (points.length == 0) {
             return;
         }
-        
+
         this.isPolyline = true;
         this.linePoints = points;
         this.setShape(PolylineUtil.createPolylinePath(new Path2D.Float(), points));
@@ -919,7 +932,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets <code>this</code> path to a sequence of segments described by the points.
-     * 
+     *
      * @param points
      *            points to that lie along the generated path
      */
@@ -927,7 +940,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         if (points.length == 0) {
             return;
         }
-        
+
         this.isPolygon = true;
         this.linePoints = points;
         this.setShape(PolylineUtil.createPolygonPath(new Path2D.Float(), points));

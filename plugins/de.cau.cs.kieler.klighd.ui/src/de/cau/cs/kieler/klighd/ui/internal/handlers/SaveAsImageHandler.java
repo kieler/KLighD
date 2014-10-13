@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse Rich Client
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -33,7 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 
 /**
  * An action which invokes the 'save-as-image' dialog and performs the diagram export.
- * 
+ *
  * @author mri
  * @author uru
  * @author chsch
@@ -56,7 +56,7 @@ public class SaveAsImageHandler extends AbstractHandler {
         final Shell shell = viewer.getControl().getShell();
 
         // open the dialog to receive the required user input
-        final SaveAsImageDialog dialog = new SaveAsImageDialog(shell);
+        final SaveAsImageDialog dialog = new SaveAsImageDialog(viewer.getViewContext(), shell);
         final int code = dialog.open();
 
         if (code != Dialog.OK) {
@@ -68,10 +68,10 @@ public class SaveAsImageHandler extends AbstractHandler {
                 KlighdDataManager.getInstance().getExporter(dialog.getCurrentExporter().exporterId);
 
         // execute the export process
-        final IStatus res = exporter.export(dialog.getExportData(), viewer.getControl());
+        final IStatus res = exporter.export(viewer.getControl(), dialog.getExportData());
 
         if (res == Status.OK_STATUS) {
-            final String title = "Diagram export successful.";            
+            final String title = "Diagram export successful.";
             final String msg = "KLighD diagram export finished successfully.";
 
             MessageDialog.openInformation(shell, title, msg);
@@ -85,7 +85,7 @@ public class SaveAsImageHandler extends AbstractHandler {
                     StatusManager.SHOW);
 
         } else if (res.getException() instanceof OutOfMemoryError) {
-            final String title = "Out of heap memory.";            
+            final String title = "Out of heap memory.";
             final String msg = "Diagram image could not be exported due to heap space overflow. "
                     + "Retry tiled export with more or smaller image tiles.";
             MessageDialog.openError(shell, title, msg);

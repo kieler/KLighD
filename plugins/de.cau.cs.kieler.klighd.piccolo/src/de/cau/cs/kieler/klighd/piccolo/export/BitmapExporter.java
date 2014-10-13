@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.export;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -38,14 +39,14 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * Generic {@link IViewExporter} for bitmap formats, e.g., png and jpeg.
- * 
+ *
  * Currently the following formats are supported:
  * <ul>
  * <li>bmp</li>
  * <li>jpeg</li>
  * <li>png</li>
  * </ul>
- * 
+ *
  * @author chsch
  * @author uru
  */
@@ -59,11 +60,12 @@ public class BitmapExporter extends KlighdCanvasExporter {
     public static final String SUB_FORMAT_PNG = "png";
 
     private static final String ERROR_MSG_PREFIX = "KLighD bitmap export: ";
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public IStatus export(final ExportData data, final KlighdCanvas canvas) {
+    public IStatus export(final KlighdCanvas canvas, final ExportData data) {
 
         // reveal the canvas' camera ...
         final KlighdMainCamera camera = canvas.getCamera();
@@ -90,7 +92,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
             width = (int) Math.ceil(((double) width) / cols);
             height = (int) Math.ceil(((double) height) / rows);
         }
-        
+
         // for each row and columns draw and export the image
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -104,6 +106,15 @@ public class BitmapExporter extends KlighdCanvasExporter {
         return Status.OK_STATUS;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Rectangle2D getBufferImageSize() {
+        return imageSize;
+    }
+
+    private Rectangle2D imageSize = null;
 
     private IStatus exportTile(final ExportData data, final KlighdCanvas canvas, final PBounds bounds,
             final int row, final int col, final int width, final int height) {
@@ -119,15 +130,20 @@ public class BitmapExporter extends KlighdCanvasExporter {
             final String msg = ERROR_MSG_PREFIX + "Out of heap space memory!";
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
         }
+
+        imageSize = new Rectangle2D.Double(0, 0, width, height);
+
         final GC gc = new GC(image);
 
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
 
-        // apply translation and clipping for tiled export if necessary
+        // define the initial clip
+        graphics.setClip(new Rectangle(width, height));
+
+        // apply translation for tiled exports
         if (data.getTilingInfo().isTiled) {
             graphics.transform(AffineTransform.getTranslateInstance(-col * width, -row * height));
-            graphics.clip(new Rectangle(width, height));
         }
 
         // apply the scale factor to the employed graphics object
@@ -135,8 +151,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
 
         // do the action diagram drawing work
-        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, data.scale,
-                ExportHooks.getExportHooksByFormat(data.format), false);
+        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, false,
+                ExportHooks.getExportHooksByFormat(data.format, data.viewContext));
 
         // create an image loader to save the image
         // although the API differently suggests:

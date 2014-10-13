@@ -14,13 +14,11 @@
 package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.geom.AffineTransform;
-import java.util.Collection;
+import java.awt.geom.Rectangle2D;
 import java.util.Collections;
-import java.util.List;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
@@ -83,7 +81,58 @@ public abstract class AbstractDiagramExporter {
     /**
      * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
      * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, Collection, boolean)}.
+     * double, boolean, Iterable)}.
+     * The diagram scale is set to 100%, exporting of semantic data is deactivated.
+     *
+     * @param camera
+     *            the {@link KlighdMainCamera} showing the diagram to be exported
+     * @param exportViewport
+     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
+     *            displayed layer is exported
+     * @param graphics
+     *            the graphics object to 'draw' the diagram on
+     * @param bounds
+     *            the bounds of the diagram part to be exported, required for determining the main
+     *            clip and the background coloring; may be <code>null</code>,
+     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
+     */
+    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
+            final KlighdSWTGraphics graphics, final PBounds bounds) {
+        drawDiagram(camera, exportViewport, graphics, bounds, 1, false,
+                Collections.<IExportHook>emptyList());
+    }
+
+
+    /**
+     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
+     * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
+     * double, boolean, Iterable)}. Exporting of semantic data is deactivated.
+     *
+     * @param camera
+     *            the {@link KlighdMainCamera} showing the diagram to be exported
+     * @param exportViewport
+     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
+     *            displayed layer is exported
+     * @param graphics
+     *            the graphics object to 'draw' the diagram on
+     * @param bounds
+     *            the bounds of the diagram part to be exported, required for determining the main
+     *            clip and the background coloring; may be <code>null</code>,
+     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
+     * @param scale
+     *            the scaling factor
+     */
+    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
+            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale) {
+        drawDiagram(camera, exportViewport, graphics, bounds, scale, false,
+                Collections.<IExportHook>emptyList());
+    }
+
+
+    /**
+     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
+     * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
+     * double, boolean, Iterable)}. The diagram scale is set to 100%.
      *
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
@@ -103,15 +152,15 @@ public abstract class AbstractDiagramExporter {
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds, final boolean exportSemanticData) {
-        drawDiagram(camera, exportViewport, graphics, bounds, 1,
-                Collections.<IExportHook>emptyList(), exportSemanticData);
+        drawDiagram(camera, exportViewport, graphics, bounds, 1, exportSemanticData,
+                Collections.<IExportHook>emptyList());
     }
 
 
     /**
      * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
      * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, Collection, boolean)}.
+     * double, boolean, Iterable)}. Exporting of semantic data is deactivated.
      *
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
@@ -122,26 +171,25 @@ public abstract class AbstractDiagramExporter {
      *            the graphics object to 'draw' the diagram on
      * @param bounds
      *            the bounds of the diagram part to be exported, required for determining the main
-     *            clip and the background coloring; may be <code>null</code>,
+     *            clip and
+     *            the background coloring; may be <code>null</code>,
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
      * @param scale
      *            the scaling factor
-     * @param exportSemanticData
-     *            if <code>true</code> semantic data that are attached to the diagram's view model are
-     *            exported to the image (if implemented by the employed {@link KlighdSWTGraphics})
+     * @param hooks
+     *            an {@link Iterable} of {@link IExportHook IExportHooks} to apply
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds, final double scale,
-            final boolean exportSemanticData) {
-        drawDiagram(camera, exportViewport, graphics, bounds, scale,
-                Collections.<IExportHook>emptyList(), exportSemanticData);
+            final Iterable<IExportHook> hooks) {
+        drawDiagram(camera, exportViewport, graphics, bounds, scale, false, hooks);
     }
 
 
     /**
      * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
      * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, Collection, boolean)}.
+     * double, boolean, Iterable)}. The diagram scale is set to 100%.
      *
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
@@ -154,17 +202,17 @@ public abstract class AbstractDiagramExporter {
      *            the bounds of the diagram part to be exported, required for determining the main
      *            clip and the background coloring; may be <code>null</code>,
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
-     * @param hooks
-     *            a {@link Collection} of {@link IExportHook IExportHooks} to apply
      * @param exportSemanticData
      *            if <code>true</code> semantic data that are attached to the diagram's view model
      *            are exported to the image (if implemented by the employed
      *            {@link KlighdSWTGraphics})
+     * @param hooks
+     *            an {@link Iterable} of {@link IExportHook IExportHooks} to apply
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds,
-            final Collection<IExportHook> hooks, final boolean exportSemanticData) {
-        drawDiagram(camera, exportViewport, graphics, bounds, 1, hooks, exportSemanticData);
+            final boolean exportSemanticData, final Iterable<IExportHook> hooks) {
+        drawDiagram(camera, exportViewport, graphics, bounds, 1, exportSemanticData, hooks);
     }
 
 
@@ -189,15 +237,15 @@ public abstract class AbstractDiagramExporter {
      *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
      * @param scale
      *            the scaling factor
-     * @param hooks
-     *            a {@link Collection} of {@link IExportHook IExportHooks} to apply
      * @param exportSemanticData
      *            if <code>true</code> semantic data that are attached to the diagram's view model
      *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics})
+     * @param hooks
+     *            an {@link Iterable} of {@link IExportHook IExportHooks} to apply
      */
     protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
             final KlighdSWTGraphics graphics, final PBounds bounds, final double scale,
-            final Collection<IExportHook> hooks, final boolean exportSemanticData) {
+            final boolean exportSemanticData, final Iterable<IExportHook> hooks) {
 
         final PBounds theBounds;
         if (bounds != null) {
@@ -207,11 +255,6 @@ public abstract class AbstractDiagramExporter {
         }
 
         final PBounds preBounds = new PBounds(0, 0, theBounds.width, theBounds.height);
-
-        // The global clip setting is required as (in PPaintContext) a default one will be set!
-        // This however will let various browsers go crazy and don't show anything!
-        //  (in case of an SVG output)
-        graphics.setClip(preBounds);
 
         // explicitly initialize the white background (required especially for SVG exports)
         graphics.setFillColor(KlighdConstants.WHITE);
@@ -225,7 +268,7 @@ public abstract class AbstractDiagramExporter {
         final AffineTransform preTransform = new AffineTransform();
 
         for (final IExportHook hook : hooks) {
-            preTransform.concatenate(hook.drawPreDiagram((KlighdSWTGraphicsEx) graphics, preBounds));
+            preTransform.concatenate(hook.drawPreDiagram(graphics, preBounds));
             // Restore the transform in case the hooks changed something.
             graphics.setTransform(transform);
         }
@@ -261,20 +304,42 @@ public abstract class AbstractDiagramExporter {
 
         } else {
             // the fallback case, should not happen in context of KLighD
-            @SuppressWarnings("unchecked")
-            final List<PLayer> layersReference = camera.getLayersReference();
+            @SuppressWarnings("unchecked") // Piccolo2D classes do not use type parameters :-(
+            final Iterable<PLayer> layersReference = camera.getLayersReference();
             for (final PLayer layer : layersReference) {
                 layer.fullPaint(paintContext);
             }
         }
 
-        // reset the zero point
-        graphics.setTransform(transform);
-
         for (final IExportHook hook : hooks) {
-            hook.drawPostDiagram((KlighdSWTGraphicsEx) graphics, preBounds);
-            // Restore the transform in case the hooks changed something.
+            // reset the zero point,
+            //  or restore the transform in case 'hook' changed something, respectively
             graphics.setTransform(transform);
+            hook.drawPostDiagram(graphics, preBounds);
         }
+
+        final Rectangle2D imageSize = getBufferImageSize();
+        if (imageSize != null) {
+
+            final AffineTransform identity = new AffineTransform();
+            graphics.setTransform(identity);
+            graphics.setClip(imageSize);
+
+            for (final IExportHook hook : hooks) {
+                // Reset the transform in case 'hooks' changed something.
+                graphics.setTransform(identity);
+                hook.drawPostDiagramTile(graphics, imageSize);
+            }
+        }
+    }
+
+    /**
+     * Method hook providing the size of the employed buffer image(s), which is required for
+     * properly implementing {@link IExportHook#drawPostDiagramTile(KlighdSWTGraphics, Rectangle2D)}.
+     *
+     * @return the buffer image size of {@code null} if no buffer images are used
+     */
+    protected Rectangle2D getBufferImageSize() {
+        return null;
     }
 }
