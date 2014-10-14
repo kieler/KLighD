@@ -90,6 +90,7 @@
             class="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"
             contributorClass="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart$ActionContributor"
             default="false"
+            extensions="kgx,kgraph"
             icon="icons/klighd.gif"
             id="de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart"
             name="Lightweight Diagram Viewer">
@@ -132,7 +133,7 @@
             defaultHandler="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdSaveKGraphHandler"
             description="Allows to write the view model KGraph to a file."
             id="de.cau.cs.kieler.klighd.ui.savekgraph"
-            name="Save Underlying KGraph">
+            name="Save View Model (KGraph)">
       </command>
       <command
             categoryId="de.cau.cs.kieler.klighd.ui"
