@@ -471,12 +471,59 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
 
     private static GradientPaint rgb2Pattern(final RGBGradient gradient, final Rectangle2D bounds) {
         final GradientPaint gp =
-                new GradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(), rgb2Color(
+                new KlighdGradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(), rgb2Color(
                         gradient.getColor1(), gradient.getAlpha1()), (float) bounds.getMaxX(),
                         (float) bounds.getMaxY(), rgb2Color(gradient.getColor2(),
-                                gradient.getAlpha2()));
+                                gradient.getAlpha2()), gradient.getAngle());
 
         return gp;
+    }
+    
+    /**
+     * 
+     * Class that extends the AWT GradientPaint with a rotation value that svg exporters 
+     * can use to rotate gradient paints.
+     * 
+     * @author ckru
+     *
+     */
+    public static class KlighdGradientPaint extends GradientPaint {
+        
+        /**
+         * Angle of the gradient.
+         */
+        private float rotation;
+        
+        /**
+         * Constructs a simple acyclic <code>GradientPaint</code> object.
+         * @param x1 x coordinate of the first specified
+         * <code>Point</code> in user space
+         * @param y1 y coordinate of the first specified
+         * <code>Point</code> in user space
+         * @param color1 <code>Color</code> at the first specified
+         * <code>Point</code>
+         * @param x2 x coordinate of the second specified
+         * <code>Point</code> in user space
+         * @param y2 y coordinate of the second specified
+         * <code>Point</code> in user space
+         * @param color2 <code>Color</code> at the second specified
+         * <code>Point</code>
+         * @param rotation Angle by which the gradient is rotated
+         * @throws NullPointerException if either one of colors is null
+         */
+        public KlighdGradientPaint(final float x1, final float y1, final Color color1,
+                final float x2, final float y2, final Color color2, final float rotation) {
+            super(x1, y1, color1, x2, y2, color2);
+            this.rotation = rotation;
+        }
+        
+        /**
+         * Gets the angle by which the gradient is rotated.
+         * @return Angle of the gradient
+         */
+        public float getRotation() {
+            return rotation;
+        }
     }
 
     private BufferedImage convertToAWT(final ImageData data) {

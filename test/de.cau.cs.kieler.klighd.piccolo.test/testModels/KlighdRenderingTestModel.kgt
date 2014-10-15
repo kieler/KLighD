@@ -19,7 +19,7 @@ knode targetnode {
 		krectangle {
 			styles:
 				
-				background = 50g, 255b,255a->180r,100g,255a//(180)
+				background = 50g, 255b,255a->180r,100g,255a(90)
 				shadow = 0r, 0g, 0b
 				foreground = 42r, 255g, 42b
 				rotation = 24
