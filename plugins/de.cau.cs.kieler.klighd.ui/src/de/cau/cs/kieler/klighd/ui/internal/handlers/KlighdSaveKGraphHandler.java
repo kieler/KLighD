@@ -45,6 +45,8 @@ import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
  */
 public class KlighdSaveKGraphHandler extends AbstractHandler {
 
+    private static final String KGRAPH_FILE_EXTENSION = ".kgx";
+    
     /**
      * {@inheritDoc}
      */
@@ -93,11 +95,15 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             if (shell != null && success == SaveAsDialog.OK) {
                 // retrieve selected
                 String file = fd.getResult().toOSString().toString();
+                if (fd.getResult().getFileExtension() == null) {
+                    file += KGRAPH_FILE_EXTENSION;
+                }
                 ResourceSet rs = new ResourceSetImpl();
-                Resource r = rs.createResource(URI.createFileURI(file));
+                Resource r = rs.createResource(URI.createPlatformResourceURI(file, true));
 
                 // write a copy of the view model kgraph to the selected file
                 EObject copy = EcoreUtil.copy(viewContext.getViewModel());
+                
                 r.getContents().add(copy);
                 r.save(Collections.emptyMap());
 
