@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,6 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.DialogTray;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -199,17 +199,16 @@ public class PrintPreviewTray extends DialogTray {
         // Adjust the scale according to relation between preview and printing size.
         final double previewScale = (double) (imageWidth) / pageBounds.width;
 
-        final Rectangle imageBounds =
-                new Rectangle(0, 0, imageWidth, imageHeight);
+        final Rectangle imageBounds = new Rectangle(imageWidth, imageHeight);
 
         // make sure height and width are not 0, if too small <4, don't bother
         if (!(imageHeight <= MINIMAL_TILE_SIZE || imageWidth <= MINIMAL_TILE_SIZE)) {
             for (int i = 0; i < options.getPagesTall(); i++) {
                 for (int j = 0; j < options.getPagesWide(); j++) {
                     final Label label = new Label(composite, SWT.NULL);
-                    final Image pageImg = options.getExporter().exportPreview(j, i, imageBounds,
-                            options.getScaleFactor() * previewScale,
-                            options.getCenteringOffset(previewScale));
+                    final Image pageImg = options.getExporter().exportPreview(
+                            j, i, imageBounds, pageBounds, options.getScaleFactor(),
+                            previewScale, options.getCenteringOffset(previewScale));
                     label.setImage(pageImg);
                     imageList.add(pageImg);
                 }
@@ -219,7 +218,7 @@ public class PrintPreviewTray extends DialogTray {
         composite.pack();
 
         // Manually center the composite
-        final Rectangle compositeBounds = composite.getBounds();
+        final org.eclipse.swt.graphics.Rectangle compositeBounds = composite.getBounds();
 
         compositeBounds.x = (body.getSize().x - compositeBounds.width) / 2;
         compositeBounds.y = (body.getSize().y - compositeBounds.height) / 2;

@@ -24,6 +24,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
@@ -31,7 +32,6 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
@@ -203,7 +203,7 @@ public final class PrintOptions {
 
     // some "cache" fields
     private Printer printer = null;
-    private Rectangle printerBounds = null;
+    private java.awt.Rectangle printerBounds = null;
     private Rectangle2D diagramBounds = null;
     private Point2D centeringOffset = null;
 

@@ -29,7 +29,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 
+import de.cau.cs.kieler.klighd.DiagramExportConfig;
+import de.cau.cs.kieler.klighd.IExportBranding;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
@@ -73,30 +77,70 @@ public class BitmapExporter extends KlighdCanvasExporter {
         // ... and determine the bounds of the diagram to be exported
         final PBounds bounds = getExportedBounds(camera, data.isCameraViewport);
 
+        final Iterable<IExportBranding> brandings =
+               KlighdDataManager.getExportBrandingByFormat(data.format, data.viewContext);
+
+        final Trim trim = getMaximumDiagramTrim(brandings, bounds);
+        final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings, bounds).getScaled(data.scale);
+
         // determine the employed image's size
-        int width = (int) Math.ceil(data.scale * bounds.width);
-        int height = (int) Math.ceil(data.scale * bounds.height);
+        int width = (int) Math.ceil(data.scale * (trim.left + bounds.width + trim.right));
+        int height = (int) Math.ceil(data.scale * (trim.top + bounds.height + trim.bottom));
 
         // if export is tiled, compute resp. receive the needed number of rows and columns
         int rows = 1, cols = 1;
         if (data.getTilingInfo().isTiled) {
             final TilingData tilingInfo = data.getTilingInfo();
+
             if (tilingInfo.isMaxsize) {
-                rows = (int) Math.ceil(((double) height) / tilingInfo.maxHeight);
-                cols = (int) Math.ceil(((double) width) / tilingInfo.maxWidth);
+                cols = (int) Math.ceil(((double) width)
+                        / (tilingInfo.maxWidth - tileTrimScaled.left - tileTrimScaled.right));
+                rows = (int) Math.ceil(((double) height)
+                        / (tilingInfo.maxHeight - tileTrimScaled.top - tileTrimScaled.bottom));
+
+                // adapt the tiling
+                width = (int) Math.ceil(((double) width) / cols);
+                width += tileTrimScaled.left + tileTrimScaled.right;
+
+                height = (int) Math.ceil(((double) height) / rows);
+                height += tileTrimScaled.top + tileTrimScaled.bottom;
+
             } else {
                 rows = tilingInfo.rows;
                 cols = tilingInfo.cols;
+
+                // adapt the tiling
+                width = (int) Math.ceil(
+                        tileTrimScaled.left + ((double) width) / cols + tileTrimScaled.right);
+                height = (int) Math.ceil(
+                        tileTrimScaled.top + ((double) height) / rows + tileTrimScaled.bottom);
             }
-            // adapt the tiling
-            width = (int) Math.ceil(((double) width) / cols);
-            height = (int) Math.ceil(((double) height) / rows);
+
+        } else {
+            width = (int) Math.ceil(tileTrimScaled.left + width + tileTrimScaled.right);
+            height = (int) Math.ceil(tileTrimScaled.top + height + tileTrimScaled.bottom);
         }
+
+        final Rectangle tileBounds = new Rectangle(width, height);
+        final DiagramExportConfig exportConfig =
+                new DiagramExportConfig(bounds, tileBounds).setExportViewport(
+                        data.isCameraViewport).setBrandingsAndTrim(brandings, trim, tileTrimScaled);
+
+        final Rectangle tileClip =
+                new Rectangle2D.Double(
+                        Math.ceil(tileTrimScaled.left),
+                        Math.ceil(tileTrimScaled.top),
+                        Math.floor(
+                                tileBounds.width - tileTrimScaled.left - tileTrimScaled.right),
+                        Math.floor(
+                                tileBounds.height - tileTrimScaled.top - tileTrimScaled.bottom)
+                ).getBounds();
 
         // for each row and columns draw and export the image
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                final IStatus res = exportTile(data, canvas, bounds, row, col, width, height);
+                final IStatus res = exportTile(data, canvas, row, col, tileClip, exportConfig);
+
                 if (res != Status.OK_STATUS) {
                     return res;
                 }
@@ -106,23 +150,15 @@ public class BitmapExporter extends KlighdCanvasExporter {
         return Status.OK_STATUS;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Rectangle2D getBufferImageSize() {
-        return imageSize;
-    }
+    private IStatus exportTile(final ExportData data, final KlighdCanvas canvas, final int row,
+            final int col, final Rectangle tileClip, final DiagramExportConfig exportConfig) {
 
-    private Rectangle2D imageSize = null;
-
-    private IStatus exportTile(final ExportData data, final KlighdCanvas canvas, final PBounds bounds,
-            final int row, final int col, final int width, final int height) {
+        final Rectangle tileBounds = exportConfig.tileBounds;
 
         // initialize an SWT Image that serves as the pixel 'canvas'
         final Image image;
         try {
-            image = new Image(canvas.getDisplay(), width, height);
+            image = new Image(canvas.getDisplay(), tileBounds.width, tileBounds.height);
 
         } catch (final OutOfMemoryError e) {
             System.gc();
@@ -131,28 +167,32 @@ public class BitmapExporter extends KlighdCanvasExporter {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
         }
 
-        imageSize = new Rectangle2D.Double(0, 0, width, height);
-
         final GC gc = new GC(image);
 
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
 
         // define the initial clip
-        graphics.setClip(new Rectangle(width, height));
+        graphics.setClip(tileClip);
 
         // apply translation for tiled exports
-        if (data.getTilingInfo().isTiled) {
-            graphics.transform(AffineTransform.getTranslateInstance(-col * width, -row * height));
-        }
+        graphics.transform(AffineTransform.getTranslateInstance(
+                -col * tileBounds.width, -row * tileBounds.height));
+
+        final Trim tileTrimScaled = getMaximumDiagramTileTrim(
+                exportConfig.exportBrandings, tileBounds).getScaled(data.scale);
+
+        graphics.transform(AffineTransform.getTranslateInstance(
+                (col + 1) * tileTrimScaled.left + (col) * tileTrimScaled.right,
+                (row + 1) * tileTrimScaled.top + (row) * tileTrimScaled.bottom));
 
         // apply the scale factor to the employed graphics object
         //  by means of a corresponding affine transform
         graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
 
+
         // do the action diagram drawing work
-        drawDiagram(canvas.getCamera(), data.isCameraViewport, graphics, bounds, false,
-                ExportHooks.getExportHooksByFormat(data.format, data.viewContext));
+        drawDiagram(graphics, canvas.getCamera(), IDENTITY, tileClip, exportConfig);
 
         // create an image loader to save the image
         // although the API differently suggests:

@@ -13,16 +13,22 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.util.Collections;
 
+import com.google.common.base.Function;
+
+import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.DiagramExportConfig;
+import de.cau.cs.kieler.klighd.IExportBranding;
+import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
+import de.cau.cs.kieler.klighd.util.Iterables2;
 import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 
 /**
@@ -37,6 +43,14 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author csp
  */
 public abstract class AbstractDiagramExporter {
+
+    /**
+     * Singleton {@link AffineTransform} instance denoting the identical transform. Note:
+     * Application code must not manipulate it, overriding all the setters and throwing exceptions
+     * is just to lengthy for all those operations...
+     */
+    protected static final AffineTransform IDENTITY = new AffineTransform();
+
 
     /**
      * Helper method computing the actual unadjusted bounds of the content of the diagram to be
@@ -63,6 +77,78 @@ public abstract class AbstractDiagramExporter {
 
 
     /**
+     * Calculates the cumulated (maximal) diagram {@link Trim} that is defined to require for each
+     * side the maximum of those trims required by the given {@code exportBrandings} on that
+     * particular side.
+     *
+     * @param exportBrandings
+     *            the {@link IExportBranding IExportBrandings} to be applied
+     * @param bounds
+     *            A
+     * @return the desired cumulated {@link Trim}
+     */
+    protected Trim getMaximumDiagramTrim(final Iterable<IExportBranding> exportBrandings,
+            final Rectangle2D bounds) {
+        return getCumulatedTrim(false, exportBrandings, bounds);
+    }
+
+    /**
+     * Calculates the cumulated (maximal) diagram tile {@link Trim} that is defined to require for
+     * each side the maximum of those trims required by the given {@code exportBrandings} on that
+     * particular side.
+     *
+     * @param exportBrandings
+     *            the {@link IExportBranding IExportBrandings} to be applied
+     * @param bounds
+     *            A
+     * @return the desired cumulated {@link Trim}
+     */
+    protected Trim getMaximumDiagramTileTrim(final Iterable<IExportBranding> exportBrandings,
+            final Rectangle2D bounds) {
+        return getCumulatedTrim(true, exportBrandings, bounds);
+    }
+
+    private Trim getCumulatedTrim(final boolean tileTrim,
+            final Iterable<IExportBranding> exportBrandings, final Rectangle2D bounds) {
+
+        final Trim res =
+                Iterables2.fold(exportBrandings, new Function<Pair<Trim, IExportBranding>, Trim>() {
+
+            public Trim apply(final Pair<Trim, IExportBranding> input) {
+                final Trim exportersTrim = tileTrim ? input.getSecond().getDiagramTileTrimm(bounds, true)
+                                : input.getSecond().getDiagramTrim(bounds);
+
+                final Trim result = input.getFirst();
+
+                if (result == null) {
+                    return exportersTrim;
+
+                } else if (exportersTrim == null) {
+                    return result;
+
+                } else {
+
+                    final float maxLeft = Math.max(result.left, exportersTrim.left);
+                    final float maxRight = Math.max(result.right, exportersTrim.right);
+                    final float maxTop = Math.max(result.top, exportersTrim.top);
+                    final float maxBottom = Math.max(result.bottom, exportersTrim.bottom);
+
+                    if (maxLeft != result.left || maxRight != result.right || maxTop != result.top
+                            || maxBottom != result.bottom) {
+                        return new Trim(maxLeft, maxRight, maxTop, maxBottom);
+
+                    } else {
+                        return result;
+                    }
+                }
+            }
+        });
+
+        return res != null ? res : new Trim(0, 0, 0, 0);
+    }
+
+
+    /**
      * Factory method hook for injecting a {@link KlighdPaintContext} tailored to the type of
      * diagram rendering/export.<br>
      * <br>
@@ -80,201 +166,76 @@ public abstract class AbstractDiagramExporter {
 
     /**
      * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
-     * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, boolean, Iterable)}.
-     * The diagram scale is set to 100%, exporting of semantic data is deactivated.
-     *
-     * @param camera
-     *            the {@link KlighdMainCamera} showing the diagram to be exported
-     * @param exportViewport
-     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
-     *            displayed layer is exported
-     * @param graphics
-     *            the graphics object to 'draw' the diagram on
-     * @param bounds
-     *            the bounds of the diagram part to be exported, required for determining the main
-     *            clip and the background coloring; may be <code>null</code>,
-     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
-     */
-    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds) {
-        drawDiagram(camera, exportViewport, graphics, bounds, 1, false,
-                Collections.<IExportHook>emptyList());
-    }
-
-
-    /**
-     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
-     * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, boolean, Iterable)}. Exporting of semantic data is deactivated.
-     *
-     * @param camera
-     *            the {@link KlighdMainCamera} showing the diagram to be exported
-     * @param exportViewport
-     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
-     *            displayed layer is exported
-     * @param graphics
-     *            the graphics object to 'draw' the diagram on
-     * @param bounds
-     *            the bounds of the diagram part to be exported, required for determining the main
-     *            clip and the background coloring; may be <code>null</code>,
-     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
-     * @param scale
-     *            the scaling factor
-     */
-    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale) {
-        drawDiagram(camera, exportViewport, graphics, bounds, scale, false,
-                Collections.<IExportHook>emptyList());
-    }
-
-
-    /**
-     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
-     * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, boolean, Iterable)}. The diagram scale is set to 100%.
-     *
-     * @param camera
-     *            the {@link KlighdMainCamera} showing the diagram to be exported
-     * @param exportViewport
-     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
-     *            displayed layer is exported
-     * @param graphics
-     *            the graphics object to 'draw' the diagram on
-     * @param bounds
-     *            the bounds of the diagram part to be exported, required for determining the main
-     *            clip and
-     *            the background coloring; may be <code>null</code>,
-     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
-     * @param exportSemanticData
-     *            if <code>true</code> semantic data that are attached to the diagram's view model
-     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics})
-     */
-    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds, final boolean exportSemanticData) {
-        drawDiagram(camera, exportViewport, graphics, bounds, 1, exportSemanticData,
-                Collections.<IExportHook>emptyList());
-    }
-
-
-    /**
-     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
-     * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, boolean, Iterable)}. Exporting of semantic data is deactivated.
-     *
-     * @param camera
-     *            the {@link KlighdMainCamera} showing the diagram to be exported
-     * @param exportViewport
-     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
-     *            displayed layer is exported
-     * @param graphics
-     *            the graphics object to 'draw' the diagram on
-     * @param bounds
-     *            the bounds of the diagram part to be exported, required for determining the main
-     *            clip and
-     *            the background coloring; may be <code>null</code>,
-     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
-     * @param scale
-     *            the scaling factor
-     * @param hooks
-     *            an {@link Iterable} of {@link IExportHook IExportHooks} to apply
-     */
-    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale,
-            final Iterable<IExportHook> hooks) {
-        drawDiagram(camera, exportViewport, graphics, bounds, scale, false, hooks);
-    }
-
-
-    /**
-     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}
-     * by delegating to {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds,
-     * double, boolean, Iterable)}. The diagram scale is set to 100%.
-     *
-     * @param camera
-     *            the {@link KlighdMainCamera} showing the diagram to be exported
-     * @param exportViewport
-     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
-     *            displayed layer is exported
-     * @param graphics
-     *            the graphics object to 'draw' the diagram on
-     * @param bounds
-     *            the bounds of the diagram part to be exported, required for determining the main
-     *            clip and the background coloring; may be <code>null</code>,
-     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
-     * @param exportSemanticData
-     *            if <code>true</code> semantic data that are attached to the diagram's view model
-     *            are exported to the image (if implemented by the employed
-     *            {@link KlighdSWTGraphics})
-     * @param hooks
-     *            an {@link Iterable} of {@link IExportHook IExportHooks} to apply
-     */
-    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds,
-            final boolean exportSemanticData, final Iterable<IExportHook> hooks) {
-        drawDiagram(camera, exportViewport, graphics, bounds, 1, exportSemanticData, hooks);
-    }
-
-
-    /**
-     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}.<br>
+     * .<br>
      * <br>
      * This method is supposed to be used by all registered
      * {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporters} in order to achieve
      * consistent exporting behavior.
-     *
-     * @param camera
-     *            the {@link KlighdMainCamera} showing the diagram to be exported
-     * @param exportViewport
-     *            if <code>true</code> the camera's view port is exported, otherwise the camera's
-     *            displayed layer is exported
      * @param graphics
      *            the graphics object to 'draw' the diagram on
-     * @param bounds
-     *            the bounds of the diagram part to be exported, required for determining the main
-     *            clip and
-     *            the background coloring; may be <code>null</code>,
-     *            {@link #getExportedBounds(KlighdMainCamera, boolean)} will be called in that case
-     * @param scale
-     *            the scaling factor
-     * @param exportSemanticData
-     *            if <code>true</code> semantic data that are attached to the diagram's view model
-     *            are exported to the image (if implemented by the employed {@link KlighdSWTGraphics})
-     * @param hooks
-     *            an {@link Iterable} of {@link IExportHook IExportHooks} to apply
+     * @param camera
+     *            the {@link KlighdMainCamera} showing the diagram to be exported
+     * @param tileScaling
+     *            TODO
+     * @param tileClip
+     *            TODO
+     * @param config
+     *            an {@link DiagramExportConfig} record comprising all information required for proper
+     *            export, must not be {@code null}
      */
-    protected void drawDiagram(final KlighdMainCamera camera, final boolean exportViewport,
-            final KlighdSWTGraphics graphics, final PBounds bounds, final double scale,
-            final boolean exportSemanticData, final Iterable<IExportHook> hooks) {
+    protected void drawDiagram(final KlighdSWTGraphics graphics,
+            final KlighdMainCamera camera, final AffineTransform tileScaling,
+            final Rectangle tileClip, final DiagramExportConfig config) {
+
+        final Trim diagramTrim = config.diagramTrim;
 
         final PBounds theBounds;
-        if (bounds != null) {
-            theBounds = bounds;
+        if (config.diagramBounds instanceof PBounds) {
+            theBounds = (PBounds) config.diagramBounds;
+
+        } else if (config.diagramBounds != null) {
+            theBounds = new PBounds(config.diagramBounds);
+
         } else {
-            theBounds = getExportedBounds(camera, exportViewport);
+            theBounds = getExportedBounds(camera, config.exportViewport);
         }
 
-        final PBounds preBounds = new PBounds(0, 0, theBounds.width, theBounds.height);
+        final PBounds preBounds =
+                new PBounds(0, 0, theBounds.width + diagramTrim.left + diagramTrim.right,
+                        theBounds.height + diagramTrim.top + diagramTrim.bottom);
 
         // explicitly initialize the white background (required especially for SVG exports)
         graphics.setFillColor(KlighdConstants.WHITE);
         graphics.fill(preBounds);
 
         // Save the transform to restore it after hook call.
-        final PAffineTransform transform = new PAffineTransform(graphics.getTransform());
-        // VERIFYME transform.transform(preBounds, preBounds);
+        final AffineTransform transform = graphics.getTransform();
 
-        // transformation applied by the pre draw hooks
-        final AffineTransform preTransform = new AffineTransform();
+        for (final IExportBranding branding : config.exportBrandings) {
+            branding.drawDiagramBackground(graphics, config);
 
-        for (final IExportHook hook : hooks) {
-            preTransform.concatenate(hook.drawPreDiagram(graphics, preBounds));
             // Restore the transform in case the hooks changed something.
             graphics.setTransform(transform);
         }
 
-        // apply the pre hook transformation
-        graphics.transform(preTransform);
+        if (config.tileBounds != null) {
+            graphics.setTransform(tileScaling);
+            graphics.setClip(config.tileBounds);
+
+            for (final IExportBranding branding : config.exportBrandings) {
+                branding.drawDiagramTileBackground(graphics, config);
+                graphics.setTransform(tileScaling);
+            }
+
+            graphics.setTransform(IDENTITY);
+            graphics.setClip(tileClip);
+            graphics.setTransform(transform);
+        }
+
+        if (diagramTrim != null) {
+            graphics.transform(
+                    AffineTransform.getTranslateInstance(diagramTrim.left, diagramTrim.top));
+        }
 
         // adjust the zero reference point corresponding to the exported bounds' reference point
         graphics.transform(
@@ -292,7 +253,7 @@ public abstract class AbstractDiagramExporter {
         final PLayer exportedLayer = camera.getDisplayedLayer();
 
         // perform the painting
-        if (exportViewport) {
+        if (config.exportViewport) {
             // only render the current viewport
             camera.fullPaint(paintContext);
 
@@ -311,35 +272,22 @@ public abstract class AbstractDiagramExporter {
             }
         }
 
-        for (final IExportHook hook : hooks) {
+        for (final IExportBranding branding : config.exportBrandings) {
             // reset the zero point,
             //  or restore the transform in case 'hook' changed something, respectively
             graphics.setTransform(transform);
-            hook.drawPostDiagram(graphics, preBounds);
+            branding.drawDiagramOverlay(graphics, config);
         }
 
-        final Rectangle2D imageSize = getBufferImageSize();
-        if (imageSize != null) {
+        if (config.tileBounds != null) {
+            graphics.setTransform(tileScaling);
+            graphics.setClip(config.tileBounds);
 
-            final AffineTransform identity = new AffineTransform();
-            graphics.setTransform(identity);
-            graphics.setClip(imageSize);
-
-            for (final IExportHook hook : hooks) {
-                // Reset the transform in case 'hooks' changed something.
-                graphics.setTransform(identity);
-                hook.drawPostDiagramTile(graphics, imageSize);
+            for (final IExportBranding branding : config.exportBrandings) {
+                // Reset the transform in case 'hook' changed something.
+                graphics.setTransform(tileScaling);
+                branding.drawDiagramTileOverlay(graphics, config);
             }
         }
-    }
-
-    /**
-     * Method hook providing the size of the employed buffer image(s), which is required for
-     * properly implementing {@link IExportHook#drawPostDiagramTile(KlighdSWTGraphics, Rectangle2D)}.
-     *
-     * @return the buffer image size of {@code null} if no buffer images are used
-     */
-    protected Rectangle2D getBufferImageSize() {
-        return null;
     }
 }

@@ -27,10 +27,12 @@ import de.cau.cs.kieler.klighd.IExportBranding.Trim;
  */
 public class DiagramExportConfig {
 
-    // SUPPRESS CHECKSTYLE NEXT 20 Visibility|Javadoc
+    // SUPPRESS CHECKSTYLE NEXT 22 Visibility|Javadoc
 
     public final Rectangle2D diagramBounds;
     public final Rectangle tileBounds;
+
+    public final double diagramScale;
 
     public boolean exportViewport = false;
     public boolean exportSemanticData = false;
@@ -39,10 +41,15 @@ public class DiagramExportConfig {
     public Trim tileTrim = null;
     public Iterable<IExportBranding> exportBrandings = null;
 
+    public int pageNo = 0;
+    public int row = 0;
+    public int column = 0;
+
     public boolean firstColumn = false;
     public boolean firstRow = false;
     public boolean lastColumn = false;
     public boolean lastRow = false;
+
 
     /**
      * Constructor.
@@ -53,10 +60,27 @@ public class DiagramExportConfig {
      *            the bounds of the particular diagram tiles
      */
     public DiagramExportConfig(final Rectangle2D diagramBounds, final Rectangle tileBounds) {
-        super();
+        this(diagramBounds, tileBounds, 1d);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param diagramBounds
+     *            the bounds of the diagram area to be exported
+     * @param tileBounds
+     *            the bounds of the particular diagram tiles
+     * @param diagramScale
+     *            the scale factor to be applied to the diagram (e.g. chosen by the user while
+     *            exporting raster images or during printout)
+     */
+    public DiagramExportConfig(final Rectangle2D diagramBounds, final Rectangle tileBounds,
+            final double diagramScale) {
         this.diagramBounds = diagramBounds;
         this.tileBounds = tileBounds;
+        this.diagramScale = diagramScale;
     }
+
 
     /**
      * Configures the export of the current main diagram's visible area, by default the whole
@@ -136,6 +160,61 @@ public class DiagramExportConfig {
         this.exportBrandings = customizers;
         this.diagramTrim = diagramTrim;
         this.tileTrim = tileTrim;
+
+        return this;
+    }
+
+    /**
+     * Combined setter of information concerning the page/tile numbering.<br>
+     * {@link #firstRow} & {@link #firstColumn} are set if {@code rowNo} & {@code columnNo} are
+     * equal to zero, {@link #lastRow} & and {@link #lastColumn} are set to {@code false}.
+     *
+     * @param pageNo
+     *            the current page number of the currently printed tile
+     * @param row
+     *            the row number of the currently printed tile (starting with zero)
+     * @param column
+     *            the column number of the currently printed tile (starting with zero)
+     * @return this {@link DiagramExportConfig} for convenience
+     */
+    // SUPPRESS CHECKSTYLE NEXT 2 Field -- don't bother me
+    public DiagramExportConfig setPageAndTileNumbesr(final int pageNo, final int row,
+            final int column) {
+
+        this.setPageAndTileNumbesr(pageNo, row, column, false, false);
+
+        return this;
+    }
+
+    /**
+     * Combined setter of information concerning the page/tile numbering..<br>
+     * {@link #firstRow} & {@link #firstColumn} are set if {@code rowNo} & {@code columnNo} are
+     * equal to zero.
+     *
+     * @param pageNo
+     *            the current page number of the currently printed tile
+     * @param row
+     *            the row number of the currently printed tile (starting with zero)
+     * @param column
+     *            the column number of the currently printed tile (starting with zero)
+     * @param lastRow
+     *            shall be {@code true} if the currently printed tile is part of the last row
+     * @param lastColumn
+     *            shall be {@code true} if the currently printed tile is part of the last column
+     * @return this {@link DiagramExportConfig} for convenience
+     */
+    // SUPPRESS CHECKSTYLE NEXT 2 Field -- don't bother me
+    public DiagramExportConfig setPageAndTileNumbesr(final int pageNo, final int row,
+            final int column, final boolean lastRow, final boolean lastColumn) {
+        this.pageNo = pageNo;
+        this.row = row;
+        this.column = column;
+
+        this.firstRow = row == 0;
+        this.firstColumn = column == 0;
+
+        this.lastRow = lastRow;
+        this.lastColumn = lastColumn;
 
         return this;
     }

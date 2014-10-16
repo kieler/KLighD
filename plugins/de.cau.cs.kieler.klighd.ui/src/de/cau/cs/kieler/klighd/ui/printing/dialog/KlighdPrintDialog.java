@@ -72,7 +72,7 @@ public class KlighdPrintDialog extends TrayDialog {
     private ActionsBlock actionsBlock;
 
     /**
-     * Creates a new Klighd print dialog based on the given options.
+     * Creates a new KLighD print dialog based on the given options.
      *
      * @param parentShell
      *            the object that returns the current parent shell

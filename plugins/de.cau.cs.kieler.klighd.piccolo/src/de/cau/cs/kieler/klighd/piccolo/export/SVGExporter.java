@@ -13,13 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+import de.cau.cs.kieler.klighd.DiagramExportConfig;
+import de.cau.cs.kieler.klighd.IExportBranding;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
@@ -39,16 +42,6 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public class SVGExporter extends KlighdCanvasExporter {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Rectangle2D getBufferImageSize() {
-        return imageSize;
-    }
-
-    private Rectangle2D imageSize = null;
-
    /**
      * {@inheritDoc}
      */
@@ -64,7 +57,6 @@ public class SVGExporter extends KlighdCanvasExporter {
         bounds.height += bounds.y;
         bounds.x = 0;
         bounds.y = 0;
-        imageSize = bounds;
 
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdAbstractSVGGraphics graphics =
@@ -76,9 +68,16 @@ public class SVGExporter extends KlighdCanvasExporter {
         //  (in case of an SVG output)
         graphics.setClip(bounds);
 
+        final Iterable<IExportBranding> brandings =
+                KlighdDataManager.getExportBrandingByFormat(data.format, data.viewContext);
+
+        final Rectangle tileBounds = bounds.getBounds();
+        final DiagramExportConfig exportConfig =
+                new DiagramExportConfig(bounds, tileBounds).setBrandingsAndTrim(brandings,
+                        getMaximumDiagramTrim(brandings, bounds), null);
+
         // do the actual diagram drawing work
-        this.drawDiagram(camera, data.isCameraViewport, graphics, bounds, true,
-                ExportHooks.getExportHooksByFormat(data.format, data.viewContext));
+        this.drawDiagram(graphics, camera, IDENTITY, tileBounds, exportConfig);
 
         OutputStream stream = null;
         try {
