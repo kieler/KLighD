@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -72,6 +73,9 @@ public final class KlighdDataManager {
 
     /** name of the 'exporter' element. */
     private static final String ELEMENT_EXPORTER = "exporter";
+
+    /** name of the 'exportHook' element. */
+    private static final String ELEMENT_EXPORT_BRANDING = "exportBranding";
 
     /** name of the 'offscreenRenderer' element. */
     private static final String ELEMENT_OFFSCREEN_RENDERER = "offscreenRenderer";
@@ -197,6 +201,28 @@ public final class KlighdDataManager {
 
 
     /**
+     * Data record containing the information about an exporter.
+     */
+    public static final class ExporterDescriptor {
+
+        // SUPPRESS CHECKSTYLE NEXT 5 Visibility|Javadoc
+        public final String exporterId;
+        public final String subFormatId;
+        public final String description;
+        public final String fileExtension;
+        public final boolean supportsTiling;
+
+        private ExporterDescriptor(final String exporterId, final String subFormatId,
+                final String description, final String fileExtension, final boolean supportsTiling) {
+            this.exporterId = exporterId;
+            this.subFormatId = subFormatId;
+            this.description = description;
+            this.fileExtension = fileExtension;
+            this.supportsTiling = supportsTiling;
+        }
+    }
+
+    /**
      * Loads all registered extensions from the extension point 'extensions' and builds up the
      * corresponding mappings.
      */
@@ -279,9 +305,6 @@ public final class KlighdDataManager {
                                 new ExporterDescriptor(id, subFormat, descr, extension, supportsTiling);
                         descriptors.add(descriptor);
 
-//                        // create the exporter class
-//                        IDiagramExporter exporter =
-//                                (IDiagramExporter) element.createExecutableExtension("class");
                         // put the configuration element into the map to lazy load the exporter later
                         exportersMap.put(id, element);
                     }
@@ -571,6 +594,69 @@ public final class KlighdDataManager {
         return exporter;
     }
 
+//    /** name of the 'supportedFormats' attribute in the 'offscreenRenderer' extensions. */
+//    private static final String ATTRIBUTE_SUPPORTED_FORMATS = "supportedFormats";
+
+    /** the mapping of formats and the supporting export hooks. */
+    private static Multimap<String, IConfigurationElement> formatExportHookMapping = null;
+
+    /**
+     * Returns the collection of registered {@link IExportBranding IExportHooks} with the given
+     * <code>format</code>.
+     *
+     * @param format
+     *            the format an {@link IExportBranding} is requested for
+     * @param viewContext
+     *            the {@link ViewContext} providing access to the diagram' view & source model
+     *
+     * @return the {@link Iterable} of {@link IExportBranding IExportHooks}
+     */
+    public static Iterable<IExportBranding> getExportBrandingByFormat(final String format,
+            final ViewContext viewContext) {
+        if (formatExportHookMapping == null) {
+            formatExportHookMapping = ArrayListMultimap.create();
+
+            final IConfigurationElement[] extensions =
+                    Platform.getExtensionRegistry().getConfigurationElementsFor(EXTP_ID_EXTENSIONS);
+
+            for (final IConfigurationElement element : extensions) {
+                if (!ELEMENT_EXPORT_BRANDING.equals(element.getName())) {
+                    continue;
+                }
+
+                // requesting an exportBranding by 'id' is currently not supported
+                // if (Strings.isNullOrEmpty(element.getAttribute(ATTRIBUTE_ID))) {
+                //     KlighdDataManager.reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
+                //     continue;
+                // }
+
+                for (final String f : Strings.nullToEmpty(
+                        element.getAttribute(ATTRIBUTE_SUPPORTED_FORMATS)).split("[,\\s]")) {
+                    formatExportHookMapping.put(f, element);
+                }
+            }
+        }
+
+        final List<IExportBranding> result = Lists.newArrayList();
+        for (final IConfigurationElement element : formatExportHookMapping.get(format)) {
+            final IExportBranding branding;
+
+            try {
+                branding = (IExportBranding) element.createExecutableExtension(ATTRIBUTE_CLASS);
+                branding.setViewContext(viewContext);
+            } catch (final Exception e) {
+                KlighdDataManager.reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_CLASS, e);
+                continue;
+            }
+
+            if (branding.isEnabled()) {
+                result.add(branding);
+            }
+        }
+
+        return result;
+    }
+
     /**
      * Returns the collection of registered {@link IOffscreenRenderer IOffscreenRenderers} with the
      * given <code>format</code>.
@@ -612,27 +698,5 @@ public final class KlighdDataManager {
         }
 
         return Collections.unmodifiableCollection(formatOffscreenRendererMapping.get(format));
-    }
-
-    /**
-     * Data record containing the information about an exporter.
-     */
-    public static final class ExporterDescriptor {
-
-        // SUPPRESS CHECKSTYLE NEXT 5 Visibility|Javadoc
-        public final String exporterId;
-        public final String subFormatId;
-        public final String description;
-        public final String fileExtension;
-        public final boolean supportsTiling;
-
-        private ExporterDescriptor(final String exporterId, final String subFormatId,
-                final String description, final String fileExtension, final boolean supportsTiling) {
-            this.exporterId = exporterId;
-            this.subFormatId = subFormatId;
-            this.description = description;
-            this.fileExtension = fileExtension;
-            this.supportsTiling = supportsTiling;
-        }
     }
 }

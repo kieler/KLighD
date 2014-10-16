@@ -19,8 +19,9 @@
       <complexType>
          <choice minOccurs="1" maxOccurs="unbounded">
             <element ref="action"/>
-            <element ref="exporter"/>
             <element ref="styleModifier"/>
+            <element ref="exporter"/>
+            <element ref="exportBranding"/>
             <element ref="updateStrategy"/>
             <element ref="viewer"/>
             <element ref="wrapper"/>
@@ -216,6 +217,35 @@
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="exportBranding">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":de.cau.cs.kieler.klighd.IExportBranding"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="supportedFormats" type="string">
+            <annotation>
+               <documentation>
+                  A space/comma separated list of formats like svg, gml, etc.
                </documentation>
             </annotation>
          </attribute>
