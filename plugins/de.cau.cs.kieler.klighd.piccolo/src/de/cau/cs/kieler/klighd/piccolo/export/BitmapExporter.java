@@ -15,8 +15,6 @@ package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -81,7 +79,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
                KlighdDataManager.getExportBrandingByFormat(data.format, data.viewContext);
 
         final Trim trim = getMaximumDiagramTrim(brandings, bounds);
-        final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings, bounds).getScaled(data.scale);
+        final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings, bounds);
 
         // determine the employed image's size
         int width = (int) Math.ceil(data.scale * (trim.left + bounds.width + trim.right));
@@ -123,23 +121,20 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
         final Rectangle tileBounds = new Rectangle(width, height);
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(bounds, tileBounds).setExportViewport(
+                new DiagramExportConfig(bounds, tileBounds, data.scale).setExportViewport(
                         data.isCameraViewport).setBrandingsAndTrim(brandings, trim, tileTrimScaled);
 
-        final Rectangle tileClip =
-                new Rectangle2D.Double(
-                        Math.ceil(tileTrimScaled.left),
-                        Math.ceil(tileTrimScaled.top),
-                        Math.floor(
-                                tileBounds.width - tileTrimScaled.left - tileTrimScaled.right),
-                        Math.floor(
-                                tileBounds.height - tileTrimScaled.top - tileTrimScaled.bottom)
-                ).getBounds();
+        final Rectangle tileClip = getPureTileClip(tileBounds, tileTrimScaled);
+
+        int pageNo = 0;
 
         // for each row and columns draw and export the image
         for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                final IStatus res = exportTile(data, canvas, row, col, tileClip, exportConfig);
+            for (int column = 0; column < cols; column++) {
+
+                exportConfig.setPageAndTileNumbesr(pageNo++, row, column);
+
+                final IStatus res = exportTile(data, canvas, row, column, tileClip, exportConfig);
 
                 if (res != Status.OK_STATUS) {
                     return res;
@@ -172,27 +167,28 @@ public class BitmapExporter extends KlighdCanvasExporter {
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
 
-        // define the initial clip
-        graphics.setClip(tileClip);
-
-        // apply translation for tiled exports
-        graphics.transform(AffineTransform.getTranslateInstance(
-                -col * tileBounds.width, -row * tileBounds.height));
-
-        final Trim tileTrimScaled = getMaximumDiagramTileTrim(
-                exportConfig.exportBrandings, tileBounds).getScaled(data.scale);
-
-        graphics.transform(AffineTransform.getTranslateInstance(
-                (col + 1) * tileTrimScaled.left + (col) * tileTrimScaled.right,
-                (row + 1) * tileTrimScaled.top + (row) * tileTrimScaled.bottom));
-
-        // apply the scale factor to the employed graphics object
-        //  by means of a corresponding affine transform
-        graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
-
-
-        // do the action diagram drawing work
-        drawDiagram(graphics, canvas.getCamera(), IDENTITY, tileClip, exportConfig);
+        drawDiagramTile(exportConfig, graphics, canvas.getCamera(), tileBounds, 1, null);
+//        // define the initial clip
+//        graphics.setClip(tileClip);
+//
+//        // apply translation for tiled exports
+//        graphics.transform(AffineTransform.getTranslateInstance(
+//                -col * tileBounds.width, -row * tileBounds.height));
+//
+//        final Trim tileTrimScaled = getMaximumDiagramTileTrim(
+//                exportConfig.exportBrandings, tileBounds).getScaled(data.scale);
+//
+//        graphics.transform(AffineTransform.getTranslateInstance(
+//                (col + 1) * tileTrimScaled.left + (col) * tileTrimScaled.right,
+//                (row + 1) * tileTrimScaled.top + (row) * tileTrimScaled.bottom));
+//
+//        // apply the scale factor to the employed graphics object
+//        //  by means of a corresponding affine transform
+//        graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
+//
+//
+//        // do the action diagram drawing work
+//        drawDiagram(graphics, canvas.getCamera(), IDENTITY, tileClip, exportConfig);
 
         // create an image loader to save the image
         // although the API differently suggests:
@@ -218,7 +214,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
         try {
 
             if (data.getTilingInfo().isTiled) {
-                stream = data.createOutputStream(row, col);
+                stream = data.createOutputStream(exportConfig.row, exportConfig.column);
             } else {
                 stream = data.createOutputStream();
             }

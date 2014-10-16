@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import com.google.common.base.Function;
@@ -53,6 +54,22 @@ public abstract class AbstractDiagramExporter {
 
 
     /**
+     * Factory method hook for injecting a {@link KlighdPaintContext} tailored to the type of
+     * diagram rendering/export.<br>
+     * <br>
+     * May be overriden by concrete implementations, base implementation returns a
+     * {@link KlighdPaintContext} tailored to diagram image exports.
+     *
+     * @param graphics
+     *            the {@link KlighdSWTGraphics} to draw on
+     * @return a {@link KlighdPaintContext} tailored to the type of diagram rendering/export.
+     */
+    protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics) {
+        return KlighdPaintContext.createExportDiagramPaintContext(graphics);
+    }
+
+
+    /**
      * Helper method computing the actual unadjusted bounds of the content of the diagram to be
      * exported.
      *
@@ -63,7 +80,8 @@ public abstract class AbstractDiagramExporter {
      *            otherwise the closure bounds of the camera's displayed layer are returned
      * @return a new {@link PBounds} instance containing the requested bounds data
      */
-    protected PBounds getExportedBounds(final KlighdMainCamera camera, final boolean exportViewport) {
+    protected final PBounds getExportedBounds(final KlighdMainCamera camera,
+            final boolean exportViewport) {
         final PBounds bounds;
 
         if (exportViewport) {
@@ -87,7 +105,7 @@ public abstract class AbstractDiagramExporter {
      *            A
      * @return the desired cumulated {@link Trim}
      */
-    protected Trim getMaximumDiagramTrim(final Iterable<IExportBranding> exportBrandings,
+    protected final Trim getMaximumDiagramTrim(final Iterable<IExportBranding> exportBrandings,
             final Rectangle2D bounds) {
         return getCumulatedTrim(false, exportBrandings, bounds);
     }
@@ -103,7 +121,7 @@ public abstract class AbstractDiagramExporter {
      *            A
      * @return the desired cumulated {@link Trim}
      */
-    protected Trim getMaximumDiagramTileTrim(final Iterable<IExportBranding> exportBrandings,
+    protected final Trim getMaximumDiagramTileTrim(final Iterable<IExportBranding> exportBrandings,
             final Rectangle2D bounds) {
         return getCumulatedTrim(true, exportBrandings, bounds);
     }
@@ -149,18 +167,69 @@ public abstract class AbstractDiagramExporter {
 
 
     /**
-     * Factory method hook for injecting a {@link KlighdPaintContext} tailored to the type of
-     * diagram rendering/export.<br>
-     * <br>
-     * May be overriden by concrete implementations, base implementation returns a
-     * {@link KlighdPaintContext} tailored to diagram image exports.
      *
-     * @param graphics
-     *            the {@link KlighdSWTGraphics} to draw on
-     * @return a {@link KlighdPaintContext} tailored to the type of diagram rendering/export.
+     *
+     * @param drawablesBounds
+     *            TODO
+     * @param tileTrimScaled
+     *            TODO
+     * @return a {@link Rectangle} describing the pure clip rectangle
      */
-    protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics) {
-        return KlighdPaintContext.createExportDiagramPaintContext(graphics);
+    protected Rectangle getPureTileClip(final Rectangle drawablesBounds, final Trim tileTrimScaled) {
+
+        final Rectangle2D clip = new Rectangle2D.Double(
+                Math.ceil(tileTrimScaled.left),
+                Math.ceil(tileTrimScaled.top),
+                Math.floor(
+                        drawablesBounds.width - tileTrimScaled.left - tileTrimScaled.right),
+                Math.floor(
+                        drawablesBounds.height - tileTrimScaled.top - tileTrimScaled.bottom));
+        return clip.getBounds();
+    }
+
+
+    /**
+     *
+     * @param exportConfig TODO
+     * @param graphics TODO
+     * @param camera TODO
+     * @param drawablesBounds TODO
+     * @param tileScale TODO
+     * @param centeringOffset TODO
+     */
+    protected void drawDiagramTile(final DiagramExportConfig exportConfig,
+            final KlighdSWTGraphics graphics, final KlighdMainCamera camera,
+            final Rectangle drawablesBounds, final double tileScale, final Point2D centeringOffset) {
+        final Trim tileTrimScaled = exportConfig.tileTrim.getScaled((float) tileScale);
+
+        // initial clip definition
+        final Rectangle tileClip = getPureTileClip(drawablesBounds, tileTrimScaled);
+        graphics.setClip(tileClip);
+
+        // apply translation for tiled export if necessary
+        graphics.setTransform(AffineTransform.getTranslateInstance(
+                -exportConfig.column * drawablesBounds.getWidth(),
+                -exportConfig.row * drawablesBounds.getHeight()));
+
+        if (centeringOffset != null) {
+            graphics.transform(AffineTransform.getTranslateInstance(
+                    centeringOffset.getX(), centeringOffset.getY()));
+        }
+
+        graphics.transform(AffineTransform.getTranslateInstance(
+                (exportConfig.column + 1) * tileTrimScaled.left
+                    + exportConfig.column * tileTrimScaled.right,
+                (exportConfig.row + 1) * tileTrimScaled.top + exportConfig.row * tileTrimScaled.bottom));
+
+        final AffineTransform tileScaling = AffineTransform.getScaleInstance(tileScale, tileScale);
+        graphics.transform(tileScaling);
+
+        // apply the scale factor to the employed graphics object
+        //  by means of a corresponding affine transform
+        graphics.transform(AffineTransform.getScaleInstance(
+                exportConfig.diagramScale, exportConfig.diagramScale));
+
+        drawDiagram(graphics, camera, tileScaling, tileClip, exportConfig);
     }
 
 
@@ -183,7 +252,7 @@ public abstract class AbstractDiagramExporter {
      *            an {@link DiagramExportConfig} record comprising all information required for proper
      *            export, must not be {@code null}
      */
-    protected void drawDiagram(final KlighdSWTGraphics graphics,
+    protected final void drawDiagram(final KlighdSWTGraphics graphics,
             final KlighdMainCamera camera, final AffineTransform tileScaling,
             final Rectangle tileClip, final DiagramExportConfig config) {
 

@@ -14,9 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.printing;
 
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import org.eclipse.swt.graphics.Drawable;
 import org.eclipse.swt.graphics.GC;
@@ -25,8 +23,8 @@ import org.eclipse.swt.printing.Printer;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
-import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.export.AbstractDiagramExporter;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
@@ -56,6 +54,7 @@ public class PrintExporter extends AbstractDiagramExporter {
         this.exportBrandings =
                 KlighdDataManager.getExportBrandingByFormat("printout", viewer.getViewContext());
     }
+
 
     private Trim diagramTrim = null;
     private Trim diagramTileTrim = null;
@@ -90,6 +89,30 @@ public class PrintExporter extends AbstractDiagramExporter {
     }
 
     /**
+     * Resets the cached trim information.<br>
+     * This method is currently only called from {@link PrintOptions} after the printer data
+     * (resolution) and page orientation has been altered.
+     */
+    void resetTrimInformation() {
+        diagramTrim = null;
+        diagramTileTrim = null;
+    }
+
+    /**
+     *
+     * @param tileBounds
+     *            the non-scaled bounds of each tile
+     * @return a new {@link PBounds} with (width, height) describing the reduced tile bounds.
+     */
+    public PBounds getTrimmedTileBounds(final Rectangle tileBounds) {
+        final Trim tileTrim = getDiagramTileTrim(tileBounds);
+        return new PBounds(0, 0,
+                tileBounds.width - tileTrim.left - tileTrim.right,
+                tileBounds.height - tileTrim.top - tileTrim.bottom);
+    }
+
+
+    /**
      * Get the diagram bounds.
      *
      * @return the diagram bounds
@@ -106,6 +129,7 @@ public class PrintExporter extends AbstractDiagramExporter {
         return diagramBounds;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -121,9 +145,10 @@ public class PrintExporter extends AbstractDiagramExporter {
      *            the column of the tile to export
      * @param row
      *            the row of the tile to export
-     * @param bounds
-     *            the bounds of the diagram preview image to be returned
-     * @param pageBounds TODO
+     * @param imageBounds
+     *            the bounds of the diagram preview {@link Image} to be returned
+     * @param pageBounds
+     *            the bounds of the diagram print page being previewed
      * @param diagramScale
      *            the scale factor
      * @param previewScale
@@ -132,13 +157,13 @@ public class PrintExporter extends AbstractDiagramExporter {
      *            the offset to be applied to centrally align the diagram as requested
      * @return the image
      */
-    public Image exportPreview(final int column, final int row, final Rectangle bounds,
+    public Image exportPreview(final int column, final int row, final Rectangle imageBounds,
             final Rectangle pageBounds, final double diagramScale, final double previewScale,
             final Point2D centeringOffset) {
 
-        final Image image = new Image(viewer.getControl().getDisplay(), bounds.width, bounds.height);
-
-        export(image, column, row, bounds, pageBounds, diagramScale, previewScale, centeringOffset);
+        final Image image = new Image(
+                viewer.getControl().getDisplay(), imageBounds.width, imageBounds.height);
+        export(image, column, row, imageBounds, pageBounds, diagramScale, previewScale, centeringOffset);
 
         return image;
     }
@@ -163,59 +188,31 @@ public class PrintExporter extends AbstractDiagramExporter {
         export(printer, column, row, pageBounds, pageBounds, scale, 1, centeringOffset);
     }
 
+
     /**
      *
      * @param drawable
      * @param column
      * @param row
      * @param drawablesBounds
+     * @param pageBounds
      * @param diagramScale
+     * @param previewScale
      * @param centeringOffset
      */
     private void export(final Drawable drawable, final int column, final int row,
-            final Rectangle drawablesBounds,
-            final Rectangle pageBounds,
-            final double diagramScale, final double previewScale,
-            final Point2D centeringOffset) {
+            final Rectangle drawablesBounds, final Rectangle pageBounds, final double diagramScale,
+            final double previewScale, final Point2D centeringOffset) {
+
+        final DiagramExportConfig exportConfig = new DiagramExportConfig(null, pageBounds, diagramScale)
+                .setBrandingsAndTrim(exportBrandings, getDiagramTrim(), getDiagramTileTrim(pageBounds))
+                .setPageAndTileNumbesr(0, row, column);
 
         final GC gc = new GC(drawable);
         final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, gc.getDevice());
 
-        final Trim tileTrimScaled = getDiagramTileTrim(pageBounds).getScaled((float) previewScale);
-
-        // initial clip definition
-        final Rectangle clip =
-                new Rectangle2D.Double(
-                        Math.ceil(tileTrimScaled.left),
-                        Math.ceil(tileTrimScaled.top),
-                        Math.floor(
-                                drawablesBounds.getWidth() - tileTrimScaled.left - tileTrimScaled.right),
-                        Math.floor(
-                                drawablesBounds.getHeight() - tileTrimScaled.top - tileTrimScaled.bottom)
-                ).getBounds();
-        graphics.setClip(clip);
-
-        // apply translation for tiled export if necessary
-        graphics.setTransform(AffineTransform.getTranslateInstance(
-                -column * drawablesBounds.getWidth() + centeringOffset.getX(),
-                -row * drawablesBounds.getHeight() + centeringOffset.getY()));
-
-        graphics.transform(AffineTransform.getTranslateInstance(
-                (column + 1) * tileTrimScaled.left + (column) * tileTrimScaled.right,
-                (row + 1) * tileTrimScaled.top + (row) * tileTrimScaled.bottom));
-
-        final AffineTransform tileScaling = AffineTransform.getScaleInstance(previewScale, previewScale);
-        graphics.transform(tileScaling);
-
-        // apply the scale factor to the employed graphics object
-        //  by means of a corresponding affine transform
-        graphics.transform(AffineTransform.getScaleInstance(diagramScale, diagramScale));
-
-        final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(null, pageBounds).setBrandingsAndTrim(
-                        exportBrandings, getDiagramTrim(), getDiagramTileTrim(null));
-
-        drawDiagram(graphics, viewer.getControl().getCamera(), tileScaling, clip, exportConfig);
+        drawDiagramTile(exportConfig, graphics, viewer.getControl().getCamera(), drawablesBounds,
+                previewScale, centeringOffset);
 
         graphics.dispose();
         gc.dispose();
@@ -223,7 +220,6 @@ public class PrintExporter extends AbstractDiagramExporter {
 
     /**
      * Provides the printer bounds.<br>
-     * {@link Rectangle#x} and {@link Rectangle#y} denote the top left point of the printable area.
      * {@link Rectangle#width} and {@link Rectangle#height} are width and height of the printable
      * area.
      *
@@ -231,10 +227,13 @@ public class PrintExporter extends AbstractDiagramExporter {
      *            the printer
      * @return the printer bounds
      */
+    // this information is currently not required:
+    //    * {@link Rectangle#x} and {@link Rectangle#y} denote the top left point of the printable area.
+
     // method is set 'package protected' (no modifier) as it is used here and in PrintOptions
     Rectangle getPrinterBounds(final Printer printer) {
         final org.eclipse.swt.graphics.Rectangle pageArea = printer.getClientArea();
-        final org.eclipse.swt.graphics.Rectangle trim = printer.computeTrim(0, 0, 0, 0);
+//        final org.eclipse.swt.graphics.Rectangle trim = printer.computeTrim(0, 0, 0, 0);
 //        return new Rectangle(-trim.x, -trim.y, pageArea.width, pageArea.height);
         return new Rectangle(pageArea.width, pageArea.height);
     }

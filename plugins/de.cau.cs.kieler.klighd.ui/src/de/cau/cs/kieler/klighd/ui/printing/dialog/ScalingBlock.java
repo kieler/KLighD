@@ -24,8 +24,6 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
-import java.awt.Rectangle;
-
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
@@ -40,7 +38,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -120,16 +117,16 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate the minimum of necessary horizontal and vertical s1cale factors to fit the
                 // whole diagram on the selected amount of pages.
 
-                final Rectangle printerBounds = options.getPrinterBounds();
                 final PBounds diagramBounds = options.getExporter().getDiagramBounds();
 
-                final Trim tileTrim = options.getExporter().getDiagramTileTrim(printerBounds);
+                final PBounds trimmedPrinterBounds =
+                        options.getExporter().getTrimmedTileBounds(options.getPrinterBounds());
 
-                final double scaleX = (printerBounds.width - tileTrim.left - tileTrim.right)
-                        * options.getPagesWide() / diagramBounds.width;
+                final double scaleX =
+                        trimmedPrinterBounds.width * options.getPagesWide() / diagramBounds.width;
 
-                final double scaleY = (printerBounds.height - tileTrim.top - tileTrim.bottom)
-                        * options.getPagesTall() / diagramBounds.height;
+                final double scaleY =
+                        trimmedPrinterBounds.height * options.getPagesTall() / diagramBounds.height;
 
                 options.setScaleFactor(Math.min(scaleX, scaleY));
             }
@@ -145,17 +142,16 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate for both horizontal and vertical directions how many pages are necessary
                 // to fit the diagram in.
 
-                final Rectangle printerBounds = options.getPrinterBounds();
-                final PBounds size = options.getExporter().getDiagramBounds();
+                final PBounds trimmedPrinterBounds =
+                        options.getExporter().getTrimmedTileBounds(options.getPrinterBounds());
 
-                final Trim tileTrim = options.getExporter().getDiagramTileTrim(printerBounds);
+                final PBounds diagramBounds = options.getExporter().getDiagramBounds();
 
-                options.setPagesWide(
-                        (int) Math.ceil(size.width * options.getScaleFactor()
-                                / (printerBounds.width - tileTrim.left - tileTrim.right)));
-                options.setPagesTall(
-                        (int) Math.ceil(size.height * options.getScaleFactor()
-                                / (printerBounds.height - tileTrim.top - tileTrim.bottom)));
+                options.setPagesWide((int) Math.ceil(diagramBounds.width * options.getScaleFactor()
+                        / trimmedPrinterBounds.width));
+
+                options.setPagesTall((int) Math.ceil(diagramBounds.height * options.getScaleFactor()
+                        / trimmedPrinterBounds.height));
             }
         });
 

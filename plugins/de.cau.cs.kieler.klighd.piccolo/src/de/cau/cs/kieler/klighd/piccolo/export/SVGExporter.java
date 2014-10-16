@@ -73,7 +73,7 @@ public class SVGExporter extends KlighdCanvasExporter {
 
         final Rectangle tileBounds = bounds.getBounds();
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(bounds, tileBounds).setBrandingsAndTrim(brandings,
+                new DiagramExportConfig(bounds, tileBounds, 1d).setBrandingsAndTrim(brandings,
                         getMaximumDiagramTrim(brandings, bounds), null);
 
         // do the actual diagram drawing work

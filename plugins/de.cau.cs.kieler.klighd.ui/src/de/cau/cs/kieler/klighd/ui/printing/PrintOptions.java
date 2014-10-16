@@ -36,6 +36,7 @@ import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
+import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * This class is used as part of the infrastructure required for data-bindings used with the JPS
@@ -562,6 +563,7 @@ public final class PrintOptions {
 
         disposePrinter();
         resetCenteringOffset();
+        getExporter().resetTrimInformation();
     }
 
     /**
@@ -595,6 +597,7 @@ public final class PrintOptions {
         firePropertyChange(PROPERTY_ORIENTATION, oldOrientation, printerData.orientation);
         disposePrinter();
         resetCenteringOffset();
+        getExporter().resetTrimInformation();
     }
 
     /**
@@ -756,7 +759,7 @@ public final class PrintOptions {
             return new Point2D.Double();
         }
 
-        final Rectangle pBounds = getPrinterBounds();
+        final PBounds pBounds = getExporter().getTrimmedTileBounds(getPrinterBounds());
 
         if (pBounds != null) {
             if (diagramBounds == null) {
