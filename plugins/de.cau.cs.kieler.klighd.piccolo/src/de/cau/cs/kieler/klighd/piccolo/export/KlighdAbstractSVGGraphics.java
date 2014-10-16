@@ -481,7 +481,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     
     /**
      * 
-     * Class that extends the AWT GradientPaint with a rotation value that svg exporters 
+     * Class that extends the AWT {@link GradientPaint} with a rotation value that svg exporters 
      * can use to rotate gradient paints.
      * 
      * @author ckru
