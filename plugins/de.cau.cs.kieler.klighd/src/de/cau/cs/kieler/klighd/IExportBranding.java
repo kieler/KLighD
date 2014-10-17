@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -60,6 +59,24 @@ public interface IExportBranding {
         }
 
         /**
+         * Returns the sum of the {@link #left} and {@link #right}.
+         *
+         * @return the sum of the {@link #left} and {@link #right}
+         */
+        public float getWidth() {
+            return Trim.this.left + Trim.this.right;
+        }
+
+        /**
+         * Returns the sum of the {@link #top} and {@link #bottom}.
+         *
+         * @return the sum of the {@link #top} and {@link #bottom}
+         */
+        public float getHeight() {
+            return Trim.this.top + Trim.this.bottom;
+        }
+
+        /**
          * Returns a copy of {@code this} {@link Trim} instance with all values being multiplied
          * with {@code scale}.
          *
@@ -70,32 +87,6 @@ public interface IExportBranding {
         public Trim getScaled(final float scale) {
             return new Trim(
                     scale * this.left, scale * this.right, scale * this.top, scale * this.bottom);
-        }
-
-        /**
-         * Returns a {@link Dimension2D} describing the required width and height of {@code this}
-         * {@link Trim} definition.
-         *
-         * @return the desired {@link Dimension2D} instance.
-         */
-        public Dimension2D getDimension() {
-            return new Dimension2D() {
-
-                @Override
-                public void setSize(final double width, final double height) {
-                    throw new UnsupportedOperationException();
-                }
-
-                @Override
-                public double getWidth() {
-                    return Trim.this.left + Trim.this.right;
-                }
-
-                @Override
-                public double getHeight() {
-                    return Trim.this.top + Trim.this.bottom;
-                }
-            };
         }
     }
 
