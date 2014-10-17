@@ -13,8 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -29,28 +29,20 @@ import org.eclipse.swt.graphics.ImageLoader;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
+import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
- * Generic {@link IViewExporter} for bitmap formats, e.g., png and jpeg.
- *
- * Currently the following formats are supported:
- * <ul>
- * <li>bmp</li>
- * <li>jpeg</li>
- * <li>png</li>
- * </ul>
+ * An {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporter} contributing diagram
+ * exports into the raster formats {@code .bmp}, {@code .jpeg}, and {@code .png}.
  *
  * @author chsch
- * @author uru
+ * @author csp
  */
 public class BitmapExporter extends KlighdCanvasExporter {
 
@@ -73,68 +65,63 @@ public class BitmapExporter extends KlighdCanvasExporter {
         final KlighdMainCamera camera = canvas.getCamera();
 
         // ... and determine the bounds of the diagram to be exported
-        final PBounds bounds = getExportedBounds(camera, data.isCameraViewport);
+        final Rectangle2D bounds = getExportedBounds(camera, data.isCameraViewport);
 
         final Iterable<IExportBranding> brandings =
                KlighdDataManager.getExportBrandingByFormat(data.format, data.viewContext);
 
+        final TilingData tilingInfo = data.getTilingInfo();
+
         final Trim trim = getMaximumDiagramTrim(brandings, bounds);
-        final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings, bounds);
+        final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings, bounds,
+                tilingInfo.isTiled & tilingInfo.isMaxsize);
 
         // determine the employed image's size
-        int width = (int) Math.ceil(data.scale * (trim.left + bounds.width + trim.right));
-        int height = (int) Math.ceil(data.scale * (trim.top + bounds.height + trim.bottom));
+        final double width = data.scale * (bounds.getWidth() + trim.getWidth());
+        final double height = data.scale * (bounds.getHeight() + trim.getHeight());
 
         // if export is tiled, compute resp. receive the needed number of rows and columns
-        int rows = 1, cols = 1;
-        if (data.getTilingInfo().isTiled) {
-            final TilingData tilingInfo = data.getTilingInfo();
+        final int rows, columns;
+        final int tileWidth, tileHeight;
 
-            if (tilingInfo.isMaxsize) {
-                cols = (int) Math.ceil(((double) width)
-                        / (tilingInfo.maxWidth - tileTrimScaled.left - tileTrimScaled.right));
-                rows = (int) Math.ceil(((double) height)
-                        / (tilingInfo.maxHeight - tileTrimScaled.top - tileTrimScaled.bottom));
+        if (!tilingInfo.isTiled) {
+            columns = 1;
+            rows = 1;
 
-                // adapt the tiling
-                width = (int) Math.ceil(((double) width) / cols);
-                width += tileTrimScaled.left + tileTrimScaled.right;
+            tileWidth = (int) Math.ceil(width + tileTrimScaled.getWidth());
+            tileHeight = (int) Math.ceil(height + tileTrimScaled.getHeight());
 
-                height = (int) Math.ceil(((double) height) / rows);
-                height += tileTrimScaled.top + tileTrimScaled.bottom;
+        } else if (tilingInfo.isMaxsize) {
+            columns = (int) Math.ceil(width / (tilingInfo.maxWidth - tileTrimScaled.getWidth()));
+            rows = (int) Math.ceil(height / (tilingInfo.maxHeight - tileTrimScaled.getHeight()));
 
-            } else {
-                rows = tilingInfo.rows;
-                cols = tilingInfo.cols;
-
-                // adapt the tiling
-                width = (int) Math.ceil(
-                        tileTrimScaled.left + ((double) width) / cols + tileTrimScaled.right);
-                height = (int) Math.ceil(
-                        tileTrimScaled.top + ((double) height) / rows + tileTrimScaled.bottom);
-            }
+            tileWidth = (int) Math.ceil(width / columns + tileTrimScaled.getWidth());
+            tileHeight = (int) Math.ceil(height / rows + tileTrimScaled.getHeight());
 
         } else {
-            width = (int) Math.ceil(tileTrimScaled.left + width + tileTrimScaled.right);
-            height = (int) Math.ceil(tileTrimScaled.top + height + tileTrimScaled.bottom);
+            columns = tilingInfo.cols;
+            rows = tilingInfo.rows;
+
+            tileWidth = (int) Math.ceil(width / columns + tileTrimScaled.getWidth());
+            tileHeight = (int) Math.ceil(height / rows + tileTrimScaled.getHeight());
         }
 
-        final Rectangle tileBounds = new Rectangle(width, height);
+        final Rectangle tileBounds = new Rectangle(tileWidth, tileHeight);
         final DiagramExportConfig exportConfig =
                 new DiagramExportConfig(bounds, tileBounds, data.scale).setExportViewport(
                         data.isCameraViewport).setBrandingsAndTrim(brandings, trim, tileTrimScaled);
 
-        final Rectangle tileClip = getPureTileClip(tileBounds, tileTrimScaled);
+        final Rectangle tileClip = getBasicTileClip(tileBounds, tileTrimScaled);
 
         int pageNo = 0;
 
         // for each row and columns draw and export the image
         for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < cols; column++) {
+            for (int column = 0; column < columns; column++) {
 
-                exportConfig.setPageAndTileNumbesr(pageNo++, row, column);
+                exportConfig.setPageAndTileNumbers(pageNo++, row, column, rows, columns);
 
-                final IStatus res = exportTile(data, canvas, row, column, tileClip, exportConfig);
+                final IStatus res = exportTile(data, canvas, tileClip, exportConfig);
 
                 if (res != Status.OK_STATUS) {
                     return res;
@@ -145,8 +132,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         return Status.OK_STATUS;
     }
 
-    private IStatus exportTile(final ExportData data, final KlighdCanvas canvas, final int row,
-            final int col, final Rectangle tileClip, final DiagramExportConfig exportConfig) {
+    private IStatus exportTile(final ExportData data, final KlighdCanvas canvas,
+            final Rectangle tileClip, final DiagramExportConfig exportConfig) {
 
         final Rectangle tileBounds = exportConfig.tileBounds;
 
@@ -162,33 +149,16 @@ public class BitmapExporter extends KlighdCanvasExporter {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
         }
 
+
+        // initialize a GC and graphics object that 'collects' all the drawing instructions
         final GC gc = new GC(image);
+        final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
 
-        // initialize a graphics object that 'collects' all the drawing instructions
-        final KlighdSWTGraphics graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
+        drawDiagramTile(exportConfig, graphics, canvas.getCamera(), tileBounds, tileClip);
 
-        drawDiagramTile(exportConfig, graphics, canvas.getCamera(), tileBounds, 1, null);
-//        // define the initial clip
-//        graphics.setClip(tileClip);
-//
-//        // apply translation for tiled exports
-//        graphics.transform(AffineTransform.getTranslateInstance(
-//                -col * tileBounds.width, -row * tileBounds.height));
-//
-//        final Trim tileTrimScaled = getMaximumDiagramTileTrim(
-//                exportConfig.exportBrandings, tileBounds).getScaled(data.scale);
-//
-//        graphics.transform(AffineTransform.getTranslateInstance(
-//                (col + 1) * tileTrimScaled.left + (col) * tileTrimScaled.right,
-//                (row + 1) * tileTrimScaled.top + (row) * tileTrimScaled.bottom));
-//
-//        // apply the scale factor to the employed graphics object
-//        //  by means of a corresponding affine transform
-//        graphics.transform(AffineTransform.getScaleInstance(data.scale, data.scale));
-//
-//
-//        // do the action diagram drawing work
-//        drawDiagram(graphics, canvas.getCamera(), IDENTITY, tileClip, exportConfig);
+        // release the instruction recipients
+        graphics.dispose();
+        gc.dispose();
 
         // create an image loader to save the image
         // although the API differently suggests:
@@ -196,6 +166,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         //  see the implementations of FileFormat.unloadIntoByteStream(ImageLoader)
         final ImageLoader loader = new ImageLoader();
         loader.data = new ImageData[] { image.getImageData() };
+
+        image.dispose();
 
         // translate the requested format identifier
         final int format;
@@ -211,8 +183,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         // dump out the binary image data via the provided output stream
         OutputStream stream = null;
         IStatus status;
-        try {
 
+        try {
             if (data.getTilingInfo().isTiled) {
                 stream = data.createOutputStream(exportConfig.row, exportConfig.column);
             } else {
@@ -231,6 +203,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
                         + stream.toString();
             }
             status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+
         } catch (final IOException e) {
             final String msg;
             if (stream == null) {
@@ -244,10 +217,6 @@ public class BitmapExporter extends KlighdCanvasExporter {
             status = new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, t.getMessage(), t);
         }
 
-        // release all native resources
-        ((Graphics2D) graphics).dispose();
-        gc.dispose();
-        image.dispose();
         return status;
     }
 }

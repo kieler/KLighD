@@ -21,11 +21,11 @@ import org.eclipse.core.runtime.Status;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PRoot;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * An implementation of {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}
@@ -71,25 +71,13 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                     BUILDING_UP_FIGURES_FAILURE_MSG, e);
         }
 
-        // determine the bounds of the diagram to be exported
-        final PBounds bounds = getExportedBounds(camera, false);
-
         try {
-            // create a new graphics object
-            final KlighdAbstractSVGGraphics graphics =
-                    SVGGeneratorManager.createGraphics(generator, bounds, textAsShapes, embedFonts);
+            return new SVGExporter().export(camera,
+                    new ExportData(viewContext, generator, output, false, 1, textAsShapes, embedFonts));
 
-            // do the actual diagram drawing work
-            // TODO fix it!
-            this.drawDiagram(graphics, camera, IDENTITY, null, null);
-
-            // dump out the resulting SVG description via the provided output stream
-            graphics.stream(output);
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
                     EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
-
-        return Status.OK_STATUS;
     }
 }

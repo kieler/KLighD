@@ -24,7 +24,6 @@ import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -107,7 +106,7 @@ public abstract class AbstractDiagramExporter {
      */
     protected final Trim getMaximumDiagramTrim(final Iterable<IExportBranding> exportBrandings,
             final Rectangle2D bounds) {
-        return getCumulatedTrim(false, exportBrandings, bounds);
+        return getCumulatedTrim(false, false, exportBrandings, bounds);
     }
 
     /**
@@ -119,21 +118,25 @@ public abstract class AbstractDiagramExporter {
      *            the {@link IExportBranding IExportBrandings} to be applied
      * @param bounds
      *            A
+     * @param fixSizedTiles
+     *            if {@code true} the returned {@link Trim} will reduce the area being available
+     *            for drawing, otherwise the tile is increased by the provided {@link Trim}
      * @return the desired cumulated {@link Trim}
      */
     protected final Trim getMaximumDiagramTileTrim(final Iterable<IExportBranding> exportBrandings,
-            final Rectangle2D bounds) {
-        return getCumulatedTrim(true, exportBrandings, bounds);
+            final Rectangle2D bounds, final boolean fixSizedTiles) {
+        return getCumulatedTrim(true, fixSizedTiles, exportBrandings, bounds);
     }
 
-    private Trim getCumulatedTrim(final boolean tileTrim,
+    private Trim getCumulatedTrim(final boolean tileTrim, final boolean fixSizedTiles,
             final Iterable<IExportBranding> exportBrandings, final Rectangle2D bounds) {
 
         final Trim res =
                 Iterables2.fold(exportBrandings, new Function<Pair<Trim, IExportBranding>, Trim>() {
 
             public Trim apply(final Pair<Trim, IExportBranding> input) {
-                final Trim exportersTrim = tileTrim ? input.getSecond().getDiagramTileTrimm(bounds, true)
+                final Trim exportersTrim = tileTrim
+                        ? input.getSecond().getDiagramTileTrimm(bounds, fixSizedTiles)
                                 : input.getSecond().getDiagramTrim(bounds);
 
                 final Trim result = input.getFirst();
@@ -167,26 +170,48 @@ public abstract class AbstractDiagramExporter {
 
 
     /**
-     *
+     * Provides a {@link Rectangle} describing the basic clip of diagram tiles based on the actual
+     * bounds of the employed {@link org.eclipse.swt.graphics.Drawable Drawable} (
+     * {@link org.eclipse.swt.graphics.Image Image} or {@link org.eclipse.swt.graphics.Printer
+     * Printer} and the cumulated required tile {@link Trim} being scaled to the size of the
+     * employed drawable.
      *
      * @param drawablesBounds
-     *            TODO
+     *            the actual bounds of the employed {@link org.eclipse.swt.graphics.Drawable
+     *            Drawable}
      * @param tileTrimScaled
-     *            TODO
-     * @return a {@link Rectangle} describing the pure clip rectangle
+     *            the cumulated required {@link Trim} scaled to {@code drawablesBounds} if necessary
+     * @return a {@link Rectangle} describing the unadjusted clip rectangle that is to be applied
+     *         without having configured any {@link AffineTransform transform} on the corresponding
+     *         graphics
      */
-    protected Rectangle getPureTileClip(final Rectangle drawablesBounds, final Trim tileTrimScaled) {
-
+    protected Rectangle getBasicTileClip(final Rectangle drawablesBounds, final Trim tileTrimScaled) {
         final Rectangle2D clip = new Rectangle2D.Double(
                 Math.ceil(tileTrimScaled.left),
                 Math.ceil(tileTrimScaled.top),
-                Math.floor(
-                        drawablesBounds.width - tileTrimScaled.left - tileTrimScaled.right),
-                Math.floor(
-                        drawablesBounds.height - tileTrimScaled.top - tileTrimScaled.bottom));
+                Math.floor(drawablesBounds.width - tileTrimScaled.getWidth()),
+                Math.floor(drawablesBounds.height - tileTrimScaled.getHeight()));
         return clip.getBounds();
     }
 
+    /**
+     *
+     * @param exportConfig
+     *            TODO
+     * @param graphics
+     *            TODO
+     * @param camera
+     *            TODO
+     * @param drawablesBounds
+     *            TODO
+     * @param baseTileClip
+     *            maybe {@code null}
+     */
+    protected void drawDiagramTile(final DiagramExportConfig exportConfig,
+            final KlighdSWTGraphics graphics, final KlighdMainCamera camera,
+            final Rectangle drawablesBounds, final Rectangle baseTileClip) {
+        drawDiagramTile(exportConfig, graphics, camera, drawablesBounds, baseTileClip, 1d, null);
+    }
 
     /**
      *
@@ -194,42 +219,45 @@ public abstract class AbstractDiagramExporter {
      * @param graphics TODO
      * @param camera TODO
      * @param drawablesBounds TODO
+     * @param baseTileClip maybe {@code null}
      * @param tileScale TODO
      * @param centeringOffset TODO
      */
     protected void drawDiagramTile(final DiagramExportConfig exportConfig,
             final KlighdSWTGraphics graphics, final KlighdMainCamera camera,
-            final Rectangle drawablesBounds, final double tileScale, final Point2D centeringOffset) {
+            final Rectangle drawablesBounds, final Rectangle baseTileClip,
+            final double tileScale, final Point2D centeringOffset) {
+
         final Trim tileTrimScaled = exportConfig.tileTrim.getScaled((float) tileScale);
 
         // initial clip definition
-        final Rectangle tileClip = getPureTileClip(drawablesBounds, tileTrimScaled);
+        final Rectangle tileClip = baseTileClip != null
+                ? baseTileClip : getBasicTileClip(drawablesBounds, tileTrimScaled);
         graphics.setClip(tileClip);
 
         // apply translation for tiled export if necessary
-        graphics.setTransform(AffineTransform.getTranslateInstance(
+        final AffineTransform tileTransform = AffineTransform.getTranslateInstance(
                 -exportConfig.column * drawablesBounds.getWidth(),
-                -exportConfig.row * drawablesBounds.getHeight()));
+                -exportConfig.row * drawablesBounds.getHeight());
 
         if (centeringOffset != null) {
-            graphics.transform(AffineTransform.getTranslateInstance(
-                    centeringOffset.getX(), centeringOffset.getY()));
+            tileTransform.translate(centeringOffset.getX(), centeringOffset.getY());
         }
 
-        graphics.transform(AffineTransform.getTranslateInstance(
+        tileTransform.translate(
                 (exportConfig.column + 1) * tileTrimScaled.left
-                    + exportConfig.column * tileTrimScaled.right,
-                (exportConfig.row + 1) * tileTrimScaled.top + exportConfig.row * tileTrimScaled.bottom));
+                        + exportConfig.column * tileTrimScaled.right,
+                (exportConfig.row + 1) * tileTrimScaled.top
+                        + exportConfig.row * tileTrimScaled.bottom);
 
         final AffineTransform tileScaling = AffineTransform.getScaleInstance(tileScale, tileScale);
-        graphics.transform(tileScaling);
+        tileTransform.concatenate(tileScaling);
 
         // apply the scale factor to the employed graphics object
         //  by means of a corresponding affine transform
-        graphics.transform(AffineTransform.getScaleInstance(
-                exportConfig.diagramScale, exportConfig.diagramScale));
+        tileTransform.scale(exportConfig.diagramScale, exportConfig.diagramScale);
 
-        drawDiagram(graphics, camera, tileScaling, tileClip, exportConfig);
+        drawDiagram(exportConfig, graphics, camera, tileTransform, tileScaling, tileClip);
     }
 
 
@@ -240,21 +268,26 @@ public abstract class AbstractDiagramExporter {
      * This method is supposed to be used by all registered
      * {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporters} in order to achieve
      * consistent exporting behavior.
+     *
+     * @param config
+     *            an {@link DiagramExportConfig} record comprising all information required for
+     *            proper export, must not be {@code null}
      * @param graphics
-     *            the graphics object to 'draw' the diagram on
+     *            the {@link KlighdSWTGraphics} to 'draw' the diagram on
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
+     * @param diagramTransform
+     *            TODO
      * @param tileScaling
-     *            TODO
+     *            the scaling of the tile, e.g. for implementing the shrunk print page previews
      * @param tileClip
-     *            TODO
-     * @param config
-     *            an {@link DiagramExportConfig} record comprising all information required for proper
-     *            export, must not be {@code null}
+     *            a {@link Rectangle} describing the basic unadjusted (except for tile scaling) tile
+     *            clip to prevent the diagram being drawn into the tile trim
      */
-    protected final void drawDiagram(final KlighdSWTGraphics graphics,
-            final KlighdMainCamera camera, final AffineTransform tileScaling,
-            final Rectangle tileClip, final DiagramExportConfig config) {
+    protected final void drawDiagram(final DiagramExportConfig config,
+            final KlighdSWTGraphics graphics, final KlighdMainCamera camera,
+            final AffineTransform diagramTransform, final AffineTransform tileScaling,
+            final Rectangle tileClip) {
 
         final Trim diagramTrim = config.diagramTrim;
 
@@ -269,24 +302,6 @@ public abstract class AbstractDiagramExporter {
             theBounds = getExportedBounds(camera, config.exportViewport);
         }
 
-        final PBounds preBounds =
-                new PBounds(0, 0, theBounds.width + diagramTrim.left + diagramTrim.right,
-                        theBounds.height + diagramTrim.top + diagramTrim.bottom);
-
-        // explicitly initialize the white background (required especially for SVG exports)
-        graphics.setFillColor(KlighdConstants.WHITE);
-        graphics.fill(preBounds);
-
-        // Save the transform to restore it after hook call.
-        final AffineTransform transform = graphics.getTransform();
-
-        for (final IExportBranding branding : config.exportBrandings) {
-            branding.drawDiagramBackground(graphics, config);
-
-            // Restore the transform in case the hooks changed something.
-            graphics.setTransform(transform);
-        }
-
         if (config.tileBounds != null) {
             graphics.setTransform(tileScaling);
             graphics.setClip(config.tileBounds);
@@ -298,12 +313,19 @@ public abstract class AbstractDiagramExporter {
 
             graphics.setTransform(IDENTITY);
             graphics.setClip(tileClip);
-            graphics.setTransform(transform);
+            graphics.setTransform(diagramTransform);
         }
 
         if (diagramTrim != null) {
             graphics.transform(
                     AffineTransform.getTranslateInstance(diagramTrim.left, diagramTrim.top));
+        }
+
+        for (final IExportBranding branding : config.exportBrandings) {
+            branding.drawDiagramBackground(graphics, config);
+
+            // Restore the transform in case the hooks changed something.
+            graphics.setTransform(diagramTransform);
         }
 
         // adjust the zero reference point corresponding to the exported bounds' reference point
@@ -344,7 +366,7 @@ public abstract class AbstractDiagramExporter {
         for (final IExportBranding branding : config.exportBrandings) {
             // reset the zero point,
             //  or restore the transform in case 'hook' changed something, respectively
-            graphics.setTransform(transform);
+            graphics.setTransform(diagramTransform);
             branding.drawDiagramOverlay(graphics, config);
         }
 

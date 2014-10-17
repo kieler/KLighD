@@ -13,11 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontData;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 
 /**
@@ -42,11 +48,11 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 public class AuthorConfidentialExportHook extends AbstractExportBranding {
 
 //    private static final int BORDER_LINE_WIDTH = 1;
-//    private static final int BOTTOM_MARGIN = 30;
-//    private static final int TOP_LEFT_RIGHT_MARGIN = 20;
+    private static final int BOTTOM_MARGIN = 30;
+    private static final int TOP_LEFT_RIGHT_MARGIN = 20;
 //    private static final int BORDER_PADDING = 5;
-//    private static final int WATERMARK_ALPHA = 100;
-//    private static final double WATERMARK_PADDING_FACTOR = 0.8;
+    private static final int WATERMARK_ALPHA = 100;
+    private static final double WATERMARK_PADDING_FACTOR = 0.8;
 
     // CHECKSTYLEOFF MagicNumber
 
@@ -160,34 +166,38 @@ public class AuthorConfidentialExportHook extends AbstractExportBranding {
     @Override
     public void drawDiagramTileOverlay(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {
-//        // draw confidential
-//        final double innerWidth = bounds.getWidth() - (2 * TOP_LEFT_RIGHT_MARGIN);
-//        final double innerHeight = bounds.getHeight() - (TOP_LEFT_RIGHT_MARGIN + BOTTOM_MARGIN);
-//
-//        // font
-//        final FontData font = new FontData();
-//        font.setStyle(SWT.BOLD);
-//        graphics.setFont(font);
-//        graphics.setAlpha(WATERMARK_ALPHA);
-//
-//        // size & scale
-//        final String confidential = "Confidential";
-//        final Rectangle size =
-//                PlacementUtil.estimateTextSize(font, confidential).setBoundsOf(new Rectangle());
-//
-//        final double scale = Math.sqrt(Math.pow(innerWidth, 2) + Math.pow(innerHeight, 2))
-//                / size.width * WATERMARK_PADDING_FACTOR;
-//
-//        size.width *= scale;
-//        size.height *= scale;
-//
-//        // transformations
-//        graphics.transform(AffineTransform.getTranslateInstance(
-//                bounds.getWidth() / 2d - size.width / 2d, bounds.getHeight() / 2d - size.height / 2d));
-//        graphics.transform(AffineTransform.getRotateInstance(
-//                innerWidth, -innerHeight, size.width / 2d, size.height / 2d));
-//        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
-//
-//        graphics.drawText(confidential);
+        // draw confidential
+
+        final Rectangle2D bounds = config.tileBounds;
+
+        final double innerWidth = bounds.getWidth(); // - (2 * TOP_LEFT_RIGHT_MARGIN);
+        final double innerHeight = bounds.getHeight(); // - (TOP_LEFT_RIGHT_MARGIN + BOTTOM_MARGIN);
+
+        // font
+        final FontData font = new FontData("Arial", KlighdConstants.DEFAULT_FONT_SIZE, SWT.BOLD);
+        graphics.setFont(font);
+        graphics.setAlpha(WATERMARK_ALPHA);
+
+        // size & scale
+        final String confidential = "Confidential";
+        final Rectangle size =
+                PlacementUtil.estimateTextSize(font, confidential).setBoundsOf(new Rectangle());
+
+        final double scale = Math.sqrt(Math.pow(innerWidth, 2) + Math.pow(innerHeight, 2))
+                / size.width * WATERMARK_PADDING_FACTOR;
+
+        size.width *= scale;
+        size.height *= scale;
+
+        // transformations
+        graphics.transform(AffineTransform.getTranslateInstance(
+                bounds.getWidth() / 2d - size.width / 2d, bounds.getHeight() / 2d - size.height / 2d));
+        graphics.transform(AffineTransform.getRotateInstance(
+                innerWidth, -innerHeight, size.width / 2d, size.height / 2d));
+
+        graphics.draw(size);
+
+        graphics.transform(AffineTransform.getScaleInstance(scale, scale));
+        graphics.drawText(confidential);
     }
 }

@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -22,6 +23,8 @@ import org.eclipse.core.runtime.Status;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
+import de.cau.cs.kieler.klighd.IExportBranding.Trim;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -42,42 +45,64 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 public class SVGExporter extends KlighdCanvasExporter {
 
-   /**
+    /**
      * {@inheritDoc}
      */
     @Override
     public IStatus export(final KlighdCanvas canvas, final ExportData data) {
+        return export(canvas.getCamera(), data);
+    }
 
-        // reveal the canvas' camera ...
-        final KlighdMainCamera camera = canvas.getCamera();
-
-        // ... an determine the bounds of the diagram to be exported
-        final PBounds bounds = this.getExportedBounds(camera, data.isCameraViewport);
-        bounds.width += bounds.x;
-        bounds.height += bounds.y;
-        bounds.x = 0;
-        bounds.y = 0;
-
-        // initialize a graphics object that 'collects' all the drawing instructions
-        final KlighdAbstractSVGGraphics graphics =
-                SVGGeneratorManager.createGraphics(data.format, bounds,
-                        data.isTextAsShapes, data.isEmbedFonts);
-
-        // The global clip setting is required as (in PPaintContext) a default one will be set!
-        // This however will let various browsers go crazy and don't show anything!
-        //  (in case of an SVG output)
-        graphics.setClip(bounds);
+    /**
+     * Exports the diagram depicted by the given <code>camera</code>.
+     *
+     * @param camera
+     *            the camera representing the diagram
+     * @param data
+     *            the specified export info
+     *
+     * @return {@link org.eclipse.core.runtime.Status#OK_STATUS Status#OK_STATUS} if the diagram
+     *         export went successfully, an {@link IStatus} providing information on the failure
+     *         otherwise.
+     * @see KlighdCanvasExporter#export(KlighdCanvas, ExportData)
+     */
+    public IStatus export(final KlighdMainCamera camera, final ExportData data) {
 
         final Iterable<IExportBranding> brandings =
                 KlighdDataManager.getExportBrandingByFormat(data.format, data.viewContext);
 
-        final Rectangle tileBounds = bounds.getBounds();
-        final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(bounds, tileBounds, 1d).setBrandingsAndTrim(brandings,
-                        getMaximumDiagramTrim(brandings, bounds), null);
+        // ... an determine the bounds of the diagram to be exported
+        final PBounds bounds = this.getExportedBounds(camera, data.isCameraViewport);
+
+        final Trim diagramTrim = getMaximumDiagramTrim(brandings, bounds);
+        final Trim diagramTileTrim = getMaximumDiagramTileTrim(brandings, bounds, false);
+
+        final PBounds extendedBounds =
+                new PBounds(0, 0, bounds.width + diagramTrim.getWidth() + diagramTileTrim.getWidth(),
+                        bounds.height  + diagramTrim.getHeight() + diagramTileTrim.getHeight());
+
+        final Rectangle tileBounds = extendedBounds.getBounds();
+
+        final DiagramExportConfig exportConfig = new DiagramExportConfig(bounds, tileBounds)
+                .setBrandingsAndTrim(brandings, diagramTrim, diagramTileTrim);
+
+        // initialize a graphics object that 'collects' all the drawing instructions
+        final KlighdAbstractSVGGraphics graphics = SVGGeneratorManager.createGraphics(
+                data.format, extendedBounds, data.isTextAsShapes, data.isEmbedFonts);
+
+        // The global clip setting is required as (in PPaintContext) a default one will be set!
+        // This however will let various browsers go crazy and don't show anything!
+        //  (in case of an SVG output)
+        graphics.setClip(extendedBounds);
+
+        // explicitly initialize the white background (required especially for SVG exports)
+        graphics.setFillColor(KlighdConstants.WHITE);
+        graphics.fill(extendedBounds);
 
         // do the actual diagram drawing work
-        this.drawDiagram(graphics, camera, IDENTITY, tileBounds, exportConfig);
+        drawDiagram(exportConfig, graphics, camera,
+                AffineTransform.getTranslateInstance(diagramTileTrim.left, diagramTileTrim.top),
+                IDENTITY, getBasicTileClip(tileBounds, diagramTileTrim));
 
         OutputStream stream = null;
         try {
@@ -86,9 +111,9 @@ public class SVGExporter extends KlighdCanvasExporter {
             graphics.stream(stream);
             stream.close();
             return Status.OK_STATUS;
+
         } catch (final IOException e) {
-            String msg = "KLighD SVG export: "
-                    + "Failed to write SVG data";
+            String msg = "KLighD SVG export: Failed to write SVG data";
             if (stream != null) {
                 msg += " into the provided OutputStream of type "
                         + stream.getClass().getCanonicalName() + KlighdPlugin.LINE_SEPARATOR

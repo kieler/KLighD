@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
+import de.cau.cs.kieler.klighd.DiagramExportConfig;
+import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
@@ -196,21 +199,39 @@ public class PrintPreviewTray extends DialogTray {
             imageHeight = (int) (imageWidth * (1.0f / printerRatio));
         }
 
-        // Adjust the scale according to relation between preview and printing size.
-        final double previewScale = (double) (imageWidth) / pageBounds.width;
+        final PrintExporter exporter = options.getExporter();
+
+        final DiagramExportConfig config =
+                exporter.getExportConfig(pageBounds, options.getScaleFactor(),
+                        options.getPrinter().getDPI());
 
         final Rectangle imageBounds = new Rectangle(imageWidth, imageHeight);
 
+        // Adjust the scale according to relation between preview and printing size.
+        final double previewScale = (double) (imageWidth) / pageBounds.width;
+
+        final Rectangle imageClip = exporter.getBasicTileClip(imageBounds,
+                config.tileTrim.getScaled((float) previewScale));
+
+        final Point2D centeringOffset = options.getCenteringOffset(previewScale);
+
         // make sure height and width are not 0, if too small <4, don't bother
         if (!(imageHeight <= MINIMAL_TILE_SIZE || imageWidth <= MINIMAL_TILE_SIZE)) {
-            for (int i = 0; i < options.getPagesTall(); i++) {
-                for (int j = 0; j < options.getPagesWide(); j++) {
-                    final Label label = new Label(composite, SWT.NULL);
-                    final Image pageImg = options.getExporter().exportPreview(
-                            j, i, imageBounds, pageBounds, options.getScaleFactor(),
-                            previewScale, options.getCenteringOffset(previewScale));
-                    label.setImage(pageImg);
+
+            final int rows = options.getPagesTall();
+            final int columns = options.getPagesWide();
+            int pageNo = 0;
+
+            for (int row = 0; row < rows; row++) {
+                for (int column = 0; column < columns; column++) {
+
+                    config.setPageAndTileNumbers(++pageNo, row, column, rows, columns);
+
+                    final Image pageImg = exporter.exportPreview(
+                            config, imageBounds, imageClip, previewScale, centeringOffset);
                     imageList.add(pageImg);
+
+                    new Label(composite, SWT.NULL).setImage(pageImg);
                 }
             }
         }

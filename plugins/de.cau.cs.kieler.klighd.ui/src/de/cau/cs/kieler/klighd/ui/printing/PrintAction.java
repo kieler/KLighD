@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
 import org.eclipse.jface.action.Action;
@@ -21,6 +22,7 @@ import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.ui.PlatformUI;
 
+import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog;
@@ -118,27 +120,38 @@ public final class PrintAction extends Action {
         // start the print job
         printer.startJob("KlighD Printing");
 
-        int pageNo = 1;
+        final Rectangle pageBounds = exporter.getPrinterBounds(printer);
+
+        final DiagramExportConfig config =
+                exporter.getExportConfig(pageBounds, options.getScaleFactor(), printer.getDPI());
+
+        final Rectangle pageClip = exporter.getBasicTileClip(pageBounds, config.tileTrim);
+
         final Point2D centeringOffset = options.getCenteringOffset();
+
+        final int rows = options.getPagesTall();
+        final int columns = options.getPagesWide();
+
+        int pageNo = 0;
 
         // considering the assumptions to print row by row, i.e. start with all pages of the first row
         //  than proceed to those of the second one etc.
-        // the 'row' counter is treated by the outer loop, and 'column' by in the inner one
 
         outerLoop:
-        for (int row = 0; row < options.getPagesTall(); row++) {
-            for (int column = 0; column < options.getPagesWide(); column++) {
+        for (int row = 0; row != rows; row++) {
+            for (int column = 0; column != columns; column++) {
 
+                ++pageNo;
                 final boolean pageEnabled = printerData.scope == PrinterData.ALL_PAGES
                         || printerData.scope == PrinterData.PAGE_RANGE
                                 && printerData.startPage <= pageNo && printerData.endPage >= pageNo;
-                ++pageNo;
 
                 if (!pageEnabled) {
                     continue;
 
                 } else if (printer.startPage()) {
-                    exporter.print(printer, column, row, options.getScaleFactor(), centeringOffset);
+                    config.setPageAndTileNumbers(pageNo, row, column, rows, columns);
+                    exporter.print(config, printer, pageBounds, pageClip, centeringOffset);
                     printer.endPage();
 
                 } else {

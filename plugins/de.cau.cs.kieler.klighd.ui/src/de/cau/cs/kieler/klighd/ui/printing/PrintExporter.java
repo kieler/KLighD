@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
@@ -38,7 +39,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author csp
  * @author chsch
  */
-public class PrintExporter extends AbstractDiagramExporter {
+public final class PrintExporter extends AbstractDiagramExporter {
 
     private final PiccoloViewer viewer;
     private final Iterable<IExportBranding> exportBrandings;
@@ -83,7 +84,7 @@ public class PrintExporter extends AbstractDiagramExporter {
      */
     public Trim getDiagramTileTrim(final Rectangle tileBounds) {
         if (diagramTileTrim == null) {
-            diagramTileTrim = getMaximumDiagramTileTrim(exportBrandings, tileBounds);
+            diagramTileTrim = getMaximumDiagramTileTrim(exportBrandings, tileBounds, true);
         }
         return diagramTileTrim;
     }
@@ -107,8 +108,7 @@ public class PrintExporter extends AbstractDiagramExporter {
     public PBounds getTrimmedTileBounds(final Rectangle tileBounds) {
         final Trim tileTrim = getDiagramTileTrim(tileBounds);
         return new PBounds(0, 0,
-                tileBounds.width - tileTrim.left - tileTrim.right,
-                tileBounds.height - tileTrim.top - tileTrim.bottom);
+                tileBounds.width - tileTrim.getWidth(), tileBounds.height - tileTrim.getHeight());
     }
 
 
@@ -122,8 +122,8 @@ public class PrintExporter extends AbstractDiagramExporter {
         final Trim trim = getDiagramTrim();
 
         if (trim != null) {
-            diagramBounds.width += trim.left + trim.right;
-            diagramBounds.height += trim.top + trim.bottom;
+            diagramBounds.width += trim.getWidth();
+            diagramBounds.height += trim.getHeight();
         }
 
         return diagramBounds;
@@ -138,54 +138,77 @@ public class PrintExporter extends AbstractDiagramExporter {
         return KlighdPaintContext.createPrintoutPaintContext(graphics);
     }
 
+
+    /**
+     *
+     * @param pageBounds
+     *            TODO
+     * @param diagramScale
+     *            TODO
+     * @param dotsPerInch
+     *            TODO
+     * @return the required {@link DiagramExportConfig}
+     */
+    public DiagramExportConfig getExportConfig(final Rectangle pageBounds,
+            final double diagramScale, final org.eclipse.swt.graphics.Point dotsPerInch) {
+
+        return new DiagramExportConfig(getExportedBounds(viewer.getControl().getCamera(), false),
+                pageBounds, diagramScale, new Point(dotsPerInch.x, dotsPerInch.y)).setBrandingsAndTrim(
+                    exportBrandings, getDiagramTrim(), getDiagramTileTrim(pageBounds));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Rectangle getBasicTileClip(final Rectangle drawablesBounds, final Trim tileTrimScaled) {
+        return super.getBasicTileClip(drawablesBounds, tileTrimScaled);
+    }
+
+
     /**
      * Export preview. Can export the diagram in tiles to print on multiple pages.
      *
-     * @param column
-     *            the column of the tile to export
-     * @param row
-     *            the row of the tile to export
+     * @param config
+     *            the employed {@link DiagramExportConfig}
      * @param imageBounds
      *            the bounds of the diagram preview {@link Image} to be returned
-     * @param pageBounds
+     * @param imageClip
      *            the bounds of the diagram print page being previewed
-     * @param diagramScale
-     *            the scale factor
      * @param previewScale
      *            the scale factor
      * @param centeringOffset
      *            the offset to be applied to centrally align the diagram as requested
      * @return the image
      */
-    public Image exportPreview(final int column, final int row, final Rectangle imageBounds,
-            final Rectangle pageBounds, final double diagramScale, final double previewScale,
-            final Point2D centeringOffset) {
+    public Image exportPreview(final DiagramExportConfig config, final Rectangle imageBounds,
+            final Rectangle imageClip, final double previewScale, final Point2D centeringOffset) {
 
         final Image image = new Image(
                 viewer.getControl().getDisplay(), imageBounds.width, imageBounds.height);
-        export(image, column, row, imageBounds, pageBounds, diagramScale, previewScale, centeringOffset);
+        export(config, image, imageBounds, imageClip, previewScale, centeringOffset);
 
         return image;
     }
 
+
     /**
      * Export print. Can export the diagram in tiles to print on multiple pages.
      *
+     * @param config
+     *            the employed {@link DiagramExportConfig}
      * @param printer
      *            the printer to print to
-     * @param column
-     *            the column of the tile to export
-     * @param row
-     *            the row of the tile to export
-     * @param scale
-     *            the scale factor
+     * @param pageBounds
+     *            the bounds of the diagram preview {@link Image} to be returned
+     * @param pageClip
+     *            the bounds of the diagram print page being previewed
      * @param centeringOffset
      *            the offset to be applied to centrally align the diagram as requested
      */
-    public void print(final Printer printer, final int column, final int row,
-            final double scale, final Point2D centeringOffset) {
-        final Rectangle pageBounds = getPrinterBounds(printer);
-        export(printer, column, row, pageBounds, pageBounds, scale, 1, centeringOffset);
+    public void print(final DiagramExportConfig config, final Printer printer,
+            final Rectangle pageBounds, final Rectangle pageClip, final Point2D centeringOffset) {
+        export(config, printer, pageBounds, pageClip, 1d, centeringOffset);
     }
 
 
@@ -200,23 +223,20 @@ public class PrintExporter extends AbstractDiagramExporter {
      * @param previewScale
      * @param centeringOffset
      */
-    private void export(final Drawable drawable, final int column, final int row,
-            final Rectangle drawablesBounds, final Rectangle pageBounds, final double diagramScale,
-            final double previewScale, final Point2D centeringOffset) {
-
-        final DiagramExportConfig exportConfig = new DiagramExportConfig(null, pageBounds, diagramScale)
-                .setBrandingsAndTrim(exportBrandings, getDiagramTrim(), getDiagramTileTrim(pageBounds))
-                .setPageAndTileNumbesr(0, row, column);
+    private void export(final DiagramExportConfig exportConfig, final Drawable drawable,
+            final Rectangle drawablesBounds, final Rectangle imageClip, final double imageScale,
+            final Point2D centeringOffset) {
 
         final GC gc = new GC(drawable);
         final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, gc.getDevice());
 
         drawDiagramTile(exportConfig, graphics, viewer.getControl().getCamera(), drawablesBounds,
-                previewScale, centeringOffset);
+                imageClip, imageScale, centeringOffset);
 
         graphics.dispose();
         gc.dispose();
     }
+
 
     /**
      * Provides the printer bounds.<br>
