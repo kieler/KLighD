@@ -224,6 +224,13 @@
    </element>
 
    <element name="exportBranding">
+      <annotation>
+         <documentation>
+            Registration of diagram printout/export customizers allowing to add frames, author information, and confidentiality remarks to diagram printouts and exports.
+Note: Implementations should not directly implement the required interface but subclass &apos;de.cau.cs.kieler.klighd.piccolo.export.AbstractExportBranding&apos; situated in the plug-in
+ &apos;code de.cau.cs.kieler.klighd.piccolo&apos;.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>

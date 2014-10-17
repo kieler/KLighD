@@ -17,9 +17,11 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Interface to be implemented when using the extension point
- * {@code de.cau.cs.kieler.klighd.piccolo.exportHooks}. Registered hooks are being called before and
- * after the diagram is drawn.
+ * Interface of diagram printout/export customizers allowing to add frames, author information, and
+ * confidentiality remarks to diagram printouts and exports.<br>
+ * <b>Note:</b> Implementations should not directly implement this interface but subclass
+ * {@link de.cau.cs.kieler.klighd.piccolo.export.AbstractExportBranding} situated in the plug-in
+ * {@code de.cau.cs.kieler.klighd.piccolo}.
  *
  * @author csp
  * @author chsch
