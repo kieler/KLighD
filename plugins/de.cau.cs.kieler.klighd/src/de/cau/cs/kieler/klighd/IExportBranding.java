@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -67,6 +68,32 @@ public interface IExportBranding {
         public Trim getScaled(final float scale) {
             return new Trim(
                     scale * this.left, scale * this.right, scale * this.top, scale * this.bottom);
+        }
+
+        /**
+         * Returns a {@link Dimension2D} describing the required width and height of {@code this}
+         * {@link Trim} definition.
+         *
+         * @return the desired {@link Dimension2D} instance.
+         */
+        public Dimension2D getDimension() {
+            return new Dimension2D() {
+
+                @Override
+                public void setSize(final double width, final double height) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public double getWidth() {
+                    return Trim.this.left + Trim.this.right;
+                }
+
+                @Override
+                public double getHeight() {
+                    return Trim.this.top + Trim.this.bottom;
+                }
+            };
         }
     }
 
