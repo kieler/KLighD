@@ -45,11 +45,11 @@
             id="de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer"
             supportedFormats="svg">
       </offscreenRenderer>
-      <exportBranding
+      <!-- exportBranding
             class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
             id="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
             supportedFormats="printout, bmp, jpeg, png, de.cau.cs.kieler.klighd.piccolo.svggen.batik, de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic">
-      </exportBranding>
+      </exportBranding -->
    </extension>
 
 </plugin>
