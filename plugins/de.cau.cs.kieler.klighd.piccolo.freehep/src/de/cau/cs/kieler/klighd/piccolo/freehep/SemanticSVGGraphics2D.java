@@ -59,6 +59,7 @@ import org.freehep.util.io.WriterOutputStream;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics.KlighdGradientPaint;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
@@ -995,6 +996,10 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             os.print("y1=\"" + fixedPrecision(p1.getY()) + "\" ");
             os.print("x2=\"" + fixedPrecision(p2.getX()) + "\" ");
             os.print("y2=\"" + fixedPrecision(p2.getY()) + "\" ");
+            // added gradient rotation
+            if (paint instanceof KlighdGradientPaint) {
+                os.print("gradientTransform=\"rotate(" + (((KlighdGradientPaint) paint).getRotation() - 45) + ")\" ");
+            }
             os.print("gradientUnits=\"userSpaceOnUse\" ");
             os.print("spreadMethod=\""
                     + ((paint.isCyclic()) ? "reflect" : "pad") + "\" ");

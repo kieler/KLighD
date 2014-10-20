@@ -1,0 +1,57 @@
+properties:
+    de.cau.cs.kieler.edgeRouting=ORTHOGONAL
+    
+knode targetnode {
+	size: width=50 height =50
+	kport targetport {
+	}
+	knode child1 {
+		size: width = 25 height = 25
+		kpolygon {
+			points: left 0 , top 0; left 20 , top 0; left 20, top 20
+			styles: rotation = 45
+		}
+		
+
+	}
+	knode child2 {
+		size: width = 25 height = 25
+		krectangle {
+			styles:
+				
+				background = 50g, 255b,255a->180r,100g,255a(90)
+				shadow = 0r, 0g, 0b
+				foreground = 42r, 255g, 42b
+				rotation = 24
+		}
+	} 
+}
+
+knode sourcenode1 { 
+	size: width=50 height =50
+	pos: x=0 y=0
+	kport sourceport1 {
+    size: width=5 height=5
+	}
+	kedge (:sourceport1 -> targetnode:targetport) {
+	}
+	kroundedRectangle (15,15) {
+		styles:
+			background = 170b
+	}
+	
+}
+
+
+knode sourcenode2 { 
+	size: width=40 height =70
+	kport sourceport2 {
+    size: width=5 height=5
+	}
+	kedge (:sourceport2 -> targetnode:targetport) {
+	}
+	kellipse {
+		styles:
+			shadow = 0r
+	}
+}
