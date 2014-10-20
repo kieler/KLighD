@@ -24,9 +24,9 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
-import java.awt.Rectangle;
+import java.awt.Dimension;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -36,7 +36,6 @@ import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * This class is used as part of the infrastructure required for data-bindings used with the JPS
@@ -204,8 +203,8 @@ public final class PrintOptions {
 
     // some "cache" fields
     private Printer printer = null;
-    private java.awt.Rectangle printerBounds = null;
-    private Rectangle2D diagramBounds = null;
+    private Dimension printerBounds = null;
+    private Dimension2D diagramBounds = null;
     private Point2D centeringOffset = null;
 
 
@@ -220,6 +219,7 @@ public final class PrintOptions {
         this.exporter = printExporter;
         restoreFromPreferences();
     }
+
 
     /**
      * Restore the options from preference store.
@@ -695,13 +695,13 @@ public final class PrintOptions {
     }
 
     /**
-     * Provides a (cached) {@link Rectangle} containing the bounds of the currently configured
+     * Provides a (cached) {@link Dimension} containing the bounds of the currently configured
      * {@link Printer}.
      *
-     * @return a {@link Rectangle} denoting the printer's bounds, or {@code null} if no valid
+     * @return a {@link Dimension} denoting the printer's bounds, or {@code null} if no valid
      *         printer configuration is present
      */
-    public Rectangle getPrinterBounds() {
+    public Dimension getPrinterBounds() {
         final Printer p = getPrinter();
         if (p != null) {
             if (printerBounds == null && exporter != null) {
@@ -759,7 +759,7 @@ public final class PrintOptions {
             return new Point2D.Double();
         }
 
-        final PBounds pBounds = getExporter().getTrimmedTileBounds(getPrinterBounds());
+        final Dimension2D pBounds = getExporter().getTrimmedTileBounds(getPrinterBounds());
 
         if (pBounds != null) {
             if (diagramBounds == null) {
@@ -767,15 +767,12 @@ public final class PrintOptions {
                     // in this case we cannot compute the centering offset, should not happen
                     return null;
                 }
-                diagramBounds = exporter.getDiagramBounds();
+                diagramBounds = exporter.getDiagramBoundsIncludingTrim();
             }
 
-            final Rectangle2D.Double adjustedPrinterBounds = new Rectangle2D.Double(
-                    0, 0, pBounds.width * pagesWide, pBounds.height * pagesTall);
-
             return new Point2D.Double(
-                    (adjustedPrinterBounds.width - diagramBounds.getWidth() * scaleFactor) / 2,
-                    (adjustedPrinterBounds.height - diagramBounds.getHeight() * scaleFactor) / 2);
+                    (pBounds.getWidth() * pagesWide - diagramBounds.getWidth() * scaleFactor) / 2,
+                    (pBounds.getHeight() * pagesTall - diagramBounds.getHeight() * scaleFactor) / 2);
         }
 
         return null;

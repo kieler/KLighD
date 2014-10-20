@@ -13,12 +13,14 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.Collections;
 
 import org.eclipse.swt.widgets.Display;
+
+import com.google.common.collect.ImmutableList;
 
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 
@@ -34,11 +36,18 @@ public class DiagramExportConfig {
     // this is just a data record class introduced for reducing method parameters, so
     // CHECKSTYLEOFF Visibility|Field
 
-    /** The (unadjusted) bounds of the diagram to be exported (excluding the diagram trim). */
+    /** The {@link ViewContext} belonging to the diagram being exported. */
+    public final ViewContext viewContext;
+
+    /**
+     * The (unadjusted) bounds of the diagram to be exported (excluding the diagram trim).
+     *
+     * @see #getDiagramBoundsIncludingTrim()
+     */
     public final Rectangle2D diagramBounds;
 
     /** The (unadjusted) size of the diagram tiles created on printouts or (raster) image exports. */
-    public final Rectangle tileBounds;
+    public final Dimension tileBounds;
 
     /** The scale being chosen by the tool user while creating printouts or (raster) image exports. */
     public final double diagramScale;
@@ -48,7 +57,7 @@ public class DiagramExportConfig {
      * {@link org.eclipse.swt.printing.Printer#getDPI() Printer#getDPI()} of the chosen printer,
      * otherwise to {@link Display#getDPI()} of the default Display.
      *
-     * @see Device#getDPI()
+     * @see org.eclipse.swt.graphics.Device#getDPI()
      */
     public final Point dotsPerInch;
 
@@ -122,19 +131,24 @@ public class DiagramExportConfig {
      * {@link #diagramScale} is set equal to {@code 1d}, {@link #dotsPerInch} is set to
      * {@link Display#getDPI()} of the default Display.
      *
+     * @param viewContext
+     *            the {@link ViewContext} belonging to the diagram being exported
      * @param diagramBounds
      *            the bounds of the diagram area to be exported
      * @param tileBounds
      *            the bounds of the particular diagram tiles
      */
-    public DiagramExportConfig(final Rectangle2D diagramBounds, final Rectangle tileBounds) {
-        this(diagramBounds, tileBounds, 1d, null);
+    public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
+            final Dimension tileBounds) {
+        this(viewContext, diagramBounds, tileBounds, 1d, null);
     }
 
     /**
      * Constructor.<br>
      * {@link #dotsPerInch} is set to {@link Display#getDPI()} of the default Display.
      *
+     * @param viewContext
+     *            the {@link ViewContext} belonging to the diagram being exported
      * @param diagramBounds
      *            the bounds of the diagram area to be exported
      * @param tileBounds
@@ -143,9 +157,9 @@ public class DiagramExportConfig {
      *            the scale factor to be applied to the diagram (e.g. chosen by the user while
      *            exporting raster images or during printout)
      */
-    public DiagramExportConfig(final Rectangle2D diagramBounds, final Rectangle tileBounds,
-            final double diagramScale) {
-        this(diagramBounds, tileBounds, diagramScale, new Point());
+    public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
+            final Dimension tileBounds, final double diagramScale) {
+        this(viewContext, diagramBounds, tileBounds, diagramScale, new Point());
 
         final org.eclipse.swt.graphics.Point dpi = Display.getDefault().getDPI();
         this.dotsPerInch.setLocation(dpi.x, dpi.y);
@@ -154,6 +168,8 @@ public class DiagramExportConfig {
     /**
      * Constructor.
      *
+     * @param viewContext
+     *            the {@link ViewContext} belonging to the diagram being exported
      * @param diagramBounds
      *            the bounds of the diagram area to be exported
      * @param tileBounds
@@ -165,14 +181,61 @@ public class DiagramExportConfig {
      *            the image resolution used by the employed drawing
      *            {@link org.eclipse.swt.graphics.Device Device}
      */
-    public DiagramExportConfig(final Rectangle2D diagramBounds, final Rectangle tileBounds,
-            final double diagramScale, final Point dotsPerInch) {
+    public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
+            final Dimension tileBounds, final double diagramScale, final Point dotsPerInch) {
+        this.viewContext = viewContext;
         this.diagramBounds = diagramBounds;
         this.tileBounds = tileBounds;
         this.diagramScale = diagramScale;
         this.dotsPerInch = dotsPerInch;
     }
 
+    /**
+     * Copy constructor.
+     *
+     * @param original the {@link DiagramExportConfig} to take the values from
+     */
+    public DiagramExportConfig(final DiagramExportConfig original) {
+        this.viewContext = original.viewContext;
+
+        // also create copies of those records can be changed, like rectangles, etc.
+        this.diagramBounds = new Rectangle2D.Double();
+        this.diagramBounds.setRect(original.diagramBounds);
+        this.diagramScale = original.diagramScale;
+        this.diagramTrim = original.diagramTrim;
+
+        this.tileBounds = new Dimension(original.tileBounds);
+        this.tileTrim = original.tileTrim;
+
+        this.dotsPerInch = new Point(original.dotsPerInch);
+
+        this.exportBrandings = ImmutableList.copyOf(original.exportBrandings);
+
+        this.exportSemanticData = original.exportSemanticData;
+        this.exportViewport = original.exportViewport;
+
+        this.pageNo = original.pageNo;
+        this.row = original.row;
+        this.column = original.column;
+        this.firstRow = original.firstRow;
+        this.firstColumn = original.firstColumn;
+        this.lastRow = original.lastRow;
+        this.lastColumn = original.lastColumn;
+    }
+
+    /**
+     * Provides a {@link Rectangle2D} describing the diagram's bounds including the
+     * {@link #diagramTrim}.<br>
+     * Implementation neglects position (x,y) of {@link #diagramBounds} since those don't matter for
+     * the overall diagram size (they are neutralized before drawing the diagram).
+     *
+     * @return a {@link Rectangle2D} describing the diagram's bounds including the
+     *         {@link #diagramTrim}
+     */
+    public Rectangle2D getDiagramBoundsIncludingTrim() {
+        return new Rectangle2D.Double(diagramTrim.left, diagramTrim.top, diagramBounds.getWidth()
+                + diagramTrim.getWidth(), diagramBounds.getHeight() + diagramTrim.getHeight());
+    }
 
     /**
      * Configures the export of the current main diagram's visible area, by default the whole
@@ -200,31 +263,6 @@ public class DiagramExportConfig {
      */
     public DiagramExportConfig setExportSemanticData(final boolean exportViewport) {
         this.exportViewport = exportViewport;
-
-        return this;
-    }
-
-    /**
-     * Combined setter of information concerning the position of the tile to be printed within
-     * the whole diagram.
-     *
-     * @param firstColumn
-     *            {@code true} if and only if tile is located in the first column
-     * @param firstRow
-     *            {@code true} if and only if tile is located in the first row
-     * @param lastColumn
-     *            {@code true} if and only if tile is located in the last column
-     * @param lastRow
-     *            {@code true} if and only if tile is located in the last row
-     *
-     * @return this {@link DiagramExportConfig} for convenience
-     */
-    public DiagramExportConfig setTileInfo(final boolean firstColumn, final boolean firstRow,
-            final boolean lastColumn, final boolean lastRow) {
-        this.firstColumn = firstColumn;
-        this.firstRow = firstRow;
-        this.lastColumn = lastColumn;
-        this.lastRow = lastRow;
 
         return this;
     }
@@ -309,6 +347,31 @@ public class DiagramExportConfig {
 
         this.lastRow = lastRow;
         this.lastColumn = lastColumn;
+
+        return this;
+    }
+
+    /**
+     * Combined setter of information concerning the position of the tile to be printed within
+     * the whole diagram.
+     *
+     * @param firstColumn
+     *            {@code true} if and only if tile is located in the first column
+     * @param firstRow
+     *            {@code true} if and only if tile is located in the first row
+     * @param lastColumn
+     *            {@code true} if and only if tile is located in the last column
+     * @param lastRow
+     *            {@code true} if and only if tile is located in the last row
+     *
+     * @return this {@link DiagramExportConfig} for convenience
+     */
+    public DiagramExportConfig setTileInfo(final boolean firstColumn, final boolean firstRow,
+            final boolean lastColumn, final boolean lastRow) {
+        this.firstColumn = firstColumn;
+        this.firstRow = firstRow;
+        this.lastColumn = lastColumn;
+        this.lastRow = lastRow;
 
         return this;
     }

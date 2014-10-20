@@ -24,6 +24,8 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
+import java.awt.geom.Dimension2D;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
@@ -40,7 +42,6 @@ import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A section of the KlighD print dialog that adds scaling support.
@@ -117,16 +118,16 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate the minimum of necessary horizontal and vertical s1cale factors to fit the
                 // whole diagram on the selected amount of pages.
 
-                final PBounds diagramBounds = options.getExporter().getDiagramBounds();
+                final Dimension2D diagramBounds = options.getExporter().getDiagramBoundsIncludingTrim();
 
-                final PBounds trimmedPrinterBounds =
+                final Dimension2D trimmedPrinterBounds =
                         options.getExporter().getTrimmedTileBounds(options.getPrinterBounds());
 
-                final double scaleX =
-                        trimmedPrinterBounds.width * options.getPagesWide() / diagramBounds.width;
+                final double scaleX = trimmedPrinterBounds.getWidth() * options.getPagesWide()
+                        / diagramBounds.getWidth();
 
-                final double scaleY =
-                        trimmedPrinterBounds.height * options.getPagesTall() / diagramBounds.height;
+                final double scaleY = trimmedPrinterBounds.getHeight() * options.getPagesTall()
+                        / diagramBounds.getHeight();
 
                 options.setScaleFactor(Math.min(scaleX, scaleY));
             }
@@ -142,16 +143,16 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate for both horizontal and vertical directions how many pages are necessary
                 // to fit the diagram in.
 
-                final PBounds trimmedPrinterBounds =
+                final Dimension2D trimmedPrinterBounds =
                         options.getExporter().getTrimmedTileBounds(options.getPrinterBounds());
 
-                final PBounds diagramBounds = options.getExporter().getDiagramBounds();
+                final Dimension2D diagramBounds = options.getExporter().getDiagramBoundsIncludingTrim();
 
-                options.setPagesWide((int) Math.ceil(diagramBounds.width * options.getScaleFactor()
-                        / trimmedPrinterBounds.width));
+                options.setPagesWide((int) Math.ceil(diagramBounds.getWidth() * options.getScaleFactor()
+                        / trimmedPrinterBounds.getWidth()));
 
-                options.setPagesTall((int) Math.ceil(diagramBounds.height * options.getScaleFactor()
-                        / trimmedPrinterBounds.height));
+                options.setPagesTall((int) Math.ceil(diagramBounds.getHeight() * options.getScaleFactor()
+                        / trimmedPrinterBounds.getHeight()));
             }
         });
 

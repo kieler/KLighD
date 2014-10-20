@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -106,10 +107,11 @@ public class BitmapExporter extends KlighdCanvasExporter {
             tileHeight = (int) Math.ceil(height / rows + tileTrimScaled.getHeight());
         }
 
-        final Rectangle tileBounds = new Rectangle(tileWidth, tileHeight);
+        final Dimension tileBounds = new Dimension(tileWidth, tileHeight);
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(bounds, tileBounds, data.scale).setExportViewport(
-                        data.isCameraViewport).setBrandingsAndTrim(brandings, trim, tileTrimScaled);
+                new DiagramExportConfig(data.viewContext, bounds, tileBounds, data.scale)
+                .setBrandingsAndTrim(brandings, trim, tileTrimScaled)
+                .setExportViewport(data.isCameraViewport);
 
         final Rectangle tileClip = getBasicTileClip(tileBounds, tileTrimScaled);
 
@@ -123,6 +125,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
                 final IStatus res = exportTile(data, canvas, tileClip, exportConfig);
 
+                // if any tile could not be create and saved stop here completely, as continuing
+                //  is non-sense in case the file path is broken or write permissions are missing
                 if (res != Status.OK_STATUS) {
                     return res;
                 }
@@ -135,9 +139,12 @@ public class BitmapExporter extends KlighdCanvasExporter {
     private IStatus exportTile(final ExportData data, final KlighdCanvas canvas,
             final Rectangle tileClip, final DiagramExportConfig exportConfig) {
 
-        final Rectangle tileBounds = exportConfig.tileBounds;
+        final Dimension tileBounds = exportConfig.tileBounds;
 
         // initialize an SWT Image that serves as the pixel 'canvas'
+        //  since any potential scaling is (here) considered as diagram scaling, not tile scaling,
+        //  the employed images will have the size of 'tilesBounds',
+        //  and this size is used while calling #drawDiagramTile(...) below
         final Image image;
         try {
             image = new Image(canvas.getDisplay(), tileBounds.width, tileBounds.height);
@@ -152,8 +159,10 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
         // initialize a GC and graphics object that 'collects' all the drawing instructions
         final GC gc = new GC(image);
-        final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc, canvas.getDisplay());
+        final KlighdSWTGraphicsImpl graphics = new KlighdSWTGraphicsImpl(gc);
 
+        // now draw the diagram
+        //  see comment above on the assignment of 'drawablesBounds' (4th parameter)
         drawDiagramTile(exportConfig, graphics, canvas.getCamera(), tileBounds, tileClip);
 
         // release the instruction recipients

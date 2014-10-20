@@ -13,12 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.LineAttributes;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -47,10 +50,10 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
  */
 public class AuthorConfidentialExportHook extends AbstractExportBranding {
 
-//    private static final int BORDER_LINE_WIDTH = 1;
+    private static final int BORDER_LINE_WIDTH = 3;
     private static final int BOTTOM_MARGIN = 30;
     private static final int TOP_LEFT_RIGHT_MARGIN = 20;
-//    private static final int BORDER_PADDING = 5;
+    private static final int BORDER_PADDING = 5;
     private static final int WATERMARK_ALPHA = 100;
     private static final double WATERMARK_PADDING_FACTOR = 0.8;
 
@@ -68,7 +71,7 @@ public class AuthorConfidentialExportHook extends AbstractExportBranding {
      */
     @Override
     public Trim getDiagramTrim(final Rectangle2D bounds) {
-        return null; //new TrimData(100, 100, 200, 200);
+        return new Trim(100, 100, 200, 200);
     }
 
     /**
@@ -89,27 +92,29 @@ public class AuthorConfidentialExportHook extends AbstractExportBranding {
     @Override
     public void drawDiagramBackground(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {
-//        graphics.setFillColor(KlighdConstants.RED);
-//
-//        graphics.fill(new Rectangle2D.Double(0, 0, 100, bounds.getHeight()));
-//        graphics.fill(new Rectangle2D.Double(bounds.getWidth() - 100, 0, 100, bounds.getHeight()));
-//
-//        final Path2D p = new Path2D.Float();
-//        p.moveTo(0, 0);
-//        p.lineTo(bounds.getWidth(), 0);
-//        p.lineTo(bounds.getWidth() - 100, 200);
-//        p.lineTo(100, 200);
-//        p.closePath();
-//
-//        graphics.setFillColor(KlighdConstants.BLUE);
-//
-//        graphics.fill(p);
-//
-//        graphics.transform(AffineTransform.getRotateInstance(Math.toRadians(180),
-//                bounds.getCenterX(), bounds.getCenterY()));
-//
-//        graphics.fill(p);
+        graphics.setFillColor(KlighdConstants.RED);
 
+        final Rectangle2D bounds = config.diagramBounds.getBounds2D();
+        bounds.setRect(0, 0, 200 + bounds.getWidth(), 400 + bounds.getHeight());
+
+        graphics.fill(new Rectangle2D.Double(0, 0, 100, bounds.getHeight()));
+        graphics.fill(new Rectangle2D.Double(bounds.getWidth() - 100, 0, 100, bounds.getHeight()));
+
+        final Path2D p = new Path2D.Float();
+        p.moveTo(0, 0);
+        p.lineTo(bounds.getWidth(), 0);
+        p.lineTo(bounds.getWidth() - 100, 200);
+        p.lineTo(100, 200);
+        p.closePath();
+
+        graphics.setFillColor(KlighdConstants.BLUE);
+
+        graphics.fill(p);
+
+        graphics.transform(AffineTransform.getRotateInstance(
+              Math.toRadians(180), bounds.getCenterX(), bounds.getCenterY()));
+
+        graphics.fill(p);
     }
 
     /**
@@ -128,11 +133,6 @@ public class AuthorConfidentialExportHook extends AbstractExportBranding {
                     config.tileBounds.getWidth() - 100,
                     config.tileBounds.getHeight() - 40));
         }
-//
-//        graphics.setFillColor(KlighdConstants.GREEN);
-//        graphics.setAlpha(100);
-//        graphics.fill(new Rectangle2D.Double(10, 10, bounds.getWidth() - 20, bounds.getHeight() - 20));
-//        graphics.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);
     }
 
     /**
@@ -140,23 +140,25 @@ public class AuthorConfidentialExportHook extends AbstractExportBranding {
      */
     @Override
     public void drawDiagramOverlay(final KlighdSWTGraphics graphics, final DiagramExportConfig config) {
-//
-//        final double innerWidth = bounds.getWidth() - (2 * TOP_LEFT_RIGHT_MARGIN);
-//        final double innerHeight = bounds.getHeight() - (TOP_LEFT_RIGHT_MARGIN + BOTTOM_MARGIN);
-//
-//        // make border
-//        graphics.setLineAttributes(new LineAttributes(BORDER_LINE_WIDTH));
-//        graphics.setStrokeColor(KlighdConstants.BLACK);
-//        graphics.draw(new Rectangle2D.Double(
-//                TOP_LEFT_RIGHT_MARGIN - BORDER_PADDING, TOP_LEFT_RIGHT_MARGIN - BORDER_PADDING,
-//                innerWidth + 2 * BORDER_PADDING, innerHeight + 2 * BORDER_PADDING));
-//
-//        // draw author
-//        graphics.transform(AffineTransform.getTranslateInstance(TOP_LEFT_RIGHT_MARGIN,
-//                bounds.getHeight() - TOP_LEFT_RIGHT_MARGIN));
-//        graphics.setFont(new FontData("Arial", KlighdConstants.DEFAULT_FONT_SIZE,
-//                KlighdConstants.DEFAULT_FONT_STYLE_SWT));
-//        graphics.drawText("Author: Max Mustermann");
+
+        final Rectangle2D bounds = config.getDiagramBoundsIncludingTrim();
+
+        final double innerWidth = bounds.getWidth() - (2 * TOP_LEFT_RIGHT_MARGIN);
+        final double innerHeight = bounds.getHeight() - (TOP_LEFT_RIGHT_MARGIN + BOTTOM_MARGIN);
+
+        // make border
+        graphics.setLineAttributes(new LineAttributes(BORDER_LINE_WIDTH));
+        graphics.setStrokeColor(KlighdConstants.WHITE);
+        graphics.draw(new Rectangle2D.Double(
+                TOP_LEFT_RIGHT_MARGIN - BORDER_PADDING, TOP_LEFT_RIGHT_MARGIN - BORDER_PADDING,
+                innerWidth + 2 * BORDER_PADDING, innerHeight + 2 * BORDER_PADDING));
+
+        // draw author
+        graphics.transform(AffineTransform.getTranslateInstance(TOP_LEFT_RIGHT_MARGIN,
+                bounds.getHeight() - TOP_LEFT_RIGHT_MARGIN));
+        graphics.setFont(new FontData("Arial", KlighdConstants.DEFAULT_FONT_SIZE,
+                KlighdConstants.DEFAULT_FONT_STYLE_SWT));
+        graphics.drawText("Author: Max Mustermann");
 
     }
 
@@ -168,7 +170,7 @@ public class AuthorConfidentialExportHook extends AbstractExportBranding {
             final DiagramExportConfig config) {
         // draw confidential
 
-        final Rectangle2D bounds = config.tileBounds;
+        final Dimension bounds = config.tileBounds;
 
         final double innerWidth = bounds.getWidth(); // - (2 * TOP_LEFT_RIGHT_MARGIN);
         final double innerHeight = bounds.getHeight(); // - (TOP_LEFT_RIGHT_MARGIN + BOTTOM_MARGIN);
@@ -195,6 +197,7 @@ public class AuthorConfidentialExportHook extends AbstractExportBranding {
         graphics.transform(AffineTransform.getRotateInstance(
                 innerWidth, -innerHeight, size.width / 2d, size.height / 2d));
 
+        graphics.setStrokeColor(KlighdConstants.BLACK);
         graphics.draw(size);
 
         graphics.transform(AffineTransform.getScaleInstance(scale, scale));

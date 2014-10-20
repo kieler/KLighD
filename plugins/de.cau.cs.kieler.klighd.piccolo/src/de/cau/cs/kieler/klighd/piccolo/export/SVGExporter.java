@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import java.awt.Rectangle;
+import java.awt.Dimension;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -81,10 +81,11 @@ public class SVGExporter extends KlighdCanvasExporter {
                 new PBounds(0, 0, bounds.width + diagramTrim.getWidth() + diagramTileTrim.getWidth(),
                         bounds.height  + diagramTrim.getHeight() + diagramTileTrim.getHeight());
 
-        final Rectangle tileBounds = extendedBounds.getBounds();
+        final Dimension tileBounds = extendedBounds.getBounds().getSize();
 
-        final DiagramExportConfig exportConfig = new DiagramExportConfig(bounds, tileBounds)
-                .setBrandingsAndTrim(brandings, diagramTrim, diagramTileTrim);
+        final DiagramExportConfig exportConfig =
+                new DiagramExportConfig(data.viewContext, bounds, tileBounds).setBrandingsAndTrim(
+                        brandings, diagramTrim, diagramTileTrim);
 
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdAbstractSVGGraphics graphics = SVGGeneratorManager.createGraphics(

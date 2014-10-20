@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -186,7 +187,7 @@ public class PrintPreviewTray extends DialogTray {
 
         // now adjust to the limiting one based on aspect ratio
 
-        final Rectangle pageBounds = options.getPrinterBounds();
+        final Dimension pageBounds = options.getPrinterBounds();
 
         // width / height
         final float printerRatio = ((float) pageBounds.width) / ((float) pageBounds.height);
@@ -201,16 +202,15 @@ public class PrintPreviewTray extends DialogTray {
 
         final PrintExporter exporter = options.getExporter();
 
-        final DiagramExportConfig config =
-                exporter.getExportConfig(pageBounds, options.getScaleFactor(),
-                        options.getPrinter().getDPI());
+        final DiagramExportConfig config = exporter.createExportConfig(
+                pageBounds, options.getScaleFactor(), options.getPrinter().getDPI());
 
-        final Rectangle imageBounds = new Rectangle(imageWidth, imageHeight);
+        final Dimension imageBounds = new Dimension(imageWidth, imageHeight);
 
         // Adjust the scale according to relation between preview and printing size.
         final double previewScale = (double) (imageWidth) / pageBounds.width;
 
-        final Rectangle imageClip = exporter.getBasicTileClip(imageBounds,
+        final Rectangle imageClip = exporter.getBasicPageClip(imageBounds,
                 config.tileTrim.getScaled((float) previewScale));
 
         final Point2D centeringOffset = options.getCenteringOffset(previewScale);

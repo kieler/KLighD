@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.printing;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
@@ -120,12 +121,12 @@ public final class PrintAction extends Action {
         // start the print job
         printer.startJob("KlighD Printing");
 
-        final Rectangle pageBounds = exporter.getPrinterBounds(printer);
+        final Dimension pageBounds = exporter.getPrinterBounds(printer);
 
         final DiagramExportConfig config =
-                exporter.getExportConfig(pageBounds, options.getScaleFactor(), printer.getDPI());
+                exporter.createExportConfig(pageBounds, options.getScaleFactor(), printer.getDPI());
 
-        final Rectangle pageClip = exporter.getBasicTileClip(pageBounds, config.tileTrim);
+        final Rectangle pageClip = exporter.getBasicPageClip(pageBounds, config.tileTrim);
 
         final Point2D centeringOffset = options.getCenteringOffset();
 

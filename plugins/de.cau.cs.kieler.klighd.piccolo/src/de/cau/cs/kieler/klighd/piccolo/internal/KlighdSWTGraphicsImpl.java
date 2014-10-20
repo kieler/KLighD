@@ -114,6 +114,17 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * @param gc
      *            The Eclipse Graphics Context onto which all Graphics2D operations are
      *            delegating
+     */
+    public KlighdSWTGraphicsImpl(final GC gc) {
+        this(gc, gc.getDevice());
+    }
+
+    /**
+     * Constructor for SWTGraphics2D.
+     *
+     * @param gc
+     *            The Eclipse Graphics Context onto which all Graphics2D operations are
+     *            delegating
      * @param device
      *            Device onto which ultimately all gc operations are drawn onto
      */
