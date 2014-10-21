@@ -92,7 +92,7 @@ public class DiagramEditorPart extends EditorPart implements
     /**
      * ActionBarContributor providing the print action for DiagramEditorParts.
      */
-    public static class ActionContributor extends EditorActionBarContributor {
+    public static class PrintActionContributor extends EditorActionBarContributor {
 
         /** The print action. */
         private final PrintAction action = new PrintAction();
