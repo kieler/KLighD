@@ -97,7 +97,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     public KlighdPrintDialog(final Shell shell, final PrintOptions options) {
         super(shell);
-        setShellStyle(getShellStyle() | SWT.RESIZE);
+        setShellStyle(getShellStyle() | SWT.MAX | SWT.RESIZE);
         this.options = options;
     }
 
