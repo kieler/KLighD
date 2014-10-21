@@ -128,7 +128,7 @@ final class PrinterBlock implements IDialogBlock {
      * If no valid setting are returned (e.g. the user cancels the dialog), nothing is changed.
      */
     private void openPrintOptionsDialog() {
-        final PrintDialog systemPrintDialog = new PrintDialog(printDialog.getShell());
+        final PrintDialog systemPrintDialog = printDialog.getNativePrintDialog();
         systemPrintDialog.setPrinterData(options.getPrinterData());
 
         final PrinterData data = systemPrintDialog.open();
