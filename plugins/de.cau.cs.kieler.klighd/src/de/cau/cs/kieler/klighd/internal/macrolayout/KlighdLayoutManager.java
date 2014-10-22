@@ -301,6 +301,14 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 KlighdInternalProperties.POPULATED)
                 && Iterables.any(node.getChildren(), RenderingContextData.IS_ACTIVE);
 
+        final Predicate<KRendering> filter = RenderingContextData.IS_POPULATED.apply(node)
+                ? KlighdPredicates.isExpandedRendering()
+                        : Predicates.not(KlighdPredicates.isExpandedRendering());
+
+        final KRendering displayedRendering = Iterators.find(
+                Iterators.filter(node.getData().iterator(), KRendering.class),
+                filter, node.getData(KRendering.class));
+
         final Bounds size;
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
@@ -333,13 +341,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     new KVector(minSize.getWidth(), minSize.getHeight()));
             nodeLayout.eSetDeliver(deliver);
 
-            final KRendering rootRendering = node.getData(KRendering.class);
             // if a rendering definition is given ...
-            if (rootRendering != null) {
+            if (displayedRendering != null) {
 
                 // ... calculate the minimal required size based on the determined 'minSize' bounds
                 if (performSizeEstimation) {
-                size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+                size = Bounds.max(minSize, PlacementUtil.estimateSize(displayedRendering, minSize));
                 } else {
                     size = minSize;
                 }
@@ -364,14 +371,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // set insets if available
         final KInsets layoutInsets = layoutLayout.getInsets();
-
-        final Predicate<KRendering> filter = RenderingContextData.IS_POPULATED.apply(node)
-                ? KlighdPredicates.isExpandedRendering()
-                        : KlighdPredicates.isCollapsedOrExpandedRendering();
-
-        final KRendering displayedRendering = Iterators.find(
-                Iterators.filter(node.getData().iterator(), KRendering.class),
-                filter, node.getData(KRendering.class));
 
         PlacementUtil.calculateInsets(displayedRendering, layoutInsets, size);
 
