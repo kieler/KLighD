@@ -119,6 +119,18 @@ class KNodeExtensions {
         ];
     }
     
+    def KNode setWidth(KNode node, float width) {
+        val height = node.getData(typeof(KShapeLayout)).height;
+        node.setNodeSize(width, height)
+        return node
+    }
+    
+    def KNode setHeight(KNode node, float height) {
+        val width = node.getData(typeof(KShapeLayout)).width;
+        node.setNodeSize(width, height)
+        return node
+    }
+    
     private static val IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
             "de.cau.cs.kieler.klighd.minimalNodeSize", new KVector(10d, 10d));
 
