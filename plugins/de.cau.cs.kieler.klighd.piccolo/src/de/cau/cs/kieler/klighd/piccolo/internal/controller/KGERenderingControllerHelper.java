@@ -308,9 +308,15 @@ final class KGERenderingControllerHelper {
 
         // create a controller for the text and return it
         return new KlighdTextController(textNode) {
+            
+            @Override
+            public PNode getTransformedNode() {
+                return alignmentNode;
+            }
+            
             @Override
             public void setBounds(final Bounds bounds) {
-                NodeUtil.applyBounds(alignmentNode, bounds);
+                NodeUtil.applyBounds(this, bounds);
             }
 
             @Override
@@ -543,7 +549,10 @@ final class KGERenderingControllerHelper {
 
             @Override
             public void applyChanges(final Styles styles) {
-                // the bunch of work of super.applyChanges(styles) is not required here  
+                // delegate to the controller of the KlighdNode representing the referenced rendering
+                //  this is required in order to react on styling changes of the renderingRef or
+                //  (propagated) styling changes of the renderingRefs' parents
+                pnodeController.applyChanges(styles);
             }
             
             @Override
