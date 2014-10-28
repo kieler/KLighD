@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -83,10 +83,10 @@ import edu.umd.cs.piccolo.nodes.PPath;
  * The abstract base class for controllers that manages the transformation of a dedicated
  * {@link KGraphElement}'s KRendering data to Piccolo2D nodes and the synchronization of those Piccolo2D
  * nodes with the KRendering specification.
- * 
+ *
  * @author mri
  * @author chsch
- * 
+ *
  * @param <S>
  *            the type of the underlying graph element
  * @param <T>
@@ -107,7 +107,7 @@ public abstract class AbstractKGERenderingController
      */
     private final Multimap<KRendering, PNodeController<? extends PNode>> pnodeControllers
             = ArrayListMultimap.create();
-    
+
     /**
      * This attribute key is used to let the PNodes be aware of their related KRenderings in their
      * attributes list. It is used in the KlighdActionEventHandler, for example.
@@ -118,19 +118,19 @@ public abstract class AbstractKGERenderingController
 
     /** the graph element whose rendering is controlled by this controller. */
     private S element;
-    
+
     /** the rendering currently in use by this controller. */
     private KRendering currentRendering;
 
     /** the Piccolo2D node representing the node. */
     private T repNode;
-    
+
     /** the Piccolo2D node representing the rendering. */
     private PNode renderingNode = null;
 
     /** the adapter currently installed on the rendering. */
     private CrossDocumentContentAdapter renderingDeepAdapter = null;
-    
+
     /**
      * An adapter on the graph element that is supposed to react on changes in the 'data' field. It
      * is sensitive to additions, exchanges, and removals of top level {@link KRendering} data.
@@ -145,16 +145,16 @@ public abstract class AbstractKGERenderingController
      * {@link #currentRendering}.
      */
     private boolean modifiableStylesPresent = false;
-    
+
     /**
      * A flag indicating the availability of {@link KStyle KStyles} with {@link KStyle#isSelection()}
      * returns <code>true<code>.
      */
     private boolean selectionStylesPresent = false;
-    
+
     /**
      * Constructs a rendering controller.
-     * 
+     *
      * @param element
      *            the graph element for this controller
      * @param repNode
@@ -168,7 +168,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Returns the underlying graph element.
-     * 
+     *
      * @return the graph element
      */
     public S getGraphElement() {
@@ -177,7 +177,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Returns the Piccolo2D node representing the underlying graph element.
-     * 
+     *
      * @return the Piccolo2D node
      */
     public T getRepresentation() {
@@ -188,7 +188,7 @@ public abstract class AbstractKGERenderingController
      * Determines and returns the {@link KRendering} currently managed by <code>this</code>
      * controller.<br>
      * As a side effect this method puts the returned rendering into the 'currentRendering' field.
-     * 
+     *
      * @return the (potentially) updated {@link KRendering} managed by <code>this</code> controller
      */
     public KRendering getCurrentRendering() {
@@ -229,18 +229,18 @@ public abstract class AbstractKGERenderingController
         } else {
             currentRendering = element.getData(KRendering.class);
         }
-        
+
         if (currentRendering == null) {
             currentRendering = createDefaultRendering();
         }
-        
+
         return currentRendering;
     }
 
     /**
      * Returns the {@link KRendering} currently managed by <code>this</code> controller without any
      * side effect.
-     * 
+     *
      * @return the {@link KRendering} currently managed by <code>this</code> controller
      */
     public KRendering getCurrentRenderingReference() {
@@ -249,7 +249,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Initializes the rendering controller.
-     * 
+     *
      * @param diagCtrl
      *            the overall {@link DiagramController} referenced for scheduling rendering updates
      * @param sync
@@ -262,32 +262,32 @@ public abstract class AbstractKGERenderingController
         // do the initial update of the rendering
         updateRendering();
     }
-    
-    
+
+
     /**
      * Getter.
-     * 
+     *
      * @return the selection state of the current root rendering
      */
     protected boolean isSelected() {
         return currentRendering == null
                 ? false : currentRendering.getProperty(KlighdInternalProperties.SELECTED);
     }
-    
-    
+
+
     /**
      * Convenience getter.
-     * 
+     *
      * @param kText
      *            the {@link KText} element to check for selection.
-     * 
+     *
      * @return the selection state of the given {@link KText} rendering
      */
     private boolean isSelected(final KText kText) {
         return kText == null ? false : kText.getProperty(KlighdInternalProperties.SELECTED);
     }
-    
-    
+
+
     /**
      * Fires a run of the {@link de.cau.cs.kieler.klighd.IStyleModifier IStyleModifiers} referenced
      * by the {@link KStyle KStyles} attached to this {@link KGraphElement}'s rendering and updates
@@ -299,11 +299,11 @@ public abstract class AbstractKGERenderingController
             updateStyles();
         }
     };
-    
+
 
     // ---------------------------------------------------------------------------------- //
     //  internal part
-    
+
     /**
      * Updates the rendering by removing the current rendering and evaluating the rendering data
      * attached to the graph element.
@@ -320,7 +320,7 @@ public abstract class AbstractKGERenderingController
         if (renderingNode != null) {
             removeListeners(renderingNode);
             renderingNode.removeFromParent();
-            
+
             // dispose the SWT Resources employed by the out-dated pnodes
             NodeDisposeListener.disposePNode(renderingNode);
             renderingNode = null;
@@ -329,7 +329,7 @@ public abstract class AbstractKGERenderingController
         // get the current rendering
         //  this call updates the 'currentRendering' field
         getCurrentRendering();
-        
+
         // reset that flag as potentially available styles with a modifier might be removed now
         modifiableStylesPresent = false;
 
@@ -350,14 +350,14 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Creates default rendering corresponding to the type of {@link #element}.
-     * 
+     *
      * @return a default {@link KRendering}
      */
     protected abstract KRendering createDefaultRendering();
-    
+
     /**
      * Performs the actual update of the rendering.
-     * 
+     *
      * @return the Piccolo2D node representing the current rendering
      */
     protected abstract PNode internalUpdateRendering();
@@ -370,11 +370,11 @@ public abstract class AbstractKGERenderingController
         elementAdapter = new ElementAdapter();
         element.eAdapters().add(elementAdapter);
     }
-    
+
     /**
      * An adapter on the graph element to react on changes in its graph data feature.
      * This on is sensitive to additions, exchanges, and removals of {@link KRendering} data.
-     * 
+     *
      * @author chsch
      */
     private class ElementAdapter extends AdapterImpl {
@@ -449,7 +449,7 @@ public abstract class AbstractKGERenderingController
                     }
                     return;
                 }
-                
+
                 Iterable<KRendering> allRemovedRenderings = Collections.emptyList();
                 switch (msg.getEventType()) {
                 case Notification.REMOVE_MANY:
@@ -458,10 +458,10 @@ public abstract class AbstractKGERenderingController
                         updateStylesInUi(false);
                         return;
                     }
-                    
+
                     final Iterable<KRendering> removedRenderings = Iterables.filter(
                             removed, KRendering.class);
-                    
+
                     allRemovedRenderings = Iterables.concat(Iterables.transform(
                             removedRenderings, new Function<KRendering, Iterable<KRendering>>() {
                                 public Iterable<KRendering> apply(final KRendering r) {
@@ -469,13 +469,13 @@ public abstract class AbstractKGERenderingController
                                 }
                             }));
                     // there is no break here by intention !
-                    
+
                 case Notification.REMOVE:
                     if (msg.getOldValue() instanceof KStyle) {
                         updateStylesInUi(false);
                         return;
                     }
-                    
+
                     if (msg.getOldValue() instanceof KRendering) {
                         allRemovedRenderings = ModelingUtil
                                 .selfAndEAllContentsOfSameType((KRendering) msg.getOldValue());
@@ -484,7 +484,7 @@ public abstract class AbstractKGERenderingController
                         removePNodeController(r);
                     }
                     // there is no break here by intention !
-                    
+
                 case Notification.UNSET:
                 case Notification.SET:
                 case Notification.MOVE:
@@ -540,7 +540,7 @@ public abstract class AbstractKGERenderingController
      * The scheduling allows to collect a bunch of changes within some time and apply them in one
      * run, which is desirable in combination with the new EMF compare-based incremental update.
      * <br>
-     * In addition, this automatically realizes the switching to the UI thread. 
+     * In addition, this automatically realizes the switching to the UI thread.
      */
     private void scheduleRenderingUpdate() {
         diagramController.scheduleRenderingUpdate(this);
@@ -548,7 +548,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * A little helper reducing the 'syncExec' calls if possible.
-     * 
+     *
      * @param r
      *            the runnable to be performed in the UI context.
      */
@@ -606,11 +606,11 @@ public abstract class AbstractKGERenderingController
      * Empty method hook to be overridden by {@link KEdgeRenderingController} in order to bring
      * highlighted edges to front. Method is not supposed to be overridden by other sub classes.
      */
-    protected void bringToFront() {        
+    protected void bringToFront() {
     }
 
-    /* ----------------------------------------------------------------------------------- 
-     * The style evaluation methods: 
+    /* -----------------------------------------------------------------------------------
+     * The style evaluation methods:
      * ----------------------------------------------------------------------------------- */
 
     /**
@@ -619,7 +619,7 @@ public abstract class AbstractKGERenderingController
     private void updateStyles() {
         // reset that flag as potentially available styles with a modifier might be removed now
         modifiableStylesPresent = false;
-        
+
         final boolean isSelected = this.isSelected();
         if (isSelected) {
             final Iterator<KRendering> renderings = Iterators.filter(
@@ -631,7 +631,7 @@ public abstract class AbstractKGERenderingController
                             return rendering.getStyles().iterator();
                         }
                     }));
-            
+
             selectionStylesPresent = Iterators.any(styles, KlighdPredicates.isSelection());
         }
 
@@ -640,7 +640,7 @@ public abstract class AbstractKGERenderingController
 
         // in case styles of a detached KRendering are modified, e.g. if selection highlighting
         //  is removed from renderings that are not part of the diagram in the meantime
-        //  'null' values may occur here 
+        //  'null' values may occur here
         for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
             final PNode node = nodeController.getNode();
             if (node != null) {
@@ -648,14 +648,23 @@ public abstract class AbstractKGERenderingController
             }
         }
     }
-    
+
     /**
      * Recursively updates the styles of the {@link PNode PNodes} representing <code>rendering</code>.
      */
     private void updateStyles(final KRendering rendering, final boolean isSelected,
             final List<KStyle> propagatedStyles) {
 
-        final Collection<PNodeController<?>> controllers = getPNodeController(rendering);
+        updateStyles(getPNodeController(rendering), rendering, isSelected, propagatedStyles);
+    }
+
+    /**
+     * Recursively updates the styles of the {@link PNode PNodes} representing <code>rendering</code>.
+     */
+    private void updateStyles(final Collection<PNodeController<?>> controllers,
+            final KRendering rendering, final boolean isSelected,
+            final List<KStyle> propagatedStyles) {
+
         if (controllers == null || controllers.isEmpty()) {
             // in case 'rendering' is not represented by any node and, thus, no pnodeController exists,
             //  stop here
@@ -670,27 +679,27 @@ public abstract class AbstractKGERenderingController
             final KRendering referencedRendering = renderingRef.getRendering();
 
             // proceed recursively with the referenced rendering
-            updateStyles(referencedRendering, isSelected,
+            updateStyles(controllers, referencedRendering, isSelected,
                     Lists.newLinkedList(Iterables.concat(rendering.getStyles(), propagatedStyles)));
-            
+
             return;
         }
-        
+
         processModifiableStyles(rendering.getStyles());
-        
+
         // determine the styles for this rendering
         final Styles styles = prepareStylesRecord(rendering, propagatedStyles, isSelected);
-        
+
         // apply the styles to the rendering
         for (final PNodeController<?> controller : controllers) {
             controller.applyChanges(styles);
         }
-        
+
         if (rendering instanceof KContainerRendering) {
             List<KStyle> childPropagatedStyles = null;
-            
+
             // update children
-            final KContainerRendering container = (KContainerRendering) rendering;            
+            final KContainerRendering container = (KContainerRendering) rendering;
             if (container.getChildren().size() > 0) {
                 // determine the styles for propagation to child nodes
                  childPropagatedStyles = determinePropagationStyles(
@@ -701,10 +710,10 @@ public abstract class AbstractKGERenderingController
                     updateStyles(child, isSelected, childPropagatedStyles);
                 }
             }
-            
+
             if (rendering instanceof KPolyline) {
                 final KPolyline polyline = (KPolyline) rendering;
-                
+
                 final KRendering jpr = polyline.getJunctionPointRendering();
                 if (jpr != null) {
 
@@ -712,13 +721,13 @@ public abstract class AbstractKGERenderingController
                         childPropagatedStyles = determinePropagationStyles(
                                 rendering.getStyles(), propagatedStyles);
                     }
-                    
+
                     updateStyles(jpr, isSelected, childPropagatedStyles);
                 }
             }
         }
     }
-    
+
     /**
      * Prepares a {@link Styles} with those styles to be applied to the Piccolo2D node representing
      * <code>rendering</code>.
@@ -726,7 +735,7 @@ public abstract class AbstractKGERenderingController
     private Styles prepareStylesRecord(final KRendering rendering, final List<KStyle> propagatedStyles,
             final boolean isSelected) {
         final Styles styles = new Styles();
-        
+
         if (rendering instanceof KText) {
             styles.deriveStyles(rendering, propagatedStyles, isSelected((KText) rendering), false, null);
         } else {
@@ -739,7 +748,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Returns the list of styles propagated to children of the rendering with the given rendering
      * styles and propagated styles.
-     * 
+     *
      * @param renderingStyles
      *            the rendering styles
      * @param propagatedStyles
@@ -748,18 +757,18 @@ public abstract class AbstractKGERenderingController
      */
     protected List<KStyle> determinePropagationStyles(final List<KStyle> renderingStyles,
             final List<KStyle> propagatedStyles) {
-        final List<KStyle> propagationStyles = Lists.newLinkedList();
-//        propagationStyles.addAll(propagatedStyles);
+        final List<KStyle> result = Lists.newLinkedList();
+
         for (final KStyle style : Iterables.concat(propagatedStyles, renderingStyles)) {
             if (style.isPropagateToChildren()) {
-                propagationStyles.add(style);
+                result.add(style);
             }
         }
-        return propagationStyles;
+        return result;
     }
 
-    /** 
-     * A filter that lets only styles with a valid modifier id pass.  
+    /**
+     * A filter that lets only styles with a valid modifier id pass.
      */
     private static final Predicate<KStyle> MODIFIED_STYLE_FILTER = new Predicate<KStyle>() {
         public boolean apply(final KStyle style) {
@@ -768,7 +777,7 @@ public abstract class AbstractKGERenderingController
                         .getStyleModifierById(style.getModifierId()) != null;
         }
     };
-    
+
     private final StyleModificationContext singletonModContext = new StyleModificationContext();
 
     private void processModifiableStyles(final List<KStyle> styles) {
@@ -780,7 +789,7 @@ public abstract class AbstractKGERenderingController
         if (layoutData == null) {
             return;
         }
-        
+
         boolean deliver;
         for (final KStyle s: localModifiedStyles) {
             deliver  = s.eDeliver();
@@ -792,9 +801,9 @@ public abstract class AbstractKGERenderingController
     }
 
 
-    /* ----------------------------------------------------------------------------------- 
+    /* -----------------------------------------------------------------------------------
      *
-     * The PNode creation methods: 
+     * The PNode creation methods:
      * They're called from sub the classes of this one, i.e. the KNodeRenderingController,
      *  KPortRenderingController, KEdgeRenderingController, and KLabelRenderinController.
      *
@@ -803,7 +812,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Creates the Piccolo2D nodes for a list of renderings inside a parent Piccolo2D node for the given
      * placement.
-     * 
+     *
      * @param children
      *            the list of children
      * @param placement
@@ -829,7 +838,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Creates the Piccolo2D node for a rendering inside a parent Piccolo2D node using point- or
      * area-based child placement.
-     * 
+     *
      * @param rendering
      *            the rendering
      * @param parent
@@ -844,7 +853,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Creates the Piccolo2D node for a rendering inside a parent Piccolo2D node using point- or
      * area-based child placement.
-     * 
+     *
      * @param rendering
      *            the rendering
      * @param styles
@@ -906,7 +915,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Creates the Piccolo2D nodes for a list of renderings inside a parent Piccolo2D node using grid
      * placement.
-     * 
+     *
      * @param gridPlacement
      *            the grid placement
      * @param renderings
@@ -929,7 +938,7 @@ public abstract class AbstractKGERenderingController
 
         // create the renderings and collect the controllers
         final PNodeController<?>[] controllers = new PNodeController<?>[renderings.size()];
-        
+
         for (int i = 0; i < renderings.size(); i++) {
             controllers[i] = createRendering(renderings.get(i), styles, parent, elementBounds[i]);
         }
@@ -960,7 +969,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Creates the Piccolo2D node for a rendering inside a parent Piccolo2D node representing a polyline
      * using decorator placement.
-     * 
+     *
      * @param rendering
      *            the rendering
      * @param styles
@@ -1017,7 +1026,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Creates the Piccolo2D node representing the rendering inside the given parent with initial
      * bounds.
-     * 
+     *
      * @param rendering
      *            the rendering
      * @param parent
@@ -1036,7 +1045,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Creates the Piccolo2D node representing the rendering inside the given parent with initial
      * bounds.
-     * 
+     *
      * @param rendering
      *            the rendering
      * @param propagatedStyles
@@ -1051,7 +1060,7 @@ public abstract class AbstractKGERenderingController
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
 
         final List<KStyle> renderingStyles = rendering.getStyles();
-        
+
         processModifiableStyles(renderingStyles);
 
         // determine the styles for propagation to child nodes
@@ -1061,33 +1070,33 @@ public abstract class AbstractKGERenderingController
         // create the rendering and return its controller
         kSwitch.configure(childPropagatedStyles, parent, initialBounds);
         final PNodeController<?> controller = kSwitch.doSwitch(rendering);
-        
+
         // determine the styles for this rendering
-        final Styles styles = prepareStylesRecord(rendering, propagatedStyles, this.isSelected()); 
-        
+        final Styles styles = prepareStylesRecord(rendering, propagatedStyles, this.isSelected());
+
         // set the styles for the created rendering node using the controller
         controller.applyChanges(styles);
 
-        // remember the KRendering-controller pair in the controller's 'pnodeControllers' map 
+        // remember the KRendering-controller pair in the controller's 'pnodeControllers' map
         addPNodeController(rendering, controller);
 
         // remember the KRendering element in the PNode
         controller.getNode().addAttribute(ATTR_KRENDERING, rendering);
-        
+
         // in case an action is attached to the KRendering make the node pickable
         //  this is only done in the PNode initialization as adding and removing actions later in life
-        //  of a KRendering/PNode is considered unlikely and thus not supported yet 
+        //  of a KRendering/PNode is considered unlikely and thus not supported yet
         if (!rendering.getActions().isEmpty()) {
             controller.getNode().setPickable(true);
         }
         return controller;
     }
-    
+
     /**
      * Configures the Piccolo2D node for the given {@code KChildArea}.<br>
      * <br>
      * <b>CAUTION:</b> This method is overloaded by {@link KNodeRenderingController}.
-     * 
+     *
      * @param parent
      *            the parent Piccolo2D node
      * @param initialBounds
@@ -1105,7 +1114,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Adds a listener for a child node on a parent node.
-     * 
+     *
      * @param property
      *            the property to register the listener on
      * @param parent
@@ -1130,7 +1139,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Removes a node as listener from its parent.
-     * 
+     *
      * @param node
      *            the child node
      */
@@ -1147,7 +1156,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Remember a KRendering-controller pair in the controller's 'pnodeControllers' map.
-     * 
+     *
      * @param key
      *            the {@link KRendering} serving as the key
      * @param value
@@ -1159,7 +1168,7 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Returns the {@link PNodeController} value for the given {@link KRendering} key.
-     * 
+     *
      * @param key
      *            the {@link KRendering} key
      * @return the related {@link PNodeController} value
@@ -1170,14 +1179,14 @@ public abstract class AbstractKGERenderingController
 
     /**
      * Removes the key-value pair in {@link #pnodeControllers} map.
-     * 
+     *
      * @param key
      *            the key
      */
     private void removePNodeController(final KRendering key) {
         this.pnodeControllers.removeAll(key);
     }
-    
+
     /**
      * Release all key-value mappings in order to let unused objects be garbage collected.
      */
