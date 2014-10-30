@@ -47,6 +47,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         preferenceStore.setDefault(KlighdPreferences.ZOOM_STYLE,
                 KlighdPreferences.ZOOM_STYLE_DEFAULT);
 
+        preferenceStore.setDefault(KlighdPreferences.ZOOM_TO_FOCUS_STYLE,
+                KlighdPreferences.ZOOM_TO_FOCUS_STYLE_DEFAULT);
+
         preferenceStore.setDefault(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE,
                 KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE_DEFAULT);
 

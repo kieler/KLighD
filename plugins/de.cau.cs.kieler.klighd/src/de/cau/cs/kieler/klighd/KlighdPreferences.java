@@ -40,12 +40,23 @@ public final class KlighdPreferences {
     /** Default value of the Animate Layout preference. */
     public static final boolean ANIMATE_LAYOUT_DEFAULT = true;
 
-    /** ID of the Zoom-style preference. */
+    /** ID of the zoom style preference. */
     public static final String ZOOM_STYLE =
             "de.cau.cs.kieler.klighd.preferences.zoomStyle"; //$NON-NLS-1$
 
     /** Default zoom style value. */
     public static final String ZOOM_STYLE_DEFAULT = ZoomStyle.ZOOM_TO_FIT.name();
+
+    /**
+     * ID of the 'zoom to focus' style preference. This preference is (currently) not offered in the
+     * preference page since it is intended just for programmatic application customization.
+     */
+    public static final String ZOOM_TO_FOCUS_STYLE =
+            "de.cau.cs.kieler.klighd.preferences.zoomToFocusStyle";
+
+    /** Default 'zoom to focus' style value. */
+    public static final String ZOOM_TO_FOCUS_STYLE_DEFAULT =
+            ZoomStyle.ZOOM_TO_FOCUS_OR_INCREASE_TO_FIT.name();
 
     /** ID of the 'zoom on workbench part change' preference. */
     public static final String ZOOM_ON_WORKBENCHPART_CHANGE =
@@ -143,6 +154,15 @@ public final class KlighdPreferences {
      */
     public static ZoomStyle getPreferredZoomStyle() {
         return ZoomStyle.valueOf(STORE.getString(ZOOM_STYLE));
+    }
+
+    /**
+     * Getter.
+     *
+     * @return the configured 'zoom to focus' {@link ZoomStyle}
+     */
+    public static ZoomStyle getZoomToFocusStyle() {
+        return ZoomStyle.valueOf(STORE.getString(ZOOM_TO_FOCUS_STYLE));
     }
 
     /**
