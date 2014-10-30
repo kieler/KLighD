@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -73,7 +73,7 @@ import edu.umd.cs.piccolo.PNode;
  * Collection of KRendering-related figure creation methods.<br>
  * These methods are outsourced from {@link AbstractKGERenderingController} in order
  * to reduce the size of that class.
- * 
+ *
  * @author chsch
  */
 final class KGERenderingControllerHelper {
@@ -86,7 +86,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KEllipse}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -131,7 +131,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KRectangle}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -176,7 +176,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KRoundedRectangle}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -197,7 +197,7 @@ final class KGERenderingControllerHelper {
             final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
         final float cornerWidth = 2 * rect.getCornerWidth();
         final float cornerHeight = 2 * rect.getCornerHeight();
-        
+
         // create the rounded rectangle
         final KlighdPath path = new KlighdPath(rect);
         path.setPathToRoundRectangle(0, 0, initialBounds.getWidth(), initialBounds.getHeight(),
@@ -226,7 +226,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KArc}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -274,7 +274,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a {@code PSWTText} representation for the {@code KText}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -308,12 +308,12 @@ final class KGERenderingControllerHelper {
 
         // create a controller for the text and return it
         return new KlighdTextController(textNode) {
-            
+
             @Override
             public PNode getTransformedNode() {
                 return alignmentNode;
             }
-            
+
             @Override
             public void setBounds(final Bounds bounds) {
                 NodeUtil.applyBounds(this, bounds);
@@ -334,7 +334,7 @@ final class KGERenderingControllerHelper {
     /**
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KPolyline} or
      * {@code KSpline}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -390,8 +390,8 @@ final class KGERenderingControllerHelper {
 
             // handle children without decorator placement data if any
             if (restChildren.size() > 0) {
-                // chsch: Why is that proxy node needed. Don't see the point... 
-                // 
+                // chsch: Why is that proxy node needed. Don't see the point...
+                //
                 // create a proxy parent for the children without decorator placement data
                 // final PNode proxyParent = new KlighdNode();
                 // path.addChild(proxyParent);
@@ -435,7 +435,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a {@code PSWTAdvancedPath} representation for the {@code KPolygon}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -474,8 +474,8 @@ final class KGERenderingControllerHelper {
 
             // handle children without decorator placement data if any
             if (restChildren.size() > 0) {
-                // chsch: Why is that proxy node needed. Don't see the point... 
-                // 
+                // chsch: Why is that proxy node needed. Don't see the point...
+                //
                 // create a proxy parent for the children without decorator placement data
                 // final PNode proxyParent = new PEmptyNode();
                 // path.addChild(proxyParent);
@@ -506,7 +506,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a representation for the {@code KRenderingRef}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -534,16 +534,16 @@ final class KGERenderingControllerHelper {
         final List<KStyle> renderingStyles = renderingReference.getStyles();
 
         // determine the styles for propagation to child nodes
-        final List<KStyle> childPropagatedStyles = 
+        final List<KStyle> childPropagatedStyles =
                 Lists.newLinkedList(Iterables.concat(renderingStyles, propagatedStyles));
 
         // dispatch the rendering
         final PNodeController<?> pnodeController = controller.createRendering(rendering,
                 childPropagatedStyles, parent, initialBounds);
 
-        // remember the KRendering-controller pair in the controller's 'pnodeControllers' map 
+        // remember the KRendering-controller pair in the controller's 'pnodeControllers' map
         controller.addPNodeController(rendering, pnodeController);
-        
+
         // return a controller for the reference which sets the bounds of the referenced node
         return new PNodeController<PNode>(pnodeController.getNode()) {
 
@@ -554,17 +554,17 @@ final class KGERenderingControllerHelper {
                 //  (propagated) styling changes of the renderingRefs' parents
                 pnodeController.applyChanges(styles);
             }
-            
+
             @Override
             public void setBounds(final Bounds bounds) {
                 pnodeController.setBounds(bounds);
             }
         };
     }
-    
+
     /**
      * Creates a representation for the {@link KImage}.
-     * 
+     *
      * @param controller
      *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
      *            should be the caller of this method)
@@ -603,7 +603,7 @@ final class KGERenderingControllerHelper {
             // determine the containing bundle,
             // trim potentially leading and trailing quotation marks
             final String bundleName = image.getBundleName().replace("\"", "");
-            
+
             final Bundle bundle = Platform.getBundle(bundleName);
 
             if (bundle == null) {
@@ -625,7 +625,7 @@ final class KGERenderingControllerHelper {
             } else {
                 final String imagePath = image.getImagePath().replace("\"", "");
                 final URL entry = bundle.getEntry(imagePath);
-                
+
                 if (entry == null) {
                     final String msg = "KLighD: Error occurred while loading an image from bundle "
                             + bundleName + " : No entry could be found on path " + imagePath
@@ -633,8 +633,8 @@ final class KGERenderingControllerHelper {
                             + "Provide a valid bundle relative path of the image!";
                     StatusManager.getManager().handle(new Status(
                             IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg), StatusManager.LOG);
-                    return createDummy(parent, initialBounds);                        
-                    
+                    return createDummy(parent, initialBounds);
+
                 } else {
                     imageNode = new KlighdImage(bundleName, imagePath);
                 }
@@ -663,7 +663,7 @@ final class KGERenderingControllerHelper {
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
                 NodeUtil.applyBounds(this, bounds);
-                
+
                 final KRendering clip = image.getClipShape();
                 if (clip != null) {
                     updateClipShape(image.getClipShape(), bounds, getNode().getClip());
@@ -671,11 +671,11 @@ final class KGERenderingControllerHelper {
             }
         };
     }
-    
+
     /**
      * Constructs an AWT {@link Shape} being used for configuring the clip while drawing the
      * corresponding {@link KlighdImage}.
-     * 
+     *
      * @param rendering
      *            a {@link KRectangle}, {@link KEllipse}, or {@link KRenderingRef} pointing to a
      *            rendering of the former types
@@ -687,7 +687,7 @@ final class KGERenderingControllerHelper {
             final RectangularShape currentClip) {
         // resolve the KRendering (if 'rendering' is a KRenderingRef)
         final KRendering clipRendering = KRenderingUtil.dereference(rendering);
-        
+
         final KPlacementData pcd = KRenderingUtil.getPlacementData(clipRendering);
         final KAreaPlacementData apd = KRenderingUtil.asAreaPlacementData(pcd);
         final KPointPlacementData ppd = KRenderingUtil.asPointPlacementData(pcd);
@@ -727,13 +727,13 @@ final class KGERenderingControllerHelper {
         } else {
             clipShape = null;
         }
-        
+
         return clipShape;
     }
 
     /**
      * Creates a representation for the {@code KCustomRendering}.
-     * 
+     *
      * @param customRendering
      *            the custom rendering
      * @param styles
@@ -793,7 +793,7 @@ final class KGERenderingControllerHelper {
 
         // create a standard default node controller
         return new KCustomFigureController(node) {
-            
+
             @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
@@ -804,7 +804,7 @@ final class KGERenderingControllerHelper {
 
     /**
      * Creates a dummy node.
-     * 
+     *
      * @param parent
      *            the parent Piccolo node
      * @param initialBounds
