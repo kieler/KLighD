@@ -71,6 +71,25 @@ public final class NodeUtil {
     }
 
     /**
+     * Applies the translation to the given node.
+     *
+     * @param node
+     *            the node
+     * @param x
+     *            the x-translation
+     * @param y
+     *            the y-translation
+     */
+    public static void applyTranslation(final PNode node, final double x, final double y) {
+        final AffineTransform t = node.getTransformReference(true);
+
+        if (t.getTranslateX() != x || t.getTranslateY() != y) {
+            // apply the translation
+            node.setOffset(x, y);
+        }
+    }
+
+    /**
      * Applies the bounds to the given node using the node's translation and its bounds.
      *
      * @param node
@@ -83,12 +102,9 @@ public final class NodeUtil {
      *            the width
      * @param height
      *            the height
-     *
-     * @author mri, chsch
      */
     public static void applyBounds(final PNode node, final double x, final double y,
             final double width, final double height) {
-        // apply the layout;
         // sets the size of the node, does not influence the above determined position
         node.setBounds(0, 0, width, height);
 
@@ -142,7 +158,7 @@ public final class NodeUtil {
      *            the {@link Bounds}
      */
     public static void applyBounds(final PNodeController<?> controller, final Bounds bounds) {
-        controller.getNode().setBounds(0, 0,  bounds.getWidth(), bounds.getHeight());
+        controller.getTransformedNode().setBounds(0, 0,  bounds.getWidth(), bounds.getHeight());
 
         applyTranslation(controller, bounds);
     }
@@ -157,34 +173,18 @@ public final class NodeUtil {
      *            the {@link Bounds}
      */
     public static void applyTranslation(final PNodeController<?> controller, final Bounds bounds) {
+        final PNode transformedNode = controller.getTransformedNode();
+
+        // reset the current affine transform
+        transformedNode.getTransformReference(true).setToIdentity();
+
         // apply the translation
-        final PNode node = controller.getNode();
-        node.getTransformReference(true).setToIdentity();
+        applyTranslation(transformedNode, bounds.getX(), bounds.getY());
 
+        // (re-)apply the rotation,
+        //  'controller' is in charge of caching the required angle and anchor data
+        //  invalidation of 'transformedNodes's current bounds already done in applyTranslation 
         controller.applyRotation();
-
-        node.translate(bounds.getX(), bounds.getY());
-    }
-
-    /**
-     * Applies the translation to the given node.
-     *
-     * @param node
-     *            the node
-     * @param x
-     *            the x-translation
-     * @param y
-     *            the y-translation
-     *
-     * @author mri, chsch
-     */
-    public static void applyTranslation(final PNode node, final double x, final double y) {
-        final AffineTransform t = node.getTransformReference(true);
-
-        if (t.getTranslateX() != x || t.getTranslateY() != y) {
-            // apply the translation
-            node.setOffset(x, y);
-        }
     }
 
     /**
@@ -194,11 +194,8 @@ public final class NodeUtil {
      *            the node
      * @param translation
      *            the translation
-     *
-     * @author mri, chsch
      */
     public static void applyTranslation(final PNode node, final Point2D translation) {
-        // apply the translation
         applyTranslation(node, translation.getX(), translation.getY());
     }
 

@@ -21,7 +21,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.Shell;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -29,16 +29,31 @@ import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog;
 
 /**
- * An {@link Action} to show a system independent print dialog with print preview.
- * This class can be registered as an action handler. It denotes the main entry point to the KlighD
- * printing infrastructure.<br>
+ * An {@link Action} contributing print support to KLighD diagram viewers including a system
+ * independent printout configuration dialog a with print preview. The printer selection is
+ * delegated to the native 'printer selection' dialog.<br>
  * <br>
- * Note: A {@link PiccoloViewer} must be set to successfully execute the <code>run()</code> method.
+ * This class can be subclass in order to contribute a specialized version of the
+ * {@link KlighdPrintDialog} by overriding {@link #getPrintDialog(Shell, PrintOptions)}.<br>
+ * <br>
+ * In order to register the print support for editor parts a corresponding
+ * {@link org.eclipse.ui.part.EditorActionBarContributor EditorActionBarContributor} must be created
+ * and registered. Our default one is
+ * {@link de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart.PrintActionContributor
+ * DiagramEditorPart.PrintActionContributor}, it is registered in the plugin.xml as a contributor of
+ * the {@link de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart DiagramEditorPart}.<br>
+ * <br>
+ * In order to enable printing for self implemented view parts, this print action must be registered
+ * in the view site's action base as done in
+ * {@link de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart#registerPrintSupport
+ * DiagramViewPart#registerPrintSupport}.<br>
+ * <br>
+ * Note: A {@link PiccoloViewer} must be set to successfully perform the printing.
  *
  * @author csp
  * @author chsch
  */
-public final class PrintAction extends Action {
+public class PrintAction extends Action {
 
     private PiccoloViewer viewer;
 
@@ -93,19 +108,32 @@ public final class PrintAction extends Action {
     }
 
     /**
+     * Factor method contributing the employed {@link KlighdPrintDialog}, may be overridden if a
+     * customized dialog shall be injected.
+     *
+     * @param parentShell
+     *            the parent {@link Shell} required by the dialog
+     * @param options
+     *            the {@link PrintOptions} instance to work with
+     * @return the {@link KlighdPrintDialog} to be used
+     */
+    protected KlighdPrintDialog getPrintDialog(final Shell parentShell, final PrintOptions options) {
+        return new KlighdPrintDialog(parentShell, options);
+    }
+
+    /**
      * Show the print dialog and print.
      */
     @Override
-    public void run() {
+    public final void run() {
         if (viewer == null) {
-            throw new IllegalArgumentException("PrintAction: Viewer not set!");
+            throw new IllegalStateException("KLighD PrintAction: The required viewer is not set!");
         }
 
         final PrintExporter exporter = new PrintExporter(viewer);
         final PrintOptions options = new PrintOptions(exporter);
 
-        final KlighdPrintDialog dlg =
-                new KlighdPrintDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow(), options);
+        final KlighdPrintDialog dlg = getPrintDialog(viewer.getControl().getShell(), options);
 
         if (dlg.open() != IDialogConstants.OK_ID) {
             return;

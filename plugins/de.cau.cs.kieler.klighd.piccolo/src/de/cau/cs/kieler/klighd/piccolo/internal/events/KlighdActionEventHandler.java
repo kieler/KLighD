@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -46,7 +46,7 @@ import edu.umd.cs.piccolo.event.PInputEventListener;
 
 /**
  * Event handler that invokes actions associated with KRenderings on corresponding mouse click events.
- * 
+ *
  * @author chsch
  */
 public class KlighdActionEventHandler implements PInputEventListener {
@@ -55,17 +55,17 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
     /**
      * Constructor.
-     * 
+     *
      * @param theViewer
      *            the {@link PiccoloViewer} it is attached to
      */
     public KlighdActionEventHandler(final PiccoloViewer theViewer) {
         this.viewer = theViewer;
     }
-    
+
     /**
      * The well-formedness criterion of {@link KAction KActions} that is used to filter
-     * the actions to be examined in {@link #processEvent(PInputEvent, int)}.  
+     * the actions to be examined in {@link #processEvent(PInputEvent, int)}.
      */
     private static final Predicate<KAction> WELLFORMED = new Predicate<KAction>() {
         public boolean apply(final KAction action) {
@@ -107,7 +107,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             // in case no KRendering has been found ...
 
             // ... check whether a KNode's representative has been picked,
-            //  which happens if a click or double click occurred on the canvas, for example 
+            //  which happens if a click or double click occurred on the canvas, for example
             if (pickedNode instanceof INode) {
                 final INode iNode = (INode) pickedNode;
 
@@ -120,7 +120,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 } else {
                     // Otherwise we assume that a nested KNode's representative has been picked,
                     //  which may happen if the diagram has been clipped to that particular KNode.
-                    
+
                     // in that case ask the associated KGE rendering controller for the currently
                     //  displayed KRendering
                     rendering = iNode.getRenderingController().getCurrentRenderingReference();
@@ -133,15 +133,15 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 return;
             }
         }
-        
+
         ActionContext context = null; // construct the context lazily when it is required
         ActionResult result = null;
-        
+
         // this flag is used to track the successful execution of actions
         //  in order to enable animated diagram changes, the viewer must be informed to
         //  record view model changes, which is done once an action is actually executed
         boolean anyActionPerformed = false;
-        
+
         for (final KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
             if (!action.getTrigger().equals(me.getTrigger()) || !guardsMatch(action, me)) {
                 continue;
@@ -152,11 +152,11 @@ public class KlighdActionEventHandler implements PInputEventListener {
             if (actionImpl == null) {
                 continue;
             }
-            
+
             if (context == null) {
                 context = new ActionContext(this.viewer, action.getTrigger(), null, rendering);
             }
-            
+
             if (!anyActionPerformed) {
                 viewer.startRecording();
                 // the related 'stopRecording(...)' will be performed after the layout application
@@ -173,23 +173,24 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
             anyActionPerformed = result.getActionPerformed();
         }
-        
+
         if (!anyActionPerformed) {
             // if no action has been performed, skip the layout update and return
             return;
         }
-        
+
         // don't modify the evaluation of the 'handled' flag in an ad-hoc way,
         //  first make sure that the scenario described below is not enabled again.
         inputEvent.setHandled(true);
-        
+
         // remember the desired zoom style in the view context
         final ViewContext vc = viewer.getViewContext();
 
         final boolean animate = result.getAnimateLayout();
         final ZoomStyle zoomStyle = ZoomStyle.create(result, vc);
-        final KNode focusNode = zoomStyle == ZoomStyle.ZOOM_TO_FOCUS ? result.getFocusNode() : null;
-        
+        final KNode focusNode =
+                zoomStyle == ZoomStyle.getZoomToFocusStyle() ? result.getFocusNode() : null;
+
         final List<ILayoutConfig> layoutConfigs = result.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager
@@ -206,10 +207,10 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 LightDiagramServices.layoutDiagram(vc, animate, zoomStyle, focusNode, layoutConfigs);
             }
         });
-        
+
         KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, viewer.getViewContext());
     }
-    
+
     private boolean guardsMatch(final KAction action, final KlighdMouseEvent event) {
         return (!action.isAltPressed() || event.isAltDown())
                 && (!action.isCtrlCmdPressed() || event.isControlDown())
@@ -221,7 +222,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
      * A dedicated exception indicating an illegal result of a method.<br>
      * It is currently thrown if implementations of {@link IAction#execute(ActionContext)} returns
      * <code>null</code>.
-     * 
+     *
      * @author chsch
      */
     public class IllegalResultException extends RuntimeException {
@@ -230,7 +231,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
         /**
          * Constructor.
-         * 
+         *
          * @param msg
          *            the detail message. The detail message is saved for later retrieval by the
          *            {@link #getMessage()} method.

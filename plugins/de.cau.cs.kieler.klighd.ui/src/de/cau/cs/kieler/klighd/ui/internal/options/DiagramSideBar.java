@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -71,26 +71,26 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 /**
  * Builds up the diagram side bar containing the controls for configuring diagram synthesis and
  * layout options.
- * 
+ *
  * @author chsch
  */
 public final class DiagramSideBar {
-    
+
     /** The priority of the {@link ILayoutConfig} employed in side bars. */
     public static final int LAYOUT_CONFIG_PRIORITY = KlighdConstants.SIDE_BAR_LAYOUT_CONFIG_PRIORITY;
-    
+
     /** The initial width of the option pane and the diagram viewer. */
     private static final int INITIAL_OPTIONS_FORM_WIDTH = 230;
-    
+
     /** The minimal width of the option pane and the diagram viewer. */
     private static final int MINIMAL_OPTIONS_FORM_WIDTH = 100;
-    
+
     /** The space left between the 'Diagram options' and 'Layout options' sub forms. */
     private static final int SYNTHESIS_LAYOUT_OPTIONS_SPACE = 20;
-    
+
     /** The width of the separator. */
     private static final int SASH_WIDTH = 7;
-    
+
     /** Constant value denoting 100%. */
     private static final int FULL = 100;
 
@@ -98,12 +98,12 @@ public final class DiagramSideBar {
     private static final int CANVAS_ZOOM_BTNS_OFFSET = 3;
 
     private boolean zoomButtonsVisible = KlighdPreferences.isShowZoomConfigButtons();
-    
+
     private boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
-    
+
     /** The layout configurator that stores the values set by the layout option controls. */
     private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
-    
+
     private final Composite sideBarParent;
 
     /** the factory for action controls. */
@@ -120,7 +120,7 @@ public final class DiagramSideBar {
 
     /** The form that holds the zoom buttons in the sidebar. */
     private Form sideZoomBtnsForm;
-    
+
     /** The composite that holds the zoom buttons in the canvas. */
     private Composite canvasZoomBtnsContainer;
 
@@ -137,7 +137,7 @@ public final class DiagramSideBar {
     private final List<Resource> resources = new LinkedList<Resource>();
 
     private final List<Control> sideBarControls = Lists.newArrayListWithCapacity(5);
-    
+
     private FormData sashLayoutData = null;
 
     /**
@@ -148,20 +148,20 @@ public final class DiagramSideBar {
     private int horizontalPos = initiallyExpanded ? -INITIAL_OPTIONS_FORM_WIDTH : -SASH_WIDTH;
 
     private ViewContext viewContext;
-    
+
     /**
      * Hidden constructor.
-     * 
+     *
      * @param parent
      *            the parent {@link Composite} to attach the side bar to
      */
     private DiagramSideBar(final Composite parent) {
         this.sideBarParent = parent;
     }
-    
+
     /**
      * Provides the {@link ILayoutConfig} with layout settings from <code>this</code> side bar.
-     * 
+     *
      * @return the employed {@link ILayoutConfig}
      */
     public ILayoutConfig getLayoutConfig() {
@@ -171,7 +171,7 @@ public final class DiagramSideBar {
     /**
      * Creates and attaches a side bar to the given <code>parent</code> {@link Composite}.<br>
      * The given <code>diagramContainer</code> is thereby integrated in the tree of widgets.
-     * 
+     *
      * @param parent
      *            the parent {@link Composite} to attach the side bar to
      * @param diagramContainer
@@ -185,22 +185,22 @@ public final class DiagramSideBar {
             final Composite diagramContainer, final ViewContext viewContext) {
         return new DiagramSideBar(parent).initialize(diagramContainer, viewContext);
     }
-    
+
     /**
      * @see #createSideBar(Composite, Composite, ViewContext)
      */
     private DiagramSideBar initialize(final Composite diagramContainer,
             final ViewContext theViewContext) {
         // SUPPRESS CHECKSTYLE PREVIOUS 2 Length -- UI stuff is lengthy :-(
-        
+
         viewContext = theViewContext;
-        
+
         // in addition to the side bar initialization preference setting
         //  a diagram specific configuration shall be possible; thus...
         switch (viewContext.getProperty(KlighdSynthesisProperties.REQUESTED_SIDE_BAR_HANDLING)) {
         case UNDEFINED:
             break;
-        case EXPAND: 
+        case EXPAND:
             initiallyExpanded = true;
             horizontalPos = -INITIAL_OPTIONS_FORM_WIDTH;
             break;
@@ -219,15 +219,15 @@ public final class DiagramSideBar {
         case HIDE:
             zoomButtonsVisible = false;
         }
-        
+
         sideBarParent.setLayout(new FormLayout());
-        
+
         // for easier managing the visibility of the side bar's collapse/expand arrows
         //  let's put them in a dedicated container, this is advantageous below
         final Composite arrowsContainer = new Composite(sideBarParent, SWT.NONE);
         sideBarControls.add(arrowsContainer);
         arrowsContainer.setVisible(false);
-        final StackLayout arrowLabelContainerLayout = new StackLayout(); 
+        final StackLayout arrowLabelContainerLayout = new StackLayout();
         arrowsContainer.setLayout(arrowLabelContainerLayout);
 
         // create the right arrow for collapsing the options pane
@@ -271,7 +271,7 @@ public final class DiagramSideBar {
         final ScrolledForm formRootScroller = optionsformToolkit.createScrolledForm(sideBarParent);
         formRootScroller.setText(null);
         sideBarControls.add(formRootScroller);
-                
+
         final Composite formRoot = formRootScroller.getBody();
         formRoot.setLayout(new FormLayout());
 
@@ -281,58 +281,58 @@ public final class DiagramSideBar {
         actionsForm.setText("Actions");
         actionsForm.setVisible(false);
         final Composite actionsContainer = actionsForm.getBody();
-        
+
         // create the factory for diagram synthesis option controls to fill the options container
         actionControlFactory = new ActionControlFactory(actionsContainer, optionsformToolkit);
-        
+
         // create container for diagram synthesis options
         synthesisOptionsForm = optionsformToolkit.createForm(formRoot);
         sideBarControls.add(synthesisOptionsForm);
         synthesisOptionsForm.setText("Diagram Options");
         synthesisOptionsForm.setVisible(false);
         final Composite synthesisOptionsContainer = synthesisOptionsForm.getBody();
-        
+
         // create the factory for diagram synthesis option controls to fill the options container
         synthesisOptionControlFactory = new SynthesisOptionControlFactory(
                 synthesisOptionsContainer, optionsformToolkit);
-        
+
         // create container for layout options
         layoutOptionsForm = optionsformToolkit.createForm(formRoot);
         sideBarControls.add(layoutOptionsForm);
         layoutOptionsForm.setText("Layout Options");
         layoutOptionsForm.setVisible(false);
         final Composite layoutOptionsContainer = layoutOptionsForm.getBody();
-        
+
         // create the factory for layout option controls to fill the options container
         layoutOptionControlFactory = new LayoutOptionControlFactory(
                 layoutOptionsContainer, optionsformToolkit, layoutConfig);
-        
+
         // prepare the form layout data for each of the above created widgets
         final FormData diagramContainerLayoutData = new FormData();
         diagramContainerLayoutData.top = new FormAttachment(0);
         diagramContainerLayoutData.bottom = new FormAttachment(FULL);
-        diagramContainerLayoutData.left = new FormAttachment(0); 
-        diagramContainerLayoutData.right = new FormAttachment(sash); 
+        diagramContainerLayoutData.left = new FormAttachment(0);
+        diagramContainerLayoutData.right = new FormAttachment(sash);
         diagramContainer.setLayoutData(diagramContainerLayoutData);
-        
+
         final FormData arrowsContainerLayoutData = new FormData();
         arrowsContainerLayoutData.top = new FormAttachment(0);
         arrowsContainerLayoutData.bottom = new FormAttachment(sash);
-        arrowsContainerLayoutData.left = new FormAttachment(diagramContainer); 
+        arrowsContainerLayoutData.left = new FormAttachment(diagramContainer);
         arrowsContainerLayoutData.right = new FormAttachment(formRootScroller);
         arrowsContainer.setLayoutData(arrowsContainerLayoutData);
 
         // initially put the sash outside its parent composite's visible area
         //  right next to that widget's right border (i.e. at 100% of its width)
         // if the side bar is to be shown later on, a negative absolute offset
-        //  will be configured on the 'left' form attachment 
+        //  will be configured on the 'left' form attachment
         sashLayoutData = new FormData();
         sashLayoutData.top = new FormAttachment(arrowsContainer);
         sashLayoutData.bottom = new FormAttachment(FULL);
         sashLayoutData.left = new FormAttachment(FULL);
         sashLayoutData.width = SASH_WIDTH;
         sash.setLayoutData(sashLayoutData);
-        
+
         if (zoomButtonsVisible) {
             final FormData toolbarFormLayoutData = new FormData();
             toolbarFormLayoutData.top = new FormAttachment(1);
@@ -345,29 +345,29 @@ public final class DiagramSideBar {
         formRootLayoutData.top =
                 zoomButtonsVisible ? new FormAttachment(sideZoomBtnsForm) : new FormAttachment(0);
         formRootLayoutData.bottom = new FormAttachment(FULL);
-        formRootLayoutData.left = new FormAttachment(sash); 
-        formRootLayoutData.right = new FormAttachment(FULL); 
+        formRootLayoutData.left = new FormAttachment(sash);
+        formRootLayoutData.right = new FormAttachment(FULL);
         formRootScroller.setLayoutData(formRootLayoutData);
-        
-        final FormData acionsFormLayoutData = new FormData();        
+
+        final FormData acionsFormLayoutData = new FormData();
         acionsFormLayoutData.top = new FormAttachment(0);
-        acionsFormLayoutData.left = new FormAttachment(0); 
-        acionsFormLayoutData.right = new FormAttachment(FULL); 
+        acionsFormLayoutData.left = new FormAttachment(0);
+        acionsFormLayoutData.right = new FormAttachment(FULL);
         actionsForm.setLayoutData(acionsFormLayoutData);
-        
-        final FormData synthesisOptionsFormLayoutData = new FormData();        
+
+        final FormData synthesisOptionsFormLayoutData = new FormData();
         synthesisOptionsFormLayoutData.top = new FormAttachment(
                 actionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
-        synthesisOptionsFormLayoutData.left = new FormAttachment(0); 
-        synthesisOptionsFormLayoutData.right = new FormAttachment(FULL); 
+        synthesisOptionsFormLayoutData.left = new FormAttachment(0);
+        synthesisOptionsFormLayoutData.right = new FormAttachment(FULL);
         synthesisOptionsForm.setLayoutData(synthesisOptionsFormLayoutData);
-        
-        final FormData layoutOptionsFormLayoutData = new FormData();        
+
+        final FormData layoutOptionsFormLayoutData = new FormData();
         layoutOptionsFormLayoutData.top = new FormAttachment(
                 synthesisOptionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
         layoutOptionsFormLayoutData.bottom = new FormAttachment(FULL);
-        layoutOptionsFormLayoutData.left = new FormAttachment(0); 
-        layoutOptionsFormLayoutData.right = new FormAttachment(FULL); 
+        layoutOptionsFormLayoutData.left = new FormAttachment(0);
+        layoutOptionsFormLayoutData.right = new FormAttachment(FULL);
         layoutOptionsForm.setLayoutData(layoutOptionsFormLayoutData);
 
         // register the sash moving handler for resizing the options pane
@@ -391,12 +391,12 @@ public final class DiagramSideBar {
                 sideBarParent.layout(true, true);
             }
         });
-        
+
         // a "pseudo" field ;-)
         // the initialization with #INITIAL_OPTIONS_FORM_WIDTH is required for proper expansion
         //  in case the side bar is initially to be collapsed
         final int[] lastXpos = new int[] { INITIAL_OPTIONS_FORM_WIDTH };
-        
+
         // register actions for the collapse / expand labels
         rightArrowLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -431,7 +431,7 @@ public final class DiagramSideBar {
 
     /**
      * Initialize the toolbar, that is create the three buttons and register selection listeners.
-     * 
+     *
      * @param parent
      *            the {@link Composite} to which the buttons are being added
      */
@@ -439,7 +439,7 @@ public final class DiagramSideBar {
         if (!zoomButtonsVisible) {
             return;
         }
-        
+
 
         parent.setLayout(new RowLayout());
         final Button zoomToFitBtn = new Button(parent, SWT.TOGGLE | SWT.FLAT);
@@ -477,7 +477,7 @@ public final class DiagramSideBar {
         zoomToFocusBtn.setImage(zoomToFocusImage);
         zoomToFocusBtn.setToolTipText("Toggle Zoom to Focus");
         // set extra data to identify the buttons while updating later
-        zoomToFocusBtn.setData(BUTTON_TYPE, ZoomStyle.ZOOM_TO_FOCUS);
+        zoomToFocusBtn.setData(BUTTON_TYPE, ZoomStyle.getZoomToFocusStyle());
         zoomToFocusBtn.setSelection(viewContext.isZoomToFocus());
         zoomToFocusBtn.addSelectionListener(new SelectionAdapter() {
 
@@ -508,10 +508,10 @@ public final class DiagramSideBar {
             }
         });
 
-        int maxWidth =
+        final int maxWidth =
                 Math.max(zoomToFitBtn.getBounds().width,
                         Math.max(zoomToFocusBtn.getBounds().width, zoomToOneBtn.getBounds().width));
-        int maxHeight =
+        final int maxHeight =
                 Math.max(zoomToFitBtn.getBounds().height,
                         Math.max(zoomToFocusBtn.getBounds().height, zoomToOneBtn.getBounds().height));
         zoomToFitBtn.setSize(maxWidth, maxHeight);
@@ -530,10 +530,10 @@ public final class DiagramSideBar {
             event.gc.drawLine(event.width / 2, 0, event.width / 2, size.y);
         }
     }
-    
+
     /**
      * Update the options to be displayed in the options pane.
-     * 
+     *
      * @param diagramComposite
      *            the {@link Composite} the diagram canvas is contained in
      * @param theViewContext
@@ -565,7 +565,7 @@ public final class DiagramSideBar {
 
         // remove any option controls that have been created before
         synthesisOptionControlFactory.clear();
-        
+
         boolean synthesisOptionsAvailable = false;
 
         for (final SynthesisOption option : viewContext.getDisplayedSynthesisOptions()) {
@@ -582,8 +582,8 @@ public final class DiagramSideBar {
                 synthesisOptionControlFactory.createSeparator(option.getName());
             }
         }
-        
-        
+
+
         // remove any option controls that have been created before
         layoutOptionControlFactory.clear();
 
@@ -603,7 +603,7 @@ public final class DiagramSideBar {
                 first = null;
                 second = null;
             }
-            
+
             if (first instanceof Number && second instanceof Number) {
                 layoutOptionControlFactory.createControl(pair.getFirst().getId(),
                         ((Number) first).floatValue(), ((Number) second).floatValue());
@@ -617,10 +617,10 @@ public final class DiagramSideBar {
                 layoutOptionsAvailable = true;
             }
         }
-        
+
         final boolean sideBarEnabled = this.enableOptionsSideBar(fitSpace,
                 actionsAvailable, synthesisOptionsAvailable, layoutOptionsAvailable);
-        
+
         updateZoomButtons(sideBarEnabled);
 
         final IDiagramWorkbenchPart part = viewContext.getDiagramWorkbenchPart();
@@ -650,7 +650,7 @@ public final class DiagramSideBar {
         if (sideBarEnabled) {
             // side bar is expanded: simply update the selections status of the buttons.
             updateZoomButtonSelection(sideZoomBtnsForm.getBody());
-            
+
             return;
         }
 
@@ -660,7 +660,7 @@ public final class DiagramSideBar {
 
             final KlighdCanvas canvas = (KlighdCanvas) viewContext.getViewer().getControl();
             canvas.addDisposeListener(new DisposeListener() {
-                
+
                 public void widgetDisposed(final DisposeEvent e) {
                     // whenever a new model is shown in the KlighCanvas, the old one gets disposed,
                     // along with the canvasZoomBtnsContainer.
@@ -680,7 +680,7 @@ public final class DiagramSideBar {
 
             // Take care of the positioning of the canvasToolbar because the KlightCanvas
             // has no Layout set.
-            
+
             final Point canvasSize = canvas.getSize();
             final Point buttonBarSize = canvasZoomBtnsContainer.getSize();
 
@@ -704,10 +704,10 @@ public final class DiagramSideBar {
         // finally update the selection status
         updateZoomButtonSelection(canvasZoomBtnsContainer);
     }
-    
+
     /**
      * Update the selection-status of the zoom buttons.
-     * 
+     *
      * @param container
      *            the {@link Composite} the buttons are contained in
      */
@@ -716,7 +716,7 @@ public final class DiagramSideBar {
             final Object type = button.getData(BUTTON_TYPE);
             if (ZoomStyle.ZOOM_TO_FIT == type) {
                 ((Button) button).setSelection(viewContext.isZoomToFit());
-            } else if (ZoomStyle.ZOOM_TO_FOCUS == type) {
+            } else if (ZoomStyle.getZoomToFocusStyle() == type) {
                 ((Button) button).setSelection(viewContext.isZoomToFocus());
             }
         }
@@ -725,7 +725,7 @@ public final class DiagramSideBar {
     /**
      * A simple enabler of the side bar controls. It is to be executed in case there are diagram
      * options to provide in the side bar.
-     * 
+     *
      * @param zoomToFit
      *            <code>true</code> if the diagram shall fit the available space
      * @param showActions
@@ -738,7 +738,7 @@ public final class DiagramSideBar {
     private boolean enableOptionsSideBar(final boolean zoomToFit, final boolean showActions,
             final boolean showSynthesisOptions, final boolean showLayoutOptions) {
         final boolean enabled;
-        
+
         if (showActions || showSynthesisOptions || showLayoutOptions) {
             // define the controls (sash, right arrow, form) to be visible
             for (final Control c : this.sideBarControls) {
@@ -754,7 +754,7 @@ public final class DiagramSideBar {
             }
 
             if (showSynthesisOptions) {
-                if (showActions) {                
+                if (showActions) {
                     // in case actions and diagram options are available ...
                     ((FormData) synthesisOptionsForm.getLayoutData()).top =
                             new FormAttachment(actionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
@@ -768,7 +768,7 @@ public final class DiagramSideBar {
                 ((FormData) layoutOptionsForm.getLayoutData()).top =
                         new FormAttachment(synthesisOptionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
             } else {
-                if (showActions) {                
+                if (showActions) {
                     // in case no diagram options but actions and layout options are available ...
                     ((FormData) layoutOptionsForm.getLayoutData()).top =
                             new FormAttachment(actionsForm, SYNTHESIS_LAYOUT_OPTIONS_SPACE);
@@ -783,7 +783,7 @@ public final class DiagramSideBar {
                 this.sashLayoutData.left.numerator = FULL;
                 this.sashLayoutData.left.offset = horizontalPos;
             }
-            
+
             enabled = true;
 
         } else {
@@ -792,9 +792,9 @@ public final class DiagramSideBar {
             }
             if (this.sashLayoutData != null) {
                 if (this.sashLayoutData.left.offset != 0) {
-                    // The horizontal position of the side bar's sash should only be saved 
+                    // The horizontal position of the side bar's sash should only be saved
                     // if it is visible in current view.
-                    // It' propose is to avoid the re-initialization of the side bar's size 
+                    // It' propose is to avoid the re-initialization of the side bar's size
                     // in case a different model has been assigned to the current view.
                     // But if a sequence of models is displayed where only some of them have a sidebar
                     // The problem appears that horizontalPos may be set to 0 which permanently
@@ -804,7 +804,7 @@ public final class DiagramSideBar {
                 this.sashLayoutData.left.numerator = FULL;
                 this.sashLayoutData.left.offset = 0;
             }
-            
+
             enabled = false;
         }
 
@@ -817,7 +817,7 @@ public final class DiagramSideBar {
         if (zoomToFit) {
             viewContext.getViewer().zoom(ZoomStyle.ZOOM_TO_FIT, 0);
         }
-        
+
         return enabled;
     }
 
@@ -827,7 +827,7 @@ public final class DiagramSideBar {
     public void resetLayoutOptionsToDefaults() {
         this.layoutOptionControlFactory.resetToDefaults();
     }
-    
+
     /**
      * Disposes the {@link Resource Resources}.
      */

@@ -97,20 +97,79 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     public KlighdPrintDialog(final Shell shell, final PrintOptions options) {
         super(shell);
-        setShellStyle(getShellStyle() | SWT.RESIZE);
+        setShellStyle(getShellStyle() | SWT.MAX | SWT.RESIZE);
         this.options = options;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<br>
+     * <br>
+     * Specialization first checks whether a valid printer configuration can be loaded from the
+     * saved configuration (preferences). If so this dialog is opened in blocking mode. Otherwise
+     * this dialog is opened (in background) without blocking and the native printer selection
+     * dialog is opened on top (in blocking mode).<br>
+     * If the user cancels the printer selections (<code>null</code> is returned by
+     * {@link PrintDialog#open()}) the background instance of this dialog is closed and the
+     * {@link IDialogConstants#CANCEL_ID} is returned.<br>
+     * If the user properly selects a printer the returned printer data are applied to
+     * {@link #options} {@code super.open()} is (again) called in blocking mode. The implementation
+     * of {@code super.open()} checks whether the dialog is already visible on the screen and,
+     * hence, skips the creation in this case but starts rather immediately the blocking event
+     * listening loop.
      */
     @Override
     public final int open() {
+
         if (!checkPrinterData()) {
-            return IDialogConstants.CANCEL_ID;
+            setBlockOnOpen(false);
+            super.open();
+
+            final PrinterData data = getNativePrintDialog().open();
+            if (data == null) {
+                this.close();
+                return IDialogConstants.CANCEL_ID;
+
+            } else {
+                options.setPrinterData(data);
+            }
         }
 
+        setBlockOnOpen(true);
         return super.open();
+    }
+
+    /**
+     * Checks whether the printer data in the current print options are valid (i.e. an SWT Printer
+     * can be created based on them).<br>
+     * In addition, the configured printer name is checked to be non-empty (since, at least on OSX,
+     * a printer can be properly instantiated based on the default printer data).
+     *
+     * @return <code>true</code> if a valid printer configuration is available, <code>false</code>
+     *         otherwise.
+     */
+    private boolean checkPrinterData() {
+        try {
+            options.getPrinter();
+            if (!Strings.isNullOrEmpty(options.getPrinterName())) {
+                return true;
+            }
+        } catch (final Throwable e) {
+            // nothing
+        }
+
+        return false;
+    }
+
+    /**
+     * Convenience factory method providing the native printer selection dialog.
+     *
+     * @return the native {@link PrintDialog}
+     */
+    protected PrintDialog getNativePrintDialog() {
+        final PrintDialog printDialog = new PrintDialog(getParentShell());
+        printDialog.setText(KlighdUIPrintingMessages.KlighdPrintDialog_InitialDialog_title);
+
+        return printDialog;
     }
 
     /**
@@ -309,35 +368,5 @@ public class KlighdPrintDialog extends TrayDialog {
         }
 
         return super.close();
-    }
-
-    /**
-     * Checks whether the printer data in the current print options are valid (i.e. a printer can be
-     * created based on them). In addition, the pre-loaded printer name is checked to be non-empty
-     * (as, at least on OSX, a printer can be properly instantiated based on the default printer data).
-     *
-     * If those checks are not passed properly
-     *  the system's native print dialog is opened to let the user choose a valid printer.
-     */
-    private boolean checkPrinterData() {
-        try {
-            options.getPrinter();
-            if (!Strings.isNullOrEmpty(options.getPrinterName())) {
-                return true;
-            }
-        } catch (final Throwable e) {
-            // nothing
-        }
-
-        final PrintDialog printDialog = new PrintDialog(getParentShell());
-        printDialog.setText(KlighdUIPrintingMessages.KlighdPrintDialog_InitialDialog_title);
-
-        final PrinterData data = printDialog.open();
-        if (data != null) {
-            options.setPrinterData(data);
-            return true;
-        } else {
-            return false;
-        }
     }
 }
