@@ -278,9 +278,9 @@ public final class AnchorUtil {
             default:
                 return collideTowardsRectangleCenter(point, width, height);
             }
+        } else {
+            return collideTowardsRectangleCenter(point, width, height);
         }
-
-        return collideTowardsRectangleCenter(point, width, height);
     }
     
     /**
