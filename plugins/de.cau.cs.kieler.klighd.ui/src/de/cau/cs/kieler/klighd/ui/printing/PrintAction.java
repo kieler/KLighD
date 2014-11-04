@@ -100,8 +100,8 @@ public class PrintAction extends Action {
                 this.viewer = (PiccoloViewer) aViewer;
 
             } else {
-                final String msg = "KLighD PrintAction: "
-                        + "provided IViewer must be/contain an instance of PiccoloViewer!";
+                final String msg = "KLighD PrintAction: " //$NON-NLS-1$
+                        + "provided IViewer must be/contain an instance of PiccoloViewer!"; //$NON-NLS-1$
                 throw new IllegalArgumentException(msg);
             }
         }
@@ -127,7 +127,8 @@ public class PrintAction extends Action {
     @Override
     public final void run() {
         if (viewer == null) {
-            throw new IllegalStateException("KLighD PrintAction: The required viewer is not set!");
+            throw new IllegalStateException(
+                    "KLighD PrintAction: The required viewer is not set!"); //$NON-NLS-1$
         }
 
         final PrintExporter exporter = new PrintExporter(viewer);
@@ -147,7 +148,7 @@ public class PrintAction extends Action {
         final PrinterData printerData = printer.getPrinterData();
 
         // start the print job
-        printer.startJob("KlighD Printing");
+        printer.startJob(KlighdUIPrintingMessages.PrintAction_JobName);
 
         final Dimension pageBounds = exporter.getPrinterBounds(printer);
 
