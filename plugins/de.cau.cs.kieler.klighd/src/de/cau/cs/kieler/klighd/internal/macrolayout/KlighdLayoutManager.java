@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -29,6 +29,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -80,11 +81,11 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData;
  * <code>1.0f</code>, since the scaling is implemented on figure level by means of affine
  * transforms. In addition, the scale adjustment need not be reverted before the subsequent layout
  * run.
- * 
+ *
  * @author mri
  * @author chsch
  * @author msp
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
@@ -117,7 +118,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private static final IProperty<IWorkbenchPart> WORKBENCH_PART = new Property<IWorkbenchPart>(
             "klighd.layout.workbenchPart");
-    
+
     /** the property layout configurator. */
     private final KGraphPropertyLayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
 
@@ -127,7 +128,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     public IMutableLayoutConfig getDiagramConfig() {
         return propertyLayoutConfig;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -143,7 +144,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             return true;
         } else if (object instanceof IDiagramWorkbenchPart) {
             return true;
-        } 
+        }
         return false;
     }
 
@@ -157,7 +158,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         final ViewContext viewContext;
 
         // search for the root node
-            
+
         if (diagramPart instanceof KNode) {
             graph = (KNode) diagramPart;
             viewContext = null;
@@ -174,7 +175,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             viewContext = null;
             graph = null;
         }
-        
+
         // if no root node could be found
         if (graph == null) {
             throw new UnsupportedOperationException(
@@ -194,7 +195,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // remember the layout recorder if any
         if (viewContext != null) {
             recorder = viewContext.getLayoutRecorder();
-            
+
             if (recorder != null) {
                 mapping.setProperty(KlighdInternalProperties.RECORDER, recorder);
             }
@@ -204,7 +205,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Builds a layout graph from the given graph.
-     * 
+     *
      * @param graph
      *            the graph to build the layout graph from
      * @param performSizeEstimation
@@ -215,7 +216,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             final boolean performSizeEstimation) {
         final LayoutMapping<KGraphElement> mapping = new LayoutMapping<KGraphElement>();
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
-        
+
         // set the parent element
         mapping.setParentElement(graph);
 
@@ -247,7 +248,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Processes all child nodes of the given parent node.
-     * 
+     *
      * @param mapping
      *            the layout mapping
      * @param parent
@@ -267,17 +268,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             createNode(mapping, node, layoutParent, suppressSizeEstimation);
         }
     }
-    
+
     /**
      * An internal property attached to a node's shape layout when the size of the node is affected
      * by KIML. It is used to decide which value to rely on for the minimal node size.
      */
     private static final IProperty<Boolean> INITIAL_NODE_SIZE = new Property<Boolean>(
             "klighd.initialNodeSize", true);
-    
+
     /**
      * Creates a layout node for the node inside the given layout parent node.
-     * 
+     *
      * @param mapping
      *            the layout mapping
      * @param node
@@ -295,35 +296,43 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // initialize with defaultLayout and try to get specific layout attached to the node
         final KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         final KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-        
+
         final boolean isCompoundNode = RenderingContextData.get(node).getProperty(
                 KlighdInternalProperties.POPULATED)
                 && Iterables.any(node.getChildren(), RenderingContextData.IS_ACTIVE);
+
+        final Predicate<KRendering> filter = RenderingContextData.IS_POPULATED.apply(node)
+                ? KlighdPredicates.isExpandedRendering()
+                        : Predicates.not(KlighdPredicates.isExpandedRendering());
+
+        final KRendering displayedRendering = Iterators.find(
+                Iterators.filter(node.getData().iterator(), KRendering.class),
+                filter, node.getData(KRendering.class));
 
         final Bounds size;
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
             // so take that as node layout instead of the default-layout
             transferShapeLayout(nodeLayout, layoutLayout, false, false);
-            
+
             // In the following the minimal width and height of the node is determined, which
             //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
 
-            // We start with standard minimal bounds given in the related constant. 
+            // We start with standard minimal bounds given in the related constant.
             Bounds minSize = Bounds.of(KlighdConstants.MINIMAL_NODE_BOUNDS);
             // check the definition of the minimal size property
             final boolean minNodeSizeIsSet = nodeLayout.getProperties().containsKey(
                     KlighdProperties.MINIMAL_NODE_SIZE);
-            
+
             if (minNodeSizeIsSet) {
                 // if the minimal node size is given in terms of the dedicated property, use its values
                 minSize = Bounds.of(nodeLayout.getProperty(KlighdProperties.MINIMAL_NODE_SIZE));
             } else if (!isCompoundNode || nodeLayout.getProperty(INITIAL_NODE_SIZE)) {
                 // otherwise, if the node is a non-compound one or the size is not yet modified by KIML
-                //  take the component-wise maximum of the standard bounds and 'nodelayout's values 
+                //  take the component-wise maximum of the standard bounds and 'nodelayout's values
                 minSize = Bounds.max(minSize, Bounds.of(nodeLayout.getWidth(), nodeLayout.getHeight()));
             }
-                
+
             // explicitly store the determined minimal node size in the layout data of the node
             //  note that this information will be removed or overwritten by the update strategies
             final boolean deliver = nodeLayout.eDeliver();
@@ -332,13 +341,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     new KVector(minSize.getWidth(), minSize.getHeight()));
             nodeLayout.eSetDeliver(deliver);
 
-            final KRendering rootRendering = node.getData(KRendering.class);
             // if a rendering definition is given ...
-            if (rootRendering != null) {
-                
+            if (displayedRendering != null) {
+
                 // ... calculate the minimal required size based on the determined 'minSize' bounds
                 if (performSizeEstimation) {
-                size = Bounds.max(minSize, PlacementUtil.estimateSize(rootRendering, minSize));
+                size = Bounds.max(minSize, PlacementUtil.estimateSize(displayedRendering, minSize));
                 } else {
                     size = minSize;
                 }
@@ -347,7 +355,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 //  in case of a compound node, the minimal node size to be preserved by KIML must be
                 //   handed over by means of the MIN_WIDTH/MIN_HEIGHT properties
                 //  in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
-                //   definitions are also relevant 
+                //   definitions are also relevant
                 nodeLayout.setProperty(LayoutOptions.MIN_WIDTH, size.getWidth());
                 nodeLayout.setProperty(LayoutOptions.MIN_HEIGHT, size.getHeight());
                 if (!isCompoundNode) {
@@ -360,10 +368,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         } else {
             size = null;
         }
-        
+
         // set insets if available
         final KInsets layoutInsets = layoutLayout.getInsets();
-        PlacementUtil.calculateInsets(node.getData(KRendering.class), layoutInsets, size);
+
+        PlacementUtil.calculateInsets(displayedRendering, layoutInsets, size);
 
         layoutParent.getChildren().add(layoutNode);
         mapping.getGraphMap().put(layoutNode, node);
@@ -391,7 +400,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Creates a layout port for the port attached to the given layout node.
-     * 
+     *
      * @param mapping
      *            the layout mapping
      * @param port
@@ -423,7 +432,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Processes all edges collected while processing nodes.
-     * 
+     *
      * @param mapping
      *            the layout mapping
      * @param estimateLabelSizes
@@ -437,7 +446,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // iterate through the list of collected edges
         final List<KEdge> edges = mapping.getProperty(EDGES);
         for (final KEdge edge : edges) {
-            
+
             final KEdgeLayout layout = edge.getData(KEdgeLayout.class);
             if (layout == null || layout.getProperty(LayoutOptions.NO_LAYOUT)) {
                 List<KEdge> excludedEdges = mapping.getProperty(EXCLUDED_EDGES);
@@ -448,7 +457,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 excludedEdges.add(edge);
                 continue;
             }
-                
+
             final KNode layoutSource = (KNode) graphMap.get(edge.getSource());
             final KNode layoutTarget = (KNode) graphMap.get(edge.getTarget());
 
@@ -470,7 +479,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     /**
      * Creates a layout edge for the edge between the given layout source node and layout target
      * node.
-     * 
+     *
      * @param mapping
      *            the layout mapping
      * @param edge
@@ -494,12 +503,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (edgeLayout != null) {
             transferEdgeLayout(edgeLayout, layoutLayout, true);
         }
-        
+
         // make sure to clear old junction points
         // the new layouter might not calculate any and we don't want
         // any floating junction points in the diagram
         edgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS, null);
-        
+
         // delete the old EDGE_ROUTING return value
         // this is allowed as the EDGE_ROUTING directive to the layouter
         //  must be set on the parent of the KNode with the outgoing edge
@@ -524,7 +533,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Creates a layout label for the label attached to the given labeled layout element.
-     * 
+     *
      * @param mapping
      *            the layout mapping
      * @param label
@@ -541,10 +550,10 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // set the label layout
         final KShapeLayout layoutLayout = layoutLabel.getData(KShapeLayout.class);
         final KShapeLayout labelLayout = label.getData(KShapeLayout.class);
-        
+
         if (labelLayout != null) {
             transferShapeLayout(labelLayout, layoutLayout, false, false);
-            
+
             // integrate the minimal estimated label size based on the updated layoutLayout
             // - manipulating the labelLayout may cause immediate glitches in the diagram
             // (through the listeners)
@@ -586,7 +595,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             recorder.startRecording();
             applyLayout(mapping);
             recorder.stopRecording(animationTime);
-            
+
         } else {
             applyLayout(mapping);
         }
@@ -594,7 +603,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Applies the computed layout back to the graph.
-     * 
+     *
      * @param mapping
      *            the layout mapping that was created by this manager
      */
@@ -615,10 +624,10 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     if (nodeLayout != null) {
                         transferShapeLayout(layoutLayout, nodeLayout, true, true);
                         nodeLayout.setProperty(INITIAL_NODE_SIZE, false);
-                        
+
                         // transfer the scale factor value since KIML might have reset it
                         //  to 1f in case scaling was not supported in the particular configuration
-                        // and the figure scaling will be set according this property setting 
+                        // and the figure scaling will be set according this property setting
                         nodeLayout.setProperty(LayoutOptions.SCALE_FACTOR,
                                 layoutLayout.getProperty(LayoutOptions.SCALE_FACTOR));
                     }
@@ -658,7 +667,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 }
             } /**/.doSwitch(layoutElement);
         }
-        
+
         // process the edges that have been excluded from layout
         final List<KEdge> excludedEdges = mapping.getProperty(EXCLUDED_EDGES);
         if (excludedEdges != null) {
@@ -670,7 +679,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Transfers the source shape layout to the target shape layout.
-     * 
+     *
      * @param sourceShapeLayout
      *            the source shape layout
      * @param targetShapeLayout
@@ -697,13 +706,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             final KGraphPackage pack = KGraphPackage.eINSTANCE;
             final EObject container = sourceShapeLayout.eContainer();
             final float scale;
-            
+
             if (pack.getKNode().isInstance(container)) {
                 scale = sourceShapeLayout.getProperty(LayoutOptions.SCALE_FACTOR);
                 targetShapeLayout.setPos(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
                 targetShapeLayout.setSize(sourceShapeLayout.getWidth() / scale,
                         sourceShapeLayout.getHeight() / scale);
-                
+
             } else if (pack.getKPort().isInstance(container)
                     || pack.getKLabel().isInstance(container)) {
                 scale = ((KGraphElement) container.eContainer()).getData(KLayoutData.class).getProperty(
@@ -729,7 +738,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         //  bringing the observing diagram controller to update the displayed diagram
         targetShapeLayout.eSetDeliver(deliver);
         if (deliver) {
-            
+
             // for efficiency reasons just fire a single notification with values indicating
             //  whether actually some change occurred in the shape layout
             // the information whether 'no change' happened is required for, e.g., updating the
@@ -755,7 +764,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
     /**
      * Transfers the source edge layout to the target edge layout.
-     * 
+     *
      * @param viewModelEdgeLayout
      *            the destination edge layout
      * @param layoutEdgeLayout
@@ -766,7 +775,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private void transferEdgeLayout(final KEdgeLayout viewModelEdgeLayout,
             final KEdgeLayout layoutEdgeLayout, final boolean viewModel2LayoutGraph) {
-        
+
         final KEdge viewModelEdge = (KEdge) viewModelEdgeLayout.eContainer();
         final KEdge layoutEdge = (KEdge) layoutEdgeLayout.eContainer();
 
@@ -790,11 +799,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         } else {
             final KNode layoutSourceNode = layoutEdge.getSource();
             final KVector offset = new KVector();
-            
+
             // this flag indicates the requirement of the adjusting the port position
             //  wrt. the scaling factor being associated with the port's parent node
-            boolean adjustPortPosition = false; 
-            
+            boolean adjustPortPosition = false;
+
             // If the target is a descendant of the source, the edge's source point is already
             // relative to the source node's position.
             if (!KimlUtil.isDescendant(layoutEdge.getTarget(), layoutSourceNode)) {
@@ -807,10 +816,10 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 offset.x = sourceLayout.getInsets().getLeft();
                 offset.y = sourceLayout.getInsets().getTop();
             }
-            
+
             final boolean pointDeliver = viewModelEdgeLayout.getSourcePoint().eDeliver();
             viewModelEdgeLayout.getSourcePoint().eSetDeliver(false);
-            
+
             checkAndCopyPoint(layoutEdgeLayout.getSourcePoint(),
                     viewModelEdgeLayout.getSourcePoint(), layoutSourceNode,
                     layoutEdge.getSourcePort(),
@@ -818,7 +827,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     viewModelEdge.getSourcePort() == null ? null
                     : viewModelEdge.getSourcePort().getData(KRendering.class),
                     offset, adjustPortPosition);
-            
+
             viewModelEdgeLayout.getSourcePoint().eSetDeliver(pointDeliver);
         }
 
@@ -851,15 +860,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             // transfer the target point without checking
             final KPoint targetPoint = viewModelEdgeLayout.getTargetPoint();
             layoutEdgeLayout.getTargetPoint().setPos(targetPoint.getX(), targetPoint.getY());
-        } else {            
+        } else {
             final KNode layoutSourceNode = layoutEdge.getSource();
             final KNode layoutTargetNode = layoutEdge.getTarget();
             final KVector offset = new KVector();
-            
+
             // this flag indicates the requirement of the adjusting the port position
             //  wrt. the scaling factor being associated with the port's parent node
-            boolean adjustPortPosition = false; 
-            
+            boolean adjustPortPosition = false;
+
             if (layoutSourceNode.getParent() == layoutTargetNode.getParent()) {
                 // The source and target are on the same level, so just subtract the target position.
                 final KShapeLayout targetLayout = layoutTargetNode.getData(KShapeLayout.class);
@@ -888,7 +897,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     viewModelEdge.getTargetPort() == null ? null
                     : viewModelEdge.getTargetPort().getData(KRendering.class),
                     offset, adjustPortPosition);
-            
+
             viewModelEdgeLayout.getTargetPoint().eSetDeliver(pointDeliver);
         }
 
@@ -902,11 +911,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         }
 
     }
-    
+
     /**
      * Handle the given edge that was excluded from layout. Set its source and
      * target points to appropriate positions on the border of the respective elements.
-     * 
+     *
      * @param edge an excluded edge
      */
     private void handleExcludedEdge(final KEdge edge) {
@@ -946,7 +955,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             edgeLayout.setSourcePoint(sourceKPoint);
         }
         sourceKPoint.applyVector(sourcePoint);
-        
+
         // determine the target point
         final KShapeLayout targetLayout = targetNode.getData(KShapeLayout.class);
         final KVector targetPoint = toElementBorder(targetNode, targetPort, sourceNode, sourcePort);
@@ -964,17 +973,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             edgeLayout.setTargetPoint(targetKPoint);
         }
         targetKPoint.applyVector(targetPoint);
-        
+
         // notify the listeners
         edgeLayout.eSetDeliver(deliver);
         edgeLayout.eNotify(new ENotificationImpl((InternalEObject) edgeLayout, Notification.SET,
                 KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS, null, null));
     }
-    
+
     /**
      * Check whether the given source point lies on the boundary of the corresponding node or port
      * and transfer the corrected position to the target point.
-     * 
+     *
      * @param originPoint
      *            the point from which to take the position
      * @param destinationPoint
@@ -1009,7 +1018,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     nodeRendering, scale);
         } else {
             final KShapeLayout portLayout = port.getData(KShapeLayout.class);
-            
+
             if (adjustPortPos) {
                 offset.add(-portLayout.getXpos() / scale, -portLayout.getYpos() / scale);
             } else {
@@ -1020,14 +1029,14 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             p = AnchorUtil.nearestBorderPoint(p, portLayout.getWidth(), portLayout.getHeight(),
                     portRendering, scale);
         }
-        
+
         destinationPoint.applyVector(p.sub(offset));
     }
-    
+
     /**
      * Find a point that lies close to the intersection of the direct line from the
      * given center element to the remote element with the center element's border.
-     * 
+     *
      * @param centerNode the center node
      * @param centerPort the center port, or {@code null}
      * @param remoteNode the remote node
@@ -1036,7 +1045,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private KVector toElementBorder(final KNode centerNode, final KPort centerPort,
             final KNode remoteNode, final KPort remotePort) {
-        
+
         final KShapeLayout remoteNodeLayout = remoteNode.getData(KShapeLayout.class);
         KVector point = new KVector();
         if (remotePort == null) {
@@ -1052,7 +1061,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             KimlUtil.toAbsolute(point, remoteNode.getParent());
             KimlUtil.toRelative(point, centerNode.getParent());
         }
-        
+
         final KShapeLayout centerNodeLayout = centerNode.getData(KShapeLayout.class);
         point.add(-centerNodeLayout.getXpos(), -centerNodeLayout.getYpos());
         if (centerPort == null) {
@@ -1071,7 +1080,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     centerPort.getData(KRendering.class));
             point.add(centerPortLayout.getXpos(), centerPortLayout.getYpos());
         }
-        
+
         return point;
     }
 

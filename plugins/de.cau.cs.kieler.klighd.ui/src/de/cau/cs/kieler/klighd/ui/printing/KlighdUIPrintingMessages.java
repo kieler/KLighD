@@ -13,12 +13,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -28,24 +28,33 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * An accessor class for externalized strings.
- * 
+ *
  * @author cmahoney
  * @author csp
+ * @author chsch
  */
 public final class KlighdUIPrintingMessages extends NLS {
 
     private static final String BUNDLE_NAME =
             "de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages"; //$NON-NLS-1$
 
-    // SUPPRESS CHECKSTYLE NEXT 22 Name|Visibility|Javadoc
+    // CHECKSTYLEOFF Name|Visibility|Javadoc -- this is a generated file
+
+    public static String KlighdPrintDialog_InitialDialog_title;
+    public static String KlighdPrintDialog_Title;
+    public static String KlighdPrintDialog_OK_label;
+
     public static String PrintDialog_Button_PrintPreview;
+    public static String PrintDialog_Alignment;
+    public static String PrintDialog_Alignment_centerHorizontally;
+    public static String PrintDialog_Alignment_centerVertically;
     public static String PrintDialog_Copies;
     public static String PrintDialog_NumberOfCopies;
     public static String PrintDialog_Collate;
-    public static String PrintDialog_Title;
+    public static String KlighdPrintDialog_Copies_OSXToolTip;
     public static String PrintDialog_Printer;
     public static String PrintDialog_Name;
-    public static String PrintDialog_Properties;
+    public static String PrintDialog_PrinterSettings;
     public static String PrintDialog_PrintRange;
     public static String PrintDialog_All;
     public static String PrintDialog_Pages;

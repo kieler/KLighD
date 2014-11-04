@@ -800,6 +800,8 @@ public class DiagramController {
             return;
         }
         
+        final int expand;
+
         // if there is no Piccolo2D representation of the node create it
         if (nodeNode == null) {
             final KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
@@ -815,13 +817,12 @@ public class DiagramController {
             
             addExpansionListener(nodeNode);
 
-            final boolean expand = data == null || data.getProperty(KlighdProperties.EXPAND);
+            expand = data == null || data.getProperty(KlighdProperties.EXPAND) ?  1 : 0;
             // in case the EXPAND property is not set the default value 'true' is returned
-            nodeNode.getChildAreaNode().setExpanded(expand);
             
         } else {
             // touch the expansion state, see the methods javadoc for details
-            nodeNode.getChildAreaNode().touchExpanded();
+            expand = 2;
         }
 
         if (record && isAutomaticallyArranged(node)) {
@@ -837,9 +838,23 @@ public class DiagramController {
         handleEdges(nodeNode);
         handlePorts(nodeNode);
         handleLabels(nodeNode, node);
-        
-        // add the node
+
+        // add the node to its parents
         parent.getChildAreaNode().addNode(nodeNode);
+
+        // perform expansion strictly AFTER adding 'nodeNode' to its parent as the edge offset adjustment
+        //  logic requires that (for registration of an transform change listener on the parents row)
+        switch (expand) {
+        case 1:
+            nodeNode.getChildAreaNode().setExpanded(true);
+            break;
+        case 2:
+            // touch the expansion state, see the methods javadoc for details
+            nodeNode.getChildAreaNode().touchExpanded();
+            break;
+        default:
+            // e.g. case 0: don't expand
+        }
     }
 
 

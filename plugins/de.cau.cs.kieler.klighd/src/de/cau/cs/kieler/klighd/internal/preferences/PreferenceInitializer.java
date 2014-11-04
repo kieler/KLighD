@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -21,10 +21,10 @@ import de.cau.cs.kieler.klighd.KlighdPreferences;
 
 /**
  * Initializes the KLighD preferences to their default values.
- * 
+ *
  * @author cds
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
@@ -36,7 +36,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
         final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        
+
         // Set default option values
         preferenceStore.setDefault(KlighdPreferences.ANIMATE_LAYOUT,
                 KlighdPreferences.ANIMATE_LAYOUT_DEFAULT);
@@ -46,15 +46,29 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
         preferenceStore.setDefault(KlighdPreferences.ZOOM_STYLE,
                 KlighdPreferences.ZOOM_STYLE_DEFAULT);
-        
+
+        preferenceStore.setDefault(KlighdPreferences.ZOOM_TO_FOCUS_STYLE,
+                KlighdPreferences.ZOOM_TO_FOCUS_STYLE_DEFAULT);
+
         preferenceStore.setDefault(KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE,
                 KlighdPreferences.ZOOM_ON_WORKBENCHPART_CHANGE_DEFAULT);
 
         preferenceStore.setDefault(KlighdPreferences.EXPAND_SIDE_BAR,
                 KlighdPreferences.EXPAND_SIDE_BAR_DEFAULT);
-        
+
         preferenceStore.setDefault(KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS,
                 KlighdPreferences.SHOW_ZOOM_CONFIG_BUTTONS_DEFAULT);
+
+        if (KlighdPreferences.USER_ZOOMING_MINIMAL_LEVEL_DEFAULT != null) {
+            preferenceStore.setDefault(KlighdPreferences.USER_ZOOMING_MINIMAL_LEVEL,
+                    KlighdPreferences.USER_ZOOMING_MINIMAL_LEVEL_DEFAULT.floatValue());
+        }
+
+        if (KlighdPreferences.USER_ZOOMING_MAXIMAL_LEVEL_DEFAULT != null) {
+            preferenceStore.setDefault(KlighdPreferences.USER_ZOOMING_MAXIMAL_LEVEL,
+                    KlighdPreferences.USER_ZOOMING_MAXIMAL_LEVEL_DEFAULT.floatValue());
+        }
+
 
         // Magnification lens settings
         preferenceStore.setDefault(KlighdPreferences.MAGNIFICATION_LENS_ENABLED,

@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -21,16 +21,16 @@ import org.eclipse.core.runtime.Status;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PRoot;
-import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * An implementation of {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}
  * producing SVG diagrams.
- * 
+ *
  * @author chsch
  */
 public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
@@ -55,7 +55,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
         final String generator = properties != null
                 ? properties.getProperty(GENERATOR) : GENERATOR.getDefault();
 
-        // Construct a KLighD main camera ... 
+        // Construct a KLighD main camera ...
         final KlighdMainCamera camera = new KlighdMainCamera();
 
         // add it to a Piccolo2D root figure
@@ -65,30 +65,19 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
         try {
             // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
             this.buildUpDiagram(viewContext, camera, properties);
-            
+
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
                     BUILDING_UP_FIGURES_FAILURE_MSG, e);
         }
-        
-        // determine the bounds of the diagram to be exported
-        final PBounds bounds = getExportedBounds(camera, false);
 
         try {
-            // create a new graphics object
-            final KlighdAbstractSVGGraphics graphics =
-                    SVGGeneratorManager.createGraphics(generator, bounds, textAsShapes, embedFonts);
-            
-            // do the actual diagram drawing work
-            this.drawDiagram(camera, false, graphics, bounds, true);
-            
-            // dump out the resulting SVG description via the provided output stream
-            graphics.stream(output);
-        } catch (final Exception e) {
+            return new SVGExporter().export(camera,
+                    new ExportData(viewContext, generator, output, false, 1, textAsShapes, embedFonts));
+
+        } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,
                     EXPORT_DIAGRAM_FAILURE_MSG, e);
         }
-
-        return Status.OK_STATUS; 
     }
 }

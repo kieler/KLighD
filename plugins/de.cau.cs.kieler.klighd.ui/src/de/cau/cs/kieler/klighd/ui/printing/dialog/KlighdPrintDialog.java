@@ -13,12 +13,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -31,29 +31,30 @@ import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrintDialog;
-import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Strings;
 
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
- * A dialog that supports platform independent printing options.
- * A printpreview can be shown in the tray.<br>
- * To add own GUI elements, you may override any of the
- * {@code create*BlockArea(Composite)} methods to change or omit the corresponding controls. Or you
- * may override the {@link #createDialogArea(Composite)} method and call the needed
+ * A dialog that offers platform independent printing options and print preview in a separate tray.<br>
+ * <br>
+ * To add own GUI elements, you may override any of the {@code create*BlockArea(Composite)} methods
+ * to change or omit the corresponding controls. Or you may override the
+ * {@link #createDialogArea(Composite)} method and call the needed
  * {@code create*BlockArea(Composite)} methods.<br>
  * <br>
  * The implementation is inspired by
- * {@link org.eclipse.gmf.runtime.diagram.ui.printing.render.dialogs.JPSPrintDialog
- * JPSPrintDialog} of the GMF project.
- * 
+ * {@link org.eclipse.gmf.runtime.diagram.ui.printing.render.dialogs.JPSPrintDialog JPSPrintDialog}
+ * of the GMF project.
+ *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
@@ -67,11 +68,12 @@ public class KlighdPrintDialog extends TrayDialog {
     private ScalingBlock scalingBlock;
     private RangeBlock rangeBlock;
     private CopiesBlock copiesBlock;
+    private AlignmentBlock alignmentBlock;
     private ActionsBlock actionsBlock;
 
     /**
-     * Creates a new Klighd print dialog based on the given options.
-     * 
+     * Creates a new KLighD print dialog based on the given options.
+     *
      * @param parentShell
      *            the object that returns the current parent shell
      * @param options
@@ -85,8 +87,8 @@ public class KlighdPrintDialog extends TrayDialog {
     }
 
     /**
-     * Creates a new Klighd print dialog based on the given options.
-     * 
+     * Creates a new KLighD print dialog based on the given options.
+     *
      * @param shell
      *            the parent shell, or <code>null</code> to create a top-level shell
      * @param options
@@ -95,19 +97,79 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     public KlighdPrintDialog(final Shell shell, final PrintOptions options) {
         super(shell);
-        setShellStyle(getShellStyle() | SWT.RESIZE);
+        setShellStyle(getShellStyle() | SWT.MAX | SWT.RESIZE);
         this.options = options;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}<br>
+     * <br>
+     * Specialization first checks whether a valid printer configuration can be loaded from the
+     * saved configuration (preferences). If so this dialog is opened in blocking mode. Otherwise
+     * this dialog is opened (in background) without blocking and the native printer selection
+     * dialog is opened on top (in blocking mode).<br>
+     * If the user cancels the printer selections (<code>null</code> is returned by
+     * {@link PrintDialog#open()}) the background instance of this dialog is closed and the
+     * {@link IDialogConstants#CANCEL_ID} is returned.<br>
+     * If the user properly selects a printer the returned printer data are applied to
+     * {@link #options} {@code super.open()} is (again) called in blocking mode. The implementation
+     * of {@code super.open()} checks whether the dialog is already visible on the screen and,
+     * hence, skips the creation in this case but starts rather immediately the blocking event
+     * listening loop.
      */
     @Override
     public final int open() {
+
         if (!checkPrinterData()) {
-            return IDialogConstants.CANCEL_ID;
+            setBlockOnOpen(false);
+            super.open();
+
+            final PrinterData data = getNativePrintDialog().open();
+            if (data == null) {
+                this.close();
+                return IDialogConstants.CANCEL_ID;
+
+            } else {
+                options.setPrinterData(data);
+            }
         }
+
+        setBlockOnOpen(true);
         return super.open();
+    }
+
+    /**
+     * Checks whether the printer data in the current print options are valid (i.e. an SWT Printer
+     * can be created based on them).<br>
+     * In addition, the configured printer name is checked to be non-empty (since, at least on OSX,
+     * a printer can be properly instantiated based on the default printer data).
+     *
+     * @return <code>true</code> if a valid printer configuration is available, <code>false</code>
+     *         otherwise.
+     */
+    private boolean checkPrinterData() {
+        try {
+            options.getPrinter();
+            if (!Strings.isNullOrEmpty(options.getPrinterName())) {
+                return true;
+            }
+        } catch (final Throwable e) {
+            // nothing
+        }
+
+        return false;
+    }
+
+    /**
+     * Convenience factory method providing the native printer selection dialog.
+     *
+     * @return the native {@link PrintDialog}
+     */
+    protected PrintDialog getNativePrintDialog() {
+        final PrintDialog printDialog = new PrintDialog(getParentShell());
+        printDialog.setText(KlighdUIPrintingMessages.KlighdPrintDialog_InitialDialog_title);
+
+        return printDialog;
     }
 
     /**
@@ -116,9 +178,8 @@ public class KlighdPrintDialog extends TrayDialog {
     @Override
     protected void configureShell(final Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText(KlighdUIPrintingMessages.PrintDialog_Title);
+        newShell.setText(KlighdUIPrintingMessages.KlighdPrintDialog_Title);
         setHelpAvailable(false);
-        setDialogHelpAvailable(false);
     }
 
     /**
@@ -133,12 +194,48 @@ public class KlighdPrintDialog extends TrayDialog {
 
         createPrinterBlockArea(result);
         createScalingBlockArea(result);
+        createAlignmentBlockArea(result);
         createRangeBlockArea(result);
         createCopiesBlockArea(result);
         createExtensibleBlockArea(result);
         createActionsBlockArea(result);
 
+        if (PrintOptions.getInitiallyShowPreview()) {
+
+            // this asyncExec is employed in order to let the main dialog get build up properly;
+            // for some reason its layout gets heavily corrupted if the preview is opened directly
+            //  some good soul might investigate this some day...
+            parent.getDisplay().asyncExec(new Runnable() {
+                public void run() {
+                    openPreview();
+                }
+            });
+        }
+
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Button createButton(final Composite parent, final int id, final String label,
+            final boolean defaultButton) {
+        // method is overridden in order to change the OK button's label
+        if (id == IDialogConstants.OK_ID) {
+            return super.createButton(parent, id,
+                    KlighdUIPrintingMessages.KlighdPrintDialog_OK_label, defaultButton);
+        } else {
+            return super.createButton(parent, id, label, defaultButton);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PrintPreviewTray getTray() {
+        return (PrintPreviewTray) super.getTray();
     }
 
     /**
@@ -187,8 +284,30 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createCopiesBlockArea(final Composite parent) {
-        copiesBlock = new CopiesBlock(bindings, options);
-        copiesBlock.createContents(parent);
+         copiesBlock = new CopiesBlock(bindings, options);
+         final Composite group = (Composite) copiesBlock.createContents(parent);
+
+        if (KlighdPlugin.IS_MACOSX) {
+            // I deactivated 'copies' block as this information can be changed in the native dialog
+            //  but (on OSX) it is not delivered back within the returned PrinterData.
+            // Thus, 'copies' cannot be updated properly.
+            // This, however, seems not to hold for windows and linux.
+            group.setToolTipText(KlighdUIPrintingMessages.KlighdPrintDialog_Copies_OSXToolTip);
+
+            for (final Control con : group.getChildren()) {
+                con.setEnabled(false);
+            }
+        }
+    }
+
+    /**
+     * Creates the copies block area.
+     *
+     * @param parent the parent composite
+     */
+    protected void createAlignmentBlockArea(final Composite parent) {
+         alignmentBlock = new AlignmentBlock(bindings, options);
+         DialogUtil.layoutSpanHorizontal(alignmentBlock.createContents(parent), 2);
     }
 
     /**
@@ -206,8 +325,15 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createActionsBlockArea(final Composite parent) {
-        actionsBlock = new ActionsBlock(bindings, options, this);
+        actionsBlock = new ActionsBlock(this);
         DialogUtil.layoutSpanHorizontal(actionsBlock.createContents(parent), 2);
+    }
+
+    /**
+     * Opens the print preview by injecting a corresponding {@link PrintPreviewTray}.
+     */
+    public void openPreview() {
+        this.openTray(new PrintPreviewTray(bindings, options));
     }
 
     /**
@@ -235,36 +361,12 @@ public class KlighdPrintDialog extends TrayDialog {
         scalingBlock.dispose();
         rangeBlock.dispose();
         actionsBlock.dispose();
+
+        final PrintPreviewTray printPreviewTray = this.getTray();
+        if (printPreviewTray != null) {
+            printPreviewTray.dispose();
+        }
+
         return super.close();
-    }
-
-    /**
-     * Checks whether the printer data in the current print options are valid (i.e. a printer can be
-     * created based on them). In addition, the pre-loaded printer name is checked to be non-empty
-     * (as, at least on OSX, a printer can be properly instantiated based on the default printer data).
-     *  
-     * If those checks are not passed properly
-     *  the system's native print dialog is opened to let the user choose a valid printer.
-     */
-    private boolean checkPrinterData() {
-        try {
-            new Printer(options.getPrinterData());
-            if (!Strings.isNullOrEmpty(options.getPrinterName())) {
-                return true;
-            }
-        } catch (final Throwable e) {
-            // nothing
-        }
-
-        final PrintDialog printDialog = new PrintDialog(getParentShell());
-        printDialog.setText("Select a printer");
-        final PrinterData data = printDialog.open();
-
-        if (data != null) {
-            options.setPrinterData(data);
-            return true;
-        } else {
-            return false;
-        }
     }
 }

@@ -13,12 +13,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -37,14 +37,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A section of the KlighD print dialog that adds printer options. Printer specific options are
  * gathered via the native system print dialog.
- * 
+ *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
@@ -58,7 +57,7 @@ final class PrinterBlock implements IDialogBlock {
     /**
      * Instantiates a new printer block.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
-     * 
+     *
      * @param bindings
      *            the bindings used for observables
      * @param options
@@ -109,7 +108,7 @@ final class PrinterBlock implements IDialogBlock {
 
         // printer properties button
         final Button propertiesButton =
-                DialogUtil.button(result, KlighdUIPrintingMessages.PrintDialog_Properties);
+                DialogUtil.button(result, KlighdUIPrintingMessages.PrintDialog_PrinterSettings);
         propertiesButton.setEnabled(true);
 
         propertiesButton.addSelectionListener(new SelectionAdapter() {
@@ -122,13 +121,16 @@ final class PrinterBlock implements IDialogBlock {
         return result;
     }
 
+
+
     /**
      * Open the system's native print dialog to gather printer specific settings.
      * If no valid setting are returned (e.g. the user cancels the dialog), nothing is changed.
      */
     private void openPrintOptionsDialog() {
-        final PrintDialog systemPrintDialog = new PrintDialog(printDialog.getShell());
+        final PrintDialog systemPrintDialog = printDialog.getNativePrintDialog();
         systemPrintDialog.setPrinterData(options.getPrinterData());
+
         final PrinterData data = systemPrintDialog.open();
         if (data != null) {
             options.setPrinterData(data);

@@ -520,13 +520,13 @@ public class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Keep in mind that zoom to focus has a higher priority, thus
+     * Keep in mind that zoom to fit has a higher priority, thus
      * this can only return false if {@link #isZoomToFit()} returns false.
      *
      * @return whether the zoom style is zoom to focus.
      */
     public boolean isZoomToFocus() {
-        return !isZoomToFit() && zoomStyle == ZoomStyle.ZOOM_TO_FOCUS;
+        return !isZoomToFit() && zoomStyle == ZoomStyle.getZoomToFocusStyle();
     }
 
     /**

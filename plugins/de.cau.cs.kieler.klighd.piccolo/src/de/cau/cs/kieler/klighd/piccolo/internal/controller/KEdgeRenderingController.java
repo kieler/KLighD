@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -58,15 +58,15 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * <br>
  * The junction point rendering is currently not implemented for edges with {@link KCustomRendering
  * custom renderings}.
- * 
+ *
  * @author mri
  * @author chsch
  */
 public class KEdgeRenderingController extends AbstractKGERenderingController<KEdge, KEdgeNode> {
-    
+
     /**
      * Constructs a rendering controller for an edge.
-     * 
+     *
      * @param edge
      *            the Piccolo2D node representing an edge
      */
@@ -83,13 +83,13 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         // evaluate the rendering data
         final KRendering currentRendering = getCurrentRendering();
-        
+
         if (currentRendering == null) {
             return handleEdgeRendering(createDefaultRendering(), repNode);
-        } 
-        
+        }
+
         final PNode renderingNode;
-        
+
         // the rendering of an edge has to be a KPolyline or a sub type of KPolyline except KPolygon,
         //  or a KCustomRendering providing a KCustomConnectionFigureNode
         switch (currentRendering.eClass().getClassifierID()) {
@@ -98,10 +98,10 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         case KRenderingPackage.KSPLINE:
             renderingNode = handleEdgeRendering((KPolyline) currentRendering, repNode);
             break;
-            
+
         case KRenderingPackage.KCUSTOM_RENDERING:
             final KCustomRendering customRendering = (KCustomRendering) currentRendering;
-            if (customRendering.getFigureObject()  == null 
+            if (customRendering.getFigureObject()  == null
                     || customRendering.getFigureObject() instanceof KCustomConnectionFigureNode) {
                 renderingNode = handleEdgeRendering(customRendering, repNode);
                 break;
@@ -118,7 +118,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                         StatusManager.LOG);
                 return null;
             }
-        
+
         case KRenderingPackage.KRENDERING_REF:
             // TODO this is only a preliminary support of references for edge renderings
             final KRenderingRef renderingRef = (KRenderingRef) currentRendering;
@@ -131,22 +131,22 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                 throw new RuntimeException("KLighD: llegal KRendering is attached to graph edge.");
             }
             break;
-            
+
         default:
             // hence, throw an exception if something different is provided
             throw new RuntimeException("KLighD: Illegal KRendering is attached to graph edge: "
                     + getGraphElement()
                     + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!");
         }
-        
+
         return renderingNode;
     }
-    
+
     /**
      * Creates the Piccolo2D node for a rendering of a {@code KEdge} inside a parent Piccolo2D node.<br>
      * <br>
      * The rendering has to be a {@code KPolyline} or the method fails.
-     * 
+     *
      * @param rendering
      *            the rendering
      * @param parent
@@ -158,7 +158,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         @SuppressWarnings("unchecked")
         final PNodeController<KlighdPath> controller = (PNodeController<KlighdPath>) createRendering(
                 rendering, parent, new Bounds(1, 1));
-        
+
         if (rendering instanceof KSpline) {
             controller.getNode().setPathToSpline(parent.getBendPoints());
         } else if (rendering instanceof KRoundedBendsPolyline) {
@@ -189,32 +189,32 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                     }
                 });
 
-        
+
         final KRendering jpR = rendering.getJunctionPointRendering();
-        
+
         if (jpR == null) {
             // if there is no junction point rendering determined, we're done!
             return controller.getNode();
         }
-                    
-        
+
+
         /* ----------------------- */
         /* junction point handling */
         /* ----------------------- */
-        
+
         final List<KStyle> propagatedStyles = determinePropagationStyles(rendering.getStyles(),
-                Lists.<KStyle>newLinkedList());
-        
+                Lists.<KStyle>newLinkedList(), false);
+
         // As explained in the class doc, the representation of multiple junction points is realized
         //  by means of cameras. Since those support only PLayers as 'viewed' figures, create one
         //  serving as container for the junction point figure:
         final PLayer junctionParent = new PLayer();
-        
+
         // Create the junction point figure the usual way
         final PNode junctionFigure = handleAreaAndPointPlacementRendering(jpR, propagatedStyles,
                 junctionParent);
 
-        // Create a layer accommodating the concrete camera instances ... 
+        // Create a layer accommodating the concrete camera instances ...
         final PLayer displayedJunctions = new PLayer();
 
         // ... and add it to the edge's rendering figure (I think it could be also added to the
@@ -224,7 +224,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         // initially add the junction points (required if the initial layout run is suppressed)
         updateJunctionPoints(parent, junctionFigure, displayedJunctions);
-        
+
         // and finally add the listener that is keeping them up to date
         addListener(KEdgeNode.PROPERTY_JUNCTION_POINTS, parent, controller.getNode(),
                 new PropertyChangeListener() {
@@ -241,7 +241,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * Updates the displayed junction point figures based on the junction point coordinates in
      * <code>parent</code>. Puts the required amount of {@link PCamera} instances 'viewing'
      * <code>junctionFigure</code> into the <code>displayedJunctions</code> layer.
-     * 
+     *
      * @param parent
      *            the {@link KEdgeNode} providing the junction point coordinates
      * @param junctionFigure
@@ -251,7 +251,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      */
     private void updateJunctionPoints(final KEdgeNode parent, final PNode junctionFigure,
             final PLayer displayedJunctions) {
-        
+
         // get the points from the parent (structural) node
         final Point2D[] newJunctionPoints = parent.getJunctionPoints();
 
@@ -259,9 +259,9 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         final int missingJuncts = newJunctionPoints.length - displayedJunctions.getChildrenCount();
 
         // since a camera can be pointed to layers take the junctionFigures parent layer
-        //  (see handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) 
+        //  (see handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent)
         final PLayer junctionParent = (PLayer) junctionFigure.getParent();
-        
+
         // remove superfluous cameras in case the number of required juncts has decreased
         for (int i = 0; i < -missingJuncts; i++) {
             ((PCamera) displayedJunctions.removeChild(displayedJunctions.getChildrenCount() - 1))
@@ -272,7 +272,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         for (int i = 0; i < missingJuncts; i++) {
             final PCamera cam = new JunctionPointCamera();
 
-            // set the camera non-pickable as the junction points can be panned locally :-) 
+            // set the camera non-pickable as the junction points can be panned locally :-)
             cam.setPickable(false);
 
             // add the layer to be shown by the camera
@@ -284,13 +284,13 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             //  KPointPlacement data based on the given junction point coordinates
             cam.setBounds(junctionFigure.getFullBoundsReference());
 
-            // put the camera into the "camera container" -> invalidates the parent and the polyline 
+            // put the camera into the "camera container" -> invalidates the parent and the polyline
             displayedJunctions.addChild(cam);
         }
 
         @SuppressWarnings("unchecked")
         final List<PNode> cams = displayedJunctions.getChildrenReference();
-        
+
         // update the position of the cameras to the given coordinates by modifying their transform
         //  (their local bounds need not to be touched)
         for (int i = 0; i < cams.size(); i++) {
@@ -302,7 +302,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
     /**
      * A specialized {@link PCamera} behaving exactly as {@link PCamera} except for touching the
      * configured drawing clip configured on the employed graphics (/canvas).
-     * 
+     *
      * @author chsch
      */
     private static class JunctionPointCamera extends PCamera {
@@ -312,7 +312,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         @Override
         protected void paint(final PPaintContext paintContext) {
             super.paint(paintContext);
-            
+
             final PAffineTransform viewTransform = getViewTransformReference();
 
             // paintContext.pushClip(getBoundsReference());
@@ -323,7 +323,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
             paintContext.popTransform(viewTransform);
             // paintContext.popClip(getBoundsReference());
-        }        
+        }
     }
 
 
@@ -331,7 +331,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * Creates the Piccolo2D node for a rendering of a {@code KEdge} inside a parent Piccolo2D node.<br>
      * <br>
      * The rendering has to be a {@code KPolyline} or the method fails.
-     * 
+     *
      * @param rendering
      *            the rendering
      * @param parent
@@ -363,10 +363,10 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         return controller.getNode();
     }
-    
+
     /**
      * Creates a default rendering for edges without attached rendering data.
-     * 
+     *
      * @return the rendering
      */
     @Override

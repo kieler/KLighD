@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -73,32 +73,32 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
  * Standard implementation of {@link de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics
  * KlighdSWTGraphics}. It's aim is to get independent from Piccolo2Ds
  * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D SWTGraphics2D}.
- * 
+ *
  * @author chsch
  */
 public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphicsEx {
 
     // SUPPRESS CHECKSTYLE NEXT 30 Visibility
-    
+
     /** The {@link Device} to draw on. */
     protected Device device;
-    
+
     /** The {@link GC} to draw on. */
     protected GC gc;
-    
+
     /** An internal SWT {@link Rectangle} used for clip handling computations. */
     protected Transform swtTransform;
 
     // SUPPRESS CHECKSTYLE NEXT 2 MagicNumber
     /** The bit position of {@link GC#DRAW_OFFSET} required for avoiding Eclipse bugs 335769 & 253670.*/
     private static final int DRAW_OFFSET_BIT = KlighdPlugin.IS_WINDOWS ? 14 : 9;
-    
+
     /** A {@link TextLayout} used to draw styled texts (e.g. those with underline and/or strikeout). */
     protected TextLayout textLayout;
-    
+
     /** Indicates a self-created textLayout that is to be disposed while disposing this instance. */
     protected boolean disposeTextLayout = false;
-    
+
     /** The current font to use when drawing text. */
     protected Font curFont;
 
@@ -110,7 +110,18 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /**
      * Constructor for SWTGraphics2D.
-     * 
+     *
+     * @param gc
+     *            The Eclipse Graphics Context onto which all Graphics2D operations are
+     *            delegating
+     */
+    public KlighdSWTGraphicsImpl(final GC gc) {
+        this(gc, gc.getDevice());
+    }
+
+    /**
+     * Constructor for SWTGraphics2D.
+     *
      * @param gc
      *            The Eclipse Graphics Context onto which all Graphics2D operations are
      *            delegating
@@ -124,7 +135,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /**
      * Constructor for SWTGraphics2D.
-     * 
+     *
      * @param device
      *            Device onto which ultimately all {@link GC} operations are drawn onto
      * @param gc
@@ -194,7 +205,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public LineAttributes getLineAttributes() {
         return gc.getLineAttributes();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -204,7 +215,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         //  be able to adjust it according to the zoom factor
         this.setLineWidth(attributes.width);
     }
-    
+
     private float lineWidth = KlighdConstants.DEFAULT_LINE_ATTRIBUTES.width;
 
     /**
@@ -237,13 +248,13 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /**
      * {@inheritDoc}
-     *  
+     *
      * @return
      */
     public RGB getStrokeColor() {
         return gc.getForeground().getRGB();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -257,7 +268,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public RGB getFillColor() {
         return gc.getBackground().getRGB();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -301,14 +312,14 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         if (this.lastPattern != null) {
             this.lastPattern.dispose();
         }
-        
+
         this.lastPattern = new Pattern(this.device,
                 (float) points[0].getX(), (float) points[0].getY(), (float) points[1].getX(),
                 (float) points[1].getY(), this.getColor(gradient.getColor1()), alpha1,
                 this.getColor(gradient.getColor2()), alpha2);
         gc.setBackgroundPattern(this.lastPattern);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -331,7 +342,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         curFont = font;
 
         useTextStyle = underlining || strikeout;
-        
+
         if (!useTextStyle) {
             curTextStyle = null;
         } else {
@@ -340,18 +351,18 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             curTextStyle = new TextStyle();
             curTextStyle.font = curFont;
             curTextStyle.foreground = gc.getForeground();
-            
+
             // since PSWTText/PSWTStyledText cares itself on the background
-            //  setting the curTextStyle.background is left here 
-            
+            //  setting the curTextStyle.background is left here
+
             if (strikeout) {
                 curTextStyle.strikeout = true;
                 curTextStyle.strikeoutColor = getColor(strikeoutColor);
             } else {
                 curTextStyle.strikeout = false;
-                curTextStyle.strikeoutColor = getColor(KlighdConstants.BLACK); 
+                curTextStyle.strikeoutColor = getColor(KlighdConstants.BLACK);
             }
-            
+
             if (underlining) {
                 curTextStyle.underline = true;
                 curTextStyle.underlineStyle = underline;
@@ -370,7 +381,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /** The current strikeout color to use when drawing struck out text. */
     private RGB strikeoutColor = null;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -402,11 +413,11 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /** Map from RGB to SWT Colors. */
     protected static final HashMap<RGB, Color> COLOR_CACHE = new HashMap<RGB, Color>();
-    
+
     /**
      * A convenience method or obtaining the SWT {@link Color} related to the given {@link RGB}
      * instance.
-     * 
+     *
      * @param rgb
      *            the {@link RGB} descriptor
      * @return the related {@link Device} dependent {@link Color} instance.
@@ -447,7 +458,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
         setAlpha(alpha);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -457,7 +468,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
         gc.drawPath(path);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -469,7 +480,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
 
         gc.fillPath(path);
-        
+
         path.dispose();
     }
 
@@ -482,7 +493,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
         gc.fillPath(path);
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -494,7 +505,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
         gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, (int) width, (int) height);
     }
-    
+
     private Map<ImageData, Image> images = Maps.newHashMap();
 
     /**
@@ -524,7 +535,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             gc.setTransform(null);
         } else {
             this.textLayout.setText(text);
-            this.textLayout.setStyle(curTextStyle, 0, text.length() - 1);            
+            this.textLayout.setStyle(curTextStyle, 0, text.length() - 1);
             gc.setTransform(swtTransform);
             gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
 
@@ -539,7 +550,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     // SUPPRESS CHECKSTYLE NEXT 10 MagicNumber
     private static final double[] MATRIX_BUFFER = new double[6];
-    
+
     /** Updates the SWT transform instance such that it matches AWTs counterpart. */
     private void updateSWTTransform() {
         transform.getMatrix(MATRIX_BUFFER);
@@ -550,10 +561,10 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     }
 
     private static final Rectangle2D TEMP_LINE_RECT = new Rectangle2D.Float();
-    
+
     /**
      * Computes the width of the line after it passes through the current transform.
-     * 
+     *
      * @return resulting width of line after being transform
      */
     public float getTransformedLineWidthFloat() {
@@ -562,7 +573,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         // float lineWidth = gc.getGCData().lineWidth;
         TEMP_LINE_RECT.setRect(0, 0, lineWidth, lineWidth);
         SWTShapeManager.transform(TEMP_LINE_RECT, transform);
-        
+
         return (float) TEMP_LINE_RECT.getWidth();
     }
 
@@ -574,27 +585,27 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         final int alpha = getAlpha();
         final float transformedLineWidth = this.getTransformedLineWidthFloat();
         final int factor = 100;
-        
+
         if (transformedLineWidth < 2) {
-            final double adjustedAlpha = 
+            final double adjustedAlpha =
                     alpha * (KlighdConstants.ALPHA_FULL_OPAQUE - (2 - transformedLineWidth) * factor)
                             / KlighdConstants.ALPHA_FULL_OPAQUE;
             this.setAlpha((int) adjustedAlpha);
         }
     }
-    
+
     /** A rectangle object used to adjust custom line dash configurations wrt. the current transform. */
-    private static final Rectangle2D.Float TEMP_DASH_RECT = new Rectangle2D.Float(); 
+    private static final Rectangle2D.Float TEMP_DASH_RECT = new Rectangle2D.Float();
 
     /**
      * A helper function that adjusts custom dash patterns and dash offset according the given transform,
      * i.e. the zoom factor
-     * 
+     *
      */
     @SuppressWarnings("unused")
     private void updateCustomLineStyle() {
         if (this.gc.getGCData().lineStyle == SWT.LINE_CUSTOM) {
-            
+
             // adjust the pattern
             final float[] dashPattern = this.gc.getGCData().lineDashes;
             for (int i = 0; i < dashPattern.length; i++) {
@@ -602,7 +613,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
                 SWTShapeManager.transform(TEMP_DASH_RECT, transform);
                 dashPattern[i] = TEMP_DASH_RECT.width;
             }
-            
+
             // adjust the offset
             final float dashOffset = this.gc.getGCData().lineDashesOffset;
             TEMP_DASH_RECT.setRect(0, 0, dashOffset, dashOffset);
@@ -610,9 +621,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             this.gc.getGCData().lineDashesOffset = TEMP_DASH_RECT.width;
         }
     }
-    
-    // the following field with singleton values
-    //  that serve the purpose of avoiding unnecessary object creation and dismiss 
+
+    // the following fields with singleton values
+    //  serve the purpose of avoiding unnecessary object creation and dismiss
     private final PAffineTransform rotation = new PAffineTransform();
     private final Rectangle2D transformedBounds = new Rectangle2D.Double();
     private final Point2D[] patternPoints = new Point2D[] {
@@ -622,7 +633,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     /**
      * Compute the pattern points required by
      * {@link Pattern#Pattern(Device, float, float, float, float, Color, int, Color, int)}.
-     * 
+     *
      * @param bounds
      *            the bounds of the shape to be drawn with a gradient
      * @param angle
@@ -634,7 +645,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         if (angle != 0d) {
             // set 'rotation' to rotate its input counterclockwise around the center of 'bounds'
             this.rotation.rotate(-angle, bounds.getCenterX(), bounds.getCenterY());
-            
+
             // create a copy of 'bounds' and apply 't' to that copy, i.e. rotate the copy
             //  counterclockwise according to 'angle';
             // note that transforming a rectangle will lead to a new rectangle resembling
@@ -644,9 +655,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         } else {
             this.transformedBounds.setRect(bounds);
         }
-        
+
         // now determine two points forming a horizontal line through the center of 'bounds'
-        //  (which is equal to the center of 'transformedBounds' as we rotated around the center) 
+        //  (which is equal to the center of 'transformedBounds' as we rotated around the center)
         //  from 'transformedBounds''s left most 'x' value to its right most one
         this.patternPoints[0].setLocation(this.transformedBounds.getMinX(), bounds.getCenterY());
         this.patternPoints[1].setLocation(this.transformedBounds.getMaxX(), bounds.getCenterY());
@@ -660,7 +671,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             this.rotation.inverseTransform(this.patternPoints[1], this.patternPoints[1]);
             this.rotation.setToIdentity();
         }
-        
+
         return this.patternPoints;
     }
 
@@ -677,7 +688,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public Composite getComposite() {
         return this.transparency;
     }
-    
+
     @Override
     public void setComposite(final Composite comp) {
         if (comp instanceof AlphaComposite) {
@@ -691,8 +702,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     }
 
     /** An {@link AffineTransform} instance denoting the currently set drawing transform. */
-    private final AffineTransform transform; 
-    
+    private final AffineTransform transform;
+
     @Override
     public AffineTransform getTransform() {
         return new AffineTransform(this.transform);
@@ -701,7 +712,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     @Override
     public void setTransform(final AffineTransform transform) {
         this.transform.setTransform(transform);
-        this.updateSWTTransform();        
+        this.updateSWTTransform();
     }
 
     @Override
@@ -709,7 +720,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         this.transform.concatenate(tx);
         this.updateSWTTransform();
     }
-    
+
     @Override
     public Shape getClip() {
         // Since the results of this method are pushed on a stack it must not return
@@ -723,7 +734,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         // chsch: I would appreciate so much if we could get rid of the following 5 lines!
         //  (as well as 'this.gc.setTransform(null)' above)
         // however, due to the required coordinate roundings in #setClip(Shape) and #clip(Shape)
-        //  their errors will also be scaled up leading to unacceptable results 
+        //  their errors will also be scaled up leading to unacceptable results
         try {
             SWTShapeManager.transform(clip, transform.createInverse());
         } catch (final NoninvertibleTransformException e) {
@@ -731,14 +742,14 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         }
         return clip;
     }
-    
+
     private final Rectangle swtClipRect = new Rectangle(0, 0, 0, 0);
 
     @Override
     public void setClip(final Shape clip) {
         // important: clip bounds must not be adjusted in any way, since in combination with
-        //  usage of 'getClip()' those manipulations will accumulate and lead to unintended effects!! 
-        
+        //  usage of 'getClip()' those manipulations will accumulate and lead to unintended effects!!
+
         if (clip == null) {
             this.gc.setClipping((Rectangle) null);
 
@@ -747,7 +758,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             // chsch: I would appreciate so much if we could get rid of the following 2(7) lines!
             //  (as well as the first line of the 'else' branch)
             // however, due to the required coordinate roundings their errors will also be scaled up
-            //  leading to unacceptable results; see also #getClip() and #clip(Shape) 
+            //  leading to unacceptable results; see also #getClip() and #clip(Shape)
             this.gc.setTransform(null);
             final java.awt.Rectangle rect = clip.getBounds();
             SWTShapeManager.transform(rect, transform);
@@ -766,21 +777,21 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             clipPath.dispose();
         }
     }
-    
+
     @Override
     public void clip(final Shape clip) {
         // important: clip bounds must not be adjusted in any way, since in combination with
         //  usage of 'getClip()' those manipulations will accumulate and lead to unintended effects!!
         //  (PCamera.fullPaint() calls 'clip(getBoundsReference()', for example);
-        
+
         if (clip == null) {
             this.gc.setClipping((Rectangle) null);
-            
+
         } else if (clip instanceof Rectangle2D) {
             final Rectangle2D rect = clip.getBounds2D();
             Rectangle2D.intersect(this.getClip().getBounds2D(), rect, rect);
             this.setClip(rect);
-            
+
             // alternatively:
             //
             // // chsch: I would appreciate so much if we could get rid of the following 2(7) lines!
@@ -817,7 +828,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /**
      * Helper for debugging purposes.
-     * 
+     *
      * @param clip
      *            the clip SWT {@link Rectangle} to be visualized
      */
@@ -829,7 +840,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         gc.drawRectangle(clip.x + 0, clip.y + 0 , clip.width + 0, clip.height + 0);
         gc.setForeground(c);
     }
-    
+
     @Override
     public void setColor(final java.awt.Color c) {
         gc.setForeground(getColor(new RGB(c.getRed(), c.getGreen(), c.getBlue())));
@@ -869,7 +880,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     /* ------------------------------------------------ */
 
     // CHECKSTYLEOFF Parameter
-    
+
     @Override
     public boolean drawImage(final java.awt.Image img, final AffineTransform xform,
             final ImageObserver obs) {
@@ -925,7 +936,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     public GraphicsConfiguration getDeviceConfiguration() {
         throw new UnsupportedOperationException();
     }
-    
+
     @Override
     public void setPaint(final Paint paint) {
         throw new UnsupportedOperationException();
@@ -1158,9 +1169,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             final java.awt.Color bgcolor, final ImageObserver observer) {
         throw new UnsupportedOperationException();
     }
-    
+
     /* --------------------- Semantic Data ---------------------*/
-    
+
     // CHECKSTYLEOFF Javadoc
     // unsupported for the SWT graphics
     public void addSemanticData(final KlighdSemanticDiagramData semanticData) {

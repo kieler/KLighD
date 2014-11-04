@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -17,7 +17,6 @@ import java.awt.geom.Point2D;
 
 import org.eclipse.swt.graphics.RGB;
 
-import com.google.common.base.Function;
 import com.google.common.primitives.Floats;
 
 import de.cau.cs.kieler.core.krendering.KColor;
@@ -44,9 +43,9 @@ import edu.umd.cs.piccolo.PNode;
  * <br />
  * A node controller is a facade on a specific Piccolo node, providing a generic interface to set
  * the bounds and other parameters of the node.
- * 
+ *
  * @author mri, chsch
- * 
+ *
  * @param <T>
  *            the type of the associated node
  */
@@ -57,7 +56,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Constructs a controller for a given Piccolo node.
-     * 
+     *
      * @param node
      *            the Piccolo node
      */
@@ -67,16 +66,26 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Returns the associated node.
-     * 
+     *
      * @return the node
      */
-    public T getNode() {
+    public final T getNode() {
         return node;
     }
 
     /**
+     * Returns the {@link PNode} being designated for applying rotations and translations.<br>
+     * Default implementation delegates to {@link #getNode()}.
+     *
+     * @return the {@link PNode} being designated for applying rotations and translations.
+     */
+    public PNode getTransformedNode() {
+        return getNode();
+    }
+
+    /**
      * Sets the bounds of the associated node.
-     * 
+     *
      * @param bounds
      *            the bounds
      */
@@ -84,7 +93,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the invisibility of the associated node.
-     * 
+     *
      * @param invisible
      *            the invisibility state
      */
@@ -100,7 +109,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the foreground color of the associated node.
-     * 
+     *
      * @param color
      *            the foreground color
      * @param alpha
@@ -112,7 +121,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the foreground gradient of the associated node.
-     * 
+     *
      * @param gradient
      *            the foreground gradient
      */
@@ -122,7 +131,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the background color of the associated node.
-     * 
+     *
      * @param color
      *            the background color
      * @param alpha
@@ -134,7 +143,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the background gradient of the associated node.
-     * 
+     *
      * @param gradient
      *            the background gradient
      */
@@ -144,7 +153,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the line width of the associated node.
-     * 
+     *
      * @param lineWidth
      *            the line width
      */
@@ -154,7 +163,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the line style of the associated node.
-     * 
+     *
      * @param lineStyle
      *            the line style
      * @param dashPattern
@@ -169,7 +178,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the line cap style of the associated node.
-     * 
+     *
      * @param lineCap
      *            the line cap style
      */
@@ -179,7 +188,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the line join style of the associated node.
-     * 
+     *
      * @param lineJoin
      *            the line join style
      * @param miterLimit
@@ -189,24 +198,20 @@ public abstract class PNodeController<T extends PNode> {
         // do nothing
     }
 
-    private static final KPosition CENTER = new Function<Void, KPosition>() {
-        public KPosition apply(final Void v) {
-            final KPosition res = KRenderingFactory.eINSTANCE.createKPosition();
-            res.setX(KRenderingFactory.eINSTANCE.createKLeftPosition());
-            res.getX().setRelative(0.5f);       // SUPPRESS CHECKSTYLE MagicNumber
-            res.setY(KRenderingFactory.eINSTANCE.createKTopPosition());
-            res.getY().setRelative(0.5f);       // SUPPRESS CHECKSTYLE MagicNumber
-            return res;
-        }
-    } .apply(null); 
+
+    private static final KPosition CENTER =
+            KRenderingFactory.eINSTANCE.createKPosition().setPositions(
+                KRenderingFactory.eINSTANCE.createKLeftPosition().setPosition(0, 1f / 2),
+                KRenderingFactory.eINSTANCE.createKTopPosition().setPosition(0, 1f / 2)
+            );
 
     private float prevRotation = 0f;
     private KPosition prevRotationAnchor = CENTER;
     private Point2D prevRotationPoint = new Point2D.Float();
-    
+
     /**
      * Sets the rotation of the associated node.
-     * 
+     *
      * @param rotation
      *            the rotation
      * @param anchor
@@ -216,24 +221,33 @@ public abstract class PNodeController<T extends PNode> {
         if (rotation == 0f && prevRotation == 0f) {
             return;
         }
-        
+
         final KPosition theAnchor = anchor != null ? anchor : CENTER;
-        
-        Point2D point;
-        if (prevRotationAnchor.equals(theAnchor)) {
-            point = PlacementUtil.evaluateKPosition(theAnchor, getNode()
-                    .getBoundsReference(), true);
-            getNode().getTransformReference(true).rotate(Math.toRadians(rotation - prevRotation),
-                    point.getX(), point.getY());
+        final PNode rotatedNode = getTransformedNode();
+
+        final Point2D point =
+                PlacementUtil.evaluateKPosition(theAnchor, rotatedNode.getBoundsReference(), true);
+
+        if (prevRotation == 0f || point.equals(prevRotationPoint)) {
+
+            final float diff = rotation - prevRotation;
+            if (diff != 0) {
+                // with the following statement 'rotatedNode's transform is manipulated s.t. the rotation
+                //  is applied first, and the existing afterwards, see javadoc of 'concatenate()'
+                rotatedNode.getTransformReference(true).rotate(
+                        Math.toRadians(diff), point.getX(), point.getY());
+            }
         } else {
-            getNode().rotateAboutPoint(Math.toRadians(-prevRotation),
-                    prevRotationPoint.getX(), prevRotationPoint.getY());
-            
-            point = PlacementUtil.evaluateKPosition(theAnchor, getNode()
-                    .getBoundsReference(), true);
-            
-            getNode().getTransformReference(true).rotate(Math.toRadians(rotation),
-                    point.getX(), point.getY());
+            // according to the above conditions 'prevRotation' is unequal to zero
+            //  hence revert the existing rotation first ...
+            rotatedNode.getTransformReference(true).rotate(
+                    Math.toRadians(-prevRotation), prevRotationPoint.getX(), prevRotationPoint.getY());
+
+            // ... and apply the new angle if unequal to zero
+            if (rotation != 0) {
+                rotatedNode.getTransformReference(true).rotate(
+                        Math.toRadians(rotation), point.getX(), point.getY());
+            }
         }
 
         // Remember the rotation in this memory since this rotation needs to be reverted
@@ -253,9 +267,10 @@ public abstract class PNodeController<T extends PNode> {
         setRotation(rotation, prevRotationAnchor);
     }
 
+
     /**
      * Sets the shadow of the associated node.
-     * 
+     *
      * @param color
      *            the shadow color
      */
@@ -265,7 +280,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the horizontal alignment of the associated node.
-     * 
+     *
      * @param alignment
      *            the horizontal alignment
      */
@@ -275,7 +290,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the vertical alignment of the associated node.
-     * 
+     *
      * @param alignment
      *            the vertical alignment
      */
@@ -285,7 +300,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the font name of the associated node (most likely some kind of text).
-     * 
+     *
      * @param fontName
      *            the font name
      */
@@ -295,7 +310,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the font size of the associated node (most likely some kind of text).
-     * 
+     *
      * @param fontSize
      *            the font size
      */
@@ -305,7 +320,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the italic property for the associated node (most likely some kind of text).
-     * 
+     *
      * @param italic
      *            the italic property
      */
@@ -315,7 +330,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the bold property for the associated node (most likely some kind of text).
-     * 
+     *
      * @param bold
      *            the bold property
      */
@@ -325,7 +340,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the underlining property for the associated node (most likely some kind of text).
-     * 
+     *
      * @param underline
      *            the underline property
      * @param color
@@ -337,7 +352,7 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Sets the strikeout property for the associated node (most likely some kind of text).
-     * 
+     *
      * @param strikeout
      *            the underline property
      * @param color
@@ -351,7 +366,7 @@ public abstract class PNodeController<T extends PNode> {
      * Applies changes to the associated node.<br>
      * <br>
      * This can be used to apply several style changes at once to prevent costly redundancy.
-     * 
+     *
      * @param styles
      *            A compound {@link Styles} field to infer the data from.
      */
@@ -533,31 +548,31 @@ public abstract class PNodeController<T extends PNode> {
 
     /**
      * Convenience transformation converting a {@link KColor} into an {@link RGB}.
-     * 
+     *
      * TODO Install same caching in order to avoid unnecessary object creation.
-     * 
+     *
      * @param color
      *            the {@link KColor} to be converted
      * @return null if<code>color = null<code>, the related {@link RGB} otherwise
      */
     public RGB toRGB(final KColor color) {
         final int maxValue = 255;
-        
+
         if (color == null) {
             return null;
         }
-        
+
         final int red = color.getRed() < maxValue ? color.getRed() : maxValue;
         final int green = color.getGreen() < maxValue ? color.getGreen() : maxValue;
         final int blue = color.getBlue() < maxValue ? color.getBlue() : maxValue;
-        
+
         return new RGB(red, green, blue);
     }
 
     /**
      * Convenience transformation converting a {@link KColoring} with defined target color into an
      * {@link RGBGradient}.
-     * 
+     *
      * @param coloring
      *            the {@link KColoring} to be converted
      * @return null if<code>color = null<code>, the related {@link RGB} otherwise

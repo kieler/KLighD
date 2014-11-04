@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -15,12 +15,13 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
 import java.awt.geom.Point2D;
 
+import de.cau.cs.kieler.klighd.KlighdPreferences;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.event.PInputEvent;
 
 /**
  * This handler provides basic zooming functionality for the canvas using the mouse wheel.
- * 
+ *
  * @author mri
  */
 public class KlighdMouseWheelZoomEventHandler extends KlighdBasicInputEventHandler {
@@ -28,9 +29,9 @@ public class KlighdMouseWheelZoomEventHandler extends KlighdBasicInputEventHandl
     /** the zoom sensitivity. */
     private static final double ZOOM_SENSITIVITY = 0.20;
     /** the minimum scale. */
-    private double minScale = 0;
+    private double minScale = KlighdPreferences.getUserZoomingMinimalLevel(0);
     /** the maximum scale. */
-    private double maxScale = Double.MAX_VALUE;
+    private double maxScale = KlighdPreferences.getUserZoomingMaximalLevel(Double.MAX_VALUE);
 
     /**
      * Constructs a mouse wheel zoom event handler.
@@ -41,7 +42,7 @@ public class KlighdMouseWheelZoomEventHandler extends KlighdBasicInputEventHandl
 
     /**
      * Returns the minimum scale.
-     * 
+     *
      * @return the minimum scale
      */
     public double getMinScale() {
@@ -50,7 +51,7 @@ public class KlighdMouseWheelZoomEventHandler extends KlighdBasicInputEventHandl
 
     /**
      * Sets the minimum scale.
-     * 
+     *
      * @param minScale
      *            the minimum scale
      */
@@ -60,7 +61,7 @@ public class KlighdMouseWheelZoomEventHandler extends KlighdBasicInputEventHandl
 
     /**
      * Returns the maximum scale.
-     * 
+     *
      * @return the maximum scale
      */
     public double getMaxScale() {
@@ -69,7 +70,7 @@ public class KlighdMouseWheelZoomEventHandler extends KlighdBasicInputEventHandl
 
     /**
      * Sets the maximum scale.
-     * 
+     *
      * @param maxScale
      *            the maximum scale
      */

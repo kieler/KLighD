@@ -19,6 +19,8 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Widget;
 
+import com.google.common.base.Strings;
+
 
 /**
  * IDs and default values of preferences defined by KLighD and stored in the preference store.
@@ -38,12 +40,23 @@ public final class KlighdPreferences {
     /** Default value of the Animate Layout preference. */
     public static final boolean ANIMATE_LAYOUT_DEFAULT = true;
 
-    /** ID of the Zoom-style preference. */
+    /** ID of the zoom style preference. */
     public static final String ZOOM_STYLE =
             "de.cau.cs.kieler.klighd.preferences.zoomStyle"; //$NON-NLS-1$
 
     /** Default zoom style value. */
     public static final String ZOOM_STYLE_DEFAULT = ZoomStyle.ZOOM_TO_FIT.name();
+
+    /**
+     * ID of the 'zoom to focus' style preference. This preference is (currently) not offered in the
+     * preference page since it is intended just for programmatic application customization.
+     */
+    public static final String ZOOM_TO_FOCUS_STYLE =
+            "de.cau.cs.kieler.klighd.preferences.zoomToFocusStyle";
+
+    /** Default 'zoom to focus' style value. */
+    public static final String ZOOM_TO_FOCUS_STYLE_DEFAULT =
+            ZoomStyle.ZOOM_TO_FOCUS_OR_INCREASE_TO_FIT.name();
 
     /** ID of the 'zoom on workbench part change' preference. */
     public static final String ZOOM_ON_WORKBENCHPART_CHANGE =
@@ -104,6 +117,27 @@ public final class KlighdPreferences {
     /** Default zoom buttons visibility. */
     public static final boolean SHOW_ZOOM_CONFIG_BUTTONS_DEFAULT = true;
 
+    /**
+     * ID of the minimal user zoom level preference. If set the tool user can only
+     * "zoom out of the diagram" until the given level is reached.
+     */
+    public static final String USER_ZOOMING_MINIMAL_LEVEL =
+            "de.cau.cs.kieler.klighd.preferences.userZoomingMinimalLevel";
+
+    /** Default minimal user zoom level value. */
+    public static final Number USER_ZOOMING_MINIMAL_LEVEL_DEFAULT = null;
+
+    /**
+     * ID of the maximal user zoom level preference. If set the tool user can only
+     * "zoom into the diagram" until the given level is reached.
+     */
+    public static final String USER_ZOOMING_MAXIMAL_LEVEL =
+            "de.cau.cs.kieler.klighd.preferences.userZoomingMaximalLevel";
+
+    /** Default maximal user zoom level value. */
+    public static final Number USER_ZOOMING_MAXIMAL_LEVEL_DEFAULT = null;
+
+
     /** The {@link IPreferenceStore} used for KLighD-specific preferences. */
     public static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
 
@@ -120,6 +154,15 @@ public final class KlighdPreferences {
      */
     public static ZoomStyle getPreferredZoomStyle() {
         return ZoomStyle.valueOf(STORE.getString(ZOOM_STYLE));
+    }
+
+    /**
+     * Getter.
+     *
+     * @return the configured 'zoom to focus' {@link ZoomStyle}
+     */
+    public static ZoomStyle getZoomToFocusStyle() {
+        return ZoomStyle.valueOf(STORE.getString(ZOOM_TO_FOCUS_STYLE));
     }
 
     /**
@@ -166,6 +209,36 @@ public final class KlighdPreferences {
      */
     public static boolean isZoomOnWorkbenchpartChange() {
         return STORE.getBoolean(ZOOM_ON_WORKBENCHPART_CHANGE);
+    }
+
+    /**
+     * Getter.
+     *
+     * @param defaultValue
+     *            the value to be returned in case no value is stored
+     * @return the configured minimal zoom level the user is allowed to select, or <code>null</code>
+     *         if none is configured.
+     */
+    public static double getUserZoomingMinimalLevel(final double defaultValue) {
+        final String config = STORE.getString(USER_ZOOMING_MINIMAL_LEVEL);
+
+        return Strings.isNullOrEmpty(config)
+                ? defaultValue : STORE.getDouble(USER_ZOOMING_MINIMAL_LEVEL);
+    }
+
+    /**
+     * Getter.
+     *
+     * @param defaultValue
+     *            the value to be returned in case no value is stored
+     * @return the configured maximal zoom level the user is allowed to select, or <code>null</code>
+     *         if none is configured.
+     */
+    public static double getUserZoomingMaximalLevel(final double defaultValue) {
+        final String config = STORE.getString(USER_ZOOMING_MAXIMAL_LEVEL);
+
+        return Strings.isNullOrEmpty(config)
+                ? defaultValue : STORE.getDouble(USER_ZOOMING_MAXIMAL_LEVEL);
     }
 
 
