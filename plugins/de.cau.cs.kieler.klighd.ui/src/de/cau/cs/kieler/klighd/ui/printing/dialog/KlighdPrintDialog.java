@@ -37,8 +37,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import com.google.common.base.Strings;
-
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -150,14 +148,11 @@ public class KlighdPrintDialog extends TrayDialog {
     private boolean checkPrinterData() {
         try {
             options.getPrinter();
-            if (!Strings.isNullOrEmpty(options.getPrinterName())) {
-                return true;
-            }
-        } catch (final Throwable e) {
-            // nothing
-        }
+            return true;
 
-        return false;
+        } catch (final Throwable e) {
+            return false;
+        }
     }
 
     /**
@@ -189,6 +184,9 @@ public class KlighdPrintDialog extends TrayDialog {
     protected Control createDialogArea(final Composite parent) {
         bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
 
+        final boolean previewInitiallyOpen =
+                PrintOptions.getInitiallyShowPreview() && checkPrinterData();
+
         final Composite result = new Composite(parent, SWT.NONE);
         DialogUtil.layout(result, 2);
 
@@ -198,9 +196,9 @@ public class KlighdPrintDialog extends TrayDialog {
         createRangeBlockArea(result);
         createCopiesBlockArea(result);
         createExtensibleBlockArea(result);
-        createActionsBlockArea(result);
+        createActionsBlockArea(result, false);
 
-        if (PrintOptions.getInitiallyShowPreview()) {
+        if (previewInitiallyOpen) {
 
             // this asyncExec is employed in order to let the main dialog get build up properly;
             // for some reason its layout gets heavily corrupted if the preview is opened directly
@@ -322,10 +320,13 @@ public class KlighdPrintDialog extends TrayDialog {
     /**
      * Creates the actions block area.
      *
-     * @param parent the parent composite
+     * @param parent
+     *            the parent composite
+     * @param previewInitiallyOpen
+     *            <code>true</code> if preview is initially visible, <code>false</code> otherwise
      */
-    protected void createActionsBlockArea(final Composite parent) {
-        actionsBlock = new ActionsBlock(this);
+    protected void createActionsBlockArea(final Composite parent, final boolean previewInitiallyOpen) {
+        actionsBlock = new ActionsBlock(this, previewInitiallyOpen);
         DialogUtil.layoutSpanHorizontal(actionsBlock.createContents(parent), 2);
     }
 
@@ -341,13 +342,13 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     @Override
     protected void buttonPressed(final int buttonId) {
-        switch (buttonId) {
-        case IDialogConstants.OK_ID:
-            options.storeToPreferences();
-            // fall through!
-        default:
-            super.buttonPressed(buttonId);
-        }
+        options.storeToPreferences();
+//        switch (buttonId) {
+//        case IDialogConstants.OK_ID:
+//            // fall through!
+//        default:
+        super.buttonPressed(buttonId);
+//        }
     }
 
     /**

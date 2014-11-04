@@ -49,6 +49,7 @@ final class ActionsBlock implements IDialogBlock {
     private static final String CLOSE_ARROWS = " <<";
 
     private final KlighdPrintDialog printDialog;
+    private final boolean previewInitiallyOpen;
 
     private Button printPreview;
     private final SelectionListener printPreviewButtonListener = new SelectionAdapter() {
@@ -81,16 +82,18 @@ final class ActionsBlock implements IDialogBlock {
      *
      * @param printDialog
      *            the print dialog to execute the actions on (e.g. show preview)
+     * @param previewOpen TODO
      */
-    ActionsBlock(final KlighdPrintDialog printDialog) {
+    ActionsBlock(final KlighdPrintDialog printDialog, final boolean previewOpen) {
         this.printDialog = printDialog;
+        this.previewInitiallyOpen = previewOpen;
     }
 
     /**
      * {@inheritDoc}
      */
     public Control createContents(final Composite parent) {
-        final String arrows = PrintOptions.getInitiallyShowPreview() ? CLOSE_ARROWS : OPEN_ARROWS;
+        final String arrows = previewInitiallyOpen ? CLOSE_ARROWS : OPEN_ARROWS;
 
         printPreview = new Button(parent, SWT.PUSH);
         printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + arrows);
