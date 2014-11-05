@@ -35,12 +35,14 @@ import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.Bundle;
 
+import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
@@ -104,6 +106,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
         // introduce a new Composite that accommodates the visualized content
         this.diagramComposite = new Composite(parent, SWT.NONE);
+        this.diagramComposite.setVisible(false);
         this.diagramComposite.setLayout(new FillLayout());
 
         // create the context viewer
@@ -115,6 +118,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
         // put some default actions into the view menu
         fillViewMenu(getViewSite().getActionBars().getMenuManager());
+
+        registerPrintSupport();
 
         // install a drop handler for the view (XXX this could be omitted)
         installDropHandler(parent);
@@ -132,22 +137,64 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     }
 
     /**
-     * Sets the {@link ViewContext} to be used by this view part.<br>
-     * Note that this method may be called multiple times in life of a part instance.
+     * (Re-)Initializes the given {@link DiagramViewPart}.<br>
+     * This involves the creation of a {@link ViewContext}, the execution the matching
+     * implementation {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
+     * AbstractDiagramSynthesis}, the application of automatic layout. and the update of the diagram
+     * side bar entries.
      *
-     * @param viewContext
-     *            the {@link ViewContext} to be displayed
+     * @param name
+     *            the name (can be null if the view should be created with the default name)
+     * @param model
+     *            the model (can be null if the view should be created without an initial model)
+     * @param properties
+     *            the property holder containing properties configurations or <code>null</code>
      */
-    public void setViewContext(final ViewContext viewContext) {
+    public void initialize(final Object model, final String name, final IPropertyHolder properties) {
+
+        // set the view name
+        if (name != null) {
+            this.setName(name);
+        }
+
+        // let the light diagram service create a view context and register it
+        final ViewContext viewContext = new ViewContext(this, model);
+        if (properties != null) {
+            viewContext.configure(properties);
+        } else {
+            viewContext.configure();
+        }
+
+        DiagramViewManager.getInstance().registerView(this);
+
         // create the options pane
         if (sideBar == null) {
             sideBar = DiagramSideBar.createSideBar(
                 diagramComposite.getParent(), diagramComposite, viewContext);
         }
 
-        this.getViewer().getContextViewer().setModel(viewContext);
+        this.viewer.setModel(viewContext);
 
-        registerPrintSupport();
+        // do an initial update of the view context
+        viewContext.getLayoutRecorder().startRecording();
+        viewContext.update(model);
+
+        // fill the options pane according to the the incorporated transformations
+        this.updateOptions(false);
+
+        // make the view visible without giving it the focus
+        //  this must be done before applying the layout as otherwise
+        //  the canvas size may not be determined - it is required for proper zooming
+        this.getViewSite().getPage().bringToTop(this);
+
+        LightDiagramServices.layoutDiagram(viewContext, false);
+
+        // setting the diagram composite visible strictly after applying the initial layout avoids
+        //  flickering and suppresses the DiagramAreaChangeListener from getting active too early
+        this.diagramComposite.setVisible(true);
+
+        // trigger the create success status
+        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CREATE_SUCCESS, viewContext);
     }
 
     /**
@@ -178,7 +225,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      */
     @Override
     public void dispose() {
-        DiagramViewManager.getInstance().unregisterViewContexts(this);
+        DiagramViewManager.getInstance().unregisterView(this);
 
         if (!diagramComposite.isDisposed()) {
             diagramComposite.removeControlListener(diagramAreaListener);

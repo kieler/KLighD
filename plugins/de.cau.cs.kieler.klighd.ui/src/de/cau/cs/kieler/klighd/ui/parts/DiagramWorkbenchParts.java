@@ -61,6 +61,8 @@ public final class DiagramWorkbenchParts {
 
         private double oldAspectRatio = -1;
 
+        private boolean isScheduled = false;
+
         private final IDiagramWorkbenchPart diagramWorkbenchPart;
 
         /**
@@ -77,14 +79,31 @@ public final class DiagramWorkbenchParts {
         @Override
         public void controlResized(final ControlEvent e) {
             final ViewContext context = diagramWorkbenchPart.getViewContext();
-            if (KlighdPreferences.isZoomOnWorkbenchpartChange() && context != null) {
-                // assure that the composite's size is settled before we execute the layout
 
+            if (KlighdPreferences.isZoomOnWorkbenchpartChange() && context != null) {
+                final Control control = context.getViewer().getControl();
+
+                if (control == null || control.isDisposed() || !control.isVisible()) {
+                    return;
+                }
+
+                // this is a poor man barrier
+                // as long as nobody abuses this listener this method will be always
+                //  executed by the Display's thread
+                // since 'isScheduled's reset statement below is also executed by the UI thread
+                //  the world is fine :-)
+                if (isScheduled) {
+                    return;
+                }
+
+                isScheduled = true;
                 Display.getCurrent().asyncExec(new Runnable() {
+
                     public void run() {
                         final IViewer viewer = diagramWorkbenchPart.getViewer();
                         final Control control = viewer.getControl();
 
+                        isScheduled = false;
                         if (!control.isDisposed() && control.isVisible()) {
                             zoomOrRelayout(viewer);
                         }
@@ -102,6 +121,7 @@ public final class DiagramWorkbenchParts {
             // calculate the aspect ratio of the current canvas
             final Point size = viewer.getControl().getSize();
 
+            // assure that the composite's size is settled before we execute the layout
             if (size.x > 0 && size.y > 0) {
                 final Float aspectRatio =
                         Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
