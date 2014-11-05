@@ -26,12 +26,9 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ResourceTransfer;
@@ -42,7 +39,6 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
@@ -73,7 +69,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     public static final String ACTION_ID_RESET_LAYOUT_OPTIONS = VIEW_ID + ".resetLayoutOptions";
 
     /** the default name for this view. */
-    public static final String DEFAULT_NAME = "Light Diagram";
+    public static final String DEFAULT_NAME = "KLighD Diagram";
 
     /** the viewer for this view part. */
     private ContextViewer viewer;
@@ -92,6 +88,13 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     private DiagramSideBar sideBar;
 
     private Composite diagramComposite;
+
+    /**
+     * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
+     * defined.
+     */
+    private final ControlListener diagramAreaListener =
+            DiagramWorkbenchParts.createDiagramAreaChangeListener(this);
 
     /**
      * {@inheritDoc}
@@ -382,58 +385,4 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
         });
     }
-
-    /**
-     * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
-     * defined.
-     */
-    private ControlListener diagramAreaListener = new ControlListener() {
-
-        /** The aspect ratio is rounded at two decimal places. */
-        private static final float ASPECT_RATIO_ROUND = 100;
-
-        private double oldAspectRatio = -1;
-
-        public void controlResized(final ControlEvent e) {
-            if (KlighdPreferences.isZoomOnWorkbenchpartChange()) {
-                // assure that the composite's size is settled before we execute the layout
-                Display.getCurrent().asyncExec(new Runnable() {
-                    public void run() {
-                        if (!DiagramViewPart.this.getViewer().getControl().isDisposed()
-                                && DiagramViewPart.this.getViewer().getControl().isVisible()) {
-                            zoomOrRelayout();
-                        }
-                    }
-                });
-            }
-        }
-
-        public void controlMoved(final ControlEvent e) {
-        }
-
-        /**
-         * Some layouters (eg KlayLayered) might change the layout based on the aspect ratio of the
-         * canvas. Thus, when the aspect ratio passes 1 we re-layout the diagram instead of just
-         * triggering a re-zoom.
-         */
-        private void zoomOrRelayout() {
-            // it makes only sense to do something if we have a viewcontext, ie a viewmodel
-            if (getViewer().getViewContext() != null) {
-                // calculate the aspect ratio of the current canvas
-                final Point size = getViewer().getControl().getSize();
-                if (size.x > 0 && size.y > 0) {
-                    final Float aspectRatio =
-                            Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
-                    if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
-                            || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                        LightDiagramServices.layoutDiagram(DiagramViewPart.this);
-                        oldAspectRatio = aspectRatio;
-                        return;
-                    }
-                }
-            }
-
-            LightDiagramServices.zoomDiagram(DiagramViewPart.this);
-        }
-    };
 }
