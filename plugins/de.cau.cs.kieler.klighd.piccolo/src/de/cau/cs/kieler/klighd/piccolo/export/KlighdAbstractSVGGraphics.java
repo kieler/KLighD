@@ -268,6 +268,19 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
      * {@inheritDoc}
      */
     public void setFont(final FontData theFontData) {
+        this.setFont(theFontData, -1);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setFont(final FontData theFontData, final int maxLineWidth) {
+
+        if (maxLineWidth > 0) {
+            throw new UnsupportedOperationException(
+                    "KLighD SVG export: text wrapping based on maximal line length is not available!");
+        }
+
         this.fontData = theFontData;
         if (theFontData == null) {
             return;

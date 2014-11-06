@@ -49,8 +49,8 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
  * coordinates to the {@link org.eclipse.swt.graphics.GC GC}, and thus to get rid of rounding
  * issues. Such SWT {@link Path Paths} can be easily built-up from {@link Shape Shapes} by means of
  * AWT Geometry {@link java.awt.geom.PathIterator PathIterators}, see
- * {@link edu.umd.cs.piccolox.swt.SWTGraphics2D#pathIterator2Path(java.awt.geom.PathIterator)
- * SWTGraphics2D#pathIterator2Path(PathIterator)}.<br>
+ * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths#createSWTPath(
+ * java.awt.geom.PathIterator, Device) KlighdPaths#createSWTPath(PathIterator, Device)}.<br>
  * <br>
  * Consequently, we can delegate the application of {@link AffineTransform AffineTransforms} to SWT
  * by simply transforming them into an SWT {@link org.eclipse.swt.graphics.Transform Transform} and
@@ -187,6 +187,19 @@ public interface KlighdSWTGraphics {
      *            font configuration to be applied while drawing text
      */
     void setFont(final FontData fontData);
+
+    /**
+     * Set the font by means of a {@link FontData} and configures a maximal line width. If the text
+     * exceeds {@code maxLineWidth} it is wrapped.<br>
+     * <br>
+     * <b>Caution: Line wrapping is not supported by KLighD's SVG exporters!!</b>
+     *
+     * @param fontData
+     *            font configuration to be applied while drawing text
+     * @param maxLineWidth
+     *            the maximal line width in pixels, is ignored if less or equal to zero
+     */
+    void setFont(final FontData fontData, final int maxLineWidth);
     
     /**
      * Sets the underline for next text to be drawn.
