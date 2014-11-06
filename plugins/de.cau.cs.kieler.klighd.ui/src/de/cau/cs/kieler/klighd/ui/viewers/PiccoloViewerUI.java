@@ -446,9 +446,9 @@ public class PiccoloViewerUI extends PiccoloViewer {
     void deactivateLabelWidget() {
         labelWidget.setVisible(false);
 
-        final PNode node = (PNode) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
+        final KlighdStyledText node = (KlighdStyledText) labelWidget.getData(STYLED_TEXT_FIGURE_KEY);
         if (node != null) {
-            node.setVisible(true);
+            node.setOccludedOnMainDiagram(false);
             node.removePropertyChangeListener(
                     (PropertyChangeListener) labelWidget.getData(TEXT_STYLING_CHANGE_LISTENER_KEY));
         }
