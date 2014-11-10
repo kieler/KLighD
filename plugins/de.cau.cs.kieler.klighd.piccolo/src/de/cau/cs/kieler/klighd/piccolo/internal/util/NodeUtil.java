@@ -21,6 +21,11 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
 
+import org.eclipse.emf.common.util.AbstractTreeIterator;
+import org.eclipse.emf.common.util.TreeIterator;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
@@ -183,7 +188,7 @@ public final class NodeUtil {
 
         // (re-)apply the rotation,
         //  'controller' is in charge of caching the required angle and anchor data
-        //  invalidation of 'transformedNodes's current bounds already done in applyTranslation 
+        //  invalidation of 'transformedNodes's current bounds already done in applyTranslation
         controller.applyRotation();
     }
 
@@ -554,5 +559,67 @@ public final class NodeUtil {
         }
 
         return result;
+    }
+
+
+    // Some convenient children iterator factory methods
+
+    /**
+     * Returns an {@link TreeIterator} providing {@code node}'s direct and recursively children.
+     *
+     * @param node
+     *            the root {@link PNode}
+     * @return the requested {@link Iterator}
+     */
+    public static TreeIterator<PNode> getDeepChildrenIterator(final PNode node) {
+        return getDeepChildrenIterator(node, false);
+    }
+
+    /**
+     * Returns an {@link TreeIterator} providing {@code node}'s direct and recursively children.
+     *
+     * @param node
+     *            the root {@link PNode}
+     * @param includeRoot
+     *            if <code>true</code> {@code node} is provided, too
+     * @return the requested {@link Iterator}
+     */
+    public static TreeIterator<PNode> getDeepChildrenIterator(final PNode node,
+            final boolean includeRoot) {
+        return getSubtreeFilteredDeepChildrenIterator(node, includeRoot, null);
+    }
+
+    /**
+     * Returns an {@link TreeIterator} providing {@code node}'s direct and recursively children.<br>
+     * <b>Caution:</b> If {@code filter(x)} returns <code>false</code> for a {@link PNode} {@code x}
+     * the children of {@code x} are not visited!
+     *
+     * @param node
+     *            the root {@link PNode}
+     * @param includeRoot
+     *            if <code>true</code> {@code node} is provided, too
+     * @param filter
+     *            the filter {@link Predicate} to apply to each child subtree, if equal to
+     *            <code>null</code> no filtering is performed
+     * @return the requested {@link Iterator}
+     */
+    public static TreeIterator<PNode> getSubtreeFilteredDeepChildrenIterator(
+            final PNode node, final boolean includeRoot, final Predicate<PNode> filter) {
+
+        return new AbstractTreeIterator<PNode>(node) {
+            private static final long serialVersionUID = -7784774420574849372L;
+
+            @Override
+            protected Iterator<PNode> getChildren(final Object object) {
+                @SuppressWarnings("unchecked")
+                final Iterator<PNode> res = ((PNode) object).getChildrenIterator();
+
+                if (filter == null) {
+                    return res;
+                } else {
+                    return Iterators.filter(res, filter);
+                }
+            }
+        };
     }
 }
