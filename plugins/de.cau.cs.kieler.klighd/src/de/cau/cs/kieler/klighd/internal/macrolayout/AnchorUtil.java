@@ -335,7 +335,7 @@ public final class AnchorUtil {
         
         
         // Return the point by default
-        return new KVector(point);
+        return new KVector(center);
     }
     
     /**
@@ -453,6 +453,16 @@ public final class AnchorUtil {
     // Utility Functions
     
     /**
+     * Fuzzyness amount allowed to catch rounding errors. In the method below, the calculated
+     * intersection point is subjected to a sanity check to find out if it actually is inside the
+     * bounding boxes of the two lines that are being intersected. Due to rounding errors, this sanity
+     * check can fail even though the result is very nearly correct. The fuzzyness is the fuzzy area
+     * around the bounding boxes that we still consider to be part of the bounding box to catch these
+     * errors.
+     */
+    private static final double FA = 0.1;
+    
+    /**
      * Returns the point where the two lines given by the four points intersect, if they do.
      * 
      * @param x1 x coordinate of the first line's start point.
@@ -493,10 +503,10 @@ public final class AnchorUtil {
         
         // Check if the intersection is actually inside the rectangle defined by the end points of
         // the two lines
-        if (((x1 <= result.x && result.x <= x2) || (x1 >= result.x && result.x >= x2))
-                && ((x3 <= result.x && result.x <= x4) || (x3 >= result.x && result.x >= x4))
-                && ((y1 <= result.y && result.y <= y2) || (y1 >= result.y && result.y >= y2))
-                && ((y3 <= result.y && result.y <= y4) || (y3 >= result.y && result.y >= y4))) {
+        if (((x1 - FA <= result.x && result.x <= x2 + FA) || (x1 + FA >= result.x && result.x >= x2 - FA))
+                && ((x3 - FA <= result.x && result.x <= x4 + FA) || (x3 + FA >= result.x && result.x >= x4 - FA))
+                && ((y1 - FA <= result.y && result.y <= y2 + FA) || (y1 + FA >= result.y && result.y >= y2 - FA))
+                && ((y3 - FA <= result.y && result.y <= y4 + FA) || (y3 + FA >= result.y && result.y >= y4 - FA))) {
             
             return result;
         } else {
