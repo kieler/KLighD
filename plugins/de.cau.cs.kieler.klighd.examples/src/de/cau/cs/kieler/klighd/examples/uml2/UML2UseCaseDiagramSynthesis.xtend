@@ -68,11 +68,11 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     }
     
     def KNode createActorNode(Actor actor) {
-        return actor.createNode().putToLookUpWith(actor) => [
+        return actor.createNode().associateWith(actor) => [
             it.setNodeSize(60, 100);
             it.addOutsideBottomCenteredNodeLabel(actor.name,
                 KlighdConstants::DEFAULT_FONT_SIZE, KlighdConstants::DEFAULT_FONT_NAME
-            ).putToLookUpWith(actor);
+            ).associateWith(actor);
             it.addRectangle() => [
                 it.invisible = true;
                 it.addChild(createActorFigureBody());
@@ -85,10 +85,10 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     }
     
     def KNode createUseCaseNode(UseCase useCase) {
-        return useCase.createNode().putToLookUpWith(useCase) => [
+        return useCase.createNode().associateWith(useCase) => [
             it.addEllipse() => [
                 it.foreground = "darkGray".color;
-                it.addText(useCase.name).putToLookUpWith(useCase) => [
+                it.addText(useCase.name).associateWith(useCase) => [
                     it.setSurroundingSpace(10, 0.1f);
                     it.background = "white".color
                 ];
@@ -97,7 +97,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     }
     
     def KEdge createAssociationEdge(Association asso) {
-        return asso.createEdge().putToLookUpWith(asso) => [
+        return asso.createEdge().associateWith(asso) => [
             it.source = asso.ownedEnds.head?.type.node;
             it.target = asso.ownedEnds.last?.type.node;
             it.addPolyline();

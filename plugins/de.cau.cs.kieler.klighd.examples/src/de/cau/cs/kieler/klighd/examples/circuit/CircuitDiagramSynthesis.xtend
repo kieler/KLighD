@@ -73,7 +73,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
      */
     override transform(Circuit circuit) {
         // the diagram root node is mandatory and represents the diagrams canvas
-        val diagramRoot = createNode().putToLookUpWith(circuit);
+        val diagramRoot = createNode().associateWith(circuit);
         
         // translated the given circuit recursively ...
         circuit.createCircuitNode(diagramRoot);
@@ -94,7 +94,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
      */
     def void createCircuitNode(Circuit circuit, KNode parent) {
         // first create the new KNode and attach it to its designated parent
-        val KNode circuitNode = circuit.createNode().putToLookUpWith(circuit);
+        val KNode circuitNode = circuit.createNode().associateWith(circuit);
         parent.children += circuitNode;
         
         // we want the (potentially) contained edges to be routed in orthogonal style,
@@ -107,7 +107,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         circuit.connectors.forEach[ connector |
 
             // ... create a port, associate it to the connector, and configure it ...
-            connector.createPort().putToLookUpWith(connector) => [
+            connector.createPort().associateWith(connector) => [
 
                 // first add it to the knode representing the circuit
                 //  this is required for the correct label configuration later on 
@@ -128,7 +128,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                 
                 // last but not least add a label exhibiting the ports name
                 it.addInsidePortLabel(connector.name, 8, KlighdConstants.DEFAULT_FONT_NAME)
-                    .putToLookUpWith(connector)
+                    .associateWith(connector)
             ];
         ];
         
@@ -181,7 +181,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             wire.connectedTo.tail.forEach[ connector |
 
                 // create an edge 
-                createEdge().putToLookUpWith(wire) => [
+                createEdge().associateWith(wire) => [
 
                     // ... from the first connector = head of list...
                     it.source = wire.connectedTo.head?.parent?.node;
