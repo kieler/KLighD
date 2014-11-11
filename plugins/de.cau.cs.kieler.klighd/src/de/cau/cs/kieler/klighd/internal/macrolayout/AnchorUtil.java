@@ -20,6 +20,7 @@ import de.cau.cs.kieler.core.krendering.KPolygon;
 import de.cau.cs.kieler.core.krendering.KPosition;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -98,10 +99,13 @@ public final class AnchorUtil {
                     + ") must be >= 0.");
         }
 
-        if (rendering != null) {
-            switch (rendering.eClass().getClassifierID()) {
+        // resolve rendering references
+        final KRendering actualRendering = KRenderingUtil.dereference(rendering);
+        
+        if (actualRendering != null) {
+            switch (actualRendering.eClass().getClassifierID()) {
             case KRenderingPackage.KROUNDED_RECTANGLE:
-                final KRoundedRectangle roundedRectangle = (KRoundedRectangle) rendering;
+                final KRoundedRectangle roundedRectangle = (KRoundedRectangle) actualRendering;
                 
                 double cornerWidth = roundedRectangle.getCornerWidth() * scale;
                 cornerWidth = 2 * cornerWidth <= width ? cornerWidth : width / 2;
