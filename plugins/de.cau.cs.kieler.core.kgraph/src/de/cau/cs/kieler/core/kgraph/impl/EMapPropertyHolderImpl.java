@@ -14,30 +14,27 @@
 package de.cau.cs.kieler.core.kgraph.impl;
 
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import de.cau.cs.kieler.core.kgraph.EMapPropertyHolder;
 import de.cau.cs.kieler.core.kgraph.KGraphFactory;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.IPropertyValueProxy;
 
 import java.util.Collection;
-import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EcoreEMap;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -134,6 +131,7 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
         
         int i = 0;
         List<PersistentEntry> persisEntries = getPersistentEntries();
+        
         for (Entry<IProperty<?>, Object> entry : getProperties()) {
             IProperty<?> key = entry.getKey();
             Object value = entry.getValue();
@@ -153,6 +151,14 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
                 persisEntry.setValue(value.toString());
                 persisEntry.eSetDeliver(pEdeliver);
             }
+        }
+        
+        // remove any superfluous persistent entries that are left from previous 
+        // 'persist actions'
+        ListIterator<PersistentEntry> peIt = persisEntries.listIterator(i);
+        while (peIt.hasNext()) {
+            peIt.next();
+            peIt.remove();
         }
         
         this.eSetDeliver(deliver);

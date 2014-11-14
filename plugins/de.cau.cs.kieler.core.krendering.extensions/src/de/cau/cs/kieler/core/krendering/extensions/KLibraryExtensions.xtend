@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.krendering.extensions
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
@@ -140,5 +141,12 @@ class KLibraryExtensions {
         val library = node.library
         return library.addToLibrary(id, rendering)
     }
+
+    def KRenderingRef addRenderingRef(KGraphElement kge, KRendering rendering) {
+        createKRenderingRef => [ ref |
+            ref.rendering = rendering
+            kge.data += ref
+        ]
+    }    
 
 }

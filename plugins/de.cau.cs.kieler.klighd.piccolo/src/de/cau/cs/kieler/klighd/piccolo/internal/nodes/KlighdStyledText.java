@@ -73,6 +73,8 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     private boolean strikeout = false;
     private RGB strikeoutColor = KlighdConstants.BLACK;
 
+    private boolean occludedOnMainDiagram = false;
+
     /**
      * Constructor taking the related {@link KText} view model element.
      * 
@@ -110,6 +112,17 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         super();
         this.text = theText;
         this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
+    }
+
+    /**
+     * Configures the visibility of this {@link KlighdStyledText} on the main diagram, which need to
+     * be suppressed, e.g., in case a text label widget covers this text node.
+     * 
+     * @param occluded
+     *          if <code>true</code> 
+     */
+    public void setOccludedOnMainDiagram(final boolean occluded) {
+        this.occludedOnMainDiagram = occluded;
     }
 
     /**
@@ -344,6 +357,19 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
             return;
         } else {
             super.paint(paintContext);
+        }
+    }
+
+    @Override
+    public boolean isNotVisibleOn(final KlighdPaintContext kpc) {
+        // specialization prevents this text node from being drawn on the main diagram
+        //  is a text label widget is attached to this text
+        // this text node is drawn as usual on the outline, printouts, and image exports
+
+        if (occludedOnMainDiagram && kpc.isMainDiagram()) {
+            return true;
+        } else {
+            return super.isNotVisibleOn(kpc);
         }
     }
 

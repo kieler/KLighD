@@ -55,7 +55,8 @@ import de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog;
  */
 public class PrintAction extends Action {
 
-    private PiccoloViewer viewer;
+    private IViewer iViewer;
+    private PiccoloViewer pViewer;
 
     /**
      * Create a new PrintAction. A viewer must be set separately.
@@ -76,35 +77,45 @@ public class PrintAction extends Action {
     }
 
     /**
-     * Returns the viewer used while printing.
-     *
-     * @return the viewer to print
-     */
-    public PiccoloViewer getViewer() {
-        return viewer;
-    }
-
-    /**
      * Set a new viewer to use while printing.
      *
      * @param viewer
      *            the new viewer to print
      */
     public void setViewer(final IViewer viewer) {
-        if (viewer instanceof PiccoloViewer) {
-            this.viewer = (PiccoloViewer) viewer;
+        this.iViewer = viewer;
+
+        // the required PiccoloViewer may not be available yet
+        // hence, obtain it lazily in 'getViewer()'
+        this.pViewer = null;
+    }
+
+    /**
+     * Returns the viewer used while printing.
+     *
+     * @return the viewer to print
+     */
+    private PiccoloViewer getViewer() {
+        if (pViewer != null) {
+            return pViewer;
+        }
+
+        if (iViewer instanceof PiccoloViewer) {
+            this.pViewer = (PiccoloViewer) iViewer;
 
         } else {
-            final IViewer aViewer = viewer.getContextViewer().getActiveViewer();
+            final IViewer aViewer = iViewer.getContextViewer().getActiveViewer();
             if (aViewer instanceof PiccoloViewer) {
-                this.viewer = (PiccoloViewer) aViewer;
+                this.pViewer = (PiccoloViewer) aViewer;
 
             } else {
-                final String msg = "KLighD PrintAction: "
-                        + "provided IViewer must be/contain an instance of PiccoloViewer!";
+                final String msg = "KLighD PrintAction: " //$NON-NLS-1$
+                        + "provided IViewer must be/contain an instance of PiccoloViewer!"; //$NON-NLS-1$
                 throw new IllegalArgumentException(msg);
             }
         }
+
+        return pViewer;
     }
 
     /**
@@ -126,8 +137,11 @@ public class PrintAction extends Action {
      */
     @Override
     public final void run() {
+        final PiccoloViewer viewer = getViewer();
+
         if (viewer == null) {
-            throw new IllegalStateException("KLighD PrintAction: The required viewer is not set!");
+            throw new IllegalStateException(
+                    "KLighD PrintAction: The required viewer is not set!"); //$NON-NLS-1$
         }
 
         final PrintExporter exporter = new PrintExporter(viewer);
@@ -147,7 +161,7 @@ public class PrintAction extends Action {
         final PrinterData printerData = printer.getPrinterData();
 
         // start the print job
-        printer.startJob("KlighD Printing");
+        printer.startJob(KlighdUIPrintingMessages.PrintAction_JobName);
 
         final Dimension pageBounds = exporter.getPrinterBounds(printer);
 

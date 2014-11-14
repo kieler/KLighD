@@ -41,14 +41,15 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
  *    <exportHook
  *          class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
  *          id="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
- *          supportedFormats="bmp, jpeg, png, svg, pdf, printout">
+ *          supportedFormats="bmp, jpeg, png, pdf, printout">
  *    </exportHook>
  * </extension>}
  * </pre>
  *
  * @author csp
+ * @author chsch
  */
-public class AuthorConfidentialExportHook extends AbstractExportBranding {
+public class AuthorConfidentialExportBranding extends AbstractExportBranding {
 
     private static final int BORDER_LINE_WIDTH = 3;
     private static final int BOTTOM_MARGIN = 30;

@@ -35,6 +35,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
+import com.google.common.base.Strings;
+
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
@@ -227,7 +229,10 @@ public final class PrintOptions {
     public void restoreFromPreferences() {
         final String driver = PREF_STORE.getString(PREFERENCE_PRINTER_DRIVER);
         final String name = PREF_STORE.getString(PREFERENCE_PRINTER_NAME);
-        printerData = new PrinterData(driver, name);
+        printerData = new PrinterData(
+                // be careful: driver and name must not be equal to ""
+                //  but must be 'null' to get the default printer
+                Strings.emptyToNull(driver), Strings.emptyToNull(name));
 
         if (printerData != null) {
             setOrientation(PREF_STORE.getInt(PREFERENCE_PRINTER_ORIENTATION));
@@ -683,15 +688,22 @@ public final class PrintOptions {
      * @return a {@link Printer} or {@code null} if no valid {@link PrinterData} are configured
      */
     public Printer getPrinter() {
-        if (this.printer == null) {
-            if (this.printerData != null) {
-                this.printer = new Printer(this.printerData);
-            } else {
-                return null;
-            }
-        }
+        if (this.printer != null) {
+            return printer;
 
-        return printer;
+        } else  if (this.printerData != null) {
+            if (Strings.isNullOrEmpty(this.printerData.driver)) {
+                // printerData's 'driver' and 'name' initialized with the empty
+                //  string leads to an error so set at least 'driver' to 'null'
+                this.printerData.driver = null;
+            }
+
+            this.printer = new Printer(this.printerData);
+            return printer;
+
+        } else {
+            return null;
+        }
     }
 
     /**

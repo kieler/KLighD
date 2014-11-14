@@ -46,8 +46,8 @@
             supportedFormats="svg">
       </offscreenRenderer>
       <!-- exportBranding
-            class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
-            id="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportHook"
+            class="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportBranding"
+            id="de.cau.cs.kieler.klighd.piccolo.export.AuthorConfidentialExportBranding"
             supportedFormats="printout, bmp, jpeg, png, de.cau.cs.kieler.klighd.piccolo.svggen.batik, de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic">
       </exportBranding -->
    </extension>

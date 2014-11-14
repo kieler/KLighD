@@ -125,7 +125,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             }
         }
         
-        final KGraphElement sourceElement = getAffectedElement(context);
+        final KGraphElement sourceElement = getAffectedElement(context, false);
         if (sourceElement != null && diagramPart != null) {
             final KGraphElement viewElement = (KGraphElement) diagramPart;
 
@@ -248,7 +248,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Object getOptionValue(final LayoutOptionData optionData, final LayoutContext context) {
-        final KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context, false);
         if (element != null) {
             final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
@@ -284,7 +284,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public Collection<IProperty<?>> getAffectedOptions(final LayoutContext context) {
-        final KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context, false);
         final List<IProperty<?>> options = new LinkedList<IProperty<?>>();
 
         if (element != null) {
@@ -347,17 +347,31 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
         }
         return options;
     }
-    
+
     /**
      * Returns the graph element that shall be subject to modifications by this layout configurator.
      * 
-     * @param context a layout context
+     * @param context
+     *            a layout context
+     * @param considerDomainModel
+     *            whether associated domain model elements should be queried. This should be the 
+     *            case for 'writing actions' that yield persistent changes in the domain model.
      * @return the graph element that shall be modified in the given context, or {@code null}
      */
-    private KGraphElement getAffectedElement(final LayoutContext context) {
-        final Object domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
-        if (domainElement instanceof KGraphElement) {
-            return (KGraphElement) domainElement;
+    private KGraphElement getAffectedElement(final LayoutContext context,
+            final boolean considerDomainModel) {
+  
+        if (considerDomainModel) {
+            // the use case here is that for kgraph domain models (i.e. .kgt .kgx files) 
+            // any changed property should be written back to the originating domain model.
+            //
+            // however, when retrieving these properties during layout they are 
+            // already copied to the diagram element and further properties 
+            // that were added during diagram synthesis would be neglected.
+            final Object domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
+            if (domainElement instanceof KGraphElement) {
+                return (KGraphElement) domainElement;
+            }
         }
         
         final Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
@@ -419,7 +433,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      */
     public void setOptionValue(final LayoutOptionData optionData, final LayoutContext context,
             final Object value) {
-        final KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context, true);
         if (element != null) {
             KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout == null) {
@@ -439,7 +453,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public boolean isSet(final LayoutOptionData optionData, final LayoutContext context) {
-        final KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context, true);
         if (element != null) {
             final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {
@@ -453,7 +467,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
      * {@inheritDoc}
      */
     public void clearOptionValues(final LayoutContext context) {
-        final KGraphElement element = getAffectedElement(context);
+        final KGraphElement element = getAffectedElement(context, true);
         if (element != null) {
             final KLayoutData elementLayout = element.getData(KLayoutData.class);
             if (elementLayout != null) {

@@ -497,14 +497,13 @@ public final class LightDiagramServices {
             final IViewer diagramViewer, final ViewContext viewContext,
             final Boolean animate, final ZoomStyle zoomStyle, final KNode focusNode,
             final List<ILayoutConfig> options) {
-        
+
         final IDiagramWorkbenchPart thePart;
-        final IViewer theViewer;
         final ViewContext theViewContext;
 
         if (workbenchPart != null) {
             thePart = workbenchPart;
-            theViewer = thePart.getViewer();
+            final IViewer theViewer = thePart.getViewer();
             if (theViewer != null) {
                 theViewContext = theViewer.getViewContext();
             } else {
@@ -513,12 +512,10 @@ public final class LightDiagramServices {
 
         } else if (viewContext != null) {
             theViewContext = viewContext;
-            theViewer = theViewContext.getViewer();
             thePart = theViewContext.getDiagramWorkbenchPart();
 
         } else if (diagramViewer != null) {
-            theViewer = diagramViewer;
-            theViewContext = theViewer.getViewContext();
+            theViewContext = diagramViewer.getViewContext();
             if (theViewContext != null) {
                 thePart = theViewContext.getDiagramWorkbenchPart();
             } else {
@@ -537,6 +534,7 @@ public final class LightDiagramServices {
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
         }
 
+        final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
         final KNode viewModel = theViewContext.getViewModel();
         final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
         
@@ -567,19 +565,18 @@ public final class LightDiagramServices {
                     theViewContext.getAdditionalLayoutConfigs();
 
             if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.INSTANCE.layout(thePart, theViewer, extendedOptions);
+                DiagramLayoutEngine.INSTANCE.layout(thePart, recorder, extendedOptions);
 
             } else {
                 final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
                 configs.addAll(additionalConfigs);
 
-                DiagramLayoutEngine.INSTANCE.layout(thePart, theViewer,
+                DiagramLayoutEngine.INSTANCE.layout(thePart, recorder,
                         Iterables.toArray(configs, ILayoutConfig.class));
             }
+
         } else {
-            if (diagramViewer instanceof ILayoutRecorder) {
-                ((ILayoutRecorder) diagramViewer).stopRecording(zoomStyle, null, 0);
-            }
+            recorder.stopRecording(zoomStyle, null, 0);
         }
     }
 

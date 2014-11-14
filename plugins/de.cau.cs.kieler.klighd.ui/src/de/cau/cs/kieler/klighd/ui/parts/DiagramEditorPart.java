@@ -35,13 +35,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -66,7 +63,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -134,6 +130,13 @@ public class DiagramEditorPart extends EditorPart implements
 
     /** the composite into which the sidebar is placed. */
     private Composite diagramComposite;
+
+    /**
+     * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
+     * defined.
+     */
+    private final ControlListener diagramAreaListener =
+            DiagramWorkbenchParts.createDiagramAreaChangeListener(this);
 
     /**
      * Creates a diagram editor part.<br>
@@ -671,60 +674,4 @@ public class DiagramEditorPart extends EditorPart implements
             }
         }
     }
-
-    /**
-     * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
-     * defined.
-     */
-    private final ControlListener diagramAreaListener = new ControlListener() {
-
-        /** The aspect ratio is rounded at two decimal places. */
-        private static final float ASPECT_RATIO_ROUND = 100;
-
-        private double oldAspectRatio = -1;
-
-        public void controlResized(final ControlEvent e) {
-            // assure that the composite's size is settled before we execute the layout
-            if (KlighdPreferences.isZoomOnWorkbenchpartChange()) {
-                Display.getCurrent().asyncExec(new Runnable() {
-                    public void run() {
-                        // if the part is not visible, no zoom is required
-                        if (!DiagramEditorPart.this.getViewer().getControl().isDisposed()
-                                && DiagramEditorPart.this.getViewer().getControl().isVisible()) {
-                            zoomOrRelayout();
-                        }
-                    }
-                });
-            }
-        }
-
-        public void controlMoved(final ControlEvent e) {
-        }
-
-        /**
-         * Some layouters (eg KlayLayered) might change the layout based on the aspect ratio of the
-         * canvas. Thus, when the aspect ratio passes 1 we re-layout the diagram instead of just
-         * triggering a re-zoom.
-         */
-        private void zoomOrRelayout() {
-            // it makes only sense to do something if we have a viewcontext, ie a viewmodel
-            if (getViewer().getViewContext() != null) {
-                // calculate the aspect ratio of the current canvas
-                final Point size = getViewer().getControl().getSize();
-                if (size.x > 0 && size.y > 0) {
-                    final Float aspectRatio =
-                            Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
-                    if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
-                            || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                        LightDiagramServices.layoutDiagram(DiagramEditorPart.this);
-                        oldAspectRatio = aspectRatio;
-                        return;
-                    }
-                }
-            }
-
-            LightDiagramServices.zoomDiagram(DiagramEditorPart.this);
-        }
-    };
-
 }

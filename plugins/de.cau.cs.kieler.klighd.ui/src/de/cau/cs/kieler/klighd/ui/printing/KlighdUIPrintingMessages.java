@@ -40,6 +40,8 @@ public final class KlighdUIPrintingMessages extends NLS {
 
     // CHECKSTYLEOFF Name|Visibility|Javadoc -- this is a generated file
 
+    public static String PrintAction_JobName;
+
     public static String KlighdPrintDialog_InitialDialog_title;
     public static String KlighdPrintDialog_Title;
     public static String KlighdPrintDialog_OK_label;

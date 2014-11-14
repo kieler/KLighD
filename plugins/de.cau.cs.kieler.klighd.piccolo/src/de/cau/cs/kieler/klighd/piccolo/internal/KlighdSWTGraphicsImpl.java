@@ -78,7 +78,7 @@ import edu.umd.cs.piccolox.swt.SWTShapeManager;
  */
 public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphicsEx {
 
-    // SUPPRESS CHECKSTYLE NEXT 30 Visibility
+    // SUPPRESS CHECKSTYLE NEXT 35 Visibility
 
     /** The {@link Device} to draw on. */
     protected Device device;
@@ -107,6 +107,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /** The state w.r.t. using the text style when drawing text. */
     protected boolean useTextStyle = false;
+
+    /** The max line width of text blocks, if exceeded text will be wrapped. */
+    protected int textLineWidth = -1;
 
     /**
      * Constructor for SWTGraphics2D.
@@ -334,6 +337,13 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     public void setFont(final FontData fontData) {
+        this.setFont(fontData, -1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFont(final FontData fontData, final int maxLineWidth) {
         org.eclipse.swt.graphics.Font font = FONT_CACHE.get(fontData);
         if (font == null) {
             font = new org.eclipse.swt.graphics.Font(device, fontData);
@@ -341,7 +351,8 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         }
         curFont = font;
 
-        useTextStyle = underlining || strikeout;
+        final boolean lineWidthLimited = maxLineWidth > 0;
+        useTextStyle = underlining || strikeout || lineWidthLimited;
 
         if (!useTextStyle) {
             curTextStyle = null;
@@ -352,7 +363,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             curTextStyle.font = curFont;
             curTextStyle.foreground = gc.getForeground();
 
-            // since PSWTText/PSWTStyledText cares itself on the background
+            // since KlighdStyledText cares itself on the background
             //  setting the curTextStyle.background is left here
 
             if (strikeout) {
@@ -371,6 +382,12 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
                 curTextStyle.underline = false;
                 curTextStyle.underlineStyle = SWT.UNDERLINE_SINGLE;
                 curTextStyle.underlineColor = getColor(KlighdConstants.BLACK);
+            }
+
+            if (lineWidthLimited) {
+                textLineWidth = maxLineWidth;
+            } else {
+                textLineWidth = -1;
             }
         }
     }
@@ -534,8 +551,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             gc.drawText(text, 0, 0, SWT.DRAW_DELIMITER | SWT.DRAW_TRANSPARENT);
             gc.setTransform(null);
         } else {
-            this.textLayout.setText(text);
-            this.textLayout.setStyle(curTextStyle, 0, text.length() - 1);
+            textLayout.setText(text);
+            textLayout.setStyle(curTextStyle, 0, text.length() - 1);
+            textLayout.setWidth(textLineWidth);
             gc.setTransform(swtTransform);
             gc.getGCData().state |= 1 << DRAW_OFFSET_BIT;
 

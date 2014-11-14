@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.kgraph.text;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.linking.impl.Linker;
@@ -86,7 +87,39 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
      */
     @Override
     public Class<? extends ILinker> bindILinker() {
-        return Linker.class;
+        return MyLinker.class;
+    }
+
+    /**
+     * FIXME
+     * Temporary fix for an issue where KEdge#target is set to null again
+     * _after_ it was successfully linked. 
+     */
+    private static class MyLinker extends Linker {
+    	
+    	protected boolean isClearAllReferencesRequired(Resource resource) {
+    		return false;
+    	}
+    	
+//    	protected void ensureModelLinked(EObject model, final IDiagnosticProducer producer) {
+//    		boolean clearAllReferencesRequired = isClearAllReferencesRequired(model.eResource());
+//    		TreeIterator<EObject> iterator = getAllLinkableContents(model);
+//    		
+//    		// first clear all (possibly invalid) references 
+//    		while(iterator.hasNext()) {
+//    			EObject next = iterator.next();
+//    			if (clearAllReferencesRequired) {
+//    				clearReferences(next);
+//    			}
+//    		}
+//    		
+//    		// re-link
+//    		iterator = getAllLinkableContents(model);
+//    		while(iterator.hasNext()) {
+//    			EObject next = iterator.next();
+//    			ensureLinked(next, producer);
+//    		}
+//    	}
     }
     
 }

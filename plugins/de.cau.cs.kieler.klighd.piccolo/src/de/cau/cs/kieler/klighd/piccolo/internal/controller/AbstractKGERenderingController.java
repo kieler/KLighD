@@ -746,7 +746,7 @@ public abstract class AbstractKGERenderingController
             styles.deriveStyles(rendering, propagatedStyles, isSelected((KText) rendering), false, null);
         } else {
             styles.deriveStyles(rendering, propagatedStyles, isSelected,
-                    !this.selectionStylesPresent, this.currentRendering);
+                    !this.selectionStylesPresent, KRenderingUtil.dereference(this.currentRendering));
         }
         return styles;
     }

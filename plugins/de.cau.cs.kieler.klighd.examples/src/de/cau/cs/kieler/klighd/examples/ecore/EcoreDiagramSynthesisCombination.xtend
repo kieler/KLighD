@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EModelElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.ui.part.FileEditorInput
+import java.lang.reflect.Method
+import org.eclipse.ui.IWorkbenchPart
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.
@@ -21,6 +23,18 @@ import org.eclipse.ui.part.FileEditorInput
  * @author chsch
  */
 class EcoreDiagramSynthesisCombination extends AbstractCombination {
+    
+    new() {
+        try {
+            navItemClass = Class.forName("org.eclipse.emf.ecoretools.diagram.navigator.EcoreDomainNavigatorItem");
+            eObjectGetter = navItemClass.getMethod("getEObject");
+        } catch (Throwable t) {
+            // nothing
+        }
+    }
+    
+    private Class<?> navItemClass = null;
+    private Method eObjectGetter = null;
 	
 	/**
 	 * The 'execute()' method, see doc of {@link AbstractCombination}.
@@ -43,55 +57,78 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 		}
 		
 		val selection = selectionState.selectionElements;
-		if (!selection.nullOrEmpty) {
+		if (selection.nullOrEmpty) {
+		    return;
+	    }
+	    
+        var IPath editorInputPath;
+        var String viewId;
+        var String viewName;
+        var EModelElementCollection modelElements;
+        var IWorkbenchPart sourceWorkbenchPart;
+        
+        if (es.getEditorPart() != null && typeof(FileEditorInput).isInstance(es.getEditorPart().getEditorInput())) {
+            //   e.g. by the Ecore tree editor
+            
+            val FileEditorInput fileEditorInput = typeof(FileEditorInput).cast(es.getEditorPart().getEditorInput());
+            if (fileEditorInput.getFile() != null && fileEditorInput.getFile().getLocationURI() != null) {
+                editorInputPath = fileEditorInput.getPath();
+            }
+        }
+
+        if (editorInputPath != null) {
+            viewId = editorInputPath.toPortableString().replace(":", "") as String;
+            viewName = editorInputPath.lastSegment;
+            modelElements = EModelElementCollection::of(
+                selectionState.selectionElements.filter(typeof(EModelElement)).toList
+            );
+        }
+
+        if (modelElements.nullOrEmpty) {
+            var List<EModelElement> elements;
+
             if (selection.forall[typeof(EPackage).isInstance(it) || typeof(EClass).isInstance(it)]) {
                 // in case the elements to be depicted are given immediately,
-                //   e.g. by the Ecore tree editor
+                elements = selection.filter(EModelElement).toList;
 
-                var editorInputPath = null as IPath;
-                if (typeof(FileEditorInput).isInstance(es.getEditorPart().getEditorInput())) {
-                    val fileEditorInput = typeof(FileEditorInput).cast(es.getEditorPart().getEditorInput());
-                    if (fileEditorInput.getFile() != null && fileEditorInput.getFile().getLocationURI() != null) {
-                        editorInputPath = fileEditorInput.getPath();
-                    }
-                }
-                if (editorInputPath != null) {
-                    val id = editorInputPath.toPortableString().replace(":", "") as String;
-                    this.schedule(new KlighdUpdateDiagramEffect(id, editorInputPath.lastSegment,
-                            EModelElementCollection::of(selectionState.selectionElements.filter(typeof(EModelElement)).toList),
-                            es.editorPart
-                        )
-                    );
-                }
-            } else {
+            } else if (navItemClass != null && eObjectGetter != null) {
                 // this case covers the situation of depicting classes selected in the Project Explorer
-                val itemClass = typeof(org.eclipse.emf.ecoretools.diagram.navigator.EcoreDomainNavigatorItem);               
-                if (selection.forall[itemClass.isInstance(it)]) {
-                    val elements = selectionState.selectionElements.filter(itemClass).map[
-                        it.EObject
+
+                if (selection.forall[navItemClass.isInstance(it)]) {
+                    elements = selectionState.selectionElements.filter(navItemClass).map[
+                        eObjectGetter.invoke(it);
                     ].filter(typeof(EModelElement)).toList;
-                    
-                    // By means of this construction we reduced the conversion of nodes the result from the
-                    //  insertion of further element between the head and tail of the selection list.
-                    // We retain all previous selected ones ...
-                    this.selectedModelElements.retainAll(elements);
-                    // ... determine the newly selected ones ...
-                    elements.removeAll(this.selectedModelElements);
-                    // ... and add them to the selected elements list
-                    this.selectedModelElements += elements;
-                    
-                    // in case Ecore elements are selected within the 'Project Explorer' view
-                    this.schedule(new KlighdUpdateDiagramEffect("de.cau.cs.kieler.klighd.examples.ecore.explorer",
-                            "KLighD Class Diagram", EModelElementCollection::of(selectedModelElements)
-        		        ) => [
-        		       	// FIXME reactivate incremental update
-                        // it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
-                        it.setProperty(KlighdSynthesisProperties::REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy::ID);
-                        it.setProperty(KlighdProperties::MODEL_ACCESS, new EcoreModelAccess(this.selectedModelElements));
-                    ]);
                 }
-            } 
-		}
+            }
+
+            viewId = "de.cau.cs.kieler.klighd.examples.ecore.explorer";
+            viewName = "KLighD Class Diagram";
+
+            if (elements != null) {
+                // By means of this construction we reduced the conversion of nodes the result from the
+                //  insertion of further element between the head and tail of the selection list.
+                // We retain all previous selected ones ...
+                this.selectedModelElements.retainAll(elements);
+
+                // ... determine the newly selected ones ...
+                elements.removeAll(this.selectedModelElements);
+
+                // ... and add them to the selected elements list
+                this.selectedModelElements += elements;
+
+                modelElements = EModelElementCollection::of(selectedModelElements);
+            }
+        }
+
+        if (viewId != null && !modelElements.nullOrEmpty) {
+            // in case Ecore elements are selected within the 'Project Explorer' view
+            this.schedule(new KlighdUpdateDiagramEffect(viewId, viewName, modelElements, sourceWorkbenchPart) => [
+		       	// FIXME reactivate incremental update
+                // it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
+                it.setProperty(KlighdSynthesisProperties::REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy::ID);
+                it.setProperty(KlighdProperties::MODEL_ACCESS, new EcoreModelAccess(this.selectedModelElements));
+            ]);
+        }
 	}
     
     private List<EModelElement> selectedModelElements = newLinkedList();

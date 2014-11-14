@@ -281,9 +281,8 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
         attachTextsParentInformation(styledText);
 
         // due to rounding issues in the font size handling the label widget does not completely
-        //  overlap the text figure so we set that one invisible here
-        // note that this also affects the outline view (if existing)!
-        styledText.setVisible(false);
+        //  overlap the text figure so we set that one occluded here
+        styledText.setOccludedOnMainDiagram(true);
         
         labelWidget.setVisible(true);
         labelWidget.setFocus();
