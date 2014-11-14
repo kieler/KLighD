@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList
 import com.google.inject.Inject
 import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.Trigger
+import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
@@ -29,7 +30,7 @@ class ProjectDependencySynthesis extends AbstractDiagramSynthesis<ProjectDepende
     @Inject extension KRenderingExtensions
     @Inject extension KContainerRenderingExtensions
     @Inject extension KPolylineExtensions
-    //@Inject extension KColorExtensions
+    @Inject extension KColorExtensions
     
     private static val SynthesisOption EXT_DEPS = SynthesisOption::createCheckOption("External Dependencies", false);
     
@@ -57,7 +58,11 @@ class ProjectDependencySynthesis extends AbstractDiagramSynthesis<ProjectDepende
                     projectNode.addRectangle => [ rect |
                         rect.addText(project.name).addPadding(5)
                         
-                        rect.addAction(Trigger.SINGLECLICK, "de.cau.cs.kieler.klighd.examples.dependencies.hightlightEdges")
+                        rect.addSingleClickAction("de.cau.cs.kieler.klighd.examples.dependencies.hightlightEdges")
+                        
+                        if (project.name.contains("de.cau.cs.kieler")) {
+                        	rect.background = "lightgray".color
+                        }
                     ]
                     
                     root.children += projectNode
@@ -91,6 +96,20 @@ class ProjectDependencySynthesis extends AbstractDiagramSynthesis<ProjectDepende
                             
                             extProject.addRectangle => [ rect |
                                 rect.addText(dep).addPadding(5)
+                                
+                                  rect.addSingleClickAction("de.cau.cs.kieler.klighd.examples.dependencies.hightlightEdges")
+                                  
+                                  if (dep.contains("de.cau.cs.kieler")) {
+			                        rect.background = "lightgray".color
+			                      } 
+			                      
+			                      if (dep.contains("gmf") || dep.contains("kivi")) {
+			                        rect.background = "red".color
+			                      }
+			                      
+			                      if (dep.contains("ui")) {
+			                        rect.background = "brown".color
+			                      }
                             ]
                             
                             root.children += extProject
