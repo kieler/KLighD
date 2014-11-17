@@ -124,7 +124,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                 
                 
                 override KNode transform(«projectInfo.sourceModelClassSimple» model) {
-                    val root = model.createNode().putToLookUpWith(model);
+                    val root = model.createNode().associateWith(model);
                     
                     // Your dsl element <-> diagram figure mapping goes here!!
                     
