@@ -42,8 +42,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PAffineTransform;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * An {@link AbstractKGERenderingController} for {@link KEdge KEdges} generating the rendering
@@ -300,8 +298,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
     }
 
     /**
-     * A specialized {@link PCamera} behaving exactly as {@link PCamera} except for touching the
-     * configured drawing clip configured on the employed graphics (/canvas).
+     * A specialized {@link PCamera} behaving exactly as {@link PCamera}. This named subclass just
+     * exists for simplifying debugging by introducing the "JunctionPointCamera" name.
      *
      * @author chsch
      */
@@ -309,21 +307,6 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         private static final long serialVersionUID = -1724430297849001050L;
 
-        @Override
-        protected void paint(final PPaintContext paintContext) {
-            super.paint(paintContext);
-
-            final PAffineTransform viewTransform = getViewTransformReference();
-
-            // paintContext.pushClip(getBoundsReference());
-            paintContext.pushTransform(viewTransform);
-
-            paintCameraView(paintContext);
-            paintDebugInfo(paintContext);
-
-            paintContext.popTransform(viewTransform);
-            // paintContext.popClip(getBoundsReference());
-        }
     }
 
 
