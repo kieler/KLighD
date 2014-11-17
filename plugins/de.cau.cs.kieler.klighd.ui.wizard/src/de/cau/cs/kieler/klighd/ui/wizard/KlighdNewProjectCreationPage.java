@@ -286,6 +286,10 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         if (Strings.isNullOrEmpty(sourceModel.getText())) {
             return false;
         }
+        if (!sourceModel.getText().contains(".")) {
+            setErrorMessage("Please enter fully qualified name for the source model");
+            return false;
+        }
         status =
                 JavaConventions.validateJavaTypeName(sourceModel.getText(), JavaCore.VERSION_1_5,
                         JavaCore.VERSION_1_5);
