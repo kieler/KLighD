@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1289,15 +1291,26 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         this.semanticData = nextSemanticData;
     }
 
+    //If no semantic data is set these groups are unnecessary clutter. This
+    // stack keeps track of them and prevents printing of those that are not needed.
+    private Stack<Boolean> groupsStack = new Stack<Boolean>();
     public void startGroup(KlighdSemanticDiagramData nextSemanticData) {
         this.semanticData = nextSemanticData;
-        os.write("<g ");
-        os.write(attributes());
-        os.write(" >\n");
+        if ((this.semanticData != null && this.semanticData.iterator().hasNext())) {
+            os.write("<g ");
+            os.write(attributes());
+            os.write(" >\n");
+            groupsStack.push(true);
+        } else {
+            groupsStack.push(false);
+        }
     }
 
     public void endGroup() {
-        os.write("</g>\n");
+        if (groupsStack.peek()) {
+            os.write("</g>\n");
+        }
+        groupsStack.pop();
     }
     
 
