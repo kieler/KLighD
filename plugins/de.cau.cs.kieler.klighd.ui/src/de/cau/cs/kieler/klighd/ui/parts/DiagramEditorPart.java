@@ -44,9 +44,11 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IURIEditorInput;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorActionBarContributor;
@@ -88,13 +90,38 @@ public class DiagramEditorPart extends EditorPart implements
     /**
      * ActionBarContributor providing the print action for DiagramEditorParts.
      */
-    public static class PrintActionContributor extends EditorActionBarContributor {
+    public static class PrintActionContributor extends EditorActionBarContributor implements
+            IPartListener {
 
         /** The print action. */
         private final PrintAction action = new PrintAction();
+        private IDiagramWorkbenchPart currentEditor;
 
         /**
-         * Sets the active editor for the contributor.
+         * {@inheritDoc}
+         */
+        @Override
+        public void init(final IActionBars bars) {
+            super.init(bars);
+
+            getPage().addPartListener(this);
+
+            bars.setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
+            bars.updateActionBars();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void dispose() {
+            this.getPage().removePartListener(this);
+
+            super.dispose();
+        }
+
+        /**
+         * Sets the active editor for the contributor.<br>
          * Updates the print action to reflect the the editor change.
          *
          * @param targetEditor
@@ -104,17 +131,51 @@ public class DiagramEditorPart extends EditorPart implements
         public void setActiveEditor(final IEditorPart targetEditor) {
             super.setActiveEditor(targetEditor);
 
-            final IActionBars bars = getActionBars();
-            if (bars == null) {
-                return;
-            }
-
-            action.setViewer(((DiagramEditorPart) targetEditor).getViewer());
-            bars.setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
-            bars.updateActionBars();
+            currentEditor = (IDiagramWorkbenchPart) targetEditor;
+            action.setViewer(currentEditor.getViewer());
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        public void partClosed(final IWorkbenchPart part) {
+            // the Eclipse runtime calls #setActiveEditor(<<newActiveEditor>>) before this method
+            //  notifying the closing of the previous active editor
+            // thus this code is only executed once the last instance of the editor part this
+            //  contributor is attached to is closed, and other editor part is as the active one
+            // however, this case is the most important one wrt. ensuring the proper garbage collection
+            //  of all incorporated diagram resources
+            if (part == currentEditor) {
+                currentEditor = null;
+                action.setViewer(null);
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partOpened(final IWorkbenchPart part) {
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partDeactivated(final IWorkbenchPart part) {
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partBroughtToTop(final IWorkbenchPart part) {
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partActivated(final IWorkbenchPart part) {
+        }
     }
+
 
     /** the resource set managed by this editor part. */
     private ResourceSet resourceSet;
