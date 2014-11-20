@@ -1,39 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <fragment>
-   <extension
-         point="de.cau.cs.kieler.klighd.piccolo.svgGenerators">
-      <svgGenerator
-            class="de.cau.cs.kieler.klighd.piccolo.freehep.FreeHEPSVGGraphics"
-            id="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEP">
-      </svgGenerator>
-   </extension>
-   <extension
-         point="de.cau.cs.kieler.klighd.extensions">
-      <exporter
-            class="de.cau.cs.kieler.klighd.piccolo.export.SVGExporter"
-            description="FreeHEP"
-            extension="svg"
-            id="de.cau.cs.kieler.klighd.piccolo.export.freeHEP.svg"
-            subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEP">
-      </exporter>
-   </extension>
    
       <extension
          point="de.cau.cs.kieler.klighd.piccolo.svgGenerators">
       <svgGenerator
             class="de.cau.cs.kieler.klighd.piccolo.freehep.SemanticFreeHEPSVGGraphics"
-            id="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic">
+            id="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPExtended">
       </svgGenerator>
    </extension>
    <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <exporter
             class="de.cau.cs.kieler.klighd.piccolo.export.SVGExporter"
-            description="FreeHEP (Semantic)"
+            description="FreeHEP (Extended)"
             extension="svg"
             id="de.cau.cs.kieler.klighd.piccolo.export.freeHEP.svgSemantic"
-            subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic">
+            subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPExtended">
       </exporter>
    </extension>
 
