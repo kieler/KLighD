@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -42,7 +42,7 @@ import de.cau.cs.kieler.kiml.ui.LayoutOptionLabelProvider;
 
 /**
  * Custom proposal provider contributing KIELER Layout configuration proposals.
- * 
+ *
  * @author sgu
  * @author chsch
  * @author msp
@@ -55,12 +55,12 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
      */
     @Inject
     private TerminalsProposalProvider delegate;
-    
+
     @Inject
     private KGraphGrammarAccess grammarAccess;
-    
+
     // CHECKSTYLEOFF MethodName
-    
+
     // ---------------------------------------------------------
     //  Terminal-specific annotation proposals
     // ---------------------------------------------------------
@@ -71,30 +71,30 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
         delegate.complete_ID(model, grammarAccess.getQualifiedIDAccess().getIDTerminalRuleCall_0(),
                 context, acceptor);
     }
-    
+
     @Override
     public void complete_Float(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 1f);
     }
-    
+
     @Override
     public void complete_BOOLEAN(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         acceptor.accept(createCompletionProposal("false", "false", getImage(ruleCall), context));
         acceptor.accept(createCompletionProposal("true", "true", getImage(ruleCall), context));
     }
-    
+
     // In the following methods providing a proposal for the particular special number values
     //  only '0' or '1' is mentioned, as #createIntProposal calls the terminal converter to
     //  get the required string representation.
-    
+
     @Override
     public void complete_RED(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
-    
+
     @Override
     public void complete_GREEN(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
@@ -106,49 +106,49 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
-    
+
     @Override
     public void complete_ALPHA(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
-    
+
     @Override
     public void complete_FSIZE(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
-    
+
     @Override
     public void complete_DEGREES(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
-    
+
     @Override
     public void complete_PERCENT(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createFloatProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 0);
     }
-    
+
     @Override
     public void complete_NATURAL(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         createIntProposal(context, acceptor, ruleCall, getAssignedFeature(ruleCall), 1);
     }
-    
+
     @Override
     public void complete_STRING(final EObject model, final RuleCall ruleCall,
             final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
         delegate.complete_STRING(model, ruleCall, context, acceptor);
-    }    
-    
+    }
+
     /**
      * This method has been copied from
      * {@link org.eclipse.xtext.common.ui.contentassist.TerminalsProposalProvider}.
      */
     private String getAssignedFeature(final RuleCall call) {
-        Assignment ass = GrammarUtil.containingAssignment(call);
+        final Assignment ass = GrammarUtil.containingAssignment(call);
         if (ass != null) {
             String result = ass.getFeature();
             if (result.equals(result.toLowerCase())) {
@@ -162,21 +162,22 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     /**
      * This method has shamelessly been copied from
      * {@link org.eclipse.xtext.common.ui.contentassist.TerminalsProposalProvider} (chsch).
-     * 
+     *
      * @author Xtext developers
      */
     private void createIntProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor, final RuleCall ruleCall,
             final String feature, final int i) {
-        String proposalText = getValueConverter().toString(i, ruleCall.getRule().getName());
+        final String proposalText = getValueConverter().toString(i, ruleCall.getRule().getName());
         String displayText = proposalText + " - " + ruleCall.getRule().getName();
         if (feature != null) {
             displayText = proposalText + " - " + feature;
         }
-        ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null,
+        final ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null,
                 context);
         if (proposal instanceof ConfigurableCompletionProposal) {
-            ConfigurableCompletionProposal configurable = (ConfigurableCompletionProposal) proposal;
+            final ConfigurableCompletionProposal configurable =
+                    (ConfigurableCompletionProposal) proposal;
             configurable.setSelectionStart(configurable.getReplacementOffset());
             configurable.setSelectionLength(proposalText.length());
             configurable.setAutoInsertable(false);
@@ -188,21 +189,22 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     /**
      * This method has been copied and adapted from
      * {@link org.eclipse.xtext.common.ui.contentassist.TerminalsProposalProvider}.
-     * 
+     *
      * @author Xtext developers
      */
     private void createFloatProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor, final RuleCall ruleCall,
             final String feature, final float i) {
-        String proposalText = getValueConverter().toString(i, ruleCall.getRule().getName());
+        final String proposalText = getValueConverter().toString(i, ruleCall.getRule().getName());
         String displayText = proposalText + " - " + ruleCall.getRule().getName();
         if (feature != null) {
             displayText = proposalText + " - " + feature;
         }
-        ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null,
+        final ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null,
                 context);
         if (proposal instanceof ConfigurableCompletionProposal) {
-            ConfigurableCompletionProposal configurable = (ConfigurableCompletionProposal) proposal;
+            final ConfigurableCompletionProposal configurable =
+                    (ConfigurableCompletionProposal) proposal;
             configurable.setSelectionStart(configurable.getReplacementOffset());
             configurable.setSelectionLength(proposalText.length());
             configurable.setAutoInsertable(false);
@@ -210,70 +212,70 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
         }
         acceptor.accept(proposal);
     }
-    
-    
+
+
     // ---------------------------------------------------------
     //  Layout option proposals provided by KIML
     // ---------------------------------------------------------
 
     @Inject
     private KGraphGrammarAccess grammmarAccess;
-    
+
     /**
      * Computes the property key proposals based on available layout options.
-     * 
+     *
      * @param context Xtext API
      * @param acceptor Xtext API
-     * 
+     *
      * @author sgu, chsch
      */
     private void keyProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor) {
-        LayoutMetaDataService layoutServices = LayoutMetaDataService.getInstance();
+        final LayoutMetaDataService layoutServices = LayoutMetaDataService.getInstance();
 
         // create and register the completion proposal for every element in the list
-        for (LayoutOptionData optionData : layoutServices.getOptionData()) {
-            StyledString displayString =
+        for (final LayoutOptionData optionData : layoutServices.getOptionData()) {
+            final StyledString displayString =
                     new StyledString(optionData.toString(),
                             (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
             displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
-            String proposal = getValueConverter().toString(optionData.getId(),
+            final String proposal = getValueConverter().toString(optionData.getId(),
                                 grammmarAccess.getQualifiedIDRule().getName());
 
-            LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
-            Image image = labelProvider.getImage(optionData.getDefault());
+            final LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
+            final Image image = labelProvider.getImage(optionData.getDefault());
 
             handleKeyProposal(context, acceptor, optionData.getId(), proposal, displayString, image);
         }
 
         // additional properties as specified for the kgraph text format
         // note that we do not support suffix only here
-        for (IProperty<?> p : KGraphResource.ADDITIONAL_PROPERTIES) {
-            String proposal =
+        for (final IProperty<?> p : KGraphResource.ADDITIONAL_PROPERTIES) {
+            final String proposal =
                     getValueConverter().toString(p.getId(),
                             grammmarAccess.getQualifiedIDRule().getName());
-            StyledString displayString = new StyledString(proposal);
-            Image image = KimlUiPlugin.getDefault().getImages().getPropText();
+            final StyledString displayString = new StyledString(proposal);
+            final Image image = KimlUiPlugin.getDefault().getImages().getPropText();
 
             handleKeyProposal(context, acceptor, p.getId(), proposal, displayString, image);
         }
 
     }
-    
+
     private void handleKeyProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor, final String id, final String proposal,
             final StyledString displayString, final Image image) {
-        
+
         if (isValidProposal(proposal, context.getPrefix(), context)) {
             // accept the proposal with unmodified prefix
             acceptor.accept(doCreateProposal(proposal, displayString, image, getPriorityHelper()
                     .getDefaultPriority(), context));
         } else {
-            int lastDotIndex = id.lastIndexOf('.');
+            final int lastDotIndex = id.lastIndexOf('.');
             if (lastDotIndex >= 0) {
                 // accept the proposal with enhanced prefix
-                StringBuilder prefix =
+                final StringBuilder prefix =
                         new StringBuilder(id.substring(0, lastDotIndex + 1));
                 prefix.append(context.getPrefix());
                 // add escape characters as required
@@ -300,10 +302,10 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
     /**
      * Computes the annotation value proposals based on a foregoing layout parameter.
-     * 
+     *
      * @param context Xtext API
      * @param acceptor Xtext API
-     * 
+     *
      * @author sgu, chsch
      */
     private void valueProposal(final ContentAssistContext context,
@@ -311,23 +313,23 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
         // check if the prefix is a KIELER annotation
         if (context.getCurrentModel() instanceof PersistentEntry) {
 
-            String annotationName = ((PersistentEntry) context.getCurrentModel()).getKey();
+            final String annotationName = ((PersistentEntry) context.getCurrentModel()).getKey();
             if (!Strings.isEmpty(annotationName)) {
 
                 // get the option list
-                LayoutMetaDataService layoutServices = LayoutMetaDataService.getInstance();
+                final LayoutMetaDataService layoutServices = LayoutMetaDataService.getInstance();
 
                 // find the specific option an display all possible values
                 LayoutOptionData optionData = layoutServices.getOptionData(annotationName);
-                
+
                 // if option data is null, try to add the kieler prefix
                 if (optionData == null) {
                     optionData = layoutServices.getOptionData("de.cau.cs.kieler." + annotationName);
                 }
-                
-                Type theType = (optionData != null) ? optionData.getType() : Type.UNDEFINED;
+
+                final Type theType = (optionData != null) ? optionData.getType() : Type.UNDEFINED;
                 String proposal = null;
-                
+
                 switch (theType) {
                 // show the available choices for boolean and enumeration/
                 case BOOLEAN:
@@ -341,11 +343,11 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
                 // for string, float, integer and object show the type of the value and give a
                 //  corresponding default value
-                 
+
                 case STRING:
                     if (annotationName.equals(LayoutOptions.ALGORITHM.getId())) {
                         String displayString = null;
-                        for (LayoutAlgorithmData data : layoutServices.getAlgorithmData()) {
+                        for (final LayoutAlgorithmData data : layoutServices.getAlgorithmData()) {
                             proposal = '"' + data.getId() + '"';
                             displayString = data.getName();
                             acceptor.accept(createCompletionProposal(proposal, displayString, null,
@@ -373,9 +375,9 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                             proposal = "\""
                                     + optionData.getOptionClass().newInstance().toString()
                                     + "\"";
-                        } catch (InstantiationException e) {
+                        } catch (final InstantiationException e) {
                             proposal = "\"\"";
-                        } catch (IllegalAccessException e) {
+                        } catch (final IllegalAccessException e) {
                             proposal = "\"\"";
                         }
                         break;
@@ -393,8 +395,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             }
         }
     }
-    
-    
+
+
     // CHECKSTYLEOFF MethodName
 
     /**
