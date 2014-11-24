@@ -249,6 +249,24 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isValidProposal(final String proposal, final String prefix,
+            final ContentAssistContext context) {
+
+        // this specialization is just for improving the content assist for layout option assignments
+        //  esp. the values of the ...algorithm layout option:
+        // the default implementation did not authorize any proposal if the line contains
+        //  'de.cau.cs.kieler.algorithm=KL',
+        // with the following extra treatment the KLay algorithms' proposals considered valid
+        if (context.getCurrentModel() instanceof PersistentEntry) {
+            return proposal.contains(prefix.toLowerCase());
+        }
+        return super.isValidProposal(proposal, prefix, context);
+    }
+
+    /**
      * Computes the property key proposals based on available layout options.
      *
      * @param context Xtext API
@@ -296,8 +314,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
         if (isValidProposal(proposal, context.getPrefix(), context)) {
             // accept the proposal with unmodified prefix
-            acceptor.accept(doCreateProposal(proposal, displayString, image, getPriorityHelper()
-                    .getDefaultPriority(), context));
+            acceptor.accept(doCreateProposal(proposal, displayString, image,
+                    getPriorityHelper().getDefaultPriority(), context));
         } else {
             final int lastDotIndex = id.lastIndexOf('.');
             if (lastDotIndex >= 0) {
@@ -422,5 +440,4 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             }
         }
     }
-
 }
