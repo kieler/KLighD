@@ -218,8 +218,35 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
     //  Layout option proposals provided by KIML
     // ---------------------------------------------------------
 
-    @Inject
-    private KGraphGrammarAccess grammmarAccess;
+    // CHECKSTYLEOFF MethodName
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void completeProperty_Key(final EObject model, final Assignment assignment,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+
+        /* call implementation of superclass */
+        super.completeProperty_Key(model, assignment, context, acceptor);
+
+        /* call modified completion */
+        keyProposal(context, acceptor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void completeProperty_Value(final EObject model, final Assignment assignment,
+            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+
+        /* call implementation of superclass */
+        super.completeProperty_Value(model, assignment, context, acceptor);
+
+        /* call modified completion */
+        valueProposal(context, acceptor);
+    }
 
     /**
      * Computes the property key proposals based on available layout options.
@@ -241,7 +268,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
             final String proposal = getValueConverter().toString(optionData.getId(),
-                                grammmarAccess.getQualifiedIDRule().getName());
+                                grammarAccess.getQualifiedIDRule().getName());
 
             final LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
             final Image image = labelProvider.getImage(optionData.getDefault());
@@ -254,7 +281,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
         for (final IProperty<?> p : KGraphResource.ADDITIONAL_PROPERTIES) {
             final String proposal =
                     getValueConverter().toString(p.getId(),
-                            grammmarAccess.getQualifiedIDRule().getName());
+                            grammarAccess.getQualifiedIDRule().getName());
             final StyledString displayString = new StyledString(proposal);
             final Image image = KimlUiPlugin.getDefault().getImages().getPropText();
 
@@ -394,37 +421,6 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 }
             }
         }
-    }
-
-
-    // CHECKSTYLEOFF MethodName
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void completeProperty_Key(final EObject model, final Assignment assignment,
-            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-
-        /* call implementation of superclass */
-        super.completeProperty_Key(model, assignment, context, acceptor);
-
-        /* call modified completion */
-        keyProposal(context, acceptor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void completeProperty_Value(final EObject model, final Assignment assignment,
-            final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-
-        /* call implementation of superclass */
-        super.completeProperty_Value(model, assignment, context, acceptor);
-
-        /* call modified completion */
-        valueProposal(context, acceptor);
     }
 
 }
