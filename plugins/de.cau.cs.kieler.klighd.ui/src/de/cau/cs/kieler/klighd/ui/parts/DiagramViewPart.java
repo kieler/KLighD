@@ -30,6 +30,7 @@ import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
@@ -236,7 +237,10 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         }
         this.sideBar = null;
 
-        this.getSite().setSelectionProvider(null);
+        final IViewSite viewSite = this.getViewSite();
+        viewSite.setSelectionProvider(null);
+        viewSite.getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(), null);
+
         this.viewer = null;
 
         this.disposed = true;
