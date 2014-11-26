@@ -107,9 +107,10 @@ public class BitmapExporter extends KlighdCanvasExporter {
             tileHeight = (int) Math.ceil(height / rows + tileTrimScaled.getHeight());
         }
 
+        final int pages = columns * rows;
         final Dimension tileBounds = new Dimension(tileWidth, tileHeight);
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(data.viewContext, bounds, tileBounds, data.scale)
+                new DiagramExportConfig(data.viewContext, bounds, tileBounds, data.scale, pages)
                 .setBrandingsAndTrim(brandings, trim, tileTrimScaled)
                 .setExportViewport(data.isCameraViewport);
 
