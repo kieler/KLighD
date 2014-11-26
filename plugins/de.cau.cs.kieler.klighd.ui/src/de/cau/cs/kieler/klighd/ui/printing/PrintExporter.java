@@ -90,11 +90,14 @@ public final class PrintExporter extends AbstractDiagramExporter {
      * Provides the cumulated diagram {@link Trim} required by the employed {@link IExportBranding
      * IExportBrandings}.
      *
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return the required (overall) diagram {@link Trim}
      */
-    public Trim getDiagramTrim() {
+    public Trim getDiagramTrim(final Point dotsPerInch) {
         if (diagramTrim == null) {
-            diagramTrim = getMaximumDiagramTrim(exportBrandings, getExportedBounds());
+            diagramTrim = getMaximumDiagramTrim(exportBrandings, getExportedBounds(), dotsPerInch);
         }
         return diagramTrim;
     }
@@ -105,12 +108,15 @@ public final class PrintExporter extends AbstractDiagramExporter {
      *
      * @param tileBounds
      *            the non-scaled bounds of each tile
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return the required diagram tile {@link Trim}
      */
-    public Trim getDiagramTileTrim(final Dimension tileBounds) {
+    public Trim getDiagramTileTrim(final Dimension tileBounds, final Point dotsPerInch) {
         if (diagramTileTrim == null) {
-            diagramTileTrim =
-                    getMaximumDiagramTileTrim(exportBrandings, new Rectangle(tileBounds), true);
+            diagramTileTrim = getMaximumDiagramTileTrim(
+                    exportBrandings, new Rectangle(tileBounds), dotsPerInch, true);
         }
         return diagramTileTrim;
     }
@@ -132,10 +138,16 @@ public final class PrintExporter extends AbstractDiagramExporter {
      *
      * @param tileBounds
      *            the non-scaled bounds of each tile
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return a {@link Dimension2D} describing the reduced tile size.
      */
-    public Dimension2D getTrimmedTileBounds(final Dimension tileBounds) {
-        final Trim tileTrim = getDiagramTileTrim(tileBounds);
+    public Dimension2D getTrimmedTileBounds(final Dimension tileBounds,
+            final org.eclipse.swt.graphics.Point dotsPerInch) {
+        final Trim tileTrim = getDiagramTileTrim(tileBounds,
+                dotsPerInch == null ? null : new Point(dotsPerInch.x, dotsPerInch.y));
+
         return new PDimension(
                 tileBounds.width - tileTrim.getWidth(), tileBounds.height - tileTrim.getHeight());
     }
@@ -144,11 +156,15 @@ public final class PrintExporter extends AbstractDiagramExporter {
     /**
      * Provides the printed diagram's size supplemented with the diagram trim.
      *
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return the diagram's size supplemented with the diagram trim
      */
-    public PDimension getDiagramBoundsIncludingTrim() {
+    public PDimension getDiagramBoundsIncludingTrim(final org.eclipse.swt.graphics.Point dotsPerInch) {
         final PBounds exportedBounds = getExportedBounds();
-        final Trim trim = getDiagramTrim();
+        final Trim trim = getDiagramTrim(
+                dotsPerInch == null ? null : new Point(dotsPerInch.x, dotsPerInch.y));
 
         if (trim != null) {
             exportedBounds.width += trim.getWidth();
@@ -187,10 +203,11 @@ public final class PrintExporter extends AbstractDiagramExporter {
      */
     public DiagramExportConfig createExportConfig(final Dimension pageBounds, final double diagramScale,
             final org.eclipse.swt.graphics.Point dotsPerInch, final int pages) {
+        final Point dpi = dotsPerInch == null ? null : new Point(dotsPerInch.x, dotsPerInch.y);
 
         return new DiagramExportConfig(viewer.getViewContext(), getExportedBounds(), pageBounds,
-                diagramScale, new Point(dotsPerInch.x, dotsPerInch.y), pages).setBrandingsAndTrim(
-                        exportBrandings, getDiagramTrim(), getDiagramTileTrim(pageBounds));
+                diagramScale, dpi, pages).setBrandingsAndTrim(
+                        exportBrandings, getDiagramTrim(dpi), getDiagramTileTrim(pageBounds, dpi));
     }
 
     /**

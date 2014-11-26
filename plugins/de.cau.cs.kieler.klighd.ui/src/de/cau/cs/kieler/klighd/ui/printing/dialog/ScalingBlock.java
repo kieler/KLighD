@@ -118,10 +118,13 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate the minimum of necessary horizontal and vertical s1cale factors to fit the
                 // whole diagram on the selected amount of pages.
 
-                final Dimension2D diagramBounds = options.getExporter().getDiagramBoundsIncludingTrim();
+                final org.eclipse.swt.graphics.Point dpi =
+                        options.getPrinter() == null ? null : options.getPrinter().getDPI();
+                final Dimension2D diagramBounds =
+                        options.getExporter().getDiagramBoundsIncludingTrim(dpi);
 
-                final Dimension2D trimmedPrinterBounds =
-                        options.getExporter().getTrimmedTileBounds(options.getPrinterBounds());
+                final Dimension2D trimmedPrinterBounds = options.getExporter().getTrimmedTileBounds(
+                        options.getPrinterBounds(), dpi);
 
                 final double scaleX = trimmedPrinterBounds.getWidth() * options.getPagesWide()
                         / diagramBounds.getWidth();
@@ -143,10 +146,13 @@ final class ScalingBlock implements IDialogBlock {
                 // Calculate for both horizontal and vertical directions how many pages are necessary
                 // to fit the diagram in.
 
-                final Dimension2D trimmedPrinterBounds =
-                        options.getExporter().getTrimmedTileBounds(options.getPrinterBounds());
+                final org.eclipse.swt.graphics.Point dpi =
+                        options.getPrinter() == null ? null : options.getPrinter().getDPI();
+                final Dimension2D trimmedPrinterBounds = options.getExporter().getTrimmedTileBounds(
+                        options.getPrinterBounds(), dpi);
 
-                final Dimension2D diagramBounds = options.getExporter().getDiagramBoundsIncludingTrim();
+                final Dimension2D diagramBounds =
+                        options.getExporter().getDiagramBoundsIncludingTrim(dpi);
 
                 options.setPagesWide((int) Math.ceil(diagramBounds.getWidth() * options.getScaleFactor()
                         / trimmedPrinterBounds.getWidth()));

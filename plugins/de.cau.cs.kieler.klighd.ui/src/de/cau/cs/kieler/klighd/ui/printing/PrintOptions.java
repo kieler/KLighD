@@ -32,6 +32,7 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
@@ -771,7 +772,9 @@ public final class PrintOptions {
             return new Point2D.Double();
         }
 
-        final Dimension2D pBounds = getExporter().getTrimmedTileBounds(getPrinterBounds());
+        final Point dpi = getPrinter() == null ? null : getPrinter().getDPI();
+        final Dimension2D pBounds =
+                getExporter().getTrimmedTileBounds(getPrinterBounds(), dpi);
 
         if (pBounds != null) {
             if (diagramBounds == null) {
@@ -779,7 +782,7 @@ public final class PrintOptions {
                     // in this case we cannot compute the centering offset, should not happen
                     return null;
                 }
-                diagramBounds = exporter.getDiagramBoundsIncludingTrim();
+                diagramBounds = exporter.getDiagramBoundsIncludingTrim(dpi);
             }
 
             return new Point2D.Double(

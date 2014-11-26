@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -104,11 +105,14 @@ public abstract class AbstractDiagramExporter {
      *            the {@link IExportBranding IExportBrandings} to be applied
      * @param bounds
      *            A
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return the desired cumulated {@link Trim}
      */
     protected final Trim getMaximumDiagramTrim(final Iterable<IExportBranding> exportBrandings,
-            final Rectangle2D bounds) {
-        return getCumulatedTrim(false, false, exportBrandings, bounds);
+            final Rectangle2D bounds, final Point dotsPerInch) {
+        return getCumulatedTrim(false, false, exportBrandings, bounds, dotsPerInch);
     }
 
     /**
@@ -120,26 +124,30 @@ public abstract class AbstractDiagramExporter {
      *            the {@link IExportBranding IExportBrandings} to be applied
      * @param bounds
      *            A
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @param fixSizedTiles
      *            if {@code true} the returned {@link Trim} will reduce the area being available
      *            for drawing, otherwise the tile is increased by the provided {@link Trim}
      * @return the desired cumulated {@link Trim}
      */
     protected final Trim getMaximumDiagramTileTrim(final Iterable<IExportBranding> exportBrandings,
-            final Rectangle2D bounds, final boolean fixSizedTiles) {
-        return getCumulatedTrim(true, fixSizedTiles, exportBrandings, bounds);
+            final Rectangle2D bounds, final Point dotsPerInch, final boolean fixSizedTiles) {
+        return getCumulatedTrim(true, fixSizedTiles, exportBrandings, bounds, dotsPerInch);
     }
 
     private Trim getCumulatedTrim(final boolean tileTrim, final boolean fixSizedTiles,
-            final Iterable<IExportBranding> exportBrandings, final Rectangle2D bounds) {
+            final Iterable<IExportBranding> exportBrandings, final Rectangle2D bounds,
+            final Point dotsPerInch) {
 
         final Trim res =
                 Iterables2.fold(exportBrandings, new Function<Pair<Trim, IExportBranding>, Trim>() {
 
             public Trim apply(final Pair<Trim, IExportBranding> input) {
                 final Trim exportersTrim = tileTrim
-                        ? input.getSecond().getDiagramTileTrimm(bounds, fixSizedTiles)
-                                : input.getSecond().getDiagramTrim(bounds);
+                        ? input.getSecond().getDiagramTileTrimm(bounds, dotsPerInch, fixSizedTiles)
+                                : input.getSecond().getDiagramTrim(bounds, dotsPerInch);
 
                 final Trim result = input.getFirst();
 

@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -118,27 +119,37 @@ public interface IExportBranding {
      *
      * @param bounds
      *            the size of overall (scaled) diagram
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not
+     *            valid
      *
      * @return the required {@link Trim}
      */
-    Trim getDiagramTrim(final Rectangle2D bounds);
+    Trim getDiagramTrim(final Rectangle2D bounds, final Point dotsPerInch);
 
     /**
-     * Provides {@link Trim} denoting (additional) space required on each side of each diagram
-     * tile. In case of (tiled) printouts or image exports on fixed size tiles the drawable area of
-     * each tile is reduced by the amount of the returned trim data.<br>
+     * Provides {@link Trim} denoting (additional) space required on each side of each diagram tile.
+     * In case of (tiled) printouts or image exports on fixed size tiles the drawable area of each
+     * tile is reduced by the amount of the returned trim data.<br>
      * Note: In case multiple {@link IExportBranding}s are employed the side-wise maximum of the
      * provided {@link Trim} is applied.
      *
      * @param bounds
-     *            the absolute size of
+     *            depending on {@code fixSizedTiles} the absolute size of either the diagram tile
+     *            itself, or the diagram excerpt drawn on the tile respectively
+     * @param dotsPerInch
+     *            the image resolution applied by the employed drawing
+     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not
+     *            valid
      * @param fixSizedTiles
-     *            if {@code true} the returned {@link Trim} will reduce the area being available
-     *            for drawing, otherwise the tile is increased by the provided {@link Trim}
+     *            if {@code true} the returned {@link Trim} will reduce the area being available for
+     *            drawing, otherwise the tile is increased by the provided {@link Trim}
      *
      * @return the required {@link Trim}
      */
-    Trim getDiagramTileTrimm(final Rectangle2D bounds, final boolean fixSizedTiles);
+    Trim getDiagramTileTrimm(final Rectangle2D bounds, final Point dotsPerInch,
+            final boolean fixSizedTiles);
 
     /**
      * This function allows to contribute diagram-wide background drawings, like water marks for

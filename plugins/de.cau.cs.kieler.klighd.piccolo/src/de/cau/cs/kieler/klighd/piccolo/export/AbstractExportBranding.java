@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
@@ -58,12 +59,45 @@ public abstract class AbstractExportBranding implements IExportBranding {
     /**
      * {@inheritDoc}
      */
+    public Trim getDiagramTrim(final Rectangle2D bounds, final Point dotsPerInch) {
+        return getDiagramTrim(bounds);
+    }
+
+    /**
+     * Simplified method hook to be overridden by configuring the diagram trim.
+     *
+     * @see #getDiagramTrimm(Rectangle2D, Point, boolean)
+     *
+     * @param bounds
+     *            the size of overall (scaled) diagram
+     *
+     * @return the required {@link Trim}
+     */
     public Trim getDiagramTrim(final Rectangle2D bounds) {
         return null;
     }
 
     /**
      * {@inheritDoc}
+     */
+    public Trim getDiagramTileTrimm(final Rectangle2D bounds, final Point dotsPerInch,
+            final boolean fixSizedTiles) {
+        return getDiagramTileTrimm(bounds, fixSizedTiles);
+    }
+
+    /**
+     * Simplified method hook to be overridden by configuring the diagram tile trim.
+     *
+     * @see #getDiagramTileTrimm(Rectangle2D, Point, boolean)
+     *
+     * @param bounds
+     *            depending on {@code fixSizedTiles} the absolute size of either the diagram tile
+     *            itself, or the diagram excerpt drawn on the tile respectively
+     * @param fixSizedTiles
+     *            if {@code true} the returned {@link Trim} will reduce the area being available
+     *            for drawing, otherwise the tile is increased by the provided {@link Trim}
+     *
+     * @return the required {@link Trim}
      */
     public Trim getDiagramTileTrimm(final Rectangle2D bounds, final boolean fixSizedTiles) {
         return null;
