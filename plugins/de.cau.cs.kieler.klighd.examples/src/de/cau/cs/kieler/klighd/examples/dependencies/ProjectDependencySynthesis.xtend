@@ -3,7 +3,6 @@ package de.cau.cs.kieler.klighd.examples.dependencies
 import com.google.common.collect.ImmutableList
 import com.google.inject.Inject
 import de.cau.cs.kieler.core.krendering.KRendering
-import de.cau.cs.kieler.core.krendering.Trigger
 import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
@@ -12,9 +11,9 @@ import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
 import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.kiml.options.EdgeRouting
 import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.klay.layered.properties.Properties
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
+import de.cau.cs.kieler.klay.layered.properties.Properties
 
 /**
  * Very basic synthesis that presents a dependency graph for the passed project information.
@@ -42,7 +41,7 @@ class ProjectDependencySynthesis extends AbstractDiagramSynthesis<ProjectDepende
         return ImmutableList.of(
             specifyLayoutOption(LayoutOptions.ALGORITHM, null),
             specifyLayoutOption(LayoutOptions.EDGE_ROUTING, EdgeRouting.values().drop(1).sortBy[ it.name ]),
-            specifyLayoutOption(Properties.MERGE_PORTS, null)
+            specifyLayoutOption(Properties.MERGE_EDGES, null)
         );
     }
     
