@@ -30,6 +30,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.DialogTray;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -172,18 +173,19 @@ public class PrintPreviewTray extends DialogTray {
         composite.pack();
 
         composite.setLayout(new GridLayout(options.getPagesWide(), true));
+        final Point bodySize = body.getSize();
 
-        // ( body height - top border - bottom border -
-        // ((# of rows - 1) x border between images) ) / # of rows
+        // (body height - top border - bottom border - (# of rows - 1) x border between images)
+        //   / # of rows
         int imageHeight =
-                (body.getSize().y - BORDER_SIZE - BORDER_SIZE - ((options.getPagesTall() - 1)
-                        * BORDER_SIZE)) / options.getPagesTall();
+                (bodySize.y - (2 + options.getPagesTall() - 1) * BORDER_SIZE)
+                        / options.getPagesTall();
 
-        // ( body width - left border - right border -
-        // ((# of columns - 1) x border between images) ) / # of columns
+        // ( body width - left border - right border - (# of columns - 1) x border between images)
+        //   / # of columns
         int imageWidth =
-                (body.getSize().x - BORDER_SIZE - BORDER_SIZE - ((options.getPagesWide() - 1)
-                        * BORDER_SIZE)) / options.getPagesWide();
+                (bodySize.x - (2 + options.getPagesWide() - 1) * BORDER_SIZE)
+                        / options.getPagesWide();
 
         // now adjust to the limiting one based on aspect ratio
 
