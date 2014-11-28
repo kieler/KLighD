@@ -59,20 +59,6 @@ public abstract class AbstractExportBranding implements IExportBranding {
     /**
      * {@inheritDoc}
      */
-    public Trim getDiagramTrim(final Rectangle2D bounds, final Point dotsPerInch) {
-        return getDiagramTrim(bounds);
-    }
-
-    /**
-     * Simplified method hook to be overridden by configuring the diagram trim.
-     *
-     * @see #getDiagramTrimm(Rectangle2D, Point, boolean)
-     *
-     * @param bounds
-     *            the size of overall (scaled) diagram
-     *
-     * @return the required {@link Trim}
-     */
     public Trim getDiagramTrim(final Rectangle2D bounds) {
         return null;
     }
@@ -80,8 +66,8 @@ public abstract class AbstractExportBranding implements IExportBranding {
     /**
      * {@inheritDoc}
      */
-    public Trim getDiagramTileTrimm(final Rectangle2D bounds, final Point dotsPerInch,
-            final boolean fixSizedTiles) {
+    public Trim getDiagramTileTrimm(final Rectangle2D bounds, final Trim deviceTrim,
+            final Point dotsPerInch, final boolean fixSizedTiles) {
         return getDiagramTileTrimm(bounds, fixSizedTiles);
     }
 

@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
+import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
@@ -115,16 +116,12 @@ final class ScalingBlock implements IDialogBlock {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                // Calculate the minimum of necessary horizontal and vertical s1cale factors to fit the
-                // whole diagram on the selected amount of pages.
+                // Calculate the minimum of necessary horizontal and vertical scale factors
+                //  required to fit the whole diagram on the selected amount of pages.
 
-                final org.eclipse.swt.graphics.Point dpi =
-                        options.getPrinter() == null ? null : options.getPrinter().getDPI();
-                final Dimension2D diagramBounds =
-                        options.getExporter().getDiagramBoundsIncludingTrim(dpi);
-
-                final Dimension2D trimmedPrinterBounds = options.getExporter().getTrimmedTileBounds(
-                        options.getPrinterBounds(), dpi);
+                final PrintExporter exporter = options.getExporter();
+                final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
+                final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
 
                 final double scaleX = trimmedPrinterBounds.getWidth() * options.getPagesWide()
                         / diagramBounds.getWidth();
@@ -143,16 +140,12 @@ final class ScalingBlock implements IDialogBlock {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                // Calculate for both horizontal and vertical directions how many pages are necessary
-                // to fit the diagram in.
+                // Calculate for both horizontal and vertical directions
+                //  how many pages are necessary to fit the diagram in.
 
-                final org.eclipse.swt.graphics.Point dpi =
-                        options.getPrinter() == null ? null : options.getPrinter().getDPI();
-                final Dimension2D trimmedPrinterBounds = options.getExporter().getTrimmedTileBounds(
-                        options.getPrinterBounds(), dpi);
-
-                final Dimension2D diagramBounds =
-                        options.getExporter().getDiagramBoundsIncludingTrim(dpi);
+                final PrintExporter exporter = options.getExporter();
+                final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
+                final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
 
                 options.setPagesWide((int) Math.ceil(diagramBounds.getWidth() * options.getScaleFactor()
                         / trimmedPrinterBounds.getWidth()));

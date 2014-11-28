@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.export;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
@@ -79,7 +80,8 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
      * {@inheritDoc}
      */
     @Override
-    public Trim getDiagramTileTrimm(final Rectangle2D bounds, final boolean fixSizedTiles) {
+    public Trim getDiagramTileTrimm(final Rectangle2D bounds, final Trim deviceTrim,
+            final Point dotsPerInch, final boolean fixSizedTiles) {
         if (bounds.getWidth() > 1000 && bounds.getHeight() > 1000) {
             return new Trim(500, 500, 200, 200);
         } else {

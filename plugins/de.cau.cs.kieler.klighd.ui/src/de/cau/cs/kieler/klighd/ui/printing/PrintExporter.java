@@ -86,21 +86,20 @@ public final class PrintExporter extends AbstractDiagramExporter {
         return new PBounds(diagramBounds);
     }
 
+
     /**
      * Provides the cumulated diagram {@link Trim} required by the employed {@link IExportBranding
      * IExportBrandings}.
      *
-     * @param dotsPerInch
-     *            the image resolution applied by the employed drawing
-     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return the required (overall) diagram {@link Trim}
      */
-    public Trim getDiagramTrim(final Point dotsPerInch) {
+    public Trim getDiagramTrim() {
         if (diagramTrim == null) {
-            diagramTrim = getMaximumDiagramTrim(exportBrandings, getExportedBounds(), dotsPerInch);
+            diagramTrim = getMaximumDiagramTrim(exportBrandings, getExportedBounds());
         }
         return diagramTrim;
     }
+
 
     /**
      * Provides the cumulated diagram tile {@link Trim} required by the employed
@@ -108,18 +107,22 @@ public final class PrintExporter extends AbstractDiagramExporter {
      *
      * @param tileBounds
      *            the non-scaled bounds of each tile
+     * @param printerTrim
+     *            the printers technically required trim, i.e., the reduction of its printable area
      * @param dotsPerInch
      *            the image resolution applied by the employed drawing
      *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return the required diagram tile {@link Trim}
      */
-    public Trim getDiagramTileTrim(final Dimension tileBounds, final Point dotsPerInch) {
+    public Trim getDiagramTileTrim(final Dimension tileBounds, final Trim printerTrim,
+            final Point dotsPerInch) {
         if (diagramTileTrim == null) {
             diagramTileTrim = getMaximumDiagramTileTrim(
-                    exportBrandings, new Rectangle(tileBounds), dotsPerInch, true);
+                    exportBrandings, new Rectangle(tileBounds), printerTrim, dotsPerInch, true);
         }
         return diagramTileTrim;
     }
+
 
     /**
      * Resets the cached trim information.<br>
@@ -134,19 +137,20 @@ public final class PrintExporter extends AbstractDiagramExporter {
 
     /**
      * Provides the size of the area being available for a diagram excerpt, which is
-     * {@code tileBounds} subtracted by the size of the required tile trim.
+     * the {@code options.getPrinterBounds()} subtracted by the size of the required tile trim.
      *
-     * @param tileBounds
-     *            the non-scaled bounds of each tile
-     * @param dotsPerInch
-     *            the image resolution applied by the employed drawing
-     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
+     * @param options
+     *            the current {@link PrintOptions} configuration
      * @return a {@link Dimension2D} describing the reduced tile size.
      */
-    public Dimension2D getTrimmedTileBounds(final Dimension tileBounds,
-            final org.eclipse.swt.graphics.Point dotsPerInch) {
-        final Trim tileTrim = getDiagramTileTrim(tileBounds,
-                dotsPerInch == null ? null : new Point(dotsPerInch.x, dotsPerInch.y));
+    public Dimension2D getTrimmedTileBounds(final PrintOptions options) {
+        if (options == null || options.getPrinter() == null) {
+            return new PDimension();
+        }
+
+        final Dimension tileBounds = options.getPrinterBounds();
+        final Trim tileTrim = getDiagramTileTrim(
+                tileBounds, options.getPrinterTrim(), options.getPrinterDPI());
 
         return new PDimension(
                 tileBounds.width - tileTrim.getWidth(), tileBounds.height - tileTrim.getHeight());
@@ -156,15 +160,11 @@ public final class PrintExporter extends AbstractDiagramExporter {
     /**
      * Provides the printed diagram's size supplemented with the diagram trim.
      *
-     * @param dotsPerInch
-     *            the image resolution applied by the employed drawing
-     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
      * @return the diagram's size supplemented with the diagram trim
      */
-    public PDimension getDiagramBoundsIncludingTrim(final org.eclipse.swt.graphics.Point dotsPerInch) {
+    public PDimension getDiagramBoundsIncludingTrim() {
         final PBounds exportedBounds = getExportedBounds();
-        final Trim trim = getDiagramTrim(
-                dotsPerInch == null ? null : new Point(dotsPerInch.x, dotsPerInch.y));
+        final Trim trim = getDiagramTrim();
 
         if (trim != null) {
             exportedBounds.width += trim.getWidth();
@@ -191,24 +191,25 @@ public final class PrintExporter extends AbstractDiagramExporter {
      * Convenience helper method creating the {@link DiagramExportConfig DiagramExportConfigs} that
      * are required for printing diagrams.
      *
-     * @param pageBounds
-     *            the (width, height) of the printable area of a page in pixels
-     * @param diagramScale
-     *            the zoom scale to be applied to the diagram while printing
-     * @param dotsPerInch
-     *            the printer's resolution
-     * @param pages
-     *            the number of pages the diagram is to be printed, at least 1.
+     * @param options
+     *            the current {@link PrintOptions} configuration
+     *
      * @return the required {@link DiagramExportConfig}
      */
-    public DiagramExportConfig createExportConfig(final Dimension pageBounds, final double diagramScale,
-            final org.eclipse.swt.graphics.Point dotsPerInch, final int pages) {
-        final Point dpi = dotsPerInch == null ? null : new Point(dotsPerInch.x, dotsPerInch.y);
+    public DiagramExportConfig createExportConfig(final PrintOptions options) {
+        if (options == null || options.getPrinter() == null) {
+            return null;
+        }
+
+        final Dimension pageBounds = options.getPrinterBounds();
+        final Point dpi = options.getPrinterDPI();
+        final int pages = options.getPagesTall() * options.getPagesWide();
 
         return new DiagramExportConfig(viewer.getViewContext(), getExportedBounds(), pageBounds,
-                diagramScale, dpi, pages).setBrandingsAndTrim(
-                        exportBrandings, getDiagramTrim(dpi), getDiagramTileTrim(pageBounds, dpi));
+            options.getScaleFactor(), dpi, pages).setBrandingsAndTrim(exportBrandings,
+                getDiagramTrim(), getDiagramTileTrim(pageBounds, options.getPrinterTrim(), dpi));
     }
+
 
     /**
      * @see AbstractDiagramExporter#getBasicTileClip(Dimension, Trim)
@@ -308,27 +309,5 @@ public final class PrintExporter extends AbstractDiagramExporter {
 
         graphics.dispose();
         gc.dispose();
-    }
-
-
-    /**
-     * Provides the printer bounds.<br>
-     * {@link Rectangle#width} and {@link Rectangle#height} are width and height of the printable
-     * area.
-     *
-     * @param printer
-     *            the printer
-     * @return the printer bounds
-     */
-    // method is set 'package protected' (no modifier) as it is used here and in PrintOptions
-    Dimension getPrinterBounds(final Printer printer) {
-        final org.eclipse.swt.graphics.Rectangle pageArea = printer.getClientArea();
-        return new Dimension(pageArea.width, pageArea.height);
-
-        // this information is currently not required, but I kept this here as it is not obvious:
-        // final org.eclipse.swt.graphics.Rectangle trim = printer.computeTrim(0, 0, 0, 0);
-        // return new Rectangle(-trim.x, -trim.y, pageArea.width, pageArea.height);
-        // // with {@link Rectangle#x} and {@link Rectangle#y} denoting the top left point
-        // // of the printable area.
     }
 }

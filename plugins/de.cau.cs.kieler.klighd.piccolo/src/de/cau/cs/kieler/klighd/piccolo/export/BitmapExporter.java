@@ -73,8 +73,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
         final TilingData tilingInfo = data.getTilingInfo();
 
-        final Trim trim = getMaximumDiagramTrim(brandings, bounds, null);
-        final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings, bounds, null,
+        final Trim trim = getMaximumDiagramTrim(brandings, bounds);
+        final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings, bounds, null, null,
                 tilingInfo.isTiled & tilingInfo.isMaxsize);
 
         // determine the employed image's size

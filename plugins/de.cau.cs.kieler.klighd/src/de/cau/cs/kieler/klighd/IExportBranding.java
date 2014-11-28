@@ -111,33 +111,33 @@ public interface IExportBranding {
     boolean isEnabled();
 
     /**
-     * Provides {@link Trim} denoting additional space required on each side of the whole
-     * diagram.<br>
+     * Customization hook providing the additional space to be added on each side of the whole
+     * diagram, specified in terms of a {@link Trim} record.<br>
      * Note: In case multiple {@link IExportBranding}s are employed the side-wise maximum of the
-     * provided {@link Trim} is applied.
-     *
+     * contributed {@link Trim} records is applied.
      *
      * @param bounds
-     *            the size of overall (scaled) diagram
-     * @param dotsPerInch
-     *            the image resolution applied by the employed drawing
-     *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not
-     *            valid
-     *
+     *            the size of overall (scaled) diagram (clip)
      * @return the required {@link Trim}
      */
-    Trim getDiagramTrim(final Rectangle2D bounds, final Point dotsPerInch);
+    Trim getDiagramTrim(final Rectangle2D bounds);
 
     /**
-     * Provides {@link Trim} denoting (additional) space required on each side of each diagram tile.
-     * In case of (tiled) printouts or image exports on fixed size tiles the drawable area of each
-     * tile is reduced by the amount of the returned trim data.<br>
+     * Customization hook providing (additional) space to be added on each side of each diagram
+     * tile, specified in terms of a {@link Trim} record. In case of (tiled) printouts or image
+     * exports on fixed size tiles the drawable area of each tile is reduced by the amount of the
+     * returned trim data.<br>
      * Note: In case multiple {@link IExportBranding}s are employed the side-wise maximum of the
-     * provided {@link Trim} is applied.
+     * provided {@link Trim} records is applied.
      *
      * @param bounds
      *            depending on {@code fixSizedTiles} the absolute size of either the diagram tile
      *            itself, or the diagram excerpt drawn on the tile respectively
+     * @param deviceTrim
+     *            in case the diagram is printed this object represents the printers technically
+     *            required trim, which can be incorporated, e.g., for facilitating margins of
+     *            exactly a particular value ({@code bounds + deviceTrim} == the actual page size);
+     *            is <code>null</code> otherwise;
      * @param dotsPerInch
      *            the image resolution applied by the employed drawing
      *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not
@@ -145,10 +145,9 @@ public interface IExportBranding {
      * @param fixSizedTiles
      *            if {@code true} the returned {@link Trim} will reduce the area being available for
      *            drawing, otherwise the tile is increased by the provided {@link Trim}
-     *
      * @return the required {@link Trim}
      */
-    Trim getDiagramTileTrimm(final Rectangle2D bounds, final Point dotsPerInch,
+    Trim getDiagramTileTrimm(final Rectangle2D bounds, final Trim deviceTrim, final Point dotsPerInch,
             final boolean fixSizedTiles);
 
     /**

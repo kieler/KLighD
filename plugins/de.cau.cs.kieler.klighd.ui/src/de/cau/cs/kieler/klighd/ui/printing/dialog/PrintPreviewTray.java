@@ -206,23 +206,22 @@ public class PrintPreviewTray extends DialogTray {
         if (!(imageHeight <= MINIMAL_TILE_SIZE || imageWidth <= MINIMAL_TILE_SIZE)) {
 
             final PrintExporter exporter = options.getExporter();
-            
+
             final int rows = options.getPagesTall();
             final int columns = options.getPagesWide();
-            
-            final DiagramExportConfig config = exporter.createExportConfig(pageBounds,
-                    options.getScaleFactor(), options.getPrinter().getDPI(), columns * rows);
-            
+
+            final DiagramExportConfig config = exporter.createExportConfig(options);
+
             final Dimension imageBounds = new Dimension(imageWidth, imageHeight);
-            
+
             // Adjust the scale according to relation between preview and printing size.
             final double previewScale = (double) (imageWidth) / pageBounds.width;
-            
+
             final Rectangle imageClip = exporter.getBasicPageClip(imageBounds,
                     config.tileTrim.getScaled((float) previewScale));
-            
+
             final Point2D centeringOffset = options.getCenteringOffset(previewScale);
-            
+
             int pageNo = 0;
 
             for (int row = 0; row < rows; row++) {
