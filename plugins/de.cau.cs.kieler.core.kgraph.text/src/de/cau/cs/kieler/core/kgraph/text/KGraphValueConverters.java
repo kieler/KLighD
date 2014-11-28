@@ -312,11 +312,18 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
     }
     
     /**
-     * Value converter for {@code PropertyValue} instances. To convert a value to a string, the value is
-     * surrounded by quotation marks if (and only if) the value cannot be parsed as a Float and is not
-     * an element of the language induced by the {@code QualifiedName} rule. To convert a string to a
-     * value, surrounding quotation marks are removed if there are any.
-     *  
+     * Value converter for {@code PropertyValue} instances. To convert a value to a string, the following
+     * conditions are tested in exactly this order:
+     * <ol>
+     *   <li>The value is a boolean literal (that is, it equals either "true" or "false"). In this case,
+     *       the value is returned as is.</li>
+     *   <li>The value can be parsed as a floating point number. In this case, the value is returned
+     *       as is.</li>
+     *   <li>The value is an element of the language induced by the {@code QualifiedName} rule. In this
+     *       case, the {@link QualifiedIDValueConverter} is invoked and its result returned.</li>
+     * </ol>
+     * <p>If non of these conditions apply, the result is the value surrounded by quotation marks.</p>
+     * 
      * @author cds
      */
     private class PropertyValueConverter extends AbstractNullSafeConverter<String> {
@@ -336,6 +343,11 @@ public class KGraphValueConverters extends AbstractDeclarativeValueConverterServ
         
         @Override
         protected String internalToString(final String value) {
+            // Check if the value is a Boolean literal
+            if (value.equals("true") || value.equals("false")) {
+                return value;
+            }
+            
             // Check if the value can be parsed as a Float
             try {
                 Float.parseFloat(value);
