@@ -30,6 +30,8 @@ public class KlighdProjectInfo implements IProjectInfo {
     private String sourceModelClassFullyQualified;
     private boolean createXtendFile = false;
     private boolean createMenuContribution = false;
+    private boolean useFileEnding = false;
+    private String fileEnding;
 
     /**
      * {@inheritDoc}
@@ -131,4 +133,36 @@ public class KlighdProjectInfo implements IProjectInfo {
     public void setCreateMenuContribution(final boolean createMenuContribution) {
         this.createMenuContribution = createMenuContribution;
     }
+    
+    /**
+     * @return whether to use the file ending for menu contributions
+     */
+    public boolean isUseFileEnding() {
+        return useFileEnding;
+    }
+    
+    /**
+     * 
+     * @param useFileEnding 
+     *          whether to use the file ending for menu contributions
+     */
+    public void setUseFileEnding(final boolean useFileEnding) {
+        this.useFileEnding = useFileEnding;
+    }
+
+    /**
+     * @return  the file ending
+     */
+    public String getFileEnding() {
+        return fileEnding;
+    }
+    
+    /**
+     * @param fileEnding 
+     *          the file ending to be used for menu contributions
+     */
+    public void setFileEnding(final String fileEnding) {
+        this.fileEnding = fileEnding;
+    }
+    
 }

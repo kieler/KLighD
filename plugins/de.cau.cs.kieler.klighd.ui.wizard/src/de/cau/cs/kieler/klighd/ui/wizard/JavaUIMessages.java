@@ -43,6 +43,10 @@ final class JavaUIMessages extends NLS {
     public static String KlighdNewProjectCreationPage_MsgInvalidProjectName;
     public static String KlighdNewProjectCreationPage_MsgInvalidTransformationName;
     public static String KlighdNewProjectCreationPage_MsgInvalidSourceModelType;
+    public static String KlighdNewProjectCreationPage_UseFileEndingText;
+    public static String KlighdNewProjectCreationPage_Ending;
+    public static String KlighdNewProjectCreationPage_MsgSourceModelNotQualified;
+    public static String KlighdNewProjectCreationPage_MsgFileEndingEmpty;
 
     public static String KlighdNewProjectWizard_WizardTitle;
 

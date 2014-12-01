@@ -65,6 +65,8 @@ public class KlighdNewProjectWizard extends XtextNewProjectWizard {
         projectInfo.setSourceModelClassFullyQualified(mainPage.getSourceModel());
         projectInfo.setCreateXtendFile(mainPage.isCreateXtendFile());
         projectInfo.setCreateMenuContribution(mainPage.isCreateMenuContribution());
+        projectInfo.setUseFileEnding(mainPage.isUseFileEnding());
+        projectInfo.setFileEnding(mainPage.getFileEnding());
 
         return projectInfo;
     }

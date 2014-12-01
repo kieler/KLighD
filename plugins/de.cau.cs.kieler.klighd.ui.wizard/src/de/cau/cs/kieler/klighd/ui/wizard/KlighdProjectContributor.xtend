@@ -185,7 +185,22 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                  id="«projectInfo.transformationPackage + "." + projectInfo.transformationName»">
            </diagramSynthesis>
            </extension>
-        '''              
+        '''   
+        
+        var fileEndingCondition = ""
+        if (projectInfo.useFileEnding) {
+            fileEndingCondition =
+            '''
+                <adapt type="org.eclipse.core.resources.IResource">
+                    <test
+                          forcePluginActivation="false"
+                          property="org.eclipse.core.resources.extension"
+                          value="«projectInfo.fileEnding»">
+                    </test>
+                </adapt>
+            '''        
+        }
+             
         val menuContribution =
         '''
             <extension
@@ -214,15 +229,17 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                         style="push">
                      <visibleWhen
                            checkEnabled="false">
-                        <iterate>
+                        <iterate ifEmpty="false" operator="or">
                            <instanceof
                                  value="«projectInfo.sourceModelClassFullyQualified»">
                            </instanceof>
+                           «fileEndingCondition»
                         </iterate>
                      </visibleWhen>
                   </command>
                </menuContribution>
             </extension>
+            
         '''
 
         val end =               
@@ -242,10 +259,18 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
         import org.eclipse.core.commands.AbstractHandler;
         import org.eclipse.core.commands.ExecutionEvent;
         import org.eclipse.core.commands.ExecutionException;
+        import org.eclipse.core.resources.IFile;
+        import org.eclipse.core.runtime.IStatus;
+        import org.eclipse.core.runtime.Status;
+        import org.eclipse.emf.common.util.URI;
+        import org.eclipse.emf.ecore.resource.Resource;
+        import org.eclipse.emf.ecore.resource.ResourceSet;
+        import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
         import org.eclipse.jface.dialogs.MessageDialog;
         import org.eclipse.jface.viewers.ISelection;
         import org.eclipse.jface.viewers.IStructuredSelection;
         import org.eclipse.ui.handlers.HandlerUtil;
+        import org.eclipse.ui.statushandlers.StatusManager;
         
         import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
         import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -260,12 +285,29 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
              */
             public Object execute(final ExecutionEvent event) throws ExecutionException {
                 final ISelection selection = HandlerUtil.getCurrentSelection(event);
-                
                 if (selection instanceof IStructuredSelection) {
                     final IStructuredSelection sSelection  = (IStructuredSelection) selection;
+                    Object model = null;
+                    if (sSelection.getFirstElement() instanceof IFile) {
+                        try {
+                            IFile f = (IFile) sSelection.getFirstElement();
+                            ResourceSet rs = new ResourceSetImpl();
+                            Resource r =
+                            rs.getResource(URI.createFileURI(f.getFullPath().toString()), true);
+                            if (r.getContents().size() > 0) {
+                                model = r.getContents().get(0);
+                            }
+                        } catch (Exception e) {
+                            StatusManager.getManager().handle(
+                            new Status(IStatus.ERROR, this.getClass().getCanonicalName(),
+                            "Could not load selected file.", e), StatusManager.SHOW);
+                        }
+                    } else {
+                        model = sSelection.getFirstElement();
+                    }
                     
-                    DiagramViewManager.getInstance().createView(
-                            "«projectInfo.transformationPackage».«projectInfo.sourceModelClassSimple»Diagram", "«projectInfo.sourceModelClassSimple» Diagram", sSelection.getFirstElement(), KlighdSynthesisProperties.newInstance());
+                    DiagramViewManager.createView(
+                            "«projectInfo.transformationPackage».«projectInfo.sourceModelClassSimple»Diagram", "«projectInfo.sourceModelClassSimple» Diagram", model, KlighdSynthesisProperties.create());
                 } else {
                     MessageDialog.openInformation(HandlerUtil.getActiveShell(event), "Unsupported element",
                             "KLighD diagram synthesis is unsupported for the current selection "

@@ -27,6 +27,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -52,9 +54,13 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
     private Text transformationPackage;
     private Text transformationName;
     private Text sourceModel;
+    private Text fileEnding;
     private Button useJavaLang;
     private Button useXtendLang;
     private Button createMenuContribution;
+    private Button useFileEnding;
+    private Label fileEndingLabel;
+    
 
     /**
      * Create a new wizard configuration page.
@@ -92,7 +98,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         transformationPackage.setText(KlighdWizardSetup.DEFAULT_PROJECT);
         useXtendLang.setSelection(true);
         createMenuContribution.setSelection(true);
-
+        fileEnding.setEnabled(false);
+        fileEndingLabel.setEnabled(false);
         validatePage();
     }
 
@@ -214,6 +221,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         useXtendLang.addListener(SWT.Modify, modifyListener);
         sourceModel.addListener(SWT.Modify, modifyListener);
         
+        
         final Group uiConfigGroup = new Group(parent, SWT.NONE);
         uiConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
         uiConfigGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_UIGroupText);
@@ -222,6 +230,45 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         createMenuContribution.setText(
                 JavaUIMessages.KlighdNewProjectCreationPage_CreateMenuContributionText);
         createMenuContribution.setLayoutData(new GridData());
+        createMenuContribution.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                useFileEnding.setEnabled(createMenuContribution.getSelection());
+                if (!createMenuContribution.getSelection()) {
+                    fileEnding.setEnabled(false);
+                    fileEndingLabel.setEnabled(false);
+                } else {
+                    fileEnding.setEnabled(useFileEnding.getSelection());
+                    fileEndingLabel.setEnabled(useFileEnding.getSelection());
+                }
+            }
+        });
+        useFileEnding = new Button(uiConfigGroup, SWT.CHECK);
+        useFileEnding.setText(JavaUIMessages.KlighdNewProjectCreationPage_UseFileEndingText);
+        useFileEnding.setLayoutData(new GridData());
+        useFileEnding.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                fileEnding.setEnabled(useFileEnding.getSelection());
+                fileEndingLabel.setEnabled(useFileEnding.getSelection());
+            }
+        });
+        
+        Composite fileEndingComposite = new Composite(uiConfigGroup, SWT.NONE);
+        fileEndingComposite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+        fileEndingComposite.setLayout(new GridLayout(2, false));
+        
+        fileEndingLabel = new Label(fileEndingComposite, SWT.NONE);
+        data = new GridData();
+        data.horizontalSpan = 1;
+        fileEndingLabel.setLayoutData(data);
+        fileEndingLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_Ending);
+        
+        fileEnding = new Text(fileEndingComposite, SWT.BORDER);
+        fileEnding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        fileEnding.setFont(parent.getFont());
+        
+        createMenuContribution.addListener(SWT.Selection, modifyListener);
+        useFileEnding.addListener(SWT.Selection, modifyListener);
+        fileEnding.addListener(SWT.Modify, modifyListener);
     }
     
     // Listen to changes
@@ -261,6 +308,13 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                     + status.getMessage());
             return false;
         }
+        //check menu contribution with file ending
+        if (createMenuContribution.getSelection() && useFileEnding.getSelection() 
+                && Strings.isNullOrEmpty(fileEnding.getText())) {
+            setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgFileEndingEmpty);
+            return false;
+        }
+        
 
         // check transformation name and package
         if (transformationName == null || transformationPackage == null) {
@@ -287,7 +341,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
             return false;
         }
         if (!sourceModel.getText().contains(".")) {
-            setErrorMessage("Please enter fully qualified name for the source model");
+            setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgSourceModelNotQualified);
             return false;
         }
         status =
@@ -339,4 +393,18 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         return createMenuContribution.getSelection();
     }
 
+    /**
+     * @return whether file ending should be used for menu contributions
+     */
+    public boolean isUseFileEnding() {
+        return useFileEnding.getSelection();
+    }
+
+    /**
+     * @return the file ending to be used for menu contributions
+     */
+    public String getFileEnding() {
+        return fileEnding.getText();
+    }
+    
 }
