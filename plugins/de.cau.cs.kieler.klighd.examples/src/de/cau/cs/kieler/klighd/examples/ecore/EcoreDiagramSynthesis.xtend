@@ -228,7 +228,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                         KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "classifier"))
                 it.addRectangle => [
                     it.lineWidth = 2;
-                    it.setBackgroundGradient("white".color, "lemon".color, 0)
+                    it.setBackgroundGradient("white".color, "LemonChiffon".color, 0)
                     it.shadow = "black".color;
                     it.setGridPlacement(1).from(LEFT, 2, 0, TOP, 2, 0).to(RIGHT, 2, 0, BOTTOM, 2, 0);
                     it.addRectangle => [
@@ -383,7 +383,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	    return parent.addRectangle() => [
 	        it.lineWidth = 1.75f;
 	        it.setForegroundGradient("goldenrod4".color, 255, "darkGray".color, 255, 90);
-	        it.background = "lemon".color;
+	        it.background = "LemonChiffon".color;
 	    ];
 	}
 }

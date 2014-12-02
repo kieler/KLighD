@@ -71,7 +71,9 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
  * @author Mark Donszelmann
  * @version $Id: freehep-graphicsio-svg/src/main/java/org/freehep/graphicsio/svg/SVGGraphics2D.java 4c4708a97391 2007/06/12 22:32:31 duns $
  * 
- * Add capabilities to add semantic information to the svg, ie key/value pairs within the 'klighd' namespace.
+ * - Added capabilities to add semantic information to the svg, ie key/value pairs within the 'klighd' namespace.
+ * - Allow comments to be switched off.
+ * - Corrected direction of color gradients. 
  * 
  * @author uru
  */
@@ -185,7 +187,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     
     private KlighdSemanticDiagramData semanticData = null;
     
-    private boolean writeComments = true;
+    private boolean writeComments = false;
 
     /*
      * ================================================================================ |
@@ -1324,15 +1326,26 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         this.semanticData = nextSemanticData;
     }
 
+    //If no semantic data is set these groups are unnecessary clutter. This
+    // stack keeps track of them and prevents printing of those that are not needed.
+    private Stack<Boolean> groupsStack = new Stack<Boolean>();
     public void startGroup(KlighdSemanticDiagramData nextSemanticData) {
         this.semanticData = nextSemanticData;
-        os.write("<g ");
-        os.write(attributes());
-        os.write(" >\n");
+        if ((this.semanticData != null && this.semanticData.iterator().hasNext())) {
+            os.write("<g ");
+            os.write(attributes());
+            os.write(" >\n");
+            groupsStack.push(true);
+        } else {
+            groupsStack.push(false);
+        }
     }
 
     public void endGroup() {
-        os.write("</g>\n");
+        if (groupsStack.peek()) {
+            os.write("</g>\n");
+        }
+        groupsStack.pop();
     }
     
 

@@ -166,7 +166,11 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
         String packageString =
                 info.getSourceModelClassFullyQualified().substring(0,
                         info.getSourceModelClassFullyQualified().lastIndexOf('.'));
-        return Lists.newArrayList(packageString);
+        if (packageString.startsWith("java.")) {
+            return Lists.newArrayList();
+        } else {
+            return Lists.newArrayList(packageString);
+        }
     }
     
     /**

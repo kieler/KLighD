@@ -38,6 +38,8 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.kiml.LayoutMetaDataService;
+import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -74,11 +76,41 @@ public final class DiagramSyntheses {
      *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
      * @param value
      *            the option value
-     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     * @return <code>element</code> allowing to perform multiple operations on it in one statement
      */
     public static <R extends KGraphElement, T> R setLayoutOption(final R element,
             final IProperty<T> option, final T value) {
         element.getData(KLayoutData.class).setProperty(option, value);
+        return element;
+    }
+
+    /**
+     * Convenience method for defining layout options for {@link KGraphElement KGraphElements} 
+     * based on ids and possibly string representations of properties defined by 
+     * {@link java.util.EnumSet}s.
+     *
+     * @param <R>
+     *            the concrete type of <code>element</code>
+     * @param element
+     *            the element to set the layout option on
+     * @param optionId
+     *            the particular layout option's id, e.g. one of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
+     * @param value
+     *            the option value. It is possilbe to pass string representations 
+     *            of EnumSets as well as any non-string property.
+     * @return <code>element</code> allowing to perform multiple operations on it in one statement
+     */
+    public static <R extends KGraphElement> R setLayoutOption(final R element,
+            final String optionId, final Object value) {
+        final LayoutOptionData option = LayoutMetaDataService.getInstance().getOptionData(optionId);
+        if (option != null) {
+            Object realValue = value;
+            if (value instanceof String) {
+                realValue = option.parseValue((String) value);
+            }
+            element.getData(KLayoutData.class).setProperty(option, realValue);
+        }
         return element;
     }
 

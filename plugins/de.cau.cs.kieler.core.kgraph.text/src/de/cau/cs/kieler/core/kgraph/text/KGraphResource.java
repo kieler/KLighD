@@ -51,14 +51,21 @@ public class KGraphResource extends LazyLinkingResource {
      * KGraphDiagramSynthesis}
      */
     private static final IProperty<Boolean> DEFAULTS =
-            new Property<Boolean>("de.cau.cs.kieler.kgraphsynthesis.defaults", false);
+            new Property<Boolean>("de.cau.cs.kieler.kgraphsynthesis.defaults", false); 
+    
+    /**
+     * KLighD offers the possibility to display tooltips that need to be parsed
+     * from persistent entries and added to the {@link KGraphElement}'s properties.
+     */
+    private static final IProperty<String> TOOLTIP =
+            new Property<String>("klighd.tooltip");
     
     /**
      * Additional properties known to the kgraph text format that are no layout options. However,
      * they are made available through content assist and are parsed properly.
      */
-    public static final IProperty<?>[] ADDITIONAL_PROPERTIES = ImmutableList.of(DEFAULTS).toArray(
-            new IProperty<?>[1]);
+    public static final IProperty<?>[] ADDITIONAL_PROPERTIES = ImmutableList.of(DEFAULTS, TOOLTIP).toArray(
+            new IProperty<?>[2]);
 
     /**
      * {@inheritDoc}<br>
