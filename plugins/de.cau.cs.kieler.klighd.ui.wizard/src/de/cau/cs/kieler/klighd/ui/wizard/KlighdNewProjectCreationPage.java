@@ -191,7 +191,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         data.horizontalSpan = 1;
         transformationName.setLayoutData(data);
         transformationName.setFont(parent.getFont());
-        transformationName.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_SynthesisNameTooltip);
+        transformationName.setToolTipText(
+                JavaUIMessages.KlighdNewProjectCreationPage_SynthesisNameTooltip);
         
         // Package
         Label transformationPackageLabel = new Label(composite, SWT.NONE);
@@ -307,7 +308,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         // the page to be kindof valid.
         if (transformationName == null || transformationPackage == null || sourceModel == null
                 || fileEnding == null || useFileEnding == null || createMenuContribution == null) {
-            return true;
+            return false;
         }
         
         if (!super.validatePage()) {
@@ -331,7 +332,6 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
             return false;
         }
         
-
         // check transformation name and package
         if (Strings.isNullOrEmpty(transformationName.getText())
                 || Strings.isNullOrEmpty(transformationPackage.getText())) {
@@ -362,9 +362,10 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                     + status.getMessage());
             return false;
         }
-
-        setErrorMessage(null);
+        
         setMessage(null);
+        setErrorMessage(null);
+        
         return true;
     }
 
