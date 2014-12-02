@@ -62,6 +62,12 @@ public class DiagramExportConfig {
     public final Point dotsPerInch;
 
     /**
+     * The {@link Trim} imposed by the used {@link org.eclipse.swt.printing.Printer Printer}
+     * if the corresponding export is a print, is {@link Trim#EMPTY_TRIM} otherwise.
+     */
+    public final Trim deviceTrim;
+
+    /**
      * Determines whether the diagram part being currently visible on the screen shall be exported
      * (<code>true</code>), or whether the whole currently displayed diagram (part/clip) shall be
      * exported (<code>false</code>).
@@ -87,7 +93,7 @@ public class DiagramExportConfig {
      * The number of pages the diagram is to be printed, at least 1.
      */
     public final int pages;
-    
+
     /**
      * The page number of the diagram tile to be printed or exported starting at 1, is updated after
      * each tile print or export.
@@ -145,7 +151,7 @@ public class DiagramExportConfig {
      */
     public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
             final Dimension tileBounds) {
-        this(viewContext, diagramBounds, tileBounds, 1d, null, 1);
+        this(viewContext, diagramBounds, tileBounds, 1d, null, Trim.EMPTY_TRIM, 1);
     }
 
     /**
@@ -166,7 +172,7 @@ public class DiagramExportConfig {
      */
     public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
             final Dimension tileBounds, final double diagramScale, final int pages) {
-        this(viewContext, diagramBounds, tileBounds, diagramScale, new Point(), pages);
+        this(viewContext, diagramBounds, tileBounds, diagramScale, new Point(), Trim.EMPTY_TRIM, pages);
 
         final org.eclipse.swt.graphics.Point dpi = Display.getDefault().getDPI();
         this.dotsPerInch.setLocation(dpi.x, dpi.y);
@@ -174,7 +180,7 @@ public class DiagramExportConfig {
 
     /**
      * Constructor.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} belonging to the diagram being exported
      * @param diagramBounds
@@ -187,17 +193,21 @@ public class DiagramExportConfig {
      * @param dotsPerInch
      *            the image resolution used by the employed drawing
      *            {@link org.eclipse.swt.graphics.Device Device}
+     * @param deviceTrim
+     *            the {@link Trim} imposed the used {@link org.eclipse.swt.printing.Printer Printer},
+     *            if the corresponding export is a printout
      * @param pages
      *            the number of pages the diagram is to be printed, at least 1.
      */
     public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
             final Dimension tileBounds, final double diagramScale, final Point dotsPerInch,
-            final int pages) {
+            final Trim deviceTrim, final int pages) {
         this.viewContext = viewContext;
         this.diagramBounds = diagramBounds;
         this.tileBounds = tileBounds;
         this.diagramScale = diagramScale;
         this.dotsPerInch = dotsPerInch;
+        this.deviceTrim = deviceTrim;
         this.pages = pages;
     }
 
@@ -219,6 +229,7 @@ public class DiagramExportConfig {
         this.tileTrim = original.tileTrim;
 
         this.dotsPerInch = new Point(original.dotsPerInch);
+        this.deviceTrim = original.deviceTrim;
 
         this.exportBrandings = ImmutableList.copyOf(original.exportBrandings);
 

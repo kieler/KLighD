@@ -109,7 +109,20 @@ public abstract class AbstractDiagramExporter {
      */
     protected final Trim getMaximumDiagramTrim(
             final Iterable<IExportBranding> exportBrandings, final Rectangle2D bounds) {
-        return getCumulatedTrim(false, false, exportBrandings, bounds, null, null);
+        return getCumulatedTrim(false, exportBrandings, bounds, null, null);
+    }
+
+    /**
+     * Calculates the cumulated (maximal) diagram tile {@link Trim} that is defined to require for
+     * each side the maximum of those trims required by the given {@code exportBrandings} on that
+     * particular side.
+     *
+     * @param exportBrandings
+     *            the {@link IExportBranding IExportBrandings} to be applied
+     * @return the desired cumulated {@link Trim}
+     */
+    protected final Trim getMaximumDiagramTileTrim(final Iterable<IExportBranding> exportBrandings) {
+        return getMaximumDiagramTileTrim(exportBrandings, null, null, null);
     }
 
     /**
@@ -129,20 +142,15 @@ public abstract class AbstractDiagramExporter {
      * @param dotsPerInch
      *            the image resolution applied by the employed drawing
      *            {@link org.eclipse.swt.graphics.Device Device}, maybe <code>null</code> if not valid
-     * @param fixSizedTiles
-     *            if {@code true} the returned {@link Trim} will reduce the area being available
-     *            for drawing, otherwise the tile is increased by the provided {@link Trim}
      * @return the desired cumulated {@link Trim}
      */
     protected final Trim getMaximumDiagramTileTrim(final Iterable<IExportBranding> exportBrandings,
-            final Rectangle2D bounds, final Trim deviceTrim, final Point dotsPerInch,
-            final boolean fixSizedTiles) {
-        return getCumulatedTrim(true, fixSizedTiles, exportBrandings, bounds, deviceTrim, dotsPerInch);
+            final Rectangle2D bounds, final Trim deviceTrim, final Point dotsPerInch) {
+        return getCumulatedTrim(true, exportBrandings, bounds, deviceTrim, dotsPerInch);
     }
 
-    private Trim getCumulatedTrim(final boolean tileTrim, final boolean fixSizedTiles,
-            final Iterable<IExportBranding> brandings, final Rectangle2D bounds,
-            final Trim deviceTrim, final Point dotsPerInch) {
+    private Trim getCumulatedTrim(final boolean tileTrim, final Iterable<IExportBranding> brandings,
+            final Rectangle2D bounds, final Trim deviceTrim, final Point dotsPerInch) {
 
         final Trim res = Iterables2.fold(brandings, new Function<Pair<Trim, IExportBranding>, Trim>() {
 
@@ -152,7 +160,7 @@ public abstract class AbstractDiagramExporter {
                 final Trim trim;
 
                 if (tileTrim) {
-                    trim = branding.getDiagramTileTrimm(bounds, deviceTrim, dotsPerInch, fixSizedTiles);
+                    trim = branding.getDiagramTileTrimm(bounds, dotsPerInch, deviceTrim);
                 } else {
                     trim = branding.getDiagramTrim(bounds);
                 }

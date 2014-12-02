@@ -746,8 +746,8 @@ public final class PrintOptions {
 
         final Printer p = getPrinter();
         if (p != null) {
-            final org.eclipse.swt.graphics.Rectangle trim = printer.computeTrim(0, 0, 0, 0);
-            printerTrim = new Trim(trim.x, trim.x + trim.width, trim.y, trim.y + trim.height);
+            final org.eclipse.swt.graphics.Rectangle trim = p.computeTrim(0, 0, 0, 0);
+            printerTrim = new Trim(-trim.x, trim.x + trim.width, -trim.y, trim.y + trim.height);
             return printerTrim;
         }
         return null;

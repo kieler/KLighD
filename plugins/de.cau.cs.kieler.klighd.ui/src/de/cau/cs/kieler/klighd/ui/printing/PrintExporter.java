@@ -118,7 +118,7 @@ public final class PrintExporter extends AbstractDiagramExporter {
             final Point dotsPerInch) {
         if (diagramTileTrim == null) {
             diagramTileTrim = getMaximumDiagramTileTrim(
-                    exportBrandings, new Rectangle(tileBounds), printerTrim, dotsPerInch, true);
+                    exportBrandings, new Rectangle(tileBounds), printerTrim, dotsPerInch);
         }
         return diagramTileTrim;
     }
@@ -202,12 +202,13 @@ public final class PrintExporter extends AbstractDiagramExporter {
         }
 
         final Dimension pageBounds = options.getPrinterBounds();
+        final Trim printerTrim = options.getPrinterTrim();
         final Point dpi = options.getPrinterDPI();
         final int pages = options.getPagesTall() * options.getPagesWide();
 
         return new DiagramExportConfig(viewer.getViewContext(), getExportedBounds(), pageBounds,
-            options.getScaleFactor(), dpi, pages).setBrandingsAndTrim(exportBrandings,
-                getDiagramTrim(), getDiagramTileTrim(pageBounds, options.getPrinterTrim(), dpi));
+            options.getScaleFactor(), dpi, printerTrim, pages).setBrandingsAndTrim(exportBrandings,
+                getDiagramTrim(), getDiagramTileTrim(pageBounds, printerTrim, dpi));
     }
 
 

@@ -75,7 +75,7 @@ public class SVGExporter extends KlighdCanvasExporter {
         final PBounds bounds = this.getExportedBounds(camera, data.isCameraViewport);
 
         final Trim diagramTrim = getMaximumDiagramTrim(brandings, bounds);
-        final Trim diagramTileTrim = getMaximumDiagramTileTrim(brandings, bounds, null, null, false);
+        final Trim diagramTileTrim = getMaximumDiagramTileTrim(brandings);
 
         final PBounds extendedBounds =
                 new PBounds(0, 0, bounds.width + diagramTrim.getWidth() + diagramTileTrim.getWidth(),

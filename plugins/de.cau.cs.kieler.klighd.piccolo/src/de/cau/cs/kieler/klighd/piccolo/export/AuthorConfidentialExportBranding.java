@@ -80,8 +80,8 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
      * {@inheritDoc}
      */
     @Override
-    public Trim getDiagramTileTrimm(final Rectangle2D bounds, final Trim deviceTrim,
-            final Point dotsPerInch, final boolean fixSizedTiles) {
+    public Trim getDiagramTileTrimm(final Rectangle2D bounds, final Point dotsPerInch,
+            final Trim deviceTrim) {
         if (bounds.getWidth() > 1000 && bounds.getHeight() > 1000) {
             return new Trim(500, 500, 200, 200);
         } else {
