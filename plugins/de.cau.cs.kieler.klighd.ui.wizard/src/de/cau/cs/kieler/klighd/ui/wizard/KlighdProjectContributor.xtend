@@ -230,10 +230,12 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                      <visibleWhen
                            checkEnabled="false">
                         <iterate ifEmpty="false" operator="or">
-                           <instanceof
-                                 value="«projectInfo.sourceModelClassFullyQualified»">
-                           </instanceof>
-                           «fileEndingCondition»
+                           <or>
+                               <instanceof
+                                     value="«projectInfo.sourceModelClassFullyQualified»">
+                               </instanceof>
+                               «fileEndingCondition»
+                           </or>
                         </iterate>
                      </visibleWhen>
                   </command>
