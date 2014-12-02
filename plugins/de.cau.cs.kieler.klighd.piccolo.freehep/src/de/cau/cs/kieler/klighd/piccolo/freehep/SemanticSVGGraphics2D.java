@@ -36,8 +36,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -73,7 +71,9 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
  * @author Mark Donszelmann
  * @version $Id: freehep-graphicsio-svg/src/main/java/org/freehep/graphicsio/svg/SVGGraphics2D.java 4c4708a97391 2007/06/12 22:32:31 duns $
  * 
- * Add capabilities to add semantic information to the svg, ie key/value pairs within the 'klighd' namespace.
+ * - Added capabilities to add semantic information to the svg, ie key/value pairs within the 'klighd' namespace.
+ * - Allow comments to be switched off.
+ * - Corrected direction of color gradients. 
  * 
  * @author uru
  */
@@ -187,7 +187,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     
     private KlighdSemanticDiagramData semanticData = null;
     
-    private boolean writeComments = true;
+    private boolean writeComments = false;
 
     /*
      * ================================================================================ |
