@@ -87,7 +87,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
             import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions            
+            import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
             import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
             
             import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
@@ -96,30 +96,14 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             
             class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
                 
-                @Inject
-                extension KNodeExtensions
-                
-                @Inject
-                extension KEdgeExtensions
-                
-                @Inject
-                extension KPortExtensions
-                
-                @Inject
-                extension KLabelExtensions
-                
-                @Inject
-                extension KRenderingExtensions
-                
-                @Inject
-                extension KContainerRenderingExtensions
-                
-                @Inject
-                extension KPolylineExtensions
-                
-                @Inject
-                extension KColorExtensions
-                
+                @Inject extension KNodeExtensions
+                @Inject extension KEdgeExtensions
+                @Inject extension KPortExtensions
+                @Inject extension KLabelExtensions
+                @Inject extension KRenderingExtensions
+                @Inject extension KContainerRenderingExtensions
+                @Inject extension KPolylineExtensions
+                @Inject extension KColorExtensions
                 extension KRenderingFactory = KRenderingFactory.eINSTANCE
                 
                 

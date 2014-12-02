@@ -295,6 +295,14 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
 
     @Override
     protected boolean validatePage() {
+
+        // are we still in initialization phase? Then we assume 
+        // the page to be kindof valid.
+        if (transformationName == null || transformationPackage == null || sourceModel == null
+                || fileEnding == null || useFileEnding == null || createMenuContribution == null) {
+            return true;
+        }
+        
         if (!super.validatePage()) {
             return false;
         }
@@ -308,7 +316,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
                     + status.getMessage());
             return false;
         }
-        //check menu contribution with file ending
+
+        // check menu contribution with file ending
         if (createMenuContribution.getSelection() && useFileEnding.getSelection() 
                 && Strings.isNullOrEmpty(fileEnding.getText())) {
             setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgFileEndingEmpty);
@@ -317,9 +326,6 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         
 
         // check transformation name and package
-        if (transformationName == null || transformationPackage == null) {
-            return true;
-        }
         if (Strings.isNullOrEmpty(transformationName.getText())
                 || Strings.isNullOrEmpty(transformationPackage.getText())) {
             return false;
@@ -334,9 +340,6 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         }
 
         // check source model
-        if (sourceModel == null) {
-            return true;
-        }
         if (Strings.isNullOrEmpty(sourceModel.getText())) {
             return false;
         }
