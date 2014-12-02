@@ -124,6 +124,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         textData.horizontalSpan = 1;
         textData.horizontalIndent = 0;
         sourceModel.setLayoutData(textData);
+        sourceModel.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_SourceModelTooltip);
         // button
         Button browseButton = new Button(typeGroup, SWT.PUSH);
         browseButton.setText(JavaUIMessages.KlighdNewProjectCreationPage_BrowseButtonText);
@@ -190,7 +191,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         data.horizontalSpan = 1;
         transformationName.setLayoutData(data);
         transformationName.setFont(parent.getFont());
-
+        transformationName.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_SynthesisNameTooltip);
+        
         // Package
         Label transformationPackageLabel = new Label(composite, SWT.NONE);
         GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
@@ -202,18 +204,22 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         data2.horizontalSpan = 1;
         transformationPackage.setLayoutData(data);
         transformationPackage.setFont(parent.getFont());
+        transformationPackage.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_PackageTooltip);
 
         // Which language to use, Java or Xtend?
         final Group languageGroup = new Group(parent, SWT.NONE);
         languageGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
         languageGroup.setLayout(new GridLayout(2, false));
         languageGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageGroupText);
+        languageGroup.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageTooltip);
         useJavaLang = new Button(languageGroup, SWT.RADIO);
         useJavaLang.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageJava);
         useJavaLang.setLayoutData(new GridData());
+        useJavaLang.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageTooltip);
         useXtendLang = new Button(languageGroup, SWT.RADIO);
         useXtendLang.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageXtend);
         useXtendLang.setLayoutData(new GridData());
+        useXtendLang.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageTooltip);
 
         transformationName.addListener(SWT.Modify, modifyListener);
         transformationPackage.addListener(SWT.Modify, modifyListener);
@@ -265,6 +271,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         fileEnding = new Text(fileEndingComposite, SWT.BORDER);
         fileEnding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         fileEnding.setFont(parent.getFont());
+        fileEnding.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_FileEndingTooltip);
         
         createMenuContribution.addListener(SWT.Selection, modifyListener);
         useFileEnding.addListener(SWT.Selection, modifyListener);
