@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Strings;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -99,7 +99,7 @@ public class PiccoloTooltip {
     private class TooltipListener extends KlighdBasicInputEventHandler {
         
         /** The last mouseover's KNode (only used if no rendering is available). */
-        private KNode knode;
+        private KGraphElement kge;
         
         /** Position at which the tooltip is displayed. */
         private Point2D mousePos;
@@ -154,16 +154,11 @@ public class PiccoloTooltip {
             final AbstractKGERenderingController<?, ?> ctr = graphElement.getRenderingController();
             final KRendering rendering = ctr.getCurrentRendering();
 
-            // fall-back to the KNode if no rendering is specified
-            if (rendering == null) {
-                Object ge = graphElement.getGraphElement();
-                if (ge instanceof KNode) {
-                    knode = (KNode) ge;
-                }
-            }
+            // fall-back to the KGraphElement if no rendering is specified
+            kge = graphElement.getGraphElement();
 
             // only start the timer if we retrieved an element
-            if (rendering == null && knode == null) {
+            if (rendering == null && kge == null) {
                 return;
             }
             // get the mouse position
@@ -171,11 +166,13 @@ public class PiccoloTooltip {
             event.getPath().canvasToLocal(mousePos, camera);
 
             // retrieve the tooltip
-            final String tooltipText;
+            String tooltipText = null;
             if (rendering != null) {
                 tooltipText = rendering.getProperty(KlighdProperties.TOOLTIP);
-            } else if (knode != null) {
-                KShapeLayout l = knode.getData(KShapeLayout.class);
+            } 
+            
+            if (tooltipText == null && kge != null) {
+                KShapeLayout l = kge.getData(KShapeLayout.class);
                 tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
             } else {
                 return;
