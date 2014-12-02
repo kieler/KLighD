@@ -186,6 +186,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     private int width, height;
     
     private KlighdSemanticDiagramData semanticData = null;
+    
+    private boolean writeComments = true;
 
     /*
      * ================================================================================ |
@@ -258,6 +260,13 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         bbh = size.height;
     }
 
+    /**
+     * @param writeComments the writeComments to set
+     */
+    public void setWriteComments(boolean writeComments) {
+        this.writeComments = writeComments;
+    }
+    
     /*
      * ================================================================================ |
      * 3. Header, Trailer, Multipage & Comments
@@ -317,7 +326,10 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         os.println("     viewBox=\"" + bbx + " " + bby + " " + bbw + " " + bbh
                 + "\"");
         os.println("     >");
-        closeTags.push("</svg> <!-- bounding box -->");
+        closeTags.push("</svg>");
+        if (writeComments) {
+            pushComment(closeTags, " <!-- bounding box -->");
+        }
 
         os.print("<title>");
         os.print(XMLWriter.normalizeText(getProperty(TITLE)));
@@ -335,7 +347,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         if (!isDeviceIndependent()) {
             os.print(" Date: "
                     + DateFormat.getDateTimeInstance(DateFormat.FULL,
-                            DateFormat.FULL).format(new Date()));
+                            DateFormat.FULL, Locale.US).format(new Date()));
         }
         os.println("</desc>");
 
@@ -346,7 +358,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         os.println(">");
 
         // close default settings at the end
-        closeTags.push("</g> <!-- default stroke -->");
+        closeTags.push("</g>");
+        pushComment(closeTags, "<!-- default stroke -->");
     }
 
     public void writeBackground() throws IOException {
@@ -373,7 +386,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         if (isProperty(EMBED_FONTS)) {
             os.println("<defs>");
             os.println(fontTable.toString());
-            os.println("</defs> <!-- font definitions -->");
+            os.println("</defs>");
+            writeComment("<!-- font definitions -->");
         }
 
         // restor graphic
@@ -411,15 +425,17 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 + fixedPrecision(y) + "\" " + "width=\""
                 + fixedPrecision(width) + "\" " + "height=\""
                 + fixedPrecision(height) + "\" " + ">");
-        graphics.closeTags.push("</svg> <!-- graphics context -->");
-
+        graphics.closeTags.push("</svg>");
+        pushComment(graphics.closeTags, " <!-- graphics context -->");
+        
         // write default stroke
         os.print("<g ");
         Properties style = getStrokeProperties(defaultStroke,  true);
         os.print(style(style));
         os.println(">");
 
-        graphics.closeTags.push("</g> <!-- default stroke -->");
+        graphics.closeTags.push("</g>");
+        pushComment(graphics.closeTags, " <!-- default stroke -->");
 
         return graphics;
     }
@@ -526,7 +542,10 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         result.append(getPath(pi));
 
         // close style
-        result.append("\n</g> <!-- drawing style -->");
+        result.append("\n</g>");
+        if (writeComments) {
+           result.append(" <!-- drawing style -->"); 
+        }
 
         boolean drawClipped = false;
 
@@ -1026,7 +1045,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         os.println(">");
 
         // close color later
-        closeTags.push("</g> <!-- color -->");
+        closeTags.push("</g>");
+        pushComment(closeTags, " <!-- color -->");
     }
 
     protected void writePaint(TexturePaint paint) throws IOException {
@@ -1053,7 +1073,16 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     }
 
     public void writeComment(String s) throws IOException {
-        os.println("<!-- " + s + " -->");
+        if (writeComments) {
+            os.println("<!-- " + s + " -->");
+        }
+    }
+    
+    public void pushComment(final Stack<String> stack, String s) {
+        if (writeComments) {
+            // assure that the same number of elements is on the stack as before
+            stack.push(stack.pop() + s);
+        }
     }
 
     public String toString() {
@@ -1096,7 +1125,10 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         result.append(s);
 
         if (t != null && !t.isIdentity()) {
-            result.append("\n</g> <!-- transform -->");
+            result.append("\n</g>");
+            if (writeComments) {
+                result.append(" <!-- transform -->");
+            }
         }
 
         return result.toString();
@@ -1134,9 +1166,12 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
         // close clipping
         if (isProperty(CLIP) && getClip() != null) {
-            result.append("\n</g> <!-- clip");
-            result.append(clipNumber.getInt());
-            result.append(" -->");
+            result.append("\n</g>");
+            if (writeComments) {
+                result.append("<!-- clip");
+                result.append(clipNumber.getInt());
+                result.append(" -->");
+            }
         }
 
         return result.toString();

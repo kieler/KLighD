@@ -165,15 +165,15 @@ public class PrintAction extends Action {
 
         final Dimension pageBounds = exporter.getPrinterBounds(printer);
 
-        final DiagramExportConfig config =
-                exporter.createExportConfig(pageBounds, options.getScaleFactor(), printer.getDPI());
+        final int rows = options.getPagesTall();
+        final int columns = options.getPagesWide();
+        
+        final DiagramExportConfig config = exporter.createExportConfig(
+                pageBounds, options.getScaleFactor(), printer.getDPI(), columns * rows);
 
         final Rectangle pageClip = exporter.getBasicPageClip(pageBounds, config.tileTrim);
 
         final Point2D centeringOffset = options.getCenteringOffset();
-
-        final int rows = options.getPagesTall();
-        final int columns = options.getPagesWide();
 
         int pageNo = 0;
 

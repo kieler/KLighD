@@ -288,12 +288,13 @@ public class ViewContext extends MapPropertyHolder {
      * the view model by applying the configured {@link IUpdateStrategy}. In case the former
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
-     *
+     * 
      * @param sourceModel
      *            the initial, updated, or replaced input model, may be <code>null</code>
+     * @return <code>true</code> if view update succeeded, <code>false</code> otherwise
      */
-    public void update(final Object sourceModel) {
-        this.update(sourceModel, this.updateStrategy);
+    public boolean update(final Object sourceModel) {
+        return this.update(sourceModel, this.updateStrategy);
     }
 
     /**
@@ -307,8 +308,9 @@ public class ViewContext extends MapPropertyHolder {
      * @param properties
      *            a property holder that might influence the diagram update, e.g. via the
      *            {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY} property configuration
+     * @return <code>true</code> if view update succeeded, <code>false</code> otherwise
      */
-    public void update(final Object sourceModel, final IPropertyHolder properties) {
+    public boolean update(final Object sourceModel, final IPropertyHolder properties) {
         final IUpdateStrategy strategy;
         if (properties != null) {
             final String usId =
@@ -319,7 +321,7 @@ public class ViewContext extends MapPropertyHolder {
             strategy = null;
         }
 
-        this.update(sourceModel, strategy);
+        return this.update(sourceModel, strategy);
     }
 
     /**
@@ -332,9 +334,10 @@ public class ViewContext extends MapPropertyHolder {
      *            the initial, updated, or replaced input model, may be <code>null</code>
      * @param theUpdateStrategy
      *            the updateStrategy to use during this update, must not be <code>null</code>
+     * @return <code>true</code> if view update succeeded, <code>false</code> otherwise
      */
-    public void update(final Object model, final IUpdateStrategy theUpdateStrategy) {
-        update(model, theUpdateStrategy, KlighdSynthesisProperties.emptyConfig());
+    public boolean update(final Object model, final IUpdateStrategy theUpdateStrategy) {
+        return update(model, theUpdateStrategy, KlighdSynthesisProperties.emptyConfig());
     }
 
     /**
@@ -350,8 +353,9 @@ public class ViewContext extends MapPropertyHolder {
      * @param properties
      *            a property holder that might influence the diagram update in case type of
      *            <code>model</code> differs from the current business model's type
+     * @return <code>true</code> if view update succeeded, <code>false</code> otherwise
      */
-    public void update(final Object model, final IUpdateStrategy theUpdateStrategy,
+    public boolean update(final Object model, final IUpdateStrategy theUpdateStrategy,
             final IPropertyHolder properties) {
 
         if (model != null) {
@@ -389,7 +393,7 @@ public class ViewContext extends MapPropertyHolder {
                     final String msg = "";
                     StatusManager.getManager().handle(
                             new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
-                    return;
+                    return false;
                 }
 
             } else if (sourceModel instanceof KNode) {
@@ -405,7 +409,7 @@ public class ViewContext extends MapPropertyHolder {
                 + sourceModel + ".";
                 StatusManager.getManager().handle(
                         new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
-                return;
+                return false;
             }
 
         } else {
@@ -418,6 +422,8 @@ public class ViewContext extends MapPropertyHolder {
         if (clipNode != null && this.getViewer() != null) {
             this.getViewer().clip(clipNode);
         }
+        
+        return true;
     }
 
     /**

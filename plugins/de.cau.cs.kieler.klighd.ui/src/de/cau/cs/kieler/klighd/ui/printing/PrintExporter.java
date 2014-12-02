@@ -181,13 +181,15 @@ public final class PrintExporter extends AbstractDiagramExporter {
      *            the zoom scale to be applied to the diagram while printing
      * @param dotsPerInch
      *            the printer's resolution
+     * @param pages
+     *            the number of pages the diagram is to be printed, at least 1.
      * @return the required {@link DiagramExportConfig}
      */
     public DiagramExportConfig createExportConfig(final Dimension pageBounds, final double diagramScale,
-            final org.eclipse.swt.graphics.Point dotsPerInch) {
+            final org.eclipse.swt.graphics.Point dotsPerInch, final int pages) {
 
         return new DiagramExportConfig(viewer.getViewContext(), getExportedBounds(), pageBounds,
-                diagramScale, new Point(dotsPerInch.x, dotsPerInch.y)).setBrandingsAndTrim(
+                diagramScale, new Point(dotsPerInch.x, dotsPerInch.y), pages).setBrandingsAndTrim(
                         exportBrandings, getDiagramTrim(), getDiagramTileTrim(pageBounds));
     }
 

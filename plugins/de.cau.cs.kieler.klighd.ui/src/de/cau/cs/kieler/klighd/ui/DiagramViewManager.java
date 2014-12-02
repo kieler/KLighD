@@ -224,7 +224,13 @@ public final class DiagramViewManager implements IPartListener {
             final Object theModel = (model != null ? model : currentInputModel);
 
             viewContext.getLayoutRecorder().startRecording();
-            viewContext.update(theModel, properties);
+            final boolean successful = viewContext.update(theModel, properties);
+
+            // in case the view update didn't work properly
+            //  consider this as a failure according to the method doc!
+            if (!successful) {
+                return null;
+            }
 
             LightDiagramServices.layoutDiagram(viewContext);
         }
@@ -284,7 +290,13 @@ public final class DiagramViewManager implements IPartListener {
             final Object theModel = (model != null ? model : currentInputModel);
 
             viewContext.getLayoutRecorder().startRecording();
-            viewContext.update(theModel);
+            final boolean successful = viewContext.update(theModel);
+
+            // in case the view update didn't work properly
+            //  consider this as a failure according to the method doc!
+            if (!successful) {
+                return null;
+            }
 
             LightDiagramServices.layoutDiagram(viewContext);
         }
