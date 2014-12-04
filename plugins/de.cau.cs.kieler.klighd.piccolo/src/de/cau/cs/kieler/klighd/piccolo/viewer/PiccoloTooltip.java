@@ -23,7 +23,7 @@ import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
@@ -172,7 +172,7 @@ public class PiccoloTooltip {
             } 
             
             if (tooltipText == null && kge != null) {
-                KShapeLayout l = kge.getData(KShapeLayout.class);
+                KLayoutData l = kge.getData(KLayoutData.class);
                 tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
             } else {
                 return;
