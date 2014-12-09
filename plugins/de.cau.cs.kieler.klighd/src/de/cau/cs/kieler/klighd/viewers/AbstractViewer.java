@@ -15,12 +15,14 @@ package de.cau.cs.kieler.klighd.viewers;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -78,6 +80,7 @@ public abstract class AbstractViewer implements IViewer {
 
 
     private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListeners;
+    private Map<IViewChangeListener, Map<ViewChangeType, Long>> notificationSuppressions;
 
     /**
      * {@inheritDoc}
@@ -90,6 +93,7 @@ public abstract class AbstractViewer implements IViewer {
 
         if (viewChangeListeners == null) {
             viewChangeListeners = HashMultimap.create();
+            notificationSuppressions = Maps.newHashMap();
         }
         
         final ViewChangeType[] types =
@@ -108,6 +112,9 @@ public abstract class AbstractViewer implements IViewer {
     public void removeViewChangedEventListener(final IViewChangeListener listener) {
         if (listener != null) {
             this.viewChangeListeners.values().remove(listener);
+            this.notificationSuppressions.remove(listener);
+
+            this.viewChangeListenersView = null;
         }
     }
     
@@ -142,23 +149,96 @@ public abstract class AbstractViewer implements IViewer {
     protected void notifyViewChangeListeners(final ViewChangeType type,
             final KGraphElement affectedElement, final Rectangle2D viewPort,
             final double diagramScale) {
-        
+
         if (viewChangeListeners == null) {
             return;
         }
-        
+
+        // create a ViewChange instance being "shown" to all registered listeners
         final ViewChange change = new ViewChange(this, type, affectedElement, viewPort, diagramScale);
 
-        for (final IViewChangeListener l : viewChangeListeners.get(type)) {
-            l.viewChanged(change);
+        // take the time being used for evaluating suppression deadlines
+        final long time = System.currentTimeMillis();
+
+        for (final IViewChangeListener listener : viewChangeListeners.get(type)) {
+            final Map<ViewChangeType, Long> earlierSuppressions = notificationSuppressions.get(listener);
+
+            // check the presence of any suppression configs for 'listener'
+            if (earlierSuppressions != null) {
+                final Long suppressionDeadline = earlierSuppressions.get(type);
+
+                // check the presence of any suppression config for 'type' wrt. 'listener'
+                if (suppressionDeadline != null) {
+                    final long suppressionDeadlineValue = suppressionDeadline.longValue();
+
+                    // if a ('listener','type') corresponding suppression config is given, distinguish...
+                    if (suppressionDeadlineValue == 0) {
+                        // this case denotes a suppression of a single event w/o regard of the time:
+                        //  the next one is to be notified again so ...
+                        earlierSuppressions.remove(type);
+
+                        // ... stop evaluating for 'listener', and ...
+                        continue;
+
+                    } else if (suppressionDeadlineValue >= time) {
+                        // the suppression deadline is in future so don't do anything for 'listener'
+                        //  and ...
+                        continue;
+
+                    } else if (suppressionDeadlineValue < time) {
+                        // the suppression deadline was in past so remove this config and proceed
+                        earlierSuppressions.remove(type);
+                    }
+                }
+            }
+
+            // perform the notification by "showing" 'change' to 'listener'
+            listener.viewChanged(change);
+
+            // obtain the notification suppression config optionally contributed by 'listener'
+            //  this is a DESTRUCTIVE read operation!
+            final Map<ViewChangeType, Long> listenersSuppressionConfig =
+                    change.obtainAndResetNotificationSuppressionConfig();
+
+            if (listenersSuppressionConfig != null) {
+                // if unequal to 'null', i.e. 'listener' contributed suppression infos, evaluate them
+                updateSuppressionData(listener, listenersSuppressionConfig);
+            }
         }
     }
 
+    private void updateSuppressionData(final IViewChangeListener listener,
+            final Map<ViewChangeType, Long> declaredSuppressionConfig) {
+
+        final Map<ViewChangeType, Long> currentConfig = notificationSuppressions.get(listener);
+
+        if (currentConfig == null) {
+            // in case no suppression config is available, yet, just put the new one into the map
+            notificationSuppressions.put(listener, declaredSuppressionConfig);
+            return;
+        }
+
+        // otherwise update the entries of 'currentConfig' entry by entry
+        for (final Map.Entry<ViewChangeType, Long> entry : declaredSuppressionConfig.entrySet()) {
+            final ViewChangeType type = entry.getKey();
+            final Long currentDeadline = currentConfig.get(type);
+
+            if (currentDeadline == null) {
+                // in case no suppression of 'type' is currently configured
+                currentConfig.put(type, entry.getValue());
+
+            } else if (currentDeadline < entry.getValue()) {
+                // in case the deadline of 'type' suppressions is to be extended
+                //  note that this case implicitly includes the case of 'currentDeadline' equals to '0'!
+                currentConfig.put(type, entry.getValue());
+            } // else if currentDeadline >= entry.getValue the later deadline will be kept
+        }
+    }
 
     /**
      * Forwards the given <code>selection</code> to the employed {@link ContextViewer} that is in
      * charge of broadcasting it into the platform and the registered selection listeners.
-     * 
+     *
      * @param selection
      *            the new {@link ISelection}
      */
