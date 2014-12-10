@@ -102,10 +102,10 @@ public abstract class AbstractViewer implements IViewer {
         for (final ViewChangeType t : types) {
             viewChangeListeners.put(t, listener);
         }
+
+        viewChangeListenersView = null;
     }
-    
-    private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListenersView;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -117,7 +117,9 @@ public abstract class AbstractViewer implements IViewer {
             this.viewChangeListenersView = null;
         }
     }
-    
+
+    private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListenersView;
+
     /**
      * Provides the {@link Multimap} containing the registered {@link IViewChangeListener
      * IViewChangeListeners}.
