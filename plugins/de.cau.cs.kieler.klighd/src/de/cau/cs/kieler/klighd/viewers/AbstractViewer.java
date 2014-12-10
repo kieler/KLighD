@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -43,12 +43,12 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
  * ones ({@link Object}-based) and the selection related ones. The view model related methods (
  * {@link KGraphElement}/{@link de.cau.cs.kieler.core.kgraph.KNode KNode}/{@link KText}-based ones)
  * must be implemented by concrete viewers.
- * 
+ *
  * @author mri
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
+ * @kieler.rating proposed yellow by chsch
  */
 public abstract class AbstractViewer implements IViewer {
 
@@ -70,7 +70,7 @@ public abstract class AbstractViewer implements IViewer {
 
     /**
      * Specialized version of {@link #setModel(Object, boolean)} tailored to {@link KNode} input models.
-     * 
+     *
      * @param model
      *            the input model
      * @param sync
@@ -95,10 +95,10 @@ public abstract class AbstractViewer implements IViewer {
             viewChangeListeners = HashMultimap.create();
             notificationSuppressions = Maps.newHashMap();
         }
-        
+
         final ViewChangeType[] types =
                 eventTypes != null && eventTypes.length != 0 ? eventTypes : ViewChangeType.values();
-        
+
         for (final ViewChangeType t : types) {
             viewChangeListeners.put(t, listener);
         }
@@ -123,7 +123,7 @@ public abstract class AbstractViewer implements IViewer {
     /**
      * Provides the {@link Multimap} containing the registered {@link IViewChangeListener
      * IViewChangeListeners}.
-     * 
+     *
      * @return the {@link Multimap} containing the registered {@link IViewChangeListener
      *         IViewChangeListeners}.
      */
@@ -133,11 +133,11 @@ public abstract class AbstractViewer implements IViewer {
         }
         return viewChangeListeners;
     }
-    
+
     /**
      * Notifies the registered {@link IViewChangeListener IViewChangeListeners} of a diagram view
      * change.
-     * 
+     *
      * @param type
      *            the corresponding {@link ViewChangeType}
      * @param affectedElement
@@ -258,7 +258,7 @@ public abstract class AbstractViewer implements IViewer {
     public boolean isDisplayed(final Object semanticElement, final boolean checkParents) {
         return getContextViewer().isVisible(semanticElement, false);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -286,34 +286,34 @@ public abstract class AbstractViewer implements IViewer {
     public void reveal(final Object semanticElement, final int duration) {
         getContextViewer().reveal(semanticElement, duration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void centerOn(final Object semanticElement, final int duration) {
         getContextViewer().centerOn(semanticElement, duration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void panToTopLeftCorner(final Object semanticElement, final int duration) {
         getContextViewer().panToTopLeftCorner(semanticElement, duration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void zoomToLevel(final float zoomLevel, final int duration) {
         getContextViewer().zoomToLevel(zoomLevel, duration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void zoomToFocus(final Object semanticElement, final int duration) {
         getContextViewer().zoomToFocus(semanticElement, duration);
-        
+
     }
 
     /**
@@ -322,49 +322,49 @@ public abstract class AbstractViewer implements IViewer {
     public void zoom(final ZoomStyle style, final int duration) {
         getContextViewer().zoom(style, duration);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public boolean isExpanded(final Object semanticElement) {
         return getContextViewer().isExpanded(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void collapse(final Object semanticElement) {
         getContextViewer().collapse(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void expand(final Object semanticElement) {
         getContextViewer().expand(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void toggleExpansion(final Object semanticElement) {
         getContextViewer().toggleExpansion(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void hide(final Object semanticElement) {
         getContextViewer().hide(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void show(final Object semanticElement) {
         getContextViewer().show(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -405,70 +405,70 @@ public abstract class AbstractViewer implements IViewer {
     public KlighdTreeSelection getDiagramSelection() {
         return getContextViewer().getDiagramSelection();
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void toggleSelectionOf(final Object semanticElement) {
         getContextViewer().toggleSelectionOf(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void toggleSelectionOf(final KGraphElement diagramElement) {
         getContextViewer().toggleSelectionOf(diagramElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void toggleSelectionOf(final KText diagramElement) {
         getContextViewer().toggleSelectionOf(diagramElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void toggleSelectionOfSemanticElements(final Set<Object> diagramElements) {
         getContextViewer().toggleSelectionOfSemanticElements(diagramElements);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void toggleSelectionOfDiagramElements(final Set<? extends EObject> diagramElements) {
         getContextViewer().toggleSelectionOfDiagramElements(diagramElements);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void resetSelectionTo(final Object semanticElement) {
         getContextViewer().resetSelectionTo(semanticElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void resetSelectionTo(final KGraphElement diagramElement) {
         getContextViewer().resetSelectionTo(diagramElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void resetSelectionTo(final KText diagramElement) {
         getContextViewer().resetSelectionTo(diagramElement);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void resetSelectionToSemanticElements(final Iterable<? extends Object> diagramElements) {
         getContextViewer().resetSelectionToSemanticElements(diagramElements);
     }
-    
+
     /**
      * {@inheritDoc}
      */

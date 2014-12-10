@@ -29,9 +29,9 @@ import de.cau.cs.kieler.core.kgraph.KNode;
  * Defines the notification API to be implemented by concrete listeners being informed about changes
  * of the corresponding diagram view, e.g. changes in visible area, expansion of elements, the
  * current clip, ...
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
@@ -39,28 +39,28 @@ public interface IViewChangeListener {
 
     /**
      * Called by KLighD viewers in order to notify <code>this</code> {@link IViewChangeListener}.
-     * 
+     *
      * @param change a {@link ViewChange} notification providing information on the occurred change
      */
     void viewChanged(ViewChange change);
 
-    
+
     /**
      * Describes notification objects providing information of the view change to be broadcasted to
      * {@link IViewChangeListener IViewChangeListeners}.
-     * 
+     *
      * @author chsch
      */
     public static class ViewChange {
-        
+
         private final IViewer activeViewer;
         private final ViewChangeType changeType;
         private final KGraphElement affectedElement;
         private final double diagramScale;
-        
+
         /**
          * Constructor.
-         * 
+         *
          * @param viewer
          *            the viewer the change took place in
          * @param type
@@ -82,7 +82,7 @@ public interface IViewChangeListener {
 
         /**
          * Provides the {@link IViewer} the change occurred in.
-         * 
+         *
          * @return the {@link IViewer} the change occurred in.
          */
         public IViewer getViewer() {
@@ -91,7 +91,7 @@ public interface IViewChangeListener {
 
         /**
          * Provides the corresponding {@link ViewContext} for convenience.
-         *  
+         *
          * @return the {@link ViewContext} associated to the diagram the change took place in.
          */
         public ViewContext getViewContext() {
@@ -101,11 +101,11 @@ public interface IViewChangeListener {
                 return null;
             }
         }
-        
+
         /**
          * Provides the view change type.
-         * 
-         * @return a element of {@link ViewChangeType} denoting view change type.  
+         *
+         * @return a element of {@link ViewChangeType} denoting view change type.
          */
         public ViewChangeType getType() {
             return this.changeType;
@@ -113,7 +113,7 @@ public interface IViewChangeListener {
 
         /**
          * Provides the {@link KGraphElement} affected during the view change being notified.
-         * 
+         *
          * @return the {@link KGraphElement} affected during the view change being notified
          */
         public KGraphElement getAffectedElement() {
@@ -123,7 +123,7 @@ public interface IViewChangeListener {
         /**
          * Provides the zoom factor of the currently visible diagram area.
          * The value is normalized to 1.0, i.e. 1.0 denotes original size.
-         * 
+         *
          * @return the zoom factor of the currently visible diagram area
          */
         public double getDiagramZoomScale() {
@@ -140,8 +140,8 @@ public interface IViewChangeListener {
          * {@link KNode KNodes} visible at the moment of iterating (lazy evaluation)!<br>
          * <br>
          * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
-         * reasons. 
-         * 
+         * reasons.
+         *
          * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}
          */
         public Iterator<KNode> visibleDiagramNodes() {
