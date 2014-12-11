@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Plug-In Wizard for KLighD-Based Projects
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.wizard;singleton:=true
-Bundle-Version: 0.1.3.qualifier
+Bundle-Version: 0.1.4.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.ui.wizard.KlighdWizardPlugin
 Require-Bundle: org.apache.log4j,
  org.eclipse.core.expressions,

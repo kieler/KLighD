@@ -9,7 +9,7 @@
   </parent>
   <groupId>de.cau.cs.kieler</groupId>
   <artifactId>de.cau.cs.kieler.klighd.ui.wizard</artifactId>
-  <version>0.1.3-SNAPSHOT</version>
+  <version>0.1.4-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <build>
     <sourceDirectory>src</sourceDirectory>
