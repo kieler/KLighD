@@ -9,7 +9,7 @@ Bundle-Localization: plugin
 Export-Package: de.cau.cs.kieler.core.kgraph,
  de.cau.cs.kieler.core.kgraph.impl,
  de.cau.cs.kieler.core.kgraph.util
-Require-Bundle: de.cau.cs.kieler.core,
+Require-Bundle: de.cau.cs.kieler.core;bundle-version="0.14.0";visibility:=reexport,
  org.eclipse.emf.ecore;bundle-version="2.5.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
