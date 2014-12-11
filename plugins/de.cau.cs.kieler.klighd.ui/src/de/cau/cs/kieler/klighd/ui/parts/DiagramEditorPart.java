@@ -394,6 +394,13 @@ public class DiagramEditorPart extends EditorPart implements
 
         this.currentOutlinePage = null;
 
+        if (resourceSet != null) {
+            for (Resource r : resourceSet.getResources()) {
+                r.unload();
+            }
+            resourceSet = null;
+        }
+        
         super.dispose();
     }
 
