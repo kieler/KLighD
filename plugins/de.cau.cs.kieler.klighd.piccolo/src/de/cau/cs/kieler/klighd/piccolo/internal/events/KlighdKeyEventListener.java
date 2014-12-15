@@ -21,7 +21,6 @@ import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.TypedEvent;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerEx.IKlighdInputEvent;
@@ -111,7 +110,7 @@ public class KlighdKeyEventListener implements KeyListener {
         /**
          * {@inheritDoc}
          */
-        public TypedEvent getEvent() {
+        public KeyEvent getEvent() {
             return this.keyEvent;
         }
         
