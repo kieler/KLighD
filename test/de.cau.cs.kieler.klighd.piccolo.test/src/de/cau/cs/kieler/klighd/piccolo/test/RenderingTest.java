@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -19,12 +19,15 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.text.KGraphStandaloneSetup;
 import de.cau.cs.kieler.core.krendering.KBackground;
 import de.cau.cs.kieler.core.krendering.KEllipse;
 import de.cau.cs.kieler.core.krendering.KForeground;
@@ -52,12 +55,12 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 
 /**
- * 
+ *
  * Tests that check whether styles and shapes that are defined in the KGraph also show up
  * equivalently in the underlying piccolo graph.
- * 
+ *
  * @author ckru
- * 
+ *
  */
 @RunWith(ModelCollectionTestRunner.class)
 @BundleId("de.cau.cs.kieler.klighd.piccolo.test")
@@ -65,21 +68,32 @@ import edu.umd.cs.piccolo.PRoot;
 @ModelFilter("KlighdRenderingTestModel.kgt")
 public class RenderingTest {
 
-    private static KNode graph;
+    private KNode graph;
 
-    private static DiagramController controller;
+    private DiagramController controller;
+
+    /**
+     * Provides a {@link ResourceSet} in order to load the models properly.
+     *
+     * @return the required {@link ResourceSet}
+     */
+    @ModelCollectionTestRunner.ResourceSet
+    public static ResourceSet getResourceSet() {
+        return new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration().getInstance(
+                XtextResourceSet.class);
+    }
 
     /**
      * Some initialization to insert input KGraph into some Klighd structures.
-     * 
+     *
      * @param n
      *            KNode representing the input KGraph
      */
-    private static void initialize(final KNode n) {
+    private void initialize(final KNode n) {
         graph = n;
 
-        KlighdMainCamera camera = new KlighdMainCamera();
-        PRoot pRoot = new PRoot();
+        final KlighdMainCamera camera = new KlighdMainCamera();
+        final PRoot pRoot = new PRoot();
         pRoot.addChild(camera);
 
         controller = new DiagramController(graph, camera, true, false);
@@ -88,114 +102,100 @@ public class RenderingTest {
     /**
      * Test whether the test graphs styles are the same in KGraph notation as well as in the piccolo
      * results.
-     * 
+     *
      * @param node
      *            test kgraph
      */
     @Test
     public void renderingStyleTest(final KNode node) {
-        Boolean initializer = false;
-        if (controller == null) {
-            initialize(node);
-            initializer = true;
-        }
-        String id = getKNodeId(node);
-        
-        INode targetNode = findPNodeById(id, controller.getNode());
-        KlighdPath path = getKlighdPath(targetNode);
-        KRendering ren = node.getData(KRendering.class);
+        initialize(node);
+
+        final String id = getKNodeId(node);
+
+        final INode targetNode = findPNodeById(id, controller.getNode());
+        final KlighdPath path = getKlighdPath(targetNode);
+        final KRendering ren = node.getData(KRendering.class);
         if (path != null && ren != null) {
             compareStyle(path, ren, node);
         }
-        for (KNode child: node.getChildren()) {
+        for (final KNode child: node.getChildren()) {
             renderingStyleTest(child);
-        }
-        if (initializer) {
-            controller = null;
-            graph = null;
         }
     }
 
     /**
      * Test whether the test graphs shapes are the same in KGraph notation as well as in the piccolo
      * results.
-     * 
+     *
      * @param node
      *            test kgraph
      */
     @Test
     public void renderingShapeTest(final KNode node) {
-        Boolean initializer = false;
-        if (controller == null) {
-            initialize(node);
-            initializer = true;
-        }
-        
-        String id = getKNodeId(node);
-        INode targetNode = findPNodeById(id, controller.getNode());
-        KlighdPath path = getKlighdPath(targetNode);
-        KRendering ren = node.getData(KRendering.class);
+        initialize(node);
+
+        final String id = getKNodeId(node);
+        final INode targetNode = findPNodeById(id, controller.getNode());
+        final KlighdPath path = getKlighdPath(targetNode);
+        final KRendering ren = node.getData(KRendering.class);
         if (path != null && ren != null) {
             compareShape(path, ren, node);
         }
-        for (KNode child: node.getChildren()) {
+        for (final KNode child: node.getChildren()) {
             renderingShapeTest(child);
-        }
-
-        if (initializer) {
-            controller = null;
-            graph = null;
         }
     }
 
     private String getKNodeId(final KNode node) {
-        KIdentifier ki = node.getData(KIdentifier.class);
-        String id = "?";
+        final KIdentifier ki = node.getData(KIdentifier.class);
+        final String id;
         if (ki != null) {
             id = ki.getId();
+        } else {
+            id = node.toString();
         }
         return id;
     }
-    
+
     /**
      * Compare the shape of given renderings from a KNode and a PNode.
-     * 
+     *
      * @param path
      *            piccolo object
      * @param ren
      *            KGraph object
      */
     private void compareShape(final KlighdPath path, final KRendering ren, final KNode node) {
-        String id = getKNodeId(node);
+        final String id = getKNodeId(node);
         Assert.assertTrue(
                 "Shape mismatched on node " + id,
                 (ren instanceof KRectangle && path.getShape() instanceof Rectangle2D)
                         || (ren instanceof KEllipse && path.getShape() instanceof Ellipse2D)
-                        || (ren instanceof KRoundedRectangle 
+                        || (ren instanceof KRoundedRectangle
                                 && path.getShape() instanceof RoundRectangle2D)
                         || (ren instanceof KPolygon && path.getShape() instanceof Path2D));
     }
 
     /**
      * Compare the styles of given renderings from a KNode and a PNode.
-     * 
+     *
      * @param path
      *            object holding styles for klighd piccolo
      * @param ren
      *            object holding styles for KGraph
      */
     private void compareStyle(final KlighdPath path, final KRendering ren, final KNode node) {
-        List<KStyle> styles = ren.getStyles();
-        KBackground bg = (KBackground) getStyle(styles, KBackground.class);
-        KForeground fg = (KForeground) getStyle(styles, KForeground.class);
-        KShadow sh = (KShadow) getStyle(styles, KShadow.class);
-        RGB shadow = path.getShadow();
-        RGB paint = path.getSWTPaint();
-        RGBGradient paintGradient = path.getSWTPaintGradient();
-        RGB strokepaint = path.getStrokePaint();
-        RGBGradient strokeGradient = path.getStrokePaintGradient();
-        
-        String id = getKNodeId(node);
+        final List<KStyle> styles = ren.getStyles();
+        final KBackground bg = (KBackground) getStyle(styles, KBackground.class);
+        final KForeground fg = (KForeground) getStyle(styles, KForeground.class);
+        final KShadow sh = (KShadow) getStyle(styles, KShadow.class);
+        final RGB shadow = path.getShadow();
+        final RGB paint = path.getSWTPaint();
+        final RGBGradient paintGradient = path.getSWTPaintGradient();
+        final RGB strokepaint = path.getStrokePaint();
+        final RGBGradient strokeGradient = path.getStrokePaintGradient();
+
+        final String id = getKNodeId(node);
         if (!(bg != null && paint == null)) {
             Assert.assertTrue("Background color mismatched on node " + id,
                     (bg == null && paint == null)
@@ -238,7 +238,7 @@ public class RenderingTest {
      * Fetch the style of a certain type out of list of styles usually attached to a KRendering. If
      * multiple of the same type are present it will return the bottom most one which should also be
      * the one that is actually displayed.
-     * 
+     *
      * @param styles
      *            a list of styles, usually gotten from a KRendering
      * @param type
@@ -256,7 +256,7 @@ public class RenderingTest {
 
     /**
      * Gets the KlighdPath from the given node.
-     * 
+     *
      * @param node
      *            the node whose path to get
      * @return the KlighdPath attached to the given node
@@ -264,7 +264,7 @@ public class RenderingTest {
     private KlighdPath getKlighdPath(final INode node) {
         if (node instanceof PNode) {
             for (int i = 0; i < ((PNode) node).getChildrenCount(); i++) {
-                PNode pn = ((PNode) node).getChild(i);
+                final PNode pn = ((PNode) node).getChild(i);
                 if (pn instanceof KlighdPath) {
                     return (KlighdPath) pn;
                 }
@@ -275,7 +275,7 @@ public class RenderingTest {
 
     /**
      * Finds a node with the given id in a given piccolo graph.
-     * 
+     *
      * @id the id to search for
      * @param graph
      *            the piccolo graph in which to search
@@ -290,11 +290,11 @@ public class RenderingTest {
             return node;
         } else {
             INode result = null;
-            KChildAreaNode kcan = node.getChildAreaNode();
-            PLayer nlay = kcan.getNodeLayer();
+            final KChildAreaNode kcan = node.getChildAreaNode();
+            final PLayer nlay = kcan.getNodeLayer();
             if (nlay != null) {
                 for (int i = 0; i < nlay.getChildrenCount(); i++) {
-                    INode n = (INode) nlay.getChild(i);
+                    final INode n = (INode) nlay.getChild(i);
                     result = findPNodeById(id, n);
                     if (result != null) {
                         return result;
