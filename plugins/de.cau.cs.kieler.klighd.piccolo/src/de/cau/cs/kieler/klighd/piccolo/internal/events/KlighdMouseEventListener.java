@@ -26,7 +26,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
-import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.core.krendering.Trigger;
@@ -403,7 +402,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         /**
          * {@inheritDoc}
          */
-        public TypedEvent getEvent() {
+        public GestureEvent getEvent() {
             return this.gestureEvent;
         }
         
@@ -509,7 +508,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         /**
          * {@inheritDoc}
          */
-        public TypedEvent getEvent() {
+        public MouseEvent getEvent() {
             return mouseEvent;
         }
         
