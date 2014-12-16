@@ -63,7 +63,7 @@ import edu.umd.cs.piccolo.PRoot;
 @BundleId("de.cau.cs.kieler.klighd.piccolo.test")
 @ModelPath("testModels/")
 @ModelFilter("KlighdRenderingTestModel.kgt")
-public class RenderingTests {
+public class RenderingTest {
 
     private static KNode graph;
 

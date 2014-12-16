@@ -35,7 +35,7 @@ import edu.umd.cs.piccolo.util.PAffineTransform;
  * @author ckru
  * 
  */
-public class AdapterTests {
+public class AdapterTest {
 
     @Test
     public void layoutTest() {

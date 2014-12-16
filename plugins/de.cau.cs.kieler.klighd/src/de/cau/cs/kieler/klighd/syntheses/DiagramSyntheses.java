@@ -97,7 +97,7 @@ public final class DiagramSyntheses {
      *            the particular layout option's id, e.g. one of
      *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
      * @param value
-     *            the option value. It is possilbe to pass string representations 
+     *            the option value. It is possible to pass string representations 
      *            of EnumSets as well as any non-string property.
      * @return <code>element</code> allowing to perform multiple operations on it in one statement
      */

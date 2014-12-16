@@ -117,7 +117,8 @@ public class HighlightedEdgeToForegroundTest {
         final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
 
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
-
+        
+        waitAmoment();
         clickOn(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
 
@@ -144,7 +145,8 @@ public class HighlightedEdgeToForegroundTest {
         final int sampleXPos = 50;
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 200;
-
+        waitAmoment();
+        
         moveTo(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
@@ -192,6 +194,7 @@ public class HighlightedEdgeToForegroundTest {
         final int sampleXPos = 120;
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 50;
+        waitAmoment();
 
         moveTo(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
@@ -244,7 +247,8 @@ public class HighlightedEdgeToForegroundTest {
                 //   + edge spacing factor * spacing
         final int secondClickXPos = 5 + 50 + 100 + 5 + 100 + 5 + 20;
             // port width + border spacing + spacing + port width + node with + port width + 20
-
+        waitAmoment();
+        
         moveTo(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
