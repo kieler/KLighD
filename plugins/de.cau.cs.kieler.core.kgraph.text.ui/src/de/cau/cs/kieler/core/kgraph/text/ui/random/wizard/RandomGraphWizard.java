@@ -283,7 +283,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
         if (options.getProperty(GeneratorOptions.TIME_BASED_RANDOMIZATION)) {
             random = new Random();
         } else {
-            random = new Random(options.getProperty(GeneratorOptions.RANDOMIZATION_SEED));
+            random = new Random(options.getProperty(GeneratorOptions.RANDOMIZATION_SEED).intValue());
         }
         RandomGraphGenerator generator = new RandomGraphGenerator(random);
         
