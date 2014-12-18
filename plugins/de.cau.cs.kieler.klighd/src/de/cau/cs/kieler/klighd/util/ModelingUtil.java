@@ -283,6 +283,30 @@ public final class ModelingUtil {
     }
 
 
+    /**
+     * A modified version of {@link EObject#eAllContents()} allowing to filter the traversed
+     * elements (and self) based on its type. In contrast to
+     * 
+     * <pre>
+     * Iterators.filter(eObject.eAllContents(), ...)
+     * </pre>
+     * 
+     * or {@link ModelingUtil#eAllContentsOfType(EObject, Class)} this function does not visit
+     * elements being not of one of the given types. Consequently, elements of one of the given types
+     * being (deeply) contained by those skipped elements are not found.
+     * 
+     * @param eObject
+     *            the {@link EObject} whose contents (and self) are to be traversed
+     * @param types
+     *            the types of elements to be visited (varArgs)
+     * @return the tailored {@link Iterator}
+     */
+    public static Iterator<EObject> selfAndEAllContentsOfType2(final EObject eObject,
+            final Class<?>... types) {
+        return Iterators.concat(Iterators.singletonIterator(eObject),
+                eAllContentsOfType2(eObject, types));
+    }
+
 
     /**
      * A little shortcut for removing {@link org.eclipse.emf.common.notify.Adapter Adapters} from an
