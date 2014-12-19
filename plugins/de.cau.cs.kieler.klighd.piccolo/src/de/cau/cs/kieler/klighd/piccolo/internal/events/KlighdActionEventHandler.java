@@ -78,6 +78,11 @@ public class KlighdActionEventHandler implements PInputEventListener {
      * {@inheritDoc}
      */
     public void processEvent(final PInputEvent inputEvent, final int eventType) {
+
+        // CAUTION: parts of this method and parts of
+        //  KlighdActionExecutionHandler.execute(...) (klighd.ui) are symmetric,
+        // In case of changes make sure to update both!
+
         // don't modify the evaluation of the 'handled' flag in an ad-hoc way,
         //  first make sure that the scenario described below is not enabled again.
         if (inputEvent.isHandled()) {
@@ -174,8 +179,17 @@ public class KlighdActionEventHandler implements PInputEventListener {
             anyActionPerformed = result.getActionPerformed();
         }
 
+        // remember the desired zoom style in the view context
+        final ViewContext vc = viewer.getViewContext();
+
+        final ZoomStyle zoomStyle = ZoomStyle.create(result, vc);
+        final KNode focusNode = result.getFocusNode();
+
         if (!anyActionPerformed) {
-            // if no action has been performed, skip the layout update and return
+            // if no action has been performed, skip the layout update and stop the recording, ...
+            vc.getLayoutRecorder().stopRecording(zoomStyle, focusNode, 0);
+
+            // ... and return
             return;
         }
 
@@ -183,14 +197,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  first make sure that the scenario described below is not enabled again.
         inputEvent.setHandled(true);
 
-        // remember the desired zoom style in the view context
-        final ViewContext vc = viewer.getViewContext();
-
         final boolean animate = result.getAnimateLayout();
-        final ZoomStyle zoomStyle = ZoomStyle.create(result, vc);
-        final KNode focusNode =
-                zoomStyle == ZoomStyle.getZoomToFocusStyle() ? result.getFocusNode() : null;
-
         final List<ILayoutConfig> layoutConfigs = result.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager

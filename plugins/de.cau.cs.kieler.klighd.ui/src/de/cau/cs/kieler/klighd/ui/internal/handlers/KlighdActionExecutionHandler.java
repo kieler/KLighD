@@ -63,6 +63,10 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IKlighdSelection selection;
 
+        // CAUTION: parts of this method and parts of
+        //  KlighdActionEventHandler.processEvent(...) (klighd.piccolo) are symmetric,
+        // In case of changes make sure to update both!
+
         // in case this handler is invoked via a context menu,
         //  the activeMenuSelection (ISources#ACTIVE_MENU_SELECTION_NAME) is available
         ISelection s = HandlerUtil.getActiveMenuSelection(event);
@@ -124,13 +128,13 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         }
 
         final ActionResult result = Iterables.getFirst(results, ActionResult.createResult(false));
+        final ZoomStyle zoomStyle = ZoomStyle.create(result, viewContext);
 
         if (anyActionPerformed) {
             LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
-                    ZoomStyle.create(result, viewContext), result.getFocusNode(),
-                    result.getLayoutConfigs());
+                    zoomStyle, result.getFocusNode(), result.getLayoutConfigs());
         } else {
-            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
+            viewContext.getLayoutRecorder().stopRecording(zoomStyle, result.getFocusNode(), 0);
         }
         
         return null;
