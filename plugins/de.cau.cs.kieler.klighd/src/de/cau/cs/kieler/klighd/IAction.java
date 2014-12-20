@@ -186,17 +186,22 @@ public interface IAction {
 
         /**
          * Creates a new {@link ActionResult} instance .
-         * 
-         * @param actionPerformed
-         *            flag indicating whether the action actually performed changes on the diagram
-         *            and a subsequent layout refreshment is required
+         *
+         * @param actionRequiresLayout
+         *            flag indicating whether the action performed changes on the diagram requiring
+         *            a subsequent layout re-computation
          * @param config
-         *            an optional {@link ILayoutConfig}, may be <code>null</code>
+         *            some additional {@link ILayoutConfig ILayoutConfigs} to by incorporated,
+         *            will be ignored if {@code actionRequiresLayout == false}
          * @return the requested {@link ActionResult}
          */
-        public static ActionResult createResult(final boolean actionPerformed,
+        public static ActionResult createResult(final boolean actionRequiresLayout,
                 final ILayoutConfig... config) {
-            return new ActionResult(actionPerformed, Arrays.asList(config));
+            if (actionRequiresLayout) {
+                return new ActionResult(actionRequiresLayout, Arrays.asList(config));
+            } else {
+                return new ActionResult(actionRequiresLayout).dontZoom();
+            }
         }
         
         /**
@@ -324,6 +329,7 @@ public interface IAction {
         /**
          * Getter.
          * 
+         * Getter. Denotes whether a subsequent layout update run is required.
          * @return the {@link #actionPerformed} flag
          */
         public boolean getActionPerformed() {

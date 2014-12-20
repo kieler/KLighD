@@ -78,12 +78,14 @@ public class KlighdActionEventHandler implements PInputEventListener {
      * {@inheritDoc}
      */
     public void processEvent(final PInputEvent inputEvent, final int eventType) {
+        // SUPPRESS CHECKSTYLE PREVIOUS MethodLength -- don't bother me,
+        //  there's lots of documentation!
 
         // CAUTION: parts of this method and parts of
         //  KlighdActionExecutionHandler.execute(...) (klighd.ui) are symmetric,
         // In case of changes make sure to update both!
 
-        // don't modify the evaluation of the 'handled' flag in an ad-hoc way,
+        // caution: don't modify the evaluation of the 'handled' flag in an ad-hoc way,
         //  first make sure that the scenario described below is not enabled again.
         if (inputEvent.isHandled()) {
             return;
@@ -140,12 +142,11 @@ public class KlighdActionEventHandler implements PInputEventListener {
         }
 
         ActionContext context = null; // construct the context lazily when it is required
-        ActionResult result = null;
+        ActionResult resultOfLastAction = null;
+        ActionResult resultOfLastActionRequiringLayout = null;
 
-        // this flag is used to track the successful execution of actions
-        //  in order to enable animated diagram changes, the viewer must be informed to
-        //  record view model changes, which is done once an action is actually executed
-        boolean anyActionPerformed = false;
+        // this flag is used to track the execution of actions requiring a layout update
+        boolean anyActionRequiresLayout = false;
 
         for (final KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
             if (!action.getTrigger().equals(me.getTrigger()) || !guardsMatch(action, me)) {
@@ -162,43 +163,62 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 context = new ActionContext(this.viewer, action.getTrigger(), null, rendering);
             }
 
-            if (!anyActionPerformed) {
+            if (!anyActionRequiresLayout) {
+                // in order to enable animated movements of diagram elements due to view model changes,
+                //  the viewer must be informed to record view model changes before executing any action
                 viewer.startRecording();
-                // the related 'stopRecording(...)' will be performed after the layout application
-            }
-            result = actionImpl.execute(context);
 
-            if (result == null) {
+                // the related 'stopRecording(...)' will be performed below in case no layout update is
+                //  required, and after the layout application, respectively
+            }
+
+            resultOfLastAction = actionImpl.execute(context);
+
+            if (resultOfLastAction == null) {
                 viewer.stopRecording(ZoomStyle.NONE, null, 0);
-                final String msg = "KLighD action event handler: Execution of "
-                        + actionImpl.getClass()
+
+                final String msg = "KLighD action event handler: Execution of " + actionImpl.getClass()
                         + " returned 'null', expected an IAction.ActionResult.";
                 throw new IllegalResultException(msg);
             }
 
-            anyActionPerformed = result.getActionPerformed();
+            final boolean actionRequiresLayout = resultOfLastAction.getActionPerformed();
+            if (actionRequiresLayout) {
+                anyActionRequiresLayout = true;
+                resultOfLastActionRequiringLayout = resultOfLastAction;
+            }
         }
 
-        // remember the desired zoom style in the view context
-        final ViewContext vc = viewer.getViewContext();
-
-        final ZoomStyle zoomStyle = ZoomStyle.create(result, vc);
-        final KNode focusNode = result.getFocusNode();
-
-        if (!anyActionPerformed) {
-            // if no action has been performed, skip the layout update and stop the recording, ...
-            vc.getLayoutRecorder().stopRecording(zoomStyle, focusNode, 0);
-
-            // ... and return
+        if (resultOfLastAction == null) {
+            // ... indicating that no action has been executed at all
+            // skip any layout and zoom update, do not tag 'inputEvent' to be handled, and ...
             return;
         }
 
-        // don't modify the evaluation of the 'handled' flag in an ad-hoc way,
+        // otherwise 'resultOfLastAction' is a valid ActionResult determine the requested zoom style ...
+
+        // caution: don't modify the evaluation of the 'handled' flag in an ad-hoc way,
         //  first make sure that the scenario described below is not enabled again.
         inputEvent.setHandled(true);
 
-        final boolean animate = result.getAnimateLayout();
-        final List<ILayoutConfig> layoutConfigs = result.getLayoutConfigs();
+        final ViewContext vc = viewer.getViewContext();
+        if (!anyActionRequiresLayout) {
+            // ... i.e. no action requires layout (and 'resultOfLastActionRequiringLayout == null'),
+            // skip the layout update and stop recording, and finish here
+
+            // in case 'resultOfLastAction' was created via ActionResult.create(false) without any
+            //  zooming requests the resulting zoomStyle will be ZoomStyle.NONE,
+            //  see implementation of ActionResult.create(...)
+            vc.getLayoutRecorder().stopRecording(ZoomStyle.create(resultOfLastAction, vc),
+                    resultOfLastAction.getFocusNode(), 0);
+
+            return;
+        }
+
+        final boolean animate = resultOfLastAction.getAnimateLayout();
+        final ZoomStyle zoomStyle = ZoomStyle.create(resultOfLastActionRequiringLayout, vc);
+        final KNode focusNode = resultOfLastActionRequiringLayout.getFocusNode();
+        final List<ILayoutConfig> layoutConfigs = resultOfLastAction.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager
         //  finish the processing of 'inputEvent' quickly.
@@ -207,7 +227,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  the processing of 'inputEvent' by the input manager might get triggered a
         //  second time by some timer event causing a kind of nested/recursive (!) evaluation
         //  of 'inputEvent' and, thereby, this method.
-        // In addition, this scenario is tried to avoid by setting & evaluating the 'handled'.
+        // In addition, this scenario is tried to avoid by setting & evaluating the 'handled'
         //  flag of 'inputEvent' properly.
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
