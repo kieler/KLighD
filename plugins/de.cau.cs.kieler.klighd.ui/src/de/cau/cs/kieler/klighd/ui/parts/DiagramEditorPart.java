@@ -265,35 +265,41 @@ public class DiagramEditorPart extends EditorPart implements
             viewContext.update(model);
 
             if (requiresInitialLayout(viewContext)) {
-                // in order to avoid flickering we set the viewer's control
-                // (the canvas) invisible, the canvas of a potentially created outline
-                // page is invisible after initialization, too.
+                // In order to avoid flickering we set the viewer's control
+                //  (the canvas) invisible, the canvas of a potentially created outline
+                //  page is invisible after initialization, too.
                 viewer.getControl().setVisible(false);
 
-                // it is important to wait with the layout call until the #createPartControl
-                // method has finished and the widget toolkit has applied proper bounds
-                // to the parent composite via a Composite#layout call.
+                // It is important to wait with the layout call until the #createPartControl
+                //  method has finished and the widget toolkit has applied proper bounds
+                //  to the parent composite via a Composite#layout call.
                 // Otherwise a possible zoomToFit after the layout will fail since the
-                // view bounds are empty and no 'view area' to which to zoom can be
-                // determined. The async call here hopefully assures this.
+                //  view bounds are empty and no 'view area' to which to zoom can be
+                //  determined. The async call here hopefully assures this.
                 parent.getDisplay().asyncExec(new Runnable() {
                     public void run() {
-                        final Control control = viewer.getControl();
 
                         // In case of the editor initialization at start of the tool (due
-                        // to foregoing tool exit without closing the editor)
+                        //  to foregoing tool exit without closing the editor)
                         // and some startup logic closing all "leftover" editor parts
-                        // the viewer's control (the canvas) may have been disposed in the
-                        // meantime of schedule this runnable and executing it.
-                        // Thus check disposition here, and for cautiousness below, too.
-                        // (further Display activities may be schedule during the layout run
-                        // while waiting for the layouters to finish).
-                        if (control.isDisposed()) {
+                        //  the viewer's control (the canvas) may have been disposed in the
+                        //  meantime of schedule this runnable and executing it.
+                        // Thus check the disposition here, and for cautiousness after the
+                        //  the layout request, too. (further Display activities may be scheduled
+                        //  during the layout run while waiting for the layouters to finish).
+
+                        if (viewer == null) {
+                            // this is given if #dispose was called in the meantime
                             return;
                         }
 
-                        LightDiagramServices.layoutDiagram(viewContext, false,
-                                getInitialZoomStyle());
+                        final Control control = viewer.getControl();
+
+                        if (control == null || control.isDisposed()) {
+                            return;
+                        }
+
+                        LightDiagramServices.layoutDiagram(viewContext, false, getInitialZoomStyle());
 
                         if (control.isDisposed()) {
                             return;
@@ -395,12 +401,12 @@ public class DiagramEditorPart extends EditorPart implements
         this.currentOutlinePage = null;
 
         if (resourceSet != null) {
-            for (Resource r : resourceSet.getResources()) {
+            for (final Resource r : resourceSet.getResources()) {
                 r.unload();
             }
             resourceSet = null;
         }
-        
+
         super.dispose();
     }
 
