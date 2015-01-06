@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.ui.internal.handlers;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Iterator;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -34,9 +35,15 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.core.kgraph.KGraphData;
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
+import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
  * Handler to store the view model KGraph of a KlighD view to a file.
@@ -103,6 +110,29 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
                 // write a copy of the view model kgraph to the selected file
                 EObject copy = EcoreUtil.copy(viewContext.getViewModel());
+
+                // persist layout options and friends
+                KimlUtil.persistDataElements((KNode) copy);
+                // remove transient klighd state
+                @SuppressWarnings("unchecked")
+                Iterator<KGraphElement> kgeIt =
+                        (Iterator<KGraphElement>) (Iterator<?>) ModelingUtil.selfAndEAllContentsOfType2(
+                                copy, KGraphElement.class);
+                try {
+                while (kgeIt.hasNext()) {
+                    KGraphElement kge = kgeIt.next();
+                    Iterator<KGraphData> dataIt = kge.getData().iterator();
+                    while (dataIt.hasNext()) {
+                        KGraphData d = dataIt.next();
+                        // RenderinContextData
+                        if (d.getClass().equals(KGraphDataImpl.class)) {
+                            dataIt.remove();
+                        }
+                    }
+                }
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
                 
                 r.getContents().add(copy);
                 r.save(Collections.emptyMap());

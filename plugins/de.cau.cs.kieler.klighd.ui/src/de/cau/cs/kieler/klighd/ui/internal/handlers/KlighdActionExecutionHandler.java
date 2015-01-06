@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.ui.internal.handlers;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -27,9 +26,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -62,6 +59,10 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
      */
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IKlighdSelection selection;
+
+        // CAUTION: parts of this method and parts of
+        //  KlighdActionEventHandler.processEvent(...) (klighd.piccolo) are symmetric,
+        // In case of changes make sure to update both!
 
         // in case this handler is invoked via a context menu,
         //  the activeMenuSelection (ISources#ACTIVE_MENU_SELECTION_NAME) is available
@@ -101,14 +102,16 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         }
         
         final ViewContext viewContext = selection.getViewContext();
-        final List<ActionResult> results = Lists.newArrayList();
-        
-        // this flag is used to track the successful execution of actions
-        //  in order to enable animated diagram changes, the viewer must be informed to
-        //  record view model changes, which is done once an action is actually executed
-        boolean anyActionPerformed = false;
-        
+
+        ActionResult resultOfLastRun = null;
+        ActionResult resultOfLastRunRequiringLayout = null;
+
+        // in order to enable animated movements of diagram elements due to view model changes,
+        //  the viewer must be informed to record view model changes before executing any action
         viewContext.getLayoutRecorder().startRecording();
+
+        // the related 'stopRecording(...)' will be performed below in case no layout update is
+        //  required, and after the layout application, respectively
 
         final Iterator<KGraphElement> kges =
                 Iterators.filter(selection.diagramElementsIterator(), KGraphElement.class);
@@ -116,23 +119,29 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
         for (final KGraphElement kge : Iterables2.toIterable(kges)) {
             final ActionContext context = new ActionContext(viewContext.getViewer(), null, kge, null);
 
-            final ActionResult result = action.execute(context);
-            if (result != null) {
-                results.add(result);
-                anyActionPerformed |= result.getActionPerformed();
+            resultOfLastRun = action.execute(context);
+            if (resultOfLastRun != null && resultOfLastRun.getActionPerformed()) {
+                resultOfLastRunRequiringLayout = resultOfLastRun;
             }
         }
 
-        final ActionResult result = Iterables.getFirst(results, ActionResult.createResult(false));
+        if (resultOfLastRunRequiringLayout != null) {
+            final ActionResult result = resultOfLastRunRequiringLayout;
+            final ZoomStyle zoomStyle = ZoomStyle.create(result, viewContext);
 
-        if (anyActionPerformed) {
             LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
-                    ZoomStyle.create(result, viewContext), result.getFocusNode(),
-                    result.getLayoutConfigs());
+                    zoomStyle, result.getFocusNode(), result.getLayoutConfigs());
+
+        } else if (resultOfLastRun != null) {
+            viewContext.getLayoutRecorder().stopRecording(
+                    ZoomStyle.create(resultOfLastRun, viewContext), resultOfLastRun.getFocusNode(), 0);
         } else {
+            // ... i.e. no action has been executed at all
+            // skip any layout and zoom update
             viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
         }
-        
+
+        // and finally return as required by the API
         return null;
     }
     
