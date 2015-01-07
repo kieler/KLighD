@@ -15,15 +15,21 @@
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.xtend</groupId>
-        <artifactId>xtend-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <dependency-resolution>
+            <!-- Ignore the optional dependency to kiml.ui while computing the classpath!
+                 That dependency has been introduced because of registration of the
+                 customized handler for "de.cau.cs.kieler.kiml.ui.command.layout".
+                 Actually the dependency is not required at runtime but IMO
+                 it is justified because of reference of the command id.
+                 Note that this can't be kept in case further optional dependencies
+                 are added that need to be resolved for compiling all classes. -->
+            <optionalDependencies>ignore</optionalDependencies>
+          </dependency-resolution>
+        </configuration>
       </plugin>
     </plugins>
   </build>
