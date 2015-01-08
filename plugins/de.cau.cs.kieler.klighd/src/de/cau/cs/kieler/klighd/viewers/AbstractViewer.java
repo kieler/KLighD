@@ -110,8 +110,17 @@ public abstract class AbstractViewer implements IViewer {
      * {@inheritDoc}
      */
     public void removeViewChangedEventListener(final IViewChangeListener listener) {
-        if (listener != null) {
-            this.viewChangeListeners.values().remove(listener);
+        if (listener != null && viewChangeListeners != null) {
+
+            // removing a value from the 'values()' collection removes only the first occurrence
+            //  in the map; in order to remove all occurrences rather efficiently I employed an iterator
+            final Iterator<IViewChangeListener> listeners = this.viewChangeListeners.values().iterator();
+            while (listeners.hasNext()) {
+                if (listeners.next() == listener) {
+                    listeners.remove();
+                }
+            }
+
             this.notificationSuppressions.remove(listener);
 
             this.viewChangeListenersView = null;
