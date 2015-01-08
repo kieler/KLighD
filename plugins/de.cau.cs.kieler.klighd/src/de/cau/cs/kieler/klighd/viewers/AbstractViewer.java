@@ -78,7 +78,8 @@ public abstract class AbstractViewer implements IViewer {
      */
     public abstract void setModel(KNode model, boolean sync);
 
-
+    // I assume that both maps will be initialized simultaneously so
+    //  only the first is checked for 'null' later on
     private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListeners;
     private Map<IViewChangeListener, Map<ViewChangeType, Long>> notificationSuppressions;
 
