@@ -161,6 +161,7 @@ public class PiccoloTooltip {
             if (rendering == null && kge == null) {
                 return;
             }
+
             // get the mouse position
             mousePos = event.getCanvasPosition();
             event.getPath().canvasToLocal(mousePos, camera);
@@ -170,12 +171,10 @@ public class PiccoloTooltip {
             if (rendering != null) {
                 tooltipText = rendering.getProperty(KlighdProperties.TOOLTIP);
             } 
-            
+
             if (tooltipText == null && kge != null) {
                 KLayoutData l = kge.getData(KLayoutData.class);
                 tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
-            } else {
-                return;
             }
 
             // return if no tooltip was assembled
