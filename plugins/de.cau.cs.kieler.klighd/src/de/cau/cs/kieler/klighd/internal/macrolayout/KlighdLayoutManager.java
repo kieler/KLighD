@@ -62,6 +62,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
@@ -662,6 +663,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     final KShapeLayout labelLayout = element.getData(KShapeLayout.class);
                     if (labelLayout != null) {
                         transferShapeLayout(layoutLayout, labelLayout, false, true);
+                        
+                        // if the label's text was changed during layout, remember the new text in a
+                        // special property
+                        if (layoutLabel.getText() != null) {
+                            if (!layoutLabel.getText().equals(((KLabel) element).getText())) {
+                                labelLayout.setProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE,
+                                        layoutLabel.getText());
+                            }
+                        }
                     }
                     return true;
                 }

@@ -1,0 +1,40 @@
+/*
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ *
+ * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * 
+ * Copyright 2015 by
+ * + Christian-Albrechts-University of Kiel
+ *   + Department of Computer Science
+ *     + Real-Time and Embedded Systems Group
+ * 
+ * This code is provided under the terms of the Eclipse Public License (EPL).
+ * See the file epl-v10.html for the license text.
+ */
+package de.cau.cs.kieler.klighd.labels;
+
+import de.cau.cs.kieler.core.properties.Property;
+
+/**
+ * KLighD-specific properties related to label management.
+ * 
+ * @author cds
+ */
+public final class KlighdLabelProperties {
+    
+    /**
+     * String to override a label's original text with. If this property is set to a non-null value,
+     * that value is used as the label's text instead of the original text set in the view model.
+     */
+    public static final Property<String> LABEL_TEXT_OVERRIDE = new Property<String>(
+            "klighd.labels.modifiedLabelText", null);
+    
+    
+    /**
+     * Not supposed to be instantiated.
+     */
+    private KlighdLabelProperties() {
+        throw new IllegalStateException("not supposed to be instantiated.");
+    }
+    
+}
