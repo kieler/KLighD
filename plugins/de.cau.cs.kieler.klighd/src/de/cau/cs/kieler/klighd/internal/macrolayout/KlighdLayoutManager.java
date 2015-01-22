@@ -297,18 +297,30 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         final KShapeLayout layoutLayout = layoutNode.getData(KShapeLayout.class);
         final KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
 
-        final boolean isCompoundNode = RenderingContextData.get(node).getProperty(
-                KlighdInternalProperties.POPULATED)
-                && Iterables.any(node.getChildren(), RenderingContextData.IS_ACTIVE);
+        // first check whether children of 'node' shall be taken into account at all.
+        // note that all KNodes of a view model are set 'POPULATED' except the
+        //  explicitly (e.g. initially) collapsed ones.
+        // note the special implementation of 'IS_POPULATED' in case no RenderingContextData
+        //  are attached to 'node'; the predicate returns 'true' in that particular case.
+        // this is required for applying layout to view models that aren't shown by a viewer
+        //  and whose (compound) nodes are not tagged to be 'populated'. This may happen in
+        //  batch tests, for example.
+        final boolean isPopulated = RenderingContextData.IS_POPULATED.apply(node);
 
-        final Predicate<KRendering> filter = RenderingContextData.IS_POPULATED.apply(node)
-                ? KlighdPredicates.isExpandedRendering()
-                        : Predicates.not(KlighdPredicates.isExpandedRendering());
-
+        // determine the corresponding rendering
+        final Predicate<KRendering> filter = isPopulated ? KlighdPredicates.isExpandedRendering()
+                : Predicates.not(KlighdPredicates.isExpandedRendering());
+        // apply the class-based filter, than the above defined 'filter'
+        //  if none is found, just take the first KRendering in the 'data' list
         final KRendering displayedRendering = Iterators.find(
                 Iterators.filter(node.getData().iterator(), KRendering.class),
                 filter, node.getData(KRendering.class));
 
+        // consider 'node' a compound node if it is populated AND has active children
+        //  will be false if all children are inactive and not added to the layout graph later on
+        final boolean isCompoundNode =
+                isPopulated && Iterables.any(node.getChildren(), RenderingContextData.IS_ACTIVE);
+        
         final Bounds size;
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
@@ -346,7 +358,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
                 // ... calculate the minimal required size based on the determined 'minSize' bounds
                 if (performSizeEstimation) {
-                size = Bounds.max(minSize, PlacementUtil.estimateSize(displayedRendering, minSize));
+                    size = Bounds.max(minSize, PlacementUtil.estimateSize(displayedRendering, minSize));
                 } else {
                     size = minSize;
                 }
