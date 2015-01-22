@@ -532,6 +532,7 @@ public final class LightDiagramServices {
                     + "Is the diagram correctly and completely initialized?";
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+            return;
         }
 
         final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
@@ -564,14 +565,16 @@ public final class LightDiagramServices {
             final List<? extends ILayoutConfig> additionalConfigs =
                     theViewContext.getAdditionalLayoutConfigs();
 
+            final Object diagramPart = recorder != null ? recorder : theViewContext;
+
             if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.INSTANCE.layout(thePart, recorder, extendedOptions);
+                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart, extendedOptions);
 
             } else {
                 final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
                 configs.addAll(additionalConfigs);
 
-                DiagramLayoutEngine.INSTANCE.layout(thePart, recorder,
+                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart,
                         Iterables.toArray(configs, ILayoutConfig.class));
             }
 
