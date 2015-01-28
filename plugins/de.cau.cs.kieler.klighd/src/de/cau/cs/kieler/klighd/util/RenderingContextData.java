@@ -47,7 +47,7 @@ public class RenderingContextData extends KGraphDataImpl {
      * @return the corresponding {@code RenderingContextData}
      */
     public static RenderingContextData get(final KGraphElement element) {
-        RenderingContextData data = element.getData(RenderingContextData.class);
+        RenderingContextData data = basicGet(element);
         if (data == null) {
             data = new RenderingContextData();
             element.getData().add(data);
@@ -78,8 +78,7 @@ public class RenderingContextData extends KGraphDataImpl {
      *         otherwise.
      */
     public static boolean exists(final KGraphElement element) {
-        final RenderingContextData data = element.getData(RenderingContextData.class);
-        return data != null;
+        return basicGet(element) != null;
     }
 
     /**
@@ -139,22 +138,45 @@ public class RenderingContextData extends KGraphDataImpl {
     /**
      * A predicate definition used to drop inactive nodes while processing the layout input graph.<br>
      * Currently all children of a node are active or non-active at a time, a selective filtering is
-     * not done so far (see e.g. DiagramController#addExpansionListener). This might change in future.
+     * not done so far (see e.g. DiagramController#addExpansionListener). This might change in
+     * future.<br>
+     * <br>
+     * <b>Caution:</b> Note the special behavior in case no {@link RenderingContextData} are
+     * attached to {@code element}. As opposed to the default value of
+     * {@link KlighdInternalProperties#ACTIVE} this predicate returns <code>true</code> in that
+     * case. This is required in the
+     * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager KlighdLayoutManager}
+     * for applying layout to view models that are not shown by any viewer and whose
+     * {@link KGraphElement KGraphElements} are not tagged to be 'active'. This may happen in batch
+     * tests, for example.
      */
     public static final Predicate<KGraphElement> IS_ACTIVE = new Predicate<KGraphElement>() {
-        public boolean apply(final KGraphElement node) {
-            return !RenderingContextData.get(node).containsPoperty(KlighdInternalProperties.ACTIVE)
-                    || RenderingContextData.get(node).getProperty(KlighdInternalProperties.ACTIVE);
+        public boolean apply(final KGraphElement element) {
+            final RenderingContextData data = basicGet(element);
+
+            return data == null // || !data.containsPoperty(KlighdInternalProperties.ACTIVE)
+                    || data.getProperty(KlighdInternalProperties.ACTIVE);
         }
     };
 
     /**
      * A predicate definition used to test the {@link KlighdInternalProperties#POPULATED} state of
-     * {@link KNode KNodes}.
+     * {@link KNode KNodes}.<br>
+     * <br>
+     * <b>Caution:</b> Note the special behavior in case no {@link RenderingContextData} are
+     * attached to {@code node}. As opposed to the default value of
+     * {@link KlighdInternalProperties#POPULATED} this predicate returns <code>true</code> in that
+     * case. This is required in the
+     * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager KlighdLayoutManager}
+     * for applying layout to view models that are not shown by any viewer and whose compound nodes
+     * are not tagged to be 'populated'. This may happen in batch tests, for example.
      */
     public static final Predicate<KNode> IS_POPULATED = new Predicate<KNode>() {
         public boolean apply(final KNode node) {
-            return RenderingContextData.get(node).getProperty(KlighdInternalProperties.POPULATED);
+            final RenderingContextData data = basicGet(node);
+
+            return data == null // || !data.containsPoperty(KlighdInternalProperties.POPULATED)
+                    || data.getProperty(KlighdInternalProperties.POPULATED);
         }
     };
 }

@@ -80,25 +80,26 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
         }
 
         final KShapeLayout shL;
-        final boolean newLayoutData;
+        final boolean dataCompletelyChanged;
         final boolean unchanged;
 
         if (notification.getNotifier() instanceof KNode
                 && notification.getNewValue() instanceof KShapeLayout) {
             shL = (KShapeLayout) notification.getNewValue();
-            newLayoutData = true;
+            dataCompletelyChanged = true;
             unchanged = false;
 
         } else if (notification.getNotifier() instanceof KShapeLayout) {
             shL = (KShapeLayout) notification.getNotifier();
-            newLayoutData = false;
 
             final Object newValue = notification.getNewValue();
 
             if (newValue == KlighdLayoutManager.LAYOUT_DATA_CHANGED_VALUE) {
+                dataCompletelyChanged = true;
                 unchanged = false;
                 
             } else if (newValue == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+                dataCompletelyChanged = false;
                 unchanged = true;
 
             } else if (notification.getFeature() == KGraphPackage.eINSTANCE
@@ -106,13 +107,14 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 return;
 
             } else if (newValue instanceof Number) {
+                dataCompletelyChanged = false;
+                unchanged = false;
                 
                 switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
                 case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
                 case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
                 case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
-                    unchanged = false;
                     break;
                 default:
                     return;
@@ -136,12 +138,12 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             }
             return;
 
-        } else {
-            if (newLayoutData) {
-                NodeUtil.applyBounds(nodeRep, shL);
+        } else if (unchanged) {
+            return;
 
-            } else if (unchanged) {
-                return;
+        } else {
+            if (dataCompletelyChanged) {
+                NodeUtil.applyBounds(nodeRep, shL);
 
             } else {
                 final AffineTransform localTransform = nodeRep.getTransformReference(true);

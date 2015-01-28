@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicates;
@@ -31,6 +30,7 @@ import com.google.common.collect.Lists;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.CompoundLayoutConfig;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
@@ -45,9 +45,9 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * Collection of basic KLighD services.
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
@@ -65,9 +65,9 @@ public final class LightDiagramServices {
      * <br>
      * The configurations of 'animate' is taken from the preference settings, the 'zoomStyle' is
      * taken from the corresponding {@link ViewContext} (toggle buttons).
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      */
     public static void layoutDiagram(final ViewContext viewContext) {
         layoutDiagram(viewContext, (List<ILayoutConfig>) null);
@@ -78,9 +78,9 @@ public final class LightDiagramServices {
      * <br>
      * The configurations of 'animate' is taken from the preference settings, the 'zoomStyle' is
      * taken from the corresponding {@link ViewContext} (toggle buttons).
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param options
      *            a list of layout options
      */
@@ -94,9 +94,9 @@ public final class LightDiagramServices {
      * <br>
      * The configuration of 'zoomStyle' is taken from the corresponding {@link ViewContext} (toggle
      * buttons).
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param animate
      *            layout with or without animation
      */
@@ -109,9 +109,9 @@ public final class LightDiagramServices {
      * <br>
      * The configuration of 'zoomStyle' is taken from the corresponding {@link ViewContext} (toggle
      * buttons).
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param animate
      *            layout with or without animation
      * @param options
@@ -126,23 +126,23 @@ public final class LightDiagramServices {
      * Performs the automatic layout on the diagram represented by the given view context.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param zoomStyle
      *            the {@link ZoomStyle} to be applied during this layout update
      */
     public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle) {
         layoutDiagram(viewContext, zoomStyle, null, null);
     }
-    
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param zoomStyle
      *            the {@link ZoomStyle} to be applied during this layout update
      * @param options
@@ -157,9 +157,9 @@ public final class LightDiagramServices {
      * Performs the automatic layout on the diagram represented by the given view context.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param zoomStyle
      *            the {@link ZoomStyle} to be applied during this layout update
      * @param focusNode
@@ -170,14 +170,14 @@ public final class LightDiagramServices {
             final KNode focusNode) {
         layoutDiagram(viewContext, zoomStyle, focusNode, null);
     }
-    
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param zoomStyle
      *            the {@link ZoomStyle} to be applied during this layout update
      * @param focusNode
@@ -190,12 +190,12 @@ public final class LightDiagramServices {
             final KNode focusNode, final List<ILayoutConfig> options) {
         layoutDiagram(null, null, viewContext, null, zoomStyle, focusNode, options);
     }
-    
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param animate
      *            layout with or without animation
      * @param zoomStyle
@@ -205,12 +205,12 @@ public final class LightDiagramServices {
             final ZoomStyle zoomStyle) {
         layoutDiagram(viewContext, animate, zoomStyle, (List<ILayoutConfig>) null);
     }
-    
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param animate
      *            layout with or without animation
      * @param zoomStyle
@@ -225,9 +225,9 @@ public final class LightDiagramServices {
 
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param animate
      *            layout with or without animation
      * @param zoomStyle
@@ -240,12 +240,12 @@ public final class LightDiagramServices {
             final ZoomStyle zoomStyle, final KNode focusNode) {
         layoutDiagram(viewContext, animate, zoomStyle, focusNode, null);
     }
-    
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
-     * 
+     *
      * @param viewContext
-     *            the viewContext whose diagram diagram is to be arranged
+     *            the viewContext whose diagram is to be arranged
      * @param animate
      *            layout with or without animation
      * @param zoomStyle
@@ -260,7 +260,7 @@ public final class LightDiagramServices {
             final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
         layoutDiagram(null, null, viewContext, animate, zoomStyle, focusNode, options);
     }
-    
+
 
     /**
      * Performs the automatic layout on the diagram represented by the given
@@ -268,7 +268,7 @@ public final class LightDiagramServices {
      * <br>
      * The configurations of 'animate' is taken from the preference settings, the 'zoomStyle' is
      * taken from the corresponding {@link ViewContext} (toggle buttons).
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      */
@@ -282,7 +282,7 @@ public final class LightDiagramServices {
      * <br>
      * The configurations of 'animate' is taken from the preference settings, the 'zoomStyle' is
      * taken from the corresponding {@link ViewContext} (toggle buttons).
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param options
@@ -300,7 +300,7 @@ public final class LightDiagramServices {
      * <br>
      * The configurations of 'zoomStyle' is taken from the corresponding {@link ViewContext} (toggle
      * buttons).
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param animate
@@ -316,7 +316,7 @@ public final class LightDiagramServices {
      * <br>
      * The configurations of 'zoomStyle' is taken from the corresponding {@link ViewContext} (toggle
      * buttons).
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param animate
@@ -334,7 +334,7 @@ public final class LightDiagramServices {
      * {@link IDiagramWorkbenchPart}.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param zoomStyle
@@ -349,7 +349,7 @@ public final class LightDiagramServices {
      * {@link IDiagramWorkbenchPart}.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param zoomStyle
@@ -366,7 +366,7 @@ public final class LightDiagramServices {
      * Performs the automatic layout on the diagram represented by the given view context.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param zoomStyle
@@ -379,12 +379,12 @@ public final class LightDiagramServices {
             final ZoomStyle zoomStyle, final KNode focusNode) {
         layoutDiagram(viewPart, zoomStyle, focusNode, null);
     }
-    
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.<br>
      * <br>
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param zoomStyle
@@ -403,7 +403,7 @@ public final class LightDiagramServices {
     /**
      * Performs the automatic layout on the diagram represented by the given
      * {@link IDiagramWorkbenchPart}.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param animate
@@ -414,12 +414,12 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final ZoomStyle zoomStyle) {
         layoutDiagram(viewPart, animate, zoomStyle, null, null);
-    }    
+    }
 
     /**
      * Performs the automatic layout on the diagram represented by the given
      * {@link IDiagramWorkbenchPart}.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param animate
@@ -432,11 +432,11 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
             final ZoomStyle zoomStyle, final List<ILayoutConfig> options) {
         layoutDiagram(viewPart, null, null, animate, zoomStyle, null, options);
-    }    
+    }
 
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param animate
@@ -451,10 +451,10 @@ public final class LightDiagramServices {
             final ZoomStyle zoomStyle, final KNode focusNode) {
         layoutDiagram(viewPart, null, null, animate, zoomStyle, focusNode, null);
     }
-    
+
     /**
      * Performs the automatic layout on the diagram represented by the given view context.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      * @param animate
@@ -471,18 +471,18 @@ public final class LightDiagramServices {
             final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
         layoutDiagram(viewPart, null, null, animate, zoomStyle, focusNode, options);
     }
-    
+
 
     /**
      * Performs the automatic layout on the diagram represented by the given
      * {@link IDiagramWorkbenchPart} / {@link IViewer} / {@link ViewContext}.
-     * 
+     *
      * @param workbenchPart
      *            the {@link IDiagramWorkbenchPart} part showing the diagram to layout
      * @param diagramViewer
      *            the {@link IViewer} that renders the diagram to layout
      * @param viewContext
-     *            the {@link ViewContext} whose diagram diagram is to be arranged
+     *            the {@link ViewContext} whose diagram is to be arranged
      * @param animate
      *            layout with or without animation
      * @param zoomStyle
@@ -497,6 +497,76 @@ public final class LightDiagramServices {
             final IViewer diagramViewer, final ViewContext viewContext,
             final Boolean animate, final ZoomStyle zoomStyle, final KNode focusNode,
             final List<ILayoutConfig> options) {
+
+        final Pair<IDiagramWorkbenchPart, ViewContext> pair =
+                determineDWPandVC(workbenchPart, diagramViewer, viewContext);
+
+        if (pair == null || pair.getSecond() == null) {
+            final String msg = "KLighD LightDiagramServices: Could not perform layout since no "
+                    + "ViewContext could be determined for IDiagramWorkbenchPart "
+                    + workbenchPart + "/IViewer " + diagramViewer + ". "
+                    + "Is the diagram correctly and completely initialized?";
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+            return;
+        }
+
+        final IDiagramWorkbenchPart thePart = pair.getFirst();
+        final ViewContext theViewContext = pair.getSecond();
+
+        final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
+        final KNode viewModel = theViewContext.getViewModel();
+        final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
+
+        if (layoutData != null) {
+            theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE, zoomStyle);
+            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE, focusNode);
+
+            // Activate the KIML Service plug-in so all layout options are loaded
+            KimlServicePlugin.getDefault();
+
+            final boolean doAnimate = animate != null
+                    ? animate.booleanValue() : KlighdPlugin.getDefault()
+                            .getPreferenceStore().getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+
+            final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
+            extendedOptions.add(new VolatileLayoutConfig()
+                    .setValue(LayoutOptions.ANIMATE, doAnimate));
+
+            if (thePart instanceof ILayoutConfigProvider) {
+                extendedOptions.add(((ILayoutConfigProvider) thePart).getLayoutConfig());
+            }
+
+            if (options != null && !options.isEmpty()) {
+                extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
+            }
+
+            final List<? extends ILayoutConfig> additionalConfigs =
+                    theViewContext.getAdditionalLayoutConfigs();
+
+            final Object diagramPart = recorder != null ? recorder : theViewContext;
+
+            if (additionalConfigs.isEmpty()) {
+                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart, extendedOptions);
+
+            } else {
+                final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
+                configs.addAll(additionalConfigs);
+
+                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart,
+                        Iterables.toArray(configs, ILayoutConfig.class));
+            }
+
+        } else {
+            if (recorder != null) {
+                recorder.stopRecording(zoomStyle, null, 0);
+            }
+        }
+    }
+
+    private static Pair<IDiagramWorkbenchPart, ViewContext> determineDWPandVC(
+            final IDiagramWorkbenchPart workbenchPart, final IViewer diagramViewer,
+            final ViewContext viewContext) {
 
         final IDiagramWorkbenchPart thePart;
         final ViewContext theViewContext;
@@ -522,115 +592,107 @@ public final class LightDiagramServices {
                 thePart = null;
             }
         } else {
-            return;
+            return null;
         }
 
-        if (theViewContext == null) {
-            final String msg = "KLighD LightDiagramServices: Could not perform layout since no "
-                    + "ViewContext could be determined for IDiagramWorkbenchPart "
-                    + workbenchPart + "/IViewer " + diagramViewer + ". "
-                    + "Is the diagram correctly and completely initialized?";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
-        }
-
-        final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
-        final KNode viewModel = theViewContext.getViewModel();
-        final KLayoutData layoutData = viewModel != null ? viewModel.getData(KLayoutData.class) : null;
-        
-        if (layoutData != null) {
-            theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE, zoomStyle);
-            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE, focusNode);
-
-            // Activate the KIML Service plug-in so all layout options are loaded
-            KimlServicePlugin.getDefault();
-            
-            final boolean doAnimate = animate != null
-                    ? animate.booleanValue() : KlighdPlugin.getDefault()
-                            .getPreferenceStore().getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-
-            final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
-            extendedOptions.add(new VolatileLayoutConfig()
-                    .setValue(LayoutOptions.ANIMATE, doAnimate));
-
-            if (thePart instanceof ILayoutConfigProvider) {
-                extendedOptions.add(((ILayoutConfigProvider) thePart).getLayoutConfig());
-            }
-
-            if (options != null && !options.isEmpty()) {
-                extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
-            }
-
-            final List<? extends ILayoutConfig> additionalConfigs =
-                    theViewContext.getAdditionalLayoutConfigs();
-
-            if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.INSTANCE.layout(thePart, recorder, extendedOptions);
-
-            } else {
-                final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
-                configs.addAll(additionalConfigs);
-
-                DiagramLayoutEngine.INSTANCE.layout(thePart, recorder,
-                        Iterables.toArray(configs, ILayoutConfig.class));
-            }
-
-        } else {
-            recorder.stopRecording(zoomStyle, null, 0);
-        }
+        return Pair.of(thePart, theViewContext);
     }
 
 
     /**
-     * Performs zoom on the diagram represented by the given view context based on the current
-     * {@link ZoomStyle} defined for the view context.
-     * 
+     * Performs zoom on the diagram represented by the given {@link ViewContext} based on the
+     * current {@link ZoomStyle} defined for the view context.
+     *
      * The configurations of 'animate' is taken from the preference settings.
-     * 
+     *
      * @param viewContext
      *            the viewContext whose diagram diagram is to be arranged
      */
     public static void zoomDiagram(final ViewContext viewContext) {
-        
-        if (viewContext == null) {
-            return;
-        }
-        
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        zoomDiagram(null, viewContext, null);
+    }
 
-        if (viewContext.getZoomStyle() != ZoomStyle.NONE) {
-            viewContext.getViewer().zoom(viewContext.getZoomStyle(),
-                    animate ? KlighdConstants.DEFAULT_ANIMATION_TIME : 0);
-        }
+    /**
+     * Performs zoom on the diagram represented by the given {@link ViewContext} based on the
+     * current {@link ZoomStyle} defined for the view context.
+     *
+     * The configurations of 'animate' is taken from the preference settings.
+     *
+     * @param viewContext
+     *            the viewContext whose diagram diagram is to be arranged
+     * @param animate
+     *            zoom with or without animation
+     */
+    public static void zoomDiagram(final ViewContext viewContext, final boolean animate) {
+        zoomDiagram(null, viewContext, animate);
     }
 
     /**
      * Performs zoom on the diagram represented by the given {@link IDiagramWorkbenchPart} based on
      * the current {@link ZoomStyle} defined for the view context.
-     * 
+     *
      * The configurations of 'animate' are taken from the preference settings.
-     * 
+     *
      * @param viewPart
      *            the diagram view part showing the diagram to layout
      */
     public static void zoomDiagram(final IDiagramWorkbenchPart viewPart) {
+        zoomDiagram(viewPart, null, null);
+    }
 
-        // check that we can obtain all information we need
-        if (viewPart == null || viewPart.getViewer() == null
-                || viewPart.getViewer().getViewContext() == null) {
+    /**
+     * Performs zoom on the diagram represented by the given {@link IDiagramWorkbenchPart} based on
+     * the current {@link ZoomStyle} defined for the view context.
+     *
+     * The configurations of 'animate' are taken from the preference settings.
+     *
+     * @param viewPart
+     *            the diagram view part showing the diagram to layout
+     * @param animate
+     *            zoom with or without animation
+     */
+    public static void zoomDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
+        zoomDiagram(viewPart, null, animate);
+    }
+
+    /**
+     * Performs zoom on the diagram represented by the given {@link IDiagramWorkbenchPart} of
+     * {@link ViewContext} based on the current {@link ZoomStyle} defined for the view context.
+     *
+     * @param workbenchPart
+     *            the {@link IDiagramWorkbenchPart} part showing the diagram to zoom
+     * @param viewContext
+     *            the {@link ViewContext} whose diagram is to be zoomed
+     * @param animate
+     *            zoom with or without animation
+     */
+    private static void zoomDiagram(final IDiagramWorkbenchPart workbenchPart,
+            final ViewContext viewContext, final Boolean animate) {
+
+        final Pair<IDiagramWorkbenchPart, ViewContext> pair =
+                determineDWPandVC(workbenchPart, null, viewContext);
+
+        if (pair == null || pair.getSecond() == null) {
+            final String msg = "KLighD LightDiagramServices: Could not perform zoom since no "
+                    + "ViewContext could be determined for IDiagramWorkbenchPart "
+                    + workbenchPart + ". "
+                    + "Is the diagram correctly and completely initialized?";
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
             return;
         }
-        
-        final IPreferenceStore preferenceStore = KlighdPlugin.getDefault().getPreferenceStore();
-        final boolean animate = preferenceStore.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        final ViewContext viewContext = viewPart.getViewer().getViewContext();
 
-        if (viewContext.getZoomStyle() != ZoomStyle.NONE) {
-            viewContext.getViewer().zoom(viewContext.getZoomStyle(),
-                    animate ? KlighdConstants.DEFAULT_ANIMATION_TIME : 0);
+        final ViewContext theViewContext = pair.getSecond();
+        final boolean doAnimate = animate != null
+                ? animate.booleanValue() : KlighdPlugin.getDefault()
+                        .getPreferenceStore().getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+
+        if (theViewContext.getZoomStyle() != ZoomStyle.NONE) {
+            theViewContext.getViewer().zoom(theViewContext.getZoomStyle(),
+                    doAnimate ? KlighdConstants.DEFAULT_ANIMATION_TIME : 0);
         }
     }
+
 
     /**
      * Translates the given <code>model</code> by means of the known diagram synthesis translations.<br>
@@ -639,12 +701,12 @@ public final class LightDiagramServices {
      * <br>
      * <b>Note:</b> If no matching diagram synthesis is available this method will return an empty
      * {@link KNode}.
-     * 
+     *
      * @param model
      *            the model to be translated into a diagram
      * @param otherVC
      *            the view context to take {@link SynthesisOption} settings from while translating
-     *            <code>model</code>
+     *            <code>model</code>, may be <code>null</code>
      * @param propertyHolders
      *            the property holders
      * @return the resulting view model, may be an empty {@link KNode} in case no matching diagram
@@ -662,12 +724,12 @@ public final class LightDiagramServices {
      * <br>
      * <b>Note:</b> If no matching diagram synthesis is available {@link ViewContext#getViewModel()
      * getViewModel()} being called on the result of this method will return an empty {@link KNode}.
-     * 
+     *
      * @param model
      *            the model to be translated into a diagram
      * @param otherVC
      *            the view context to take {@link SynthesisOption} settings from while translating
-     *            <code>model</code>
+     *            <code>model</code>, may be <code>null</code>
      * @param propertyHolders
      *            the property holders
      * @return the view context
@@ -684,13 +746,13 @@ public final class LightDiagramServices {
     /* ---------------------------------------- */
     /*     Off-screen diagram rendering API     */
     /* ---------------------------------------- */
-    
+
     /**
      * Translates the given <code>model</code> by means of the known diagram synthesis translations
      * and renders it off-screen into the given format, if a matching {@link IOffscreenRenderer} is
      * available.<br>
      * <b>Caution:</b> If the target file already exists it is likely to be overwritten!
-     * 
+     *
      * @param model
      *            the model to be translated into a diagram
      * @param format
@@ -710,7 +772,7 @@ public final class LightDiagramServices {
      * and renders it off-screen into the given format, if a matching {@link IOffscreenRenderer} is
      * available.<br>
      * <b>Caution:</b> If the target file already exists it is likely to be overwritten!
-     * 
+     *
      * @param model
      *            the model to be translated into a diagram
      * @param format
@@ -753,7 +815,7 @@ public final class LightDiagramServices {
      * Translates the given <code>model</code> by means of the known diagram synthesis translations
      * and renders it off-screen into the given format, if a matching {@link IOffscreenRenderer} is
      * available.<br>
-     * 
+     *
      * @param model
      *            the model to be translated into a diagram
      * @param format
@@ -773,7 +835,7 @@ public final class LightDiagramServices {
      * Translates the given <code>model</code> by means of the known diagram synthesis translations
      * and renders it off-screen into the given format, if a matching {@link IOffscreenRenderer} is
      * available.<br>
-     * 
+     *
      * @param model
      *            the model to be translated into a diagram
      * @param format
@@ -814,7 +876,7 @@ public final class LightDiagramServices {
         // otherwise try to build up a corresponding view context
         final ViewContext viewContext = translateModel2(model, null);
 
-        // if no corresponding diagram synthesis is available and, thus, no diagram has been created... 
+        // if no corresponding diagram synthesis is available and, thus, no diagram has been created...
         if (viewContext.getViewModel() == null
                 || viewContext.getViewModel().getChildren().isEmpty()) {
             // skip the rendering call and return
