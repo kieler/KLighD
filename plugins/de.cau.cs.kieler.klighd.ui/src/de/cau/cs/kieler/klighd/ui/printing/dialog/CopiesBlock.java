@@ -37,7 +37,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
@@ -50,6 +52,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
 final class CopiesBlock implements IDialogBlock {
 
@@ -64,9 +67,6 @@ final class CopiesBlock implements IDialogBlock {
     private final PrintOptions options;
     private final Image collateOnImage = COLLATE_ON.createImage();
     private final Image collateOffImage = COLLATE_OFF.createImage();
-
-    private IObservableValue collateObservable;
-    private IValueChangeListener listener;
 
     /**
      * Instantiates a new copies block.
@@ -105,30 +105,40 @@ final class CopiesBlock implements IDialogBlock {
 
         // collate (imagelabel & checkbox)
         final Label collateImageLabel = new Label(result, SWT.CENTER | SWT.SHADOW_NONE);
-
         DialogUtil.layoutAlignRight(collateImageLabel);
-        collateImageLabel.setImage(collateOffImage);
 
         final Button collateCheck =
                 DialogUtil.check(result, KlighdUIPrintingMessages.PrintDialog_Collate);
 
-        collateObservable =
+        final IObservableValue collateValue =
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
-        bindings.bindValue(SWTObservables.observeSelection(collateCheck), collateObservable, null,
-                null);
+        bindings.bindValue(SWTObservables.observeSelection(collateCheck), collateValue);
 
-        // set image according to collate state
-        listener = new IValueChangeListener() {
+        collateValue.addValueChangeListener(new IValueChangeListener() {
 
             public void handleValueChange(final ValueChangeEvent event) {
-                if (options.isCollate()) {
+
+                // set image according to collate state
+                if (((Boolean) event.getObservableValue().getValue()).booleanValue()) {
                     collateImageLabel.setImage(collateOnImage);
                 } else {
                     collateImageLabel.setImage(collateOffImage);
                 }
             }
-        };
-        collateObservable.addValueChangeListener(listener);
+        });
+
+        collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
+        collateImageLabel.addListener(SWT.Dispose, new Listener() {
+
+            public void handleEvent(final Event event) {
+                collateOnImage.dispose();
+                collateOffImage.dispose();
+
+                // although it is not mandatory to dispose 'collateValue' as it just registers
+                //  a listener on 'options', let's just do it for the good conscience
+                collateValue.dispose();
+            }
+        });
 
         return result;
     }
@@ -137,9 +147,5 @@ final class CopiesBlock implements IDialogBlock {
      * {@inheritDoc}
      */
     public void dispose() {
-        collateObservable.removeValueChangeListener(listener);
-        collateOnImage.dispose();
-        collateOffImage.dispose();
     }
-
 }
