@@ -26,7 +26,6 @@ package de.cau.cs.kieler.klighd.ui.printing;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -39,19 +38,16 @@ import org.eclipse.swt.printing.PrinterData;
 import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
-import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
- * This class is used as part of the infrastructure required for data-bindings used with the JPS
- * dialog.
+ * This class is part of the infrastructure required for data-bindings used with the
+ * {@link de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog KlighdPrintDialog}.
  *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author chsch
  */
-public final class PrintOptions {
-
-    private static final IPreferenceStore PREF_STORE = KlighdUIPlugin.getDefault().getPreferenceStore();
+public class PrintOptions {
 
     /* printer data */
 
@@ -143,85 +139,70 @@ public final class PrintOptions {
     /** Id of the preference PRINTER_DUPLEX. */
     private static final String PREFERENCE_PRINTER_DUPLEX = "klighd.printing.duplex";
 
-    /** Id of the preference SHOW_PREVIEW. */
-    public static final String PREFERENCE_INITIALLY_SHOW_PREVIEW =
-            "klighd.printing.initiallyShowPreview";
-
     /**
-     * Preference initializer making sure the required data contain valid values.
-     *
+     * Abstract preference initializer skeleton contributing default values for preference entries
+     * used in {@link PrintOptions}. Concrete implementations must be registered by means of the
+     * extension point {@code org.eclipse.core.runtime.preferences}, see e.g.
+     * {@link DiagramPrintOptions.Initializer}. {@link #getPreferenceStore()} must return the same
+     * {@link IPreferenceStore} provided to the
+     * {@link PrintOptions#PrintOptions(IPreferenceStore) constructor} instantiating
+     * {@link PrintOptions} or subclasses, of course.
+     * 
      * @author chsch
      */
-    public static class Initializer extends AbstractPreferenceInitializer {
+    public abstract static class Initializer extends AbstractPreferenceInitializer {
 
+        /**
+         * Provides the {@link IPreferenceStore} to be used for storing the configuration.
+         * 
+         * @return the {@link IPreferenceStore} to be used for storing the configuration.
+         */
+        protected abstract IPreferenceStore getPreferenceStore();
+        
         /**
          * {@inheritDoc}
          */
         @Override
         public void initializeDefaultPreferences() {
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_SCALE, 1f);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_TALL, 1);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_WIDE, 1);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_SCOPE, PrinterData.ALL_PAGES);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_START, 1);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_PAGES_END, 1);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_CENTER_HORIZONTALLY, false);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_CENTER_VERTICALLY, false);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_ORIENTATION, PrinterData.PORTRAIT);
-            PREF_STORE.setDefault(PREFERENCE_PRINTER_DUPLEX, PrinterData.DUPLEX_NONE);
-            PREF_STORE.setDefault(PREFERENCE_INITIALLY_SHOW_PREVIEW, false);
+            final IPreferenceStore prefStore = getPreferenceStore();
+            prefStore.setDefault(PREFERENCE_PRINTER_SCALE, 1f);
+            prefStore.setDefault(PREFERENCE_PRINTER_PAGES_TALL, 1);
+            prefStore.setDefault(PREFERENCE_PRINTER_PAGES_WIDE, 1);
+            prefStore.setDefault(PREFERENCE_PRINTER_SCOPE, PrinterData.ALL_PAGES);
+            prefStore.setDefault(PREFERENCE_PRINTER_PAGES_START, 1);
+            prefStore.setDefault(PREFERENCE_PRINTER_PAGES_END, 1);
+            prefStore.setDefault(PREFERENCE_PRINTER_CENTER_HORIZONTALLY, false);
+            prefStore.setDefault(PREFERENCE_PRINTER_CENTER_VERTICALLY, false);
+            prefStore.setDefault(PREFERENCE_PRINTER_ORIENTATION, PrinterData.PORTRAIT);
+            prefStore.setDefault(PREFERENCE_PRINTER_DUPLEX, PrinterData.DUPLEX_NONE);
         }
-    }
-
-    /**
-     * Convenience getter.
-     *
-     * @return {@code true} the print preview is to be shown while opening the print dialog,
-     *         {@code false} otherwise.
-     */
-    public static boolean getInitiallyShowPreview() {
-        return PREF_STORE.getBoolean(PREFERENCE_INITIALLY_SHOW_PREVIEW);
-    }
-
-    /**
-     * Convenience setter.
-     *
-     * @param initiallyShow
-     *            {@code true} the print preview is to be shown while opening the print dialog,
-     *            {@code false} otherwise.
-     */
-    public static void setInitiallyShowPreview(final boolean initiallyShow) {
-        PREF_STORE.setValue(PREFERENCE_INITIALLY_SHOW_PREVIEW, initiallyShow);
     }
 
     /** The property change support. */
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
+    private final IPreferenceStore prefStore;
     private PrinterData printerData;
     private double scaleFactor;
     private int pagesWide;
     private int pagesTall;
     private boolean centerHorizontally;
     private boolean centerVertically;
-    private PrintExporter exporter;
 
     // some "cache" fields
     private Printer printer = null;
     private Dimension printerBounds = null;
     private Trim printerTrim = null;
-    private Dimension2D diagramBounds = null;
     private Point2D centeringOffset = null;
 
 
     /**
      * Constructor.
      *
-     * @param printExporter
-     *            the {@link PrintExporter} being employed shall be hooked for easy access while,
-     *            e.g., computing the "Fit to pages" scale
+     * @param prefStore the {@link IPreferenceStore} to use for storing and loading the configuration.
      */
-    public PrintOptions(final PrintExporter printExporter) {
-        this.exporter = printExporter;
+    public PrintOptions(final IPreferenceStore prefStore) {
+        this.prefStore = prefStore;
         restoreFromPreferences();
     }
 
@@ -230,44 +211,44 @@ public final class PrintOptions {
      * Restore the options from preference store.
      */
     public void restoreFromPreferences() {
-        final String driver = PREF_STORE.getString(PREFERENCE_PRINTER_DRIVER);
-        final String name = PREF_STORE.getString(PREFERENCE_PRINTER_NAME);
+        final String driver = prefStore.getString(PREFERENCE_PRINTER_DRIVER);
+        final String name = prefStore.getString(PREFERENCE_PRINTER_NAME);
         printerData = new PrinterData(
                 // be careful: driver and name must not be equal to ""
                 //  but must be 'null' to get the default printer
                 Strings.emptyToNull(driver), Strings.emptyToNull(name));
 
         if (printerData != null) {
-            setOrientation(PREF_STORE.getInt(PREFERENCE_PRINTER_ORIENTATION));
-            setDuplex(PREF_STORE.getInt(PREFERENCE_PRINTER_DUPLEX));
+            setOrientation(prefStore.getInt(PREFERENCE_PRINTER_ORIENTATION));
+            setDuplex(prefStore.getInt(PREFERENCE_PRINTER_DUPLEX));
         }
 
-        setScaleFactor(PREF_STORE.getDouble(PREFERENCE_PRINTER_SCALE));
-        setPagesTall(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_TALL));
-        setPagesWide(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
-        setAllPages(PREF_STORE.getInt(PREFERENCE_PRINTER_SCOPE) == PrinterData.ALL_PAGES);
-        setRangeFrom(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_START));
-        setRangeTo(PREF_STORE.getInt(PREFERENCE_PRINTER_PAGES_END));
-        setHorizontallyCentered(PREF_STORE.getBoolean(PREFERENCE_PRINTER_CENTER_HORIZONTALLY));
-        setVerticallyCentered(PREF_STORE.getBoolean(PREFERENCE_PRINTER_CENTER_VERTICALLY));
+        setScaleFactor(prefStore.getDouble(PREFERENCE_PRINTER_SCALE));
+        setPagesTall(prefStore.getInt(PREFERENCE_PRINTER_PAGES_TALL));
+        setPagesWide(prefStore.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
+        setAllPages(prefStore.getInt(PREFERENCE_PRINTER_SCOPE) == PrinterData.ALL_PAGES);
+        setRangeFrom(prefStore.getInt(PREFERENCE_PRINTER_PAGES_START));
+        setRangeTo(prefStore.getInt(PREFERENCE_PRINTER_PAGES_END));
+        setHorizontallyCentered(prefStore.getBoolean(PREFERENCE_PRINTER_CENTER_HORIZONTALLY));
+        setVerticallyCentered(prefStore.getBoolean(PREFERENCE_PRINTER_CENTER_VERTICALLY));
     }
 
     /**
      * Store the options in the preference store.
      */
     public void storeToPreferences() {
-        PREF_STORE.setValue(PREFERENCE_PRINTER_DRIVER, printerData.driver);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_NAME, printerData.name);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_SCALE, scaleFactor);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_TALL, pagesTall);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_WIDE, pagesWide);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_SCOPE, printerData.scope);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_START, printerData.startPage);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_PAGES_END, printerData.endPage);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_CENTER_HORIZONTALLY, centerHorizontally);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_CENTER_VERTICALLY, centerVertically);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_ORIENTATION, printerData.orientation);
-        PREF_STORE.setValue(PREFERENCE_PRINTER_DUPLEX, printerData.duplex);
+        prefStore.setValue(PREFERENCE_PRINTER_DRIVER, printerData.driver);
+        prefStore.setValue(PREFERENCE_PRINTER_NAME, printerData.name);
+        prefStore.setValue(PREFERENCE_PRINTER_SCALE, scaleFactor);
+        prefStore.setValue(PREFERENCE_PRINTER_PAGES_TALL, pagesTall);
+        prefStore.setValue(PREFERENCE_PRINTER_PAGES_WIDE, pagesWide);
+        prefStore.setValue(PREFERENCE_PRINTER_SCOPE, printerData.scope);
+        prefStore.setValue(PREFERENCE_PRINTER_PAGES_START, printerData.startPage);
+        prefStore.setValue(PREFERENCE_PRINTER_PAGES_END, printerData.endPage);
+        prefStore.setValue(PREFERENCE_PRINTER_CENTER_HORIZONTALLY, centerHorizontally);
+        prefStore.setValue(PREFERENCE_PRINTER_CENTER_VERTICALLY, centerVertically);
+        prefStore.setValue(PREFERENCE_PRINTER_ORIENTATION, printerData.orientation);
+        prefStore.setValue(PREFERENCE_PRINTER_DUPLEX, printerData.duplex);
     }
 
     /**
@@ -570,8 +551,8 @@ public final class PrintOptions {
                 printerData.orientation);
 
         disposePrinter();
+        resetTrimData();
         resetCenteringOffset();
-        getExporter().resetTrimInformation();
     }
 
     /**
@@ -604,8 +585,8 @@ public final class PrintOptions {
         printerData.orientation = orientation;
         firePropertyChange(PROPERTY_ORIENTATION, oldOrientation, printerData.orientation);
         disposePrinter();
+        resetTrimData();
         resetCenteringOffset();
-        getExporter().resetTrimInformation();
     }
 
     /**
@@ -663,15 +644,6 @@ public final class PrintOptions {
      */
     public String getPrinterName() {
         return printerData.name;
-    }
-
-    /**
-     * Gets the exporter to use when printing or showing the preview.
-     *
-     * @return the exporter
-     */
-    public PrintExporter getExporter() {
-        return exporter;
     }
 
     /**
@@ -769,6 +741,13 @@ public final class PrintOptions {
     }
 
     /**
+     * Resets cached {@link Trim} information, which is necessary, e.g., after changing the paper
+     * format or page orientation. Must be implemented by subclasses if necessary.
+     */
+    protected void resetTrimData() {
+    }
+
+    /**
      * Disposes the existing center offset leading to the re-computation on demand.
      */
     private void resetCenteringOffset() {
@@ -810,27 +789,14 @@ public final class PrintOptions {
         }
     }
 
-    private Point2D updateCenteringOffset() {
-        if (!centerHorizontally && !centerVertically) {
-            return new Point2D.Double();
-        }
-
-        final Dimension2D pBounds = getExporter().getTrimmedTileBounds(this);
-
-        if (pBounds != null) {
-            if (diagramBounds == null) {
-                if (exporter == null) {
-                    // in this case we cannot compute the centering offset, should not happen
-                    return null;
-                }
-                diagramBounds = exporter.getDiagramBoundsIncludingTrim();
-            }
-
-            return new Point2D.Double(
-                    (pBounds.getWidth() * pagesWide - diagramBounds.getWidth() * scaleFactor) / 2,
-                    (pBounds.getHeight() * pagesTall - diagramBounds.getHeight() * scaleFactor) / 2);
-        }
-
+    /**
+     * Re-calculates the (x,y) offset being required for aligning the page content centrally and/or
+     * vertically, which is necessary, e.g., after changing the paper format or page orientation.
+     * Must be implemented by subclasses if necessary.
+     *
+     * @return a {@link Point2D} determining the (x,y) offset, or <code>null</code> if not supported
+     */
+    protected Point2D updateCenteringOffset() {
         return null;
     }
 

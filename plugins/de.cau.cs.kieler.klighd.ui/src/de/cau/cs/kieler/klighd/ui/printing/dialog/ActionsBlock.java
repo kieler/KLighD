@@ -32,8 +32,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A section of the KlighD print dialog that handles extra actions. In this case,
@@ -49,6 +49,7 @@ final class ActionsBlock implements IDialogBlock {
     private static final String CLOSE_ARROWS = " <<";
 
     private final KlighdPrintDialog printDialog;
+    private final boolean previewEnabled;
     private final boolean previewInitiallyOpen;
 
     private Button printPreview;
@@ -65,14 +66,14 @@ final class ActionsBlock implements IDialogBlock {
                 printDialog.closeTray();
                 printPreview.setText(
                         KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + OPEN_ARROWS);
-                PrintOptions.setInitiallyShowPreview(false);
+                DiagramPrintOptions.setInitiallyShowPreview(false);
                 tray.dispose();
 
             } else {
                 printDialog.openPreview();
                 printPreview.setText(
                         KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + CLOSE_ARROWS);
-                PrintOptions.setInitiallyShowPreview(true);
+                DiagramPrintOptions.setInitiallyShowPreview(true);
             }
         }
     };
@@ -82,10 +83,15 @@ final class ActionsBlock implements IDialogBlock {
      *
      * @param printDialog
      *            the print dialog to execute the actions on (e.g. show preview)
-     * @param previewOpen TODO
+     * @param previewEnabled
+     *            TODO
+     * @param previewOpen
+     *            TODO
      */
-    ActionsBlock(final KlighdPrintDialog printDialog, final boolean previewOpen) {
+    ActionsBlock(final KlighdPrintDialog printDialog, final boolean previewEnabled,
+            final boolean previewOpen) {
         this.printDialog = printDialog;
+        this.previewEnabled = previewEnabled;
         this.previewInitiallyOpen = previewOpen;
     }
 
@@ -98,6 +104,7 @@ final class ActionsBlock implements IDialogBlock {
         printPreview = new Button(parent, SWT.PUSH);
         printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + arrows);
         printPreview.addSelectionListener(printPreviewButtonListener);
+        printPreview.setEnabled(previewEnabled);
 
         DialogUtil.layoutAlignRight(printPreview);
 

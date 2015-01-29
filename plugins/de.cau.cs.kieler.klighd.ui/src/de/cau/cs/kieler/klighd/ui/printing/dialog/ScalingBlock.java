@@ -29,7 +29,6 @@ import java.awt.geom.Dimension2D;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -40,6 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
+import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -55,7 +55,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 final class ScalingBlock implements IDialogBlock {
 
     private final DataBindingContext bindings;
-    private final PrintOptions options;
+    private final DiagramPrintOptions options;
 
     /**
      * Instantiates a new scaling block.
@@ -68,7 +68,12 @@ final class ScalingBlock implements IDialogBlock {
      */
     ScalingBlock(final DataBindingContext bindings, final PrintOptions options) {
         this.bindings = bindings;
-        this.options = options;
+
+        if (options instanceof DiagramPrintOptions) {
+            this.options = (DiagramPrintOptions) options;
+        } else {
+            this.options = null;
+        }
     }
 
     private static final int MAX_PAGES = 100;
@@ -81,9 +86,8 @@ final class ScalingBlock implements IDialogBlock {
      * {@inheritDoc}
      */
     public Control createContents(final Composite parent) {
-        final Realm realm = bindings.getValidationRealm();
 
-        // create group
+        // create the scaling group
         final Composite result = DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Scaling);
         DialogUtil.layout(result, 1);
 
@@ -101,61 +105,13 @@ final class ScalingBlock implements IDialogBlock {
         final Button oneToOneBtn = DialogUtil.button(
                 buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_to100);
 
-        oneToOneBtn.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                options.setScaleFactor(1);
-            }
-        });
-
         final Button fitToPagesBtn = DialogUtil.button(
                 buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_fitPages);
-
-        fitToPagesBtn.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                // Calculate the minimum of necessary horizontal and vertical scale factors
-                //  required to fit the whole diagram on the selected amount of pages.
-
-                final PrintExporter exporter = options.getExporter();
-                final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
-                final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
-
-                final double scaleX = trimmedPrinterBounds.getWidth() * options.getPagesWide()
-                        / diagramBounds.getWidth();
-
-                final double scaleY = trimmedPrinterBounds.getHeight() * options.getPagesTall()
-                        / diagramBounds.getHeight();
-
-                options.setScaleFactor(Math.min(scaleX, scaleY));
-            }
-        });
 
         final Button adjustPagesBtn = DialogUtil.button(
                 buttonsGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_adjustPages);
 
-        adjustPagesBtn.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                // Calculate for both horizontal and vertical directions
-                //  how many pages are necessary to fit the diagram in.
-
-                final PrintExporter exporter = options.getExporter();
-                final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
-                final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
-
-                options.setPagesWide((int) Math.ceil(diagramBounds.getWidth() * options.getScaleFactor()
-                        / trimmedPrinterBounds.getWidth()));
-
-                options.setPagesTall((int) Math.ceil(diagramBounds.getHeight() * options.getScaleFactor()
-                        / trimmedPrinterBounds.getHeight()));
-            }
-        });
-
-        // Group containing a spinner and some textlabels for scale settings.
+        // Group containing a spinner and some text labels for scale settings.
         final Composite scalingGroup = new Composite(result, SWT.NONE);
         DialogUtil.layoutFillHorizontal(scalingGroup, true);
         scalingGroup.setLayout(new GridLayout(SCALING_GROUP_COLUMNS, false));
@@ -165,12 +121,8 @@ final class ScalingBlock implements IDialogBlock {
         DialogUtil.layoutFillHorizontal(scaleSpinner, true);
         DialogUtil.label(scalingGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_percent);
 
-        final IObservableValue scaleValue =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_PERCENT);
-        bindings.bindValue(SWTObservables.observeSelection(scaleSpinner), scaleValue, null, null);
-
-        // Group containing two spinner (and describing labels) to set the number of pages tall and
-        // wide to print on.
+        // Group containing two spinners (and describing labels)
+        //  to set the number of pages tall and wide to print on.
         final Composite pagesGroup = new Composite(result, SWT.NONE);
         DialogUtil.layoutFillHorizontal(pagesGroup, true);
         pagesGroup.setLayout(new GridLayout(PAGES_GROUP_COLUMNS, false));
@@ -187,13 +139,86 @@ final class ScalingBlock implements IDialogBlock {
 
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesTall);
 
-        bindings.bindValue(SWTObservables.observeSelection(spinnerWide),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE),
-                null, null);
+        if (options != null) {
+            oneToOneBtn.addSelectionListener(new SelectionAdapter() {
 
-        bindings.bindValue(SWTObservables.observeSelection(spinnerTall),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL),
-                null, null);
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
+                    options.setScaleFactor(1);
+                }
+            });
+
+            fitToPagesBtn.addSelectionListener(new SelectionAdapter() {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
+                    // Calculate the minimum of necessary horizontal and vertical scale factors
+                    //  required to fit the whole diagram on the selected amount of pages.
+
+                    final PrintExporter exporter = options.getExporter();
+                    final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
+                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
+
+                    final double scaleX = trimmedPrinterBounds.getWidth() * options.getPagesWide()
+                            / diagramBounds.getWidth();
+
+                    final double scaleY = trimmedPrinterBounds.getHeight() * options.getPagesTall()
+                            / diagramBounds.getHeight();
+
+                    options.setScaleFactor(Math.min(scaleX, scaleY));
+                }
+            });
+
+            adjustPagesBtn.addSelectionListener(new SelectionAdapter() {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
+                    // Calculate for both horizontal and vertical directions
+                    //  how many pages are necessary to fit the diagram in.
+
+                    final PrintExporter exporter = options.getExporter();
+                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
+                    final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
+
+                    options.setPagesWide((int) Math.ceil(diagramBounds.getWidth()
+                            * options.getScaleFactor() / trimmedPrinterBounds.getWidth()));
+
+                    options.setPagesTall((int) Math.ceil(diagramBounds.getHeight()
+                            * options.getScaleFactor() / trimmedPrinterBounds.getHeight()));
+                }
+            });
+
+            final Realm realm = bindings.getValidationRealm();
+
+            bindings.bindValue(SWTObservables.observeSelection(scaleSpinner),
+                    BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_PERCENT),
+                    null, null);
+
+            bindings.bindValue(SWTObservables.observeSelection(spinnerWide),
+                    BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE),
+                    null, null);
+
+            bindings.bindValue(SWTObservables.observeSelection(spinnerTall),
+                    BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL),
+                    null, null);
+        } else {
+
+            // in case the 'options' field is null, i.e. this instance is not linked to an instance of
+            //  'DiagramPrintOptions',
+            // deactivate all the controls as they do not make sense for printing non-diagram content
+            // (some customers asked for this feature in order to provide consistent print dialogs
+            //  for all kinds of printable content)
+
+            result.setEnabled(false);
+            for (Control c : ((Composite) result).getChildren()) {
+                c.setEnabled(false);
+                if (c instanceof Composite) {
+                    for (Control d : ((Composite) c).getChildren()) {
+                        d.setEnabled(false);
+                    }
+                }
+            }
+        }
 
         return result;
     }

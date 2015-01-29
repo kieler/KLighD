@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
+import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
@@ -55,7 +56,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 public class PrintPreviewTray extends DialogTray {
 
     private final DataBindingContext bindings;
-    private final PrintOptions options;
+    private final DiagramPrintOptions options;
 
     /* SWT interface variables */
 
@@ -89,7 +90,7 @@ public class PrintPreviewTray extends DialogTray {
      */
     protected static final int OBSERVABLE_DELAY = 100;
 
-    PrintPreviewTray(final DataBindingContext bindings, final PrintOptions options) {
+    PrintPreviewTray(final DataBindingContext bindings, final DiagramPrintOptions options) {
         this.bindings = bindings;
         this.options = options;
     }

@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
@@ -61,6 +62,7 @@ public class KlighdPrintDialog extends TrayDialog {
 
     private DataBindingContext bindings;
     private final PrintOptions options;
+    private final boolean previewEnabled;
 
     private PrinterBlock printerBlock;
     private ScalingBlock scalingBlock;
@@ -82,6 +84,7 @@ public class KlighdPrintDialog extends TrayDialog {
         super(parentShell);
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.options = options;
+        this.previewEnabled = options instanceof DiagramPrintOptions;
     }
 
     /**
@@ -97,6 +100,7 @@ public class KlighdPrintDialog extends TrayDialog {
         super(shell);
         setShellStyle(getShellStyle() | SWT.MAX | SWT.RESIZE);
         this.options = options;
+        this.previewEnabled = options instanceof DiagramPrintOptions;
     }
 
     /**
@@ -185,7 +189,7 @@ public class KlighdPrintDialog extends TrayDialog {
         bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
 
         final boolean previewInitiallyOpen =
-                PrintOptions.getInitiallyShowPreview() && checkPrinterData();
+                previewEnabled && DiagramPrintOptions.getInitiallyShowPreview() && checkPrinterData();
 
         final Composite result = new Composite(parent, SWT.NONE);
         DialogUtil.layout(result, 2);
@@ -322,11 +326,11 @@ public class KlighdPrintDialog extends TrayDialog {
      *
      * @param parent
      *            the parent composite
-     * @param previewInitiallyOpen
+     * @param previewInitiallyOpen determines the text of the preview button; must be
      *            <code>true</code> if preview is initially visible, <code>false</code> otherwise
      */
     protected void createActionsBlockArea(final Composite parent, final boolean previewInitiallyOpen) {
-        actionsBlock = new ActionsBlock(this, previewInitiallyOpen);
+        actionsBlock = new ActionsBlock(this, previewEnabled, previewInitiallyOpen);
         DialogUtil.layoutSpanHorizontal(actionsBlock.createContents(parent), 2);
     }
 
@@ -334,7 +338,9 @@ public class KlighdPrintDialog extends TrayDialog {
      * Opens the print preview by injecting a corresponding {@link PrintPreviewTray}.
      */
     public void openPreview() {
-        this.openTray(new PrintPreviewTray(bindings, options));
+        if (previewEnabled) {
+            this.openTray(new PrintPreviewTray(bindings, (DiagramPrintOptions) options));
+        }
     }
 
     /**
