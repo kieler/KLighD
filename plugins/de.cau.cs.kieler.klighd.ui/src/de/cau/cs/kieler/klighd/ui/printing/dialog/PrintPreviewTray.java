@@ -16,8 +16,6 @@ package de.cau.cs.kieler.klighd.ui.printing.dialog;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -35,7 +33,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
@@ -43,12 +43,17 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintExporter;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
- * A PrintPreview to be displayed as a dialog tray, e.g. used by {@link KlighdPrintDialog}.
- * </br>
+ * A PrintPreview to be displayed as a dialog tray, e.g. used by {@link KlighdPrintDialog}.<br>
+ * <br>
  * The implementation is inspired by
  * {@link org.eclipse.gmf.runtime.diagram.ui.printing.internal.printpreview.PrintPreviewHelper
  * PrintPreviewHelper} of the GMF project, esp.
- * <code>PrintPreviewHelper.updateCompositeForNumberOfColumns(int, int)</code>.
+ * <code>PrintPreviewHelper.updateCompositeForNumberOfColumns(int, int)</code>.<br>
+ * <br>
+ * Note: There's no method 'dispose()' or similar, since all required dispose routines are coupled
+ * to the disposal of the employed SWT widgets. Their disposal is invoked by
+ * {@link  org.eclipse.jface.dialogs.TrayDialog#closeTray() TrayDialog#closeTray()}, which is
+ * inherited by our {@link KlighdPrintDialog}.
  *
  * @author csp
  * @author chsch
@@ -62,21 +67,6 @@ public class PrintPreviewTray extends DialogTray {
 
     private Composite body;
     private Composite composite;
-
-    /** List of images to dispose. */
-    private final List<Image> imageList = new ArrayList<Image>();
-
-    /* Observables to remove listeners from */
-    private IObservableValue delayedResize;
-    private IObservableValue delayedPrinterData;
-    private IObservableValue delayedScale;
-    private IObservableValue delayedPagesWide;
-    private IObservableValue delayedPagesTall;
-    private IObservableValue delayedHorCentered;
-    private IObservableValue delayedVerCentered;
-
-    /** Listener to be removed from observables. */
-    private IValueChangeListener listener;
 
     /** Minimal tile size. */
     protected static final int MINIMAL_TILE_SIZE = 4;
@@ -110,41 +100,59 @@ public class PrintPreviewTray extends DialogTray {
 
         updateComposite();
 
-        listener = new IValueChangeListener() {
+        final IValueChangeListener listener = new IValueChangeListener() {
 
             public void handleValueChange(final ValueChangeEvent event) {
                 updateComposite();
             }
         };
 
-        delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+        final IObservableValue delayedResize = Observables.observeDelayedValue(OBSERVABLE_DELAY,
                 SWTObservables.observeSize(body));
         delayedResize.addValueChangeListener(listener);
 
-        delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+        final IObservableValue delayedPrinterData = Observables.observeDelayedValue(OBSERVABLE_DELAY,
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PRINTER_DATA));
         delayedPrinterData.addValueChangeListener(listener);
 
-        delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+        final IObservableValue delayedScale = Observables.observeDelayedValue(OBSERVABLE_DELAY,
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_FACTOR));
         delayedScale.addValueChangeListener(listener);
 
-        delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+        final IObservableValue delayedPagesWide = Observables.observeDelayedValue(OBSERVABLE_DELAY,
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE));
         delayedPagesWide.addValueChangeListener(listener);
 
-        delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+        final IObservableValue delayedPagesTall = Observables.observeDelayedValue(OBSERVABLE_DELAY,
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL));
         delayedPagesTall.addValueChangeListener(listener);
 
-        delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+        final IObservableValue delayedHorCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
                 BeansObservables.observeValue(realm, options,
                         PrintOptions.PROPERTY_CENTER_HORIZONTALLY));
         delayedHorCentered.addValueChangeListener(listener);
 
-        delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+        final IObservableValue delayedVerCentered = Observables.observeDelayedValue(OBSERVABLE_DELAY,
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY));
         delayedVerCentered.addValueChangeListener(listener);
+
+        final IObservableValue delayedOrientation = Observables.observeDelayedValue(OBSERVABLE_DELAY,
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION));
+        delayedOrientation.addValueChangeListener(listener);
+
+        body.addListener(SWT.Dispose, new Listener() {
+
+            public void handleEvent(final Event event) {
+                delayedResize.dispose();
+                delayedPrinterData.dispose();
+                delayedScale.dispose();
+                delayedPagesWide.dispose();
+                delayedPagesTall.dispose();
+                delayedHorCentered.dispose();
+                delayedVerCentered.dispose();
+                delayedOrientation.dispose();
+            }
+        });
 
         return body;
     }
@@ -165,7 +173,6 @@ public class PrintPreviewTray extends DialogTray {
         for (int i = 0; i < children.length; i++) {
             children[i].dispose();
         }
-        disposeImages();
 
         // Setting the layout to null removes all cached sizes and
         // forces the later layout to populate the resize to the labels
@@ -232,9 +239,15 @@ public class PrintPreviewTray extends DialogTray {
 
                     final Image pageImg = exporter.exportPreview(
                             config, imageBounds, imageClip, previewScale, centeringOffset);
-                    imageList.add(pageImg);
 
-                    new Label(composite, SWT.NULL).setImage(pageImg);
+                    final Label l = new Label(composite, SWT.NULL);
+                    l.setImage(pageImg);
+                    l.addListener(SWT.Dispose, new Listener() {
+
+                        public void handleEvent(final Event event) {
+                            pageImg.dispose();
+                        }
+                    });
                 }
             }
         }
@@ -251,53 +264,4 @@ public class PrintPreviewTray extends DialogTray {
         // reactivate redrawing
         body.setRedraw(true);
     }
-
-    /**
-     * Safely dispose an image.
-     *
-     * @param image
-     *            the Image to dispose.
-     */
-    private void safeDisposeImage(final Image image) {
-        if (image != null && !image.isDisposed()) {
-            image.dispose();
-        }
-    }
-
-    /**
-     * Dispose images.
-     */
-    private void disposeImages() {
-        for (final Image image : imageList) {
-            safeDisposeImage(image);
-        }
-        imageList.clear();
-    }
-
-    /**
-     * Safely removes the listener from the given observable.
-     *
-     * @param observable
-     *            the observable to remove the listener from
-     */
-    private void safeRemoveListener(final IObservableValue observable) {
-        if (observable != null) {
-            observable.removeValueChangeListener(listener);
-        }
-    }
-
-    /**
-     * Dispose resources.
-     */
-    public void dispose() {
-        disposeImages();
-        safeRemoveListener(delayedResize);
-        safeRemoveListener(delayedPrinterData);
-        safeRemoveListener(delayedScale);
-        safeRemoveListener(delayedPagesWide);
-        safeRemoveListener(delayedPagesTall);
-        safeRemoveListener(delayedHorCentered);
-        safeRemoveListener(delayedVerCentered);
-    }
-
 }

@@ -369,10 +369,6 @@ public class KlighdPrintDialog extends TrayDialog {
         rangeBlock.dispose();
         actionsBlock.dispose();
 
-        final PrintPreviewTray printPreviewTray = this.getTray();
-        if (printPreviewTray != null) {
-            printPreviewTray.dispose();
-        }
 
         return super.close();
     }

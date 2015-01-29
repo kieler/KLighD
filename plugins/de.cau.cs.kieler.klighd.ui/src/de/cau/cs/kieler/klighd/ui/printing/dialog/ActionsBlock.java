@@ -67,7 +67,6 @@ final class ActionsBlock implements IDialogBlock {
                 printPreview.setText(
                         KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + OPEN_ARROWS);
                 DiagramPrintOptions.setInitiallyShowPreview(false);
-                tray.dispose();
 
             } else {
                 printDialog.openPreview();
