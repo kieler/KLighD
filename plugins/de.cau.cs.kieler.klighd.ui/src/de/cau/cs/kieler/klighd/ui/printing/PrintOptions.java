@@ -139,6 +139,9 @@ public class PrintOptions {
     /** Id of the preference PRINTER_DUPLEX. */
     private static final String PREFERENCE_PRINTER_DUPLEX = "klighd.printing.duplex";
 
+    /** Id of the preference PRINTER_COLLATE. */
+    private static final String PREFERENCE_PRINTER_COLLATE = "klighd.printing.collate";
+
     /**
      * Abstract preference initializer skeleton contributing default values for preference entries
      * used in {@link PrintOptions}. Concrete implementations must be registered by means of the
@@ -175,6 +178,7 @@ public class PrintOptions {
             prefStore.setDefault(PREFERENCE_PRINTER_CENTER_VERTICALLY, false);
             prefStore.setDefault(PREFERENCE_PRINTER_ORIENTATION, PrinterData.PORTRAIT);
             prefStore.setDefault(PREFERENCE_PRINTER_DUPLEX, PrinterData.DUPLEX_NONE);
+            prefStore.setDefault(PREFERENCE_PRINTER_COLLATE, false);
         }
     }
 
@@ -219,16 +223,17 @@ public class PrintOptions {
                 Strings.emptyToNull(driver), Strings.emptyToNull(name));
 
         if (printerData != null) {
+            setAllPages(prefStore.getInt(PREFERENCE_PRINTER_SCOPE) == PrinterData.ALL_PAGES);
+            setRangeFrom(prefStore.getInt(PREFERENCE_PRINTER_PAGES_START));
+            setRangeTo(prefStore.getInt(PREFERENCE_PRINTER_PAGES_END));
             setOrientation(prefStore.getInt(PREFERENCE_PRINTER_ORIENTATION));
             setDuplex(prefStore.getInt(PREFERENCE_PRINTER_DUPLEX));
+            setCollate(prefStore.getBoolean(PREFERENCE_PRINTER_COLLATE));
         }
 
         setScaleFactor(prefStore.getDouble(PREFERENCE_PRINTER_SCALE));
         setPagesTall(prefStore.getInt(PREFERENCE_PRINTER_PAGES_TALL));
         setPagesWide(prefStore.getInt(PREFERENCE_PRINTER_PAGES_WIDE));
-        setAllPages(prefStore.getInt(PREFERENCE_PRINTER_SCOPE) == PrinterData.ALL_PAGES);
-        setRangeFrom(prefStore.getInt(PREFERENCE_PRINTER_PAGES_START));
-        setRangeTo(prefStore.getInt(PREFERENCE_PRINTER_PAGES_END));
         setHorizontallyCentered(prefStore.getBoolean(PREFERENCE_PRINTER_CENTER_HORIZONTALLY));
         setVerticallyCentered(prefStore.getBoolean(PREFERENCE_PRINTER_CENTER_VERTICALLY));
     }
@@ -249,6 +254,7 @@ public class PrintOptions {
         prefStore.setValue(PREFERENCE_PRINTER_CENTER_VERTICALLY, centerVertically);
         prefStore.setValue(PREFERENCE_PRINTER_ORIENTATION, printerData.orientation);
         prefStore.setValue(PREFERENCE_PRINTER_DUPLEX, printerData.duplex);
+        prefStore.setValue(PREFERENCE_PRINTER_COLLATE, printerData.collate);
     }
 
     /**
