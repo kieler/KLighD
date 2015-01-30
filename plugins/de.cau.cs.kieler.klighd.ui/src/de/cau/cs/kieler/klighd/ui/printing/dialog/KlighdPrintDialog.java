@@ -64,12 +64,6 @@ public class KlighdPrintDialog extends TrayDialog {
     private final PrintOptions options;
     private final boolean previewEnabled;
 
-    private PrinterBlock printerBlock;
-    private ScalingBlock scalingBlock;
-    private RangeBlock rangeBlock;
-    private CopiesBlock copiesBlock;
-    private AlignmentBlock alignmentBlock;
-    private ActionsBlock actionsBlock;
 
     /**
      * Creates a new KLighD print dialog based on the given options.
@@ -196,11 +190,12 @@ public class KlighdPrintDialog extends TrayDialog {
 
         createPrinterBlockArea(result);
         createScalingBlockArea(result);
+        createOrientationBlockArea(result);
         createAlignmentBlockArea(result);
         createRangeBlockArea(result);
         createCopiesBlockArea(result);
         createExtensibleBlockArea(result);
-        createActionsBlockArea(result, false);
+        createActionsBlockArea(result, previewInitiallyOpen);
 
         if (previewInitiallyOpen) {
 
@@ -256,8 +251,8 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createPrinterBlockArea(final Composite parent) {
-        printerBlock = new PrinterBlock(bindings, options, this);
-        DialogUtil.layoutSpanHorizontal(printerBlock.createContents(parent), 2);
+        DialogUtil.layoutSpanHorizontal(
+                new PrinterBlock(bindings, options, this).createContents(parent), 2);
     }
 
     /**
@@ -266,8 +261,26 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createScalingBlockArea(final Composite parent) {
-        scalingBlock = new ScalingBlock(bindings, options);
-        DialogUtil.layoutSpanHorizontal(scalingBlock.createContents(parent), 2);
+        DialogUtil.layoutSpanHorizontal(
+                new ScalingBlock(bindings, options).createContents(parent), 2);
+    }
+
+    /**
+     * Creates the orientation block area.
+     *
+     * @param parent the parent composite
+     */
+    protected void createOrientationBlockArea(final Composite parent) {
+        new OrientationBlock(bindings, options).createContents(parent);
+    }
+
+    /**
+     * Creates the copies block area.
+     *
+     * @param parent the parent composite
+     */
+    protected void createAlignmentBlockArea(final Composite parent) {
+         new AlignmentBlock(bindings, options).createContents(parent);
     }
 
     /**
@@ -276,8 +289,7 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createRangeBlockArea(final Composite parent) {
-        rangeBlock = new RangeBlock(bindings, options);
-        rangeBlock.createContents(parent);
+        new RangeBlock(bindings, options).createContents(parent);
     }
 
     /**
@@ -286,8 +298,7 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createCopiesBlockArea(final Composite parent) {
-         copiesBlock = new CopiesBlock(bindings, options);
-         final Composite group = (Composite) copiesBlock.createContents(parent);
+        final Composite group = (Composite) new CopiesBlock(bindings, options).createContents(parent);
 
         if (KlighdPlugin.IS_MACOSX) {
             // I deactivated 'copies' block as this information can be changed in the native dialog
@@ -300,16 +311,6 @@ public class KlighdPrintDialog extends TrayDialog {
                 con.setEnabled(false);
             }
         }
-    }
-
-    /**
-     * Creates the copies block area.
-     *
-     * @param parent the parent composite
-     */
-    protected void createAlignmentBlockArea(final Composite parent) {
-         alignmentBlock = new AlignmentBlock(bindings, options);
-         DialogUtil.layoutSpanHorizontal(alignmentBlock.createContents(parent), 2);
     }
 
     /**
@@ -330,8 +331,8 @@ public class KlighdPrintDialog extends TrayDialog {
      *            <code>true</code> if preview is initially visible, <code>false</code> otherwise
      */
     protected void createActionsBlockArea(final Composite parent, final boolean previewInitiallyOpen) {
-        actionsBlock = new ActionsBlock(this, previewEnabled, previewInitiallyOpen);
-        DialogUtil.layoutSpanHorizontal(actionsBlock.createContents(parent), 2);
+        DialogUtil.layoutSpanHorizontal(
+                new ActionsBlock(this, previewEnabled, previewInitiallyOpen).createContents(parent), 2);
     }
 
     /**
@@ -347,29 +348,8 @@ public class KlighdPrintDialog extends TrayDialog {
      * {@inheritDoc}
      */
     @Override
-    protected void buttonPressed(final int buttonId) {
-        options.storeToPreferences();
-//        switch (buttonId) {
-//        case IDialogConstants.OK_ID:
-//            // fall through!
-//        default:
-        super.buttonPressed(buttonId);
-//        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean close() {
-        bindings.dispose();
-        copiesBlock.dispose();
-        printerBlock.dispose();
-        scalingBlock.dispose();
-        rangeBlock.dispose();
-        actionsBlock.dispose();
-
-
+        options.storeToPreferences();
         return super.close();
     }
 }

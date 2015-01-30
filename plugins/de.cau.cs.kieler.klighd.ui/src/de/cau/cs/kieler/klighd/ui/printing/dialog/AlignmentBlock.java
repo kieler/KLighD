@@ -57,7 +57,7 @@ final class AlignmentBlock implements IDialogBlock {
     public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
-        final int columns = 3;
+        final int columns = 2;
 
         // create group
         final Composite result = DialogUtil.layout(
@@ -67,16 +67,19 @@ final class AlignmentBlock implements IDialogBlock {
 
         final Button centerHorizontally = DialogUtil.check(result,
                 KlighdUIPrintingMessages.PrintDialog_Alignment_centerHorizontally);
+
+        // a helper widget filling the 3rd quadrant
+        DialogUtil.label(result, "").setVisible(false);
+
         final Button centerVertically = DialogUtil.check(result,
                 KlighdUIPrintingMessages.PrintDialog_Alignment_centerVertically);
 
+        // SUPPRESS CHECKSTYLE NEXT 2 LineLength -- it's just one character ;-)
         bindings.bindValue(SWTObservables.observeSelection(centerHorizontally),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY),
-                null, null);
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY));
 
         bindings.bindValue(SWTObservables.observeSelection(centerVertically),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY),
-                null, null);
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY));
 
         return result;
     }
