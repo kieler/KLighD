@@ -35,8 +35,9 @@ import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
@@ -47,47 +48,46 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
-final class PrinterBlock implements IDialogBlock {
-
-    private final DataBindingContext bindings;
-    private final PrintOptions options;
-    private final KlighdPrintDialog printDialog;
+final class PrinterBlock {
 
     /**
-     * Instantiates a new printer block.
+     * Hidden standard constructor.
+     */
+    private PrinterBlock() {
+
+    }
+
+    /**
+     * Creates the 'Printer' block contents.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
+     * @param parent
+     *            the parent {@link Composite} to use
      * @param bindings
      *            the bindings used for observables
      * @param options
      *            the current print options
      * @param printDialog
      *            the parent dialog used for the system print dialog
+     * @return the created {@link Group}
      */
-    PrinterBlock(final DataBindingContext bindings, final PrintOptions options,
-            final KlighdPrintDialog printDialog) {
-        this.bindings = bindings;
-        this.options = options;
-        this.printDialog = printDialog;
-    }
-
-    private static final int COLUMNS = 3;
-    /**
-     * {@inheritDoc}
-     */
-    public Control createContents(final Composite parent) {
-        final Realm realm = bindings.getValidationRealm();
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options, final KlighdPrintDialog printDialog) {
+        final int columns = 3;
 
         // create group
-        final Composite result =
+        final Group result =
                 DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Printer);
-        DialogUtil.layout(result, COLUMNS);
+        DialogUtil.layout(result, columns);
 
         // printer resp. file name label
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_Name);
         final Label printerLabel = DialogUtil.label(result, "");
         DialogUtil.layoutFillHorizontal(printerLabel, true);
+
+        final Realm realm = bindings.getValidationRealm();
 
         // Observable to display the printer resp. file name, if print to file is set.
         final ComputedValue computedValue = new ComputedValue(realm) {
@@ -112,35 +112,22 @@ final class PrinterBlock implements IDialogBlock {
         propertiesButton.setEnabled(true);
 
         propertiesButton.addSelectionListener(new SelectionAdapter() {
+
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                openPrintOptionsDialog();
+                // Open the system's native print dialog to gather printer specific settings.
+                // If no valid setting are returned (e.g. the user cancels the dialog),
+                //  nothing is changed.
+                final PrintDialog systemPrintDialog = printDialog.getNativePrintDialog();
+                systemPrintDialog.setPrinterData(options.getPrinterData());
+
+                final PrinterData data = systemPrintDialog.open();
+                if (data != null) {
+                    options.setPrinterData(data);
+                }
             }
         });
 
         return result;
-    }
-
-
-
-    /**
-     * Open the system's native print dialog to gather printer specific settings.
-     * If no valid setting are returned (e.g. the user cancels the dialog), nothing is changed.
-     */
-    private void openPrintOptionsDialog() {
-        final PrintDialog systemPrintDialog = printDialog.getNativePrintDialog();
-        systemPrintDialog.setPrinterData(options.getPrinterData());
-
-        final PrinterData data = systemPrintDialog.open();
-        if (data != null) {
-            options.setPrinterData(data);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
-        // nothing to dispose
     }
 }

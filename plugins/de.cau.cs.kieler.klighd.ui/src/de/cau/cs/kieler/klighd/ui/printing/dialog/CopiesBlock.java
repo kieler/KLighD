@@ -13,12 +13,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -38,23 +38,25 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A section of the KlighD print dialog that handles the number of copies of a diagram to print.
- * 
+ *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
  * @author chsch
  */
-final class CopiesBlock implements IDialogBlock {
+final class CopiesBlock {
 
     /** Image for collate on. */
     private static final ImageDescriptor COLLATE_ON = KlighdUIPlugin.getImageDescriptor(
@@ -63,37 +65,35 @@ final class CopiesBlock implements IDialogBlock {
     public static final ImageDescriptor COLLATE_OFF = KlighdUIPlugin.getImageDescriptor(
             "icons/printing/no_collate.gif"); //$NON-NLS-1$
 
-    private final DataBindingContext bindings;
-    private final PrintOptions options;
-    private final Image collateOnImage = COLLATE_ON.createImage();
-    private final Image collateOffImage = COLLATE_OFF.createImage();
+    /**
+     * Hidden standard constructor.
+     */
+    private CopiesBlock() {
+
+    }
 
     /**
-     * Instantiates a new copies block.
+     * Creates the 'Copies' block contents.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
-     * 
+     *
+     * @param parent
+     *            the parent {@link Composite} to use
      * @param bindings
      *            the bindings used for observables
      * @param options
      *            the current print options
-     * @param printDialog
-     *            the print dialog to execute the actions on (e.g. show preview)
+     * @return the created {@link Group}
      */
-    CopiesBlock(final DataBindingContext bindings, final PrintOptions options) {
-        this.bindings = bindings;
-        this.options = options;
-    }
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options) {
+        final int columns = 2;
 
-    /**
-     * {@inheritDoc}
-     */
-    public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
         // create group
-        final Composite result =
+        final Group result =
                 DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Copies);
-        DialogUtil.layout(result, 2);
+        DialogUtil.layout(result, columns);
 
         // number of copies (label & spinner)
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_NumberOfCopies);
@@ -102,6 +102,9 @@ final class CopiesBlock implements IDialogBlock {
         bindings.bindValue(SWTObservables.observeSelection(copiesSpinner),
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES), null,
                 null);
+
+        final Image collateOnImage = COLLATE_ON.createImage();
+        final Image collateOffImage = COLLATE_OFF.createImage();
 
         // collate (imagelabel & checkbox)
         final Label collateImageLabel = new Label(result, SWT.CENTER | SWT.SHADOW_NONE);
@@ -140,12 +143,18 @@ final class CopiesBlock implements IDialogBlock {
             }
         });
 
-        return result;
-    }
+        if (KlighdPlugin.IS_MACOSX) {
+            // I deactivated 'copies' block as this information can be changed in the native dialog
+            //  but (on OSX) it is not delivered back within the returned PrinterData.
+            // Thus, 'copies' cannot be updated properly.
+            // This, however, seems not to hold for windows and linux.
+            result.setToolTipText(KlighdUIPrintingMessages.KlighdPrintDialog_Copies_OSXToolTip);
 
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
+            for (final Control con : result.getChildren()) {
+                con.setEnabled(false);
+            }
+        }
+
+        return result;
     }
 }

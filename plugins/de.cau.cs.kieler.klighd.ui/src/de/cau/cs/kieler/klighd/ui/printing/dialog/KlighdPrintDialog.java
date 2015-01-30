@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -252,7 +251,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     protected void createPrinterBlockArea(final Composite parent) {
         DialogUtil.layoutSpanHorizontal(
-                new PrinterBlock(bindings, options, this).createContents(parent), 2);
+                PrinterBlock.createContents(parent, bindings, options, this), 2);
     }
 
     /**
@@ -262,7 +261,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     protected void createScalingBlockArea(final Composite parent) {
         DialogUtil.layoutSpanHorizontal(
-                new ScalingBlock(bindings, options).createContents(parent), 2);
+                ScalingBlock.createContents(parent, bindings, options), 2);
     }
 
     /**
@@ -271,7 +270,7 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createOrientationBlockArea(final Composite parent) {
-        new OrientationBlock(bindings, options).createContents(parent);
+        OrientationBlock.createContents(parent, bindings, options);
     }
 
     /**
@@ -280,7 +279,7 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createAlignmentBlockArea(final Composite parent) {
-         new AlignmentBlock(bindings, options).createContents(parent);
+         AlignmentBlock.createContents(parent, bindings, options);
     }
 
     /**
@@ -289,7 +288,7 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createRangeBlockArea(final Composite parent) {
-        new RangeBlock(bindings, options).createContents(parent);
+        RangeBlock.createContents(parent, bindings, options);
     }
 
     /**
@@ -298,19 +297,7 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createCopiesBlockArea(final Composite parent) {
-        final Composite group = (Composite) new CopiesBlock(bindings, options).createContents(parent);
-
-        if (KlighdPlugin.IS_MACOSX) {
-            // I deactivated 'copies' block as this information can be changed in the native dialog
-            //  but (on OSX) it is not delivered back within the returned PrinterData.
-            // Thus, 'copies' cannot be updated properly.
-            // This, however, seems not to hold for windows and linux.
-            group.setToolTipText(KlighdUIPrintingMessages.KlighdPrintDialog_Copies_OSXToolTip);
-
-            for (final Control con : group.getChildren()) {
-                con.setEnabled(false);
-            }
-        }
+        CopiesBlock.createContents(parent, bindings, options);
     }
 
     /**
@@ -332,7 +319,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     protected void createActionsBlockArea(final Composite parent, final boolean previewInitiallyOpen) {
         DialogUtil.layoutSpanHorizontal(
-                new ActionsBlock(this, previewEnabled, previewInitiallyOpen).createContents(parent), 2);
+                ActionsBlock.createContents(parent, this, previewEnabled, previewInitiallyOpen), 2);
     }
 
     /**

@@ -27,13 +27,12 @@ package de.cau.cs.kieler.klighd.ui.printing.dialog;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
@@ -45,50 +44,50 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
-final class RangeBlock implements IDialogBlock {
-    private final DataBindingContext bindings;
-    private final PrintOptions options;
+final class RangeBlock {
 
     /**
-     * Instantiates a new range block.
+     * Hidden standard constructor.
+     */
+    private RangeBlock() {
+    }
+
+
+    /**
+     * Creates the 'Range' block contents.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
+     * @param parent
+     *            the parent {@link Composite} to use
      * @param bindings
      *            the bindings used for observables
      * @param options
      *            the current print options
+     * @return the created {@link Group}
      */
-    RangeBlock(final DataBindingContext bindings, final PrintOptions options) {
-        this.bindings = bindings;
-        this.options = options;
-    }
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options) {
+        final int columns = 2;
+        final int textWidth = 20;
 
-    private static final int COLUMNS = 2;
-    private static final int TEXT_WIDTH = 20;
-    /**
-     * {@inheritDoc}
-     */
-    public Control createContents(final Composite parent) {
         final Realm realm = bindings.getValidationRealm();
 
         // create group
-        final Composite result =
+        final Group result =
                 DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_PrintRange);
-        DialogUtil.layout(result, COLUMNS);
+        DialogUtil.layout(result, columns);
 
         // radiobutton for print all
         final Button allRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_All);
-        DialogUtil.layoutSpanHorizontal(allRadio, COLUMNS);
+        DialogUtil.layoutSpanHorizontal(allRadio, columns);
 
         final IObservableValue allValue =
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ALL_PAGES);
         bindings.bindValue(SWTObservables.observeSelection(allRadio), allValue, null, null);
 
         //radiobutton for defining a print range
-        final Button rangeRadio =
-                DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Pages);
-        DialogUtil.layoutSpanHorizontal(rangeRadio, COLUMNS);
 
         final IObservableValue rangeValue = new ComputedValue(realm) {
             @Override
@@ -97,34 +96,29 @@ final class RangeBlock implements IDialogBlock {
             }
         };
         bindings.bindValue(SWTObservables.observeSelection(rangeRadio), rangeValue, null, null);
+        final Button rangeRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Pages);
+        DialogUtil.layoutSpanHorizontal(rangeRadio, columns);
 
         // range from (label & textfield)
         DialogUtil.layoutHorizontalIndent(DialogUtil.label(result,
                 KlighdUIPrintingMessages.PrintDialog_From));
-        final Text textFrom = DialogUtil.text(result, TEXT_WIDTH);
+
+        final Text textFrom = DialogUtil.text(result, textWidth);
 
         bindings.bindValue(SWTObservables.observeText(textFrom, SWT.Modify),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM),
-                null, null);
-        bindings.bindValue(SWTObservables.observeEnabled(textFrom), rangeValue, null, null);
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM));
+        bindings.bindValue(SWTObservables.observeEnabled(textFrom), rangeValue);
 
         // range to (label & textfield)
-        DialogUtil.layoutHorizontalIndent(DialogUtil.label(result,
-                KlighdUIPrintingMessages.PrintDialog_To));
-        final Text textTo = DialogUtil.text(result, TEXT_WIDTH);
+        DialogUtil.layoutHorizontalIndent(
+                DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_To));
+
+        final Text textTo = DialogUtil.text(result, textWidth);
 
         bindings.bindValue(SWTObservables.observeText(textTo, SWT.Modify),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO),
-                null, null);
-        bindings.bindValue(SWTObservables.observeEnabled(textTo), rangeValue, null, null);
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO));
+        bindings.bindValue(SWTObservables.observeEnabled(textTo), rangeValue);
 
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
-        // nothing to dispose
     }
 }

@@ -22,8 +22,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
@@ -35,47 +35,46 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  *
  * @author chsch
  */
-final class OrientationBlock implements IDialogBlock {
-
-    private final DataBindingContext bindings;
-    private final PrintOptions options;
+final class OrientationBlock {
 
     /**
-     * Instantiates a new orientation block.
+     * Hidden standard constructor.
+     */
+    private OrientationBlock() {
+    }
+
+    /**
+     * Creates the 'Orientation' block contents.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
+     * @param parent
+     *            the parent {@link Composite} to use
      * @param bindings
      *            the bindings used for observables
      * @param options
      *            the current print options
+     * @return the created {@link Group}
      */
-    OrientationBlock(final DataBindingContext bindings, final PrintOptions options) {
-        this.bindings = bindings;
-        this.options = options;
-    }
-
-    private static final int COLUMNS = 1;
-
-    /**
-     * {@inheritDoc}
-     */
-    public Control createContents(final Composite parent) {
-        final Realm realm = bindings.getValidationRealm();
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options) {
+        final int columns = 1;
 
         // create group
-        final Composite result =
+        final Group result =
                 DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Orientation_orientation);
-        DialogUtil.layout(result, COLUMNS);
+        DialogUtil.layout(result, columns);
 
         // radio button for portrait
         final Button portraitRadio =
                 DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Orientation_portrait);
-        DialogUtil.layoutSpanHorizontal(portraitRadio, COLUMNS);
+        DialogUtil.layoutSpanHorizontal(portraitRadio, columns);
 
         // radio button for landscape
         final Button landscapeRadio =
                 DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Orientation_landscape);
-        DialogUtil.layoutSpanHorizontal(landscapeRadio, COLUMNS);
+        DialogUtil.layoutSpanHorizontal(landscapeRadio, columns);
+
+        final Realm realm = bindings.getValidationRealm();
 
         final SelectObservableValue orientationGroupValue = new SelectObservableValue(realm);
         orientationGroupValue.addOption(PrinterData.PORTRAIT,
@@ -96,12 +95,5 @@ final class OrientationBlock implements IDialogBlock {
         });
 
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
-        // nothing to dispose
     }
 }

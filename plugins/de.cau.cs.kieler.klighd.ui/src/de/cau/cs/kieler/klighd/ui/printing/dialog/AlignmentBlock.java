@@ -19,7 +19,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -30,38 +30,34 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  *
  * @author chsch
  */
-final class AlignmentBlock implements IDialogBlock {
-
-    private final DataBindingContext bindings;
-    private final PrintOptions options;
+final class AlignmentBlock {
 
     /**
-     * Instantiates a new alignment block.
+     * Hidden standard constructor.
+     */
+    private AlignmentBlock() {
+    }
+
+    /**
+     * Creates the 'Alignment' block contents.
      * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
+     * @param parent
+     *            the parent {@link Composite} to use
      * @param bindings
      *            the bindings used for observables
      * @param options
      *            the current print options
-     * @param printDialog
-     *            the print dialog to execute the actions on (e.g. show preview)
+     * @return the created {@link Group}
      */
-    AlignmentBlock(final DataBindingContext bindings, final PrintOptions options) {
-        this.bindings = bindings;
-        this.options = options;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Control createContents(final Composite parent) {
-        final Realm realm = bindings.getValidationRealm();
-
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options) {
         final int columns = 2;
 
         // create group
-        final Composite result = DialogUtil.layout(
-                DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Alignment), columns);
+        final Group result =
+                DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Alignment);
+        DialogUtil.layout(result, columns);
 
         DialogUtil.label(result, "Center diagram");
 
@@ -74,6 +70,8 @@ final class AlignmentBlock implements IDialogBlock {
         final Button centerVertically = DialogUtil.check(result,
                 KlighdUIPrintingMessages.PrintDialog_Alignment_centerVertically);
 
+        final Realm realm = bindings.getValidationRealm();
+
         // SUPPRESS CHECKSTYLE NEXT 2 LineLength -- it's just one character ;-)
         bindings.bindValue(SWTObservables.observeSelection(centerHorizontally),
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY));
@@ -82,11 +80,5 @@ final class AlignmentBlock implements IDialogBlock {
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY));
 
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
     }
 }

@@ -37,6 +37,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
@@ -52,10 +53,7 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * @author csp
  * @author chsch
  */
-final class ScalingBlock implements IDialogBlock {
-
-    private final DataBindingContext bindings;
-    private final DiagramPrintOptions options;
+final class ScalingBlock {
 
     /**
      * Instantiates a new scaling block.
@@ -66,14 +64,7 @@ final class ScalingBlock implements IDialogBlock {
      * @param options
      *            the current print options
      */
-    ScalingBlock(final DataBindingContext bindings, final PrintOptions options) {
-        this.bindings = bindings;
-
-        if (options instanceof DiagramPrintOptions) {
-            this.options = (DiagramPrintOptions) options;
-        } else {
-            this.options = null;
-        }
+    private ScalingBlock() {
     }
 
     private static final int MAX_PAGES = 100;
@@ -83,12 +74,22 @@ final class ScalingBlock implements IDialogBlock {
     private static final int SPINNER_WIDTH = 20;
 
     /**
-     * {@inheritDoc}
+     * Creates the 'Scaling' block contents.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
+     *
+     * @param parent
+     *            the parent {@link Composite} to use
+     * @param bindings
+     *            the bindings used for observables
+     * @param options
+     *            the current print options
+     * @return the created {@link Group}
      */
-    public Control createContents(final Composite parent) {
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options) {
 
         // create the scaling group
-        final Composite result = DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Scaling);
+        final Group result = DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Scaling);
         DialogUtil.layout(result, 1);
 
         // This group contains three composites to be independent from the gridlayout's columns in
@@ -139,12 +140,15 @@ final class ScalingBlock implements IDialogBlock {
 
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesTall);
 
-        if (options != null) {
+        final DiagramPrintOptions dOptions;
+        if (options instanceof DiagramPrintOptions) {
+            dOptions = (DiagramPrintOptions) options;
+
             oneToOneBtn.addSelectionListener(new SelectionAdapter() {
 
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
-                    options.setScaleFactor(1);
+                    dOptions.setScaleFactor(1);
                 }
             });
 
@@ -155,17 +159,17 @@ final class ScalingBlock implements IDialogBlock {
                     // Calculate the minimum of necessary horizontal and vertical scale factors
                     //  required to fit the whole diagram on the selected amount of pages.
 
-                    final PrintExporter exporter = options.getExporter();
+                    final PrintExporter exporter = dOptions.getExporter();
                     final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
-                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
+                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
 
-                    final double scaleX = trimmedPrinterBounds.getWidth() * options.getPagesWide()
+                    final double scaleX = trimmedPrinterBounds.getWidth() * dOptions.getPagesWide()
                             / diagramBounds.getWidth();
 
-                    final double scaleY = trimmedPrinterBounds.getHeight() * options.getPagesTall()
+                    final double scaleY = trimmedPrinterBounds.getHeight() * dOptions.getPagesTall()
                             / diagramBounds.getHeight();
 
-                    options.setScaleFactor(Math.min(scaleX, scaleY));
+                    dOptions.setScaleFactor(Math.min(scaleX, scaleY));
                 }
             });
 
@@ -176,31 +180,28 @@ final class ScalingBlock implements IDialogBlock {
                     // Calculate for both horizontal and vertical directions
                     //  how many pages are necessary to fit the diagram in.
 
-                    final PrintExporter exporter = options.getExporter();
-                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(options);
+                    final PrintExporter exporter = dOptions.getExporter();
+                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
                     final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
 
-                    options.setPagesWide((int) Math.ceil(diagramBounds.getWidth()
-                            * options.getScaleFactor() / trimmedPrinterBounds.getWidth()));
+                    dOptions.setPagesWide((int) Math.ceil(diagramBounds.getWidth()
+                            * dOptions.getScaleFactor() / trimmedPrinterBounds.getWidth()));
 
-                    options.setPagesTall((int) Math.ceil(diagramBounds.getHeight()
-                            * options.getScaleFactor() / trimmedPrinterBounds.getHeight()));
+                    dOptions.setPagesTall((int) Math.ceil(diagramBounds.getHeight()
+                            * dOptions.getScaleFactor() / trimmedPrinterBounds.getHeight()));
                 }
             });
 
             final Realm realm = bindings.getValidationRealm();
 
             bindings.bindValue(SWTObservables.observeSelection(scaleSpinner),
-                    BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_SCALE_PERCENT),
-                    null, null);
+                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_SCALE_PERCENT));
 
             bindings.bindValue(SWTObservables.observeSelection(spinnerWide),
-                    BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_WIDE),
-                    null, null);
+                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_WIDE));
 
             bindings.bindValue(SWTObservables.observeSelection(spinnerTall),
-                    BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_PAGES_TALL),
-                    null, null);
+                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_TALL));
         } else {
 
             // in case the 'options' field is null, i.e. this instance is not linked to an instance of
@@ -210,10 +211,10 @@ final class ScalingBlock implements IDialogBlock {
             //  for all kinds of printable content)
 
             result.setEnabled(false);
-            for (Control c : ((Composite) result).getChildren()) {
+            for (final Control c : result.getChildren()) {
                 c.setEnabled(false);
                 if (c instanceof Composite) {
-                    for (Control d : ((Composite) c).getChildren()) {
+                    for (final Control d : ((Composite) c).getChildren()) {
                         d.setEnabled(false);
                     }
                 }
@@ -221,12 +222,5 @@ final class ScalingBlock implements IDialogBlock {
         }
 
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
-        // nothing to dispose
     }
 }
