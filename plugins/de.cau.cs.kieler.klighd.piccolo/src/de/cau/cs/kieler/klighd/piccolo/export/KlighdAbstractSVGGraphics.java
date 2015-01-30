@@ -46,6 +46,7 @@ import java.io.OutputStream;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -97,6 +98,17 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
 
     private final Map<ImageData, BufferedImage> imageBuffer = Maps.newHashMap();
     private final Rectangle2D imageBoundsRect = new Rectangle2D.Double();
+    
+    // the dash constants in the following definitions are copied
+    // from the related definitions in the GC class (OSX Cocoa fragment):
+    private static final float[] LINE_DOT = new float[]{1, 1};
+    private static final float[] LINE_DASH = new float[]{3, 1};
+    private static final float[] LINE_DASHDOT = new float[]{3, 1, 1, 1};
+    private static final float[] LINE_DASHDOTDOT = new float[]{3, 1, 1, 1, 1, 1};
+    private static final float[] LINE_DOT_ZERO = new float[]{3, 3};
+    private static final float[] LINE_DASH_ZERO = new float[]{18, 6};
+    private static final float[] LINE_DASHDOT_ZERO = new float[]{9, 6, 3, 6};
+    private static final float[] LINE_DASHDOTDOT_ZERO = new float[]{9, 3, 3, 3, 3, 3};
     
     /**
      * true if multiline strings can be handled by exporter.
@@ -188,11 +200,52 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     public void setLineAttributes(final LineAttributes attributes) {
         lineAttributes = attributes;
 
-        final float[] dash = lineAttributes.dash == null
-                ? null : lineAttributes.dash.length == 0 ? null : lineAttributes.dash;
+        float[] dash;
+        switch (lineAttributes.style) {
+        case SWT.LINE_DASH:
+            dash = lineAttributes.width != 0.0f ? LINE_DASH : LINE_DASH_ZERO;
+            break;
+        case SWT.LINE_DOT:
+            dash = lineAttributes.width != 0.0f ? LINE_DOT : LINE_DOT_ZERO;
+            break;
+        case SWT.LINE_DASHDOT:
+            dash = lineAttributes.width != 0.0f ? LINE_DASHDOT : LINE_DASHDOT_ZERO;
+            break;
+        case SWT.LINE_DASHDOTDOT:
+            dash = lineAttributes.width != 0.0f ? LINE_DASHDOTDOT : LINE_DASHDOTDOT_ZERO;
+            break;
+        case SWT.LINE_CUSTOM:
+            // dash is set by klighd syntheses
+            dash = lineAttributes.dash;
+            break;
+        default:
+            dash = null;
+        }
+        
+        float[] scaledDash = dash;
+        
+        // for non-custom dashed line styles we scale the 
+        // default dash styles to the specified line width
+        if (dash != null && lineAttributes.style != SWT.LINE_CUSTOM) {
+            boolean flatCap = lineAttributes.cap == SWT.CAP_FLAT;
+            scaledDash = new float[dash.length];
+            for (int i = 0; i < dash.length; i++) {
+                scaledDash[i] = lineAttributes.width * dash[i];
+                if (!flatCap && (i % 2 == 1)) {
+                    // CAP_ROUND and CAP_SQUARE yield dash elements 
+                    //  that are slightly elongated (by half the stroke 
+                    //  width to be precise). To maintain visibility 
+                    //  of the gaps we increase the specified gap 
+                    //  by the size of one line width (2 * 0.5 * width).
+                    scaledDash[i] += lineAttributes.width;
+                }
+            }
+        }
 
-        final Stroke s = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
-                lineAttributes.join - 1, lineAttributes.miterLimit, dash, lineAttributes.dashOffset);
+        final Stroke s =
+                new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
+                        lineAttributes.join - 1, lineAttributes.miterLimit, scaledDash,
+                        lineAttributes.dashOffset);
 
         graphics.setStroke(s);
     }
