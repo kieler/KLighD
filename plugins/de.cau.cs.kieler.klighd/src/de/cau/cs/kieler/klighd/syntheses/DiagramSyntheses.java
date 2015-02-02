@@ -85,8 +85,8 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Convenience method for defining layout options for {@link KGraphElement KGraphElements} 
-     * based on ids and possibly string representations of properties defined by 
+     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}
+     * based on ids and possibly string representations of properties defined by
      * {@link java.util.EnumSet}s.
      *
      * @param <R>
@@ -97,7 +97,7 @@ public final class DiagramSyntheses {
      *            the particular layout option's id, e.g. one of
      *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
      * @param value
-     *            the option value. It is possible to pass string representations 
+     *            the option value. It is possible to pass string representations
      *            of EnumSets as well as any non-string property.
      * @return <code>element</code> allowing to perform multiple operations on it in one statement
      */
@@ -464,22 +464,44 @@ public final class DiagramSyntheses {
         return kText;
     }
 
+
+    /**
+     * Configures a tooltip on the provided {@link KGraphElement KGraphElement}. This method has no
+     * effect if another tooltip is defined on the root {@link KRendering} attached attached to this
+     * {@link KGraphElement} (except of blowing up the view model :-P).
+     *
+     * @param <T>
+     *            the concrete type of {@code kge}
+     * @param kge
+     *            the {@link KGraphElement} to be configured
+     * @param tooltip
+     *            the tooltip text to be shown while hovering over the corresponding diagram figure
+     * @return <code>kge</code> for convenience
+     */
+    public static <T extends KGraphElement> T setTooltip(final T kge, final String tooltip) {
+        kge.getData(KLayoutData.class).setProperty(KlighdProperties.TOOLTIP, tooltip);
+        return kge;
+    }
+
     /**
      * Configures a tooltip on the provided {@link KRendering root KRendering} of a
      * {@link KGraphElement}. Similar to {@link #setAsCollapsedView(KRendering)} or
      * {@link #setAsExpandedView(KRendering)} this method has no effect on nested {@link KRendering
-     * KRendering} (except of blowing up the view model :-P).
+     * KRenderings} (except of blowing up the view model :-P).
      *
+     * @param <T>
+     *            the concrete type of {@code rendering}
      * @param rendering
      *            the {@link KRendering} to be configured
      * @param tooltip
      *            the tooltip text to be shown while hovering over the corresponding diagram figure
      * @return <code>rendering</code> for convenience
      */
-    public static KRendering setTooltip(final KRendering rendering, final String tooltip) {
+    public static <T extends KRendering> T setTooltip(final T rendering, final String tooltip) {
         rendering.setProperty(KlighdProperties.TOOLTIP, tooltip);
         return rendering;
     }
+
 
     /**
      * Wraps the given rendering in a rendering displayed on selection and adds that to the given KGraph
