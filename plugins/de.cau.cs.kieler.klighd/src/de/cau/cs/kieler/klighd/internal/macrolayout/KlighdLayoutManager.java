@@ -572,17 +572,26 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             // (through the listeners)
             final KRendering rootRendering = label.getData(KRendering.class);
 
-            if (estimateSize && rootRendering != null) {
-                // calculate the minimal size need for the rendering ...
-                final Bounds minSize = PlacementUtil.estimateTextSize(label);
-
-                final float minWidth = minSize.getWidth() > layoutLayout.getWidth()
-                        ? minSize.getWidth() : layoutLayout.getWidth();
-                final float minHeight = minSize.getHeight() > layoutLayout.getHeight()
-                        ? minSize.getHeight() : layoutLayout.getHeight();
-
-                // ... and update the node size if it exceeds its size
-                layoutLayout.setSize(minWidth, minHeight);
+            if (rootRendering != null) {
+                if (estimateSize) {
+                    // calculate the minimal size need for the rendering ...
+                    final Bounds minSize = PlacementUtil.estimateTextSize(label);
+                    
+                    final float minWidth = minSize.getWidth() > layoutLayout.getWidth()
+                            ? minSize.getWidth()
+                            : layoutLayout.getWidth();
+                    final float minHeight = minSize.getHeight() > layoutLayout.getHeight()
+                            ? minSize.getHeight()
+                            : layoutLayout.getHeight();
+                    
+                    // ... and update the node size if it exceeds its size
+                    layoutLayout.setSize(minWidth, minHeight);
+                    
+                }
+                
+                // attach the label's root rendering to the label so that our layout algorithms know
+                // how to estimate text sizes.
+                layoutLabel.getData().add(rootRendering);
             }
         }
 
