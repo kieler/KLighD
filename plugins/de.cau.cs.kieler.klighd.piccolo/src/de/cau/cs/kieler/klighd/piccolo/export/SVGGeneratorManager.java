@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -31,7 +32,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
  * Singleton class that takes care of loading all svg generators from the {@code svgGenerators}
  * extension point. A new instance of a registered generator can be retrieved using the
  * {@link #createGraphics(String, Rectangle2D, boolean)} method.
- * 
+ *
  * @author uru
  */
 public final class SVGGeneratorManager {
@@ -64,7 +65,10 @@ public final class SVGGeneratorManager {
     }
 
     /**
-     * 
+     * Instantiates the {@link KlighdAbstractSVGGraphics} registered with id {@code id} if known.
+     * Throws an {@link IllegalArgumentException} providing some details on the failure if
+     * instantiation fails.
+     *
      * @param id
      *            the id of the svg generator, most probably specified in
      *            {@link de.cau.cs.kieler.klighd.KlighdConstants KlighdConstants}.
@@ -78,53 +82,57 @@ public final class SVGGeneratorManager {
      *             when the graphics object cannot be created.
      * @return a instance of a svg generator initialized with the passed parameters.
      */
-    @SuppressWarnings("unchecked")
     public static KlighdAbstractSVGGraphics createGraphics(final String id, final Rectangle2D bounds,
             final boolean textAsShapes, final boolean embedFonts) {
         final String graphicsClass = getInstance().generatorsMap.get(id);
 
-        try {
-            final Class<? extends KlighdAbstractSVGGraphics> clazz =
-                    (Class<? extends KlighdAbstractSVGGraphics>) Class.forName(graphicsClass);
-            
-            KlighdAbstractSVGGraphics graphics = null;
-            try {
-
-                final Constructor<? extends KlighdAbstractSVGGraphics> constr =
-                        clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class,
-                                Boolean.class);
-                graphics = constr.newInstance(bounds, textAsShapes, embedFonts);
-
-            } catch (final NoSuchMethodException e0) {
-                // nothing
-            }
-            
-            if (graphics != null) {
-                return graphics;
-            }
-            
-            try {
-                final Constructor<? extends KlighdAbstractSVGGraphics> constr =
-                        clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class);
-                graphics = constr.newInstance(bounds, textAsShapes);
-                
-            } catch (final NoSuchMethodException e1) {
-                // nothing
-            }
-            
-            if (graphics != null) {
-                return graphics;
-            }
-            
-            throw new IllegalArgumentException("Could not instantiate svg graphics object for id "
-                    + id + " because of a missing constructor with signature "
-                    + "(Rectangle2D, Boolean) or (Reactangle2D, Boolean, Boolean)");
-            
-        } catch (final Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Could not instantiate svg graphics object for id "
-                    + id, e);
+        if (Strings.isNullOrEmpty(graphicsClass)) {
+            throw new IllegalArgumentException("Could not instantiate svg graphics object, the "
+                    + "provided graphicsClass id is 'null' or empty.");
         }
+
+        Class<? extends KlighdAbstractSVGGraphics> clazz;
+        try {
+            @SuppressWarnings("unchecked")
+            final Class<? extends KlighdAbstractSVGGraphics> theClazz =
+                    (Class<? extends KlighdAbstractSVGGraphics>) Class.forName(graphicsClass);
+            clazz =  theClazz;
+        } catch (final ClassNotFoundException e) {
+            throw new IllegalArgumentException("Could not instantiate svg graphics object for id "
+                    + id + ". Corresponding class " + graphicsClass + " could not be found");
+        }
+
+        KlighdAbstractSVGGraphics graphics = null;
+        try {
+
+            final Constructor<? extends KlighdAbstractSVGGraphics> constr =
+                    clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class, Boolean.class);
+            graphics = constr.newInstance(bounds, textAsShapes, embedFonts);
+
+        } catch (final Exception e) {
+            // nothing
+        }
+
+        if (graphics != null) {
+            return graphics;
+        }
+
+        try {
+            final Constructor<? extends KlighdAbstractSVGGraphics> constr =
+                    clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class);
+            graphics = constr.newInstance(bounds, textAsShapes);
+
+        } catch (final Exception e) {
+            // nothing
+        }
+
+        if (graphics != null) {
+            return graphics;
+        }
+
+        throw new IllegalArgumentException("Could not instantiate svg graphics object for id " + id
+                + " because of a missing constructor with signature "
+                + "(Rectangle2D, Boolean) or (Reactangle2D, Boolean, Boolean)");
     }
 
     private void loadSvgGenerators() {

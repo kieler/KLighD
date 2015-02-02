@@ -88,8 +88,15 @@ public class SVGExporter extends KlighdCanvasExporter {
                         brandings, diagramTrim, diagramTileTrim);
 
         // initialize a graphics object that 'collects' all the drawing instructions
-        final KlighdAbstractSVGGraphics graphics = SVGGeneratorManager.createGraphics(
+        final KlighdAbstractSVGGraphics graphics;
+        try {
+            graphics = SVGGeneratorManager.createGraphics(
                 data.format, extendedBounds, data.isTextAsShapes, data.isEmbedFonts);
+
+        } catch (final IllegalArgumentException e) {
+            final String msg = "KLighD SVG export: Failed to load SVG exporter backend.";
+            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+        }
 
         // The global clip setting is required as (in PPaintContext) a default one will be set!
         // This however will let various browsers go crazy and don't show anything!
