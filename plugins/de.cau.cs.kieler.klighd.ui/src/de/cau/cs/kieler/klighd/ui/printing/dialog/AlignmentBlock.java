@@ -16,10 +16,14 @@ package de.cau.cs.kieler.klighd.ui.printing.dialog;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -39,15 +43,16 @@ final class AlignmentBlock {
     }
 
     /**
-     * Creates the 'Alignment' block contents.
-     * The bindings are used to bind observable GUI elements to print setting in the given options.
+     * Creates the 'Alignment' block contents. The bindings are used to bind observable GUI elements
+     * to print setting in the given options.
      *
      * @param parent
      *            the parent {@link Composite} to use
      * @param bindings
-     *            the bindings used for observables
+     *            the {@link DataBindingContext} managing the employed
+     *            {@link org.eclipse.core.databinding.Binding Bindings}
      * @param options
-     *            the current print options
+     *            the {@link PrintOptions} to be used
      * @return the created {@link Group}
      */
     public static Group createContents(final Composite parent, final DataBindingContext bindings,
@@ -72,12 +77,23 @@ final class AlignmentBlock {
 
         final Realm realm = bindings.getValidationRealm();
 
-        // SUPPRESS CHECKSTYLE NEXT 2 LineLength -- it's just one character ;-)
-        bindings.bindValue(SWTObservables.observeSelection(centerHorizontally),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY));
+        final IObservableValue centerHorValue =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_HORIZONTALLY);
+        bindings.bindValue(SWTObservables.observeSelection(centerHorizontally), centerHorValue);
 
-        bindings.bindValue(SWTObservables.observeSelection(centerVertically),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY));
+        final IObservableValue centerVerValue =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_CENTER_VERTICALLY);
+        bindings.bindValue(SWTObservables.observeSelection(centerVertically), centerVerValue);
+
+        result.addListener(SWT.Dispose, new Listener() {
+
+            public void handleEvent(final Event event) {
+                // while the SWTObservableValues are disposed while disposing the corresponding widgets
+                //  the Beans-based ones should be disposed explicitly
+                centerHorValue.dispose();
+                centerVerValue.dispose();
+            }
+        });
 
         return result;
     }

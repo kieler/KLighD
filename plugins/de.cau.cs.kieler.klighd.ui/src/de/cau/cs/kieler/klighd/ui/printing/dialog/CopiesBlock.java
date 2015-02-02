@@ -79,9 +79,10 @@ final class CopiesBlock {
      * @param parent
      *            the parent {@link Composite} to use
      * @param bindings
-     *            the bindings used for observables
+     *            the {@link DataBindingContext} managing the employed
+     *            {@link org.eclipse.core.databinding.Binding Bindings}
      * @param options
-     *            the current print options
+     *            the {@link PrintOptions} to be used
      * @return the created {@link Group}
      */
     public static Group createContents(final Composite parent, final DataBindingContext bindings,
@@ -99,9 +100,9 @@ final class CopiesBlock {
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_NumberOfCopies);
         final Spinner copiesSpinner = DialogUtil.spinner(result, 1, Integer.MAX_VALUE);
 
-        bindings.bindValue(SWTObservables.observeSelection(copiesSpinner),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES), null,
-                null);
+        final IObservableValue copiesValue =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES);
+        bindings.bindValue(SWTObservables.observeSelection(copiesSpinner), copiesValue);
 
         final Image collateOnImage = COLLATE_ON.createImage();
         final Image collateOffImage = COLLATE_OFF.createImage();
@@ -112,6 +113,8 @@ final class CopiesBlock {
 
         final Button collateCheck =
                 DialogUtil.check(result, KlighdUIPrintingMessages.PrintDialog_Collate);
+
+        collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
 
         final IObservableValue collateValue =
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
@@ -130,15 +133,15 @@ final class CopiesBlock {
             }
         });
 
-        collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
-        collateImageLabel.addListener(SWT.Dispose, new Listener() {
+        result.addListener(SWT.Dispose, new Listener() {
 
             public void handleEvent(final Event event) {
                 collateOnImage.dispose();
                 collateOffImage.dispose();
 
-                // although it is not mandatory to dispose 'collateValue' as it just registers
-                //  a listener on 'options', let's just do it for the good conscience
+                // while the SWTObservableValues are disposed while disposing the corresponding widgets
+                //  the Beans-based ones should be disposed explicitly
+                copiesValue.dispose();
                 collateValue.dispose();
             }
         });

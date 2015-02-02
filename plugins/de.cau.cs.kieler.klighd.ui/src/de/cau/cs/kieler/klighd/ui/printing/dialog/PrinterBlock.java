@@ -29,14 +29,17 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
@@ -66,9 +69,10 @@ final class PrinterBlock {
      * @param parent
      *            the parent {@link Composite} to use
      * @param bindings
-     *            the bindings used for observables
+     *            the {@link DataBindingContext} managing the employed
+     *            {@link org.eclipse.core.databinding.Binding Bindings}
      * @param options
-     *            the current print options
+     *            the {@link PrintOptions} to be used
      * @param printDialog
      *            the parent dialog used for the system print dialog
      * @return the created {@link Group}
@@ -84,6 +88,7 @@ final class PrinterBlock {
 
         // printer resp. file name label
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_Name);
+
         final Label printerLabel = DialogUtil.label(result, "");
         DialogUtil.layoutFillHorizontal(printerLabel, true);
 
@@ -104,7 +109,7 @@ final class PrinterBlock {
                 }
             }
         };
-        bindings.bindValue(SWTObservables.observeText(printerLabel), computedValue, null, null);
+        bindings.bindValue(SWTObservables.observeText(printerLabel), computedValue);
 
         // printer properties button
         final Button propertiesButton =
@@ -125,6 +130,15 @@ final class PrinterBlock {
                 if (data != null) {
                     options.setPrinterData(data);
                 }
+            }
+        });
+
+        result.addListener(SWT.Dispose, new Listener() {
+
+            public void handleEvent(final Event event) {
+                // while the SWTObservableValues are disposed while disposing the corresponding widgets
+                //  the ComputedValue should be disposed explicitly
+                computedValue.dispose();
             }
         });
 

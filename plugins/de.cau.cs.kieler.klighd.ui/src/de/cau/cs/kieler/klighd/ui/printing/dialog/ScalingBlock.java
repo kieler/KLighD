@@ -29,6 +29,7 @@ import java.awt.geom.Dimension2D;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -37,7 +38,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
@@ -194,14 +197,29 @@ final class ScalingBlock {
 
             final Realm realm = bindings.getValidationRealm();
 
-            bindings.bindValue(SWTObservables.observeSelection(scaleSpinner),
-                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_SCALE_PERCENT));
+            final IObservableValue scalePercent =
+                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_SCALE_PERCENT);
+            bindings.bindValue(SWTObservables.observeSelection(scaleSpinner), scalePercent);
 
-            bindings.bindValue(SWTObservables.observeSelection(spinnerWide),
-                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_WIDE));
+            final IObservableValue pagesWide =
+                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_WIDE);
+            bindings.bindValue(SWTObservables.observeSelection(spinnerWide), pagesWide);
 
-            bindings.bindValue(SWTObservables.observeSelection(spinnerTall),
-                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_TALL));
+            final IObservableValue pagesTall =
+                    BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_TALL);
+            bindings.bindValue(SWTObservables.observeSelection(spinnerTall), pagesTall);
+
+            result.addListener(SWT.Dispose, new Listener() {
+
+                public void handleEvent(final Event event) {
+                    // while the SWTObservableValues are disposed while disposing the corresponding
+                    //  widgets the Beans-based ones should be disposed explicitly
+                    scalePercent.dispose();
+                    pagesWide.dispose();
+                    pagesTall.dispose();
+                }
+            });
+
         } else {
 
             // in case the 'options' field is null, i.e. this instance is not linked to an instance of

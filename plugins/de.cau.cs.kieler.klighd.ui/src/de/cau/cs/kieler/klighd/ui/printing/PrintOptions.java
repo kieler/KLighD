@@ -40,8 +40,15 @@ import com.google.common.base.Strings;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 
 /**
- * This class is part of the infrastructure required for data-bindings used with the
- * {@link de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog KlighdPrintDialog}.
+ * Data record definition providing storage of the information required by the
+ * {@link de.cau.cs.kieler.klighd.ui.printing.dialog.KlighdPrintDialog KlighdPrintDialog}.<br>
+ * <br>
+ * The is class contains only basic print configuration data fields. This way the print dialog can
+ * be incorporated for printing non-diagram content either, a subclass of this class can be created
+ * enabling the storage of further information.<br>
+ * <br>
+ * During the KLighD diagram print an instance of {@link DiagramPrintOptions}, which is a subclass
+ * of this one as well, is incorporated.
  *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
@@ -150,18 +157,18 @@ public class PrintOptions {
      * {@link IPreferenceStore} provided to the
      * {@link PrintOptions#PrintOptions(IPreferenceStore) constructor} instantiating
      * {@link PrintOptions} or subclasses, of course.
-     * 
+     *
      * @author chsch
      */
     public abstract static class Initializer extends AbstractPreferenceInitializer {
 
         /**
          * Provides the {@link IPreferenceStore} to be used for storing the configuration.
-         * 
+         *
          * @return the {@link IPreferenceStore} to be used for storing the configuration.
          */
         protected abstract IPreferenceStore getPreferenceStore();
-        
+
         /**
          * {@inheritDoc}
          */
