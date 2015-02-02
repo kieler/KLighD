@@ -27,13 +27,12 @@ package de.cau.cs.kieler.klighd.ui.printing.dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
-import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A section of the KlighD print dialog that handles extra actions. In this case,
@@ -42,72 +41,66 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
-final class ActionsBlock implements IDialogBlock {
+final class ActionsBlock {
 
     private static final String OPEN_ARROWS = " >>";
     private static final String CLOSE_ARROWS = " <<";
 
-    private final KlighdPrintDialog printDialog;
-    private final boolean previewInitiallyOpen;
-
-    private Button printPreview;
-    private final SelectionListener printPreviewButtonListener = new SelectionAdapter() {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void widgetSelected(final SelectionEvent e) {
-            final PrintPreviewTray tray = printDialog.getTray();
-
-            if (tray != null) {
-                printDialog.closeTray();
-                printPreview.setText(
-                        KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + OPEN_ARROWS);
-                PrintOptions.setInitiallyShowPreview(false);
-                tray.dispose();
-
-            } else {
-                printDialog.openPreview();
-                printPreview.setText(
-                        KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + CLOSE_ARROWS);
-                PrintOptions.setInitiallyShowPreview(true);
-            }
-        }
-    };
+    /**
+     * Hidden standard constructor.
+     */
+    private ActionsBlock() {
+    }
 
     /**
-     * Instantiates a new actions block.
+     * Creates the action block contents.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
      *
+     * @param parent
+     *            the parent {@link Composite} to use
      * @param printDialog
      *            the print dialog to execute the actions on (e.g. show preview)
-     * @param previewOpen TODO
+     * @param previewEnabled
+     *            TODO
+     * @param previewInitiallyOpen
+     *            TODO
+     * @return the created {@link Control}
      */
-    ActionsBlock(final KlighdPrintDialog printDialog, final boolean previewOpen) {
-        this.printDialog = printDialog;
-        this.previewInitiallyOpen = previewOpen;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Control createContents(final Composite parent) {
+    public static Control createContents(final Composite parent, final KlighdPrintDialog printDialog,
+            final boolean previewEnabled, final boolean previewInitiallyOpen) {
         final String arrows = previewInitiallyOpen ? CLOSE_ARROWS : OPEN_ARROWS;
 
-        printPreview = new Button(parent, SWT.PUSH);
-        printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + arrows);
-        printPreview.addSelectionListener(printPreviewButtonListener);
-
+        final Button printPreview = new Button(parent, SWT.PUSH);
         DialogUtil.layoutAlignRight(printPreview);
 
-        return printPreview;
-    }
+        printPreview.setText(KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + arrows);
+        printPreview.setEnabled(previewEnabled);
+        printPreview.addSelectionListener(new SelectionAdapter() {
 
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
-        printPreview.removeSelectionListener(printPreviewButtonListener);
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final PrintPreviewTray tray = printDialog.getTray();
+
+                if (tray != null) {
+                    printDialog.closeTray();
+                    printPreview.setText(
+                            KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + OPEN_ARROWS);
+                    DiagramPrintOptions.setInitiallyShowPreview(false);
+
+                } else {
+                    printDialog.openPreview();
+                    printPreview.setText(
+                            KlighdUIPrintingMessages.PrintDialog_Button_PrintPreview + CLOSE_ARROWS);
+                    DiagramPrintOptions.setInitiallyShowPreview(true);
+                }
+            }
+        });
+
+        return printPreview;
     }
 }

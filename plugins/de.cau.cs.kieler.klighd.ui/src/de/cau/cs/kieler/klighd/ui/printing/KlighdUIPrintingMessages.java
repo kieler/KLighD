@@ -62,6 +62,11 @@ public final class KlighdUIPrintingMessages extends NLS {
     public static String PrintDialog_Pages;
     public static String PrintDialog_From;
     public static String PrintDialog_To;
+
+    public static String PrintDialog_Orientation_orientation;
+    public static String PrintDialog_Orientation_portrait;
+    public static String PrintDialog_Orientation_landscape;
+
     public static String PrintDialog_Scaling;
     public static String PrintDialog_Scaling_to100;
     public static String PrintDialog_Scaling_fitPages;

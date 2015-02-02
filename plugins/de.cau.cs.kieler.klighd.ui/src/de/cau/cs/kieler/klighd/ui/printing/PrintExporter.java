@@ -126,7 +126,7 @@ public final class PrintExporter extends AbstractDiagramExporter {
 
     /**
      * Resets the cached trim information.<br>
-     * This method is currently only called from {@link PrintOptions} after the printer data
+     * This method is currently only called from {@link DiagramPrintOptions} after the printer data
      * (resolution) and page orientation has been altered.
      */
     void resetTrimInformation() {

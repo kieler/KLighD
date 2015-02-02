@@ -145,7 +145,7 @@ public class PrintAction extends Action {
         }
 
         final PrintExporter exporter = new PrintExporter(viewer);
-        final PrintOptions options = new PrintOptions(exporter);
+        final PrintOptions options = new DiagramPrintOptions(exporter);
 
         final KlighdPrintDialog dlg = getPrintDialog(viewer.getControl().getShell(), options);
 

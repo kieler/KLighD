@@ -33,7 +33,9 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
@@ -45,86 +47,108 @@ import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
-final class RangeBlock implements IDialogBlock {
-    private final DataBindingContext bindings;
-    private final PrintOptions options;
+final class RangeBlock {
 
     /**
-     * Instantiates a new range block.
-     * The bindings are used to bind observable GUI elements to print setting in the given options.
-     *
-     * @param bindings
-     *            the bindings used for observables
-     * @param options
-     *            the current print options
+     * Hidden standard constructor.
      */
-    RangeBlock(final DataBindingContext bindings, final PrintOptions options) {
-        this.bindings = bindings;
-        this.options = options;
+    private RangeBlock() {
     }
 
-    private static final int COLUMNS = 2;
-    private static final int TEXT_WIDTH = 20;
     /**
-     * {@inheritDoc}
+     * Creates the 'Range' block contents.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
+     *
+     * @param parent
+     *            the parent {@link Composite} to use
+     * @param bindings
+     *            the {@link DataBindingContext} managing the employed
+     *            {@link org.eclipse.core.databinding.Binding Bindings}
+     * @param options
+     *            the {@link PrintOptions} to be used
+     * @return the created {@link Group}
      */
-    public Control createContents(final Composite parent) {
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options) {
+        final int columns = 2;
+        final int textWidth = 20;
+
         final Realm realm = bindings.getValidationRealm();
 
         // create group
-        final Composite result =
+        final Group result =
                 DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_PrintRange);
-        DialogUtil.layout(result, COLUMNS);
+        DialogUtil.layout(result, columns);
 
-        // radiobutton for print all
+        // radio button for print all
         final Button allRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_All);
-        DialogUtil.layoutSpanHorizontal(allRadio, COLUMNS);
+        DialogUtil.layoutSpanHorizontal(allRadio, columns);
 
         final IObservableValue allValue =
                 BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ALL_PAGES);
-        bindings.bindValue(SWTObservables.observeSelection(allRadio), allValue, null, null);
+        bindings.bindValue(SWTObservables.observeSelection(allRadio), allValue);
 
-        //radiobutton for defining a print range
-        final Button rangeRadio =
-                DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Pages);
-        DialogUtil.layoutSpanHorizontal(rangeRadio, COLUMNS);
+        // radio button for defining a print range
+        final Button rangeRadio = DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Pages);
+        DialogUtil.layoutSpanHorizontal(rangeRadio, columns);
 
+        // the following ComputedValue is required for properly initializing the selection of
+        //  'rangeRadio', which won't be done if 'rangeValue' would be initialized with just
+        //  'SWTObservables.observeSelection(rangeRadio)' (during initialization from preferences
+        //  as well as changes performed in the native print dialog);
+        // note that the executions of 'calculate' are monitored and calls of 'allValue.getValue()'
+        //  cause the attachment of valueChangeListeners on 'allValue' notifying 'rangeValue'
+        // interestingly a set operation on 'rangeRadio', which would then cause a set operation
+        //  on 'rangeValue', leads to a (caught) exception in AbstractObservableValue#doSetValue()
+        //  since that method is not overridden by 'ComputedValue';
+        // the update of 'rangeValue' is than caused by the de-selection of 'allValue' leading to
+        //  a re-computation of rangValue by means of the above mentioned listeners (crazy shit ...);
+        //  the than calculated result is used below for enabling the "from" & "to" text fields.
         final IObservableValue rangeValue = new ComputedValue(realm) {
+
             @Override
             protected Object calculate() {
-                return Boolean.valueOf(!((Boolean) allValue.getValue()).booleanValue());
+                return ((Boolean) allValue.getValue()).booleanValue() ? Boolean.FALSE : Boolean.TRUE;
             }
         };
-        bindings.bindValue(SWTObservables.observeSelection(rangeRadio), rangeValue, null, null);
+        bindings.bindValue(SWTObservables.observeSelection(rangeRadio), rangeValue);
 
         // range from (label & textfield)
         DialogUtil.layoutHorizontalIndent(DialogUtil.label(result,
                 KlighdUIPrintingMessages.PrintDialog_From));
-        final Text textFrom = DialogUtil.text(result, TEXT_WIDTH);
 
-        bindings.bindValue(SWTObservables.observeText(textFrom, SWT.Modify),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM),
-                null, null);
-        bindings.bindValue(SWTObservables.observeEnabled(textFrom), rangeValue, null, null);
+        final Text textFrom = DialogUtil.text(result, textWidth);
+
+        final IObservableValue rangeFrom =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_FROM);
+        bindings.bindValue(SWTObservables.observeText(textFrom, SWT.Modify), rangeFrom);
+        bindings.bindValue(SWTObservables.observeEnabled(textFrom), rangeValue);
 
         // range to (label & textfield)
-        DialogUtil.layoutHorizontalIndent(DialogUtil.label(result,
-                KlighdUIPrintingMessages.PrintDialog_To));
-        final Text textTo = DialogUtil.text(result, TEXT_WIDTH);
+        DialogUtil.layoutHorizontalIndent(
+                DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_To));
 
-        bindings.bindValue(SWTObservables.observeText(textTo, SWT.Modify),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO),
-                null, null);
-        bindings.bindValue(SWTObservables.observeEnabled(textTo), rangeValue, null, null);
+        final Text textTo = DialogUtil.text(result, textWidth);
+
+        final IObservableValue rangeTo =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_RANGE_TO);
+        bindings.bindValue(SWTObservables.observeText(textTo, SWT.Modify), rangeTo);
+        bindings.bindValue(SWTObservables.observeEnabled(textTo), rangeValue);
+
+        result.addListener(SWT.Dispose, new Listener() {
+
+            public void handleEvent(final Event event) {
+                // while the SWTObservableValues are disposed while disposing the corresponding widgets
+                //  the Beans-based ones should be disposed explicitly
+                allValue.dispose();
+                rangeValue.dispose();
+                rangeFrom.dispose();
+                rangeTo.dispose();
+            }
+        });
 
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
-        // nothing to dispose
     }
 }

@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.ui.printing.DiagramPrintOptions;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
@@ -61,13 +61,8 @@ public class KlighdPrintDialog extends TrayDialog {
 
     private DataBindingContext bindings;
     private final PrintOptions options;
+    private final boolean previewEnabled;
 
-    private PrinterBlock printerBlock;
-    private ScalingBlock scalingBlock;
-    private RangeBlock rangeBlock;
-    private CopiesBlock copiesBlock;
-    private AlignmentBlock alignmentBlock;
-    private ActionsBlock actionsBlock;
 
     /**
      * Creates a new KLighD print dialog based on the given options.
@@ -82,6 +77,7 @@ public class KlighdPrintDialog extends TrayDialog {
         super(parentShell);
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.options = options;
+        this.previewEnabled = options instanceof DiagramPrintOptions;
     }
 
     /**
@@ -97,6 +93,7 @@ public class KlighdPrintDialog extends TrayDialog {
         super(shell);
         setShellStyle(getShellStyle() | SWT.MAX | SWT.RESIZE);
         this.options = options;
+        this.previewEnabled = options instanceof DiagramPrintOptions;
     }
 
     /**
@@ -185,18 +182,19 @@ public class KlighdPrintDialog extends TrayDialog {
         bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
 
         final boolean previewInitiallyOpen =
-                PrintOptions.getInitiallyShowPreview() && checkPrinterData();
+                previewEnabled && DiagramPrintOptions.getInitiallyShowPreview() && checkPrinterData();
 
         final Composite result = new Composite(parent, SWT.NONE);
         DialogUtil.layout(result, 2);
 
         createPrinterBlockArea(result);
         createScalingBlockArea(result);
+        createOrientationBlockArea(result);
         createAlignmentBlockArea(result);
         createRangeBlockArea(result);
         createCopiesBlockArea(result);
         createExtensibleBlockArea(result);
-        createActionsBlockArea(result, false);
+        createActionsBlockArea(result, previewInitiallyOpen);
 
         if (previewInitiallyOpen) {
 
@@ -252,8 +250,8 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createPrinterBlockArea(final Composite parent) {
-        printerBlock = new PrinterBlock(bindings, options, this);
-        DialogUtil.layoutSpanHorizontal(printerBlock.createContents(parent), 2);
+        DialogUtil.layoutSpanHorizontal(
+                PrinterBlock.createContents(parent, bindings, options, this), 2);
     }
 
     /**
@@ -262,40 +260,17 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createScalingBlockArea(final Composite parent) {
-        scalingBlock = new ScalingBlock(bindings, options);
-        DialogUtil.layoutSpanHorizontal(scalingBlock.createContents(parent), 2);
+        DialogUtil.layoutSpanHorizontal(
+                ScalingBlock.createContents(parent, bindings, options), 2);
     }
 
     /**
-     * Creates the range block area.
+     * Creates the orientation block area.
      *
      * @param parent the parent composite
      */
-    protected void createRangeBlockArea(final Composite parent) {
-        rangeBlock = new RangeBlock(bindings, options);
-        rangeBlock.createContents(parent);
-    }
-
-    /**
-     * Creates the copies block area.
-     *
-     * @param parent the parent composite
-     */
-    protected void createCopiesBlockArea(final Composite parent) {
-         copiesBlock = new CopiesBlock(bindings, options);
-         final Composite group = (Composite) copiesBlock.createContents(parent);
-
-        if (KlighdPlugin.IS_MACOSX) {
-            // I deactivated 'copies' block as this information can be changed in the native dialog
-            //  but (on OSX) it is not delivered back within the returned PrinterData.
-            // Thus, 'copies' cannot be updated properly.
-            // This, however, seems not to hold for windows and linux.
-            group.setToolTipText(KlighdUIPrintingMessages.KlighdPrintDialog_Copies_OSXToolTip);
-
-            for (final Control con : group.getChildren()) {
-                con.setEnabled(false);
-            }
-        }
+    protected void createOrientationBlockArea(final Composite parent) {
+        OrientationBlock.createContents(parent, bindings, options);
     }
 
     /**
@@ -304,8 +279,25 @@ public class KlighdPrintDialog extends TrayDialog {
      * @param parent the parent composite
      */
     protected void createAlignmentBlockArea(final Composite parent) {
-         alignmentBlock = new AlignmentBlock(bindings, options);
-         DialogUtil.layoutSpanHorizontal(alignmentBlock.createContents(parent), 2);
+         AlignmentBlock.createContents(parent, bindings, options);
+    }
+
+    /**
+     * Creates the range block area.
+     *
+     * @param parent the parent composite
+     */
+    protected void createRangeBlockArea(final Composite parent) {
+        RangeBlock.createContents(parent, bindings, options);
+    }
+
+    /**
+     * Creates the copies block area.
+     *
+     * @param parent the parent composite
+     */
+    protected void createCopiesBlockArea(final Composite parent) {
+        CopiesBlock.createContents(parent, bindings, options);
     }
 
     /**
@@ -322,33 +314,21 @@ public class KlighdPrintDialog extends TrayDialog {
      *
      * @param parent
      *            the parent composite
-     * @param previewInitiallyOpen
+     * @param previewInitiallyOpen determines the text of the preview button; must be
      *            <code>true</code> if preview is initially visible, <code>false</code> otherwise
      */
     protected void createActionsBlockArea(final Composite parent, final boolean previewInitiallyOpen) {
-        actionsBlock = new ActionsBlock(this, previewInitiallyOpen);
-        DialogUtil.layoutSpanHorizontal(actionsBlock.createContents(parent), 2);
+        DialogUtil.layoutSpanHorizontal(
+                ActionsBlock.createContents(parent, this, previewEnabled, previewInitiallyOpen), 2);
     }
 
     /**
      * Opens the print preview by injecting a corresponding {@link PrintPreviewTray}.
      */
     public void openPreview() {
-        this.openTray(new PrintPreviewTray(bindings, options));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void buttonPressed(final int buttonId) {
-        options.storeToPreferences();
-//        switch (buttonId) {
-//        case IDialogConstants.OK_ID:
-//            // fall through!
-//        default:
-        super.buttonPressed(buttonId);
-//        }
+        if (previewEnabled) {
+            this.openTray(new PrintPreviewTray(bindings, (DiagramPrintOptions) options));
+        }
     }
 
     /**
@@ -356,18 +336,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     @Override
     public boolean close() {
-        bindings.dispose();
-        copiesBlock.dispose();
-        printerBlock.dispose();
-        scalingBlock.dispose();
-        rangeBlock.dispose();
-        actionsBlock.dispose();
-
-        final PrintPreviewTray printPreviewTray = this.getTray();
-        if (printPreviewTray != null) {
-            printPreviewTray.dispose();
-        }
-
+        options.storeToPreferences();
         return super.close();
     }
 }

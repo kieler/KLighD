@@ -141,7 +141,7 @@ public abstract class KlighdPathController extends PNodeController<KlighdPath> {
     @Override
     public void setLineJoin(final LineJoin lineJoin, final float miterLimit) {
         final LineAttributes lineAttributes = getNode().getLineAttributes();
-        switch(lineJoin) {
+        switch (lineJoin) {
         case JOIN_MITER:
             lineAttributes.join = SWT.JOIN_MITER;
             lineAttributes.miterLimit = miterLimit;

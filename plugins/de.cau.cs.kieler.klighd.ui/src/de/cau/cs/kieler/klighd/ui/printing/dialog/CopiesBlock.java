@@ -13,12 +13,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -37,21 +37,26 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.printing.KlighdUIPrintingMessages;
 import de.cau.cs.kieler.klighd.ui.printing.PrintOptions;
 
 /**
  * A section of the KlighD print dialog that handles the number of copies of a diagram to print.
- * 
+ *
  * @author Christian Damus (cdamus)
  * @author James Bruck (jbruck)
  * @author csp
+ * @author chsch
  */
-final class CopiesBlock implements IDialogBlock {
+final class CopiesBlock {
 
     /** Image for collate on. */
     private static final ImageDescriptor COLLATE_ON = KlighdUIPlugin.getImageDescriptor(
@@ -60,86 +65,99 @@ final class CopiesBlock implements IDialogBlock {
     public static final ImageDescriptor COLLATE_OFF = KlighdUIPlugin.getImageDescriptor(
             "icons/printing/no_collate.gif"); //$NON-NLS-1$
 
-    private final DataBindingContext bindings;
-    private final PrintOptions options;
-    private final Image collateOnImage = COLLATE_ON.createImage();
-    private final Image collateOffImage = COLLATE_OFF.createImage();
-
-    private IObservableValue collateObservable;
-    private IValueChangeListener listener;
-
     /**
-     * Instantiates a new copies block.
-     * The bindings are used to bind observable GUI elements to print setting in the given options.
-     * 
-     * @param bindings
-     *            the bindings used for observables
-     * @param options
-     *            the current print options
-     * @param printDialog
-     *            the print dialog to execute the actions on (e.g. show preview)
+     * Hidden standard constructor.
      */
-    CopiesBlock(final DataBindingContext bindings, final PrintOptions options) {
-        this.bindings = bindings;
-        this.options = options;
+    private CopiesBlock() {
+
     }
 
     /**
-     * {@inheritDoc}
+     * Creates the 'Copies' block contents.
+     * The bindings are used to bind observable GUI elements to print setting in the given options.
+     *
+     * @param parent
+     *            the parent {@link Composite} to use
+     * @param bindings
+     *            the {@link DataBindingContext} managing the employed
+     *            {@link org.eclipse.core.databinding.Binding Bindings}
+     * @param options
+     *            the {@link PrintOptions} to be used
+     * @return the created {@link Group}
      */
-    public Control createContents(final Composite parent) {
+    public static Group createContents(final Composite parent, final DataBindingContext bindings,
+            final PrintOptions options) {
+        final int columns = 2;
+
         final Realm realm = bindings.getValidationRealm();
 
         // create group
-        final Composite result =
+        final Group result =
                 DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Copies);
-        DialogUtil.layout(result, 2);
+        DialogUtil.layout(result, columns);
 
         // number of copies (label & spinner)
         DialogUtil.label(result, KlighdUIPrintingMessages.PrintDialog_NumberOfCopies);
         final Spinner copiesSpinner = DialogUtil.spinner(result, 1, Integer.MAX_VALUE);
 
-        bindings.bindValue(SWTObservables.observeSelection(copiesSpinner),
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES), null,
-                null);
+        final IObservableValue copiesValue =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES);
+        bindings.bindValue(SWTObservables.observeSelection(copiesSpinner), copiesValue);
+
+        final Image collateOnImage = COLLATE_ON.createImage();
+        final Image collateOffImage = COLLATE_OFF.createImage();
 
         // collate (imagelabel & checkbox)
         final Label collateImageLabel = new Label(result, SWT.CENTER | SWT.SHADOW_NONE);
-
         DialogUtil.layoutAlignRight(collateImageLabel);
-        collateImageLabel.setImage(collateOffImage);
 
         final Button collateCheck =
                 DialogUtil.check(result, KlighdUIPrintingMessages.PrintDialog_Collate);
 
-        collateObservable =
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
-        bindings.bindValue(SWTObservables.observeSelection(collateCheck), collateObservable, null,
-                null);
+        collateImageLabel.setImage(collateCheck.getSelection() ? collateOnImage : collateOffImage);
 
-        // set image according to collate state
-        listener = new IValueChangeListener() {
+        final IObservableValue collateValue =
+                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
+        bindings.bindValue(SWTObservables.observeSelection(collateCheck), collateValue);
+
+        collateValue.addValueChangeListener(new IValueChangeListener() {
 
             public void handleValueChange(final ValueChangeEvent event) {
-                if (options.isCollate()) {
+
+                // set image according to collate state
+                if (((Boolean) event.getObservableValue().getValue()).booleanValue()) {
                     collateImageLabel.setImage(collateOnImage);
                 } else {
                     collateImageLabel.setImage(collateOffImage);
                 }
             }
-        };
-        collateObservable.addValueChangeListener(listener);
+        });
+
+        result.addListener(SWT.Dispose, new Listener() {
+
+            public void handleEvent(final Event event) {
+                collateOnImage.dispose();
+                collateOffImage.dispose();
+
+                // while the SWTObservableValues are disposed while disposing the corresponding widgets
+                //  the Beans-based ones should be disposed explicitly
+                copiesValue.dispose();
+                collateValue.dispose();
+            }
+        });
+
+        if (KlighdPlugin.IS_MACOSX) {
+            // I deactivated 'copies' block as this information can be changed in the native dialog
+            //  but (on OSX) it is not delivered back within the returned PrinterData.
+            // Thus, 'copies' cannot be updated properly.
+            // This, however, seems not to hold for windows and linux.
+            result.setToolTipText(KlighdUIPrintingMessages.KlighdPrintDialog_Copies_OSXToolTip);
+
+            for (final Control con : result.getChildren()) {
+                con.setEnabled(false);
+            }
+        }
 
         return result;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose() {
-        collateObservable.removeValueChangeListener(listener);
-        collateOnImage.dispose();
-        collateOffImage.dispose();
-    }
-
 }
