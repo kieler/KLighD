@@ -43,6 +43,8 @@ import java.util.Properties;
 import java.util.Stack;
 import java.util.zip.GZIPOutputStream;
 
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Display;
 import org.freehep.graphics2d.font.FontUtilities;
 import org.freehep.graphicsbase.util.UserProperties;
 import org.freehep.graphicsbase.util.Value;
@@ -56,6 +58,8 @@ import org.freehep.graphicsio.PageConstants;
 import org.freehep.graphicsio.svg.SVGFontTable;
 import org.freehep.util.io.Base64OutputStream;
 import org.freehep.util.io.WriterOutputStream;
+
+import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -73,7 +77,8 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
  * 
  * - Added capabilities to add semantic information to the svg, ie key/value pairs within the 'klighd' namespace.
  * - Allow comments to be switched off.
- * - Corrected direction of color gradients. 
+ * - Corrected direction of color gradients.
+ * - Added support for multi-line text and proper font sizing. 
  * 
  * @author uru
  */
@@ -188,6 +193,11 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     private KlighdSemanticDiagramData semanticData = null;
     
     private boolean writeComments = false;
+    
+    /** The display used to render diagrams, if available, otherwhise {@code null}. */
+    private Display display;
+    /** If a display exists, this {@link GC} is used to perform font size calculations. */  
+    private GC gc;
 
     /*
      * ================================================================================ |
@@ -225,6 +235,14 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         this.filename = null;
 
         this.clipNumber = new Value().set(0);
+        
+        // Dont use #getDefault() as we do not want to 
+        //  create a display if none exists so far.
+        display = Display.getCurrent();
+        if (display != null && gc == null) {
+            // remember to dispose the gc later
+            gc = new GC(display);
+        }
     }
 
     protected SemanticSVGGraphics2D(SemanticSVGGraphics2D graphics, boolean doRestoreOnDispose) {
@@ -240,6 +258,15 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         textures = graphics.textures;
         clipNumber = graphics.clipNumber;
         fontTable = graphics.fontTable;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void dispose() {
+        gc = null;
+        super.dispose();
     }
 
     /*
@@ -737,12 +764,27 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
     
     /**
-     * Parse the attributes string and add a unit to the font-size attribute. 
-     * @param attributes the text attributes
+     * Parse the attributes string and add a unit to the font-size attribute.
+     * 
+     * A font's size is specified in 'pt' which is a relative size where a height of 72pt
+     * corresponds to 1 inch. When a font is rendered on a screen however, these pts are converted
+     * to pixels and sizes of nodes and boxes are determined correspondingly. We thus use a px size
+     * if we are able to determine the device with wich the font was rendered (i.e. the device).
+     * 
+     * @param attributes
+     *            the text attributes
      * @return the text attributes with added font-size unit.
      */
     private String addFontHeightUnit(final String attributes) {
-        return attributes.replaceFirst("font-size=\"(\\d*)\"", "font-size=\"$1pt\"");
+        String fontWithUnit;
+        if (display != null) {
+            fontWithUnit =
+                    attributes.replaceFirst("font-size=\"(\\d*(\\.\\d*)?)\"", "font-size=\"$1px\"");
+        } else {
+            fontWithUnit =
+                    attributes.replaceFirst("font-size=\"(\\d*(\\.\\d*)?)\"", "font-size=\"$1pt\"");
+        }
+        return fontWithUnit;
     }
     
     /**
@@ -751,21 +793,60 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
      * @return the string enriched by TSpan elements.
      */
     private String insertTSpan(final String text) {
-        float size = this.getFontHeight();
-        String content = "";
-        //blanklines would normally be ignored so we somehow have 
-        //to count them and adjust the offset accordingly
-        int blanklinefactor = 1;
-        for (final String line : text.split("\\r?\\n|\\r")) {
-            if (!line.isEmpty()) {
-                content += "<tspan x=\"0\" dy=\"" + ((size * blanklinefactor) 
-                    + (0.5 * size)) + "\">" + line + "</tspan>" + KlighdPlugin.LINE_SEPARATOR;
-                blanklinefactor = 1;
-            } else {
-                blanklinefactor += 1;
+        
+        // empty string
+        if (Strings.isNullOrEmpty(text)) {
+            return "";
+        }
+
+        String[] lines = text.split("\\r?\\n|\\r");
+        StringBuffer content = new StringBuffer();
+        if (display != null) {
+            // Translate font size in 'pt' to display 'px'
+            //  see #addFontHeightUnit javadoc for more information
+            float size = this.getFont().getSize2D() * ((float) display.getDPI().x) / 72;
+            
+            // Translate the font back to an swt font
+            //  KLighD used SWT to determine font sizes and as SWT and AWT font metrics
+            //  differ we have to use swt here
+            // Note that the font style constants in SWT and AWT are identical
+            org.eclipse.swt.graphics.Font swtFont = new org.eclipse.swt.graphics.Font(display, 
+                    getFont().getName(), getFont().getSize(), getFont().getStyle());
+            gc.setFont(swtFont);
+            org.eclipse.swt.graphics.FontMetrics fm = gc.getFontMetrics();
+            
+            // FIXME 
+            // The following values are determined experimentally
+            //  as each of the browser/awt/swt seem to determine 
+            //  slightly different values ...
+            
+            // to the 1st baseline 
+            double firstLineHeight = fm.getLeading() + fm.getAscent();
+            // actually we want to use fm.getHeight, however this seems to be too much
+            double lineHeight = size + fm.getLeading() / 2d; 
+            // use tspans to emulate multiline text
+            boolean first = true;
+            for (final String line : lines) {
+                content.append("<tspan x=\"0\" dy=\"");
+                content.append(first ? firstLineHeight : lineHeight);
+                content.append("\">");
+                content.append(line);
+                content.append("</tspan>" + KlighdPlugin.LINE_SEPARATOR);
+                first = false;
+            }
+            
+        } else {
+            // without a display just use the pt size as line height for multiline text
+            for (final String line : lines) {
+                content.append("<tspan x=\"0\" dy=\"");
+                content.append(getFont().getSize());
+                content.append("\">");
+                content.append(line);
+                content.append("</tspan>" + KlighdPlugin.LINE_SEPARATOR);
             }
         }
-        return content;
+
+        return content.toString();
     }
     
     /**
@@ -838,7 +919,11 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         }
 
         Float size = (Float) attributes.get(TextAttribute.SIZE);
-        result.put("font-size", fixedPrecision(size.floatValue()));
+        if (display != null) {
+            result.put("font-size", fixedPrecision(size.floatValue() * display.getDPI().x / 72));
+        } else {
+            result.put("font-size", fixedPrecision(size.floatValue()));
+        }
 
         return result;
     }
