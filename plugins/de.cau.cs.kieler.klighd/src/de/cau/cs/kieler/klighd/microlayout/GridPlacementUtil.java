@@ -102,8 +102,8 @@ public final class GridPlacementUtil {
      */
     private static class GridPlacer {
 
-        private KRendering parent;
-        
+        private KContainerRendering parent;
+
         private KPosition topLeft = null;
         private KPosition bottomRight = null;
         
@@ -155,7 +155,7 @@ public final class GridPlacementUtil {
          *            the children to be placed inside the grid with their placementData
          */
         public GridPlacer(final KGridPlacement gridPlacement, final List<KRendering> children) {
-            this.parent = (KRendering) gridPlacement.eContainer();
+            this.parent = (KContainerRendering) gridPlacement.eContainer();
             this.children = children;
         
             if (children.size() == 0) {
@@ -270,6 +270,14 @@ public final class GridPlacementUtil {
             if (parentBounds.width == 0f || parentBounds.height == 0f) {
                 Arrays.fill(bounds, new Bounds(0, 0));
                 return bounds;
+            }
+
+            // if there're no cached estimated grid data attached to the 'parent'
+            //  KContainerRendering just do the size estimation of 'parent's children right now
+            // this may happen in case a pre-layouted view model is opened in the KGraph editor
+            //  with initial diagram layout switched off, for example  
+            if (parent.getProperty(ESTIMATED_GRID_DATA) == null) {
+                estimateGridSize(parent, parentBounds);
             }
 
             final GridSizeAssignment estimatedGrid = parent.getProperty(ESTIMATED_GRID_DATA);
