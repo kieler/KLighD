@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.hamcrest.collection.IsIterableWithSize;
@@ -36,6 +36,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
@@ -73,8 +74,9 @@ public class ViewChangedNotificationTest {
     public void prepare() {
         shell = new Shell(Display.getDefault());
         shell.setSize(300, 200);
-        shell.setLayout(new StackLayout());
-        
+        shell.setLocation(100, 100);
+        shell.setLayout(new FillLayout());
+
         viewContext = new ViewContext((IDiagramWorkbenchPart) null, loadTestModel())
                 .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
@@ -83,15 +85,18 @@ public class ViewChangedNotificationTest {
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
         
+        KimlUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
-        // the zoom to fit causes the VIEW_PORT change events, the listener is waiting for 
+        // the zoom to fit causes the VIEW_PORT change events the listener is waiting for
         viewContext.setZoomStyle(ZoomStyle.ZOOM_TO_FIT);
         viewContext.getViewer().addViewChangedListener(listener, ViewChangeType.VIEW_PORT);
-        
+
+        shell.open();
+
         finished = false;
         failure = null;
-        deadline = System.currentTimeMillis() + 2000;
+        deadline = System.currentTimeMillis() + 3000;
     }
 
     /**
