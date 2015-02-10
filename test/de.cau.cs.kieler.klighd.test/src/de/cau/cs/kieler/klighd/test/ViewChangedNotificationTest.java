@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -51,7 +51,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 /**
  * Tests KLighD's view change notification mechanism, especially
  * {@link ViewChange#visibleDiagramNodes()} & {@link ViewChange#visibleDiagramsElements()}.
- * 
+ *
  * @author chsch
  */
 public class ViewChangedNotificationTest {
@@ -63,9 +63,9 @@ public class ViewChangedNotificationTest {
     private long deadline = 0;
     private boolean respectDeadline = true;
     private int heightDelta = 0;
-    
+
     // CHECKSTYLEOFF MagicNumber
-    
+
     /**
      * Prepares the test: creates a fresh {@link Shell} and attaches KLighD's diagramming
      * infrastructure initialized with the model provided by {@link #loadTestModel()}.
@@ -81,10 +81,10 @@ public class ViewChangedNotificationTest {
                 .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
         new ContextViewer(shell).setModel(viewContext, true);
-        
+
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
-        
+
         KimlUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
@@ -101,19 +101,19 @@ public class ViewChangedNotificationTest {
 
     /**
      * Loads 'circuit.kgx' from within this bundle.
-     * 
+     *
      * @return the runtime representation of the test model.
      */
     private EObject loadTestModel() {
         final ResourceSet set = new ResourceSetImpl();
-        
+
         final Iterator<URL> it =
                 Iterators.forEnumeration(KlighdTestPlugin.getDefault().getBundle()
                         .findEntries("/", "circuit.kgx", true));
         if (!it.hasNext()) {
             Assert.fail("Test model 'circuit.kgx' could not be found!");
         }
-        
+
         final Resource res = set.getResource(URI.createURI(it.next().toString(), true), true);
         return res.getContents().get(0);
     }
@@ -133,8 +133,8 @@ public class ViewChangedNotificationTest {
             }
             try {
                 Display.getCurrent().readAndDispatch();
-                
-                // since the VIEW_PORT notifications are timer-triggered 
+
+                // since the VIEW_PORT notifications are timer-triggered
                 //  wait for some time before continuing
                 Thread.sleep(100);
             } catch (final InterruptedException e) {
@@ -153,7 +153,7 @@ public class ViewChangedNotificationTest {
      * Denominates whether to count only diagram nodes or all visible diagram elements.
      */
     private boolean countNodesOnly = true;
-    
+
     /**
      * Field to be configured in test methods, is read by {@link #listener}.
      */
@@ -166,7 +166,7 @@ public class ViewChangedNotificationTest {
     private final IViewChangeListener listener = new IViewChangeListener() {
 
         public void viewChanged(final ViewChange change) {
-            
+
             final Iterable<KGraphElement> l = Sets.newHashSet(
                     countNodesOnly ? change.visibleDiagramNodes() : change.visibleDiagramElements());
             try {
