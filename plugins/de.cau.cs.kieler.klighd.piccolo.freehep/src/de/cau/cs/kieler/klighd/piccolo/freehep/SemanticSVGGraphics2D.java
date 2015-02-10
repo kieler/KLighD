@@ -1098,17 +1098,25 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             Point2D p2 = paint.getPoint2();
             os.println("<defs>");
             os.print("  <linearGradient id=\"" + name + "\" ");
-            os.print("x1=\"" + fixedPrecision(p1.getX()) + "\" ");
-            os.print("y1=\"" + fixedPrecision(p1.getY()) + "\" ");
-            os.print("x2=\"" + fixedPrecision(p2.getX()) + "\" ");
-            os.print("y2=\"" + fixedPrecision(p2.getY()) + "\" ");
-            // added gradient rotation
+
+            // special treatment of klighd's gradients, to support rotations
             if (paint instanceof KlighdGradientPaint) {
-                os.print("gradientTransform=\"rotate(" + (((KlighdGradientPaint) paint).getRotation() - 45) + ")\" ");
+                // To make things easier and be able to reuse specified gradients, 
+                //  we let the gradient always fill the whole bounding box. Thus we do not 
+                //  need to specify explicit coordinates and can easily rotate 
+                //  the gradient
+                os.print("gradientUnits=\"objectBoundingBox\" ");
+                os.print("gradientTransform=\"rotate("
+                        + (((KlighdGradientPaint) paint).getRotation()) + ")\" ");
+            } else {
+                os.print("x1=\"" + fixedPrecision(p1.getX()) + "\" ");
+                os.print("y1=\"" + fixedPrecision(p1.getY()) + "\" ");
+                os.print("x2=\"" + fixedPrecision(p2.getX()) + "\" ");
+                os.print("y2=\"" + fixedPrecision(p2.getY()) + "\" ");
+                os.print("gradientUnits=\"userSpaceOnUse\" ");
+                os.print("spreadMethod=\""
+                        + ((paint.isCyclic()) ? "reflect" : "pad") + "\" ");
             }
-            os.print("gradientUnits=\"userSpaceOnUse\" ");
-            os.print("spreadMethod=\""
-                    + ((paint.isCyclic()) ? "reflect" : "pad") + "\" ");
             os.println(">");
             os.println("    <stop offset=\"0\" stop-color=\""
                     + hexColor(paint.getColor1()) + "\" " + "opacity-stop=\""

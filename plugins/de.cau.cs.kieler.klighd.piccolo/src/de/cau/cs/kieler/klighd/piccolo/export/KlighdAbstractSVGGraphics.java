@@ -57,6 +57,7 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.util.Pair;
@@ -536,12 +537,12 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     }
 
     private static GradientPaint rgb2Pattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        final GradientPaint gp =
-                new KlighdGradientPaint((float) bounds.getMinX(), (float) bounds.getMinY(), rgb2Color(
-                        gradient.getColor1(), gradient.getAlpha1()), (float) bounds.getMaxX(),
-                        (float) bounds.getMaxY(), rgb2Color(gradient.getColor2(),
-                                gradient.getAlpha2()), gradient.getAngle());
 
+        // We specify gradients locally wrt to the bounding box, thus there is no need to 
+        //  pass the exact bounds.
+        final GradientPaint gp =
+                new KlighdGradientPaint(rgb2Color(gradient.getColor1(), gradient.getAlpha1()),
+                        rgb2Color(gradient.getColor2(), gradient.getAlpha2()), gradient.getAngle());
         return gp;
     }
     
@@ -562,24 +563,19 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
         
         /**
          * Constructs a simple acyclic <code>GradientPaint</code> object.
-         * @param x1 x coordinate of the first specified
-         * <code>Point</code> in user space
-         * @param y1 y coordinate of the first specified
-         * <code>Point</code> in user space
-         * @param color1 <code>Color</code> at the first specified
-         * <code>Point</code>
-         * @param x2 x coordinate of the second specified
-         * <code>Point</code> in user space
-         * @param y2 y coordinate of the second specified
-         * <code>Point</code> in user space
-         * @param color2 <code>Color</code> at the second specified
-         * <code>Point</code>
-         * @param rotation Angle by which the gradient is rotated
-         * @throws NullPointerException if either one of colors is null
+         * 
+         * @param color1
+         *            <code>Color</code> at the first specified <code>Point</code>
+         * @param color2
+         *            <code>Color</code> at the second specified <code>Point</code>
+         * @param rotation
+         *            Angle by which the gradient is rotated
+         * @throws NullPointerException
+         *             if either one of colors is null
          */
-        public KlighdGradientPaint(final float x1, final float y1, final Color color1,
-                final float x2, final float y2, final Color color2, final float rotation) {
-            super(x1, y1, color1, x2, y2, color2);
+        public KlighdGradientPaint(final Color color1,
+                final Color color2, final float rotation) {
+            super(0, 0, color1, 0, 0, color2);
             this.rotation = rotation;
         }
         
@@ -589,6 +585,29 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
          */
         public float getRotation() {
             return rotation;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(getColor1(), getColor2(), getRotation(), getTransparency());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(final Object obj) {
+            if (obj == null || !(obj instanceof KlighdGradientPaint)) {
+                return false;
+            }
+            KlighdGradientPaint kgp = (KlighdGradientPaint) obj;
+            return Objects.equal(getColor1(), kgp.getColor1())
+                    && Objects.equal(getColor2(), kgp.getColor2())
+                    && Objects.equal(getRotation(), kgp.getRotation())
+                    && Objects.equal(getTransparency(), kgp.getTransparency());
         }
     }
 
