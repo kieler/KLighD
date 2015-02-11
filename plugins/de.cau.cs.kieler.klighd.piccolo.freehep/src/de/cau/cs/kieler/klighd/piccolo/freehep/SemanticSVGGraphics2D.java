@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
@@ -16,6 +17,7 @@ import java.awt.TexturePaint;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -43,7 +45,10 @@ import java.util.Properties;
 import java.util.Stack;
 import java.util.zip.GZIPOutputStream;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.PathData;
 import org.eclipse.swt.widgets.Display;
 import org.freehep.graphics2d.font.FontUtilities;
 import org.freehep.graphicsbase.util.UserProperties;
@@ -60,6 +65,7 @@ import org.freehep.util.io.Base64OutputStream;
 import org.freehep.util.io.WriterOutputStream;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -198,6 +204,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     private Display display;
     /** If a display exists, this {@link GC} is used to perform font size calculations. */  
     private GC gc;
+    /** A mapping of awt fonts to swt fonts. The latter are used for font size calculations. */
+    private Map<Font, org.eclipse.swt.graphics.Font> awtSwtFontCache = Maps.newHashMap();
 
     /*
      * ================================================================================ |
@@ -266,6 +274,12 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     @Override
     public void dispose() {
         gc = null;
+        // dispose cached swt fonts
+        for (org.eclipse.swt.graphics.Font f : awtSwtFontCache.values()) {
+            f.dispose();
+        }
+        awtSwtFontCache.clear();
+        awtSwtFontCache = null;
         super.dispose();
     }
 
@@ -703,6 +717,47 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 .toString()))));
     }
 
+    /**
+     * Copied from {@link AbstractVectorGraphicsIO} to change the handling of text as shapes.
+     * 
+     * Draws the string at (x, y). If TEXT_AS_SHAPES is set
+     * {@link #drawGlyphVector(java.awt.font.GlyphVector, float, float)} is used, otherwise
+     * {@link #writeString(String, double, double)} for a more direct output of the string.
+     *
+     * @param string
+     * @param x
+     * @param y
+     */
+    public void drawString(String string, double x, double y) {
+        // something to draw?
+        if (string == null || string.equals("")) {
+            return;
+        }
+
+        // Draw strings as shapes?
+        // We reuse SWT's font size estimation here, as
+        //  KLighD uses it to determine the sizes of nodes etc.
+        if (isProperty(TEXT_AS_SHAPES)) {
+            Path path = new Path(display);
+            path.addString(string, (float) x, (float) y, getSWTFont());
+            path.close();
+
+            // convert to awt path
+            Path2D p2d = createAWTPath(path.getPathData());
+            path.dispose();
+
+            fill(p2d);
+
+        } else {
+            // write string directly
+            try {
+                writeString(string, x, y);
+            } catch (IOException e) {
+                handleException(e);
+            }
+        }
+    }
+
     /* 5.3. Strings */
     protected void writeString(String str, double x, double y)
             throws IOException {
@@ -804,24 +859,29 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         if (display != null) {
             // Translate font size in 'pt' to display 'px'
             //  see #addFontHeightUnit javadoc for more information
+            // As opposed to the font metrics used below, the determined
+            //  size is a non-rounded decimal number 
             float size = this.getFont().getSize2D() * ((float) display.getDPI().x) / 72;
             
             // Translate the font back to an swt font
             //  KLighD used SWT to determine font sizes and as SWT and AWT font metrics
             //  differ we have to use swt here
             // Note that the font style constants in SWT and AWT are identical
-            org.eclipse.swt.graphics.Font swtFont = new org.eclipse.swt.graphics.Font(display, 
-                    getFont().getName(), getFont().getSize(), getFont().getStyle());
-            gc.setFont(swtFont);
+
+            gc.setFont(getSWTFont());
             org.eclipse.swt.graphics.FontMetrics fm = gc.getFontMetrics();
+            
+            
+            System.out.println(fm.getAscent() + " " + fm.getDescent() + " " + fm.getLeading() + " " + size + " " + fm.getHeight());
             
             // FIXME 
             // The following values are determined experimentally
             //  as each of the browser/awt/swt seem to determine 
             //  slightly different values ...
+            // fm.getLeading / 2 seems to be a good value at least under windows
             
             // to the 1st baseline 
-            double firstLineHeight = fm.getLeading() + fm.getAscent();
+            double firstLineHeight = fm.getLeading() / 2d + fm.getAscent();
             // actually we want to use fm.getHeight, however this seems to be too much
             double lineHeight = size + fm.getLeading() / 2d; 
             // use tspans to emulate multiline text
@@ -849,6 +909,23 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         return content.toString();
     }
     
+
+    /**
+     * KLighD uses SWT to estimate font sizes, hence we do 
+     * the same when exporting svgs.
+     */
+    @Override
+    public FontMetrics getFontMetrics() {
+        // use swt functionality if a display is available
+        if (display != null) {
+            gc.setFont(getSWTFont());
+            return new PseudoAWTFontMetrics(getFont(), gc.getFontMetrics());
+        } else {
+            // fallback to the awt metrics
+            return super.getFontMetrics();
+        }
+    }
+
     /**
      * Gets the height of the current font.
      * @return The current font height.
@@ -1494,6 +1571,76 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         return result.toString();
     }
 
+    
+    /**
+     * Builds up a AWT {@link Path2D} according to a given SWT Geometry {@link PathData}.
+     * 
+     * @param pathData
+     *            provides the segments the new path shall contain.
+     *            the device to create the path on
+     * @return the desired {@link Path2D} object.
+     */
+    public static Path2D createAWTPath(final PathData pathData) {
+        final Path2D p2d = new Path2D.Double();
+        final float[] pts = pathData.points;
+
+        int i = 0;
+        for (byte type : pathData.types) {
+            switch (type) {
+            case SWT.PATH_MOVE_TO:
+                p2d.moveTo(pts[i++], pts[i++]);
+                break;
+            case SWT.PATH_LINE_TO:
+                p2d.lineTo(pts[i++], pts[i++]);
+                break;
+            case SWT.PATH_CLOSE:
+                p2d.closePath();
+                break;
+            case SWT.PATH_QUAD_TO:
+                p2d.quadTo(pts[i++], pts[i++], pts[i++], pts[i++]);
+                break;
+            case SWT.PATH_CUBIC_TO:
+                p2d.curveTo(pts[i++], pts[i++], pts[i++], pts[i++], pts[i++], pts[i++]);
+                break;
+            default:
+            }
+        }
+        return p2d;
+    }
+    
+    private org.eclipse.swt.graphics.Font getSWTFont() {
+        return getSWTFont(getFont());
+    }
+    
+    /**
+     * @param font
+     *            the awt font for which to assemble an swt font.
+     * @return either the corresponding swt font, or {@code null} if no dispaly exists.
+     */
+    private org.eclipse.swt.graphics.Font getSWTFont(final Font font) {
+        if (!awtSwtFontCache.containsKey(font) && display != null) {
+            // note that the style constants for swt and awt are equal
+            org.eclipse.swt.graphics.Font swtFont =
+                    new org.eclipse.swt.graphics.Font(display, getFont().getName(), getFont()
+                            .getSize(), getSWTFontStyle());
+            awtSwtFontCache.put(font, swtFont);
+        }
+        return awtSwtFontCache.get(font);
+    }
+    
+    private int getSWTFontStyle() {
+        switch (getFont().getStyle()) {
+        case Font.PLAIN:
+            return SWT.NORMAL;
+        case Font.BOLD:
+            return SWT.BOLD;
+        case Font.ITALIC:
+            return SWT.ITALIC;
+        }
+        // default
+        return SWT.NORMAL;
+    }
+    
     /**
      * for fixedPrecision(double d), SVG does not understand "1E-7"
      * we have to use ".0000007" instead

@@ -499,18 +499,16 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
         // browsers.
         if (!canHandleMultiline) {
             int y = 0;
-            final int fontHeight =
-                    graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getDescent();
-    
-            // translate by the font height as the reference point for drawing text in svg seems to be
-            // at the bottom left corner, SWT has it as the top left corner.
-            translate(0, fontHeight);
+            
+            // Space separate lines by the font's overall height, i.e 
+            // ascent + descent + leading
+            int fontHeight = graphics.getFontMetrics().getHeight();
     
             for (final String line : string.split("\\r?\\n|\\r")) {
                 graphics.drawString(line, 0, y);
                 y += fontHeight;
             }
-            translate(0, -fontHeight);
+            
         } else {
             graphics.drawString(string, 0, 0);
         }
