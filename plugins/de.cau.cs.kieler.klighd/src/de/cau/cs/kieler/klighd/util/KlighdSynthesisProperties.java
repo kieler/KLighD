@@ -196,13 +196,30 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         super.setProperty(property, value);
         return this;
     }
-    
+
+    /**
+     * (Pre-) configures the {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
+     * diagram synthesis} to by applied while constructing the desired diagram by means of the
+     * {@code id} it is registered via KLighD's 'diagramSyntheses' extension point.
+     *
+     * @param id
+     *            the {@code id} of the desired
+     *            {@link de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis diagram
+     *            synthesis}
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties useDiagramSynthesis(final String id) {
+        this.setProperty(REQUESTED_DIAGRAM_SYNTHESIS, id);
+        return this;
+    }
+
     /**
      * Configures the {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategy} to be employed
-     * by means of the id it is registered via KLighD's 'extensions' extension point.
-     * 
+     * by means of the {@code id} it is registered via KLighD's 'extensions' extension point.
+     *
      * @param id
-     *            the id the desired {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategy}
+     *            the {@code id} of the desired {@link de.cau.cs.kieler.klighd.IUpdateStrategy
+     *            IUpdateStrategy}
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties useUpdateStrategy(final String id) {
@@ -222,10 +239,11 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     
     /**
      * Configures the {@link de.cau.cs.kieler.klighd.IViewerProvider IViewerProvider} to be employed
-     * by means of the id it is registered via KLighD's 'extensions' extension point.
-     * 
+     * by means of the {@code id} it is registered via KLighD's 'extensions' extension point.
+     *
      * @param id
-     *            the id the desired {@link de.cau.cs.kieler.klighd.IViewerProvider IViewerProvider}
+     *            the {@code id} of the desired {@link de.cau.cs.kieler.klighd.IViewerProvider
+     *            IViewerProvider}
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties useViewer(final String id) {
@@ -234,8 +252,8 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     }
     
     /**
-     * Configures the initial visibility of the diagram side bar in the diagram viewer to be opened.
-     * 
+     * Configures the diagram side bar in the diagram viewer to be initially opened.
+     *
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties expandSideBar() {
@@ -244,13 +262,24 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     }
 
     /**
-     * Configures the initial invisibility of the diagram side bar in the diagram viewer to be
-     * opened.
-     * 
+     * Configures the diagram side bar in the diagram viewer to be initially collapsed.
+     *
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
      */
     public KlighdSynthesisProperties collapseSideBar() {
         this.setProperty(REQUESTED_SIDE_BAR_HANDLING, SideBarHandling.COLLAPSE);
+        return this;
+    }
+
+    /**
+     * Instructs the diagram viewer to hide the zoom config buttons (both from side bar
+     * and from diagram canvas if no side bar is available or side bar is collapsed).
+     * By default the zoom config buttons are shown.
+     *
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties hideDiagramZoomConfigButtons() {
+        this.setProperty(REQUESTED_ZOOM_CONFIG_BUTTONS_HANDLING, ZoomConfigButtonsHandling.HIDE);
         return this;
     }
 
