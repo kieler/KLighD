@@ -14,8 +14,8 @@
 package de.cau.cs.kieler.klighd.ui.internal.handlers;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -23,11 +23,10 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -35,10 +34,14 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.collect.Maps;
+
 import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
+import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -86,6 +89,19 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             return null;
         }
 
+        KNode subgraph = null;
+        if (selection.isEmpty()) {
+            StatusManager.getManager().handle(
+                    new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID,
+                            "Please select something to export."), StatusManager.SHOW);
+            return null;
+        } else if (selection.size() == 1 && selection.getFirstElement() instanceof KNode) {
+            // If exactly one element is selected and it is a knode
+            // we suppose the user wanted to select that subgraph
+            subgraph = (KNode) selection.getFirstElement();
+        } 
+        
+        // Otherwise we export the whole view model graph
         final ViewContext viewContext = selection.getViewContext();
         if (viewContext == null) {
             StatusManager.getManager().handle(
@@ -108,9 +124,29 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                 ResourceSet rs = new ResourceSetImpl();
                 Resource r = rs.createResource(URI.createPlatformResourceURI(file, true));
 
-                // write a copy of the view model kgraph to the selected file
-                EObject copy = EcoreUtil.copy(viewContext.getViewModel());
+                // We do not want to tamper with the original model, thus create a copy.
+                // Also, we copy the whole graph because we must be able to 
+                // collect rendering libraries that might exist on higher levels
+                Copier copier = new Copier();
+                KNode copy = (KNode) copier.copy(viewContext.getViewModel());
+                copier.copyReferences();
+                
+                if (subgraph != null) {
+                    // the new root's position is at 0,0 now
+                    KNode newRoot = (KNode) copier.get(subgraph);
+                    KShapeLayout sl = newRoot.getData(KShapeLayout.class);
+                    sl.setPos(0, 0);
 
+                    // move all rendering libraries that we can find to the newly promoted root
+                    Iterable<KRenderingLibrary> libs =
+                            ModelingUtil.eAllContentsOfType(copy, KRenderingLibrary.class);
+
+                    for (KRenderingLibrary lib : libs) {
+                        // move the libs to the new root
+                        newRoot.getData().add(lib);
+                    }
+                }
+                
                 // persist layout options and friends
                 KimlUtil.persistDataElements((KNode) copy);
                 // remove transient klighd state
@@ -134,8 +170,20 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                     t.printStackTrace();
                 }
                 
-                r.getContents().add(copy);
-                r.save(Collections.emptyMap());
+                if (subgraph != null) {
+                    r.getContents().add(copier.get(subgraph));
+                } else {
+                    r.getContents().add(copy);
+                }
+                Map<String, Object> saveOpts = Maps.newHashMap();
+
+                if (subgraph != null) {
+                    // we have to drop several elements if only a subgraph 
+                    // is exported ... just let the emf deal with it.
+                    // FIXME use constants
+                    saveOpts.put("PROCESS_DANGLING_HREF", "DISCARD");
+                }
+                r.save(saveOpts);
 
             }
         } catch (IOException e) {
