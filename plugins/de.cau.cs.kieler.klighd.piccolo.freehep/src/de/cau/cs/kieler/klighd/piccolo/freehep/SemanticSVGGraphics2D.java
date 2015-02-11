@@ -871,9 +871,6 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             gc.setFont(getSWTFont());
             org.eclipse.swt.graphics.FontMetrics fm = gc.getFontMetrics();
             
-            
-            System.out.println(fm.getAscent() + " " + fm.getDescent() + " " + fm.getLeading() + " " + size + " " + fm.getHeight());
-            
             // FIXME 
             // The following values are determined experimentally
             //  as each of the browser/awt/swt seem to determine 
