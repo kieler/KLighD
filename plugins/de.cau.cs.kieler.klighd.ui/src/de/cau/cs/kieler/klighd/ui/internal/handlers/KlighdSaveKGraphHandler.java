@@ -41,18 +41,23 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
- * Handler to store the view model KGraph of a KlighD view to a file.
+ * Handler to store the view model KGraph (or a subgraph) of a KlighD view to a file. This class is
+ * mainly intended to support debugging purposes.
  * 
  * @author uru
  */
+@SuppressWarnings("restriction")
 public class KlighdSaveKGraphHandler extends AbstractHandler {
 
     private static final String KGRAPH_FILE_EXTENSION = ".kgx";
@@ -131,10 +136,12 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                 KNode copy = (KNode) copier.copy(viewContext.getViewModel());
                 copier.copyReferences();
                 
+                KNode exportGraph = copy;
                 if (subgraph != null) {
+
                     // the new root's position is at 0,0 now
-                    KNode newRoot = (KNode) copier.get(subgraph);
-                    KShapeLayout sl = newRoot.getData(KShapeLayout.class);
+                    KNode subgraphCopy = (KNode) copier.get(subgraph);
+                    KShapeLayout sl = subgraphCopy.getData(KShapeLayout.class);
                     sl.setPos(0, 0);
 
                     // move all rendering libraries that we can find to the newly promoted root
@@ -143,38 +150,53 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
                     for (KRenderingLibrary lib : libs) {
                         // move the libs to the new root
-                        newRoot.getData().add(lib);
+                        subgraphCopy.getData().add(lib);
                     }
+                    
+                    // we wrap the subgraph into a new psuedo root node 
+                    // to retain external ports 
+                    KNode newRoot = KimlUtil.createInitializedNode();
+                    newRoot.getChildren().add(subgraphCopy);
+                    
+                    // expand the subgraph by default
+                    KLayoutData ld = subgraphCopy.getData(KLayoutData.class);
+                    ld.setProperty(KlighdInternalProperties.POPULATED, true);
+                    ld.setProperty(KlighdProperties.EXPAND, true);
+                    
+                    exportGraph = newRoot;
                 }
                 
-                // persist layout options and friends
-                KimlUtil.persistDataElements((KNode) copy);
                 // remove transient klighd state
                 @SuppressWarnings("unchecked")
                 Iterator<KGraphElement> kgeIt =
                         (Iterator<KGraphElement>) (Iterator<?>) ModelingUtil.selfAndEAllContentsOfType2(
                                 copy, KGraphElement.class);
                 try {
-                while (kgeIt.hasNext()) {
-                    KGraphElement kge = kgeIt.next();
-                    Iterator<KGraphData> dataIt = kge.getData().iterator();
-                    while (dataIt.hasNext()) {
-                        KGraphData d = dataIt.next();
-                        // RenderinContextData
-                        if (d.getClass().equals(KGraphDataImpl.class)) {
-                            dataIt.remove();
+                    while (kgeIt.hasNext()) {
+                        KGraphElement kge = kgeIt.next();
+                        Iterator<KGraphData> dataIt = kge.getData().iterator();
+                        while (dataIt.hasNext()) {
+                            KGraphData d = dataIt.next();
+                            // RenderingContextData (explicit type information not available here)
+                            if (d.getClass().equals(KGraphDataImpl.class)) {
+                                // remember whether a node was expanded / collapsed
+                                if (kge instanceof KNode && kge != exportGraph) {
+                                        kge.getData(KLayoutData.class).setProperty(
+                                                KlighdProperties.EXPAND,
+                                                d.getProperty(KlighdInternalProperties.POPULATED));
+                                }
+                                dataIt.remove();
+                            }
                         }
                     }
-                }
                 } catch (Throwable t) {
                     t.printStackTrace();
                 }
                 
-                if (subgraph != null) {
-                    r.getContents().add(copier.get(subgraph));
-                } else {
-                    r.getContents().add(copy);
-                }
+                // persist layout options and friends
+                KimlUtil.persistDataElements((KNode) copy);
+                
+                r.getContents().add(exportGraph);
                 Map<String, Object> saveOpts = Maps.newHashMap();
 
                 if (subgraph != null) {
