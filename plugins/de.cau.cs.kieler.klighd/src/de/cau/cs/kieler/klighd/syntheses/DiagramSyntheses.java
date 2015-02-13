@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.syntheses;
 
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -45,7 +47,6 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 
 /**
  * Collection of KGraph/KRendering view model configuration methods.
@@ -115,6 +116,37 @@ public final class DiagramSyntheses {
     }
 
     /**
+     * Convenience method for defining multiple layout options for {@link KGraphElement
+     * KGraphElements}.<br>
+     * The required <code>optionValueMap</code> can be easily created via
+     * {@link com.google.common.collect.ImmutableMap#of(Object, Object, Object, Object)
+     * ImmutableMap#of(Object, Object, Object, Object)}, for example.
+     *
+     * @param <R>
+     *            the concrete type of <code>element</code>
+     * @param element
+     *            the element to set the layout option on
+     * @param optionValueMap
+     *            a {@link Map} containing valid pairs of layout options, e.g. some of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}, and
+     *            corresponding option values.
+     * @return <code>element</code> allowing to perform multiple operations on it in one statement
+     */
+    public static <R extends KGraphElement> R setLayoutOptions(final R element,
+            final Map<IProperty<?>, ?> optionValueMap) {
+        final KLayoutData sl = element.getData(KLayoutData.class);
+        if (sl != null && optionValueMap != null) {
+            for (final Map.Entry<IProperty<?>, ?> entry : optionValueMap.entrySet()) {
+                @SuppressWarnings("unchecked")
+                final IProperty<Object> key = (IProperty<Object>) entry.getKey();
+                sl.setProperty(key, entry.getValue());
+            }
+        }
+        return element;
+    }
+
+
+    /**
      * Convenience method for defining collapse/expand state dependent layout options for
      * {@link KNode KNodes}.
      *
@@ -156,22 +188,17 @@ public final class DiagramSyntheses {
      *            the value in case <code>port</code>'s container node is collapsed
      * @param expandedValue
      *            the value in case <code>port</code>'s container node is expanded
-     * @return <code>node</code> allowing to perform multiple operations on it in one statement
+     * @return <code>port</code> allowing to perform multiple operations on it in one statement
      */
     public static <T> KPort setExpansionAwareLayoutOption(final KPort port,
             final IProperty<T> option, final T collapsedValue, final T expandedValue) {
         final KLayoutData sl = port.getData(KLayoutData.class);
-        ExpansionAwareLayoutOptionData data = sl.getProperty(ExpansionAwareLayoutOption.OPTION);
-
-        if (data == null) {
-            data = new ExpansionAwareLayoutOptionData();
-            sl.setProperty(ExpansionAwareLayoutOption.OPTION, data);
+        if (sl != null) {
+            ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
         }
-
-        data.setProperty(option, collapsedValue, expandedValue);
-
         return port;
     }
+
 
     /**
      * Configures the provided {@link KRendering} to represent the parent {@link KNode} if it is in
