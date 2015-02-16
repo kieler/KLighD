@@ -13,11 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import org.eclipse.emf.ecore.EObject;
+
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 
@@ -107,6 +112,7 @@ public final class KlighdProperties {
     public static final IProperty<KNode> CLIP = new Property<KNode>(
             "de.cau.cs.kieler.klighd.clip");
 
+
     /**
      * Property determining the selectability of a certain
      * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
@@ -117,6 +123,47 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> NOT_SELECTABLE = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.suppressSelectability", false);
+
+    /**
+     * Convenience method determining the selectability of the given {@link KGraphElement}.
+     *
+     * @param kge
+     *            the {@link KGraphElement} element to check for selectability.
+     *
+     * @return the selectability of the given {@link KGraphElement}
+     */
+    public static boolean isSelectable(final KGraphElement kge) {
+        final KLayoutData layoutData = kge != null ? kge.getData(KLayoutData.class) : null;
+        return layoutData != null && !layoutData.getProperty(KlighdProperties.NOT_SELECTABLE);
+    }
+
+    /**
+     * Convenience method determining the selectability of the given {@link KText}.
+     *
+     * @param kText
+     *            the {@link KText} element to check for selectability.
+     *
+     * @return the selectability of the given {@link KText} rendering
+     */
+    public static boolean isSelectable(final KText kText) {
+        return kText == null ? false : !kText.getProperty(KlighdProperties.NOT_SELECTABLE);
+    }
+
+    /**
+     * Convenience method determining the selectability of the given view model element, either a
+     * {@link KGraphElement} or a {@link KText}.
+     *
+     * @param viewElement
+     *            the view model element to check for selectability.
+     *
+     * @return the selectability of the given view model element, or <code>null</code> is no valid
+     *         view element is provided
+     */
+    public static boolean isSelectable(final EObject viewElement) {
+        return (viewElement instanceof KGraphElement && isSelectable((KGraphElement) viewElement))
+                || (viewElement instanceof KText && isSelectable((KText) viewElement));
+    }
+
 
     /**
      * Property determining the visibility of a certain

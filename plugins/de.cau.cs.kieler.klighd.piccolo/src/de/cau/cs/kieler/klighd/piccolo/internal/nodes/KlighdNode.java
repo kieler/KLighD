@@ -236,9 +236,7 @@ public abstract class KlighdNode extends PNode {
          */
         @Override
         public boolean isSelectable() {
-            final T kge = getGraphElement();
-            return kge != null
-                    && !kge.getData(KLayoutData.class).getProperty(KlighdProperties.NOT_SELECTABLE);
+            return KlighdProperties.isSelectable(getGraphElement());
         }
 
         /**

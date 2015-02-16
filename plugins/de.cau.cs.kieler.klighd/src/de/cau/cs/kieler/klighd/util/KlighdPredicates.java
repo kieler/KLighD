@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.util;
 
 import static de.cau.cs.kieler.klighd.util.KlighdProperties.COLLAPSED_RENDERING;
 import static de.cau.cs.kieler.klighd.util.KlighdProperties.EXPANDED_RENDERING;
-import static de.cau.cs.kieler.klighd.util.KlighdProperties.NOT_SELECTABLE;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,12 +28,9 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -161,16 +157,8 @@ public final class KlighdPredicates {
      */
     private static final Predicate<EObject> IS_SELECTABLE = new Predicate<EObject>() {
 
-        private final EClass kgraphElement = KGraphPackage.eINSTANCE.getKGraphElement();
-        private final EClass ktext = KRenderingPackage.eINSTANCE.getKText();
-
-        private final Predicate<KGraphElement> kgeSelectableTest = kgePropertyPredicate(
-                NOT_SELECTABLE, false, true);
-
         public boolean apply(final EObject input) {
-            return input == null ? false
-                : (kgraphElement.isInstance(input) && kgeSelectableTest.apply((KGraphElement) input))
-                    || (ktext.isInstance(input) && !((KText) input).getProperty(NOT_SELECTABLE));
+            return KlighdProperties.isSelectable(input);
         }
     };
 
