@@ -79,6 +79,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decora
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
@@ -618,6 +619,20 @@ public abstract class AbstractKGERenderingController
      * The style evaluation methods:
      * ----------------------------------------------------------------------------------- */
 
+    /** returns <code>true</code> for all kRenderings, except kTexts that are selectable. */
+    private static final Predicate<KRendering> SELECTION_HIGHLIGHTING_RENDERINGS_FILTER =
+            Predicates.not(Predicates.<KRendering>and(
+                    // see the corresponding distinction in #prepareStylesRecord(...), as well!
+                    KlighdPredicates.instanceOf(KText.class), KlighdPredicates.isSelectable()));
+
+    /** returns an {@link Iterator} of the provided kRendering's styles list. */
+    private static final Function<KRendering, Iterator<KStyle>> TO_STYLES =
+            new Function<KRendering, Iterator<KStyle>>() {
+                public Iterator<KStyle> apply(final KRendering rendering) {
+                    return rendering.getStyles().iterator();
+                }
+            };
+
     /**
      * Updates the styles of the {@link PNode PNodes} representing {@link #currentRendering}.
      */
@@ -627,16 +642,17 @@ public abstract class AbstractKGERenderingController
 
         final boolean isSelected = this.isSelected();
         if (isSelected) {
+            // check for the presence of any 'selection'-flagged style deeply in the
+            //  'currentRendering' by composing an iterator visiting 'currentRendering' and
+            //  all of its children and children's children ...
             final Iterator<KRendering> renderings = Iterators.filter(
                     KRenderingUtil.selfAndAllChildren(this.currentRendering),
-                    KlighdPredicates.notInstanceOf(KText.class));
-            final Iterator<KStyle> styles = Iterators.concat(Iterators.transform(renderings,
-                    new Function<KRendering, Iterator<KStyle>>() {
-                        public Iterator<KStyle> apply(final KRendering rendering) {
-                            return rendering.getStyles().iterator();
-                        }
-                    }));
+                    SELECTION_HIGHLIGHTING_RENDERINGS_FILTER);
 
+            // ... and inspecting their attached kStyles;
+            final Iterator<KStyle> styles = Iterators.concat(Iterators.transform(renderings, TO_STYLES));
+
+            // visit the styles lazily, stop if a kStyle with the 'selection' flag == true is found
             selectionStylesPresent = Iterators.any(styles, KlighdPredicates.isSelection());
         }
 
@@ -742,9 +758,16 @@ public abstract class AbstractKGERenderingController
             final boolean isSelected) {
         final Styles styles = new Styles();
 
-        if (rendering instanceof KText) {
+        if (rendering instanceof KText && KlighdProperties.isSelectable((KText) rendering)) {
+            // this branch is only taken if the (text) rendering is selectable itself
+            //  in this case no selection styles are applied to further kRenderings being part of
+            //  'currentRendering'
+            // see also the corresponding distinction in
+            //  #updateStyles() / SELECTION_HIGHLIGHTING_RENDERINGS_FILTER!
             styles.deriveStyles(rendering, propagatedStyles, isSelected((KText) rendering), false, null);
         } else {
+            // this branch is taken for all kRenderings and kTexts if there selectability is suppressed
+            //  such kTexts treated like all of the other kRenderings
             styles.deriveStyles(rendering, propagatedStyles, isSelected,
                     !this.selectionStylesPresent, KRenderingUtil.dereference(this.currentRendering));
         }
