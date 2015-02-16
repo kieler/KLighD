@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -43,9 +43,9 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 /**
  * Various convenience implementations of {@link Predicate}.<br>
  * To be continued :-)
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  */
 public final class KlighdPredicates {
@@ -59,7 +59,7 @@ public final class KlighdPredicates {
     /**
      * Provider method creating a {@link IsNotEmptyAndExpandedPredicate} for testing the expansion
      * state of {@link KNode KNodes}.
-     * 
+     *
      * @return a new instance of the required predicate
      */
     public static IsNotEmptyAndExpandedPredicate isNotEmptyAndExpanded() {
@@ -69,7 +69,7 @@ public final class KlighdPredicates {
     /**
      * Named {@link Predicate} implementation allowing to added setter for context specific
      * information in future, e.g. the current viewer.
-     * 
+     *
      * @author chsch
      */
     public static class IsNotEmptyAndExpandedPredicate implements Predicate<KNode> {
@@ -154,16 +154,16 @@ public final class KlighdPredicates {
             }
         };
     }
-    
+
     /**
      * A static (singleton) predicate definition for testing the selectabilty of view elements.
      * See also {@link #isSelectable()}.
      */
     private static final Predicate<EObject> IS_SELECTABLE = new Predicate<EObject>() {
-        
+
         private final EClass kgraphElement = KGraphPackage.eINSTANCE.getKGraphElement();
         private final EClass ktext = KRenderingPackage.eINSTANCE.getKText();
-        
+
         private final Predicate<KGraphElement> kgeSelectableTest = kgePropertyPredicate(
                 NOT_SELECTABLE, false, true);
 
@@ -173,20 +173,20 @@ public final class KlighdPredicates {
                     || (ktext.isInstance(input) && !((KText) input).getProperty(NOT_SELECTABLE));
         }
     };
-    
+
     /**
      * Provides a static predicate for testing an EObject whether it is a view model element that is
      * allowed to be selected by the user. Currently only {@link KGraphElement KGraphElements} and
      * {@link de.cau.cs.kieler.core.krendering.KText KTexts} can be selected. The returned
      * {@link Predicate} tolerates <code>null</code> values and returns <code>false</code> in that
      * case.
-     * 
+     *
      * @return the dedicated predicate instance (singleton)
      */
     public static Predicate<EObject> isSelectable() {
         return IS_SELECTABLE;
     }
-    
+
     /**
      * A static (singleton) predicate definition for testing the selection flag of {@link KStyle
      * KStyles}. See also {@link #isSelection()}.
@@ -200,7 +200,7 @@ public final class KlighdPredicates {
     /**
      * Provides a static predicate for testing a {@link KStyle} for its {@link KStyle#isSelection()
      * selection flag} set to <code>true</code>.
-     * 
+     *
      * @return a static predicate testing the provided {@link KStyle} for its selection flag set to
      *         <code>true</code>
      */
@@ -221,7 +221,7 @@ public final class KlighdPredicates {
     /**
      * Provides a static predicate for testing a {@link KRendering} (of a {@link KNode}) for being
      * tagged as the <i>collapsed state</i> rendering definition.
-     * 
+     *
      * @return a static predicate testing the provided {@link KRendering} for a <i>collapsed
      *         state<i> tag.
      */
@@ -242,7 +242,7 @@ public final class KlighdPredicates {
     /**
      * Provides a static predicate for testing a {@link KRendering} (of a {@link KNode}) for being
      * tagged as the <i>expanded state</i> rendering definition.
-     * 
+     *
      * @return a static predicate testing the provided {@link KRendering} for a <i>expanded
      *         state<i> tag.
      */
@@ -254,14 +254,14 @@ public final class KlighdPredicates {
      * A predicate for testing a {@link KRendering} (of a {@link KNode}) for being tagged as the
      * <i>collapsed</i> or <i>expanded state</i> rendering definition.
      */
-    private static final Predicate<KRendering> IS_COLLAPSED_OR_EXPANDED_RENDERING = 
+    private static final Predicate<KRendering> IS_COLLAPSED_OR_EXPANDED_RENDERING =
             Predicates.or(IS_COLLAPSED_RENDERING, IS_EXPANDED_RENDERING);
 
     /**
      * Provides a static predicate for testing a {@link KRendering} (of a {@link KNode}) for being
      * explicitly tagged as the <i>collapsed</i> or <i>expanded state</i> rendering definition.<br>
      * This predicate returns <code>false</code> if no markers are available.
-     * 
+     *
      * @return a static predicate testing the provided {@link KRendering} for a <i>collapsed</i> or
      *         <i>expanded state<i> tag.
      */
@@ -272,7 +272,7 @@ public final class KlighdPredicates {
     /**
      * An abbreviation of {@link Predicates#not(Predicate) Predicates.not}(
      * {@link Predicates#in(Collection) Predicates.in}(...)).
-     * 
+     *
      * @param <T>
      *            the type the {@link Predicate} is defined on
      * @param target
@@ -286,7 +286,7 @@ public final class KlighdPredicates {
     /**
      * An abbreviation of {@link Predicates#not(Predicate) Predicates.not}(
      * {@link Predicates#instanceOf(Class) Predicates.instanceOf}(...)).
-     * 
+     *
      * @param clazz
      *            the class to the instanceof property
      * @return the requested {@link Predicate}
@@ -300,7 +300,7 @@ public final class KlighdPredicates {
      * Creates new compound {@link Predicates#instanceOf(Class)} predicates testing for several
      * <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this predicate returns
      * <true> if the input is instance of one of the provided classes or interfaces.
-     * 
+     *
      * @param classes
      *            the classes/interface to be 'instanceof' checked
      * @return the compound {@link Predicate}
@@ -313,7 +313,7 @@ public final class KlighdPredicates {
      * Creates new compound {@link Predicates#instanceOf(Class)} predicates testing for several
      * <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this predicate returns
      * <true> if the input is instance of one of the provided classes or interfaces.
-     * 
+     *
      * @param classes
      *            the classes/interface to be 'instanceof' checked
      * @return the compound {@link Predicate}
@@ -321,7 +321,7 @@ public final class KlighdPredicates {
     public static Predicate<Object> instanceOf(final Iterable<Class<?>> classes) {
         return Predicates.or(Iterables.transform(classes, CLASS_TO_PREDICATE));
     }
-    
+
     /**
      * A singleton helper Function used in {@link #eAllContentsOfType(EObject, Class...)}.
      */
@@ -335,14 +335,14 @@ public final class KlighdPredicates {
                     return Predicates.instanceOf(clazz);
                 }
             };
-            
+
 
     /**
      * Creates new compound {@link Predicate Predicates} testing {@link EClass#isInstance(Object)}
      * for several <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this
      * predicate returns <true> if the input is instance of one of the provided classes or
      * interfaces.
-     * 
+     *
      * @param classes
      *            the classes/interface to be 'instanceof' checked
      * @return the compound {@link Predicate}
@@ -356,7 +356,7 @@ public final class KlighdPredicates {
      * for several <code>classes</code>. {@link Predicate#apply(Object) apply(Object)} of this
      * predicate returns <true> if the input is instance of one of the provided classes or
      * interfaces.
-     * 
+     *
      * @param classes
      *            the classes/interface to be 'instanceof' checked
      * @return the compound {@link Predicate}
@@ -364,7 +364,7 @@ public final class KlighdPredicates {
     public static Predicate<EObject> eInstanceOf(final Iterable<EClass> classes) {
         return Predicates.or(Iterables.transform(classes, ECLASS_TO_PREDICATE));
     }
-            
+
     /**
      * A singleton helper Function used in {@link #eAllContentsOfType(EObject, Class...)}.
      */
