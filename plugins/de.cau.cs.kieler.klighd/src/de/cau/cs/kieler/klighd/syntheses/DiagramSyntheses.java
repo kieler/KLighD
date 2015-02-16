@@ -118,9 +118,10 @@ public final class DiagramSyntheses {
     /**
      * Convenience method for defining multiple layout options for {@link KGraphElement
      * KGraphElements}.<br>
-     * The required <code>optionValueMap</code> can be easily created via
+     * The required <code>optionValueMap</code> can be easily created via<br>
      * {@link com.google.common.collect.ImmutableMap#of(Object, Object, Object, Object)
-     * ImmutableMap#of(Object, Object, Object, Object)}, for example.
+     * ImmutableMap.&lt;IProperty&lt;?&gt;, Object&gt;of(option, value, option, value, ...)},
+     * for example.
      *
      * @param <R>
      *            the concrete type of <code>element</code>
