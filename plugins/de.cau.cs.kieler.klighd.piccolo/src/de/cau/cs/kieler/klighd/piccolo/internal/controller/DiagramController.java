@@ -1314,17 +1314,17 @@ public class DiagramController {
 
 
     private boolean isAutomaticallyArranged(final KGraphElement element) {
-        KShapeLayout shapeLayout = this.topNode.getGraphElement().getData(KShapeLayout.class);
-        if (shapeLayout == null || shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+        KLayoutData layoutData = this.topNode.getGraphElement().getData(KLayoutData.class);
+        if (layoutData == null || layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
-        shapeLayout = element.getData(KShapeLayout.class);
-        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+        layoutData = element.getData(KLayoutData.class);
+        if (layoutData != null && layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
         final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
-        shapeLayout = container == null ? null : container.getData(KShapeLayout.class);
-        if (shapeLayout != null && shapeLayout.getProperty(LayoutOptions.NO_LAYOUT)) {
+        layoutData = container == null ? null : container.getData(KLayoutData.class);
+        if (layoutData != null && layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
         return true;
