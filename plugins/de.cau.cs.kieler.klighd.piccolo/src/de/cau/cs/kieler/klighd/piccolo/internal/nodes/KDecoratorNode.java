@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**

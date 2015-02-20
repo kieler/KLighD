@@ -17,11 +17,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKLabeledGraphElementNode;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -67,8 +65,6 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements IKLabeledGrap
         setChildrenPickable(true);
         bendPoints[0] = new Point2D.Double();
         bendPoints[1] = new Point2D.Double();
-        lowerScaleBound = edge.getData(KLayoutData.class).getProperty(
-                KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
     }
 
     /**

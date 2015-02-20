@@ -31,8 +31,8 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import edu.umd.cs.piccolo.PNode;
 

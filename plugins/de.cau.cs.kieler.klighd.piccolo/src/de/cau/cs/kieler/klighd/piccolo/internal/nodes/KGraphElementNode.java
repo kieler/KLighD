@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -52,13 +53,12 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
      */
     public KGraphElementNode(final T element) {
         this.graphElement = element;
-        
+
         final KLayoutData layoutData = element.getData(KLayoutData.class);
         if (layoutData != null) {
-            this.lowerScaleBound = layoutData.getProperty(
-                    KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
-            this.upperScaleBound = layoutData.getProperty(
-                    KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND).floatValue();
+            setVisibilityBounds(
+                    layoutData.getProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue(),
+                    layoutData.getProperty(KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND).floatValue());
         }
     }
 

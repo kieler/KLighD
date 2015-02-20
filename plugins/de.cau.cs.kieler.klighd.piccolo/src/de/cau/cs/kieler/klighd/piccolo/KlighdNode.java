@@ -9,12 +9,12 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
+package de.cau.cs.kieler.klighd.piccolo;
 
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
@@ -26,21 +26,24 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * It enables, e.g., proper view-model-tracing by preserving the related
  * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/ {@link KRendering} view model
  * element being accessible via {@link #getViewModelElement()}.<br>
- * 
+ * <br>
+ * Application-specific custom figures incorporated by means of
+ * {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRenderings} may subclass
+ * {@link KlighdNode} of {@link KlighdNode.KlighdFigureNode} if beneficial, otherwise rely on
+ * {@link IKlighdNode}.
+ *
  * @author chsch
  */
 public abstract class KlighdNode extends PNode implements IKlighdNode {
 
     private static final long serialVersionUID = 6876586117083105843L;
 
-    // SUPPRESS CHECKSTYLE NEXT 7 Visibility -- fields are package protected in order to be accessed
-    //  for initialization, see inner sub classes
-    boolean outlineInvisible = false;
-    boolean exportedImageInvisible = false;
-    boolean printoutInvisible = false;
+    private boolean outlineInvisible = false;
+    private boolean exportedImageInvisible = false;
+    private boolean printoutInvisible = false;
 
-    float lowerScaleBound = 0;
-    float upperScaleBound = -1;
+    private float lowerScaleBound = 0;
+    private float upperScaleBound = -1;
 
     /**
      * Constructor.
@@ -50,8 +53,38 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
     }
 
     /**
+     * Sets zoom scale dependent visibility bounds of <code>this</code> {@link KlighdNode}.
+     *
+     * @param lowerBound
+     *            the lower visibility bound, default is the (unreachable) scale of zero
+     * @param upperBound
+     *            the upper visibility bound, default is -1 denoting no upper bound
+     */
+    protected void setVisibilityBounds(final float lowerBound, final float upperBound) {
+        this.lowerScaleBound = lowerBound;
+        this.upperScaleBound = upperBound;
+    }
+
+    /**
+     * Sets zoom scale dependent visibility bounds of <code>this</code> {@link KlighdNode}.
+     *
+     * @param outline
+     *            visibility in the outline view, independent of zoom scale dependent (in)visibility
+     * @param exports
+     *            visibility in image exports (raster and vector graphic exports)
+     * @param printouts
+     *            visibility on printouts (which apply a fixed zoom scale of one)
+     */
+    protected void setVisibilityOn(final boolean outline, final boolean exports,
+            final boolean printouts) {
+        this.outlineInvisible = outline;
+        this.exportedImageInvisible = exports;
+        this.printoutInvisible = printouts;
+    }
+
+    /**
      * Returns the graph element traced by this node.
-     * 
+     *
      * @return the traced view graph element.
      */
     public abstract EObject getViewModelElement();
@@ -79,23 +112,23 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      */
     public boolean isPrintOutInvisible() {
         return printoutInvisible;
-    }    
+    }
 
     /**
      * Returns the declared lower bound of the diagram scale/zoom factor of which this (pseudo)
      * figure is sill visible, i.e. drawn on the canvas.
-     * 
+     *
      * @return the declared lower bound of the diagram scale/zoom factor of which this (pseudo)
      * figure is sill visible, i.e. drawn on the canvas.
      */
     public double getLowerVisibilityBound() {
         return lowerScaleBound;
     }
-    
+
     /**
      * Returns the declared upper bound of the diagram scale/zoom factor of which this (pseudo)
      * figure is sill visible, i.e. drawn on the canvas.
-     * 
+     *
      * @return the declared upper bound of the diagram scale/zoom factor of which this (pseudo)
      * figure is sill visible, i.e. drawn on the canvas.
      */
@@ -108,10 +141,10 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * visibility definitions. (see
      * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
      * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
-     * 
+     *
      * @param kpc
      *            the KlighdPaintContext providing the required information
-     * 
+     *
      * @return <code>true</code> if this (pseudo) figure should not be drawn on the diagram being
      *         drawn in the given <code>diagramScale</code>
      */
@@ -142,10 +175,10 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * visibility definitions. (see
      * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
      * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
-     * 
+     *
      * @param diagramScale
      *            the diagram scale factor to be applied
-     * 
+     *
      * @return <code>true</code> if this (pseudo) figure should not be drawn on the diagram being
      *         drawn in the given <code>diagramScale</code>
      */
@@ -181,7 +214,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * Provides the permission of the corresponding
      * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/{@link KRendering} to be
      * selected.
-     * 
+     *
      * @return <code>true</code> if the corresponding
      *         {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/{@link KRendering}
      *         is allowed to be selected, <code>false</code> otherwise.
@@ -190,8 +223,11 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
 
 
     /**
-     * A common abstract class of {@link KlighdPath}, {@link KlighdImage}, {@link KlighdStyledText},
-     * and {@link KCustomFigureNode} serving the purpose of avoiding code clones.<br>
+     * A common abstract class of {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath
+     * KlighdPath}, {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage KlighdImage},
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText KlighdStyledText}, and
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode KCustomFigureNode}
+     * serving the purpose of avoiding code clones.<br>
      * This class cares about tracking the corresponding {@link KRendering} element, contributing
      * semantic model data into drawn (vector graphic) images, and determining the visibility the
      * figure wrt. the diagram zoom scale while drawing the diagram.
@@ -205,14 +241,14 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
          */
         public KlighdFigureNode() {
             super();
-            
+
             setVisible(true);
             setPickable(false);
         }
 
         /**
          * Constructor.
-         * 
+         *
          * @param rendering
          *            the {@link KRendering} element being represented by this {@link KlighdFigureNode}
          */
@@ -225,7 +261,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
 
         /**
          * Provides the {@link KRendering} element being represented by this {@link KlighdFigureNode}.
-         * 
+         *
          * @return the {@link KRendering} element being represented by this {@link KlighdFigureNode}
          */
         public T getRendering() {
@@ -240,20 +276,19 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
          */
         public void setRendering(final T rendering) {
             this.rendering = rendering;
-            
-            if (rendering != null) {
-                this.outlineInvisible = rendering.getProperty(
-                        KlighdProperties.OUTLINE_INVISIBLE);
-                this.exportedImageInvisible = rendering.getProperty(
-                        KlighdProperties.EXPORTED_IMAGE_INVISIBLE);
-                this.printoutInvisible = rendering.getProperty(
-                        KlighdProperties.PRINTOUT_INVISIBLE);
 
-                this.lowerScaleBound = rendering.getProperty(
-                        KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
-                this.upperScaleBound = rendering.getProperty(
-                        KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND).floatValue();
+            if (rendering == null) {
+                return;
             }
+
+            setVisibilityOn(
+                    rendering.getProperty(KlighdProperties.OUTLINE_INVISIBLE).booleanValue(),
+                    rendering.getProperty(KlighdProperties.EXPORTED_IMAGE_INVISIBLE).booleanValue(),
+                    rendering.getProperty(KlighdProperties.PRINTOUT_INVISIBLE).booleanValue());
+
+            setVisibilityBounds(
+                    rendering.getProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue(),
+                    rendering.getProperty(KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND).floatValue());
         }
 
         /**
@@ -287,6 +322,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
             return super.pickAfterChildren(pickPath);
         }
 
+
         /**
          * {@inheritDoc}
          */
@@ -304,7 +340,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
 
         /**
          * Derivative of {@link #paint(PPaintContext)} requiring a {@link KlighdPaintContext}.
-         * 
+         *
          * @param paintContext
          *            the paint context to use for drawing the node
          * @see PNode#paint(PPaintContext)
@@ -316,7 +352,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         /**
          * A convenience method to be re-used in the {@link #paint(PPaintContext)} methods of
          * concrete implementations of this class.
-         * 
+         *
          * @param kpc the {@link KlighdPaintContext} employed while drawing the diagram.
          */
         public void addSemanticData(final KlighdPaintContext kpc) {
