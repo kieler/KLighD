@@ -24,14 +24,14 @@ import edu.umd.cs.piccolo.PLayer;
  * 
  * @author chsch
  */
-public class KDisposingLayer extends PLayer {
+public class KlighdDisposingLayer extends PLayer {
 
     private static final long serialVersionUID = 4423173127127342353L;
 
     /**
      * Constructor. 
      */
-    public KDisposingLayer() {
+    public KlighdDisposingLayer() {
         this.setPickable(false);
         this.setChildrenPickable(true);
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
@@ -45,7 +45,8 @@ public class KDisposingLayer extends PLayer {
      * 
      * @see KlighdNode.KlighdGraphNode
      */
-    public abstract static class KNodeRepresentingLayer extends KDisposingLayer implements IKNodeNode {
+    public abstract static class KNodeRepresentingLayer extends KlighdDisposingLayer implements
+            IKNodeNode {
 
         private static final long serialVersionUID = -4486373398530744260L;
 

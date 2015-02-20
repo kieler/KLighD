@@ -31,7 +31,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
+public class KNodeTopNode extends KlighdDisposingLayer.KNodeRepresentingLayer {
 
     private static final long serialVersionUID = 8395163186723344696L;
 

@@ -44,7 +44,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
+public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer implements
         IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
@@ -232,7 +232,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      */
     public void addPort(final KPortNode port) {
         if (portLayer == null) {
-            portLayer = new KDisposingLayer();
+            portLayer = new KlighdDisposingLayer();
             addChild(labelLayer == null ? getChildrenCount() : getChildrenCount() - 1, portLayer);
         }
         portLayer.addChild(port);
@@ -246,7 +246,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      */
     public void addLabel(final KLabelNode label) {
         if (labelLayer == null) {
-            labelLayer = new KDisposingLayer();
+            labelLayer = new KlighdDisposingLayer();
             addChild(labelLayer);
         }
         labelLayer.addChild(label);

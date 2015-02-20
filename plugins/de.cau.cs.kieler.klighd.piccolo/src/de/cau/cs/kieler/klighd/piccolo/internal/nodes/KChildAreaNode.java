@@ -26,13 +26,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * case the container {@link IKNodeNode} is collapsed <code>this</code> {@link KChildAreaNode} is just
  * set invisible.<br>
  * <br>
- * Inherits from {@link KDisposingLayer} in order to enable its observation by a
+ * Inherits from {@link KlighdDisposingLayer} in order to enable its observation by a
  * {@link edu.umd.cs.piccolo.PCamera PCamera}.
  * 
  * @author mri
  * @author chsch
  */
-public class KChildAreaNode extends KDisposingLayer {
+public class KChildAreaNode extends KlighdDisposingLayer {
 
     private static final long serialVersionUID = -403773990520864787L;
     
@@ -111,7 +111,7 @@ public class KChildAreaNode extends KDisposingLayer {
      */
     public void addNode(final KNodeNode node) {
         if (nodeLayer == null) {
-            nodeLayer = new KDisposingLayer();
+            nodeLayer = new KlighdDisposingLayer();
             addChild(edgesFirst ? getChildrenCount() : 0, nodeLayer);
         }
         nodeLayer.addChild(node);
@@ -126,7 +126,7 @@ public class KChildAreaNode extends KDisposingLayer {
      */
     public void addEdge(final KEdgeNode edge) {
         if (edgeLayer == null) {
-            edgeLayer = new KDisposingLayer();
+            edgeLayer = new KlighdDisposingLayer();
             addChild(edgesFirst ? 0 : getChildrenCount(), edgeLayer);
         }
         edgeLayer.addChild(edge);
