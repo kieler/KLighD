@@ -70,7 +70,7 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
@@ -99,7 +99,7 @@ import edu.umd.cs.piccolo.nodes.PPath;
  *            the type of the Piccolo2D node representing the graph element
  */
 public abstract class AbstractKGERenderingController
-    <S extends KGraphElement, T extends IGraphElement<S>> {
+    <S extends KGraphElement, T extends IKGraphElementNode<S>> {
 
     /**
      * A map that tracks the {@link PNodeController PNodeControllers} that are deployed to manage

@@ -17,7 +17,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -330,7 +330,7 @@ public class AdapterTest {
     private boolean checkStructure(final KNode kgraph, final INode piccoloTree) {
 
         // check if knode is included in piccolo structure
-        if (!piccoloTree.getGraphElement().toString().equals(kgraph.toString())) {
+        if (!piccoloTree.getViewModelElement().toString().equals(kgraph.toString())) {
             return false;
         }
         final PLayer nodeLayer = piccoloTree.getChildAreaNode().getNodeLayer() != null
@@ -353,7 +353,7 @@ public class AdapterTest {
 
                 for (int j = 0; j < kgraph.getPorts().size(); j++) {
                     if (!(kgraph.getPorts().get(j) == ((KlighdNode) portLayer.getChild(j))
-                            .getGraphElement())) {
+                            .getViewModelElement())) {
                         return false;
                     }
                 }
@@ -365,7 +365,7 @@ public class AdapterTest {
 
                 for (int j = 0; j < kgraph.getLabels().size(); j++) {
                     if (!(kgraph.getLabels().get(j) == ((KlighdNode) labelLayer.getChild(j))
-                            .getGraphElement())) {
+                            .getViewModelElement())) {
                         return false;
                     }
                 }

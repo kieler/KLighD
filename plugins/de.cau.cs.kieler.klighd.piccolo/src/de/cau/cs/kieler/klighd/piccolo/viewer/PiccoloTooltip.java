@@ -27,7 +27,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
@@ -135,18 +135,18 @@ public class PiccoloTooltip {
 
             // determine the IGraphElement the mouse is over
             final PStack nodeStack = event.getPath().getNodeStackReference();
-            
+
             Object n = nodeStack.pop();
-            while (!nodeStack.isEmpty() && !(n instanceof IGraphElement<?>)) {
+            while (!nodeStack.isEmpty() && !(n instanceof IKGraphElementNode<?>)) {
                 n = nodeStack.pop();
             }
-            
-            final IGraphElement<?> graphElement;
-            
+
+            final IKGraphElementNode<?> graphElement;
+
             if (n instanceof KNodeTopNode) {
                 return;
-            } else if (n instanceof IGraphElement<?>) {
-                 graphElement = (IGraphElement<?>) n;
+            } else if (n instanceof IKGraphElementNode<?>) {
+                 graphElement = (IKGraphElementNode<?>) n;
             } else {
                 return;
             }
@@ -155,7 +155,7 @@ public class PiccoloTooltip {
             final KRendering rendering = ctr.getCurrentRendering();
 
             // fall-back to the KGraphElement if no rendering is specified
-            kge = graphElement.getGraphElement();
+            kge = graphElement.getViewModelElement();
 
             // only start the timer if we retrieved an element
             if (rendering == null && kge == null) {

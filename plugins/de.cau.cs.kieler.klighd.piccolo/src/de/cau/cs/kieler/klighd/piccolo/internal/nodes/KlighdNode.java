@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -31,7 +32,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * 
  * @author chsch
  */
-public abstract class KlighdNode extends PNode {
+public abstract class KlighdNode extends PNode implements IKlighdNode {
 
     private static final long serialVersionUID = 6876586117083105843L;
 
@@ -56,7 +57,7 @@ public abstract class KlighdNode extends PNode {
      * 
      * @return the traced view graph element.
      */
-    public abstract EObject getGraphElement();
+    public abstract EObject getViewModelElement();
 
 
     /**
@@ -199,7 +200,7 @@ public abstract class KlighdNode extends PNode {
      * pseudo figure wrt. the diagram zoom scale while drawing the diagram.
      */
     public abstract static class KlighdGraphNode<T extends KGraphElement> extends KlighdNode implements
-            IGraphElement<T> {
+            IKGraphElementNode<T> {
 
         private static final long serialVersionUID = -5577703758022742813L;
 
@@ -226,8 +227,15 @@ public abstract class KlighdNode extends PNode {
         /**
          * {@inheritDoc}
          */
-        @Override
         public T getGraphElement() {
+            return getViewModelElement();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public T getViewModelElement() {
             return graphElement;
         }
 
@@ -236,7 +244,7 @@ public abstract class KlighdNode extends PNode {
          */
         @Override
         public boolean isSelectable() {
-            return KlighdProperties.isSelectable(getGraphElement());
+            return KlighdProperties.isSelectable(getViewModelElement());
         }
 
         /**
@@ -365,7 +373,7 @@ public abstract class KlighdNode extends PNode {
 
         /**
          * Configures the {@link KRendering} element being represented by this {@link KlighdFigureNode}.
-         * 
+         *
          * @param rendering
          *            the {@link KRendering} element being represented by this {@link KlighdFigureNode}
          */
@@ -391,7 +399,7 @@ public abstract class KlighdNode extends PNode {
          * {@inheritDoc}
          */
         @Override
-        public T getGraphElement() {
+        public T getViewModelElement() {
             return rendering;
         }
 

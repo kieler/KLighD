@@ -23,9 +23,9 @@ import org.eclipse.emf.ecore.EObject;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import edu.umd.cs.piccolo.PNode;
@@ -114,8 +114,8 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
             selectedNode = (PNode) it.next();
 
             // get the corresponding view model element, i.e. KText or KGraphElement 
-            if (selectedNode instanceof KlighdNode && ((KlighdNode) selectedNode).isSelectable()) {
-                graphElement = ((KlighdNode) selectedNode).getGraphElement();
+            if (selectedNode instanceof IKlighdNode && ((IKlighdNode) selectedNode).isSelectable()) {
+                graphElement = ((IKlighdNode) selectedNode).getViewModelElement();
                 break;
             } else if (selectedNode instanceof INode) {
                 // in case we found a KNode that is marked to be non-selectable
@@ -124,7 +124,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                 // otherwise the diagramClip node would be selected,
                 //  which seems to be not intuitive
                 graphElement = ((INode) selectedNode).isSelectable()
-                        ? ((INode) selectedNode).getGraphElement() : null;
+                        ? ((INode) selectedNode).getViewModelElement() : null;
                 break;
             }            
         }

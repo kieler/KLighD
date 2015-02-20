@@ -126,7 +126,7 @@ public class DiagramZoomController {
      *            time to animate in ms
      */
     private void zoomToActualSize(final int duration) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement();
+        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getViewModelElement();
         final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
 
         if (nodeLayout == null) {
@@ -150,7 +150,7 @@ public class DiagramZoomController {
      *            time to animate in ms
      */
     private void zoomToFit(final int duration) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement();
+        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getViewModelElement();
         final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
 
         if (nodeLayout == null) {
@@ -200,7 +200,7 @@ public class DiagramZoomController {
      *            diagram canvas area, see also {@link ZoomStyle#ZOOM_TO_FOCUS_OR_INCREASE_TO_FIT}
      */
     private void zoomToFocus(final KNode focus, final int duration, final boolean increaseToFit) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement();
+        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getViewModelElement();
 
         // fetch bounds of the whole visible diagram
         final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
@@ -263,7 +263,7 @@ public class DiagramZoomController {
      *            time to animate
      */
     public void zoomToLevel(final float newZoomLevel, final int duration) {
-        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getGraphElement();
+        final KNode displayedKNode = this.canvasCamera.getDisplayedINode().getViewModelElement();
         final KShapeLayout topNodeLayout = displayedKNode.getData(KShapeLayout.class);
 
         if (topNodeLayout == null) {

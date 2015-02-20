@@ -31,8 +31,8 @@ import com.google.common.collect.Lists;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -63,15 +63,15 @@ public final class NodeUtil {
     }
 
     /**
-     * Casts a custom {@link PNode} object that implements {@link IGraphElement} to
-     * {@link IGraphElement}, the <b>type check is omitted for performance reasons</b>.
+     * Casts a custom {@link PNode} object that implements {@link IKGraphElementNode} to
+     * {@link IKGraphElementNode}, the <b>type check is omitted for performance reasons</b>.
      *
      * @param node
-     *            a custom {@link PNode} implementing {@link IGraphElement}
-     * @return node typed as {@link IGraphElement}
+     *            a custom {@link PNode} implementing {@link IKGraphElementNode}
+     * @return node typed as {@link IKGraphElementNode}
      */
-    public static IGraphElement<?> asIGraphElement(final PNode node) {
-        final IGraphElement<?> graphNode = (IGraphElement<?>) node;
+    public static IKGraphElementNode<?> asIGraphElement(final PNode node) {
+        final IKGraphElementNode<?> graphNode = (IKGraphElementNode<?>) node;
         return graphNode;
     }
 

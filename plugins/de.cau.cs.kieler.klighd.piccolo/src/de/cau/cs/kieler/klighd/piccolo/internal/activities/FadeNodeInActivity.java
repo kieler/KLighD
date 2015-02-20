@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
@@ -73,7 +73,7 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
      */
     @Override
     public void activityStarted() {
-        final IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+        final IKGraphElementNode<?> gE = NodeUtil.asIGraphElement(node);
 
         if (gE.getRenderingController() != null) {
             gE.getRenderingController().modifyStyles();

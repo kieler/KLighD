@@ -86,8 +86,9 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KNode,
+            ? extends IKGraphElementNode<KNode>> controller) {
+
         final String s = "KLighD: Invalid access occured: invoking setRenderingController()"
                 + "is not allowed for KNodeTopNodes!";
         throw new UnsupportedOperationException(s);

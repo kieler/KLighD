@@ -49,8 +49,9 @@ public class KLabelNode extends KlighdNode.KlighdGraphNode<KLabel> {
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KLabel, ? extends IGraphElement<KLabel>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KLabel,
+            ? extends IKGraphElementNode<KLabel>> controller) {
+
         if (controller == null || controller instanceof KLabelRenderingController) {
             this.renderingController = (KLabelRenderingController) controller;
         } else {

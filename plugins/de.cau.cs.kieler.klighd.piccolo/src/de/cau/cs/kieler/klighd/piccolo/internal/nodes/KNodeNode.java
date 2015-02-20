@@ -26,7 +26,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKLabeledGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -45,7 +45,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author chsch
  */
 public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
-        ILabeledGraphElement<KNode> {
+        IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
 
@@ -187,10 +187,12 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KNode,
+            ? extends IKGraphElementNode<KNode>> controller) {
+
         if (controller == null || controller instanceof KNodeRenderingController) {
             this.renderingController = (KNodeRenderingController) controller;
+
         } else {
             final String s = "KLighD: Fault occured while building up a concrete KNode rendering: "
                 + "KNodeNodes are supposed to be controlled by KNodeRenderingControllers rather than "

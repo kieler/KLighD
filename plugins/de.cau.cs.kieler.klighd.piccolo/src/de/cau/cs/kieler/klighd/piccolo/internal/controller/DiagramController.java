@@ -66,9 +66,9 @@ import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplySmartBoundsActiv
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeEdgeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.IStartingAndFinishingActivity;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKLabeledGraphElementNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
@@ -140,7 +140,7 @@ public class DiagramController {
     private boolean record = false;
 
     /** the layout changes to graph elements while recording. */
-    private final Map<IGraphElement<?>, Object> recordedChanges = Maps.newLinkedHashMap();
+    private final Map<IKGraphElementNode<?>, Object> recordedChanges = Maps.newLinkedHashMap();
 
 
     /**
@@ -269,10 +269,10 @@ public class DiagramController {
      *            the diagram element
      * @return the Piccolo2D representation
      */
-    public <T extends KGraphElement> IGraphElement<T> getRepresentation(final T diagramElement) {
+    public <T extends KGraphElement> IKGraphElementNode<T> getRepresentation(final T diagramElement) {
         @SuppressWarnings("unchecked")
-        final IGraphElement<T> result =
-                (IGraphElement<T>) RenderingContextData.get(diagramElement).getProperty(REP);
+        final IKGraphElementNode<T> result =
+                (IKGraphElementNode<T>) RenderingContextData.get(diagramElement).getProperty(REP);
         return result;
     }
 
@@ -391,7 +391,7 @@ public class DiagramController {
 
     /**
      * Hides the given {@link KGraphElement} from the diagram by removing the related
-     * {@link IGraphElement} from the network of {@link PNode PNodes}. In combination with
+     * {@link IKGraphElementNode} from the network of {@link PNode PNodes}. In combination with
      * {@link #show(KGraphElement)} this method can be used for changing the diagram's amount of
      * detail without changing the view model.
      *
@@ -409,7 +409,7 @@ public class DiagramController {
 
     /**
      * Shows the given {@link KGraphElement} from the diagram by (re-) adding a related
-     * {@link IGraphElement} to the network of {@link PNode PNodes}. In combination with
+     * {@link IKGraphElementNode} to the network of {@link PNode PNodes}. In combination with
      * {@link #hide(KGraphElement)} this method can be used for changing the diagram's amount of
      * detail without changing the view model.
      *
@@ -441,7 +441,7 @@ public class DiagramController {
      *            <code>null</code>
      */
     public void clip(final KNode diagramElement) {
-        final IGraphElement<KNode> node =
+        final IKGraphElementNode<KNode> node =
                 (diagramElement == null) ? topNode : getRepresentation(diagramElement);
 
         if (node == null) {
@@ -474,14 +474,14 @@ public class DiagramController {
      */
     public KNode getClip() {
         final INode node = getClipNode();
-        return node.getGraphElement();
+        return node.getViewModelElement();
     }
 
     /* --------------------------------------------- */
     /* internal part */
     /* --------------------------------------------- */
 
-    void recordChange(final IGraphElement<?> node, final Object change) {
+    void recordChange(final IKGraphElementNode<?> node, final Object change) {
         recordedChanges.put(node, change);
     }
 
@@ -536,7 +536,7 @@ public class DiagramController {
             final int animationTime) {
 
         // create activities to apply all recorded changes
-        for (final Map.Entry<IGraphElement<?>, Object> recordedChange : recordedChanges.entrySet()) {
+        for (final Map.Entry<IKGraphElementNode<?>, ?> recordedChange : recordedChanges.entrySet()) {
             // create the activity to apply the change
             PInterpolatingActivity activity;
             final PNode shapeNode;
@@ -626,7 +626,7 @@ public class DiagramController {
     private void addExpansionListener(final INode nodeNode) {
         final KChildAreaNode childAreaNode = nodeNode.getChildAreaNode();
         if (childAreaNode != null) {
-            final KNode node = nodeNode.getGraphElement();
+            final KNode node = nodeNode.getViewModelElement();
 
             childAreaNode.addPropertyChangeListener(KChildAreaNode.PROPERTY_EXPANSION,
                     new PropertyChangeListener() {
@@ -675,7 +675,7 @@ public class DiagramController {
             return;
         }
 
-        final IGraphElement<?> parentRep = getRepresentation((KGraphElement) element.eContainer());
+        final IKGraphElementNode<?> parentRep = getRepresentation((KGraphElement) element.eContainer());
 
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
@@ -690,7 +690,7 @@ public class DiagramController {
             break;
         case KGraphPackage.KLABEL:
             if (parentRep != null) {
-                addLabel((ILabeledGraphElement<?>) parentRep, (KLabel) element, forceShow);
+                addLabel((IKLabeledGraphElementNode<?>) parentRep, (KLabel) element, forceShow);
             }
             break;
         case KGraphPackage.KEDGE:
@@ -751,7 +751,7 @@ public class DiagramController {
      *            the parent structure node representing a KNode
      */
     private void addChildren(final INode parentNode) {
-        final KNode parent = parentNode.getGraphElement();
+        final KNode parent = parentNode.getViewModelElement();
 
         // create the nodes
         for (final KNode child : parent.getChildren()) {
@@ -1202,7 +1202,7 @@ public class DiagramController {
      * @param labeledElement
      *            the labeled element
      */
-    private void handleLabels(final ILabeledGraphElement<?> labeledNode,
+    private void handleLabels(final IKLabeledGraphElementNode<?> labeledNode,
             final KLabeledGraphElement labeledElement) {
         for (final KLabel label : labeledElement.getLabels()) {
             addLabel(labeledNode, label, false);
@@ -1228,7 +1228,7 @@ public class DiagramController {
      *            if <code>true</code> add <code>label</code> to the diagram regardless of its
      *            {@link KlighdProperties#SHOW} property value
      */
-    private void addLabel(final ILabeledGraphElement<?> labeledNode, final KLabel label,
+    private void addLabel(final IKLabeledGraphElementNode<?> labeledNode, final KLabel label,
             final boolean forceShow) {
         final RenderingContextData contextData = RenderingContextData.get(label);
         KLabelNode labelNode = contextData.getProperty(LABEL_REP);
@@ -1767,9 +1767,9 @@ public class DiagramController {
      * (in contrast to an anonymous subclass)
      */
     private final class LabelSyncAdapter extends AdapterImpl {
-        private final ILabeledGraphElement<?> labeledNode;
+        private final IKLabeledGraphElementNode<?> labeledNode;
 
-        private LabelSyncAdapter(final ILabeledGraphElement<?> theLabeledNode) {
+        private LabelSyncAdapter(final IKLabeledGraphElementNode<?> theLabeledNode) {
             this.labeledNode = theLabeledNode;
         }
 

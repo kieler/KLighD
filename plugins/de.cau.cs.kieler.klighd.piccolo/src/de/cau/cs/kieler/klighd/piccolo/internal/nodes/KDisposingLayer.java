@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PLayer;
 
@@ -66,6 +67,13 @@ public class KDisposingLayer extends PLayer {
          * {@inheritDoc}
          */
         public KNode getGraphElement() {
+            return getViewModelElement();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public KNode getViewModelElement() {
             return node;
         }
 
@@ -73,7 +81,7 @@ public class KDisposingLayer extends PLayer {
          * {@inheritDoc}
          */
         public boolean isSelectable() {
-            return KlighdProperties.isSelectable(getGraphElement());
+            return KlighdProperties.isSelectable(getViewModelElement());
         }
 
         /**
