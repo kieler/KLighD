@@ -36,8 +36,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author mri
  * @author chsch
  */
-public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements
-        IKLabeledGraphElementNode<KEdge> {
+public class KEdgeNode extends KGraphElementNode<KEdge> implements IKLabeledGraphElementNode<KEdge> {
 
     private static final long serialVersionUID = -1867615197736299487L;
 

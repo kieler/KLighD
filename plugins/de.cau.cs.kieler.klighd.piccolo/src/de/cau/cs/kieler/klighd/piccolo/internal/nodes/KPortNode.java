@@ -25,8 +25,7 @@ import edu.umd.cs.piccolo.PNode;
  * @author mri
  * @author chsch
  */
-public class KPortNode extends KlighdNode.KlighdGraphNode<KPort> implements
-        IKLabeledGraphElementNode<KPort> {
+public class KPortNode extends KGraphElementNode<KPort> implements IKLabeledGraphElementNode<KPort> {
 
     private static final long serialVersionUID = 6016725932024647084L;
 

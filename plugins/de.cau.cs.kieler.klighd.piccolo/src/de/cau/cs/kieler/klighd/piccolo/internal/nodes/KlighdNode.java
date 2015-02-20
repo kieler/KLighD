@@ -13,22 +13,19 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import org.eclipse.emf.ecore.EObject;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
-import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * Common base class of KLighD-specific {@link PNode PNodes}.<br>
- * It enables, e.g., proper view-model-tracing by preserving the related {@link KGraphElement}/
- * {@link KRendering} view model element being accessible via {@link #getGraphElement()}.<br>
+ * It enables, e.g., proper view-model-tracing by preserving the related
+ * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/ {@link KRendering} view model
+ * element being accessible via {@link #getViewModelElement()}.<br>
  * 
  * @author chsch
  */
@@ -164,8 +161,8 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * This specialization evaluates the occlusion of an element while picking it. It is required as
      * we're using the occlusion flag for implementing single figure/rendering invisibility and as
      * we don't use on {@link edu.umd.cs.piccolo.util.PPickPath#nextPickedNode()
-     * PPickPath#nextPickedNode()} (since we don't expected {@link KGraphElement KGraphElements}
-     * occluding each other).
+     * PPickPath#nextPickedNode()} (since we don't expected
+     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} occluding each other).
      */
     @Override
     public boolean getPickable() {
@@ -181,152 +178,16 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
     }
 
     /**
-     * Provides the permission of the corresponding {@link KGraphElement}/{@link KRendering} to be
+     * Provides the permission of the corresponding
+     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/{@link KRendering} to be
      * selected.
      * 
-     * @return <code>true</code> if the corresponding {@link KGraphElement}/{@link KRendering} is
-     *         allowed to be selected, <code>false</code> otherwise.
+     * @return <code>true</code> if the corresponding
+     *         {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/{@link KRendering}
+     *         is allowed to be selected, <code>false</code> otherwise.
      */
     public abstract boolean isSelectable();
 
-
-    /**
-     * A common abstract class of {@link KEdgeNode}, {@link KPortNode}, and {@link KLabelNode}
-     * serving the purpose of avoiding code clones. Due to the inheritance of
-     * {@link edu.umd.cs.piccolo.PLayer PLayer} {@link KNodeNode} and {@link KNodeTopNode} cannot inherit
-     * this class, which I regret very much.<br>
-     * This class cares about tracking the corresponding {@link KRendering} element, contributing
-     * semantic model data into drawn (vector graphic) images, and determining the visibility the
-     * pseudo figure wrt. the diagram zoom scale while drawing the diagram.
-     */
-    public abstract static class KlighdGraphNode<T extends KGraphElement> extends KlighdNode implements
-            IKGraphElementNode<T> {
-
-        private static final long serialVersionUID = -5577703758022742813L;
-
-        private T graphElement;
-
-        /**
-         * Constructs a corresponding Piccolo2D node representing the given {@link KGraphElement}.
-         * 
-         * @param element
-         *            the {@link KGraphElement}
-         */
-        public KlighdGraphNode(final T element) {
-            this.graphElement = element;
-            
-            final KLayoutData layoutData = element.getData(KLayoutData.class);
-            if (layoutData != null) {
-                this.lowerScaleBound = layoutData.getProperty(
-                        KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
-                this.upperScaleBound = layoutData.getProperty(
-                        KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND).floatValue();
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public T getGraphElement() {
-            return getViewModelElement();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public T getViewModelElement() {
-            return graphElement;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean isSelectable() {
-            return KlighdProperties.isSelectable(getViewModelElement());
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void setScale(final double scale) {
-            final double curScale = getScale();
-
-            if (scale == curScale) {
-                return;
-            } else if (scale == 0) {
-                throw new RuntimeException("Can't set scale to 0");
-            }
-            scale(scale / curScale);
-        }
-
-        /**
-         * {@inheritDoc}<br>
-         * <br>
-         * KLighD contributes a visibility check in this method.<br>
-         * Note that the labels of labeled kGraph elements are currently skipped, too, if the
-         * element itself is masked.
-         */
-        @Override
-        public boolean fullPick(final PPickPath pickPath) {
-            final PCamera topCam = pickPath.getTopCamera();
-
-            // first test whether this figure is visible at all
-            //  we shamelessly assume that scaleX == scaleY ;-)
-            if (isNotVisibleOn(topCam.getViewTransformReference().getScaleX())) {
-                return false;
-            }
-
-            return super.fullPick(pickPath);
-        }
-
-        /**
-         * {@inheritDoc}<br>
-         * <br>
-         * KLighD contributes a visibility check in this method.<br>
-         * Note that the labels of labeled kGraph elements are currently skipped, too, if the
-         * element itself is masked.
-         */
-        @Override
-        public void fullPaint(final PPaintContext paintContext) {
-            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-            if (isNotVisibleOn(kpc)) {
-                return;
-            }
-            super.fullPaint(paintContext);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        protected void paint(final PPaintContext paintContext) {
-            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-
-            if (kpc.isAddSemanticData()) {
-                final KlighdSemanticDiagramData sd = getGraphElement().getData(KLayoutData.class)
-                        .getProperty(KlighdProperties.SEMANTIC_DATA);
-                kpc.getKlighdGraphics().startGroup(sd);
-            }
-           
-            super.paint(paintContext);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        protected void paintAfterChildren(final PPaintContext paintContext) {
-            super.paintAfterChildren(paintContext);
-
-            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
-            if (kpc.isAddSemanticData()) {
-                kpc.getKlighdGraphics().endGroup();
-            }
-        }
-    }
 
     /**
      * A common abstract class of {@link KlighdPath}, {@link KlighdImage}, {@link KlighdStyledText},

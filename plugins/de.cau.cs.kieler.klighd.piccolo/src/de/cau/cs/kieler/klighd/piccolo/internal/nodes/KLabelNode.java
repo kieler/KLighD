@@ -23,7 +23,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingContro
  * @author mri
  * @author chsch
  */
-public class KLabelNode extends KlighdNode.KlighdGraphNode<KLabel> {
+public class KLabelNode extends KGraphElementNode<KLabel> {
 
     private static final long serialVersionUID = -3999806360081871118L;
 

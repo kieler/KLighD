@@ -41,9 +41,9 @@ public class KlighdDisposingLayer extends PLayer {
     /**
      * An abstract super class of {@link KNodeTopNode} and {@link KNodeNode} contributing common
      * behavior. The main purpose of it is to reduce code clones that are here anyway since the
-     * inheritance of {@link PLayer} forbids the inheritance of {@link KlighdNode.KlighdGraphNode}.
+     * inheritance of {@link PLayer} forbids the inheritance of {@link KGraphElementNode}.
      * 
-     * @see KlighdNode.KlighdGraphNode
+     * @see KGraphElementNode
      */
     public abstract static class KNodeRepresentingLayer extends KlighdDisposingLayer implements
             IKNodeNode {
