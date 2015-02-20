@@ -14,7 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PLayer;
 
@@ -45,7 +45,7 @@ public class KDisposingLayer extends PLayer {
      * 
      * @see KlighdNode.KlighdGraphNode
      */
-    public abstract static class KNodeRepresentingLayer extends KDisposingLayer implements INode {
+    public abstract static class KNodeRepresentingLayer extends KDisposingLayer implements IKNodeNode {
 
         private static final long serialVersionUID = -4486373398530744260L;
 

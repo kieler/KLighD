@@ -32,7 +32,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -346,7 +346,7 @@ public final class NodeUtil {
      * @return <code>node's</code> global bounds relative to the current clip, or <code>null</code>
      *         if <code>node</code> is not a (recursive) child of <code>clipNode</code>
      */
-    public static PBounds clipRelativeGlobalBoundsOf(final PNode node, final INode clipNode) {
+    public static PBounds clipRelativeGlobalBoundsOf(final PNode node, final IKNodeNode clipNode) {
         // determine the closure of node's bounds and all recursively contained children's bounds
         final PBounds nodeBounds = node.getFullBounds();
 
@@ -371,14 +371,14 @@ public final class NodeUtil {
 
     /**
      * Tests whether the given <code>node</code> is contained in the <code>camera</code>'s displayed
-     * {@link INode}'s children sub tree.
+     * {@link IKNodeNode}'s children sub tree.
      *
      * @param node
      *            the PNode to be tested
      * @param camera
      *            the camera the test is based on
      * @return <code>true</code> if node is contained in <code>camera</code>'s displayed
-     *         {@link INode}'s deep children, <code>false</code> otherwise.
+     *         {@link IKNodeNode}'s deep children, <code>false</code> otherwise.
      */
     public static boolean isDisplayed(final PNode node, final KlighdMainCamera camera) {
         if (camera == null) {
@@ -448,28 +448,28 @@ public final class NodeUtil {
     }
 
     /**
-     * Creates an iterator traversing along the 'parentNode' chain of the given {@link INode}
+     * Creates an iterator traversing along the 'parentNode' chain of the given {@link IKNodeNode}
      * {@code node}.
      *
      * @param node
-     *            the {@link INode} to start with
+     *            the {@link IKNodeNode} to start with
      * @return the an {@link Iterator} all parents of {@code node}.
      */
-    public static Iterator<INode> parentINodeIterator(final INode node) {
+    public static Iterator<IKNodeNode> parentINodeIterator(final IKNodeNode node) {
         return new ParentINodeIterator(node, false);
     }
 
     /**
      * A simple implementation of the {@link Iterator} interface allowing to traverse the
-     * 'parent' chain of {@link INode INodes}.
+     * 'parent' chain of {@link IKNodeNode INodes}.
      *
      * @author chsch
      */
-    private static class ParentINodeIterator implements Iterator<INode> {
+    private static class ParentINodeIterator implements Iterator<IKNodeNode> {
 
-        private INode node;
+        private IKNodeNode node;
 
-        public ParentINodeIterator(final INode child, final boolean includingSelf) {
+        public ParentINodeIterator(final IKNodeNode child, final boolean includingSelf) {
             if (child == null) {
                 throw new IllegalArgumentException("Class ParentINodeIterator:"
                         + "Constructor of ParentINodeIterator requires a non-null input.");
@@ -481,11 +481,11 @@ public final class NodeUtil {
             return node != null;
         }
 
-        public INode next() {
+        public IKNodeNode next() {
             if (node == null) {
                 throw new IllegalStateException("Class ParentINodeIterator: There is no more element.");
             }
-            final INode res = node;
+            final IKNodeNode res = node;
             node = node.getParentNode();
             return res;
         }
@@ -497,20 +497,20 @@ public final class NodeUtil {
     }
 
     /**
-     * Reveals the closest common ancestor {@link INode} of {@code node0} and {@code node1},
+     * Reveals the closest common ancestor {@link IKNodeNode} of {@code node0} and {@code node1},
      * assuming each of {@code node0} and {@code1} is contained in the diagram's figure tree
      * if it is unequal to {@code null}.
      *
      * @param node0
-     *            an {@link INode} being contained in the diagrams figure tree
+     *            an {@link IKNodeNode} being contained in the diagrams figure tree
      * @param node1
-     *            an {@link INode} being contained in the diagrams figure tree
-     * @return the closest common ancestor {@link INode}, {@code null} if {@code node0 == null} or
+     *            an {@link IKNodeNode} being contained in the diagrams figure tree
+     * @return the closest common ancestor {@link IKNodeNode}, {@code null} if {@code node0 == null} or
      *         {@code node1 == null} or {@code node0.getParentNode() == null} or
      *         {@code node1.getParentNode() == null}, or {@code node0.getParentNode()} if
      *         {@code node0 == node1}
      */
-    public static INode getCommonAncestor(final INode node0, final INode node1) {
+    public static IKNodeNode getCommonAncestor(final IKNodeNode node0, final IKNodeNode node1) {
 
         // start with some trivial cases ...
         if (node0 == null || node1 == null) {
@@ -521,8 +521,8 @@ public final class NodeUtil {
 
         }
 
-        final INode node0parent = node0.getParentNode();
-        final INode node1parent = node1.getParentNode();
+        final IKNodeNode node0parent = node0.getParentNode();
+        final IKNodeNode node1parent = node1.getParentNode();
 
         // and some not so trivial cases...
         if (node0parent == null || node1parent == null) {
@@ -537,17 +537,17 @@ public final class NodeUtil {
         // now apply the big artillery ...
         // build lists containing the parents for both 'node0' and 'node1',
         //  create reverse views on theses lists, and iterators traversing theses views
-        final Iterator<INode> node0parents =
+        final Iterator<IKNodeNode> node0parents =
                 Lists.reverse(Lists.newArrayList(parentINodeIterator(node0))).listIterator();
-        final Iterator<INode> node1parents =
+        final Iterator<IKNodeNode> node1parents =
                 Lists.reverse(Lists.newArrayList(parentINodeIterator(node1))).listIterator();
 
-        INode result = null;
+        IKNodeNode result = null;
 
         // now simultaneously traverse the elements ...
         while (node0parents.hasNext() && node1parents.hasNext()) {
-            final INode inode0 = node0parents.next();
-            final INode inode1 = node1parents.next();
+            final IKNodeNode inode0 = node0parents.next();
+            final IKNodeNode inode1 = node1parents.next();
 
             if (inode0 == inode1) {
                 // ... keep the last element found in both lists, ...

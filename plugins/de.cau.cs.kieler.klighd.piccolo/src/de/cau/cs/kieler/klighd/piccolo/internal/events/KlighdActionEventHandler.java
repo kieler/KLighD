@@ -37,7 +37,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.PNode;
@@ -115,8 +115,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
             // ... check whether a KNode's representative has been picked,
             //  which happens if a click or double click occurred on the canvas, for example
-            if (pickedNode instanceof INode) {
-                final INode iNode = (INode) pickedNode;
+            if (pickedNode instanceof IKNodeNode) {
+                final IKNodeNode iNode = (IKNodeNode) pickedNode;
 
                 // if so test whether the diagram's top node has been picked ...
                 if (pickedNode instanceof KNodeTopNode) {

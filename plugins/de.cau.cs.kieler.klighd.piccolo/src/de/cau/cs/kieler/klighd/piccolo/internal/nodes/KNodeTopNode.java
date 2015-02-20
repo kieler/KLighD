@@ -64,7 +64,7 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
 
     /**
      * Sets the main camera of the diagram headed by this top node. This method may currently only
-     * be called from {@link KlighdMainCamera#setDisplayedNode(INode)}.
+     * be called from {@link KlighdMainCamera#setDisplayedNode(IKNodeNode)}.
      *
      * @param camera
      */
@@ -113,7 +113,7 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
     /**
      * {@inheritDoc}
      */
-    public INode getParentNode() {
+    public IKNodeNode getParentNode() {
         return null;
     }
 

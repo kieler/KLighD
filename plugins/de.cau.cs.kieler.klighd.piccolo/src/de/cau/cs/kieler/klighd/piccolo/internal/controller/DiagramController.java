@@ -68,7 +68,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.activities.FadeNodeInActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.IStartingAndFinishingActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKLabeledGraphElementNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
@@ -106,7 +106,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 public class DiagramController {
 
     /** the property for the Piccolo2D representation of a node. */
-    static final IProperty<INode> REP = new Property<INode>(
+    static final IProperty<IKNodeNode> REP = new Property<IKNodeNode>(
             "klighd.piccolo.representation");
 
     /** the property for the Piccolo2D representation of an edge. */
@@ -283,7 +283,7 @@ public class DiagramController {
      *            the node
      */
     public void collapse(final KNode node) {
-        final INode nodeRep = (INode) getRepresentation(node);
+        final IKNodeNode nodeRep = (IKNodeNode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().setExpanded(false);
         }
@@ -298,7 +298,7 @@ public class DiagramController {
      *            the node
      */
     public void expand(final KNode node) {
-        final INode nodeRep = (INode) getRepresentation(node);
+        final IKNodeNode nodeRep = (IKNodeNode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().setExpanded(true);
         }
@@ -312,7 +312,7 @@ public class DiagramController {
      * @return true if this node is expanded.
      */
     public boolean isExpanded(final KNode node) {
-        final INode nodeRep = (INode) getRepresentation(node);
+        final IKNodeNode nodeRep = (IKNodeNode) getRepresentation(node);
         if (nodeRep != null) {
             return nodeRep.getChildAreaNode().isExpanded();
         }
@@ -326,7 +326,7 @@ public class DiagramController {
      *            the node
      */
     public void toggleExpansion(final KNode node) {
-        final INode nodeRep = (INode) getRepresentation(node);
+        final IKNodeNode nodeRep = (IKNodeNode) getRepresentation(node);
         if (nodeRep != null) {
             nodeRep.getChildAreaNode().toggleExpansion();
         }
@@ -383,7 +383,7 @@ public class DiagramController {
             }
         }
 
-        final INode clip = getClipNode();
+        final IKNodeNode clip = getClipNode();
         final PBounds camBounds = canvasCamera.getViewBounds();
         final PBounds elemFullBounds = NodeUtil.clipRelativeGlobalBoundsOf(p, clip);
         return elemFullBounds != null && elemFullBounds.intersects(camBounds);
@@ -449,7 +449,7 @@ public class DiagramController {
                     diagramElement.toString()));
         }
 
-        final INode currentRootNode = canvasCamera.getDisplayedINode();
+        final IKNodeNode currentRootNode = canvasCamera.getDisplayedINode();
         if (currentRootNode == node) {
             return;
         }
@@ -459,11 +459,11 @@ public class DiagramController {
                     diagramElement.toString()));
         }
 
-        canvasCamera.exchangeDisplayedNode((INode) node);
+        canvasCamera.exchangeDisplayedNode((IKNodeNode) node);
         zoomController.setFocusNode(diagramElement);
     }
 
-    private INode getClipNode() {
+    private IKNodeNode getClipNode() {
         return canvasCamera.getDisplayedINode();
     }
 
@@ -473,7 +473,7 @@ public class DiagramController {
      * @return the {@link KNode} that is currently clipped.
      */
     public KNode getClip() {
-        final INode node = getClipNode();
+        final IKNodeNode node = getClipNode();
         return node.getViewModelElement();
     }
 
@@ -623,7 +623,7 @@ public class DiagramController {
      * @param nodeNode
      *            the node representation
      */
-    private void addExpansionListener(final INode nodeNode) {
+    private void addExpansionListener(final IKNodeNode nodeNode) {
         final KChildAreaNode childAreaNode = nodeNode.getChildAreaNode();
         if (childAreaNode != null) {
             final KNode node = nodeNode.getViewModelElement();
@@ -680,7 +680,7 @@ public class DiagramController {
         switch (element.eClass().getClassifierID()) {
         case KGraphPackage.KNODE:
             if (parentRep != null) {
-                addNode((INode) parentRep, (KNode) element, forceShow);
+                addNode((IKNodeNode) parentRep, (KNode) element, forceShow);
             }
             break;
         case KGraphPackage.KPORT:
@@ -750,7 +750,7 @@ public class DiagramController {
      * @param parentNode
      *            the parent structure node representing a KNode
      */
-    private void addChildren(final INode parentNode) {
+    private void addChildren(final IKNodeNode parentNode) {
         final KNode parent = parentNode.getViewModelElement();
 
         // create the nodes
@@ -780,9 +780,9 @@ public class DiagramController {
      *            if <code>true</code> add <code>element</code> to the diagram regardless of its
      *            {@link KlighdProperties#SHOW} property value
      */
-    private void addNode(final INode parent, final KNode node, final boolean forceShow) {
+    private void addNode(final IKNodeNode parent, final KNode node, final boolean forceShow) {
         final RenderingContextData contextData = RenderingContextData.get(node);
-        final INode nodeRep = contextData.getProperty(REP);
+        final IKNodeNode nodeRep = contextData.getProperty(REP);
 
         KNodeNode nodeNode;
         if (nodeRep instanceof KNodeTopNode) {
@@ -890,7 +890,7 @@ public class DiagramController {
      */
     private void removeNode(final KNode node, final boolean releaseControllers) {
         final RenderingContextData contextData = RenderingContextData.get(node);
-        final INode nodeRep = contextData.getProperty(REP);
+        final IKNodeNode nodeRep = contextData.getProperty(REP);
 
         if (nodeRep == null) {
             return;
@@ -1564,9 +1564,9 @@ public class DiagramController {
      * (in contrast to an anonymous subclass)
      */
     private final class ChildrenSyncAdapter extends AdapterImpl {
-        private final INode nodeRep;
+        private final IKNodeNode nodeRep;
 
-        private ChildrenSyncAdapter(final INode theNodeRep) {
+        private ChildrenSyncAdapter(final IKNodeNode theNodeRep) {
             this.nodeRep = theNodeRep;
         }
 

@@ -49,8 +49,8 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     private static final long serialVersionUID = 6311105654943173693L;
 
-    /** the parent {@link INode}. */
-    private INode parent;
+    /** the parent {@link IKNodeNode}. */
+    private IKNodeNode parent;
 
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
@@ -255,7 +255,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     /**
      * {@inheritDoc}
      */
-    public INode getParentNode() {
+    public IKNodeNode getParentNode() {
         return parent;
     }
 
@@ -263,9 +263,9 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      * Setter.
      *
      * @param parentINode
-     *            the {@link INode} being the new parent in terms of the structural nodes
+     *            the {@link IKNodeNode} being the new parent in terms of the structural nodes
      */
-    public void setParentNode(final INode parentINode) {
+    public void setParentNode(final IKNodeNode parentINode) {
         this.parent = parentINode;
     }
 

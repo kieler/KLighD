@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -23,7 +23,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * A dedicated Piccolo2D node type whose instances represent
  * {@link de.cau.cs.kieler.core.krendering.KChildArea KChildAreas}.<br>
  * The method {@link #setExpanded(boolean)} simply forwards to {@link #setVisible(boolean)} so in
- * case the container {@link INode} is collapsed <code>this</code> {@link KChildAreaNode} is just
+ * case the container {@link IKNodeNode} is collapsed <code>this</code> {@link KChildAreaNode} is just
  * set invisible.<br>
  * <br>
  * Inherits from {@link KDisposingLayer} in order to enable its observation by a
@@ -43,7 +43,7 @@ public class KChildAreaNode extends KDisposingLayer {
      */
     public static final String PROPERTY_EXPANSION = "expansion";
 
-    private final INode containingINode;
+    private final IKNodeNode containingINode;
 
     private final boolean edgesFirst;
 
@@ -68,7 +68,7 @@ public class KChildAreaNode extends KDisposingLayer {
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
-    public KChildAreaNode(final INode containingNode, final boolean edgesFirst) {
+    public KChildAreaNode(final IKNodeNode containingNode, final boolean edgesFirst) {
         super();
         this.setPickable(false);
         this.containingINode = containingNode;

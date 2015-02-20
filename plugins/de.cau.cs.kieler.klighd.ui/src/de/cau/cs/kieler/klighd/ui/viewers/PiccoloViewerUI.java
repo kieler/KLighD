@@ -44,7 +44,7 @@ import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
@@ -490,11 +490,11 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 return;
             }
 
-            if (node instanceof INode) {
+            if (node instanceof IKNodeNode) {
                 // the textNode appears not to be contained in a KLabelNode but
                 //  (via path nodes and helper ones) directly in a KNodeNode or KNodeTopNode
                 relatedLabel = null;
-                relatedKGE = ((INode) node).getViewModelElement();
+                relatedKGE = ((IKNodeNode) node).getViewModelElement();
                 break;
 
             } else if (node instanceof KLabelNode) {

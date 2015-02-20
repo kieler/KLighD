@@ -17,7 +17,7 @@ import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -64,7 +64,7 @@ public class AdapterTest {
         labellayout.setPos(2, 3);
         labellayout.setSize(4, 5);
 
-        final INode node = controller.getNode();
+        final IKNodeNode node = controller.getNode();
         final PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
         final PNode pnext = nodeLayer.getChild(0);
         final PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
@@ -106,7 +106,7 @@ public class AdapterTest {
         KlighdTestUtil.makeTestGraph(root);
         // create a controller for the graph
         final DiagramController controller = new DiagramController(root, camera, true, false);
-        final INode topNode = controller.getNode();
+        final IKNodeNode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
     
@@ -127,7 +127,7 @@ public class AdapterTest {
         KlighdTestUtil.makeTestGraph(root);
         controller.expand(root);
         // create a controller for the graph
-        final INode topNode = controller.getNode();
+        final IKNodeNode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
     
@@ -147,7 +147,7 @@ public class AdapterTest {
         KlighdTestUtil.makeTestGraph(root);
 
         // create a controller for the graph
-        final INode topNode = controller.getNode();
+        final IKNodeNode topNode = controller.getNode();
         Assert.assertFalse(checkStructure(root, topNode));
     }
     
@@ -327,7 +327,7 @@ public class AdapterTest {
      *            the translated piccolo representation
      * @return true if all elements in kgraph are also present in piccolo
      */
-    private boolean checkStructure(final KNode kgraph, final INode piccoloTree) {
+    private boolean checkStructure(final KNode kgraph, final IKNodeNode piccoloTree) {
 
         // check if knode is included in piccolo structure
         if (!piccoloTree.getViewModelElement().toString().equals(kgraph.toString())) {
@@ -395,7 +395,7 @@ public class AdapterTest {
             if (kgraph.getChildren() != null && nodeLayer.getChildrenCount() == 0) {
                 return false;
             }
-            if (!checkStructure(kgraph.getChildren().get(i), (INode) nodeLayer.getChild(i))) {
+            if (!checkStructure(kgraph.getChildren().get(i), (IKNodeNode) nodeLayer.getChild(i))) {
                 return false;
             }
         }

@@ -105,7 +105,7 @@ public interface IKGraphElementNode<T extends KGraphElement> extends IKlighdNode
      * @author mri
      * @author chsch
      */
-    public interface INode extends IKGraphElementNode<KNode> {
+    public interface IKNodeNode extends IKGraphElementNode<KNode> {
 
         /**
          * Returns the child area of this parent node.
@@ -115,11 +115,11 @@ public interface IKGraphElementNode<T extends KGraphElement> extends IKlighdNode
         KChildAreaNode getChildAreaNode();
 
         /**
-         * Returns the parent {@link INode} that (deeply) contains this {@link INode}.
+         * Returns the parent {@link IKNodeNode} that (deeply) contains this {@link IKNodeNode}.
          *
-         * @return the parent {@link INode}
+         * @return the parent {@link IKNodeNode}
          */
-        INode getParentNode();
+        IKNodeNode getParentNode();
 
         /**
          * Returns the bounds of this node's exportable area that are required to fully export the

@@ -40,7 +40,7 @@ import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -112,7 +112,7 @@ public class RenderingTest {
 
         final String id = getKNodeId(node);
 
-        final INode targetNode = findPNodeById(id, controller.getNode());
+        final IKNodeNode targetNode = findPNodeById(id, controller.getNode());
         final KlighdPath path = getKlighdPath(targetNode);
         final KRendering ren = node.getData(KRendering.class);
         if (path != null && ren != null) {
@@ -135,7 +135,7 @@ public class RenderingTest {
         initialize(node);
 
         final String id = getKNodeId(node);
-        final INode targetNode = findPNodeById(id, controller.getNode());
+        final IKNodeNode targetNode = findPNodeById(id, controller.getNode());
         final KlighdPath path = getKlighdPath(targetNode);
         final KRendering ren = node.getData(KRendering.class);
         if (path != null && ren != null) {
@@ -261,7 +261,7 @@ public class RenderingTest {
      *            the node whose path to get
      * @return the KlighdPath attached to the given node
      */
-    private KlighdPath getKlighdPath(final INode node) {
+    private KlighdPath getKlighdPath(final IKNodeNode node) {
         if (node instanceof PNode) {
             for (int i = 0; i < ((PNode) node).getChildrenCount(); i++) {
                 final PNode pn = ((PNode) node).getChild(i);
@@ -281,7 +281,7 @@ public class RenderingTest {
      *            the piccolo graph in which to search
      * @return the node if found or null
      */
-    private INode findPNodeById(final String id, final INode node) {
+    private IKNodeNode findPNodeById(final String id, final IKNodeNode node) {
         KIdentifier nodeID = null;
         if (node instanceof KNodeNode) {
             nodeID = ((KNodeNode) node).getGraphElement().getData(KIdentifier.class);
@@ -289,12 +289,12 @@ public class RenderingTest {
         if ((nodeID != null) && nodeID.getId().equals(id)) {
             return node;
         } else {
-            INode result = null;
+            IKNodeNode result = null;
             final KChildAreaNode kcan = node.getChildAreaNode();
             final PLayer nlay = kcan.getNodeLayer();
             if (nlay != null) {
                 for (int i = 0; i < nlay.getChildrenCount(); i++) {
-                    final INode n = (INode) nlay.getChild(i);
+                    final IKNodeNode n = (IKNodeNode) nlay.getChild(i);
                     result = findPNodeById(id, n);
                     if (result != null) {
                         return result;
