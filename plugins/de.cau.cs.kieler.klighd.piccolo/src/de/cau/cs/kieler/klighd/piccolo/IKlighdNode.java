@@ -67,10 +67,13 @@ public interface IKlighdNode {
      *
      * @author chsch
      */
-    public interface IKRenderingNode extends IKlighdNode {
+    public interface IKlighdFigureNode extends IKlighdNode {
 
         /**
-         * @return the {@link KRendering} represented by this node
+         * @return the {@link KRendering} represented by this node, maybe <code>null</code> if this
+         *         figure node does not represent a {@link KRendering} but is part of a
+         *         {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRendering}, for
+         *         example.
          */
         KRendering getViewModelElement();
     }

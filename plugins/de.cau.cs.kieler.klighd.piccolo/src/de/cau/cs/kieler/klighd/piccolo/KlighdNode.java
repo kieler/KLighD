@@ -223,7 +223,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * figure wrt. the diagram zoom scale while drawing the diagram.
      */
     public static class KlighdFigureNode<T extends KRendering> extends KlighdNode implements
-            IKRenderingNode {
+            IKlighdFigureNode {
 
         private static final long serialVersionUID = -3975636790695588901L;
 
