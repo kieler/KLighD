@@ -19,7 +19,6 @@ import java.awt.geom.Rectangle2D;
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKLabeledGraphElementNode;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -34,7 +33,8 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author mri
  * @author chsch
  */
-public class KEdgeNode extends KGraphElementNode<KEdge> implements IKLabeledGraphElementNode<KEdge> {
+public class KEdgeNode extends KGraphElementNode<KEdge> implements
+        IInternalKGraphElementNode.IKLabeledGraphElementNode<KEdge> {
 
     private static final long serialVersionUID = -1867615197736299487L;
 
@@ -71,7 +71,7 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements IKLabeledGrap
      * {@inheritDoc}
      */
     public void setRenderingController(final AbstractKGERenderingController<KEdge,
-            ? extends IKGraphElementNode<KEdge>> controller) {
+            ? extends IInternalKGraphElementNode<KEdge>> controller) {
 
         if (controller == null || controller instanceof KEdgeRenderingController) {
             this.renderingController = (KEdgeRenderingController) controller;

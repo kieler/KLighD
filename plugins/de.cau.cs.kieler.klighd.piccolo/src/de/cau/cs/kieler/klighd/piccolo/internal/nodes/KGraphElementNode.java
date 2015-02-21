@@ -39,7 +39,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  *            the concrete type of the {@link KGraphElement}
  */
 public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdNode implements
-        IKGraphElementNode<T> {
+        IInternalKGraphElementNode<T> {
 
     private static final long serialVersionUID = -5577703758022742813L;
 
@@ -72,7 +72,6 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
     /**
      * {@inheritDoc}
      */
-    @Override
     public T getViewModelElement() {
         return graphElement;
     }

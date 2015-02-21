@@ -18,7 +18,7 @@ import java.awt.geom.Rectangle2D;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 
 /**
@@ -33,18 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingC
  * @param <T>
  *            the concrete type of the {@link KGraphElement}
  */
-public interface IKGraphElementNode<T extends KGraphElement> extends IKlighdNode {
-
-    /**
-     * Returns the graph element represented by this node.<br>
-     * With the introduction of {@link ITracingElement} this method definition is obsolete,
-     * it is merely kept for the sake of having the whole interface definition at a single place.
-     *
-     * @deprecated use {@link #getViewModelElement()}
-     *
-     * @return the graph element
-     */
-    T getGraphElement();
+public interface IInternalKGraphElementNode<T extends KGraphElement> extends IKGraphElementNode {
 
     /**
      * {@inheritDoc}
@@ -61,7 +50,7 @@ public interface IKGraphElementNode<T extends KGraphElement> extends IKlighdNode
      *            the deployed rendering controller
      */
     void setRenderingController(
-            AbstractKGERenderingController<T, ? extends IKGraphElementNode<T>> controller);
+            AbstractKGERenderingController<T, ? extends IInternalKGraphElementNode<T>> controller);
 
     /**
      * Getter for accessing the rendering controller that is in charge of managing the correct
@@ -71,11 +60,11 @@ public interface IKGraphElementNode<T extends KGraphElement> extends IKlighdNode
      *
      * @return the related rendering controller
      */
-    AbstractKGERenderingController<T, ? extends IKGraphElementNode<T>> getRenderingController();
+    AbstractKGERenderingController<T, ? extends IInternalKGraphElementNode<T>> getRenderingController();
 
 
     /**
-     * Extension of {@link IKGraphElementNode} required by (almost) all nodes representing
+     * Extension of {@link IInternalKGraphElementNode} required by (almost) all nodes representing
      * {@link KLabeledGraphElement KLabeledGraphElements}.
      *
      * @author mri
@@ -85,7 +74,7 @@ public interface IKGraphElementNode<T extends KGraphElement> extends IKlighdNode
      *            the concrete type of the {@link KLabeledGraphElement}
      */
     public interface IKLabeledGraphElementNode<T extends KLabeledGraphElement> extends
-            IKGraphElementNode<T> {
+            IInternalKGraphElementNode<T> {
 
         /**
          * Adds the representation of a label to this element.
@@ -105,7 +94,7 @@ public interface IKGraphElementNode<T extends KGraphElement> extends IKlighdNode
      * @author mri
      * @author chsch
      */
-    public interface IKNodeNode extends IKGraphElementNode<KNode> {
+    public interface IKNodeNode extends IInternalKGraphElementNode<KNode> {
 
         /**
          * Returns the child area of this parent node.

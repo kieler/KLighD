@@ -27,7 +27,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
@@ -137,16 +137,16 @@ public class PiccoloTooltip {
             final PStack nodeStack = event.getPath().getNodeStackReference();
 
             Object n = nodeStack.pop();
-            while (!nodeStack.isEmpty() && !(n instanceof IKGraphElementNode<?>)) {
+            while (!nodeStack.isEmpty() && !(n instanceof IInternalKGraphElementNode<?>)) {
                 n = nodeStack.pop();
             }
 
-            final IKGraphElementNode<?> graphElement;
+            final IInternalKGraphElementNode<?> graphElement;
 
             if (n instanceof KNodeTopNode) {
                 return;
-            } else if (n instanceof IKGraphElementNode<?>) {
-                 graphElement = (IKGraphElementNode<?>) n;
+            } else if (n instanceof IInternalKGraphElementNode<?>) {
+                 graphElement = (IInternalKGraphElementNode<?>) n;
             } else {
                 return;
             }

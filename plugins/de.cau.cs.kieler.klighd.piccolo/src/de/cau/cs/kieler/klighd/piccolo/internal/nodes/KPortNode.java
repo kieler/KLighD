@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKLabeledGraphElementNode;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -25,7 +24,8 @@ import edu.umd.cs.piccolo.PNode;
  * @author mri
  * @author chsch
  */
-public class KPortNode extends KGraphElementNode<KPort> implements IKLabeledGraphElementNode<KPort> {
+public class KPortNode extends KGraphElementNode<KPort> implements
+        IInternalKGraphElementNode.IKLabeledGraphElementNode<KPort> {
 
     private static final long serialVersionUID = 6016725932024647084L;
 
@@ -46,7 +46,7 @@ public class KPortNode extends KGraphElementNode<KPort> implements IKLabeledGrap
      * {@inheritDoc}
      */
     public void setRenderingController(final AbstractKGERenderingController<KPort,
-            ? extends IKGraphElementNode<KPort>> controller) {
+            ? extends IInternalKGraphElementNode<KPort>> controller) {
 
         if (controller == null || controller instanceof KPortRenderingController) {
             this.renderingController = (KPortRenderingController) controller;

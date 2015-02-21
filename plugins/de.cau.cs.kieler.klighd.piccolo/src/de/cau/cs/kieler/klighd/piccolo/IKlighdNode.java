@@ -15,6 +15,9 @@ package de.cau.cs.kieler.klighd.piccolo;
 
 import org.eclipse.emf.ecore.EObject;
 
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.krendering.KRendering;
+
 /**
  * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing view
  * model elements.
@@ -26,7 +29,7 @@ public interface IKlighdNode {
     /**
      * @return the view model element ({@link de.cau.cs.kieler.core.kgraph.KGraphElement
      *         KGraphElement} or {@link de.cau.cs.kieler.core.krendering.KRendering KRendering})
-     *         this {@link IKlighdNode} corresponds to.
+     *         represented by this {@link IKlighdNode}.
      */
     EObject getViewModelElement();
 
@@ -42,4 +45,33 @@ public interface IKlighdNode {
      */
     boolean isSelectable();
 
+    /**
+     * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing the
+     * structural view model elements {@link de.cau.cs.kieler.core.kgraph.KNode KNode},
+     * {@link de.cau.cs.kieler.core.kgraph.KPort KPort}, {@link de.cau.cs.kieler.core.kgraph.KLabel
+     * KLabel}, and {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}.
+     *
+     * @author chsch
+     */
+    public interface IKGraphElementNode extends IKlighdNode {
+
+        /**
+         * @return the {@link KGraphElement} represented by this node
+         */
+        KGraphElement getViewModelElement();
+    }
+
+    /**
+     * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing the
+     * figure defining view model elements, which are subtypes of {@link KRendering}.
+     *
+     * @author chsch
+     */
+    public interface IKRenderingNode extends IKlighdNode {
+
+        /**
+         * @return the {@link KRendering} represented by this node
+         */
+        KRendering getViewModelElement();
+    }
 }

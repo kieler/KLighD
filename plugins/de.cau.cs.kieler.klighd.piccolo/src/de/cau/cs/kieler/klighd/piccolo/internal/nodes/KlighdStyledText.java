@@ -131,7 +131,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      */
     @Override
     public boolean isSelectable() {
-        return KlighdProperties.isSelectable(getRendering());
+        return KlighdProperties.isSelectable(getViewModelElement());
     }
 
     /**

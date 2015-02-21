@@ -50,7 +50,7 @@ public class KLabelNode extends KGraphElementNode<KLabel> {
      * {@inheritDoc}
      */
     public void setRenderingController(final AbstractKGERenderingController<KLabel,
-            ? extends IKGraphElementNode<KLabel>> controller) {
+            ? extends IInternalKGraphElementNode<KLabel>> controller) {
 
         if (controller == null || controller instanceof KLabelRenderingController) {
             this.renderingController = (KLabelRenderingController) controller;

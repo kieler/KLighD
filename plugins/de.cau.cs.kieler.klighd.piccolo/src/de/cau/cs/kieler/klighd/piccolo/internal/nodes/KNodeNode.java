@@ -26,7 +26,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKGraphElementNode.IKLabeledGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -45,7 +44,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author chsch
  */
 public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer implements
-        IKLabeledGraphElementNode<KNode> {
+    IInternalKGraphElementNode.IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
 
@@ -188,7 +187,7 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
      * {@inheritDoc}
      */
     public void setRenderingController(final AbstractKGERenderingController<KNode,
-            ? extends IKGraphElementNode<KNode>> controller) {
+            ? extends IInternalKGraphElementNode<KNode>> controller) {
 
         if (controller == null || controller instanceof KNodeRenderingController) {
             this.renderingController = (KNodeRenderingController) controller;

@@ -11,8 +11,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo;
 
-import org.eclipse.emf.ecore.EObject;
-
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -81,14 +79,6 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         this.exportedImageInvisible = exports;
         this.printoutInvisible = printouts;
     }
-
-    /**
-     * Returns the graph element traced by this node.
-     *
-     * @return the traced view graph element.
-     */
-    public abstract EObject getViewModelElement();
-
 
     /**
      * @return <code>true</code> in order to suppress the drawing of this {@link KlighdNode} on the
@@ -232,7 +222,8 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * semantic model data into drawn (vector graphic) images, and determining the visibility the
      * figure wrt. the diagram zoom scale while drawing the diagram.
      */
-   public static class KlighdFigureNode<T extends KRendering> extends KlighdNode {
+    public static class KlighdFigureNode<T extends KRendering> extends KlighdNode implements
+            IKRenderingNode {
 
         private static final long serialVersionUID = -3975636790695588901L;
 
@@ -260,15 +251,6 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         private T rendering;
 
         /**
-         * Provides the {@link KRendering} element being represented by this {@link KlighdFigureNode}.
-         *
-         * @return the {@link KRendering} element being represented by this {@link KlighdFigureNode}
-         */
-        public T getRendering() {
-            return rendering;
-        }
-
-        /**
          * Configures the {@link KRendering} element being represented by this {@link KlighdFigureNode}.
          *
          * @param rendering
@@ -294,7 +276,6 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         /**
          * {@inheritDoc}
          */
-        @Override
         public T getViewModelElement() {
             return rendering;
         }
