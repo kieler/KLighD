@@ -15,7 +15,7 @@
 <booleanAttribute key="includeOptional" value="false"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/de.cau.cs.kieler.klighd.piccolo.test/src/de/cau/cs/kieler/klighd/piccolo/test/RenderingTest.java"/>
+<listEntry value="/de.cau.cs.kieler.klighd.piccolo.test/src/de/cau/cs/kieler/klighd/piccolo/test/AdapterTest.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
