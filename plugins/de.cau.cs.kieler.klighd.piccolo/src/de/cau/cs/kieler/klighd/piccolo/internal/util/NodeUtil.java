@@ -70,7 +70,7 @@ public final class NodeUtil {
      *            a custom {@link PNode} implementing {@link IInternalKGraphElementNode}
      * @return node typed as {@link IInternalKGraphElementNode}
      */
-    public static IInternalKGraphElementNode<?> asIGraphElement(final PNode node) {
+    public static IInternalKGraphElementNode<?> asKGENode(final PNode node) {
         final IInternalKGraphElementNode<?> graphNode = (IInternalKGraphElementNode<?>) node;
         return graphNode;
     }

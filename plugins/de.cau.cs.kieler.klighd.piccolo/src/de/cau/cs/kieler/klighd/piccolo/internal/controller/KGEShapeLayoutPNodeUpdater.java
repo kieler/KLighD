@@ -189,8 +189,8 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 shL.resetModificationFlag();
             }                
 
-            final AbstractKGERenderingController<?, ?> nodeController = NodeUtil.asIGraphElement(
-                    nodeRep).getRenderingController();
+            final AbstractKGERenderingController<?, ?> nodeController =
+                    NodeUtil.asKGENode(nodeRep).getRenderingController();
             if (nodeController != null) {
                 nodeController.modifyStyles();
             }

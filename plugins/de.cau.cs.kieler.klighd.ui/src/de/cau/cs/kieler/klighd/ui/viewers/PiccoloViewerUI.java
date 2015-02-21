@@ -390,7 +390,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         //  this is method is supposed to be only called for 'styledText' element that are contained
         //  in the current clip
         final Rectangle2D bounds =
-                NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedINode());
+                NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedKNodeNode());
 
         if (bounds == null) {
             return;

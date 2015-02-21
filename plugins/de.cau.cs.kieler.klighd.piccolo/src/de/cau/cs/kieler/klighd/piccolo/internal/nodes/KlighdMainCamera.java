@@ -48,7 +48,7 @@ public class KlighdMainCamera extends PCamera {
      *
      * @return the currently displayed {@link IKNodeNode}
      */
-    public IKNodeNode getDisplayedINode() {
+    public IKNodeNode getDisplayedKNodeNode() {
         return (IKNodeNode) getDisplayedLayer();
     }
 

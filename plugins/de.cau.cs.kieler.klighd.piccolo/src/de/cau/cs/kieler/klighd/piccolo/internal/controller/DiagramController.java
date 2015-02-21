@@ -445,7 +445,7 @@ public class DiagramController {
                     diagramElement.toString()));
         }
 
-        final IKNodeNode currentRootNode = canvasCamera.getDisplayedINode();
+        final IKNodeNode currentRootNode = canvasCamera.getDisplayedKNodeNode();
         if (currentRootNode == node) {
             return;
         }
@@ -460,7 +460,7 @@ public class DiagramController {
     }
 
     private IKNodeNode getClipNode() {
-        return canvasCamera.getDisplayedINode();
+        return canvasCamera.getDisplayedKNodeNode();
     }
 
     /**

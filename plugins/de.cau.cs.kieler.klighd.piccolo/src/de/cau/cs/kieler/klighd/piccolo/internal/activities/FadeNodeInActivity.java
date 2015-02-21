@@ -73,7 +73,7 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
      */
     @Override
     public void activityStarted() {
-        final IInternalKGraphElementNode<?> gE = NodeUtil.asIGraphElement(node);
+        final IInternalKGraphElementNode<?> gE = NodeUtil.asKGENode(node);
 
         if (gE.getRenderingController() != null) {
             gE.getRenderingController().modifyStyles();

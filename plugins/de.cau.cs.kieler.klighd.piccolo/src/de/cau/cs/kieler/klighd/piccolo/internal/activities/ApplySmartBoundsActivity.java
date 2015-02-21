@@ -100,7 +100,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
         }
         if (!stylesModified && zeroToOne > 1f / 2f) {
             stylesModified = true;
-            final IInternalKGraphElementNode<?> gE = NodeUtil.asIGraphElement(node);
+            final IInternalKGraphElementNode<?> gE = NodeUtil.asKGENode(node);
             if (gE.getRenderingController() != null) {
                 gE.getRenderingController().modifyStyles();
             }
@@ -119,7 +119,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
         NodeUtil.applyBounds(node, targetBounds);
         if (!stylesModified) {
             stylesModified = true;
-            final IInternalKGraphElementNode<?> gE = NodeUtil.asIGraphElement(node);
+            final IInternalKGraphElementNode<?> gE = NodeUtil.asKGENode(node);
             if (gE.getRenderingController() != null) {
                 gE.getRenderingController().modifyStyles();
             }
