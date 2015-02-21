@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KLighD-specific Eclipse 3x UI contributions
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.contrib3x;singleton:=true
-Bundle-Version: 0.1.1.qualifier
+Bundle-Version: 0.1.2.qualifier
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",

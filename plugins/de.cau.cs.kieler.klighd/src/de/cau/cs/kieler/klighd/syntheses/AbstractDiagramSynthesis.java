@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.syntheses;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -409,7 +410,30 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
         return DiagramSyntheses.setLayoutOption(element, option, value);
     }
-    
+
+    /**
+     * Convenience method for defining multiple layout options for {@link KGraphElement
+     * KGraphElements}.<br>
+     * The required <code>optionValueMap</code> can be easily created via
+     * {@link com.google.common.collect.ImmutableMap#of(Object, Object, Object, Object)
+     * ImmutableMap#of(Object, Object, Object, Object)}, for example.
+     *
+     * @param <R>
+     *            the concrete type of <code>element</code>
+     * @param element
+     *            the element to set the layout option on
+     * @param optionValueMap
+     *            a {@link Map} containing valid pairs of layout options, e.g. some of
+     *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}, and
+     *            corresponding option values.
+     * @return <code>element</code> allowing to perform multiple operations on it in one statement
+     */
+    public static <R extends KGraphElement> R setLayoutOptions(final R element,
+            final Map<IProperty<?>, ?> optionValueMap) {
+        
+        return DiagramSyntheses.setLayoutOptions(element, optionValueMap);
+    }
+
     /**
      * Convenience method for defining collapse/expand state dependent layout options for
      * {@link KNode KNodes}.

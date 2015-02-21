@@ -2,22 +2,27 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.klighd.util;
 
+import org.eclipse.emf.ecore.EObject;
+
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.RunnableWithResult;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 
@@ -25,9 +30,9 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
  * A collection of KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty IProperties}
  * that may be used while interacting with KLighD, e.g. in custom diagram synthesis or action
  * implementations.
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  */
 public final class KlighdProperties {
@@ -78,7 +83,7 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> EXPANDED_RENDERING = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.expandedRendering", false);
-    
+
     /**
      * Property indicating the auto expansion of a node if the value is true.<br>
      * This property is currently to be attached to the node's shape layout data during the view
@@ -86,7 +91,7 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> EXPAND = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.expand", true);
-    
+
     /**
      * Property indicating the auto incorporation of a
      * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} (kge) into the corresponding
@@ -107,6 +112,7 @@ public final class KlighdProperties {
     public static final IProperty<KNode> CLIP = new Property<KNode>(
             "de.cau.cs.kieler.klighd.clip");
 
+
     /**
      * Property determining the selectability of a certain
      * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
@@ -117,7 +123,48 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> NOT_SELECTABLE = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.suppressSelectability", false);
-    
+
+    /**
+     * Convenience method determining the selectability of the given {@link KGraphElement}.
+     *
+     * @param kge
+     *            the {@link KGraphElement} element to check for selectability.
+     *
+     * @return the selectability of the given {@link KGraphElement}
+     */
+    public static boolean isSelectable(final KGraphElement kge) {
+        final KLayoutData layoutData = kge != null ? kge.getData(KLayoutData.class) : null;
+        return layoutData != null && !layoutData.getProperty(KlighdProperties.NOT_SELECTABLE);
+    }
+
+    /**
+     * Convenience method determining the selectability of the given {@link KText}.
+     *
+     * @param kText
+     *            the {@link KText} element to check for selectability.
+     *
+     * @return the selectability of the given {@link KText} rendering
+     */
+    public static boolean isSelectable(final KText kText) {
+        return kText == null ? false : !kText.getProperty(KlighdProperties.NOT_SELECTABLE);
+    }
+
+    /**
+     * Convenience method determining the selectability of the given view model element, either a
+     * {@link KGraphElement} or a {@link KText}.
+     *
+     * @param viewElement
+     *            the view model element to check for selectability.
+     *
+     * @return the selectability of the given view model element, or <code>null</code> is no valid
+     *         view element is provided
+     */
+    public static boolean isSelectable(final EObject viewElement) {
+        return (viewElement instanceof KGraphElement && isSelectable((KGraphElement) viewElement))
+                || (viewElement instanceof KText && isSelectable((KText) viewElement));
+    }
+
+
     /**
      * Property determining the visibility of a certain
      * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in the outline diagram view.
@@ -126,7 +173,7 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> OUTLINE_INVISIBLE = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.outlineInvisible", false);
-    
+
     /**
      * Property determining the visibility of a certain
      * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in exported diagram diagram
@@ -135,7 +182,7 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> EXPORTED_IMAGE_INVISIBLE = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.exportedImageInvisible", false);
-    
+
     /**
      * Property determining the visibility of a certain
      * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in diagram printouts. If it is
@@ -198,12 +245,12 @@ public final class KlighdProperties {
      * The property holds a tooltip that is displayed upon a mouse hover of the respective element.
      */
     public static final IProperty<String> TOOLTIP = new Property<String>("klighd.tooltip", null);
-    
+
     /**
      * A map of string/string pairs that will be added to the generated rendering. Note that not all
-     * rendering mechanisms support this feature. 
+     * rendering mechanisms support this feature.
      * An example would be to add 'id' elements to svg elements.
-     * 
+     *
      * @see KlighdConstants#SEMANTIC_DATA_ID
      * @see KlighdConstants#SEMANTIC_DATA_CLASS
      */

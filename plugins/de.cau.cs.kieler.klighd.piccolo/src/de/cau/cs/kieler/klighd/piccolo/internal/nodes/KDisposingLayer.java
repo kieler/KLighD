@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PLayer;
 
@@ -74,8 +73,7 @@ public class KDisposingLayer extends PLayer {
          * {@inheritDoc}
          */
         public boolean isSelectable() {
-            final KLayoutData layoutData = node != null ? node.getData(KLayoutData.class) : null;
-            return layoutData != null && !layoutData.getProperty(KlighdProperties.NOT_SELECTABLE);
+            return KlighdProperties.isSelectable(getGraphElement());
         }
 
         /**

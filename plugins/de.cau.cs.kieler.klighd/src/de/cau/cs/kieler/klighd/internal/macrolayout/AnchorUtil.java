@@ -497,22 +497,22 @@ public final class AnchorUtil {
         final double x3y4minusy3x4 = x3 * y4 - y3 * x4;
         
         // Calculate the coordinates of the intersection
-        final KVector result = new KVector(
+        final KVector res = new KVector(
                 (x1y2minusy1x2 * (x3 - x4) - (x1 - x2) * x3y4minusy3x4) / divisor,
                 (x1y2minusy1x2 * (y3 - y4) - (y1 - y2) * x3y4minusy3x4) / divisor);
-        
-        // Check if the intersection is actually inside the rectangle defined by the end points of
-        // the two lines
-        if (((x1 - FA <= result.x && result.x <= x2 + FA) || (x1 + FA >= result.x && result.x >= x2 - FA))
-                && ((x3 - FA <= result.x && result.x <= x4 + FA) || (x3 + FA >= result.x && result.x >= x4 - FA))
-                && ((y1 - FA <= result.y && result.y <= y2 + FA) || (y1 + FA >= result.y && result.y >= y2 - FA))
-                && ((y3 - FA <= result.y && result.y <= y4 + FA) || (y3 + FA >= result.y && result.y >= y4 - FA))) {
+
+        // SUPPRESS CHECKSTYLE NEXT LineLength|ParenPad -- don't fuss,
+        if (   ((x1 - FA <= res.x && res.x <= x2 + FA) || (x1 + FA >= res.x && res.x >= x2 - FA))
+            && ((x3 - FA <= res.x && res.x <= x4 + FA) || (x3 + FA >= res.x && res.x >= x4 - FA))
+            && ((y1 - FA <= res.y && res.y <= y2 + FA) || (y1 + FA >= res.y && res.y >= y2 - FA))
+            && ((y3 - FA <= res.y && res.y <= y4 + FA) || (y3 + FA >= res.y && res.y >= y4 - FA))) {
             
-            return result;
+            // i.e. if the intersection lies inside the rectangle spanned by the two lines' end points
+            return res;
+
         } else {
-            // The lines don't intersect
+            // the lines don't intersect
             return null;
         }
     }
-    
 }

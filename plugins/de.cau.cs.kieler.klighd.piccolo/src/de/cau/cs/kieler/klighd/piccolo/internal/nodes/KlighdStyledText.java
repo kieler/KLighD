@@ -130,7 +130,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      */
     @Override
     public boolean isSelectable() {
-        return !getRendering().getProperty(KlighdProperties.NOT_SELECTABLE);
+        return KlighdProperties.isSelectable(getRendering());
     }
 
     /**
