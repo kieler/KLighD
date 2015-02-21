@@ -284,7 +284,7 @@ public class RenderingTest {
     private IKNodeNode findPNodeById(final String id, final IKNodeNode node) {
         KIdentifier nodeID = null;
         if (node instanceof KNodeNode) {
-            nodeID = ((KNodeNode) node).getGraphElement().getData(KIdentifier.class);
+            nodeID = ((KNodeNode) node).getViewModelElement().getData(KIdentifier.class);
         }
         if ((nodeID != null) && nodeID.getId().equals(id)) {
             return node;

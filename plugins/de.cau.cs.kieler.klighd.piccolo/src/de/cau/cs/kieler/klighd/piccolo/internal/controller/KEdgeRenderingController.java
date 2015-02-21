@@ -69,7 +69,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      *            the Piccolo2D node representing an edge
      */
     public KEdgeRenderingController(final KEdgeNode edge) {
-        super(edge.getGraphElement(), edge);
+        super(edge.getViewModelElement(), edge);
     }
 
     /**

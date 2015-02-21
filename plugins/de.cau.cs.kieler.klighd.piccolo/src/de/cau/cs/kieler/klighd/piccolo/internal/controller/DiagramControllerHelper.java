@@ -66,7 +66,7 @@ public final class DiagramControllerHelper {
      *            the edge representation
      */
     static void updateEdgeParent(final KEdgeNode edgeRep) {
-        KEdge edge = edgeRep.getGraphElement();
+        KEdge edge = edgeRep.getViewModelElement();
         KNode source = edge.getSource();
         KNode target = edge.getTarget();
         if (source != null && target != null) {
@@ -91,7 +91,7 @@ public final class DiagramControllerHelper {
     static void updateEdgeOffset(final KEdgeNode edgeNode) {
         final KChildAreaNode edgeNodeParent = edgeNode.getParentChildArea();
         if (edgeNodeParent != null) {
-            KEdge edge = edgeNode.getGraphElement();
+            KEdge edge = edgeNode.getViewModelElement();
             // chsch: change due to KIELER-1988; // SUPPRESS CHECKSTYLE NEXT 3 LineLength
             // edges uses different reference points as indicated by
             // http://rtsys.informatik.uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png

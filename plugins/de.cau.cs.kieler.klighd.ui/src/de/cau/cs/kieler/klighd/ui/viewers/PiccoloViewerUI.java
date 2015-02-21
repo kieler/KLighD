@@ -500,7 +500,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             } else if (node instanceof KLabelNode) {
                 // the text is contained in a KLabelNode ...
                 relatedLabel = (KLabelNode) node;
-                relatedKGE = relatedLabel.getGraphElement();
+                relatedKGE = relatedLabel.getViewModelElement();
                 break;
             }
         }

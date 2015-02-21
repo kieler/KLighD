@@ -574,7 +574,7 @@ public class DiagramController {
 
                 final float scale;
                 if (shapeNode instanceof KNodeNode) {
-                    scale = ((KNodeNode) shapeNode).getGraphElement().getData(KShapeLayout.class)
+                    scale = ((KNodeNode) shapeNode).getViewModelElement().getData(KShapeLayout.class)
                                     .getProperty(LayoutOptions.SCALE_FACTOR);
                 } else {
                     scale = 1f;
@@ -949,7 +949,7 @@ public class DiagramController {
      *            the node representation
      */
     private void handleEdges(final KNodeNode nodeNode) {
-        final KNode node = nodeNode.getGraphElement();
+        final KNode node = nodeNode.getViewModelElement();
 
         // add all incoming edges
         for (final KEdge incomingEdge : node.getIncomingEdges()) {
@@ -1088,7 +1088,7 @@ public class DiagramController {
      *            the node representation
      */
     private void handlePorts(final KNodeNode nodeNode) {
-        final KNode node = nodeNode.getGraphElement();
+        final KNode node = nodeNode.getViewModelElement();
 
         // create the ports
         for (final KPort port : node.getPorts()) {
@@ -1313,7 +1313,7 @@ public class DiagramController {
 
 
     private boolean isAutomaticallyArranged(final KGraphElement element) {
-        KLayoutData layoutData = this.topNode.getGraphElement().getData(KLayoutData.class);
+        KLayoutData layoutData = this.topNode.getViewModelElement().getData(KLayoutData.class);
         if (layoutData == null || layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
             return false;
         }
@@ -1342,7 +1342,7 @@ public class DiagramController {
      */
     private void updateLayout(final KNodeNode nodeNode) {
         if (sync) {
-            final KNode node = nodeNode.getGraphElement();
+            final KNode node = nodeNode.getViewModelElement();
 
             // remove the currently installed adapter if any; existing adapters get outdated if
             //  a) 'node' has been moved within the view model
@@ -1353,7 +1353,7 @@ public class DiagramController {
             node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeNode, this));
         }
 
-        final KShapeLayout shapeLayout = nodeNode.getGraphElement().getData(KShapeLayout.class);
+        final KShapeLayout shapeLayout = nodeNode.getViewModelElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applyBounds(nodeNode, shapeLayout);
         }
@@ -1372,7 +1372,7 @@ public class DiagramController {
     private void updateLayout(final KPortNode portNode) {
 
         if (sync) {
-            final KPort port = portNode.getGraphElement();
+            final KPort port = portNode.getViewModelElement();
 
             // remove the currently installed adapter if any; existing adapters get outdated if
             //  a) 'port' has been moved within the view model
@@ -1383,7 +1383,7 @@ public class DiagramController {
             port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portNode, this));
         }
 
-        final KShapeLayout shapeLayout = portNode.getGraphElement().getData(KShapeLayout.class);
+        final KShapeLayout shapeLayout = portNode.getViewModelElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applyBounds(portNode, shapeLayout);
         }
@@ -1402,7 +1402,7 @@ public class DiagramController {
     private void updateLayout(final KLabelNode labelNode) {
 
         if (sync) {
-            final KLabel label = labelNode.getGraphElement();
+            final KLabel label = labelNode.getViewModelElement();
 
             // remove the currently installed adapter if any; existing adapters get outdated if
             //  a) 'label' has been moved within the view model
@@ -1413,7 +1413,7 @@ public class DiagramController {
             label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelNode, this));
         }
 
-        final KShapeLayout shapeLayout = labelNode.getGraphElement().getData(KShapeLayout.class);
+        final KShapeLayout shapeLayout = labelNode.getViewModelElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applyBounds(labelNode, shapeLayout);
         }
@@ -1432,7 +1432,7 @@ public class DiagramController {
     private void updateLayout(final KEdgeNode edgeRep) {
 
         if (sync) {
-            final KEdge edge = edgeRep.getGraphElement();
+            final KEdge edge = edgeRep.getViewModelElement();
 
             // remove the currently installed adapter if any; existing adapters get outdated if
             //  a) 'edge' has been moved within the view model
@@ -1443,7 +1443,7 @@ public class DiagramController {
             edge.eAdapters().add(new KEdgeLayoutEdgeNodeUpdater(edgeRep, this));
         }
 
-        final KEdge edge = edgeRep.getGraphElement();
+        final KEdge edge = edgeRep.getViewModelElement();
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
             final KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));

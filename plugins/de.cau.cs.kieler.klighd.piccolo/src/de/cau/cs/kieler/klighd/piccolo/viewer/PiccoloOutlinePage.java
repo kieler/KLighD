@@ -283,7 +283,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             this.outlineCanvas.getCamera().removeChild(this.topNode);
 
             if (nodeLayoutAdapter != null) {
-                this.topNode.getGraphElement().eAdapters().remove(nodeLayoutAdapter);
+                this.topNode.getViewModelElement().eAdapters().remove(nodeLayoutAdapter);
             }
         }
 
@@ -364,7 +364,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
 
         // add listeners to layout changes and canvas resizing
-        rootNode = topNode.getGraphElement();
+        rootNode = topNode.getViewModelElement();
         nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
 
             @Override

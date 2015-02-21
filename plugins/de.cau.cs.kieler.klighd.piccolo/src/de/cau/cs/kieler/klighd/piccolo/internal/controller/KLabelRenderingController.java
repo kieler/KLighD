@@ -44,7 +44,7 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
      *            the Piccolo node representing a label
      */
     public KLabelRenderingController(final KLabelNode label) {
-        super(label.getGraphElement(), label);
+        super(label.getViewModelElement(), label);
     }
 
     /**

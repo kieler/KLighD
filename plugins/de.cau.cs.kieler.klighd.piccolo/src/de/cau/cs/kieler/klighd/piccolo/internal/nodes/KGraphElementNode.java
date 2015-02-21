@@ -65,13 +65,6 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
     /**
      * {@inheritDoc}
      */
-    public T getGraphElement() {
-        return getViewModelElement();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public T getViewModelElement() {
         return graphElement;
     }
@@ -143,7 +136,7 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
         final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
 
         if (kpc.isAddSemanticData()) {
-            final KlighdSemanticDiagramData sd = getGraphElement().getData(KLayoutData.class)
+            final KlighdSemanticDiagramData sd = getViewModelElement().getData(KLayoutData.class)
                     .getProperty(KlighdProperties.SEMANTIC_DATA);
             kpc.getKlighdGraphics().startGroup(sd);
         }

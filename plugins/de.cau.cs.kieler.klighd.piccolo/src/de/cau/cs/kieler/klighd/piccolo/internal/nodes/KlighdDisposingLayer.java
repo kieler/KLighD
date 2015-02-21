@@ -67,13 +67,6 @@ public class KlighdDisposingLayer extends PLayer {
         /**
          * {@inheritDoc}
          */
-        public KNode getGraphElement() {
-            return getViewModelElement();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
         public KNode getViewModelElement() {
             return node;
         }

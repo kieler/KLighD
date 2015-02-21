@@ -148,7 +148,7 @@ public class KNodeTopNode extends KlighdDisposingLayer.KNodeRepresentingLayer {
     protected void paint(final PPaintContext paintContext) {
         final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         final KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
+                getViewModelElement().getData(KLayoutData.class).getProperty(
                         KlighdProperties.SEMANTIC_DATA);
         g2.startGroup(sd);
         super.paint(paintContext);

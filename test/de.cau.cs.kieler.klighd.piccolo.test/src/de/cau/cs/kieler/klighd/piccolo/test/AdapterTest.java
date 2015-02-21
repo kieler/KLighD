@@ -380,7 +380,7 @@ public class AdapterTest {
                     final
                     ListIterator<KEdgeNode> iter = edgeLayer.getChildrenIterator();
                     while (iter.hasNext()) {
-                        if (iter.next().getGraphElement() == edge) {
+                        if (iter.next().getViewModelElement() == edge) {
                             edgematch = true;
                             break;
                         }
