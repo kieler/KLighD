@@ -31,8 +31,8 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import edu.umd.cs.piccolo.PNode;
 
@@ -89,7 +89,7 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
         this.completeLine = isCompleteLine;
         this.completeLabel = isCompleteLabel;
         this.figureNode = figureNode;
-        this.diagramElement = figureNode == null ? null : figureNode.getGraphElement();
+        this.diagramElement = figureNode == null ? null : figureNode.getViewModelElement();
         this.kgraphElement = null;
     }
 
@@ -161,8 +161,8 @@ public class KlighdTextSelection implements IKlighdSelection, IStructuredSelecti
         if (kgraphElement == null) {
             PNode node = figureNode;
             while (node != null) {
-                if (node instanceof IGraphElement<?>) {
-                    kgraphElement = ((IGraphElement<?>) node).getGraphElement();
+                if (node instanceof IKGraphElementNode) {
+                    kgraphElement = ((IKGraphElementNode) node).getViewModelElement();
                     break;
                 }
                 node = node.getParent();

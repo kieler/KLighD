@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
@@ -100,7 +100,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
         }
         if (!stylesModified && zeroToOne > 1f / 2f) {
             stylesModified = true;
-            final IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+            final IInternalKGraphElementNode<?> gE = NodeUtil.asKGENode(node);
             if (gE.getRenderingController() != null) {
                 gE.getRenderingController().modifyStyles();
             }
@@ -119,7 +119,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
         NodeUtil.applyBounds(node, targetBounds);
         if (!stylesModified) {
             stylesModified = true;
-            final IGraphElement<?> gE = NodeUtil.asIGraphElement(node);
+            final IInternalKGraphElementNode<?> gE = NodeUtil.asKGENode(node);
             if (gE.getRenderingController() != null) {
                 gE.getRenderingController().modifyStyles();
             }

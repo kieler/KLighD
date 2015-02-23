@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PLayer;
 
@@ -23,14 +24,14 @@ import edu.umd.cs.piccolo.PLayer;
  * 
  * @author chsch
  */
-public class KDisposingLayer extends PLayer {
+public class KlighdDisposingLayer extends PLayer {
 
     private static final long serialVersionUID = 4423173127127342353L;
 
     /**
      * Constructor. 
      */
-    public KDisposingLayer() {
+    public KlighdDisposingLayer() {
         this.setPickable(false);
         this.setChildrenPickable(true);
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
@@ -40,11 +41,12 @@ public class KDisposingLayer extends PLayer {
     /**
      * An abstract super class of {@link KNodeTopNode} and {@link KNodeNode} contributing common
      * behavior. The main purpose of it is to reduce code clones that are here anyway since the
-     * inheritance of {@link PLayer} forbids the inheritance of {@link KlighdNode.KlighdGraphNode}.
+     * inheritance of {@link PLayer} forbids the inheritance of {@link KGraphElementNode}.
      * 
-     * @see KlighdNode.KlighdGraphNode
+     * @see KGraphElementNode
      */
-    public abstract static class KNodeRepresentingLayer extends KDisposingLayer implements INode {
+    public abstract static class KNodeRepresentingLayer extends KlighdDisposingLayer implements
+            IKNodeNode {
 
         private static final long serialVersionUID = -4486373398530744260L;
 
@@ -65,7 +67,7 @@ public class KDisposingLayer extends PLayer {
         /**
          * {@inheritDoc}
          */
-        public KNode getGraphElement() {
+        public KNode getViewModelElement() {
             return node;
         }
 
@@ -73,7 +75,7 @@ public class KDisposingLayer extends PLayer {
          * {@inheritDoc}
          */
         public boolean isSelectable() {
-            return KlighdProperties.isSelectable(getGraphElement());
+            return KlighdProperties.isSelectable(getViewModelElement());
         }
 
         /**

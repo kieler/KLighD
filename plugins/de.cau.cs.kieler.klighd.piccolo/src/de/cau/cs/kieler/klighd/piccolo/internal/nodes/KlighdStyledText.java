@@ -26,6 +26,7 @@ import com.google.common.base.Strings;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -130,7 +131,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      */
     @Override
     public boolean isSelectable() {
-        return KlighdProperties.isSelectable(getRendering());
+        return KlighdProperties.isSelectable(getViewModelElement());
     }
 
     /**

@@ -17,11 +17,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -36,7 +33,8 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author mri
  * @author chsch
  */
-public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILabeledGraphElement<KEdge> {
+public class KEdgeNode extends KGraphElementNode<KEdge> implements
+        IInternalKGraphElementNode.IKLabeledGraphElementNode<KEdge> {
 
     private static final long serialVersionUID = -1867615197736299487L;
 
@@ -67,15 +65,14 @@ public class KEdgeNode extends KlighdNode.KlighdGraphNode<KEdge> implements ILab
         setChildrenPickable(true);
         bendPoints[0] = new Point2D.Double();
         bendPoints[1] = new Point2D.Double();
-        lowerScaleBound = edge.getData(KLayoutData.class).getProperty(
-                KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KEdge, ? extends IGraphElement<KEdge>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KEdge,
+            ? extends IInternalKGraphElementNode<KEdge>> controller) {
+
         if (controller == null || controller instanceof KEdgeRenderingController) {
             this.renderingController = (KEdgeRenderingController) controller;
         } else {

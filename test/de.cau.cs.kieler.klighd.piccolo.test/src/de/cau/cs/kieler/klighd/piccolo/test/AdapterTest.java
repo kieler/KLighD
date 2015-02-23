@@ -16,12 +16,12 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
@@ -64,7 +64,7 @@ public class AdapterTest {
         labellayout.setPos(2, 3);
         labellayout.setSize(4, 5);
 
-        final INode node = controller.getNode();
+        final IKNodeNode node = controller.getNode();
         final PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
         final PNode pnext = nodeLayer.getChild(0);
         final PLayer portlayer = ((KNodeNode) pnext).getPortLayer();
@@ -106,7 +106,7 @@ public class AdapterTest {
         KlighdTestUtil.makeTestGraph(root);
         // create a controller for the graph
         final DiagramController controller = new DiagramController(root, camera, true, false);
-        final INode topNode = controller.getNode();
+        final IKNodeNode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
     
@@ -127,7 +127,7 @@ public class AdapterTest {
         KlighdTestUtil.makeTestGraph(root);
         controller.expand(root);
         // create a controller for the graph
-        final INode topNode = controller.getNode();
+        final IKNodeNode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
     
@@ -147,7 +147,7 @@ public class AdapterTest {
         KlighdTestUtil.makeTestGraph(root);
 
         // create a controller for the graph
-        final INode topNode = controller.getNode();
+        final IKNodeNode topNode = controller.getNode();
         Assert.assertFalse(checkStructure(root, topNode));
     }
     
@@ -327,10 +327,10 @@ public class AdapterTest {
      *            the translated piccolo representation
      * @return true if all elements in kgraph are also present in piccolo
      */
-    private boolean checkStructure(final KNode kgraph, final INode piccoloTree) {
+    private boolean checkStructure(final KNode kgraph, final IKNodeNode piccoloTree) {
 
         // check if knode is included in piccolo structure
-        if (!piccoloTree.getGraphElement().toString().equals(kgraph.toString())) {
+        if (!piccoloTree.getViewModelElement().toString().equals(kgraph.toString())) {
             return false;
         }
         final PLayer nodeLayer = piccoloTree.getChildAreaNode().getNodeLayer() != null
@@ -353,7 +353,7 @@ public class AdapterTest {
 
                 for (int j = 0; j < kgraph.getPorts().size(); j++) {
                     if (!(kgraph.getPorts().get(j) == ((KlighdNode) portLayer.getChild(j))
-                            .getGraphElement())) {
+                            .getViewModelElement())) {
                         return false;
                     }
                 }
@@ -365,7 +365,7 @@ public class AdapterTest {
 
                 for (int j = 0; j < kgraph.getLabels().size(); j++) {
                     if (!(kgraph.getLabels().get(j) == ((KlighdNode) labelLayer.getChild(j))
-                            .getGraphElement())) {
+                            .getViewModelElement())) {
                         return false;
                     }
                 }
@@ -380,7 +380,7 @@ public class AdapterTest {
                     final
                     ListIterator<KEdgeNode> iter = edgeLayer.getChildrenIterator();
                     while (iter.hasNext()) {
-                        if (iter.next().getGraphElement() == edge) {
+                        if (iter.next().getViewModelElement() == edge) {
                             edgematch = true;
                             break;
                         }
@@ -395,7 +395,7 @@ public class AdapterTest {
             if (kgraph.getChildren() != null && nodeLayer.getChildrenCount() == 0) {
                 return false;
             }
-            if (!checkStructure(kgraph.getChildren().get(i), (INode) nodeLayer.getChild(i))) {
+            if (!checkStructure(kgraph.getChildren().get(i), (IKNodeNode) nodeLayer.getChild(i))) {
                 return false;
             }
         }

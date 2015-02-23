@@ -31,7 +31,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
+public class KNodeTopNode extends KlighdDisposingLayer.KNodeRepresentingLayer {
 
     private static final long serialVersionUID = 8395163186723344696L;
 
@@ -64,7 +64,7 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
 
     /**
      * Sets the main camera of the diagram headed by this top node. This method may currently only
-     * be called from {@link KlighdMainCamera#setDisplayedNode(INode)}.
+     * be called from {@link KlighdMainCamera#setDisplayedNode(IKNodeNode)}.
      *
      * @param camera
      */
@@ -86,8 +86,9 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KNode,
+            ? extends IInternalKGraphElementNode<KNode>> controller) {
+
         final String s = "KLighD: Invalid access occured: invoking setRenderingController()"
                 + "is not allowed for KNodeTopNodes!";
         throw new UnsupportedOperationException(s);
@@ -112,7 +113,7 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
     /**
      * {@inheritDoc}
      */
-    public INode getParentNode() {
+    public IKNodeNode getParentNode() {
         return null;
     }
 
@@ -147,7 +148,7 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
     protected void paint(final PPaintContext paintContext) {
         final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         final KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
+                getViewModelElement().getData(KLayoutData.class).getProperty(
                         KlighdProperties.SEMANTIC_DATA);
         g2.startGroup(sd);
         super.paint(paintContext);

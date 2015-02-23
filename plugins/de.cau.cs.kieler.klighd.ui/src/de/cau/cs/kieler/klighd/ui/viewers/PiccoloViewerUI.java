@@ -44,10 +44,10 @@ import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
@@ -390,7 +390,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         //  this is method is supposed to be only called for 'styledText' element that are contained
         //  in the current clip
         final Rectangle2D bounds =
-                NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedINode());
+                NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedKNodeNode());
 
         if (bounds == null) {
             return;
@@ -490,17 +490,17 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 return;
             }
 
-            if (node instanceof INode) {
+            if (node instanceof IKNodeNode) {
                 // the textNode appears not to be contained in a KLabelNode but
                 //  (via path nodes and helper ones) directly in a KNodeNode or KNodeTopNode
                 relatedLabel = null;
-                relatedKGE = ((INode) node).getGraphElement();
+                relatedKGE = ((IKNodeNode) node).getViewModelElement();
                 break;
 
             } else if (node instanceof KLabelNode) {
                 // the text is contained in a KLabelNode ...
                 relatedLabel = (KLabelNode) node;
-                relatedKGE = relatedLabel.getGraphElement();
+                relatedKGE = relatedLabel.getViewModelElement();
                 break;
             }
         }
@@ -516,7 +516,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         // by means of the (accessible) KText and parent KGraphElement request a
         //  model update function from the employed diagram synthesis
         final Function<String, Void> f = viewContext.getDiagramSynthesis().getTextUpdateFunction(
-                textNode.getGraphElement(), relatedKGE);
+                textNode.getViewModelElement(), relatedKGE);
 
         if (f == null) {
             // in case no function for updating that particular text (label) is available,

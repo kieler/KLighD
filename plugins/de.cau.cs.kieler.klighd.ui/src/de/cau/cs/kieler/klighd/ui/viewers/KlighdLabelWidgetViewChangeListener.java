@@ -25,7 +25,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.ViewChangeType;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
@@ -60,7 +60,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
         }
 
         @SuppressWarnings("unchecked")
-        final List<IGraphElement<?>> graphNodes = (List<IGraphElement<?>>) labelWidget.getData(
+        final List<IKGraphElementNode> graphNodes = (List<IKGraphElementNode>) labelWidget.getData(
                 KlighdLabelWidgetEventHandler.STYLED_TEXT_PARENTS_KEY);
 
         switch (change.getType()) {
@@ -82,11 +82,11 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
     }
 
 
-    private void handleCollapse(final ViewChange change, final List<IGraphElement<?>> graphNodes) {
+    private void handleCollapse(final ViewChange change, final List<IKGraphElementNode> graphNodes) {
         final KNode collapsedElement = (KNode) change.getAffectedElement();
 
         // the last graphNode is supposed to be a KNodeNode pointing to the related KNode
-        final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getGraphElement();
+        final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getViewModelElement();
 
         // create an iterator providing parentKNode's containers ...
         final Iterator<KNode> it =
@@ -105,12 +105,12 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
     }
     
     
-    private void handleHide(final ViewChange change, final List<IGraphElement<?>> graphNodes) {
+    private void handleHide(final ViewChange change, final List<IKGraphElementNode> graphNodes) {
         final KGraphElement hiddenElement = change.getAffectedElement();
 
         // check whether the potentially container KLabel, KPort/KEdge, and/or KNode got hidden
-        for (final IGraphElement<?> node : graphNodes) {
-            if (node.getGraphElement() == hiddenElement) {
+        for (final IKGraphElementNode node : graphNodes) {
+            if (node.getViewModelElement() == hiddenElement) {
                 viewer.deactivateLabelWidget();
                 return;
             }
@@ -122,7 +122,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
         }
 
         // the last graphNode is supposed to be a KNodeNode pointing to the related KNode
-        final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getGraphElement();
+        final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getViewModelElement();
 
         // create an iterator providing parentKNode's containers ...
         final Iterator<KNode> it =
@@ -140,11 +140,11 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
         }
     }
     
-    private void handleClip(final ViewChange change, final List<IGraphElement<?>> graphNodes) {
+    private void handleClip(final ViewChange change, final List<IKGraphElementNode> graphNodes) {
         final KNode newClip = (KNode) change.getAffectedElement();
 
         // the last graphNode is supposed to be a KNodeNode pointing to the related KNode
-        final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getGraphElement();
+        final KNode parentKNode = (KNode) Iterables.getLast(graphNodes).getViewModelElement();
 
         // create an iterator providing parentKNode's containers ...
         final Iterator<KNode> it =

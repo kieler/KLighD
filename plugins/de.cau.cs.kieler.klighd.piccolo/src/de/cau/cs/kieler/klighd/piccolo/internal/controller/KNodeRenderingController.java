@@ -42,7 +42,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      *            the Piccolo2D node representing a node
      */
     public KNodeRenderingController(final KNodeNode node) {
-        super(node.getGraphElement(), node);
+        super(node.getViewModelElement(), node);
     }
 
     /**

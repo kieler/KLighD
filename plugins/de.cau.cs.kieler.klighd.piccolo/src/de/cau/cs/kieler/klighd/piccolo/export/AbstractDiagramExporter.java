@@ -89,7 +89,7 @@ public abstract class AbstractDiagramExporter {
         if (exportViewport) {
             bounds = camera.getBounds();
         } else {
-            bounds = new PBounds(camera.getDisplayedINode().getExportedBounds());
+            bounds = new PBounds(camera.getDisplayedKNodeNode().getExportedBounds());
         }
 
         return bounds;

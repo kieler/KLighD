@@ -166,8 +166,10 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 // listening to the layers is required for enabling/disabling the clip outline overlay
                 //  immediately without any flickering
 
-                clipOutlineOverlay.setVisible(
-                        ((KlighdMainCamera) evt.getSource()).getDisplayedINode() instanceof KNodeNode);
+                // that the clip overlay invisible if the current clip node is the KNodeTopNode,
+                //  and visible otherwise, the clip node is a KNodeNode in those cases
+                clipOutlineOverlay.setVisible(((KlighdMainCamera) evt.getSource())
+                        .getDisplayedKNodeNode() instanceof KNodeNode);
                 clipOutlineOverlay.repaint();
             }
         }
@@ -281,7 +283,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             this.outlineCanvas.getCamera().removeChild(this.topNode);
 
             if (nodeLayoutAdapter != null) {
-                this.topNode.getGraphElement().eAdapters().remove(nodeLayoutAdapter);
+                this.topNode.getViewModelElement().eAdapters().remove(nodeLayoutAdapter);
             }
         }
 
@@ -348,7 +350,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         clipOutlineOverlay.setStrokeColor((RGB) null);
         clipOutlineOverlay.setPaint(clipOutlineOverlayColoring.getFirst());
         clipOutlineOverlay.setPaintAlpha(clipOutlineOverlayColoring.getSecond());
-        clipOutlineOverlay.setVisible(diagramMainCamera.getDisplayedINode() instanceof KNodeNode);
+        clipOutlineOverlay.setVisible(diagramMainCamera.getDisplayedKNodeNode() instanceof KNodeNode);
         // ... implies to switch it off if displayedNode is a KNodeTopNode.
 
         camera.addChild(clipOutlineOverlay);
@@ -362,7 +364,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
 
         // add listeners to layout changes and canvas resizing
-        rootNode = topNode.getGraphElement();
+        rootNode = topNode.getViewModelElement();
         nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
 
             @Override
@@ -440,7 +442,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             return;
         }
 
-        final PNode displayedNode = (PNode) originalCamera.getDisplayedINode();
+        final PNode displayedNode = (PNode) originalCamera.getDisplayedKNodeNode();
 
         // get the new bounds
         final PBounds bounds = originalCamera.getViewBounds();

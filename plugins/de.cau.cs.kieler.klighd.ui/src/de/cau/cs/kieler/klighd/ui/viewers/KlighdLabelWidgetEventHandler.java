@@ -25,8 +25,8 @@ import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -247,7 +247,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
 
         if (n instanceof KlighdStyledText) {
             styledText = (KlighdStyledText) n;
-            kText = styledText.getGraphElement();
+            kText = styledText.getViewModelElement();
         } else {
             return false;
         }
@@ -353,7 +353,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
         PNode parent = node;
         do {
             parent = parent.getParent();
-        } while (!(parent == null || parent instanceof IGraphElement));
+        } while (!(parent == null || parent instanceof IKGraphElementNode));
         return parent;
     }
 

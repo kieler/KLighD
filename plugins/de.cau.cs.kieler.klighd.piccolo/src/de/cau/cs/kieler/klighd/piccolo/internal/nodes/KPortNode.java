@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -25,7 +24,8 @@ import edu.umd.cs.piccolo.PNode;
  * @author mri
  * @author chsch
  */
-public class KPortNode extends KlighdNode.KlighdGraphNode<KPort> implements ILabeledGraphElement<KPort> {
+public class KPortNode extends KGraphElementNode<KPort> implements
+        IInternalKGraphElementNode.IKLabeledGraphElementNode<KPort> {
 
     private static final long serialVersionUID = 6016725932024647084L;
 
@@ -45,10 +45,12 @@ public class KPortNode extends KlighdNode.KlighdGraphNode<KPort> implements ILab
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KPort, ? extends IGraphElement<KPort>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KPort,
+            ? extends IInternalKGraphElementNode<KPort>> controller) {
+
         if (controller == null || controller instanceof KPortRenderingController) {
             this.renderingController = (KPortRenderingController) controller;
+
         } else {
             final String s = "KLighD: Fault occured while building up a concrete KPort rendering: "
                     + "KPortNodes are supposed to be controlled by KPortRenderingController rather than "

@@ -37,7 +37,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import edu.umd.cs.piccolo.PNode;
@@ -115,14 +115,14 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
             // ... check whether a KNode's representative has been picked,
             //  which happens if a click or double click occurred on the canvas, for example
-            if (pickedNode instanceof INode) {
-                final INode iNode = (INode) pickedNode;
+            if (pickedNode instanceof IKNodeNode) {
+                final IKNodeNode iNode = (IKNodeNode) pickedNode;
 
                 // if so test whether the diagram's top node has been picked ...
                 if (pickedNode instanceof KNodeTopNode) {
                     // and if so reveal the represented KNode and look for a dummy KRendering element
                     //  that might contain KActions
-                    rendering = iNode.getGraphElement().getData(KRendering.class);
+                    rendering = iNode.getViewModelElement().getData(KRendering.class);
 
                 } else {
                     // Otherwise we assume that a nested KNode's representative has been picked,

@@ -26,7 +26,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -44,13 +43,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
-        ILabeledGraphElement<KNode> {
+public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer implements
+    IInternalKGraphElementNode.IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
 
-    /** the parent {@link INode}. */
-    private INode parent;
+    /** the parent {@link IKNodeNode}. */
+    private IKNodeNode parent;
 
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
@@ -187,10 +186,12 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KNode,
+            ? extends IInternalKGraphElementNode<KNode>> controller) {
+
         if (controller == null || controller instanceof KNodeRenderingController) {
             this.renderingController = (KNodeRenderingController) controller;
+
         } else {
             final String s = "KLighD: Fault occured while building up a concrete KNode rendering: "
                 + "KNodeNodes are supposed to be controlled by KNodeRenderingControllers rather than "
@@ -230,7 +231,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      */
     public void addPort(final KPortNode port) {
         if (portLayer == null) {
-            portLayer = new KDisposingLayer();
+            portLayer = new KlighdDisposingLayer();
             addChild(labelLayer == null ? getChildrenCount() : getChildrenCount() - 1, portLayer);
         }
         portLayer.addChild(port);
@@ -244,7 +245,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      */
     public void addLabel(final KLabelNode label) {
         if (labelLayer == null) {
-            labelLayer = new KDisposingLayer();
+            labelLayer = new KlighdDisposingLayer();
             addChild(labelLayer);
         }
         labelLayer.addChild(label);
@@ -253,7 +254,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     /**
      * {@inheritDoc}
      */
-    public INode getParentNode() {
+    public IKNodeNode getParentNode() {
         return parent;
     }
 
@@ -261,9 +262,9 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      * Setter.
      *
      * @param parentINode
-     *            the {@link INode} being the new parent in terms of the structural nodes
+     *            the {@link IKNodeNode} being the new parent in terms of the structural nodes
      */
-    public void setParentNode(final INode parentINode) {
+    public void setParentNode(final IKNodeNode parentINode) {
         this.parent = parentINode;
     }
 
@@ -451,7 +452,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     protected void paint(final PPaintContext paintContext) {
         final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
         final KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
+                getViewModelElement().getData(KLayoutData.class).getProperty(
                         KlighdProperties.SEMANTIC_DATA);
         g2.startGroup(sd);
         super.paint(paintContext);
