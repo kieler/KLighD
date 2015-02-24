@@ -337,8 +337,13 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
                 clip.subtract(diagramClip);
 
+                graphics.getGC().setTransform(null);
                 graphics.getGC().setClipping(clip);
+
                 super.paint(kpc);
+
+                graphics.getGC().setClipping((Rectangle) null);
+                clip.dispose();
             }
 
             private Rectangle toSWTRectangle(final java.awt.Rectangle rect) {
