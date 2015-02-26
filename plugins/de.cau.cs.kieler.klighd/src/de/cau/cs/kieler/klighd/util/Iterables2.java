@@ -15,10 +15,12 @@ package de.cau.cs.kieler.klighd.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.util.Pair;
@@ -44,8 +46,10 @@ public final class Iterables2 {
     /**
      * Provides a related {@link Iterable} for an {@link Iterator}.
      *
-     * @param <T> the generic type of {@code iterator}
-     * @param iterator the {@link Iterator} to wrap
+     * @param <T>
+     *            the generic type of {@code iterator}
+     * @param iterator
+     *            the {@link Iterator} to wrap
      * @return the wrapping {@link Iterable}
      */
     public static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
@@ -93,9 +97,13 @@ public final class Iterables2 {
 
     /**
      * Constructs a new {@link Iterable} containing all elements of <code>iterable</code> except the
-     * last <code>count</code> ones.
+     * last <code>count</code> ones. The provided <code>iterable</code> is lazily evaluated, the
+     * evaluation starts with examining the first <code>x</code> elements once
+     * {@link Iterator#hasNext() result.iterator().hasNext()} is called. Further elements will be
+     * accessed one by one.
      *
-     * @param <T> the type of value
+     * @param <T>
+     *            the type of value
      * @param iterable
      *            the source {@link Iterable}
      * @param count
@@ -103,7 +111,7 @@ public final class Iterables2 {
      * @return a new {@link Iterable} containing all elements of <code>iterable</code> except the
      *         last <code>count</code> ones.
      */
-    public static <T> Iterable<T> dropLast(final Iterable<T> iterable, final int count) {
+    public static <T> Iterable<T> skipLast(final Iterable<T> iterable, final int count) {
         if (iterable == null) {
             throw new NullPointerException("The provided 'iterable' is 'null'!");
         } else if (count == 0) {
@@ -112,15 +120,134 @@ public final class Iterables2 {
             throw new IllegalArgumentException(
                     "Cannot drop a negative number of elements. Argument 'count' was: " + count);
         }
+
         return new Iterable<T>() {
             public Iterator<T> iterator() {
-                return Lists.reverse(
-                        Lists.newLinkedList(
-                                Iterables.skip(
-                                        Lists.reverse(
-                                                Lists.newLinkedList(iterable)), count))).iterator();
+                return new SkipLastIterator<T>(iterable, count);
             }
         };
+    }
+
+    /**
+     * Constructs a new {@link Iterator} providing all elements of <code>iterator</code> except the
+     * last <code>count</code> ones. The provided <code>iterator</code> is lazily evaluated, the
+     * evaluation starts with examining the first <code>x</code> elements once
+     * {@link Iterator#hasNext() result.hasNext()} is called. Further elements will be accessed one
+     * by one.
+     *
+     * @param <T>
+     *            the type of value
+     * @param iterator
+     *            the source {@link Iterator}
+     * @param count
+     *            number elements to drop
+     * @return a new {@link Iterator} containing all elements of <code>iterator</code> except the
+     *         last <code>count</code> ones.
+     */
+    public static <T> Iterator<T> skipLast(final Iterator<T> iterator, final int count) {
+        if (iterator == null) {
+            throw new NullPointerException("The provided 'iterator' is 'null'!");
+        } else if (count == 0) {
+            return iterator;
+        } else if (count < 0) {
+            throw new IllegalArgumentException(
+                    "Cannot drop a negative number of elements. Argument 'count' was: " + count);
+        }
+
+        return new SkipLastIterator<T>(iterator, count);
+    }
+
+    /**
+     * Special {@link Iterator} skipping the <code>n</code> elements of the provided parent
+     * {@link Iterator}. The provided <code>iterator</code> is lazily evaluated, the evaluation
+     * starts with examining the first <code>x</code> elements once {@link Iterator#hasNext()
+     * result.hasNext()} is called. Further elements will be accessed one by one.
+     *
+     * @param <T>
+     *            the type of value
+     */
+    private static class SkipLastIterator<T> implements Iterator<T> {
+
+        private final Iterable<T> src;
+        private final int count;
+
+        private Iterator<T> srcIterator = null;
+        private Queue<T> queue = null;
+
+        public SkipLastIterator(final Iterable<T> src, final int count) {
+            this.src = Preconditions.checkNotNull(src);
+            this.count = count;
+        }
+
+        public SkipLastIterator(final Iterator<T> src, final int count) {
+            this.src = null;
+            this.srcIterator = Preconditions.checkNotNull(src);
+            this.count = count;
+        }
+
+        /**
+         * Initializes this {@link Iterator} on demand.
+         *
+         * @return <code>true</code> if there more elements provided by {@link #srcIterator},
+         *         <code>false</code> if this {@link Iterator} won't provide anything.
+         */
+        private boolean initialize() {
+            if (srcIterator == null) {
+                // this is OK because of the constructors' field initialization
+                srcIterator = src.iterator();
+            }
+
+            queue = Lists.newLinkedList();
+
+            int i = count;
+            while ((i--) != 0) {
+                if (srcIterator.hasNext()) {
+                    queue.add(srcIterator.next());
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean hasNext() {
+            // queue == null -> (lazy) initialization required
+            if (queue == null && !initialize()) {
+                // no more elements available after initialization
+                return false;
+            }
+            return srcIterator.hasNext();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public T next() {
+            if (srcIterator.hasNext()) {
+                queue.add(srcIterator.next());
+                return queue.poll();
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see Iterators#toString()
+         */
+        @Override
+        public String toString() {
+            return Iterators.toString(this);
+        }
     }
 
     /**
@@ -136,8 +263,8 @@ public final class Iterables2 {
      * @param function
      *            the {@link Function} to be applied, is called with a {@link Pair} providing the
      *            value of the previous application ({@link Pair#getFirst() first}, is {@code null}
-     *            for first time), and the particular element of {@code iterable}
-     *            ({@link Pair#getSecond() second})
+     *            for first time), and the particular element of {@code iterable} (
+     *            {@link Pair#getSecond() second})
      * @return the accumulated result obtained by consecutively applying {@code function} on the
      *         elements of {@code iterable} and the preliminary result of previous application,
      *         starting with {@code null}
