@@ -43,13 +43,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer implements
+public class KNodeNode extends KlighdDisposingLayer.AbstractKNodeNode implements
     IInternalKGraphElementNode.IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
 
-    /** the parent {@link IInternalKNodeNode}. */
-    private IInternalKNodeNode parent;
+    /** the parent {@link AbstractKNodeNode}. */
+    private AbstractKNodeNode parent;
 
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
@@ -59,9 +59,6 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
 
     /** a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.*/
     private PLayer labelLayer;
-
-    /** the child area for this node. */
-    private final KChildAreaNode childArea;
 
     /**
      * This camera is used if the diagram is clipped to this node and this node's child area is part
@@ -80,15 +77,13 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
      * Constructs a Piccolo2D node for representing a <code>KNode</code>.
      *
      * @param node
-     *            the node
+     *            the represented {@link KNode}
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
     public KNodeNode(final KNode node, final boolean edgesFirst) {
-        super(node);
-
-        this.childArea = new KChildAreaNode(this, edgesFirst);
+        super(node, edgesFirst);
 
         this.childAreaCamera = new PCamera() {
 
@@ -254,7 +249,8 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
     /**
      * {@inheritDoc}
      */
-    public IInternalKNodeNode getParentNode() {
+    @Override
+    public AbstractKNodeNode getParentNode() {
         return parent;
     }
 
@@ -262,17 +258,10 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
      * Setter.
      *
      * @param parentINode
-     *            the {@link IInternalKNodeNode} being the new parent in terms of the structural nodes
+     *            the {@link AbstractKNodeNode} being the new parent in terms of the structural nodes
      */
-    public void setParentNode(final IInternalKNodeNode parentINode) {
+    public void setParentNode(final AbstractKNodeNode parentINode) {
         this.parent = parentINode;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KChildAreaNode getChildAreaNode() {
-        return childArea;
     }
 
     /**

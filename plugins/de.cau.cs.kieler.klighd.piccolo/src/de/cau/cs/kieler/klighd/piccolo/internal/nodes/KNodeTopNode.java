@@ -31,12 +31,9 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeTopNode extends KlighdDisposingLayer.KNodeRepresentingLayer {
+public class KNodeTopNode extends KlighdDisposingLayer.AbstractKNodeNode {
 
     private static final long serialVersionUID = 8395163186723344696L;
-
-    /** the Piccolo2D node representing the child area. */
-    private KChildAreaNode childArea;
 
     /** the main camera of the diagram headed by this top node. */
     private KlighdMainCamera diagramMainCamera = null;
@@ -45,20 +42,16 @@ public class KNodeTopNode extends KlighdDisposingLayer.KNodeRepresentingLayer {
      * Constructs a Piccolo2D node for representing the top-level {@link KNode}.
      *
      * @param node
-     *            the KNode
+     *            the represented {@link KNode}
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
     public KNodeTopNode(final KNode node, final boolean edgesFirst) {
-        super(node);
+        super(node, edgesFirst);
 
-        this.setPickable(true);
-
-        childArea = new KChildAreaNode(this, edgesFirst);
-        childArea.setPickable(true);
-        childArea.setClip(false);
-
+        // add the child area immediately to the children list,
+        //  this is not done in the super constructor as it must not be done in KNodeNode
         this.addChild(childArea);
     }
 
@@ -106,15 +99,19 @@ public class KNodeTopNode extends KlighdDisposingLayer.KNodeRepresentingLayer {
     /**
      * {@inheritDoc}
      */
-    public KChildAreaNode getChildAreaNode() {
-        return childArea;
+    @Override
+    public AbstractKNodeNode getParentNode() {
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public IInternalKNodeNode getParentNode() {
-        return null;
+    @Override
+    public void setExpanded(final boolean expanded) {
+        if (!expanded) {
+            super.setExpanded(expanded);
+        }
     }
 
     /**

@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IInternalKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -34,7 +33,7 @@ public class KChildAreaNode extends KlighdDisposingLayer {
 
     private static final long serialVersionUID = -403773990520864787L;
 
-    private final IInternalKNodeNode containingINode;
+    private final AbstractKNodeNode containingINode;
 
     private final boolean edgesFirst;
 
@@ -56,7 +55,7 @@ public class KChildAreaNode extends KlighdDisposingLayer {
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
-    public KChildAreaNode(final IInternalKNodeNode containingNode, final boolean edgesFirst) {
+    public KChildAreaNode(final AbstractKNodeNode containingNode, final boolean edgesFirst) {
         super();
         this.setPickable(false);
         this.containingINode = containingNode;

@@ -45,7 +45,7 @@ public class KlighdDisposingLayer extends PLayer {
      *
      * @see KGraphElementNode
      */
-    public abstract static class KNodeRepresentingLayer extends KlighdDisposingLayer implements
+    public abstract static class AbstractKNodeNode extends KlighdDisposingLayer implements
             IInternalKNodeNode {
 
         private static final long serialVersionUID = -4486373398530744260L;
@@ -53,14 +53,22 @@ public class KlighdDisposingLayer extends PLayer {
         /** the represented {@link KNode}. */
         private KNode node;
 
+        /** the child area for this node. */
+        protected final KChildAreaNode childArea; // SUPPRESS CHECKSTYLE Visibility
+
         /**
          * Constructor.
          *
          * @param node
-         *            the node
+         *            the represented {@link KNode}
+         * @param edgesFirst
+         *            determining whether edges are drawn before nodes, i.e. nodes have priority
+         *            over edges
          */
-        public KNodeRepresentingLayer(final KNode node) {
+        public AbstractKNodeNode(final KNode node, final boolean edgesFirst) {
             this.node = node;
+            this.childArea = new KChildAreaNode(this, edgesFirst);
+
             this.setPickable(true);
         }
 
@@ -81,16 +89,13 @@ public class KlighdDisposingLayer extends PLayer {
         /**
          * {@inheritDoc}
          */
-        @Override
-        public void setScale(final double scale) {
-            final double curScale = getScale();
+        public abstract AbstractKNodeNode getParentNode();
 
-            if (scale == curScale) {
-                return;
-            } else if (scale == 0) {
-                throw new RuntimeException("Can't set scale to 0");
-            }
-            scale(scale / curScale);
+        /**
+         * {@inheritDoc}
+         */
+        public KChildAreaNode getChildAreaNode() {
+            return childArea;
         }
 
         private boolean expanded = false;
@@ -137,6 +142,21 @@ public class KlighdDisposingLayer extends PLayer {
          */
         public void toggleExpansion() {
             setExpanded(!this.expanded);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void setScale(final double scale) {
+            final double curScale = getScale();
+
+            if (scale == curScale) {
+                return;
+            } else if (scale == 0) {
+                throw new RuntimeException("Can't set scale to 0");
+            }
+            scale(scale / curScale);
         }
     }
 }
