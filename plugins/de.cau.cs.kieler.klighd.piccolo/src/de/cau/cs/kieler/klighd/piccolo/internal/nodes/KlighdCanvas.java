@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdFocusEventListener;
@@ -80,8 +79,6 @@ public class KlighdCanvas extends PSWTCanvas {
         this.removeInputEventListener(super.getPanEventHandler());
         
         this.graphics = new KlighdSWTGraphicsImpl(null, parent.getDisplay());
-        this.getRoot().addAttribute(Constants.DEVICE, parent.getDisplay());
-        this.getRoot().addAttribute(Constants.MAIN_CAMERA, this.getCamera());
 
         // this reduces flickering drastically
         this.setDoubleBuffered(true);
