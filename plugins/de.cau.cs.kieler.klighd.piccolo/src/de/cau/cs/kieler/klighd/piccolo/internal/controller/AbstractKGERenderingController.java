@@ -70,8 +70,8 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
@@ -84,6 +84,7 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The abstract base class for controllers that manages the transformation of a dedicated
@@ -1021,7 +1022,7 @@ public abstract class AbstractKGERenderingController
                 PiccoloPlacementUtil.getDecoratorPlacementData(rendering), parent);
 
         // create an empty node for the decorator
-        final KDecoratorNode decorator = new KDecoratorNode(rendering);
+        final KlighdDecoratorNode decorator = new KlighdDecoratorNode(rendering);
 
         // NodeUtil.applyTranslation(decorator, decoration.getOrigin());
         parent.addChild(decorator);
@@ -1032,9 +1033,6 @@ public abstract class AbstractKGERenderingController
 
         // apply the initial rotation
         decorator.setRotation(decoration.getRotation());
-
-        // let the decorator be pickable
-        decorator.setPickable(true);
 
         // add a listener on the parent's path
         addListener(PPath.PROPERTY_PATH, parent, controller.getNode(),
@@ -1058,6 +1056,37 @@ public abstract class AbstractKGERenderingController
 
         return controller.getNode();
     }
+
+    /**
+     * Dedicated {@link PNode} type wrapping edge decorator figures.<br>
+     */
+    private static class KlighdDecoratorNode extends KlighdNode.KlighdFigureNode<KRendering> {
+
+        private static final long serialVersionUID = -2824069198134013044L;
+
+        /**
+         * Standard constructor.
+         *
+         * @param theRendering
+         *            the rendering being represented by this node.
+         */
+        public KlighdDecoratorNode(final KRendering theRendering) {
+            this.setRendering(theRendering);
+            this.setPickable(true);
+        }
+
+        /**
+         * {@inheritDoc}.<br>
+         * <br>
+         * KlighdDecoratorNode state greedy picking as it is unlikely that they contain nested
+         * pickable elements like text fields.
+         */
+        @Override
+        protected boolean pick(final PPickPath pickPath) {
+            return true;
+        }
+    }
+
 
     /**
      * Creates the Piccolo2D node representing the rendering inside the given parent with initial
