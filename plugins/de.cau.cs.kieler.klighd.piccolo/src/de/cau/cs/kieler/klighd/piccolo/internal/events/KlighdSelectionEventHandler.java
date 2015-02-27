@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IInternalKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import edu.umd.cs.piccolo.PNode;
@@ -117,14 +117,14 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
             if (selectedNode instanceof IKlighdNode && ((IKlighdNode) selectedNode).isSelectable()) {
                 graphElement = ((IKlighdNode) selectedNode).getViewModelElement();
                 break;
-            } else if (selectedNode instanceof IKNodeNode) {
+            } else if (selectedNode instanceof IInternalKNodeNode) {
                 // in case we found a KNode that is marked to be non-selectable
                 //  (and that is expected to not cover any further KGraphElements)
                 //  stop here in order to keep the previous selection,
                 // otherwise the diagramClip node would be selected,
                 //  which seems to be not intuitive
-                graphElement = ((IKNodeNode) selectedNode).isSelectable()
-                        ? ((IKNodeNode) selectedNode).getViewModelElement() : null;
+                graphElement = ((IInternalKNodeNode) selectedNode).isSelectable()
+                        ? ((IInternalKNodeNode) selectedNode).getViewModelElement() : null;
                 break;
             }            
         }

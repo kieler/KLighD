@@ -29,7 +29,7 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IInternalKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
@@ -71,7 +71,7 @@ public final class DiagramControllerHelper {
         KNode target = edge.getTarget();
         if (source != null && target != null) {
             KNode commonParent = findLowestCommonAncestor(source, target);
-            IKNodeNode commonParentNode =
+            final IInternalKNodeNode commonParentNode =
                     RenderingContextData.get(commonParent).getProperty(DiagramController.REP);
             if (commonParentNode != null) {
                 KChildAreaNode childAreaNode = commonParentNode.getChildAreaNode();
@@ -96,8 +96,8 @@ public final class DiagramControllerHelper {
             // edges uses different reference points as indicated by
             // http://rtsys.informatik.uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png
             // see page http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model
-            IKNodeNode sourceParentNode = RenderingContextData.get(determineReferenceNodeOf(edge))
-                    .getProperty(DiagramController.REP);
+            final IInternalKNodeNode sourceParentNode = RenderingContextData.get(
+                    determineReferenceNodeOf(edge)).getProperty(DiagramController.REP);
             final KChildAreaNode relativeChildArea = sourceParentNode.getChildAreaNode();
 
             // chsch: The following listener updates the offset of the edge depending the parent nodes.

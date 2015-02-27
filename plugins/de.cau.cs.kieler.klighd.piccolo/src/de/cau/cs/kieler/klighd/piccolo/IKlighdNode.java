@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
 
 /**
@@ -56,9 +57,41 @@ public interface IKlighdNode {
     public interface IKGraphElementNode extends IKlighdNode {
 
         /**
-         * @return the {@link KGraphElement} represented by this node
+         * @return the {@link KGraphElement} represented by this  {@link edu.umd.cs.piccolo.PNode PNode}
          */
         KGraphElement getViewModelElement();
+    }
+
+    /**
+     * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing
+     * view model {@link KNode KNodes}.<br>
+     * This interface can be relied on in custom figure implementation for navigating on the figure
+     * tree, e.g., for filtering the parent figures by means of <code>instanceof</code>.
+     *
+     * @author chsch
+     */
+    public interface IKNodeNode extends IKGraphElementNode {
+
+        /**
+         * The property name for changes of the child areas expansion status.<br>
+         * <b>Caution!</b> Don't let listeners rely on the propagated old value as that might not be
+         * correct in case they are fired via {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.
+         * IInternalKGraphElementNode.IInternalKNodeNode#touchExpanded()
+         * IInternalKNodeNode#touchExpanded()}.
+         */
+        String PROPERTY_EXPANSION = "expansion";
+
+        /**
+         * @return the {@link KNode} represented by this {@link edu.umd.cs.piccolo.PNode PNode}
+         */
+        KNode getViewModelElement();
+
+        /**
+         * Returns the parent {@link IKNodeNode} that (deeply) contains this {@link IKNodeNode}.
+         *
+         * @return the parent {@link IKNodeNode}
+         */
+        IKNodeNode getParentNode();
     }
 
     /**
@@ -70,8 +103,9 @@ public interface IKlighdNode {
     public interface IKlighdFigureNode extends IKlighdNode {
 
         /**
-         * @return the {@link KRendering} represented by this node, maybe <code>null</code> if this
-         *         figure node does not represent a {@link KRendering} but is part of a
+         * @return the {@link KRendering} represented by this {@link edu.umd.cs.piccolo.PNode PNode}
+         *         , maybe <code>null</code> if this figure node does not represent a
+         *         {@link KRendering} but is part of a
          *         {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRendering}, for
          *         example.
          */

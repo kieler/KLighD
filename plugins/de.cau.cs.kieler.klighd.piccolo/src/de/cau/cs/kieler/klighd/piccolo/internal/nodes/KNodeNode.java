@@ -48,8 +48,8 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
 
     private static final long serialVersionUID = 6311105654943173693L;
 
-    /** the parent {@link IKNodeNode}. */
-    private IKNodeNode parent;
+    /** the parent {@link IInternalKNodeNode}. */
+    private IInternalKNodeNode parent;
 
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
@@ -254,7 +254,7 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
     /**
      * {@inheritDoc}
      */
-    public IKNodeNode getParentNode() {
+    public IInternalKNodeNode getParentNode() {
         return parent;
     }
 
@@ -262,9 +262,9 @@ public class KNodeNode extends KlighdDisposingLayer.KNodeRepresentingLayer imple
      * Setter.
      *
      * @param parentINode
-     *            the {@link IKNodeNode} being the new parent in terms of the structural nodes
+     *            the {@link IInternalKNodeNode} being the new parent in terms of the structural nodes
      */
-    public void setParentNode(final IKNodeNode parentINode) {
+    public void setParentNode(final IInternalKNodeNode parentINode) {
         this.parent = parentINode;
     }
 

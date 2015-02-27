@@ -337,10 +337,10 @@ public class DiagramZoomController {
      * This method checks for ports and labels of the given <code>node</code> and increases the
      * given <code>nodeBounds</code> accordingly.<br>
      *
-     *
      * @param nodeBounds
-     *            the bounds of the {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.IKNodeNode
-     *            INode} representing {@link KNode} <code>node</code>
+     *            the bounds of the
+     *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKNodeNode
+     *            IInternalKNodeNode} representing {@link KNode} <code>node</code>
      * @param node
      *            the {@link KNode} to be evaluated for ports and labels
      * @return the updated <code>nodeBounds</code> for convenience

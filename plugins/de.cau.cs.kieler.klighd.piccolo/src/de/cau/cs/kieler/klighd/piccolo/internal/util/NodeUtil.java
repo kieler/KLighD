@@ -30,9 +30,9 @@ import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.PNodeController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -461,7 +461,7 @@ public final class NodeUtil {
 
     /**
      * A simple implementation of the {@link Iterator} interface allowing to traverse the
-     * 'parent' chain of {@link IKNodeNode INodes}.
+     * 'parent' chain of {@link IKNodeNode IKNodeNodes}.
      *
      * @author chsch
      */

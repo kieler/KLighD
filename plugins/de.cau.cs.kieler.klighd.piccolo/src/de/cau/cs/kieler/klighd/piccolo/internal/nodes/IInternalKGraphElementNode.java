@@ -94,7 +94,7 @@ public interface IInternalKGraphElementNode<T extends KGraphElement> extends IKG
      * @author mri
      * @author chsch
      */
-    public interface IKNodeNode extends IInternalKGraphElementNode<KNode> {
+    public interface IInternalKNodeNode extends IKNodeNode, IInternalKGraphElementNode<KNode> {
 
         /**
          * Returns the child area of this parent node.
@@ -104,11 +104,39 @@ public interface IInternalKGraphElementNode<T extends KGraphElement> extends IKG
         KChildAreaNode getChildAreaNode();
 
         /**
-         * Returns the parent {@link IKNodeNode} that (deeply) contains this {@link IKNodeNode}.
-         *
-         * @return the parent {@link IKNodeNode}
+         * {@inheritDoc}
          */
-        IKNodeNode getParentNode();
+        IInternalKNodeNode getParentNode();
+
+        /**
+         * Returns whether this child area is expanded.
+         *
+         * @return true if this child area is expanded; false else
+         */
+        boolean isExpanded();
+
+        /**
+         * Sets whether this child area is expanded.
+         *
+         * @param expanded
+         *            true if this child area is expanded; false else
+         */
+        void setExpanded(final boolean expanded);
+
+        /**
+         * Touches the expansion state, i.e. fires the listeners on {@link #PROPERTY_EXPANSION} without
+         * changing the value. This is required in combination with EMF Compare in case parts of the
+         * model have been moved (and EMF Compare noticed that as such). In this case the
+         * RenderingContextData are preserved but the diagram needs to be updated accordingly.<br>
+         * <br>
+         * Unfortunately old and new value must be different, so I set the old value to the inverse.
+         */
+        void touchExpanded();
+
+        /**
+         * Toggles the expansion state of <code>this</code> {@link KChildAreaNode}.
+         */
+        void toggleExpansion();
 
         /**
          * Returns the bounds of this node's exportable area that are required to fully export the

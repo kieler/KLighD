@@ -18,8 +18,9 @@ import java.awt.geom.AffineTransform;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IKNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IInternalKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -46,16 +47,16 @@ public class KlighdMainCamera extends PCamera {
     /**
      * Getter.
      *
-     * @return the currently displayed {@link IKNodeNode}
+     * @return the currently displayed {@link IInternalKNodeNode}
      */
-    public IKNodeNode getDisplayedKNodeNode() {
-        return (IKNodeNode) getDisplayedLayer();
+    public IInternalKNodeNode getDisplayedKNodeNode() {
+        return (IInternalKNodeNode) getDisplayedLayer();
     }
 
     /**
      * Getter.
      *
-     * @return the currently displayed {@link IKNodeNode} casted to {@link PLayer}.
+     * @return the currently displayed {@link IInternalKNodeNode} casted to {@link PLayer}.
      */
     public PLayer getDisplayedLayer() {
         if (this.getLayersReference().isEmpty()) {
@@ -63,7 +64,7 @@ public class KlighdMainCamera extends PCamera {
         }
 
         final PLayer res = this.getLayer(0);
-        if (res instanceof IKNodeNode) {
+        if (res instanceof IInternalKNodeNode) {
             return res;
         } else {
             return null;
@@ -71,13 +72,13 @@ public class KlighdMainCamera extends PCamera {
     }
 
     /**
-     * Sets the {@link IKNodeNode} to be displayed on the canvas if it is a {@link PLayer}; does nothing
-     * otherwise.
+     * Sets the {@link IInternalKNodeNode} to be displayed on the canvas if it is a {@link PLayer};
+     * does nothing otherwise.
      *
      * @param node
-     *            the {@link IKNodeNode} to displayed
+     *            the {@link IInternalKNodeNode} to displayed
      */
-    public void setDisplayedNode(final IKNodeNode node) {
+    public void setDisplayedNode(final IInternalKNodeNode node) {
         if (node instanceof PLayer) {
             this.setDisplayedNode((PLayer) node);
         }
@@ -101,9 +102,9 @@ public class KlighdMainCamera extends PCamera {
      * displayed {@link PLayer}, if the <code>node</code> is a {@link PLayer}; does nothing otherwise.
      *
      * @param node
-     *            the {@link IKNodeNode} to be now displayed
+     *            the {@link IInternalKNodeNode} to be now displayed
      */
-    public void exchangeDisplayedNode(final IKNodeNode node) {
+    public void exchangeDisplayedNode(final IInternalKNodeNode node) {
         if (node instanceof PLayer) {
             exchangeDisplayedNode((PLayer) node);
         }
@@ -178,7 +179,7 @@ public class KlighdMainCamera extends PCamera {
 
             } else {
                 // take the commonAncestor's child area node, ...
-                final PNode caChildArea = commonAncestor.getChildAreaNode();
+                final PNode caChildArea = ((IInternalKNodeNode) commonAncestor).getChildAreaNode();
 
                 // ... apply case b) between 'prevNode's parent (child area node) and
                 //  'commonAncestor's child area node, ...
