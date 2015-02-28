@@ -31,7 +31,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeTopNode extends KlighdDisposingLayer.AbstractKNodeNode {
+public class KNodeTopNode extends KNodeAbstractNode {
 
     private static final long serialVersionUID = 8395163186723344696L;
 
@@ -100,7 +100,7 @@ public class KNodeTopNode extends KlighdDisposingLayer.AbstractKNodeNode {
      * {@inheritDoc}
      */
     @Override
-    public AbstractKNodeNode getParentNode() {
+    public KNodeAbstractNode getParentNode() {
         return null;
     }
 

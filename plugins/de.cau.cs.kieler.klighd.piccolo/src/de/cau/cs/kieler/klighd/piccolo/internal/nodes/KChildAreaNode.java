@@ -33,7 +33,7 @@ public class KChildAreaNode extends KlighdDisposingLayer {
 
     private static final long serialVersionUID = -403773990520864787L;
 
-    private final AbstractKNodeNode containingINode;
+    private final KNodeAbstractNode containingINode;
 
     private final boolean edgesFirst;
 
@@ -50,12 +50,12 @@ public class KChildAreaNode extends KlighdDisposingLayer {
      * Constructs a child area for a given node.
      *
      * @param containingNode
-     *            the node containing this child area
+     *            the {@link KNodeAbstractNode} containing this child area
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
-    public KChildAreaNode(final AbstractKNodeNode containingNode, final boolean edgesFirst) {
+    public KChildAreaNode(final KNodeAbstractNode containingNode, final boolean edgesFirst) {
         super();
         this.setPickable(false);
         this.containingINode = containingNode;

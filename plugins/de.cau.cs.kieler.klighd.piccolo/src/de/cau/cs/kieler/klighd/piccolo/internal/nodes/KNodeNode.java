@@ -43,13 +43,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends KlighdDisposingLayer.AbstractKNodeNode implements
-    IInternalKGraphElementNode.IKLabeledGraphElementNode<KNode> {
+public class KNodeNode extends KNodeAbstractNode implements
+        IInternalKGraphElementNode.IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
 
     /** the parent {@link AbstractKNodeNode}. */
-    private AbstractKNodeNode parent;
+    private KNodeAbstractNode parent;
 
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
@@ -250,7 +250,7 @@ public class KNodeNode extends KlighdDisposingLayer.AbstractKNodeNode implements
      * {@inheritDoc}
      */
     @Override
-    public AbstractKNodeNode getParentNode() {
+    public KNodeAbstractNode getParentNode() {
         return parent;
     }
 
@@ -260,7 +260,7 @@ public class KNodeNode extends KlighdDisposingLayer.AbstractKNodeNode implements
      * @param parentINode
      *            the {@link AbstractKNodeNode} being the new parent in terms of the structural nodes
      */
-    public void setParentNode(final AbstractKNodeNode parentINode) {
+    public void setParentNode(final KNodeAbstractNode parentINode) {
         this.parent = parentINode;
     }
 
