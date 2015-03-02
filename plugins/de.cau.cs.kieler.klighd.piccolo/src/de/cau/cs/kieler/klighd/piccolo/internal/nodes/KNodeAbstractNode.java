@@ -13,8 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import java.awt.geom.Rectangle2D;
+
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IInternalKNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
@@ -22,13 +24,14 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties;
  * behavior. The main purpose of it is to reduce code clones that exists anyway since the
  * inheritance of {@link edu.umd.cs.piccolo.PLayer PLayer} forbids the inheritance of
  * {@link KGraphElementNode}. This class is intended to be subclassed by {@link KNodeNode} and
- * {@link KNodeTopNode} only and is, thus, configured 'package protected' by intention.
+ * {@link KNodeTopNode} only.
  *
  * @see KGraphElementNode
  *
  * @author chsch
  */
-abstract class KNodeAbstractNode extends KlighdDisposingLayer implements IInternalKNodeNode {
+public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
+        IKGraphElementNode.IKNodeNode, IInternalKGraphElementNode<KNode> {
 
     private static final long serialVersionUID = -4486373398530744260L;
 
@@ -80,6 +83,15 @@ abstract class KNodeAbstractNode extends KlighdDisposingLayer implements IIntern
      */
     public abstract KNodeAbstractNode getParentNode();
 
+    /**
+     * Returns the bounds of this node's exportable area that are required to fully export the
+     * (visible) part(s) of this node in case it is completely shown as well as in case the diagram
+     * is clipped to this node. In the latter case the node's figures are skipped, only the child
+     * area, non-hidden ports, and non-hidden labels drawn.
+     *
+     * @return the adjusted bounds
+     */
+    public abstract Rectangle2D getExportedBounds();
 
     private boolean expanded = false;
 

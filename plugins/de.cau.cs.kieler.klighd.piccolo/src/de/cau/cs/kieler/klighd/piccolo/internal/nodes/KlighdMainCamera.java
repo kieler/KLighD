@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.Status;
 
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IInternalKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -47,16 +46,16 @@ public class KlighdMainCamera extends PCamera {
     /**
      * Getter.
      *
-     * @return the currently displayed {@link IInternalKNodeNode}
+     * @return the currently displayed {@link KNodeAbstractNode}
      */
-    public IInternalKNodeNode getDisplayedKNodeNode() {
-        return (IInternalKNodeNode) getDisplayedLayer();
+    public KNodeAbstractNode getDisplayedKNodeNode() {
+        return (KNodeAbstractNode) getDisplayedLayer();
     }
 
     /**
      * Getter.
      *
-     * @return the currently displayed {@link IInternalKNodeNode} casted to {@link PLayer}.
+     * @return the currently displayed {@link KNodeAbstractNode} casted to {@link PLayer}.
      */
     public PLayer getDisplayedLayer() {
         if (this.getLayersReference().isEmpty()) {
@@ -64,7 +63,7 @@ public class KlighdMainCamera extends PCamera {
         }
 
         final PLayer res = this.getLayer(0);
-        if (res instanceof IInternalKNodeNode) {
+        if (res instanceof KNodeAbstractNode) {
             return res;
         } else {
             return null;
@@ -72,16 +71,15 @@ public class KlighdMainCamera extends PCamera {
     }
 
     /**
-     * Sets the {@link IInternalKNodeNode} to be displayed on the canvas if it is a {@link PLayer};
+     * Sets the {@link KNodeAbstractNode} to be displayed on the canvas if it is a {@link PLayer};
      * does nothing otherwise.
      *
      * @param node
-     *            the {@link IInternalKNodeNode} to displayed
+     *            the {@link KNodeAbstractNode} to displayed
      */
-    public void setDisplayedNode(final IInternalKNodeNode node) {
-        if (node instanceof PLayer) {
-            this.setDisplayedNode((PLayer) node);
-        }
+    public void setDisplayedNode(final KNodeAbstractNode node) {
+        this.addLayer(0, node);
+
         if (node instanceof KNodeTopNode) {
             // this is only for initialization, has no effect later on
             ((KNodeTopNode) node).setDiagramMainCamera(this);
@@ -89,38 +87,17 @@ public class KlighdMainCamera extends PCamera {
     }
 
     /**
-     * Sets the {@link PLayer} to be displayed on the canvas.
-     *
-     * @param node the {@link PLayer} to displayed
-     */
-    private void setDisplayedNode(final PLayer node) {
-        this.addLayer(0, node);
-    }
-
-    /**
      * Re-targets <code>this</code> camera to the given <code>node</code> by detaching the currently
-     * displayed {@link PLayer}, if the <code>node</code> is a {@link PLayer}; does nothing otherwise.
+     * displayed {@link PLayer}, if the <code>node</code> is a {@link PLayer}; does nothing
+     * otherwise.
      *
      * @param node
-     *            the {@link IInternalKNodeNode} to be now displayed
+     *            the {@link KNodeAbstractNode} to be now displayed, must be contained in the
+     *            diagram's PNode figure tree!
      */
-    public void exchangeDisplayedNode(final IInternalKNodeNode node) {
-        if (node instanceof PLayer) {
-            exchangeDisplayedNode((PLayer) node);
-        }
-    }
+    public void exchangeDisplayedNode(final KNodeAbstractNode node) {
 
-    /**
-     * Detaches the currently configures displayed {@link PLayer} and re-target to the given
-     * <code>node</code>.
-     *
-     * @param node
-     *            the {@link PLayer} to be now displayed, must be contained in the diagram's PNode
-     *            figure tree!
-     */
-    public void exchangeDisplayedNode(final PLayer node) {
-
-        final PNode prevNode = this.getDisplayedLayer();
+        final KNodeAbstractNode prevNode = this.getDisplayedKNodeNode();
         if (prevNode == node) {
             return;
         }
@@ -165,8 +142,7 @@ public class KlighdMainCamera extends PCamera {
 
         } else {
             // In case c) first the closest common ancestor (iKNodeNode) is determined
-            final IKNodeNode commonAncestor =
-                    NodeUtil.getCommonAncestor((IKNodeNode) prevNode, (IKNodeNode) node);
+            final IKNodeNode commonAncestor = NodeUtil.getCommonAncestor(prevNode, node);
 
             if (commonAncestor == null) {
                 // ... which should not happen because
@@ -179,7 +155,7 @@ public class KlighdMainCamera extends PCamera {
 
             } else {
                 // take the commonAncestor's child area node, ...
-                final PNode caChildArea = ((IInternalKNodeNode) commonAncestor).getChildAreaNode();
+                final PNode caChildArea = ((KNodeAbstractNode) commonAncestor).getChildAreaNode();
 
                 // ... apply case b) between 'prevNode's parent (child area node) and
                 //  'commonAncestor's child area node, ...

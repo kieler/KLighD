@@ -13,11 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import java.awt.geom.Rectangle2D;
-
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 
@@ -83,69 +80,5 @@ public interface IInternalKGraphElementNode<T extends KGraphElement> extends IKG
          *            the label representation
          */
         void addLabel(KLabelNode label);
-    }
-
-
-    /**
-     * Common interface {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode KNodeNode} and
-     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode KNodeTopNode}, which represent
-     * represent {@link KNode KNodes}.
-     *
-     * @author mri
-     * @author chsch
-     */
-    public interface IInternalKNodeNode extends IKNodeNode, IInternalKGraphElementNode<KNode> {
-
-        /**
-         * Returns the child area of this parent node.
-         *
-         * @return the child area
-         */
-        KChildAreaNode getChildAreaNode();
-
-        /**
-         * {@inheritDoc}
-         */
-        IInternalKNodeNode getParentNode();
-
-        /**
-         * Returns whether this child area is expanded.
-         *
-         * @return true if this child area is expanded; false else
-         */
-        boolean isExpanded();
-
-        /**
-         * Sets whether this child area is expanded.
-         *
-         * @param expanded
-         *            true if this child area is expanded; false else
-         */
-        void setExpanded(final boolean expanded);
-
-        /**
-         * Touches the expansion state, i.e. fires the listeners on {@link #PROPERTY_EXPANSION} without
-         * changing the value. This is required in combination with EMF Compare in case parts of the
-         * model have been moved (and EMF Compare noticed that as such). In this case the
-         * RenderingContextData are preserved but the diagram needs to be updated accordingly.<br>
-         * <br>
-         * Unfortunately old and new value must be different, so I set the old value to the inverse.
-         */
-        void touchExpanded();
-
-        /**
-         * Toggles the expansion state of <code>this</code> {@link KChildAreaNode}.
-         */
-        void toggleExpansion();
-
-        /**
-         * Returns the bounds of this node's exportable area that are required to fully export the
-         * (visible) part(s) of this node in case it is completely shown as well as in case the diagram
-         * is clipped to this node. In the latter case the node's figures are skipped, only the child
-         * area, non-hidden ports, and non-hidden labels drawn.
-         *
-         * @return the adjusted bounds
-         */
-        Rectangle2D getExportedBounds();
     }
 }

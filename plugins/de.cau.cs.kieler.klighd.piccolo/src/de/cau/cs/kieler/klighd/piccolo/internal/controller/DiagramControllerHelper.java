@@ -29,9 +29,9 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode.IInternalKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
@@ -71,7 +71,7 @@ public final class DiagramControllerHelper {
         KNode target = edge.getTarget();
         if (source != null && target != null) {
             KNode commonParent = findLowestCommonAncestor(source, target);
-            final IInternalKNodeNode commonParentNode =
+            final KNodeAbstractNode commonParentNode =
                     RenderingContextData.get(commonParent).getProperty(DiagramController.REP);
             if (commonParentNode != null) {
                 KChildAreaNode childAreaNode = commonParentNode.getChildAreaNode();
@@ -96,7 +96,7 @@ public final class DiagramControllerHelper {
             // edges uses different reference points as indicated by
             // http://rtsys.informatik.uni-kiel.de/~kieler/files/documentation/klayoutdata-reference-points.png
             // see page http://rtsys.informatik.uni-kiel.de/confluence/display/KIELER/KLayoutData+Meta+Model
-            final IInternalKNodeNode sourceParentNode = RenderingContextData.get(
+            final KNodeAbstractNode sourceParentNode = RenderingContextData.get(
                     determineReferenceNodeOf(edge)).getProperty(DiagramController.REP);
             final KChildAreaNode relativeChildArea = sourceParentNode.getChildAreaNode();
 

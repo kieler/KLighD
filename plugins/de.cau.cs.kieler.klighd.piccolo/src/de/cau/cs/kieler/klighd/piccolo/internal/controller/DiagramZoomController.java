@@ -339,8 +339,8 @@ public class DiagramZoomController {
      *
      * @param nodeBounds
      *            the bounds of the
-     *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKNodeNode
-     *            IInternalKNodeNode} representing {@link KNode} <code>node</code>
+     *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode
+     *            KNodeAbstractNode} representing {@link KNode} <code>node</code>
      * @param node
      *            the {@link KNode} to be evaluated for ports and labels
      * @return the updated <code>nodeBounds</code> for convenience
