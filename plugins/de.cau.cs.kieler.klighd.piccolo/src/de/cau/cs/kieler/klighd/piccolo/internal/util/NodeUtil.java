@@ -385,7 +385,7 @@ public final class NodeUtil {
             throw new IllegalArgumentException(
                     "KLighD: 'camera' in NodeUtil.isDisplayed(...) must not be 'null'");
         }
-        final PLayer displayedLayer = camera.getDisplayedLayer();
+        final PLayer displayedLayer = camera.getDisplayedKNodeNode();
 
         PNode parent = node;
 

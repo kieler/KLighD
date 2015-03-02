@@ -49,22 +49,13 @@ public class KlighdMainCamera extends PCamera {
      * @return the currently displayed {@link KNodeAbstractNode}
      */
     public KNodeAbstractNode getDisplayedKNodeNode() {
-        return (KNodeAbstractNode) getDisplayedLayer();
-    }
-
-    /**
-     * Getter.
-     *
-     * @return the currently displayed {@link KNodeAbstractNode} casted to {@link PLayer}.
-     */
-    public PLayer getDisplayedLayer() {
         if (this.getLayersReference().isEmpty()) {
             return null;
         }
 
         final PLayer res = this.getLayer(0);
         if (res instanceof KNodeAbstractNode) {
-            return res;
+            return (KNodeAbstractNode) res;
         } else {
             return null;
         }

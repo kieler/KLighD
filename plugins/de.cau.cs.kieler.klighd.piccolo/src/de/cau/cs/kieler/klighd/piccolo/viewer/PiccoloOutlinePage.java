@@ -378,7 +378,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 final KlighdSWTGraphicsEx graphics = ((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());
 
                 final Rectangle2D globalClipBounds =
-                        topNode.getDiagramMainCamera().getDisplayedLayer().getGlobalFullBounds();
+                        topNode.getDiagramMainCamera().getDisplayedKNodeNode().getGlobalFullBounds();
 
                 final Region clip = new Region(graphics.getDevice());
                 clip.add(toSWTRectangle(clipOutlineOverlay.getBoundsReference().getBounds()));
@@ -606,7 +606,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             //  'originalCamera.getDisplayedLayer().getParent()' is calculated. This way an
             //  optional translation of the parent inode's child area is also respected!
             final Point2D clipOffset =
-                    originalCamera.getDisplayedLayer().getParent().getGlobalTranslation();
+                    originalCamera.getDisplayedKNodeNode().getParent().getGlobalTranslation();
 
             final PBounds outlineRectBounds =
                     originalCamera.getViewBounds().moveBy(clipOffset.getX(), clipOffset.getY());

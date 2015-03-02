@@ -552,7 +552,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         final AffineTransform t = AffineTransform.getScaleInstance(scale, scale);
 
         final PBounds destBounds =
-                NodeUtil.clipRelativeGlobalBoundsOf(camera.getDisplayedLayer(),
+                NodeUtil.clipRelativeGlobalBoundsOf(camera.getDisplayedKNodeNode(),
                         camera.getDisplayedKNodeNode());
         t.translate(-destBounds.x, -destBounds.y);
         camera.animateViewToTransform(t, duration);

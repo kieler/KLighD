@@ -366,7 +366,7 @@ public class DiagramController {
 
         // first check whether 'diagramElement' is represented by any figure (PNode)
         //  that is contained by any other figure (and thus hopefully contained in the figure tree)
-        if (p == canvasCamera.getDisplayedLayer()) {
+        if (p == canvasCamera.getDisplayedKNodeNode()) {
             return true;
         } else if (p == null || p.getParent() == null) {
             return false;

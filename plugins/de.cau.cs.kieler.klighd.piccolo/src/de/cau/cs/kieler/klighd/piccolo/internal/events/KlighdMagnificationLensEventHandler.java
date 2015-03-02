@@ -164,7 +164,7 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
         final float scale = STORE.getFloat(KlighdPreferences.MAGNIFICATION_LENS_SCALE) / 100f;
         viewTransform.scale(scale, scale);
 
-        final double clipScale = mainCamera.getDisplayedLayer().getScale();
+        final double clipScale = mainCamera.getDisplayedKNodeNode().getScale();
         viewTransform.scale(1 / clipScale, 1 / clipScale);
         
         final Point2D pos = event.getPosition();
@@ -186,7 +186,7 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
             lensCamera.setViewTransform(createViewTransform(event));
 
             lensCamera.getLayersReference().clear();
-            lensCamera.addLayer(mainCamera.getDisplayedLayer());
+            lensCamera.addLayer(mainCamera.getDisplayedKNodeNode());
             lensVisible = true;
             lensCamera.getParent().setVisible(true);
         }
