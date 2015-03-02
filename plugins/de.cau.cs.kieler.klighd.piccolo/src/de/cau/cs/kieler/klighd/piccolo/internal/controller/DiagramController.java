@@ -468,7 +468,7 @@ public class DiagramController {
                     diagramElement.toString()));
         }
 
-        canvasCamera.exchangeDisplayedKNodeNode(node);
+        canvasCamera.exchangeDisplayedNode(node);
         zoomController.setFocusNode(diagramElement);
     }
 
@@ -594,7 +594,7 @@ public class DiagramController {
                 }
 
                 if (!shapeNode.getVisible()) {
-                    // the visibility is set to false for newly introduced elemen       ts in #addNode,
+                    // the visibility is set to false for newly introduced elements in #addNode,
                     //  #addPort, and #addLabel for avoiding unnecessary flickering and indicating
                     //  to fade it in
                     // note the special behavior of FadeNodeInActivity if 'bounds' is 'null',
