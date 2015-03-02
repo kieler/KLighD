@@ -96,9 +96,7 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
     private boolean expanded = false;
 
     /**
-     * Returns whether this child area is expanded.
-     *
-     * @return true if this child area is expanded; false else
+     * {@inheritDoc}
      */
     public boolean isExpanded() {
         return expanded;

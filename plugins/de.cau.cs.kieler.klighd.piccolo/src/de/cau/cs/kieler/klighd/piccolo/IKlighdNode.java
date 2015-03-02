@@ -92,6 +92,14 @@ public interface IKlighdNode {
          * @return the parent {@link IKNodeNode}
          */
         IKNodeNode getParentNode();
+
+        /**
+         * Returns whether this {@link IKNodeNode} is expanded.
+         *
+         * @return <code>true</code> if this {@link IKNodeNode} is expanded, <code>false</code>
+         *         otherwise
+         */
+        boolean isExpanded();
     }
 
     /**
