@@ -57,7 +57,7 @@ public class KNodeTopNode extends KNodeAbstractNode {
 
     /**
      * Sets the main camera of the diagram headed by this top node. This method may currently only
-     * be called from {@link KlighdMainCamera#setDisplayedNode(IInternalKNodeNode)}.
+     * be called from {@link KlighdMainCamera#setDisplayedKNodeNode(KNodeAbstractNode))}.
      *
      * @param camera
      */

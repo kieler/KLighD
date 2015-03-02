@@ -68,7 +68,7 @@ public class KlighdMainCamera extends PCamera {
      * @param node
      *            the {@link KNodeAbstractNode} to displayed
      */
-    public void setDisplayedNode(final KNodeAbstractNode node) {
+    public void setDisplayedKNodeNode(final KNodeAbstractNode node) {
         this.addLayer(0, node);
 
         if (node instanceof KNodeTopNode) {
@@ -86,7 +86,7 @@ public class KlighdMainCamera extends PCamera {
      *            the {@link KNodeAbstractNode} to be now displayed, must be contained in the
      *            diagram's PNode figure tree!
      */
-    public void exchangeDisplayedNode(final KNodeAbstractNode node) {
+    public void exchangeDisplayedKNodeNode(final KNodeAbstractNode node) {
 
         final KNodeAbstractNode prevNode = this.getDisplayedKNodeNode();
         if (prevNode == node) {

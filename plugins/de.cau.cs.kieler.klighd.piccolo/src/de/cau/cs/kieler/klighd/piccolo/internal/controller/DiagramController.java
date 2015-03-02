@@ -174,7 +174,7 @@ public class DiagramController {
         this.zoomController = new DiagramZoomController(topNode, canvasCamera, this);
 
         canvasCamera.getRoot().addChild(topNode);
-        canvasCamera.setDisplayedNode(topNode);
+        canvasCamera.setDisplayedKNodeNode(topNode);
 
         addExpansionListener(topNode);
 
@@ -468,7 +468,7 @@ public class DiagramController {
                     diagramElement.toString()));
         }
 
-        canvasCamera.exchangeDisplayedNode(node);
+        canvasCamera.exchangeDisplayedKNodeNode(node);
         zoomController.setFocusNode(diagramElement);
     }
 
