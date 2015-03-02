@@ -468,7 +468,7 @@ public class DiagramController {
                     diagramElement.toString()));
         }
 
-        canvasCamera.exchangeDisplayedNode(node);
+        canvasCamera.exchangeDisplayedKNodeNode(node);
         zoomController.setFocusNode(diagramElement);
     }
 
