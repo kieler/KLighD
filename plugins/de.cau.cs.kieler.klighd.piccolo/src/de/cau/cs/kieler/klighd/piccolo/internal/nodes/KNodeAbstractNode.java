@@ -16,8 +16,12 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
+import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * An abstract super class of {@link KNodeTopNode} and {@link KNodeNode} contributing common
@@ -150,5 +154,38 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
             throw new RuntimeException("Can't set scale to 0");
         }
         scale(scale / curScale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paint(final PPaintContext paintContext) {
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        if (kpc.isAddSemanticData()) {
+            final KlighdSemanticDiagramData sd =
+                    getViewModelElement().getData(KLayoutData.class).getProperty(
+                            KlighdProperties.SEMANTIC_DATA);
+            kpc.getKlighdGraphics().startGroup(sd);
+        }
+
+        // since the super implementation doesn't contribute any functionality
+        //  the call 'super.paint(paintContext)' is omitted here
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintAfterChildren(final PPaintContext paintContext) {
+        // since the super implementation doesn't contribute any functionality
+        //  the call 'super.paintAfterChildren(paintContext)' is omitted here
+
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+        if (kpc.isAddSemanticData()) {
+            kpc.getKlighdGraphics().endGroup();
+        }
     }
 }

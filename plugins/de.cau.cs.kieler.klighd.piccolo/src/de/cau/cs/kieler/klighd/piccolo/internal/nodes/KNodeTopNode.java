@@ -16,12 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
-import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
@@ -136,29 +131,6 @@ public class KNodeTopNode extends KNodeAbstractNode {
     @Override
     protected boolean pickAfterChildren(final PPickPath pickPath) {
         return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paint(final PPaintContext paintContext) {
-        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        final KlighdSemanticDiagramData sd =
-                getViewModelElement().getData(KLayoutData.class).getProperty(
-                        KlighdProperties.SEMANTIC_DATA);
-        g2.startGroup(sd);
-        super.paint(paintContext);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintAfterChildren(final PPaintContext paintContext) {
-        super.paintAfterChildren(paintContext);
-        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        g2.endGroup();
     }
 
     /**
