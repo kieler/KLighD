@@ -57,7 +57,7 @@ public interface IKlighdNode {
     public interface IKGraphElementNode extends IKlighdNode {
 
         /**
-         * @return the {@link KGraphElement} represented by this  {@link edu.umd.cs.piccolo.PNode PNode}
+         * @return the {@link KGraphElement} represented by this {@link IKGraphElementNode}
          */
         KGraphElement getViewModelElement();
     }
@@ -73,29 +73,25 @@ public interface IKlighdNode {
     public interface IKNodeNode extends IKGraphElementNode {
 
         /**
-         * The property name for changes of the child areas expansion status.<br>
+         * The property name used while notifying changes of {@link IKNodeNode}'s expansion status.<br>
          * <b>Caution!</b> Don't let listeners rely on the propagated old value as that might not be
-         * correct in case they are fired via {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.
-         * IInternalKGraphElementNode.IInternalKNodeNode#touchExpanded()
-         * IInternalKNodeNode#touchExpanded()}.
+         * correct in case a notification is fired via
+         * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode#touchExpanded()
+         * KNodeAbstractNode#touchExpanded()}.
          */
         String PROPERTY_EXPANSION = "expansion";
 
         /**
-         * @return the {@link KNode} represented by this {@link edu.umd.cs.piccolo.PNode PNode}
+         * @return the {@link KNode} represented by this {@link IKNodeNode}
          */
         KNode getViewModelElement();
 
         /**
-         * Returns the parent {@link IKNodeNode} that (deeply) contains this {@link IKNodeNode}.
-         *
-         * @return the parent {@link IKNodeNode}
+         * @return the parent {@link IKNodeNode} that (deeply) contains this {@link IKNodeNode}
          */
         IKNodeNode getParentKNodeNode();
 
         /**
-         * Returns whether this {@link IKNodeNode} is expanded.
-         *
          * @return <code>true</code> if this {@link IKNodeNode} is expanded, <code>false</code>
          *         otherwise
          */
@@ -111,9 +107,9 @@ public interface IKlighdNode {
     public interface IKlighdFigureNode extends IKlighdNode {
 
         /**
-         * @return the {@link KRendering} represented by this {@link edu.umd.cs.piccolo.PNode PNode}
-         *         , maybe <code>null</code> if this figure node does not represent a
-         *         {@link KRendering} but is part of a
+         * @return the {@link KRendering} represented by this {@link IKlighdFigureNode}, maybe
+         *         <code>null</code> if this figure node does not represent a {@link KRendering} but
+         *         is part of a custom figure contributed via a
          *         {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRendering}, for
          *         example.
          */
