@@ -109,9 +109,9 @@ public class KNodeTopNode extends KNodeAbstractNode {
      */
     @Override
     public void setExpanded(final boolean expanded) {
-        if (!expanded) {
+//        if (expanded) {
             super.setExpanded(expanded);
-        }
+//        }
     }
 
     /**
@@ -164,6 +164,7 @@ public class KNodeTopNode extends KNodeAbstractNode {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Rectangle2D getExportedBounds() {
         return this.getUnionOfChildrenBounds(null);
     }

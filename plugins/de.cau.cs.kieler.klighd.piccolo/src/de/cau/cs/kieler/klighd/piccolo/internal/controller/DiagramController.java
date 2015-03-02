@@ -176,12 +176,12 @@ public class DiagramController {
         canvasCamera.getRoot().addChild(topNode);
         canvasCamera.setDisplayedNode(topNode);
 
-//        addExpansionListener(topNode);
+        addExpansionListener(topNode);
 
         contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
 
         topNode.setExpanded(true);
-        addChildren(topNode);
+//        addChildren(topNode);
     }
 
     /**
