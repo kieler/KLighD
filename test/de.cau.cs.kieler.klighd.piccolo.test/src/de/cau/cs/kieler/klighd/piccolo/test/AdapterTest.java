@@ -338,9 +338,9 @@ public class AdapterTest {
                     // chsch: added some hotfix here
 
         PLayer edgeLayer = null;
-        if (piccoloTree.getParentNode() != null) {
-            edgeLayer = piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer() != null
-                ? piccoloTree.getParentNode().getChildAreaNode().getEdgeLayer() : new PLayer();
+        if (piccoloTree.getParentKNodeNode() != null) {
+            edgeLayer = piccoloTree.getParentKNodeNode().getChildAreaNode().getEdgeLayer() != null
+                ? piccoloTree.getParentKNodeNode().getChildAreaNode().getEdgeLayer() : new PLayer();
                     // chsch: added some hotfix here
         }
         for (int i = 0; i < kgraph.getChildren().size(); i++) {

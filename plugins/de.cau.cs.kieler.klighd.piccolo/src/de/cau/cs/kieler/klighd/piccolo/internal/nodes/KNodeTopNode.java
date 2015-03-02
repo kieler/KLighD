@@ -100,7 +100,7 @@ public class KNodeTopNode extends KNodeAbstractNode {
      * {@inheritDoc}
      */
     @Override
-    public KNodeAbstractNode getParentNode() {
+    public KNodeAbstractNode getParentKNodeNode() {
         return null;
     }
 

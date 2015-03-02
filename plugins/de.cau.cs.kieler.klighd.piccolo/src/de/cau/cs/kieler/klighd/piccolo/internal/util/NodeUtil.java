@@ -474,7 +474,7 @@ public final class NodeUtil {
                 throw new IllegalArgumentException("Class ParentINodeIterator:"
                         + "Constructor of ParentINodeIterator requires a non-null input.");
             }
-            this.node = includingSelf ? child : child.getParentNode();
+            this.node = includingSelf ? child : child.getParentKNodeNode();
         }
 
         public boolean hasNext() {
@@ -486,7 +486,7 @@ public final class NodeUtil {
                 throw new IllegalStateException("Class ParentINodeIterator: There is no more element.");
             }
             final IKNodeNode res = node;
-            node = node.getParentNode();
+            node = node.getParentKNodeNode();
             return res;
         }
 
@@ -517,12 +517,12 @@ public final class NodeUtil {
             return null;
 
         } else if (node0 == node1) {
-            return node0.getParentNode();
+            return node0.getParentKNodeNode();
 
         }
 
-        final IKNodeNode node0parent = node0.getParentNode();
-        final IKNodeNode node1parent = node1.getParentNode();
+        final IKNodeNode node0parent = node0.getParentKNodeNode();
+        final IKNodeNode node1parent = node1.getParentKNodeNode();
 
         // and some not so trivial cases...
         if (node0parent == null || node1parent == null) {

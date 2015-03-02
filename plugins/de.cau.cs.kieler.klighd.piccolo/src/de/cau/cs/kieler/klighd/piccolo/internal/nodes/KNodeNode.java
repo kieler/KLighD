@@ -250,7 +250,7 @@ public class KNodeNode extends KNodeAbstractNode implements
      * {@inheritDoc}
      */
     @Override
-    public KNodeAbstractNode getParentNode() {
+    public KNodeAbstractNode getParentKNodeNode() {
         return parent;
     }
 
@@ -460,6 +460,7 @@ public class KNodeNode extends KNodeAbstractNode implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public Rectangle2D getExportedBounds() {
         final PBounds bounds;
 

@@ -81,7 +81,7 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
     /**
      * {@inheritDoc}
      */
-    public abstract KNodeAbstractNode getParentNode();
+    public abstract KNodeAbstractNode getParentKNodeNode();
 
     /**
      * Returns the bounds of this node's exportable area that are required to fully export the

@@ -91,7 +91,7 @@ public interface IKlighdNode {
          *
          * @return the parent {@link IKNodeNode}
          */
-        IKNodeNode getParentNode();
+        IKNodeNode getParentKNodeNode();
 
         /**
          * Returns whether this {@link IKNodeNode} is expanded.
