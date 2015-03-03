@@ -46,10 +46,10 @@ public class DiagramZoomController {
 
     private final DiagramController diagramController;
 
-    private final Predicate<KGraphElement> visibilityFilter = new Predicate<KGraphElement>() {
+    private final Predicate<KGraphElement> isDisplayedFilter = new Predicate<KGraphElement>() {
 
         public boolean apply(final KGraphElement input) {
-            return diagramController.isVisible(input, false);
+            return diagramController.isDisplayed(input, false);
         }
     };
 
@@ -359,7 +359,7 @@ public class DiagramZoomController {
         // incorporate only those contained ports & labels that are actually visible
         //  others may not have reasonable positions
         for (final KGraphElement element : Iterables.filter(
-                Iterables.concat(node.getPorts(), node.getLabels()), visibilityFilter)) {
+                Iterables.concat(node.getPorts(), node.getLabels()), isDisplayedFilter)) {
             final KShapeLayout pL = element.getData(KShapeLayout.class);
             float val;
 

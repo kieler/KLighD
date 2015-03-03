@@ -344,6 +344,65 @@ public class DiagramController {
     }
 
     /**
+     * Provides the displaying state of the given diagram element. A diagram element is said to be
+     * displayed if it is part of the currently depicted diagram <b>regardless</b> of the currently
+     * visible diagram excerpt (viewport).<br>
+     * <br>
+     * Note that a recursive displaying check along the containment hierarchy is done only if
+     * <code>checkContainment</code> is <code>true</code>. Otherwise that is omitted for performance
+     * reasons. Thus, given the nested diagram nodes A contains B contains C with A collapsed this
+     * method may return <code>true</code> for C if <code>checkContainment</code> is
+     * <code>false</code>.
+     *
+     * @param diagramElement
+     *            a {@link KGraphElement}
+     * @param checkParents
+     *            whether the parent (containment) hierarchy is to be checked, too
+     * @return <code>true</code> if the {@link KGraphElement} <code>diagramElement</code> is
+     *         visible, <code>false</code> otherwise.
+     */
+    public boolean isDisplayed(final KGraphElement diagramElement, final boolean checkParents) {
+        final RenderingContextData contextData = RenderingContextData.basicGet(diagramElement);
+        if (contextData == null || !contextData.isActive(diagramElement)) {
+            // in this case either node rendering figure exists as of now or it has been
+            // removed from the diagram due to node collapse or a hide execution
+            return false;
+        }
+
+        if (checkParents) {
+            // TODO implementation to be fine-tuned wrt. performance etc.
+            final PNode node = (PNode) getRepresentation(diagramElement);
+            return node != null && NodeUtil.isDisplayed(node, canvasCamera);
+
+        } else {
+            // beyond testing for the 'active' flag I want to at least test the display of the
+            // corresponding parent node in case of labels and ports (and their labels)
+
+            if (diagramElement instanceof KNode) {
+                // nothing to do
+                return true;
+            }
+
+            if (diagramElement instanceof KEdge) {
+                // edges are handled explicitly at removal of nodes (see DiagramController) so we don't
+                //  test their source and target node explicitly here.
+                return true;
+            }
+
+            if (diagramElement instanceof KPort) {
+                return isDisplayed(((KPort) diagramElement).getNode(), false);
+            }
+
+            if (diagramElement instanceof KLabel) {
+                return isDisplayed(((KLabel) diagramElement).getParent(), false);
+            }
+
+            // the required default case, should never be executed!
+            return false;
+        }
+    }
+
+    /**
      * Provides the visibility state of the given diagram element, assuming the parent
      * {@link KGraphElement} is visible. A node is said to be visible if it is drawn in the
      * currently depicted diagram excerpt (viewport). <br>

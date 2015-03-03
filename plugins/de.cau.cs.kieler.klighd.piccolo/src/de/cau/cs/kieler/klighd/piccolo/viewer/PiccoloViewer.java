@@ -29,11 +29,8 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -57,7 +54,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
@@ -353,45 +349,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * {@inheritDoc}
      */
     public boolean isDisplayed(final KGraphElement diagramElement, final boolean checkParents) {
-        final RenderingContextData contextData = RenderingContextData.basicGet(diagramElement);
-        if (contextData == null || !contextData.isActive(diagramElement)) {
-            // in this case either node rendering figure exists as of now or it has been
-            // removed from the diagram due to node collapse or a hide execution
-            return false;
-        }
-
-        if (checkParents) {
-            // TODO implementation to be fine-tuned wrt. performance etc.
-            final PNode node = (PNode) controller.getRepresentation(diagramElement);
-            return node != null && NodeUtil.isDisplayed(node, this.canvas.getCamera());
-
-        } else {
-            // beyond testing for the 'active' flag I want to at least test the display of the
-            // corresponding parent node in case of labels and ports (and their labels)
-
-            if (diagramElement instanceof KNode) {
-                // nothing to do
-                return true;
-            }
-
-            if (diagramElement instanceof KEdge) {
-                // edges are handled explicitly at removal of nodes (see DiagramController) so we
-                // don't
-                // test their source and target node explicitly here.
-                return true;
-            }
-
-            if (diagramElement instanceof KPort) {
-                return isDisplayed(((KPort) diagramElement).getNode(), false);
-            }
-
-            if (diagramElement instanceof KLabel) {
-                return isDisplayed(((KLabel) diagramElement).getParent(), false);
-            }
-
-            // the required default case, should never be executed!
-            return false;
-        }
+        return controller.isDisplayed(diagramElement, checkParents);
     }
 
     /**
