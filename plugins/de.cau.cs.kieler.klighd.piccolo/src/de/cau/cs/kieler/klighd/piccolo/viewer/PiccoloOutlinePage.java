@@ -47,7 +47,6 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
@@ -179,11 +178,12 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                     return;
                 }
 
-                // that the clip overlay invisible if the current clip node is the KNodeTopNode,
+                // set the clip overlay invisible if the current clip node is the KNodeTopNode,
                 //  and visible otherwise, the clip node is a KNodeNode in those cases
-                clipOutlineOverlay.setVisible(((KlighdMainCamera) evt.getSource())
-                        .getDisplayedKNodeNode() instanceof KNodeNode);
-                clipOutlineOverlay.repaint();
+                // switched from 'setVisible(...)' to 'setOccluded(...)' in order to prevent the
+                //  calls of 'repaint()' / 'invalidatePaint()' that are hard-coded in 'setVisible(...)'
+                clipOutlineOverlay.setOccluded(((KlighdMainCamera) evt.getSource())
+                        .getDisplayedKNodeNode() instanceof KNodeTopNode);
             }
         }
     };
@@ -395,8 +395,12 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         clipOutlineOverlay.setStrokeColor((RGB) null);
         clipOutlineOverlay.setPaint(clipOutlineOverlayColoring.getFirst());
         clipOutlineOverlay.setPaintAlpha(clipOutlineOverlayColoring.getSecond());
-        clipOutlineOverlay.setVisible(diagramMainCamera.getDisplayedKNodeNode() instanceof KNodeNode);
-        // ... implies to switch it off if displayedNode is a KNodeTopNode.
+
+        // switched from 'setVisible(...)' to 'setOccluded(...)' in order to prevent the
+        //  calls of 'repaint()' / 'invalidatePaint()' that are hard-coded in 'setVisible(...)'
+        clipOutlineOverlay.setOccluded(
+                // implies to switch it off if displayedKNodeNode is a KNodeTopNode
+                (diagramMainCamera.getDisplayedKNodeNode() instanceof KNodeTopNode));
 
         outlineCamera.addChild(clipOutlineOverlay);
 
