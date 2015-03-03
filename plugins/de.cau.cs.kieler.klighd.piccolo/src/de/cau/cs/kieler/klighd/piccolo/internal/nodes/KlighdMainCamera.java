@@ -24,6 +24,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
@@ -38,9 +39,16 @@ public class KlighdMainCamera extends PCamera {
 
     /**
      * Constructor.
+     *
+     * @param root
+     *            the {@link PRoot} to add <code>this</code> camera to, may be <code>null</code>
      */
-    public KlighdMainCamera() {
+    public KlighdMainCamera(final PRoot root) {
         super();
+
+        if (root != null) {
+            root.addChild(this);
+        }
     }
 
     /**

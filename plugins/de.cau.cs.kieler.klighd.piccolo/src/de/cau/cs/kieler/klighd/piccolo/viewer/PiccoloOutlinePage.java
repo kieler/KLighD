@@ -199,15 +199,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
         @Override
         public KlighdMainCamera createBasicSceneGraph() {
-            final PCamera origCam = super.createBasicSceneGraph();
-            final PNode root = origCam.getRoot();
-
-            // the API does not allow to inject a certain camera so we have to remove
-            //  the existing one and add the desired one ... yes this is quite ugly!
-
-            origCam.removeFromParent();
-
-            final KlighdMainCamera cam = new KlighdMainCamera() {
+            return new KlighdMainCamera(new KlighdRoot()) {
 
                 private static final long serialVersionUID = -3551541550083498908L;
 
@@ -220,11 +212,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                     //  an update of the outline camera is scheduled
                     PiccoloOutlinePage.this.cameraTimer.restart();
                 }
-
             };
-
-            root.addChild(cam);
-            return cam;
         }
 
         @Override

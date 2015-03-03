@@ -34,7 +34,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PInputManager;
-import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PPanEventHandler;
 import edu.umd.cs.piccolo.event.PZoomEventHandler;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -54,6 +53,13 @@ public class KlighdCanvas extends PSWTCanvas {
      * be incorporated while drawing the diagram.
      */
     private KlighdSWTGraphicsEx graphics;
+
+    /**
+     * The {@link PInputManager} employed in this diagram canvas, is cached here for the sake of
+     * squeezing out some more performance, which is most effective while dispatching mouse move
+     * events.
+     */
+    private PInputManager inputManager;
 
     /**
      * Construct a canvas with the basic scene graph consisting of a root node, a camera, and a
@@ -100,9 +106,48 @@ public class KlighdCanvas extends PSWTCanvas {
 
                 if (thisCanvas.graphics != null) {
                     thisCanvas.graphics.dispose();
+                    thisCanvas.graphics = null;
+                }
+                if (thisCanvas.inputManager != null) {
+                    thisCanvas.inputManager = null;
                 }
             }
         });
+    }
+
+    /**
+     * Named specialized {@link PSWTRoot} contributing the customized {@link KlighdInputManager}.
+     *
+     * @author chsch
+     */
+    protected class KlighdRoot extends PSWTRoot {
+
+        private static final long serialVersionUID = 5244208939770217529L;
+
+        private PInputManager inputManager = null;
+
+        /**
+         * Standard constructor.
+         */
+        public KlighdRoot() {
+            super(KlighdCanvas.this);
+        }
+
+        @Override
+        public PInputManager getDefaultInputManager() {
+            if (inputManager == null) {
+                inputManager = new KlighdInputManager();
+                addInputSource(inputManager);
+
+                KlighdCanvas.this.addListener(SWT.Dispose, new Listener() {
+                    public void handleEvent(final Event event) {
+                        removeInputSource(inputManager);
+                        inputManager = null;
+                    }
+                });
+            }
+            return inputManager;
+        }
     }
 
     /**
@@ -121,31 +166,7 @@ public class KlighdCanvas extends PSWTCanvas {
      */
     @Override // SUPPRESS CHECKSTYLE Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
     public PCamera createBasicSceneGraph() {
-        final PRoot r = new PSWTRoot(this) {
-            private static final long serialVersionUID = -4737922663028304522L;
-
-            private PInputManager inputManager = null;
-
-            @Override
-            public PInputManager getDefaultInputManager() {
-                if (inputManager == null) {
-                    inputManager = new KlighdInputManager();
-                    addInputSource(inputManager);
-
-                    KlighdCanvas.this.addListener(SWT.Dispose, new Listener() {
-                        public void handleEvent(final Event event) {
-                            removeInputSource(inputManager);
-                            inputManager = null;
-                        }
-                    });
-                }
-                return inputManager;
-            }
-        };
-
-        final PCamera c = new KlighdMainCamera();
-        r.addChild(c);
-        return c;
+        return new KlighdMainCamera(new KlighdRoot());
     }
 
     @Override
@@ -195,7 +216,13 @@ public class KlighdCanvas extends PSWTCanvas {
      */
     @Override
     public void sendInputEventToInputManager(final InputEvent awtEvent, final int type) {
-        super.sendInputEventToInputManager(awtEvent, type);
+        // instead of calling the super implementation
+        //  save some performance and keep and call the input manager directly
+
+        if (this.inputManager == null) {
+            this.inputManager = getRoot().getDefaultInputManager();
+        }
+        this.inputManager.processEventFromCamera(awtEvent, type, getCamera());
     }
 
     /**

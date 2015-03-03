@@ -56,11 +56,8 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                 ? properties.getProperty(GENERATOR) : GENERATOR.getDefault();
 
         // Construct a KLighD main camera ...
-        final KlighdMainCamera camera = new KlighdMainCamera();
-
-        // add it to a Piccolo2D root figure
-        //  (the basic PRoot is sufficient as this canvas doesn't rely on any SWT stuff)
-        new PRoot().addChild(camera);
+        //  (the basic PRoot is sufficient here, as this canvas doesn't rely on any SWT stuff)
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
         try {
             // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
