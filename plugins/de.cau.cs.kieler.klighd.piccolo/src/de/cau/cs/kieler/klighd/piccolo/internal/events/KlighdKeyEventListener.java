@@ -53,22 +53,16 @@ public class KlighdKeyEventListener implements KeyListener {
      * {@inheritDoc}
      */
     public void keyPressed(final KeyEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdKeyEvent(e, SWT.KeyDown),
-                        java.awt.event.KeyEvent.KEY_PRESSED, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdKeyEvent(e, SWT.KeyDown),
+                java.awt.event.KeyEvent.KEY_PRESSED);
     }
 
     /**
      * {@inheritDoc}
      */
     public void keyReleased(final KeyEvent e) {
-        this.canvas
-                .getRoot()
-                .getDefaultInputManager()
-                .processEventFromCamera(new KlighdKeyEvent(e, SWT.KeyUp),
-                        java.awt.event.KeyEvent.KEY_RELEASED, this.canvas.getCamera());
+        this.canvas.sendInputEventToInputManager(new KlighdKeyEvent(e, SWT.KeyUp),
+                java.awt.event.KeyEvent.KEY_RELEASED);
     }
 
 
