@@ -92,9 +92,7 @@ public class RenderingTest {
     private void initialize(final KNode n) {
         graph = n;
 
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
         controller = new DiagramController(graph, camera, true, false);
     }

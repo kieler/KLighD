@@ -28,20 +28,18 @@ import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 
 /**
- * 
+ *
  * Testing of klighd piccolo adapters are correctly set/remembered on
  * creating, collapsing and expanding nodes.
- * 
+ *
  * @author ckru
- * 
+ *
  */
 public class AdapterTest {
 
     @Test
     public void layoutTest() {
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
         final KNode root = KimlUtil.createInitializedNode();
         final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
@@ -91,15 +89,13 @@ public class AdapterTest {
         Assert.assertEquals(5, pport.getBoundsReference().height, 0);
         Assert.assertEquals(5, pport.getBoundsReference().width, 0);
     }
-  
+
     /**
      * Test for checking if all kgraph elements are also existing in the pgraph.
      */
     @Test
     public void nodeTest() {
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
         final KNode root = KimlUtil.createInitializedNode();
         final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
@@ -109,15 +105,13 @@ public class AdapterTest {
         final KNodeAbstractNode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
-    
+
     /**
      * Test adding of elements was correct after expansion.
      */
     @Test
     public void nodeTestExpanded() {
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
         final KNode root = KimlUtil.createInitializedNode();
         final KLabel l = KimlUtil.createInitializedLabel(root);
@@ -130,15 +124,13 @@ public class AdapterTest {
         final KNodeAbstractNode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
-    
+
     /**
      * Test adding of elements while node is collapsed.
      */
     @Test
     public void nodeTestCollapsed() {
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
         final KNode root = KimlUtil.createInitializedNode();
         final KLabel l = KimlUtil.createInitializedLabel(root);
         l.setText("rootnode");
@@ -150,15 +142,13 @@ public class AdapterTest {
         final KNodeAbstractNode topNode = controller.getNode();
         Assert.assertFalse(checkStructure(root, topNode));
     }
-    
+
     /**
      * Test if all adapters are added correctly.
      */
     @Test
     public void adapterTest() {
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
         final KNode root = KimlUtil.createInitializedNode();
         final KLabel l = KimlUtil.createInitializedLabel(root);
@@ -169,15 +159,13 @@ public class AdapterTest {
         controller.getNode();
         Assert.assertTrue(checkAdapters(child));
     }
-    
+
     /**
      * Test if all adapters are added correctly.
      */
     @Test
     public void adapterTestExpanded() {
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
         final KNode root = KimlUtil.createInitializedNode();
         final KLabel l = KimlUtil.createInitializedLabel(root);
@@ -193,16 +181,16 @@ public class AdapterTest {
         controller.getNode();
         Assert.assertTrue(checkAdapters(child));
     }
-    
+
     /**
      * Check recursively if given KNode has the correct adapters installed for a collapsed node.
-     * 
+     *
      * @param kgraph
      *            the model whoose adapters to check
      * @return false if not all adapters set.
      */
     private boolean checkAdaptersCollapsed(final KNode kgraph) {
-        List<Adapter> nodeadapters = kgraph.eAdapters();
+        final List<Adapter> nodeadapters = kgraph.eAdapters();
         if (nodeadapters.size() != 5) {
             return false;
         }
@@ -216,22 +204,20 @@ public class AdapterTest {
         }
 
         // check recursively for children
-        for (KNode child : kgraph.getChildren()) {
+        for (final KNode child : kgraph.getChildren()) {
             if (!checkAdapters(child)) {
                 return false;
             }
         }
         return true;
     }
-    
+
     /**
      * Test if all adapters are added correctly.
      */
     //@Test
     public void adapterTestCollapsed() {
-        final KlighdMainCamera camera = new KlighdMainCamera();
-        final PRoot pRoot = new PRoot();
-        pRoot.addChild(camera);
+        final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
         final KNode root = KimlUtil.createInitializedNode();
         final KLabel l = KimlUtil.createInitializedLabel(root);
@@ -246,16 +232,16 @@ public class AdapterTest {
         controller.getNode();
         Assert.assertTrue(this.checkAdaptersCollapsed(cc));
     }
-    
+
     /**
      * Check recursively if given KNode has all its adapters added correctly.
-     * 
+     *
      * @param kgraph
      *            the model whoose adapters to check
      * @return false if not all adapters set.
      */
     private boolean checkAdapters(final KNode kgraph) {
-        List<Adapter> nodeadapters = kgraph.eAdapters();
+        final List<Adapter> nodeadapters = kgraph.eAdapters();
         if (nodeadapters.size() != 6) {
             return false;
         }
@@ -272,8 +258,8 @@ public class AdapterTest {
         }
 
         // check adapters on ports
-        for (KPort p : kgraph.getPorts()) {
-            List<Adapter> portadapters = p.eAdapters();
+        for (final KPort p : kgraph.getPorts()) {
+            final List<Adapter> portadapters = p.eAdapters();
             if (Iterables.any(nodeadapters,
                     this.getCondition("AbstractKGERenderingController$ElementAdapter"))
                     || !Iterables
@@ -283,8 +269,8 @@ public class AdapterTest {
             }
         }
         // check adapters on labels
-        for (KLabel l : kgraph.getLabels()) {
-            List<Adapter> labeladapters = l.eAdapters();
+        for (final KLabel l : kgraph.getLabels()) {
+            final List<Adapter> labeladapters = l.eAdapters();
             if (Iterables.any(nodeadapters,
                     this.getCondition("AbstractKGERenderingController$ElementAdapter"))
                     || !Iterables.any(labeladapters,
@@ -295,8 +281,8 @@ public class AdapterTest {
         }
 
         // check adapters on edges
-        for (KEdge e : kgraph.getOutgoingEdges()) {
-            List<Adapter> edgeadapters = e.eAdapters();
+        for (final KEdge e : kgraph.getOutgoingEdges()) {
+            final List<Adapter> edgeadapters = e.eAdapters();
             if (Iterables.any(nodeadapters,
                     this.getCondition("AbstractKGERenderingController$ElementAdapter"))
                     || !Iterables
@@ -308,7 +294,7 @@ public class AdapterTest {
         }
 
         // check recursively for children
-        for (KNode child : kgraph.getChildren()) {
+        for (final KNode child : kgraph.getChildren()) {
             if (!checkAdapters(child)) {
                 return false;
             }
@@ -316,11 +302,11 @@ public class AdapterTest {
         return true;
     }
 
-    
+
     /**
      * Recusively check if every given element of the input kgraph is also present in the Piccolo
      * structure.
-     * 
+     *
      * @param kgraph
      *            the input model
      * @param piccoloTree
@@ -402,21 +388,21 @@ public class AdapterTest {
 
         return true;
     }
-    
+
     /**
      * Generate a predicate that checks if an adapters classname matches the given string.
-     * 
+     *
      * @param name
      *            The string thats supposed to be the class name of the adapter.
      * @return true if name matches classname
      */
     private Predicate<Adapter> getCondition(final String name) {
         return new Predicate<Adapter>() {
-            public boolean apply(Adapter arg0) {
+            public boolean apply(final Adapter arg0) {
                 return arg0.getClass().getSimpleName().equals(name);
             }
 
         };
     }
-    
+
 }
