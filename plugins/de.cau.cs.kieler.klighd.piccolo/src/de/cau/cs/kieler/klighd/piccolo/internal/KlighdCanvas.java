@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
+package de.cau.cs.kieler.klighd.piccolo.internal;
 
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdFocusEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdInputManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PInputManager;
@@ -113,10 +113,11 @@ public class KlighdCanvas extends PSWTCanvas {
      * based on AWT's event type codes by one based on SWT's event type codes.<br>
      * <br>
      * Besides, no initial instance of {@link edu.umd.cs.piccolo.PLayer PLayer} is added - our
-     * {@link KNodeTopNode} takes that part; see
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode KNodeTopNode} takes that
+     * part; see
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController#DiagramController(
-     * de.cau.cs.kieler.core.kgraph.KNode, PCamera, boolean)
-     * DiagramController.DiagramController(KNode, PCamera, boolean)}.
+     * de.cau.cs.kieler.core.kgraph.KNode, KlighdMainCamera, boolean, boolean)
+     * DiagramController.DiagramController(KNode, KlighdMainCamera, boolean, boolean)}.
      */
     @Override // SUPPRESS CHECKSTYLE Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
     public PCamera createBasicSceneGraph() {

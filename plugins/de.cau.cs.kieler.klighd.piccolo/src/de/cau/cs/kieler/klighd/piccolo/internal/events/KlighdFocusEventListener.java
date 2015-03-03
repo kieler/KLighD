@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 
 /**
  * 

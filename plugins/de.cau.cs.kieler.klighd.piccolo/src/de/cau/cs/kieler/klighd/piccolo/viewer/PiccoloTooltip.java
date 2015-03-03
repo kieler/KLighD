@@ -40,7 +40,7 @@ import edu.umd.cs.piccolo.util.PStack;
 
 /**
  * The class realizes a tooltip for the
- * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas KlighdCanvas}. Tooltips are
+ * {@link de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas KlighdCanvas}. Tooltips are
  * either retrieved from a {@link edu.umd.cs.piccolo.PNode PNode}'s root {@link KRendering} or, if
  * this is not available, from the corresponding {@link KNode}'s {@link KShapeLayout}.
  * 

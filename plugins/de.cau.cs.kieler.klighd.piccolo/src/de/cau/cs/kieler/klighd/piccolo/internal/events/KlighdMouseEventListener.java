@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerEx.IKlighdInputEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener.KlighdEventHelper;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 
 /**
  * Custom mouse and gesture listener implementation that is supposed to avoid the translation of SWT

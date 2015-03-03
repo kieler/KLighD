@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 
 /**
  * Abstract implementation of {@link IDiagramExporter} supporting the export of diagrams depicted by

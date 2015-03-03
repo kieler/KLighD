@@ -21,7 +21,7 @@ import edu.umd.cs.piccolo.event.PInputEventListener;
 
 /**
  * Specialized {@link PInputManager} that replaces the evaluation of events from the SWT event
- * listeners installed on the {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas
+ * listeners installed on the {@link de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas
  * KlighdCanvas} based on AWT's event type codes by an evaluation based on the codes of
  * {@link org.eclipse.swt.SWT SWT}. This way {@link org.eclipse.swt.SWT#MouseDoubleClick
  * SWT#MouseDoubleClick}, {@link org.eclipse.swt.SWT#MouseHover SWT#MouseHover}, and
