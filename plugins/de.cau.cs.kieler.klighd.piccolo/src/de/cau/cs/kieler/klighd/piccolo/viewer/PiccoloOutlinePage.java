@@ -245,6 +245,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
             public void actionPerformed(final ActionEvent e) {
                 adjustCamera();
+                adjustOutlineRect();
             }
         });
         cameraTimer.setRepeats(false);
@@ -254,6 +255,9 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 new ActionListener() {
 
             public void actionPerformed(final ActionEvent e) {
+                if (cameraTimer.isRunning()) {
+                    return;
+                }
                 adjustOutlineRect();
             }
         });
