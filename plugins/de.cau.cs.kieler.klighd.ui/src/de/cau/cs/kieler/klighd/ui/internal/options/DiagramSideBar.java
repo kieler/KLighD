@@ -64,7 +64,6 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
@@ -655,10 +654,10 @@ public final class DiagramSideBar {
         }
 
         // side bar is hidden: if required, initialize the canvas buttons.
-        if (viewContext.getViewer().getControl() instanceof KlighdCanvas
+        if (viewContext.getViewer().getControl() instanceof Composite
                 && canvasZoomBtnsContainer == null) {
 
-            final KlighdCanvas canvas = (KlighdCanvas) viewContext.getViewer().getControl();
+            final Composite canvas = (Composite) viewContext.getViewer().getControl();
             canvas.addDisposeListener(new DisposeListener() {
 
                 public void widgetDisposed(final DisposeEvent e) {
