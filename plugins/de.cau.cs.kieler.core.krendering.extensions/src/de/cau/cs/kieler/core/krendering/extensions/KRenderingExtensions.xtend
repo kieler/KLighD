@@ -247,23 +247,77 @@ class KRenderingExtensions {
         ];
         return rendering;
     }
-    
+
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a single (!) click on <code>rendering</code>. The action triggered with a delay if and
+     * only if no subsequent click occurs within the system wide double click time.
+     * 
+     * @extensionCategory actions       
+     */    
     def <T extends KRendering> T addSingleClickAction(T rendering, String actionId) {
         return rendering.addAction(Trigger::SINGLECLICK, actionId);
     }
 
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a single (!) click on <code>rendering</code>. The action triggered with a delay if and
+     * only if no subsequent click occurs within the system wide double click time, and if the
+     * required modifier keys are pressed.
+     * 
+     * @extensionCategory actions       
+     */    
     def <T extends KRendering> T addSingleClickAction(T rendering, String actionId,
             boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
         return rendering.addAction(Trigger::SINGLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
     }
 
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a double (or tripple, ...) click on <code>rendering</code>.
+     * 
+     * @extensionCategory actions       
+     */    
     def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId) {
         return rendering.addAction(Trigger::DOUBLECLICK, actionId);
     }
 
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a double (or tripple, ...) click on <code>rendering</code> if the required modifier
+     * keys are pressed.
+     * 
+     * @extensionCategory actions       
+     */    
     def <T extends KRendering> T addDoubleClickAction(T rendering, String actionId,
             boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
         return rendering.addAction(Trigger::DOUBLECLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
+    }
+
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a single click on <code>rendering</code> regardless of whether more clicks follow
+     * within the system wide double click time. In contrast to #addSingleClickAction, there's
+     * no delay between the event receipt and the action execution.
+     * 
+     * @extensionCategory actions       
+     */    
+    def <T extends KRendering> T addSingleOrMultiClickAction(T rendering, String actionId) {
+        return rendering.addAction(Trigger::SINGLE_OR_MULTICLICK, actionId);
+    }
+
+    /**
+     * Configures the action being registered in KLighD with <code>actionId</code> to be executed
+     * after a single click on <code>rendering</code> regardless of whether more clicks follow
+     * within the system wide double click time, if the required modifier keys are pressed.
+     * In contrast to #addSingleClickAction, there's no delay between the event receipt and the
+     * action execution.
+     * 
+     * @extensionCategory actions       
+     */    
+    def <T extends KRendering> T addSingleOrMultiClickAction(T rendering, String actionId,
+            boolean altPressed, boolean ctrlCmdPressed, boolean shiftPressed) {
+        return rendering.addAction(Trigger::SINGLE_OR_MULTICLICK, actionId, altPressed, ctrlCmdPressed, shiftPressed);
     }
 
 

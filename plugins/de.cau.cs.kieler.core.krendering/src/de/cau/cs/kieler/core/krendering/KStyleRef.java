@@ -74,7 +74,7 @@ public interface KStyleRef extends KStyle {
      * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * A list of {@link KStyle} class instances (List<Class<KStyle>>) that is looked for in <code>styleHolder</code>; if it is empty all styles are evaluated.
+     * A list of {@link KStyle} class instances (List&lt;Class&lt;KStyle&gt;&gt;) that is used for filtering the styles being "imported" from <code>styleHolder</code>; if it is empty all styles of <code>styleHolder</code> are (transitively) evaluated.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Referenced Types</em>' attribute list.
      * @see de.cau.cs.kieler.core.krendering.KRenderingPackage#getKStyleRef_ReferencedTypes()
