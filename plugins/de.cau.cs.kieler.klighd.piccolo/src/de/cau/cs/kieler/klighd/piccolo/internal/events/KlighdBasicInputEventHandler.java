@@ -146,6 +146,12 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
             }
             break;
 
+        case KlighdMouseEventListener.MouseSingleOrMultiClick:
+            if (delegate instanceof IKlighdInputEventHandlerEx) {
+                ((IKlighdInputEventHandlerEx) delegate).mouseSingleOrMultiClicked(event);
+            }
+            break;
+
         case SWT.MouseHover:
             if (delegate instanceof IKlighdInputEventHandlerEx) {
                 ((IKlighdInputEventHandlerEx) delegate).mouseHovered(event);
@@ -185,6 +191,12 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
      * {@inheritDoc}
      */
     public void mouseDoubleClicked(final PInputEvent event) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void mouseSingleOrMultiClicked(final PInputEvent event) {
     }
 
     /**

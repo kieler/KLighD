@@ -25,6 +25,7 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KAction;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.Trigger;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
@@ -141,6 +142,8 @@ public class KlighdActionEventHandler implements PInputEventListener {
             }
         }
 
+        final Trigger trigger = me.getTrigger();
+
         ActionContext context = null; // construct the context lazily when it is required
         ActionResult resultOfLastAction = null;
         ActionResult resultOfLastActionRequiringLayout = null;
@@ -149,7 +152,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         boolean anyActionRequiresLayout = false;
 
         for (final KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
-            if (!action.getTrigger().equals(me.getTrigger()) || !guardsMatch(action, me)) {
+            if (!action.getTrigger().equals(trigger) || !guardsMatch(action, me)) {
                 continue;
             }
 

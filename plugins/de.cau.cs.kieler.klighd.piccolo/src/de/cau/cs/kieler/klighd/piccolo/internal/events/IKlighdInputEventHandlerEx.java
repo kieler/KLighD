@@ -33,7 +33,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 public interface IKlighdInputEventHandlerEx {
 
     /**
-     * Method is invoked when mouse button 1 has been double clicked.<br>
+     * Method is invoked when mouse button 1 or 2 has been double clicked.<br>
      * To be implemented by clients.
      * 
      * @param event
@@ -44,6 +44,19 @@ public interface IKlighdInputEventHandlerEx {
      *            {@link KlighdInputManager.IKlighdInputEvent}
      */
     void mouseDoubleClicked(final PInputEvent event);
+
+    /**
+     * Method is invoked when mouse button 1 or 2 has been double clicked.<br>
+     * To be implemented by clients.
+     *
+     * @param event
+     *            a corresponding {@link PInputEvent}, which has is usually created in
+     *            {@link edu.umd.cs.piccolo.PInputManager#processInput()
+     *            PInputManager#processInput()}; the source event is accessible via
+     *            {@link PInputEvent#getSourceSwingEvent()}, it is supposed to by an instance of
+     *            {@link KlighdInputManager.IKlighdInputEvent}
+     */
+    void mouseSingleOrMultiClicked(final PInputEvent event);
 
     /**
      * Method is invoked when the mouse rests at a position for some time.<br>

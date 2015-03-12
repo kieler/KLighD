@@ -45,10 +45,16 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         MouseWheelListener, DragDetectListener, GestureListener {
     
     /**
-     * Dedicated event type constant, reuses {@link SWT#Iconify} in hope that choice will never lead
-     * to any conflict...
+     * Dedicated event type constant, reuses {@link SWT#Iconify} in hope that the choice will never
+     * lead to any conflict...
      */
     public static final int MouseClick = SWT.Iconify; // SUPPRESS CHECKSTYLE Name
+
+    /**
+     * Dedicated event type constant, reuses {@link SWT#Deiconify} in hope that the choice will
+     * never lead to any conflict...
+     */
+    public static final int MouseSingleOrMultiClick = SWT.Deiconify; // SUPPRESS CHECKSTYLE Name
 
     private KlighdCanvas canvas = null;
     
@@ -112,25 +118,35 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
 
     private boolean[] lastSingleClickConfig = new boolean[] { Boolean.FALSE };
 
-    private long doubleClickDeadLine = System.currentTimeMillis();
-    private boolean doubleClicked = false;
-
     /**
      * {@inheritDoc}
      */
     public void mouseUp(final MouseEvent e) {
-        final long currentTime = System.currentTimeMillis();
-        
+        // notify a 'MouseUp' each time
         this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseUp),
                 java.awt.event.MouseEvent.MOUSE_RELEASED);
 
-        if (doubleClicked && currentTime < doubleClickDeadLine) {
-            // i.e. a doubleClick event occurred and it did before the deadline
-            // suppress the propagation of the mouse up
-            doubleClicked = false;
+        // fortunately SWT provides the number of mouse button events
+        //  that occurred within the system wide mouse double click period
+
+        // if this is the 2nd or a number higher mouseUp event ...
+        if (e.count != 1) {
+            lastSingleClickConfig[0] = Boolean.FALSE;
+            // ... stop here, the remaining part is valid for the 1st mouseUp only!
             return;
-        } 
-        
+        }
+
+        // at the 1st occurrence of a mouse up notify furthermore a
+        //  'MouseSingleOrMultiClick' event without any delay; subsequent mouseUp
+        //  within the system wide mouse double click period are ignored
+
+        this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, MouseSingleOrMultiClick),
+                KlighdInputManager.MOUSE_SINGLE_OR_MULTI_CLICKED);
+
+        // besides schedule a timer that notifies a MouseClick event if no more
+        //  mouseUp occurs within the double click time
+        // this way both a diagram action triggered by a single click and a double click
+        //  triggered one may be associated with the same diagram element and properly distinguished
         final Display display = this.canvas.getDisplay();
         final int doubleClickTime = display.getDoubleClickTime();
         
@@ -147,15 +163,12 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
                 }
             }
         });
-
-        doubleClickDeadLine = System.currentTimeMillis() + doubleClickTime;
     }
 
     /**
      * {@inheritDoc}
      */
     public void mouseDoubleClick(final MouseEvent e) {
-        doubleClicked = true;
         this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseDoubleClick),
                 KlighdInputManager.MOUSE_DOUBLE_CLICKED);
     }
@@ -268,6 +281,9 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
               case SWT.MouseDoubleClick:
                   str.append("MouseDoubleClick");
                   break;
+              case MouseSingleOrMultiClick:
+                  str.append("SingleOrMultiMouseClick");
+                  break;
                default:
                   str.append("unknown type");
             }
@@ -299,15 +315,27 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
          */
         public Trigger getTrigger() {
             if (eventType == MouseClick) {
-                if (mouseEvent.button == 1) {
+                switch (mouseEvent.button) {
+                case 1:
                     return Trigger.SINGLECLICK;
-                } else if (mouseEvent.button == 2) {
+                case 2:
                     return Trigger.MIDDLE_SINGLECLICK;
                 }
-            }
-            if (eventType == SWT.MouseDoubleClick
-                    && mouseEvent.button == 1) {
-                return Trigger.DOUBLECLICK;
+
+            } else if (eventType == SWT.MouseDoubleClick) {
+                switch (mouseEvent.button) {
+                case 1:
+                    return Trigger.DOUBLECLICK;
+                case 2:
+                    return Trigger.MIDDLE_DOUBLECLICK;
+                }
+            } else if (eventType == MouseSingleOrMultiClick) {
+                switch (mouseEvent.button) {
+                case 1:
+                    return Trigger.SINGLE_OR_MULTICLICK;
+                case 2:
+                    return Trigger.MIDDLE_SINGLE_OR_MULTICLICK;
+                }
             }
             return null;
         }
