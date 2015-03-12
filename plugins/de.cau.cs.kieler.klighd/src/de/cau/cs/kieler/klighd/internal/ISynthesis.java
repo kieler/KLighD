@@ -46,11 +46,11 @@ import de.cau.cs.kieler.klighd.ViewContext;
 public interface ISynthesis {
 
     /**
-     * Returns the class of the source model.
+     * Returns the type of the input data.
      * 
-     * @return the class of the source model
+     * @return the type of the input data.
      */
-    Class<?> getSourceClass();
+    Class<?> getInputDataType();
 
     /**
      * Method for checking whether <code>this</code> diagram synthesis implementation supports

@@ -361,7 +361,10 @@ public final class KlighdDataManager {
                     } else {
                         try {
                             idSynthesisMapping.put(id, synthesis);
-                            typeSynthesisMapping.put(synthesis.getSourceClass(), synthesis);
+                            final Class<?> inputDataType = synthesis.getInputDataType();
+                            if (inputDataType != null) {
+                                typeSynthesisMapping.put(inputDataType, synthesis);
+                            }
 
                         } catch (final WrappedException exception) {
                             StatusManager.getManager().handle(

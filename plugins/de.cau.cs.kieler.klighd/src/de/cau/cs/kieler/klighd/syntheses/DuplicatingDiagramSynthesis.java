@@ -58,7 +58,7 @@ public class DuplicatingDiagramSynthesis extends AbstractDiagramSynthesis<KNode>
      * {@inheritDoc}
      */
     @Override
-    public Class<?> getSourceClass() {
+    public Class<?> getInputDataType() {
         return KNode.class;
     }
 }

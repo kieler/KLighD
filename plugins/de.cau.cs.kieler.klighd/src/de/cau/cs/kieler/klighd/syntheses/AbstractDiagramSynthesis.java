@@ -18,7 +18,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Function;
 
@@ -31,6 +34,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -98,9 +102,9 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
-    public Class<?> getSourceClass() {
+    public Class<?> getInputDataType() {
         if (!triedToInferClasses) {
-            inferSourceAndTargetModelClass();
+            inferInputDataType();
         }
         return sourceModelClass;
     }
@@ -108,22 +112,54 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
-    protected void inferSourceAndTargetModelClass() {
+    protected void inferInputDataType() {
         this.triedToInferClasses = true;
-        // try to find a method with one parameter which returns KNode
-        // takes the first matching method with parameter 0 != Object
+        // try to find the implementation of method 'transform(S input) : KNode'
+        //  in order to determine then input data's type, which can't be revealed otherwise
+        //  since the type parameterization is not available in compiled classes
+        // however, this approach suffers from the issue that multiple methods of the same
+        //  signature except the param type can be declared in concrete diagram syntheses
+        // thus, the identification of 'transform(S input) : KNode' must not stop if
+        //  such a method has been found but has to make sure the absence of any further one!
+        // this, however, might waste a bit of performance...
+
+        // a note on '!method.isBridge()': if a class determines the value of a generic type
+        //  argument while subclassing/implementing a parameterized class/interface, the methods
+        //  referring to that generic type argument in their list of parameters are handled as follows:
+        // for each implementation/override of such a method with a parameter's type being defined
+        //  in terms of the particular class type parameter in the original declaration
+        //  the java compilers generate additional so-called bridge methods that take the lower
+        //  bound type (like EObject in case of "<S extends EObject>", is Object by default),
+        //  cast it to the concrete type determined by the subclass, and call the (overridden/
+        //  implementation) method requiring the parameter in shape of the concrete type
+        // those methods will, of course, be found by the loop below but must be ignored!
+
         Method transformMethod = null;
-        for (final Method method : getClass().getDeclaredMethods()) {
-            if (method.getParameterTypes().length == 1
-                    && method.getReturnType().equals(KNode.class)
-                    && method.getName().equals(TRANSFORM_METHOD_NAME)) {
-                transformMethod = method;
-                // keep searching if the parameter is of type Object
-                // this is necessary to skip the method with type Object that is always present when
-                // dealing with generic typed methods
-                if (!method.getParameterTypes()[0].equals(new Object().getClass())) {
-                    break;
+        for (final Method method : getClass().getMethods()) {
+            if (method.getReturnType().equals(KNode.class)
+                    && method.getName().equals(TRANSFORM_METHOD_NAME)
+                    && !method.isBridge()
+                    && method.getParameterTypes().length == 1) {
+
+                if (transformMethod == null) {
+                    transformMethod = method;
+                    continue;
                 }
+
+                final String msg = "KLighD " + getClass().getSimpleName()
+                        + " diagram synthesis init: found multiple methods named "
+                        + "\"transform\" requiring a single parameter and returning a KNode."
+                        + KlighdPlugin.LINE_SEPARATOR
+                        + "KLighD's automatic source data type resolution requires exactly one "
+                        + "\"transform\" method implementing the abstract one required by the "
+                        + "super class." + KlighdPlugin.LINE_SEPARATOR
+                        + "Alternatively provide the input data type by overriding "
+                        + "\"getInputDataType()\".";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+
+                transformMethod = null;
+                break;
             }
         }
         // infer the types if a matching method has been found
@@ -140,7 +176,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     public boolean supports(final Object model, final ViewContext viewContext) {
 
-        if (this.getSourceClass().isInstance(model)) {
+        if (this.getInputDataType().isInstance(model)) {
             @SuppressWarnings("unchecked")
             final S input = (S) model;
             return supports(input);

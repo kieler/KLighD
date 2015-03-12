@@ -362,7 +362,7 @@ public class ViewContext extends MapPropertyHolder {
             this.businessModel = model;
 
             if (diagramSynthesis == null
-                    || !diagramSynthesis.getSourceClass().isAssignableFrom(model.getClass())) {
+                    || !diagramSynthesis.getInputDataType().isAssignableFrom(model.getClass())) {
                 this.configure(properties);
             }
         }
@@ -385,7 +385,7 @@ public class ViewContext extends MapPropertyHolder {
 
         if (chosenUpdateStrategy.requiresDiagramSynthesisReRun(this)) {
             if (this.diagramSynthesis != null
-                    && diagramSynthesis.getSourceClass().isAssignableFrom(sourceModel.getClass())) {
+                    && diagramSynthesis.getInputDataType().isAssignableFrom(sourceModel.getClass())) {
 
                 try {
                     newViewModel = this.diagramSynthesis.transform(sourceModel, this);
