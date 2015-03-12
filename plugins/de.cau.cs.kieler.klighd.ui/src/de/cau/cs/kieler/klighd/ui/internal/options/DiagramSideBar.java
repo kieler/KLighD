@@ -459,10 +459,12 @@ public final class DiagramSideBar {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                viewContext.setZoomStyle(ZoomStyle.create(false, zoomToFitBtn.getSelection(), false));
+                viewContext.setZoomStyle(
+                        ZoomStyle.create(false, zoomToFitBtn.getSelection(), false));
+
                 // perform zoom to fit upon activation of the toggle button
                 if (zoomToFitBtn.getSelection()) {
-                    LightDiagramServices.layoutDiagram(viewContext);
+                    LightDiagramServices.zoomDiagram(viewContext);
                     // uncheck the zoom to focus button
                     zoomToFocusBtn.setSelection(false);
                 }
@@ -482,11 +484,12 @@ public final class DiagramSideBar {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                viewContext.setZoomStyle(ZoomStyle.create(false, false,
-                        zoomToFocusBtn.getSelection()));
+                viewContext.setZoomStyle(
+                        ZoomStyle.create(false, false, zoomToFocusBtn.getSelection()));
+
                 // perform zoom to focus upon activation of the toggle button
                 if (zoomToFocusBtn.getSelection()) {
-                    LightDiagramServices.layoutDiagram(viewContext);
+                    LightDiagramServices.zoomDiagram(viewContext);
                     // uncheck the zoom to fit button
                     zoomToFitBtn.setSelection(false);
                 }
