@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -26,8 +26,8 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * {@link org.eclipse.swt.SWT#MouseHover SWT#MouseHover}, and {@link org.eclipse.swt.SWT#Gesture
  * SWT#Gesture} events, for example.<br>
  * <br>
- * This interface is not intended to be implemented by clients! 
- * 
+ * This interface is not intended to be implemented by clients!
+ *
  * @author chsch
  */
 public interface IKlighdInputEventHandlerEx {
@@ -35,7 +35,7 @@ public interface IKlighdInputEventHandlerEx {
     /**
      * Method is invoked when mouse button 1 or 2 has been double clicked.<br>
      * To be implemented by clients.
-     * 
+     *
      * @param event
      *            a corresponding {@link PInputEvent}, which has is usually created in
      *            {@link edu.umd.cs.piccolo.PInputManager#processInput()
@@ -61,7 +61,7 @@ public interface IKlighdInputEventHandlerEx {
     /**
      * Method is invoked when the mouse rests at a position for some time.<br>
      * To be implemented by clients.
-     * 
+     *
      * @param event
      *            a corresponding {@link PInputEvent}, which has is usually created in
      *            {@link edu.umd.cs.piccolo.PInputManager#processInput()
@@ -77,7 +77,7 @@ public interface IKlighdInputEventHandlerEx {
      * PBasicInputEventHandler#mouseWheelRotated(PInputEvent)} for reacting on vertical rotation
      * event.<br>
      * To be implemented by clients.
-     * 
+     *
      * @param event
      *            a corresponding {@link PInputEvent}, which has is usually created in
      *            {@link edu.umd.cs.piccolo.PInputManager#processInput()
@@ -90,7 +90,7 @@ public interface IKlighdInputEventHandlerEx {
     /**
      * Method is invoked when a gesture is performed on the track pad.<br>
      * To be implemented by clients.
-     * 
+     *
      * @param event
      *            a corresponding {@link PInputEvent}, which has is usually created in
      *            {@link edu.umd.cs.piccolo.PInputManager#processInput()
@@ -113,21 +113,21 @@ public interface IKlighdInputEventHandlerEx {
      * KlighdGestureEvent}.<br>
      * <br>
      * This interface is not intended to be implemented by clients.
-     * 
+     *
      * @author chsch
      */
     public interface IKlighdInputEvent {
-        
+
         /**
          * Returns the {@link org.eclipse.swt.SWT SWT} event type.
-         * 
+         *
          * @return the event type
          */
         int getEventType();
-        
+
         /**
          * Returns the {@link org.eclipse.swt.SWT SWT} event.
-         * 
+         *
          * @return the original {@link TypedEvent}
          */
         TypedEvent getEvent();

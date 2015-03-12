@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -30,7 +30,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.IKlighdInputEventHandlerE
  * Custom key listener implementation that is supposed to avoid the translation of SWT events into
  * AWT ones. To that end, it contributes own an {@link java.awt.event.KeyEvent} type that wraps the
  * original events.
- * 
+ *
  * @author chsch
  */
 public class KlighdKeyEventListener implements KeyListener {
@@ -38,10 +38,10 @@ public class KlighdKeyEventListener implements KeyListener {
     static final boolean OS_MACOSX = KlighdPlugin.IS_MACOSX;
 
     private KlighdCanvas canvas = null;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param theCanvas
      *          the canvas it delegates the events to
      */
@@ -69,26 +69,26 @@ public class KlighdKeyEventListener implements KeyListener {
     /**
      * Custom {@link java.awt.event.KeyEvent} that wraps an {@link KeyEvent SWT KeyEvent}
      * and can be pushed trough Piccolo's runtime.
-     * 
+     *
      * @author chsch
      */
     public static class KlighdKeyEvent extends java.awt.event.KeyEvent implements
             IKlighdInputEvent {
-        
+
         private static final long serialVersionUID = -4510781224721252994L;
-        
+
         private static Component dummySrc = new Component() {
             private static final long serialVersionUID = -1814729194899793112L;
         };
-        
+
         private KeyEvent keyEvent = null;
         private int eventType = SWT.None;
-        
+
         private KlighdEventHelper helper;
-        
+
         /**
          * Constructor.
-         * 
+         *
          * @param ke
          *            the SWT {@link KeyEvent}
          * @param type
@@ -107,14 +107,14 @@ public class KlighdKeyEventListener implements KeyListener {
         public KeyEvent getEvent() {
             return this.keyEvent;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         public int getEventType() {
             return this.eventType;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -122,7 +122,7 @@ public class KlighdKeyEventListener implements KeyListener {
         public int getKeyCode() {
             return this.keyEvent.keyCode;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -130,7 +130,7 @@ public class KlighdKeyEventListener implements KeyListener {
         public int getKeyLocation() {
             return this.keyEvent.keyLocation;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -138,7 +138,7 @@ public class KlighdKeyEventListener implements KeyListener {
         public int getModifiers() {
             return  this.helper == null ? 0 : this.helper.getModifiers();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -146,7 +146,7 @@ public class KlighdKeyEventListener implements KeyListener {
         public int getModifiersEx() {
             return  this.helper == null ? 0 : this.helper.getModifiersEx();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -154,7 +154,7 @@ public class KlighdKeyEventListener implements KeyListener {
         public boolean isAltDown() {
             return helper.isAltDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -162,7 +162,7 @@ public class KlighdKeyEventListener implements KeyListener {
         public boolean isControlDown() {
             return helper.isControlDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -170,7 +170,7 @@ public class KlighdKeyEventListener implements KeyListener {
         public boolean isMetaDown() {
             return helper.isMetaDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -190,26 +190,26 @@ public class KlighdKeyEventListener implements KeyListener {
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.
      * KlighdMouseWheelEvent KlighdMouseWheelEvent}. Introduced to avoid code clones and have the
      * implementations of the methods below at a single place.
-     * 
+     *
      * @author chsch
      */
     static class KlighdEventHelper {
-        
+
         private int button = 0;
-        private int stateMask = 0;        
-        
+        private int stateMask = 0;
+
         /**
          * Constructor.
-         * 
+         *
          * @param ge
          */
         public KlighdEventHelper(final GestureEvent ge) {
             this.stateMask = ge.stateMask;
         }
-        
+
         /**
          * Constructor.
-         * 
+         *
          * @param ke
          */
         public KlighdEventHelper(final KeyEvent ke) {
@@ -218,14 +218,14 @@ public class KlighdKeyEventListener implements KeyListener {
 
         /**
          * Constructor.
-         * 
+         *
          * @param me
          */
         public KlighdEventHelper(final MouseEvent me) {
             this.button = me.button;
             this.stateMask = me.stateMask;
         }
-        
+
 
         public boolean isShiftDown() {
             return (stateMask & SWT.SHIFT) != 0;
@@ -313,8 +313,8 @@ public class KlighdKeyEventListener implements KeyListener {
             if (button == 3 || (stateMask & SWT.BUTTON3) != 0) { // SUPPRESS CHECKSTYLE MagicNumber
                 modifiers = modifiers | InputEvent.BUTTON3_DOWN_MASK;
             }
-            
+
             return modifiers;
         }
-    }    
+    }
 }

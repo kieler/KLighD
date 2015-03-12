@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -48,7 +48,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 public class KlighdInputManager extends PInputManager implements IKlighdInputEventHandlerEx {
 
     //SUPPRESS CHECKSTYLE NEXT 30 MagicNumber
-    
+
     /**
      * The "mouse double click" event type. Such events are fired if the mouse has been double
      * clicked.
@@ -66,27 +66,27 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
      * while.
      */
     public static final int MOUSE_HOVERED = 10 + MouseEvent.MOUSE_FIRST;
-    
+
     /**
      * The "mouse horizontal wheel" event type. Such events are fired if the mouse' horizontal wheel
      * is rotated.
      */
     public static final int MOUSE_HORIZONTAL_WHEEL = 11 + MouseEvent.MOUSE_FIRST;
-    
+
     /**
      * The "mouse gesture" event type. Such events are treated as mouse event since AWT doesn't
      * provide any gesture support yet.
      */
     public static final int MOUSE_GESTURE = 12 + MouseEvent.MOUSE_FIRST;
-    
+
     /**
-     * The delegate event handler employed for replacing the AWT event code-based event evaluation.  
+     * The delegate event handler employed for replacing the AWT event code-based event evaluation.
      */
     private KlighdBasicInputEventHandler helper = new KlighdBasicInputEventHandler(this);
 
 
     // the overriding method replacing the original event evaluation
-    
+
     /**
      * {@inheritDoc}
      */

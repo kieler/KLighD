@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -38,12 +38,12 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener.Kl
  * Custom mouse and gesture listener implementation that is supposed to avoid the translation of SWT
  * events into AWT ones. To that end, it contributes own {@link java.awt.event.MouseEvent}
  * {@link java.awt.event.MouseWheelEvent} types that wrap the original events.
- * 
+ *
  * @author chsch
  */
 public class KlighdMouseEventListener implements MouseListener, MouseMoveListener, MouseTrackListener,
         MouseWheelListener, DragDetectListener, GestureListener {
-    
+
     /**
      * Dedicated event type constant, reuses {@link SWT#Iconify} in hope that the choice will never
      * lead to any conflict...
@@ -57,10 +57,10 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
     public static final int MouseSingleOrMultiClick = SWT.Deiconify; // SUPPRESS CHECKSTYLE Name
 
     private KlighdCanvas canvas = null;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param theCanvas
      *          the canvas it delegates the events to
      */
@@ -172,7 +172,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         this.canvas.sendInputEventToInputManager(new KlighdMouseEvent(e, SWT.MouseDoubleClick),
                 KlighdInputManager.MOUSE_DOUBLE_CLICKED);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -188,7 +188,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         this.canvas.sendInputEventToInputManager(new KlighdGestureEvent(e, SWT.Gesture),
                         KlighdInputManager.MOUSE_GESTURE);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -202,11 +202,11 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
     /**
      * Custom {@link java.awt.event.MouseEvent} that wraps the original {@link MouseEvent SWT MouseEvent}
      * and can be pushed trough Piccolo's runtime.
-     * 
+     *
      * @author chsch
      */
     public static class KlighdMouseEvent extends java.awt.event.MouseEvent implements IKlighdInputEvent {
-        
+
         private static final long serialVersionUID = 4690767684494461534L;
 
         private static Component dummySrc = new Component() {
@@ -215,12 +215,12 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
 
         private MouseEvent mouseEvent = null;
         private int eventType = SWT.None;
-        
+
         private KlighdEventHelper helper;
-        
+
         /**
          * Constructor.
-         * 
+         *
          * @param me
          *            the SWT mouse event
          * @param type
@@ -241,14 +241,14 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public MouseEvent getEvent() {
             return this.mouseEvent;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         public int getEventType() {
             return this.eventType;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -305,12 +305,12 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
 
             str.append(",clickCount=").append(getClickCount());
 
-            return str.toString(); 
+            return str.toString();
         }
-        
+
         /**
          * Provides the MouseEventType translated into values of {@link Trigger}.
-         * 
+         *
          * @return the event {@link Trigger} or <code>null</code> if event type is not supported.
          */
         public Trigger getTrigger() {
@@ -339,7 +339,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             }
             return null;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -347,7 +347,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public int getModifiers() {
             return this.helper == null ? 0 : this.helper.getModifiers();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -355,7 +355,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public int getModifiersEx() {
             return this.helper == null ? 0 : this.helper.getModifiersEx();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -363,7 +363,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isAltDown() {
             return helper.isAltDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -371,7 +371,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isControlDown() {
             return helper.isControlDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -379,7 +379,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isMetaDown() {
             return helper.isMetaDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -388,33 +388,33 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             return helper.isShiftDown();
         }
     }
-    
+
     /**
      * Custom {@link java.awt.event.MouseEvent} that wraps an {@link GestureEvent SWT GestureEvent}
      * and can be pushed trough Piccolo's runtime. Need this wrapping
      * {@link java.awt.event.MouseEvent} since AWT doesn't provide any gesture-specific event.<br>
      * In addition, the constructor of its super class {@link java.awt.event.InputEvent} is package
      * protected.
-     * 
+     *
      * @author chsch
      */
     public static class KlighdGestureEvent extends java.awt.event.MouseEvent implements
             IKlighdInputEvent {
-        
+
         private static final long serialVersionUID = 2711517281987328193L;
 
         private static Component dummySrc = new Component() {
             private static final long serialVersionUID = 2609348390438849160L;
         };
-        
+
         private GestureEvent gestureEvent = null;
         private int eventType = SWT.None;
-        
+
         private KlighdEventHelper helper;
 
         /**
          * Constructor.
-         * 
+         *
          * @param ge
          *            the SWT mouse event
          * @param type
@@ -433,14 +433,14 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public GestureEvent getEvent() {
             return this.gestureEvent;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         public int getEventType() {
             return this.eventType;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -448,7 +448,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public int getModifiers() {
             return this.helper == null ? 0 : this.helper.getModifiers();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -456,7 +456,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public int getModifiersEx() {
             return this.helper == null ? 0 : this.helper.getModifiersEx();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -464,7 +464,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isAltDown() {
             return helper.isAltDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -472,7 +472,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isControlDown() {
             return helper.isControlDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -480,7 +480,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isMetaDown() {
             return helper.isMetaDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -489,16 +489,16 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             return helper.isShiftDown();
         }
     }
-    
+
     /**
      * Custom {@link java.awt.event.MouseWheelEvent} that wraps the original {@link MouseEvent SWT
      * MouseEvent} and can be pushed trough Piccolo's runtime.
-     * 
+     *
      * @author mri
      */
     public static class KlighdMouseWheelEvent extends java.awt.event.MouseWheelEvent implements
             IKlighdInputEvent {
-        
+
         private static final long serialVersionUID = -2094261280867051699L;
 
         private static Component fakeSrc = new Component() {
@@ -508,12 +508,12 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         /** Event being wrapped. */
         private MouseEvent mouseEvent;
         private int eventType = SWT.None;
-        
+
         private KlighdEventHelper helper;
 
         /**
          * Constructor.
-         * 
+         *
          * @param me
          *            the {@link SWT} {@link MouseEvent}
          * @param type
@@ -532,21 +532,21 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             this.eventType = type;
             this.helper = new KlighdEventHelper(me);
         }
-        
+
         /**
          * {@inheritDoc}
          */
         public MouseEvent getEvent() {
             return mouseEvent;
         }
-        
+
         /**
          * {@inheritDoc}
          */
         public int getEventType() {
             return eventType;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -554,7 +554,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public int getModifiers() {
             return this.helper == null ? 0 : this.helper.getModifiers();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -562,7 +562,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public int getModifiersEx() {
             return this.helper == null ? 0 : this.helper.getModifiersEx();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -570,7 +570,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isAltDown() {
             return helper.isAltDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -578,7 +578,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isControlDown() {
             return helper.isControlDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -586,7 +586,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public boolean isMetaDown() {
             return helper.isMetaDown();
         }
-        
+
         /**
          * {@inheritDoc}
          */
