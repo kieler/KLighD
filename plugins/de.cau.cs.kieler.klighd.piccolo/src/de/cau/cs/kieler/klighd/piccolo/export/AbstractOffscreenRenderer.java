@@ -16,8 +16,8 @@ package de.cau.cs.kieler.klighd.piccolo.export;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.klighd.IOffscreenRenderer;
+import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -72,7 +72,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
 
         if (properties == null) {
             // layout the diagram
-            DiagramLayoutEngine.INSTANCE.layout(null, viewContext);
+            LightDiagramServices.layoutDiagram(viewContext);
 
         } else {
             // expand the desired elements...
@@ -93,7 +93,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
 
             if (!properties.getProperty(IOffscreenRenderer.NO_LAYOUT)) {
                 // layout the diagram
-                DiagramLayoutEngine.INSTANCE.layout(null, viewContext);
+                LightDiagramServices.layoutDiagram(viewContext);
             }
         }
         
