@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -26,19 +26,19 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties;
 /**
  * Abstract implementation of {@link IOffscreenRenderer} providing common functionalities of
  * concrete for particular diagram formats.
- * 
+ *
  * @author chsch
  */
 public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter implements
         IOffscreenRenderer {
-    
+
     /** Error msg to be delivered in case of figure composition failures. */
-    protected static final String BUILDING_UP_FIGURES_FAILURE_MSG = 
+    protected static final String BUILDING_UP_FIGURES_FAILURE_MSG =
             "KLighD offscreen diagram export: "
                 + "Building up the diagram figures failed with the following exception.";
 
     /** Error msg to be delivered in case of diagram export failures. */
-    protected static final String EXPORT_DIAGRAM_FAILURE_MSG = 
+    protected static final String EXPORT_DIAGRAM_FAILURE_MSG =
             "KLighD offscreen diagram export: "
                 + "Rendering the diagram on the provided canvas failed with the following exception.";
 
@@ -48,7 +48,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
      * figures. Afterwards it collapses, expands, and scales diagram nodes, hides and shows diagram
      * elements, and configures the diagram clip if requested. Finally, it invokes the computation
      * and application of automatic layout data.
-     * 
+     *
      * @param viewContext
      *            the view context describing the diagram to be rendered
      * @param camera
@@ -96,7 +96,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
                 LightDiagramServices.layoutDiagram(viewContext);
             }
         }
-        
+
         return viewContext.getViewModel().getData(KShapeLayout.class);
     }
 }
