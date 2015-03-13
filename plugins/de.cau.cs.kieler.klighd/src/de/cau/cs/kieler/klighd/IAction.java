@@ -13,10 +13,12 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Point;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -152,6 +154,47 @@ public interface IAction {
         @SuppressWarnings("unchecked")
         public <T> T getDomainElement(final KNode viewElement) {
             return (T) this.viewer.getViewContext().getSourceElement(viewElement);
+        }
+
+
+        /**
+         * @return an AWT Geometry {@link Point2D} denoting the mouse cursor position while invoking
+         *         the action in overall diagram coordinates, or <code>null</code> if the action was
+         *         not triggered by clicking on a diagram element but, e.g., via a menu contribution.
+         */
+        public Point2D getDiagramRelativeMousePos() {
+            return null;
+        }
+
+        /**
+         * @return an AWT Geometry {@link Point2D} denoting the mouse cursor position while invoking
+         *         the action in canvas coordinates, or <code>null</code> if the action was not
+         *         triggered by clicking on a diagram element but, e.g., via a menu contribution; is
+         *         similar to {@link #getControlRelativeMousePos()}.
+         */
+        public Point2D getCanvasRelativeMousePos() {
+            return null;
+        }
+
+        /**
+         * @return an SWT {@link Point} denoting the mouse cursor position while invoking the action
+         *         in {@link org.eclipse.swt.widgets.Control Control} coordinates, or
+         *         <code>null</code> if the action was not triggered by clicking on a diagram
+         *         element but, e.g., via a menu contribution; is similar to
+         *         {@link #getCanvasRelativeMousePos()}.
+         */
+        public Point getControlRelativeMousePos() {
+            return null;
+        }
+
+        /**
+         * @return an SWT {@link Point} denoting the mouse cursor position while invoking the action
+         *         in {@link org.eclipse.swt.widgets.Display Display} coordinates, or
+         *         <code>null</code> if the action was not triggered by clicking on a diagram
+         *         element but, e.g., via a menu contribution.
+         */
+        public Point getDisplayRelativeMousePos() {
+            return null;
         }
     }
 
