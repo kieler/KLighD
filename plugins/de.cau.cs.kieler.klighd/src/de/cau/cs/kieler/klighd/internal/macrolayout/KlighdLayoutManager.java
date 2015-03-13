@@ -52,7 +52,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.service.IDiagramLayoutManager;
 import de.cau.cs.kieler.kiml.service.LayoutMapping;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
@@ -154,7 +153,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     public LayoutMapping<KGraphElement> buildLayoutGraph(final IWorkbenchPart workbenchPart,
             final Object diagramPart) {
         final KNode graph;
-        ILayoutRecorder recorder = null;
         final ViewContext viewContext;
 
         // search for the root node
@@ -183,22 +181,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                             + workbenchPart + ", diagram part " + diagramPart);
         }
 
+        final boolean performSizeEstimation = viewContext == null
+                ? true : !viewContext.getProperty(KlighdSynthesisProperties.SUPPRESS_SIZE_ESTIMATION);
+
         // create the mapping
-        final LayoutMapping<KGraphElement> mapping =
-                buildLayoutGraph(graph,
-                        !viewContext.getProperty(KlighdSynthesisProperties.SUPPRESS_SIZE_ESTIMATION));
-        mapping.setProperty(EclipseLayoutConfig.ACTIVATION, false);
+        final LayoutMapping<KGraphElement> mapping = buildLayoutGraph(graph, performSizeEstimation);
+
         if (viewContext != null) {
             mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
-        }
 
-        // remember the layout recorder if any
-        if (viewContext != null) {
-            recorder = viewContext.getLayoutRecorder();
-
-            if (recorder != null) {
-                mapping.setProperty(KlighdInternalProperties.RECORDER, recorder);
-            }
+            // remember the layout recorder if any
+            mapping.setProperty(KlighdInternalProperties.RECORDER, viewContext.getLayoutRecorder());
         }
         return mapping;
     }
@@ -255,17 +248,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the parent node
      * @param layoutParent
      *            the layout parent node
-     * @param suppressSizeEstimation
+     * @param performSizeEstimation
      *            whether the size of nodes & labels should be automatically estimated.
      */
     private void processNodes(final LayoutMapping<KGraphElement> mapping,
-            final KNode parent, final KNode layoutParent, final boolean suppressSizeEstimation) {
+            final KNode parent, final KNode layoutParent, final boolean performSizeEstimation) {
         // iterate through the parent's active children and put copies in the layout graph;
         //  a child is active if it contains RenderingContextData and the 'true' value wrt.
         //  the property KlighdConstants.ACTIVE, see the predicate definition above
         // furthermore, all nodes that have the LAYOUT_IGNORE property set are ignored
         for (final KNode node : Iterables.filter(parent.getChildren(), NODE_FILTER)) {
-            createNode(mapping, node, layoutParent, suppressSizeEstimation);
+            createNode(mapping, node, layoutParent, performSizeEstimation);
         }
     }
 
@@ -320,7 +313,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         //  will be false if all children are inactive and not added to the layout graph later on
         final boolean isCompoundNode =
                 isPopulated && Iterables.any(node.getChildren(), RenderingContextData.IS_ACTIVE);
-        
+
         final Bounds size;
         if (nodeLayout != null) {
             // there is layoutData attached to the node,
