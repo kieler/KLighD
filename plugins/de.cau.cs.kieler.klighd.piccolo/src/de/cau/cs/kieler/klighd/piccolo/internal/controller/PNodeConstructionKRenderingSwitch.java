@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -40,7 +40,7 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
 
     /**
      * Standard constructor.
-     * 
+     *
      * @param theController
      *            the controller that uses this switch and that is delegated to while calling
      *            further methods
@@ -57,7 +57,7 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
 
     /**
      * A.
-     * 
+     *
      * @param theChildPropagatedStyles
      *            propagated style definitions
      * @param theParent
