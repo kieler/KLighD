@@ -36,7 +36,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
-import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
@@ -108,8 +108,10 @@ public class KlighdActionEventHandler implements PInputEventListener {
 
         final PNode pickedNode = inputEvent.getPickedNode();
 
-        KRendering rendering =
-                (KRendering) pickedNode.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
+        KRendering rendering = pickedNode instanceof IKlighdNode.IKlighdFigureNode
+                ? ((IKlighdNode.IKlighdFigureNode) pickedNode).getViewModelElement() : null;
+//            (KRendering) pickedNode.getAttribute(AbstractKGERenderingController.ATTR_KRENDERING);
+
 
         if (rendering == null) {
             // in case no KRendering has been found ...

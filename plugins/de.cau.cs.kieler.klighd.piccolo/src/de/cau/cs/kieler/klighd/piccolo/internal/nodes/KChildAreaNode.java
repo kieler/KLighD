@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import de.cau.cs.kieler.core.krendering.KChildArea;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -29,7 +31,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KChildAreaNode extends KlighdDisposingLayer {
+public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.IKlighdFigureNode {
 
     private static final long serialVersionUID = -403773990520864787L;
 
@@ -42,6 +44,9 @@ public class KChildAreaNode extends KlighdDisposingLayer {
 
     /** the edge layer. */
     private PLayer edgeLayer;
+
+    /** the {@link KChildArea} represented by this {@link KChildAreaNode}, may be <code>null</code>. */
+    private KChildArea childArea;
 
     /** flag indicating whether to clip nodes and edges. */
     private boolean clip = false;
@@ -117,6 +122,32 @@ public class KChildAreaNode extends KlighdDisposingLayer {
             addChild(edgesFirst ? 0 : getChildrenCount(), edgeLayer);
         }
         edgeLayer.addChild(edge);
+    }
+
+    /**
+     * Sets the tracked {@link KChildArea} represented by <code>this</code> {@link KChildAreaNode}.
+     *
+     * @param rendering
+     *            the corresponding {@link KChildArea}
+     * @return <code>this</code> for convenience
+     */
+    public KChildAreaNode setRendering(final KChildArea rendering) {
+        this.childArea = rendering;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public KChildArea getViewModelElement() {
+        return this.childArea;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isSelectable() {
+        return false;
     }
 
     /**

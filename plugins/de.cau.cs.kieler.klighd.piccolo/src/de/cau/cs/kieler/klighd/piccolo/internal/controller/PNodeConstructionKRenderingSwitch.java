@@ -159,7 +159,7 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
     // Child Area
     @Override
     public PNodeController<?> caseKChildArea(final KChildArea childArea) {
-        return controller.createChildArea(parent, initialBounds);
+        return controller.createChildArea(parent, childArea, initialBounds);
     }
 
 }

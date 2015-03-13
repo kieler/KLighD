@@ -17,6 +17,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -79,15 +80,18 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      * {@inheritDoc}
      */
     @Override
-    protected PNodeController<?> createChildArea(final PNode parent, final Bounds initialBounds) {
-        final KChildAreaNode childAreaNode = getRepresentation().getChildAreaNode(); 
-        
+    protected PNodeController<?> createChildArea(final PNode parent, final KChildArea childArea,
+            final Bounds initialBounds) {
+
+        final KChildAreaNode childAreaNode = getRepresentation().getChildAreaNode();
+
         // there can only be none or one child area
         if (childAreaNode.getParent() != null) {
             throw new RuntimeException("More then one child area found in graph element: "
                     + getGraphElement());
         }
 
+        childAreaNode.setRendering(childArea);
         parent.addChild(childAreaNode);
 
         // configure the child area
@@ -118,7 +122,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
         final Bounds bounds = PlacementUtil.evaluateAreaPlacement(null, parent.getBoundsReference());
 
         // configure the child area
-        final PNodeController<?> controller = createChildArea(parent, bounds);
+        final PNodeController<?> controller = createChildArea(parent, null, bounds);
 
         // add a listener on the parent's bounds
         addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
