@@ -44,6 +44,15 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener.Kl
 public class KlighdMouseEventListener implements MouseListener, MouseMoveListener, MouseTrackListener,
         MouseWheelListener, DragDetectListener, GestureListener {
 
+    /** Constant value of the left mouse button id. */
+    public static final int LEFT_BUTTON = 1;
+
+    /** Constant value of the mid mouse button id. */
+    public static final int MIDDLE_BUTTON = 2;
+
+    /** Constant value of the right mouse button id. */
+    public static final int RIGHT_BUTTON = 3;
+
     /**
      * Dedicated event type constant, reuses {@link SWT#Iconify} in hope that the choice will never
      * lead to any conflict...
@@ -149,10 +158,10 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         //  triggered one may be associated with the same diagram element and properly distinguished
         final Display display = this.canvas.getDisplay();
         final int doubleClickTime = display.getDoubleClickTime();
-        
+
         final boolean[] singleClick = new boolean[] { Boolean.TRUE };
         lastSingleClickConfig = singleClick;
-        
+
         display.timerExec(doubleClickTime, new Runnable() {
 
             public void run() {
@@ -224,7 +233,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
          * @param me
          *            the SWT mouse event
          * @param type
-         *            the event type
+         *            the SWT event type
          */
         public KlighdMouseEvent(final MouseEvent me, final int type) {
             super(dummySrc, 0, me.time, 0, me.x, me.y, 0, false, me.button > BUTTON3 ? 0 : me.button);
@@ -232,7 +241,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             //  in such cases
             this.mouseEvent = me;
             this.eventType = type;
-            this.helper = new KlighdEventHelper(me);
+            this.helper = new KlighdEventHelper(me, eventType == SWT.MouseDown);
         }
 
         /**
@@ -316,28 +325,37 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public Trigger getTrigger() {
             if (eventType == MouseClick) {
                 switch (mouseEvent.button) {
-                case 1:
+                case LEFT_BUTTON:
                     return Trigger.SINGLECLICK;
-                case 2:
+                case MIDDLE_BUTTON:
                     return Trigger.MIDDLE_SINGLECLICK;
                 }
 
             } else if (eventType == SWT.MouseDoubleClick) {
                 switch (mouseEvent.button) {
-                case 1:
+                case LEFT_BUTTON:
                     return Trigger.DOUBLECLICK;
-                case 2:
+                case MIDDLE_BUTTON:
                     return Trigger.MIDDLE_DOUBLECLICK;
                 }
             } else if (eventType == MouseSingleOrMultiClick) {
                 switch (mouseEvent.button) {
-                case 1:
+                case LEFT_BUTTON:
                     return Trigger.SINGLE_OR_MULTICLICK;
-                case 2:
+                case MIDDLE_BUTTON:
                     return Trigger.MIDDLE_SINGLE_OR_MULTICLICK;
                 }
             }
             return null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getButton() {
+            // since the SWT button ids are equal to the AWT button ids just ...
+            return super.getButton();
         }
 
         /**
@@ -530,7 +548,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
             //        me.count < 0 ? -1 : 1);
             this.mouseEvent = me;
             this.eventType = type;
-            this.helper = new KlighdEventHelper(me);
+            this.helper = new KlighdEventHelper(me, false);
         }
 
         /**

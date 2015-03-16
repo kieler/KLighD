@@ -16,6 +16,10 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 
+import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.LEFT_BUTTON;
+import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.MIDDLE_BUTTON;
+import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.RIGHT_BUTTON;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.GestureEvent;
 import org.eclipse.swt.events.KeyEvent;
@@ -195,8 +199,9 @@ public class KlighdKeyEventListener implements KeyListener {
      */
     static class KlighdEventHelper {
 
-        private int button = 0;
-        private int stateMask = 0;
+        private final boolean mousePressed;
+        private final int button;
+        private final int stateMask;
 
         /**
          * Constructor.
@@ -204,6 +209,8 @@ public class KlighdKeyEventListener implements KeyListener {
          * @param ge
          */
         public KlighdEventHelper(final GestureEvent ge) {
+            this.mousePressed = false;
+            this.button = 0;
             this.stateMask = ge.stateMask;
         }
 
@@ -213,6 +220,8 @@ public class KlighdKeyEventListener implements KeyListener {
          * @param ke
          */
         public KlighdEventHelper(final KeyEvent ke) {
+            this.mousePressed = false;
+            this.button = 0;
             this.stateMask = ke.stateMask;
         }
 
@@ -220,8 +229,13 @@ public class KlighdKeyEventListener implements KeyListener {
          * Constructor.
          *
          * @param me
+         * @param pressed
+         *            <code>true</code> if the corresponding event is a mouse pressed event, the
+         *            result will include the events <code>button</code> information in only that
+         *            case, <code>false</code> by default
          */
-        public KlighdEventHelper(final MouseEvent me) {
+        public KlighdEventHelper(final MouseEvent me, final boolean pressed) {
+            this.mousePressed = pressed;
             this.button = me.button;
             this.stateMask = me.stateMask;
         }
@@ -253,38 +267,42 @@ public class KlighdKeyEventListener implements KeyListener {
             return (stateMask & SWT.ALT) != 0;
         }
 
+        /**
+         * Provides the modifier descriptor according to {@link InputEvent#getModifiers()}.<br>
+         * Since {@link InputEvent#BUTTON2_MASK} == {@link InputEvent#ALT_MASK} (which is likely to
+         * be by intention in order to provides alternatives to buttons 2 and 3, e.g., for users
+         * of older Apple one button mice) and {@link KlighdKeyEvent#isAltDown()},
+         * {@link de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEvent#isAltDown()
+         * KlighdMouseEvent.isAltDown()},
+         * {@link de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseWheelEvent#isAltDown()
+         * KlighdMouseWheelEvent.isAltDown()}, and {@link
+         * de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdGestureEvent
+         * #isAltDown() KlighdGestureEvent.isAltDown()} don't rely on this method (and those testing
+         * shift and ctrl/cmd as well) I removed the setting of the SHIFT, ALT, and CTRL/CMD bits here!
+         * 
+         * @return the combined modifier descriptor according to the AWT JDK <= 1.3 bit masks
+         */
         public int getModifiers() {
             int modifiers = 0;
 
-            if ((stateMask & SWT.ALT) != 0) {
-                modifiers = modifiers | InputEvent.ALT_MASK;
-            }
-            if ((stateMask & SWT.CONTROL) != 0) {
-                if (!OS_MACOSX) {
-                    modifiers = modifiers | InputEvent.CTRL_MASK;
-                }
-            }
-            if ((stateMask & SWT.SHIFT) != 0) {
-                modifiers = modifiers | InputEvent.SHIFT_MASK;
-            }
-            if ((stateMask & SWT.COMMAND) != 0) {
-                if (OS_MACOSX) {
-                    modifiers = modifiers | InputEvent.CTRL_MASK;
-                }
-            }
-            if (button == 1 || (stateMask & SWT.BUTTON1) != 0) {
+            if ((mousePressed && button == LEFT_BUTTON) || (stateMask & SWT.BUTTON1) != 0) {
                 modifiers = modifiers | InputEvent.BUTTON1_MASK;
             }
-            if (button == 2 || (stateMask & SWT.BUTTON2) != 0) {
+            if ((mousePressed && button == MIDDLE_BUTTON) || (stateMask & SWT.BUTTON2) != 0) {
                 modifiers = modifiers | InputEvent.BUTTON2_MASK;
             }
-            if (button == 3 || (stateMask & SWT.BUTTON3) != 0) { // SUPPRESS CHECKSTYLE MagicNumber
+            if ((mousePressed && button == RIGHT_BUTTON) || (stateMask & SWT.BUTTON3) != 0) {
                 modifiers = modifiers | InputEvent.BUTTON3_MASK;
             }
 
             return modifiers;
         }
 
+        /**
+         * Provides the modifier descriptor according to {@link InputEvent#getModifiersEx()}.
+         *
+         * @return the combined modifier descriptor according to the AWT JDK >= 1.4 bit masks
+         */
         public int getModifiersEx() {
             int modifiers = 0;
 
@@ -304,13 +322,13 @@ public class KlighdKeyEventListener implements KeyListener {
                     modifiers = modifiers | InputEvent.CTRL_MASK;
                 }
             }
-            if (button == 1 || (stateMask & SWT.BUTTON1) != 0) {
+            if ((mousePressed && button == LEFT_BUTTON) || (stateMask & SWT.BUTTON1) != 0) {
                 modifiers = modifiers | InputEvent.BUTTON1_DOWN_MASK;
             }
-            if (button == 2 || (stateMask & SWT.BUTTON2) != 0) {
+            if ((mousePressed && button == MIDDLE_BUTTON) || (stateMask & SWT.BUTTON2) != 0) {
                 modifiers = modifiers | InputEvent.BUTTON2_DOWN_MASK;
             }
-            if (button == 3 || (stateMask & SWT.BUTTON3) != 0) { // SUPPRESS CHECKSTYLE MagicNumber
+            if ((mousePressed && button == RIGHT_BUTTON) || (stateMask & SWT.BUTTON3) != 0) {
                 modifiers = modifiers | InputEvent.BUTTON3_DOWN_MASK;
             }
 

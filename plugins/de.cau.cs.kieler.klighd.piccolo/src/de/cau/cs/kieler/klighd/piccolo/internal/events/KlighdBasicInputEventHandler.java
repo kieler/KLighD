@@ -102,19 +102,11 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
             break;
 
         case SWT.MouseDown:
-            // button 3 is reserved for the context menu popup so suppress reactions on that button
-            // SUPPRESS CHECKSTYLE NEXT MagicNumber
-            if (((MouseEvent) kEvent.getEvent()).button != 3) {
-                delegate.mousePressed(event);
-            }
+            delegate.mousePressed(event);
             break;
 
         case SWT.MouseUp:
-            // button 3 is reserved for the context menu popup so suppress reactions on that button
-            // SUPPRESS CHECKSTYLE NEXT MagicNumber
-            if (((MouseEvent) kEvent.getEvent()).button != 3) {
-                delegate.mouseReleased(event);
-            }
+            delegate.mouseReleased(event);
             break;
 
         case SWT.MouseMove:
