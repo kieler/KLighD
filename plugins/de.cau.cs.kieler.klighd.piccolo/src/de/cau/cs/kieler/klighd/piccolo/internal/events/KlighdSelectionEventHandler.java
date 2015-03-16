@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -37,15 +37,15 @@ import edu.umd.cs.piccolo.util.PStack;
  * It supports the selection of multiple elements if the CTRL/COMMAND key is pressed.<br>
  * In order to not interfere with the diagram panning the selection is done on mouse up events
  * (this is in contrast to the usual selection) if and only if the mouse pointer has not been moved
- * between mouse down and mouse up. 
- * 
+ * between mouse down and mouse up.
+ *
  * @author chsch
  */
 public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
 
     /**
      * Constructor.
-     * 
+     *
      * @param theDiagramViewer
      *            the {@link IViewer} to set the selection on
      */
@@ -55,12 +55,12 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         this.multiSelection =
                 viewer.getViewContext().getProperty(KlighdSynthesisProperties.MULTI_SELECTION);
     }
-    
+
     private final IViewer viewer;
     private final PiccoloViewer diagramViewer;
     private final boolean multiSelection;
     private Point2D point = null;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -161,7 +161,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         while (it.hasPrevious()) {
             selectedNode = (PNode) it.previous();
 
-            // get the corresponding view model element, i.e. KText or KGraphElement 
+            // get the corresponding view model element, i.e. KText or KGraphElement
             if (selectedNode instanceof IKlighdNode && ((IKlighdNode) selectedNode).isSelectable()) {
                 graphElement = ((IKlighdNode) selectedNode).getViewModelElement();
                 break;
@@ -174,7 +174,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                 graphElement = ((IKNodeNode) selectedNode).isSelectable()
                         ? ((IKlighdNode) selectedNode).getViewModelElement() : null;
                 break;
-            }            
+            }
         }
 
         if (graphElement == null) {
