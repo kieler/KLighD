@@ -157,6 +157,10 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                     // to retain external ports 
                     KNode newRoot = KimlUtil.createInitializedNode();
                     newRoot.getChildren().add(subgraphCopy);
+                    // give the root a proper dimension
+                    KShapeLayout rsl = newRoot.getData(KShapeLayout.class);
+                    rsl.setWidth(sl.getWidth());
+                    rsl.setHeight(sl.getHeight());
                     
                     // expand the subgraph by default
                     KLayoutData ld = subgraphCopy.getData(KLayoutData.class);
@@ -167,10 +171,12 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                 }
                 
                 // remove transient klighd state
+                // care: do not iterate over the elements of the 'copy' as the subgraph
+                // was already removed from its original containmet
                 @SuppressWarnings("unchecked")
                 Iterator<KGraphElement> kgeIt =
                         (Iterator<KGraphElement>) (Iterator<?>) ModelingUtil.selfAndEAllContentsOfType2(
-                                copy, KGraphElement.class);
+                                copier.get(subgraph), KGraphElement.class);
                 try {
                     while (kgeIt.hasNext()) {
                         KGraphElement kge = kgeIt.next();
