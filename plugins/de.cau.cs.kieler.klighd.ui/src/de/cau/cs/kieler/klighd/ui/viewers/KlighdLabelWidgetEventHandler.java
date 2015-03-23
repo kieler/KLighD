@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -46,8 +46,8 @@ import edu.umd.cs.piccolo.nodes.PText;
  * of it) and copy it, for example. This however requires quite some event handling magic like
  * duplicating SWT events.<br>
  * <br>
- * <b>Update:</b> deactivated the magic code as it doesn't work properly on windows setups 
- * 
+ * <b>Update:</b> deactivated the magic code as it doesn't work properly on windows setups
+ *
  * @author chsch
  */
 public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler {
@@ -56,10 +56,10 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
     private final KlighdMainCamera camera;
     private StyledText labelWidget;
     private PropertyChangeListener labelWidgetStylingEventListener;
-    
+
     /**
      * Constructor that just calls super.
-     * 
+     *
      * @param viewer
      *            the employed {@link PiccoloViewerUI}
      * @param labelWidget
@@ -110,7 +110,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
                 }
             }
         };
-        
+
         viewer.addViewChangedListener(new KlighdLabelWidgetViewChangeListener(viewer, labelWidget));
     }
 
@@ -121,7 +121,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
      * <br>
      * This method triggers the preparation of the text label widget if it's not blocked due to a
      * text selection and the mouse moved over a text figure node, and hides the widget if the mouse
-     * moved over a non-text figure and no text selection was defined. 
+     * moved over a non-text figure and no text selection was defined.
      */
     @Override
     public void mouseMoved(final PInputEvent event) {
@@ -129,9 +129,9 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
 //            // This special case is active if the text widget is been prepared some milliseconds ago.
 //            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
 //            //  and "forward" it to the label widget.
-//            
+//
 //            forwardEventToLabel(event.getSourceSwingEvent());
-            
+
             // Don't let any further event handler evaluate 'event'.
             //  This works fine since this handler is supposed to be the last one in the row of
             //  registered handlers and is, therefore, called first
@@ -142,7 +142,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
 
         } else if (event.getPickedNode() instanceof KlighdStyledText) {
             updateTextInput(event, false);
-            
+
             // event.setHandled(true) is skipped here by intention
             //  - other handlers might want to react on it
 
@@ -153,7 +153,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             //  - other handlers might want to react on it
         }
     }
-    
+
     /**
      * {@inheritDoc}<br>
      * <br>
@@ -162,13 +162,13 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
      */
     @Override
     public void mousePressed(final PInputEvent event) {
-        if (widgetJustPrepared) {            
+        if (widgetJustPrepared) {
 //            // This special case is active if the text widget is been prepared some milliseconds ago.
 //            // Thus, prevent the canvas, i.e. the registered handlers, from reacting on this event,
 //            //  and "forward" it to the label widget.
-//            
+//
 //            forwardEventToLabel(event.getSourceSwingEvent());
-            
+
             // Don't let any further event handler evaluate 'event'.
             //  This works fine since this handler is supposed to be the last one in the row of
             //  registered handlers and is, therefore, called first
@@ -188,7 +188,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
                 return;
             }
 
-            // otherwise prevent other handler from evaluating this event 
+            // otherwise prevent other handler from evaluating this event
             event.setHandled(true);
 
 //            // fire a small mouse movement that helps much in capturing the first character of a
@@ -234,7 +234,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
      * Configures the text label widget to exhibit the text content in case event's picked node is a
      * {@link KlighdStyledText} that is configured to be cursorSelectable and its text is non-
      * <code>null</code>.
-     * 
+     *
      * @param event
      *            the event that triggered this update.
      * @return <code>true</code> if the text widget has been updated successfully,
@@ -258,7 +258,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
         }
 
         // this call is required in order to re-enable the visibility of the formerly corresponding
-        //  text figure and to remove any listeners from that figure 
+        //  text figure and to remove any listeners from that figure
         this.viewer.deactivateLabelWidget();
 
         final String text = styledText.getText();
@@ -283,7 +283,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
         // due to rounding issues in the font size handling the label widget does not completely
         //  overlap the text figure so we set that one occluded here
         styledText.setOccludedOnMainDiagram(true);
-        
+
         labelWidget.setVisible(true);
         labelWidget.setFocus();
         setWidgetPrepared();
@@ -409,11 +409,11 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
 //        event.type = eventType;
 //
 //        if (eventType == SWT.MouseMove) {
-//            final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);            
+//            final Point canvasLocation = ((Control) sourceEvent.widget).toDisplay(0, 0);
 //            event.x = sourceEvent.x + canvasLocation.x;
 //            event.y = sourceEvent.y + canvasLocation.y;
 //        }
 //
 //        sourceEvent.display.post(event);
-//    }    
+//    }
 }

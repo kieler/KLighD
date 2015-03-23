@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -29,22 +29,22 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * menu and propagation of the selection into the platform.<br>
  * It is used by the {@link de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart DiagramEditorPart}
  * and {@link de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart DiagramViewPart}.
- * 
+ *
  * @author chsch
  */
 public class UiContextViewer extends ContextViewer implements ISelectionProvider,
         IDiagramOutlinePage.Provider {
 
     /**
-     * Constant string defining the KLighD-specific Eclipse UI key binding context id. 
+     * Constant string defining the KLighD-specific Eclipse UI key binding context id.
      */
     public static final String KLIGHD_UI_CONTEXT_ID = "de.cau.cs.kieler.klighd.ui.context";
-    
+
     private Composite diagramContainer;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param parent
      *            the parent {@link Composite} the diagram canvas is to be attached to
      * @param part
@@ -59,7 +59,7 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
         // this must be done within 'createPartControl()' of 'part',
         //  which is why this registration is done here rather than in 'setModel(...)'
         part.getSite().setSelectionProvider(this);
-        
+
         // the following activates the our (key binding) context, which is registered
         //  in the plugin.xml
         ((IContextService) part.getSite().getService(IContextService.class))
@@ -68,7 +68,7 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
         // initialize with the display of an empty string
         showMessage("");
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -106,27 +106,27 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
         } else if (model instanceof String) {
             // if the model is a string show it
             showMessage((String) model);
-            
+
             // provide no (custom) context menu in this case!
         }
     }
 
     /**
      * Shows the given message.
-     * 
+     *
      * @param message
      *            the message
      */
     private synchronized void showMessage(final String message) {
         final StringViewer stringViewer;
-        
+
         if (!(getActiveViewer() instanceof StringViewer)) {
-            stringViewer = new StringViewer(diagramContainer); 
-            setViewer(stringViewer);            
+            stringViewer = new StringViewer(diagramContainer);
+            setViewer(stringViewer);
         } else {
             stringViewer = (StringViewer) getActiveViewer();
         }
-        
+
         stringViewer.setModel(message, false);
     }
 }

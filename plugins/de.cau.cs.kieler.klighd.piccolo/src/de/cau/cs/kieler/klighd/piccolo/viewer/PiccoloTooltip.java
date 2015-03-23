@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -47,7 +47,7 @@ import edu.umd.cs.piccolo.util.PStack;
  *
  * TODO: Evaluate the realization of the tooltip by means of an SWT Widget, too, although that won't
  * be available for the web-based approach.
- * 
+ *
  * @author uru
  * @author chsch
  */
@@ -94,25 +94,25 @@ public class PiccoloTooltip {
 
     }
 
-    
+
     /**
      * Listens to the diagram's {@link KlighdMainCamera} and reacts to mouse hover & move events in
      * order to display a tooltip where available.
      */
     private class TooltipListener extends KlighdBasicInputEventHandler {
-        
+
         /** The last mouseover's KNode (only used if no rendering is available). */
         private KGraphElement kge;
-        
+
         /** Position at which the tooltip is displayed. */
         private Point2D mousePos;
-        
+
         /**
          * Constructor.
          */
         public TooltipListener() {
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -173,10 +173,10 @@ public class PiccoloTooltip {
             String tooltipText = null;
             if (rendering != null) {
                 tooltipText = rendering.getProperty(KlighdProperties.TOOLTIP);
-            } 
+            }
 
             if (tooltipText == null && kge != null) {
-                KLayoutData l = kge.getData(KLayoutData.class);
+                final KLayoutData l = kge.getData(KLayoutData.class);
                 tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
             }
 

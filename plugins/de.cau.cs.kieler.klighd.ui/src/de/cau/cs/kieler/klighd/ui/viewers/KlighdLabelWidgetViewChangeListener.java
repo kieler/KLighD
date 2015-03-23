@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -29,18 +29,18 @@ import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
- * A. 
+ * A.
  * @author chsch
  */
 class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
-    
+
     private final PiccoloViewerUI viewer;
     private StyledText labelWidget;
 
 
     /**
      * Constructor that just calls super.
-     * 
+     *
      * @param viewer
      *            the employed {@link PiccoloViewerUI}
      * @param labelWidget
@@ -77,7 +77,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
             handleClip(change, graphNodes);
             break;
         // to be continued...
-        default:            
+        default:
         }
     }
 
@@ -93,7 +93,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
                 Iterators.filter(ModelingUtil.eAllContainers(parentKNode), KNode.class);
 
         final KNode clip = change.getViewer().getClip();
-        
+
         // ... and traverse them until the current diagram clip node
         for (KNode node = it.next(); node != clip && it.hasNext(); node = it.next()) {
             if (node == collapsedElement) {
@@ -103,8 +103,8 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
             }
         }
     }
-    
-    
+
+
     private void handleHide(final ViewChange change, final List<IKGraphElementNode> graphNodes) {
         final KGraphElement hiddenElement = change.getAffectedElement();
 
@@ -129,7 +129,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
                 Iterators.filter(ModelingUtil.eAllContainers(parentKNode), KNode.class);
 
         final KNode clip = change.getViewer().getClip();
-        
+
         // ... and traverse them until the current diagram clip node
         for (KNode node = it.next(); node != clip && it.hasNext(); node = it.next()) {
             if (node == hiddenElement) {
@@ -139,7 +139,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
             }
         }
     }
-    
+
     private void handleClip(final ViewChange change, final List<IKGraphElementNode> graphNodes) {
         final KNode newClip = (KNode) change.getAffectedElement();
 
