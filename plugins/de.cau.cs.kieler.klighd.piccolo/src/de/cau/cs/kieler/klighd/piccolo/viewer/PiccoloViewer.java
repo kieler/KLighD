@@ -158,7 +158,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 new KlighdSelectiveZoomEventHandler(this)));
 
         // add a tooltip element
-        new PiccoloTooltip(parent.getDisplay(), canvas.getCamera());
+        new PiccoloTooltip(canvas);
 
         // A timer being in charge of buffering and thus aggregating a bunch of single
         // view transform changes occurring closely after each other to a single view
