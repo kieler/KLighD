@@ -2,16 +2,16 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
+package de.cau.cs.kieler.klighd.piccolo.internal;
 
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
@@ -25,17 +25,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import de.cau.cs.kieler.klighd.piccolo.internal.Constants;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
-import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdFocusEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdInputManager;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdKeyEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PInputManager;
-import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.event.PPanEventHandler;
 import edu.umd.cs.piccolo.event.PZoomEventHandler;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -57,11 +55,18 @@ public class KlighdCanvas extends PSWTCanvas {
     private KlighdSWTGraphicsEx graphics;
 
     /**
+     * The {@link PInputManager} employed in this diagram canvas, is cached here for the sake of
+     * squeezing out some more performance, which is most effective while dispatching mouse move
+     * events.
+     */
+    private PInputManager inputManager;
+
+    /**
      * Construct a canvas with the basic scene graph consisting of a root node, a camera, and a
      * layer (via <code>super(...)</code> and {@link #createBasicSceneGraph()}). The original event
      * handlers for zooming and panning coming via <code>super(...)</code> are removed, appropriate
      * ones are installed later on by users of this class.
-     * 
+     *
      * @param parent
      *            component onto which the canvas is installed
      * @param style
@@ -78,16 +83,14 @@ public class KlighdCanvas extends PSWTCanvas {
         //  e.g. in PiccoloViewer or PiccoloOutlinePage
         this.removeInputEventListener(super.getZoomEventHandler());
         this.removeInputEventListener(super.getPanEventHandler());
-        
+
         this.graphics = new KlighdSWTGraphicsImpl(null, parent.getDisplay());
-        this.getRoot().addAttribute(Constants.DEVICE, parent.getDisplay());
-        this.getRoot().addAttribute(Constants.MAIN_CAMERA, this.getCamera());
 
         // this reduces flickering drastically
         this.setDoubleBuffered(true);
 
         this.addDisposeListener(new DisposeListener() {
-            
+
             public void widgetDisposed(final DisposeEvent e) {
                 final KlighdCanvas thisCanvas = KlighdCanvas.this;
 
@@ -103,9 +106,48 @@ public class KlighdCanvas extends PSWTCanvas {
 
                 if (thisCanvas.graphics != null) {
                     thisCanvas.graphics.dispose();
+                    thisCanvas.graphics = null;
+                }
+                if (thisCanvas.inputManager != null) {
+                    thisCanvas.inputManager = null;
                 }
             }
         });
+    }
+
+    /**
+     * Named specialized {@link PSWTRoot} contributing the customized {@link KlighdInputManager}.
+     *
+     * @author chsch
+     */
+    protected class KlighdRoot extends PSWTRoot {
+
+        private static final long serialVersionUID = 5244208939770217529L;
+
+        private PInputManager inputManager = null;
+
+        /**
+         * Standard constructor.
+         */
+        public KlighdRoot() {
+            super(KlighdCanvas.this);
+        }
+
+        @Override
+        public PInputManager getDefaultInputManager() {
+            if (inputManager == null) {
+                inputManager = new KlighdInputManager();
+                addInputSource(inputManager);
+
+                KlighdCanvas.this.addListener(SWT.Dispose, new Listener() {
+                    public void handleEvent(final Event event) {
+                        removeInputSource(inputManager);
+                        inputManager = null;
+                    }
+                });
+            }
+            return inputManager;
+        }
     }
 
     /**
@@ -116,38 +158,15 @@ public class KlighdCanvas extends PSWTCanvas {
      * based on AWT's event type codes by one based on SWT's event type codes.<br>
      * <br>
      * Besides, no initial instance of {@link edu.umd.cs.piccolo.PLayer PLayer} is added - our
-     * {@link KNodeTopNode} takes that part; see
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode KNodeTopNode} takes that
+     * part; see
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController#DiagramController(
-     * de.cau.cs.kieler.core.kgraph.KNode, PCamera, boolean)
-     * DiagramController.DiagramController(KNode, PCamera, boolean)}.
+     * de.cau.cs.kieler.core.kgraph.KNode, KlighdMainCamera, boolean, boolean)
+     * DiagramController.DiagramController(KNode, KlighdMainCamera, boolean, boolean)}.
      */
     @Override // SUPPRESS CHECKSTYLE Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/
     public PCamera createBasicSceneGraph() {
-        final PRoot r = new PSWTRoot(this) {
-            private static final long serialVersionUID = -4737922663028304522L;
-
-            private PInputManager inputManager = null;
-            
-            @Override
-            public PInputManager getDefaultInputManager() {
-                if (inputManager == null) {
-                    inputManager = new KlighdInputManager();
-                    addInputSource(inputManager);
-
-                    KlighdCanvas.this.addListener(SWT.Dispose, new Listener() {
-                        public void handleEvent(final Event event) {
-                            removeInputSource(inputManager);
-                            inputManager = null;
-                        }
-                    });
-                }
-                return inputManager;
-            }
-        };
-        
-        final PCamera c = new KlighdMainCamera();
-        r.addChild(c);
-        return c;
+        return new KlighdMainCamera(new KlighdRoot());
     }
 
     @Override
@@ -179,7 +198,7 @@ public class KlighdCanvas extends PSWTCanvas {
 
         this.addFocusListener(new KlighdFocusEventListener(this));
         this.addKeyListener(new KlighdKeyEventListener(this));
-        
+
         final KlighdMouseEventListener mouseListener = new KlighdMouseEventListener(this);
         this.addMouseListener(mouseListener);
         this.addMouseMoveListener(mouseListener);
@@ -197,7 +216,13 @@ public class KlighdCanvas extends PSWTCanvas {
      */
     @Override
     public void sendInputEventToInputManager(final InputEvent awtEvent, final int type) {
-        super.sendInputEventToInputManager(awtEvent, type);
+        // instead of calling the super implementation
+        //  save some performance and keep and call the input manager directly
+
+        if (this.inputManager == null) {
+            this.inputManager = getRoot().getDefaultInputManager();
+        }
+        this.inputManager.processEventFromCamera(awtEvent, type, getCamera());
     }
 
     /**
@@ -220,7 +245,7 @@ public class KlighdCanvas extends PSWTCanvas {
                 + "Method is not supported as a different pan event handler is deployed.";
         throw new UnsupportedOperationException(msg);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -253,7 +278,7 @@ public class KlighdCanvas extends PSWTCanvas {
         //  in order to allow to roll back most of the customizations in the Piccolo2D code some day
         if (newWidth == 0 || newHeight == 0) {
             // chsch: introduced this check as the workbench sometimes determines width
-            //  and/or height of zero that results in an exception later on. 
+            //  and/or height of zero that results in an exception later on.
             return;
         } else {
             final PBounds bounds = getCamera().getBoundsReference();

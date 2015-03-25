@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -44,10 +44,10 @@ import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloOutlinePage;
@@ -62,7 +62,7 @@ import edu.umd.cs.piccolo.PNode;
  * UI stuff such as the text input mechanism and registry of actions are extracted from the
  * PiccoloViewer to this class to optimize dependencies. PiccoloViewerUi instance will be generated
  * by the PiccoloViewerProvider.
- * 
+ *
  * @author chsch
  * @author ckru
  */
@@ -86,7 +86,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
     /**
      * Creates a Piccolo2D viewer with default style.
-     * 
+     *
      * @param parentViewer
      *            the parent {@link ContextViewer}
      * @param parent
@@ -98,7 +98,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
     /**
      * Creates a Piccolo2D viewer with given style.
-     * 
+     *
      * @param parentViewer
      *            the parent {@link ContextViewer}
      * @param parent
@@ -120,7 +120,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     /**
      * Getter providing the employed {@link StyledText} SWT widget, e.g. for installing additional
      * event {@link Listener Listeners}.
-     * 
+     *
      * @return the employed {@link StyledText} widget.
      */
     protected StyledText getLabelTextWidget() {
@@ -129,7 +129,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
     /**
      * Adds a text widget to the viewer that can be used to select and edit texts.
-     * 
+     *
      * @param parentViewer
      *            the viewer to which to add the text widget
      */
@@ -190,7 +190,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     /**
      * Extension hook method registering an SWT event {@link Listener} on the employed
      * <code>textLabelWidget</code>.
-     * 
+     *
      * @param textLabelWidget
      *            the employed instance of {@link StyledText}
      */
@@ -209,7 +209,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      * <code>super.handleEvent(event)</code> for the event types distinguished in this
      * implementation. Make also sure to register your subclass for additional event types if necessary,
      * see {@link #LabelTextWidgetListener(PiccoloViewerUI, StyledText)}.
-     * 
+     *
      * @author chsch
      */
     public static class LabelTextWidgetListener implements Listener {
@@ -219,7 +219,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
 
         /**
          * Constructor.
-         * 
+         *
          * @param viewer
          *            employed instance of {@link PiccoloViewerUI}
          * @param textLabelWidget
@@ -240,7 +240,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
          * Provides the {@link KlighdFigureNode} the label text widget is currently attached to.
          * Make sure to let this method be executed by the UI thread as it relies on
          * {@link org.eclipse.swt.widgets.Widget#getData() Widget#getData()}.
-         * 
+         *
          * @return the desired {@link KlighdFigureNode}
          */
         protected KlighdFigureNode<KText> getFigureNode() {
@@ -324,7 +324,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     /**
      * Asynchronously executes {@link #updateSelection(ISelection)} in order to let the calling
      * method terminate quickly and do not block any display modifications.
-     * 
+     *
      * @param selection
      *            the new {@link IKlighdSelection} to be propagated to the selection service.
      */
@@ -360,7 +360,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     /**
      * Aligns the label text widget to the given <code>styledText</code> in terms of position, font
      * size, and size.
-     * 
+     *
      * @param styledText
      *            the {@link KlighdStyledText} the text label widget is to be aligned to
      */
@@ -390,7 +390,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         //  this is method is supposed to be only called for 'styledText' element that are contained
         //  in the current clip
         final Rectangle2D bounds =
-                NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedINode());
+                NodeUtil.clipRelativeGlobalBoundsOf(theStyledText, camera.getDisplayedKNodeNode());
 
         if (bounds == null) {
             return;
@@ -460,7 +460,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      * represented by the {@link StyledText} widget <code>textWidget</code>. Identifies the
      * corresponding KText & {@link KGraphElement} data, asks for a matching model update function,
      * and, if available, executes that function (wraps it with transaction helpers if required).
-     * 
+     *
      * @param textWidget
      *            the {@link StyledText} widget containing the updated text (label)
      * @param viewContext
@@ -490,17 +490,17 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 return;
             }
 
-            if (node instanceof INode) {
+            if (node instanceof IKNodeNode) {
                 // the textNode appears not to be contained in a KLabelNode but
                 //  (via path nodes and helper ones) directly in a KNodeNode or KNodeTopNode
                 relatedLabel = null;
-                relatedKGE = ((INode) node).getGraphElement();
+                relatedKGE = ((IKNodeNode) node).getViewModelElement();
                 break;
 
             } else if (node instanceof KLabelNode) {
                 // the text is contained in a KLabelNode ...
                 relatedLabel = (KLabelNode) node;
-                relatedKGE = relatedLabel.getGraphElement();
+                relatedKGE = relatedLabel.getViewModelElement();
                 break;
             }
         }
@@ -516,7 +516,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         // by means of the (accessible) KText and parent KGraphElement request a
         //  model update function from the employed diagram synthesis
         final Function<String, Void> f = viewContext.getDiagramSynthesis().getTextUpdateFunction(
-                textNode.getGraphElement(), relatedKGE);
+                textNode.getViewModelElement(), relatedKGE);
 
         if (f == null) {
             // in case no function for updating that particular text (label) is available,
@@ -559,7 +559,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      * {@link org.eclipse.ui.part.IPage IPage} for the sake of reducing dependencies. The required
      * (empty) {@link org.eclipse.jface.viewers.ISelectionProvider ISelectionProvider} methods are
      * than contributed by this sub class.
-     * 
+     *
      * @author chsch
      */
     private static class PiccoloContentOutlinePage extends PiccoloOutlinePage implements

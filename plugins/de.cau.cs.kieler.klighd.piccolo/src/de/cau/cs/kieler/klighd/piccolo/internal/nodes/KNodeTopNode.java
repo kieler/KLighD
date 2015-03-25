@@ -16,12 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
-import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
@@ -31,12 +26,9 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
+public class KNodeTopNode extends KNodeAbstractNode {
 
     private static final long serialVersionUID = 8395163186723344696L;
-
-    /** the Piccolo2D node representing the child area. */
-    private KChildAreaNode childArea;
 
     /** the main camera of the diagram headed by this top node. */
     private KlighdMainCamera diagramMainCamera = null;
@@ -45,26 +37,22 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
      * Constructs a Piccolo2D node for representing the top-level {@link KNode}.
      *
      * @param node
-     *            the KNode
+     *            the represented {@link KNode}
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
     public KNodeTopNode(final KNode node, final boolean edgesFirst) {
-        super(node);
+        super(node, edgesFirst);
 
-        this.setPickable(true);
-
-        childArea = new KChildAreaNode(this, edgesFirst);
-        childArea.setPickable(true);
-        childArea.setClip(false);
-
+        // add the child area immediately to the children list,
+        //  this is not done in the super constructor as it must not be done in KNodeNode
         this.addChild(childArea);
     }
 
     /**
      * Sets the main camera of the diagram headed by this top node. This method may currently only
-     * be called from {@link KlighdMainCamera#setDisplayedNode(INode)}.
+     * be called from {@link KlighdMainCamera#setDisplayedKNodeNode(KNodeAbstractNode))}.
      *
      * @param camera
      */
@@ -86,8 +74,9 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KNode,
+            ? extends IInternalKGraphElementNode<KNode>> controller) {
+
         final String s = "KLighD: Invalid access occured: invoking setRenderingController()"
                 + "is not allowed for KNodeTopNodes!";
         throw new UnsupportedOperationException(s);
@@ -105,15 +94,19 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
     /**
      * {@inheritDoc}
      */
-    public KChildAreaNode getChildAreaNode() {
-        return childArea;
+    @Override
+    public KNodeAbstractNode getParentKNodeNode() {
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public INode getParentNode() {
-        return null;
+    @Override
+    public void setExpanded(final boolean expanded) {
+//        if (expanded) {
+            super.setExpanded(expanded);
+//        }
     }
 
     /**
@@ -144,28 +137,6 @@ public class KNodeTopNode extends KDisposingLayer.KNodeRepresentingLayer {
      * {@inheritDoc}
      */
     @Override
-    protected void paint(final PPaintContext paintContext) {
-        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        final KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
-                        KlighdProperties.SEMANTIC_DATA);
-        g2.startGroup(sd);
-        super.paint(paintContext);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintAfterChildren(final PPaintContext paintContext) {
-        super.paintAfterChildren(paintContext);
-        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        g2.endGroup();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Rectangle2D getExportedBounds() {
         return this.getUnionOfChildrenBounds(null);
     }

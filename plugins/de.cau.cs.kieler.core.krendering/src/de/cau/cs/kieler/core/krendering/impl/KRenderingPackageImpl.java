@@ -2933,7 +2933,10 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEEnum(triggerEEnum, Trigger.class, "Trigger");
         addEEnumLiteral(triggerEEnum, Trigger.SINGLECLICK);
         addEEnumLiteral(triggerEEnum, Trigger.DOUBLECLICK);
+        addEEnumLiteral(triggerEEnum, Trigger.SINGLE_OR_MULTICLICK);
         addEEnumLiteral(triggerEEnum, Trigger.MIDDLE_SINGLECLICK);
+        addEEnumLiteral(triggerEEnum, Trigger.MIDDLE_DOUBLECLICK);
+        addEEnumLiteral(triggerEEnum, Trigger.MIDDLE_SINGLE_OR_MULTICLICK);
 
         initEEnum(underlineEEnum, Underline.class, "Underline");
         addEEnumLiteral(underlineEEnum, Underline.NONE);

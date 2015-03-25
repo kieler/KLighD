@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2011 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -38,9 +38,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * A viewer for string messages.
- * 
+ *
  * chsch: TODO class and its interaction with the framework must be reviewed!!
- * 
+ *
  * @author mri
  * @author chsch
  */
@@ -53,7 +53,7 @@ public class StringViewer implements IViewer {
 
     /**
      * Constructs a string viewer.
-     * 
+     *
      * @param parent
      *            the parent composite
      */
@@ -99,7 +99,7 @@ public class StringViewer implements IViewer {
         }
     }
 
-    
+
     // remaining methods of the IViewer interface
     //  their application is not reasonable for this viewer
 
@@ -109,7 +109,7 @@ public class StringViewer implements IViewer {
     public ContextViewer getContextViewer() {
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -117,7 +117,7 @@ public class StringViewer implements IViewer {
             final ViewChangeType... eventTypes) {
         // do nothing
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -131,42 +131,42 @@ public class StringViewer implements IViewer {
     public boolean isDisplayed(final Object semanticElement, final boolean checkParents) {
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public boolean isDisplayed(final KGraphElement diagramElement, final boolean checkContainment) {
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public boolean isVisible(final Object semanticElement, final boolean checkParents) {
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public boolean isVisible(final KGraphElement diagramElement, final boolean checkContainment) {
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public Iterator<KNode> getVisibleDiagramNodes() {
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public Iterator<KGraphElement> getVisibleDiagramElements() {
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -348,7 +348,7 @@ public class StringViewer implements IViewer {
     public void clip(final KNode diagramElement) {
         // do nothing
     }
-    
+
     /**
      * {@inheritDoc}
      */

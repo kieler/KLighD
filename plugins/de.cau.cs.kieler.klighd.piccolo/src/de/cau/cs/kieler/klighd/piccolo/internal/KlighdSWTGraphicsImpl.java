@@ -285,7 +285,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     public void setStrokePattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        final Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
+        final Point2D[] points = computePatternPoints(bounds, gradient.getAngle());
 
         final float curAlpha = this.getAlpha();
         final int alpha1 = (int) (gradient.getAlpha1() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
@@ -306,7 +306,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     public void setFillPattern(final RGBGradient gradient, final Rectangle2D bounds) {
-        final Point2D[] points = computePatternPoints(bounds, Math.toRadians(gradient.getAngle()));
+        final Point2D[] points = computePatternPoints(bounds, gradient.getAngle());
 
         final float curAlpha = this.getAlpha();
         final int alpha1 = (int) (gradient.getAlpha1() * (curAlpha / KlighdConstants.ALPHA_FULL_OPAQUE));
@@ -649,44 +649,61 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     };
 
     /**
-     * Compute the pattern points required by
+     * Computes the pair of pattern points required by
      * {@link Pattern#Pattern(Device, float, float, float, float, Color, int, Color, int)}.
      *
      * @param bounds
      *            the bounds of the shape to be drawn with a gradient
      * @param angle
-     *            the gradients angle
+     *            the gradients angle in degree
      * @return the {@link #patternPoints} array providing the desired gradient points
      */
     private Point2D[] computePatternPoints(final Rectangle2D bounds, final double angle) {
+        // the requirement to those pattern points is specify the color gradient s.t.
+        //  (at least) one corner is colored with the source color, and (at least) one
+        //  corner is colored with the target color, independent of 'angle'
+
+        // The idea to achieve that is to rotate 'bounds' counterclockwise by 'angle', and
+        //  determine the bounding box of the rotated rectangle. This way at least 2 corners
+        //  will lie on the left and right side bound.
+        // Now build a vector from the left side of the bounding box to its right side through
+        //  the center, and rotate that vector clockwise by 'angle'.
+        //  The new start and and end points obtained this way are our required pattern points.
+
+        // An optimization: Since we're not interested in the actual rotated 'bounds' but just
+        //  its bounding box, we can also rotate 'bounds' clockwise instead of counterclockwise
+        //  so we can skip inverting or reconfiguring the 'rotation' affine transform.
+
+        // store this value for avoiding superfluous re-computations
+        final double centerY = bounds.getCenterY();
 
         if (angle != 0d) {
             // set 'rotation' to rotate its input counterclockwise around the center of 'bounds'
-            this.rotation.rotate(-angle, bounds.getCenterX(), bounds.getCenterY());
+            this.rotation.rotate(Math.toRadians(angle), bounds.getCenterX(), centerY);
 
-            // create a copy of 'bounds' and apply 't' to that copy, i.e. rotate the copy
-            //  counterclockwise according to 'angle';
+            // rotate 'bounds' and store the result in 'transformedBounds'
             // note that transforming a rectangle will lead to a new rectangle resembling
             //  the bounding box of the imaginary rotated original one;
             // there will be no Path2D created containing the rotated corner points!
             this.rotation.transform(bounds, this.transformedBounds);
         } else {
+            // just set 'transformedBounds' to the values of 'bounds'
             this.transformedBounds.setRect(bounds);
         }
 
         // now determine two points forming a horizontal line through the center of 'bounds'
         //  (which is equal to the center of 'transformedBounds' as we rotated around the center)
-        //  from 'transformedBounds''s left most 'x' value to its right most one
-        this.patternPoints[0].setLocation(this.transformedBounds.getMinX(), bounds.getCenterY());
-        this.patternPoints[1].setLocation(this.transformedBounds.getMaxX(), bounds.getCenterY());
+        //  from 'transformedBounds's left most 'x' value to its right most one
+        this.patternPoints[0].setLocation(this.transformedBounds.getMinX(), centerY);
+        this.patternPoints[1].setLocation(this.transformedBounds.getMaxX(), centerY);
 
         // the gradient will be realized along that imaginary line,
         //  lines of points of equal color will run orthogonally to that line
+
         if (!this.rotation.isIdentity()) {
             // in order to let the imaginary line respect our desired angle,
-            //  simply rotate the points back :-)
-            this.rotation.inverseTransform(this.patternPoints[0], this.patternPoints[0]);
-            this.rotation.inverseTransform(this.patternPoints[1], this.patternPoints[1]);
+            //  simply rotate the points wrt. the above configured rotation anchor
+            this.rotation.transform(this.patternPoints, 0, this.patternPoints, 0, 2);
             this.rotation.setToIdentity();
         }
 

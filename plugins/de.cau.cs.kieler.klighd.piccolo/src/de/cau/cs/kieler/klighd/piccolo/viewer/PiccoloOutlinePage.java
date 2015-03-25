@@ -20,6 +20,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collections;
 
 import javax.swing.Timer;
 
@@ -43,11 +44,10 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -79,8 +79,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     private static final Colors CLIP_OUTLINE_COLOR = Colors.MEDIUM_PURPLE_4;
     private static final int CLIP_OVERLAY_ALPHA = 50;
 
-    // Delay of the timed repaint.
-    private static final int REPAINT_DELAY = 200;
+    // Delay of the timed outline rect update.
+    private static final int OUTLINE_RECT_UPDATE_DELAY = 200;
+
+    // Delay of the timed camera repaint.
+    private static final int CAMERA_UPDATE_DELAY = 800;
 
     /** the canvas used for drawing. */
     private KlighdCanvas outlineCanvas;
@@ -102,6 +105,9 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
     /** Indicates whether a drag action on the outline canvas is in progress. */
     private boolean isDragging = false;
+
+    /** A timer to reduce the load during original diagram's size changes, e.g. due to node expansion. */
+    private Timer cameraTimer;
 
     /** A timer to reduce the load during panning of the original canvas. */
     private Timer outlineRectTimer;
@@ -147,7 +153,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      * Property Listener that listens to changes on the original canvas and triggers a redraw of the
      * outline rectangle.
      */
-    private PropertyChangeListener propertyListener = new PropertyChangeListener() {
+    private PropertyChangeListener mainCamListener = new PropertyChangeListener() {
 
         public void propertyChange(final PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(PCamera.PROPERTY_VIEW_TRANSFORM)
@@ -166,9 +172,18 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 // listening to the layers is required for enabling/disabling the clip outline overlay
                 //  immediately without any flickering
 
-                clipOutlineOverlay.setVisible(
-                        ((KlighdMainCamera) evt.getSource()).getDisplayedINode() instanceof KNodeNode);
-                clipOutlineOverlay.repaint();
+                if (Collections.emptyList().equals(evt.getNewValue())) {
+                    // in this case the previous depicted IKNodeNode has been detached
+                    //  a notification on the addition of the new one will follow shortly
+                    return;
+                }
+
+                // set the clip overlay invisible if the current clip node is the KNodeTopNode,
+                //  and visible otherwise, the clip node is a KNodeNode in those cases
+                // switched from 'setVisible(...)' to 'setOccluded(...)' in order to prevent the
+                //  calls of 'repaint()' / 'invalidatePaint()' that are hard-coded in 'setVisible(...)'
+                clipOutlineOverlay.setOccluded(((KlighdMainCamera) evt.getSource())
+                        .getDisplayedKNodeNode() instanceof KNodeTopNode);
             }
         }
     };
@@ -176,10 +191,28 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     /**
      * Named subclass of {@link KlighdCanvas} providing outline paint contexts.
      */
-    private static final class KlighdOutlineCanvas extends KlighdCanvas {
+    private final class KlighdOutlineCanvas extends KlighdCanvas {
 
         public KlighdOutlineCanvas(final Composite parent, final int style) {
             super(parent, style);
+        }
+
+        @Override
+        public KlighdMainCamera createBasicSceneGraph() {
+            return new KlighdMainCamera(new KlighdRoot()) {
+
+                private static final long serialVersionUID = -3551541550083498908L;
+
+                @Override
+                public void repaintFromLayer(final PBounds viewBounds, final PLayer repaintedLayer) {
+                    // by overriding the super implementation the propagation of repaint requests
+                    //  from the main diagram is blocked, and the load due to updating the outline
+                    //  is avoided
+                    // in order to reflect diagram changes, e.g., due to style or rendering updates
+                    //  an update of the outline camera is scheduled
+                    PiccoloOutlinePage.this.cameraTimer.restart();
+                }
+            };
         }
 
         @Override
@@ -207,14 +240,27 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         outlineCanvas.addInputEventListener(new KlighdBasicInputEventHandler(new OutlineDragHandler()));
 
 
-        // initialize the timer triggering the request to redraw the outline rect
-        outlineRectTimer = outlineCanvas.getRoot().createTimer(REPAINT_DELAY, new ActionListener() {
+        // initialize the timer triggering the update of the outline camera's view transform
+        cameraTimer = outlineCanvas.getRoot().createTimer(CAMERA_UPDATE_DELAY, new ActionListener() {
 
             public void actionPerformed(final ActionEvent e) {
+                adjustCamera();
                 adjustOutlineRect();
             }
         });
+        cameraTimer.setRepeats(false);
 
+        // initialize the timer triggering the request to update the outline rect
+        outlineRectTimer = outlineCanvas.getRoot().createTimer(OUTLINE_RECT_UPDATE_DELAY,
+                new ActionListener() {
+
+            public void actionPerformed(final ActionEvent e) {
+                if (cameraTimer.isRunning()) {
+                    return;
+                }
+                adjustOutlineRect();
+            }
+        });
         outlineRectTimer.setRepeats(false);
         outlineRectTimer.start();
 
@@ -277,11 +323,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                                 + "to contain at least one camera.");
             }
 
-            this.topNode.getDiagramMainCamera().removePropertyChangeListener(propertyListener);
+            this.topNode.getDiagramMainCamera().removePropertyChangeListener(mainCamListener);
             this.outlineCanvas.getCamera().removeChild(this.topNode);
 
             if (nodeLayoutAdapter != null) {
-                this.topNode.getGraphElement().eAdapters().remove(nodeLayoutAdapter);
+                this.topNode.getViewModelElement().eAdapters().remove(nodeLayoutAdapter);
             }
         }
 
@@ -290,17 +336,17 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         final KlighdMainCamera diagramMainCamera = topNode.getDiagramMainCamera();
 
         // listen to view transformations
-        diagramMainCamera.addPropertyChangeListener(propertyListener);
+        diagramMainCamera.addPropertyChangeListener(mainCamListener);
 
-        final KlighdMainCamera camera = outlineCanvas.getCamera();
+        final KlighdMainCamera outlineCamera = outlineCanvas.getCamera();
 
         // install the outlineCanvas' camera into the given (new) topNode
-        camera.addLayer(topNode);
+        outlineCamera.addLayer(topNode);
 
         // add a further layer to the camera
         //  that contains a rectangle indicating the visible part of the model
         final PLayer overlayLayer = new PLayer();
-        camera.addLayer(overlayLayer);
+        outlineCamera.addLayer(overlayLayer);
 
         // initialize & configure the outline rectangle
         //  the concrete path data are set later on in #adjustOutlineRect()
@@ -324,7 +370,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 final KlighdSWTGraphicsEx graphics = ((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());
 
                 final Rectangle2D globalClipBounds =
-                        topNode.getDiagramMainCamera().getDisplayedLayer().getGlobalFullBounds();
+                        topNode.getDiagramMainCamera().getDisplayedKNodeNode().getGlobalFullBounds();
 
                 final Region clip = new Region(graphics.getDevice());
                 clip.add(toSWTRectangle(clipOutlineOverlay.getBoundsReference().getBounds()));
@@ -335,8 +381,13 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
                 clip.subtract(diagramClip);
 
+                graphics.getGC().setTransform(null);
                 graphics.getGC().setClipping(clip);
+
                 super.paint(kpc);
+
+                graphics.getGC().setClipping((Rectangle) null);
+                clip.dispose();
             }
 
             private Rectangle toSWTRectangle(final java.awt.Rectangle rect) {
@@ -348,12 +399,16 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         clipOutlineOverlay.setStrokeColor((RGB) null);
         clipOutlineOverlay.setPaint(clipOutlineOverlayColoring.getFirst());
         clipOutlineOverlay.setPaintAlpha(clipOutlineOverlayColoring.getSecond());
-        clipOutlineOverlay.setVisible(diagramMainCamera.getDisplayedINode() instanceof KNodeNode);
-        // ... implies to switch it off if displayedNode is a KNodeTopNode.
 
-        camera.addChild(clipOutlineOverlay);
+        // switched from 'setVisible(...)' to 'setOccluded(...)' in order to prevent the
+        //  calls of 'repaint()' / 'invalidatePaint()' that are hard-coded in 'setVisible(...)'
+        clipOutlineOverlay.setOccluded(
+                // implies to switch it off if displayedKNodeNode is a KNodeTopNode
+                (diagramMainCamera.getDisplayedKNodeNode() instanceof KNodeTopNode));
 
-        camera.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, new PropertyChangeListener() {
+        outlineCamera.addChild(clipOutlineOverlay);
+
+        outlineCamera.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, new PropertyChangeListener() {
 
             public void propertyChange(final PropertyChangeEvent evt) {
                 clipOutlineOverlay.setPathToRectangle((Rectangle2D) evt.getNewValue());
@@ -362,7 +417,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
 
         // add listeners to layout changes and canvas resizing
-        rootNode = topNode.getGraphElement();
+        rootNode = topNode.getViewModelElement();
         nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
 
             @Override
@@ -381,7 +436,10 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                         || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
                         || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__XPOS
                         || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__YPOS) {
-                    adjustCamera();
+
+                    if (cameraTimer != null) {
+                        cameraTimer.restart();
+                    }
                 }
             }
         };
@@ -440,7 +498,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             return;
         }
 
-        final PNode displayedNode = (PNode) originalCamera.getDisplayedINode();
+        final PNode displayedNode = (PNode) originalCamera.getDisplayedKNodeNode();
 
         // get the new bounds
         final PBounds bounds = originalCamera.getViewBounds();
@@ -475,11 +533,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
             final PCamera originalCamera = topNode.getDiagramMainCamera();
             if (originalCamera != null) {
-                originalCamera.removePropertyChangeListener(propertyListener);
+                originalCamera.removePropertyChangeListener(mainCamListener);
             }
         }
         topNode = null;
-        propertyListener = null;
+        mainCamListener = null;
 
         if (rootNode != null) {
             rootNode.eAdapters().remove(nodeLayoutAdapter);
@@ -544,7 +602,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             //  'originalCamera.getDisplayedLayer().getParent()' is calculated. This way an
             //  optional translation of the parent inode's child area is also respected!
             final Point2D clipOffset =
-                    originalCamera.getDisplayedLayer().getParent().getGlobalTranslation();
+                    originalCamera.getDisplayedKNodeNode().getParent().getGlobalTranslation();
 
             final PBounds outlineRectBounds =
                     originalCamera.getViewBounds().moveBy(clipOffset.getX(), clipOffset.getY());

@@ -2,21 +2,23 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Point;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KGraphPackage;
@@ -33,17 +35,17 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * <br>
  * {@link IAction IActions} are currently assumed to be stateless and, thus, a singleton instance is
  * created only.
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
 public interface IAction {
-    
+
     /**
      * This method performs the intended action on a diagram.
-     * 
+     *
      * @param context
      *            an {@link ActionContext} instance providing various useful data.
      * @return an {@link ActionResult} providing {@link ILayoutConfig layout config(s)} to be
@@ -60,15 +62,15 @@ public interface IAction {
      * @author chsch
      */
     public static class ActionContext {
-        
+
         private IViewer viewer = null;
         private Trigger trigger = null;
         private KGraphElement kgraphElement = null;
         private KRendering rendering = null;
-        
+
         /**
          * Standard constructor.
-         * 
+         *
          * @param v
          *            the viewer the action was triggered in
          * @param t
@@ -92,14 +94,14 @@ public interface IAction {
         public IViewer getActiveViewer() {
             return viewer;
         }
-        
+
         /**
          * @return the current {@link ContextViewer}
          */
         public ContextViewer getContextViewer() {
             return viewer.getContextViewer();
         }
-        
+
         /**
          * @return the view context related to the current diagram
          */
@@ -113,7 +115,7 @@ public interface IAction {
         public Trigger getTrigger() {
             return trigger;
         }
-        
+
         /**
          * @return the node
          */
@@ -144,7 +146,7 @@ public interface IAction {
         /**
          * Reveals the source (domain) element associated with the given <code>node</code>
          * if any exists, or <code>null</code>.
-         * 
+         *
          * @param <T> the expected return type
          * @param viewElement the {@link KNode} to get the associated source element for
          * @return the related source (domain) element if any associated one exists, or <code>null</code>
@@ -153,32 +155,73 @@ public interface IAction {
         public <T> T getDomainElement(final KNode viewElement) {
             return (T) this.viewer.getViewContext().getSourceElement(viewElement);
         }
+
+
+        /**
+         * @return an AWT Geometry {@link Point2D} denoting the mouse cursor position while invoking
+         *         the action in overall diagram coordinates, or <code>null</code> if the action was
+         *         not triggered by clicking on a diagram element but, e.g., via a menu contribution.
+         */
+        public Point2D getDiagramRelativeMousePos() {
+            return null;
+        }
+
+        /**
+         * @return an AWT Geometry {@link Point2D} denoting the mouse cursor position while invoking
+         *         the action in canvas coordinates, or <code>null</code> if the action was not
+         *         triggered by clicking on a diagram element but, e.g., via a menu contribution; is
+         *         similar to {@link #getControlRelativeMousePos()}.
+         */
+        public Point2D getCanvasRelativeMousePos() {
+            return null;
+        }
+
+        /**
+         * @return an SWT {@link Point} denoting the mouse cursor position while invoking the action
+         *         in {@link org.eclipse.swt.widgets.Control Control} coordinates, or
+         *         <code>null</code> if the action was not triggered by clicking on a diagram
+         *         element but, e.g., via a menu contribution; is similar to
+         *         {@link #getCanvasRelativeMousePos()}.
+         */
+        public Point getControlRelativeMousePos() {
+            return null;
+        }
+
+        /**
+         * @return an SWT {@link Point} denoting the mouse cursor position while invoking the action
+         *         in {@link org.eclipse.swt.widgets.Display Display} coordinates, or
+         *         <code>null</code> if the action was not triggered by clicking on a diagram
+         *         element but, e.g., via a menu contribution.
+         */
+        public Point getDisplayRelativeMousePos() {
+            return null;
+        }
     }
 
 
     /**
      * Return type being expected by implementations of {@link IAction#execute(ActionContext)}.
      * Besides {@link ILayoutConfig ILayoutConfigs}
-     * 
+     *
      * @author chsch
      */
     public static final class ActionResult {
-        
+
         private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
-        
+
         private List<ILayoutConfig> layoutConfigs = null;
-        
+
         private boolean actionPerformed = true;
         private Boolean animateLayout = null;
         private Boolean zoomToActualSize = null;
         private Boolean zoomToFit = null;
         private Boolean zoomToFocus = null;
         private KNode focus = null;
-        
+
         private ActionResult(final boolean theActionPerformed) {
             this.actionPerformed = theActionPerformed;
         }
-        
+
         private ActionResult(final boolean theActionPerformed, final List<ILayoutConfig> theConfigs) {
             this.actionPerformed = theActionPerformed;
             this.layoutConfigs = theConfigs;
@@ -203,30 +246,30 @@ public interface IAction {
                 return new ActionResult(actionRequiresLayout).dontZoom();
             }
         }
-        
+
         /**
-         * Schedule animation during the subsequent automatic layout run. 
-         * 
+         * Schedule animation during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult doAnimateLayout() {
             this.animateLayout = true;
             return this;
         }
-        
+
         /**
-         * Suppress animation during the subsequent automatic layout run. 
-         * 
+         * Suppress animation during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult dontAnimateLayout() {
             this.animateLayout = false;
             return this;
         }
-        
+
         /**
-         * Schedule zoomToActualSize during the subsequent automatic layout run. 
-         * 
+         * Schedule zoomToActualSize during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult doZoomToActualSize() {
@@ -235,20 +278,20 @@ public interface IAction {
             this.zoomToFocus = null;
             return this;
         }
-        
+
         /**
-         * Suppress zoomToActualSize during the subsequent automatic layout run. 
-         * 
+         * Suppress zoomToActualSize during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult dontZoomToActualSize() {
             this.zoomToActualSize = false;
             return this;
         }
-        
+
         /**
-         * Schedule zoomToFit during the subsequent automatic layout run. 
-         * 
+         * Schedule zoomToFit during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult doZoomToFit() {
@@ -257,20 +300,20 @@ public interface IAction {
             this.zoomToFocus = null;
             return this;
         }
-        
+
         /**
-         * Suppress zoomToFit during the subsequent automatic layout run. 
-         * 
+         * Suppress zoomToFit during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult dontZoomToFit() {
             this.zoomToFit = false;
             return this;
         }
-        
+
         /**
-         * Schedule zoomToFocus during the subsequent automatic layout run. 
-         * 
+         * Schedule zoomToFocus during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult doZoomToFocus() {
@@ -279,10 +322,10 @@ public interface IAction {
             this.zoomToFocus = true;
             return this;
         }
-        
+
         /**
          * Schedule zoomToFocus during the subsequent automatic layout run.
-         * 
+         *
          * @param focusNode
          *            the {@link KNode} to focus
          * @return <code>this</code> {@link ActionResult}
@@ -294,20 +337,20 @@ public interface IAction {
             this.focus = focusNode;
             return this;
         }
-        
+
         /**
-         * Suppress zoomToFocus during the subsequent automatic layout run. 
-         * 
+         * Suppress zoomToFocus during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult dontZoomToFocus() {
             this.zoomToFocus = false;
             return this;
         }
-        
+
         /**
-         * Suppress any zooming during the subsequent automatic layout run. 
-         * 
+         * Suppress any zooming during the subsequent automatic layout run.
+         *
          * @return <code>this</code> {@link ActionResult}
          */
         public ActionResult dontZoom() {
@@ -316,63 +359,63 @@ public interface IAction {
             this.zoomToFocus = false;
             return this;
         }
-        
+
         /**
          * Getter.
-         * 
+         *
          * @return the attached {@link ILayoutConfig}
          */
         public List<ILayoutConfig> getLayoutConfigs() {
             return this.layoutConfigs;
         }
-        
+
         /**
          * Getter.
-         * 
+         *
          * Getter. Denotes whether a subsequent layout update run is required.
          * @return the {@link #actionPerformed} flag
          */
         public boolean getActionPerformed() {
             return this.actionPerformed;
         }
-        
+
         /**
          * Getter.
-         * 
+         *
          * @return the {@link #animateLayout} flag
          */
         public boolean getAnimateLayout() {
             return this.animateLayout != null
                     ? this.animateLayout : STORE.getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
         }
-        
+
         /**
          * Getter. Returns a {@link Boolean} instead of the primitive <code>boolean</code>
          * in order distinguish the 'not configured' state. Returns <code>null</code> in this
          * case.
-         * 
+         *
          * @return the {@link #zoomToActualSize} state
          */
         public Boolean getZoomToActualSize() {
             return this.zoomToActualSize;
         }
-        
+
         /**
          * Getter. Returns a {@link Boolean} instead of the primitive <code>boolean</code>
          * in order distinguish the 'not configured' state. Returns <code>null</code> in this
          * case.
-         * 
+         *
          * @return the {@link #zoomToFit} state
          */
         public Boolean getZoomToFit() {
             return this.zoomToFit;
         }
-        
+
         /**
          * Getter. Returns a {@link Boolean} instead of the primitive <code>boolean</code>
          * in order distinguish the 'not configured' state. Returns <code>null</code> in this
          * case.
-         * 
+         *
          * @return the {@link #zoomToFocus} state
          */
         public Boolean getZoomToFocus() {
@@ -381,7 +424,7 @@ public interface IAction {
 
         /**
          * Getter.
-         * 
+         *
          * @return the {@link KNode} to focus on
          */
         public KNode getFocusNode() {

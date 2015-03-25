@@ -63,7 +63,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
     public void notifyChanged(final Notification notification) {
         super.notifyChanged(notification);
 
-        final KEdge edge = edgeRep.getGraphElement();
+        final KEdge edge = edgeRep.getViewModelElement();
         final KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
         final boolean renderedAsPolyline =
                 rendering instanceof KPolyline && !(rendering instanceof KSpline);

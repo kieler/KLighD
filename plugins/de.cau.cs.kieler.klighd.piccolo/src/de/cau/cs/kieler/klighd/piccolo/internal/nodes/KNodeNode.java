@@ -22,14 +22,9 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement.ILabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -44,13 +39,13 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * @author mri
  * @author chsch
  */
-public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
-        ILabeledGraphElement<KNode> {
+public class KNodeNode extends KNodeAbstractNode implements
+        IInternalKGraphElementNode.IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
 
-    /** the parent {@link INode}. */
-    private INode parent;
+    /** the parent {@link AbstractKNodeNode}. */
+    private KNodeAbstractNode parent;
 
     /** the node rendering controller deployed to manage the rendering of {@link #node}. */
     private KNodeRenderingController renderingController;
@@ -60,9 +55,6 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
 
     /** a dedicated layer accommodating all attached {@link KLabelNode KLabelNodes}.*/
     private PLayer labelLayer;
-
-    /** the child area for this node. */
-    private final KChildAreaNode childArea;
 
     /**
      * This camera is used if the diagram is clipped to this node and this node's child area is part
@@ -81,15 +73,13 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      * Constructs a Piccolo2D node for representing a <code>KNode</code>.
      *
      * @param node
-     *            the node
+     *            the represented {@link KNode}
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
     public KNodeNode(final KNode node, final boolean edgesFirst) {
-        super(node);
-
-        this.childArea = new KChildAreaNode(this, edgesFirst);
+        super(node, edgesFirst);
 
         this.childAreaCamera = new PCamera() {
 
@@ -187,10 +177,12 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KNode, ? extends IGraphElement<KNode>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KNode,
+            ? extends IInternalKGraphElementNode<KNode>> controller) {
+
         if (controller == null || controller instanceof KNodeRenderingController) {
             this.renderingController = (KNodeRenderingController) controller;
+
         } else {
             final String s = "KLighD: Fault occured while building up a concrete KNode rendering: "
                 + "KNodeNodes are supposed to be controlled by KNodeRenderingControllers rather than "
@@ -230,7 +222,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      */
     public void addPort(final KPortNode port) {
         if (portLayer == null) {
-            portLayer = new KDisposingLayer();
+            portLayer = new KlighdDisposingLayer();
             addChild(labelLayer == null ? getChildrenCount() : getChildrenCount() - 1, portLayer);
         }
         portLayer.addChild(port);
@@ -244,7 +236,7 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      */
     public void addLabel(final KLabelNode label) {
         if (labelLayer == null) {
-            labelLayer = new KDisposingLayer();
+            labelLayer = new KlighdDisposingLayer();
             addChild(labelLayer);
         }
         labelLayer.addChild(label);
@@ -253,7 +245,8 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
     /**
      * {@inheritDoc}
      */
-    public INode getParentNode() {
+    @Override
+    public KNodeAbstractNode getParentKNodeNode() {
         return parent;
     }
 
@@ -261,17 +254,10 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      * Setter.
      *
      * @param parentINode
-     *            the {@link INode} being the new parent in terms of the structural nodes
+     *            the {@link AbstractKNodeNode} being the new parent in terms of the structural nodes
      */
-    public void setParentNode(final INode parentINode) {
+    public void setParentNode(final KNodeAbstractNode parentINode) {
         this.parent = parentINode;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KChildAreaNode getChildAreaNode() {
-        return childArea;
     }
 
     /**
@@ -448,28 +434,6 @@ public class KNodeNode extends KDisposingLayer.KNodeRepresentingLayer implements
      * {@inheritDoc}
      */
     @Override
-    protected void paint(final PPaintContext paintContext) {
-        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        final KlighdSemanticDiagramData sd =
-                getGraphElement().getData(KLayoutData.class).getProperty(
-                        KlighdProperties.SEMANTIC_DATA);
-        g2.startGroup(sd);
-        super.paint(paintContext);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintAfterChildren(final PPaintContext paintContext) {
-        super.paintAfterChildren(paintContext);
-        final KlighdSWTGraphics g2 = (KlighdSWTGraphics) paintContext.getGraphics();
-        g2.endGroup();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Rectangle2D getExportedBounds() {
         final PBounds bounds;
 

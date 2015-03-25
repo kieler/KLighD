@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -33,7 +34,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author mri
  * @author chsch
  */
-public class PAlignmentNode extends KlighdNode.KlighdFigureNode<KRendering> implements
+public class KlighdAlignmentNode extends KlighdNode.KlighdFigureNode<KRendering> implements
         PropertyChangeListener {
 
     private static final long serialVersionUID = -2514462331029707306L;
@@ -71,7 +72,7 @@ public class PAlignmentNode extends KlighdNode.KlighdFigureNode<KRendering> impl
     /**
      * Constructs an alignment node.
      */
-    public PAlignmentNode() {
+    public KlighdAlignmentNode() {
         super();
         addPropertyChangeListener(PROPERTY_BOUNDS, this);
     }

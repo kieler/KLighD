@@ -39,7 +39,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
  * 
  * @author chsch
  */
-public class KGraphJavaValidator extends AbstractKGraphJavaValidator {
+public class KGraphJavaValidator extends KGraphBasicStructureValidator {
 
     /**
      * Constant for relating marker and fix.

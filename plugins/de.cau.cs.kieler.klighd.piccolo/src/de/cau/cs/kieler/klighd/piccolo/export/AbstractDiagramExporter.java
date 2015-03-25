@@ -89,7 +89,7 @@ public abstract class AbstractDiagramExporter {
         if (exportViewport) {
             bounds = camera.getBounds();
         } else {
-            bounds = new PBounds(camera.getDisplayedINode().getExportedBounds());
+            bounds = new PBounds(camera.getDisplayedKNodeNode().getExportedBounds());
         }
 
         return bounds;
@@ -408,7 +408,7 @@ public abstract class AbstractDiagramExporter {
         //  an image export is to be done
         final KlighdPaintContext paintContext = createPaintContext(graphics);
 
-        final PLayer exportedLayer = camera.getDisplayedLayer();
+        final PLayer exportedLayer = camera.getDisplayedKNodeNode();
 
         // perform the diagram drawing (3.)
         if (exportConfig.exportViewport) {

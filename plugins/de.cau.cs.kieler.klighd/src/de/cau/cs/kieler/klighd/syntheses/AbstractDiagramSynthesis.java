@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -18,7 +18,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Function;
 
@@ -31,6 +34,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -64,15 +68,15 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis;
  * {@link javax.inject.Singleton &#64;Singleton}). The
  * {@link de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared ViewSynthesisShared}
  * annotation helps if the described feature of employing helper classes is required.
- * 
+ *
  * @param <S>
  *            Type of the model to be visualized
- * 
+ *
  * @author chsch
  * @author uru
- * 
+ *
  * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
+ * @kieler.rating proposed yellow by chsch
  */
 public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
@@ -92,38 +96,70 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * This constant expression is a convenience handle to easy the access to the
      * {@link KRenderingFactory} in derivatives of this class, i.e. concrete diagram syntheses.
      */
-    protected static final KRenderingFactory RENDERING_FACTORY = KRenderingFactory.eINSTANCE; 
+    protected static final KRenderingFactory RENDERING_FACTORY = KRenderingFactory.eINSTANCE;
 
 
     /**
      * {@inheritDoc}
      */
-    public Class<?> getSourceClass() {
+    public Class<?> getInputDataType() {
         if (!triedToInferClasses) {
-            inferSourceAndTargetModelClass();
+            inferInputDataType();
         }
         return sourceModelClass;
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    protected void inferSourceAndTargetModelClass() {
+    protected void inferInputDataType() {
         this.triedToInferClasses = true;
-        // try to find a method with one parameter which returns KNode
-        // takes the first matching method with parameter 0 != Object
+        // try to find the implementation of method 'transform(S input) : KNode'
+        //  in order to determine then input data's type, which can't be revealed otherwise
+        //  since the type parameterization is not available in compiled classes
+        // however, this approach suffers from the issue that multiple methods of the same
+        //  signature except the param type can be declared in concrete diagram syntheses
+        // thus, the identification of 'transform(S input) : KNode' must not stop if
+        //  such a method has been found but has to make sure the absence of any further one!
+        // this, however, might waste a bit of performance...
+
+        // a note on '!method.isBridge()': if a class determines the value of a generic type
+        //  argument while subclassing/implementing a parameterized class/interface, the methods
+        //  referring to that generic type argument in their list of parameters are handled as follows:
+        // for each implementation/override of such a method with a parameter's type being defined
+        //  in terms of the particular class type parameter in the original declaration
+        //  the java compilers generate additional so-called bridge methods that take the lower
+        //  bound type (like EObject in case of "<S extends EObject>", is Object by default),
+        //  cast it to the concrete type determined by the subclass, and call the (overridden/
+        //  implementation) method requiring the parameter in shape of the concrete type
+        // those methods will, of course, be found by the loop below but must be ignored!
+
         Method transformMethod = null;
-        for (final Method method : getClass().getDeclaredMethods()) {
-            if (method.getParameterTypes().length == 1
-                    && method.getReturnType().equals(KNode.class)
-                    && method.getName().equals(TRANSFORM_METHOD_NAME)) {
-                transformMethod = method;
-                // keep searching if the parameter is of type Object
-                // this is necessary to skip the method with type Object that is always present when
-                // dealing with generic typed methods
-                if (!method.getParameterTypes()[0].equals(new Object().getClass())) {
-                    break;
+        for (final Method method : getClass().getMethods()) {
+            if (method.getReturnType().equals(KNode.class)
+                    && method.getName().equals(TRANSFORM_METHOD_NAME)
+                    && !method.isBridge()
+                    && method.getParameterTypes().length == 1) {
+
+                if (transformMethod == null) {
+                    transformMethod = method;
+                    continue;
                 }
+
+                final String msg = "KLighD " + getClass().getSimpleName()
+                        + " diagram synthesis init: found multiple methods named "
+                        + "\"transform\" requiring a single parameter and returning a KNode."
+                        + KlighdPlugin.LINE_SEPARATOR
+                        + "KLighD's automatic source data type resolution requires exactly one "
+                        + "\"transform\" method implementing the abstract one required by the "
+                        + "super class." + KlighdPlugin.LINE_SEPARATOR
+                        + "Alternatively provide the input data type by overriding "
+                        + "\"getInputDataType()\".";
+                StatusManager.getManager().handle(
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));
+
+                transformMethod = null;
+                break;
             }
         }
         // infer the types if a matching method has been found
@@ -140,7 +176,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     public boolean supports(final Object model, final ViewContext viewContext) {
 
-        if (this.getSourceClass().isInstance(model)) {
+        if (this.getInputDataType().isInstance(model)) {
             @SuppressWarnings("unchecked")
             final S input = (S) model;
             return supports(input);
@@ -154,7 +190,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * Method for checking whether <code>this</code> diagram synthesis implementation supports the
      * given <code>model</code>.<br>
      * May be overridden by concrete implementations.
-     * 
+     *
      * @param model
      *            the model to test
      * @return <code>true</code> if <code>this</code> transformation supports <code>model</code>,
@@ -169,7 +205,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * Method hook to be called by KLighD's runtime.<br>
      * Concrete implementations must not override this method but {@link #transform(Object)}.
      * The {@link ViewContext} can be accessed via {@link #getUsedContext()}.
-     * 
+     *
      * @param model
      *            the semantic model to be depicted
      * @param viewContext
@@ -195,7 +231,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     /**
      * Translates the an model of type S into a KGraph/KRendering diagram description.<br>
      * The {@link ViewContext} can be accessed via {@link #getUsedContext()}.
-     * 
+     *
      * @param model
      *            the semantic model to be depicted
      * @return the related KGraph/KRendering diagram description
@@ -212,7 +248,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * <b>Note:</b> A view model element can be associated with at most 1 input model element.
      * Hence, this method shall be called at most once for a given view model element.<br>
      * In contrast, multiple view model elements can be associated with an input model element.
-     * 
+     *
      * @param <T>
      *            the type of the view model element
      * @param derived
@@ -231,9 +267,9 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * Name, parameter ordering, and return value (the target) are optimized for calling in
      * Xtend-based transformations in a fluent interface fashion, like
      * "model.createShape().putToLookUpWith(model);"<br>
-     * 
+     *
      * @deprecated use {@link #associateWith(EObject, Object)}
-     * 
+     *
      * @param <D>
      *            the type of the target element which is implicitly determined
      * @param derived
@@ -248,20 +284,20 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
 
     // ---------------------------------------------------------------------------------- //
-    //  Synthesis option handling    
+    //  Synthesis option handling
 
     /**
      * A diagram synthesis can use this method to specify {@link SynthesisOption SynthesisOptions}
      * it makes use of. The option settings can evaluated within the synthesis' transformed method,
      * they don't have any influence in the behavior of KLighD's runtime.
-     * 
+     *
      * A {@link SynthesisOption} option might be used to either display or hide comments in the
      * resulting diagram. The {@link SynthesisOption} class provides several convenience methods to
      * create an option, e.g. {@link SynthesisOption#createRangeOption(...)} to create a 'slider'.
-     * 
+     *
      * The synthesis options will be displayed in the side bar of the corresponding view or editor
      * part according to the order within the returned list.
-     * 
+     *
      * @return a list with the desired synthesis options.
      */
     public List<SynthesisOption> getDisplayedSynthesisOptions() {
@@ -269,27 +305,27 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     }
 
     // ---------------------------------------------------------------------------------- //
-    //  Recommended layout option handling    
+    //  Recommended layout option handling
 
     /**
      * {@inheritDoc}<br>
-     * <br> 
+     * <br>
      * Use the {@link #specifyLayoutOption(IProperty, List)} method to conveniently specify
      * the options. An example usage might look like the following (Xtend code). The shown example
      * will create a choice widget allowing all possible values of KlayLayered'
      * NodePlacementStrategy enumeration. Furthermore, a slider is created to set the layout's
      * spacing that allows values in the interval [0,255].
-     * 
+     *
      * <pre>
      *  override getDisplayedLayoutOptions() {
      *      return ImmutableList::of(
-     *          specifyLayoutOption(Properties::NODE_PLACER, 
+     *          specifyLayoutOption(Properties::NODE_PLACER,
      *              ImmutableList::copyOf(NodePlacementStrategy::values)),
      *          specifyLayoutOption(LayoutOptions::SPACING, ImmutableList::of(0, 255))
      *      )
      * }
      * </pre>
-     * 
+     *
      * The layout options will be displayed in the side bar of the corresponding view or editor
      * part according to the order within the returned list.<br>
      * <br>
@@ -303,7 +339,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * elements within the 'values' parameter depends on the tyoe if the specified property. For
      * instance, for an IProperty<Integer> one might pass a List<Integer> of size 2 to specify the
      * lower and upper bound for the values.
-     * 
+     *
      * @param prop
      *            the desired property.
      * @param values
@@ -317,7 +353,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
 
     // ---------------------------------------------------------------------------------- //
-    //  Offered diagram actions handling    
+    //  Offered diagram actions handling
 
     /**
      * {@inheritDoc}
@@ -329,7 +365,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     // ---------------------------------------------------------------------------------- //
     //  Hook allowing to register additional ILayoutConfigs for
-    //   those in a row with the default one    
+    //   those in a row with the default one
 
     /**
      * {@inheritDoc}
@@ -358,7 +394,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * Convenience method for setting the initially applied diagram clip node.<br>
      * Refers to {@link #getUsedContext()} for determining the {@link ViewContext} to perform this
      * definition and delegates to {@link #initiallyClipTo(ViewContext, KNode)}.
-     * 
+     *
      * @param node
      *            the initial diagram clip node
      * @return <code>node</code> for convenience
@@ -373,7 +409,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     /**
      * Convenience method for setting the initially applied diagram clip node.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} to perform this definition in
      * @param node
@@ -391,7 +427,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     /**
      * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
-     * 
+     *
      * @param <R>
      *            the concrete type of <code>element</code>
      * @param <T>
@@ -430,14 +466,14 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      */
     public static <R extends KGraphElement> R setLayoutOptions(final R element,
             final Map<IProperty<?>, ?> optionValueMap) {
-        
+
         return DiagramSyntheses.setLayoutOptions(element, optionValueMap);
     }
 
     /**
      * Convenience method for defining collapse/expand state dependent layout options for
      * {@link KNode KNodes}.
-     * 
+     *
      * @param <T>
      *            the property value type
      * @param node
@@ -462,7 +498,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * Convenience method for defining collapse/expand state dependent layout options for
      * {@link KPort KPorts}. The collapse/expand state refers to that of the {@link KNode}
      * containing the {@link KPort}.
-     * 
+     *
      * @param <T>
      *            the property value type
      * @param port
@@ -495,17 +531,17 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * Make sure to reset the reference by calling <code>use(null)</code> after calling
      * {@link #transform(Object)} in order safely let the garbage collect dispose the given view
      * context and its referenced data if possible. Otherwise this can result in a memory leak!
-     * 
+     *
      * @param viewContext
      *            the context to be used during the current run
      */
     public void use(final ViewContext viewContext) {
         this.currentContext = viewContext;
     }
-    
+
     /**
      * Getter.
-     * 
+     *
      * @return the currently used transformation context or <code>null</code> if no one is set.
      */
     protected ViewContext getUsedContext() {
@@ -518,17 +554,17 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     /**
      * Convenience getter.
-     * 
+     *
      * @param option the option to evaluate the configuration state / the configured value.
      * @return the configured value of {@link SynthesisOption} option.
      */
     public Object getObjectValue(final SynthesisOption option) {
         return this.getUsedContext().getOptionValue(option);
     }
-    
+
     /**
      * Convenience getter.
-     * 
+     *
      * @param option the option to evaluate the configuration state / the configured value.
      * @return the configured value of {@link SynthesisOption} option.
      */
@@ -547,10 +583,10 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
                     + option.getName() + " expecting a Boolean value.");
         }
     }
-    
+
     /**
      * Convenience getter.
-     * 
+     *
      * @param option the option to evaluate the configuration state / the configured value.
      * @return the configured value of {@link SynthesisOption} option.
      */
@@ -572,10 +608,10 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
                     + option.getName() + " expecting a int value.");
         }
     }
-    
+
     /**
      * Convenience getter.
-     * 
+     *
      * @param option the option to evaluate the configuration state / the configured value.
      * @return the configured value of {@link SynthesisOption} option.
      */

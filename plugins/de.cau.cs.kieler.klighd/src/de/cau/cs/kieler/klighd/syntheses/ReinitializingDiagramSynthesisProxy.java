@@ -259,11 +259,11 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
-    public Class<?> getSourceClass() {
+    public Class<?> getInputDataType() {
         if (this.transformationDelegate == null) {
             this.transformationDelegate = getNewDelegateInstance();
         }
-        return this.transformationDelegate.getSourceClass();
+        return this.transformationDelegate.getInputDataType();
     }
 
 

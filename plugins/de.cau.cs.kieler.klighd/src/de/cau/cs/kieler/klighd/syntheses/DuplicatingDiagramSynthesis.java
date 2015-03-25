@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -23,16 +23,16 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 /**
  * A duplicating diagram synthesis performing à la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy
  * EcoreUtil#copy} preserving the source-target-mapping.<br>
- * <br> 
+ * <br>
  * Its aim is to decouple the model access performed e.g. by the model editor and those performed by
  * {@link de.cau.cs.kieler.klighd.IUpdateStrategy IUpdateStrategys} and KLighD
  * {@link de.cau.cs.kieler.klighd.IViewer IViewers}.<br>
  * <br>
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
+ * @kieler.rating proposed yellow by chsch
  */
 public class DuplicatingDiagramSynthesis extends AbstractDiagramSynthesis<KNode> {
 
@@ -58,7 +58,7 @@ public class DuplicatingDiagramSynthesis extends AbstractDiagramSynthesis<KNode>
      * {@inheritDoc}
      */
     @Override
-    public Class<?> getSourceClass() {
+    public Class<?> getInputDataType() {
         return KNode.class;
     }
 }

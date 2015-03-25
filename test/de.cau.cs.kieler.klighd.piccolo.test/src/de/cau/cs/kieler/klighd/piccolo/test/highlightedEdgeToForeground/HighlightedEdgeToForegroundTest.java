@@ -17,6 +17,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -37,7 +38,6 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.test.ColorMatcher;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -63,7 +63,7 @@ public class HighlightedEdgeToForegroundTest {
     private static ViewContext viewContext;
 
     private static Shell shell;
-    private static KlighdCanvas canvas;
+    private static Control canvas;
     private static Point zeroPoint;
 
     /**
@@ -93,7 +93,7 @@ public class HighlightedEdgeToForegroundTest {
         shell.layout(true, true);
         shell.open();
 
-        canvas = (KlighdCanvas) viewContext.getViewer().getControl();
+        canvas = viewContext.getViewer().getControl();
         zeroPoint = canvas.toDisplay(0, 0);
     }
 
@@ -117,7 +117,7 @@ public class HighlightedEdgeToForegroundTest {
         final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
 
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
-        
+
         waitAmoment();
         clickOn(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
@@ -146,7 +146,7 @@ public class HighlightedEdgeToForegroundTest {
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 200;
         waitAmoment();
-        
+
         moveTo(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
@@ -248,7 +248,7 @@ public class HighlightedEdgeToForegroundTest {
         final int secondClickXPos = 5 + 50 + 100 + 5 + 100 + 5 + 20;
             // port width + border spacing + spacing + port width + node with + port width + 20
         waitAmoment();
-        
+
         moveTo(firstClickXPos, firstChildNodeYPos);
         waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);

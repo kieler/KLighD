@@ -64,7 +64,6 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdCanvas;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
@@ -460,10 +459,12 @@ public final class DiagramSideBar {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                viewContext.setZoomStyle(ZoomStyle.create(false, zoomToFitBtn.getSelection(), false));
+                viewContext.setZoomStyle(
+                        ZoomStyle.create(false, zoomToFitBtn.getSelection(), false));
+
                 // perform zoom to fit upon activation of the toggle button
                 if (zoomToFitBtn.getSelection()) {
-                    LightDiagramServices.layoutDiagram(viewContext);
+                    LightDiagramServices.zoomDiagram(viewContext);
                     // uncheck the zoom to focus button
                     zoomToFocusBtn.setSelection(false);
                 }
@@ -483,11 +484,12 @@ public final class DiagramSideBar {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                viewContext.setZoomStyle(ZoomStyle.create(false, false,
-                        zoomToFocusBtn.getSelection()));
+                viewContext.setZoomStyle(
+                        ZoomStyle.create(false, false, zoomToFocusBtn.getSelection()));
+
                 // perform zoom to focus upon activation of the toggle button
                 if (zoomToFocusBtn.getSelection()) {
-                    LightDiagramServices.layoutDiagram(viewContext);
+                    LightDiagramServices.zoomDiagram(viewContext);
                     // uncheck the zoom to fit button
                     zoomToFitBtn.setSelection(false);
                 }
@@ -655,10 +657,10 @@ public final class DiagramSideBar {
         }
 
         // side bar is hidden: if required, initialize the canvas buttons.
-        if (viewContext.getViewer().getControl() instanceof KlighdCanvas
+        if (viewContext.getViewer().getControl() instanceof Composite
                 && canvasZoomBtnsContainer == null) {
 
-            final KlighdCanvas canvas = (KlighdCanvas) viewContext.getViewer().getControl();
+            final Composite canvas = (Composite) viewContext.getViewer().getControl();
             canvas.addDisposeListener(new DisposeListener() {
 
                 public void widgetDisposed(final DisposeEvent e) {

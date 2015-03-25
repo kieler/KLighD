@@ -1543,17 +1543,32 @@
     </eAnnotations>
     <eLiterals name="SINGLECLICK" literal="SINGLECLICK">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Fires on left button's single click."/>
+        <details key="documentation" value="Fires on a left button's single click.&amp;lt;br&amp;gt;&#xA;Note: Corresponding actions are not fired on the first click of a double, tripple, ... click.&#xA;Thus, triggering the actions is delayed by the system wide double click period for assuring the absence of subsequent clicks."/>
       </eAnnotations>
     </eLiterals>
     <eLiterals name="DOUBLECLICK" value="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Fires on left button's double click."/>
+        <details key="documentation" value="Fires on left button's double (and more) click(s)."/>
       </eAnnotations>
     </eLiterals>
-    <eLiterals name="MIDDLE_SINGLECLICK" value="2" literal="MIDDLE_SINGLECLICK">
+    <eLiterals name="SINGLE_OR_MULTICLICK" value="2">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Fires on middle button's single click."/>
+        <details key="documentation" value="Fires on left button's first click regardless if more clicks follow within the system wide double click period."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="MIDDLE_SINGLECLICK" value="3" literal="MIDDLE_SINGLECLICK">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Fires on middle button's single click.&amp;lt;br&amp;gt;&#xA;Note: Corresponding actions are not fired on the first click of a double, tripple, ... click.&#xA;Thus, triggering the actions is delayed by the system wide double click period for assuring the absence of subsequent clicks."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="MIDDLE_DOUBLECLICK" value="4" literal="MIDDLE_DOUBLECLICK">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Fires on middle button's double (and more) click(s)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="MIDDLE_SINGLE_OR_MULTICLICK" value="5">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Fires on middle button's first click regardless if more clicks follow within the system wide double click period."/>
       </eAnnotations>
     </eLiterals>
   </eClassifiers>
@@ -1646,7 +1661,7 @@
         eType="#//KStyleHolder"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referencedTypes" upperBound="-1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="This is list of {@link KStyle} class instances (List&lt;Class&lt;KStyle>>) that used for filtering the styles that are &quot;imported&quot; from &lt;code>styleHolder&lt;/code>; if it is empty all styles of &lt;code>styleHolder&lt;/code> are (transitively) evaluated."/>
+        <details key="documentation" value="A list of {@link KStyle} class instances (List&amp;lt;Class&amp;lt;KStyle&amp;gt;&amp;gt;) that is used for filtering the styles being &quot;imported&quot; from &lt;code>styleHolder&lt;/code>; if it is empty all styles of &lt;code>styleHolder&lt;/code> are (transitively) evaluated."/>
       </eAnnotations>
       <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaClass">
         <eTypeArguments eClassifier="#//KStyle"/>

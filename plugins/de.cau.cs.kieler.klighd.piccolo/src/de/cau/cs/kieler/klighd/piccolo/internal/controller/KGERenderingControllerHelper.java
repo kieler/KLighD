@@ -53,16 +53,16 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.HAlignment;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.PAlignmentNode.VAlignment;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode.HAlignment;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
@@ -298,7 +298,7 @@ final class KGERenderingControllerHelper {
         final KlighdStyledText textNode = new KlighdStyledText(text);
 
         // create the alignment node wrapping the text
-        final PAlignmentNode alignmentNode = new PAlignmentNode();
+        final KlighdAlignmentNode alignmentNode = new KlighdAlignmentNode();
         alignmentNode.translate(initialBounds.getX(), initialBounds.getY());
         alignmentNode.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
         alignmentNode.addChild(textNode);

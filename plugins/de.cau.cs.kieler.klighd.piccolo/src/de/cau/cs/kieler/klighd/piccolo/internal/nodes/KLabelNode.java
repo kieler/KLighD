@@ -23,7 +23,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingContro
  * @author mri
  * @author chsch
  */
-public class KLabelNode extends KlighdNode.KlighdGraphNode<KLabel> {
+public class KLabelNode extends KGraphElementNode<KLabel> {
 
     private static final long serialVersionUID = -3999806360081871118L;
 
@@ -49,8 +49,9 @@ public class KLabelNode extends KlighdNode.KlighdGraphNode<KLabel> {
     /**
      * {@inheritDoc}
      */
-    public void setRenderingController(
-            final AbstractKGERenderingController<KLabel, ? extends IGraphElement<KLabel>> controller) {
+    public void setRenderingController(final AbstractKGERenderingController<KLabel,
+            ? extends IInternalKGraphElementNode<KLabel>> controller) {
+
         if (controller == null || controller instanceof KLabelRenderingController) {
             this.renderingController = (KLabelRenderingController) controller;
         } else {

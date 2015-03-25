@@ -48,6 +48,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphPackage;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
+import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KGridPlacement;
@@ -70,8 +71,8 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KDecoratorNode;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
@@ -84,6 +85,7 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The abstract base class for controllers that manages the transformation of a dedicated
@@ -99,7 +101,7 @@ import edu.umd.cs.piccolo.nodes.PPath;
  *            the type of the Piccolo2D node representing the graph element
  */
 public abstract class AbstractKGERenderingController
-    <S extends KGraphElement, T extends IGraphElement<S>> {
+    <S extends KGraphElement, T extends IInternalKGraphElementNode<S>> {
 
     /**
      * A map that tracks the {@link PNodeController PNodeControllers} that are deployed to manage
@@ -111,14 +113,13 @@ public abstract class AbstractKGERenderingController
      * The map is cleared if the whole {@link KGraphElement} is removed and this controller is
      * disposed, see references of {@link #removeAllPNodeControllers()}.
      */
-    private final Multimap<KRendering, PNodeController<? extends PNode>> pnodeControllers
-            = ArrayListMultimap.create();
+    private final Multimap<KRendering, PNodeController<?>> pnodeControllers = ArrayListMultimap.create();
 
-    /**
-     * This attribute key is used to let the PNodes be aware of their related KRenderings in their
-     * attributes list. It is used in the KlighdActionEventHandler, for example.
-     */
-    public static final Object ATTR_KRENDERING = new Object();
+//    /**
+//     * This attribute key is used to let the PNodes be aware of their related KRenderings in their
+//     * attributes list. It is used in the KlighdActionEventHandler, for example.
+//     */
+//    public static final Object ATTR_KRENDERING = new Object();
 
     private DiagramController diagramController;
 
@@ -1021,7 +1022,7 @@ public abstract class AbstractKGERenderingController
                 PiccoloPlacementUtil.getDecoratorPlacementData(rendering), parent);
 
         // create an empty node for the decorator
-        final KDecoratorNode decorator = new KDecoratorNode(rendering);
+        final KlighdDecoratorNode decorator = new KlighdDecoratorNode(rendering);
 
         // NodeUtil.applyTranslation(decorator, decoration.getOrigin());
         parent.addChild(decorator);
@@ -1032,9 +1033,6 @@ public abstract class AbstractKGERenderingController
 
         // apply the initial rotation
         decorator.setRotation(decoration.getRotation());
-
-        // let the decorator be pickable
-        decorator.setPickable(true);
 
         // add a listener on the parent's path
         addListener(PPath.PROPERTY_PATH, parent, controller.getNode(),
@@ -1058,6 +1056,37 @@ public abstract class AbstractKGERenderingController
 
         return controller.getNode();
     }
+
+    /**
+     * Dedicated {@link PNode} type wrapping edge decorator figures.<br>
+     */
+    private static class KlighdDecoratorNode extends KlighdNode.KlighdFigureNode<KRendering> {
+
+        private static final long serialVersionUID = -2824069198134013044L;
+
+        /**
+         * Standard constructor.
+         *
+         * @param theRendering
+         *            the rendering being represented by this node.
+         */
+        public KlighdDecoratorNode(final KRendering theRendering) {
+            this.setRendering(theRendering);
+            this.setPickable(true);
+        }
+
+        /**
+         * {@inheritDoc}.<br>
+         * <br>
+         * KlighdDecoratorNode state greedy picking as it is unlikely that they contain nested
+         * pickable elements like text fields.
+         */
+        @Override
+        protected boolean pick(final PPickPath pickPath) {
+            return true;
+        }
+    }
+
 
     /**
      * Creates the Piccolo2D node representing the rendering inside the given parent with initial
@@ -1122,7 +1151,8 @@ public abstract class AbstractKGERenderingController
         addPNodeController(rendering, controller);
 
         // remember the KRendering element in the PNode
-        controller.getNode().addAttribute(ATTR_KRENDERING, rendering);
+// update: deactivated this bypass since this information is now available via IKlighdFigureNode
+//        controller.getNode().addAttribute(ATTR_KRENDERING, rendering);
 
         // in case an action is attached to the KRendering make the node pickable
         //  this is only done in the PNode initialization as adding and removing actions later in life
@@ -1140,11 +1170,14 @@ public abstract class AbstractKGERenderingController
      *
      * @param parent
      *            the parent Piccolo2D node
+     * @param childArea
+     *            the {@link KChildArea} to be represented, may be <code>null</code> if no explicit
+     *            child area is defined
      * @param initialBounds
      *            the initial bounds
      * @return the controller for the created Piccolo2D node
      */
-    protected PNodeController<?> createChildArea(final PNode parent,
+    protected PNodeController<?> createChildArea(final PNode parent, final KChildArea childArea,
             final Bounds initialBounds) {
         throw new RuntimeException(
                 "Child area found in graph element which does not support a child area: "

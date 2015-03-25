@@ -23,7 +23,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IGraphElement;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PNode;
@@ -131,10 +131,10 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             if (unchanged) {
                 // if the layout data did not change, provide that information anyway,
                 //  since nodeRep may be invisible and is set visible by updating the layout data
-                controller.recordChange((IGraphElement<?>) nodeRep,
+                controller.recordChange((IKGraphElementNode) nodeRep,
                         KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE);
             } else {
-                controller.recordChange((IGraphElement<?>) nodeRep, getBounds(shL));
+                controller.recordChange((IKGraphElementNode) nodeRep, getBounds(shL));
             }
             return;
 
@@ -189,8 +189,8 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 shL.resetModificationFlag();
             }                
 
-            final AbstractKGERenderingController<?, ?> nodeController = NodeUtil.asIGraphElement(
-                    nodeRep).getRenderingController();
+            final AbstractKGERenderingController<?, ?> nodeController =
+                    NodeUtil.asKGENode(nodeRep).getRenderingController();
             if (nodeController != null) {
                 nodeController.modifyStyles();
             }
