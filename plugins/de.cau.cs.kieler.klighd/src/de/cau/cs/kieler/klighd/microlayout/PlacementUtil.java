@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -668,10 +669,22 @@ public final class PlacementUtil {
      * @return font information for the given label.
      */
     public static FontData fontDataFor(final KLabel kLabel) {
-        final KText kText = Iterators.getNext(filter(
-                ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class), KText.class), null);
-
-        return fontDataFor(kText);
+        final Object rendering = Iterators.getNext(
+                ModelingUtil.eAllContentsOfType2(kLabel, KRenderingRef.class, KText.class),
+                KRendering.class);
+        
+        EObject kText = null;
+        if (rendering instanceof KRenderingRef) {
+            kText = ((KRenderingRef) rendering).getRendering();
+        }
+        
+        // Check if we really have a KText instance; the rendering ref could have insidiously referenced
+        // some arbitrary object
+        if (kText instanceof KText) {
+            return fontDataFor((KText) kText);
+        } else {
+            return fontDataFor((KText) null);
+        }
     }
     
     /**

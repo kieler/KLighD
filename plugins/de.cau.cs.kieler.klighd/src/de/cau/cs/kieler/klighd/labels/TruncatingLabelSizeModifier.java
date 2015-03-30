@@ -19,6 +19,7 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.labels.ILabelSizeModifier;
+import de.cau.cs.kieler.kiml.labels.LabelLayoutOptions;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -40,7 +41,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * 
  * @author cds
  */
-public final class TruncatingLabelSizeModifier implements ILabelSizeModifier<KLabel> {
+public final class TruncatingLabelSizeModifier implements ILabelSizeModifier {
     
     /** The string appended to a truncated label text. */
     private static final String ELLIPSES = "...";
@@ -49,27 +50,40 @@ public final class TruncatingLabelSizeModifier implements ILabelSizeModifier<KLa
     /**
      * {@inheritDoc}
      */
-    public KVector resizeLabelToWidth(final KLabel label, final double targetWidth) {
-        // Find the label's size
-        final KShapeLayout labelLayout = label.getData(KShapeLayout.class);
-        KVector labelSize = new KVector(labelLayout.getWidth(), labelLayout.getHeight());
-        
-        if (labelSize.x > targetWidth) {
-            // Label exceeds target width, so shorten it
-            labelSize = truncateOverlyWideLabel(label, targetWidth);
+    public KVector resizeLabelToWidth(final Object label, final double targetWidth) {
+        // Check if it's a KLabel
+        if (label instanceof KLabel) {
+            KLabel kLabel = (KLabel) label;
+            
+            // Find the label's size
+            final KShapeLayout labelLayout = kLabel.getData(KShapeLayout.class);
+            KVector labelSize = null;
+            
+            if (labelLayout.getWidth() > targetWidth) {
+                // Label exceeds target width, so shorten it
+                labelSize = truncateOverlyWideLabel(kLabel, targetWidth);
+            } else {
+                // We also shorten multiline labels
+                labelSize = truncateNarrowButMultilineLabel(kLabel);
+            }
+            
+            // Make sure KLighD knows that we shortened the label
+            if (labelSize != null) {
+                labelLayout.setProperty(LabelLayoutOptions.LABEL_TEXT_CHANGED, true);
+            }
+            return labelSize;
         } else {
-            // We also shorten multiline labels
-            truncateNarrowButMultilineLabel(label, labelSize);
+            return null;
         }
-        
-        return labelSize;
     }
     
     /**
      * Truncates the text of the given label until it falls below the given target width.
      * 
-     * @param label the label whose text to truncate.
-     * @param targetWidth the width the label shouldn't exceed.
+     * @param label
+     *            the label whose text to truncate.
+     * @param targetWidth
+     *            the width the label shouldn't exceed.
      * @return the label's new size as estimated.
      */
     private KVector truncateOverlyWideLabel(final KLabel label, final double targetWidth) {
@@ -116,18 +130,20 @@ public final class TruncatingLabelSizeModifier implements ILabelSizeModifier<KLa
     }
     
     /**
-     * Truncates the text of the given label to the first line. The label is assumed to be narrower than
-     * the required target width. If the label only has one line, nothing is changed.
+     * Truncates the text of the given label to the first line. The label is assumed to be narrower
+     * than the required target width. If the label only has one line, nothing is changed.
      * 
-     * @param label the label whose text to truncate.
-     * @param origSize the label's original size.
-     * @return the label's new size as estimated.
+     * @param label
+     *            the label whose text to truncate.
+     * @param origSize
+     *            the label's original size.
+     * @return the label's new size as estimated or {@code null} if it has not been shortened..
      */
-    private KVector truncateNarrowButMultilineLabel(final KLabel label, final KVector origSize) {
+    private KVector truncateNarrowButMultilineLabel(final KLabel label) {
         // Find the label's last non-whitespace character before the first newline
         int newlineIndex = label.getText().indexOf('\n');
         if (newlineIndex == -1) {
-            return origSize;
+            return null;
         }
         
         // Find the last non-whitespace character before the newline

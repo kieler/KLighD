@@ -40,6 +40,8 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.util.KGraphSwitch;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.krendering.KRenderingFactory;
+import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -51,6 +53,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.labels.LabelLayoutOptions;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.IDiagramLayoutManager;
 import de.cau.cs.kieler.kiml.service.LayoutMapping;
@@ -551,6 +554,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private void createLabel(final LayoutMapping<KGraphElement> mapping, final KLabel label,
             final KLabeledGraphElement layoutLabeledElement, final boolean estimateSize) {
+        
         final KLabel layoutLabel = KimlUtil.createInitializedLabel(layoutLabeledElement);
 
         // set the label layout
@@ -582,9 +586,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     
                 }
                 
-                // attach the label's root rendering to the label so that our layout algorithms know
-                // how to estimate text sizes.
-                layoutLabel.getData().add(rootRendering);
+                // attach a reference to the label's root rendering to the label so that our layout
+                // algorithms know how to estimate text sizes.
+                KRenderingRef rootRenderingRef = KRenderingFactory.eINSTANCE.createKRenderingRef();
+                rootRenderingRef.setRendering(rootRendering);
+                layoutLabel.getData().add(rootRenderingRef);
             }
         }
 
@@ -680,7 +686,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                         
                         // if the label's text was changed during layout, remember the new text in a
                         // special property
-                        if (layoutLabel.getText() != null) {
+                        if (layoutLayout.getProperty(LabelLayoutOptions.LABEL_TEXT_CHANGED)) {
                             if (!layoutLabel.getText().equals(((KLabel) element).getText())) {
                                 labelLayout.setProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE,
                                         layoutLabel.getText());

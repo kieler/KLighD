@@ -35,7 +35,7 @@ import de.cau.cs.kieler.kiml.labels.ILabelSizeModifier;
  * 
  * @author cds
  */
-public final class WrappingLabelSizeModifier implements ILabelSizeModifier<KLabel> {
+public final class WrappingLabelSizeModifier implements ILabelSizeModifier {
     
     /** An estimation of the number of newline characters we will usually add to a label. */
     private static final int INSERTED_NEWLINES_ESTIMATION = 10;
@@ -44,7 +44,22 @@ public final class WrappingLabelSizeModifier implements ILabelSizeModifier<KLabe
     /**
      * {@inheritDoc}
      */
-    public KVector resizeLabelToWidth(final KLabel label, final double targetWidth) {
+    public KVector resizeLabelToWidth(final Object label, final double targetWidth) {
+        if (label instanceof KLabel) {
+            return doResize((KLabel) label);
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Does the actual work of resizing the label.
+     * 
+     * @param label
+     *            the label to shorten.
+     * @return new label dimensions.
+     */
+    private KVector doResize(final KLabel label) {
         // The label's original text
         final String origLabelText = label.getText();
         // This is where we build the label's new text (make enough space for the label's original text
