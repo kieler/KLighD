@@ -676,6 +676,8 @@ public final class PlacementUtil {
         EObject kText = null;
         if (rendering instanceof KRenderingRef) {
             kText = ((KRenderingRef) rendering).getRendering();
+        } else if (rendering instanceof KText) {
+            kText = (KText) rendering;
         }
         
         // Check if we really have a KText instance; the rendering ref could have insidiously referenced
