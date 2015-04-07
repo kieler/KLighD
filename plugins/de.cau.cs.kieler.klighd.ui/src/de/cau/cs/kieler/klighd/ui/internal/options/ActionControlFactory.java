@@ -40,6 +40,7 @@ import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -139,24 +140,34 @@ public class ActionControlFactory implements ISelectionChangedListener {
                 boolean anyActionPerformed = false;
 
                 viewContext.getLayoutRecorder().startRecording();
-
-                for (final EObject e : Iterables2.toIterable(viewer.getDiagramSelection()
-                        .diagramElementsIterator())) {
-
-                    final ActionContext aContext;
-
-                    if (e instanceof KGraphElement) {
-                        aContext = new ActionContext(viewer, null, (KGraphElement) e, null);
-                    } else if (e instanceof KRendering) {
-                        aContext = new ActionContext(viewer, null, null, (KRendering) e);
-                    } else {
-                        continue;
-                    }
-
-                    final ActionResult res = action.execute(aContext); 
-                    if (res != null) {
-                        result = res;
-                        anyActionPerformed |= res.getActionPerformed();
+                
+                // check if we actually have a selection
+                final KlighdTreeSelection diagramSelection = viewer.getDiagramSelection();
+                if (diagramSelection.isEmpty()) {
+                    // call the action on the root of the view model
+                    result = action.execute(new ActionContext(
+                            viewer, null, viewer.getViewContext().getViewModel(), null));
+                    anyActionPerformed = result.getActionPerformed();
+                } else {
+                    // call the action on all selected elements
+                    for (final EObject e : Iterables2.toIterable(
+                            diagramSelection.diagramElementsIterator())) {
+                        
+                        final ActionContext aContext;
+                        
+                        if (e instanceof KGraphElement) {
+                            aContext = new ActionContext(viewer, null, (KGraphElement) e, null);
+                        } else if (e instanceof KRendering) {
+                            aContext = new ActionContext(viewer, null, null, (KRendering) e);
+                        } else {
+                            continue;
+                        }
+                        
+                        final ActionResult res = action.execute(aContext); 
+                        if (res != null) {
+                            result = res;
+                            anyActionPerformed |= res.getActionPerformed();
+                        }
                     }
                 }
 
