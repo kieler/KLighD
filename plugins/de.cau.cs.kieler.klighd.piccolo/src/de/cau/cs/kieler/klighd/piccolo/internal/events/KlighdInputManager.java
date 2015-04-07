@@ -13,10 +13,14 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 
+import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PInputManager;
 import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.util.PDimension;
 
 /**
  * Specialized {@link PInputManager} that replaces the evaluation of events from the SWT event
@@ -42,7 +46,7 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * {@link KlighdBasicInputEventHandler}) relies on the SWT event type being taken from the event
  * data rather than the provided AWT constants (e.g. the above mentioned ones) the event are
  * eventually evaluated twice. This results in a big confusion and disturbs, e.g., the panning.
- * 
+ *
  * @author chsch
  */
 public class KlighdInputManager extends PInputManager implements IKlighdInputEventHandlerEx {
@@ -80,12 +84,65 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
     public static final int MOUSE_GESTURE = 12 + MouseEvent.MOUSE_FIRST;
 
     /**
+     * Specialization of {@link PInputEvent} changing the behavior of {@link #getCamera()} to always
+     * return the root camera (
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera KlighdMainCamera}).
+     * This implies (desired) different behavior of {@link #getDelta()} and {@link #getPosition()}.
+     * 
+     */
+    public static class KlighdInputEvent extends PInputEvent {
+
+        /**
+         * Constructor.
+         *
+         * @param inputManager
+         *            source of <code>this</code> {@link KlighdInputEvent}
+         * @param event
+         *            underlying Swing {@link InputEvent}
+         */
+        public KlighdInputEvent(final PInputManager inputManager, final InputEvent event) {
+            super(inputManager, event);
+        }
+
+        @Override
+        public PCamera getCamera() {
+            return getTopCamera();
+        }
+
+        // the following 2 overrides are not necessary because of the above 'getCamera()' change;
+        // I however kept them for indicating explicitly the change's (intended) consequences
+
+        @Override
+        public PDimension getDelta() {
+            // refer to the main camera rather than any hidden helper ones ("bottomCamera(s)")
+            final PCamera camera = getTopCamera();
+            return (PDimension) camera.localToView(getDeltaRelativeTo(camera));
+        }
+
+        @Override
+        public Point2D getPosition() {
+            // refer to the main camera rather than any hidden helper ones ("bottomCamera(s)")
+            final PCamera camera = getTopCamera();
+            return camera.localToView(getPositionRelativeTo(camera));
+        }
+    }
+
+
+    // "register" the modified KlighdInputEvent type
+    
+    @Override
+    protected KlighdInputEvent createInputEvent(final InputEvent event) {
+        // overriding method injecting the above declared KlighdInputEvent type.
+        return new KlighdInputEvent(this, event);
+    }
+
+    // overriding method replacing the original event evaluation by delegating to the
+    //  SWT event type based event handling helper
+
+    /**
      * The delegate event handler employed for replacing the AWT event code-based event evaluation.
      */
     private KlighdBasicInputEventHandler helper = new KlighdBasicInputEventHandler(this);
-
-
-    // the overriding method replacing the original event evaluation
 
     /**
      * {@inheritDoc}
@@ -94,7 +151,11 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
     public void processEvent(final PInputEvent event, final int type) {
         helper.processEvent(event, type);
     }
-    
+
+
+    // overrides of some existing mouse handling methods for consolidating the behavior to
+    //  our needs, also wrt. the proper delayed single click and double click handling
+
     /**
      * {@inheritDoc}
      */
@@ -106,9 +167,16 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
         //  requires proper evaluation of the MOUSE_ENTERED & MOUSE_EXITED constants
     }
 
-    // overrides of some existing mouse handling methods for consolidating the behavior to
-    //  our needs, also wrt. the proper delayed single click and double click handling
+
+    // if truly required the reference of 'getMouseFocus()' in 'mouseReleased' (which reveals
+    //  the pickPath configured in 'mousePressed') can be altered;
+    // however, verify and test all implemented inputEventHandlers afterwards!
     
+    // btw.: I just reverted mri's modification of the subsequent 2 methods' super implementations
+    //  and I don't see the problem he needed to work around.
+    // That, however, could have resulted from the magic being done in the Piccolo2D guys' mouse
+    //  input source implementation, see PSWTCanvas.MouseInputSource
+
     /**
      * {@inheritDoc}
      */
@@ -117,7 +185,7 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
         setMouseFocus(getMouseOver());
         this.dispatchEventToListener(event, MouseEvent.MOUSE_PRESSED, getMouseFocus());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -125,7 +193,7 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
     public void mouseReleased(final PInputEvent event) {
         this.dispatchEventToListener(event, MouseEvent.MOUSE_PRESSED, getMouseFocus());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -133,9 +201,9 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
     public void mouseClicked(final PInputEvent event) {
         this.dispatchEventToListener(event, MouseEvent.MOUSE_CLICKED, getMouseFocus());
     }
-    
+
     // the additional handler methods according to KlighdInputEventHandlerEx
-    
+
     /**
      * {@inheritDoc}
      */
