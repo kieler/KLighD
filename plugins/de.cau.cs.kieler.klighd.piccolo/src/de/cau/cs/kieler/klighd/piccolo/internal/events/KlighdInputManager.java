@@ -106,8 +106,8 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
         //  requires proper evaluation of the MOUSE_ENTERED & MOUSE_EXITED constants
     }
 
-    // overrides of some existing mouse handling methods for consolidating the behavior
-    //  as we need it, also wrt. the proper delay single click and double click handling
+    // overrides of some existing mouse handling methods for consolidating the behavior to
+    //  our needs, also wrt. the proper delayed single click and double click handling
     
     /**
      * {@inheritDoc}
