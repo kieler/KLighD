@@ -15,11 +15,10 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
+import java.util.Iterator;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -79,12 +78,14 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
      * @return the Piccolo node representing the rendering
      */
     private PNode handleLabelRendering(final KRendering rendering, final KLabelNode parent) {
-        // the rendering of a label has to contain exact one KText
+        // the rendering of a label has to contain exactly one KText
         //  that "inherits" the text from the KLabel itself
-        final List<KText> kTexts = Lists.newArrayList(
-                Iterators.filter(KRenderingUtil.selfAndAllChildren(rendering), KText.class));
-       
-        if (kTexts.size() != 1) {
+        final Iterator<KText> kTexts =
+                Iterators.filter(KRenderingUtil.selfAndAllChildren(rendering), KText.class);
+        
+        final KText kText = Iterators.getNext(kTexts, null); 
+        
+        if (kText == null || kTexts.hasNext()) {
             throw new RuntimeException("KLabel " + getGraphElement()
                     + " must (deeply) contain exactly 1 KText element.");
         }
@@ -92,8 +93,6 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
         // create the rendering
         final PNodeController<?> controller = (PNodeController<?>) createRendering(rendering,
                 parent, Bounds.of(parent.getBoundsReference()));
-        
-        final KText kText = kTexts.get(0); 
         
         @SuppressWarnings("unchecked")
         final PNodeController<KlighdStyledText> textController = (PNodeController<KlighdStyledText>)
