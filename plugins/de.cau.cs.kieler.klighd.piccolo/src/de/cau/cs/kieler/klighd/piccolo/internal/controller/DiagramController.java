@@ -58,7 +58,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.labels.LabelLayoutOptions;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
@@ -1924,6 +1923,8 @@ public class DiagramController {
 
         @Override
         public void notifyChanged(final Notification notification) {
+            super.notifyChanged(notification);
+            
             // flag that indicates whether we have found a new text for our label or not
             boolean foundNewText = false;
             String newText = null;

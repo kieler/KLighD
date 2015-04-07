@@ -53,7 +53,8 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.labels.LabelLayoutOptions;
+import de.cau.cs.kieler.kiml.labels.LabelManagementOptions;
+import de.cau.cs.kieler.kiml.labels.LabelManagementResult;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.IDiagramLayoutManager;
 import de.cau.cs.kieler.kiml.service.LayoutMapping;
@@ -686,11 +687,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                         
                         // if the label's text was changed during layout, remember the new text in a
                         // special property
-                        if (layoutLayout.getProperty(LabelLayoutOptions.LABEL_TEXT_CHANGED)) {
-                            if (!layoutLabel.getText().equals(((KLabel) element).getText())) {
-                                labelLayout.setProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE,
+                        LabelManagementResult managementResult =
+                                layoutLayout.getProperty(LabelManagementOptions.LABEL_MANAGEMENT_RESULT);
+                        if (managementResult != LabelManagementResult.UNMANAGED) {
+                            // TODO: This may in the future set the KText's text instead.
+                            // However, doing so now doesn't do anything yet...
+                            labelLayout.setProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE,
                                         layoutLabel.getText());
-                            }
                         }
                     }
                     return true;
