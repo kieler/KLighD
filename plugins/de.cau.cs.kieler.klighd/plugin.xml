@@ -46,6 +46,10 @@
             id="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction">
       </action>
       <action
+            class="de.cau.cs.kieler.klighd.actions.ManageLabelsAction"
+            id="de.cau.cs.kieler.klighd.actions.ManageLabelsAction">
+      </action>
+      <action
             class="de.cau.cs.kieler.klighd.actions.ScaleUpAction"
             id="de.cau.cs.kieler.klighd.actions.ScaleUpAction">
       </action>
