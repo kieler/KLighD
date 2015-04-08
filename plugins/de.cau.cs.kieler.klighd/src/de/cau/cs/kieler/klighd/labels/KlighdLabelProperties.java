@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 
 /**
@@ -21,6 +22,15 @@ import de.cau.cs.kieler.core.properties.Property;
  * @author cds
  */
 public final class KlighdLabelProperties {
+    
+    /**
+     * The result of invoking a label manager on a label, if a label manager is registered. This option
+     * is not a registered KIML layout option, since all labels in the layout graph are initially
+     * assumed to be unmanaged.
+     */
+    public static final IProperty<LabelManagementResult> LABEL_MANAGEMENT_RESULT =
+            new Property<LabelManagementResult>("de.cau.cs.kieler.labels.labelManagementResult",
+                    LabelManagementResult.UNMANAGED);
     
     /**
      * String to override a label's original text with. If this property is set to a non-null value,

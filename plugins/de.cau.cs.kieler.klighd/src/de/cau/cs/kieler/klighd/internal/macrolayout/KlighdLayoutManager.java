@@ -53,8 +53,6 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.labels.LabelManagementOptions;
-import de.cau.cs.kieler.kiml.labels.LabelManagementResult;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.IDiagramLayoutManager;
 import de.cau.cs.kieler.kiml.service.LayoutMapping;
@@ -66,6 +64,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
+import de.cau.cs.kieler.klighd.labels.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
@@ -688,7 +687,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                         // if the label's text was changed during layout, remember the new text in a
                         // special property
                         LabelManagementResult managementResult =
-                                layoutLayout.getProperty(LabelManagementOptions.LABEL_MANAGEMENT_RESULT);
+                                layoutLayout.getProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT);
                         if (managementResult != LabelManagementResult.UNMANAGED) {
                             // TODO: This may in the future set the KText's text instead.
                             // However, doing so now doesn't do anything yet...

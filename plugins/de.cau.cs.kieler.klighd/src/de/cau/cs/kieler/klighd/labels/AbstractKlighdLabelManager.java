@@ -17,8 +17,6 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.labels.ILabelManager;
-import de.cau.cs.kieler.kiml.labels.LabelManagementOptions;
-import de.cau.cs.kieler.kiml.labels.LabelManagementResult;
 
 /**
  * Abstract superclass for {@link ILabelManager}s to be used with KLighD. All a subclass needs to to is
@@ -26,15 +24,25 @@ import de.cau.cs.kieler.kiml.labels.LabelManagementResult;
  * class.
  * 
  * <p>
- * This class also manages an activity state. Label managers inheriting from this class can be switched
+ * This class manages an activity state. Label managers inheriting from this class can be switched
  * on or off, as required. If a label manager is switched off,
  * {@link #doResizeLabelToWidth(KLabel, double)} is not called.
  * </p>
  * 
+ * <h3>Technical Remarks</h3>
+ * 
  * <p>
- * On a technical note, what happens here is that KLighD needs to know if a label was managed or not
- * through the {@link LabelManagementOptions#LABEL_MANAGEMENT_RESULT} property. This class lets clients
- * abstract away from this technical detail.
+ * The label passed to this manager is the one from the layout KGraph fed to the layout algorithm,
+ * not the one used in KLighD's view model. This means that we need to remember the label's new text
+ * somewhere. We actually remember it by modifying the text of the layout graph's label. When
+ * applying the layout results,
+ * {@link de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager KlighdLayoutManager}
+ * checks if the layout graph's label has a {@link LabelManagementResult} attached to it that
+ * indicates that a label manager was active. If so, it applies the label's new text to a property
+ * set on the label ({@link KlighdLabelProperties#LABEL_TEXT_OVERRIDE}) which is then used as the
+ * label's text when displaying the label. Setting a proper {@link LabelManagementResult} on a given
+ * label is something subclasses do not need to worry about. The necessary logic is completely
+ * encapsulated in this base class.
  * </p>
  * 
  * @author cds
@@ -104,10 +112,10 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
             
             // Make sure KLighD knows if we shortened the label
             if (newLabelSize == null) {
-                labelLayout.setProperty(LabelManagementOptions.LABEL_MANAGEMENT_RESULT,
+                labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                         LabelManagementResult.MANAGED_UNMODIFIED);
             } else {
-                labelLayout.setProperty(LabelManagementOptions.LABEL_MANAGEMENT_RESULT,
+                labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                         LabelManagementResult.MANAGED_MODIFIED);
             }
             
