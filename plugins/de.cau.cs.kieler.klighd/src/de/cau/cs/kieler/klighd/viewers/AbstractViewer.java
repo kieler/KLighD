@@ -86,7 +86,7 @@ public abstract class AbstractViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public void addViewChangedListener(final IViewChangeListener listener,
+    public void addViewChangeListener(final IViewChangeListener listener,
             final ViewChangeType... eventTypes) {
         if (listener == null) {
             return;
@@ -110,7 +110,15 @@ public abstract class AbstractViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public void removeViewChangedEventListener(final IViewChangeListener listener) {
+    public void addViewChangedListener(final IViewChangeListener listener,
+            final ViewChangeType... eventTypes) {
+        this.addViewChangeListener(listener, eventTypes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeViewChangeListener(final IViewChangeListener listener) {
         if (listener != null && viewChangeListeners != null) {
 
             // removing a value from the 'values()' collection removes only the first occurrence
@@ -126,6 +134,13 @@ public abstract class AbstractViewer implements IViewer {
 
             this.viewChangeListenersView = null;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeViewChangedEventListener(final IViewChangeListener listener) {
+        this.removeViewChangeListener(listener);
     }
 
     private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListenersView;

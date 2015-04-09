@@ -93,13 +93,34 @@ public interface IViewer {
      * @param eventTypes
      *            the {@link ViewChangeType} this listener is notified of
      */
-    void addViewChangedListener(IViewChangeListener listener,
+    void addViewChangeListener(IViewChangeListener listener,
             ViewChangeType... eventTypes);
 
     /**
      * Unregisters the given {@link IViewChangeListener}.
      * 
-     * @param listener the {@link IViewChangeListener} to be removed from the listeners queue
+     * @param listener
+     *            the {@link IViewChangeListener} to be removed from the listeners queue
+     */
+    void removeViewChangeListener(IViewChangeListener listener);
+
+    /**
+     * @deprecated (inconsistent name) use
+     *             {@link #addViewChangeListener(IViewChangeListener, ViewChangeType...)}
+     * 
+     * @param listener
+     *            the {@link IViewChangeListener} to be registered
+     * @param eventTypes
+     *            the {@link ViewChangeType} this listener is notified of
+     */
+    void addViewChangedListener(IViewChangeListener listener,
+            ViewChangeType... eventTypes);
+
+    /**
+     * @deprecated (inconsistent name) use {@link #removeViewChangeListener(IViewChangeListener)}
+     * 
+     * @param listener
+     *            the {@link IViewChangeListener} to be removed from the listeners queue
      */
     void removeViewChangedEventListener(IViewChangeListener listener);
 

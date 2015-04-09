@@ -258,11 +258,11 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /**
      * {@inheritDoc}
      */
-    public void addViewChangedListener(final IViewChangeListener listener,
+    public void addViewChangeListener(final IViewChangeListener listener,
             final ViewChangeType... eventTypes) {
         if (currentViewer != null) {
             if (listener != null) {
-                currentViewer.addViewChangedListener(listener, eventTypes);
+                currentViewer.addViewChangeListener(listener, eventTypes);
             }
         } else {
             throw new RuntimeException("KLighD: Registering the "
@@ -274,12 +274,26 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /**
      * {@inheritDoc}
      */
-    public void removeViewChangedEventListener(final IViewChangeListener listener) {
+    public void addViewChangedListener(final IViewChangeListener listener,
+            final ViewChangeType... eventTypes) {
+        this.addViewChangeListener(listener, eventTypes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeViewChangeListener(final IViewChangeListener listener) {
         if (listener != null && currentViewer != null) {
-            currentViewer.removeViewChangedEventListener(listener);
+            currentViewer.removeViewChangeListener(listener);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void removeViewChangedEventListener(final IViewChangeListener listener) {
+        this.removeViewChangeListener(listener);
+    }
 
     /* ----------------------------- */
     /*   the view manipulation API   */
@@ -612,8 +626,8 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     public void scale(final Object semanticElement, final float scale) {
         final EObject diagramElement =
                 getViewContext().getTargetElement(semanticElement, KGraphElement.class);
-        if (diagramElement instanceof KGraphElement) {
-            currentViewer.scale((KGraphElement) diagramElement, scale);
+        if (diagramElement instanceof KNode) {
+            currentViewer.scale((KNode) diagramElement, scale);
         }
     }
 
@@ -690,8 +704,8 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     public void panToTopLeftCorner(final Object semanticElement, final int duration) {
         final EObject diagramElement =
                 getViewContext().getTargetElement(semanticElement, KGraphElement.class);
-        if (diagramElement instanceof KGraphElement) {
-            currentViewer.panToTopLeftCorner((KGraphElement) diagramElement, duration);
+        if (diagramElement instanceof KNode) {
+            currentViewer.panToTopLeftCorner((KNode) diagramElement, duration);
         }
     }
 
