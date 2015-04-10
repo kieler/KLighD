@@ -224,25 +224,25 @@ public class ViewChangedNotificationSuppressionTest {
 
 
     private void employFirstListener() {
-        viewContext.getViewer().addViewChangedListener(listener1, ViewChangeType.VIEW_PORT,
+        viewContext.getViewer().addViewChangeListener(listener1, ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.EXPAND, ViewChangeType.CLIP);
     }
 
     private void employFirstThanSecond() {
-        viewContext.getViewer().addViewChangedListener(listener1, ViewChangeType.VIEW_PORT,
+        viewContext.getViewer().addViewChangeListener(listener1, ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.EXPAND, ViewChangeType.CLIP);
 
-        viewContext.getViewer().addViewChangedListener(listener2, ViewChangeType.VIEW_PORT,
+        viewContext.getViewer().addViewChangeListener(listener2, ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.EXPAND, ViewChangeType.CLIP);
 
         secondListenerEmployed = true;
     }
 
     private void employSecondThanFirst() {
-        viewContext.getViewer().addViewChangedListener(listener2, ViewChangeType.VIEW_PORT,
+        viewContext.getViewer().addViewChangeListener(listener2, ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.EXPAND, ViewChangeType.CLIP);
 
-        viewContext.getViewer().addViewChangedListener(listener1, ViewChangeType.VIEW_PORT,
+        viewContext.getViewer().addViewChangeListener(listener1, ViewChangeType.VIEW_PORT,
                 ViewChangeType.COLLAPSE, ViewChangeType.EXPAND, ViewChangeType.CLIP);
 
         secondListenerEmployed = true;
