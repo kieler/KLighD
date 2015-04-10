@@ -671,7 +671,7 @@ public final class PlacementUtil {
     public static FontData fontDataFor(final KLabel kLabel) {
         final Object rendering = Iterators.getNext(
                 ModelingUtil.eAllContentsOfType2(kLabel, KRenderingRef.class, KText.class),
-                KRendering.class);
+                null);
         
         EObject kText = null;
         if (rendering instanceof KRenderingRef) {
