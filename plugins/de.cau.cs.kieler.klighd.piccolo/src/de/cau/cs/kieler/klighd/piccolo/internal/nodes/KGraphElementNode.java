@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2015 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -34,9 +34,9 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} element, contributing semantic
  * model data into drawn (vector graphic) images, and determining the visibility the pseudo figure
  * wrt. the diagram zoom scale while drawing the diagram.
- * 
+ *
  * @author chsch
- * 
+ *
  * @param <T>
  *            the concrete type of the {@link KGraphElement}
  */
@@ -111,7 +111,7 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
 
     /**
      * Constructs a corresponding Piccolo2D node representing the given {@link KGraphElement}.
-     * 
+     *
      * @param element
      *            the {@link KGraphElement}
      */
@@ -207,7 +207,7 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
                     .getProperty(KlighdProperties.SEMANTIC_DATA);
             kpc.getKlighdGraphics().startGroup(sd);
         }
-       
+
         super.paint(paintContext);
     }
 
