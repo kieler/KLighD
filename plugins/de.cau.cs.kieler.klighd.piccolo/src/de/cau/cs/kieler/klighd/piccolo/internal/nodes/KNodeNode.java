@@ -18,6 +18,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
@@ -43,6 +44,8 @@ public class KNodeNode extends KNodeAbstractNode implements
         IInternalKGraphElementNode.IKLabeledGraphElementNode<KNode> {
 
     private static final long serialVersionUID = 6311105654943173693L;
+
+    private static final Predicate<Object> IS_MAIN_CAM = Predicates.instanceOf(KlighdMainCamera.class);
 
     /** the parent {@link AbstractKNodeNode}. */
     private KNodeAbstractNode parent;
@@ -131,8 +134,7 @@ public class KNodeNode extends KNodeAbstractNode implements
                     // if there is a KlighdMainCamera in the list of observing cameras
                     //  that one is supposed to be the diagram main camera and, thus,
                     //  the diagram is assumed to be clipped to this node
-                    final boolean isRoot =
-                            Iterables.any(newCameras, Predicates.instanceOf(KlighdMainCamera.class));
+                    final boolean isRoot = Iterables.any(newCameras, IS_MAIN_CAM);
                     thisNode.isRootLayer = isRoot;
 
                     final PNode childAreaParent = thisNode.childArea.getParent();
