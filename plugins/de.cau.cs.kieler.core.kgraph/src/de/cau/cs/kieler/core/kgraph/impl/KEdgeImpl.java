@@ -437,7 +437,9 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
     public String toString() {
         KNode source = getSource();
         if (source != null && target != null) {
-            return "KEdge:" + source.toString() + "->" + target.toString();
+            final String sPort = getSourcePort() == null ? "" : (":" + getSourcePort().toString());
+            final String tPort = getTargetPort() == null ? "" : (":" + getTargetPort().toString());
+            return "KEdge:" + source.toString() + sPort + "->" + target.toString() + tPort;
         }
         return super.toString();
     }
