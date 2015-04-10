@@ -36,22 +36,9 @@ public final class ModelingUtil {
     private ModelingUtil() {
     }
 
-
     /**
-     * Returns an {@link Iterator} containing <code>eObject</code> itself and all recursively contained
-     * elements.
-     *
-     * @param eObject
-     *            the {@link EObject} whose contents are to be traversed
-     * @return the required {@link Iterator}
-     */
-    public static Iterator<? extends EObject> selfAndEAllContents(final EObject eObject) {
-        return Iterators.concat(Iterators.singletonIterator(eObject), eObject.eAllContents());
-    }
-
-    /**
-     * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
-     * elements.<br>
+     * Returns an {@link Iterable} containing all recursively contained elements of
+     * <code>eObject</code>.<br>
      * <br>
      * <b>Note:</b>
      * <em>The returned {@link Iterable} provides a pre-composed {@link Iterator} that can be traversed
@@ -59,6 +46,34 @@ public final class ModelingUtil {
      *
      * @param eObject
      *            the {@link EObject} whose contents are to be traversed
+     * @return the required {@link Iterable}
+     */
+    public static Iterable<? extends EObject> eAllContentsIterable(final EObject eObject) {
+        return Iterables2.toIterable(eObject.eAllContents());
+    }
+
+    /**
+     * Returns an {@link Iterator} containing <code>eObject</code> itself and all recursively
+     * contained elements.
+     * 
+     * @param eObject
+     *            the {@link EObject} whose contents (and itself) are to be traversed
+     * @return the required {@link Iterator}
+     */
+    public static Iterator<? extends EObject> selfAndEAllContents(final EObject eObject) {
+        return Iterators.concat(Iterators.singletonIterator(eObject), eObject.eAllContents());
+    }
+
+    /**
+     * Returns an {@link Iterable} containing <code>eObject</code> itself and all recursively
+     * contained elements.<br>
+     * <br>
+     * <b>Note:</b>
+     * <em>The returned {@link Iterable} provides a pre-composed {@link Iterator} that can be traversed
+     * only once! Hence, the {@link Iterable} can used in at most one for-loop, for example.</em>
+     *
+     * @param eObject
+     *            the {@link EObject} whose contents (and itself) are to be traversed
      * @return the required {@link Iterable}
      */
     public static Iterable<? extends EObject> selfAndEAllContentsIterable(final EObject eObject) {
