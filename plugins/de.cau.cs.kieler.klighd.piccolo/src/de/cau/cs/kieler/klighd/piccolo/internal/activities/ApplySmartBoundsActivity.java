@@ -74,7 +74,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
                 - sourceBounds.y, targetBounds.width - sourceBounds.width, targetBounds.height
                 - sourceBounds.height);
         
-        this.sourceScale = node.getTransform().getScale();
+        this.sourceScale = node.getTransformReference(true).getScale();
         this.deltaScale = this.targetScale - this.sourceScale;
         
         node.setVisible(true);
