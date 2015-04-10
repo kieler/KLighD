@@ -90,7 +90,7 @@ public class ViewChangedNotificationTest {
 
         // the zoom to fit causes the VIEW_PORT change events the listener is waiting for
         viewContext.setZoomStyle(ZoomStyle.ZOOM_TO_FIT);
-        viewContext.getViewer().addViewChangedListener(listener, ViewChangeType.VIEW_PORT);
+        viewContext.getViewer().addViewChangeListener(listener, ViewChangeType.VIEW_PORT);
 
         shell.open();
 
