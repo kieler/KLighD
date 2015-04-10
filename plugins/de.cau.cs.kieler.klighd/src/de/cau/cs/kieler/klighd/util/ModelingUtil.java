@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -25,22 +25,22 @@ import com.google.common.collect.Iterators;
 
 /**
  * A collection of some modeling related convenience functions.
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch 
+ * @kieler.rating proposed yellow by chsch
  */
 public final class ModelingUtil {
-    
+
     private ModelingUtil() {
     }
-    
+
 
     /**
      * Returns an {@link Iterator} containing <code>eObject</code> itself and all recursively contained
      * elements.
-     * 
+     *
      * @param eObject
      *            the {@link EObject} whose contents are to be traversed
      * @return the required {@link Iterator}
@@ -65,11 +65,11 @@ public final class ModelingUtil {
         return Iterables2.toIterable(selfAndEAllContents(eObject));
     }
 
-    
+
     /**
      * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
      * elements of {@code value}'s type.
-     * 
+     *
      * @param <T>
      *            the generic type of {@code value}
      * @param value
@@ -88,7 +88,7 @@ public final class ModelingUtil {
         );
     }
 
-    
+
     /**
      * Returns an {@link Iterator} containing all recursively contained elements of type
      * {@code value}'s type.
@@ -329,7 +329,7 @@ public final class ModelingUtil {
     /**
      * Returns the first element of type <code>eClass</code> in <code>eObject</code>'s containment
      * hierarchy.
-     * 
+     *
      * @param eObject
      *            the element reveal the required parent
      * @param eClass
@@ -351,7 +351,7 @@ public final class ModelingUtil {
     /**
      * Returns the first element of type <code>eClass</code> in <code>eObject</code>'s containment
      * hierarchy including <code>eObject</code> itself.
-     * 
+     *
      * @param eObject
      *            the element reveal the required parent
      * @param eClass
@@ -369,7 +369,7 @@ public final class ModelingUtil {
     /**
      * Returns the first element of type <code>eClass</code> in <code>eObject</code>'s containment
      * hierarchy.
-     * 
+     *
      * @param <T>
      *            the type of the required parent
      * @param eObject
@@ -395,7 +395,7 @@ public final class ModelingUtil {
     /**
      * Returns the first element of type <code>eClass</code> in <code>eObject</code>'s containment
      * hierarchy including <code>eObject</code> itself.
-     * 
+     *
      * @param <T>
      *            the type of the required parent
      * @param eObject
@@ -416,7 +416,7 @@ public final class ModelingUtil {
 
     /**
      * Creates an iterator traversing along the 'eContainer' chain of an {@link EObject}.
-     * 
+     *
      * @param eObject
      *            the element to start with
      * @return the an {@link Iterator} visiting all eContainers.
@@ -424,11 +424,11 @@ public final class ModelingUtil {
     public static Iterator<EObject> eAllContainers(final EObject eObject) {
         return new EContainerIterator(eObject, false);
     }
-    
+
     /**
      * Creates an iterator traversing along the 'eContainer' chain of an {@link EObject} including
      * (starting with) <code>eOject</code> itself.
-     * 
+     *
      * @param eObject
      *            the element to start with
      * @return the an {@link Iterator} visiting <code>eObject</code> and all eContainers.
@@ -436,17 +436,17 @@ public final class ModelingUtil {
     public static Iterator<EObject> selfAndEAllContainers(final EObject eObject) {
         return new EContainerIterator(eObject, true);
     }
-    
+
     /**
      * A simple implementation of the {@link Iterator} interface allowing to traverse the
      * 'eContainer' chain of {@link EObject EObjects}.
-     * 
+     *
      * @author chsch
      */
     private static class EContainerIterator implements Iterator<EObject> {
 
         private EObject element;
-        
+
         public EContainerIterator(final EObject theElement, final boolean includingSelf) {
             if (theElement == null) {
                 throw new IllegalArgumentException("Class EContainerIterator:"
@@ -454,7 +454,7 @@ public final class ModelingUtil {
             }
             this.element = includingSelf ? theElement : theElement.eContainer();
         }
-        
+
         public boolean hasNext() {
             return element != null;
         }
@@ -487,7 +487,7 @@ public final class ModelingUtil {
      * duplicates later on causing {@link org.eclipse.emf.common.notify.Notification#REMOVE
      * Notification#REMOVE} or {@link org.eclipse.emf.common.notify.Notification#REMOVE_MANY
      * #REMOVE_MANY} notifications for elements that are still in the list!
-     * 
+     *
      * @param eObject
      *            the {@link EObject} to remove {@link org.eclipse.emf.common.notify.Adapter
      *            Adapters} from
@@ -512,7 +512,7 @@ public final class ModelingUtil {
      * duplicates later on causing {@link org.eclipse.emf.common.notify.Notification#REMOVE
      * Notification#REMOVE} or {@link org.eclipse.emf.common.notify.Notification#REMOVE_MANY
      * #REMOVE_MANY} notifications for elements that are still in the list!
-     * 
+     *
      * @param eObject
      *            the {@link EObject} to remove {@link org.eclipse.emf.common.notify.Adapter
      *            Adapters} from
