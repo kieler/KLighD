@@ -173,11 +173,9 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                 
                 // remove transient klighd state
                 // care: do not iterate over the elements of the 'copy' as the subgraph
-                // was already removed from its original containmet
-                @SuppressWarnings("unchecked")
-                Iterator<KGraphElement> kgeIt =
-                        (Iterator<KGraphElement>) (Iterator<?>) ModelingUtil.selfAndEAllContentsOfType2(
-                                copier.get(subgraph), KGraphElement.class);
+                // was already removed from its original containment
+                Iterator<KGraphElement> kgeIt = ModelingUtil.selfAndEAllContentsOfType2(
+                        copier.get(subgraph), KGraphElement.class);
                 try {
                     while (kgeIt.hasNext()) {
                         KGraphElement kge = kgeIt.next();
