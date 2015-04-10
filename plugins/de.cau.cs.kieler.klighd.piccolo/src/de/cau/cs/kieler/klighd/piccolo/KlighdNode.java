@@ -12,6 +12,7 @@
 package de.cau.cs.kieler.klighd.piccolo;
 
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera.KlighdPickPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -295,14 +296,15 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
          */
         @Override
         protected boolean pickAfterChildren(final PPickPath pickPath) {
-            // first test whether this figure is visible at all
-            //  we shamelessly assume that scaleX == scaleY ;-)
-            if (isNotVisibleOn(pickPath.getTopCamera().getViewTransformReference().getScaleX())) {
-                return false;
-            }
-            return super.pickAfterChildren(pickPath);
-        }
+            final KlighdPickPath kpp = (KlighdPickPath) pickPath;
 
+            // first test whether this figure is visible at all
+            if (isNotVisibleOn(kpp.getCameraZoomScale())) {
+                return false;
+            } else {
+                return super.pickAfterChildren(pickPath);
+            }
+        }
 
         /**
          * {@inheritDoc}

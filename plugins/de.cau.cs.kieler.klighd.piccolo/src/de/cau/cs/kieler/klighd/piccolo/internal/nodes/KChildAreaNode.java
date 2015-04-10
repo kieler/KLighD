@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera.KlighdPickPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -50,6 +51,9 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
 
     /** flag indicating whether to clip nodes and edges. */
     private boolean clip = false;
+
+    /** tracks {@link #containingINode}'s scale setting. */
+    private Double nodeScale = null;
 
     /**
      * Constructs a child area for a given node.
@@ -93,6 +97,23 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
      */
     public void setClip(final boolean clip) {
         this.clip = clip;
+    }
+
+    /**
+     * Setter for notifying {@link #containingINode}'s scale factor, called from
+     * {@link KNodeNode#setScale(double)}, used to adjust the
+     * {@link KlighdPaintContext#getCameraZoomScale() camera zoom scale} before/after drawing the
+     * contained {@link KNodeNode KNodeNodes}.
+     *
+     * @param nodeScale
+     *            the scale factor applied to {@link #containingINode}
+     */
+    void setNodeScale(final double nodeScale) {
+        if (nodeScale == 1d) {
+            this.nodeScale = null;
+        } else {
+            this.nodeScale = nodeScale;
+        }
     }
 
     /**
@@ -158,6 +179,14 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
         if (clip) {
             ((KlighdPaintContext) paintContext).forcedPushClip(getBoundsReference());
         }
+
+        // in case 'containingNode' is scaled adjust the camera zoom scale provided by the
+        //  KlighdPaintContext correspondingly, in order be able to apply the zoom-based
+        //  visibility constraints properly
+
+        if (nodeScale != null) {
+            ((KlighdPaintContext) paintContext).pushNodeScale(nodeScale.doubleValue());
+        }
     }
 
     /**
@@ -168,6 +197,12 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
         if (clip) {
             ((KlighdPaintContext) paintContext).forcedPopClip();
         }
+
+        // see #paint(...) above for details on the following statement
+
+        if (nodeScale != null) {
+            ((KlighdPaintContext) paintContext).popNodeScale();
+        }
     }
 
     /**
@@ -175,6 +210,12 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
      */
     @Override
     public boolean fullPick(final PPickPath pickPath) {
+        final KlighdPickPath kpp = (KlighdPickPath) pickPath;
+
+        if (nodeScale != null) {
+            kpp.pushNodeScale(nodeScale.doubleValue());
+        }
+
         // special picking when this child area has clipping enabled
         if (clip) {
             // never pick the child area and only pick children in the clipped area
@@ -196,6 +237,11 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
         } else {
             return super.fullPick(pickPath);
         }
+
+        if (nodeScale != null) {
+            kpp.popNodeScale();
+        }
+
         return false;
     }
 }

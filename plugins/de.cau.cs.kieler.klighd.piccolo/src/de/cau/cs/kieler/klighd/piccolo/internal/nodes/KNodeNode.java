@@ -23,8 +23,12 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera.KlighdPickPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
@@ -71,6 +75,12 @@ public class KNodeNode extends KNodeAbstractNode implements
     /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
     private boolean isRootLayer = false;
 
+    /**
+     * This helper is required for relying on the visibility evaluation methods of {@link KlighdNode}.
+     * It is only initialized with an instance, if visibility restrictions are defined in the
+     * corresponding {@link KNode}.
+     */
+    private final KlighdNode visibilityHelper;
 
     /**
      * Constructs a Piccolo2D node for representing a <code>KNode</code>.
@@ -83,6 +93,9 @@ public class KNodeNode extends KNodeAbstractNode implements
      */
     public KNodeNode(final KNode node, final boolean edgesFirst) {
         super(node, edgesFirst);
+
+        this.visibilityHelper =
+                KGraphElementNode.evaluateVisibilityDefinitions(node.getData(KLayoutData.class), null);
 
         this.childAreaCamera = new PCamera() {
 
@@ -313,7 +326,25 @@ public class KNodeNode extends KNodeAbstractNode implements
      * {@inheritDoc}
      */
     @Override
+    public void setScale(final double scale) {
+        super.setScale(scale);
+        this.childArea.setNodeScale(scale);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean fullPick(final PPickPath pickPath) {
+        final KlighdPickPath kpp = (KlighdPickPath) pickPath;
+
+        // first test whether this figure is visible at all
+        if (!this.isRootLayer && this.visibilityHelper != null
+                && this.visibilityHelper.isNotVisibleOn(kpp.getCameraZoomScale())) {
+            return false;
+        }
+
         final boolean fullPick = fullPickOri(pickPath);
 
         // in case the diagram is clipped to this kNodeNode (isRootLayer == true)
@@ -389,6 +420,12 @@ public class KNodeNode extends KNodeAbstractNode implements
      */
     @Override
     public void fullPaint(final PPaintContext paintContext) {
+        final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+        if (!this.isRootLayer && this.visibilityHelper != null
+                && this.visibilityHelper.isNotVisibleOn(kpc)) {
+            return;
+        }
+
         // Unfortunately I had to copy the whole method just for
         //  introducing the filter in the loop below, since 'PNode#fullPaint(...)'
         //  accesses the child list directly rather via 'getChildrenReference()'.
@@ -431,6 +468,7 @@ public class KNodeNode extends KNodeAbstractNode implements
             paintContext.popTransform(getTransformReference(false));
         }
     }
+
 
     /**
      * {@inheritDoc}

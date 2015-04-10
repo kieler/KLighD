@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.util.Stack;
 
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCamera;
@@ -112,10 +113,12 @@ public class KlighdPaintContext extends PPaintContext {
     private final boolean printout;
     private final boolean addSemanticData;
 
+    private final Stack<Double> cameraScales = new Stack<Double>();
 
     /**
      * Provides the current diagram zoom factor as determined by the active {@link KlighdMainCamera}'s
-     * view {@link java.awt.geom.AffineTransform transform}.
+     * view {@link java.awt.geom.AffineTransform transform}, adjusted by the drawn parent
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode KNodeNode}'s scale settings.
      *
      * @return the current diagram zoom factor
      */
@@ -242,5 +245,27 @@ public class KlighdPaintContext extends PPaintContext {
      */
     public void forcedPopClip() {
         super.popClip(null);
+    }
+
+    /**
+     * Saves the (adjusted) {@link #cameraZoomScale} and applies <code>scale</code> to the current
+     * value. Is intended to be called from
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode KChildAreaNode} only!
+     *
+     * @param scale
+     *            the scale factor to be applied to the current {@link #cameraZoomScale}
+     */
+    public void pushNodeScale(final double scale) {
+        cameraScales.push(cameraZoomScale);
+        cameraZoomScale *= scale;
+    }
+
+    /**
+     * Restores the previous logged (adjusted) camera zoom scale.<br>
+     * Is intended to be called from
+     * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode KChildAreaNode} only!
+     */
+    public void popNodeScale() {
+        cameraZoomScale = cameraScales.pop();
     }
 }

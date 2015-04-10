@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.util.Stack;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -25,7 +27,9 @@ import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * This specialized {@link PCamera} type describes the diagram root cameras.<br>
@@ -173,13 +177,93 @@ public class KlighdMainCamera extends PCamera {
 
 
     /**
+     * A specialized {@link PPickPath}.
+     */
+    public static class KlighdPickPath extends PPickPath {
+
+        private double cameraZoomScale = 1d;
+        private final Stack<Double> cameraScales = new Stack<Double>();
+
+        /**
+         * Creates a pick pack originating from the provided camera and with the given screen pick
+         * bounds.
+         *
+         * @param camera
+         *            camera from which the pickpath originates
+         * @param aScreenPickBounds
+         *            bounds of pick area
+         */
+        public KlighdPickPath(final KlighdMainCamera camera, final PBounds aScreenPickBounds) {
+            super(camera, aScreenPickBounds);
+
+            // I shamelessly assume that scaleX == scaleY ;-)
+            this.cameraZoomScale = camera.getViewTransformReference().getScaleX();
+        }
+
+        /**
+         * Provides the current diagram zoom factor as determined by the active
+         * {@link KlighdMainCamera}'s view {@link java.awt.geom.AffineTransform transform}, adjusted
+         * by the picked parent {@link KNodeNode}'s scale settings.
+         *
+         * @return the current diagram zoom factor
+         */
+        public double getCameraZoomScale() {
+            return cameraZoomScale;
+        }
+
+        /**
+         * Saves the (adjusted) {@link #cameraZoomScale} and applies <code>scale</code> to the current
+         * value. Is intended to be called from
+         * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode KChildAreaNode} only!
+         *
+         * @param scale
+         *            the scale factor to be applied to the current {@link #cameraZoomScale}
+         */
+        public void pushNodeScale(final double scale) {
+            this.cameraScales.push(cameraZoomScale);
+            this.cameraZoomScale *= scale;
+        }
+
+        /**
+         * Restores the previous logged (adjusted) camera zoom scale.<br>
+         * Is intended to be called from
+         * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode KChildAreaNode} only!
+         */
+        public void popNodeScale() {
+            this.cameraZoomScale = cameraScales.pop();
+        }
+    }
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * Had to copy this method from {@link PCamera} in order to inject the specialized
+     * {@link KlighdPickPath}.
+     */
+    @Override
+    public PPickPath pick(final double x, final double y, final double halo) {
+        final PBounds b = new PBounds(new Point2D.Double(x, y), -halo, -halo);
+        final PPickPath result = new KlighdPickPath(this, b);
+
+        fullPick(result);
+
+        // make sure this camera is pushed.
+        if (result.getNodeStackReference().size() == 0) {
+            result.pushNode(this);
+            result.pushTransform(getTransformReference(false));
+        }
+
+        return result;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void fullPaint(final PPaintContext paintContext) {
         try {
             // In case the following call fails the SWT components employed in
-            //  PSWCanvas#paintComponent(...) may end up in an inconsistent state.
+            //  PSWTCanvas#paintComponent(...) may end up in an inconsistent state.
             // Hence, this try catch block is added here in order to let (at least)
             //  this#fullPaint(...) return properly.
             super.fullPaint(paintContext);
