@@ -311,7 +311,7 @@ public final class KlighdPredicates {
     }
 
     /**
-     * A singleton helper Function used in {@link #eAllContentsOfType(EObject, Class...)}.
+     * A singleton helper Function used in {@link #instanceOf(Class...)}.
      */
     private static final Function<Class<?>, Predicate<Object>> CLASS_TO_PREDICATE =
             new Function<Class<?>, Predicate<Object>>() {
@@ -354,7 +354,7 @@ public final class KlighdPredicates {
     }
 
     /**
-     * A singleton helper Function used in {@link #eAllContentsOfType(EObject, Class...)}.
+     * A singleton helper Function used in {@link #eInstanceOf(EClass...)}.
      */
     private static final Function<EClass, Predicate<EObject>> ECLASS_TO_PREDICATE =
             new Function<EClass, Predicate<EObject>>() {
