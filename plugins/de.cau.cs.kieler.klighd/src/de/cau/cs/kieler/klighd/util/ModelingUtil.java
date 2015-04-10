@@ -38,20 +38,31 @@ public final class ModelingUtil {
     
 
     /**
-     * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
+     * Returns an {@link Iterator} containing <code>eObject</code> itself and all recursively contained
      * elements.
      * 
-     * @param value
-     *            the value
+     * @param eObject
+     *            the {@link EObject} whose contents are to be traversed
+     * @return the required {@link Iterator}
+     */
+    public static Iterator<? extends EObject> selfAndEAllContents(final EObject eObject) {
+        return Iterators.concat(Iterators.singletonIterator(eObject), eObject.eAllContents());
+    }
+
+    /**
+     * Returns an {@link Iterable} containing {@code value} itself and all recursively contained
+     * elements.<br>
+     * <br>
+     * <b>Note:</b>
+     * <em>The returned {@link Iterable} provides a pre-composed {@link Iterator} that can be traversed
+     * only once! Hence, the {@link Iterable} can used in at most one for-loop, for example.</em>
+     *
+     * @param eObject
+     *            the {@link EObject} whose contents are to be traversed
      * @return the required {@link Iterable}
      */
-    public static Iterable<? extends EObject> selfAndEAllContents(final EObject value) {
-        return Iterables2.toIterable(
-                Iterators.concat(
-                        Iterators.singletonIterator(value),
-                        value.eAllContents()
-                )
-        );
+    public static Iterable<? extends EObject> selfAndEAllContentsIterable(final EObject eObject) {
+        return Iterables2.toIterable(selfAndEAllContents(eObject));
     }
 
     
@@ -79,37 +90,37 @@ public final class ModelingUtil {
 
     
     /**
-     * Returns an {@link Iterable} containing all recursively contained elements of type
+     * Returns an {@link Iterator} containing all recursively contained elements of type
      * {@code value}'s type.
      *
      * @param <T>
-     *            the required type of {@code value}
+     *            the type or a super type of <code>type</code>
      * @param eObject
      *            the {@link EObject} whose contents are to be traversed
-     * @param clazz
+     * @param type
      *            the required type
-     * @return the requested {@link Iterable}
+     * @return the requested {@link Iterator}
      */
-    public static <T extends EObject> Iterable<T> eAllContentsOfType(final EObject eObject,
-            final Class<T> clazz) {
-        return Iterables2.toIterable(Iterators.filter(eObject.eAllContents(), clazz));
+    public static <T extends EObject> Iterator<T> eAllContentsOfType(final EObject eObject,
+            final Class<T> type) {
+        return Iterators.filter(eObject.eAllContents(), type);
     }
 
 
     /**
-     * Returns an {@link Iterator} providing all deeply contained children being an instance of one
-     * of the given <code>types</code>.
+     * Returns an {@link Iterator} providing all deeply contained children of <code>eObject</code>
+     * being an instance of one of the given <code>types</code>.
      *
      * @param <T>
-     *            the most concrete super type of <code>types</code>
+     *            a common super type of <code>types</code>
      * @param eObject
      *            the {@link EObject} whose contents are to be traversed
      * @param types
      *            the types of elements to be visited (varArgs)
-     * @return the requested {@link Iterable}
+     * @return the requested {@link Iterator}
      */
     public static <T extends EObject> Iterator<T> eAllContentsOfType(final EObject eObject,
-            final Class<? extends T>... types) {
+            final Class<?>... types) {
 
         if (types == null) {
             @SuppressWarnings("unchecked")
@@ -127,28 +138,193 @@ public final class ModelingUtil {
             final Iterator<T> result = (Iterator<T>) Iterators.filter(eObject.eAllContents(), p);
             return result;
         }
+    }
 
+    /**
+     * Returns an {@link Iterator} providing <code>eObject</code> and all deeply contained children
+     * being an instance of <code>type</code>.<br>
+     * <br>
+     * <b>Note:</b> <em><code>eObject</code> is always contained regardless of its type!</em>
+     *
+     * @param <T>
+     *            a common super type of <code>eObject</code>'s type and <code>types</code>
+     * @param eObject
+     *            the {@link EObject} whose contents (and itself) are to be traversed
+     * @param type
+     *            the type of elements to be visited
+     * @return the requested {@link Iterator}
+     */
+    public static <T extends EObject> Iterator<T> selfAndEAllContentsOfType(final EObject eObject,
+            final Class<?> type) {
+
+        return selfAndEAllContentsOfType(eObject, new Class[] {type});
     }
 
     /**
      * Returns an {@link Iterator} providing <code>eObject</code> and all deeply contained children
      * being an instance of one of the given <code>types</code>.<br>
      * <br>
-     * <b>Note:</b> <em><code>eObject</code> is always contained regardless of its type!</em> Therefore,
-     * the returned {@link Iterator}'s type parameter must be {@link EObject}.
+     * <b>Note:</b> <em><code>eObject</code> is always contained regardless of its type!</em>
      *
+     * @param <T>
+     *            a common super type of <code>eObject</code>'s type and <code>types</code>
+     * @param eObject
+     *            the {@link EObject} whose contents (and itself) are to be traversed
+     * @param types
+     *            the types of elements to be visited (varArgs)
+     * @return the requested {@link Iterator}
+     */
+    public static <T extends EObject> Iterator<T> selfAndEAllContentsOfType(final EObject eObject,
+            final Class<?>... types) {
+
+        @SuppressWarnings("unchecked")
+        final T self = (T) eObject;
+
+        return Iterators.concat(Iterators.singletonIterator(self),
+                ModelingUtil.<T>eAllContentsOfType(self, types));
+    }
+
+
+    /**
+     * An extended version of {@link EObject#eAllContents()} allowing to filter the traversed
+     * elements of <code>eObject</code> based on its type. In contrast to
+     *
+     * <pre>
+     * Iterators.filter(eObject.eAllContents(), ...)
+     * </pre>
+     *
+     * or {@link ModelingUtil#eAllContentsOfType(EObject, Class)} this function does not visit
+     * children being not of the given type. Consequently, elements of the given type being (deeply)
+     * contained in such skipped children are not found.
+     *
+     * @param <T>
+     *            the type or a super type of <code>type</code>
+     * @param eObject
+     *            the {@link EObject} whose contents are to be traversed
+     * @param type
+     *            the type of elements to be visited
+     * @return the tailored {@link org.eclipse.emf.common.util.TreeIterator (Tree-)Iterator}
+     */
+    public static <T extends EObject> Iterator<T> eAllContentsOfType2(final EObject eObject,
+            final Class<T> type) {
+
+        return eAllContentsOfType2(eObject, new Class[] {type});
+    }
+
+    /**
+     * An extended version of {@link EObject#eAllContents()} allowing to filter the traversed
+     * elements of <code>eObject</code> based on its type. In contrast to
+     *
+     * <pre>
+     * Iterators.filter(eObject.eAllContents(), ...)
+     * </pre>
+     *
+     * or {@link ModelingUtil#eAllContentsOfType(EObject, Class...)} this function does not visit
+     * elements being not of one of the given types. Consequently, elements of one of the given
+     * types being (deeply) contained in such skipped elements are not found.
+     *
+     * @param <T>
+     *            a common super type of <code>types</code>
      * @param eObject
      *            the {@link EObject} whose contents are to be traversed
      * @param types
      *            the types of elements to be visited (varArgs)
-     * @return the requested {@link Iterable}
+     * @return the tailored {@link org.eclipse.emf.common.util.TreeIterator (Tree-)Iterator}
      */
-    public static Iterator<EObject> selfAndEAllContentsOfType(final EObject eObject,
-            final Class<? extends EObject>... types) {
-        return Iterators.concat(Iterators.singletonIterator(eObject),
-                eAllContentsOfType(eObject, types));
+    public static <T extends EObject> Iterator<T> eAllContentsOfType2(final EObject eObject,
+            final Class<?>... types) {
+
+        if (types == null) {
+            @SuppressWarnings("unchecked")
+            final Iterator<T> res = (Iterator<T>) eObject.eAllContents();
+            return res;
+
+        } else if (types.length == 0) {
+            // because the empty disjunction is defined to evaluate to 'false' ...
+            return Iterators.emptyIterator();
+
+        } else {
+
+            final Predicate<Object> p = KlighdPredicates.instanceOf(types);
+
+            return new AbstractTreeIterator<T>(eObject, false) {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public Iterator<T> getChildren(final Object object) {
+                    @SuppressWarnings("unchecked")
+                    final Iterator<T> res = (Iterator<T>) Iterators.filter(
+                            ((EObject) object).eContents().iterator(), p);
+                    return res;
+                }
+            };
+        }
     }
 
+
+    /**
+     * An extended version of {@link EObject#eAllContents()} allowing to filter the traversed
+     * elements of <code>eObject</code> based on its type. In contrast to
+     *
+     * <pre>
+     * Iterators.filter(eObject.eAllContents(), ...)
+     * </pre>
+     *
+     * or {@link ModelingUtil#eAllContentsOfType(EObject, Class)} this function does not visit
+     * children being not of the given type. Consequently, elements of the given type being (deeply)
+     * contained in such skipped children are not found.<br>
+     * <br>
+     * <b>Note:</b> <em><code>eObject</code> is always contained regardless of its type!</em>
+     *
+     * @param <T>
+     *            a common super type of <code>eObject</code>'s type and <code>type</code>
+     * @param eObject
+     *            the {@link EObject} whose contents (and itself) are to be traversed
+     * @param type
+     *            the type of elements to be visited
+     * @return the requested {@link Iterator}
+     */
+    public static <T extends EObject> Iterator<T> selfAndEAllContentsOfType2(final EObject eObject,
+            final Class<? extends EObject> type) {
+
+        return selfAndEAllContentsOfType2(eObject, new Class[] {type});
+    }
+
+    /**
+     * An extended version of {@link EObject#eAllContents()} allowing to filter the traversed
+     * elements of <code>eObject</code> based on its type. In contrast to
+     *
+     * <pre>
+     * Iterators.concat(
+     *     Iterators.singletonIterator(eObject), Iterators.filter(eObject.eAllContents(), ...))
+     * </pre>
+     *
+     * or {@link ModelingUtil#selfAndEAllContentsOfType(EObject, Class...)} this function does not
+     * visit elements being not of one of the given types. Consequently, elements of one of the
+     * given types being (deeply) contained in such skipped elements are not found.<br>
+     * <br>
+     * <b>Note:</b> <em><code>eObject</code> is always contained regardless of its type!</em>
+     *
+     * @param <T>
+     *            a common super type of <code>eObject</code>'s type and <code>types</code>
+     * @param eObject
+     *            the {@link EObject} whose contents (and itself) are to be traversed
+     * @param types
+     *            the types of elements to be visited (varArgs)
+     * @return the requested {@link Iterator}
+     */
+    public static <T extends EObject> Iterator<T> selfAndEAllContentsOfType2(final EObject eObject,
+            final Class<?>... types) {
+
+        @SuppressWarnings("unchecked")
+        final T self = (T) eObject;
+
+        return Iterators.concat(Iterators.singletonIterator(self),
+                ModelingUtil.<T>eAllContentsOfType2(self, types));
+    }
+
+
+    // eContainer iterator factory methods
 
     /**
      * Returns the first element of type <code>eClass</code> in <code>eObject</code>'s containment
@@ -296,86 +472,6 @@ public final class ModelingUtil {
             throw new UnsupportedOperationException(
                     "Removing elements from a containment hierarchy is not allowed!");
         }
-    }
-
-
-    /**
-     * An extended version of {@link EObject#eAllContents()} allowing to filter the traversed
-     * elements based on its type. In contrast to
-     * 
-     * <pre>
-     * Iterators.filter(eObject.eAllContents(), ...)
-     * </pre>
-     * 
-     * or {@link ModelingUtil#eAllContentsOfType(EObject, Class...)} this function does not visit
-     * elements being not of one of the given types. Consequently, elements of one of the given types
-     * being (deeply) contained in such skipped elements are not found.
-     * 
-     * @param <T>
-     *            the most concrete super type of <code>types</code>
-     * @param eObject
-     *            the {@link EObject} whose contents are to be traversed
-     * @param types
-     *            the types of elements to be visited (varArgs)
-     * @return the tailored {@link org.eclipse.emf.common.util.TreeIterator (Tree-)Iterator}
-     */
-    public static <T extends EObject> Iterator<T> eAllContentsOfType2(final EObject eObject,
-            final Class<? extends T>... types) {
-
-        if (types == null) {
-            @SuppressWarnings("unchecked")
-            final Iterator<T> res = (Iterator<T>) eObject.eAllContents();
-            return res;
-
-        } else if (types.length == 0) {
-            // because the empty disjunction is defined to evaluate to 'false' ...
-            return Iterators.emptyIterator();
-
-        } else {
-
-            final Predicate<Object> p = KlighdPredicates.instanceOf(types);
-
-            return new AbstractTreeIterator<T>(eObject, false) {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public Iterator<T> getChildren(final Object object) {
-                    @SuppressWarnings("unchecked")
-                    final Iterator<T> res = (Iterator<T>) Iterators.filter(
-                            ((EObject) object).eContents().iterator(), p);
-                    return res;
-                }
-            };
-        }
-    }
-
-
-    /**
-     * An extended version of {@link EObject#eAllContents()} allowing to filter the traversed
-     * elements based on its type. In contrast to
-     * 
-     * <pre>
-     * Iterators.concat(
-     *     Iterators.singletonIterator(eObject), Iterators.filter(eObject.eAllContents(), ...))
-     * </pre>
-     * 
-     * or {@link ModelingUtil#selfAndEAllContentsOfType(EObject, Class...)} this function does not visit
-     * elements being not of one of the given types. Consequently, elements of one of the given types
-     * being (deeply) contained in such skipped elements are not found.<br>
-     * <br>
-     * <b>Note:</b> <em><code>eObject</code> is always contained regardless of its type!</em> Therefore,
-     * the returned {@link Iterator}'s type parameter must be {@link EObject}.
-     * 
-     * @param eObject
-     *            the {@link EObject} whose contents (and self) are to be traversed
-     * @param types
-     *            the types of elements to be visited (varArgs)
-     * @return the tailored {@link org.eclipse.emf.common.util.TreeIterator (Tree-)Iterator}
-     */
-    public static Iterator<EObject> selfAndEAllContentsOfType2(final EObject eObject,
-            final Class<? extends EObject>... types) {
-        return Iterators.concat(Iterators.singletonIterator(eObject),
-                eAllContentsOfType2(eObject, types));
     }
 
 
