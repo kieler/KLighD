@@ -278,8 +278,8 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                         try {
                             IFile f = (IFile) sSelection.getFirstElement();
                             ResourceSet rs = new ResourceSetImpl();
-                            Resource r =
-                            rs.getResource(URI.createFileURI(f.getFullPath().toString()), true);
+                            Resource r = rs.getResource(URI.createPlatformResourceURI(
+                                    f.getFullPath().toString(), true), true);
                             if (r.getContents().size() > 0) {
                                 model = r.getContents().get(0);
                             }
