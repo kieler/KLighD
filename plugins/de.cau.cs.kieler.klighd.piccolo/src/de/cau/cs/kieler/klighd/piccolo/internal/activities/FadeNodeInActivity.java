@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -23,23 +23,23 @@ import edu.umd.cs.piccolo.util.PBounds;
  * A custom {@link edu.umd.cs.piccolo.activities.PInterpolatingActivity PInterpolatingActivity} that
  * fades {@link PNode PNodes} representing {@link de.cau.cs.kieler.core.kgraph.KGraphElement
  * KGraphElements} (except KEdges) into a diagram.
- * 
+ *
  * @author chsch
  */
 public class FadeNodeInActivity extends PInterpolatingActivity implements IStartingAndFinishingActivity {
 
     /** the node for this activity. */
     private final PNode node;
-    
+
     /** the target bounds. */
     private PBounds targetBounds;
-    
+
     private float targetScale;
-    
+
     /**
      * Constructs an activity that immediately applies the bounds to a Piccolo2D node and fades it
      * in over a duration.
-     * 
+     *
      * @param node
      *            the Piccolo2D node
      * @param bounds
@@ -96,11 +96,11 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
      * This customization exposes the given node according to the value of 'zeroToOne'.
      */
     @Override
-    public void setRelativeTargetValue(final float zeroToOne) {        
+    public void setRelativeTargetValue(final float zeroToOne) {
         node.setTransparency(zeroToOne);
         super.setRelativeTargetValue(zeroToOne);
     }
-    
+
     /**
      * {@inheritDoc}<br>
      * <br>

@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -20,7 +20,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.activities;
  * PActivity#activityFinished}, which are marked <code>protected</code> in
  * {@link edu.umd.cs.piccolo.activities.PActivity PActivity}. This enables the initialization and
  * execution of such activities without scheduling them in case no animation is required.
- * 
+ *
  * @author chsch
  */
 public interface IStartingAndFinishingActivity {
@@ -31,7 +31,7 @@ public interface IStartingAndFinishingActivity {
      * {@link edu.umd.cs.piccolo.activities.PActivity#activityStarted PActivity#activityStarted})
      */
     void activityStarted();
-    
+
     /**
      * This method is called after an activity is has finished running and the
      * activity has been removed from the PActivityScheduler queue. (from

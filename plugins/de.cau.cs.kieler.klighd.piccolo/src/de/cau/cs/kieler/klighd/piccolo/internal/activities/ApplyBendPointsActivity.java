@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -21,7 +21,7 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 
 /**
  * The Piccolo activity for applying bend points to a {@KEdgeNode}.
- * 
+ *
  * @author mri, chsch
  */
 public class ApplyBendPointsActivity extends PInterpolatingActivity implements
@@ -47,13 +47,13 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     private Point2D[] deltaJunctions;
     /** the temporary bends. */
     private Point2D[] tempJunctions;
-    
+
     /** a local memory indicating whether a style update took place already. */
     private boolean stylesModified = false;
 
     /**
      * Constructs an activity to apply new bend points to an edge node over a specified duration.
-     * 
+     *
      * @param edgeNode
      *            the edge node
      * @param newBends
@@ -74,6 +74,7 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void activityStarted() {
         prepareBendTransition();
         prepareJunctionTransition();
@@ -94,17 +95,17 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         } else {
             // as long as the activity is not completed use proxy bend points
             for (int i = 0; i < sourceBends.length; ++i) {
-                Point2D sourceBend = sourceBends[i];
-                Point2D deltaBend = deltaBends[i];
+                final Point2D sourceBend = sourceBends[i];
+                final Point2D deltaBend = deltaBends[i];
                 tempBends[i].setLocation(sourceBend.getX() + zeroToOne * deltaBend.getX(),
                         sourceBend.getY() + zeroToOne * deltaBend.getY());
             }
             edgeNode.setBendPoints(tempBends);
-            
-            
+
+
             for (int i = 0; i < targetJunctions.length; ++i) {
-                Point2D sourceJunction = sourceJunctions[i];
-                Point2D deltaJunction = deltaJunctions[i];
+                final Point2D sourceJunction = sourceJunctions[i];
+                final Point2D deltaJunction = deltaJunctions[i];
                 tempJunctions[i].setLocation(sourceJunction.getX() + zeroToOne * deltaJunction.getX(),
                         sourceJunction.getY() + zeroToOne * deltaJunction.getY());
             }
@@ -124,10 +125,11 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
      * <br>
      * This customization puts the desired bend points to the edge.
      */
+    @Override
     public void activityFinished() {
         edgeNode.setBendPoints(targetBends);
         edgeNode.setJunctionPoints(targetJunctions);
-        
+
         if (!stylesModified) {
             stylesModified = true;
             if (edgeNode.getRenderingController() != null) {
@@ -151,10 +153,10 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     protected void prepareBendTransition() {
         // for a smooth transition of bends the maximum number of bends in the source and target
         // layout are required
-        Point2D[] originSourceBends = edgeNode.getBendPoints();
-        int sourceNumber = originSourceBends.length;
-        int targetNumber = targetBends.length;
-        int maxNumber = Math.max(sourceNumber, targetNumber);
+        final Point2D[] originSourceBends = edgeNode.getBendPoints();
+        final int sourceNumber = originSourceBends.length;
+        final int targetNumber = targetBends.length;
+        final int maxNumber = Math.max(sourceNumber, targetNumber);
         sourceBends = new Point2D[maxNumber];
         deltaBends = new Point2D[maxNumber];
 
@@ -162,8 +164,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         if (sourceNumber == targetNumber) {
             // no proxies required
             for (int i = 0; i < maxNumber; ++i) {
-                Point2D sourceBend = (Point2D) originSourceBends[i].clone();
-                Point2D targetBend = targetBends[i];
+                final Point2D sourceBend = (Point2D) originSourceBends[i].clone();
+                final Point2D targetBend = targetBends[i];
                 sourceBends[i] = sourceBend;
                 deltaBends[i] = new Point2D.Double(targetBend.getX() - sourceBend.getX(),
                         targetBend.getY() - sourceBend.getY());
@@ -189,12 +191,12 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         final Point2D[] originSourceJunctions = edgeNode.getJunctionPoints();
         final int sourceNumber = originSourceJunctions.length;
         final int targetNumber = targetJunctions.length;
-        
+
         if (sourceNumber == 0 && targetNumber == 0) {
             sourceJunctions = new Point2D[0];
             deltaJunctions = new Point2D[0];
             tempJunctions = new Point2D[0];
-            
+
         } else {
             sourceJunctions = new Point2D[targetNumber];
             deltaJunctions = new Point2D[targetNumber];
@@ -225,17 +227,17 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     /**
      * Creates the bend points for the transition and adds a required amount of source proxy bend
      * points.
-     * 
+     *
      * @param sourceBendsTemp
      *            the source bend points
      */
     private void createBendsSourceProxy(final Point2D[] sourceBendsTemp) {
         // create proxies for the source bend points
-        double[] sourceRels = createIndexRelativePositionMapping(sourceBendsTemp);
-        double[] targetRels = createIndexRelativePositionMapping(targetBends);
+        final double[] sourceRels = createIndexRelativePositionMapping(sourceBendsTemp);
+        final double[] targetRels = createIndexRelativePositionMapping(targetBends);
         int k = 0;
         for (int i = 0; i < targetRels.length; ++i) {
-            double targetRel = targetRels[i];
+            final double targetRel = targetRels[i];
             // only inserts proxy bend points as long as it is still possible to use all
             // existing ones (i.e. don't insert proxy bends instead of real ones)
 
@@ -257,8 +259,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
 
         // calculate the bend point delta
         for (int i = 0; i < targetRels.length; ++i) {
-            Point2D sourceBend = sourceBends[i];
-            Point2D targetBend = targetBends[i];
+            final Point2D sourceBend = sourceBends[i];
+            final Point2D targetBend = targetBends[i];
             deltaBends[i] = new Point2D.Double(targetBend.getX() - sourceBend.getX(),
                     targetBend.getY() - sourceBend.getY());
         }
@@ -267,23 +269,23 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     /**
      * Creates the bend points for the transition and adds a required amount of target proxy bend
      * points.
-     * 
+     *
      * @param sourceBendsTemp
      *            the source bend points
      */
     private void createBendsTargetProxy(final Point2D[] sourceBendsTemp) {
         // copy the source bend points into the array
         for (int i = 0; i < sourceBendsTemp.length; ++i) {
-            sourceBends[i] = (Point2D) sourceBendsTemp[i];
+            sourceBends[i] = sourceBendsTemp[i];
         }
 
         // create proxies for the target bend points
-        double[] sourceRels = createIndexRelativePositionMapping(sourceBendsTemp);
-        double[] targetRels = createIndexRelativePositionMapping(targetBends);
-        Point2D[] targetBendsTemp = new Point2D[sourceRels.length];
+        final double[] sourceRels = createIndexRelativePositionMapping(sourceBendsTemp);
+        final double[] targetRels = createIndexRelativePositionMapping(targetBends);
+        final Point2D[] targetBendsTemp = new Point2D[sourceRels.length];
         int k = 0;
         for (int i = 0; i < sourceRels.length; ++i) {
-            double sourceRel = sourceRels[i];
+            final double sourceRel = sourceRels[i];
 
             // chsch: original code, produced an ArrayIndexOutOfBound exception...
             // if (targetRels[k] > sourceRel && sourceRels.length - i > targetRels.length - k) {
@@ -303,8 +305,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
 
         // calculate the bend point delta
         for (int i = 0; i < sourceRels.length; ++i) {
-            Point2D sourceBend = sourceBends[i];
-            Point2D targetBend = targetBendsTemp[i];
+            final Point2D sourceBend = sourceBends[i];
+            final Point2D targetBend = targetBendsTemp[i];
             deltaBends[i] = new Point2D.Double(targetBend.getX() - sourceBend.getX(),
                     targetBend.getY() - sourceBend.getY());
         }
@@ -313,20 +315,20 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
     /**
      * Interprets the list of bend points as a polyline and returns a mapping of bend point indices
      * to the relative position of the bend point on the line.
-     * 
+     *
      * @param bends
      *            the bend points
      * @return the mapping
      */
     private double[] createIndexRelativePositionMapping(final Point2D[] bends) {
-        double[] mapping = new double[bends.length];
-        double length = MathUtil.getLength(bends);
+        final double[] mapping = new double[bends.length];
+        final double length = MathUtil.getLength(bends);
         if (length > 0) {
             Point2D lastBend = bends[0];
             mapping[0] = 0.0f;
             double currentLength = 0.0f;
             for (int i = 1; i < bends.length; ++i) {
-                Point2D currentBend = bends[i];
+                final Point2D currentBend = bends[i];
                 currentLength += lastBend.distance(currentBend);
                 mapping[i] = currentLength / length;
                 lastBend = currentBend;
@@ -339,5 +341,5 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
         }
         return mapping;
     }
-    
+
 }
