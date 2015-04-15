@@ -68,7 +68,27 @@ public class KlighdPanEventHandler extends PPanEventHandler {
 
     @Override
     protected boolean shouldStartDragInteraction(final PInputEvent event) {
-        return !event.isControlDown() && super.shouldStartDragInteraction(event);
+        return getAutopan() && !event.isControlDown() && super.shouldStartDragInteraction(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void mouseDragged(final PInputEvent event) {
+        // This method has been overridden in order to enable the call of 'drag' in case
+        //  'isDragging()' returns 'false', which always the case if auto panning if off
+        //  (which is the default setting), see 'shouldStartDragInteraction(...)' above.
+        // In case auto panning is active, I assume that a proper 'mouse pressed' is received first,
+        //  which will put the handler in dragging mode and enable the employed drag activity.
+
+        if (event.isControlDown()) {
+            // in this case the KlighdSelectiveZoomEventHandler or the
+            //  KlighdSelectionEventHandler are in charge of handling 'event'
+            return;
+        } else {
+            drag(event);
+        }
     }
 
     @Override
@@ -93,13 +113,9 @@ public class KlighdPanEventHandler extends PPanEventHandler {
     
     @Override
     protected void dragActivityStep(final PInputEvent event) {
-        // Beyond the following check the reason for overriding this method is the replacement of
+        // The reason for overriding this method is the replacement of
         //  'event.getCamera()' by 'event.getTopCamera()'.
         // Besides some simplification have been done as our top camera always starts at (x,y) = (0,0).
-
-        if (!getAutopan()) {
-            return;
-        }
 
         final PCamera c = event.getTopCamera();
         final PBounds b = c.getBoundsReference();
