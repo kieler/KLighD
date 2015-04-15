@@ -331,13 +331,21 @@ public class KNodeNode extends KNodeAbstractNode implements
         }
     }
 
+    /** tracks scale setting.
+     * Setter for notifying {@link #containingINode}'s scale factor, called from
+     * {@link KNodeNode#setScale(double)}, used to adjust the
+     * {@link KlighdPaintContext#getCameraZoomScale() camera zoom scale} before/after drawing the
+     * contained {@link KNodeNode KNodeNodes}.
+     *  */
+    private Double nodeScale = null;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void setScale(final double scale) {
         super.setScale(scale);
-        this.childArea.setNodeScale(scale);
+        this.nodeScale = Double.valueOf(scale);
     }
 
 
@@ -389,6 +397,16 @@ public class KNodeNode extends KNodeAbstractNode implements
             pickPath.pushNode(this);
             pickPath.pushTransform(getTransformReference(true));
 
+            final boolean applyScale = nodeScale != null;
+
+            final KlighdPickPath kpp;
+            if (applyScale) {
+                kpp = (KlighdPickPath) pickPath;
+                kpp.pushNodeScale(nodeScale.doubleValue());
+            } else {
+                kpp = null;
+            }
+
             final boolean thisPickable = getPickable() && pickPath.acceptsNode(this);
 
             if (thisPickable && pick(pickPath)) {
@@ -414,6 +432,10 @@ public class KNodeNode extends KNodeAbstractNode implements
 
             if (thisPickable && pickAfterChildren(pickPath)) {
                 return true;
+            }
+
+            if (applyScale) {
+                kpp.popNodeScale();
             }
 
             pickPath.popTransform(getTransformReference(false));
@@ -446,8 +468,14 @@ public class KNodeNode extends KNodeAbstractNode implements
         //  while the diagram is drawn via the outline view's camera!
 
         if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
-            paintContext.pushTransform(getTransformReference(false));
-            paintContext.pushTransparency(getTransparency());
+            final PAffineTransform transform = getTransformReference(false);
+            paintContext.pushTransform(transform);
+            // paintContext.pushTransparency(getTransparency());
+
+            final boolean applyScale = this.nodeScale != null;
+            if (applyScale) {
+                kpc.pushNodeScale(this.nodeScale.doubleValue());
+            }
 
             if (!getOccluded()) {
                 paint(paintContext);
@@ -473,8 +501,12 @@ public class KNodeNode extends KNodeAbstractNode implements
 
             paintAfterChildren(paintContext);
 
-            paintContext.popTransparency(getTransparency());
-            paintContext.popTransform(getTransformReference(false));
+            if (applyScale) {
+                kpc.popNodeScale();
+            }
+
+            // paintContext.popTransparency(getTransparency());
+            paintContext.popTransform(transform);
         }
     }
 
