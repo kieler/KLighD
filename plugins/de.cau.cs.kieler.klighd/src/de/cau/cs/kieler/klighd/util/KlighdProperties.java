@@ -195,7 +195,7 @@ public final class KlighdProperties {
      * Property determining the upper visibility bound of a certain
      * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
      * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
-     * If the diagram is shown is in equal or higher scale (>=) than the determined value the
+     * If the diagram is shown in equal or higher scale (>=) than the determined value the
      * corresponding diagram or figure element is not visible anymore.
      */
     public static final IProperty<Number> VISIBILITY_SCALE_UPPER_BOUND = new Property<Number>(
@@ -205,11 +205,51 @@ public final class KlighdProperties {
      * Property determining the lower visibility bound of a certain
      * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
      * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
-     * If the diagram is shown is in strictly lower scale (<) than the determined value the
+     * If the diagram is shown in strictly lower scale (<) than the determined value the
      * corresponding diagram or figure element is not visible anymore.
      */
     public static final IProperty<Number> VISIBILITY_SCALE_LOWER_BOUND = new Property<Number>(
             "de.cau.cs.kieler.klighd.visibilityScaleLowerBound", 0);
+
+    /**
+     * Property determining the upper visibility bound in terms of an absolute height value of a
+     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * zoom scale leading to a height equal or higher (>=) than the determined value, the
+     * corresponding diagram or figure element is not visible anymore.
+     */
+    public static final IProperty<Number> VISIBILITY_HEIGHT_UPPER_BOUND = new Property<Number>(
+            "de.cau.cs.kieler.klighd.visibilityHeightUpperBound", -1);
+
+    /**
+     * Property determining the lower visibility bound in terms of an absolute height value of a
+     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * zoom scale leading to a strictly lower height (<) than the determined value, the
+     * corresponding diagram or figure element is not visible anymore.
+     */
+    public static final IProperty<Number> VISIBILITY_HEIGHT_LOWER_BOUND = new Property<Number>(
+            "de.cau.cs.kieler.klighd.visibilityHeightLowerBound", 0);
+
+    /**
+     * Property determining the upper visibility bound in terms of an absolute width value of a
+     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * zoom scale leading to a width equal or higher (>=) than the determined value, the
+     * corresponding diagram or figure element is not visible anymore.
+     */
+    public static final IProperty<Number> VISIBILITY_WIDTH_UPPER_BOUND = new Property<Number>(
+            "de.cau.cs.kieler.klighd.visibilityWidthUpperBound", -1);
+
+    /**
+     * Property determining the lower visibility bound in terms of an absolute width value of a
+     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * zoom scale leading to a strictly lower width (<) than the determined value, the corresponding
+     * diagram or figure element is not visible anymore.
+     */
+    public static final IProperty<Number> VISIBILITY_WIDTH_LOWER_BOUND = new Property<Number>(
+            "de.cau.cs.kieler.klighd.visibilityWidthLowerBound", 0);
 
     /**
      * A pre-defined property to be used for handing over an {@link RunnableWithResult} to the

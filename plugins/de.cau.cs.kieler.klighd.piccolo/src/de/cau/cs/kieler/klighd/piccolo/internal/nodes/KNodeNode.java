@@ -187,6 +187,15 @@ public class KNodeNode extends KNodeAbstractNode implements
                 }
             }
         });
+
+        if (visibilityHelper != null) {
+            addPropertyChangeListener(PROPERTY_BOUNDS_FINISHED, new PropertyChangeListener() {
+                public void propertyChange(final PropertyChangeEvent evt) {
+                    visibilityHelper.updateScaleBasedVisibilityBounds(
+                        KNodeNode.this.getBoundsReference());
+                }
+            });
+        }
     }
 
     /**

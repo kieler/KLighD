@@ -234,6 +234,40 @@ public final class DiagramSyntheses {
     }
 
     /**
+     * Configures the provided {@link KGraphElement} to be visible only if the diagram zoom scale is
+     * strictly less then the given <code>upperBounds</code>.
+     *
+     * @param kgraphElement
+     *            the {@link KGraphElement} to be configured
+     * @param upperBound
+     *            the desired upper bound
+     * @return <code>kgraphElement</code> for convenience
+     */
+    public static KGraphElement setUpperVisibilityScaleBound(final KGraphElement kgraphElement,
+            final Number upperBound) {
+        kgraphElement.getData(KLayoutData.class).setProperty(
+                KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND, upperBound);
+        return kgraphElement;
+    }
+
+    /**
+     * Configures the provided {@link KGraphElement} to be visible only if the diagram zoom scale is
+     * higher or equal then the given <code>lowerBound</code>.
+     *
+     * @param kgraphElement
+     *            the {@link KGraphElement} to be configured
+     * @param lowerBound
+     *            the desired lower bound
+     * @return <code>kgraphElement</code> for convenience
+     */
+    public static KGraphElement setLowerVisibilityScaleBound(final KGraphElement kgraphElement,
+            final Number lowerBound) {
+        kgraphElement.getData(KLayoutData.class).setProperty(
+                KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND, lowerBound);
+        return kgraphElement;
+    }
+
+    /**
      * Configures the provided {@link KRendering} to be visible only if the diagram zoom scale is
      * strictly less then the given <code>upperBounds</code>.
      *
@@ -250,25 +284,8 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Configures the provided {@link KGraphElement} to be visible only if the diagram zoom scale is
-     * strictly less then the given <code>upperBounds</code>.
-     *
-     * @param kgraphElement
-     *            the {@link KGraphElement} to be configured
-     * @param upperBound
-     *            the desired upper bound
-     * @return <code>rendering</code> for convenience
-     */
-    public static KGraphElement setUpperVisibilityScaleBound(final KGraphElement kgraphElement,
-            final Number upperBound) {
-        kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND, upperBound);
-        return kgraphElement;
-    }
-
-    /**
      * Configures the provided {@link KRendering} to be visible only if the diagram zoom scale is
-     * less or equal then the given <code>lowerBound</code>.
+     * higher or equal then the given <code>lowerBound</code>.
      *
      * @param rendering
      *            the {@link KRendering} to be configured
@@ -284,19 +301,142 @@ public final class DiagramSyntheses {
 
     /**
      * Configures the provided {@link KGraphElement} to be visible only if the diagram zoom scale is
-     * less or equal then the given <code>lowerBound</code>.
+     * strictly less then the level causing <code>kgraphElement</code> to be drawn with absolute
+     * <em>height</em> of <code>upperBound</code>.
+     *
+     * @param kgraphElement
+     *            the {@link KGraphElement} to be configured
+     * @param upperBound
+     *            the desired upper (absolute) height bound
+     * @return <code>kgraphElement</code> for convenience
+     */
+    public static KGraphElement setUpperVisibilityHeightBound(final KGraphElement kgraphElement,
+            final Number upperBound) {
+        kgraphElement.getData(KLayoutData.class).setProperty(
+                KlighdProperties.VISIBILITY_HEIGHT_UPPER_BOUND, upperBound);
+        return kgraphElement;
+    }
+
+    /**
+     * Configures the provided {@link KGraphElement} to be visible only if the diagram zoom scale is
+     * higher or equal to the level causing <code>kgraphElement</code> to be drawn with absolute
+     * <em>height</em> of <code>lowerBound</code>.
      *
      * @param kgraphElement
      *            the {@link KGraphElement} to be configured
      * @param lowerBound
-     *            the desired lower bound
-     * @return <code>rendering</code> for convenience
+     *            the desired lower (absolute) height bound
+     * @return <code>kgraphElement</code> for convenience
      */
-    public static KGraphElement setLowerVisibilityScaleBound(final KGraphElement kgraphElement,
+    public static KGraphElement setLowerVisibilityHeightBound(final KGraphElement kgraphElement,
             final Number lowerBound) {
         kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND, lowerBound);
+                KlighdProperties.VISIBILITY_HEIGHT_LOWER_BOUND, lowerBound);
         return kgraphElement;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to be visible only if the diagram zoom scale is
+     * strictly less then the level causing <code>kgraphElement</code> to be drawn with absolute
+     * <em>height</em> of <code>upperBound</code>.
+     *
+     * @param krendering
+     *            the {@link KRendering} to be configured
+     * @param upperBound
+     *            the desired upper (absolute) height bound
+     * @return <code>krendering</code> for convenience
+     */
+    public static KRendering setUpperVisibilityHeightBound(final KRendering krendering,
+            final Number upperBound) {
+        krendering.setProperty(KlighdProperties.VISIBILITY_HEIGHT_UPPER_BOUND, upperBound);
+        return krendering;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to be visible only if the diagram zoom scale is
+     * higher or equal to the level causing <code>kgraphElement</code> to be drawn with absolute
+     * <em>height</em> of <code>lowerBound</code>.
+     *
+     * @param krendering
+     *            the {@link KRendering} to be configured
+     * @param lowerBound
+     *            the desired lower (absolute) height bound
+     * @return <code>krendering</code> for convenience
+     */
+    public static KRendering setLowerVisibilityHeightBound(final KRendering krendering,
+            final Number lowerBound) {
+        krendering.setProperty(KlighdProperties.VISIBILITY_HEIGHT_LOWER_BOUND, lowerBound);
+        return krendering;
+    }
+
+    /**
+     * Configures the provided {@link KGraphElement} to be visible only if the diagram zoom scale is
+     * strictly less then the level causing <code>krendering</code> to be drawn with absolute
+     * <em>width</em> of <code>upperBound</code>.
+     *
+     * @param kgraphElement
+     *            the {@link KGraphElement} to be configured
+     * @param upperBound
+     *            the desired upper (absolute) width bound
+     * @return <code>kgraphElement</code> for convenience
+     */
+    public static KGraphElement setUpperVisibilityWidthBound(final KGraphElement kgraphElement,
+            final Number upperBound) {
+        kgraphElement.getData(KLayoutData.class).setProperty(
+                KlighdProperties.VISIBILITY_WIDTH_UPPER_BOUND, upperBound);
+        return kgraphElement;
+    }
+
+    /**
+     * Configures the provided {@link KGraphElement} to be visible only if the diagram zoom scale is
+     * higher or equal to the level causing <code>krendering</code> to be drawn with absolute
+     * <em>width</em> of <code>lowerBound</code>.
+     *
+     * @param kgraphElement
+     *            the {@link KGraphElement} to be configured
+     * @param lowerBound
+     *            the desired lower (absolute) width bound
+     * @return <code>kgraphElement</code> for convenience
+     */
+    public static KGraphElement setLowerVisibilityWidthBound(final KGraphElement kgraphElement,
+            final Number lowerBound) {
+        kgraphElement.getData(KLayoutData.class).setProperty(
+                KlighdProperties.VISIBILITY_WIDTH_LOWER_BOUND, lowerBound);
+        return kgraphElement;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to be visible only if the diagram zoom scale is
+     * strictly less then the level causing <code>krendering</code> to be drawn with absolute
+     * <em>width</em> of <code>upperBound</code>.
+     *
+     * @param krendering
+     *            the {@link KRendering} to be configured
+     * @param upperBound
+     *            the desired upper (absolute) height bound
+     * @return <code>krendering</code> for convenience
+     */
+    public static KRendering setUpperVisibilityWidthBound(final KRendering krendering,
+            final Number upperBound) {
+        krendering.setProperty(KlighdProperties.VISIBILITY_WIDTH_UPPER_BOUND, upperBound);
+        return krendering;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to be visible only if the diagram zoom scale is
+     * higher or equal to the level causing <code>krendering</code> to be drawn with absolute
+     * <em>width</em> of <code>lowerBound</code>.
+     *
+     * @param krendering
+     *            the {@link KRendering} to be configured
+     * @param lowerBound
+     *            the desired lower (absolute) height bound
+     * @return <code>krendering</code> for convenience
+     */
+    public static KRendering setLowerVisibilityWidthBound(final KRendering krendering,
+            final Number lowerBound) {
+        krendering.setProperty(KlighdProperties.VISIBILITY_WIDTH_LOWER_BOUND, lowerBound);
+        return krendering;
     }
 
     /**

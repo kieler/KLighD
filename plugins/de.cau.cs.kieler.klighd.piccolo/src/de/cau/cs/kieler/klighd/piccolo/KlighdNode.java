@@ -11,12 +11,28 @@
  */
 package de.cau.cs.kieler.klighd.piccolo;
 
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_HEIGHT_LOWER_BOUND;
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_HEIGHT_UPPER_BOUND;
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND;
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND;
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_WIDTH_LOWER_BOUND;
+import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_WIDTH_UPPER_BOUND;
+
+import java.util.List;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
+
+import de.cau.cs.kieler.core.kgraph.EMapPropertyHolder;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera.KlighdPickPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
 
@@ -37,18 +53,78 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
 
     private static final long serialVersionUID = 6876586117083105843L;
 
+    // for the sake of brevity the properties referenced below are statically imported
+
+    /** Convenience constant for accessing the property value default here and in subclasses. */
+    protected static final Number SCALE_LB_DEF = VISIBILITY_SCALE_LOWER_BOUND.getDefault();
+
+    /** Convenience constant for accessing the property value default here and in subclasses. */
+    protected static final Number SCALE_UB_DEF = VISIBILITY_SCALE_UPPER_BOUND.getDefault();
+
+    /** Convenience constant for accessing the property value default here and in subclasses. */
+    protected static final Number HEIGHT_LB_DEF = VISIBILITY_HEIGHT_LOWER_BOUND.getDefault();
+
+    /** Convenience constant for accessing the property value default here and in subclasses. */
+    protected static final Number HEIGHT_UB_DEF = VISIBILITY_HEIGHT_UPPER_BOUND.getDefault();
+
+    /** Convenience constant for accessing the property value default here and in subclasses. */
+    protected static final Number WIDTH_LB_DEF = VISIBILITY_WIDTH_LOWER_BOUND.getDefault();
+
+    /** Convenience constant for accessing the property value default here and in subclasses. */
+    protected static final Number WIDTH_UB_DEF = VISIBILITY_WIDTH_UPPER_BOUND.getDefault();
+
+    private static final List<? extends IProperty<?>> VISIBILTY_DEFS = ImmutableList.of(
+            VISIBILITY_SCALE_LOWER_BOUND, VISIBILITY_SCALE_UPPER_BOUND,
+            VISIBILITY_HEIGHT_LOWER_BOUND, VISIBILITY_HEIGHT_UPPER_BOUND,
+            VISIBILITY_WIDTH_LOWER_BOUND, VISIBILITY_WIDTH_UPPER_BOUND);
+
+    /**
+     * @param propertyConfig
+     *            the {@link EMapPropertyHolder} to examine
+     * @return <code>true</code> if the given {@link EMapPropertyHolder} contains any visibility
+     *         settings, <code>false</code> otherwise
+     */
+    protected static boolean containsVisibilitySettings(final EMapPropertyHolder propertyConfig) {
+        return Iterators.any(propertyConfig.getProperties().keySet().iterator(),
+                Predicates.in(VISIBILTY_DEFS));
+
+    }
+
     private boolean outlineInvisible = false;
     private boolean exportedImageInvisible = false;
     private boolean printoutInvisible = false;
 
-    private float lowerScaleBound = 0;
-    private float upperScaleBound = -1;
+    private double lowerScaleBound = 0;
+    private double upperScaleBound = -1;
+
+    private boolean lowerSizeBoundUndef = true;
+    private boolean upperSizeBoundUndef = true;
+
+    private float lowerHeightBound = 0;
+    private float upperHeightBound = -1;
+
+    private float lowerWidthBound = 0;
+    private float upperWidthBound = -1;
 
     /**
      * Constructor.
      */
     public KlighdNode() {
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+    }
+
+    /**
+     * Sets zoom scale dependent visibility bounds of <code>this</code> {@link KlighdNode}.<br>
+     * Is just for internal use in order to avoid casts to <code>float</code>.
+     *
+     * @param lowerBound
+     *            the lower visibility bound, default is the (unreachable) scale of zero
+     * @param upperBound
+     *            the upper visibility bound, default is -1 denoting no upper bound
+     */
+    private void setScaleBasedVisibilityBounds(final double lowerBound, final double upperBound) {
+        this.lowerScaleBound = lowerBound;
+        this.upperScaleBound = upperBound;
     }
 
     /**
@@ -59,9 +135,96 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * @param upperBound
      *            the upper visibility bound, default is -1 denoting no upper bound
      */
-    protected void setVisibilityBounds(final float lowerBound, final float upperBound) {
+    protected void setScaleBasedVisibilityBounds(final float lowerBound, final float upperBound) {
         this.lowerScaleBound = lowerBound;
         this.upperScaleBound = upperBound;
+    }
+
+    /**
+     * Sets absolute height dependent visibility bounds of <code>this</code> {@link KlighdNode}.
+     *
+     * @param lowerBound
+     *            the lower visibility bound in <code>px</code>, default is the height of zero
+     * @param upperBound
+     *            the upper visibility bound in <code>px</code>, default is -1 denoting no upper bound
+     */
+    protected void setHeightBasedVisibilityBounds(final float lowerBound, final float upperBound) {
+        this.lowerHeightBound = lowerBound;
+        this.upperHeightBound = upperBound;
+
+        this.lowerSizeBoundUndef &= lowerBound == HEIGHT_LB_DEF.floatValue();
+        this.upperSizeBoundUndef &= upperBound == HEIGHT_UB_DEF.floatValue();
+    }
+
+    /**
+     * Sets absolute width dependent visibility bounds of <code>this</code> {@link KlighdNode}.
+     *
+     * @param lowerBound
+     *            the lower visibility bound in <code>px</code>, default is the width of zero
+     * @param upperBound
+     *            the upper visibility bound in <code>px</code>, default is -1 denoting no upper bound
+     */
+    protected void setWidthBasedVisibilityBounds(final float lowerBound, final float upperBound) {
+        this.lowerWidthBound = lowerBound;
+        this.upperWidthBound = upperBound;
+
+        this.lowerSizeBoundUndef &= lowerBound == WIDTH_LB_DEF.floatValue();
+        this.upperSizeBoundUndef &= upperBound == WIDTH_UB_DEF.floatValue();
+    }
+
+    /**
+     *
+     * @param propertyConfig
+     *            the {@link EMapPropertyHolder} providing the desired visibility configuration.
+     */
+    protected void setScaleAndSizeBasedVisibilityBounds(final EMapPropertyHolder propertyConfig) {
+        if (propertyConfig == null || !containsVisibilitySettings(propertyConfig)) {
+            return;
+        }
+
+        setScaleBasedVisibilityBounds(
+                propertyConfig.getProperty(VISIBILITY_SCALE_LOWER_BOUND).floatValue(),
+                propertyConfig.getProperty(VISIBILITY_SCALE_UPPER_BOUND).floatValue());
+
+        setHeightBasedVisibilityBounds(
+                propertyConfig.getProperty(VISIBILITY_HEIGHT_LOWER_BOUND).floatValue(),
+                propertyConfig.getProperty(VISIBILITY_HEIGHT_UPPER_BOUND).floatValue());
+
+        setWidthBasedVisibilityBounds(
+                propertyConfig.getProperty(VISIBILITY_WIDTH_LOWER_BOUND).floatValue(),
+                propertyConfig.getProperty(VISIBILITY_WIDTH_UPPER_BOUND).floatValue());
+    }
+
+    /**
+     * Updates the scale based visibility config to match the absolute visibility settings in
+     * context of the given <code>bounds</code>.
+     *
+     * @param bounds
+     *            the current bounds of the corresponding {@link IKlighdNode}, either
+     *            <code>this</code> node's or the corresponding
+     *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode KNodeNode}'s
+     *            bounds.
+     */
+    public void updateScaleBasedVisibilityBounds(final PBounds bounds) {
+        if (upperSizeBoundUndef && lowerSizeBoundUndef || bounds.isEmpty()) {
+            return;
+        }
+
+        final double lowerBound = lowerSizeBoundUndef ? lowerScaleBound : Math.min(
+            lowerWidthBound == WIDTH_LB_DEF.floatValue()
+                ? Integer.MAX_VALUE : lowerWidthBound / bounds.width,
+
+            lowerHeightBound == HEIGHT_LB_DEF.floatValue()
+                ? Integer.MAX_VALUE : lowerHeightBound / bounds.height);
+
+        final double upperBound = upperSizeBoundUndef ? upperScaleBound : Math.max(
+            upperWidthBound == WIDTH_UB_DEF.floatValue()
+                ? WIDTH_UB_DEF.floatValue() : upperWidthBound / bounds.width,
+
+            upperHeightBound == HEIGHT_UB_DEF.floatValue()
+                ? HEIGHT_UB_DEF.floatValue() : upperHeightBound / bounds.height);
+
+        setScaleBasedVisibilityBounds(lowerBound, upperBound);
     }
 
     /**
@@ -269,9 +432,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
                     rendering.getProperty(KlighdProperties.EXPORTED_IMAGE_INVISIBLE).booleanValue(),
                     rendering.getProperty(KlighdProperties.PRINTOUT_INVISIBLE).booleanValue());
 
-            setVisibilityBounds(
-                    rendering.getProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue(),
-                    rendering.getProperty(KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND).floatValue());
+            setScaleAndSizeBasedVisibilityBounds(rendering);
         }
 
         /**

@@ -154,6 +154,19 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
     }
 
     /**
+     *
+     * @return the bounds of the attached {@link KlighdFigureNode}
+     */
+    public PBounds getPathBoundsReference() {
+        for (final Object child : getChildrenReference()) {
+            if (child instanceof KlighdFigureNode<?>) {
+                return ((PNode) child).getBoundsReference();
+            }
+        }
+        return null;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
