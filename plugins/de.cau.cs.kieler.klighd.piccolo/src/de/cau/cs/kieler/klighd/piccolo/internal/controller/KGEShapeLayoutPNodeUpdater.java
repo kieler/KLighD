@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -42,32 +42,32 @@ import edu.umd.cs.piccolo.util.PBounds;
  * to the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}. They propagate
  * themselves to the available {@link KShapeLayout KShapeLayouts} or those that are added
  * afterwards.
- * 
+ *
  * @author chsch
  */
 class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
-    
+
     public KGEShapeLayoutPNodeUpdater(final PNode theRepNode, final DiagramController theController) {
         super(KShapeLayout.class);
         this.controller = theController;
         this.nodeRep = theRepNode;
     }
-    
+
     private DiagramController controller = null;
     private PNode nodeRep = null;
-    
-    @Override 
+
+    @Override
     public void notifyChanged(final Notification notification) {
         super.notifyChanged(notification);
 
         // this method is supposed to be as fast as possible
         //  so please excuse its confusing structure ;-)
-        
+
         switch (notification.getEventType()) {
         case Notification.ADD:
         case Notification.SET:
             // good cases - continue executing this method
-            break;                
+            break;
         case Notification.ADD_MANY:
         case Notification.MOVE:
         case Notification.REMOVE:
@@ -98,7 +98,7 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             if (newValue == KlighdLayoutManager.LAYOUT_DATA_CHANGED_VALUE) {
                 dataCompletelyChanged = true;
                 unchanged = false;
-                
+
             } else if (newValue == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
                 dataCompletelyChanged = false;
                 unchanged = true;
@@ -110,7 +110,7 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             } else if (newValue instanceof Number) {
                 dataCompletelyChanged = false;
                 unchanged = false;
-                
+
                 switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
                 case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
                 case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
@@ -188,7 +188,7 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 }
 
                 shL.resetModificationFlag();
-            }                
+            }
 
             final AbstractKGERenderingController<?, ?> nodeController =
                     NodeUtil.asKGENode(nodeRep).getRenderingController();
@@ -199,20 +199,20 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             nodeRep.firePropertyChange(0, IKlighdNode.PROPERTY_BOUNDS_FINISHED, null, Boolean.TRUE);
         }
     }
-    
+
     /**
      * Returns bounds from the given {@code KShapeLayout}.
-     * 
+     *
      * @param shapeLayout
      *            the shape layout
      * @return the bounds
      */
     private static PBounds getBounds(final KShapeLayout shapeLayout) {
         final PBounds bounds = new PBounds();
-        
+
         bounds.setRect(shapeLayout.getXpos(), shapeLayout.getYpos(), shapeLayout.getWidth(),
                 shapeLayout.getHeight());
         return bounds;
     }
-    
+
 }

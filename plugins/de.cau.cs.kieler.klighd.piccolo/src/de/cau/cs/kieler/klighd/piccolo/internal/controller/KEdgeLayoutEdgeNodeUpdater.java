@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -45,18 +45,18 @@ import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
  * {@link KEdgeLayout} when some of the attribute values have changed, such updaters are attached to
  * the {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}. They propagate themselves to the available
  * {@link KEdgeLayout KEdgeLayouts} or those that are added afterwards.
- * 
+ *
  * @author chsch
  */
 class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
-    
+
     public KEdgeLayoutEdgeNodeUpdater(final KEdgeNode theEdgeRep,
             final DiagramController theController) {
         super(KEdgeLayout.class);
         this.controller = theController;
         this.edgeRep = theEdgeRep;
     }
-    
+
     private DiagramController controller = null;
     private final KEdgeNode edgeRep;
 
@@ -68,14 +68,14 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
         final KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
         final boolean renderedAsPolyline =
                 rendering instanceof KPolyline && !(rendering instanceof KSpline);
-        
+
         final KEdgeLayout edL;
         final Object notifier = notification.getNotifier();
         if (notifier instanceof KEdgeLayout) {
             final int featureId = notification.getFeatureID(KEdgeLayout.class);
-            
+
             if (featureId == KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS
-                    || featureId == KLayoutDataPackage.KEDGE_LAYOUT__SOURCE_POINT 
+                    || featureId == KLayoutDataPackage.KEDGE_LAYOUT__SOURCE_POINT
                     || featureId == KLayoutDataPackage.KEDGE_LAYOUT__TARGET_POINT) {
                 edL = (KEdgeLayout) notifier;
             } else {
@@ -83,18 +83,18 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
             }
         } else if (notifier instanceof KPoint) {
             final int featureId = notification.getFeatureID(KPoint.class);
-            
+
             if (featureId == KLayoutDataPackage.KPOINT__X
                     || featureId == KLayoutDataPackage.KPOINT__Y) {
                 edL = (KEdgeLayout) ((EObject) notifier).eContainer();
-            
+
             } else {
                 edL = null;
             }
         } else {
             edL = null;
         }
-        
+
         if (edL != null) {
             if (controller.isRecording()) {
                 controller.recordChange(edgeRep, Pair.of(
@@ -102,7 +102,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
             } else {
                 edgeRep.setBendPoints(getBendPoints(edL, renderedAsPolyline));
                 edgeRep.setJunctionPoints(getJunctionPoints(edL));
-                
+
                 final KEdgeRenderingController nodeController = edgeRep.getRenderingController();
                 if (nodeController != null) {
                     nodeController.modifyStyles();
@@ -115,7 +115,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
 
     /**
      * Returns an array of bend points from the given {@code KEdgeLayout}.
-     * 
+     *
      * @param edgeLayout
      *            the edge layout
      * @param renderedAsPolyline
@@ -123,7 +123,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
      *            points if the layouter returned spline-based ones
      * @return the bend points
      */
-    // method is package protected as it is used in DiagramController, too    
+    // method is package protected as it is used in DiagramController, too
     static Point2D[] getBendPoints(final KEdgeLayout edgeLayout,
             final boolean renderedAsPolyline) {
 
@@ -132,7 +132,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
         KVectorChain bendPoints = edgeLayout.createVectorChain();
 
         // for connections that support splines the control points are passed without change
-        boolean layoutedAsSpline = edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING)
+        final boolean layoutedAsSpline = edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING)
                 == EdgeRouting.SPLINES;
         // in other cases an approximation is used // SUPPRESS CHECKSTYLE NEXT MagicNumber
         if (renderedAsPolyline && layoutedAsSpline && bendPoints.size() >= 4) {
@@ -140,9 +140,9 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
         }
 
         // build the bend point array
-        Point2D[] points = new Point2D[bendPoints.size()];
+        final Point2D[] points = new Point2D[bendPoints.size()];
         int i = 0;
-        for (KVector bend : bendPoints) {
+        for (final KVector bend : bendPoints) {
             points[i++] = new Point2D.Double(bend.x, bend.y);
         }
         return points;
@@ -150,24 +150,24 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
 
     /**
      * Returns an array of junction points from the given {@code KEdgeLayout}.
-     * 
+     *
      * @param edgeLayout
      *            the edge layout
      * @return the junction points or an empty Point2D[] if none exist
      */
-    // method is package protected as it is used in DiagramController, too    
+    // method is package protected as it is used in DiagramController, too
     static Point2D[] getJunctionPoints(final KEdgeLayout edgeLayout) {
 
         final KVectorChain junctionPoints = edgeLayout.getProperty(LayoutOptions.JUNCTION_POINTS);
-        
+
         if (junctionPoints == null || junctionPoints.isEmpty()) {
             return new Point2D[0];
         }
-        
+
         // build the bend point array
-        Point2D[] points = new Point2D[junctionPoints.size()];
+        final Point2D[] points = new Point2D[junctionPoints.size()];
         int i = 0;
-        for (KVector bend : junctionPoints) {
+        for (final KVector bend : junctionPoints) {
             points[i++] = new Point2D.Double(bend.x, bend.y);
         }
         return points;
