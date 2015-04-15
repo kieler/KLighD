@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -30,7 +30,7 @@ import edu.umd.cs.piccolo.util.PDimension;
 /**
  * A specialization of {@link PPanEventHandler} with some customizations in the configuration and
  * non-configurable code. The latter requires some method overriding.
- * 
+ *
  * @author chsch
  */
 public class KlighdPanEventHandler extends PPanEventHandler {
@@ -43,7 +43,7 @@ public class KlighdPanEventHandler extends PPanEventHandler {
 
     /**
      * Constructor.
-     * 
+     *
      * @param widget
      *            an SWT {@link Widget} corresponding to the current diagram, required only for
      *            reacting on its disposal in order to cleanup installed change listeners
@@ -110,7 +110,7 @@ public class KlighdPanEventHandler extends PPanEventHandler {
         }
     }
 
-    
+
     @Override
     protected void dragActivityStep(final PInputEvent event) {
         // The reason for overriding this method is the replacement of
@@ -120,10 +120,10 @@ public class KlighdPanEventHandler extends PPanEventHandler {
         final PCamera c = event.getTopCamera();
         final PBounds b = c.getBoundsReference();
         final Point2D.Double l = (Point2D.Double) event.getCanvasPosition();
-        
+
         final int outcode = b.outcode(l);
         final PDimension delta = new PDimension();
-        
+
         // SUPPRESS CHECKSTYLE NEXT 15 MagicNumber
 
         if ((outcode & Rectangle2D.OUT_TOP) != 0) {
