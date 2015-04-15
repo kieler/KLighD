@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import edu.umd.cs.piccolo.PNode;
@@ -83,6 +84,7 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
 
         if (targetBounds != null) {
             NodeUtil.applyBounds(node, targetBounds);
+            node.firePropertyChange(0, IKlighdNode.PROPERTY_BOUNDS_FINISHED, null, Boolean.TRUE);
         }
 
         node.setTransparency(0);

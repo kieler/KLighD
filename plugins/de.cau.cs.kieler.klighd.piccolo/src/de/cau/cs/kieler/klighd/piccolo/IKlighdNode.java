@@ -28,6 +28,14 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 public interface IKlighdNode {
 
     /**
+     * Property name definition for indicating the completed update of a {@link IKlighdNode}'s
+     * {@link edu.umd.cs.piccolo.PNode#getBoundsReference() bounds}, e.g. after animations are
+     * finished.<br>
+     * Such events are fired by the KLighD runtime and must not be fired by by application code!
+     */
+    String PROPERTY_BOUNDS_FINISHED = "boundsFinished";
+
+    /**
      * @return the view model element ({@link de.cau.cs.kieler.core.kgraph.KGraphElement
      *         KGraphElement} or {@link de.cau.cs.kieler.core.krendering.KRendering KRendering})
      *         represented by this {@link IKlighdNode}.

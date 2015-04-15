@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
 import java.awt.geom.Point2D;
 
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.MathUtil;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
@@ -137,6 +138,8 @@ public class ApplyBendPointsActivity extends PInterpolatingActivity implements
             }
         }
         super.activityFinished();
+
+        edgeNode.firePropertyChange(0, IKlighdNode.PROPERTY_BOUNDS_FINISHED, null, Boolean.TRUE);
     }
 
     /**

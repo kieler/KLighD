@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.activities;
 
 import java.awt.geom.Point2D;
 
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 
@@ -74,6 +75,8 @@ public class FadeEdgeInActivity extends PInterpolatingActivity implements IStart
         edgeNode.setVisible(true);
 
         super.activityStarted();
+
+        edgeNode.firePropertyChange(0, IKlighdNode.PROPERTY_BOUNDS_FINISHED, null, Boolean.TRUE);
     }
 
     /**

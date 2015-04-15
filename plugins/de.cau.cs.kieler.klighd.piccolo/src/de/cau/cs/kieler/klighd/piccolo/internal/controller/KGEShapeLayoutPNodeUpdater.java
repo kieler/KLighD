@@ -23,6 +23,7 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
@@ -194,6 +195,8 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
             if (nodeController != null) {
                 nodeController.modifyStyles();
             }
+
+            nodeRep.firePropertyChange(0, IKlighdNode.PROPERTY_BOUNDS_FINISHED, null, Boolean.TRUE);
         }
     }
     

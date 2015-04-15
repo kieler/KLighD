@@ -32,6 +32,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 
@@ -106,6 +107,8 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
                 if (nodeController != null) {
                     nodeController.modifyStyles();
                 }
+
+                edgeRep.firePropertyChange(0, IKlighdNode.PROPERTY_BOUNDS_FINISHED, null, Boolean.TRUE);
             }
         }
     }
