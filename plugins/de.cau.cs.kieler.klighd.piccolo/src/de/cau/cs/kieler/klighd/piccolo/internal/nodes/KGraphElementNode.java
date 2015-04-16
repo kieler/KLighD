@@ -99,7 +99,6 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
                     return null;
                 }
 
-                @Override
                 public boolean isSelectable() {
                     return false;
                 }
@@ -145,7 +144,6 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
     /**
      * {@inheritDoc}
      */
-    @Override
     public boolean isSelectable() {
         return KlighdProperties.isSelectable(getViewModelElement());
     }

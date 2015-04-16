@@ -364,17 +364,6 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         // do nothing
     }
 
-    /**
-     * Provides the permission of the corresponding
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/{@link KRendering} to be
-     * selected.
-     *
-     * @return <code>true</code> if the corresponding
-     *         {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/{@link KRendering}
-     *         is allowed to be selected, <code>false</code> otherwise.
-     */
-    public abstract boolean isSelectable();
-
 
     /**
      * A common abstract class of {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath
@@ -445,7 +434,6 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         /**
          * {@inheritDoc}
          */
-        @Override
         public boolean isSelectable() {
             return false;
         }
