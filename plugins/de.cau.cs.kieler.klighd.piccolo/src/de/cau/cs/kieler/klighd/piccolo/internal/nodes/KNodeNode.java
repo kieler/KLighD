@@ -503,7 +503,7 @@ public class KNodeNode extends KNodeAbstractNode implements
         // In contrast, the rendering figure is supposed to be drawn at all times
         //  while the diagram is drawn via the outline view's camera!
 
-        if (getVisible() && fullIntersectsOri(paintContext.getLocalClip())) {
+        if (getVisible() && (kpc.isOutline() || fullIntersectsOri(paintContext.getLocalClip()))) {
             final PAffineTransform transform = getTransformReference(false);
             paintContext.pushTransform(transform);
             // paintContext.pushTransparency(getTransparency());
