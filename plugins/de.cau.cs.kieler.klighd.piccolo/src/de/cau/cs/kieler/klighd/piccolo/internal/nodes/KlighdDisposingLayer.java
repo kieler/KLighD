@@ -12,6 +12,8 @@
  * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
+import java.awt.geom.Rectangle2D;
+
 import edu.umd.cs.piccolo.PLayer;
 
 /**
@@ -31,5 +33,32 @@ public class KlighdDisposingLayer extends PLayer {
         this.setPickable(false);
         this.setChildrenPickable(true);
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+    }
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This specialization always returns <code>true</code> since instances of this class will
+     * always respect the bounds of their containing {@link KNodeAbstractNode KNodeAbstractNodes}.<br>
+     * <br>
+     * Solely {@link KNodeNode KNodeNodes} have to rely on the
+     * {@link edu.umd.cs.piccolo.PNode#fullIntersects(Rectangle2D) super implementation} that is
+     * reachable via {@link #fullIntersectsOri(Rectangle2D)}.
+     *
+     */
+    @Override
+    public boolean fullIntersects(final Rectangle2D parentBounds) {
+        return true;
+    }
+
+    /**
+     * @see #fullIntersects(Rectangle2D)
+     *
+     * @param parentBounds the bounds to test for intersection against
+     *            (specified in parent's coordinate system)
+     * @return true if this nodes full bounds intersect the given bounds.
+     */
+    public boolean fullIntersectsOri(final Rectangle2D parentBounds) {
+        return super.fullIntersects(parentBounds);
     }
 }

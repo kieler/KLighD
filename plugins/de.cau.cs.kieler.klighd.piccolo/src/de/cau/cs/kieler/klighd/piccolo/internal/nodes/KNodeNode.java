@@ -362,6 +362,30 @@ public class KNodeNode extends KNodeAbstractNode implements
     }
 
     /**
+     * This method override lets the API call {@link PNode#fullIntersects(Rectangle2D)} work as
+     * expected for {@link KNodeNode KNodeNodes}, since the
+     * {@link KlighdDisposingLayer#fullIntersects(Rectangle2D) override} in the super class
+     * {@link KlighdDisposingLayer} returns just <code>true</code> for the sake of reducing
+     * superfluous checks while drawing. <br>
+     * This implementation just delegates to
+     * {@link KlighdDisposingLayer#fullIntersectsOri(Rectangle2D)}.<br>
+     * <br>
+     * Since this class' specializations of {@link #fullPaint(PPaintContext)} and
+     * {@link #fullPick(PPickPath)} directly call
+     * {@link KlighdDisposingLayer#fullIntersectsOri(Rectangle2D)} this method is not called
+     * internally.
+     *
+     * @param parentBounds
+     *            the bounds to test for intersection against (specified in parent's coordinate
+     *            system)
+     * @return the result of {@link PNode#fullIntersects(Rectangle2D)}
+     */
+    @Override
+    public boolean fullIntersects(final Rectangle2D parentBounds) {
+        return super.fullIntersectsOri(parentBounds);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -405,7 +429,7 @@ public class KNodeNode extends KNodeAbstractNode implements
         // The filter is in charge of masking out the rendering while the diagram is
         //  clipped to this node and it's being drawn via the diagram's main camera!
         if (getVisible() && (getPickable() || getChildrenPickable())
-                && fullIntersects(pickPath.getPickBounds())) {
+                && fullIntersectsOri(pickPath.getPickBounds())) {
             pickPath.pushNode(this);
             pickPath.pushTransform(getTransformReference(true));
 
@@ -479,7 +503,7 @@ public class KNodeNode extends KNodeAbstractNode implements
         // In contrast, the rendering figure is supposed to be drawn at all times
         //  while the diagram is drawn via the outline view's camera!
 
-        if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
+        if (getVisible() && fullIntersectsOri(paintContext.getLocalClip())) {
             final PAffineTransform transform = getTransformReference(false);
             paintContext.pushTransform(transform);
             // paintContext.pushTransparency(getTransparency());
