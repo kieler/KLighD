@@ -83,6 +83,21 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
     }
 
     /**
+     * Method indicates whether this {@link KNodeAbstractNode} has been drawn once; if so the
+     * attached {@link KChildAreaNode} must perform its {@link #validateFullBounds() bounds
+     * validation} and {@link #validateFullPaint() paint validation} properly; otherwise the child
+     * area may skip those validations and need not visit all its (indirectly) contained nodeNodes
+     * and edgeNodes for reducing the initial diagram setup load.
+     *
+     * @return <code>true</code> if <code>this</code> {@link KNodeAbstractNode} represents the
+     *         current diagram clip or has already been drawn at least once or is about to be drawn,
+     *         <code>false</code> otherwise
+     */
+    protected boolean isBoundsValidationRequired() {
+        return true;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public abstract KNodeAbstractNode getParentKNodeNode();

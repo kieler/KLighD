@@ -18,6 +18,7 @@ import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
 
@@ -35,7 +36,7 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
 
     private static final long serialVersionUID = -403773990520864787L;
 
-    private final KNodeAbstractNode containingINode;
+    private final KNodeAbstractNode parentNodeNode;
 
     private final boolean edgesFirst;
 
@@ -54,16 +55,16 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
     /**
      * Constructs a child area for a given node.
      *
-     * @param containingNode
+     * @param parentNodeNode
      *            the {@link KNodeAbstractNode} containing this child area
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
-    public KChildAreaNode(final KNodeAbstractNode containingNode, final boolean edgesFirst) {
+    public KChildAreaNode(final KNodeAbstractNode parentNodeNode, final boolean edgesFirst) {
         super();
         this.setPickable(false);
-        this.containingINode = containingNode;
+        this.parentNodeNode = parentNodeNode;
         this.edgesFirst = edgesFirst;
     }
 
@@ -107,7 +108,7 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
             addChild(edgesFirst ? getChildrenCount() : 0, nodeLayer);
         }
         nodeLayer.addChild(node);
-        node.setParentNode(containingINode);
+        node.setParentNode(parentNodeNode);
     }
 
     /**
@@ -148,6 +149,40 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
      */
     public boolean isSelectable() {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean validateFullBounds() {
+        if (parentNodeNode.isBoundsValidationRequired()) {
+            return super.validateFullBounds();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validateFullPaint() {
+        if (parentNodeNode.isBoundsValidationRequired()) {
+            super.validateFullPaint();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PBounds getUnionOfChildrenBounds(final PBounds dstBounds) {
+        if (parentNodeNode.isBoundsValidationRequired()) {
+            return super.getUnionOfChildrenBounds(dstBounds);
+        } else {
+            return dstBounds;
+        }
     }
 
     /**
@@ -198,5 +233,16 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void fullPaint(final PPaintContext paintContext) {
+        super.validateFullBounds();
+        super.validateFullPaint();
+
+        super.fullPaint(paintContext);
     }
 }

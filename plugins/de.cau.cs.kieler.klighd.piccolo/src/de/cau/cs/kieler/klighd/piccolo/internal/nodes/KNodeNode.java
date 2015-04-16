@@ -76,6 +76,11 @@ public class KNodeNode extends KNodeAbstractNode implements
     private boolean isRootLayer = false;
 
     /**
+     * tracks whether this node has been drawn once; required for {@link #isBoundsValidationRequired()}.
+     */
+    private boolean hasBeenDrawn = false;
+
+    /**
      * This helper is required for relying on the visibility evaluation methods of {@link KlighdNode}.
      * It is only initialized with an instance, if visibility restrictions are defined in the
      * corresponding {@link KNode}.
@@ -348,6 +353,13 @@ public class KNodeNode extends KNodeAbstractNode implements
         this.nodeScale = Double.valueOf(scale);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isBoundsValidationRequired() {
+        return this.isRootLayer || this.hasBeenDrawn;
+    }
 
     /**
      * {@inheritDoc}
@@ -471,6 +483,8 @@ public class KNodeNode extends KNodeAbstractNode implements
             final PAffineTransform transform = getTransformReference(false);
             paintContext.pushTransform(transform);
             // paintContext.pushTransparency(getTransparency());
+
+            this.hasBeenDrawn = true;
 
             final boolean applyScale = this.nodeScale != null;
             if (applyScale) {
