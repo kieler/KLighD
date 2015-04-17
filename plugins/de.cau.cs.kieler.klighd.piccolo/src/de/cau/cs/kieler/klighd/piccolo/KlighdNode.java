@@ -356,12 +356,77 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         return super.getPickable() && !getOccluded();
     }
 
+
+    private final PBounds tempRect = new PBounds();
+    private boolean isValidatingPaint = false;
+
+    // By means of the following two methods the behavior of validating the drawing,
+    //  especially notifying the windows system on outdated diagram parts, is heavy changed.
+    // In the super implementation each and every invalid diagram part is individually
+    //  notified to the window system. This is reasonable if, for instance, just the coloring
+    //  of a signal path is changed. For large diagrams, however, this wastes performance
+    /// because the invalidation of each and every, e.g., edge decorator is notified to the
+    //  window system.
+    // The advantage of this approach is that only the truly out-dated parts can be
+    //  individually requested to be repainted by the window system, see
+    //  KlighdCanvas(PSWTCanvas).paintComponent(...).
+
+    // To reduce the load of single repaint requests I employed 'TEMP_RECT' here and
+    //  accumulate the children's repaint requests received during 'validateFullPaint'.
+    // The bounding box approach, however, will potentially cause up-to-date diagram parts
+    //  to be redrawn, as well, which mighty cause additional load while drawing.
+    // One remark on the scenario of re-coloring signal paths: Our 'KlighdPath' and
+    //  'KlighdStyledText' figures do not fire 'invalidate' notifications. This job is
+    //  done by the corresponding rendering controller ('AbstractKGERenderingController')
+    //  in the 'updateStyles' method by calling 'PNode.repaint()' (the rendering controller
+    //  is in charge of listening to rendering & style changes on the view model).
+    // Since the diagram is most likely not requested to 'validateFullPaint' at that time
+    //  the original behavior is preserved.
+
+    // Both methods occur exactly the same way in 'KlighdDisposingLayer'.
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validateFullPaint() {
+        isValidatingPaint = true;
+        tempRect.resetToZero();
+
+        super.validateFullPaint();
+
+        isValidatingPaint = false;
+
+        if (!tempRect.isEmpty()) {
+            repaintFrom(tempRect, this);
+        }
+    }
+
+    // Don't put further methods in between those two because of the common objective they
+    //  are supposed to implement! Both occur exactly the same way in 'KlighdDisposingLayer'.
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void repaintFrom(final PBounds localBounds, final PNode childOrThis) {
+        if (isValidatingPaint) {
+            if (childOrThis != this) {
+                this.localToParent(localBounds);
+            }
+            tempRect.add(localBounds);
+        } else {
+            super.repaintFrom(localBounds, childOrThis);
+        }
+    }
+
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected void paint(final PPaintContext paintContext) {
-        // do nothing
+        // skip the super implementations behavior and do nothing
     }
 
 

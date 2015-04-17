@@ -15,6 +15,8 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.geom.Rectangle2D;
 
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A sightly extended {@link PLayer} that listens to {@link NodeDisposeListener#DISPOSE} notifications
@@ -60,5 +62,49 @@ public class KlighdDisposingLayer extends PLayer {
      */
     public boolean fullIntersectsOri(final Rectangle2D parentBounds) {
         return super.fullIntersects(parentBounds);
+    }
+
+
+    private final PBounds tempRect = new PBounds();
+    private boolean isValidatingPaint = false;
+
+    // The following two methods shall reduce the load while invalidating diagram parts.
+    // See the long explanation in 'KlighdNode' on that!
+
+    // Both methods occur exactly the same way in 'KlighdNode'.
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validateFullPaint() {
+        isValidatingPaint = true;
+        tempRect.resetToZero();
+
+        super.validateFullPaint();
+
+        isValidatingPaint = false;
+
+        if (!tempRect.isEmpty()) {
+            repaintFrom(tempRect, this);
+        }
+    }
+
+    // Don't put further methods in between those two because of the common objective they
+    //  are supposed to implement! Both occur exactly the same way in 'KlighdNode'.
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void repaintFrom(final PBounds localBounds, final PNode childOrThis) {
+        if (isValidatingPaint) {
+            if (childOrThis != this) {
+                this.localToParent(localBounds);
+            }
+            tempRect.add(localBounds);
+        } else {
+            super.repaintFrom(localBounds, childOrThis);
+        }
     }
 }
