@@ -33,6 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.nodes.PText;
+import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
@@ -343,7 +344,24 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      * {@link #fontData} by delegating to {@link PlacementUtil#estimateTextSize(FontData, String)}.
      */
     protected void updateBounds() {
-        this.setBounds(PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
+        // do the (re-)computation of the figure's (local) bounds lazily during the next request,
+        // the indication to do so is done by setting the local bounds 'empty'!  
+        resetBounds();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PBounds getBoundsReference() {
+        final PBounds bounds = super.getBoundsReference();
+
+        if (bounds.isEmpty()) {
+            this.setBounds(PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
+            this.updateScaleBasedVisibilityBounds(bounds);
+        }
+
+        return bounds;
     }
     
     /**
@@ -353,11 +371,13 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     private static final Rectangle2D BACKGROUND = new Rectangle2D.Double();
 
     @Override
-    protected void paint(final PPaintContext paintContext) {
+    public void fullPaint(final PPaintContext paintContext) {
+        // since text figures are not supposed to contain children
+        //  skip 'fullPaint(...)' instead of just 'paint(...)' if no text is given
         if (Strings.isNullOrEmpty(this.text)) {
             return;
         } else {
-            super.paint(paintContext);
+            super.fullPaint(paintContext);
         }
     }
 
