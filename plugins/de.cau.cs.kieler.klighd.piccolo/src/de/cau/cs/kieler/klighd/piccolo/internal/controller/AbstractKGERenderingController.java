@@ -568,6 +568,20 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
+     * A little helper reducing the 'asyncExec' calls if possible.
+     *
+     * @param r
+     *            the runnable to be performed in the UI context.
+     */
+    private static void runAsyncInUI(final Runnable r) {
+        if (PlatformUI.isWorkbenchRunning()) {
+            PlatformUI.getWorkbench().getDisplay().asyncExec(r);
+        } else {
+            r.run();
+        }
+    }
+
+    /**
      * A re-usable {@link Runnable} to be executed in UI context wrapping {@link #updateRendering()}.
      */
     private Runnable updateRenderingRunnable = new Runnable() {
@@ -660,16 +674,27 @@ public abstract class AbstractKGERenderingController
         // update using the recursive method
         updateStyles(currentRendering, isSelected, Collections.<KStyle>emptyList());
 
-        // in case styles of a detached KRendering are modified, e.g. if selection highlighting
-        //  is removed from renderings that are not part of the diagram in the meantime
-        //  'null' values may occur here
-        for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
-            final PNode node = nodeController.getNode();
-            if (node != null) {
-                node.repaint();
+        // schedule the figure validation asynchronously,
+        // the (expected) advantage in case of multiple changes on the managed KGE's rendering is
+        //  that the first execution will reset the 'invalid' flags, the subsequent "schedulings"
+        //  will terminate instantly because the figures' paints are fine!
+        runAsyncInUI(validateFigurePaints);
+    }
+
+    private final Runnable validateFigurePaints = new Runnable() {
+
+        public void run() {
+            for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
+                final PNode node = nodeController.getNode();
+                // in case styles of a detached KRendering are modified, e.g. if selection highlighting
+                //  is removed from renderings that are not part of the diagram in the meantime
+                //  'null' values may occur here
+                if (node != null) {
+                    node.validateFullPaint();
+                }
             }
         }
-    }
+    };
 
     /**
      * Recursively updates the styles of the {@link PNode PNodes} representing <code>rendering</code>.

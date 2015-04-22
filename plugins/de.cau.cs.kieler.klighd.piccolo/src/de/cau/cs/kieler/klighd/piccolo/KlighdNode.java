@@ -506,6 +506,38 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         /**
          * {@inheritDoc}<br>
          * <br>
+         * To be more precise, {@link #invalidatePaint()} is required in case the styling of the
+         * figure, e.g. the coloring, is to be changed. In case the (full) bounds of the figure are
+         * affected, e.g. while changing a text figures font size or alignment,
+         * {@link #invalidateFullBounds()} must be called (which is done by
+         * {@link #setBounds(double, double, double, double)} automatically).<br>
+         * <br>
+         * This specialization of {@link PNode#invalidatePaint()} overrides the default
+         * implementation s.t. it does not propagate the invalidation to the diagram's root figure
+         * but just up to the parent {@link IKGraphElementNode}. The required corresponding calls of
+         * {@link #validateFullPaint()} are triggered during the initialization of the figures (in
+         * combination with applying the bounds due to corresponding {@link
+         * de.cau.cs.kieler.core.krendering.KPlacementData KPlacementData}) anyway, and in case of
+         * pure style changes by the corresponding
+         * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement's} rendering controllers
+         * ({@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController
+         * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and
+         * style changes are performed.
+         */
+        @Override
+        public void invalidatePaint() {
+            this.setPaintInvalid(true);
+
+            PNode n = getParent();
+            while (n != null && !n.getChildPaintInvalid() && !(n instanceof IKGraphElementNode)) {
+                n.setChildPaintInvalid(true);
+                n = n.getParent();
+            }
+        }
+
+        /**
+         * {@inheritDoc}<br>
+         * <br>
          * KLighD just contributes a visibility check in this method.
          */
         @Override
