@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
@@ -62,16 +63,10 @@ import edu.umd.cs.piccolo.util.PBounds;
  * This, however, does not hold for polylines and polygons as their covered area is determined by
  * the particular line points.<br>
  * <br>
- * <b>Note:</b> All <code>invalidate...</code> and <code>repaint</code> calls are deactivated in
- * order to avoid superfluous repaint activities. The repaint events are fired by
- * {@link #addChild(edu.umd.cs.piccolo.PNode) addChild(PNode)}/
- * {@link #removeChild(edu.umd.cs.piccolo.PNode) removeChild(PNode)} in case of rendering changes,
- * by {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of
- * pure style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}
- * rendering controllers ({@link
- * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController #updateStyles()
- * AbstractKGERenderingController#updateStyles()}) after all rendering and style changes are
- * performed.
+ * <b>Note:</b> All the implementation of {@link edu.umd.cs.piccolo.PNode#invalidatePaint()
+ * PNode#invalidatePaint()} is significantly changed in the super class
+ * {@link KlighdNode.KlighdFigureNode}. Pay attention in case this figure implementation is used
+ * beyond the representation of {@link KRendering}-based figure specifications.
  *
  * @author chsch, mri
  */
@@ -82,7 +77,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap();
 
     private LineAttributes lineAttributes = new LineAttributes(1f);
-    private BasicStroke stroke = new BasicStroke();
+    private Stroke stroke = new BasicStroke();
 
     private int strokeAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
     private RGB strokePaint = KlighdConstants.BLACK;
@@ -154,7 +149,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         updateBoundsFromPath();
         invalidatePaint();
     }
-    
+
     /**
      * Gets the underlying shape of this {@link KlighdPath}.
      * @return the underlying shape
@@ -216,9 +211,16 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      * manipulating the {@link LineAttributes} obtained via {@link #getLineAttributes()}.
      */
     public void flushAttributes() {
-        this.stroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
+        final Stroke newStroke = new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
                 lineAttributes.join - 1, lineAttributes.miterLimit);
                 //, lineAttributes.dash, lineAttributes.dashOffset);
+
+        if (this.stroke.equals(newStroke)) {
+            return;
+        }
+
+        this.stroke = newStroke;
+
         updateBoundsFromPath();
         updateShape();
     }
@@ -275,12 +277,22 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            new stroke color
      */
     public void setStrokeColor(final RGB strokeColor) {
-        final RGB old = strokePaint;
+        if (strokePaint != null && strokePaint.equals(strokeColor)) {
+            return;
+        }
+
+        Object oldPaint = null;
+        if (strokePaintGradient != null) {
+            oldPaint = strokePaintGradient;
+            strokePaintGradient = null;
+        } else if (strokePaint != null) {
+            oldPaint = strokePaint;
+        }
         strokePaint = strokeColor;
-        strokePaintGradient = null;
-        // invalidatePaint();
-        firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, old,
-                strokePaint);
+
+        invalidatePaint();
+        firePropertyChange(
+                PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, oldPaint, strokePaint);
     }
 
     /**
@@ -311,7 +323,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
             strokePaint = null;
         }
         strokePaintGradient = strokeGradient;
-        // invalidatePaint();
+
+        invalidatePaint();
         firePropertyChange(PPath.PROPERTY_CODE_STROKE_PAINT, PPath.PROPERTY_STROKE_PAINT, oldPaint,
                 strokePaintGradient);
     }
@@ -352,7 +365,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
             oldPaint = paint;
         }
         paint = newPaint;
-        // invalidatePaint();
+
+        invalidatePaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
     }
 
@@ -384,7 +398,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
             paint = null;
         }
         paintGradient = newPaint;
-        // invalidatePaint();
+
+        invalidatePaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, paint);
     }
 
@@ -423,9 +438,10 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         this.shadowExtendX = xOffset;
         this.shadowExtendY = yOffset;
     }
-   
+
     /**
      * Gets the shadow color for this path.
+     *
      * @return the current shadow
      */
     public RGB getShadow() {
@@ -437,34 +453,22 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /* ---------------------- */
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void internalUpdateBounds(final double x, final double y, final double width,
-            final double height) {
-        // unused (left it the for the case it might be helpful in future,
-        //  should not sink into obscurity)
-        // if it is used again one have to make sure that no recursive cycles occur with
-        //  #updateBoundsFromPath
-    }
-
-    /**
      * Returns true if path crosses the provided bounds. Takes visibility of path into account.
      *
-     * @param aBounds
+     * @param localBounds
      *            bounds being tested for intersection
      * @return true if path visibly crosses bounds
      */
     @Override
-    public boolean intersects(final Rectangle2D aBounds) {
-        if (super.intersects(aBounds)) {
-            final Rectangle2D srcBounds = aBounds;
+    public boolean intersects(final Rectangle2D localBounds) {
+        if (super.intersects(localBounds)) {
+            final Rectangle2D srcBounds = localBounds;
             // see remark on the deactivated 'transform' code above
             //
             // if (internalXForm == null) {
-            //     srcBounds = aBounds;
+            //     srcBounds = localBounds;
             // } else {
-            //     srcBounds = new PBounds(aBounds);
+            //     srcBounds = new PBounds(localBounds);
             //     internalXForm.inverseTransform(srcBounds, srcBounds);
             // }
 
@@ -527,8 +531,9 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
                 }
             }
         }
+
+        invalidatePaint();
         firePropertyChange(PPath.PROPERTY_CODE_PATH, PPath.PROPERTY_PATH, null, shape);
-        // invalidatePaint();
     }
 
 
@@ -552,30 +557,26 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         }
     }
 
-
     /**
      * {@inheritDoc}<br>
      * <br>
-     * This customization extends the fullBounds by the size of the shadow if present. It is called
-     * by {@link #repaint()} and makes sure the shadow is cleared out, too!<br>
-     * <br>
-     * <i>I'm not sure whether it is better to do that this way or by providing a specialized
-     * <code>repaint()</code> method.</i><br>
-     * This should be observed and changed if necessary.
-     *
-     * @author chsch
+     * This customization locally extends the fullBounds by the size of the shadow, if present.<br>
+     * Makes sure the shadow is cleared out if this path figure is moved leftward/upward or removed.
      */
     @Override
-    public PBounds getFullBoundsReference() {
-        PBounds curBounds = super.getFullBoundsReference();
-        if (shadow != null) {
-            curBounds = new PBounds(super.getFullBoundsReference());
-            curBounds.width += shadowExtendX;
-            curBounds.height += shadowExtendY;
-        }
-        return curBounds;
-    }
+    public PBounds computeFullBounds(final PBounds dstBounds) {
 
+        final PBounds fullBounds = super.computeFullBounds(dstBounds);
+        // the above produced result is already adjusted by 'this.transform';
+        // since particular figures are not scaled but only moved (transformed)
+        //  we can easily increase the size
+
+        if (shadow != null) {
+            fullBounds.width += shadowExtendX;
+            fullBounds.height += shadowExtendY;
+        }
+        return fullBounds;
+    }
 
     /* ----------------------- */
     /*  drawing related stuff  */
