@@ -126,6 +126,15 @@ public class KNodeNode extends KNodeAbstractNode implements
                 }
                 return false;
             }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void repaintFromLayer(final PBounds viewBounds, final PLayer repaintedLayer) {
+                // don't forward repaint notifications from the observed KChildArea,
+                //  the notification will reach this KNodeNode via the ordinary parent hierarchy
+            }
         };
 
         // Without this 'pickable' setting this KNodeNode may be picked in the clipping case
