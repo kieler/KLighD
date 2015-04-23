@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -43,10 +44,13 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
+import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphData;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
+import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
 import de.cau.cs.kieler.core.krendering.KContainerRendering;
 import de.cau.cs.kieler.core.krendering.KImage;
@@ -55,12 +59,17 @@ import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
 import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.Direction;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.options.PortConstraints;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
@@ -153,7 +162,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                     file += KGRAPH_FILE_EXTENSION;
                 }
                 // export, retain renderings
-                export(subgraph, file, EMPTY);
+                export(subgraph, file, EMPTY, false);
             }
         } else if (exportType.equals(EXPORT_TYPE_CHUNKY)) {
             // ---------------------------------------------------
@@ -196,7 +205,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             if (n.getChildren().size() > 1) {
                 String filename = "flat_" + getModelPathName(n) + KGRAPH_FILE_EXTENSION;
                 System.out.println("Exporting: " + filename);
-                export(n, path + filename, EMPTY);
+                export(n, path + filename, EMPTY, true);
             }
 
             // expand and collect the children
@@ -222,9 +231,14 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             final KNode n = expandedNodes.poll();
 
             if (n.getChildren().size() > 1) {
-                String filename = "expanded_" + getModelPathName(n) + KGRAPH_FILE_EXTENSION;
+                String filename = getModelPathName(n) + KGRAPH_FILE_EXTENSION;
                 System.out.println("Exporting: " + filename);
-                export(n, path + filename, EMPTY);
+                
+                // export fully expanded
+                export(n, path + "expanded_" + filename, EMPTY, false);
+                
+                // remove children of compound nodes and export again
+                export(n, path + "expanded_flat_" + filename, EMPTY, true);
             }
         }
     }
@@ -242,7 +256,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
     }
     
     private void export(final KNode subgraph, final String fileName,
-            final Set<Class<?>> removeRenderingsOnClasses) {
+            final Set<Class<?>> removeRenderingsOnClasses, final boolean removeChildren) {
         try {
             ResourceSet rs = new ResourceSetImpl();
             Resource r = rs.createResource(URI.createPlatformResourceURI(fileName, true));
@@ -293,13 +307,16 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                 exportGraph = newRoot;
             }
 
-            // remove transient klighd state
-            // care: do not iterate over the elements of the 'copy' as the subgraph
-            // was already removed from its original containment
-            Iterator<KGraphElement> kgeIt =
-                    ModelingUtil.selfAndEAllContentsOfType2(copier.get(subgraph),
-                            KGraphElement.class);
             try {
+                Set<KNode> populatedNodes = Sets.newHashSet();
+                // remove transient klighd state
+                // care: do not iterate over the elements of the 'copy' as the subgraph
+                // was already removed from its original containment
+                EObject copyRoot = copier.get(subgraph);
+                Iterator<KGraphElement> kgeIt =
+                        ModelingUtil.selfAndEAllContentsOfType2(copyRoot,
+                                KGraphElement.class);
+
                 while (kgeIt.hasNext()) {
                     KGraphElement kge = kgeIt.next();
                     Iterator<KGraphData> dataIt = kge.getData().iterator();
@@ -310,8 +327,47 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                         if (d.getClass().equals(KGraphDataImpl.class)) {
                             // remember whether a node was expanded / collapsed
                             if (kge instanceof KNode && kge != exportGraph) {
-                                kge.getData(KLayoutData.class).setProperty(KlighdProperties.EXPAND,
-                                        d.getProperty(KlighdInternalProperties.POPULATED));
+                                KNode currentNode = (KNode) kge;
+                                KLayoutData ld = kge.getData(KLayoutData.class);
+                                boolean isPopulated = d.getProperty(KlighdInternalProperties.POPULATED);
+                                ld.setProperty(KlighdProperties.EXPAND, isPopulated);
+                                
+                                // since the populated state is only attached to the transient 
+                                // rendering context that we throw away here, we have to remember 
+                                // it for later usage
+                                if (isPopulated) {
+                                    populatedNodes.add(currentNode);
+                                }
+
+                                // klighd supports to change layout options based on the expansion
+                                // state of a node
+                                // here we want to persist the options based on the current state.
+                                ExpansionAwareLayoutOptionData ealo =
+                                        ld.getProperty(ExpansionAwareLayoutOption.OPTION);
+                                if (ealo != null) {
+                                    ld.copyProperties(ealo.getValues(isPopulated));
+                                }
+                                
+                                // we make an exception if children of expanded compound
+                                //  nodes are remove. In such cases the port constraints of the 
+                                //  compound node are fixed after internal layout, 
+                                //  which we want to retain after export
+                                // but don't fix them for the currently exported compound node 
+                                //  because that's the one we wanna layout and hence be able 
+                                //  to move external ports
+                                if (removeChildren && isPopulated && currentNode != copyRoot) {
+                                    ld.setProperty(LayoutOptions.PORT_CONSTRAINTS,
+                                            PortConstraints.FIXED_POS);
+                                    Direction dir = currentNode.getParent().getData(KLayoutData.class)
+                                                      .getProperty(LayoutOptions.DIRECTION);
+                                    // due to a previous FREE, ports might have been moved to
+                                    // different sides
+                                    for (KPort p : currentNode.getPorts()) {
+                                        p.getData(KLayoutData.class).setProperty(
+                                                LayoutOptions.PORT_SIDE, KimlUtil.calcPortSide(p, dir));
+                                    }
+                                }
+
                             }
                             dataIt.remove();
                         }
@@ -347,16 +403,51 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                  
                     }
                 }
+
+
+                // persist layout options and friends
+                KimlUtil.persistDataElements((KNode) copy);
+    
+                // remove children if requested. Do this after the previous removal
+                // happening to make sure all rendering libraries are considered etc
+                if (removeChildren) {
+                    Iterator<KNode> childrenIterator =
+                            ((KNode) copier.get(subgraph)).getChildren().iterator();
+                    while (childrenIterator.hasNext()) {
+                        KNode child = childrenIterator.next();
+                        child.getChildren().clear();
+                        KLayoutData ld = child.getData(KLayoutData.class);
+                        ld.setProperty(KlighdProperties.EXPAND, false);
+                        ld.setProperty(KlighdProperties.MINIMAL_NODE_SIZE, null);
+
+                        // remove the collapsed rendering
+                        Iterator<KGraphData> dataIt = child.getData().iterator();
+                        while (dataIt.hasNext()) {
+                            KGraphData d = dataIt.next();
+                            // either remove the collapsed or the expanded rendering
+                            if (d instanceof KRendering && populatedNodes.contains(child)) {
+                                if (d.getProperty(KlighdProperties.COLLAPSED_RENDERING)) {
+                                    dataIt.remove();
+                                }
+                            } else if (d instanceof KRendering) {
+                                if (d.getProperty(KlighdProperties.EXPANDED_RENDERING)) {
+                                    dataIt.remove();
+                                }
+                            }
+                        }
+                        
+                    }
+                }
             } catch (Throwable t) {
                 t.printStackTrace();
             }
-
-            // persist layout options and friends
-            KimlUtil.persistDataElements((KNode) copy);
-
+            
             r.getContents().add(exportGraph);
-            Map<String, Object> saveOpts = Maps.newHashMap();
 
+            // remove any edges that do not have a target anymore
+            recursivelyRemoveInvalidEdges((KNode) copier.get(subgraph));
+            
+            Map<String, Object> saveOpts = Maps.newHashMap();
             if (subgraph != null) {
                 // we have to drop several elements if only a subgraph
                 // is exported ... just let the emf deal with it.
@@ -374,6 +465,23 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             StatusManager.getManager().handle(
                     new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, "Error occurred.", e),
                     StatusManager.SHOW);
+        }
+    }
+    
+    private void recursivelyRemoveInvalidEdges(final KNode parent) {
+        
+        final Iterator<KEdge> edgeIt = parent.getOutgoingEdges().iterator();
+        while (edgeIt.hasNext()) {
+            KEdge edge = edgeIt.next();
+            if (edge.getTarget() == null) {
+                edgeIt.remove();
+            } else if (!edge.getSource().eResource().equals(edge.getTarget().eResource())) {
+                edgeIt.remove();
+            }
+        }        
+        
+        for (KNode child : parent.getChildren()) {
+            recursivelyRemoveInvalidEdges(child);
         }
     }
 }
