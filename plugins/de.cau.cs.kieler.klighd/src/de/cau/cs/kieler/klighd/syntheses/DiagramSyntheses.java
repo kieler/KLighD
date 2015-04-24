@@ -440,6 +440,38 @@ public final class DiagramSyntheses {
     }
 
     /**
+     * Configures the provided {@link KRendering} to propagate its diagram zoom scale-based
+     * visibility expressions to its children. In other words: if set to <code>true</code>
+     * drawing the whole figure (sub) tree is skipped, instead of solely the figure itself.
+     *
+     * @param krendering
+     *            the {@link KRendering} to be configured
+     * @param propagateToChildren
+     *            <code>true</code> if the visibility configuration shall apply to children,
+     *            <code>false</code> otherwise.
+     * @return <code>krendering</code> for convenience
+     */
+    public static KRendering setPropagateVisibilityBoundsToChildren(final KRendering krendering,
+            final boolean propagateToChildren) {
+        krendering.setProperty(
+                KlighdProperties.VISIBILITY_PROPAGATE_TO_CHILDREN, propagateToChildren);
+        return krendering;
+    }
+
+    /**
+     * Configures the provided {@link KRendering} to propagate its diagram zoom scale-based
+     * visibility expressions to its children. In other words: if set drawing the whole figure (sub)
+     * tree is skipped, instead of solely the figure itself.
+     *
+     * @param krendering
+     *            the {@link KRendering} to be configured
+     * @return <code>krendering</code> for convenience
+     */
+    public static KRendering propagateVisibilityBoundsToChildren(final KRendering krendering) {
+        return setPropagateVisibilityBoundsToChildren(krendering, true);
+    }
+
+    /**
      * Configures the provided {@link KRendering} to be excluded from the outline diagram view.
      *
      * @param rendering

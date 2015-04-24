@@ -32,6 +32,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolo.util.PPickPath;
@@ -290,6 +291,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         return upperScaleBound;
     }
 
+
     /**
      * Decides whether a {@link KlighdNode} must not be drawn according to given scale-based
      * visibility definitions. (see
@@ -297,10 +299,10 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
      *
      * @param kpc
-     *            the KlighdPaintContext providing the required information
+     *            the {@link KlighdPaintContext} providing the required information
      *
      * @return <code>true</code> if this (pseudo) figure should not be drawn on the diagram being
-     *         drawn in the given <code>diagramScale</code>
+     *         drawn in the given <code>diagramScale</code>, <code>false</code> otherwise.
      */
     public boolean isNotVisibleOn(final KlighdPaintContext kpc) {
         // this method must be as fast as possible in the 'main diagram case'
@@ -323,6 +325,22 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
             return false;
         }
     }
+
+    /**
+     * Decides whether a {@link KlighdNode} must not be picked according to given scale-based
+     * visibility definitions. (see
+     * {@link de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses#setUpperVisibilityScaleBound(KRendering,
+     * float) DiagramSyntheses#setUpperVisibilityScaleBound(KRendering, float)} and friends)
+     *
+     * @param kpp
+     *            the {@link KlighdPickPath} providing the required information
+     * @return <code>true</code> if this (pseudo) figure should not be picked on the diagram being
+     *         drawn in the given <code>diagramScale</code>, <code>false</code> otherwise.
+     */
+    public boolean isNotVisibleOn(final KlighdPickPath kpp) {
+        return isNotVisibleOn(kpp.getCameraZoomScale());
+    }
+
 
     /**
      * Decides whether a {@link KlighdNode} must not be drawn according to given scale-based
@@ -455,6 +473,8 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
 
         private static final long serialVersionUID = -3975636790695588901L;
 
+        private boolean propagateVisibilityToChildren = false;
+
         /**
          * Standard constructor.
          */
@@ -514,6 +534,26 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         }
 
         /**
+         * @return <code>true</code> if <code>this</code> {@link KlighdFigureNode
+         *         KlighdFigureNode's} scale-based visibility bounds are to by applied to
+         *         <code>this</code> {@link KlighdFigureNode KlighdFigureNode's} children, too,
+         *         <code>false</code> otherwise.
+         */
+        protected boolean isPropagateVisibilityToChildren() {
+            return propagateVisibilityToChildren;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void setScaleAndSizeBasedVisibilityBounds(final EMapPropertyHolder propertyConfig) {
+            super.setScaleAndSizeBasedVisibilityBounds(propertyConfig);
+            this.propagateVisibilityToChildren =
+                    propertyConfig.getProperty(KlighdProperties.VISIBILITY_PROPAGATE_TO_CHILDREN);
+        }
+
+        /**
          * {@inheritDoc}<br>
          * <br>
          * To be more precise, {@link #invalidatePaint()} is required in case the styling of the
@@ -548,14 +588,33 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         /**
          * {@inheritDoc}<br>
          * <br>
-         * KLighD just contributes a visibility check in this method.
+         * {@link KlighdNode} just contributes a visibility check in this method.
+         */
+        @Override
+        public boolean fullPick(final PPickPath pickPath) {
+            // first test whether this figure's visibility bounds apply to children as well
+            //  and if so perform the (in)visibility check
+            // I can expect a 'KlighdPickPath' here, as our 'KlighdMainCamera' only such,
+            //  and in other views like the outline or magnification lens no elements can be picked!
+            if (isPropagateVisibilityToChildren() && isNotVisibleOn((KlighdPickPath) pickPath)) {
+                return false;
+
+            } else {
+                return super.fullPick(pickPath);
+            }
+        }
+
+        /**
+         * {@inheritDoc}<br>
+         * <br>
+         * {@link KlighdNode} just contributes a visibility check in this method.
          */
         @Override
         protected boolean pickAfterChildren(final PPickPath pickPath) {
-            final KlighdPickPath kpp = (KlighdPickPath) pickPath;
-
-            // first test whether this figure is visible at all
-            if (isNotVisibleOn(kpp.getCameraZoomScale())) {
+            // just return false if this figure is not visible at the zoom scale provided by 'pickPath'
+            // I can expect a 'KlighdPickPath' here, as our 'KlighdMainCamera' only such,
+            //  and in other views like the outline or magnification lens no elements can be picked!
+            if (isNotVisibleOn((KlighdPickPath) pickPath)) {
                 return false;
             } else {
                 return super.pickAfterChildren(pickPath);
@@ -563,18 +622,40 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         }
 
         /**
-         * {@inheritDoc}
+         * {@inheritDoc}<br>
+         * <br>
+         * {@link KlighdNode} contributes visibility checks in this method, and skips superfluous
+         * method calls.
          */
         @Override
-        protected void paint(final PPaintContext paintContext) {
+        public void fullPaint(final PPaintContext paintContext) {
             final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
 
             // first test whether this figure shall be drawn at all
-            if (isNotVisibleOn(kpc)) {
+            if (isPropagateVisibilityToChildren() && isNotVisibleOn(kpc)) {
                 return;
             }
 
-            this.paint((KlighdPaintContext) paintContext);
+            if (getVisible() && fullIntersects(paintContext.getLocalClip())) {
+
+                final PAffineTransform transform = getTransformReference(false);
+                paintContext.pushTransform(transform);
+
+                if (!getOccluded() && !isNotVisibleOn(kpc)) {
+                    paint(kpc);
+                }
+
+                final int count = getChildrenCount();
+                for (int i = 0; i < count; i++) {
+                    final PNode each = getChildrenReference().get(i);
+                    each.fullPaint(paintContext);
+                }
+
+                // removed the call of 'paintAfterChildren(...)
+                //  as that method is (currently) not required for our figures
+
+                paintContext.popTransform(transform);
+            }
         }
 
         /**
@@ -587,6 +668,27 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         protected void paint(final KlighdPaintContext paintContext) {
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected final void paint(final PPaintContext paintContext) {
+            throw new UnsupportedOperationException(
+                    "KLighD: The method 'paint(PPaintContext)' of 'edu.umd.cs.piccolo.PNode' "
+                    + "is replaced by 'paint(KlighdPaintContext)' in "
+                    + "'de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode'");
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected final void paintAfterChildren(final PPaintContext paintContext) {
+            throw new UnsupportedOperationException(
+                    "KLighD: The method 'paintAfterChildren(PPaintContext)' of "
+                    + "'edu.umd.cs.piccolo.PNode' currently not supported for subclasses of "
+                    + "'de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode'");
+        }
 
         /**
          * A convenience method to be re-used in the {@link #paint(PPaintContext)} methods of

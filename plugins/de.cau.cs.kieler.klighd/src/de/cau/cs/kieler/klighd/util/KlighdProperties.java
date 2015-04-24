@@ -252,6 +252,16 @@ public final class KlighdProperties {
             "de.cau.cs.kieler.klighd.visibilityWidthLowerBound", 0);
 
     /**
+     * Property determining whether the diagram zoom scale-based visibility configurations of the
+     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} it is defined on shall apply
+     * to its children, as well. Configuring this property on {@link KGraphElement KGraphElements}
+     * (' {@link KLayoutData}) will have no effect, {@link KGraphElement KGraphElements'} children
+     * are automatically skipped by default.
+     */
+    public static final IProperty<Boolean> VISIBILITY_PROPAGATE_TO_CHILDREN = new Property<Boolean>(
+            "de.cau.cs.kieler.klighd.visibilityPropagateToChildren", false);
+
+    /**
      * A pre-defined property to be used for handing over an {@link RunnableWithResult} to the
      * KLighD view allowing to update the represented model, e.g. from UI contributions of the
      * KLighD view.
