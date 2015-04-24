@@ -98,13 +98,17 @@ public abstract class PNodeController<T extends PNode> {
      *            the invisibility state
      */
     public void setInvisible(final boolean invisible) {
-        getNode().setOccluded(invisible);
-        // need the following call in order to get newly invisible figures away
-        // (PNode does not do it)
-        getNode().invalidatePaint();
+        final PNode figure = getNode();
+        if (invisible != figure.getOccluded()) {
+            figure.setOccluded(invisible);
 
-        // question: is it correct to do the following when propagateToChildren is set?
-        // controller.getNode().setVisible(!styles.invisibility.isInvisible());
+            // need the following call in order to get newly invisible figures to vanish
+            // (PNode does not do it)
+            figure.invalidatePaint();
+
+            // question: is it correct to do the following when propagateToChildren is set?
+            // figure.setVisible(!styles.invisibility.isInvisible());
+        }
     }
 
     /**
