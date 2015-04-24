@@ -685,7 +685,7 @@ public abstract class AbstractKGERenderingController
 
         public void run() {
             for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
-                final PNode node = nodeController.getNode();
+                final PNode node = nodeController.getTransformedNode();
                 // in case styles of a detached KRendering are modified, e.g. if selection highlighting
                 //  is removed from renderings that are not part of the diagram in the meantime
                 //  'null' values may occur here

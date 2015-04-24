@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import java.awt.geom.Rectangle2D;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.FontData;
@@ -227,7 +225,8 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         final Object oldPaint = penColor;
         penColor = color;
         penAlpha = alpha;
-        // repaint();
+
+        invalidatePaint();
         firePropertyChange(PText.PROPERTY_CODE_TEXT_PAINT, PROPERTY_PAINT, oldPaint, penColor);
     }
 
@@ -256,14 +255,16 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            use this alpha.
      */
     public void setPaint(final RGB color, final int alpha) {
-        if (paint != null && paint.equals(color) && paintAlpha == alpha) {
+        if (paint == null && color == null
+                || paint != null && paint.equals(color) && paintAlpha == alpha) {
             return;
         }
         final Object oldPaint = paintGradient != null ? paintGradient : paint;
         paintGradient = null;
         paint = color;
         paintAlpha = alpha;
-        // repaint();
+
+        invalidatePaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, color);
     }
 
@@ -280,7 +281,8 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         paint = null;
         paintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
         paintGradient = gradient;
-        // repaint();
+
+        invalidatePaint();
         firePropertyChange(PROPERTY_CODE_PAINT, PROPERTY_PAINT, oldPaint, gradient);
     }
 
@@ -304,10 +306,14 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            the desired {@link FontData}, must not be <code>null<code>
      */
     public void setFont(final FontData theFont) {
+        if (fontData != null && fontData.equals(theFont)) {
+            return;
+        }
+
         final Object oldFont = this.fontData;
         this.fontData = theFont;
         this.updateBounds();
-        // repaint();
+
         firePropertyChange(PText.PROPERTY_CODE_FONT, PText.PROPERTY_FONT, oldFont, theFont);
     }
 
@@ -320,9 +326,14 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            the used color, maybe <code>null<code> (penColor is used in that case)
      */
     public void setUnderline(final int theUnderlining, final RGB color) {
+        if (underlining == theUnderlining) {
+            return;
+        }
+
         this.underlining = theUnderlining;
         this.underlineColor = color != null ? color : this.penColor;
-        // repaint();
+
+        invalidatePaint();
     }
 
     /**
@@ -334,9 +345,14 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            the used color, maybe <code>null<code> (penColor is used in that case)
      */
     public void setStrikeout(final boolean theStrikeout, final RGB color) {
+        if (strikeout == theStrikeout && strikeoutColor == color) {
+            return;
+        }
+
         this.strikeout = theStrikeout;
         this.strikeoutColor = color != null ? color : this.penColor;
-        // repaint();
+
+        invalidatePaint();
     }
 
     /**
@@ -345,8 +361,25 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      */
     protected void updateBounds() {
         // do the (re-)computation of the figure's (local) bounds lazily during the next request,
-        // the indication to do so is done by setting the local bounds 'empty'!
-        resetBounds();
+        //  the indication to do so is done by setting the local bounds 'empty'!
+        getBoundsReference().resetToZero();
+
+        // CAUTION: I intentionally do no call 'invalidateFullBounds'
+        //  as this will traverse up the parents and flag all as 'childBoundsInvalid',
+        //  which I consider unnecessary performance waste.
+
+        // Thus the 'fullBoundsInvalid' is set just locally. The subsequently called method
+        //  'invalidatePaint()' is specialized in the super class 'KlighdNode.KlighdFigureNode';
+        //  this modified method stops traversing upward if an 'IKGraphElementNode' is found
+
+        // In the regular case this 'KlighdStyledText' is wrapped by a 'KlighdAlignmentNode',
+        //  whose specialized method 'setChildPaintInvalid' sets its 'fullBoundsInvalid' and
+        //  'childBoundsInvalid' flags to 'true' leading to the local (!) re-evaluation
+        //  of the alignment node's as well as this node's full bounds on next access!
+        // Thus, DON'T change the order of the method calls below.
+
+        setFullBoundsInvalid(true);
+        invalidatePaint();
     }
 
     /**
@@ -357,7 +390,11 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         final PBounds bounds = super.getBoundsReference();
 
         if (bounds.isEmpty()) {
+            // lazy (re-)computation of the figure's (local) bounds if the bounds are set 'empty'
             this.setBounds(PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
+
+            // update the scale-based visibility bounds (limits) according to specification defined
+            //  on the corresponding KText element (either in absolute px or zoom scale fractions)
             this.updateScaleBasedVisibilityBounds(bounds);
         }
 
@@ -365,32 +402,42 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     }
 
     /**
-     * A singleton {@link Rectangle2D} that is used for drawing the text background by means of
-     * {@link KlighdSWTGraphics#fill(java.awt.Shape)}.
+     * {@inheritDoc}<br>
+     * <br>
+     * The aim of this override is to enable to call this method from {@link KlighdAlignmentNode}
+     * situated in the same package.
      */
-    private static final Rectangle2D BACKGROUND = new Rectangle2D.Double();
+    @Override
+    protected boolean getFullBoundsInvalid() {
+        return super.getFullBoundsInvalid();
+    }
+
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * The aim of this override is to enable to call this method from {@link KlighdAlignmentNode}
+     * situated in the same package.
+     */
+    @Override
+    protected void setFullBoundsInvalid(final boolean fullBoundsInvalid) {
+        super.setFullBoundsInvalid(fullBoundsInvalid);
+    }
 
     @Override
     public void fullPaint(final PPaintContext paintContext) {
         // since text figures are not supposed to contain children
-        //  skip 'fullPaint(...)' instead of just 'paint(...)' if no text is given
-        if (Strings.isNullOrEmpty(this.text)) {
+        //  skip the 'fullPaint(...)' instead of just 'paint(...)'
+        // skip if
+        //  * no text is given, or
+        //  * a text label widget is attached to this text
+        //    and the text is to be drawn on the main diagram;
+        //    (the text must be drawn as usual on the outline, printouts, and image exports)
+
+        if (Strings.isNullOrEmpty(this.text)
+                || occludedOnMainDiagram && ((KlighdPaintContext) paintContext).isMainDiagram()) {
             return;
         } else {
             super.fullPaint(paintContext);
-        }
-    }
-
-    @Override
-    public boolean isNotVisibleOn(final KlighdPaintContext kpc) {
-        // specialization prevents this text node from being drawn on the main diagram
-        //  is a text label widget is attached to this text
-        // this text node is drawn as usual on the outline, printouts, and image exports
-
-        if (occludedOnMainDiagram && kpc.isMainDiagram()) {
-            return true;
-        } else {
-            return super.isNotVisibleOn(kpc);
         }
     }
 
@@ -411,9 +458,8 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         }
 
         if (this.paint != null || this.paintGradient != null) {
-            BACKGROUND.setFrame(0, 0, getWidth(), getHeight());
             graphics.setLineAttributes(KlighdConstants.DEFAULT_LINE_ATTRIBUTES);
-            graphics.fill(BACKGROUND);
+            graphics.fill(getBoundsReference());
         }
 
         graphics.setUnderline(underlining, underlineColor);
@@ -439,5 +485,13 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         graphics.drawText(text);
 
         graphics.setAlpha(currentAlpha);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "KlighdStyledText '" + text + "'";
     }
 }

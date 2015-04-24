@@ -30,6 +30,7 @@ import org.osgi.framework.Bundle;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KArc;
 import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.core.krendering.KCustomRendering;
@@ -49,6 +50,7 @@ import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.core.krendering.VerticalAlignment;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KCustomRenderingWrapperFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -61,8 +63,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode.HAlignment;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
@@ -298,12 +298,12 @@ final class KGERenderingControllerHelper {
         final KlighdStyledText textNode = new KlighdStyledText(text);
 
         // create the alignment node wrapping the text
-        final KlighdAlignmentNode alignmentNode = new KlighdAlignmentNode();
+        final KlighdAlignmentNode alignmentNode = new KlighdAlignmentNode(textNode);
         alignmentNode.translate(initialBounds.getX(), initialBounds.getY());
         alignmentNode.setBounds(0, 0, initialBounds.getWidth(), initialBounds.getHeight());
-        alignmentNode.addChild(textNode);
-        alignmentNode.setHorizontalAlignment(textNode, HAlignment.CENTER);
-        alignmentNode.setVerticalAlignment(textNode, VAlignment.CENTER);
+
+        // default alignment is defined in PNodeController.applyStyles!
+
         parent.addChild(alignmentNode);
 
         // create a controller for the text and return it
@@ -320,13 +320,13 @@ final class KGERenderingControllerHelper {
             }
 
             @Override
-            public void setHorizontalAlignment(final HAlignment alignment) {
-                alignmentNode.setHorizontalAlignment(getNode(), alignment);
+            public void setHorizontalAlignment(final HorizontalAlignment alignment) {
+                alignmentNode.setHorizontalAlignment(alignment);
             }
 
             @Override
-            public void setVerticalAlignment(final VAlignment alignment) {
-                alignmentNode.setVerticalAlignment(getNode(), alignment);
+            public void setVerticalAlignment(final VerticalAlignment alignment) {
+                alignmentNode.setVerticalAlignment(alignment);
             }
         };
     }

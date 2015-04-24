@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import com.google.common.primitives.Floats;
 
+import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.core.krendering.KColor;
 import de.cau.cs.kieler.core.krendering.KColoring;
 import de.cau.cs.kieler.core.krendering.KPosition;
@@ -29,11 +30,10 @@ import de.cau.cs.kieler.core.krendering.LineCap;
 import de.cau.cs.kieler.core.krendering.LineJoin;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.krendering.Underline;
+import de.cau.cs.kieler.core.krendering.VerticalAlignment;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode.HAlignment;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode.VAlignment;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
@@ -284,7 +284,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param alignment
      *            the horizontal alignment
      */
-    public void setHorizontalAlignment(final HAlignment alignment) {
+    public void setHorizontalAlignment(final HorizontalAlignment alignment) {
         // do nothing
     }
 
@@ -294,7 +294,7 @@ public abstract class PNodeController<T extends PNode> {
      * @param alignment
      *            the vertical alignment
      */
-    public void setVerticalAlignment(final VAlignment alignment) {
+    public void setVerticalAlignment(final VerticalAlignment alignment) {
         // do nothing
     }
 
@@ -473,34 +473,16 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply horizontal alignment
         if (styles.horizontalAlignment != null) {
-            switch (styles.horizontalAlignment.getHorizontalAlignment()) {
-            case LEFT:
-                this.setHorizontalAlignment(HAlignment.LEFT);
-                break;
-            case RIGHT:
-                this.setHorizontalAlignment(HAlignment.RIGHT);
-                break;
-            case CENTER:
-            default:
-                this.setHorizontalAlignment(HAlignment.CENTER);
-                break;
-            }
+            this.setHorizontalAlignment(styles.horizontalAlignment.getHorizontalAlignment());
+        } else {
+            this.setHorizontalAlignment(HorizontalAlignment.CENTER);
         }
 
         // apply vertical alignment
         if (styles.verticalAlignment != null) {
-            switch (styles.verticalAlignment.getVerticalAlignment()) {
-            case TOP:
-                this.setVerticalAlignment(VAlignment.TOP);
-                break;
-            case BOTTOM:
-                this.setVerticalAlignment(VAlignment.BOTTOM);
-                break;
-            case CENTER:
-            default:
-                this.setVerticalAlignment(VAlignment.CENTER);
-                break;
-            }
+            this.setVerticalAlignment(styles.verticalAlignment.getVerticalAlignment());
+        } else {
+            this.setVerticalAlignment(VerticalAlignment.CENTER);
         }
 
         // apply font name
