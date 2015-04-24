@@ -560,9 +560,10 @@ public abstract class AbstractKGERenderingController
      *            the runnable to be performed in the UI context.
      */
     private static void runInUI(final Runnable r) {
-        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() != null) {
+        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
             PlatformUI.getWorkbench().getDisplay().syncExec(r);
         } else {
+            // if no workbench is available or we're are already on the UI thread ...
             r.run();
         }
     }
