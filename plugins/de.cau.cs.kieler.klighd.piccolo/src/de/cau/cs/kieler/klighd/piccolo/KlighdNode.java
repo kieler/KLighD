@@ -206,7 +206,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      *            bounds.
      */
     public void updateScaleBasedVisibilityBounds(final PBounds bounds) {
-        if (upperSizeBoundUndef && lowerSizeBoundUndef || bounds.isEmpty()) {
+        if (upperSizeBoundUndef && lowerSizeBoundUndef || bounds == null || bounds.isEmpty()) {
             return;
         }
 
@@ -356,6 +356,16 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
         return super.getPickable() && !getOccluded();
     }
 
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This specialization just casts the result to {@link List} parameterized by {@link PNode}.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<? extends PNode> getChildrenReference() {
+        return super.getChildrenReference();
+    }
 
     private final PBounds tempRect = new PBounds();
     private boolean isValidatingPaint = false;
