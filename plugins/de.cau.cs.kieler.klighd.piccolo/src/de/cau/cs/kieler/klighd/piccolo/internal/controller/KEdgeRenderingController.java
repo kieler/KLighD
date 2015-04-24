@@ -38,7 +38,9 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdDisposingLayer;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -206,14 +208,14 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         // As explained in the class doc, the representation of multiple junction points is realized
         //  by means of cameras. Since those support only PLayers as 'viewed' figures, create one
         //  serving as container for the junction point figure:
-        final PLayer junctionParent = new PLayer();
+        final PLayer junctionParent = new KlighdDisposingLayer();
 
         // Create the junction point figure the usual way
         final PNode junctionFigure = handleAreaAndPointPlacementRendering(jpR, propagatedStyles,
                 junctionParent);
 
         // Create a layer accommodating the concrete camera instances ...
-        final PLayer displayedJunctions = new PLayer();
+        final PLayer displayedJunctions = new KlighdDisposingLayer();
 
         // ... and add it to the edge's rendering figure (I think it could be also added to the
         //  parent 'edgeNode', but this is cleaner regarding the replacement/deletion of the current
@@ -231,6 +233,14 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                         updateJunctionPoints(parent, junctionFigure, displayedJunctions);
                     }
                 });
+
+        parent.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new PropertyChangeListener() {
+
+            public void propertyChange(final PropertyChangeEvent evt) {
+                junctionParent.firePropertyChange(NodeDisposeListener.DISPOSE_CODE,
+                        evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            }
+        });
 
         return controller.getNode();
     }
