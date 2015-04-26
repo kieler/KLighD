@@ -19,9 +19,13 @@ import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventLi
 import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.collect.Sets;
+
+import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
@@ -30,6 +34,7 @@ import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.util.PPickPath;
 import edu.umd.cs.piccolo.util.PStack;
 
 /**
@@ -146,45 +151,85 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
     }
 
     private void performSelection(final PInputEvent event) {
+        final PPickPath pickPath = event.getPath();
 
-        // in order to figure out which of the picked elements are selectable
-        //  create a list iterator initialized to the top of the node stack
-        // I think just "popping" elements from the stack would work, too,
-        //  this way, however, there's no side effect on the node stack
-        final PStack nodeStack = event.getPath().getNodeStackReference();
-        final ListIterator<?> it = nodeStack.listIterator(nodeStack.size());
+        Set<EObject> selectedElements = null;
+        do {
+            // in order to figure out which of the picked elements are selectable
+            //  create a list iterator initialized to the top of the node stack
+            // I think just "popping" elements from the stack would work, too,
+            //  this way, however, there's no side effect on the node stack
+            final PStack nodeStack = pickPath.getNodeStackReference();
+            final ListIterator<?> it = nodeStack.listIterator(nodeStack.size());
 
-        // run variables
-        PNode selectedNode = null;
-        EObject graphElement = null;
+            // run variables
+            PNode selectedNode = null;
+            EObject viewModelElement = null;
 
-        while (it.hasPrevious()) {
-            selectedNode = (PNode) it.previous();
+            while (it.hasPrevious()) {
+                selectedNode = (PNode) it.previous();
 
-            // get the corresponding view model element, i.e. KText or KGraphElement
-            if (selectedNode instanceof IKlighdNode && ((IKlighdNode) selectedNode).isSelectable()) {
-                graphElement = ((IKlighdNode) selectedNode).getViewModelElement();
+                // get the corresponding view model element, i.e. KText or KGraphElement
+                if (selectedNode instanceof IKlighdNode && ((IKlighdNode) selectedNode).isSelectable()) {
+                    viewModelElement = ((IKlighdNode) selectedNode).getViewModelElement();
+                    break;
+                } else if (selectedNode instanceof IKNodeNode) {
+                    // in case we found a KNode that is marked to be non-selectable
+                    //  (and that is expected to not cover any further KGraphElements)
+                    //  stop here in order to keep the previous selection,
+                    // otherwise the diagramClip node would be selected,
+                    //  which seems to be not intuitive
+                    viewModelElement = ((IKNodeNode) selectedNode).isSelectable()
+                            ? ((IKlighdNode) selectedNode).getViewModelElement() : null;
+                    break;
+                }
+            }
+
+            if (viewModelElement == null) {
+                return;
+            }
+
+            if (viewModelElement instanceof KEdge) {
+                // in case a KEdge has been identified that edge might occlude another one that
+                //  shall be selected as well (mostly happens if edges are routed in orthogonal fashion);
+
+                if (selectedElements == null) {
+                    selectedElements = Sets.newHashSet();
+                }
+
+                // add the currently found edge to set of elements to be selected, ...
+                selectedElements.add(viewModelElement);
+
+                // ... start a new "pick" run ('nextPickedNode' takes care
+                //  about ignoring the previously found ones), ...
+                pickPath.nextPickedNode();
+
+                // ... and evaluate the updated pick path by starting the loop again
+                continue;
+
+            } else if (selectedElements != null) {
+                // the fact that 'selectedElements' is non-null implies that the above case
+                //  must have been executed beforehand meaning we're selecting one or multiple KEdges
+                // the execution of the above statements now gave a selectable view element
+                //  that is not a KEdge so we have to stop and ignore 'viewModelElement' here
                 break;
-            } else if (selectedNode instanceof IKNodeNode) {
-                // in case we found a KNode that is marked to be non-selectable
-                //  (and that is expected to not cover any further KGraphElements)
-                //  stop here in order to keep the previous selection,
-                // otherwise the diagramClip node would be selected,
-                //  which seems to be not intuitive
-                graphElement = ((IKNodeNode) selectedNode).isSelectable()
-                        ? ((IKlighdNode) selectedNode).getViewModelElement() : null;
+
+            } else {
+                // we identified a selectable view model element not being a KEdge, and
+                //  the current loop iteration must be the first one since 'selectedElemets' is 'null'
+                // we just initialize 'selectedElements', put 'viewModelElement' in there, ...
+                selectedElements = Collections.singleton(viewModelElement);
+
+                //  ... and stop the loop!
                 break;
             }
-        }
+        } while (true);
 
-        if (graphElement == null) {
-            return;
-        }
 
         if (multiSelection && event.isControlDown()) {
-            this.viewer.toggleSelectionOfDiagramElements(Collections.singleton(graphElement));
+            this.viewer.toggleSelectionOfDiagramElements(selectedElements);
         } else {
-            this.viewer.resetSelectionToDiagramElements(Collections.singleton(graphElement));
+            this.viewer.resetSelectionToDiagramElements(selectedElements);
         }
     }
 }
