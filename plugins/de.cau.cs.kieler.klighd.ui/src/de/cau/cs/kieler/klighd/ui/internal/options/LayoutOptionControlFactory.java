@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -58,12 +58,12 @@ import de.cau.cs.kieler.klighd.internal.macrolayout.KGraphPropertyLayoutConfig;
  * @author chsch
  */
 public class LayoutOptionControlFactory {
-    
+
     /** The parent composite into which controls are created. */
     private Composite parent;
-    
+
     private ViewContext viewContext;
-    
+
     /** The workbench part containing the diagram viewer. */
     private IDiagramWorkbenchPart workbenchPart;
     /** the form toolkit used to create controls. */
@@ -78,15 +78,15 @@ public class LayoutOptionControlFactory {
     private final Collection<Control> controls = new LinkedList<Control>();
     /** Whether the layout shall be refreshed automatically. */
     private boolean autoRefreshLayout = true;
-    
+
     /** number of columns in the grid for enumeration value selection. */
     private static final int ENUM_GRID_COLS = 1;
     /** widget data identifier for the attached selection listener. */
     private static final String DATA_SELECTION_LISTENER = "klighd.selectionListener";
-    
+
     /**
      * Create an option control factory.
-     * 
+     *
      * @param parent
      *            the parent container
      * @param formToolkit
@@ -99,7 +99,7 @@ public class LayoutOptionControlFactory {
         this.parent = parent;
         this.formToolkit = formToolkit;
         this.lightLayoutConfig = theLightLayoutConfig;
-        
+
         // configure the parent's layout
         this.parent.setLayout(new GridLayout(1, false)); // chsch: changed this from 2 to 1
 
@@ -107,25 +107,25 @@ public class LayoutOptionControlFactory {
         defaultLayoutConfig = new DefaultLayoutConfig();
         defaultLayoutContext = new LayoutContext();
     }
-    
+
     /**
      * Clear the current layout configuration and reinitialize option values. These values
      * are used when new controls are created. If any controls have been created before,
      * they should be removed first using {@link #clear()}.
-     * 
+     *
      * @param theViewContext
      *            the viewContext belonging to the current diagram
      */
     public void initialize(final ViewContext theViewContext) {
         lightLayoutConfig.clearOptionValues(LayoutContext.global());
-        
+
         this.viewContext = theViewContext;
         this.workbenchPart = viewContext.getDiagramWorkbenchPart();
-        
+
         final Object input = this.viewContext.getInputModel();
         final KNode viewModel = this.viewContext.getViewModel();
         final EObject inputModel;
-        
+
         if (input instanceof EObject) {
             inputModel = (EObject) viewContext.getInputModel();
         } else if (input instanceof Iterable) {
@@ -133,10 +133,11 @@ public class LayoutOptionControlFactory {
         } else {
             inputModel = null;
         }
-        
+
         // create the layout configurator
         final LayoutOptionManager optionManager = DiagramLayoutEngine.INSTANCE.getOptionManager();
         defaultLayoutConfig = optionManager.createConfig(inputModel, new KGraphPropertyLayoutConfig());
+
         // create and enrich the layout context
         defaultLayoutContext = new LayoutContext();
         defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
@@ -154,7 +155,7 @@ public class LayoutOptionControlFactory {
 
         optionManager.enrich(defaultLayoutContext, defaultLayoutConfig, true);
     }
-    
+
     /**
      * Clear the previously created option controls.
      */
@@ -164,10 +165,10 @@ public class LayoutOptionControlFactory {
         }
         controls.clear();
     }
-    
+
     /**
      * Refresh the layout of the displayed diagram.
-     * 
+     *
      * @param animate whether the new layout shall be animated
      */
     private void refreshLayout(final boolean animate) {
@@ -179,10 +180,10 @@ public class LayoutOptionControlFactory {
             }
         }
     }
-    
+
     /**
      * Create a control for the given layout option identifier.
-     * 
+     *
      * @param optionId a layout option identifier
      */
     public void createControl(final String optionId) {
@@ -191,10 +192,10 @@ public class LayoutOptionControlFactory {
             createControl(optionData, null, null, null);
         }
     }
-    
+
     /**
      * Create a control for the given layout option identifier with given bounds.
-     * 
+     *
      * @param optionId a layout option identifier
      * @param minValue the minimal value for the option
      * @param maxValue the maximal value for the option
@@ -205,10 +206,10 @@ public class LayoutOptionControlFactory {
             createControl(optionData, minValue, maxValue, null);
         }
     }
-    
+
     /**
      * Create a control for the given layout option identifier with given available option values.
-     * 
+     *
      * @param optionId a layout option identifier
      * @param availableValues the set of values to offer
      */
@@ -218,7 +219,7 @@ public class LayoutOptionControlFactory {
             createControl(optionData, null, null, availableValues);
         }
     }
-    
+
     /**
      * Reset all displayed layout options to their default values.
      *
@@ -235,7 +236,7 @@ public class LayoutOptionControlFactory {
                 final LayoutOptionData optionData = (LayoutOptionData) control.getData();
                 final Object defaultValue = defaultLayoutConfig.getOptionValue(optionData,
                         defaultLayoutContext);
-                
+
                 switch (optionData.getType()) {
                 case INT:
                 case FLOAT: {
@@ -253,7 +254,7 @@ public class LayoutOptionControlFactory {
                     }
                     break;
                 }
-                
+
                 case BOOLEAN:
                 case ENUM: {
                     // the composite's children store the available values in their 'Data' fields
@@ -272,7 +273,7 @@ public class LayoutOptionControlFactory {
                     }
                     break;
                 }
-                
+
                 }
             }
         }
@@ -282,10 +283,10 @@ public class LayoutOptionControlFactory {
             refreshLayout(true);
         }
     }
-    
+
     /**
      * Create a control for the given layout option data instance with given bounds.
-     * 
+     *
      * @param optionData a layout option data instance
      * @param minValue the minimal value for the option, or {@code null}
      * @param maxValue the maximal value for the option, or {@code null}
@@ -312,19 +313,19 @@ public class LayoutOptionControlFactory {
 //            if (algorithmHint != null && algorithmHint.length() > 0) {
 //                lightLayoutConfig.setValue(optionData, algorithmHint);
 //            }
-//            
+//
 //            // chsch: via this tweak we get more space below the 'Select ...' button as in GridData
 //            //  one can only specify vertical indentation on the top side of the widget
 //            final Composite dummy = new Composite(parent, SWT.NONE | SWT.NO_BACKGROUND);
 //            dummy.setLayoutData(new GridData(1, 1));
 //            controls.add(dummy);
-//         
+//
 //            return;
 //        }
         final Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
         label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
         controls.add(label);
-        
+
         switch (optionData.getType()) {
         case INT:
         case FLOAT: {
@@ -350,13 +351,13 @@ public class LayoutOptionControlFactory {
                     / (sliderListener.maxFloat - sliderListener.minFloat)
                     * (slider.getMaximum() - slider.getMinimum())) + slider.getMinimum();
             slider.setSelection(selection);
-            
+
             // add selection listener for instant layout updates
             slider.addSelectionListener(sliderListener);
             slider.setData(DATA_SELECTION_LISTENER, sliderListener);
             break;
         }
-        
+
         case BOOLEAN: {
             final Composite valuesContainer = formToolkit.createComposite(parent);
             valuesContainer.setLayout(new GridLayout(2, false));
@@ -381,7 +382,7 @@ public class LayoutOptionControlFactory {
             falseButton.addSelectionListener(new EnumerationListener(optionData, Boolean.FALSE));
             break;
         }
-        
+
         case ENUM: {
             final Composite valuesContainer = formToolkit.createComposite(parent);
             valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
@@ -410,11 +411,11 @@ public class LayoutOptionControlFactory {
             controls.add(valuesContainer);
             break;
         }
-        
+
         case ENUMSET: {
             final Composite valuesContainer = formToolkit.createComposite(parent);
             valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
-            
+
             final Object[] values;
             if (availableValues != null) {
                 values = availableValues.toArray();
@@ -426,7 +427,7 @@ public class LayoutOptionControlFactory {
                 controls.add(errorLabel);
                 break;
             }
-            
+
             final Object initialValue = defaultLayoutConfig.getOptionValue(optionData,
                     defaultLayoutContext);
             for (final Object value : values) {
@@ -442,7 +443,7 @@ public class LayoutOptionControlFactory {
             }
             valuesContainer.setData(optionData);
             controls.add(valuesContainer);
-            break;               
+            break;
         }
 
         default:
@@ -452,13 +453,13 @@ public class LayoutOptionControlFactory {
             controls.add(errorLabel);
         }
     }
-    
+
     /** The default value for the lower bound. */
     private static final int DEFAULT_MIN = 0;
-    
+
     /**
      * Get a lower bound for values of the given option.
-     * 
+     *
      * @param optionData a layout option data instance
      * @param requested the requested bound, or {@code null}
      * @return a minimal value
@@ -473,13 +474,13 @@ public class LayoutOptionControlFactory {
         }
         return DEFAULT_MIN;
     }
-    
+
     /** The default value for the upper bound. */
     private static final int DEFAULT_MAX = 100;
 
     /**
      * Get an upper bound for values of the given option.
-     * 
+     *
      * @param optionData a layout option data instance
      * @param requested the requested bound, or {@code null}
      * @return a maximal value
@@ -494,10 +495,10 @@ public class LayoutOptionControlFactory {
         }
         return DEFAULT_MAX;
     }
-    
+
     /**
      * Get a user-friendly value for the given object.
-     * 
+     *
      * @param object an object, e.g. an enumeration value
      * @return a user-friendly string to display in the UI
      */
@@ -521,12 +522,12 @@ public class LayoutOptionControlFactory {
 
     private static final Pattern MAX_2_DIGITS = Pattern.compile("(.*\\.\\d[^0]?)\\d*");
     private static final String FIRST_GROUP = "$1";
-    
+
     /**
      * A listener for sliders.
      */
     private class SliderListener extends SelectionAdapter {
-        
+
         /** the corresponding name label used updating the selected value. */
         private final Label correspondingLabel;
         /** the layout option that is affected by the slider. */
@@ -565,14 +566,14 @@ public class LayoutOptionControlFactory {
             correspondingLabel.setText(optionData.getName() + ": "
                     + MAX_2_DIGITS.matcher(String.valueOf(optionValue)).replaceFirst(FIRST_GROUP));
             correspondingLabel.getParent().layout(true);
-            
+
             // trigger a new layout on the displayed diagram
             refreshLayout(false);
         }
-        
+
         /**
          * Set the new value of the layout option.
-         * 
+         *
          * @param optionValue the layout option value
          */
         @SuppressWarnings({ "incomplete-switch" })
@@ -587,7 +588,7 @@ public class LayoutOptionControlFactory {
             }
         }
     }
-    
+
 // chsch: deactivated the following part in order to get rid of the dependency to kiml.ui,
 //  employing the fully-fledged layout algorithm selection dialog is not considered appropriate anyway,
 //  see KIPRA-1448
@@ -606,7 +607,7 @@ public class LayoutOptionControlFactory {
 //                public void selectionChanged(final SelectionChangedEvent event) {
 //                    // instantly update the layout when an algorithm is selected
 //                    final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-//                    if (!selection.isEmpty() 
+//                    if (!selection.isEmpty()
 //                            && selection.getFirstElement() instanceof ILayoutMetaData) {
 //                        ILayoutMetaData layoutData = (ILayoutMetaData) selection.getFirstElement();
 //                        lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, layoutData.getId());
@@ -619,25 +620,25 @@ public class LayoutOptionControlFactory {
 //            } else {
 //                lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, initialValue);
 //            }
-//            
+//
 //            // trigger a new layout on the displayed diagram
 //            refreshLayout(true);
 //        }
 //    }
-    
+
     /**
      * A listener for enumeration values.
      */
     private class EnumerationListener extends SelectionAdapter {
-        
+
         /** the layout option that is affected by the button. */
         private LayoutOptionData optionData;
         /** the enumeration value to set when selection is triggered. */
         private Object value;
-        
+
         /**
          * Creates an enumeration listener.
-         * 
+         *
          * @param optionData the layout option that is affected by the button
          * @param value the enumeration value to set when selection is triggered
          */
@@ -657,5 +658,5 @@ public class LayoutOptionControlFactory {
             }
         }
     }
-    
+
 }
