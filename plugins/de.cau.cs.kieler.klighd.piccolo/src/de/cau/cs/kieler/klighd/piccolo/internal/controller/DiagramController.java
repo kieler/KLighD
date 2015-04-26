@@ -1331,12 +1331,13 @@ public class DiagramController {
         }
 
         updateLayout(labelNode);
-        
+
         // if the label's text is overriden by means of a property, use that property
         String labelText = label.getText();
-        KLayoutData layoutData = label.getData(KLayoutData.class);
+        final KLayoutData layoutData = label.getData(KLayoutData.class);
         if (layoutData != null) {
-            String labelTextOverride = layoutData.getProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE);
+            final String labelTextOverride =
+                    layoutData.getProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE);
             if (labelTextOverride != null) {
                 labelText = labelTextOverride;
             }
@@ -1656,7 +1657,7 @@ public class DiagramController {
         @Override
         public void notifyChanged(final Notification notification) {
 
-            if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__CHILDREN) {
+            if (notification.getFeature() == KGraphPackage.Literals.KNODE__CHILDREN) {
                 if (UIExecRequired()) {
                     throw new RuntimeException(UI_REQUIRED_ERROR_MSG_NODES);
                 }
@@ -1730,16 +1731,16 @@ public class DiagramController {
 
         @Override
         public void notifyChanged(final Notification notification) {
-            final int featureId = notification.getFeatureID(KNode.class);
+            final Object feature = notification.getFeature();
 
-            if (featureId == KGraphPackage.KNODE__OUTGOING_EDGES
-                    || featureId == KGraphPackage.KNODE__INCOMING_EDGES) {
+            if (feature == KGraphPackage.Literals.KNODE__OUTGOING_EDGES
+                    || feature == KGraphPackage.Literals.KNODE__INCOMING_EDGES) {
                 if (UIExecRequired()) {
                     throw new RuntimeException(UI_REQUIRED_ERROR_MSG_EDGES);
                 }
 
                 final boolean releaseChildrenAndControllers =
-                        featureId == KGraphPackage.KNODE__OUTGOING_EDGES;
+                        feature == KGraphPackage.Literals.KNODE__OUTGOING_EDGES;
 
                 switch (notification.getEventType()) {
                 case Notification.ADD: {
@@ -1797,7 +1798,7 @@ public class DiagramController {
 
         @Override
         public void notifyChanged(final Notification notification) {
-            if (notification.getFeatureID(KNode.class) == KGraphPackage.KNODE__PORTS) {
+            if (notification.getFeature() == KGraphPackage.Literals.KNODE__PORTS) {
                 if (UIExecRequired()) {
                     throw new RuntimeException(UI_REQUIRED_ERROR_MSG_PORTS);
                 }
@@ -1860,8 +1861,7 @@ public class DiagramController {
         @Override
         public void notifyChanged(final Notification notification) {
 
-            if (notification.getFeatureID(KLabeledGraphElement.class)
-                    == KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS) {
+            if (notification.getFeature() == KGraphPackage.Literals.KLABELED_GRAPH_ELEMENT__LABELS) {
                 if (UIExecRequired()) {
                     throw new RuntimeException(UI_REQUIRED_ERROR_MSG_LABELS);
                 }
@@ -1917,19 +1917,19 @@ public class DiagramController {
 
         private TextSyncAdapter(final KLabelNode theLabelRep) {
             super(KLayoutData.class);
-            
+
             this.labelRep = theLabelRep;
         }
 
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
-            
+
             // flag that indicates whether we have found a new text for our label or not
             boolean foundNewText = false;
             String newText = null;
-            
-            if (notification.getFeatureID(KLabel.class) == KGraphPackage.KLABEL__TEXT) {
+
+            if (notification.getFeature() == KGraphPackage.Literals.KLABEL__TEXT) {
                 // this is the case if the original KLabel in the view model had its text changed
                 switch (notification.getEventType()) {
                 case Notification.SET:
@@ -1944,21 +1944,21 @@ public class DiagramController {
                 // find the corresponding property-to-object map entry and find out if the property
                 // equals LABEL_TEXT_OVERRIDE; if so, we apply the property value as the new text
                 IPropertyToObjectMapImpl entry = null;
-                
+
                 if (notification.getNotifier() instanceof KLayoutData
                     && notification.getNewValue() instanceof IPropertyToObjectMapImpl) {
-                
+
                     entry = (IPropertyToObjectMapImpl) notification.getNewValue();
                 } else if (notification.getNotifier() instanceof IPropertyToObjectMapImpl) {
                     entry = (IPropertyToObjectMapImpl) notification.getNotifier();
                 }
-                
+
                 if (entry != null && entry.getKey().equals(KlighdLabelProperties.LABEL_TEXT_OVERRIDE)) {
                     foundNewText = true;
                     newText = (String) entry.getValue();
                 }
             }
-            
+
             // apply new label text, if necessary
             if (foundNewText) {
                 if (UIExecRequired()) {

@@ -30,6 +30,11 @@
             description="Allows to write the view model KGraph to a file."
             id="de.cau.cs.kieler.klighd.ui.savekgraph"
             name="Save View Model (KGraph)">
+         <commandParameter
+               id="de.cau.cs.kieler.klighd.ui.contrib3x.savekgraphParameter"
+               name="ExportType"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             categoryId="de.cau.cs.kieler.klighd.ui"
@@ -157,18 +162,6 @@
             </visibleWhen>
          </command>
          <command
-               commandId="de.cau.cs.kieler.klighd.ui.savekgraph"
-               id="de.cau.cs.kieler.klighd.ui.saveKGraph"
-               label="Save underlying KGraph"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
                commandId="de.cau.cs.kieler.klighd.ui.saveAsImage"
                id="de.cau.cs.kieler.klighd.ui.saveAsImage"
                label="Save as image..."
@@ -180,6 +173,35 @@
                </reference>
             </visibleWhen>
          </command>
+         <menu
+               label="Export KGraphs">
+            <command
+                  commandId="de.cau.cs.kieler.klighd.ui.savekgraph"
+                  id="de.cau.cs.kieler.klighd.ui.saveKGraph"
+                  label="Underlying KGraph"
+                  style="push">
+               <parameter
+                     name="de.cau.cs.kieler.klighd.ui.contrib3x.savekgraphParameter"
+                     value="single">
+               </parameter>
+            </command>
+            <command
+                  commandId="de.cau.cs.kieler.klighd.ui.savekgraph"
+                  id="de.cau.cs.kieler.klighd.ui.kgraphchunky"
+                  label="KGraph Chunky"
+                  style="push">
+               <parameter
+                     name="de.cau.cs.kieler.klighd.ui.contrib3x.savekgraphParameter"
+                     value="chunky">
+               </parameter>
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.cau.cs.kieler.klighd.ui.nodesSelected">
+               </reference>
+            </visibleWhen>
+         </menu>
          <!-- command
                commandId="org.eclipse.ui.edit.copy"
                label="Copy"

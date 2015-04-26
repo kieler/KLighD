@@ -17,6 +17,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
+import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 
 /**
@@ -26,7 +27,10 @@ import edu.umd.cs.piccolo.event.PInputEvent;
  * <br>
  * This class can be subclassed in order to react on certain event. Alternatively, it can be
  * instantiated in order to wrap another {@link PBasicInputEventHandler}, e.g. in case that handler
- * is a {@link edu.umd.cs.piccolo.event.PDragSequenceEventHandler PDragSequenceEventHandler}.
+ * is a {@link PDragSequenceEventHandler}.<br>
+ * <br>
+ * <b>Note:</b> <em>Right mouse button events are not forwarded to
+ * {@link PDragSequenceEventHandlers}.</em>
  *
  * @author chsch
  */
@@ -39,12 +43,19 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
     private final PBasicInputEventHandler delegate;
 
     /**
+     * A flag indicating whether right mouse button events shall be forwarded, this must not be done
+     * to {@link PDragSequenceEventHandler PDragSequenceEventHandlers} (at least on OSX).
+     */
+    private final boolean forwardRightMouseButtonEvents;
+
+    /**
      * Constructor. Is protected as it is to be called by subclasses only.
      */
     protected KlighdBasicInputEventHandler() {
         this.setEventFilter(null);
 
         this.delegate = this;
+        this.forwardRightMouseButtonEvents = true;
     }
 
     /**
@@ -66,6 +77,13 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
         theDelegate.setEventFilter(null);
 
         this.delegate = theDelegate;
+
+        // at least on OSX 'MouseDown' events with button = 3 are sent to the diagram canvas,
+        //  but no corresponding 'MouseUp' events, maybe because the context menu widget gets
+        //  the event focus
+        // therefore, PDragSequenceEventHandlers must not be blessed with button 3 events
+        //  as they track the symmetry of 'mousePressed(...)' and 'mouseReleased(...)' events
+        this.forwardRightMouseButtonEvents = !(theDelegate instanceof PDragSequenceEventHandler);
     }
 
     /**
@@ -102,11 +120,19 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
             break;
 
         case SWT.MouseDown:
-            delegate.mousePressed(event);
+            // button 3 is reserved for the context menu popUp so suppress reactions on that button
+            if (forwardRightMouseButtonEvents            // SUPPRESS CHECKSTYLE NEXT MagicNumber
+                    || ((MouseEvent) kEvent.getEvent()).button != 3) {
+                delegate.mousePressed(event);
+            }
             break;
 
         case SWT.MouseUp:
-            delegate.mouseReleased(event);
+            // button 3 is reserved for the context menu popUp so suppress reactions on that button
+            if (forwardRightMouseButtonEvents            // SUPPRESS CHECKSTYLE NEXT MagicNumber
+                    || ((MouseEvent) kEvent.getEvent()).button != 3) {
+                delegate.mouseReleased(event);
+            }
             break;
 
         case SWT.MouseMove:
