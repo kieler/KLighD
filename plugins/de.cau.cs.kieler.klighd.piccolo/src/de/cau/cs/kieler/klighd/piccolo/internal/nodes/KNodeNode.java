@@ -515,7 +515,7 @@ public class KNodeNode extends KNodeAbstractNode implements
         if (getVisible() && (kpc.isOutline() || fullIntersectsOri(paintContext.getLocalClip()))) {
             final PAffineTransform transform = getTransformReference(false);
             paintContext.pushTransform(transform);
-            // paintContext.pushTransparency(getTransparency());
+            paintContext.pushTransparency(getTransparency());
 
             this.hasBeenDrawn = true;
 
@@ -552,7 +552,7 @@ public class KNodeNode extends KNodeAbstractNode implements
                 kpc.popNodeScale();
             }
 
-            // paintContext.popTransparency(getTransparency());
+            paintContext.popTransparency(getTransparency());
             paintContext.popTransform(transform);
         }
     }
