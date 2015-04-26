@@ -824,10 +824,13 @@ public final class DiagramSideBar {
     }
 
     /**
-     * {@inheritDoc}
+     * Resets the layout option settings configured via the sidebar's controls.
+     *
+     * @param doLayout
+     *            if <code>true</code> a subsequent layout run will be triggered
      */
-    public void resetLayoutOptionsToDefaults() {
-        this.layoutOptionControlFactory.resetToDefaults();
+    public void resetLayoutOptionsToDefaults(final boolean doLayout) {
+        this.layoutOptionControlFactory.resetToDefaults(doLayout);
     }
 
     /**

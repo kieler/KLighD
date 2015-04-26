@@ -216,8 +216,15 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      * {@inheritDoc}
      */
     public void resetLayoutConfig() {
+        resetLayoutConfig(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetLayoutConfig(final boolean doLayout) {
         if (this.sideBar != null) {
-            this.sideBar.resetLayoutOptionsToDefaults();
+            this.sideBar.resetLayoutOptionsToDefaults(doLayout);
         }
     }
 
@@ -317,7 +324,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
             @Override
             public void run() {
-                sideBar.resetLayoutOptionsToDefaults();
+                sideBar.resetLayoutOptionsToDefaults(true);
             }
         };
         resetLayoutOptionsAction.setId(ACTION_ID_RESET_LAYOUT_OPTIONS);

@@ -373,8 +373,15 @@ public class DiagramEditorPart extends EditorPart implements
      * {@inheritDoc}
      */
     public void resetLayoutConfig() {
+        resetLayoutConfig(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resetLayoutConfig(final boolean doLayout) {
         if (this.sideBar != null) {
-            this.sideBar.resetLayoutOptionsToDefaults();
+            this.sideBar.resetLayoutOptionsToDefaults(doLayout);
         }
     }
 

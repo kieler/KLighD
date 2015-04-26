@@ -216,9 +216,12 @@ public class LayoutOptionControlFactory {
     
     /**
      * Reset all displayed layout options to their default values.
+     *
+     * @param doLayout
+     *            if <code>true</code> a subsequent layout run will be triggered
      */
     @SuppressWarnings("incomplete-switch")
-    public void resetToDefaults() {
+    public void resetToDefaults(final boolean doLayout) {
         // temporarily disable auto-refresh to avoid multiple layout runs triggered by listeners
         autoRefreshLayout = false;
         lightLayoutConfig.clearOptionValues(LayoutContext.global());
@@ -269,7 +272,10 @@ public class LayoutOptionControlFactory {
             }
         }
         autoRefreshLayout = true;
-        refreshLayout(true);
+
+        if (doLayout) {
+            refreshLayout(true);
+        }
     }
     
     /**

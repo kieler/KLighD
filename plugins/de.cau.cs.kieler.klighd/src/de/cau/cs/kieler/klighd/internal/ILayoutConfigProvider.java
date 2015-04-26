@@ -37,7 +37,16 @@ public interface ILayoutConfigProvider {
     ILayoutConfig getLayoutConfig();
 
     /**
-     * Drops all layout configurations in the employed {@link ILayoutConfig}.
+     * Drops all layout configurations in the employed {@link ILayoutConfig} and performs a
+     * subsequent layout run.
      */
     void resetLayoutConfig();
+
+    /**
+     * Drops all layout configurations in the employed {@link ILayoutConfig}.
+     *
+     * @param doLayout
+     *            if <code>true</code> a subsequent layout run will be triggered
+     */
+    void resetLayoutConfig(boolean doLayout);
 }
