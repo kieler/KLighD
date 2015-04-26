@@ -129,9 +129,7 @@ public class LayoutOptionControlFactory {
         if (input instanceof EObject) {
             inputModel = (EObject) viewContext.getInputModel();
         } else if (input instanceof Iterable) {
-            inputModel =
-                    Iterables.getFirst(Iterables.filter(
-                            (Collection<?>) viewContext.getInputModel(), EObject.class), null);
+            inputModel = Iterables.getFirst(Iterables.filter((Iterable<?>) input, EObject.class), null);
         } else {
             inputModel = null;
         }
@@ -142,12 +140,19 @@ public class LayoutOptionControlFactory {
         // create and enrich the layout context
         defaultLayoutContext = new LayoutContext();
         defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
-        defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
+
+        // chsch: deactivated the following declaration as it may disturb the layout massively
+        //  in case 'inputModel' is NOT represented by 'viewModel' (but, e.g., its first child)
+        //  and a semantic layout config is associated with the input model's root element;
+        // in that case those layout settings are taken into 'lightLayoutConfig',
+        //  and, thus, applied to all view model elements (view model nodes), which is wrong, of course!
+        // defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
         defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
-        defaultLayoutContext.setProperty(LayoutContext.OPT_TARGETS,
-                EnumSet.of(LayoutOptionData.Target.PARENTS));
-        DiagramLayoutEngine.INSTANCE.getOptionManager().enrich(defaultLayoutContext,
-                defaultLayoutConfig, true);
+
+        defaultLayoutContext.setProperty(
+                LayoutContext.OPT_TARGETS, EnumSet.of(LayoutOptionData.Target.PARENTS));
+
+        optionManager.enrich(defaultLayoutContext, defaultLayoutConfig, true);
     }
     
     /**
@@ -338,7 +343,7 @@ public class LayoutOptionControlFactory {
                     defaultLayoutContext)).floatValue();
             initialValue = KielerMath.boundf(initialValue, sliderListener.minFloat,
                     sliderListener.maxFloat);
-            sliderListener.setOptionValue(initialValue);
+
             label.setText(optionData.getName() + ": " + initialValue);
 
             final int selection = Math.round((initialValue - sliderListener.minFloat)
