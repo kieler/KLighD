@@ -73,7 +73,6 @@ import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdAlignmentNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
@@ -327,11 +326,6 @@ public abstract class AbstractKGERenderingController
         // remove the rendering node
         if (renderingNode != null) {
             removeListeners(renderingNode);
-
-            final PNode parent = renderingNode.getParent();
-            if (parent instanceof KlighdAlignmentNode) {
-                renderingNode = parent;
-            }
             renderingNode.removeFromParent();
 
             // dispose the SWT Resources employed by the out-dated pnodes
