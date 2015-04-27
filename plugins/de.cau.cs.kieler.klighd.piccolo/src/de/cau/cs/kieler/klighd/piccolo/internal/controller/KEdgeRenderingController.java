@@ -78,7 +78,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * {@inheritDoc}
      */
     @Override
-    protected PNode internalUpdateRendering() {
+    protected PNodeController<?> internalUpdateRendering() {
         final KEdgeNode repNode = getRepresentation();
 
         // evaluate the rendering data
@@ -88,7 +88,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             return handleEdgeRendering(createDefaultRendering(), repNode);
         }
 
-        final PNode renderingNode;
+        final PNodeController<?> renderingNodeController;
 
         // the rendering of an edge has to be a KPolyline or a sub type of KPolyline except KPolygon,
         //  or a KCustomRendering providing a KCustomConnectionFigureNode
@@ -96,14 +96,14 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         case KRenderingPackage.KPOLYLINE:
         case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
         case KRenderingPackage.KSPLINE:
-            renderingNode = handleEdgeRendering((KPolyline) currentRendering, repNode);
+            renderingNodeController = handleEdgeRendering((KPolyline) currentRendering, repNode);
             break;
 
         case KRenderingPackage.KCUSTOM_RENDERING:
             final KCustomRendering customRendering = (KCustomRendering) currentRendering;
             if (customRendering.getFigureObject()  == null
                     || customRendering.getFigureObject() instanceof KCustomConnectionFigureNode) {
-                renderingNode = handleEdgeRendering(customRendering, repNode);
+                renderingNodeController = handleEdgeRendering(customRendering, repNode);
                 break;
             } else {
                 // FIXME why is the status manager used here, while below a runtime exception is thrown?
@@ -125,8 +125,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             if (renderingRef.getRendering() == null) {
                 return handleEdgeRendering(createDefaultRendering(), repNode);
             } else if (renderingRef.getRendering() instanceof KPolyline) {
-                renderingNode = handleEdgeRendering((KPolyline) renderingRef.getRendering(),
-                        repNode);
+                renderingNodeController =
+                        handleEdgeRendering((KPolyline) renderingRef.getRendering(), repNode);
             } else {
                 throw new RuntimeException("KLighD: llegal KRendering is attached to graph edge.");
             }
@@ -139,7 +139,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                     + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!");
         }
 
-        return renderingNode;
+        return renderingNodeController;
     }
 
     /**
@@ -151,9 +151,10 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      *            the rendering
      * @param parent
      *            the parent Piccolo2D edge node
-     * @return the Piccolo2D node representing the rendering
+     * @return the {@link PNodeController} managing the Piccolo2D node that represents
+     *         <code>rendering</code>
      */
-    private PNode handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) {
+    private PNodeController<?> handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) {
         // create the rendering
         @SuppressWarnings("unchecked")
         final PNodeController<KlighdPath> controller = (PNodeController<KlighdPath>) createRendering(
@@ -194,7 +195,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         if (jpR == null) {
             // if there is no junction point rendering determined, we're done!
-            return controller.getNode();
+            return controller;
         }
 
 
@@ -212,7 +213,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         // Create the junction point figure the usual way
         final PNode junctionFigure = handleAreaAndPointPlacementRendering(jpR, propagatedStyles,
-                junctionParent);
+                junctionParent).getNode();
 
         // Create a layer accommodating the concrete camera instances ...
         final PLayer displayedJunctions = new KlighdDisposingLayer();
@@ -242,7 +243,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             }
         });
 
-        return controller.getNode();
+        return controller;
     }
 
     /**
@@ -329,9 +330,11 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      *            the rendering
      * @param parent
      *            the parent Piccolo2D edge node
-     * @return the Piccolo2D node representing the rendering
+     * @return the {@link PNodeController} managing the Piccolo2D node that represents
+     *         <code>rendering</code>
      */
-    private PNode handleEdgeRendering(final KCustomRendering rendering, final KEdgeNode parent) {
+    private PNodeController<?> handleEdgeRendering(final KCustomRendering rendering,
+            final KEdgeNode parent) {
 
         // create the rendering
         @SuppressWarnings("unchecked")
@@ -354,7 +357,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
                     }
                 });
 
-        return controller.getNode();
+        return controller;
     }
 
     /**

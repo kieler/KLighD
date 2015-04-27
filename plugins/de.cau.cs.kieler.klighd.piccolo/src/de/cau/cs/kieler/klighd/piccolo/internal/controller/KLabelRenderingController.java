@@ -50,20 +50,20 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
      * {@inheritDoc}
      */
     @Override
-    protected PNode internalUpdateRendering() {
+    protected PNodeController<?> internalUpdateRendering() {
         final KLabelNode repNode = getRepresentation();
 
         // evaluate the rendering data
         final KRendering currentRendering = getCurrentRendering();
 
-        final PNode renderingNode;
+        final PNodeController<?> renderingNodeController;
         if (currentRendering != null) {
-            renderingNode = handleLabelRendering(currentRendering, repNode);
+            renderingNodeController = handleLabelRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleLabelRendering(createDefaultRendering(), repNode);
+            renderingNodeController = handleLabelRendering(createDefaultRendering(), repNode);
         }
 
-        return renderingNode;
+        return renderingNodeController;
     }
 
     /**
@@ -75,9 +75,11 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
      *            the rendering
      * @param parent
      *            the parent Piccolo label node
-     * @return the Piccolo node representing the rendering
+     * @return the {@link PNodeController} managing the Piccolo2D node that represents
+     *         <code>rendering</code>
      */
-    private PNode handleLabelRendering(final KRendering rendering, final KLabelNode parent) {
+    private PNodeController<?> handleLabelRendering(final KRendering rendering,
+            final KLabelNode parent) {
         // the rendering of a label has to contain exactly one KText
         //  that "inherits" the text from the KLabel itself
         final Iterator<KText> kTexts =
@@ -91,8 +93,8 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
         }
         
         // create the rendering
-        final PNodeController<?> controller = (PNodeController<?>) createRendering(rendering,
-                parent, Bounds.of(parent.getBoundsReference()));
+        final PNodeController<?> controller =
+                createRendering(rendering, parent, Bounds.of(parent.getBoundsReference()));
         
         @SuppressWarnings("unchecked")
         final PNodeController<KlighdStyledText> textController = (PNodeController<KlighdStyledText>)
@@ -130,7 +132,7 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
                     }
                 });
 
-        return controller.getNode();
+        return controller;
     }
 
     /**

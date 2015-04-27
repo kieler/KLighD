@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2012 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -20,7 +20,6 @@ import de.cau.cs.kieler.core.krendering.KRectangle;
 import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
-import edu.umd.cs.piccolo.PNode;
 
 /**
  * @author mri
@@ -29,7 +28,7 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
 
     /**
      * Constructs a rendering controller for a port.
-     * 
+     *
      * @param port
      *            the Piccolo node representing a port
      */
@@ -41,32 +40,35 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
      * {@inheritDoc}
      */
     @Override
-    protected PNode internalUpdateRendering() {
+    protected PNodeController<?> internalUpdateRendering() {
         final KPortNode repNode = getRepresentation();
 
         // evaluate the rendering data
         final KRendering currentRendering = getCurrentRendering();
 
-        final PNode renderingNode;
+        final PNodeController<?> renderingNodeController;
         if (currentRendering != null) {
-            renderingNode = handleAreaAndPointPlacementRendering(currentRendering, repNode);
+            renderingNodeController =
+                    handleAreaAndPointPlacementRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleAreaAndPointPlacementRendering(createDefaultRendering(), repNode);
+            renderingNodeController =
+                    handleAreaAndPointPlacementRendering(createDefaultRendering(), repNode);
         }
-        
-        return renderingNode;
+
+        return renderingNodeController;
     }
-    
+
     /**
      * Creates a default rendering for ports without attached rendering data.
-     * 
+     *
      * @return the rendering
      */
+    @Override
     protected KRendering createDefaultRendering() {
         // create the default rendering model
         final KRenderingFactory factory = KRenderingFactory.eINSTANCE;
         final KRectangle rect = factory.createKRectangle();
-        
+
         final KForeground foreground = factory.createKForeground().setColor(0, 0, 0);
         final KBackground background = factory.createKBackground().setColor(0, 0, 0);
 
@@ -74,5 +76,5 @@ public class KPortRenderingController extends AbstractKGERenderingController<KPo
         rect.getStyles().add(background);
         return rect;
     }
-    
+
 }

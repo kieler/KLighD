@@ -347,7 +347,7 @@ public abstract class AbstractKGERenderingController
         modifiableStylesPresent = false;
 
         // update the rendering
-        renderingNode = internalUpdateRendering();
+        renderingNode = internalUpdateRendering().getTransformedNode();
 
         // install rendering adapter if sync is enabled
         if (syncRendering) {
@@ -371,9 +371,10 @@ public abstract class AbstractKGERenderingController
     /**
      * Performs the actual update of the rendering.
      *
-     * @return the Piccolo2D node representing the current rendering
+     * @return the {@link PNodeController} managing the Piccolo2D node
+     *         ({@link KlighdNode.KlighdFigureNode}) that represents {@link #currentRendering}
      */
-    protected abstract PNode internalUpdateRendering();
+    protected abstract PNodeController<?> internalUpdateRendering();
 
     /**
      * Registers an adapter on the graph element to react on changes in its graph data feature.
@@ -914,7 +915,7 @@ public abstract class AbstractKGERenderingController
      *            the parent Piccolo2D node
      * @return the Piccolo2D node representing the rendering
      */
-    protected PNode handleAreaAndPointPlacementRendering(final KRendering rendering,
+    protected PNodeController<?> handleAreaAndPointPlacementRendering(final KRendering rendering,
             final PNode parent) {
         return handleAreaAndPointPlacementRendering(rendering, Collections.<KStyle>emptyList(), parent);
     }
@@ -931,7 +932,7 @@ public abstract class AbstractKGERenderingController
      *            the parent Piccolo2D node
      * @return the Piccolo2D node representing the rendering
      */
-    protected PNode handleAreaAndPointPlacementRendering(final KRendering rendering,
+    protected PNodeController<?> handleAreaAndPointPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final PNode parent) {
         final KPlacementData pcd = KRenderingUtil.getPlacementData(rendering);
         final KAreaPlacementData pad = KRenderingUtil.asAreaPlacementData(pcd);
@@ -978,7 +979,7 @@ public abstract class AbstractKGERenderingController
                     });
         }
 
-        return controller.getNode();
+        return controller;
     }
 
     /**

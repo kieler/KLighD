@@ -50,7 +50,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      * {@inheritDoc}
      */
     @Override
-    protected PNode internalUpdateRendering() {
+    protected PNodeController<?> internalUpdateRendering() {
         final KNodeNode repNode = getRepresentation();
         final KChildAreaNode childAreaNode = repNode.getChildAreaNode();
 
@@ -60,11 +60,13 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
         // evaluate the rendering data
         final KRendering currentRendering = getCurrentRendering();
 
-        final PNode renderingNode;
+        final PNodeController<?> renderingNodeController;
         if (currentRendering != null) {
-            renderingNode = handleAreaAndPointPlacementRendering(currentRendering, repNode);
+            renderingNodeController =
+                    handleAreaAndPointPlacementRendering(currentRendering, repNode);
         } else {
-            renderingNode = handleAreaAndPointPlacementRendering(createDefaultRendering(), repNode);
+            renderingNodeController =
+                    handleAreaAndPointPlacementRendering(createDefaultRendering(), repNode);
         }
 
         // make sure the child area is attached to something
@@ -73,7 +75,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
             // let the whole figure be the child area
             createDefaultChildArea(getRepresentation());
         }
-        return renderingNode;
+        return renderingNodeController;
     }
 
     /**
