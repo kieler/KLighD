@@ -273,13 +273,17 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
      */
     @Override
     public void dispose() {
-        gc = null;
         // dispose cached swt fonts
         for (org.eclipse.swt.graphics.Font f : awtSwtFontCache.values()) {
             f.dispose();
         }
         awtSwtFontCache.clear();
         awtSwtFontCache = null;
+
+        // dispose the gc
+        gc.dispose();
+        gc = null;
+
         super.dispose();
     }
 
