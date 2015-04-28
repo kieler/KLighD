@@ -32,7 +32,7 @@
       </exporter>
       <exporter
             class="de.cau.cs.kieler.klighd.piccolo.export.BitmapExporter"
-            description="Portable Network Graphic (.png)"
+            description="Portable Network Graphics (.png)"
             extension="png"
             id="de.cau.cs.kieler.klighd.piccolo.exporter.png"
             subFormat="png"
