@@ -72,6 +72,11 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * {@link de.cau.cs.kieler.core.kgraph.KLabel KLabels}. */
     public static final IProperty<Boolean> SUPPRESS_SIZE_ESTIMATION = new Property<Boolean>(
             "klighd.suppressSizeEstimation", false);
+
+    /** property denoting whether to suppress edge adjustment or not. */
+    public static final IProperty<Boolean> SUPPRESS_EDGE_ADJUSTMENT = new Property<Boolean>(
+            "klighd.suppressEdgeAdjustment", false);
+
     /**
      * Defines the possible diagram side bar initialization options.
      */
@@ -304,6 +309,15 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
         return this;
     }
 
+    /**
+     * Configures whether the edge adjustment should be calculated or not.
+     * 
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties suppressEdgeAdjustment() {
+        this.setProperty(SUPPRESS_EDGE_ADJUSTMENT, false);
+        return this;
+    }
 
     /**
      * Configures diagram {@link SynthesisOption} values beyond the default value definitions.

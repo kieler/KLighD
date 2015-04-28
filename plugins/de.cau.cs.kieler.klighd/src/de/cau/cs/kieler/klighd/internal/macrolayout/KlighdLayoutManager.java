@@ -114,6 +114,18 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             "krendering.layout.excludedEdges");
 
     /**
+     * Defines the possible transfer modes used to layout the graph.
+     */
+    private static enum EdgeLayoutTransferMode {
+        /** Model transfered from the model to layout graph. */
+        VIEW_MODEL_TO_LAYOUT_GRAPH,
+        /** Layout graph to view model without adjustments. */
+        LAYOUT_GRAPH_TO_VIEW_MODEL,
+        /** Layout graph to view model with adjustments. */
+        LAYOUT_GRAPH_TO_VIEW_MODEL_ADJUSTMENT
+    }
+
+    /**
      * A property that is used to tell KIML about the workbench part this layout manager is
      * responsible for. Note that this property is not referred to by KIML immediately, it rather
      * filters given property definitions by their value types and looks for one of
@@ -510,7 +522,8 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         final KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
         final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
         if (edgeLayout != null) {
-            transferEdgeLayout(edgeLayout, layoutLayout, true);
+            transferEdgeLayout(edgeLayout, layoutLayout,
+                    EdgeLayoutTransferMode.VIEW_MODEL_TO_LAYOUT_GRAPH);
         }
 
         // make sure to clear old junction points
@@ -610,15 +623,17 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // ... and apply the layout
         if (recorder != null) {
             final IViewer viewer = (IViewer) recorder;
+            final boolean suppressEdgeAdjustment = viewer.getViewContext().getProperty(
+                    KlighdSynthesisProperties.SUPPRESS_EDGE_ADJUSTMENT);
             if (viewer.getControl() != null && viewer.getControl().isDisposed()) {
                 return;
             }
             recorder.startRecording();
-            applyLayout(mapping);
+            applyLayout(mapping, suppressEdgeAdjustment);
             recorder.stopRecording(animationTime);
 
         } else {
-            applyLayout(mapping);
+            applyLayout(mapping, false);
         }
     }
 
@@ -627,8 +642,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *
      * @param mapping
      *            the layout mapping that was created by this manager
+     * @param suppressEdgeAdjustment
+     *            if true edge adjustment will be suppressed, if no
+     *            edge adjustment will be done
      */
-    private void applyLayout(final LayoutMapping<KGraphElement> mapping) {
+    private void applyLayout(final LayoutMapping<KGraphElement> mapping,
+            final boolean suppressEdgeAdjustment) {
         final Set<Entry<KGraphElement, KGraphElement>> elementMappings =
                 mapping.getGraphMap().entrySet();
 
@@ -659,8 +678,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                 public Boolean caseKEdge(final KEdge layoutEdge) {
                     final KEdgeLayout layoutLayout = layoutEdge.getData(KEdgeLayout.class);
                     final KEdgeLayout edgeLayout = element.getData(KEdgeLayout.class);
+                    final EdgeLayoutTransferMode transferMode =
+                            suppressEdgeAdjustment ? EdgeLayoutTransferMode.LAYOUT_GRAPH_TO_VIEW_MODEL
+                                    : EdgeLayoutTransferMode.LAYOUT_GRAPH_TO_VIEW_MODEL_ADJUSTMENT;
                     if (edgeLayout != null) {
-                        transferEdgeLayout(edgeLayout, layoutLayout, false);
+                        transferEdgeLayout(edgeLayout, layoutLayout, transferMode);
                     }
                     return true;
                 }
@@ -683,7 +705,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     final KShapeLayout labelLayout = element.getData(KShapeLayout.class);
                     if (labelLayout != null) {
                         transferShapeLayout(layoutLayout, labelLayout, false, true);
-                        
+
                         // if the label's text was changed during layout, remember the new text in a
                         // special property
                         LabelManagementResult managementResult =
@@ -801,12 +823,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the destination edge layout
      * @param layoutEdgeLayout
      *            the origin edge layout
-     * @param viewModel2LayoutGraph
+     * @param transferMode
      *            if true the transfer is to be done from viewModel to layout graph, if false the
-     *            other round
+     *            other way round
      */
     private void transferEdgeLayout(final KEdgeLayout viewModelEdgeLayout,
-            final KEdgeLayout layoutEdgeLayout, final boolean viewModel2LayoutGraph) {
+            final KEdgeLayout layoutEdgeLayout,
+            final EdgeLayoutTransferMode transferMode) {
 
         final KEdge viewModelEdge = (KEdge) viewModelEdgeLayout.eContainer();
         final KEdge layoutEdge = (KEdge) layoutEdgeLayout.eContainer();
@@ -821,6 +844,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         // the viewModel2LayoutGraph case this statement will have no effect
         viewModelEdgeLayout.copyProperties(layoutEdgeLayout);
 
+        // flag indicates direction view model to layout graph if true,
+        // if false the other way round.
+        final boolean viewModel2LayoutGraph =
+                transferMode.equals(EdgeLayoutTransferMode.VIEW_MODEL_TO_LAYOUT_GRAPH);
+
+        // indicates whether the edge adjustment should be calculated or not.
+        final boolean edgeAdjustment = transferMode.equals(
+                EdgeLayoutTransferMode.LAYOUT_GRAPH_TO_VIEW_MODEL_ADJUSTMENT);
+
         if (viewModelEdgeLayout.getSourcePoint() == null) {
             viewModelEdgeLayout.setSourcePoint(KLayoutDataFactory.eINSTANCE.createKPoint());
         }
@@ -834,32 +866,39 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
             // this flag indicates the requirement of the adjusting the port position
             //  wrt. the scaling factor being associated with the port's parent node
-            boolean adjustPortPosition = false;
-
-            // If the target is a descendant of the source, the edge's source point is already
-            // relative to the source node's position.
-            if (!KimlUtil.isDescendant(layoutEdge.getTarget(), layoutSourceNode)) {
-                final KShapeLayout sourceLayout = layoutSourceNode.getData(KShapeLayout.class);
-                offset.x = -sourceLayout.getXpos();
-                offset.y = -sourceLayout.getYpos();
-            } else {
-                adjustPortPosition = true;
-                final KShapeLayout sourceLayout = layoutSourceNode.getData(KShapeLayout.class);
-                offset.x = sourceLayout.getInsets().getLeft();
-                offset.y = sourceLayout.getInsets().getTop();
-            }
+            final boolean adjustPortPosition;
 
             final boolean pointDeliver = viewModelEdgeLayout.getSourcePoint().eDeliver();
             viewModelEdgeLayout.getSourcePoint().eSetDeliver(false);
 
-            checkAndCopyPoint(layoutEdgeLayout.getSourcePoint(),
-                    viewModelEdgeLayout.getSourcePoint(), layoutSourceNode,
-                    layoutEdge.getSourcePort(),
-                    viewModelEdge.getSource().getData(KRendering.class),
-                    viewModelEdge.getSourcePort() == null ? null
-                    : viewModelEdge.getSourcePort().getData(KRendering.class),
-                    offset, adjustPortPosition);
+            if (edgeAdjustment) {
+                // If the target is a descendant of the source, the edge's source point is already
+                // relative to the source node's position.
+                if (!KimlUtil.isDescendant(layoutEdge.getTarget(), layoutSourceNode)) {
+                    adjustPortPosition = false;
+                    final KShapeLayout sourceLayout = layoutSourceNode.getData(KShapeLayout.class);
+                    offset.x = -sourceLayout.getXpos();
+                    offset.y = -sourceLayout.getYpos();
+                } else {
+                    adjustPortPosition = true;
+                    final KShapeLayout sourceLayout = layoutSourceNode.getData(KShapeLayout.class);
+                    offset.x = sourceLayout.getInsets().getLeft();
+                    offset.y = sourceLayout.getInsets().getTop();
+                }
 
+                final KRendering portRendering = viewModelEdge.getSourcePort() == null
+                        ? null : viewModelEdge.getSourcePort().getData(KRendering.class);
+
+                checkAndCopyPoint(layoutEdgeLayout.getSourcePoint(),
+                        viewModelEdgeLayout.getSourcePoint(), layoutSourceNode,
+                        layoutEdge.getSourcePort(),
+                        viewModelEdge.getSource().getData(KRendering.class),
+                        portRendering, offset,
+                        adjustPortPosition);
+            } else {
+                KPoint p = layoutEdgeLayout.getSourcePoint();
+                viewModelEdgeLayout.getSourcePoint().setPos(p.getX(), p.getY());
+            }
             viewModelEdgeLayout.getSourcePoint().eSetDeliver(pointDeliver);
         }
 
@@ -899,37 +938,47 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
             // this flag indicates the requirement of the adjusting the port position
             //  wrt. the scaling factor being associated with the port's parent node
-            boolean adjustPortPosition = false;
+            final boolean adjustPortPosition;
 
-            if (layoutSourceNode.getParent() == layoutTargetNode.getParent()) {
-                // The source and target are on the same level, so just subtract the target position.
-                final KShapeLayout targetLayout = layoutTargetNode.getData(KShapeLayout.class);
-                offset.x = -targetLayout.getXpos();
-                offset.y = -targetLayout.getYpos();
-            } else {
-                // The source and target are on different levels, so transform coordinate system.
-                KNode referenceNode = layoutSourceNode;
-                if (!KimlUtil.isDescendant(layoutTargetNode, layoutSourceNode)) {
-                    adjustPortPosition = true;
-                    referenceNode = referenceNode.getParent();
-                }
-                KimlUtil.toAbsolute(offset, referenceNode);
-                KimlUtil.toRelative(offset, layoutTargetNode.getParent());
-                final KShapeLayout targetLayout = layoutTargetNode.getData(KShapeLayout.class);
-                offset.x -= targetLayout.getXpos();
-                offset.y -= targetLayout.getYpos();
-            }
             final boolean pointDeliver = viewModelEdgeLayout.getTargetPoint().eDeliver();
             viewModelEdgeLayout.getTargetPoint().eSetDeliver(false);
 
-            checkAndCopyPoint(layoutEdgeLayout.getTargetPoint(),
-                    viewModelEdgeLayout.getTargetPoint(), layoutTargetNode,
-                    layoutEdge.getTargetPort(),
-                    viewModelEdge.getTarget().getData(KRendering.class),
-                    viewModelEdge.getTargetPort() == null ? null
-                    : viewModelEdge.getTargetPort().getData(KRendering.class),
-                    offset, adjustPortPosition);
+            if (edgeAdjustment) {
+                if (layoutSourceNode.getParent() == layoutTargetNode.getParent()) {
+                    adjustPortPosition = false;
+                    // The source and target are on the same level, so just subtract the target
+                    // position.
+                    final KShapeLayout targetLayout = layoutTargetNode.getData(KShapeLayout.class);
+                    offset.x = -targetLayout.getXpos();
+                    offset.y = -targetLayout.getYpos();
+                } else {
+                    // The source and target are on different levels, so transform coordinate
+                    // system.
+                    KNode referenceNode = layoutSourceNode;
+                    if (!KimlUtil.isDescendant(layoutTargetNode, layoutSourceNode)) {
+                        adjustPortPosition = true;
+                        referenceNode = referenceNode.getParent();
+                    } else {
+                        adjustPortPosition = false;
+                    }
+                    KimlUtil.toAbsolute(offset, referenceNode);
+                    KimlUtil.toRelative(offset, layoutTargetNode.getParent());
+                    final KShapeLayout targetLayout = layoutTargetNode.getData(KShapeLayout.class);
+                    offset.x -= targetLayout.getXpos();
+                    offset.y -= targetLayout.getYpos();
+                }
 
+                checkAndCopyPoint(layoutEdgeLayout.getTargetPoint(),
+                        viewModelEdgeLayout.getTargetPoint(), layoutTargetNode,
+                        layoutEdge.getTargetPort(),
+                        viewModelEdge.getTarget().getData(KRendering.class),
+                        viewModelEdge.getTargetPort() == null ? null
+                        : viewModelEdge.getTargetPort().getData(KRendering.class), offset,
+                        adjustPortPosition);
+            } else {
+                KPoint p = layoutEdgeLayout.getTargetPoint();
+                viewModelEdgeLayout.getTargetPoint().setPos(p.getX(), p.getY());
+            }
             viewModelEdgeLayout.getTargetPoint().eSetDeliver(pointDeliver);
         }
 
