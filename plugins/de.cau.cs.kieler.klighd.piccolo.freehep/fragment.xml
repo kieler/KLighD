@@ -13,9 +13,9 @@
          point="de.cau.cs.kieler.klighd.extensions">
       <exporter
             class="de.cau.cs.kieler.klighd.piccolo.export.SVGExporter"
-            description="FreeHEP (Extended)"
+            description="Scalable Vector Graphics (.svg) powered by FreeHEP"
             extension="svg"
-            id="de.cau.cs.kieler.klighd.piccolo.export.freeHEP.svgSemantic"
+            id="de.cau.cs.kieler.klighd.piccolo.export.freeHEP.svg"
             subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPExtended">
       </exporter>
    </extension>

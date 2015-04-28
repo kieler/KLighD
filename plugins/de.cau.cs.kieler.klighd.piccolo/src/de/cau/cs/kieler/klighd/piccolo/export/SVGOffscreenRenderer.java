@@ -35,12 +35,18 @@ import edu.umd.cs.piccolo.PRoot;
  */
 public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
-    /**
-     * Property definition for declaring the desired SVG generator.<br>
-     */
+    /** The freeHEP-based SVG generator's id, requires the fragment "...klighd.piccolo.freehep". */
+    public static final String GENERATOR_SVG_FREEHEP_EXTENDED =
+            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPExtended";
+
+    /** The Batik-based SVG generator's id, requires the fragment "...klighd.piccolo.batik". */
+    public static final String GENERATOR_SVG_BATIK =
+            "de.cau.cs.kieler.klighd.piccolo.svggen.batik";
+
+    /** Property definition for declaring the desired SVG generator. */
     public static final IProperty<String> GENERATOR = new Property<String>(
             "de.cau.cs.kieler.klighd.piccolo.svg.generator",
-            "de.cau.cs.kieler.klighd.piccolo.svggen.batik");
+            GENERATOR_SVG_FREEHEP_EXTENDED);
 
     /**
      * {@inheritDoc}

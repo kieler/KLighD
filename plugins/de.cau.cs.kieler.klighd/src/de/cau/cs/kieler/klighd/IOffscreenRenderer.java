@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -26,13 +26,25 @@ import de.cau.cs.kieler.core.properties.Property;
 /**
  * Implementations of this interface are able to render diagram formats like PNG or SVG without
  * showing them on the screen.
- * 
+ *
  * @author chsch
- * 
+ *
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
 public interface IOffscreenRenderer {
+
+    /** Export format id denoting the Bitmap (.bmp) format. */
+    String BMP = "bmb";
+
+    /** Export format id denoting the JPEG compressed raster image (.jpeg) format. */
+    String JPEG = "jpeg";
+
+    /** Export format id denoting the PNG compressed raster image (.png) format. */
+    String PNG = "png";
+
+    /** Export format id denoting the Scalable Vector Graphics (.svg) format. */
+    String SVG = "svg";
 
     /**
      * Property definition for declaring the desired rendering format.<br>
@@ -87,7 +99,7 @@ public interface IOffscreenRenderer {
      * <br>
      * If multiple formats are support by this renderer use {@link #OUTPUT_FORMAT} to configure the
      * desired format.
-     * 
+     *
      * @param viewContext
      *            the view context describing the diagram to be rendered
      * @param output

@@ -28,9 +28,8 @@ import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 
+import de.cau.cs.kieler.klighd.IOffscreenRenderer;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
-import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer;
-import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * An initial draft of an off-screen diagram rendering application generating SVG outputs.<br>
@@ -44,12 +43,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * @author uru
  */
 public class OffscreenDiagramRenderer implements IApplication {
-    
-    public final static String GENERATOR_SVG_FREEHEP =
-            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEP";
-    public final static String GENERATOR_SVG_FREEHEP_SEMANTIC =
-            "de.cau.cs.kieler.klighd.piccolo.svggen.freeHEPSemantic";
-    
+
     private final ResourceSet set = new ResourceSetImpl();
 
     /**
@@ -89,20 +83,13 @@ public class OffscreenDiagramRenderer implements IApplication {
         if (eo == null) {
             return;
         }
-        
-        // execute klighd and render using
-        final IStatus result =
-                LightDiagramServices.renderOffScreen(
-                        eo,
-                        "svg",
-                        targetFile,
-                        // select the specific generator
-                        KlighdSynthesisProperties.create().setProperty2(
-                                SVGOffscreenRenderer.GENERATOR,
-                                GENERATOR_SVG_FREEHEP_SEMANTIC));
 
-        if (result != null && result.getCode() == IStatus.OK) {
-            System.out.println("Generated file " + targetFile);            
+        // render and layout the diagram
+        final IStatus result =
+                LightDiagramServices.renderOffScreen(eo, IOffscreenRenderer.SVG, targetFile);
+
+        if (result != null && result.isOK()) {
+            System.out.println("Generated file " + targetFile);
         } else {
             System.out.println("Generation of diagram to stored in " + targetFile + " failed.");
             if (result != null && result.getException() != null) {

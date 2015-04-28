@@ -12,14 +12,14 @@
          point="de.cau.cs.kieler.klighd.extensions">
       <exporter
             class="de.cau.cs.kieler.klighd.piccolo.export.SVGExporter"
-            description="Batik"
+            description="Scalable Vector Graphics (.svg) powered by Batik"
             extension="svg"
             id="de.cau.cs.kieler.klighd.piccolo.export.batik.svg"
             subFormat="de.cau.cs.kieler.klighd.piccolo.svggen.batik">
       </exporter>
       <exporter
             class="de.cau.cs.kieler.klighd.piccolo.batik.BatikPDFGraphics"
-            description="Batik"
+            description="Portable Document Format (.pdf) powered by Batik"
             extension="pdf"
             id="de.cau.cs.kieler.klighd.piccolo.export.batik.pdf">
       </exporter>
