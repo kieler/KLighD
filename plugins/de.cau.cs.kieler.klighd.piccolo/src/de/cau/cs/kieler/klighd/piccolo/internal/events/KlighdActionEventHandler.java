@@ -41,6 +41,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
@@ -135,9 +136,19 @@ public class KlighdActionEventHandler implements PInputEventListener {
                     // Otherwise we assume that a nested KNode's representative has been picked,
                     //  which may happen if the diagram has been clipped to that particular KNode.
 
-                    // in that case ask the associated KGE rendering controller for the currently
-                    //  displayed KRendering
-                    rendering = iNode.getRenderingController().getCurrentRenderingReference();
+                    // in that case ask the associated KGE rendering controller ... 
+                    final AbstractKGERenderingController<?, ?> controller =
+                            iNode.getRenderingController();
+                    if (controller == null) {
+                        // the iNode will return 'null' in case 'iNode' has been removed from the
+                        //  diagram and the corresponding controller has been released,
+                        // a pickPack containing 'iNode' may however be hold by the canvas'
+                        //  KlighdInputManager/PInputManager
+                        return;
+                    }
+                    
+                    // ... for the currently displayed KRendering
+                    rendering = controller.getCurrentRenderingReference();
                 }
 
                 if (rendering == null) {
