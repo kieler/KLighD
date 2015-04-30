@@ -37,6 +37,7 @@ import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
+import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine.ILayoutCancelationIndicator;
 import de.cau.cs.kieler.kiml.service.KimlServicePlugin;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -545,15 +546,19 @@ public final class LightDiagramServices {
                     theViewContext.getAdditionalLayoutConfigs();
 
             final Object diagramPart = recorder != null ? recorder : theViewContext;
+            
+            final ILayoutCancelationIndicator cancelationIndicator = thePart != null
+                    ? new DispositionAwareCancelationHandle(thePart) : null;
 
             if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart, extendedOptions);
+                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart, cancelationIndicator,
+                        extendedOptions);
 
             } else {
                 final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
                 configs.addAll(additionalConfigs);
 
-                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart,
+                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart, cancelationIndicator,
                         Iterables.toArray(configs, ILayoutConfig.class));
             }
 
@@ -598,6 +603,42 @@ public final class LightDiagramServices {
         return Pair.of(thePart, theViewContext);
     }
 
+    /**
+     * An implementation of {@link ILayoutCancelationIndicator} checking the provided
+     * {@link IDiagramWorkbenchPart} for disposition. Is handed over to the
+     * {@link DiagramLayoutEngine} in order to let it cancel layout runs if the corresponding
+     * {@link IDiagramWorkbenchPart} has been closed in the meantime.
+     * 
+     * @author chsch
+     */
+    private static final class DispositionAwareCancelationHandle implements ILayoutCancelationIndicator {
+        
+        private final IDiagramWorkbenchPart workbenchPart;
+        
+        /**
+         * Constructor.
+         * 
+         * @param wb
+         *            the {@link IDiagramWorkbenchPart} to test for disposition
+         */
+        private DispositionAwareCancelationHandle(final IDiagramWorkbenchPart wb) {
+            workbenchPart = wb;
+        }
+        
+        /**
+         * {@inheritDoc}
+         */
+        public boolean isCanceled() {
+            // by convention (I would like to say 'by definition' but there's no definition)
+            //  the employed viewer is only reset to 'null' during IDiagramWorkbenchPart.dispose()
+            return workbenchPart.getViewer() == null;
+        }
+    }
+
+
+    /* ---------------------------------------- */
+    /*     diagram zooming API                  */
+    /* ---------------------------------------- */
 
     /**
      * Performs zoom on the diagram represented by the given {@link ViewContext} based on the
