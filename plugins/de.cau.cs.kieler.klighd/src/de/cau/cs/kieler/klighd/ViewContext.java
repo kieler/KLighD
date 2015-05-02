@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -39,7 +40,6 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.core.util.RunnableWithResult;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
@@ -186,26 +186,60 @@ public class ViewContext extends MapPropertyHolder {
     public ViewContext configure(final IPropertyHolder propertyHolder) {
         final KlighdDataManager data = KlighdDataManager.getInstance();
 
-        // get the transformations request
+        // check for a requested diagram synthesis
         final String synthesisId =
                 propertyHolder.getProperty(KlighdSynthesisProperties.REQUESTED_DIAGRAM_SYNTHESIS);
         diagramSynthesis = data.getDiagramSynthesisById(synthesisId);
 
         if (diagramSynthesis == null) {
-            diagramSynthesis = Iterables.getFirst(Iterables.filter(
-                            data.getAvailableSyntheses(this.businessModel.getClass()),
-                            synthesisFilter), null);
+            // if no concrete diagram synthesis is requested identify a matching one
+            //  via the reflection-based mechanism; this involves
+            // 1) get all registered diagram syntheses matching the business models type
+            // 2) take the first one whose 'supports()' methods returns 'true'
+
+            if (businessModel instanceof ISourceProxy) {
+                // in case source model is not directly provided but accessible via a proxy
+                // wrap the above described operation into a function and let it be
+                //  executed by the proxy;
+                // this approach is required in order to comply with the requirements of
+                //  transaction-based model sources like Xtext editors
+
+                final ISourceProxy proxy = (ISourceProxy) this.businessModel;
+                diagramSynthesis = proxy.execute(new Function<Object, ISynthesis>() {
+
+                    public ISynthesis apply(final Object input) {
+                        return Iterables.getFirst(Iterables.filter(
+                                data.getAvailableSyntheses(input.getClass()),
+                                createSynthesisFilter(input)), null);
+                    }
+                });
+
+            } else {
+                // in the common case just execute the query directly (yes this is duplicate code)
+                diagramSynthesis = Iterables.getFirst(Iterables.filter(
+                                data.getAvailableSyntheses(this.businessModel.getClass()),
+                                synthesisFilter), null);
+            }
         }
 
-        if (this.diagramSynthesis != null) {
-            this.synthesisOptions.addAll(this.diagramSynthesis.getDisplayedSynthesisOptions());
-            for (final SynthesisOption option: this.synthesisOptions) {
+        if (diagramSynthesis != null) {
+            // if a diagram synthesis could be identified ...
+            // ... get its offered synthesis options, ...
+            synthesisOptions.addAll(diagramSynthesis.getDisplayedSynthesisOptions());
+
+            // ... initialize their values according to the given 'synthesisOptionConfig', ...
+            //  (those are configured if this ViewContext was created based on another one)
+            for (final SynthesisOption option: synthesisOptions) {
                 if (!this.synthesisOptionConfig.containsKey(option)) {
                     this.configureOption(option, option.getInitialValue());
                 }
             }
+
             final Map<SynthesisOption, Object> config =
                     propertyHolder.getProperty(KlighdSynthesisProperties.SYNTHESIS_OPTION_CONFIG);
+
+            // ... and evaluate synthesis option initialization settings provided with the
+            //  diagram request, e.g. via "DiagramViewManager.createView(...)";
             if (config != null) {
                 for (final Map.Entry<SynthesisOption, Object> entry : config.entrySet()) {
                     this.configureOption(entry.getKey(), entry.getValue());
@@ -239,18 +273,26 @@ public class ViewContext extends MapPropertyHolder {
         return this;
     }
 
-    private final Predicate<ISynthesis> synthesisFilter = new Predicate<ISynthesis>() {
-        public boolean apply(final ISynthesis synthesis) {
-            try {
-                return synthesis.supports(ViewContext.this.businessModel, ViewContext.this);
-            } catch (final WrappedException e) {
-                StatusManager.getManager().handle(
-                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(),
-                                e.getCause()), StatusManager.LOG);
-                return false;
+    private final Predicate<ISynthesis> synthesisFilter = createSynthesisFilter(null);
+
+    private Predicate<ISynthesis> createSynthesisFilter(final Object input) {
+        return new Predicate<ISynthesis>() {
+
+            public boolean apply(final ISynthesis synthesis) {
+                final Object model = input != null ? input : ViewContext.this.businessModel;
+
+                try {
+                    return synthesis.supports(model, ViewContext.this);
+
+                } catch (final WrappedException e) {
+                    final Status status = new Status(
+                            IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e.getMessage(), e.getCause());
+                    StatusManager.getManager().handle(status, StatusManager.LOG);
+                    return false;
+                }
             }
-        }
-    };
+        };
+    }
 
 
     /**
@@ -288,7 +330,7 @@ public class ViewContext extends MapPropertyHolder {
      * the view model by applying the configured {@link IUpdateStrategy}. In case the former
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
-     * 
+     *
      * @param sourceModel
      *            the initial, updated, or replaced input model, may be <code>null</code>
      * @return <code>true</code> if view update succeeded, <code>false</code> otherwise
@@ -358,11 +400,11 @@ public class ViewContext extends MapPropertyHolder {
     public boolean update(final Object model, final IUpdateStrategy theUpdateStrategy,
             final IPropertyHolder properties) {
 
-        if (model != null) {
+        if (model != null && model != this.businessModel) {
             this.businessModel = model;
 
-            if (diagramSynthesis == null
-                    || !diagramSynthesis.getInputDataType().isAssignableFrom(model.getClass())) {
+            if (this.diagramSynthesis == null
+                    || !synthesisMatches(this.diagramSynthesis, this.businessModel)) {
                 this.configure(properties);
             }
         }
@@ -370,6 +412,7 @@ public class ViewContext extends MapPropertyHolder {
         if (properties != null) {
             final Map<SynthesisOption, Object> config =
                     properties.getProperty(KlighdSynthesisProperties.SYNTHESIS_OPTION_CONFIG);
+
             if (config != null) {
                 for (final Map.Entry<SynthesisOption, Object> entry : config.entrySet()) {
                     this.configureOption(entry.getKey(), entry.getValue());
@@ -383,37 +426,49 @@ public class ViewContext extends MapPropertyHolder {
         final IUpdateStrategy chosenUpdateStrategy =
                 theUpdateStrategy != null ? theUpdateStrategy : this.updateStrategy;
 
-        if (chosenUpdateStrategy.requiresDiagramSynthesisReRun(this)) {
-            if (this.diagramSynthesis != null
-                    && diagramSynthesis.getInputDataType().isAssignableFrom(sourceModel.getClass())) {
+        if (!chosenUpdateStrategy.requiresDiagramSynthesisReRun(this)) {
+            newViewModel = this.viewModel;
+            
+        } else if (this.diagramSynthesis != null) {
+            final ISynthesis synthesis = this.diagramSynthesis;
 
-                try {
-                    newViewModel = this.diagramSynthesis.transform(sourceModel, this);
-                } catch (final Exception e) {
-                    final String msg = "";
-                    StatusManager.getManager().handle(
-                            new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
-                    return false;
+            try {
+                if (sourceModel instanceof ISourceProxy) {
+                    newViewModel = ((ISourceProxy) sourceModel).execute(new Function<Object, KNode>() {
+
+                        public KNode apply(final Object input) {
+                            return synthesis.transform(input, ViewContext.this);
+                        }
+                    });
+
+                } else {
+                    newViewModel = synthesis.transform(sourceModel, ViewContext.this);
                 }
 
-            } else if (sourceModel instanceof KNode) {
-                if (this.duplicator == null) {
-                    this.duplicator = new DuplicatingDiagramSynthesis();
-                }
+            } catch (final Exception e) {
+                final String msg = "KLighD: Execution of diagram synthesis "
+                        + synthesis.getClass().getCanonicalName().toString()
+                        + " failed for input model " + sourceModel.toString() + ".";
 
-                newViewModel = duplicator.transform(sourceModel, this);
-
-            } else {
-                final String msg =
-                        "KLighD: Could not create a diagram of provided input model "
-                + sourceModel + ".";
                 StatusManager.getManager().handle(
-                        new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
+                        new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg, e));
                 return false;
             }
 
+        } else if (sourceModel instanceof KNode) {
+            if (this.duplicator == null) {
+                this.duplicator = new DuplicatingDiagramSynthesis();
+            }
+
+            newViewModel = duplicator.transform(sourceModel, this);
+
         } else {
-            newViewModel = this.viewModel;
+            final String msg = "KLighD: Could not create a diagram of provided input model "
+                    + sourceModel + ".";
+
+            StatusManager.getManager().handle(
+                    new Status(IStatus.WARNING, KlighdPlugin.PLUGIN_ID, msg));
+            return false;
         }
 
         chosenUpdateStrategy.update(this.viewModel, newViewModel, this);
@@ -422,9 +477,32 @@ public class ViewContext extends MapPropertyHolder {
         if (clipNode != null && this.getViewer() != null) {
             this.getViewer().clip(clipNode);
         }
-        
+
         return true;
     }
+
+    /**
+     * @param synthesis
+     *            the {@link ISynthesis} to check, must not be <code>null</code>
+     * @param model
+     *            the source model to check <code>synthesis</code> for match
+     * @return <code>true</code> if <code>synthesis</code> matches <code>model</code>
+     */
+    private boolean synthesisMatches(final ISynthesis synthesis, final Object model) {
+        final Class<?> inputType = synthesis.getInputDataType();
+
+        if (model instanceof ISourceProxy) {
+            return ((ISourceProxy) model).execute(new Function<Object, Boolean>() {
+
+                public Boolean apply(final Object theModel) {
+                    return inputType.isAssignableFrom(theModel.getClass());
+                }
+            });
+        } else {
+            return inputType.isAssignableFrom(model.getClass());
+        }
+    }
+
 
     /**
      * Returns the diagram workbench part.
@@ -465,16 +543,12 @@ public class ViewContext extends MapPropertyHolder {
     }
 
     /**
-     * Returns the current model to be represented.
+     * Returns the current model to be represented, can be an {@link ISourceProxy},
+     * see documentation of that interface for details.
      *
      * @return the current model to be represented.
      */
     public Object getInputModel() {
-        final RunnableWithResult<?> modelAccess = this.getProperty(KlighdProperties.MODEL_ACCESS);
-        if (modelAccess != null) {
-            modelAccess.run();
-            return modelAccess.getResult();
-        }
         return this.businessModel;
     }
 

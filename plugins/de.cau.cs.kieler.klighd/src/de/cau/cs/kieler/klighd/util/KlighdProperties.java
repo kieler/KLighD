@@ -21,7 +21,6 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.util.RunnableWithResult;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -260,14 +259,6 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> VISIBILITY_PROPAGATE_TO_CHILDREN = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.visibilityPropagateToChildren", false);
-
-    /**
-     * A pre-defined property to be used for handing over an {@link RunnableWithResult} to the
-     * KLighD view allowing to update the represented model, e.g. from UI contributions of the
-     * KLighD view.
-     */
-    public static final IProperty<RunnableWithResult<?>> MODEL_ACCESS =
-            new Property<RunnableWithResult<?>>("klighd.modelAccess");
 
     /**
      * Property that is used to keep original port side data during the whole life cycle of a port,
