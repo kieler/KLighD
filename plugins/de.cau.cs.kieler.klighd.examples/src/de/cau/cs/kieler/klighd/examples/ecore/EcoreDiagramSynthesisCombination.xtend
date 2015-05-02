@@ -6,16 +6,15 @@ import de.cau.cs.kieler.core.kivi.triggers.SelectionTrigger
 import de.cau.cs.kieler.klighd.KlighdTreeSelection
 import de.cau.cs.kieler.klighd.kivi.effects.KlighdUpdateDiagramEffect
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy
-import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
+import java.lang.reflect.Method
 import java.util.List
 import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EModelElement
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.ui.part.FileEditorInput
-import java.lang.reflect.Method
 import org.eclipse.ui.IWorkbenchPart
+import org.eclipse.ui.part.FileEditorInput
 
 /**
  * Combination that triggers the synthesis of Ecore diagrams.
@@ -126,7 +125,6 @@ class EcoreDiagramSynthesisCombination extends AbstractCombination {
 		       	// FIXME reactivate incremental update
                 // it.setProperty(LightDiagramServices::REQUESTED_UPDATE_STRATEGY, UpdateStrategy::ID);
                 it.setProperty(KlighdSynthesisProperties::REQUESTED_UPDATE_STRATEGY, SimpleUpdateStrategy::ID);
-                it.setProperty(KlighdProperties::MODEL_ACCESS, new EcoreModelAccess(this.selectedModelElements));
             ]);
         }
 	}
