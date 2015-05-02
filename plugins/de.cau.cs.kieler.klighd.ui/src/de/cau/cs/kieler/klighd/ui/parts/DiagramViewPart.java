@@ -297,7 +297,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
             @Override
             public void run() {
-                DiagramViewManager.updateView(DiagramViewPart.this.getPartId());
+                DiagramViewManager.updateView(DiagramViewPart.this.getViewContext());
             }
         });
 

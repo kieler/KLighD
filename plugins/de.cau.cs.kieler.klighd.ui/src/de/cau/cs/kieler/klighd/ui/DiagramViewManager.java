@@ -304,19 +304,40 @@ public final class DiagramViewManager implements IPartListener {
     }
 
     /**
-     * Creates a {@link DiagramViewPart} showing the desired diagram of <code>model</code>.
-     * That diagram view will have with the given name and model under the specified identifier. <br>
-     *
+     * Creates a {@link DiagramViewPart} showing the desired diagram of <code>model</code>. The
+     * diagram view will exhibit the given name and can be addressed via the specified id.
+     * 
      * @param id
-     *            the diagram identifier (can be null for the default view)
+     *            the diagram identifier (can be <code>null</code> for the default view)
      * @param name
-     *            the name (can be null if the view should be created with the default name)
+     *            the name, may be <code>null</code> if the view should be created with the default
+     *            name
      * @param model
-     *            the model (can be null if the view should be created without an initial model)
+     *            the model, may be <code>null</code> if the view should be created without an
+     *            initial model
+     * @return the view with the identifier (newly created or reused if it exists already), or
+     *         <code>null</code> on failure
+     */
+    public static DiagramViewPart createView(final String id, final String name, final Object model) {
+        return createView(id, name, model, null);
+    }
+
+    /**
+     * Creates a {@link DiagramViewPart} showing the desired diagram of <code>model</code>. The
+     * diagram view will exhibit the given name and can be addressed via the specified id.
+     * 
+     * @param id
+     *            the diagram identifier (can be <code>null</code> for the default view)
+     * @param name
+     *            the name, may be <code>null</code> if the view should be created with the default
+     *            name
+     * @param model
+     *            the model, may be <code>null</code> if the view should be created without an
+     *            initial model
      * @param properties
      *            the property holder containing properties configurations or <code>null</code>
-     * @return the view with the identifier (newly created or reused if it exists already) or null
-     *         on failure
+     * @return the view with the identifier (newly created or reused if it exists already), or
+     *         <code>null</code> on failure
      */
     public static DiagramViewPart createView(final String id, final String name, final Object model,
             final IPropertyHolder properties) {
@@ -371,7 +392,9 @@ public final class DiagramViewManager implements IPartListener {
             getInstance().unregisterView(diagramView);
         }
 
-        return initializeView(diagramView, model, name, properties);
+        diagramView.initialize(model, name, properties);
+
+        return diagramView;
     }
 
     /**
