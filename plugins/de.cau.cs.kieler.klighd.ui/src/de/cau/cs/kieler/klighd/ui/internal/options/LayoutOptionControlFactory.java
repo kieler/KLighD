@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -47,6 +48,7 @@ import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
 import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
 import de.cau.cs.kieler.kiml.service.LayoutOptionManager;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.ISourceProxy;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KGraphPropertyLayoutConfig;
@@ -83,6 +85,9 @@ public class LayoutOptionControlFactory {
     private static final int ENUM_GRID_COLS = 1;
     /** widget data identifier for the attached selection listener. */
     private static final String DATA_SELECTION_LISTENER = "klighd.selectionListener";
+
+    /** a {@link KGraphPropertyLayoutConfig} instance required for computing the defaults. */
+    private static final ILayoutConfig KGRAPH_CONFIG = new KGraphPropertyLayoutConfig();
 
     /**
      * Create an option control factory.
@@ -124,19 +129,37 @@ public class LayoutOptionControlFactory {
 
         final Object input = this.viewContext.getInputModel();
         final KNode viewModel = this.viewContext.getViewModel();
-        final EObject inputModel;
 
-        if (input instanceof EObject) {
-            inputModel = (EObject) viewContext.getInputModel();
-        } else if (input instanceof Iterable) {
-            inputModel = Iterables.getFirst(Iterables.filter((Iterable<?>) input, EObject.class), null);
-        } else {
-            inputModel = null;
-        }
+        final LayoutOptionManager optionManager = DiagramLayoutEngine.INSTANCE.getOptionManager();
 
         // create the layout configurator
-        final LayoutOptionManager optionManager = DiagramLayoutEngine.INSTANCE.getOptionManager();
-        defaultLayoutConfig = optionManager.createConfig(inputModel, new KGraphPropertyLayoutConfig());
+        if (input instanceof ISourceProxy) {
+            defaultLayoutConfig = ((ISourceProxy) input).execute(new Function<Object, ILayoutConfig>() {
+
+                public ILayoutConfig apply(final Object inputModel) {
+                    // question: shall we check for Iterables here, as well?
+                    // skip this for now as our diagram syntheses usually take a single source element
+                    //  rather than an iterable, although this is possible (see Ecore example)
+                    return optionManager.createConfig(inputModel, KGRAPH_CONFIG);
+                }
+            });
+
+        } else {
+            final EObject inputModel;
+
+            // question: why do we only accept EObjects here?
+
+            if (input instanceof EObject) {
+                inputModel = (EObject) input;
+            } else if (input instanceof Iterable) {
+                inputModel = Iterables.getFirst(
+                        Iterables.filter((Iterable<?>) input, EObject.class), null);
+            } else {
+                inputModel = null;
+            }
+
+            defaultLayoutConfig = optionManager.createConfig(inputModel, KGRAPH_CONFIG);
+        }
 
         // create and enrich the layout context
         defaultLayoutContext = new LayoutContext();
