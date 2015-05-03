@@ -178,7 +178,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
         // do an initial update of the view context
         viewContext.getLayoutRecorder().startRecording();
-        viewContext.update(model);
+        viewContext.update();
 
         // fill the options pane according to the the incorporated transformations
         this.updateOptions(false);

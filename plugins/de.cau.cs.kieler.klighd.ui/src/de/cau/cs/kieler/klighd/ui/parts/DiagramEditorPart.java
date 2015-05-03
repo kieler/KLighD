@@ -262,7 +262,7 @@ public class DiagramEditorPart extends EditorPart implements
             viewer.setModel(viewContext);
 
             // do an initial update of the view context
-            viewContext.update(model);
+            viewContext.update();
 
             if (requiresInitialLayout(viewContext)) {
                 // In order to avoid flickering we set the viewer's control

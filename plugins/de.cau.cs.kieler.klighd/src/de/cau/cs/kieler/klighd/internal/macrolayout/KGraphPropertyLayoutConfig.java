@@ -406,7 +406,7 @@ public class KGraphPropertyLayoutConfig implements IMutableLayoutConfig {
             }
 
             // update the view context in order to re-apply the view synthesis
-            viewContext.update(viewContext.getInputModel());
+            viewContext.update();
 
             Display.getDefault().asyncExec(new Runnable() {
                 public void run() {
