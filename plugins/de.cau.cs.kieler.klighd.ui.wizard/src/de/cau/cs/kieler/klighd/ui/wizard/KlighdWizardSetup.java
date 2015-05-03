@@ -55,6 +55,7 @@ public final class KlighdWizardSetup {
             "de.cau.cs.kieler.kiml.graphviz.layouter;resolution:=optional",
             "org.eclipse.ui", // required for the menu contribution extension points
             "org.eclipse.ui.ide.application", "org.eclipse.ui.navigator.resources",
-            "org.eclipse.ui.views.log", "org.eclipse.core.resources", "org.eclipse.emf");
+            "org.eclipse.ui.views.log", "org.eclipse.core.resources", "org.eclipse.emf",
+            "org.eclipse.xtext.ui;resolution:=optional"); // required for accessing XtextEditors' models
 
 }
