@@ -326,8 +326,20 @@ public class ViewContext extends MapPropertyHolder {
 
 
     /**
+     * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context involving
+     * the formerly set input/source model and updates the view model by applying the configured
+     * {@link IUpdateStrategy}.
+     * 
+     * @return <code>true</code> if view update succeeded, <code>false</code> otherwise
+     */
+    public boolean update() {
+        return this.update(null);
+    }
+
+
+    /**
      * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
-     * the view model by applying the configured {@link IUpdateStrategy}. In case the former
+     * the view model by applying the configured {@link IUpdateStrategy}. In case the formerly set
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
      *
@@ -341,7 +353,7 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
-     * the view model by applying the configured {@link IUpdateStrategy}. In case the former
+     * the view model by applying the configured {@link IUpdateStrategy}. In case the formerly set
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
      *
@@ -368,7 +380,7 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
-     * the view model by applying the configured {@link IUpdateStrategy}. In case the former
+     * the view model by applying the configured {@link IUpdateStrategy}. In case the formerly set
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
      *
@@ -384,7 +396,7 @@ public class ViewContext extends MapPropertyHolder {
 
     /**
      * Executes the {@link #diagramSynthesis} attached to <code>this</code> view context and updates
-     * the view model by applying the configured {@link IUpdateStrategy}. In case the former
+     * the view model by applying the configured {@link IUpdateStrategy}. In case the formerly set
      * input/source model has been replaced by a new one of compatible type this new one must be
      * provided, otherwise <code>model</code> may by <code>null</code>.
      *
