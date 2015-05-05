@@ -61,7 +61,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  *
  * @author chsch
  */
-public class HighlightedEdgeToForegroundTestDeactivated {
+public class HighlightedEdgeToForegroundTest {
 
     private static HighlightedEdgeToForegroundTestModelGen testModelGen;
     private static ViewContext viewContext;
