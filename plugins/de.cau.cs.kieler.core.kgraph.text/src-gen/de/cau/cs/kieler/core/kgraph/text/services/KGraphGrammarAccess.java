@@ -3068,12 +3068,24 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEqualsSignKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cLineStyleAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cLineStyleLineStyleEnumRuleCall_4_0 = (RuleCall)cLineStyleAssignment_4.eContents().get(0);
+		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
+		private final Keyword cDashOffsetKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_5_1 = (Keyword)cGroup_5.eContents().get(1);
+		private final Assignment cDashOffsetAssignment_5_2 = (Assignment)cGroup_5.eContents().get(2);
+		private final RuleCall cDashOffsetFloatParserRuleCall_5_2_0 = (RuleCall)cDashOffsetAssignment_5_2.eContents().get(0);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cDashPatternKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_6_1 = (Keyword)cGroup_6.eContents().get(1);
+		private final Assignment cDashPatternAssignment_6_2 = (Assignment)cGroup_6.eContents().get(2);
+		private final RuleCall cDashPatternFloatParserRuleCall_6_2_0 = (RuleCall)cDashPatternAssignment_6_2.eContents().get(0);
 		
 		//KLineStyle:
-		//	propagateToChildren?="propagate"? selection?="selection"? "lineStyle" "=" lineStyle=LineStyle;
+		//	propagateToChildren?="propagate"? selection?="selection"? "lineStyle" "=" lineStyle=LineStyle ("dashOffset" "="
+		//	dashOffset=Float)? ("dashPattern" "=" dashPattern+=Float*)?;
 		public ParserRule getRule() { return rule; }
 
-		//propagateToChildren?="propagate"? selection?="selection"? "lineStyle" "=" lineStyle=LineStyle
+		//propagateToChildren?="propagate"? selection?="selection"? "lineStyle" "=" lineStyle=LineStyle ("dashOffset" "="
+		//dashOffset=Float)? ("dashPattern" "=" dashPattern+=Float*)?
 		public Group getGroup() { return cGroup; }
 
 		//propagateToChildren?="propagate"?
@@ -3099,6 +3111,36 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 		//LineStyle
 		public RuleCall getLineStyleLineStyleEnumRuleCall_4_0() { return cLineStyleLineStyleEnumRuleCall_4_0; }
+
+		//("dashOffset" "=" dashOffset=Float)?
+		public Group getGroup_5() { return cGroup_5; }
+
+		//"dashOffset"
+		public Keyword getDashOffsetKeyword_5_0() { return cDashOffsetKeyword_5_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_5_1() { return cEqualsSignKeyword_5_1; }
+
+		//dashOffset=Float
+		public Assignment getDashOffsetAssignment_5_2() { return cDashOffsetAssignment_5_2; }
+
+		//Float
+		public RuleCall getDashOffsetFloatParserRuleCall_5_2_0() { return cDashOffsetFloatParserRuleCall_5_2_0; }
+
+		//("dashPattern" "=" dashPattern+=Float*)?
+		public Group getGroup_6() { return cGroup_6; }
+
+		//"dashPattern"
+		public Keyword getDashPatternKeyword_6_0() { return cDashPatternKeyword_6_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_6_1() { return cEqualsSignKeyword_6_1; }
+
+		//dashPattern+=Float*
+		public Assignment getDashPatternAssignment_6_2() { return cDashPatternAssignment_6_2; }
+
+		//Float
+		public RuleCall getDashPatternFloatParserRuleCall_6_2_0() { return cDashPatternFloatParserRuleCall_6_2_0; }
 	}
 
 	public class KLineWidthElements extends AbstractParserRuleElementFinder {
@@ -4801,12 +4843,14 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cDASHDOTDashDotKeyword_3_0 = (Keyword)cDASHDOTEnumLiteralDeclaration_3.eContents().get(0);
 		private final EnumLiteralDeclaration cDASHDOTDOTEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
 		private final Keyword cDASHDOTDOTDashDotDotKeyword_4_0 = (Keyword)cDASHDOTDOTEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cCUSTOMEnumLiteralDeclaration_5 = (EnumLiteralDeclaration)cAlternatives.eContents().get(5);
+		private final Keyword cCUSTOMCustomKeyword_5_0 = (Keyword)cCUSTOMEnumLiteralDeclaration_5.eContents().get(0);
 		
 		//enum LineStyle:
-		//	SOLID="solid" | DASH="dash" | DOT="dot" | DASHDOT="dash-dot" | DASHDOTDOT="dash-dot-dot";
+		//	SOLID="solid" | DASH="dash" | DOT="dot" | DASHDOT="dash-dot" | DASHDOTDOT="dash-dot-dot" | CUSTOM="custom";
 		public EnumRule getRule() { return rule; }
 
-		//SOLID="solid" | DASH="dash" | DOT="dot" | DASHDOT="dash-dot" | DASHDOTDOT="dash-dot-dot"
+		//SOLID="solid" | DASH="dash" | DOT="dot" | DASHDOT="dash-dot" | DASHDOTDOT="dash-dot-dot" | CUSTOM="custom"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//SOLID="solid"
@@ -4838,6 +4882,12 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 		//"dash-dot-dot"
 		public Keyword getDASHDOTDOTDashDotDotKeyword_4_0() { return cDASHDOTDOTDashDotDotKeyword_4_0; }
+
+		//CUSTOM="custom"
+		public EnumLiteralDeclaration getCUSTOMEnumLiteralDeclaration_5() { return cCUSTOMEnumLiteralDeclaration_5; }
+
+		//"custom"
+		public Keyword getCUSTOMCustomKeyword_5_0() { return cCUSTOMCustomKeyword_5_0; }
 	}
 
 	public class LineCapElements extends AbstractEnumRuleElementFinder {
@@ -4919,12 +4969,24 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSINGLECLICKSingleClickKeyword_0_0 = (Keyword)cSINGLECLICKEnumLiteralDeclaration_0.eContents().get(0);
 		private final EnumLiteralDeclaration cDOUBLECLICKEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
 		private final Keyword cDOUBLECLICKDoubleClickKeyword_1_0 = (Keyword)cDOUBLECLICKEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cSINGLE_OR_MULTICLICKEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cSINGLE_OR_MULTICLICKSingleOrMultiClickKeyword_2_0 = (Keyword)cSINGLE_OR_MULTICLICKEnumLiteralDeclaration_2.eContents().get(0);
+		private final EnumLiteralDeclaration cMIDDLE_SINGLECLICKEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
+		private final Keyword cMIDDLE_SINGLECLICKMiddleSingleClickKeyword_3_0 = (Keyword)cMIDDLE_SINGLECLICKEnumLiteralDeclaration_3.eContents().get(0);
+		private final EnumLiteralDeclaration cMIDDLE_DOUBLECLICKEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
+		private final Keyword cMIDDLE_DOUBLECLICKMiddleDoubleClickKeyword_4_0 = (Keyword)cMIDDLE_DOUBLECLICKEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cMIDDLE_SINGLE_OR_MULTICLICKEnumLiteralDeclaration_5 = (EnumLiteralDeclaration)cAlternatives.eContents().get(5);
+		private final Keyword cMIDDLE_SINGLE_OR_MULTICLICKMiddleSingleOrMultiClickKeyword_5_0 = (Keyword)cMIDDLE_SINGLE_OR_MULTICLICKEnumLiteralDeclaration_5.eContents().get(0);
 		
 		//enum Trigger:
-		//	SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick";
+		//	SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick" | SINGLE_OR_MULTICLICK="singleOrMultiClick" |
+		//	MIDDLE_SINGLECLICK="middleSingleClick" | MIDDLE_DOUBLECLICK="middleDoubleClick" |
+		//	MIDDLE_SINGLE_OR_MULTICLICK="middleSingleOrMultiClick";
 		public EnumRule getRule() { return rule; }
 
-		//SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick"
+		//SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick" | SINGLE_OR_MULTICLICK="singleOrMultiClick" |
+		//MIDDLE_SINGLECLICK="middleSingleClick" | MIDDLE_DOUBLECLICK="middleDoubleClick" |
+		//MIDDLE_SINGLE_OR_MULTICLICK="middleSingleOrMultiClick"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//SINGLECLICK="singleClick"
@@ -4938,111 +5000,232 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 
 		//"doubleClick"
 		public Keyword getDOUBLECLICKDoubleClickKeyword_1_0() { return cDOUBLECLICKDoubleClickKeyword_1_0; }
+
+		//SINGLE_OR_MULTICLICK="singleOrMultiClick"
+		public EnumLiteralDeclaration getSINGLE_OR_MULTICLICKEnumLiteralDeclaration_2() { return cSINGLE_OR_MULTICLICKEnumLiteralDeclaration_2; }
+
+		//"singleOrMultiClick"
+		public Keyword getSINGLE_OR_MULTICLICKSingleOrMultiClickKeyword_2_0() { return cSINGLE_OR_MULTICLICKSingleOrMultiClickKeyword_2_0; }
+
+		//MIDDLE_SINGLECLICK="middleSingleClick"
+		public EnumLiteralDeclaration getMIDDLE_SINGLECLICKEnumLiteralDeclaration_3() { return cMIDDLE_SINGLECLICKEnumLiteralDeclaration_3; }
+
+		//"middleSingleClick"
+		public Keyword getMIDDLE_SINGLECLICKMiddleSingleClickKeyword_3_0() { return cMIDDLE_SINGLECLICKMiddleSingleClickKeyword_3_0; }
+
+		//MIDDLE_DOUBLECLICK="middleDoubleClick"
+		public EnumLiteralDeclaration getMIDDLE_DOUBLECLICKEnumLiteralDeclaration_4() { return cMIDDLE_DOUBLECLICKEnumLiteralDeclaration_4; }
+
+		//"middleDoubleClick"
+		public Keyword getMIDDLE_DOUBLECLICKMiddleDoubleClickKeyword_4_0() { return cMIDDLE_DOUBLECLICKMiddleDoubleClickKeyword_4_0; }
+
+		//MIDDLE_SINGLE_OR_MULTICLICK="middleSingleOrMultiClick"
+		public EnumLiteralDeclaration getMIDDLE_SINGLE_OR_MULTICLICKEnumLiteralDeclaration_5() { return cMIDDLE_SINGLE_OR_MULTICLICKEnumLiteralDeclaration_5; }
+
+		//"middleSingleOrMultiClick"
+		public Keyword getMIDDLE_SINGLE_OR_MULTICLICKMiddleSingleOrMultiClickKeyword_5_0() { return cMIDDLE_SINGLE_OR_MULTICLICKMiddleSingleOrMultiClickKeyword_5_0; }
 	}
 	
-	private ParentKNodeElements pParentKNode;
-	private KNodeElements pKNode;
-	private KEdgeElements pKEdge;
-	private KLabelElements pKLabel;
-	private KPortElements pKPort;
-	private PropertyElements pProperty;
-	private KIdentifierElements pKIdentifier;
-	private KNodeLayoutElements pKNodeLayout;
-	private EmptyKNodeLayoutElements pEmptyKNodeLayout;
-	private KInsetsElements pKInsets;
-	private EmptyKInsetsElements pEmptyKInsets;
-	private KShapeLayoutElements pKShapeLayout;
-	private EmptyKShapeLayoutElements pEmptyKShapeLayout;
-	private KEdgeLayoutElements pKEdgeLayout;
-	private EmptyKEdgeLayoutElements pEmptyKEdgeLayout;
-	private KPointElements pKPoint;
-	private EmptyKPointElements pEmptyKPoint;
-	private KRenderingElements pKRendering;
-	private KSimpleRenderingElements pKSimpleRendering;
-	private KContainerRenderingElements pKContainerRendering;
-	private KRenderingRefElements pKRenderingRef;
-	private KChildAreaElements pKChildArea;
-	private KTextElements pKText;
-	private KRectangleElements pKRectangle;
-	private KRoundedRectangleElements pKRoundedRectangle;
-	private KEllipseElements pKEllipse;
-	private KArcElements pKArc;
-	private KCustomRenderingElements pKCustomRendering;
-	private KImageElements pKImage;
-	private KPolylineElements pKPolyline;
-	private KSimplePolylineElements pKSimplePolyline;
-	private KPolygonElements pKPolygon;
-	private KRoundedBendsPolylineElements pKRoundedBendsPolyline;
-	private KSplineElements pKSpline;
-	private KStyleElements pKStyle;
-	private KColoringElements pKColoring;
-	private KForegroundElements pKForeground;
-	private KBackgroundElements pKBackground;
-	private KFontBoldElements pKFontBold;
-	private KFontItalicElements pKFontItalic;
-	private KFontNameElements pKFontName;
-	private KFontSizeElements pKFontSize;
-	private KTextUnderlineElements pKTextUnderline;
-	private KHorizontalAlignmentElements pKHorizontalAlignment;
-	private KVerticalAlignmentElements pKVerticalAlignment;
-	private KInvisibilityElements pKInvisibility;
-	private KLineCapElements pKLineCap;
-	private KLineJoinElements pKLineJoin;
-	private KLineStyleElements pKLineStyle;
-	private KLineWidthElements pKLineWidth;
-	private KRotationElements pKRotation;
-	private KShadowElements pKShadow;
-	private KStyleRefElements pKStyleRef;
-	private KRenderingLibraryElements pKRenderingLibrary;
-	private KStyleHolderElements pKStyleHolder;
-	private KPlacementElements pKPlacement;
-	private KGridPlacementElements pKGridPlacement;
-	private KPlacementDataElements pKPlacementData;
-	private KAreaPlacementDataElements pKAreaPlacementData;
-	private KPointPlacementDataElements pKPointPlacementData;
-	private KGridPlacementDataElements pKGridPlacementData;
-	private KDecoratorPlacementDataElements pKDecoratorPlacementData;
-	private KActionElements pKAction;
-	private KPositionElements pKPosition;
-	private KXPositionElements pKXPosition;
-	private KLeftPositionElements pKLeftPosition;
-	private KRightPositionElements pKRightPosition;
-	private KYPositionElements pKYPosition;
-	private KTopPositionElements pKTopPosition;
-	private KBottomPositionElements pKBottomPosition;
-	private KColorElements pKColor;
-	private QualifiedIDElements pQualifiedID;
-	private PropertyValueElements pPropertyValue;
-	private FloatElements pFloat;
-	private ArcElements unknownRuleArc;
-	private HorizontalAlignmentElements unknownRuleHorizontalAlignment;
-	private VerticalAlignmentElements unknownRuleVerticalAlignment;
-	private UnderlineElements unknownRuleUnderline;
-	private LineStyleElements unknownRuleLineStyle;
-	private LineCapElements unknownRuleLineCap;
-	private LineJoinElements unknownRuleLineJoin;
-	private TriggerElements unknownRuleTrigger;
-	private TerminalRule tBOOLEAN;
-	private TerminalRule tRED;
-	private TerminalRule tGREEN;
-	private TerminalRule tBLUE;
-	private TerminalRule tALPHA;
-	private TerminalRule tFSIZE;
-	private TerminalRule tDEGREES;
-	private TerminalRule tPERCENT;
-	private TerminalRule tTFLOAT;
-	private TerminalRule tNATURAL;
-	private TerminalRule tID;
-	private TerminalRule tSTRING;
-	private TerminalRule tML_COMMENT;
-	private TerminalRule tSL_COMMENT;
-	private TerminalRule tWS;
+	private final ParentKNodeElements pParentKNode;
+	private final KNodeElements pKNode;
+	private final KEdgeElements pKEdge;
+	private final KLabelElements pKLabel;
+	private final KPortElements pKPort;
+	private final PropertyElements pProperty;
+	private final KIdentifierElements pKIdentifier;
+	private final KNodeLayoutElements pKNodeLayout;
+	private final EmptyKNodeLayoutElements pEmptyKNodeLayout;
+	private final KInsetsElements pKInsets;
+	private final EmptyKInsetsElements pEmptyKInsets;
+	private final KShapeLayoutElements pKShapeLayout;
+	private final EmptyKShapeLayoutElements pEmptyKShapeLayout;
+	private final KEdgeLayoutElements pKEdgeLayout;
+	private final EmptyKEdgeLayoutElements pEmptyKEdgeLayout;
+	private final KPointElements pKPoint;
+	private final EmptyKPointElements pEmptyKPoint;
+	private final KRenderingElements pKRendering;
+	private final KSimpleRenderingElements pKSimpleRendering;
+	private final KContainerRenderingElements pKContainerRendering;
+	private final KRenderingRefElements pKRenderingRef;
+	private final KChildAreaElements pKChildArea;
+	private final KTextElements pKText;
+	private final KRectangleElements pKRectangle;
+	private final KRoundedRectangleElements pKRoundedRectangle;
+	private final KEllipseElements pKEllipse;
+	private final KArcElements pKArc;
+	private final KCustomRenderingElements pKCustomRendering;
+	private final KImageElements pKImage;
+	private final KPolylineElements pKPolyline;
+	private final KSimplePolylineElements pKSimplePolyline;
+	private final KPolygonElements pKPolygon;
+	private final KRoundedBendsPolylineElements pKRoundedBendsPolyline;
+	private final KSplineElements pKSpline;
+	private final KStyleElements pKStyle;
+	private final KColoringElements pKColoring;
+	private final KForegroundElements pKForeground;
+	private final KBackgroundElements pKBackground;
+	private final KFontBoldElements pKFontBold;
+	private final KFontItalicElements pKFontItalic;
+	private final KFontNameElements pKFontName;
+	private final KFontSizeElements pKFontSize;
+	private final KTextUnderlineElements pKTextUnderline;
+	private final KHorizontalAlignmentElements pKHorizontalAlignment;
+	private final KVerticalAlignmentElements pKVerticalAlignment;
+	private final KInvisibilityElements pKInvisibility;
+	private final KLineCapElements pKLineCap;
+	private final KLineJoinElements pKLineJoin;
+	private final KLineStyleElements pKLineStyle;
+	private final KLineWidthElements pKLineWidth;
+	private final KRotationElements pKRotation;
+	private final KShadowElements pKShadow;
+	private final KStyleRefElements pKStyleRef;
+	private final KRenderingLibraryElements pKRenderingLibrary;
+	private final KStyleHolderElements pKStyleHolder;
+	private final KPlacementElements pKPlacement;
+	private final KGridPlacementElements pKGridPlacement;
+	private final KPlacementDataElements pKPlacementData;
+	private final KAreaPlacementDataElements pKAreaPlacementData;
+	private final KPointPlacementDataElements pKPointPlacementData;
+	private final KGridPlacementDataElements pKGridPlacementData;
+	private final KDecoratorPlacementDataElements pKDecoratorPlacementData;
+	private final KActionElements pKAction;
+	private final KPositionElements pKPosition;
+	private final KXPositionElements pKXPosition;
+	private final KLeftPositionElements pKLeftPosition;
+	private final KRightPositionElements pKRightPosition;
+	private final KYPositionElements pKYPosition;
+	private final KTopPositionElements pKTopPosition;
+	private final KBottomPositionElements pKBottomPosition;
+	private final KColorElements pKColor;
+	private final QualifiedIDElements pQualifiedID;
+	private final PropertyValueElements pPropertyValue;
+	private final FloatElements pFloat;
+	private final ArcElements unknownRuleArc;
+	private final HorizontalAlignmentElements unknownRuleHorizontalAlignment;
+	private final VerticalAlignmentElements unknownRuleVerticalAlignment;
+	private final UnderlineElements unknownRuleUnderline;
+	private final LineStyleElements unknownRuleLineStyle;
+	private final LineCapElements unknownRuleLineCap;
+	private final LineJoinElements unknownRuleLineJoin;
+	private final TriggerElements unknownRuleTrigger;
+	private final TerminalRule tBOOLEAN;
+	private final TerminalRule tRED;
+	private final TerminalRule tGREEN;
+	private final TerminalRule tBLUE;
+	private final TerminalRule tALPHA;
+	private final TerminalRule tFSIZE;
+	private final TerminalRule tDEGREES;
+	private final TerminalRule tPERCENT;
+	private final TerminalRule tTFLOAT;
+	private final TerminalRule tNATURAL;
+	private final TerminalRule tID;
+	private final TerminalRule tSTRING;
+	private final TerminalRule tML_COMMENT;
+	private final TerminalRule tSL_COMMENT;
+	private final TerminalRule tWS;
 	
 	private final Grammar grammar;
 
 	@Inject
 	public KGraphGrammarAccess(GrammarProvider grammarProvider) {
 		this.grammar = internalFindGrammar(grammarProvider);
+		this.pParentKNode = new ParentKNodeElements();
+		this.pKNode = new KNodeElements();
+		this.pKEdge = new KEdgeElements();
+		this.pKLabel = new KLabelElements();
+		this.pKPort = new KPortElements();
+		this.pProperty = new PropertyElements();
+		this.pKIdentifier = new KIdentifierElements();
+		this.pKNodeLayout = new KNodeLayoutElements();
+		this.pEmptyKNodeLayout = new EmptyKNodeLayoutElements();
+		this.pKInsets = new KInsetsElements();
+		this.pEmptyKInsets = new EmptyKInsetsElements();
+		this.pKShapeLayout = new KShapeLayoutElements();
+		this.pEmptyKShapeLayout = new EmptyKShapeLayoutElements();
+		this.pKEdgeLayout = new KEdgeLayoutElements();
+		this.pEmptyKEdgeLayout = new EmptyKEdgeLayoutElements();
+		this.pKPoint = new KPointElements();
+		this.pEmptyKPoint = new EmptyKPointElements();
+		this.pKRendering = new KRenderingElements();
+		this.pKSimpleRendering = new KSimpleRenderingElements();
+		this.pKContainerRendering = new KContainerRenderingElements();
+		this.pKRenderingRef = new KRenderingRefElements();
+		this.pKChildArea = new KChildAreaElements();
+		this.pKText = new KTextElements();
+		this.pKRectangle = new KRectangleElements();
+		this.pKRoundedRectangle = new KRoundedRectangleElements();
+		this.pKEllipse = new KEllipseElements();
+		this.pKArc = new KArcElements();
+		this.pKCustomRendering = new KCustomRenderingElements();
+		this.pKImage = new KImageElements();
+		this.pKPolyline = new KPolylineElements();
+		this.pKSimplePolyline = new KSimplePolylineElements();
+		this.pKPolygon = new KPolygonElements();
+		this.pKRoundedBendsPolyline = new KRoundedBendsPolylineElements();
+		this.pKSpline = new KSplineElements();
+		this.pKStyle = new KStyleElements();
+		this.pKColoring = new KColoringElements();
+		this.pKForeground = new KForegroundElements();
+		this.pKBackground = new KBackgroundElements();
+		this.pKFontBold = new KFontBoldElements();
+		this.pKFontItalic = new KFontItalicElements();
+		this.pKFontName = new KFontNameElements();
+		this.pKFontSize = new KFontSizeElements();
+		this.pKTextUnderline = new KTextUnderlineElements();
+		this.pKHorizontalAlignment = new KHorizontalAlignmentElements();
+		this.pKVerticalAlignment = new KVerticalAlignmentElements();
+		this.pKInvisibility = new KInvisibilityElements();
+		this.pKLineCap = new KLineCapElements();
+		this.pKLineJoin = new KLineJoinElements();
+		this.pKLineStyle = new KLineStyleElements();
+		this.pKLineWidth = new KLineWidthElements();
+		this.pKRotation = new KRotationElements();
+		this.pKShadow = new KShadowElements();
+		this.pKStyleRef = new KStyleRefElements();
+		this.pKRenderingLibrary = new KRenderingLibraryElements();
+		this.pKStyleHolder = new KStyleHolderElements();
+		this.pKPlacement = new KPlacementElements();
+		this.pKGridPlacement = new KGridPlacementElements();
+		this.pKPlacementData = new KPlacementDataElements();
+		this.pKAreaPlacementData = new KAreaPlacementDataElements();
+		this.pKPointPlacementData = new KPointPlacementDataElements();
+		this.pKGridPlacementData = new KGridPlacementDataElements();
+		this.pKDecoratorPlacementData = new KDecoratorPlacementDataElements();
+		this.pKAction = new KActionElements();
+		this.pKPosition = new KPositionElements();
+		this.pKXPosition = new KXPositionElements();
+		this.pKLeftPosition = new KLeftPositionElements();
+		this.pKRightPosition = new KRightPositionElements();
+		this.pKYPosition = new KYPositionElements();
+		this.pKTopPosition = new KTopPositionElements();
+		this.pKBottomPosition = new KBottomPositionElements();
+		this.pKColor = new KColorElements();
+		this.pQualifiedID = new QualifiedIDElements();
+		this.pPropertyValue = new PropertyValueElements();
+		this.pFloat = new FloatElements();
+		this.unknownRuleArc = new ArcElements();
+		this.unknownRuleHorizontalAlignment = new HorizontalAlignmentElements();
+		this.unknownRuleVerticalAlignment = new VerticalAlignmentElements();
+		this.unknownRuleUnderline = new UnderlineElements();
+		this.unknownRuleLineStyle = new LineStyleElements();
+		this.unknownRuleLineCap = new LineCapElements();
+		this.unknownRuleLineJoin = new LineJoinElements();
+		this.unknownRuleTrigger = new TriggerElements();
+		this.tBOOLEAN = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "BOOLEAN");
+		this.tRED = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "RED");
+		this.tGREEN = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "GREEN");
+		this.tBLUE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "BLUE");
+		this.tALPHA = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ALPHA");
+		this.tFSIZE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "FSIZE");
+		this.tDEGREES = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "DEGREES");
+		this.tPERCENT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "PERCENT");
+		this.tTFLOAT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "TFLOAT");
+		this.tNATURAL = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "NATURAL");
+		this.tID = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ID");
+		this.tSTRING = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "STRING");
+		this.tML_COMMENT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ML_COMMENT");
+		this.tSL_COMMENT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "SL_COMMENT");
+		this.tWS = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "WS");
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -5073,7 +5256,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KNode} ("kgraph" data+=KIdentifier?)? data+=KNodeLayout (labels+=KLabel | children+=KNode | ports+=KPort |
 	//	outgoingEdges+=KEdge | data+=KRendering | data+=KRenderingLibrary)*;
 	public ParentKNodeElements getParentKNodeAccess() {
-		return (pParentKNode != null) ? pParentKNode : (pParentKNode = new ParentKNodeElements());
+		return pParentKNode;
 	}
 	
 	public ParserRule getParentKNodeRule() {
@@ -5084,7 +5267,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KNode} "knode" data+=KIdentifier? ("{" data+=KNodeLayout (labels+=KLabel | children+=KNode | ports+=KPort |
 	//	outgoingEdges+=KEdge | data+=KRendering | data+=KRenderingLibrary)* "}" | data+=EmptyKNodeLayout);
 	public KNodeElements getKNodeAccess() {
-		return (pKNode != null) ? pKNode : (pKNode = new KNodeElements());
+		return pKNode;
 	}
 	
 	public ParserRule getKNodeRule() {
@@ -5096,7 +5279,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	targetPort=[KPort|QualifiedID])? ")" ("{" data+=KEdgeLayout (labels+=KLabel | data+=KRendering)* "}" |
 	//	data+=EmptyKEdgeLayout);
 	public KEdgeElements getKEdgeAccess() {
-		return (pKEdge != null) ? pKEdge : (pKEdge = new KEdgeElements());
+		return pKEdge;
 	}
 	
 	public ParserRule getKEdgeRule() {
@@ -5107,7 +5290,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KLabel} "klabel" data+=KIdentifier? text=STRING? ("{" data+=KShapeLayout data+=KRendering* "}" |
 	//	data+=EmptyKShapeLayout);
 	public KLabelElements getKLabelAccess() {
-		return (pKLabel != null) ? pKLabel : (pKLabel = new KLabelElements());
+		return pKLabel;
 	}
 	
 	public ParserRule getKLabelRule() {
@@ -5118,7 +5301,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KPort} "kport" data+=KIdentifier? ("{" data+=KShapeLayout (labels+=KLabel | data+=KRendering)* "}" |
 	//	data+=EmptyKShapeLayout);
 	public KPortElements getKPortAccess() {
-		return (pKPort != null) ? pKPort : (pKPort = new KPortElements());
+		return pKPort;
 	}
 	
 	public ParserRule getKPortRule() {
@@ -5129,7 +5312,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//Property returns PersistentEntry:
 	//	key=QualifiedID "=" value=PropertyValue;
 	public PropertyElements getPropertyAccess() {
-		return (pProperty != null) ? pProperty : (pProperty = new PropertyElements());
+		return pProperty;
 	}
 	
 	public ParserRule getPropertyRule() {
@@ -5139,7 +5322,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KIdentifier:
 	//	id=QualifiedID ("[" persistentEntries+=Property* "]")?;
 	public KIdentifierElements getKIdentifierAccess() {
-		return (pKIdentifier != null) ? pKIdentifier : (pKIdentifier = new KIdentifierElements());
+		return pKIdentifier;
 	}
 	
 	public ParserRule getKIdentifierRule() {
@@ -5151,7 +5334,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	"=" height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?) ("insets" ":" insets=KInsets |
 	//	insets=EmptyKInsets);
 	public KNodeLayoutElements getKNodeLayoutAccess() {
-		return (pKNodeLayout != null) ? pKNodeLayout : (pKNodeLayout = new KNodeLayoutElements());
+		return pKNodeLayout;
 	}
 	
 	public ParserRule getKNodeLayoutRule() {
@@ -5161,7 +5344,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//EmptyKNodeLayout returns KShapeLayout:
 	//	insets=EmptyKInsets;
 	public EmptyKNodeLayoutElements getEmptyKNodeLayoutAccess() {
-		return (pEmptyKNodeLayout != null) ? pEmptyKNodeLayout : (pEmptyKNodeLayout = new EmptyKNodeLayoutElements());
+		return pEmptyKNodeLayout;
 	}
 	
 	public ParserRule getEmptyKNodeLayoutRule() {
@@ -5172,7 +5355,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KInsets} (("top" "=" top=Float)? & ("bottom" "=" bottom=Float)? & ("left" "=" left=Float)? & ("right" "="
 	//	right=Float)?);
 	public KInsetsElements getKInsetsAccess() {
-		return (pKInsets != null) ? pKInsets : (pKInsets = new KInsetsElements());
+		return pKInsets;
 	}
 	
 	public ParserRule getKInsetsRule() {
@@ -5182,7 +5365,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//EmptyKInsets returns KInsets:
 	//	{KInsets};
 	public EmptyKInsetsElements getEmptyKInsetsAccess() {
-		return (pEmptyKInsets != null) ? pEmptyKInsets : (pEmptyKInsets = new EmptyKInsetsElements());
+		return pEmptyKInsets;
 	}
 	
 	public ParserRule getEmptyKInsetsRule() {
@@ -5193,7 +5376,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KShapeLayout} (("pos" ":" (("x" "=" xpos=Float)? & ("y" "=" ypos=Float)?))? & ("size" ":" (("width" "=" width=Float)?
 	//	& ("height" "=" height=Float)?))? & ("properties" ":" persistentEntries+=Property*)?);
 	public KShapeLayoutElements getKShapeLayoutAccess() {
-		return (pKShapeLayout != null) ? pKShapeLayout : (pKShapeLayout = new KShapeLayoutElements());
+		return pKShapeLayout;
 	}
 	
 	public ParserRule getKShapeLayoutRule() {
@@ -5203,7 +5386,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//EmptyKShapeLayout returns KShapeLayout:
 	//	{KShapeLayout};
 	public EmptyKShapeLayoutElements getEmptyKShapeLayoutAccess() {
-		return (pEmptyKShapeLayout != null) ? pEmptyKShapeLayout : (pEmptyKShapeLayout = new EmptyKShapeLayoutElements());
+		return pEmptyKShapeLayout;
 	}
 	
 	public ParserRule getEmptyKShapeLayoutRule() {
@@ -5215,7 +5398,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) | sourcePoint=EmptyKPoint targetPoint=EmptyKPoint) ("properties" ":"
 	//	persistentEntries+=Property*)?;
 	public KEdgeLayoutElements getKEdgeLayoutAccess() {
-		return (pKEdgeLayout != null) ? pKEdgeLayout : (pKEdgeLayout = new KEdgeLayoutElements());
+		return pKEdgeLayout;
 	}
 	
 	public ParserRule getKEdgeLayoutRule() {
@@ -5225,7 +5408,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//EmptyKEdgeLayout returns KEdgeLayout:
 	//	sourcePoint=EmptyKPoint targetPoint=EmptyKPoint;
 	public EmptyKEdgeLayoutElements getEmptyKEdgeLayoutAccess() {
-		return (pEmptyKEdgeLayout != null) ? pEmptyKEdgeLayout : (pEmptyKEdgeLayout = new EmptyKEdgeLayoutElements());
+		return pEmptyKEdgeLayout;
 	}
 	
 	public ParserRule getEmptyKEdgeLayoutRule() {
@@ -5235,7 +5418,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KPoint:
 	//	x=Float "," y=Float;
 	public KPointElements getKPointAccess() {
-		return (pKPoint != null) ? pKPoint : (pKPoint = new KPointElements());
+		return pKPoint;
 	}
 	
 	public ParserRule getKPointRule() {
@@ -5245,7 +5428,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//EmptyKPoint returns KPoint:
 	//	{KPoint};
 	public EmptyKPointElements getEmptyKPointAccess() {
-		return (pEmptyKPoint != null) ? pEmptyKPoint : (pEmptyKPoint = new EmptyKPointElements());
+		return pEmptyKPoint;
 	}
 	
 	public ParserRule getEmptyKPointRule() {
@@ -5256,7 +5439,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KRendering:
 	//	KSimpleRendering | KContainerRendering | KPolyline;
 	public KRenderingElements getKRenderingAccess() {
-		return (pKRendering != null) ? pKRendering : (pKRendering = new KRenderingElements());
+		return pKRendering;
 	}
 	
 	public ParserRule getKRenderingRule() {
@@ -5267,7 +5450,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	(KRenderingRef | KChildArea | KText) id=QualifiedID? ("[" persistentEntries+=Property* "]")? ("{" (("styles" ":"
 	//	styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? & placementData=KPlacementData?) "}")?;
 	public KSimpleRenderingElements getKSimpleRenderingAccess() {
-		return (pKSimpleRendering != null) ? pKSimpleRendering : (pKSimpleRendering = new KSimpleRenderingElements());
+		return pKSimpleRendering;
 	}
 	
 	public ParserRule getKSimpleRenderingRule() {
@@ -5279,7 +5462,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	persistentEntries+=Property* "]")? ("{" (("styles" ":" styles+=KStyle*)? & ("actions" ":" actions+=KAction*)? &
 	//	placementData=KPlacementData? & childPlacement=KPlacement?) children+=KRendering* "}")?;
 	public KContainerRenderingElements getKContainerRenderingAccess() {
-		return (pKContainerRendering != null) ? pKContainerRendering : (pKContainerRendering = new KContainerRenderingElements());
+		return pKContainerRendering;
 	}
 	
 	public ParserRule getKContainerRenderingRule() {
@@ -5289,7 +5472,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KRenderingRef:
 	//	"krendering" "*" rendering=[KRendering|QualifiedID];
 	public KRenderingRefElements getKRenderingRefAccess() {
-		return (pKRenderingRef != null) ? pKRenderingRef : (pKRenderingRef = new KRenderingRefElements());
+		return pKRenderingRef;
 	}
 	
 	public ParserRule getKRenderingRefRule() {
@@ -5299,7 +5482,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KChildArea:
 	//	{KChildArea} "kchildArea";
 	public KChildAreaElements getKChildAreaAccess() {
-		return (pKChildArea != null) ? pKChildArea : (pKChildArea = new KChildAreaElements());
+		return pKChildArea;
 	}
 	
 	public ParserRule getKChildAreaRule() {
@@ -5309,7 +5492,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KText:
 	//	{KText} "ktext" ("(" text=STRING ("," cursorSelectable=BOOLEAN)? ")")?;
 	public KTextElements getKTextAccess() {
-		return (pKText != null) ? pKText : (pKText = new KTextElements());
+		return pKText;
 	}
 	
 	public ParserRule getKTextRule() {
@@ -5319,7 +5502,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KRectangle:
 	//	{KRectangle} "krectangle";
 	public KRectangleElements getKRectangleAccess() {
-		return (pKRectangle != null) ? pKRectangle : (pKRectangle = new KRectangleElements());
+		return pKRectangle;
 	}
 	
 	public ParserRule getKRectangleRule() {
@@ -5329,7 +5512,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KRoundedRectangle:
 	//	{KRoundedRectangle} "kroundedRectangle" ("(" cornerWidth=Float "," cornerHeight=Float ")")?;
 	public KRoundedRectangleElements getKRoundedRectangleAccess() {
-		return (pKRoundedRectangle != null) ? pKRoundedRectangle : (pKRoundedRectangle = new KRoundedRectangleElements());
+		return pKRoundedRectangle;
 	}
 	
 	public ParserRule getKRoundedRectangleRule() {
@@ -5339,7 +5522,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KEllipse:
 	//	{KEllipse} "kellipse";
 	public KEllipseElements getKEllipseAccess() {
-		return (pKEllipse != null) ? pKEllipse : (pKEllipse = new KEllipseElements());
+		return pKEllipse;
 	}
 	
 	public ParserRule getKEllipseRule() {
@@ -5349,7 +5532,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KArc:
 	//	{KArc} "karc" ("(" startAngle=DEGREES "," arcAngle=DEGREES ("," arcType=Arc)? ")");
 	public KArcElements getKArcAccess() {
-		return (pKArc != null) ? pKArc : (pKArc = new KArcElements());
+		return pKArc;
 	}
 	
 	public ParserRule getKArcRule() {
@@ -5359,7 +5542,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KCustomRendering:
 	//	{KCustomRendering} "kcustomRendering" ("(" (bundleName=QualifiedID ":")? className=QualifiedID ")")?;
 	public KCustomRenderingElements getKCustomRenderingAccess() {
-		return (pKCustomRendering != null) ? pKCustomRendering : (pKCustomRendering = new KCustomRenderingElements());
+		return pKCustomRendering;
 	}
 	
 	public ParserRule getKCustomRenderingRule() {
@@ -5369,7 +5552,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KImage:
 	//	{KImage} "kimage" ("(" (bundleName=QualifiedID ":")? imagePath=STRING ("clipShape" clipShape=KRendering)? ")")?;
 	public KImageElements getKImageAccess() {
-		return (pKImage != null) ? pKImage : (pKImage = new KImageElements());
+		return pKImage;
 	}
 	
 	public ParserRule getKImageRule() {
@@ -5382,7 +5565,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	actions+=KAction*)? & placementData=KPlacementData? & childPlacement=KPlacement?) ("junction"
 	//	junctionPointRendering=KRendering)? children+=KRendering* "}")?;
 	public KPolylineElements getKPolylineAccess() {
-		return (pKPolyline != null) ? pKPolyline : (pKPolyline = new KPolylineElements());
+		return pKPolyline;
 	}
 	
 	public ParserRule getKPolylineRule() {
@@ -5392,7 +5575,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KSimplePolyline returns KPolyline:
 	//	{KPolyline} "kpolyline";
 	public KSimplePolylineElements getKSimplePolylineAccess() {
-		return (pKSimplePolyline != null) ? pKSimplePolyline : (pKSimplePolyline = new KSimplePolylineElements());
+		return pKSimplePolyline;
 	}
 	
 	public ParserRule getKSimplePolylineRule() {
@@ -5402,7 +5585,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KPolygon:
 	//	{KPolygon} "kpolygon";
 	public KPolygonElements getKPolygonAccess() {
-		return (pKPolygon != null) ? pKPolygon : (pKPolygon = new KPolygonElements());
+		return pKPolygon;
 	}
 	
 	public ParserRule getKPolygonRule() {
@@ -5412,7 +5595,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KRoundedBendsPolyline:
 	//	{KRoundedBendsPolyline} "kroundedPolyline" ("(" bendRadius=Float ")")?;
 	public KRoundedBendsPolylineElements getKRoundedBendsPolylineAccess() {
-		return (pKRoundedBendsPolyline != null) ? pKRoundedBendsPolyline : (pKRoundedBendsPolyline = new KRoundedBendsPolylineElements());
+		return pKRoundedBendsPolyline;
 	}
 	
 	public ParserRule getKRoundedBendsPolylineRule() {
@@ -5422,7 +5605,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KSpline:
 	//	{KSpline} "kspline";
 	public KSplineElements getKSplineAccess() {
-		return (pKSpline != null) ? pKSpline : (pKSpline = new KSplineElements());
+		return pKSpline;
 	}
 	
 	public ParserRule getKSplineRule() {
@@ -5435,7 +5618,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	KVerticalAlignment | KInvisibility | KLineCap | KLineJoin | KLineStyle | KLineWidth | KRotation | KShadow | KStyleRef)
 	//	("modifier" modifierId=QualifiedID)?;
 	public KStyleElements getKStyleAccess() {
-		return (pKStyle != null) ? pKStyle : (pKStyle = new KStyleElements());
+		return pKStyle;
 	}
 	
 	public ParserRule getKStyleRule() {
@@ -5446,7 +5629,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	(KForeground | KBackground) "=" ("null" | color=KColor ("," alpha=ALPHA)? ("->" targetColor=KColor (","
 	//	targetAlpha=ALPHA)? ("(" gradientAngle=Float ")")?)?);
 	public KColoringElements getKColoringAccess() {
-		return (pKColoring != null) ? pKColoring : (pKColoring = new KColoringElements());
+		return pKColoring;
 	}
 	
 	public ParserRule getKColoringRule() {
@@ -5456,7 +5639,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KForeground:
 	//	{KForeground} propagateToChildren?="propagate"? selection?="selection"? "foreground";
 	public KForegroundElements getKForegroundAccess() {
-		return (pKForeground != null) ? pKForeground : (pKForeground = new KForegroundElements());
+		return pKForeground;
 	}
 	
 	public ParserRule getKForegroundRule() {
@@ -5466,7 +5649,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KBackground:
 	//	{KBackground} propagateToChildren?="propagate"? selection?="selection"? "background";
 	public KBackgroundElements getKBackgroundAccess() {
-		return (pKBackground != null) ? pKBackground : (pKBackground = new KBackgroundElements());
+		return pKBackground;
 	}
 	
 	public ParserRule getKBackgroundRule() {
@@ -5476,7 +5659,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KFontBold:
 	//	propagateToChildren?="propagate"? selection?="selection"? "bold" "=" bold=BOOLEAN;
 	public KFontBoldElements getKFontBoldAccess() {
-		return (pKFontBold != null) ? pKFontBold : (pKFontBold = new KFontBoldElements());
+		return pKFontBold;
 	}
 	
 	public ParserRule getKFontBoldRule() {
@@ -5486,7 +5669,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KFontItalic:
 	//	propagateToChildren?="propagate"? selection?="selection"? "italic" "=" italic=BOOLEAN;
 	public KFontItalicElements getKFontItalicAccess() {
-		return (pKFontItalic != null) ? pKFontItalic : (pKFontItalic = new KFontItalicElements());
+		return pKFontItalic;
 	}
 	
 	public ParserRule getKFontItalicRule() {
@@ -5496,7 +5679,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KFontName:
 	//	propagateToChildren?="propagate"? selection?="selection"? "fontName" "=" name=STRING;
 	public KFontNameElements getKFontNameAccess() {
-		return (pKFontName != null) ? pKFontName : (pKFontName = new KFontNameElements());
+		return pKFontName;
 	}
 	
 	public ParserRule getKFontNameRule() {
@@ -5506,7 +5689,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KFontSize:
 	//	propagateToChildren?="propagate"? selection?="selection"? scaleWithZoom?="scale"? "fontSize" "=" size=FSIZE;
 	public KFontSizeElements getKFontSizeAccess() {
-		return (pKFontSize != null) ? pKFontSize : (pKFontSize = new KFontSizeElements());
+		return pKFontSize;
 	}
 	
 	public ParserRule getKFontSizeRule() {
@@ -5516,7 +5699,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KTextUnderline:
 	//	propagateToChildren?="propagate"? selection?="selection"? "underline" "=" underline=Underline;
 	public KTextUnderlineElements getKTextUnderlineAccess() {
-		return (pKTextUnderline != null) ? pKTextUnderline : (pKTextUnderline = new KTextUnderlineElements());
+		return pKTextUnderline;
 	}
 	
 	public ParserRule getKTextUnderlineRule() {
@@ -5526,7 +5709,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KHorizontalAlignment:
 	//	propagateToChildren?="propagate"? selection?="selection"? "hAlign" "=" horizontalAlignment=HorizontalAlignment;
 	public KHorizontalAlignmentElements getKHorizontalAlignmentAccess() {
-		return (pKHorizontalAlignment != null) ? pKHorizontalAlignment : (pKHorizontalAlignment = new KHorizontalAlignmentElements());
+		return pKHorizontalAlignment;
 	}
 	
 	public ParserRule getKHorizontalAlignmentRule() {
@@ -5536,7 +5719,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KVerticalAlignment:
 	//	propagateToChildren?="propagate"? selection?="selection"? "vAlign" "=" verticalAlignment=VerticalAlignment;
 	public KVerticalAlignmentElements getKVerticalAlignmentAccess() {
-		return (pKVerticalAlignment != null) ? pKVerticalAlignment : (pKVerticalAlignment = new KVerticalAlignmentElements());
+		return pKVerticalAlignment;
 	}
 	
 	public ParserRule getKVerticalAlignmentRule() {
@@ -5546,7 +5729,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KInvisibility:
 	//	propagateToChildren?="propagate"? selection?="selection"? "invisible" "=" invisible=BOOLEAN;
 	public KInvisibilityElements getKInvisibilityAccess() {
-		return (pKInvisibility != null) ? pKInvisibility : (pKInvisibility = new KInvisibilityElements());
+		return pKInvisibility;
 	}
 	
 	public ParserRule getKInvisibilityRule() {
@@ -5556,7 +5739,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KLineCap:
 	//	propagateToChildren?="propagate"? selection?="selection"? "lineCap" "=" lineCap=LineCap;
 	public KLineCapElements getKLineCapAccess() {
-		return (pKLineCap != null) ? pKLineCap : (pKLineCap = new KLineCapElements());
+		return pKLineCap;
 	}
 	
 	public ParserRule getKLineCapRule() {
@@ -5566,7 +5749,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KLineJoin:
 	//	propagateToChildren?="propagate"? selection?="selection"? "lineJoin" "=" lineJoin=LineJoin;
 	public KLineJoinElements getKLineJoinAccess() {
-		return (pKLineJoin != null) ? pKLineJoin : (pKLineJoin = new KLineJoinElements());
+		return pKLineJoin;
 	}
 	
 	public ParserRule getKLineJoinRule() {
@@ -5574,9 +5757,10 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//KLineStyle:
-	//	propagateToChildren?="propagate"? selection?="selection"? "lineStyle" "=" lineStyle=LineStyle;
+	//	propagateToChildren?="propagate"? selection?="selection"? "lineStyle" "=" lineStyle=LineStyle ("dashOffset" "="
+	//	dashOffset=Float)? ("dashPattern" "=" dashPattern+=Float*)?;
 	public KLineStyleElements getKLineStyleAccess() {
-		return (pKLineStyle != null) ? pKLineStyle : (pKLineStyle = new KLineStyleElements());
+		return pKLineStyle;
 	}
 	
 	public ParserRule getKLineStyleRule() {
@@ -5586,7 +5770,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KLineWidth:
 	//	propagateToChildren?="propagate"? selection?="selection"? "lineWidth" "=" lineWidth=Float;
 	public KLineWidthElements getKLineWidthAccess() {
-		return (pKLineWidth != null) ? pKLineWidth : (pKLineWidth = new KLineWidthElements());
+		return pKLineWidth;
 	}
 	
 	public ParserRule getKLineWidthRule() {
@@ -5597,7 +5781,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	propagateToChildren?="propagate"? selection?="selection"? "rotation" "=" rotation=Float ("(" "anchor" "="
 	//	rotationAnchor=KPosition ")")?;
 	public KRotationElements getKRotationAccess() {
-		return (pKRotation != null) ? pKRotation : (pKRotation = new KRotationElements());
+		return pKRotation;
 	}
 	
 	public ParserRule getKRotationRule() {
@@ -5608,7 +5792,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KShadow} propagateToChildren?="propagate"? selection?="selection"? "shadow" "=" color=KColor? ("(" xOffset=Float ","
 	//	yOffset=Float ("," blur=Float)? ")")?;
 	public KShadowElements getKShadowAccess() {
-		return (pKShadow != null) ? pKShadow : (pKShadow = new KShadowElements());
+		return pKShadow;
 	}
 	
 	public ParserRule getKShadowRule() {
@@ -5618,7 +5802,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KStyleRef:
 	//	selection?="selection"? "reference" "=" styleHolder=[KStyleHolder|QualifiedID];
 	public KStyleRefElements getKStyleRefAccess() {
-		return (pKStyleRef != null) ? pKStyleRef : (pKStyleRef = new KStyleRefElements());
+		return pKStyleRef;
 	}
 	
 	public ParserRule getKStyleRefRule() {
@@ -5630,7 +5814,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KRenderingLibrary} "krenderingLibrary" ("[" persistentEntries+=Property* "]")? "{" (renderings+=KRendering |
 	//	renderings+=KStyleHolder)* "}";
 	public KRenderingLibraryElements getKRenderingLibraryAccess() {
-		return (pKRenderingLibrary != null) ? pKRenderingLibrary : (pKRenderingLibrary = new KRenderingLibraryElements());
+		return pKRenderingLibrary;
 	}
 	
 	public ParserRule getKRenderingLibraryRule() {
@@ -5640,7 +5824,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KStyleHolder:
 	//	{KStyleHolder} "kstylesTemplate" id=QualifiedID? "{" styles+=KStyle* "}";
 	public KStyleHolderElements getKStyleHolderAccess() {
-		return (pKStyleHolder != null) ? pKStyleHolder : (pKStyleHolder = new KStyleHolderElements());
+		return pKStyleHolder;
 	}
 	
 	public ParserRule getKStyleHolderRule() {
@@ -5650,7 +5834,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KPlacement:
 	//	KGridPlacement;
 	public KPlacementElements getKPlacementAccess() {
-		return (pKPlacement != null) ? pKPlacement : (pKPlacement = new KPlacementElements());
+		return pKPlacement;
 	}
 	
 	public ParserRule getKPlacementRule() {
@@ -5661,7 +5845,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KGridPlacement} "grid" ":" (("topLeftAnchor" "=" topLeft=KPosition)? & ("bottomRightAnchor" "="
 	//	bottomRight=KPosition)? & ("columns" "=" numColumns=NATURAL)?);
 	public KGridPlacementElements getKGridPlacementAccess() {
-		return (pKGridPlacement != null) ? pKGridPlacement : (pKGridPlacement = new KGridPlacementElements());
+		return pKGridPlacement;
 	}
 	
 	public ParserRule getKGridPlacementRule() {
@@ -5671,7 +5855,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KPlacementData:
 	//	KAreaPlacementData | KPointPlacementData | KGridPlacementData | KDecoratorPlacementData;
 	public KPlacementDataElements getKPlacementDataAccess() {
-		return (pKPlacementData != null) ? pKPlacementData : (pKPlacementData = new KPlacementDataElements());
+		return pKPlacementData;
 	}
 	
 	public ParserRule getKPlacementDataRule() {
@@ -5682,7 +5866,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	{KAreaPlacementData} "areaData" ":" (("topLeftAnchor" "=" topLeft=KPosition)? & ("bottomRightAnchor" "="
 	//	bottomRight=KPosition)?);
 	public KAreaPlacementDataElements getKAreaPlacementDataAccess() {
-		return (pKAreaPlacementData != null) ? pKAreaPlacementData : (pKAreaPlacementData = new KAreaPlacementDataElements());
+		return pKAreaPlacementData;
 	}
 	
 	public ParserRule getKAreaPlacementDataRule() {
@@ -5695,7 +5879,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	horizontalAlignment=HorizontalAlignment)? & ("verticalAlignment" "=" verticalAlignment=VerticalAlignment)? &
 	//	("horizontalMargin" "=" horizontalMargin=Float)? & ("verticalMargin" "=" verticalMargin=Float)?);
 	public KPointPlacementDataElements getKPointPlacementDataAccess() {
-		return (pKPointPlacementData != null) ? pKPointPlacementData : (pKPointPlacementData = new KPointPlacementDataElements());
+		return pKPointPlacementData;
 	}
 	
 	public ParserRule getKPointPlacementDataRule() {
@@ -5707,7 +5891,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	bottomRight=KPosition)? & ("minCellWidth" "=" minCellWidth=Float)? & ("minCellHeight" "=" minCellHeight=Float)? &
 	//	("flexibleWidth" "=" flexibleWidth=BOOLEAN)? & ("flexibleHeight" "=" flexibleHeight=BOOLEAN)?);
 	public KGridPlacementDataElements getKGridPlacementDataAccess() {
-		return (pKGridPlacementData != null) ? pKGridPlacementData : (pKGridPlacementData = new KGridPlacementDataElements());
+		return pKGridPlacementData;
 	}
 	
 	public ParserRule getKGridPlacementDataRule() {
@@ -5719,7 +5903,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	("width" "=" width=Float)? & ("height" "=" height=Float)? & ("relativePos" "=" relative=Float)? & ("absolutePos" "="
 	//	absolute=Float)? & ("rotateWithLine" "=" rotateWithLine=BOOLEAN)?);
 	public KDecoratorPlacementDataElements getKDecoratorPlacementDataAccess() {
-		return (pKDecoratorPlacementData != null) ? pKDecoratorPlacementData : (pKDecoratorPlacementData = new KDecoratorPlacementDataElements());
+		return pKDecoratorPlacementData;
 	}
 	
 	public ParserRule getKDecoratorPlacementDataRule() {
@@ -5729,7 +5913,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KAction:
 	//	trigger=Trigger "=>" actionId=QualifiedID;
 	public KActionElements getKActionAccess() {
-		return (pKAction != null) ? pKAction : (pKAction = new KActionElements());
+		return pKAction;
 	}
 	
 	public ParserRule getKActionRule() {
@@ -5739,7 +5923,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KPosition:
 	//	x=KXPosition "," y=KYPosition;
 	public KPositionElements getKPositionAccess() {
-		return (pKPosition != null) ? pKPosition : (pKPosition = new KPositionElements());
+		return pKPosition;
 	}
 	
 	public ParserRule getKPositionRule() {
@@ -5749,7 +5933,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KXPosition:
 	//	(KLeftPosition | KRightPosition) (relative=PERCENT | (relative=PERCENT "+")? absolute=Float)?;
 	public KXPositionElements getKXPositionAccess() {
-		return (pKXPosition != null) ? pKXPosition : (pKXPosition = new KXPositionElements());
+		return pKXPosition;
 	}
 	
 	public ParserRule getKXPositionRule() {
@@ -5759,7 +5943,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KLeftPosition:
 	//	{KLeftPosition} "left";
 	public KLeftPositionElements getKLeftPositionAccess() {
-		return (pKLeftPosition != null) ? pKLeftPosition : (pKLeftPosition = new KLeftPositionElements());
+		return pKLeftPosition;
 	}
 	
 	public ParserRule getKLeftPositionRule() {
@@ -5769,7 +5953,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KRightPosition:
 	//	{KRightPosition} "right";
 	public KRightPositionElements getKRightPositionAccess() {
-		return (pKRightPosition != null) ? pKRightPosition : (pKRightPosition = new KRightPositionElements());
+		return pKRightPosition;
 	}
 	
 	public ParserRule getKRightPositionRule() {
@@ -5779,7 +5963,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KYPosition:
 	//	(KTopPosition | KBottomPosition) (relative=PERCENT | (relative=PERCENT "+")? absolute=Float)?;
 	public KYPositionElements getKYPositionAccess() {
-		return (pKYPosition != null) ? pKYPosition : (pKYPosition = new KYPositionElements());
+		return pKYPosition;
 	}
 	
 	public ParserRule getKYPositionRule() {
@@ -5789,7 +5973,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KTopPosition:
 	//	{KTopPosition} "top";
 	public KTopPositionElements getKTopPositionAccess() {
-		return (pKTopPosition != null) ? pKTopPosition : (pKTopPosition = new KTopPositionElements());
+		return pKTopPosition;
 	}
 	
 	public ParserRule getKTopPositionRule() {
@@ -5799,7 +5983,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KBottomPosition:
 	//	{KBottomPosition} "bottom";
 	public KBottomPositionElements getKBottomPositionAccess() {
-		return (pKBottomPosition != null) ? pKBottomPosition : (pKBottomPosition = new KBottomPositionElements());
+		return pKBottomPosition;
 	}
 	
 	public ParserRule getKBottomPositionRule() {
@@ -5809,7 +5993,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//KColor:
 	//	red=RED ("," green=GREEN)? ("," blue=BLUE)? | green=GREEN ("," blue=BLUE)? | blue=BLUE;
 	public KColorElements getKColorAccess() {
-		return (pKColor != null) ? pKColor : (pKColor = new KColorElements());
+		return pKColor;
 	}
 	
 	public ParserRule getKColorRule() {
@@ -5820,7 +6004,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//QualifiedID returns ecore::EString:
 	//	ID ("." ID)*;
 	public QualifiedIDElements getQualifiedIDAccess() {
-		return (pQualifiedID != null) ? pQualifiedID : (pQualifiedID = new QualifiedIDElements());
+		return pQualifiedID;
 	}
 	
 	public ParserRule getQualifiedIDRule() {
@@ -5830,7 +6014,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//PropertyValue returns ecore::EString:
 	//	BOOLEAN | STRING | Float | QualifiedID;
 	public PropertyValueElements getPropertyValueAccess() {
-		return (pPropertyValue != null) ? pPropertyValue : (pPropertyValue = new PropertyValueElements());
+		return pPropertyValue;
 	}
 	
 	public ParserRule getPropertyValueRule() {
@@ -5840,7 +6024,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//Float returns ecore::EFloat:
 	//	TFLOAT | NATURAL;
 	public FloatElements getFloatAccess() {
-		return (pFloat != null) ? pFloat : (pFloat = new FloatElements());
+		return pFloat;
 	}
 	
 	public ParserRule getFloatRule() {
@@ -5850,7 +6034,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//enum Arc:
 	//	OPEN="open" | CHORD="chord" | PIE="pie";
 	public ArcElements getArcAccess() {
-		return (unknownRuleArc != null) ? unknownRuleArc : (unknownRuleArc = new ArcElements());
+		return unknownRuleArc;
 	}
 	
 	public EnumRule getArcRule() {
@@ -5860,7 +6044,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//enum HorizontalAlignment:
 	//	LEFT="left" | CENTER="center" | RIGHT="right";
 	public HorizontalAlignmentElements getHorizontalAlignmentAccess() {
-		return (unknownRuleHorizontalAlignment != null) ? unknownRuleHorizontalAlignment : (unknownRuleHorizontalAlignment = new HorizontalAlignmentElements());
+		return unknownRuleHorizontalAlignment;
 	}
 	
 	public EnumRule getHorizontalAlignmentRule() {
@@ -5870,7 +6054,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//enum VerticalAlignment:
 	//	TOP="top" | CENTER="center" | BOTTOM="bottom";
 	public VerticalAlignmentElements getVerticalAlignmentAccess() {
-		return (unknownRuleVerticalAlignment != null) ? unknownRuleVerticalAlignment : (unknownRuleVerticalAlignment = new VerticalAlignmentElements());
+		return unknownRuleVerticalAlignment;
 	}
 	
 	public EnumRule getVerticalAlignmentRule() {
@@ -5880,7 +6064,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//enum Underline:
 	//	NONE="none" | SINGLE="single" | DOUBLE="double" | ERROR="error" | SQUIGGLE="squiggle" | LINK="link";
 	public UnderlineElements getUnderlineAccess() {
-		return (unknownRuleUnderline != null) ? unknownRuleUnderline : (unknownRuleUnderline = new UnderlineElements());
+		return unknownRuleUnderline;
 	}
 	
 	public EnumRule getUnderlineRule() {
@@ -5888,9 +6072,9 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//enum LineStyle:
-	//	SOLID="solid" | DASH="dash" | DOT="dot" | DASHDOT="dash-dot" | DASHDOTDOT="dash-dot-dot";
+	//	SOLID="solid" | DASH="dash" | DOT="dot" | DASHDOT="dash-dot" | DASHDOTDOT="dash-dot-dot" | CUSTOM="custom";
 	public LineStyleElements getLineStyleAccess() {
-		return (unknownRuleLineStyle != null) ? unknownRuleLineStyle : (unknownRuleLineStyle = new LineStyleElements());
+		return unknownRuleLineStyle;
 	}
 	
 	public EnumRule getLineStyleRule() {
@@ -5900,7 +6084,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//enum LineCap:
 	//	CAP_FLAT="flat" | CAP_ROUND="round" | CAP_SQUARE="square";
 	public LineCapElements getLineCapAccess() {
-		return (unknownRuleLineCap != null) ? unknownRuleLineCap : (unknownRuleLineCap = new LineCapElements());
+		return unknownRuleLineCap;
 	}
 	
 	public EnumRule getLineCapRule() {
@@ -5910,7 +6094,7 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//enum LineJoin:
 	//	JOIN_MITER="miter" | JOIN_ROUND="round" | JOIN_BEVEL="bevel";
 	public LineJoinElements getLineJoinAccess() {
-		return (unknownRuleLineJoin != null) ? unknownRuleLineJoin : (unknownRuleLineJoin = new LineJoinElements());
+		return unknownRuleLineJoin;
 	}
 	
 	public EnumRule getLineJoinRule() {
@@ -5918,9 +6102,11 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//enum Trigger:
-	//	SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick";
+	//	SINGLECLICK="singleClick" | DOUBLECLICK="doubleClick" | SINGLE_OR_MULTICLICK="singleOrMultiClick" |
+	//	MIDDLE_SINGLECLICK="middleSingleClick" | MIDDLE_DOUBLECLICK="middleDoubleClick" |
+	//	MIDDLE_SINGLE_OR_MULTICLICK="middleSingleOrMultiClick";
 	public TriggerElements getTriggerAccess() {
-		return (unknownRuleTrigger != null) ? unknownRuleTrigger : (unknownRuleTrigger = new TriggerElements());
+		return unknownRuleTrigger;
 	}
 	
 	public EnumRule getTriggerRule() {
@@ -5930,49 +6116,49 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//terminal BOOLEAN returns ecore::EBoolean:
 	//	"true" | "false";
 	public TerminalRule getBOOLEANRule() {
-		return (tBOOLEAN != null) ? tBOOLEAN : (tBOOLEAN = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "BOOLEAN"));
+		return tBOOLEAN;
 	} 
 
 	//terminal RED returns ecore::EInt:
 	//	"0".."9"+ "r";
 	public TerminalRule getREDRule() {
-		return (tRED != null) ? tRED : (tRED = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "RED"));
+		return tRED;
 	} 
 
 	//terminal GREEN returns ecore::EInt:
 	//	"0".."9"+ "g";
 	public TerminalRule getGREENRule() {
-		return (tGREEN != null) ? tGREEN : (tGREEN = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "GREEN"));
+		return tGREEN;
 	} 
 
 	//terminal BLUE returns ecore::EInt:
 	//	"0".."9"+ "b";
 	public TerminalRule getBLUERule() {
-		return (tBLUE != null) ? tBLUE : (tBLUE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "BLUE"));
+		return tBLUE;
 	} 
 
 	//terminal ALPHA returns ecore::EInt:
 	//	"0".."9"+ "a";
 	public TerminalRule getALPHARule() {
-		return (tALPHA != null) ? tALPHA : (tALPHA = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ALPHA"));
+		return tALPHA;
 	} 
 
 	//terminal FSIZE returns ecore::EInt:
 	//	"0".."9"+ "pt";
 	public TerminalRule getFSIZERule() {
-		return (tFSIZE != null) ? tFSIZE : (tFSIZE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "FSIZE"));
+		return tFSIZE;
 	} 
 
 	//terminal DEGREES returns ecore::EFloat:
 	//	("+" | "-")? ("0".."9"+ ("." "0".."9"*)? | "." "0".."9"+) "deg";
 	public TerminalRule getDEGREESRule() {
-		return (tDEGREES != null) ? tDEGREES : (tDEGREES = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "DEGREES"));
+		return tDEGREES;
 	} 
 
 	//terminal PERCENT returns ecore::EFloat:
 	//	("+" | "-")? ("0".."9"+ ("." "0".."9"*)? | "." "0".."9"+) "%";
 	public TerminalRule getPERCENTRule() {
-		return (tPERCENT != null) ? tPERCENT : (tPERCENT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "PERCENT"));
+		return tPERCENT;
 	} 
 
 	//terminal TFLOAT returns ecore::EFloat:
@@ -5980,42 +6166,42 @@ public class KGraphGrammarAccess extends AbstractGrammarElementFinder {
 	//	"-")? "0".."9"+)?) | "0".."9"+ "." "0".."9"* (("e" | "E") ("+" | "-")? "0".."9"+)? | "." "0".."9"+ (("e" | "E") ("+" |
 	//	"-")? "0".."9"+)? | "0".."9"+ ("e" | "E") ("+" | "-")? "0".."9"+;
 	public TerminalRule getTFLOATRule() {
-		return (tTFLOAT != null) ? tTFLOAT : (tTFLOAT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "TFLOAT"));
+		return tTFLOAT;
 	} 
 
 	//terminal NATURAL returns ecore::EInt:
 	//	"0".."9"+;
 	public TerminalRule getNATURALRule() {
-		return (tNATURAL != null) ? tNATURAL : (tNATURAL = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "NATURAL"));
+		return tNATURAL;
 	} 
 
 	//terminal ID:
 	//	"^"? ("a".."z" | "A".."Z" | "_") ("a".."z" | "A".."Z" | "_" | "0".."9")*;
 	public TerminalRule getIDRule() {
-		return (tID != null) ? tID : (tID = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ID"));
+		return tID;
 	} 
 
 	//terminal STRING:
 	//	"\"" ("\\" ("b" | "t" | "n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\""))* "\"";
 	public TerminalRule getSTRINGRule() {
-		return (tSTRING != null) ? tSTRING : (tSTRING = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "STRING"));
+		return tSTRING;
 	} 
 
 	//terminal ML_COMMENT:
 	//	"/ *"->"* /";
 	public TerminalRule getML_COMMENTRule() {
-		return (tML_COMMENT != null) ? tML_COMMENT : (tML_COMMENT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "ML_COMMENT"));
+		return tML_COMMENT;
 	} 
 
 	//terminal SL_COMMENT:
 	//	"//" !("\n" | "\r")* ("\r"? "\n")?;
 	public TerminalRule getSL_COMMENTRule() {
-		return (tSL_COMMENT != null) ? tSL_COMMENT : (tSL_COMMENT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "SL_COMMENT"));
+		return tSL_COMMENT;
 	} 
 
 	//terminal WS:
 	//	(" " | "\t" | "\r" | "\n")+;
 	public TerminalRule getWSRule() {
-		return (tWS != null) ? tWS : (tWS = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "WS"));
+		return tWS;
 	} 
 }

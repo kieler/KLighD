@@ -246,7 +246,8 @@ KLineJoin returns KLineJoin:
     (propagateToChildren?='propagate')? (selection?='selection')? 'lineJoin' '=' lineJoin=LineJoin;
 
 KLineStyle returns KLineStyle:
-	(propagateToChildren?='propagate')? (selection?='selection')? 'lineStyle' '=' lineStyle=LineStyle;
+	(propagateToChildren?='propagate')? (selection?='selection')? 'lineStyle' '=' lineStyle=LineStyle
+	('dashOffset' '=' dashOffset=Float)? ('dashPattern' '=' (dashPattern+=Float)*)?;
 
 KLineWidth returns KLineWidth:
 	(propagateToChildren?='propagate')? (selection?='selection')? 'lineWidth' '=' lineWidth=Float;
@@ -390,7 +391,7 @@ enum Underline returns Underline:
 	NONE='none' | SINGLE='single' | DOUBLE='double' | ERROR='error' | SQUIGGLE="squiggle" | LINK='link';
 
 enum LineStyle returns LineStyle:
-	SOLID='solid' | DASH='dash' | DOT='dot' | DASHDOT='dash-dot' | DASHDOTDOT='dash-dot-dot';
+	SOLID='solid' | DASH='dash' | DOT='dot' | DASHDOT='dash-dot' | DASHDOTDOT='dash-dot-dot' | CUSTOM='custom';
 
 enum LineCap returns LineCap:
     CAP_FLAT='flat' | CAP_ROUND='round' | CAP_SQUARE='square';
@@ -399,7 +400,8 @@ enum LineJoin returns LineJoin:
     JOIN_MITER='miter' | JOIN_ROUND='round' | JOIN_BEVEL='bevel';
 
 enum Trigger returns Trigger:
-	SINGLECLICK='singleClick' | DOUBLECLICK='doubleClick';
+	SINGLECLICK='singleClick' | DOUBLECLICK='doubleClick' | SINGLE_OR_MULTICLICK='singleOrMultiClick'
+	| MIDDLE_SINGLECLICK='middleSingleClick' | MIDDLE_DOUBLECLICK='middleDoubleClick' | MIDDLE_SINGLE_OR_MULTICLICK='middleSingleOrMultiClick';
 
 terminal BOOLEAN returns ecore::EBoolean:
 	'true' | 'false';

@@ -184,6 +184,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKLineCapAccess().getGroup(), "rule__KLineCap__Group__0");
 					put(grammarAccess.getKLineJoinAccess().getGroup(), "rule__KLineJoin__Group__0");
 					put(grammarAccess.getKLineStyleAccess().getGroup(), "rule__KLineStyle__Group__0");
+					put(grammarAccess.getKLineStyleAccess().getGroup_5(), "rule__KLineStyle__Group_5__0");
+					put(grammarAccess.getKLineStyleAccess().getGroup_6(), "rule__KLineStyle__Group_6__0");
 					put(grammarAccess.getKLineWidthAccess().getGroup(), "rule__KLineWidth__Group__0");
 					put(grammarAccess.getKRotationAccess().getGroup(), "rule__KRotation__Group__0");
 					put(grammarAccess.getKRotationAccess().getGroup_5(), "rule__KRotation__Group_5__0");
@@ -392,6 +394,8 @@ public class KGraphParser extends AbstractContentAssistParser {
 					put(grammarAccess.getKLineStyleAccess().getPropagateToChildrenAssignment_0(), "rule__KLineStyle__PropagateToChildrenAssignment_0");
 					put(grammarAccess.getKLineStyleAccess().getSelectionAssignment_1(), "rule__KLineStyle__SelectionAssignment_1");
 					put(grammarAccess.getKLineStyleAccess().getLineStyleAssignment_4(), "rule__KLineStyle__LineStyleAssignment_4");
+					put(grammarAccess.getKLineStyleAccess().getDashOffsetAssignment_5_2(), "rule__KLineStyle__DashOffsetAssignment_5_2");
+					put(grammarAccess.getKLineStyleAccess().getDashPatternAssignment_6_2(), "rule__KLineStyle__DashPatternAssignment_6_2");
 					put(grammarAccess.getKLineWidthAccess().getPropagateToChildrenAssignment_0(), "rule__KLineWidth__PropagateToChildrenAssignment_0");
 					put(grammarAccess.getKLineWidthAccess().getSelectionAssignment_1(), "rule__KLineWidth__SelectionAssignment_1");
 					put(grammarAccess.getKLineWidthAccess().getLineWidthAssignment_4(), "rule__KLineWidth__LineWidthAssignment_4");

@@ -5324,7 +5324,59 @@ ruleKLineStyle returns [EObject current=null]
 	    }
 
 )
-))
+)(	otherlv_5='dashOffset' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getKLineStyleAccess().getDashOffsetKeyword_5_0());
+    }
+	otherlv_6='=' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getKLineStyleAccess().getEqualsSignKeyword_5_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineStyleAccess().getDashOffsetFloatParserRuleCall_5_2_0()); 
+	    }
+		lv_dashOffset_7_0=ruleFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineStyleRule());
+	        }
+       		set(
+       			$current, 
+       			"dashOffset",
+        		lv_dashOffset_7_0, 
+        		"Float");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))?(	otherlv_8='dashPattern' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getKLineStyleAccess().getDashPatternKeyword_6_0());
+    }
+	otherlv_9='=' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getKLineStyleAccess().getEqualsSignKeyword_6_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getKLineStyleAccess().getDashPatternFloatParserRuleCall_6_2_0()); 
+	    }
+		lv_dashPattern_10_0=ruleFloat		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getKLineStyleRule());
+	        }
+       		add(
+       			$current, 
+       			"dashPattern",
+        		lv_dashPattern_10_0, 
+        		"Float");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)*)?)
 ;
 
 
@@ -8078,6 +8130,12 @@ ruleLineStyle returns [Enumerator current=null]
         $current = grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
         newLeafNode(enumLiteral_4, grammarAccess.getLineStyleAccess().getDASHDOTDOTEnumLiteralDeclaration_4()); 
     }
+)
+    |(	enumLiteral_5='custom' 
+	{
+        $current = grammarAccess.getLineStyleAccess().getCUSTOMEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_5, grammarAccess.getLineStyleAccess().getCUSTOMEnumLiteralDeclaration_5()); 
+    }
 ));
 
 
@@ -8146,6 +8204,30 @@ ruleTrigger returns [Enumerator current=null]
 	{
         $current = grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
         newLeafNode(enumLiteral_1, grammarAccess.getTriggerAccess().getDOUBLECLICKEnumLiteralDeclaration_1()); 
+    }
+)
+    |(	enumLiteral_2='singleOrMultiClick' 
+	{
+        $current = grammarAccess.getTriggerAccess().getSINGLE_OR_MULTICLICKEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_2, grammarAccess.getTriggerAccess().getSINGLE_OR_MULTICLICKEnumLiteralDeclaration_2()); 
+    }
+)
+    |(	enumLiteral_3='middleSingleClick' 
+	{
+        $current = grammarAccess.getTriggerAccess().getMIDDLE_SINGLECLICKEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_3, grammarAccess.getTriggerAccess().getMIDDLE_SINGLECLICKEnumLiteralDeclaration_3()); 
+    }
+)
+    |(	enumLiteral_4='middleDoubleClick' 
+	{
+        $current = grammarAccess.getTriggerAccess().getMIDDLE_DOUBLECLICKEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_4, grammarAccess.getTriggerAccess().getMIDDLE_DOUBLECLICKEnumLiteralDeclaration_4()); 
+    }
+)
+    |(	enumLiteral_5='middleSingleOrMultiClick' 
+	{
+        $current = grammarAccess.getTriggerAccess().getMIDDLE_SINGLE_OR_MULTICLICKEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_5, grammarAccess.getTriggerAccess().getMIDDLE_SINGLE_OR_MULTICLICKEnumLiteralDeclaration_5()); 
     }
 ));
 

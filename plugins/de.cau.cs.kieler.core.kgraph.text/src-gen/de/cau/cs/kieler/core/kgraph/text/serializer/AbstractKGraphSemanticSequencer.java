@@ -1139,7 +1139,7 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? selection?='selection'? lineStyle=LineStyle)
+	 *     (propagateToChildren?='propagate'? selection?='selection'? lineStyle=LineStyle dashOffset=Float? dashPattern+=Float*)
 	 */
 	protected void sequence_KLineStyle(EObject context, KLineStyle semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1148,7 +1148,14 @@ public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegating
 	
 	/**
 	 * Constraint:
-	 *     (propagateToChildren?='propagate'? selection?='selection'? lineStyle=LineStyle modifierId=QualifiedID?)
+	 *     (
+	 *         propagateToChildren?='propagate'? 
+	 *         selection?='selection'? 
+	 *         lineStyle=LineStyle 
+	 *         dashOffset=Float? 
+	 *         dashPattern+=Float* 
+	 *         modifierId=QualifiedID?
+	 *     )
 	 */
 	protected void sequence_KLineStyle_KStyle(EObject context, KLineStyle semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
