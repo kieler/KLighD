@@ -32,6 +32,7 @@ import org.eclipse.ui.PlatformUI;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -91,6 +92,9 @@ import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
+
+// SUPPRESS CHECKSTYLE PREVIOUS 100 Length
+//  Yes, this file is a bit too long, maybe to much documentation ... and too many imports ;-)
 
 /**
  * Overall manager of KGraph+KRendering+KLayoutData-based diagrams.<br>
@@ -558,23 +562,40 @@ public class DiagramController {
     }
 
     private final Set<AbstractKGERenderingController<?, ?>> dirtyDiagramElements = Sets.newHashSet();
+    private final Map<AbstractKGERenderingController<?, ?>, Boolean> dirtyDiagramElementStyles =
+            Maps.newHashMap();
 
     void scheduleRenderingUpdate(final AbstractKGERenderingController<?, ?> controller) {
         renderingUpdater.cancel();
+
         synchronized (dirtyDiagramElements) {
             dirtyDiagramElements.add(controller);
         }
-        renderingUpdater.schedule(1);
+
+        renderingUpdater.schedule(RENDERING_UPDATER_DELAY);
     }
 
+    void scheduleStylesUpdate(final AbstractKGERenderingController<?, ?> controller,
+            final boolean bringToFront) {
+        renderingUpdater.cancel();
+
+        synchronized (dirtyDiagramElementStyles) {
+            dirtyDiagramElementStyles.put(controller, bringToFront);
+        }
+
+        renderingUpdater.schedule(RENDERING_UPDATER_DELAY);
+    }
+
+    private static final int RENDERING_UPDATER_DELAY = 5; /* ms */
+
     private final Job renderingUpdater = new Job("KLighD DiagramElementUpdater") {
-        {
+        /* Constructor */ {
             this.setSystem(true);
         }
 
         @Override
         protected IStatus run(final IProgressMonitor monitor) {
-            if (Display.getCurrent() == null && PlatformUI.isWorkbenchRunning()) {
+            if (PlatformUI.isWorkbenchRunning()) {
                 PlatformUI.getWorkbench().getDisplay().asyncExec(this.diagramUpdateRunnable);
             } else {
                 this.diagramUpdateRunnable.run();
@@ -589,12 +610,25 @@ public class DiagramController {
              */
             public void run() {
                 final Set<AbstractKGERenderingController<?, ?>> copy;
+                final Map<AbstractKGERenderingController<?, ?>, Boolean> copyStyles;
+
                 synchronized (dirtyDiagramElements) {
                     copy = ImmutableSet.copyOf(dirtyDiagramElements);
                     dirtyDiagramElements.clear();
                 }
+
+                synchronized (dirtyDiagramElementStyles) {
+                    copyStyles = ImmutableMap.copyOf(dirtyDiagramElementStyles);
+                    dirtyDiagramElementStyles.clear();
+                }
+
                 for (final AbstractKGERenderingController<?, ?> ctrl : copy) {
                     ctrl.updateRenderingInUi();
+                }
+
+                for (final Map.Entry<AbstractKGERenderingController<?, ?>, Boolean> ctrl : copyStyles
+                        .entrySet()) {
+                    ctrl.getKey().updateStylesInUi(ctrl.getValue());
                 }
             }
         };

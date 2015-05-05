@@ -303,7 +303,7 @@ public abstract class AbstractKGERenderingController
      */
     public void modifyStyles() {
         if (modifiableStylesPresent) {
-            updateStyles();
+            scheduleStylesUpdate(false);
         }
     };
 
@@ -453,7 +453,7 @@ public abstract class AbstractKGERenderingController
                         entry = null;
                     }
                     if (entry != null && entry.getKey() == KlighdInternalProperties.SELECTED) {
-                        updateStylesInUi((Boolean) entry.getValue());
+                        scheduleStylesUpdate((Boolean) entry.getValue());
                     }
                     return;
                 }
@@ -463,7 +463,7 @@ public abstract class AbstractKGERenderingController
                 case Notification.REMOVE_MANY:
                     final Iterable<?> removed = (Iterable<?>) msg.getOldValue();
                     if (any(removed, Predicates.instanceOf(KStyle.class))) {
-                        updateStylesInUi(false);
+                        scheduleStylesUpdate(false);
                         return;
                     }
 
@@ -480,7 +480,7 @@ public abstract class AbstractKGERenderingController
 
                 case Notification.REMOVE:
                     if (msg.getOldValue() instanceof KStyle) {
-                        updateStylesInUi(false);
+                        scheduleStylesUpdate(false);
                         return;
                     }
 
@@ -504,7 +504,7 @@ public abstract class AbstractKGERenderingController
 
                     // handle style changes
                     if (msg.getNotifier() instanceof KStyle || msg.getNotifier() instanceof KColor) {
-                        updateStylesInUi(true);
+                        scheduleStylesUpdate(true);
                         return;
                     }
 
@@ -515,7 +515,7 @@ public abstract class AbstractKGERenderingController
                     if (msg.getNotifier() instanceof KRendering
                             && msg.getFeatureID(KRendering.class)
                                == KRenderingPackage.KRENDERING__STYLES) {
-                        updateStylesInUi(true);
+                        scheduleStylesUpdate(true);
                         return;
                     }
 
@@ -546,7 +546,7 @@ public abstract class AbstractKGERenderingController
     /**
      * Schedules a re-evaluation of this' KGE's rendering.<br>
      * The scheduling allows to collect a bunch of changes within some time and apply them in one
-     * run, which is desirable in combination with the new EMF compare-based incremental update.
+     * run, which is desirable in combination with the new EMF compare-based incremental update.<br>
      * <br>
      * In addition, this automatically realizes the switching to the UI thread.
      */
@@ -555,30 +555,31 @@ public abstract class AbstractKGERenderingController
     }
 
     /**
+     * Schedules a re-evaluation of this' KGE's rendering's styles.<br>
+     * The scheduling allows to collect a bunch of changes within some time and apply them in one
+     * run, which is desirable if multiple changes arrive after each other, which is common case.<br>
+     * <br>
+     * In addition, this automatically realizes the switching to the UI thread.
+     */
+    private void scheduleStylesUpdate(final boolean bringToFront) {
+        diagramController.scheduleStylesUpdate(this, bringToFront);
+    }
+
+    // kept this field as an instance field, as I fear a static one could be initialized
+    //  with the wrong value while loading the class at startup
+    private final boolean workbenchRunning = PlatformUI.isWorkbenchRunning();
+
+    /**
      * A little helper reducing the 'syncExec' calls if possible.
      *
      * @param r
      *            the runnable to be performed in the UI context.
      */
-    private static void runInUI(final Runnable r) {
-        if (PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
+    private void runInUI(final Runnable r) {
+        if (workbenchRunning && Display.getCurrent() == null) {
             PlatformUI.getWorkbench().getDisplay().syncExec(r);
         } else {
             // if no workbench is available or we're are already on the UI thread ...
-            r.run();
-        }
-    }
-
-    /**
-     * A little helper reducing the 'asyncExec' calls if possible.
-     *
-     * @param r
-     *            the runnable to be performed in the UI context.
-     */
-    private static void runAsyncInUI(final Runnable r) {
-        if (PlatformUI.isWorkbenchRunning()) {
-            PlatformUI.getWorkbench().getDisplay().asyncExec(r);
-        } else {
             r.run();
         }
     }
@@ -621,7 +622,7 @@ public abstract class AbstractKGERenderingController
     /**
      * A short convenience method for invoking {@link #updateStyles()} in UI context.
      */
-    private void updateStylesInUi(final boolean moveToFront) {
+    void updateStylesInUi(final boolean moveToFront) {
         runInUI(moveToFront ? this.updateStylesRunnableToFront : this.updateStylesRunnable);
     }
 
@@ -676,24 +677,15 @@ public abstract class AbstractKGERenderingController
         // update using the recursive method
         updateStyles(currentRendering, isSelected, Collections.<KStyle>emptyList());
 
-        // schedule the figure validation asynchronously,
-        // the (expected) advantage in case of multiple changes on the managed KGE's rendering is
-        //  that the first execution will reset the 'invalid' flags, the subsequent "schedulings"
-        //  will terminate instantly because the figures' paints are fine!
-        runAsyncInUI(validateFigurePaints);
-    }
-
-    private final Runnable validateFigurePaints = new Runnable() {
-
-        public void run() {
-            for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
-                final PNode node = nodeController.getTransformedNode();
-                // in case styles of a detached KRendering are modified, e.g. if selection highlighting
-                //  is removed from renderings that are not part of the diagram in the meantime
-                //  'null' values may occur here
-                if (node != null) {
-                    node.validateFullPaint();
-                }
+        // validate all figures representing 'currentRendering'
+        //  (should actually be only one, as we don't allow recursive renderingRefs)
+        for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
+            final PNode node = nodeController.getTransformedNode();
+            // in case styles of a detached KRendering are modified, e.g. if selection highlighting
+            //  is removed from renderings that are not part of the diagram in the meantime
+            //  'null' values may occur here
+            if (node != null) {
+                node.validateFullPaint();
             }
         }
     };
