@@ -828,10 +828,11 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final FontData fontData, final String text) {
-        Bounds textBounds = new Bounds(0, 0);
+        final Display display = Display.getCurrent();
+        final Bounds textBounds;
         
         // if no display is available fallback to awt metrics
-        if (Display.getCurrent() == null) {
+        if (display == null) {
 
             fmg.setFont(new java.awt.Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
                     .getStyle()), fontData.getHeight()));
@@ -848,13 +849,13 @@ public final class PlacementUtil {
             // In order to estimate the required size of a given string according to the determined
             // font, style, and size a GC is instantiated, configured, and queried.
             if (gc == null) {
-                gc = new GC(Display.getDefault());
+                gc = new GC(display);
                 gc.setAntialias(SWT.OFF);
             }
 
             Font font = FONT_CACHE.get(fontData);
             if (font == null) {
-                font = new Font(Display.getDefault(), fontData);
+                font = new Font(display, fontData);
                 FONT_CACHE.put(fontData, font);
             }
             gc.setFont(font);
