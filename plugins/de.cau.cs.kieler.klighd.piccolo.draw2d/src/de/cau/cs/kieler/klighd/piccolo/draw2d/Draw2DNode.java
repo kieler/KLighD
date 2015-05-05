@@ -215,6 +215,8 @@ public class Draw2DNode extends KCustomFigureNode {
                 }
             }
         }
+
+        invalidatePaint();
     }
     
     /**
