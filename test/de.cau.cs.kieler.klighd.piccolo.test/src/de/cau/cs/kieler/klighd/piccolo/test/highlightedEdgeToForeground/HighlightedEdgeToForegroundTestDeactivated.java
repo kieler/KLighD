@@ -13,6 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.test.highlightedEdgeToForeground;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -334,12 +338,25 @@ public class HighlightedEdgeToForegroundTestDeactivated {
     private void waitAmoment() throws InterruptedException {
         final Display d = shell.getDisplay();
 
-        Thread.sleep(A_MOMENT);
+        alarmClock.schedule(A_MOMENT);
+        d.sleep();
+        while (d.readAndDispatch());
 
+        alarmClock.schedule(A_MOMENT);
+        d.sleep();
         while (d.readAndDispatch());
     }
 
     private RGB getColorAt(final int x, final int y) {
         return ColorMatcher.getColorAt(canvas, x, y);
     }
+
+    private static Job alarmClock = new Job("") {
+
+        @Override
+        protected IStatus run(final IProgressMonitor monitor) {
+            Display.getDefault().wake();
+            return Status.OK_STATUS;
+        }
+    };
 }
