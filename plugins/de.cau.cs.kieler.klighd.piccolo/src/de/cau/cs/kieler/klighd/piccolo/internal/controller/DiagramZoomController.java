@@ -221,11 +221,16 @@ public class DiagramZoomController {
 
         if (focus != displayedKNode) {
             KNode parent = focus.getParent();
+
             while (parent != null && parent != displayedKNode.getParent()) {
                 final KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
                 final double scale = parentLayout.getProperty(LayoutOptions.SCALE_FACTOR);
+
                 focusBounds.setSize(scale * focusBounds.width , scale * focusBounds.height);
                 focusBounds.setOrigin(scale * focusBounds.x, scale * focusBounds.y);
+
+                final KInsets insets = parentLayout.getInsets();
+                focusBounds.moveBy(insets.getLeft(), insets.getTop());
 
                 focusBounds.moveBy(parentLayout.getXpos(), parentLayout.getYpos());
                 parent = parent.getParent();
