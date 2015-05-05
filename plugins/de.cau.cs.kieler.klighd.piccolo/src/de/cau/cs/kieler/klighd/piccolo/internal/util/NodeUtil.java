@@ -11,9 +11,6 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-/**
- *
- */
 package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.geom.AffineTransform;
@@ -36,6 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.activities.PActivity;
 import edu.umd.cs.piccolo.activities.PActivity.PActivityDelegate;
 import edu.umd.cs.piccolo.util.PAffineTransform;
@@ -229,10 +227,15 @@ public final class NodeUtil {
      *
      * @param node
      *            the node
+     * @param root
+     *            the diagram's {@link PRoot} in order to avoid traversing to the root for each node
+     *            (see usage of this method)
      * @param activity
      *            the primary activity
      */
-    public static void schedulePrimaryActivity(final PNode node, final PActivity activity) {
+    public static void schedulePrimaryActivity(final PNode node, final PRoot root,
+            final PActivity activity) {
+
         final Object attribute = node.getAttribute(ACTIVITY_KEY);
         if (attribute instanceof PActivity) {
             final PActivity oldActivity = (PActivity) attribute;
@@ -252,7 +255,7 @@ public final class NodeUtil {
                 node.addAttribute(ACTIVITY_KEY, null);
             }
         });
-        node.addActivity(activity);
+        root.addActivity(activity);
     }
 
     /**

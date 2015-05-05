@@ -88,6 +88,7 @@ import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.PRoot;
 import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -605,6 +606,7 @@ public class DiagramController {
      */
     private void handleRecordedChanges(final ZoomStyle zoomStyle, final KNode focusNode,
             final int animationTime) {
+        final PRoot root = topNode.getRoot();
 
         // create activities to apply all recorded changes
         for (final Map.Entry<IKGraphElementNode, ?> recordedChange : recordedChanges.entrySet()) {
@@ -673,7 +675,7 @@ public class DiagramController {
             }
             if (animationTime > 0) {
                 // schedule the activity
-                NodeUtil.schedulePrimaryActivity(shapeNode, activity);
+                NodeUtil.schedulePrimaryActivity(shapeNode, root, activity);
             } else {
                 // unschedule a currently running primary activity on the node if any
                 NodeUtil.unschedulePrimaryActivity(shapeNode);
