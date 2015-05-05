@@ -26,9 +26,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
@@ -64,6 +64,7 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
+import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
@@ -597,6 +598,20 @@ public class DiagramController {
         protected IStatus run(final IProgressMonitor monitor) {
             if (PlatformUI.isWorkbenchRunning()) {
                 PlatformUI.getWorkbench().getDisplay().asyncExec(this.diagramUpdateRunnable);
+
+            } else if (Display.getCurrent() == null) {
+                // this case is required, e.g., for UI tests
+                try {
+                    Display.getDefault().asyncExec(this.diagramUpdateRunnable);
+
+                } catch (final SWTException e) {
+                    final String msg = "KLighD (piccolo): could access display!"
+                            + "Call 'Display.getDefault()' at startup of your application or test.";
+
+                    KlighdPiccoloPlugin.getDefault().getLog().log(
+                            new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg));
+                }
+
             } else {
                 this.diagramUpdateRunnable.run();
             }
