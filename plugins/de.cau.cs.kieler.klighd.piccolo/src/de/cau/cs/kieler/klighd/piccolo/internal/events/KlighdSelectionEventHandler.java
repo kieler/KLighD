@@ -17,6 +17,7 @@ import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventLi
 import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.RIGHT_BUTTON;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Set;
@@ -29,6 +30,7 @@ import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController.JunctionPointCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -150,8 +152,54 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         performSelection(event);
     }
 
+    /**
+     * Implements the actual selection routine.
+     *
+     * @param event
+     *            the input event causing a selection update
+     */
     private void performSelection(final PInputEvent event) {
-        final PPickPath pickPath = event.getPath();
+        final PNode pickedNode = event.getPickedNode();
+        final PPickPath pickPath;
+
+        // first of all check whether a junction point (-camera) has been picked
+        if (pickedNode instanceof JunctionPointCamera) {
+            // if so we compute a new pick path with the pick area being the area
+            //  of the junction figure (which is the area of the junction cam);
+            // the rationale is to pick like with a pick punch the whole area of
+            //  the junction point figure in order to identify diverging rounded
+            //  bend point polylines!
+
+            // Of course, this approach is somehow costly!
+
+            // Thus, start with computing the junction cam's canvas-based bounds
+            //  by applying all transforms of the pickPath's transform stack,
+            //  i.e. an accumulated transform, to the cam's local bounds.
+            final Rectangle2D junctionCamBounds =
+                    event.getPath().getPathTransformTo(pickedNode).transform(
+                            pickedNode.getBounds(), null);
+
+            // Determine the pick halo to be half of the maximum of the junction cam's
+            //  width and height; the halo value will be applied twice for x- and y-direction,
+            //  see implementation of 'PCamera.pick(double, double, double)',
+            //  esp. the called 'PBounds' constructor 'PBounds(Point2D, double, double)'
+            final double halo = Math.max(
+                    junctionCamBounds.getWidth(), junctionCamBounds.getHeight()) / 2;
+
+            // Now compute the punch pick path ...
+            pickPath = event.getTopCamera().pick(
+                    junctionCamBounds.getCenterX(), junctionCamBounds.getCenterY(), halo);
+
+            // and drop the top and may be further picked junction paint cameras
+            PNode picked = pickPath.getPickedNode();
+            while (picked instanceof JunctionPointCamera) {
+                picked = pickPath.nextPickedNode();
+            }
+
+        } else {
+            // otherwise just evaluate the pick path provided by 'event'
+            pickPath = event.getPath();
+        }
 
         Set<EObject> selectedElements = null;
         do {

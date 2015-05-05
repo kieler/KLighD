@@ -44,6 +44,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * An {@link AbstractKGERenderingController} for {@link KEdge KEdges} generating the rendering
@@ -281,8 +282,14 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         for (int i = 0; i < missingJuncts; i++) {
             final PCamera cam = new JunctionPointCamera();
 
-            // set the camera non-pickable as the junction points can be panned locally :-)
-            cam.setPickable(false);
+            // set the camera pickable as junction points shall be selectable
+            // keep in mind: this might enable local panning of the junctionFigure ('s parent layer)!
+
+            // this however is avoided by the specialized 'KlighdInputEvent' that offers
+            //  the diagram top camera (usually the employed 'KlighdMainCamera') to the employed
+            //  event handlers by default, rather than the inner helper cameras ("bottom camera").
+            // see 'KlighdInputManager' for details
+            cam.setPickable(true);
 
             // add the layer to be shown by the camera
             cam.addLayer(junctionParent);
@@ -314,10 +321,40 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      *
      * @author chsch
      */
-    private static class JunctionPointCamera extends PCamera {
+    public static final class JunctionPointCamera extends PCamera {
 
         private static final long serialVersionUID = -1724430297849001050L;
 
+        private JunctionPointCamera() {
+        }
+
+        /**
+         * {@inheritDoc}<br>
+         * <br>
+         * This specialization enables the selectability of junction points, i.e. the diverging or
+         * converging edges. See
+         * {@link de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler
+         * #performSelection(PInputEvent) KlighdSelectionEventHandler#performSelection(PInputEvent)}
+         * for details.
+         */
+        @Override
+        public boolean fullPick(final PPickPath pickPath) {
+            if (fullIntersects(pickPath.getPickBounds())) {
+                pickPath.pushNode(this);
+                pickPath.pushTransform(getTransformReference(true));
+
+                final boolean thisPickable = getPickable() && pickPath.acceptsNode(this);
+
+                if (thisPickable) {
+                    return true;
+                }
+
+                pickPath.popTransform(getTransformReference(true));
+                pickPath.popNode(this);
+            }
+
+            return false;
+        }
     }
 
 
