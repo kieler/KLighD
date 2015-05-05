@@ -21,8 +21,10 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -81,6 +83,15 @@ public class RenderingTest {
     public static ResourceSet getResourceSet() {
         return new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration().getInstance(
                 XtextResourceSet.class);
+    }
+
+    /**
+     * Initialize the display as required by the employed {@link DiagramController},
+     * esp. its employed 'Job'.
+     */
+    @BeforeClass
+    public static void init() {
+        Display.getDefault();
     }
 
     /**
