@@ -22,10 +22,17 @@ import java.util.List;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.text.KGraphStandaloneSetup;
 import de.cau.cs.kieler.core.krendering.KBackground;
@@ -37,21 +44,22 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.core.krendering.KShadow;
 import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
+import de.cau.cs.kieler.klighd.util.Iterables2;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelPath;
-import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.PRoot;
 
 /**
@@ -68,9 +76,7 @@ import edu.umd.cs.piccolo.PRoot;
 @ModelFilter("KlighdRenderingTestModel.kgt")
 public class RenderingTest {
 
-    private KNode graph;
-
-    private DiagramController controller;
+    private final KNode graph;
 
     /**
      * Provides a {@link ResourceSet} in order to load the models properly.
@@ -84,18 +90,41 @@ public class RenderingTest {
     }
 
     /**
+     * Constructor. Is enabled in that form by the Model {@link ModelCollectionTestRunner}.
+     */
+    public RenderingTest(final KNode input) {
+        graph = input;
+    }
+
+    /**
      * Some initialization to insert input KGraph into some Klighd structures.
      *
      * @param n
      *            KNode representing the input KGraph
      */
-    private void initialize(final KNode n) {
-        graph = n;
-
+    @Before
+    public void initialize() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
-
-        controller = new DiagramController(graph, camera, true, false);
+        new DiagramController(graph, camera, true, false);
     }
+
+    /**
+     * This method just removes the auxiliary information attach by the {@link DiagramController}
+     * from 'graph's {@link KGraphElement KGraphElements}, i.e. cleans 'graph' up for the next test.
+     */
+    @After
+    public void dispose() {
+        final Predicate<Object> isRenderingContextData = Predicates.instanceOf(RenderingContextData.class);
+        for (final KGraphElement e : Iterables2.toIterable(
+                ModelingUtil.<KGraphElement>selfAndEAllContentsOfType2(graph, KGraphElement.class))) {
+            Iterables.removeIf(e.getData(), isRenderingContextData);
+        }
+    }
+
+
+    /** Just copied the property definition from {@link DiagramController}. */
+    private static final IProperty<KNodeAbstractNode> REP = new Property<KNodeAbstractNode>(
+            "klighd.piccolo.representation");
 
     /**
      * Test whether the test graphs styles are the same in KGraph notation as well as in the piccolo
@@ -106,13 +135,13 @@ public class RenderingTest {
      */
     @Test
     public void renderingStyleTest(final KNode node) {
-        initialize(node);
 
-        final String id = getKNodeId(node);
+        final KNodeAbstractNode targetNode = RenderingContextData.get(node).getProperty(REP);
+        final KlighdPath path = Iterables.getFirst(
+                Iterables.filter(targetNode.getChildrenReference(), KlighdPath.class), null);
 
-        final KNodeAbstractNode targetNode = findPNodeById(id, controller.getNode());
-        final KlighdPath path = getKlighdPath(targetNode);
         final KRendering ren = node.getData(KRendering.class);
+
         if (path != null && ren != null) {
             compareStyle(path, ren, node);
         }
@@ -130,12 +159,13 @@ public class RenderingTest {
      */
     @Test
     public void renderingShapeTest(final KNode node) {
-        initialize(node);
 
-        final String id = getKNodeId(node);
-        final KNodeAbstractNode targetNode = findPNodeById(id, controller.getNode());
-        final KlighdPath path = getKlighdPath(targetNode);
+        final KNodeAbstractNode targetNode = RenderingContextData.get(node).getProperty(REP);
+        final KlighdPath path = Iterables.getFirst(
+                Iterables.filter(targetNode.getChildrenReference(), KlighdPath.class), null);
+
         final KRendering ren = node.getData(KRendering.class);
+
         if (path != null && ren != null) {
             compareShape(path, ren, node);
         }
@@ -143,6 +173,7 @@ public class RenderingTest {
             renderingShapeTest(child);
         }
     }
+
 
     private String getKNodeId(final KNode node) {
         final KIdentifier ki = node.getData(KIdentifier.class);
@@ -184,9 +215,10 @@ public class RenderingTest {
      */
     private void compareStyle(final KlighdPath path, final KRendering ren, final KNode node) {
         final List<KStyle> styles = ren.getStyles();
-        final KBackground bg = (KBackground) getStyle(styles, KBackground.class);
-        final KForeground fg = (KForeground) getStyle(styles, KForeground.class);
-        final KShadow sh = (KShadow) getStyle(styles, KShadow.class);
+        final KBackground bg = Iterables.getLast(Iterables.filter(styles, KBackground.class), null);
+        final KForeground fg = Iterables.getLast(Iterables.filter(styles, KForeground.class), null);
+        final KShadow sh = Iterables.getLast(Iterables.filter(styles, KShadow.class), null);
+
         final RGB shadow = path.getShadow();
         final RGB paint = path.getSWTPaint();
         final RGBGradient paintGradient = path.getSWTPaintGradient();
@@ -230,76 +262,5 @@ public class RenderingTest {
                                 && (sh.getColor().getBlue() == shadow.blue) && (sh.getColor()
                                 .getGreen() == shadow.green)));
 
-    }
-
-    /**
-     * Fetch the style of a certain type out of list of styles usually attached to a KRendering. If
-     * multiple of the same type are present it will return the bottom most one which should also be
-     * the one that is actually displayed.
-     *
-     * @param styles
-     *            a list of styles, usually gotten from a KRendering
-     * @param type
-     *            the type of style to look for
-     * @return the style of given type or null if none found
-     */
-    private KStyle getStyle(final List<KStyle> styles, final Class<?> type) {
-        for (int i = (styles.size() - 1); i >= 0; i--) {
-            if (type.isInstance(styles.get(i))) {
-                return styles.get(i);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets the KlighdPath from the given node.
-     *
-     * @param node
-     *            the node whose path to get
-     * @return the KlighdPath attached to the given node
-     */
-    private KlighdPath getKlighdPath(final KNodeAbstractNode node) {
-        if (node instanceof PNode) {
-            for (int i = 0; i < ((PNode) node).getChildrenCount(); i++) {
-                final PNode pn = ((PNode) node).getChild(i);
-                if (pn instanceof KlighdPath) {
-                    return (KlighdPath) pn;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Finds a node with the given id in a given piccolo graph.
-     *
-     * @id the id to search for
-     * @param graph
-     *            the piccolo graph in which to search
-     * @return the node if found or null
-     */
-    private KNodeAbstractNode findPNodeById(final String id, final KNodeAbstractNode node) {
-        KIdentifier nodeID = null;
-        if (node instanceof KNodeNode) {
-            nodeID = ((KNodeNode) node).getViewModelElement().getData(KIdentifier.class);
-        }
-        if ((nodeID != null) && nodeID.getId().equals(id)) {
-            return node;
-        } else {
-            KNodeAbstractNode result = null;
-            final KChildAreaNode kcan = node.getChildAreaNode();
-            final PLayer nlay = kcan.getNodeLayer();
-            if (nlay != null) {
-                for (int i = 0; i < nlay.getChildrenCount(); i++) {
-                    final KNodeAbstractNode n = (KNodeAbstractNode) nlay.getChild(i);
-                    result = findPNodeById(id, n);
-                    if (result != null) {
-                        return result;
-                    }
-                }
-            }
-            return null;
-        }
     }
 }
