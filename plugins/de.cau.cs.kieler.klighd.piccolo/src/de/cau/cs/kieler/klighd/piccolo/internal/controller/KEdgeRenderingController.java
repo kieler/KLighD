@@ -334,8 +334,8 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
          * This specialization enables the selectability of junction points, i.e. the diverging or
          * converging edges. See
          * {@link de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectionEventHandler
-         * #performSelection(PInputEvent) KlighdSelectionEventHandler#performSelection(PInputEvent)}
-         * for details.
+         * #performSelection(edu.umd.cs.piccolo.event.PInputEvent)
+         * KlighdSelectionEventHandler#performSelection(PInputEvent)} for details.
          */
         @Override
         public boolean fullPick(final PPickPath pickPath) {
@@ -412,7 +412,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * {@inheritDoc}
      */
     @Override
-    protected void bringToFront() {
+    protected void moveToFront() {
         this.getRepresentation().moveToFront();
     }
 }
