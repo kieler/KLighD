@@ -479,6 +479,11 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      * transform).
      */
     private void adjustCamera() {
+        if (rootNode == null) {
+            // 'rootNode' is null if 'dispose()' was called while 'cameraTimer' is running
+            return;
+        }
+
         // always reveal the current shape layout - it may be exchanged over the diagram's life time
         final KShapeLayout layoutData = rootNode.getData(KShapeLayout.class);
 
@@ -493,6 +498,12 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      * Adjusts the displayed outline rectangle to the current view snippet.
      */
     private void adjustOutlineRect() {
+        if (topNode == null) {
+            // 'topNode' is null if 'dispose()' was called while 'cameraTimer' or 'outlineRectTimer'
+            //  are running
+            return;
+        }
+
         final KlighdMainCamera originalCamera = topNode.getDiagramMainCamera();
         if (originalCamera == null) {
             return;
