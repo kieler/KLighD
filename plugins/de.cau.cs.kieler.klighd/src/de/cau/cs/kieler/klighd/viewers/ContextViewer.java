@@ -777,7 +777,10 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      * {@inheritDoc}
      */
     public void toggleSelectionOfDiagramElements(final Set<? extends EObject> toBeToggled) {
-        final List<EObject> theSelection = newArrayList(this.getDiagramSelection());
+        final KlighdTreeSelection diagSelection = this.getDiagramSelection();
+        final List<EObject> theSelection = newArrayList(diagSelection != null
+                ? diagSelection : KlighdTreeSelection.EMPTY);
+
         for (final EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
             final boolean removed = theSelection.remove(diagramElement);
             if (!removed) {
