@@ -252,7 +252,12 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
         for (Map.Entry<IProperty<?>, Object> entry : props) {
             if (entry.getValue() instanceof IPropertyValueProxy) {
                 IPropertyValueProxy proxy = (IPropertyValueProxy) entry.getValue();
-                entry.setValue(proxy.resolveValue(entry.getKey()));
+                // Try to resolve the proxy's value, maybe the layout option was 
+                // registered by now. If not, we preserve the proxy. 
+                Object value = proxy.resolveValue(entry.getKey());
+                if (value != null) {
+                    entry.setValue(value);
+                }
             }
         }
         return props.map();
