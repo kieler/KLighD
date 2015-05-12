@@ -53,10 +53,10 @@ public class KlighdAlignmentNode extends KlighdNode.KlighdFigureNode<KRendering>
     }
 
     /** the horizontal alignment. */
-    private HorizontalAlignment halignment = null;
+    private HorizontalAlignment halignment = HorizontalAlignment.CENTER;
 
     /** the vertical alignment. */
-    private VerticalAlignment valignment = null;
+    private VerticalAlignment valignment = VerticalAlignment.CENTER;
 
     /**
      * Sets the horizontal alignment of a child node.
