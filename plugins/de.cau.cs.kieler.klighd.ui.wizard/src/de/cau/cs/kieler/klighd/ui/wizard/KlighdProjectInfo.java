@@ -29,6 +29,7 @@ public class KlighdProjectInfo implements IProjectInfo {
     private String transformationName;
     private String sourceModelClassFullyQualified;
     private boolean createXtendFile = false;
+    private String executionEnvironment;
     private boolean createMenuContribution = false;
     private boolean useFileEnding = false;
     private String fileEnding;
@@ -118,7 +119,22 @@ public class KlighdProjectInfo implements IProjectInfo {
     public void setCreateXtendFile(final boolean createXtendFile) {
         this.createXtendFile = createXtendFile;
     }
-    
+
+    /**
+     * @return the chosen execution environment's id
+     */
+    public String getExecutionEnvironment() {
+        return executionEnvironment;
+    }
+
+    /**
+     * @param executionEnvironment
+     *            the chosen execution environment's id
+     */
+    public void setExecutionEnvironment(final String executionEnvironment) {
+        this.executionEnvironment = executionEnvironment;
+    }
+
     /**
      * @return the createMenuContribution
      */

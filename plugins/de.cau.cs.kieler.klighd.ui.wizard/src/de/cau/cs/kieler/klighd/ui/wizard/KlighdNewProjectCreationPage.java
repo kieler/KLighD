@@ -21,11 +21,19 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -57,6 +65,7 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
     private Text fileEnding;
     private Button useJavaLang;
     private Button useXtendLang;
+    private ComboViewer execEnvCombo;
     private Button createMenuContribution;
     private Button useFileEnding;
     private Label fileEndingLabel;
@@ -109,15 +118,14 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
      * @param parent
      *            parent composite
      */
+    // SUPPRESS CHECKSTYLE NEXT Length -- ui stuff is lengthy, don't bother me!
     protected void createTransformationSelectionGroup(final Composite parent) {
         // Source Model
         final Group typeGroup = new Group(parent, SWT.NONE);
         typeGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_SourceModelGroupTitle);
         typeGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
-        // CHECKSTYLEOFF MagicNumber
         typeGroup.setLayout(new GridLayout(2, false));
-        // CHECKSTYLEON MagicNumber
-        typeGroup.setFont(parent.getFont());
+
         // text field
         sourceModel = new Text(typeGroup, SWT.BORDER);
         GridData textData = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -170,7 +178,6 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
 
         // DiagramSynthesis group
         Group transformationGroup = new Group(parent, SWT.NONE);
-        transformationGroup.setFont(parent.getFont());
         transformationGroup.setText(
                 JavaUIMessages.KlighdNewProjectCreationPage_DiagramSynthesisGroupTitle);
         transformationGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -209,17 +216,22 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
 
         // Which language to use, Java or Xtend?
         final Group languageGroup = new Group(parent, SWT.NONE);
-        languageGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-        languageGroup.setLayout(new GridLayout(2, false));
         languageGroup.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageGroupText);
         languageGroup.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageTooltip);
+        languageGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+        languageGroup.setLayout(new GridLayout(4, false)); // SUPPRESS CHECKSTYLE MagicNumber
+
         useJavaLang = new Button(languageGroup, SWT.RADIO);
         useJavaLang.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageJava);
         useJavaLang.setLayoutData(new GridData());
         useJavaLang.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageTooltip);
+
         useXtendLang = new Button(languageGroup, SWT.RADIO);
         useXtendLang.setText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageXtend);
-        useXtendLang.setLayoutData(new GridData());
+        final GridData useXtendLangLayout = new GridData();
+        useXtendLangLayout.grabExcessHorizontalSpace = true;
+        useXtendLangLayout.horizontalAlignment = SWT.CENTER;
+        useXtendLang.setLayoutData(useXtendLangLayout);
         useXtendLang.setToolTipText(JavaUIMessages.KlighdNewProjectCreationPage_LanguageTooltip);
 
         transformationName.addListener(SWT.Modify, modifyListener);
@@ -227,7 +239,39 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
         useJavaLang.addListener(SWT.Modify, modifyListener);
         useXtendLang.addListener(SWT.Modify, modifyListener);
         sourceModel.addListener(SWT.Modify, modifyListener);
-        
+
+        final Label execEnvLabel = new Label(languageGroup, SWT.NONE);
+        execEnvLabel.setText(JavaUIMessages.KlighdNewProjectCreationPage_RuntimeExecEnv);
+        final GridData execEnvLabelLayout = new GridData();
+        execEnvLabelLayout.grabExcessHorizontalSpace = true;
+        execEnvLabelLayout.horizontalAlignment = SWT.RIGHT;
+        execEnvLabel.setLayoutData(execEnvLabelLayout);
+
+        execEnvCombo = new ComboViewer(languageGroup);
+        execEnvCombo.getControl().setLayoutData(new GridData());
+        execEnvCombo.setLabelProvider(new LabelProvider() {
+
+            @Override
+            public String getText(final Object element) {
+                return ((IExecutionEnvironment) element).getId();
+            }
+        });
+
+        final IVMInstall defaultVM = JavaRuntime.getDefaultVMInstall();
+        final int minJavaVersion = 5;
+
+        for (IExecutionEnvironment e
+                : JavaRuntime.getExecutionEnvironmentsManager().getExecutionEnvironments()) {
+
+            final String id = e.getId();
+            if (id.startsWith("J")
+                    && Character.getNumericValue(id.charAt(id.length() - 1)) >= minJavaVersion) {
+                execEnvCombo.add(e);
+                if (e.isStrictlyCompatible(defaultVM)) {
+                    execEnvCombo.setSelection(new StructuredSelection(e));
+                }
+            }
+        }
         
         final Group uiConfigGroup = new Group(parent, SWT.NONE);
         uiConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
@@ -395,6 +439,16 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
      */
     public boolean isCreateXtendFile() {
         return useXtendLang.getSelection();
+    }
+
+    /**
+     * @return the <code>id</code> chosen java runtime execution environment
+     */
+    public String getExecEnvironment() {
+        final ISelection selection = execEnvCombo.getSelection();
+        return selection instanceof IStructuredSelection
+                ? ((IExecutionEnvironment) ((IStructuredSelection) selection).getFirstElement()).getId()
+                        : null;
     }
 
     /**

@@ -109,14 +109,17 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
      * @return the configured project factory
      */
     protected ProjectFactory configureProjectFactory(final ProjectFactory factory) {
-        PluginProjectFactory ppf = (PluginProjectFactory) factory;
+        final KlighdProjectInfo info = (KlighdProjectInfo) getProjectInfo();
 
-        ppf.setProjectName(getProjectInfo().getProjectName());
+        final PluginProjectFactory ppf = (PluginProjectFactory) factory;
+
+        ppf.setProjectName(info.getProjectName());
         ppf.addFolders(getAllFolders());
         ppf.addReferencedProjects(getReferencedProjects());
         ppf.addProjectNatures(getProjectNatures());
         ppf.addBuilderIds(getBuilders());
 
+        ppf.setBreeToUse(info.getExecutionEnvironment());
         ppf.addRequiredBundles(getRequiredBundles());
         ppf.addExportedPackages(getExportedPackages());
         ppf.addImportedPackages(getImportedPackages());

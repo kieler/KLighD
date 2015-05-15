@@ -39,6 +39,7 @@ final class JavaUIMessages extends NLS {
     public static String KlighdNewProjectCreationPage_LanguageGroupText;
     public static String KlighdNewProjectCreationPage_LanguageJava;
     public static String KlighdNewProjectCreationPage_LanguageXtend;
+    public static String KlighdNewProjectCreationPage_RuntimeExecEnv;
     public static String KlighdNewProjectCreationPage_UIGroupText;
     public static String KlighdNewProjectCreationPage_MsgInvalidProjectName;
     public static String KlighdNewProjectCreationPage_MsgInvalidTransformationName;
