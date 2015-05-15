@@ -118,6 +118,9 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
         ppf.addReferencedProjects(getReferencedProjects());
         ppf.addProjectNatures(getProjectNatures());
         ppf.addBuilderIds(getBuilders());
+        if (info.isCreateXtendFile()) {            
+            ppf.addFolders(Lists.newArrayList("xtend-gen"));
+        }
 
         ppf.setBreeToUse(info.getExecutionEnvironment());
         ppf.addRequiredBundles(getRequiredBundles());
@@ -140,18 +143,26 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
     /**
      * @return the required project natures
      */
+    @SuppressWarnings("restriction")
     protected String[] getProjectNatures() {
-        return new String[] { JavaCore.NATURE_ID, "org.eclipse.pde.PluginNature", //$NON-NLS-1$
-                XtextProjectHelper.NATURE_ID };
+        return new String[] {
+                JavaCore.NATURE_ID,
+                org.eclipse.pde.internal.core.natures.PDE.PLUGIN_NATURE,
+                XtextProjectHelper.NATURE_ID
+            };
     }
 
     /**
      * @return the required builders
      */
+    @SuppressWarnings("restriction")
     protected String[] getBuilders() {
-        return new String[] { JavaCore.BUILDER_ID, "org.eclipse.pde.ManifestBuilder", //$NON-NLS-1$
-                "org.eclipse.pde.SchemaBuilder", //$NON-NLS-1$
-                XtextProjectHelper.BUILDER_ID };
+        return new String[] {
+                JavaCore.BUILDER_ID,
+                org.eclipse.pde.internal.core.natures.PDE.MANIFEST_BUILDER_ID,
+                org.eclipse.pde.internal.core.natures.PDE.SCHEMA_BUILDER_ID,
+                XtextProjectHelper.BUILDER_ID
+            };
     }
 
     /**

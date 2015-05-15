@@ -33,7 +33,6 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
     }
 
     override def contributeFiles(IProject project, IFileCreator fileWriter) {
-        contributeBuildProperties(fileWriter)
         contributePluginExtensions(fileWriter)
         contributeJDTprefs(fileWriter);
 
@@ -153,16 +152,6 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
     def private getTransformationPath() {
         KlighdWizardSetup.SRC_FOLDER + projectInfo.transformationPackage.replace(".", "/") + "/" +
             projectInfo.transformationName
-    }
-
-    def private contributeBuildProperties(IFileCreator fileWriter) {
-        '''
-            source.. = «IF projectInfo.createXtendFile»xtend-gen/,\«ENDIF»
-                      src/
-            bin.includes = META-INF/,\
-                    plugin.xml,\
-                         .
-        '''.writeToFile(fileWriter, "build.properties")
     }
 
     def private contributePluginExtensions(IFileCreator fileWriter) {

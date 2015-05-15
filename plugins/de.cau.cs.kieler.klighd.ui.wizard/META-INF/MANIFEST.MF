@@ -15,7 +15,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching,
  org.eclipse.jdt.ui,
- org.eclipse.jdt.annotation,
+ org.eclipse.pde.core,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.shared
