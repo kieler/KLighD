@@ -21,9 +21,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.xtext.ui.XtextProjectHelper;
 import org.eclipse.xtext.ui.util.PluginProjectFactory;
@@ -31,6 +34,8 @@ import org.eclipse.xtext.ui.util.ProjectFactory;
 import org.eclipse.xtext.ui.wizard.IProjectCreator;
 import org.eclipse.xtext.ui.wizard.IProjectInfo;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -44,8 +49,73 @@ import com.google.inject.Provider;
  */
 public class KlighdProjectCreator extends WorkspaceModifyOperation implements IProjectCreator {
 
+    /**
+     * Specialization in order to be able to configure the JRE container.
+     * Implementation is quite ugly and shall be replaced once
+     * <a href=https://bugs.eclipse.org/bugs/show_bug.cgi?id=467391>
+     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=467391</a> is resolved.
+     *  
+     * @author chsch
+     */
+    public static class KlighdProjectFactory extends PluginProjectFactory {
+        
+        private static final String J2SE_15 = "J2SE-1.5";
+        private static final String JAVA_SE_1 = "JavaSE-1.";
+
+        private String jreContainer = J2SE_15;
+        
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void setBreeToUse(final String breeToUse) {
+            super.setBreeToUse(breeToUse);
+            this.jreContainer = breeToUse;
+        }
+
+        private static final Predicate<IClasspathEntry> CLASSPATH_FILTER = 
+                new Predicate<IClasspathEntry>() {
+
+            @SuppressWarnings("restriction")
+            public boolean apply(final IClasspathEntry input) {
+                
+                // I explicitly need to check for 'ClasspathEntry' as the path can't
+                //  be modified via just 'IClasspathEntry', see below
+                if (input instanceof org.eclipse.jdt.internal.core.ClasspathEntry) {
+                    final IPath path = input.getPath();
+                    return path != null && JavaRuntime.JRE_CONTAINER.equals(path.segment(0));
+                    
+                } else {
+                    return false;
+                }
+            }
+        };
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("restriction")
+        protected void addMoreClasspathEntriesTo(final List<IClasspathEntry> classpathEntries) {
+
+            final org.eclipse.jdt.internal.core.ClasspathEntry jre =
+                    (org.eclipse.jdt.internal.core.ClasspathEntry) 
+                            Iterables.find(classpathEntries, CLASSPATH_FILTER, null);
+
+            if (jre != null) {
+                final String lastSegment = jre.path.lastSegment();
+    
+                if (lastSegment.equals(J2SE_15) || lastSegment.startsWith(JAVA_SE_1)) {
+                    jre.path = jre.path.uptoSegment(2).append(jreContainer);
+                }
+            }
+
+            super.addMoreClasspathEntriesTo(classpathEntries);
+        }
+    }
+    
     @Inject
-    private Provider<PluginProjectFactory> projectFactoryProvider;
+    private Provider<KlighdProjectFactory> projectFactoryProvider;
 
     private IFile result;
     private IProjectInfo projectInfo;
@@ -86,7 +156,9 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
     /**
      * @return plugin project factory
      */
-    protected PluginProjectFactory createProjectFactory() {
+    protected KlighdProjectFactory createProjectFactory() {
+        // need to instantiate via injection since
+        //  the base class 'ProjectFactory' has fields requiring injection
         return projectFactoryProvider.get();
     }
 
@@ -96,22 +168,18 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
      * @return a created project.
      */
     protected IProject createProject(final IProgressMonitor monitor) {
-        ProjectFactory factory = createProjectFactory();
-        configureProjectFactory(factory);
-        return factory.createProject(monitor, null);
+        return createAndConfigureProjectFactory().createProject(monitor, null);
     }
 
     /**
-     * Configures the project factory, e.g., by adding all required bundles and exported packages.
+     * Composes the project factory, e.g., by adding all required bundles and exported packages.
      * 
-     * @param factory
-     *            project factory
      * @return the configured project factory
      */
-    protected ProjectFactory configureProjectFactory(final ProjectFactory factory) {
+    protected ProjectFactory createAndConfigureProjectFactory() {
         final KlighdProjectInfo info = (KlighdProjectInfo) getProjectInfo();
 
-        final PluginProjectFactory ppf = (PluginProjectFactory) factory;
+        final PluginProjectFactory ppf = createProjectFactory();
 
         ppf.setProjectName(info.getProjectName());
         ppf.addFolders(getAllFolders());
@@ -128,9 +196,9 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
         ppf.addImportedPackages(getImportedPackages());
         ppf.setActivatorClassName(getActivatorClassName());
 
-        factory.addContributor(new KlighdProjectContributor((KlighdProjectInfo) getProjectInfo()));
+        ppf.addContributor(new KlighdProjectContributor((KlighdProjectInfo) getProjectInfo()));
 
-        return factory;
+        return ppf;
     }
 
     /**
