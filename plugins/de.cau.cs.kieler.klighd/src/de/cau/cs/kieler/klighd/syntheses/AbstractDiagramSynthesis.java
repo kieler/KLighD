@@ -426,7 +426,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
 
     /**
-     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
+     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}. A
+     * list of typically configured options is given in {@link DiagramLayoutOptions}.
      *
      * @param <R>
      *            the concrete type of <code>element</code>
@@ -449,7 +450,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     /**
      * Convenience method for defining multiple layout options for {@link KGraphElement
-     * KGraphElements}.<br>
+     * KGraphElements}. A list of typically configured options is given in
+     * {@link DiagramLayoutOptions}.<br>
      * The required <code>optionValueMap</code> can be easily created via
      * {@link com.google.common.collect.ImmutableMap#of(Object, Object, Object, Object)
      * ImmutableMap#of(Object, Object, Object, Object)}, for example.
@@ -472,7 +474,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
 
     /**
      * Convenience method for defining collapse/expand state dependent layout options for
-     * {@link KNode KNodes}.
+     * {@link KNode KNodes}. A list of typically configured options is given in
+     * {@link DiagramLayoutOptions}.
      *
      * @param <T>
      *            the property value type
@@ -497,7 +500,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     /**
      * Convenience method for defining collapse/expand state dependent layout options for
      * {@link KPort KPorts}. The collapse/expand state refers to that of the {@link KNode}
-     * containing the {@link KPort}.
+     * containing the {@link KPort}. A list of typically configured options is given in
+     * {@link DiagramLayoutOptions}.
      *
      * @param <T>
      *            the property value type

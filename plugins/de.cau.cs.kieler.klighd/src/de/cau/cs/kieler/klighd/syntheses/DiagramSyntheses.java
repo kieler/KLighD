@@ -64,7 +64,8 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}.
+     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}. A
+     * list of typically configured options is given in {@link DiagramLayoutOptions}.
      *
      * @param <R>
      *            the concrete type of <code>element</code>
@@ -86,9 +87,9 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Convenience method for defining layout options for {@link KGraphElement KGraphElements}
-     * based on ids and possibly string representations of properties defined by
-     * {@link java.util.EnumSet}s.
+     * Convenience method for defining layout options for {@link KGraphElement KGraphElements} based
+     * on ids and string representations of property values. A list of typically configured options
+     * is given in {@link DiagramLayoutOptions}.
      *
      * @param <R>
      *            the concrete type of <code>element</code>
@@ -98,8 +99,8 @@ public final class DiagramSyntheses {
      *            the particular layout option's id, e.g. one of
      *            {@link de.cau.cs.kieler.kiml.options.LayoutOptions LayoutOptions}
      * @param value
-     *            the option value. It is possible to pass string representations
-     *            of EnumSets as well as any non-string property.
+     *            the option value. It is possible to pass string representations of EnumSets as
+     *            well as any non-string property.
      * @return <code>element</code> allowing to perform multiple operations on it in one statement
      */
     public static <R extends KGraphElement> R setLayoutOption(final R element,
@@ -117,11 +118,12 @@ public final class DiagramSyntheses {
 
     /**
      * Convenience method for defining multiple layout options for {@link KGraphElement
-     * KGraphElements}.<br>
+     * KGraphElements}. A list of typically configured options is given in
+     * {@link DiagramLayoutOptions}.<br>
      * The required <code>optionValueMap</code> can be easily created via<br>
      * {@link com.google.common.collect.ImmutableMap#of(Object, Object, Object, Object)
-     * ImmutableMap.&lt;IProperty&lt;?&gt;, Object&gt;of(option, value, option, value, ...)},
-     * for example.
+     * ImmutableMap.&lt;IProperty&lt;?&gt;, Object&gt;of(option, value, option, value, ...)}, for
+     * example.
      *
      * @param <R>
      *            the concrete type of <code>element</code>
@@ -149,7 +151,8 @@ public final class DiagramSyntheses {
 
     /**
      * Convenience method for defining collapse/expand state dependent layout options for
-     * {@link KNode KNodes}.
+     * {@link KNode KNodes}. A list of typically configured options is given in
+     * {@link DiagramLayoutOptions}.
      *
      * @param <T>
      *            the property value type
@@ -176,7 +179,8 @@ public final class DiagramSyntheses {
     /**
      * Convenience method for defining collapse/expand state dependent layout options for
      * {@link KPort KPorts}. The collapse/expand state refers to that of the {@link KNode}
-     * containing the {@link KPort}.
+     * containing the {@link KPort}. A list of typically configured options is given in
+     * {@link DiagramLayoutOptions}.
      *
      * @param <T>
      *            the property value type
