@@ -219,12 +219,14 @@ public final class SynthesisOption {
         SEPARATOR;
     }
     
-    private String name;    
-    private TransformationOptionType type;
+    private final String name;    
+    private final TransformationOptionType type;
+    private final Object initialValue;
     private List<?> values;
     private Pair<? extends Number, ? extends Number> range;
     private Number stepSize;
-    private Object initialValue;
+    private Boolean animateUpdate = null;
+    private String updateStrategy = null;
     
     /**
      * Constructor.
@@ -309,6 +311,44 @@ public final class SynthesisOption {
      */
     public Object getInitialValue() {
         return initialValue;
+    }
+
+    /**
+     * @return {@link Boolean#TRUE} if animation shall be applied while updating the diagram,
+     *         {@link Boolean#FALSE} if <i>no</i> animation shall be applied while updating the
+     *         diagram, or <code>null</code> if no setting is configured (default).
+     */
+    public Boolean getAnimateUpdate() {
+        return animateUpdate;
+    }
+
+    /**
+     * @param animate
+     *            <code>true</code> if animation shall be applied while updating the diagram,
+     *            <code>false</code> if no animation shall be applied
+     * @return <code>this</code> {@link SynthesisOption} for convenience
+     */
+    public SynthesisOption setAnimateUpdate(final boolean animate) {
+        this.animateUpdate = Boolean.valueOf(animate);
+        return this;
+    }
+
+    /**
+     * @return the id of the {@link IUpdateStrategy} to apply while updating the view model, or
+     *         <code>null</code> if no dedicated strategy is configured (default case)
+     */
+    public String getUpdateStrategy() {
+        return this.updateStrategy;
+    }
+
+    /**
+     * @param strategyId
+     *            the id of the {@link IUpdateStrategy} to apply while updating the view model
+     * @return <code>this</code> {@link SynthesisOption} for convenience
+     */
+    public SynthesisOption setUpdateStrategy(final String strategyId) {
+        this.updateStrategy = strategyId;
+        return this;
     }
 
     /**

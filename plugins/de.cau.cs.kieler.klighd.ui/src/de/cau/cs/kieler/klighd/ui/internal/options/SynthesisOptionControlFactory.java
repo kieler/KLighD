@@ -34,6 +34,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * A factory providing methods for creating diagram synthesis option controls in the diagram side bar.
@@ -127,18 +128,24 @@ public class SynthesisOptionControlFactory {
         // set initial value
         checkButton.setSelection((Boolean) context.getOptionValue(option));
 
+        final String us = option.getUpdateStrategy();
+        final KlighdSynthesisProperties properties = 
+                us == null ? null : KlighdSynthesisProperties.create().useUpdateStrategy(us);
+
         // add a selection listener for instant diagram updates
         checkButton.addSelectionListener(new SelectionAdapter() {
-            
+
             @Override
             public void widgetSelected(final SelectionEvent event) {
                 // set the new option value and trigger the diagram update
                 context.configureOption(option, ((Button) event.widget).getSelection());
-                
+
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
+
                     public void run() {
-                        LightDiagramServices.updateDiagram(context);
+                        LightDiagramServices.updateDiagram(
+                                context, null, properties, option.getAnimateUpdate());
                     }
                 });
             }
@@ -178,6 +185,10 @@ public class SynthesisOptionControlFactory {
             button.setToolTipText(value.toString());
             button.setLayoutData(vGd);
 
+            final String us = option.getUpdateStrategy();
+            final KlighdSynthesisProperties properties = 
+                    us == null ? null : KlighdSynthesisProperties.create().useUpdateStrategy(us);
+
             // ... add a selection listener for instant diagram updates ...
             button.addSelectionListener(new SelectionAdapter() {
 
@@ -190,7 +201,8 @@ public class SynthesisOptionControlFactory {
                         // trigger the diagram update
                         Display.getCurrent().asyncExec(new Runnable() {
                             public void run() {
-                        	LightDiagramServices.updateDiagram(context);
+                                LightDiagramServices.updateDiagram(
+                                        context, null, properties, option.getAnimateUpdate());
                             }
                         });
                     }
@@ -261,6 +273,10 @@ public class SynthesisOptionControlFactory {
         final String labelString = option.getName() + ": ";
         label.setText(labelString + context.getOptionValue(option));
 
+        final String us = option.getUpdateStrategy();
+        final KlighdSynthesisProperties properties = 
+                us == null ? null : KlighdSynthesisProperties.create().useUpdateStrategy(us);
+
         // and finally add a selection listener for instant diagram updates
         scale.addSelectionListener(new SelectionAdapter() {
             
@@ -302,7 +318,8 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        LightDiagramServices.updateDiagram(context);
+                        LightDiagramServices.updateDiagram(
+                                context, null, properties, option.getAnimateUpdate());
                     }
                 });
             }
