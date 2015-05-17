@@ -100,6 +100,8 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
             import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
             
+            import static de.cau.cs.kieler.klighd.syntheses.DiagramLayoutOptions.*
+            
             import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
             
             import «projectInfo.sourceModelClassFullyQualified»
@@ -122,6 +124,9 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
                     
                     // Your dsl element <-> diagram figure mapping goes here!!
                     
+                    // Notice the statically imported classes 'DiagramSyntheses' and 'DiagramLayoutOptions'
+                    //  that contribute direct access to a couple of (layout) configurations
+                    
                     return root;
                 }
                 
@@ -135,14 +140,26 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
         '''
             package «projectInfo.transformationPackage»;
             
+            import static de.cau.cs.kieler.klighd.syntheses.DiagramLayoutOptions.*;
+            import static de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*;
+            
             import de.cau.cs.kieler.core.kgraph.KNode;
+            import de.cau.cs.kieler.kiml.util.KimlUtil;
             import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
             import «projectInfo.sourceModelClassFullyQualified»;
             
             public class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
             
                 public KNode transform(final «projectInfo.sourceModelClassSimple» model) {
-                    throw new UnsupportedOperationException("TODO: auto-generated method stub");
+                    final KNode root = KimlUtil.createInitializedNode();
+                    associateWith(root, model);
+                    
+                    // Your dsl element <-> diagram figure mapping goes here!!
+                    
+                    // Notice the statically imported classes 'DiagramSyntheses' and 'DiagramLayoutOptions'
+                    //  that contribute direct access to a couple of (layout) configurations
+                    
+                    return root;
                 }
             }
         '''.writeToFile(fileWriter, getTransformationPath() + ".java")
