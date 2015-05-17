@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 
 /**
  * A factory providing methods for creating diagram synthesis option controls in the diagram side bar.
@@ -138,7 +138,7 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        DiagramViewManager.updateView(context);
+                        LightDiagramServices.updateDiagram(context);
                     }
                 });
             }
@@ -190,7 +190,7 @@ public class SynthesisOptionControlFactory {
                         // trigger the diagram update
                         Display.getCurrent().asyncExec(new Runnable() {
                             public void run() {
-                                DiagramViewManager.updateView(context);
+                        	LightDiagramServices.updateDiagram(context);
                             }
                         });
                     }
@@ -302,7 +302,7 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        DiagramViewManager.updateView(context);
+                        LightDiagramServices.updateDiagram(context);
                     }
                 });
             }
