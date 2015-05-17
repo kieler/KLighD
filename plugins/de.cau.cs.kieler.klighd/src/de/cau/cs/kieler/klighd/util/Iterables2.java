@@ -44,18 +44,34 @@ public final class Iterables2 {
     }
 
     /**
-     * Provides a related {@link Iterable} for an {@link Iterator}.
-     *
+     * Provides a related {@link Iterable} wrapping the given {@link Iterator} for use in
+     * <code>for</code> loops.<br>
+     * <b>Caution:</b> The method {@link Iterable#iterator() iterator()} of the returned
+     * {@link Iterable} must not be called more than once, an {@link IllegalStateException} is
+     * thrown if this condition is violated.
+     * 
      * @param <T>
      *            the generic type of {@code iterator}
      * @param iterator
      *            the {@link Iterator} to wrap
+     * @throws IllegalStateException
+     *             if {@link Iterable#iterator() iterator()} is called more than once on the
+     *             returned {@link Iterable}, as the wrapped {@link Iterator} is likely to be
+     *             exhausted
      * @return the wrapping {@link Iterable}
      */
     public static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
         return new Iterable<T>() {
-
+            private boolean exhausted = false;
+            
             public Iterator<T> iterator() {
+                if (exhausted) {
+                    throw new IllegalStateException(
+                            "The wrapped Iterator has been accessed already,"
+                            + " it is forbidden to request it more than once for this Iterable!");
+                }
+
+                exhausted = true;
                 return iterator;
             }
         };
