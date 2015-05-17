@@ -190,51 +190,25 @@ public final class DiagramViewManager implements IPartListener {
             final Object model, final IPropertyHolder properties) {
 
         // get the view
-        final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        final IWorkbenchPage page = window.getActivePage();
-        ViewContext viewContext = getInstance().idContextMapping.get(id);
+        final IDiagramWorkbenchPart diagramView = getDiagramWorkbenchPart(id);
+        if (diagramView == null) {
+            return null;
 
-        IDiagramWorkbenchPart diagramView = getView(id);
+        } else if (name != null && diagramView instanceof DiagramViewPart) {
+            // set/update the view name
+            ((DiagramViewPart) diagramView).setName(name);
+        } 
 
-        if (diagramView != null) {
-            // set the view name
-            if (name != null) {
-                ((DiagramViewPart) diagramView).setName(name);
-            }
-        } else {
-            diagramView = getEditor(id);
-            if (diagramView == null) {
-                return null;
-            }
-        }
+        final ViewContext viewContext = diagramView.getViewContext();
 
-        // 'diagramView' is supposed to be non-null here
         if (viewContext == null) {
-            viewContext = diagramView.getViewer().getViewContext();
-            if (viewContext == null) {
-                return null;
-            }
+            return null;
         }
 
         // update the view context
-        final Object currentInputModel = viewContext.getInputModel();
-        if (model != null || currentInputModel != null) {
-            page.bringToTop(diagramView);
-            // update the view context and viewer
-            final Object theModel = (model != null ? model : currentInputModel);
-
-            viewContext.getLayoutRecorder().startRecording();
-            final boolean successful = viewContext.update(theModel, properties);
-
-            // in case the view update didn't work properly
-            //  consider this as a failure according to the method doc!
-            if (!successful) {
-                return null;
-            }
-
-            LightDiagramServices.layoutDiagram(viewContext);
+        if (!LightDiagramServices.updateDiagram(viewContext)) {
+            return null;
         }
-
 
         // trigger the update status
         KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, viewContext);
@@ -269,38 +243,8 @@ public final class DiagramViewManager implements IPartListener {
      * @return the view with the identifier or null on failure
      */
     public static IDiagramWorkbenchPart updateView(final ViewContext viewContext, final Object model) {
-        // update the view context
-
-        final IDiagramWorkbenchPart diagramView = viewContext.getDiagramWorkbenchPart();
-        final IWorkbenchPage page;
-
-        if (diagramView instanceof DiagramViewPart) {
-            page = diagramView.getSite().getPage();
-        } else if (diagramView instanceof DiagramEditorPart) {
-            page = diagramView.getSite().getPage();
-        } else {
-            return null;
-        }
-
-        final Object currentInputModel = viewContext.getInputModel();
-        if (model != null || currentInputModel != null) {
-            page.bringToTop(diagramView);
-
-            // update the view context and viewer
-            final Object theModel = (model != null ? model : currentInputModel);
-
-            viewContext.getLayoutRecorder().startRecording();
-            final boolean successful = viewContext.update(theModel);
-
-            // in case the view update didn't work properly
-            //  consider this as a failure according to the method doc!
-            if (!successful) {
-                return null;
-            }
-
-            LightDiagramServices.layoutDiagram(viewContext);
-        }
-        return diagramView;
+        boolean res = LightDiagramServices.updateDiagram(viewContext, model);
+        return res ? viewContext.getDiagramWorkbenchPart() : null;
     }
 
     /**
