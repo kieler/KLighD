@@ -31,6 +31,7 @@ import de.cau.cs.kieler.kiml.options.PortLabelPlacement
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.List
 import javax.inject.Inject
+import de.cau.cs.kieler.core.kgraph.KEdge
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
@@ -115,21 +116,18 @@ class KLabelExtensions {
     
     
     def KLabel setLabelSize(KLabel label, float width, float height) {
-        return label => [
-            getData(typeof(KShapeLayout)).setSize(width, height)
-        ];
+        label.getData(typeof(KShapeLayout)).setSize(width, height)
+        return label;
     }
     
     def KLabel setLabelPos(KLabel label, float x, float y) {
-        return label => [
-            getData(typeof(KShapeLayout)).setPos(x, y)
-        ];
+        label.getData(typeof(KShapeLayout)).setPos(x, y)
+        return label;
     }
     
     def <T> KLabel addLayoutParam(KLabel label, IProperty<? super T> property, T value) {
-        return label => [
-            it.getData(typeof(KShapeLayout)).setProperty(property, value)
-        ];
+        label.getData(typeof(KShapeLayout)).setProperty(property, value)
+        return label;
     }
 
 
@@ -465,32 +463,50 @@ class KLabelExtensions {
      * Configures a central (main) edge label, e.g. a state transition guard/effect label!
      */
     def KLabel configureCenterEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        return label => [
-            it.basicConfigureLabel(labelText, fontSize, fontName);
-            it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::CENTER);
-        ];
+        return label.basicConfigureLabel(labelText, fontSize, fontName).addLayoutParam(
+            LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::CENTER
+        );
+    }
+
+    /**
+     * Adds a central (main) label to {@link KEdge} <code>edge</code>.
+     */
+    def KLabel addCenterEdgeLabel(KEdge edge, String labelText, int fontSize, String fontName) {
+        return edge.createLabel().configureCenterEdgeLabel(labelText, fontSize, fontName);
     }
 
     /**
      * Configures a head edge label, e.g. the cardinality of a relation in an class diagram!
      */
     def KLabel configureHeadEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        return label => [
-            it.basicConfigureLabel(labelText, fontSize, fontName);
-            it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::HEAD);
-        ];
+        return label.basicConfigureLabel(labelText, fontSize, fontName).addLayoutParam(
+            LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::HEAD
+        );
+    }
+
+    /**
+     * Adds a head label (target side) to {@link KEdge} <code>edge</code>.
+     */
+    def KLabel addHeadEdgeLabel(KEdge edge, String labelText, int fontSize, String fontName) {
+        return edge.createLabel().configureHeadEdgeLabel(labelText, fontSize, fontName);
     }
 
     /**
      * Configures a tail edge label, e.g. the cardinality of a relation in an class diagram!
      */
     def KLabel configureTailEdgeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        return label => [
-            it.basicConfigureLabel(labelText, fontSize, fontName);
-            it.addLayoutParam(LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::TAIL);
-        ];
+        return label.basicConfigureLabel(labelText, fontSize, fontName).addLayoutParam(
+            LayoutOptions::EDGE_LABEL_PLACEMENT, EdgeLabelPlacement::TAIL
+        );
     }
-    
+
+    /**
+     * Adds a tail label (source side) to {@link KEdge} <code>edge</code>.
+     */
+    def KLabel addTailEdgeLabel(KEdge edge, String labelText, int fontSize, String fontName) {
+        return edge.createLabel().configureTailEdgeLabel(labelText, fontSize, fontName);
+    }
+
 
     /* ----------------- */
     /*   other helpers   */
@@ -500,11 +516,12 @@ class KLabelExtensions {
      * The least common denominator of all the 'configure...Label' methods.<br>
      * Is private as it's to be used internally only!
      */
-    def void basicConfigureLabel(KLabel label, String labelText, int fontSize, String fontName) {
+    def KLabel basicConfigureLabel(KLabel label, String labelText, int fontSize, String fontName) {
         label.text = labelText;
         label.data += createKText().setFontName(fontName).setFontSize(fontSize);
         label.addLayoutParam(LayoutOptions::FONT_NAME, fontName);
         label.addLayoutParam(LayoutOptions::FONT_SIZE, fontSize);
+        return label;
     }
     
     /**
