@@ -292,12 +292,12 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      */
     protected void addButtons() {
         final IToolBarManager toolBar = getViewSite().getActionBars().getToolBarManager();
-        toolBar.add(new Action("Refresh diagram", KlighdPlugin
-                .getImageDescriptor("icons/full/elcl16/refresh.gif")) {
+        toolBar.add(new Action("Refresh diagram",
+                KlighdPlugin.getImageDescriptor("icons/full/elcl16/refresh.gif")) {
 
             @Override
             public void run() {
-                DiagramViewManager.updateView(DiagramViewPart.this.getViewContext());
+                LightDiagramServices.updateDiagram(DiagramViewPart.this.getViewContext(), false);
             }
         });
 
