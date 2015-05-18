@@ -51,7 +51,8 @@ public final class KlighdWizardSetup {
             "javax.inject", "com.google.guava", "com.google.inject", "org.eclipse.xtext.xbase.lib",
             "de.cau.cs.kieler.core.krendering", "de.cau.cs.kieler.core.krendering.extensions",
             "de.cau.cs.kieler.kiml", "de.cau.cs.kieler.klay.layered",
-            "de.cau.cs.kieler.klighd", "de.cau.cs.kieler.klighd.ui", "de.cau.cs.kieler.klighd.piccolo",
+            "de.cau.cs.kieler.klighd", "de.cau.cs.kieler.klighd.piccolo",
+            "de.cau.cs.kieler.klighd.ui", "de.cau.cs.kieler.klighd.ui.contrib3x",
             "de.cau.cs.kieler.kiml.graphviz.layouter;resolution:=optional",
             "org.eclipse.ui", // required for the menu contribution extension points
             "org.eclipse.ui.ide.application", "org.eclipse.ui.navigator.resources",
