@@ -19,8 +19,10 @@ import com.google.common.collect.Maps;
 
 /**
  * An color library containing a huge collection named colors.<br>
- * The list of literals have been extracted from http://www.farb-tabelle.de/de/farbtabelle.htm.  
- * 
+ * The list of literals have been extracted from
+ * <a href="http://www.farb-tabelle.de/de/farbtabelle.htm">
+ * http://www.farb-tabelle.de/de/farbtabelle.htm</a>.
+ *
  * @author als
  * @author chsch
  */
