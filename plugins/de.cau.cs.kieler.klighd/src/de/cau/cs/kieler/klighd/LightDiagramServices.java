@@ -91,7 +91,7 @@ public final class LightDiagramServices {
     public static boolean updateDiagram(final ViewContext viewContext, final boolean animate) {
         return updateDiagram(viewContext, null, null, animate);
     }
-    
+
     /**
      * Updates the diagram represented by the given {@link ViewContext}.<br>
      * <br>
@@ -105,14 +105,14 @@ public final class LightDiagramServices {
      *         otherwise
      */
     public static boolean updateDiagram(final ViewContext viewContext, final Object model) {
-        return updateDiagram(viewContext, null, null, null);
+        return updateDiagram(viewContext, model, null, null);
     }
 
     /**
      * Updates the diagram represented by the given {@link ViewContext}.<br>
      * <br>
      * The <code>viewContext</code>'s current input model is re-evaluated.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} of the diagram to be updated
      * @param properties
@@ -130,7 +130,7 @@ public final class LightDiagramServices {
      * Updates the diagram represented by the given {@link ViewContext}.<br>
      * <br>
      * The <code>viewContext</code>'s current input model replaced by <code>model</code>.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} of the diagram to be updated
      * @param model
@@ -144,12 +144,12 @@ public final class LightDiagramServices {
             final boolean animate) {
         return updateDiagram(viewContext, model, null, animate);
     }
-    
+
     /**
      * Updates the diagram represented by the given {@link ViewContext}.<br>
      * <br>
      * The <code>viewContext</code>'s current input model replaced by <code>model</code>.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} of the diagram to be updated
      * @param model
@@ -169,7 +169,7 @@ public final class LightDiagramServices {
      * Updates the diagram represented by the given {@link ViewContext}.<br>
      * <br>
      * The <code>viewContext</code>'s current input model is re-evaluated.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} of the diagram to be updated
      * @param properties
@@ -189,7 +189,7 @@ public final class LightDiagramServices {
      * Updates the diagram represented by the given {@link ViewContext}.<br>
      * <br>
      * The <code>viewContext</code>'s current input model replaced by <code>model</code>.
-     * 
+     *
      * @param viewContext
      *            the {@link ViewContext} of the diagram to be updated
      * @param model
@@ -721,7 +721,7 @@ public final class LightDiagramServices {
                     theViewContext.getAdditionalLayoutConfigs();
 
             final Object diagramPart = recorder != null ? recorder : theViewContext;
-            
+
             final ILayoutCancelationIndicator cancelationIndicator = thePart != null
                     ? new DispositionAwareCancelationHandle(thePart) : null;
 
@@ -783,23 +783,23 @@ public final class LightDiagramServices {
      * {@link IDiagramWorkbenchPart} for disposition. Is handed over to the
      * {@link DiagramLayoutEngine} in order to let it cancel layout runs if the corresponding
      * {@link IDiagramWorkbenchPart} has been closed in the meantime.
-     * 
+     *
      * @author chsch
      */
     private static final class DispositionAwareCancelationHandle implements ILayoutCancelationIndicator {
-        
+
         private final IDiagramWorkbenchPart workbenchPart;
-        
+
         /**
          * Constructor.
-         * 
+         *
          * @param wb
          *            the {@link IDiagramWorkbenchPart} to test for disposition
          */
         private DispositionAwareCancelationHandle(final IDiagramWorkbenchPart wb) {
             workbenchPart = wb;
         }
-        
+
         /**
          * {@inheritDoc}
          */
