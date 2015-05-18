@@ -52,7 +52,10 @@ public final class DiagramLayoutOptions {
      * effect.<br>
      * Examples of valid algorithm ids are {@link #BOX}, {@link #FIXED}, {@link #KLAY_LAYERED},
      * {@link #GRAPHVIZ_DOT}, {@link #GRAPHVIZ_CIRCO}, {@link #OGDF_PLANARIZATION},
-     * {@link #OGDF_CIRCULAR}.
+     * {@link #OGDF_CIRCULAR}.<br>
+     * <br>
+     * Find more layout algorithms and information on their options on our
+     * <a href="http://layout.rtsys.informatik.uni-kiel.de:9444/Providedlayout.html">web service</a>.
      *
      * @see LayoutOptions#ALGORITHM
      */
