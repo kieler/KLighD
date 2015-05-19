@@ -1056,15 +1056,27 @@ class KRenderingExtensions {
 //already defined styles first        
 
     val defaultShadowSize = 4;
-    
+
     def KShadow getShadow(KRendering rendering){
         return rendering.styles.filter(typeof(KShadow)).last?:null;
     }
-    
+
+    def <T extends KRendering> T setShadow(T rendering, Colors color) {
+        setShadow(rendering, createKColor.setColor(color))
+    }
+
+    def <T extends KRendering> T setShadow(T rendering, Colors color, float size) {
+        setShadow(rendering, createKColor.setColor(color), size)
+    }
+
+    def <T extends KRendering> T setShadow(T rendering, Colors color, float xOffset, float yOffset) {
+        setShadow(rendering, createKColor.setColor(color), xOffset, yOffset);
+    }
+
     def <T extends KRendering> T setShadow(T rendering, KColor color) {
         setShadow(rendering, color, defaultShadowSize)
     }
-    
+
     def <T extends KRendering> T setShadow(T rendering, KColor color, float size) {
         setShadow(rendering, color, size, size)
     }
