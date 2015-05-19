@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.examples.circuit
 
 import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.core.krendering.KRendering
+import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.LineCap
 import de.cau.cs.kieler.core.krendering.LineJoin
 import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
@@ -63,6 +64,8 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
     
     @Inject
     extension KColorExtensions
+
+    extension KRenderingFactory = KRenderingFactory.eINSTANCE
 
 
     /**
@@ -222,8 +225,10 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             it.background = "white".color;
             it.selectionBackground = "gray".color;
         ];
-    } 
-    
+    }
+
+    private val customLightBlue = createKColor.setColor(226, 237, 255);
+
     def KRendering createNotGateRendering(KNode node) {
         node.setNodeSize(30,30);
         node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
@@ -244,7 +249,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                 it.lineWidth = 2
                 it.lineCap = LineCap.CAP_ROUND;
                 it.lineJoin = LineJoin.JOIN_ROUND;
-                it.background = "customLightBlue".color;
+                it.background = customLightBlue;
                 it.selectionBackground = "gray".color;
                 it.addKPosition(LEFT, 0, 0, TOP, 1, 0)
                 it.addKPosition(RIGHT, 0, 0, TOP, 0, 0.5f)
@@ -268,7 +273,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             
             it.addRectangle => [
                 it.lineWidth = 0;
-                it.background = "customLightBlue".color;
+                it.background = customLightBlue;
                 it.selectionBackground = "gray".color;
                 it.setAreaPlacementData.from(LEFT, 0, 0, TOP, 0,0).to(RIGHT, 14f, 0, BOTTOM, 0, 0)
             ];
@@ -286,7 +291,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             it.addArc() => [
                 it.lineWidth = 2
                 it.lineCap = LineCap.CAP_ROUND;
-                it.background = "customLightBlue".color;
+                it.background = customLightBlue;
                 it.selectionBackground = "gray".color;
                 it.arcAngle = 180;
                 it.startAngle = -90;
@@ -313,7 +318,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
 
             it.addRectangle => [
                 it.lineWidth = 0;
-                it.background = "customLightBlue".color;
+                it.background = customLightBlue;
                 it.selectionBackground = "gray".color;
                 it.setAreaPlacementData.from(LEFT, 0.1f, 0, TOP, 0,0).to(RIGHT, 14f, 0, BOTTOM, 0, 0)
             ];
@@ -341,7 +346,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
 
             it.addArc() => [
                 it.lineWidth = 2
-                it.background = "customLightBlue".color;
+                it.background = customLightBlue;
                 it.selectionBackground = "gray".color;
                 it.arcAngle = 180;
                 it.startAngle = -90;
