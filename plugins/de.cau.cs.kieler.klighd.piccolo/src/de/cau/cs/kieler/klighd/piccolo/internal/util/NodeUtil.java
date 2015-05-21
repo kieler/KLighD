@@ -17,6 +17,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.emf.common.util.AbstractTreeIterator;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -538,19 +540,20 @@ public final class NodeUtil {
         }
 
         // now apply the big artillery ...
-        // build lists containing the parents for both 'node0' and 'node1',
-        //  create reverse views on theses lists, and iterators traversing theses views
-        final Iterator<IKNodeNode> node0parents =
-                Lists.reverse(Lists.newArrayList(parentINodeIterator(node0))).listIterator();
-        final Iterator<IKNodeNode> node1parents =
-                Lists.reverse(Lists.newArrayList(parentINodeIterator(node1))).listIterator();
+        // build lists containing the parents for both 'node0' and 'node1'
+        //  and create iterators starting with the (assumed) common root of 'node0' and 'node1'
+        final List<IKNodeNode> node0parents = Lists.newArrayList(parentINodeIterator(node0));
+        final ListIterator<IKNodeNode> node0parentIt = node0parents.listIterator(node0parents.size());
+
+        final List<IKNodeNode> node1parents = Lists.newArrayList(parentINodeIterator(node1));
+        final ListIterator<IKNodeNode> node1parentIt = node1parents.listIterator(node1parents.size());
 
         IKNodeNode result = null;
 
         // now simultaneously traverse the elements ...
-        while (node0parents.hasNext() && node1parents.hasNext()) {
-            final IKNodeNode inode0 = node0parents.next();
-            final IKNodeNode inode1 = node1parents.next();
+        while (node0parentIt.hasPrevious() && node1parentIt.hasPrevious()) {
+            final IKNodeNode inode0 = node0parentIt.previous();
+            final IKNodeNode inode1 = node1parentIt.previous();
 
             if (inode0 == inode1) {
                 // ... keep the last element found in both lists, ...
