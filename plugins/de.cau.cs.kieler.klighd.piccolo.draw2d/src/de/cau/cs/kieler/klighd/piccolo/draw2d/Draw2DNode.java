@@ -35,6 +35,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A Piccolo2D node implementation wrapping a Draw2d figure.
