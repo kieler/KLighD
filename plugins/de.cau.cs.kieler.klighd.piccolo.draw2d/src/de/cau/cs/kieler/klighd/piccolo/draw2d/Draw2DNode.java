@@ -218,7 +218,23 @@ public class Draw2DNode extends KCustomFigureNode {
 
         invalidatePaint();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void repaintFrom(final PBounds localBounds, final PNode childOrThis) {
+        if (childOrThis == this) {
+            // this customization increases the bounding box to be repainted by 2px
+            //  in each direction, which is sometimes necessary (maybe because of
+            //  bad figure implementations? ... don't know)
+            // it is applied if this method is called via 'repaint()';
+            final int inset = -2;
+            localBounds.inset(inset, inset);
+        }
+        super.repaintFrom(localBounds, childOrThis);
+    }
+
     /**
      * {@inheritDoc}
      */
