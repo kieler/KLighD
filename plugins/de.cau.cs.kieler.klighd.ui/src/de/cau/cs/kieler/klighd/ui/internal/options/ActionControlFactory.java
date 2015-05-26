@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2014 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -67,20 +67,20 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent the widget container
      * @param formToolkit the form toolkit to be used to create controls
      */
     public ActionControlFactory(final Composite parent, final FormToolkit formToolkit) {
         this.parent = parent;
         this.formToolkit = formToolkit;
-        
+
         // configure the parent's layout
         final GridLayout gl = new GridLayout(1, false);
         gl.verticalSpacing = MAJOR_VERTICAL_SPACING;
         this.parent.setLayout(gl);
     }
-    
+
     /**
      * Clear the previously created option controls.
      */
@@ -96,7 +96,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
 
     /**
      * Factory method for creating a check button related to a 'check' option.
-     * 
+     *
      * @param actionData
      *            an instance of {@link DisplayedActionData} providing the required information
      * @param viewContext
@@ -141,7 +141,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                 boolean anyActionPerformed = false;
 
                 viewContext.getLayoutRecorder().startRecording();
-                
+
                 // check if we actually have a selection
                 final KlighdTreeSelection diagramSelection = viewer.getDiagramSelection();
                 if (diagramSelection.isEmpty()) {
@@ -153,9 +153,9 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                     // call the action on all selected elements
                     for (final EObject e : Iterables2.toIterable(
                             diagramSelection.diagramElementsIterator())) {
-                        
+
                         final ActionContext aContext;
-                        
+
                         if (e instanceof KGraphElement) {
                             aContext = new ActionContext(viewer, null, (KGraphElement) e, null);
                         } else if (e instanceof KRendering) {
@@ -163,8 +163,8 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                         } else {
                             continue;
                         }
-                        
-                        final ActionResult res = action.execute(aContext); 
+
+                        final ActionResult res = action.execute(aContext);
                         if (res != null) {
                             result = res;
                             anyActionPerformed |= res.getActionPerformed();
