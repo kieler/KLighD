@@ -199,12 +199,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
      * {@inheritDoc}
      */
     public void viewChanged(final ViewChange change) {
-        final IViewer viewer = change.getViewer();
-        if (!(viewer.getSelection() instanceof IKlighdSelection)) {
-            return;
-        }
-
-        updateControls((IKlighdSelection) viewer.getSelection());
+        updateControls(change.getViewer().getSelection());
     }
 
     /**
