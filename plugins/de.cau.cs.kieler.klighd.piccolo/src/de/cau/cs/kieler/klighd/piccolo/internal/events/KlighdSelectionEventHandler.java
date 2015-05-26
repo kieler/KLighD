@@ -24,9 +24,11 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
@@ -245,8 +247,9 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                     selectedElements = Sets.newHashSet();
                 }
 
-                // add the currently found edge to set of elements to be selected, ...
-                selectedElements.add(viewModelElement);
+                // add the currently found edge and its connected ones
+                //  to the set of elements to be selected, ...
+                Iterators.addAll(selectedElements, KimlUtil.getConnectedEdges((KEdge) viewModelElement));
 
                 // ... start a new "pick" run ('nextPickedNode' takes care
                 //  about ignoring the previously found ones), ...
