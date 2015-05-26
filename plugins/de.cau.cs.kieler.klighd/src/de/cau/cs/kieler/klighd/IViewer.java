@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -87,18 +88,35 @@ public interface IViewer {
      * Registers the given {@link IViewChangeListener} to be notified of events of the given
      * {@link ViewChangeType ViewChangeEventTypes}. The provided <code>listener</code> will be
      * notified after all possible changes if no {@link ViewChangeType} is specified.
-     * 
+     *
      * @param listener
      *            the {@link IViewChangeListener} to be registered
      * @param eventTypes
-     *            the {@link ViewChangeType} this listener is notified of
+     *            the {@link ViewChangeType} this listener is notified of, may be <code>null</code>
+     *            or empty, all changes are notified in that case; throws an
+     *            {@link IllegalArgumentException} if <code>eventTypes</code> contains
+     *            <code>null</code> entries
+     * @throws IllegalArgumentException if <code>eventTypes</code> contains
+     *            <code>null</code> entries
      */
-    void addViewChangeListener(IViewChangeListener listener,
-            ViewChangeType... eventTypes);
+    void addViewChangeListener(IViewChangeListener listener, ViewChangeType... eventTypes);
+
+    /**
+     * Registers the given {@link IViewChangeListener} to be notified of events of the given
+     * {@link ViewChangeType ViewChangeEventTypes}. The provided <code>listener</code> will be
+     * notified after all possible changes if no {@link ViewChangeType} is specified.
+     *
+     * @param listener
+     *            the {@link IViewChangeListener} to be registered
+     * @param eventTypes
+     *            the {@link ViewChangeType} this listener is notified of, may be <code>null</code>
+     *            or empty, all changes are notified in that case
+     */
+    void addViewChangeListener(IViewChangeListener listener, EnumSet<ViewChangeType> eventTypes);
 
     /**
      * Unregisters the given {@link IViewChangeListener}.
-     * 
+     *
      * @param listener
      *            the {@link IViewChangeListener} to be removed from the listeners queue
      */

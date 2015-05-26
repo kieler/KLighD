@@ -14,6 +14,8 @@
 package de.cau.cs.kieler.klighd.viewers;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +23,9 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -92,15 +96,43 @@ public abstract class AbstractViewer implements IViewer {
             return;
         }
 
+        final Iterable<ViewChangeType> types = eventTypes != null && eventTypes.length != 0
+                ? Arrays.asList(eventTypes) : ViewChangeType.all();
+
+        // check for null entries and throw an exception as prescribed by the method doc
+        if (Iterables.any(types, Predicates.isNull())) {
+            final String msg = "KLighD viewer: found 'null' value in provided list of "
+                    + "'ViewChangeType's during registration of an 'IViewChangeListener'";
+            throw new IllegalArgumentException(msg);
+        }
+
+        addViewChangeListener(listener, types);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addViewChangeListener(final IViewChangeListener listener,
+            final EnumSet<ViewChangeType> eventTypes) {
+        if (listener == null) {
+            return;
+        }
+
+        final Iterable<ViewChangeType> types = eventTypes != null && !eventTypes.isEmpty()
+                ? eventTypes : ViewChangeType.all();
+
+        addViewChangeListener(listener, types);
+    }
+
+    private void addViewChangeListener(final IViewChangeListener listener,
+            final Iterable<ViewChangeType> eventTypes) {
+
         if (viewChangeListeners == null) {
             viewChangeListeners = HashMultimap.create();
             notificationSuppressions = Maps.newHashMap();
         }
 
-        final ViewChangeType[] types =
-                eventTypes != null && eventTypes.length != 0 ? eventTypes : ViewChangeType.values();
-
-        for (final ViewChangeType t : types) {
+        for (final ViewChangeType t : eventTypes) {
             viewChangeListeners.put(t, listener);
         }
 

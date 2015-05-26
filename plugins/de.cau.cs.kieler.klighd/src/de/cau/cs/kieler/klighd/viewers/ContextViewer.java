@@ -23,6 +23,7 @@ import static java.util.Collections.singleton;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -260,6 +261,22 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      */
     public void addViewChangeListener(final IViewChangeListener listener,
             final ViewChangeType... eventTypes) {
+        if (currentViewer != null) {
+            if (listener != null) {
+                currentViewer.addViewChangeListener(listener, eventTypes);
+            }
+        } else {
+            throw new RuntimeException("KLighD: Registering the "
+                    + listener.getClass().getCanonicalName()
+                    + " is not possible, since the actual diagram viewer is not initialized yet.");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addViewChangeListener(final IViewChangeListener listener,
+            final EnumSet<ViewChangeType> eventTypes) {
         if (currentViewer != null) {
             if (listener != null) {
                 currentViewer.addViewChangeListener(listener, eventTypes);

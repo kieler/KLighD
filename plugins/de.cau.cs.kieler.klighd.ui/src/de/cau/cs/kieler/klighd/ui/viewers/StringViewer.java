@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.viewers;
 
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -115,6 +116,14 @@ public class StringViewer implements IViewer {
      */
     public void addViewChangeListener(final IViewChangeListener listener,
             final ViewChangeType... eventTypes) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addViewChangeListener(final IViewChangeListener listener,
+            final EnumSet<ViewChangeType> eventTypes) {
         // do nothing
     }
 
