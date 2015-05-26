@@ -38,6 +38,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.IKlighdSelection;
+import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
@@ -48,10 +49,10 @@ import de.cau.cs.kieler.klighd.util.Iterables2;
 
 /**
  * A factory providing methods for creating action controls in the diagram side bar.
- * 
+ *
  * @author chsch
  */
-public class ActionControlFactory implements ISelectionChangedListener {
+public class ActionControlFactory implements ISelectionChangedListener, IViewChangeListener {
 
     /** The parent composite into which controls are created. */
     private Composite parent;
@@ -182,6 +183,7 @@ public class ActionControlFactory implements ISelectionChangedListener {
         });
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -190,12 +192,31 @@ public class ActionControlFactory implements ISelectionChangedListener {
             return;
         }
 
-        final IKlighdSelection klighdSelection = (IKlighdSelection) event.getSelection();
+        updateControls((IKlighdSelection) event.getSelection());
+    }
 
-        for (final Map.Entry<DisplayedActionData, Control> entry : this.actionDataControlMap
-                .entrySet()) {
+    /**
+     * {@inheritDoc}
+     */
+    public void viewChanged(final ViewChange change) {
+        final IViewer viewer = change.getViewer();
+        if (!(viewer.getSelection() instanceof IKlighdSelection)) {
+            return;
+        }
+
+        updateControls((IKlighdSelection) viewer.getSelection());
+    }
+
+    /**
+     * Executes the enablement tester of the tracked {@link DisplayedActionData} and set the
+     * corresponding controls' enablement accordingly.
+     *
+     * @param selection the current {@link IKlighdSelection}
+     */
+    private void updateControls(final IKlighdSelection selection) {
+        for (final Map.Entry<DisplayedActionData, Control> entry : actionDataControlMap.entrySet()) {
             // since only those actionData with 'enablementTester != null' are added to the map ...
-            entry.getValue().setEnabled(entry.getKey().enablementTester.apply(klighdSelection));
+            entry.getValue().setEnabled(entry.getKey().enablementTester.apply(selection));
         }
     }
 }

@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.internal.options;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -49,8 +50,6 @@ import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
-import com.google.common.collect.Lists;
-
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
@@ -62,6 +61,7 @@ import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
+import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
@@ -135,7 +135,7 @@ public final class DiagramSideBar {
     /** the set of resources to be disposed when the view is closed. */
     private final List<Resource> resources = new LinkedList<Resource>();
 
-    private final List<Control> sideBarControls = Lists.newArrayListWithCapacity(5);
+    private final List<Control> sideBarControls = new ArrayList<Control>(5);
 
     private FormData sashLayoutData = null;
 
@@ -563,6 +563,11 @@ public final class DiagramSideBar {
         for (final DisplayedActionData actionData : viewContext.getDisplayedActions()) {
             actionControlFactory.createActionControl(actionData, theViewContext);
             actionsAvailable = true;
+        }
+
+        if (actionsAvailable) {
+            viewContext.getViewer().addViewChangeListener(actionControlFactory,
+                    ViewChangeType.clipCollapseExpandHideShow());
         }
 
         // remove any option controls that have been created before
