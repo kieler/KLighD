@@ -88,7 +88,7 @@ public class KimlUtilTest {
         final Iterator<KEdge> edges = KimlUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
-        Iterators.skip(edges, 1);
+        Iterators.advance(edges, 1);
 
         final KEdge second = Iterators.getNext(edges, null);
         Assert.assertTrue(second != null
@@ -104,7 +104,7 @@ public class KimlUtilTest {
         final Iterator<KEdge> edges = KimlUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
-        Iterators.skip(edges, 2);
+        Iterators.advance(edges, 2);
 
         final KEdge third = Iterators.getNext(edges, null);
         Assert.assertTrue(third != null
@@ -141,7 +141,7 @@ public class KimlUtilTest {
         final Iterator<KEdge> edges = KimlUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
 
-        Iterators.skip(edges, 1);
+        Iterators.advance(edges, 1);
 
         final KEdge second = Iterators.getNext(edges, null);
         Assert.assertTrue(second != null
