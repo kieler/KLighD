@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
@@ -562,12 +561,14 @@ public interface IViewer {
     /* ----------------------------- */
     
     /**
-     * Provides the current {@link org.eclipse.jface.viewers.ISelection} provided by the diagram viewer.
-     *  
-     * @return the current {@link org.eclipse.jface.viewers.ISelection}
+     * Provides the current {@link IKlighdSelection} maintained by the diagram viewer.<br>
+     * In earlier versions the return type was {@link org.eclipse.jface.viewers.ISelection}, which is
+     * the super interface of {@link IKlighdSelection}.
+     *
+     * @return the current {@link IKlighdSelection}
      */
-    ISelection getSelection();
-    
+    IKlighdSelection getSelection();
+
     /**
      * Provides the current {@link KlighdTreeSelection} provided by the diagram viewer.
      * 

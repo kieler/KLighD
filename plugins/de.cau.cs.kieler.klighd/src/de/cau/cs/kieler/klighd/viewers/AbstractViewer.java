@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.ISelection;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.HashMultimap;
@@ -34,6 +33,7 @@ import com.google.common.collect.SetMultimap;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -299,9 +299,9 @@ public abstract class AbstractViewer implements IViewer {
      * charge of broadcasting it into the platform and the registered selection listeners.
      *
      * @param selection
-     *            the new {@link ISelection}
+     *            the new {@link IKlighdSelection}
      */
-    protected void updateSelection(final ISelection selection) {
+    protected void updateSelection(final IKlighdSelection selection) {
         this.getContextViewer().notifySelectionListeners(selection);
     }
 
@@ -452,7 +452,7 @@ public abstract class AbstractViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public ISelection getSelection() {
+    public IKlighdSelection getSelection() {
         return getContextViewer().getSelection();
     }
 
