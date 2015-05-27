@@ -92,7 +92,7 @@ public enum ViewChangeType {
      *         {@link #SHOW}
      */
     public static EnumSet<ViewChangeType> collapseExpandHideShow() {
-        return EnumSet.of(COLLAPSE, EXPAND);
+        return EnumSet.of(COLLAPSE, EXPAND, HIDE, SHOW);
     }
 
     /**
@@ -102,7 +102,7 @@ public enum ViewChangeType {
      *         {@link #HIDE}, and {@link #SHOW}
      */
     public static EnumSet<ViewChangeType> clipCollapseExpandHideShow() {
-        return EnumSet.of(HIDE, SHOW);
+        return EnumSet.of(CLIP, COLLAPSE, EXPAND, HIDE, SHOW);
     }
 
     /**
