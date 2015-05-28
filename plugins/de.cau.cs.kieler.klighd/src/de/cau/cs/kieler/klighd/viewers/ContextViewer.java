@@ -921,6 +921,8 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     private IKlighdSelection selection = diagramSelection;
 
     /** the selection listeners registered on this view. */
+    // don't change the type to a collection type violating the Set property
+    //  see doc of 'ISelectionProvider.addSelectionChangedListener(...)'
     private Set<ISelectionChangedListener> selectionListeners = Sets.newLinkedHashSet();
 
     /**
