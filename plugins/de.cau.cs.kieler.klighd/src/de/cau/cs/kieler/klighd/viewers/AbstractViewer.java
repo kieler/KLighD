@@ -128,6 +128,10 @@ public abstract class AbstractViewer implements IViewer {
             final Iterable<ViewChangeType> eventTypes) {
 
         if (viewChangeListeners == null) {
+            // Don't change the employed collection to a type violating the characteristic
+            //  "Adding a new key-value pair equal to an existing key-value pair has no effect."
+            //  implemented by HashMultiMap.
+            // It is guaranteed in the API and clients rely on that!
             viewChangeListeners = HashMultimap.create();
             notificationSuppressions = Maps.newHashMap();
         }

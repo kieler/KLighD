@@ -86,7 +86,9 @@ public interface IViewer {
     /**
      * Registers the given {@link IViewChangeListener} to be notified of events of the given
      * {@link ViewChangeType ViewChangeEventTypes}. The provided <code>listener</code> will be
-     * notified after all possible changes if no {@link ViewChangeType} is specified.
+     * notified after all possible changes if no {@link ViewChangeType} is specified.<br>
+     * Subsequent (re-)registrations of the same listener for particular eventTypes won't have
+     * any effect, so there's no need to conservatively remove a listener before (re-)adding it.
      *
      * @param listener
      *            the {@link IViewChangeListener} to be registered
@@ -103,7 +105,9 @@ public interface IViewer {
     /**
      * Registers the given {@link IViewChangeListener} to be notified of events of the given
      * {@link ViewChangeType ViewChangeEventTypes}. The provided <code>listener</code> will be
-     * notified after all possible changes if no {@link ViewChangeType} is specified.
+     * notified after all possible changes if no {@link ViewChangeType} is specified.<br>
+     * Subsequent (re-)registrations of the same listener for particular eventTypes won't have
+     * any effect, so there's no need to conservatively remove a listener before (re-)adding it.
      *
      * @param listener
      *            the {@link IViewChangeListener} to be registered
