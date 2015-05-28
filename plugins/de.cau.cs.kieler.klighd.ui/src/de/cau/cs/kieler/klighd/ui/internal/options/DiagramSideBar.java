@@ -56,6 +56,7 @@ import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
@@ -548,9 +549,6 @@ public final class DiagramSideBar {
 
         viewContext = theViewContext;
 
-        // register the actionsControlFactory as selection listener in the current context viewer
-        viewContext.getViewer().getContextViewer().addSelectionChangedListener(actionControlFactory);
-
         if (diagramComposite.isDisposed()) {
             return;
         }
@@ -565,9 +563,19 @@ public final class DiagramSideBar {
             actionsAvailable = true;
         }
 
+        final IViewer viewer = viewContext.getViewer();
         if (actionsAvailable) {
-            viewContext.getViewer().addViewChangeListener(actionControlFactory,
+            // register the actionsControlFactory as selection listener in the current context viewer
+            //  multiple additions are harmless as internally a LinkedHashSet is used hold the listeners
+            viewer.getContextViewer().addSelectionChangedListener(actionControlFactory);
+
+            // register the actionsControlFactory as view change listener in the current (diagram) viewer
+            //  multiple additions are harmless as internally a HashMultimap is used hold the listeners
+            viewer.addViewChangeListener(actionControlFactory,
                     ViewChangeType.clipCollapseExpandHideShow());
+        } else {
+            viewer.getContextViewer().removeSelectionChangedListener(actionControlFactory);
+            viewer.removeViewChangeListener(actionControlFactory);
         }
 
         // remove any option controls that have been created before
