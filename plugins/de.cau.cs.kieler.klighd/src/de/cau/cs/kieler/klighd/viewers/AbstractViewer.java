@@ -192,7 +192,7 @@ public abstract class AbstractViewer implements IViewer {
         if (viewChangeListenersView == null) {
             viewChangeListenersView = Multimaps.unmodifiableSetMultimap(this.viewChangeListeners);
         }
-        return viewChangeListeners;
+        return viewChangeListenersView;
     }
 
     /**
