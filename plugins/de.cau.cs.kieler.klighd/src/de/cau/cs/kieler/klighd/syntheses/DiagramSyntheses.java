@@ -47,6 +47,7 @@ import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
+import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
 /**
  * Collection of KGraph/KRendering view model configuration methods.
@@ -669,6 +670,41 @@ public final class DiagramSyntheses {
         return kText;
     }
 
+    /**
+     * Configures {@link KlighdSemanticDiagramData semantic data} on the provided {@link KGraphElement}.
+     *
+     * @param <T>
+     *            the concrete type of <code>kge</code>
+     * @param kge
+     *            the {@link KGraphElement} to be configured
+     * @param data
+     *            the {@link KlighdSemanticDiagramData} record to be evaluated while exporting
+     *            vector graphic images
+     * @return <code>kge</code> for convenience
+     */
+    public static <T extends KGraphElement> T setSemanticData(final T kge,
+            final KlighdSemanticDiagramData data) {
+        kge.getData(KLayoutData.class).setProperty(KlighdProperties.SEMANTIC_DATA, data);
+        return kge;
+    }
+
+    /**
+     * Configures {@link KlighdSemanticDiagramData semantic data} on the provided {@link KRendering}.
+     *
+     * @param <T>
+     *            the concrete type of <code>krendering</code>
+     * @param krendering
+     *            the {@link KRendering} to be configured
+     * @param data
+     *            the {@link KlighdSemanticDiagramData} record to be evaluated while exporting
+     *            vector graphic images
+     * @return <code>krendering</code> for convenience
+     */
+    public static <T extends KRendering> T setSemanticData(final T krendering,
+            final KlighdSemanticDiagramData data) {
+        krendering.setProperty(KlighdProperties.SEMANTIC_DATA, data);
+        return krendering;
+    }    
 
     /**
      * Configures a tooltip on the provided {@link KGraphElement KGraphElement}. This method has no
