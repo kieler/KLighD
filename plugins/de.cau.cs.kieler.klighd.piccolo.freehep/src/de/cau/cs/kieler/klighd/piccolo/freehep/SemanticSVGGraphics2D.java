@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -636,7 +635,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         result.append(image.getWidth());
         result.append("\" " + "height=\"");
         result.append(image.getHeight());
-        result.append("\" " + attributes());
+        result.append("\" " + attributes(true));
         result.append(" xlink:href=\"");
 
         String writeAs = getProperty(WRITE_IMAGES_AS);
@@ -813,12 +812,14 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                             // style
                             + addFontHeightUnit(style(style))
                             // semantic data
-                            + attributes()
+                            + attributes(false)
                             // Coordinates
                             + " x=\"0\" y=\"0\">"
                             // text
                             + insertTSpan(str)
                             + "</text>")))));
+
+        resetSemanticData();
     }
 
     
@@ -858,8 +859,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             return "";
         }
 
-        String[] lines = text.split("\\r?\\n|\\r");
-        StringBuffer content = new StringBuffer();
+        int i = 0;
+        final String[] lines = text.split("\\r?\\n|\\r");
+        final StringBuffer content = new StringBuffer();
         if (display != null) {
             // Translate font size in 'pt' to display 'px'
             //  see #addFontHeightUnit javadoc for more information
@@ -890,7 +892,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             for (final String line : lines) {
                 content.append("<tspan x=\"0\" dy=\"");
                 content.append(first ? firstLineHeight : lineHeight);
-                content.append("\">");
+                content.append("\"");
+                content.append(tSpanAttributes(line, i++));
+                content.append(">");
                 content.append(line);
                 content.append("</tspan>" + KlighdPlugin.LINE_SEPARATOR);
                 first = false;
@@ -898,10 +902,14 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             
         } else {
             // without a display just use the pt size as line height for multiline text
+
+            // use tspans to emulate multiline text
             for (final String line : lines) {
                 content.append("<tspan x=\"0\" dy=\"");
                 content.append(getFont().getSize());
-                content.append("\">");
+                content.append("\"");
+                content.append(tSpanAttributes(line, i++));
+                content.append(">");
                 content.append(line);
                 content.append("</tspan>" + KlighdPlugin.LINE_SEPARATOR);
             }
@@ -1462,40 +1470,74 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         StringBuffer result = new StringBuffer();
 
         result.append("<path ");
-        result.append(attributes());
+        result.append(attributes(true));
         result.append(getPathContent(path));
         result.append("/>");
 
         return result.toString();
     }
-    
-    
-    private String attributes() {
-        StringBuffer sb = new StringBuffer(" ");
-        if (semanticData != null) {
-            Iterator<Entry<String, String>> it = semanticData.iterator();
-            while (it.hasNext()) {
-                Entry<String, String> e = it.next();
 
-                // special tags
-                if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
-                    sb.append("id" + "=\"" + e.getValue() + "\"");
-                } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_CLASS)) {
-                    sb.append("class" + "=\"" + e.getValue() + "\"");
-                } else {
-                    sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
-                }
-                sb.append(" ");
+
+    public void addSemanticData(final KlighdSemanticDiagramData nextSemanticData) {
+        this.semanticData = nextSemanticData;
+    }
+
+    private String attributes(boolean resetSemData) {
+        if (semanticData == null) {
+            return "";
+        }
+
+        final StringBuffer sb = new StringBuffer(" ");
+
+        for (final Entry<String, String> e : semanticData) {
+
+            // special tags
+            if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
+                sb.append("id" + "=\"" + e.getValue() + "\"");
+
+            } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_CLASS)) {
+                sb.append("class" + "=\"" + e.getValue() + "\"");
+
+            } else {
+                sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
             }
 
-            semanticData = null;
+            sb.append(" ");
+        }
+
+        if (resetSemData) {
+            resetSemanticData();
         }
         return sb.toString();
     }
-    
-    public void addSemanticData(KlighdSemanticDiagramData nextSemanticData) {
-        this.semanticData = nextSemanticData;
+
+    private String tSpanAttributes(final String textLine, final int noOfLine) {
+        if (semanticData == null) {
+            return "";
+        }
+
+        final StringBuffer sb = new StringBuffer(" ");
+
+        for (final Entry<String, String> e : semanticData.textLineIterable(textLine, noOfLine)) {
+
+            // special tags
+            if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
+                sb.append("id" + "=\"" + e.getValue() + "\"");
+
+            } else {
+                sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
+            }
+
+            sb.append(" ");
+        }
+
+        return sb.toString();
     }
+
+    private void resetSemanticData() {
+        this.semanticData = null;
+    }
+
 
     //If no semantic data is set these groups are unnecessary clutter. This
     // stack keeps track of them and prevents printing of those that are not needed.
@@ -1504,7 +1546,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         this.semanticData = nextSemanticData;
         if ((this.semanticData != null && this.semanticData.iterator().hasNext())) {
             os.write("<g ");
-            os.write(attributes());
+            os.write(attributes(true));
             os.write(" >\n");
             groupsStack.push(true);
         } else {
