@@ -362,6 +362,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             os.println("     xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
             os.println("     xmlns:ev=\"http://www.w3.org/2001/xml-events\"");
             os.println("     xmlns:klighd=\"http://de.cau.cs.kieler/klighd\"");
+            // KIPRA-1637: preserve multiple spaces when displaying an svg
+            //  this affects all <text> elements of the document
+            os.println("     xml:space=\"preserve\"");
         }
         os.println("     x=\"" + x + "px\"");
         os.println("     y=\"" + y + "px\"");
