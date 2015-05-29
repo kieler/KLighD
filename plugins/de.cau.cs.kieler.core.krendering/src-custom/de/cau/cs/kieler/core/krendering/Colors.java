@@ -2,12 +2,12 @@
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
- * 
+ *
  * Copyright 2013 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- * 
+ *
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
@@ -21,7 +21,7 @@ import com.google.common.collect.Maps;
  * An color library containing a huge collection named colors.<br>
  * The list of literals have been extracted from
  * <a href="http://www.farb-tabelle.de/de/farbtabelle.htm">
- * http://www.farb-tabelle.de/de/farbtabelle.htm</a>.
+ * http://www.farb-tabelle.de/en/farbtabelle.htm</a>.
  *
  * @author als
  * @author chsch
@@ -1699,7 +1699,7 @@ public enum Colors {
 
     /**
      * Hidden constructor.
-     * 
+     *
      * @param theName
      *            a human friend color name
      * @param red
@@ -1752,12 +1752,12 @@ public enum Colors {
         return super.toString() + "(" + redComponent + "," + greenComponent + "," + blueComponent + ")";
     }
 
-    private static HashMap<String, Colors> fastColorLookup = Maps.newHashMap();    
+    private static HashMap<String, Colors> fastColorLookup = Maps.newHashMap();
 
     /**
      * Provides the color with the name <code>name</code>. Besides it builds up a {@link HashMap} of
      * {@link String} to {@link Colors} relations for fast access.
-     * 
+     *
      * @param name
      *            the name of desired color
      * @return the desired color with name <code>name</code> if anyone exists
