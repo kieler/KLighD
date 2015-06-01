@@ -24,9 +24,13 @@ import de.cau.cs.kieler.core.util.IDataObject;
  * @kieler.rating 2011-01-13 proposed yellow msp
  * @author uru
  * @author owo
+ * @author cds
  */
 public final class KVector implements IDataObject, Cloneable {
-
+    
+    /** the default fuzzyness used when comparing two vectors fuzzily. */
+    private static final double DEFAULT_FUZZYNESS = 0.05;
+    
     /** the serial version UID. */
     private static final long serialVersionUID = -4780985519832787684L;
 
@@ -109,6 +113,33 @@ public final class KVector implements IDataObject, Cloneable {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Calls {@link #equalsFuzzily(KVector, double)} with a default fuzzyness.
+     * 
+     * @param other
+     *            the vector to compare this vector to.
+     * @return {@code true} if the vectors are approximately equal, {@code false} otherwise.
+     */
+    public boolean equalsFuzzily(final KVector other) {
+        return equalsFuzzily(other, DEFAULT_FUZZYNESS);
+    }
+    
+    /**
+     * Compares if this and the given vector are approximately equal. What <i>approximately</i>
+     * means is defined by the fuzzyness: for both x and y coordinate, the two vectors may only
+     * differ by at most the fuzzyness to still be considered equal.
+     * 
+     * @param other
+     *            the vector to compare this vector to.
+     * @param fuzzyness
+     *            the maximum difference per dimension that is still considered equal.
+     * @return {@code true} if the vectors are approximately equal, {@code false} otherwise.
+     */
+    public boolean equalsFuzzily(final KVector other, final double fuzzyness) {
+        return Math.abs(this.x - other.x) <= fuzzyness
+                && Math.abs(this.y - other.y) <= fuzzyness;
     }
 
     /**
