@@ -1,0 +1,28 @@
+/*
+ * Test selection for ports from the top level node of an hierarchy
+ * to an inner port of hierarchy.
+ */
+properties: 
+  sourcePort = "pa"
+  expectedTargetPort = "pe"
+  expectedConnectedEdges = 4
+  
+knode a{
+	kport pa
+	kedge(:pa -> b:pb)
+	knode b{
+		kport pb
+		kedge(:pb -> c:pc)
+		knode c{
+			kport pc
+			kedge (:pc -> d:pd)
+			knode d{
+				kport pd
+				kedge(:pd -> e:pe)
+				knode e{
+					kport pe
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+/*
+ * Checks selection when port is as in and output port
+ * between hierarchies.
+ * Input: pc -> pa -> pb1
+ * Output: pb2 -> pa -> pc
+ */
+properties: 
+  sourcePort = "pc"
+  expectedTargetPort = "pb1"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pb2"
+  expectedTargetPort = "pc"
+  expectedConnectedEdges = 2
+
+knode a{
+	kport pa
+	kedge(:pa -> c:pc)
+	kedge(:pa -> b:pb1)
+	knode b {
+		kport pb1
+		kport pb2
+		kedge(:pb2 -> a:pa)
+	} 
+}
+
+knode c {
+	kport pc
+	kedge(:pc -> a:pa)
+}

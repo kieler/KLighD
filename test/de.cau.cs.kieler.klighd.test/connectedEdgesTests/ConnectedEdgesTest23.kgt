@@ -1,0 +1,26 @@
+/*
+ * Test selection for multiple outgoing edges
+ * to multiple ports
+ */
+properties: 
+  sourcePort = "pa"
+  expectedTargetPort = "pb"
+  expectedConnectedEdges = 1
+  
+  sourcePort = "pa"
+  expectedTargetPort = "pc"
+  expectedConnectedEdges = 1   
+ 
+knode a {
+	kport pa
+	kedge(:pa -> b:pb)
+	kedge(:pa -> c:pc)
+}
+
+knode b {
+	kport pb
+}
+
+knode c {
+	kport pc
+}

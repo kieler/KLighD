@@ -1,0 +1,29 @@
+/*
+ * Test selection from an innermost port pointing directly
+ * to the top level port.
+ */
+properties: 
+  sourcePort = "pe"
+  expectedTargetPort = "pa"
+  expectedConnectedEdges = 1 
+  
+de.cau.cs.kieler.layoutHierarchy = true
+
+knode a{
+	size: width = 170 height = 170
+	kport pa
+	knode b{
+		size: width = 115 height = 115
+		knode c{
+			size: width = 90 height = 90
+			knode d{
+				size: width = 65 height = 65
+				knode e{
+					size: width = 40 height = 40
+					kport pe
+					kedge(:pe -> a:pa)
+				}
+			}
+		}
+	}
+}

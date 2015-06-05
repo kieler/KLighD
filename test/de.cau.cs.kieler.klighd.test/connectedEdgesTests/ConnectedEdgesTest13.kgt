@@ -1,0 +1,44 @@
+/*
+ * Test selection for outgoing edges from innermost
+ * knodes to knodes outside. Both knodes use the same
+ * port for outcoming the hierarchy and outside it´s
+ * divided into two separate lines again.
+ */
+properties: 
+  sourcePort = "pb"
+  expectedTargetPort = "pd"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pb"
+  expectedTargetPort = "pe"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pc"
+  expectedTargetPort = "pd"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pc"
+  expectedTargetPort = "pe"
+  expectedConnectedEdges = 2      
+  
+knode a {
+	kport pa
+	kedge(:pa -> e:pe)
+	kedge(:pa -> d:pd)
+	knode b {
+		kport pb
+		kedge(:pb -> a:pa)
+	}
+	knode c {
+		kport pc
+		kedge(:pc -> a:pa)
+	}
+}
+
+knode d {
+	kport pd
+}
+
+knode e {
+	kport pe
+}

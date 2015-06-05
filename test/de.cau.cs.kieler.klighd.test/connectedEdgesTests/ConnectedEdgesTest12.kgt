@@ -1,0 +1,43 @@
+/*
+ * Test selection for two incoming merged edges from outside
+ * an hierarchy into the hierarchy. Inside the hierarchy the 
+ * edge is splitted into two lines.
+ */
+properties: 
+  sourcePort = "pd"
+  expectedTargetPort = "pb"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pd"
+  expectedTargetPort = "pc"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pe"
+  expectedTargetPort = "pb"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pe"
+  expectedTargetPort = "pc"
+  expectedConnectedEdges = 2
+  
+knode a {
+	kport pa
+	kedge(:pa -> c:pc)
+	kedge(:pa -> b:pb)
+	knode b {
+		kport pb
+	}
+	knode c {
+		kport pc
+	}
+}
+
+knode d {
+	kport pd
+	kedge(:pd -> a:pa)
+}
+
+knode e {
+	kport pe
+	kedge(:pe -> a:pa)
+}

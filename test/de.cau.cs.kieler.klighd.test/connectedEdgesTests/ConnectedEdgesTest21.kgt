@@ -1,0 +1,31 @@
+/*
+ * Test selection for edges pointing from innermost port
+ * of an hierarchy to the innermost port in a new hierarchy.
+ */
+properties: 
+  sourcePort = "pe1"
+  expectedTargetPort = "pe2"
+  expectedConnectedEdges = 2 
+  
+de.cau.cs.kieler.layoutHierarchy = true
+
+knode a {
+	size: width = 240 height = 170
+	kport pa
+	kedge (:pa -> e:pe2)
+	knode b{
+		size: width = 115 height = 115
+		knode c{
+			size: width = 90 height = 90
+			knode d{
+				size: width = 65 height = 65
+				knode e {
+					size: width = 25 height = 40
+					kport pe1 		 
+					kport pe2
+					kedge(:pe1 -> a:pa)
+				}
+			}
+		}
+	}
+}

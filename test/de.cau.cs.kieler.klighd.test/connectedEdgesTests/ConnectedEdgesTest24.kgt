@@ -1,0 +1,22 @@
+/*
+ * Test selection for two ports pointing
+ * on each other.
+ */
+properties: 
+  sourcePort = "pa"
+  expectedTargetPort = "pb"
+  expectedConnectedEdges = 1
+  
+  sourcePort = "pb"
+  expectedTargetPort = "pa"
+  expectedConnectedEdges = 1  
+ 
+knode a {
+	kport pa
+	kedge(:pa -> b:pb)
+}
+
+knode b {
+	kport pb
+	kedge(:pb -> a:pa)
+}

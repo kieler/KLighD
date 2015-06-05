@@ -1,0 +1,33 @@
+/*
+ * Test selection for a port from an outer knode
+ * into a hierarchy of knodes.
+ */
+properties: 
+  sourcePort = "pf"
+  expectedTargetPort = "pe"
+  expectedConnectedEdges = 5
+  
+knode a{
+	kport pa
+	kedge(:pa -> b:pb)
+	knode b{
+		kport pb
+		kedge(:pb -> c:pc)
+		knode c{
+			kport pc
+			kedge (:pc -> d:pd)
+			knode d{
+				kport pd
+				kedge(:pd -> e:pe)
+				knode e{
+					kport pe
+				}
+			}
+		}
+	}
+}
+
+knode f {
+	kport pf
+	kedge(:pf -> a:pa)
+}

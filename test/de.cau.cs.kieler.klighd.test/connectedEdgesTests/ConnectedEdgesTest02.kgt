@@ -1,0 +1,30 @@
+/*
+ * Test selection while port has two inputs and
+ * one output.
+ */
+properties: 
+  sourcePort = "pc"
+  expectedTargetPort = "pd"
+  expectedConnectedEdges = 2
+  
+  sourcePort = "pb"
+  expectedTargetPort = "pd"
+  expectedConnectedEdges = 2
+ 
+knode a {
+	kport pa
+	kedge(:pa -> d:pd)
+	knode d {
+		kport pd
+	}
+}
+
+knode b {
+	kport pb
+	kedge(:pb -> a:pa)
+}
+
+knode c {
+	kport pc
+	kedge(:pc -> a:pa)
+}

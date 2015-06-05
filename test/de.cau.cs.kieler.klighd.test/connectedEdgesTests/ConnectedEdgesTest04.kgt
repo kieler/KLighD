@@ -1,0 +1,26 @@
+/*
+ * Test selection when port has two inputs and no outputs.
+ * Input1: pc -> pa
+ * Input2: pb -> pa
+ */
+properties: 
+  sourcePort = "pc"
+  expectedTargetPort = "pa"
+  expectedConnectedEdges = 1
+  
+  sourcePort = "pb"
+  expectedTargetPort = "pa"
+  expectedConnectedEdges = 1  
+  
+knode a {
+	kport pa
+	knode b {
+		kport pb
+		kedge(:pb -> a:pa)
+	}
+}
+
+knode c {
+	kport pc
+	kedge(:pc->a:pa)
+}

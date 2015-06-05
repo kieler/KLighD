@@ -1,0 +1,42 @@
+/*
+ * Test selection for an innermost port to an separated
+ * outer knode. Merged with an separated knode inside hierarchy 
+ * related to the outer knode.
+ */
+properties: 
+  sourcePort = "pg"
+  expectedTargetPort = "pf"
+  expectedConnectedEdges = 4
+  
+  sourcePort = "pe"
+  expectedTargetPort = "pf"
+  expectedConnectedEdges = 5  
+ 
+knode a{
+	kport pa
+	kedge(:pa -> f:pf)
+	knode b{
+		kport pb
+		kedge(:pb -> a:pa)
+		knode c{
+			kport pc
+			kedge (:pc -> b:pb)
+			knode g {
+				kport pg
+				kedge(:pg->c:pc)
+			}
+			knode d{
+				kport pd
+				kedge(:pd -> c:pc)
+				knode e{
+					kport pe
+					kedge(:pe -> d:pd)
+				}
+			}
+		}
+	}
+}
+
+knode f {
+	kport pf
+}
