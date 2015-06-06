@@ -345,6 +345,8 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
      * @param values
      *            the allowed values.
      * @return a pair with the property and the possible values.
+     * 
+     * @deprecated Use {@link DiagramSyntheses#specifyLayoutOption(String, List)}
      */
     protected Pair<IProperty<?>, List<?>> specifyLayoutOption(final IProperty<?> prop,
             final List<?> values) {

@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.syntheses;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -40,6 +41,7 @@ import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.KTopPosition;
 import de.cau.cs.kieler.core.krendering.LineStyle;
 import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.LayoutMetaDataService;
 import de.cau.cs.kieler.kiml.LayoutOptionData;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -116,7 +118,7 @@ public final class DiagramSyntheses {
         }
         return element;
     }
-
+    
     /**
      * Convenience method for defining multiple layout options for {@link KGraphElement
      * KGraphElements}. A list of typically configured options is given in
@@ -149,7 +151,51 @@ public final class DiagramSyntheses {
         return element;
     }
 
+    /**
+     * Convenient function to assemble a pair of layout option and allowed values. This method
+     * should be used in conjunction with
+     * {@link AbstractDiagramSynthesis#specifyLayoutOption(IProperty, List)}. The type of the
+     * elements within the 'values' parameter depends on the type of the specified property. For
+     * instance, for an IProperty<Integer> one might pass a List<Integer> of size 2 to specify the
+     * lower and upper bound for the values.
+     *
+     * @param prop
+     *            the desired property.
+     * @param values
+     *            the allowed values.
+     * @return a pair with the property and the possible values.
+     */
+    public static Pair<IProperty<?>, List<?>> specifyLayoutOption(final IProperty<?> prop,
+            final List<?> values) {
+        return Pair.<IProperty<? extends Object>, List<? extends Object>>of(prop, values);
+    }
 
+    /**
+     * Convenient function to assemble a pair of layout option and allowed values. This method
+     * should be used in conjunction with
+     * {@link AbstractDiagramSynthesis#specifyLayoutOption(IProperty, List)}. The type of the
+     * elements within the 'values' parameter depends on the type of the specified property. For
+     * instance, for an IProperty<Integer> one might pass a List<Integer> of size 2 to specify the
+     * lower and upper bound for the values.
+     *
+     * @param layoutOptionId
+     *            the desired layout option's id.
+     * @param values
+     *            the allowed values.
+     * @return a pair with the property and the possible values.
+     */
+    public static Pair<IProperty<?>, List<?>> specifyLayoutOption(final String layoutOptionId, 
+            final List<?> values) {
+        final LayoutOptionData option =
+                LayoutMetaDataService.getInstance().getOptionData(layoutOptionId);
+        if (option != null) {
+            return specifyLayoutOption(option, values);
+        }
+        throw new IllegalArgumentException("Could not resolve the layout option '" + layoutOptionId 
+                + "' using KIML's layout option service. "
+                + "Make sure the layout option exists and is properly registered with KIML.");
+    }
+    
     /**
      * Convenience method for defining collapse/expand state dependent layout options for
      * {@link KNode KNodes}. A list of typically configured options is given in
