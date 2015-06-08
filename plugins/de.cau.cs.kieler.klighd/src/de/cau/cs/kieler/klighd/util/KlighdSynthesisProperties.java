@@ -58,6 +58,10 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     public static final IProperty<Boolean> MULTI_SELECTION = new Property<Boolean>(
             "klighd.multiSelection", true);
 
+    /** property denoting the option to select connected ports when selecting edges. */
+    public static final IProperty<Boolean> ADD_PORTS_TO_SELECTION = new Property<Boolean>(
+            "klighd.addPortsToSelection", false);
+
     /** property denoting pre-definition of diagram {@link SynthesisOption} values. */
     public static final IProperty<Map<SynthesisOption, Object>> SYNTHESIS_OPTION_CONFIG =
             new Property<Map<SynthesisOption, Object>>("klighd.synthesisOptionConfig");
@@ -295,6 +299,16 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      */
     public KlighdSynthesisProperties suppressMultiSelection() {
         this.setProperty(MULTI_SELECTION, false);
+        return this;
+    }
+
+    /**
+     * Configures the diagram viewer's support for selecting ports when selecting connected edges.
+     *
+     * @return <code>this<code> {@link KlighdSynthesisProperties} object.
+     */
+    public KlighdSynthesisProperties activatePortSelection() {
+        this.setProperty(ADD_PORTS_TO_SELECTION, true);
         return this;
     }
 
