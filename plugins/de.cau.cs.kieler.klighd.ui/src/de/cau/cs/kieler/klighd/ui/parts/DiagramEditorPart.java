@@ -349,7 +349,7 @@ public class DiagramEditorPart extends EditorPart implements
         final KNode viewModel = viewContext.getViewModel();
         final KShapeLayout diagramLayout = viewModel.getData(KShapeLayout.class);
 
-        return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0;
+        return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0; 
     }
 
     /**

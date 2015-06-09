@@ -405,7 +405,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // process labels
         for (final KLabel label : Iterables.filter(node.getLabels(), RenderingContextData.IS_ACTIVE)) {
-            createLabel(mapping, label, layoutNode, performSizeEstimation);
+            createLabel(mapping, label, layoutNode, performSizeEstimation, false);
         }
 
         // process the child as new parent
@@ -447,7 +447,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // process labels
         for (final KLabel label : port.getLabels()) {
-            createLabel(mapping, label, layoutPort, estimateLabelSizes);
+            createLabel(mapping, label, layoutPort, estimateLabelSizes, false);
         }
     }
 
@@ -549,13 +549,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         // process labels
         for (final KLabel label : Iterables.filter(edge.getLabels(), RenderingContextData.IS_ACTIVE)) {
-            createLabel(mapping, label, layoutEdge, estimateLabelSizes);
+            createLabel(mapping, label, layoutEdge, estimateLabelSizes, true);
         }
     }
 
     /**
      * Creates a layout label for the label attached to the given labeled layout element.
-     *
+     * 
      * @param mapping
      *            the layout mapping
      * @param label
@@ -564,9 +564,14 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            the labeled layout element
      * @param estimateSize
      *            if <code>true</code> the minimal size of the {@link KLabel} will be estimated
+     * @param setFontLayoutOptions
+     *            if <code>true</code> the layout options {@link LayoutOptions#FONT_NAME} and
+     *            {@link LayoutOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
+     *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
      */
     private void createLabel(final LayoutMapping<KGraphElement> mapping, final KLabel label,
-            final KLabeledGraphElement layoutLabeledElement, final boolean estimateSize) {
+            final KLabeledGraphElement layoutLabeledElement, final boolean estimateSize,
+            final boolean setFontLayoutOptions) {
         
         final KLabel layoutLabel = KimlUtil.createInitializedLabel(layoutLabeledElement);
 
@@ -585,7 +590,8 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             if (rootRendering != null) {
                 if (estimateSize) {
                     // calculate the minimal size need for the rendering ...
-                    final Bounds minSize = PlacementUtil.estimateTextSize(label);
+                    final Bounds minSize =
+                            PlacementUtil.estimateTextSize(label, setFontLayoutOptions);
                     
                     final float minWidth = minSize.getWidth() > layoutLayout.getWidth()
                             ? minSize.getWidth()
@@ -596,9 +602,11 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                     
                     // ... and update the node size if it exceeds its size
                     layoutLayout.setSize(minWidth, minHeight);
-                    
+
+                } else if (setFontLayoutOptions) {
+                    PlacementUtil.fontDataFor(label, true);
                 }
-                
+
                 // attach a reference to the label's root rendering to the label so that our layout
                 // algorithms know how to estimate text sizes.
                 KRenderingRef rootRenderingRef = KRenderingFactory.eINSTANCE.createKRenderingRef();

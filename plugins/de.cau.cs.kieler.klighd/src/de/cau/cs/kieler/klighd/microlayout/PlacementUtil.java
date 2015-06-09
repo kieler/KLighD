@@ -76,7 +76,9 @@ import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
@@ -669,6 +671,23 @@ public final class PlacementUtil {
      * @return font information for the given label.
      */
     public static FontData fontDataFor(final KLabel kLabel) {
+        return fontDataFor(kLabel, false);
+    }
+
+    /**
+     * Returns the font data used to render the given label. If the label has a {@link KText}
+     * rendering attached, its font information are used. Otherwise, defaults defined in
+     * {@link KlighdConstants} are used.
+     * 
+     * @param kLabel
+     *            the label whose font information to retrieve.
+     * @param setFontLayoutOptions
+     *            if <code>true</code> the layout options {@link LayoutOptions#FONT_NAME} and
+     *            {@link LayoutOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
+     *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
+     * @return font information for the given label.
+     */
+    public static FontData fontDataFor(final KLabel kLabel, final boolean setFontLayoutOptions) {
         final Object rendering = Iterators.getNext(
                 ModelingUtil.eAllContentsOfType2(kLabel, KRenderingRef.class, KText.class),
                 null);
@@ -683,9 +702,11 @@ public final class PlacementUtil {
         // Check if we really have a KText instance; the rendering ref could have insidiously referenced
         // some arbitrary object
         if (kText instanceof KText) {
-            return fontDataFor((KText) kText);
+            final KLayoutData layoutData =
+                    setFontLayoutOptions ? kLabel.getData(KLayoutData.class) : null;
+            return fontDataFor((KText) kText, layoutData);
         } else {
-            return fontDataFor((KText) null);
+            return fontDataFor((KText) null, null);
         }
     }
     
@@ -697,6 +718,22 @@ public final class PlacementUtil {
      * @return font information for the given rendering.
      */
     public static FontData fontDataFor(final KText kText) {
+        return fontDataFor(kText, null);
+    }
+    
+    /**
+     * Returns the font data defined by the given rendering. Missing font information are
+     * substituted by defaults defined in {@link KlighdConstants}.
+     * 
+     * @param kText
+     *            the rendering whose font information to retrieve.
+     * @param layoutData
+     *            if unequal to <code>null</code> the layout options {@link LayoutOptions#FONT_NAME}
+     *            and {@link LayoutOptions#FONT_SIZE} will be set/updated to the determined font
+     *            name & size values
+     * @return font information for the given rendering.
+     */
+    private static FontData fontDataFor(final KText kText, final KLayoutData layoutData) {
         KFontName kFontName = null;
         KFontSize kFontSize = null;
         KFontBold kFontBold = null;
@@ -731,7 +768,15 @@ public final class PlacementUtil {
 
         fontStyle = kFontItalic != null && kFontItalic.isItalic()
                 ? fontStyle | SWT.ITALIC : fontStyle;
-        
+
+        if (layoutData != null) {
+            // setting the font name and size layout options is expected by the Graphviz layouter
+            //  as it does not rely on given sizes but computes it on its own based on the given
+            //  label text and font configuration 
+            layoutData.setProperty(LayoutOptions.FONT_NAME, fontName);
+            layoutData.setProperty(LayoutOptions.FONT_SIZE, fontSize);
+        }
+
         return new FontData(fontName, fontSize, fontStyle);
     }
 
@@ -755,10 +800,27 @@ public final class PlacementUtil {
      * @return the minimal bounds for the {@link KLabel}
      */
     public static Bounds estimateTextSize(final KLabel kLabel) {
+        return estimateTextSize(kLabel, false);
+    }
+
+    /**
+     * Returns the minimal bounds for a KLabel. Font configurations like font name, size, and style
+     * may be provided via an attached {@link KText} rendering.
+     * 
+     * @param kLabel
+     *            the {@link KLabel} whose size is to be estimated.
+     * @param setFontLayoutOptions
+     *            if <code>true</code> the layout options {@link LayoutOptions#FONT_NAME} and
+     *            {@link LayoutOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
+     *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
+     * @return the minimal bounds for the {@link KLabel}
+     */
+    public static Bounds estimateTextSize(final KLabel kLabel, final boolean setFontLayoutOptions) {
         final KText text = Iterators.getNext(filter(
                 ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class), KText.class), null);
 
-        return estimateTextSize(text, kLabel.getText());
+        return estimateTextSize(text, kLabel.getText(), 
+                setFontLayoutOptions ? kLabel.getData(KLayoutData.class) : null);
     }
 
     private static final Predicate<KStyle> FILTER = new Predicate<KStyle>() {
@@ -780,27 +842,49 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final KText kText, final String text) {
+        return estimateTextSize(kText, text, null);
+    };
+    
+    /**
+     * Returns the minimal bounds for a string based on configurations of a {@link KText}. The
+     * string is handed over separately in order to allow the text size estimation for
+     * {@link KLabel KLabels}, whose text string is given outside of the {@link KText} rendering.
+     * 
+     * @param kText
+     *            the KText providing font configurations like font name, size, and style; maybe
+     *            <code>null</code>
+     * @param text
+     *            the actual text string whose size is to be estimated; maybe <code>null</code>
+     * @param layoutData
+     *            if unequal to <code>null</code> the layout options {@link LayoutOptions#FONT_NAME}
+     *            and {@link LayoutOptions#FONT_SIZE} will be set/updated to the font name & size
+     *            values determined during the size estimation
+     * @return the minimal bounds for the string
+     */
+    private static Bounds estimateTextSize(final KText kText, final String text,
+            final KLayoutData layoutData) {
         if (kText != null) {
-            final PersistentEntry testHeight =
-                    Iterables.find(kText.getPersistentEntries(),
-                            KlighdInternalProperties.PRED_TESTING_HEIGHT, null);
-            final PersistentEntry testWidth =
-                    Iterables.find(kText.getPersistentEntries(),
-                            KlighdInternalProperties.PRED_TESTING_WIDTH, null);
+            // special handling required for the regression tests
+            // I don't trust in the different SWT implementations to
+            //  provide the same size of a text on different platforms
+            //  so given data are to be used
+            final PersistentEntry testHeight = Iterables.find(
+                    kText.getPersistentEntries(), KlighdInternalProperties.PRED_TESTING_HEIGHT, null);
+
+            final PersistentEntry testWidth = Iterables.find(
+                    kText.getPersistentEntries(), KlighdInternalProperties.PRED_TESTING_WIDTH, null);
+            
             if (testHeight != null || testWidth != null) {
-                // code for the regression tests
-                // (I don't trust in the different SWT implementations to
-                // provide the same size of a text on different platforms
-                // so given data are to be used)
                 final float height = testHeight != null ? Float.parseFloat(testHeight.getValue()) : 0f;
                 final float width = testWidth != null ? Float.parseFloat(testWidth.getValue()) : 0f;
+
                 if (height != 0f || width != 0f) {
                     return new Bounds(width, height);
                 }
             }
         }
 
-        return estimateTextSize(fontDataFor(kText), text);
+        return estimateTextSize(fontDataFor(kText, layoutData), text);
     }
 
     /**
