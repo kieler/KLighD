@@ -22,7 +22,6 @@ import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
 import de.cau.cs.kieler.core.properties.IProperty
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
-import java.lang.reflect.Field
 import java.util.List
 import java.util.Map
 import javax.inject.Inject
@@ -68,14 +67,22 @@ class KEdgeExtensions {
 
     /**
      * The following method retrieves the internal map of the create extension. 
-     * This is mandatory for queries (e.g. exist tests) on the private and hence inaccessible hash map.
+     * This is mandatory for queries (e.g. exist tests) on the internal hash map hidden by Xtend.
      */ 
-    def private Map<? extends List<? extends Object>, KEdge> getInternalEdgeMap() {
-        val Field internalMapField = this.class.getDeclaredField("_createCache_internalCreateEdge") 
-        internalMapField.setAccessible(true)
-        internalMapField.get(this) as Map<? extends List<? extends Object>, KEdge>
+    def private Map<? extends List<? extends Object>, KEdge> create it: try {
+            // this try catch statement is the creation statement within this 'create' extension
+            // it's executed within a 'synchronized' block for thread safety purposes,
+            //  see generated java code
+            this.class.getDeclaredField("_createCache_internalCreateEdge").get(this)
+                as Map<? extends List<? extends Object>, KEdge>
+
+        } catch (Throwable t) {
+            emptyMap()
+
+        } getInternalEdgeMap() {
+        // the 'create extension's body is empty as the obtained map needn't to be manipulated in any way 
     }
-    
+
     /**
      * A convenient test method to check whether or not a specific edge exists in the create extension
      */
