@@ -135,15 +135,12 @@ class KNodeExtensions {
             "de.cau.cs.kieler.klighd.minimalNodeSize", new KVector(10d, 10d));
 
     def KNode setMinimalNodeSize(KNode node, float width, float height) {
-        return node => [
-            it.addLayoutParam(MINIMAL_NODE_SIZE, new KVector(width, height));
-        ];
+        return node.addLayoutParam(MINIMAL_NODE_SIZE, new KVector(width, height));
     }
     
     def <T> KNode addLayoutParam(KNode node, IProperty<? super T> property, T value) {
-        return node => [
-            it.getData(typeof(KShapeLayout)).setProperty(property, value)
-        ];
+        node?.getData(typeof(KShapeLayout))?.setProperty(property, value)
+        return node
     }
     
 }
