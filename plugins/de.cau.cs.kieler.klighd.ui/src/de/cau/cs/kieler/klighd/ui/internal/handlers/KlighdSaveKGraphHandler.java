@@ -34,11 +34,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
-import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -63,6 +65,8 @@ import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -97,6 +101,15 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
      */
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final KlighdTreeSelection selection;
+        
+        final IWorkbenchPart part = HandlerUtil.getActivePart(event);
+        
+        final IViewer viewer;
+        if (part instanceof IDiagramWorkbenchPart) {
+            viewer = ((IDiagramWorkbenchPart) part).getViewer();
+        } else {
+            return null;
+        }
 
         // in case this handler is invoked via a context menu,
         // the activeMenuSelection (ISources#ACTIVE_MENU_SELECTION_NAME) is available
@@ -152,17 +165,35 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             // ---------------------------------------------------
             //     Default export of the selected (sub-)graph
             // ---------------------------------------------------
-            final SaveAsDialog fd = new SaveAsDialog(shell);
-            // show a save as dialog
+            final KlighdSaveKGraphDialog fd = 
+                    new KlighdSaveKGraphDialog(viewer.getControl().getShell());
+            // show a KLighd save KGraph dialog
             int success = fd.open();
-            if (success == SaveAsDialog.OK) {
+            
+            if (success == Dialog.OK) {
                 // retrieve selected
-                String file = fd.getResult().toOSString().toString();
-                if (fd.getResult().getFileExtension() == null) {
-                    file += KGRAPH_FILE_EXTENSION;
+                IPath file = fd.getFilePath();
+                
+                // if file extension is missing, add it 
+                if (!file.toOSString().contains(KGRAPH_FILE_EXTENSION)) {
+                    file.addFileExtension(KGRAPH_FILE_EXTENSION);
                 }
-                // export, retain renderings
-                export(subgraph, file, EMPTY, false);
+                
+                // create uri to save file to the right place
+                URI uri = null;
+                if (fd.isWorkspacePath()) {
+                    uri = URI.createPlatformResourceURI(file.toOSString(), true);
+                } else {
+                    uri = URI.createFileURI(file.toOSString());
+                }
+
+                export(subgraph, uri, EMPTY, false);
+                
+                // return a confirmation that everything works fine
+                final String title = "Diagram export successful.";
+                final String msg = "KLighD diagram export finished successfully.";
+
+                MessageDialog.openInformation(shell, title, msg);
             }
         } else if (exportType.equals(EXPORT_TYPE_CHUNKY)) {
             // ---------------------------------------------------
@@ -205,7 +236,8 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             if (n.getChildren().size() > 1) {
                 String filename = "flat_" + getModelPathName(n) + KGRAPH_FILE_EXTENSION;
                 System.out.println("Exporting: " + filename);
-                export(n, path + filename, EMPTY, true);
+                URI uri = URI.createPlatformResourceURI(path + filename, true);
+                export(n, uri, EMPTY, true);
             }
 
             // expand and collect the children
@@ -233,12 +265,13 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             if (n.getChildren().size() > 1) {
                 String filename = getModelPathName(n) + KGRAPH_FILE_EXTENSION;
                 System.out.println("Exporting: " + filename);
-                
+                URI uri = URI.createPlatformResourceURI(path + "expanded_" + filename, true);
                 // export fully expanded
-                export(n, path + "expanded_" + filename, EMPTY, false);
+                export(n, uri, EMPTY, false);
                 
+                uri = URI.createPlatformResourceURI(path + "expanded_flat_" + filename, true);
                 // remove children of compound nodes and export again
-                export(n, path + "expanded_flat_" + filename, EMPTY, true);
+                export(n, uri, EMPTY, true);
             }
         }
     }
@@ -255,11 +288,11 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
         return s.substring(1);
     }
     
-    private void export(final KNode subgraph, final String fileName,
+    private void export(final KNode subgraph, final URI fileOutputURI,
             final Set<Class<?>> removeRenderingsOnClasses, final boolean removeChildren) {
         try {
             ResourceSet rs = new ResourceSetImpl();
-            Resource r = rs.createResource(URI.createPlatformResourceURI(fileName, true));
+            Resource r = rs.createResource(fileOutputURI);
 
             // We do not want to tamper with the original model, thus create a copy.
             // Also, we copy the whole graph because we must be able to
@@ -406,7 +439,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
 
                 // persist layout options and friends
-                KimlUtil.persistDataElements((KNode) copy);
+                KimlUtil.persistDataElements(copy);
     
                 // remove children if requested. Do this after the previous removal
                 // happening to make sure all rendering libraries are considered etc

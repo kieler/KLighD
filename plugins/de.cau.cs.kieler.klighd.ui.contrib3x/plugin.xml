@@ -38,7 +38,7 @@
       </command>
       <command
             categoryId="de.cau.cs.kieler.klighd.ui"
-            defaultHandler="de.cau.cs.kieler.klighd.ui.exporting.SaveAsImageHandler"
+            defaultHandler="de.cau.cs.kieler.klighd.ui.internal.handlers.SaveAsImageHandler"
             description="Contributes bitmap and vectorgraphics based diagram export of KLighD diagrams"
             id="de.cau.cs.kieler.klighd.ui.saveAsImage"
             name="Save as image">

@@ -52,6 +52,16 @@ public class Messages extends NLS {
     public static String SaveAsImageDialog_tiling;
     public static String SaveAsImageDialog_tiling_options_caption;
     
+    public static String ExportUnderlyingKGraphDialog_file_caption;
+    public static String ExportUnderlyingKGraphDialog_file_outside_project_error;
+    public static String ExportUnderlyingKGraphDialog_browse_file_system_caption;
+    public static String ExportUnderlyingKGraphDialog_container_not_exist_error;
+    public static String ExportUnderlyingKGraphDialog_browse_workspace_caption;
+    public static String ExportUnderlyingKGraphDialog_is_workspace_path_caption;
+    public static String ExportUnderlyingKGraphDialog_path_is_not_valid_error;
+    public static String ExportUnderlyingKGraphDialog_save_as_caption;
+    public static String ExportUnderlyingKGraphDialog_title;
+    
     public static String TilingDialog_title;
 
     
