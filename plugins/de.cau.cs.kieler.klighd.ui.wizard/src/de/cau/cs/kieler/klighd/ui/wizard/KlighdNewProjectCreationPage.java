@@ -395,6 +395,8 @@ public class KlighdNewProjectCreationPage extends WizardNewProjectCreationPage {
             return false;
         }
         if (!sourceModel.getText().contains(".")) {
+            // this check actually keeps people from writing transformations against models that lie in
+            // the default package, but no one should use the default package anyway, so... screw it.
             setErrorMessage(JavaUIMessages.KlighdNewProjectCreationPage_MsgSourceModelNotQualified);
             return false;
         }
