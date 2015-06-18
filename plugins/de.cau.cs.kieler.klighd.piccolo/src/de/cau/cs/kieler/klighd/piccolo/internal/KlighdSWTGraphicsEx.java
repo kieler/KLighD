@@ -84,4 +84,40 @@ public interface KlighdSWTGraphicsEx extends KlighdSWTGraphics {
      * {@link org.eclipse.swt.graphics.TextLayout TextLayouts}, etc.
      */
     void dispose();
+
+    /**
+     * First, this method is only effective for the SWT-based implementation, it is effectless for
+     * the SVG-based one.<br>
+     * <br>
+     * It stops the caching of newly instantiated {@link org.eclipse.swt.graphics.Font SWT Fonts}
+     * by means of an internal static hash map. That caching is done for performance reasons and
+     * because of the limited number of handles for tracking the corresponding native objects.<br>
+     * <br>
+     * In caching mode (being active by initialization) {@link org.eclipse.swt.graphics.Font SWT
+     * Fonts} are always instantiated in context of the current
+     * {@link org.eclipse.swt.widgets.Display Display} in order to preserve consistent font
+     * initializations amongst all text label parts in the diagram.<br>
+     * <br>
+     * In non-caching mode activated by this method {@link org.eclipse.swt.graphics.Font SWT Fonts}
+     * are instantiated in context of the current {@link #getDevice() Device} or a specific device
+     * dedicated to font creation, if configured during initialization of <code>this</code>
+     * graphics. Those fonts are kept in a list and disposed while calling
+     * {@link #resumeFontCaching()}.<br>
+     * <br>
+     * This non-caching mode is required for drawing background and overlay text enforced by
+     * {@link de.cau.cs.kieler.klighd.IExportBranding IExportBrandings} on printouts. The required
+     * fonts must be created in context of the chosen printer since the font size is resolution
+     * (DPI) dependent.
+     */
+    void stopFontCaching();
+
+    /**
+     * First, this method is only effective for the SWT-based implementation, it is effectless for
+     * the SVG-based one.<br>
+     * <br>
+     * Re-activates the caching of {@link org.eclipse.swt.graphics.Font SWT Fonts} and disposes all
+     * fonts used since the last call {@link #stopFontCaching()}. See {@link #stopFontCaching()} for
+     * details.
+     */
+    void resumeFontCaching();
 }

@@ -985,20 +985,44 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     public void dispose() {
         throw new UnsupportedOperationException();
     }
-    
-    // CHECKSTYLEOFF Javadoc
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stopFontCaching() {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resumeFontCaching() {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void addSemanticData(KlighdSemanticDiagramData semanticData) {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void startGroup(KlighdSemanticDiagramData semanticData) {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void endGroup() {
     }
     
     /**
-     * Set if this exporter can handle multiline strings themself or needs fallback
-     * @param canHandleMultiline true if multiline strings can be coped with.
+     * Set if this exporter can handle multiline strings themself or needs fallback.
+     * 
+     * @param canHandleMultiline
+     *            true if multiline strings can be coped with.
      */
     public void setCanHandleMultiline(boolean canHandleMultiline) {
         this.canHandleMultiline = canHandleMultiline;

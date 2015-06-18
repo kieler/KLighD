@@ -39,6 +39,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -59,6 +60,7 @@ import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -82,6 +84,10 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
 
     /** The {@link Device} to draw on. */
     protected Device device;
+
+    /** The {@link Device} to use while instantiating {@link Font Fonts},
+     *   in non-diagram parts like export brandings. */
+    protected Device fontCreationDevice;
 
     /** The {@link GC} to draw on. */
     protected GC gc;
@@ -323,6 +329,9 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         gc.setBackgroundPattern(this.lastPattern);
     }
 
+
+    // font configuration
+    
     /**
      * {@inheritDoc}
      */
@@ -333,6 +342,29 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     /** Map from FontData to SWT Fonts. */
     protected static final HashMap<FontData, Font> FONT_CACHE = new HashMap<FontData, Font>();
 
+    private boolean cacheFonts = true;
+    private List<org.eclipse.swt.graphics.Font> temporaryFonts = null;
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stopFontCaching() {
+        cacheFonts = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void resumeFontCaching() {
+        cacheFonts = true;
+
+        for (Font font : temporaryFonts) {
+            font.dispose();
+        }
+        temporaryFonts.clear();
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -344,12 +376,26 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     public void setFont(final FontData fontData, final int maxLineWidth) {
-        org.eclipse.swt.graphics.Font font = FONT_CACHE.get(fontData);
-        if (font == null) {
-            font = new org.eclipse.swt.graphics.Font(device, fontData);
-            FONT_CACHE.put(fontData, font);
+        if (cacheFonts) {
+            org.eclipse.swt.graphics.Font font = FONT_CACHE.get(fontData);
+            if (font == null) {
+                // cached fonts (those used in diagrams) shall always be created
+                //  in context of the display, in order to avoid trouble if one day
+                //  a diagram is printed without drawing it on a display
+                //  (because of resolution dependent actual font height)
+                font = new org.eclipse.swt.graphics.Font(Display.getCurrent(), fontData);
+                FONT_CACHE.put(fontData, font);
+            }
+            curFont = font;
+
+        } else {
+            if (temporaryFonts == null) {
+                temporaryFonts = Lists.newArrayList();
+            }
+            curFont = new org.eclipse.swt.graphics.Font(
+                        fontCreationDevice != null ? fontCreationDevice : device, fontData);
+            temporaryFonts.add(curFont);
         }
-        curFont = font;
 
         final boolean lineWidthLimited = maxLineWidth > 0;
         useTextStyle = underlining || strikeout || lineWidthLimited;
