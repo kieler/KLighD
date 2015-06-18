@@ -84,7 +84,7 @@ public class KlighdCanvas extends PSWTCanvas {
         this.removeInputEventListener(super.getZoomEventHandler());
         this.removeInputEventListener(super.getPanEventHandler());
 
-        this.graphics = new KlighdSWTGraphicsImpl(null, parent.getDisplay());
+        this.graphics = new KlighdSWTGraphicsImpl(parent.getDisplay());
 
         // this reduces flickering drastically
         this.setDoubleBuffered(true);

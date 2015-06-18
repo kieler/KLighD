@@ -118,27 +118,56 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
     protected int textLineWidth = -1;
 
     /**
-     * Constructor for SWTGraphics2D.
-     *
-     * @param gc
-     *            The Eclipse Graphics Context onto which all Graphics2D operations are
-     *            delegating
+     * Constructor.
+     * 
+     * @param device
+     *            {@link Device} onto which drawing operations are performed on, must not be
+     *            <code>null</code>
      */
-    public KlighdSWTGraphicsImpl(final GC gc) {
-        this(gc, gc.getDevice());
+    public KlighdSWTGraphicsImpl(final Device device) {
+        this(null, device, null);
     }
 
     /**
-     * Constructor for SWTGraphics2D.
-     *
+     * Constructor.
+     * 
      * @param gc
-     *            The Eclipse Graphics Context onto which all Graphics2D operations are
-     *            delegating
-     * @param device
-     *            Device onto which ultimately all gc operations are drawn onto
+     *            The {@link GC Eclipse Graphics Context} onto which all Graphics2D operations are
+     *            delegating, must not be <code>null</code>
      */
-    public KlighdSWTGraphicsImpl(final GC gc, final Device device) {
-        this(device, gc, new TextLayout(device));
+    public KlighdSWTGraphicsImpl(final GC gc) {
+        this(gc, gc.getDevice(), null);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param gc
+     *            The {@link GC Eclipse Graphics Context} onto which all Graphics2D operations are
+     *            delegating, must not be <code>null</code>
+     * @param fontCreationDevice
+     *            {@link Device} to be used for instantiation of {@link Font Fonts} while drawing
+     *            non-diagram parts like export brandings (see {@link #stopFontCaching()}), may be
+     *            <code>null</code>
+     */
+    public KlighdSWTGraphicsImpl(final GC gc, final Device fontCreationDevice) {
+        this(gc, gc.getDevice(), fontCreationDevice);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param gc
+     *            The Eclipse Graphics Context onto which all Graphics2D operations are delegating
+     * @param device
+     *            {@link Device} onto which ultimately all gc operations are drawn onto
+     * @param fontCreationDevice
+     *            {@link Device} to be used for instantiation of {@link Font Fonts} while drawing
+     *            non-diagram parts like export brandings (see {@link #stopFontCaching()}), may be
+     *            <code>null</code>
+     */
+    public KlighdSWTGraphicsImpl(final GC gc, final Device device, final Device fontCreationDevice) {
+        this(device, gc, fontCreationDevice, new TextLayout(device));
         this.disposeTextLayout = true;
     }
 
@@ -154,9 +183,32 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      *            The Eclipse Graphics Context onto which all Graphics2D operations are
      *            delegating
      */
-    public KlighdSWTGraphicsImpl(final Device device, final GC gc, final TextLayout tl) {
+    protected KlighdSWTGraphicsImpl(final Device device, final GC gc, final TextLayout tl) {
+        this(device, gc, null, tl);
+    }
+
+    /**
+     * Constructor for SWTGraphics2D.
+     *
+     * @param device
+     *            Device onto which ultimately all {@link GC} operations are drawn onto
+     * @param gc
+     *            The Eclipse Graphics Context onto which all Graphics2D operations are
+     *            delegating
+     * @param fontCreationDevice
+     *            {@link Device} to be used for instantiation of {@link Font Fonts} while drawing
+     *            non-diagram parts like export brandings (see {@link #stopFontCaching()}), may be
+     *            <code>null</code>
+     * @param tl
+     *            The Eclipse Graphics Context onto which all Graphics2D operations are
+     *            delegating
+     */
+    protected KlighdSWTGraphicsImpl(final Device device, final GC gc,
+            final Device fontCreationDevice, final TextLayout tl) {
         this.device = device;
         this.gc = gc;
+        this.fontCreationDevice = fontCreationDevice;
+
         this.swtTransform = new Transform(device);
         this.textLayout = tl;
         this.transform = new AffineTransform();
