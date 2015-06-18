@@ -237,8 +237,8 @@ public class PrintPreviewTray extends DialogTray {
 
                     config.setPageAndTileNumbers(++pageNo, row, column, rows, columns);
 
-                    final Image pageImg = exporter.exportPreview(
-                            config, imageBounds, imageClip, previewScale, centeringOffset);
+                    final Image pageImg = exporter.exportPreview(config, options.getPrinter(),
+                            imageBounds, imageClip, previewScale, centeringOffset);
 
                     final Label l = new Label(composite, SWT.NULL);
                     l.setImage(pageImg);
