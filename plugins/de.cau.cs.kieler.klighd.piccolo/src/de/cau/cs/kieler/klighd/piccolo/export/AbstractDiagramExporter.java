@@ -28,6 +28,7 @@ import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
+import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.Iterables2;
@@ -224,7 +225,7 @@ public abstract class AbstractDiagramExporter {
      *            an {@link DiagramExportConfig} record comprising all information required for
      *            proper export, must not be {@code null}
      * @param graphics
-     *            the {@link KlighdSWTGraphics} to 'draw' the diagram on
+     *            the {@link KlighdSWTGraphicsEx} to 'draw' the diagram on
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
      * @param drawablesBounds
@@ -236,13 +237,13 @@ public abstract class AbstractDiagramExporter {
      *            diagram tile, maybe {@code null}
      */
     protected final void drawDiagramTile(final DiagramExportConfig exportConfig,
-            final KlighdSWTGraphics graphics, final KlighdMainCamera camera,
+            final KlighdSWTGraphicsEx graphics, final KlighdMainCamera camera,
             final Dimension drawablesBounds, final Rectangle baseTileClip) {
         drawDiagramTile(exportConfig, graphics, camera, drawablesBounds, baseTileClip, 1d, null);
     }
 
     /**
-     * Performs the diagram rendering work by means of the employed {@link KlighdSWTGraphics}.<br>
+     * Performs the diagram rendering work by means of the employed {@link KlighdSWTGraphicsEx}.<br>
      * <br>
      * This method is supposed to be used by all registered
      * {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporters} in order to achieve
@@ -252,7 +253,7 @@ public abstract class AbstractDiagramExporter {
      *            an {@link DiagramExportConfig} record comprising all information required for
      *            proper export, must not be {@code null}
      * @param graphics
-     *            the {@link KlighdSWTGraphics} to 'draw' the diagram on
+     *            the {@link KlighdSWTGraphicsEx} to 'draw' the diagram on
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
      * @param drawablesBounds
@@ -270,7 +271,7 @@ public abstract class AbstractDiagramExporter {
      *            the diagram
      */
     protected final void drawDiagramTile(final DiagramExportConfig exportConfig,
-            final KlighdSWTGraphics graphics, final KlighdMainCamera camera,
+            final KlighdSWTGraphicsEx graphics, final KlighdMainCamera camera,
             final Dimension drawablesBounds, final Rectangle baseTileClip,
             final double tileScale, final Point2D centeringOffset) {
 
@@ -304,17 +305,18 @@ public abstract class AbstractDiagramExporter {
 
 
     /**
-     * Performs the actual diagram rendering work by means of the employed {@link KlighdSWTGraphics}.<br>
+     * Performs the actual diagram rendering work by means of the employed
+     * {@link KlighdSWTGraphicsEx}.<br>
      * <br>
      * This method is supposed to be used by all registered
      * {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporters} in order to achieve
      * consistent exporting behavior.
-     *
+     * 
      * @param exportConfig
      *            an {@link DiagramExportConfig} record comprising all information required for
      *            proper export, must not be {@code null}
      * @param graphics
-     *            the {@link KlighdSWTGraphics} to 'draw' the diagram on
+     *            the {@link KlighdSWTGraphicsEx} to 'draw' the diagram on
      * @param camera
      *            the {@link KlighdMainCamera} showing the diagram to be exported
      * @param diagramTransform
@@ -331,7 +333,7 @@ public abstract class AbstractDiagramExporter {
      *            clip to prevent the diagram being drawn into the tile trim
      */
     protected final void drawDiagram(final DiagramExportConfig exportConfig,
-            final KlighdSWTGraphics graphics, final KlighdMainCamera camera,
+            final KlighdSWTGraphicsEx graphics, final KlighdMainCamera camera,
             final AffineTransform diagramTransform, final AffineTransform tileBaseTransform,
             final Rectangle tileClip) {
 
@@ -356,7 +358,6 @@ public abstract class AbstractDiagramExporter {
         final Rectangle tileBounds =
                 brandingsAvailable ? new Rectangle(exportConfig.tileBounds) : null;
 
-        // perform the tile background drawing (1.)
         if (brandingsAvailable) {
             graphics.setTransform(tileBaseTransform);
 
@@ -365,10 +366,17 @@ public abstract class AbstractDiagramExporter {
             //  the required scaling must be part of 'tileBaseTransform' in that case)
             graphics.setClip(tileBounds);
 
+            // instruct the graphics to stop using the cached (SWT) fonts and create new fonts in
+            //  context of the configured (font creation specific) device, e.g. the configured printer
+            graphics.stopFontCaching();
+
+            // perform the tile background drawing (1.)
             for (final IExportBranding branding : exportConfig.exportBrandings) {
                 branding.drawDiagramTileBackground(graphics, configCopy);
                 graphics.setTransform(tileBaseTransform);
             }
+
+            // graphics.resumeFontCaching() is not missing here, it's called below!
 
             // reset the transform to a neutral one and restore the tile clip for drawing the
             //  drawing with respecting the tile trim properly
@@ -383,6 +391,7 @@ public abstract class AbstractDiagramExporter {
         graphics.setTransform(diagramTransform);
 
         if (brandingsAvailable) {
+
             // perform the overall diagram background drawing (2.)
             for (final IExportBranding branding : exportConfig.exportBrandings) {
                 branding.drawDiagramBackground(graphics, configCopy);
@@ -390,6 +399,10 @@ public abstract class AbstractDiagramExporter {
                 // Restore the transform in case 'branding' changed something.
                 graphics.setTransform(diagramTransform);
             }
+
+            // instruct the graphics to resume using the cached (display-based fonts)
+            //  and dispose those (SWT) fonts created in the meantime
+            graphics.resumeFontCaching();
         }
 
         final Trim diagramTrim = exportConfig.diagramTrim;
@@ -431,6 +444,11 @@ public abstract class AbstractDiagramExporter {
         }
 
         if (brandingsAvailable) {
+
+            // instruct the graphics to stop using the cached (SWT) fonts and create new fonts in
+            //  context of the configured (font creation specific) device, e.g. the configured printer
+            graphics.stopFontCaching();
+
             // perform the overall diagram overly drawing (4.)
             for (final IExportBranding branding : exportConfig.exportBrandings) {
                 // reset the zero point, or restore the transform in case previous 'branding'
@@ -449,6 +467,10 @@ public abstract class AbstractDiagramExporter {
                 // Reset the transform in case 'branding' changed something.
                 graphics.setTransform(tileBaseTransform);
             }
+
+            // instruct the graphics to resume using the cached (display-based fonts)
+            //  and dispose those (SWT) fonts created in the meantime
+            graphics.resumeFontCaching();
         }
     }
 }
