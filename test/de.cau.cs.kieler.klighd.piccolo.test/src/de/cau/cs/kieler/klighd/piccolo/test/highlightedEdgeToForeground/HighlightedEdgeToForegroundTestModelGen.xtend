@@ -26,6 +26,8 @@ import de.cau.cs.kieler.kiml.options.PortConstraints
 import de.cau.cs.kieler.kiml.options.PortSide
 import javax.inject.Inject
 
+import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
+
 /**
  * @author chsch
  *
@@ -52,10 +54,17 @@ class HighlightedEdgeToForegroundTestModelGen {
         root.children += createNode() => [
             // the visible container node
             it.addRectangle.lineWidth = 3;
-            
+
             it.addLayoutParam(LayoutOptions.SPACING, 100f)
             it.addLayoutParam(LayoutOptions.BORDER_SPACING, 50f)
             it.addLayoutParam(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
+
+            // explicitly configured the edge spacing factors
+            //  after the introduction of the 'edgeNodeSpacingFactor'
+            //  s.t. the earlier determined sample coordinates still hold
+
+            it.setLayoutOption("de.cau.cs.kieler.klay.layered.edgeSpacingFactor", 0.5f)
+            it.setLayoutOption("de.cau.cs.kieler.klay.layered.edgeNodeSpacingFactor", 0.5f)
 
             it.ports += createPort.addLayoutParam(LayoutOptions.PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
             it.ports += createPort.addLayoutParam(LayoutOptions.PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
