@@ -58,9 +58,9 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     public static final IProperty<Boolean> MULTI_SELECTION = new Property<Boolean>(
             "klighd.multiSelection", true);
 
-    /** property denoting the option to select connected ports when selecting edges. */
-    public static final IProperty<Boolean> ADD_PORTS_TO_SELECTION = new Property<Boolean>(
-            "klighd.addPortsToSelection", false);
+    /** property denoting the option to select included ports when selecting connected edges. */
+    public static final IProperty<Boolean> INCLUDE_PORTS_IN_CONNECTED_EDGES_SELECTIONS =
+            new Property<Boolean>("klighd.includePortsInConnectedEdgesSelections", false);
 
     /** property denoting pre-definition of diagram {@link SynthesisOption} values. */
     public static final IProperty<Map<SynthesisOption, Object>> SYNTHESIS_OPTION_CONFIG =
@@ -303,12 +303,17 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     }
 
     /**
-     * Configures the diagram viewer's support for selecting ports when selecting connected edges.
-     *
+     * Configures the diagram viewer to include ports when selecting connected edges. <i>Connected
+     * edges<i> refer to edges connected to the same port on different levels of nested nodes.
+     * Usually such edges can be seen as a single logical connection that has been split, e.g., for
+     * technical reasons. If set each connected {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}
+     * "segment" and each {@link de.cau.cs.kieler.core.kgraph.KPort KPort} situated in between the
+     * edges will be taken into selection, otherwise only the edges are taken.
+     * 
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
      */
-    public KlighdSynthesisProperties activatePortSelection() {
-        this.setProperty(ADD_PORTS_TO_SELECTION, true);
+    public KlighdSynthesisProperties includePortsInConnectedEdgesSelections() {
+        this.setProperty(INCLUDE_PORTS_IN_CONNECTED_EDGES_SELECTIONS, true);
         return this;
     }
 

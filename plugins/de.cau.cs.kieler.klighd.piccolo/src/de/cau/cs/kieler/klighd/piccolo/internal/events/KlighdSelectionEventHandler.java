@@ -63,15 +63,17 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         this.diagramViewer = theDiagramViewer;
         this.multiSelection =
                 viewer.getViewContext().getProperty(KlighdSynthesisProperties.MULTI_SELECTION);
-        this.selectPorts =
-                viewer.getViewContext().getProperty(KlighdSynthesisProperties.ADD_PORTS_TO_SELECTION);
+        this.includePortsWithinConnectedEdges =
+                viewer.getViewContext().getProperty(
+                        KlighdSynthesisProperties.INCLUDE_PORTS_IN_CONNECTED_EDGES_SELECTIONS);
     }
 
     private final IViewer viewer;
     private final PiccoloViewer diagramViewer;
     private final boolean multiSelection;
+    private final boolean includePortsWithinConnectedEdges;
+
     private Point2D point = null;
-    private boolean selectPorts;
 
     /**
      * {@inheritDoc}
@@ -254,7 +256,8 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                 // to the set of elements to be selected,
                 // adding ports if selected by KlighdProperty...
                 Iterators.addAll(selectedElements,
-                        KimlUtil.getConnectedEdges((KEdge) viewModelElement, selectPorts));
+                        KimlUtil.getConnectedEdges(
+                                (KEdge) viewModelElement, includePortsWithinConnectedEdges));
                 // ... start a new "pick" run ('nextPickedNode' takes care
                 // about ignoring the previously found ones), ...
                 pickPath.nextPickedNode();
