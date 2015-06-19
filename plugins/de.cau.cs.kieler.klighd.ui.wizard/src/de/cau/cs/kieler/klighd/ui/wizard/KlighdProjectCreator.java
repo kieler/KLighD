@@ -182,6 +182,7 @@ public class KlighdProjectCreator extends WorkspaceModifyOperation implements IP
         final PluginProjectFactory ppf = createProjectFactory();
 
         ppf.setProjectName(info.getProjectName());
+        ppf.setLocation(info.getProjectLocation());
         ppf.addFolders(getAllFolders());
         ppf.addReferencedProjects(getReferencedProjects());
         ppf.addProjectNatures(getProjectNatures());

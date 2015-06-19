@@ -101,7 +101,7 @@ public class KGraphResource extends LazyLinkingResource {
         KNode node = (KNode) EcoreUtil2.getRootContainer(refreshed);
         if (node != null) {
             // parse persisted key-value pairs using KIML's layout data service
-            KimlUtil.loadDataElements(node, ADDITIONAL_PROPERTIES);
+            KimlUtil.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
             // validate layout data and references and fill in missing data
             KimlUtil.validate(node);
         }

@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.wizard;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.xtext.ui.wizard.IProjectInfo;
 
 import com.google.common.base.Strings;
@@ -25,6 +26,7 @@ import com.google.common.base.Strings;
 public class KlighdProjectInfo implements IProjectInfo {
 
     private String projectName;
+    private IPath projectLocation;
     private String transformationPackage;
     private String transformationName;
     private String sourceModelClassFullyQualified;
@@ -46,6 +48,20 @@ public class KlighdProjectInfo implements IProjectInfo {
      */
     public String getProjectName() {
         return projectName;
+    }
+
+    /**
+     * @return the projectLocation
+     */
+    public IPath getProjectLocation() {
+        return projectLocation;
+    }
+
+    /**
+     * @param projectLocation the projectLocation to set
+     */
+    public void setProjectLocation(final IPath projectLocation) {
+        this.projectLocation = projectLocation;
     }
 
     /**

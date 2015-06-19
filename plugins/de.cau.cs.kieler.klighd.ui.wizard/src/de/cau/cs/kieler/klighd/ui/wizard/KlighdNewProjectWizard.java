@@ -60,6 +60,7 @@ public class KlighdNewProjectWizard extends XtextNewProjectWizard {
 
         // gather all information required to create the project
         projectInfo.setProjectName(mainPage.getProjectName());
+        projectInfo.setProjectLocation(mainPage.getLocationPath().append(projectInfo.getProjectName()));
         projectInfo.setTransformationName(mainPage.getTransformationName());
         projectInfo.setTransformationPackage(mainPage.getTransformationPackage());
         projectInfo.setSourceModelClassFullyQualified(mainPage.getSourceModel());
