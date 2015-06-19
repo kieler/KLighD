@@ -28,6 +28,7 @@ import org.eclipse.swt.printing.Printer;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
+import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.export.AbstractDiagramExporter;
@@ -56,8 +57,8 @@ public final class PrintExporter extends AbstractDiagramExporter {
      */
     public PrintExporter(final PiccoloViewer viewer) {
         this.viewer = viewer;
-        this.exportBrandings =
-                KlighdDataManager.getExportBrandingByFormat("printout", viewer.getViewContext());
+        this.exportBrandings = KlighdDataManager.getExportBrandingByFormat(
+                KlighdConstants.EXPORT_PRINTOUT, viewer.getViewContext());
     }
 
 

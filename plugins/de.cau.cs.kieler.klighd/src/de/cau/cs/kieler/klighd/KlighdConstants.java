@@ -176,6 +176,12 @@ public final class KlighdConstants {
     public static final int SIDE_BAR_LAYOUT_CONFIG_PRIORITY = VolatileLayoutConfig.DEFAULT_PRIORITY - 25;
 
     /**
+     * Constant definition of <i>printout</i> export format, required e.g. in the registration of
+     * {@link IExportBranding IExportBrandings}.
+     */
+    public static final String EXPORT_PRINTOUT = "printout"; 
+
+    /**
      * Special type of semantic data that represents an 'id'. A specified value should be mapped to
      * rendering specific id elements, i.e. for SVGs a {@code <tag id="xyz" />} attribute should be
      * generated.
