@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Textual KGraph Language UI
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
-Bundle-Version: 0.3.2.qualifier
+Bundle-Version: 0.3.3.qualifier
 Bundle-SymbolicName: de.cau.cs.kieler.core.kgraph.text.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext.ui,
