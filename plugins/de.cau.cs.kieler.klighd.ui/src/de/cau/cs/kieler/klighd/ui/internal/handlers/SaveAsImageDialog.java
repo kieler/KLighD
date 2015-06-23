@@ -506,9 +506,13 @@ public class SaveAsImageDialog extends Dialog {
         fileDialog.setOverwrite(true);
         final ExporterDescriptor descriptor = descriptors.get(imageFormatCombo.getSelectionIndex());
         String ext = descriptor.fileExtension;
-        // extensions passed to the dialog have to include the '.'
-        if (ext.charAt(0) != '.') {
-            ext = '.' + ext;
+        // extensions passed to the dialog have to include the '*.'
+        if (!ext.startsWith("*.")) {
+            if (ext.startsWith(".")) {
+                ext = "*" + ext;
+            } else {
+                ext = "*." + ext;
+            }
         }
         final String[] extensions = { ext }; //$NON-NLS-1$
         final String[] descriptions = { descriptor.description }; //$NON-NLS-1$
