@@ -58,6 +58,7 @@ import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PDragSequenceEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PDimension;
 
@@ -71,13 +72,13 @@ import edu.umd.cs.piccolo.util.PDimension;
 public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
     // Properties for the appearance of the outline rectangle.
-    private static final int VIEWPORT_OUTLINE_LINEWIDTH = 2;
-    private static final int VIEWPORT_OUTLINE_ROUNDNESS = 5;
+    private static final float VIEWPORT_OUTLINE_LINEWIDTH = 1.5f;
+    private static final int VIEWPORT_OUTLINE_CORNER_WIDTH = 5;
     private static final Colors VIEWPORT_OUTLINE_COLOR = Colors.BLUE_3;
     private static final int VIEWPORT_OUTLINE_ALPHA = 25;
 
-    private static final Colors CLIP_OUTLINE_COLOR = Colors.MEDIUM_PURPLE_4;
-    private static final int CLIP_OVERLAY_ALPHA = 50;
+    private static final Colors CLIP_OUTLINE_COLOR = Colors.WHITE;
+    private static final int CLIP_OVERLAY_ALPHA = 200;
 
     // Delay of the timed outline rect update.
     private static final int OUTLINE_RECT_UPDATE_DELAY = 200;
@@ -113,12 +114,31 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
     private Timer outlineRectTimer;
 
     /**
+     * Configuration hook for customizing the viewport outline (rounded) rectangle's corner width &
+     * height.
+     * 
+     * @return the desired value taken as corner width & corner height
+     */
+    protected int getViewportOutlineRectCornerWidth() {
+        return VIEWPORT_OUTLINE_CORNER_WIDTH;
+    }
+
+    /**
+     * Configuration hook for customizing the viewport outline rectangle's line width.
+     *
+     * @return the desired line width as <code>float<code>
+     */
+    protected float getViewportOutlineRectLineWidth() {
+        return VIEWPORT_OUTLINE_LINEWIDTH;
+    }
+
+    /**
      * Configuration hook for customizing the viewport outline rectangle's fill color.
      *
      * @return a {@link Pair} of an {@link RGB} record determining the color and an {@link Integer}
      *         denoting the opacity (alpha value).
      */
-    public Pair<RGB, Integer> getViewportOutlineRectPaint() {
+    protected Pair<RGB, Integer> getViewportOutlineRectPaint() {
         return Pair.of(toRGB(VIEWPORT_OUTLINE_COLOR), VIEWPORT_OUTLINE_ALPHA);
     }
 
@@ -129,7 +149,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      * @return a {@link Pair} of an {@link RGB} record determining the color and an {@link Integer}
      *         denoting the opacity (alpha value).
      */
-    public Pair<RGB, Integer> getClipOutlineOverlayPaint() {
+    protected Pair<RGB, Integer> getClipOutlineOverlayPaint() {
         return Pair.of(toRGB(CLIP_OUTLINE_COLOR), CLIP_OVERLAY_ALPHA);
     }
 
@@ -343,23 +363,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         // install the outlineCanvas' camera into the given (new) topNode
         outlineCamera.addLayer(topNode);
 
-        // add a further layer to the camera
-        //  that contains a rectangle indicating the visible part of the model
-        final PLayer overlayLayer = new PLayer();
-        outlineCamera.addLayer(overlayLayer);
-
-        // initialize & configure the outline rectangle
-        //  the concrete path data are set later on in #adjustOutlineRect()
-        //  when the timer expires the first time (it's started in constructor)
-        viewportOutlineRect = new KlighdPath();
-
-        final Pair<RGB, Integer> viewportOutlineRectColoring = getViewportOutlineRectPaint();
-        viewportOutlineRect.setLineWidth(VIEWPORT_OUTLINE_LINEWIDTH);
-        viewportOutlineRect.setPaint(viewportOutlineRectColoring.getFirst());
-        viewportOutlineRect.setPaintAlpha(viewportOutlineRectColoring.getSecond());
-        overlayLayer.addChild(viewportOutlineRect);
-
-        // initialize & configure the outline rectangle
+        // initialize & configure the clip outline overlay rectangle
         //  its size is updated by the PropertyChangeListener on the BOUNDS of 'camera'
         clipOutlineOverlay = new KlighdPath() {
             private static final long serialVersionUID = 1L;
@@ -407,7 +411,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 (diagramMainCamera.getDisplayedKNodeNode() instanceof KNodeTopNode));
 
         outlineCamera.addChild(clipOutlineOverlay);
-
+        
         outlineCamera.addPropertyChangeListener(PNode.PROPERTY_BOUNDS, new PropertyChangeListener() {
 
             public void propertyChange(final PropertyChangeEvent evt) {
@@ -415,6 +419,20 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
             }
         });
 
+        // initialize & configure the outline rectangle
+        //  the concrete path data are set later on in #adjustOutlineRect()
+        //  when the timer expires the first time (it's started in constructor)
+        viewportOutlineRect = new KlighdPath();
+
+        final Pair<RGB, Integer> viewportOutlineRectColoring = getViewportOutlineRectPaint();
+        viewportOutlineRect.setLineWidth(getViewportOutlineRectLineWidth());
+        viewportOutlineRect.setPaint(viewportOutlineRectColoring.getFirst());
+        viewportOutlineRect.setPaintAlpha(viewportOutlineRectColoring.getSecond());
+
+        // add the viewport outline rectangle after the clip outline overlay in order to let the
+        //  viewport rectangle be always clearly visible without any opacity reduction
+        //  cause by the clip outline overlay
+        outlineCamera.addChild(viewportOutlineRect);
 
         // add listeners to layout changes and canvas resizing
         rootNode = topNode.getViewModelElement();
@@ -491,6 +509,8 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         final float height = Math.max(layoutData.getHeight(), MIN_SIZE);
         outlineCanvas.getCamera().setViewBounds(
                 new Rectangle2D.Double(layoutData.getXpos(), layoutData.getYpos(), width, height));
+
+        adjustOutlineRect();
     }
 
 
@@ -513,11 +533,16 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
         // get the new bounds
         final PBounds bounds = originalCamera.getViewBounds();
-        NodeUtil.localToParent(displayedNode.getParent(), topNode).transform(bounds, bounds);
+        final PAffineTransform localToParent = 
+                NodeUtil.localToParent(displayedNode.getParent(), topNode);
+        localToParent.preConcatenate(outlineCanvas.getCamera().getViewTransformReference());
+        localToParent.transform(bounds, bounds);
 
-        viewportOutlineRect.setPathToRoundRectangle((float) bounds.x, (float) bounds.y,
-                (float) bounds.width, (float) bounds.height, VIEWPORT_OUTLINE_ROUNDNESS,
-                VIEWPORT_OUTLINE_ROUNDNESS);
+        final int viewportOutlineRectCornerWidth = getViewportOutlineRectCornerWidth();
+
+        viewportOutlineRect.setPathToRoundRectangle(
+                (float) bounds.x, (float) bounds.y, (float) bounds.width, (float) bounds.height,
+                viewportOutlineRectCornerWidth, viewportOutlineRectCornerWidth);
 
         // schedule a repaint
         outlineCanvas.getCamera().invalidatePaint();
