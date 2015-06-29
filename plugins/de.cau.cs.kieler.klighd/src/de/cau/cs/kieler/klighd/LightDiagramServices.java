@@ -1090,7 +1090,7 @@ public final class LightDiagramServices {
         }
 
         // otherwise try to build up a corresponding view context
-        final ViewContext viewContext = translateModel2(model, null);
+        final ViewContext viewContext = translateModel2(model, null, properties);
 
         // if no corresponding diagram synthesis is available and, thus, no diagram has been created...
         if (viewContext.getViewModel() == null
