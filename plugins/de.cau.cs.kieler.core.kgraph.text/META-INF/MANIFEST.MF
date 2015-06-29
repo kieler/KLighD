@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.antlr.runtime
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.cau.cs.kieler.core.kgraph.text,
  de.cau.cs.kieler.core.kgraph.text.services,
  de.cau.cs.kieler.core.kgraph.text.serializer,

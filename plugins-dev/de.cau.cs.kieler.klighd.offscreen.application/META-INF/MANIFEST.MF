@@ -4,7 +4,7 @@ Bundle-Name: KLighD Offscreen Rendering Application
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.offscreen.application;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  de.cau.cs.kieler.klighd,

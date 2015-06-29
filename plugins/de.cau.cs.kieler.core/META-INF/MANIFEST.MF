@@ -9,4 +9,4 @@ Export-Package: de.cau.cs.kieler.core,
  de.cau.cs.kieler.core.math,
  de.cau.cs.kieler.core.properties,
  de.cau.cs.kieler.core.util
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
