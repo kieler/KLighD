@@ -4,7 +4,7 @@ Bundle-Name: KIELER Lightweight Diagrams Xtend-based Extension Library
 Bundle-SymbolicName: de.cau.cs.kieler.core.krendering.extensions
 Bundle-Version: 0.6.0.qualifier
 Bundle-Activator: de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensionsPlugin
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Vendor: Kiel University
 Require-Bundle: org.eclipse.core.runtime,
  javax.inject;bundle-version="1.0.0",
  com.google.inject;bundle-version="3.0.0",

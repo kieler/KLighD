@@ -7,4 +7,4 @@ Fragment-Host: de.cau.cs.kieler.klighd.ui;bundle-version="[0.7.1,0.7.2)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.emf.transaction,
  org.eclipse.emf.workspace
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Vendor: Kiel University

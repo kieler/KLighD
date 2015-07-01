@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams (KLighD)
 Bundle-SymbolicName: de.cau.cs.kieler.klighd;singleton:=true
 Bundle-Version: 0.8.0.qualifier
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Vendor: Kiel University
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.6.0",

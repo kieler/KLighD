@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: KlighD incremental update extension
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.incremental;singleton:=true
 Bundle-Version: 0.2.1.qualifier
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Vendor: Kiel University
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava;bundle-version="10.0.1",
  org.eclipse.core.runtime;bundle-version="3.8.0",

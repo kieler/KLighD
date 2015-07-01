@@ -4,7 +4,7 @@ Bundle-Name: KIELER Lightweight Diagrams Visualization Examples
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.examples;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.examples.KLighDExamplesPlugin
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Vendor: Kiel University
 Require-Bundle: javax.inject;bundle-version="1.0.0",
  com.google.inject;bundle-version="3.0.0",
  com.google.guava;bundle-version="10.0.0",

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Powered by Piccolo2D
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo;singleton:=true
 Bundle-Version: 0.8.0.qualifier
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Vendor: Kiel University
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.google.guava;bundle-version="10.0.0",

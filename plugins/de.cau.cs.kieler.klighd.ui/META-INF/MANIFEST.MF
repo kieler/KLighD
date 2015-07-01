@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.expressions;bundle-version="3.4.400",
  org.eclipse.jface.databinding;bundle-version="1.6.200"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-Vendor: Christian-Albrechts-Universität zu Kiel
+Bundle-Vendor: Kiel University
 Export-Package: de.cau.cs.kieler.klighd.ui,
  de.cau.cs.kieler.klighd.ui.internal;x-friends:="de.cau.cs.kieler.klighd.ui.contrib3x",
  de.cau.cs.kieler.klighd.ui.internal.handlers;x-friends:="de.cau.cs.kieler.klighd.ui.contrib3x",
