@@ -160,6 +160,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
         defaultProperties.setProperty(EMBED_FONTS, false);
         defaultProperties.setProperty(TEXT_AS_SHAPES, true);
+        defaultProperties.setProperty(DESCRIPTION, (String) null);
     }
 
     public static Properties getDefaultProperties() {
@@ -390,13 +391,17 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         }
 
         os.print("<desc>");
-        os.print("Creator: " + XMLWriter.normalizeText(getCreator()));
-        os.print(" Producer: " + XMLWriter.normalizeText(producer));
-        os.print(" Source: " + XMLWriter.normalizeText(getProperty(FOR)));
-        if (!isDeviceIndependent()) {
-            os.print(" Date: "
-                    + DateFormat.getDateTimeInstance(DateFormat.FULL,
-                            DateFormat.FULL, Locale.US).format(new Date()));
+        if (getProperty(DESCRIPTION) != null) {
+            os.print("Creator: " + XMLWriter.normalizeText(getCreator()));
+            os.print(" Producer: " + XMLWriter.normalizeText(producer));
+            os.print(" Source: " + XMLWriter.normalizeText(getProperty(FOR)));
+            if (!isDeviceIndependent()) {
+                os.print(" Date: "
+                        + DateFormat.getDateTimeInstance(DateFormat.FULL,
+                                DateFormat.FULL, Locale.US).format(new Date()));
+            }
+        } else {
+            os.print(getProperty(DESCRIPTION));
         }
         os.println("</desc>");
 
