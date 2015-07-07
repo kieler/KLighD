@@ -60,6 +60,8 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                 ? properties.getProperty(EMBED_FONTS) : EMBED_FONTS.getDefault();
         final String generator = properties != null
                 ? properties.getProperty(GENERATOR) : GENERATOR.getDefault();
+        final String description = properties != null
+                ? properties.getProperty(DESCRIPTION) : DESCRIPTION.getDefault();
 
         // Construct a KLighD main camera ...
         //  (the basic PRoot is sufficient here, as this canvas doesn't rely on any SWT stuff)
@@ -76,7 +78,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
 
         try {
             return new SVGExporter().export(camera,
-                    new ExportData(viewContext, generator, output, false, 1, textAsShapes, embedFonts));
+                    new ExportData(viewContext, generator, output, false, 1, textAsShapes, embedFonts, description));
 
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

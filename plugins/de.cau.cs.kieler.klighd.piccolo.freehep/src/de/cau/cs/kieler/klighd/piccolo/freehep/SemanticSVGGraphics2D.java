@@ -130,7 +130,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
     public static final String EMBED_FONTS = rootKey + "."
             + FontConstants.EMBED_FONTS;
-
+    
+    public static final String DESCRIPTION = null;
+    
     private SVGFontTable fontTable;
 
     private static final UserProperties defaultProperties = new UserProperties();

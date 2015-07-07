@@ -69,6 +69,7 @@ public interface IDiagramExporter {
         public final int scale;
         public final boolean isTextAsShapes;
         public final boolean isEmbedFonts;
+        public final String description;
 
         private TilingData tilingInfo;
 
@@ -108,6 +109,43 @@ public interface IDiagramExporter {
             this.isTextAsShapes = textAsShapes;
             this.isEmbedFonts = embedFonts;
             this.tilingInfo = TilingData.createNonTiledData();
+            this.description = null;
+        }
+
+        /**
+         * Constructor.
+         *
+         * @param viewContext
+         *            the {@link ViewContext} providing access to the diagram' view & source model
+         * @param format
+         *            id of the format to transform the diagram into
+         * @param stream
+         *            the output stream
+         * @param cameraViewport
+         *            if <code>true</code> only the actually visible area is to be exported,
+         *            otherwise export the whole diagram
+         * @param scale
+         *            the scale factor to apply while constructing the image, is usually only valid
+         *            in case of raster (bitmap) images
+         * @param textAsShapes
+         *            whether text should be rendered as shapes (only vector images)
+         * @param embedFonts
+         *            whether the texts' fonts shall be embedded in the output (only vector images)
+         */
+        public ExportData(final ViewContext viewContext, final String format,
+                final OutputStream stream, final boolean cameraViewport, final int scale,
+                final boolean textAsShapes, final boolean embedFonts, final String description) {
+            this.viewContext = viewContext;
+            this.format = format;
+            this.stream = stream;
+            this.path = null;
+            this.isWorkspacePath = false;
+            this.isCameraViewport = cameraViewport;
+            this.scale = scale;
+            this.isTextAsShapes = textAsShapes;
+            this.isEmbedFonts = embedFonts;
+            this.tilingInfo = TilingData.createNonTiledData();
+            this.description = description;
         }
 
         /**
@@ -143,6 +181,7 @@ public interface IDiagramExporter {
             this.isTextAsShapes = textAsShapes;
             this.isEmbedFonts = embedFonts;
             this.tilingInfo = TilingData.createNonTiledData();
+            this.description = null;
         }
 
         /**

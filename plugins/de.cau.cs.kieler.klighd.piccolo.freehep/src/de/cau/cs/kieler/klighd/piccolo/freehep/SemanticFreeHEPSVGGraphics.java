@@ -41,6 +41,7 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
     private Rectangle2D bounds;
     private boolean textAsShapes;
     private boolean embedFonts;
+    private String description;
 
     /**
      * @param bounds
@@ -51,10 +52,11 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      *            whether the texts' fonts shall be embedded in the output
      */
     public SemanticFreeHEPSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes,
-            final Boolean embedFonts) {
+            final Boolean embedFonts, final String description) {
         super(null);
         this.bounds = bounds;
         this.textAsShapes = textAsShapes;
+        this.description = description;
         if (!textAsShapes) {
             this.setCanHandleMultiline(true);
         }
@@ -74,6 +76,7 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
         final UserProperties props = new UserProperties();
         props.setProperty(SVGGraphics2D.TEXT_AS_SHAPES, textAsShapes);
         props.setProperty(SVGGraphics2D.EMBED_FONTS, embedFonts);
+        props.setProperty(SemanticSVGGraphics2D.DESCRIPTION, description);
         graphicsDelegate.setProperties(props);
 
         // start
