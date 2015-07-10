@@ -131,7 +131,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     public static final String EMBED_FONTS = rootKey + "."
             + FontConstants.EMBED_FONTS;
     
-    public static final String DESCRIPTION = null;
+    public static final String DESCRIPTION = rootKey + ".Description";
     
     private SVGFontTable fontTable;
 
@@ -160,7 +160,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
         defaultProperties.setProperty(EMBED_FONTS, false);
         defaultProperties.setProperty(TEXT_AS_SHAPES, true);
-        defaultProperties.setProperty(DESCRIPTION, (String) null);
+        defaultProperties.setProperty(DESCRIPTION, "");
     }
 
     public static Properties getDefaultProperties() {
@@ -391,7 +391,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         }
 
         os.print("<desc>");
-        if (getProperty(DESCRIPTION) != null) {
+        if (getProperty(DESCRIPTION) != null && !getProperty(DESCRIPTION).equals("")) {
+            os.print(getProperty(DESCRIPTION));
+        } else {
             os.print("Creator: " + XMLWriter.normalizeText(getCreator()));
             os.print(" Producer: " + XMLWriter.normalizeText(producer));
             os.print(" Source: " + XMLWriter.normalizeText(getProperty(FOR)));
@@ -400,8 +402,6 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                         + DateFormat.getDateTimeInstance(DateFormat.FULL,
                                 DateFormat.FULL, Locale.US).format(new Date()));
             }
-        } else {
-            os.print(getProperty(DESCRIPTION));
         }
         os.println("</desc>");
 
