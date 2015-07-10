@@ -152,7 +152,6 @@ public class KNodeNode extends KNodeAbstractNode implements
             // this property change listener reacts on changes in the cameras list
 
             public void propertyChange(final PropertyChangeEvent evt) {
-                final KNodeNode thisNode = KNodeNode.this;
                 if (evt.getNewValue() instanceof List<?>) {
 
                     @SuppressWarnings("unchecked")
@@ -162,29 +161,8 @@ public class KNodeNode extends KNodeAbstractNode implements
                     //  that one is supposed to be the diagram main camera and, thus,
                     //  the diagram is assumed to be clipped to this node
                     final boolean isRoot = Iterables.any(newCameras, IS_MAIN_CAM);
-                    thisNode.isRootLayer = isRoot;
 
-                    final PNode childAreaParent = thisNode.childArea.getParent();
-
-                    if (isRoot && childAreaParent != null && childAreaParent != thisNode) {
-                        // ... i.e. 'childArea' is somehow buried in the rendering nodes
-                        //  set the helper 'childAreaCamera' visible and adjust its view transform
-                        //  ... if that's not the case yet
-
-                        if (thisNode.childAreaCamera.getVisible()) {
-                            // if the helper camera is already visible
-                            //  we're done as nothing will change
-                            return;
-                        }
-
-                        thisNode.childAreaCamera.setViewTransform(NodeUtil.localToParent(
-                                thisNode.childArea.getParent(), thisNode));
-
-                        thisNode.childAreaCamera.setVisible(true);
-                    } else {
-                        // otherwise switch the helper camera off be setting it invisible
-                        thisNode.childAreaCamera.setVisible(false);
-                    }
+                    updateChildAreaCamera(isRoot);
                 }
             }
         });
@@ -213,6 +191,40 @@ public class KNodeNode extends KNodeAbstractNode implements
     }
 
     /**
+     * Updates the transform describing the position and the visibility of the helper
+     * {@link #childAreaCamera}.
+     * 
+     * @param isRoot
+     *            must be <code>true</code> if <code>this</code> KNodeNode is the current diagram
+     *            clip node, <code>false</code> otherwise
+     */
+    private void updateChildAreaCamera(final boolean isRoot) {
+        this.isRootLayer = isRoot;
+
+        final PNode childAreaParent = this.childArea.getParent();
+
+        if (isRoot && this.isExpanded() && childAreaParent != null && childAreaParent != this) {
+            // ... i.e. 'childArea' is somehow buried in the rendering nodes
+            //  set the helper 'childAreaCamera' visible and adjust its view transform
+            //  ... if that's not the case yet
+
+            if (this.childAreaCamera.getVisible()) {
+                // if the helper camera is already visible
+                //  we're done as nothing will change
+                return;
+            }
+
+            this.childAreaCamera.setViewTransform(NodeUtil.localToParent(childAreaParent, this));
+            this.childAreaCamera.setVisible(true);
+
+        } else {
+            // otherwise switch the helper camera off be setting it invisible
+            this.childAreaCamera.setVisible(false);
+        }
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public void setRenderingController(final AbstractKGERenderingController<KNode,
@@ -236,6 +248,20 @@ public class KNodeNode extends KNodeAbstractNode implements
         return this.renderingController;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setExpanded(boolean expanded) {
+        super.setExpanded(expanded);
+
+        // if the diagram is currently clipped to this node and this node was (still) collapsed
+        //  we may have to update the child area camera, so ...
+        if (expanded && this.isRootLayer) {
+            updateChildAreaCamera(true);
+        }
+    }
+    
     /**
      * Get the PortLayer.
      * @return a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.
