@@ -76,7 +76,9 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
         final UserProperties props = new UserProperties();
         props.setProperty(SVGGraphics2D.TEXT_AS_SHAPES, textAsShapes);
         props.setProperty(SVGGraphics2D.EMBED_FONTS, embedFonts);
-        props.setProperty(SemanticSVGGraphics2D.DESCRIPTION, description);
+        if (description != null) {
+            props.setProperty(SemanticSVGGraphics2D.DESCRIPTION, description);
+        }
         graphicsDelegate.setProperties(props);
 
         // start

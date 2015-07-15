@@ -28,7 +28,6 @@ import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.klighd.IOffscreenRenderer;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 
@@ -84,13 +83,10 @@ public class OffscreenDiagramRenderer implements IApplication {
         if (eo == null) {
             return;
         }
-
-        MapPropertyHolder mph = new MapPropertyHolder();
-        mph.setProperty(IOffscreenRenderer.DESCRIPTION, "Testdescription");
         
         // render and layout the diagram
         final IStatus result =
-                LightDiagramServices.renderOffScreen(eo, IOffscreenRenderer.SVG, targetFile, mph);
+                LightDiagramServices.renderOffScreen(eo, IOffscreenRenderer.SVG, targetFile);
 
         if (result != null && result.isOK()) {
             System.out.println("Generated file " + targetFile);
