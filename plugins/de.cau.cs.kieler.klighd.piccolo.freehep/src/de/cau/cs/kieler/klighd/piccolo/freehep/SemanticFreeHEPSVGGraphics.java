@@ -50,6 +50,9 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      *            whether text should be rendered as shapes
      * @param embedFonts
      *            whether the texts' fonts shall be embedded in the output
+     * @param description
+     *            optional description to be inserted into the {@code desc} property of the
+     *            generated SVG. Can be null.
      */
     public SemanticFreeHEPSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes,
             final Boolean embedFonts, final String description) {

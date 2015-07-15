@@ -391,9 +391,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         }
 
         os.print("<desc>");
-        if (getProperty(DESCRIPTION) != null && !getProperty(DESCRIPTION).equals("")) {
-            os.print(getProperty(DESCRIPTION));
-        } else {
+        if (Strings.isNullOrEmpty(getProperty(DESCRIPTION))) {
             os.print("Creator: " + XMLWriter.normalizeText(getCreator()));
             os.print(" Producer: " + XMLWriter.normalizeText(producer));
             os.print(" Source: " + XMLWriter.normalizeText(getProperty(FOR)));
@@ -402,6 +400,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                         + DateFormat.getDateTimeInstance(DateFormat.FULL,
                                 DateFormat.FULL, Locale.US).format(new Date()));
             }
+        } else {
+            os.print(getProperty(DESCRIPTION));
         }
         os.println("</desc>");
 

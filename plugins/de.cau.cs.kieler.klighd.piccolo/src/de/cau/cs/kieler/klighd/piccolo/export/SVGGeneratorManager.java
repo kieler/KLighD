@@ -86,6 +86,7 @@ public final class SVGGeneratorManager {
             final boolean textAsShapes, final boolean embedFonts) {
         return createGraphics(id, bounds, textAsShapes, embedFonts, null);
     }
+    
     /**
      * Instantiates the {@link KlighdAbstractSVGGraphics} registered with id {@code id} if known.
      * Throws an {@link IllegalArgumentException} providing some details on the failure if
@@ -100,6 +101,9 @@ public final class SVGGeneratorManager {
      *            whether texts should be transformed to paths.
      * @param embedFonts
      *            whether the texts' fonts shall be embedded in the output
+     * @param description
+     *            optional description to be inserted into the {@code desc} property of the
+     *            generated SVG. Can be null.
      * @throws IllegalArgumentException
      *             when the graphics object cannot be created.
      * @return a instance of a svg generator initialized with the passed parameters.

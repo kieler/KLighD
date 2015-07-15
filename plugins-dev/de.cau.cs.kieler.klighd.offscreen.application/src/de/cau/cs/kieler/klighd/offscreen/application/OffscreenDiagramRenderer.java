@@ -83,7 +83,7 @@ public class OffscreenDiagramRenderer implements IApplication {
         if (eo == null) {
             return;
         }
-        
+
         // render and layout the diagram
         final IStatus result =
                 LightDiagramServices.renderOffScreen(eo, IOffscreenRenderer.SVG, targetFile);

@@ -131,6 +131,9 @@ public interface IDiagramExporter {
          *            whether text should be rendered as shapes (only vector images)
          * @param embedFonts
          *            whether the texts' fonts shall be embedded in the output (only vector images)
+         * @param description
+         *            optional description to be inserted into the {@code desc} property of the
+         *            generated SVG. Can be null.
          */
         public ExportData(final ViewContext viewContext, final String format,
                 final OutputStream stream, final boolean cameraViewport, final int scale,
