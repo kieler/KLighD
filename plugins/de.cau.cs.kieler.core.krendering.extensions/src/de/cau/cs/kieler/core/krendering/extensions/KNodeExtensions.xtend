@@ -23,6 +23,10 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
 import de.cau.cs.kieler.core.math.KVector
+import de.cau.cs.kieler.core.kgraph.KGraphElement
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData
+import de.cau.cs.kieler.kiml.options.LayoutOptions
+import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
@@ -141,6 +145,109 @@ class KNodeExtensions {
     def <T> KNode addLayoutParam(KNode node, IProperty<? super T> property, T value) {
         node?.getData(typeof(KShapeLayout))?.setProperty(property, value)
         return node
+    }
+    
+    /////////////
+    // Node label placement
+    /////////////
+    
+    /**
+     * Internal helper for setting layout options without the need to check for KNode, KEdge, ...
+     */
+    def private <S, T extends KGraphElement> T setLayoutOption(T kgraphElement, IProperty<S> option, S value) {
+        kgraphElement?.getData(typeof(KLayoutData))?.setProperty(option, value)
+        return kgraphElement
+    }    
+    
+    /**
+     * Configures labels on this node to be outside bottom left-aligned labels by default
+     */
+    def KNode configureOutsideBottomLeftNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomLeft)
+    }
+    
+    /**
+     * Configures labels on this node to be outside bottom centrally-aligned labels by default
+     */
+    def KNode configureOutsideBottomCenteredNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter)
+    }
+    
+    /**
+     * Configures labels on this node to be outside bottom right-aligned labels by default
+     */
+    def KNode configureOutsideBottomRightNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomRight)
+    }
+    
+    /**
+     * Configures labels on this node to be outside top left-aligned labels by default
+     */
+    def KNode configureOutsideTopLeftNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
+    }
+    
+    /**
+     * Configures labels on this node to be outside top centrally-aligned labels by default
+     */
+    def KNode configureOutsideTopCenteredNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopCenter)
+    }
+    
+    /**
+     * Configures labels on this node to be outside top right-aligned labels by default
+     */
+    def KNode configureOutsideTopRightNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopRight)
+    }
+    
+    /**
+     * Configures labels on this node to be inside bottom left-aligned labels by default
+     */
+    def KNode configureInsideBottomLeftNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomLeft)
+    }
+    
+    /**
+     * Configures labels on this node to be inside bottom centrally-aligned labels by default
+     */
+    def KNode configureInsideBottomCenteredNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomCenter)
+    }
+    
+    /**
+     * Configures labels on this node to be inside bottom right-aligned labels by default
+     */
+    def KNode configureInsideBottomRightNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomRight)
+    }
+    
+    /**
+     * Configures labels on this node to be inside centrally-aligned labels by default
+     */
+    def KNode configureInsideCenteredNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
+    }
+    
+    /**
+     * Configures labels on this node to be inside top left-aligned labels by default
+     */
+    def KNode configureInsideTopLeftNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopLeft)
+    }
+    
+    /**
+     * Configures labels on this node to be inside top centrally-aligned labels by default
+     */
+    def KNode configureInsideTopCenteredNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
+    }
+    
+    /**
+     * Configures labels on this node to be inside top right-aligned labels by default
+     */
+    def KNode configureInsideTopRightNodeLabelPlacement(KNode node) {
+        return node.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopRight)
     }
     
 }
