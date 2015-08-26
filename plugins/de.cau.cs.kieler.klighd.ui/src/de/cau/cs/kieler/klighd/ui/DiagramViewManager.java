@@ -206,7 +206,7 @@ public final class DiagramViewManager implements IPartListener {
         }
 
         // update the view context
-        if (!LightDiagramServices.updateDiagram(viewContext)) {
+        if (!LightDiagramServices.updateDiagram(viewContext, model, properties)) {
             return null;
         }
 
