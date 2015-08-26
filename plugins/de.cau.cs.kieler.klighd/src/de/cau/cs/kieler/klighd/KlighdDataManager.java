@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -41,6 +42,7 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory;
+import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
 
 /**
  * Singleton for accessing transformations, viewers, update strategies and layout post processors
@@ -472,6 +474,42 @@ public final class KlighdDataManager {
         return idSynthesisMapping.get(id);
     }
 
+    /**
+     * Returns the identifier of the given {@link ISynthesis} instance.
+     * 
+     * @param synthesis
+     *            the synthesis
+     * @return The ID or null if synthesis is not registered
+     */
+    public String getSynthesisID(final ISynthesis synthesis) {
+        if (synthesis != null) {
+            // Fast solution first
+            // Works only when given synthesis is directly retrieved form getDiagramSynthesisById or
+            // getAvailableSyntheses
+            for (Entry<String, ISynthesis> entry : idSynthesisMapping.entrySet()) {
+                if (synthesis == entry.getValue()) {
+                    return entry.getKey();
+                }
+            }
+            // Second case when the instance is not retrieved from this class.
+            // This case is unlikely because syntheses should not be instantiated by the user.
+            for (Entry<String, ISynthesis> entry : idSynthesisMapping.entrySet()) {
+                ISynthesis matchSynthesis = entry.getValue();
+                // Check and unwrap proxy synthesis
+                if (matchSynthesis instanceof ReinitializingDiagramSynthesisProxy) {
+                    if (synthesis.getClass() == ((ReinitializingDiagramSynthesisProxy<?>) matchSynthesis)
+                            .getDelegate().getClass()) {
+                        return entry.getKey();
+                    }
+                } else {
+                    if (synthesis.getClass() == matchSynthesis.getClass()) {
+                        return entry.getKey();
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Returns all registered instances of {@link IViewerProvider}.
