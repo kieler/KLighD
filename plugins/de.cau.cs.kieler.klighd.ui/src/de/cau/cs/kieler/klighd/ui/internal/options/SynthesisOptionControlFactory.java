@@ -31,9 +31,15 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import de.cau.cs.kieler.klighd.IAction;
+import de.cau.cs.kieler.klighd.IAction.ActionContext;
+import de.cau.cs.kieler.klighd.IAction.ActionResult;
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
@@ -144,8 +150,12 @@ public class SynthesisOptionControlFactory {
                 Display.getCurrent().asyncExec(new Runnable() {
 
                     public void run() {
-                        LightDiagramServices.updateDiagram(
-                                context, null, properties, option.getAnimateUpdate());
+                        if (option.getUpdateAction() != null) {
+                            invokeUpdateAction(option.getUpdateAction(), context);
+                        } else {
+                            LightDiagramServices.updateDiagram(context, null, properties,
+                                    option.getAnimateUpdate());
+                        }
                     }
                 });
             }
@@ -201,8 +211,12 @@ public class SynthesisOptionControlFactory {
                         // trigger the diagram update
                         Display.getCurrent().asyncExec(new Runnable() {
                             public void run() {
-                                LightDiagramServices.updateDiagram(
-                                        context, null, properties, option.getAnimateUpdate());
+                                if (option.getUpdateAction() != null) {
+                                    invokeUpdateAction(option.getUpdateAction(), context);
+                                } else {
+                                    LightDiagramServices.updateDiagram(context, null, properties,
+                                            option.getAnimateUpdate());
+                                }
                             }
                         });
                     }
@@ -318,11 +332,53 @@ public class SynthesisOptionControlFactory {
                 // trigger the diagram update
                 Display.getCurrent().asyncExec(new Runnable() {
                     public void run() {
-                        LightDiagramServices.updateDiagram(
-                                context, null, properties, option.getAnimateUpdate());
+                        if (option.getUpdateAction() != null) {
+                            invokeUpdateAction(option.getUpdateAction(), context);
+                        } else {
+                            LightDiagramServices.updateDiagram(context, null, properties,
+                                    option.getAnimateUpdate());
+                        }
                     }
                 });
             }
         });
+    }
+    
+    /**
+     * Executes the action on the root element of the given view context.
+     * 
+     * @param actionID
+     *            the id of the action
+     * @param viewContext
+     *            the view context
+     */
+    private void invokeUpdateAction(final String actionID, final ViewContext viewContext) {
+        if (actionID == null) {
+            return;
+        }
+
+        // Get action instance
+        final IAction action = KlighdDataManager.getInstance().getActionById(actionID);
+
+        if (action == null) {
+            return;
+        }
+
+        final IViewer viewer = viewContext.getViewer();
+
+        viewContext.getLayoutRecorder().startRecording();
+
+        // Call the action on the root of the view model
+        ActionResult result =
+                action.execute(new ActionContext(viewer, null, viewer.getViewContext()
+                        .getViewModel(), null));
+
+        if (result.getActionPerformed()) {
+            LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
+                    ZoomStyle.create(result, viewContext), result.getFocusNode(),
+                    result.getLayoutConfigs());
+        } else {
+            viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
+        }
     }
 }
