@@ -227,6 +227,7 @@ public final class SynthesisOption {
     private Number stepSize;
     private Boolean animateUpdate = null;
     private String updateStrategy = null;
+    private String updateAction = null;
     
     /**
      * Constructor.
@@ -348,6 +349,34 @@ public final class SynthesisOption {
      */
     public SynthesisOption setUpdateStrategy(final String strategyId) {
         this.updateStrategy = strategyId;
+        return this;
+    }
+    
+    /**
+     * Returns the update action id.
+     * 
+     * @return the id of the {@link IAction} which handles updating of the view model when this
+     *         {@link SynthesisOption} changed, or <code>null</code> if no dedicated action is
+     *         configured (default case)
+     */
+    public String getUpdateAction() {
+        return this.updateAction;
+    }
+
+    /**
+     * Sets the id of the update action handling model updates when this {@link SynthesisOption}
+     * changed.
+     * <p>
+     * If set non <code>null</code> the action will replace the behavior of the related
+     * {@link IUpdateStrategy}.
+     * 
+     * @param actionId
+     *            the id of the {@link IAction} which handles updating of the view model when this
+     *            {@link SynthesisOption} changed
+     * @return <code>this</code> {@link SynthesisOption} for convenience
+     */
+    public SynthesisOption setUpdateAction(final String actionId) {
+        this.updateAction = actionId;
         return this;
     }
 
