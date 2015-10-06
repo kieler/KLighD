@@ -15,8 +15,10 @@ package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -29,7 +31,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.IFormColors;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
@@ -40,6 +44,7 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
@@ -55,7 +60,12 @@ public class SynthesisOptionControlFactory {
     private FormToolkit formToolkit;
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
-    
+    /** The title text of the parent form. */
+    private final String parentTitle;
+    /** The list of {SynthesisOptionControlFactory} for synthesis specific sections. */
+    private final List<SynthesisOptionControlFactory> subFactories =
+            new LinkedList<SynthesisOptionControlFactory>();
+
     /** minimal width of sliders. */
     private static final int SLIDER_MIN_WIDTH = 70;
     /** the vertical space between different option controls, e.g. 2 check buttons. */
@@ -82,6 +92,13 @@ public class SynthesisOptionControlFactory {
         final GridLayout gl = new GridLayout(1, false);
         gl.verticalSpacing = MAJOR_VERTICAL_SPACING;
         this.parent.setLayout(gl);
+        
+        // save parent title
+        if (parent.getParent() instanceof Form) {
+            parentTitle = ((Form) parent.getParent()).getText();
+        } else {
+            parentTitle = null;
+        }
     }
     
     /**
@@ -92,6 +109,76 @@ public class SynthesisOptionControlFactory {
             c.dispose();
         }
         controls.clear();
+        
+        // Clear sections
+        for (SynthesisOptionControlFactory subFactory : subFactories) {
+            subFactory.clear();
+            subFactory.parent.getParent().dispose();
+        }
+        subFactories.clear();
+        if (parent.getParent() instanceof Form) {
+            ((Form) parent.getParent()).setText(parentTitle);
+        }
+    }
+
+    /**
+     * Creates a {@link SynthesisOptionControlFactory} for the given synthesis. Controls created
+     * with the returned factory will be clients of this section.
+     * 
+     * @param synthesis
+     *            the {@link ISynthesis} defining the section.
+     * @return the {@link SynthesisOptionControlFactory} for clients.
+     */
+    public SynthesisOptionControlFactory createSubSynthesisOptionControlFactory(
+            final ISynthesis synthesis) {
+        // Remove default title
+        if (parent.getParent() instanceof Form) {
+            ((Form) parent.getParent()).setText(null);
+        }
+        // Create section container for diagram synthesis options
+        Section synthesisSection = formToolkit.createSection(parent,
+                Section.EXPANDED | Section.NO_TITLE_FOCUS_BOX | Section.TWISTIE);
+        synthesisSection.setFont(JFaceResources.getHeaderFont());
+        synthesisSection.setForeground(formToolkit.getColors().getColor(IFormColors.TITLE));
+        synthesisSection.setText(synthesis.getInputDataType().getSimpleName() + " " + parentTitle);
+        
+        //Create client composite
+        Composite client = formToolkit.createComposite(synthesisSection);
+        synthesisSection.setClient(client);
+
+        // Create the factory for diagram synthesis option controls to fill the clients container
+        SynthesisOptionControlFactory subSynthesisOptionControlFactory =
+                new SynthesisOptionControlFactory(client, formToolkit);
+        subFactories.add(subSynthesisOptionControlFactory);
+        
+        return subSynthesisOptionControlFactory;
+    }
+    
+    /**
+     * Factory method for creating a controls for different {@link SynthesisOption}.
+     * 
+     * @param option
+     *            the option
+     * @param context
+     *            the related {@link ViewContext} the option
+     * @return true if the created control has an action, false otherwise (e.g. in case of a
+     *         separator)
+     */
+    public boolean createOptionControl(final SynthesisOption option, final ViewContext context) {
+        if (option.isCheckOption()) {
+            this.createCheckOptionControl(option, context);
+            return true;
+        } else if (option.isChoiceOption()) {
+            this.createChoiceOptionControl(option, context);
+            return true;
+        } else if (option.isRangeOption()) {
+            this.createRangeOptionControl(option, context);
+            return true;
+        } else if (option.isSeparator()) {
+            this.createSeparator(option.getName());
+            return false;
+        }
+        return false;
     }
     
     /**

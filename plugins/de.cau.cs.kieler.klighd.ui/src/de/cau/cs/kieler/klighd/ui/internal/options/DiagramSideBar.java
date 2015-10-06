@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.ui.internal.options;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,6 +66,7 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
@@ -558,7 +560,15 @@ public final class DiagramSideBar {
 
         boolean actionsAvailable = false;
 
-        for (final DisplayedActionData actionData : viewContext.getDisplayedActions()) {
+        LinkedHashSet<DisplayedActionData> allActionData = new LinkedHashSet<DisplayedActionData>();
+        allActionData.addAll(viewContext.getDisplayedActions());
+        if (!viewContext.getChildViewContexts(false).isEmpty()) {
+            // Collect all action from child view contexts
+            for (ViewContext childVC : viewContext.getChildViewContexts(true)) {
+                allActionData.addAll(childVC.getDisplayedActions());
+            }
+        }
+        for (final DisplayedActionData actionData : allActionData) {
             actionControlFactory.createActionControl(actionData, theViewContext);
             actionsAvailable = true;
         }
@@ -583,21 +593,32 @@ public final class DiagramSideBar {
 
         boolean synthesisOptionsAvailable = false;
 
-        for (final SynthesisOption option : viewContext.getDisplayedSynthesisOptions()) {
-            if (option.isCheckOption()) {
-                synthesisOptionControlFactory.createCheckOptionControl(option, viewContext);
-                synthesisOptionsAvailable = true;
-            } else if (option.isChoiceOption()) {
-                synthesisOptionControlFactory.createChoiceOptionControl(option, viewContext);
-                synthesisOptionsAvailable = true;
-            } else if (option.isRangeOption()) {
-                synthesisOptionControlFactory.createRangeOptionControl(option, viewContext);
-                synthesisOptionsAvailable = true;
-            } else if (option.isSeparator()) {
-                synthesisOptionControlFactory.createSeparator(option.getName());
+        if (!viewContext.getChildViewContexts(false).isEmpty()) {
+            LinkedHashSet<ISynthesis> allSyntheses = new LinkedHashSet<ISynthesis>();
+            allSyntheses.add(viewContext.getDiagramSynthesis());
+            // Collect all syntheses from child view contexts
+            for (ViewContext childVC : viewContext.getChildViewContexts(true)) {
+                allSyntheses.add(childVC.getDiagramSynthesis());
+            }
+            for (final ISynthesis synthesis : allSyntheses) {
+                if (synthesis != null) {
+                    // Create a new section for the synthesis options
+                    SynthesisOptionControlFactory subFactory = synthesisOptionControlFactory
+                            .createSubSynthesisOptionControlFactory(synthesis);
+                    // Add options
+                    for (final SynthesisOption option : synthesis
+                            .getDisplayedSynthesisOptions()) {
+                        synthesisOptionsAvailable |=
+                                subFactory.createOptionControl(option, viewContext);
+                    }
+                }
+            }
+        } else {
+            for (final SynthesisOption option : viewContext.getDisplayedSynthesisOptions()) {
+                synthesisOptionsAvailable |=
+                        synthesisOptionControlFactory.createOptionControl(option, viewContext);
             }
         }
-
 
         // remove any option controls that have been created before
         layoutOptionControlFactory.clear();
