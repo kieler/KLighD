@@ -592,7 +592,8 @@ public final class DiagramSideBar {
         synthesisOptionControlFactory.clear();
 
         boolean synthesisOptionsAvailable = false;
-
+        
+        // Create synthesis option sections for all used syntheses
         if (!viewContext.getChildViewContexts(false).isEmpty()) {
             LinkedHashSet<ISynthesis> allSyntheses = new LinkedHashSet<ISynthesis>();
             allSyntheses.add(viewContext.getDiagramSynthesis());

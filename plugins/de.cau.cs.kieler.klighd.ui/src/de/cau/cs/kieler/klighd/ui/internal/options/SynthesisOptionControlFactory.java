@@ -14,10 +14,13 @@
 package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,6 +34,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.IFormColors;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.events.IExpansionListener;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -45,12 +50,13 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * A factory providing methods for creating diagram synthesis option controls in the diagram side bar.
  * 
- * @author chsch
+ * @author chsch, als
  */
 public class SynthesisOptionControlFactory {
 
@@ -60,12 +66,24 @@ public class SynthesisOptionControlFactory {
     private FormToolkit formToolkit;
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
+    /** This flag is true if this factory is factory for options of a subordinate synthesis. */
+    private boolean isSubFactory = false;
     /** The title text of the parent form. */
     private final String parentTitle;
     /** The list of {SynthesisOptionControlFactory} for synthesis specific sections. */
     private final List<SynthesisOptionControlFactory> subFactories =
             new LinkedList<SynthesisOptionControlFactory>();
-
+    /** This flag is true if this factory is factory for a category of options. */
+    private boolean isCategoryFactory = false;
+    /** The list of {SynthesisOptionControlFactory} for categories of options. */
+    private final Map<SynthesisOption, SynthesisOptionControlFactory> categoryFactories =
+            new HashMap<SynthesisOption, SynthesisOptionControlFactory>();
+    
+    /** Preference prefix for sub-factory. */
+    private static final String SUB_FACTORY_PREFIX = "sidebar.synthesis.expansion.";
+    /** Preference prefix for category-factory. */
+    private static final String CATEGORY_FACTORY_PREFIX = "sidebar.category.expansion.";
+    
     /** minimal width of sliders. */
     private static final int SLIDER_MIN_WIDTH = 70;
     /** the vertical space between different option controls, e.g. 2 check buttons. */
@@ -116,9 +134,18 @@ public class SynthesisOptionControlFactory {
             subFactory.parent.getParent().dispose();
         }
         subFactories.clear();
-        if (parent.getParent() instanceof Form) {
+
+        // Restore default form title
+        if (isSubFactory && parent.getParent() instanceof Form) {
             ((Form) parent.getParent()).setText(parentTitle);
         }
+
+        // Clear categories
+        for (SynthesisOptionControlFactory categoryFactory : categoryFactories.values()) {
+            categoryFactory.clear();
+            categoryFactory.parent.getParent().dispose();
+        }
+        categoryFactories.clear();
     }
 
     /**
@@ -132,25 +159,48 @@ public class SynthesisOptionControlFactory {
     public SynthesisOptionControlFactory createSubSynthesisOptionControlFactory(
             final ISynthesis synthesis) {
         // Remove default title
-        if (parent.getParent() instanceof Form) {
+        if (!isSubFactory && parent.getParent() instanceof Form) {
             ((Form) parent.getParent()).setText(null);
         }
         // Create section container for diagram synthesis options
         Section synthesisSection = formToolkit.createSection(parent,
                 Section.EXPANDED | Section.NO_TITLE_FOCUS_BOX | Section.TWISTIE);
+        // Format text such as form titles
         synthesisSection.setFont(JFaceResources.getHeaderFont());
         synthesisSection.setForeground(formToolkit.getColors().getColor(IFormColors.TITLE));
         synthesisSection.setText(synthesis.getInputDataType().getSimpleName() + " " + parentTitle);
+
+        // Restore saved expansion state
+        final String preferenceKey =
+                SUB_FACTORY_PREFIX + KlighdDataManager.getInstance().getSynthesisID(synthesis);
+        IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
+        preferenceStore.setDefault(preferenceKey, true);
+        synthesisSection.setExpanded(preferenceStore.getBoolean(preferenceKey));
         
-        //Create client composite
+        // Add expansion listener to save expansion state
+        synthesisSection.addExpansionListener(new IExpansionListener() {
+
+            @Override
+            public void expansionStateChanging(final ExpansionEvent e) {
+            }
+
+            @Override
+            public void expansionStateChanged(final ExpansionEvent e) {
+                KlighdUIPlugin.getDefault().getPreferenceStore().setValue(preferenceKey,
+                        e.getState());
+            }
+        });
+
+        // Create client composite
         Composite client = formToolkit.createComposite(synthesisSection);
         synthesisSection.setClient(client);
 
         // Create the factory for diagram synthesis option controls to fill the clients container
         SynthesisOptionControlFactory subSynthesisOptionControlFactory =
                 new SynthesisOptionControlFactory(client, formToolkit);
+        subSynthesisOptionControlFactory.isSubFactory = true;
         subFactories.add(subSynthesisOptionControlFactory);
-        
+
         return subSynthesisOptionControlFactory;
     }
     
@@ -165,20 +215,108 @@ public class SynthesisOptionControlFactory {
      *         separator)
      */
     public boolean createOptionControl(final SynthesisOption option, final ViewContext context) {
-        if (option.isCheckOption()) {
-            this.createCheckOptionControl(option, context);
-            return true;
-        } else if (option.isChoiceOption()) {
-            this.createChoiceOptionControl(option, context);
-            return true;
-        } else if (option.isRangeOption()) {
-            this.createRangeOptionControl(option, context);
-            return true;
-        } else if (option.isSeparator()) {
-            this.createSeparator(option.getName());
-            return false;
+        SynthesisOption category = option.getCategory();
+        // If category is given and option is not a category (because nested categories are not
+        // supported for easier handling) and this is not the factory for the category (prevents
+        // infinite loops) ...
+        if (!isCategoryFactory && !option.isCategory() && category != null
+                && category.isCategory()) {
+            SynthesisOptionControlFactory categoryFactory = null;
+            // ... create section if necessary ...
+            if (categoryFactories.containsKey(category)) {
+                categoryFactory = categoryFactories.get(category);
+            } else {
+                categoryFactory = createCategorySynthesisOptionControlFactory(category, context);
+            }
+            // ... and create control in category
+            categoryFactory.createOptionControl(option, context);
+        } else {
+            if (option.isCheckOption()) {
+                createCheckOptionControl(option, context);
+                return true;
+            } else if (option.isChoiceOption()) {
+                createChoiceOptionControl(option, context);
+                return true;
+            } else if (option.isRangeOption()) {
+                createRangeOptionControl(option, context);
+                return true;
+            } else if (option.isSeparator()) {
+                createSeparator(option.getName());
+                return false;
+            } else if (option.isCategory()) {
+                // If the category is already created move the item to the correct position
+                if (categoryFactories.containsKey(option)) {
+                    SynthesisOptionControlFactory optionControl = categoryFactories.get(option);
+                    optionControl.parent.getParent()
+                            .moveBelow(parent.getChildren()[parent.getChildren().length - 1]);
+                } else {
+                    // Create empty section
+                    createCategorySynthesisOptionControlFactory(option, context);
+                }
+            }
         }
         return false;
+    }
+    
+    /**
+     * Creates a {@link SynthesisOptionControlFactory} for the given category. Controls created with
+     * the returned factory will be clients of this category.
+     * 
+     * @param option
+     *            the 'category' option
+     * @param context
+     *            the related {@link ViewContext} the option is declared in
+     * @return the {@link SynthesisOptionControlFactory} for clients.
+     */
+    public SynthesisOptionControlFactory createCategorySynthesisOptionControlFactory(
+            final SynthesisOption option, final ViewContext context) {
+        // Create category container for diagram synthesis options
+        Section categorySection = formToolkit.createSection(parent,
+                Section.CLIENT_INDENT | Section.NO_TITLE_FOCUS_BOX | Section.TWISTIE);
+
+        if (option.getName() != null && !option.getName().isEmpty()) {
+            categorySection.setText(option.getName());
+        } else {
+            categorySection.setText("Unknown Category");
+        }
+
+        // Restore saved expansion state or set initially
+        final String preferenceKey = CATEGORY_FACTORY_PREFIX
+                + KlighdDataManager.getInstance().getSynthesisID(context.getDiagramSynthesis())
+                + "." + option.getName();
+        IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
+        if (preferenceStore.contains(preferenceKey)) {
+            categorySection.setExpanded(
+                    KlighdUIPlugin.getDefault().getPreferenceStore().getBoolean(preferenceKey));
+        } else {
+            categorySection.setExpanded((Boolean) context.getOptionValue(option));
+        }
+        
+        // Add expansion listener to save expansion state
+        categorySection.addExpansionListener(new IExpansionListener() {
+
+            @Override
+            public void expansionStateChanging(final ExpansionEvent e) {
+            }
+
+            @Override
+            public void expansionStateChanged(final ExpansionEvent e) {
+                KlighdUIPlugin.getDefault().getPreferenceStore().setValue(preferenceKey,
+                        e.getState());
+            }
+        });
+
+        // Create client composite
+        Composite client = formToolkit.createComposite(categorySection);
+        categorySection.setClient(client);
+
+        // Create the factory for diagram synthesis option controls to fill the clients container
+        SynthesisOptionControlFactory categorySynthesisOptionControlFactory =
+                new SynthesisOptionControlFactory(client, formToolkit);
+        categorySynthesisOptionControlFactory.isCategoryFactory = true;
+        categoryFactories.put(option, categorySynthesisOptionControlFactory);
+
+        return categorySynthesisOptionControlFactory;
     }
     
     /**
@@ -187,7 +325,7 @@ public class SynthesisOptionControlFactory {
      * @param labelText the label text of the separator. If {@code null} or empty, the separator won't
      *                  have a label.
      */
-    public void createSeparator(final String labelText) {
+    private void createSeparator(final String labelText) {
         // Check if the separator is supposed to have a label
         if (labelText == null || labelText.isEmpty()) {
             final Label separator = formToolkit.createSeparator(parent, SWT.HORIZONTAL);
@@ -211,7 +349,7 @@ public class SynthesisOptionControlFactory {
      * @param option the 'check' option
      * @param context the related {@link ViewContext} the option is declared in
      */
-    public void createCheckOptionControl(final SynthesisOption option,
+    private void createCheckOptionControl(final SynthesisOption option,
             final ViewContext context) {
 
         final Button checkButton = formToolkit.createButton(parent, option.getName(), SWT.CHECK);
@@ -255,7 +393,7 @@ public class SynthesisOptionControlFactory {
      * @param option the 'choice' option
      * @param context the related {@link ViewContext} the option is declared in
      */
-    public void createChoiceOptionControl(final SynthesisOption option, final ViewContext context) {
+    private void createChoiceOptionControl(final SynthesisOption option, final ViewContext context) {
         
         final GridLayout gl = new GridLayout();
         gl.verticalSpacing = MINOR_VERTICAL_SPACING;
@@ -321,7 +459,7 @@ public class SynthesisOptionControlFactory {
      * @param option the 'range' option
      * @param context the related {@link ViewContext} the option is declared in
      */
-    public void createRangeOptionControl(final SynthesisOption option, final ViewContext context) {
+    private void createRangeOptionControl(final SynthesisOption option, final ViewContext context) {
         
         final GridLayout gl = new GridLayout();
         gl.verticalSpacing = MINOR_VERTICAL_SPACING;
