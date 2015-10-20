@@ -58,7 +58,6 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -109,7 +108,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             KlighdPlugin.getImageDescriptor("icons/full/elcl16/refresh.gif");
     /** The icon for layout view content. */
     private static final ImageDescriptor ARRANGE_ICON =
-            KimlUiPlugin.getImageDescriptor("icons/menu16/kieler-arrange.gif");
+            KlighdUIPlugin.getImageDescriptor("icons/full/menu16/arrange.gif");
     /** The icon for linking the view with the current editor. */
     private static final ImageDescriptor LINK_ICON = AbstractUIPlugin
             .imageDescriptorFromPlugin("org.eclipse.ui", "icons/full/elcl16/synced.gif");
