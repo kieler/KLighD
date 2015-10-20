@@ -29,4 +29,8 @@ Export-Package: de.cau.cs.kieler.klighd.ui,
  de.cau.cs.kieler.klighd.ui.parts,
  de.cau.cs.kieler.klighd.ui.printing,
  de.cau.cs.kieler.klighd.ui.printing.dialog,
+ de.cau.cs.kieler.klighd.ui.view,
+ de.cau.cs.kieler.klighd.ui.view.controller,
+ de.cau.cs.kieler.klighd.ui.view.menu,
+ de.cau.cs.kieler.klighd.ui.view.model,
  de.cau.cs.kieler.klighd.ui.viewers

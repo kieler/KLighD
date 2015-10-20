@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="de.cau.cs.kieler.klighd.ui.view.controller" name="DiagramView Update Controller" schema="schema/controller.exsd"/>
+   <extension-point id="de.cau.cs.kieler.klighd.ui.view.editor" name="DiagramView Editor Controller Registration" schema="schema/editor.exsd"/>
    <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <viewer
@@ -81,6 +83,15 @@
             icon="icons/klighd.gif"
             id="de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart"
             name="Lightweight Diagram"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            category="de.cau.cs.kieler.klighd"
+            class="de.cau.cs.kieler.klighd.ui.view.DiagramView"
+            icon="icons/full/etool16/diagrams_view.gif"
+            id="de.cau.cs.kieler.klighd.ui.view.diagram"
+            name="Diagram"
             restorable="true">
       </view>
    </extension>
