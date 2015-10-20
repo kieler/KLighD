@@ -420,7 +420,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                 newDiagramView.usedSyntheses.addAll(usedSyntheses);
                 for (AbstractViewUpdateController updateController : controllers) {
                     AbstractViewUpdateController controllerCopy = ViewUpdateControllerFactory
-                            .getNewInstance(updateController.getID(), this);
+                            .getNewInstance(updateController.getID(), newDiagramView);
                     controllerCopy.copy(updateController);
                     newDiagramView.controllers.add(controllerCopy);
                 }
