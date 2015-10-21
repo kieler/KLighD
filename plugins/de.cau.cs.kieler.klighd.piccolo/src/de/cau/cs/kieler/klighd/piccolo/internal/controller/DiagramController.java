@@ -921,14 +921,16 @@ public class DiagramController {
         //  note that this condition implies that invisible children's children
         //  that are still contained in there parent will break the recursion
         //  of this method
-        if (nodeNode != null && nodeNode.getParent() != null) {
-            return;
-        }
+//        if (nodeNode != null && nodeNode.getParent() != null) {
+//            return;
+//        }
 
         final int expand;
+        final boolean newNodeRep;
 
         // if there is no Piccolo2D representation of the node create it
         if (nodeNode == null) {
+            newNodeRep = true;
             final KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
             if (!forceShow && !data.getProperty(KlighdProperties.SHOW)) {
                 contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
@@ -946,6 +948,7 @@ public class DiagramController {
             // in case the EXPAND property is not set the default value 'true' is returned
 
         } else {
+            newNodeRep = false;
             // touch the expansion state, see the methods javadoc for details
             expand = 2;
         }
@@ -965,7 +968,11 @@ public class DiagramController {
         handleLabels(nodeNode, node);
 
         // add the node to its parents
-        parent.getChildAreaNode().addNode(nodeNode);
+        if (newNodeRep) {
+            parent.getChildAreaNode().addNode(nodeNode);
+        } else {
+            nodeNode.setVisible(true);
+        }
 
         // perform expansion strictly AFTER adding 'nodeNode' to its parent as the edge offset adjustment
         //  logic requires that (for registration of an transform change listener on the parents row)
@@ -1044,14 +1051,13 @@ public class DiagramController {
             removeEdge(outgoingEdge, releaseControllers);
         }
 
-        // remove the node representation from the containing child area
-        nodeNode.removeFromParent();
         contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
 
-        // recursively dispose all attached SWT Resources
-        NodeDisposeListener.disposePNode(nodeNode);
-
         if (releaseControllers) {
+            // remove the node representation from the containing child area
+            nodeNode.removeFromParent();
+            // recursively dispose all attached SWT Resources
+            NodeDisposeListener.disposePNode(nodeNode);
             // detach the synchronization adapters
             ModelingUtil.removeAdapters(node, NODE_ADAPTERS);
             // release the objects kept in mind
@@ -1062,6 +1068,9 @@ public class DiagramController {
             nodeNode.removeAllChildren();
             // release the node representation from the node's renderingContextData
             contextData.setProperty(REP, null);
+        } else {
+            // Only hide the representation without removing it from the model
+            nodeNode.setVisible(false);
         }
     }
 
@@ -1111,9 +1120,9 @@ public class DiagramController {
         KEdgeNode edgeNode = contextData.getProperty(EDGE_REP);
 
         // only add a representation if none is added already
-        if (edgeNode != null && edgeNode.getParent() != null) {
-            return;
-        }
+//        if (edgeNode != null && edgeNode.getParent() != null) {
+//            return;
+//        }
 
         final KNode source = edge.getSource();
         final KNode target = edge.getTarget();
@@ -1126,8 +1135,11 @@ public class DiagramController {
             return;
         }
 
+        final boolean newEdgeRep;
+
         // if there is no Piccolo2D representation for the node create it
         if (edgeNode == null) {
+            newEdgeRep = true;
             if (!forceShow && !NON_HIDDEN_KGE_FILTER.apply(edge)) {
                 contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
                 return;
@@ -1137,6 +1149,8 @@ public class DiagramController {
             contextData.setProperty(EDGE_REP, edgeNode);
 
             updateRendering(edgeNode);
+        } else {
+            newEdgeRep = false;
         }
 
         // note that 'edgeNode' is not contained in any parent and, thus, fires no events
@@ -1155,7 +1169,11 @@ public class DiagramController {
         //  the clipping is generally intended and is realized by KChildAreaNode
 
         // find and set the parent of the edge, i.e. add it into the figure tree
-        DiagramControllerHelper.updateEdgeParent(edgeNode);
+        if (newEdgeRep) {
+            DiagramControllerHelper.updateEdgeParent(edgeNode);
+        } else {
+            edgeNode.setVisible(true);
+        }
         contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
 
         // update the offset of the edge layout to the containing child area
@@ -1179,18 +1197,16 @@ public class DiagramController {
             return;
         }
 
-        // remove the edge offset listeners
-        DiagramControllerHelper.removeEdgeOffsetListener(edgeNode);
-
-        // remove the edge representation from the containing child area
-        edgeNode.removeFromParent();
         contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
-
-        // recursively dispose all attached SWT Resources
-        NodeDisposeListener.disposePNode(edgeNode);
 
         // due to #removeNode() this method might be performed multiple times so:
         if (releaseControllers && edgeNode.getRenderingController() != null) {
+            // remove the edge offset listeners
+            DiagramControllerHelper.removeEdgeOffsetListener(edgeNode);
+            // remove the edge representation from the containing child area
+            edgeNode.removeFromParent();
+            // recursively dispose all attached SWT Resources
+            NodeDisposeListener.disposePNode(edgeNode);
             // detach the synchronization adapters
             ModelingUtil.removeAdapters(edge, EDGE_ADAPTERS);
             // release the objects kept in mind
@@ -1201,6 +1217,9 @@ public class DiagramController {
             edgeNode.removeAllChildren();
             // release the edge representation from the edge's renderingContextData
             contextData.setProperty(EDGE_REP, null);
+        } else {
+            // Hide the representation of the edge
+            edgeNode.setVisible(false);
         }
     }
 
@@ -1246,12 +1265,14 @@ public class DiagramController {
         final RenderingContextData contextData = RenderingContextData.get(port);
         KPortNode portNode = contextData.getProperty(PORT_REP);
 
-        if (portNode != null && portNode.getParent() != null) {
-            return;
-        }
+//        if (portNode != null && portNode.getParent() != null) {
+//            return;
+//        }
 
+        final boolean newPortRep;
         // if there is no Piccolo2D representation of the port create it
         if (portNode == null) {
+            newPortRep = true;
             if (!forceShow && !NON_HIDDEN_KGE_FILTER.apply(port)) {
                 contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
                 return;
@@ -1261,6 +1282,8 @@ public class DiagramController {
             contextData.setProperty(PORT_REP, portNode);
 
             updateRendering(portNode);
+        } else {
+            newPortRep = false;
         }
 
         if (record && isAutomaticallyArranged(port)) {
@@ -1273,7 +1296,11 @@ public class DiagramController {
         handleLabels(portNode, port);
 
         // add the port
-        parent.addPort(portNode);
+        if (newPortRep) {
+            parent.addPort(portNode);
+        } else {
+            portNode.setVisible(true);
+        }
         contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
     }
 
@@ -1294,14 +1321,14 @@ public class DiagramController {
             return;
         }
 
-        // remove the port representation from the containing node
-        portNode.removeFromParent();
         contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
 
-        // recursively dispose all attached SWT Resources
-        NodeDisposeListener.disposePNode(portNode);
 
         if (releaseControllers) {
+            // remove the port representation from the containing node
+            portNode.removeFromParent();
+            // recursively dispose all attached SWT Resources
+            NodeDisposeListener.disposePNode(portNode);
             // detach the synchronization adapters
             ModelingUtil.removeAdapters(port, PORT_ADAPTERS);
             // release the objects kept in mind
@@ -1312,6 +1339,9 @@ public class DiagramController {
             portNode.removeAllChildren();
             // release the port representation from the port's renderingContextData
             contextData.setProperty(PORT_REP, null);
+        } else {
+            // Hide the port representation from the view
+            portNode.setVisible(false);
         }
     }
 
@@ -1359,12 +1389,14 @@ public class DiagramController {
         final RenderingContextData contextData = RenderingContextData.get(label);
         KLabelNode labelNode = contextData.getProperty(LABEL_REP);
 
-        if (labelNode != null && labelNode.getParent() != null) {
-            return;
-        }
+//        if (labelNode != null && labelNode.getParent() != null) {
+//            return;
+//        }
 
+        final boolean newLabelRep;
         // if there is no Piccolo2d representation of the label create it
         if (labelNode == null) {
+            newLabelRep = true;
             if (!forceShow && !NON_HIDDEN_KGE_FILTER.apply(label)) {
                 contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
                 return;
@@ -1374,6 +1406,8 @@ public class DiagramController {
             contextData.setProperty(LABEL_REP, labelNode);
 
             updateRendering(labelNode);
+        } else {
+            newLabelRep = false;
         }
 
         if (record && isAutomaticallyArranged(label)) {
@@ -1405,7 +1439,11 @@ public class DiagramController {
         }
 
         // add the label
-        labeledNode.addLabel(labelNode);
+        if (newLabelRep) {
+            labeledNode.addLabel(labelNode);
+        } else {
+            labelNode.setVisible(true);
+        }
         contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
     }
 
@@ -1426,14 +1464,13 @@ public class DiagramController {
             return;
         }
 
-        // remove the label representation from the containing node
-        labelNode.removeFromParent();
         contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
 
-        // recursively dispose all attached SWT Resources
-        NodeDisposeListener.disposePNode(labelNode);
-
         if (releaseControllers) {
+            // remove the label representation from the containing node
+            labelNode.removeFromParent();
+            // recursively dispose all attached SWT Resources
+            NodeDisposeListener.disposePNode(labelNode);
             // detach the synchronization adapters
             ModelingUtil.removeAdapters(label, LABEL_ADAPTERS);
             // release the objects kept in mind
@@ -1442,6 +1479,9 @@ public class DiagramController {
             labelNode.setRenderingController(null);
             // release the label representation from the label's renderingContextData
             contextData.setProperty(LABEL_REP, null);
+        } else {
+            // Hide the label representation
+            labelNode.setVisible(false);
         }
     }
 
