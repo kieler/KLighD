@@ -74,7 +74,6 @@ final class ScalingBlock {
     private static final int BUTTONS_GROUP_COLUMNS = 3;
     private static final int PAGES_GROUP_COLUMNS = 5;
     private static final int SCALING_GROUP_COLUMNS = 4;
-    private static final int SPINNER_WIDTH = 20;
 
     /**
      * Creates the 'Scaling' block contents.
@@ -134,12 +133,10 @@ final class ScalingBlock {
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_printTo);
 
         final Spinner spinnerWide = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
-        DialogUtil.layoutWidth(spinnerWide, SPINNER_WIDTH);
 
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesWide);
 
         final Spinner spinnerTall = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
-        DialogUtil.layoutWidth(spinnerTall, SPINNER_WIDTH);
 
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesTall);
 
