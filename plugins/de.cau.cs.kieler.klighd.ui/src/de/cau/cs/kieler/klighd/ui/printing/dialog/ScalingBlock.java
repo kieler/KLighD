@@ -133,10 +133,12 @@ final class ScalingBlock {
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_printTo);
 
         final Spinner spinnerWide = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
+        DialogUtil.layoutWidth(spinnerWide, spinnerWide.computeSize(SWT.DEFAULT, SWT.DEFAULT).x);
 
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesWide);
 
         final Spinner spinnerTall = DialogUtil.spinner(pagesGroup, 1, MAX_PAGES);
+        DialogUtil.layoutWidth(spinnerTall, spinnerTall.computeSize(SWT.DEFAULT, SWT.DEFAULT).x);
 
         DialogUtil.label(pagesGroup, KlighdUIPrintingMessages.PrintDialog_Scaling_lbl_pagesTall);
 
