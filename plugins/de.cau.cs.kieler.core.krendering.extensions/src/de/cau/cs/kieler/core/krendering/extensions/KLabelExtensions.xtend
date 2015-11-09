@@ -140,7 +140,7 @@ class KLabelExtensions {
      * Configures an inside centrally-aligned node label!
      */
     def KLabel configureInsideCenteredNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -148,7 +148,7 @@ class KLabelExtensions {
      * Configures an inside centrally-aligned node label!
      */
     def KLabel configureInsideCenteredNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -156,7 +156,7 @@ class KLabelExtensions {
      * Configures an inside centrally-aligned node label!
      */
     def KLabel configureInsideCenteredNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideCenter)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -185,7 +185,7 @@ class KLabelExtensions {
      * Configures an inside bottom centrally-aligned node label!
      */
     def KLabel configureInsideBottomCenteredNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomCenter)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -193,7 +193,7 @@ class KLabelExtensions {
      * Configures an inside bottom centrally-aligned node label!
      */
     def KLabel configureInsideBottomCenteredNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomCenter)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -201,7 +201,7 @@ class KLabelExtensions {
      * Configures an inside bottom centrally-aligned node label!
      */
     def KLabel configureInsideBottomCenteredNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomCenter)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -230,7 +230,7 @@ class KLabelExtensions {
      * Configures an inside bottom left-aligned node label!
      */
     def KLabel configureInsideBottomLeftNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomLeft)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -238,7 +238,7 @@ class KLabelExtensions {
      * Configures an inside bottom left-aligned node label!
      */
     def KLabel configureInsideBottomLeftNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomLeft)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -246,7 +246,7 @@ class KLabelExtensions {
      * Configures an inside bottom left-aligned node label!
      */
     def KLabel configureInsideBottomLeftNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomLeft)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -276,7 +276,7 @@ class KLabelExtensions {
      * Configures an inside bottom right-aligned node label!
      */
     def KLabel configureInsideBottomRightNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomRight)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -284,7 +284,7 @@ class KLabelExtensions {
      * Configures an inside bottom right-aligned node label!
      */
     def KLabel configureInsideBottomRightNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomRight)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -292,7 +292,7 @@ class KLabelExtensions {
      * Configures an inside bottom right-aligned node label!
      */
     def KLabel configureInsideBottomRightNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideBottomRight)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -321,7 +321,7 @@ class KLabelExtensions {
      * Configures an inside top centrally-aligned node label!
      */
     def KLabel configureInsideTopCenteredNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -329,7 +329,7 @@ class KLabelExtensions {
      * Configures an inside top centrally-aligned node label!
      */
     def KLabel configureInsideTopCenteredNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -337,7 +337,7 @@ class KLabelExtensions {
      * Configures an inside top centrally-aligned node label!
      */
     def KLabel configureInsideTopCenteredNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopCenter)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -366,7 +366,7 @@ class KLabelExtensions {
      * Configures an inside top left-aligned node label!
      */
     def KLabel configureInsideTopLeftNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopLeft)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -374,7 +374,7 @@ class KLabelExtensions {
      * Configures an inside top left-aligned node label!
      */
     def KLabel configureInsideTopLeftNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopLeft)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -382,7 +382,7 @@ class KLabelExtensions {
      * Configures an inside top left-aligned node label!
      */
     def KLabel configureInsideTopLeftNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopLeft)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -411,7 +411,7 @@ class KLabelExtensions {
      * Configures an inside top right-aligned node label!
      */
     def KLabel configureInsideTopRightNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopRight)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -419,7 +419,7 @@ class KLabelExtensions {
      * Configures an inside top right-aligned node label!
      */
     def KLabel configureInsideTopRightNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopRight)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -427,7 +427,7 @@ class KLabelExtensions {
      * Configures an inside top right-aligned node label!
      */
     def KLabel configureInsideTopRightNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::insideTopRight)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -459,7 +459,7 @@ class KLabelExtensions {
      * Configures an outside bottom centrally-aligned node label!
      */
     def KLabel configureOutsideBottomCenteredNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -467,7 +467,7 @@ class KLabelExtensions {
      * Configures an outside bottom centrally-aligned node label!
      */
     def KLabel configureOutsideBottomCenteredNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -475,7 +475,7 @@ class KLabelExtensions {
      * Configures an outside bottom centrally-aligned node label!
      */
     def KLabel configureOutsideBottomCenteredNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomCenter)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -504,7 +504,7 @@ class KLabelExtensions {
      * Configures an outside bottom left-aligned node label!
      */
     def KLabel configureOutsideBottomLeftNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomLeft)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -512,7 +512,7 @@ class KLabelExtensions {
      * Configures an outside bottom left-aligned node label!
      */
     def KLabel configureOutsideBottomLeftNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomLeft)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -520,7 +520,7 @@ class KLabelExtensions {
      * Configures an outside bottom left-aligned node label!
      */
     def KLabel configureOutsideBottomLeftNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomLeft)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -549,7 +549,7 @@ class KLabelExtensions {
      * Configures an outside bottom right-aligned node label!
      */
     def KLabel configureOutsideBottomRightNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomRight)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -557,7 +557,7 @@ class KLabelExtensions {
      * Configures an outside bottom right-aligned node label!
      */
     def KLabel configureOutsideBottomRightNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomRight)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -565,7 +565,7 @@ class KLabelExtensions {
      * Configures an outside bottom right-aligned node label!
      */
     def KLabel configureOutsideBottomRightNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomRight)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideBottomRight)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -594,7 +594,7 @@ class KLabelExtensions {
      * Configures an outside top centrally-aligned node label!
      */
     def KLabel configureOutsideTopCenteredNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopCenter)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -602,7 +602,7 @@ class KLabelExtensions {
      * Configures an outside top centrally-aligned node label!
      */
     def KLabel configureOutsideTopCenteredNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopCenter)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -610,7 +610,7 @@ class KLabelExtensions {
      * Configures an outside top centrally-aligned node label!
      */
     def KLabel configureOutsideTopCenteredNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopCenter)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopCenter)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -639,7 +639,7 @@ class KLabelExtensions {
      * Configures an outside top left-aligned node label!
      */
     def KLabel configureOutsideTopLeftNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -647,7 +647,7 @@ class KLabelExtensions {
      * Configures an outside top left-aligned node label!
      */
     def KLabel configureOutsideTopLeftNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -655,7 +655,7 @@ class KLabelExtensions {
      * Configures an outside top left-aligned node label!
      */
     def KLabel configureOutsideTopLeftNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
+        label.setLayoutOption(LayoutOptions::NODE_LABEL_PLACEMENT, NodeLabelPlacement::outsideTopLeft)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
@@ -684,7 +684,7 @@ class KLabelExtensions {
      * Configures an outside top right-aligned node label!
      */
     def KLabel configureOutsideTopRightNodeLabel(KLabel label, String labelText) {
-        label.parent.setLayoutOption(LayoutOptions.NODE_LABEL_PLACEMENT, NodeLabelPlacement.outsideTopRight)
+        label.setLayoutOption(LayoutOptions.NODE_LABEL_PLACEMENT, NodeLabelPlacement.outsideTopRight)
         return label.basicConfigureLabel(labelText);
     }
 
@@ -692,7 +692,7 @@ class KLabelExtensions {
      * Configures an outside top right-aligned node label!
      */
     def KLabel configureOutsideTopRightNodeLabel(KLabel label, String labelText, int fontSize) {
-        label.parent.setLayoutOption(LayoutOptions.NODE_LABEL_PLACEMENT, NodeLabelPlacement.outsideTopRight)
+        label.setLayoutOption(LayoutOptions.NODE_LABEL_PLACEMENT, NodeLabelPlacement.outsideTopRight)
         return label.basicConfigureLabel(labelText, fontSize);
     }
 
@@ -700,7 +700,7 @@ class KLabelExtensions {
      * Configures an outside top right-aligned node label!
      */
     def KLabel configureOutsideTopRightNodeLabel(KLabel label, String labelText, int fontSize, String fontName) {
-        label.parent.setLayoutOption(LayoutOptions.NODE_LABEL_PLACEMENT, NodeLabelPlacement.outsideTopRight)
+        label.setLayoutOption(LayoutOptions.NODE_LABEL_PLACEMENT, NodeLabelPlacement.outsideTopRight)
         return label.basicConfigureLabel(labelText, fontSize, fontName);
     }
 
