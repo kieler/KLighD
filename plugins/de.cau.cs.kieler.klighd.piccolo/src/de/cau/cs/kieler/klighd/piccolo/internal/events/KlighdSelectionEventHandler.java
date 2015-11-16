@@ -256,7 +256,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                 // to the set of elements to be selected,
                 // adding ports if selected by KlighdProperty...
                 Iterators.addAll(selectedElements,
-                        KimlUtil.getConnectedEdges(
+                        KimlUtil.getConnectedElements(
                                 (KEdge) viewModelElement, includePortsWithinConnectedEdges));
                 // ... start a new "pick" run ('nextPickedNode' takes care
                 // about ignoring the previously found ones), ...
