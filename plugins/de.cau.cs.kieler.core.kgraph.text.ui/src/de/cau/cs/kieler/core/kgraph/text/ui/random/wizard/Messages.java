@@ -75,6 +75,10 @@ public class Messages extends NLS {
     public static String RandomGraphBipartitePage_partition_error;
     public static String RandomGraphBiconnectedPage_description;
     public static String RandomGraphBiconnectedPage_title;
+
+    public static String RandomGraphCustomPage_edge_labels_caption;
+
+    public static String RandomGraphCustomPage_edge_labels_help;
     public static String RandomGraphNewFilePage_file_format_caption;
     public static String RandomGraphNewFilePage_xtext_format_caption;
     public static String RandomGraphNewFilePage_xtext_format_help;
