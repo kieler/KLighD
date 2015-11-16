@@ -57,7 +57,8 @@ public final class ManageLabelsAction implements IAction {
         
         // We are looking for AbstractKlighdLabelManager instances...
         if (labelManager instanceof AbstractKlighdLabelManager) {
-            ((AbstractKlighdLabelManager) labelManager).toggleActive();
+            AbstractKlighdLabelManager akLabelManager = (AbstractKlighdLabelManager) labelManager;
+            akLabelManager.setActive(!akLabelManager.isActive());
             actuallyDidStuff = true;
         }
         
