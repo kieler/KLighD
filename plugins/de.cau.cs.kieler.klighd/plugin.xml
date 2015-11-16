@@ -46,8 +46,16 @@
             id="de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction">
       </action>
       <action
+            class="de.cau.cs.kieler.klighd.actions.FocusAndContextAction"
+            id="de.cau.cs.kieler.klighd.actions.FocusAndContextAction">
+      </action>
+      <action
             class="de.cau.cs.kieler.klighd.actions.ManageLabelsAction"
             id="de.cau.cs.kieler.klighd.actions.ManageLabelsAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.actions.MetaFocusAction"
+            id="de.cau.cs.kieler.klighd.actions.MetaFocusAction">
       </action>
       <action
             class="de.cau.cs.kieler.klighd.actions.ScaleUpAction"
@@ -64,6 +72,15 @@
    </extension>
    <extension
          point="de.cau.cs.kieler.kiml.layoutProviders">
+      <layoutOption
+            advanced="true"
+            appliesTo="parents,nodes,ports,labels"
+            default="false"
+            description="Whether an element is in the focus rather than in the context."
+            id="klighd.labels.elementInFocus"
+            name="Element in Focus"
+            type="boolean">
+      </layoutOption>
       <layoutOption
             class="de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption$ExpansionAwareLayoutOptionData"
             description="Compound option containing pairs of layout option definitions for the collapsed and expanded state of a KNode"

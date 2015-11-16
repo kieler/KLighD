@@ -90,6 +90,12 @@ public class RandomGraphCustomPage extends AbstractRandomGraphPage {
         multiEdgesButton.setToolTipText(Messages.RandomGraphAnyPage_multi_edges_help);
         multiEdgesButton.setSelection(getOptions().getProperty(GeneratorOptions.MULTI_EDGES));
         
+        // Edge labels
+        final Button edgeLabelButton = new Button(optionsGroup, SWT.CHECK);
+        edgeLabelButton.setText(Messages.RandomGraphCustomPage_edge_labels_caption);
+        edgeLabelButton.setToolTipText(Messages.RandomGraphCustomPage_edge_labels_help);
+        edgeLabelButton.setSelection(getOptions().getProperty(GeneratorOptions.EDGE_LABELS));
+        
         // Cycles
         final Button cyclesButton = new Button(optionsGroup, SWT.CHECK);
         cyclesButton.setText(Messages.RandomGraphAnyPage_cycles_caption);
@@ -114,6 +120,13 @@ public class RandomGraphCustomPage extends AbstractRandomGraphPage {
                 getOptions().setProperty(GeneratorOptions.MULTI_EDGES, multiEdgesButton.getSelection());
             }
         });
+        
+        edgeLabelButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                getOptions().setProperty(GeneratorOptions.EDGE_LABELS, edgeLabelButton.getSelection());
+            }
+        });
+        
 
         cyclesButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {

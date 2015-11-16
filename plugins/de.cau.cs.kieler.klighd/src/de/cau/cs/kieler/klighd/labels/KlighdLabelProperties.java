@@ -39,6 +39,12 @@ public final class KlighdLabelProperties {
     public static final Property<String> LABEL_TEXT_OVERRIDE = new Property<String>(
             "klighd.labels.modifiedLabelText", null);
     
+    /**
+     * String to override a label's original text with. If this property is set to a non-null value,
+     * that value is used as the label's text instead of the original text set in the view model.
+     */
+    public static final Property<Boolean> ELEMENT_IN_FOCUS = new Property<Boolean>(
+            "klighd.labels.elementInFocus", false);
     
     /**
      * Not supposed to be instantiated.

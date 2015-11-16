@@ -228,6 +228,9 @@ public class GeneratorOptions extends MapPropertyHolder {
     /** option for allowing isolated nodes. */
     public static final IProperty<Boolean> ISOLATED_NODES = new Property<Boolean>(
             "basic.isolatedNodes", true);
+    /** option for generating random edge labels. */
+    public static final Property<Boolean> EDGE_LABELS = new Property<Boolean>(
+            "basic.edgeLabels", true);
 
     //~~~~~~~~~~~~~~~~ Options for GRAPH_TYPE TREE
 
