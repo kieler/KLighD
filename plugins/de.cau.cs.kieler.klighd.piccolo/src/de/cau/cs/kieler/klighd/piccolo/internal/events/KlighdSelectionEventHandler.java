@@ -29,6 +29,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
+import de.cau.cs.kieler.kiml.util.selection.SelectionIterator;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
@@ -66,12 +67,17 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         this.includePortsWithinConnectedEdges =
                 viewer.getViewContext().getProperty(
                         KlighdSynthesisProperties.INCLUDE_PORTS_IN_CONNECTED_EDGES_SELECTIONS);
+        this.sourceIterator = null;
+        this.targetIterator = null;
     }
 
     private final IViewer viewer;
     private final PiccoloViewer diagramViewer;
     private final boolean multiSelection;
     private final boolean includePortsWithinConnectedEdges;
+    private SelectionIterator sourceIterator;
+    private SelectionIterator targetIterator;
+    
 
     private Point2D point = null;
 
@@ -252,12 +258,18 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                     selectedElements = Sets.newHashSet();
                 }
 
-                // add the currently found edge and its connected ones
-                // to the set of elements to be selected,
-                // adding ports if selected by KlighdProperty...
-                Iterators.addAll(selectedElements,
-                        KimlUtil.getConnectedElements(
-                                (KEdge) viewModelElement, includePortsWithinConnectedEdges));
+                // Check if a dedicated SelectionIterator is defined and should be used
+                if (sourceIterator != null && targetIterator != null) {
+                    // Start the defined SelectionIterators to grab the connected Elements
+                    Iterators.addAll(selectedElements, KimlUtil.getConnectedElements(
+                            (KEdge) viewModelElement, sourceIterator, targetIterator));
+                } else {
+                    // add the currently found edge and its connected ones
+                    // to the set of elements to be selected,
+                    // adding ports if selected by KlighdProperty...
+                    Iterators.addAll(selectedElements, KimlUtil.getConnectedElements(
+                            (KEdge) viewModelElement, includePortsWithinConnectedEdges));
+                }
                 // ... start a new "pick" run ('nextPickedNode' takes care
                 // about ignoring the previously found ones), ...
                 pickPath.nextPickedNode();
