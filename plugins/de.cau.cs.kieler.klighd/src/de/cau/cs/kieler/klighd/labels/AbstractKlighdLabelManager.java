@@ -13,20 +13,25 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
+import org.eclipse.swt.graphics.FontData;
+
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.labels.ILabelManager;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
- * Abstract superclass for {@link ILabelManager}s to be used with KLighD. All a subclass needs to to is
- * to implement {@link #doResizeLabelToWidth(KLabel, double)}, everything else is taken care of by this
+ * Abstract superclass for {@link ILabelManager}s to be used with KLighD. All a subclass needs to to
+ * is to implement {@link #resizeLabel(KLabel, double)}, everything else is taken care of by this
  * class.
  * 
  * <p>
  * This class manages an activity state. Label managers inheriting from this class can be switched
- * on or off, as required. If a label manager is switched off,
- * {@link #doResizeLabelToWidth(KLabel, double)} is not called.
+ * on or off, as required. If a label manager is switched off, {@link #resizeLabel(KLabel, double)}
+ * is not called.
  * </p>
  * 
  * <h3>Technical Remarks</h3>
@@ -46,70 +51,92 @@ import de.cau.cs.kieler.kiml.labels.ILabelManager;
  * </p>
  * 
  * @author cds
+ * @author ybl
  */
 public abstract class AbstractKlighdLabelManager implements ILabelManager {
     
-    /** Whether this label manager is currently active or not. */
-    private boolean active;
+    /** Whether the label manager is currently active or not. */
+    private boolean active = true;
+    /**
+     * Whether the manager's target width should be used or the one provided by the call to
+     * {@link #manageLabelSize(Object, double)}.
+     */
+    private boolean useFixedTargetWidth = true;
+    /** The width to try and shorten labels to. */
+    private double fixedTargetWidth;
 
-    
+
     //////////////////////////////////////////////////////////////////////////////////////////
-    // Constructors
+    // Label Manager Configuration
     
     /**
-     * Creates a new instance that is initially active.
-     */
-    public AbstractKlighdLabelManager() {
-        this(true);
-    }
-    
-    /**
-     * Create a new instance that is either initially active or not.
+     * Checks whether this label manager is currently active.
      * 
-     * @param active whether the new label manager shall be initially active or not.
-     */
-    public AbstractKlighdLabelManager(final boolean active) {
-        this.active = active;
-    }
-    
-    
-    //////////////////////////////////////////////////////////////////////////////////////////
-    // Active State
-    
-    /**
-     * Checks whether this label manager is currently managing labels or not.
-     * 
-     * @return {@code true} if this label manager is currently managing labels.
+     * @return {@code true} if this label manager is currently active.
      */
     public final boolean isActive() {
         return active;
     }
     
     /**
-     * Switches this label manager on or off as it was previously off or on, respectively.
+     * Activates or deactivates this label manager.
+     * 
+     * @param isActive
+     *            {@code true} if the label manager should shorten labels, {@code false} if it
+     *            should leave them alone. This method call can be chained with other configuration
+     *            method calls.
+     * @return this label manager.
      */
-    public final void toggleActive() {
-        active = !active;
+    public final AbstractKlighdLabelManager setActive(final boolean isActive) {
+        this.active = isActive;
+        
+        return this;
     }
     
-    
+    /**
+     * Override the target width provided by each call to {@link #manageLabelSize(Object, double)}
+     * with a fixed target width. This method call can be chained with other configuration method calls.
+     * 
+     * @param targetWidth
+     *            the new target width to shorten labels to.
+     * @return this label manager.
+     */
+    public final AbstractKlighdLabelManager fixTargetWidth(final double targetWidth) {
+        this.fixedTargetWidth = targetWidth;
+        useFixedTargetWidth = true;
+        
+        return this;
+    }
+
+
     //////////////////////////////////////////////////////////////////////////////////////////
     // Label Resizing
 
     /**
      * {@inheritDoc}
      */
-    public final KVector resizeLabelToWidth(final Object label, final double targetWidth) {
+    public final KVector manageLabelSize(final Object label, final double processorTargetWidth) {
         if (label instanceof KLabel) {
             KLabel kLabel = (KLabel) label;
             final KShapeLayout labelLayout = kLabel.getData(KShapeLayout.class);
-            
+
             KVector newLabelSize = null;
-            if (isActive()) {
-                // Label exceeds target width, so shorten it
-                newLabelSize = doResizeLabelToWidth(kLabel, targetWidth);
+            String newLabelText = kLabel.getText();
+
+            if (isActive() && isInContext(kLabel)) {
+                double sizeToResizeTo = useFixedTargetWidth ? fixedTargetWidth : processorTargetWidth;
+                newLabelText = resizeLabel(kLabel, sizeToResizeTo);
+                
+                if (newLabelText != null) {
+                    kLabel.setText(newLabelText);
+                    
+                    // calculate the new Bounds of the text
+                    final FontData font = PlacementUtil.fontDataFor(kLabel);
+                    Bounds newSize = PlacementUtil.estimateTextSize(font, newLabelText);
+                    newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
+                }
             }
-            
+
             // Make sure KLighD knows if we shortened the label
             if (newLabelSize == null) {
                 labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
@@ -118,26 +145,42 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
                 labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                         LabelManagementResult.MANAGED_MODIFIED);
             }
-            
+
             return newLabelSize;
         }
-        
-        // This isn't a KLabel...
+
+        // This isn't a KLabel or this label manager is not active...
         return null;
     }
-    
+
     /**
      * Does the actual work of resizing the given label, which is guaranteed to be a {@link KLabel}.
      * Apart from this minor detail, this method should adhere to the contract specified on the
-     * {@link #resizeLabelToWidth(Object, double)} method.
+     * {@link #manageLabelSize(Object, double)} method.
+     * 
+     * <p>
+     * This method should not be called directly by label management clients. The only reason for it
+     * to be public is that compound label managers need to call this method on child label managers.
+     * </p>
      * 
      * @param label
      *            the label to shorten.
      * @param targetWidth
      *            the width the label's new dimensions should try not to exceed.
-     * @return the label's dimensions after shortening or {@code null} if the label has not been
-     *         shortened.
+     * @return the shortened text of the label as a string
      */
-    protected abstract KVector doResizeLabelToWidth(final KLabel label, final double targetWidth);
+    public abstract String resizeLabel(final KLabel label, final double targetWidth);
 
+    /**
+     * Check whether a label is in context or not.
+     * 
+     * @param label
+     *            the label to check.
+     * @return {@code true} if the label is part of the context instead of being in focus,
+     *         {@code false} otherwise.
+     */
+    private boolean isInContext(final KLabel label) {
+        KLayoutData layoutData = label.getData(KLayoutData.class);
+        return !layoutData.getProperty(KlighdLabelProperties.ELEMENT_IN_FOCUS);
+    }
 }

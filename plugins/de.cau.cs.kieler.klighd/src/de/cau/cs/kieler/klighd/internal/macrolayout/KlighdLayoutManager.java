@@ -723,6 +723,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
                             // However, doing so now doesn't do anything yet...
                             labelLayout.setProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE,
                                         layoutLabel.getText());
+                            String origLabelText = ((KLabel) element).getText();
+                            
+                            if (origLabelText.equals(layoutLabel.getText())) {
+                                labelLayout.setProperty(KlighdProperties.TOOLTIP, null);
+                            } else {
+                                labelLayout.setProperty(KlighdProperties.TOOLTIP, origLabelText);
+                            }
                         }
                     }
                     return true;

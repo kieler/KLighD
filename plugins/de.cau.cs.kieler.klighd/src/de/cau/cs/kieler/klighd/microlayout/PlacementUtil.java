@@ -915,20 +915,7 @@ public final class PlacementUtil {
         final Display display = Display.getCurrent();
         final Bounds textBounds;
         
-        // if no display is available fallback to awt metrics
-        if (display == null) {
-
-            fmg.setFont(new java.awt.Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
-                    .getStyle()), fontData.getHeight()));
-            final FontMetrics fm = fmg.getFontMetrics();
-
-            if (Strings.isNullOrEmpty(text)) {
-                textBounds = new Bounds(fm.getStringBounds(" ", fmg));
-            } else {
-                textBounds = new Bounds(fm.getStringBounds(text, fmg));
-            }
-
-        } else {
+        if (gc != null || display != null) {
 
             // In order to estimate the required size of a given string according to the determined
             // font, style, and size a GC is instantiated, configured, and queried.
@@ -950,6 +937,20 @@ public final class PlacementUtil {
             } else {
                 textBounds = new Bounds(gc.textExtent(text));
             }
+            
+        } else {
+            // if no display is available fallback to awt metrics
+
+            fmg.setFont(new java.awt.Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
+                    .getStyle()), fontData.getHeight()));
+            final FontMetrics fm = fmg.getFontMetrics();
+
+            if (Strings.isNullOrEmpty(text)) {
+                textBounds = new Bounds(fm.getStringBounds(" ", fmg));
+            } else {
+                textBounds = new Bounds(fm.getStringBounds(text, fmg));
+            }
+
         }
         
         return textBounds;
