@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,10 +74,10 @@ public class SynthesisOptionControlFactory {
     /** The list of {SynthesisOptionControlFactory} for synthesis specific sections. */
     private final List<SynthesisOptionControlFactory> subFactories =
             new LinkedList<SynthesisOptionControlFactory>();
-    /** This flag is true if this factory is factory for a category of options. */
-    private boolean isCategoryFactory = false;
-    /** The list of {SynthesisOptionControlFactory} for categories of options. */
-    private final Map<SynthesisOption, SynthesisOptionControlFactory> categoryFactories =
+    /** If set, the category this factory is responsible for. */
+    private SynthesisOption factoryCategory = null;
+    /** The list of {SynthesisOptionControlFactory} for categories directly nested. */
+    private final Map<SynthesisOption, SynthesisOptionControlFactory> subCategoryFactories =
             new HashMap<SynthesisOption, SynthesisOptionControlFactory>();
     
     /** Preference prefix for sub-factory. */
@@ -141,11 +142,11 @@ public class SynthesisOptionControlFactory {
         }
 
         // Clear categories
-        for (SynthesisOptionControlFactory categoryFactory : categoryFactories.values()) {
+        for (SynthesisOptionControlFactory categoryFactory : subCategoryFactories.values()) {
             categoryFactory.clear();
             categoryFactory.parent.getParent().dispose();
         }
-        categoryFactories.clear();
+        subCategoryFactories.clear();
     }
 
     /**
@@ -216,20 +217,11 @@ public class SynthesisOptionControlFactory {
      */
     public boolean createOptionControl(final SynthesisOption option, final ViewContext context) {
         SynthesisOption category = option.getCategory();
-        // If category is given and option is not a category (because nested categories are not
-        // supported for easier handling) and this is not the factory for the category (prevents
-        // infinite loops) ...
-        if (!isCategoryFactory && !option.isCategory() && category != null
-                && category.isCategory()) {
-            SynthesisOptionControlFactory categoryFactory = null;
-            // ... create section if necessary ...
-            if (categoryFactories.containsKey(category)) {
-                categoryFactory = categoryFactories.get(category);
-            } else {
-                categoryFactory = createCategorySynthesisOptionControlFactory(category, context);
-            }
-            // ... and create control in category
-            categoryFactory.createOptionControl(option, context);
+        // If category is given and the factory in not the factory for this factory create the factory.
+        if (category != null && factoryCategory != category) {
+            // Creates (if not already created) the factory and all its parents
+            createCategorySynthesisOptionControlFactories(category, context)
+                    .createOptionControl(option, context);
         } else {
             if (option.isCheckOption()) {
                 createCheckOptionControl(option, context);
@@ -244,18 +236,63 @@ public class SynthesisOptionControlFactory {
                 createSeparator(option.getName());
                 return false;
             } else if (option.isCategory()) {
-                // If the category is already created move the item to the correct position
-                if (categoryFactories.containsKey(option)) {
-                    SynthesisOptionControlFactory optionControl = categoryFactories.get(option);
-                    optionControl.parent.getParent()
-                            .moveBelow(parent.getChildren()[parent.getChildren().length - 1]);
-                } else {
-                    // Create empty section
-                    createCategorySynthesisOptionControlFactory(option, context);
-                }
+                // Creates (if not already created) the factory and all its parents
+                // In case the factory is already created the position is updated
+                SynthesisOptionControlFactory categoryFactory =
+                        createCategorySynthesisOptionControlFactories(option, context);
+                categoryFactory.parent.getParent()
+                        .moveBelow(parent.getChildren()[parent.getChildren().length - 1]);
             }
         }
         return false;
+    }
+    
+    /**
+     * Creates a {@link SynthesisOptionControlFactory} for the given category, including all parent
+     * categories. Factories will only be created once. Controls created with the returned factory
+     * will be clients of this category.
+     * 
+     * @param option
+     *            the 'category' option
+     * @param context
+     *            the related {@link ViewContext} the option is declared in
+     * @return the {@link SynthesisOptionControlFactory} for clients.
+     */
+    private SynthesisOptionControlFactory createCategorySynthesisOptionControlFactories(
+            final SynthesisOption option, final ViewContext context) {
+        // The nesting path of the category
+        LinkedList<SynthesisOption> categoryPath = new LinkedList<SynthesisOption>();
+        categoryPath.add(option); // Add category to create
+        SynthesisOption parentCategory = option.getCategory();
+        // Bottom up creation of the path from the option (category to create) to this factory. In
+        // case this factory is not a category factory the path will lead to the upper most category.
+        while (parentCategory != factoryCategory) {
+            // If the category path contains a cycle throw exception.
+            if (categoryPath.contains(parentCategory)) {
+                throw new IllegalArgumentException(
+                        "The given category option has a cycle in the parent categories");
+            }
+            // Add parent category
+            categoryPath.add(parentCategory);
+            // Calculate next parent parent
+            parentCategory = parentCategory.getCategory();
+        }
+
+        // Reverse the list to get a top town path form this category factory to the given option.
+        Collections.reverse(categoryPath);
+        
+        // The category where the first part of the path should be created
+        SynthesisOptionControlFactory categoryFactory = this;
+        // Move path down and create all parent categories
+        for (SynthesisOption category : categoryPath) {
+            // Create factory only once per category
+            if (!categoryFactory.subCategoryFactories.containsKey(category)) {
+                categoryFactory.createCategorySynthesisOptionControlFactory(category, context);
+            }
+            categoryFactory = categoryFactory.subCategoryFactories.get(category);
+        }
+
+        return categoryFactory;
     }
     
     /**
@@ -268,7 +305,7 @@ public class SynthesisOptionControlFactory {
      *            the related {@link ViewContext} the option is declared in
      * @return the {@link SynthesisOptionControlFactory} for clients.
      */
-    public SynthesisOptionControlFactory createCategorySynthesisOptionControlFactory(
+    private SynthesisOptionControlFactory createCategorySynthesisOptionControlFactory(
             final SynthesisOption option, final ViewContext context) {
         // Create category container for diagram synthesis options
         Section categorySection = formToolkit.createSection(parent,
@@ -313,8 +350,8 @@ public class SynthesisOptionControlFactory {
         // Create the factory for diagram synthesis option controls to fill the clients container
         SynthesisOptionControlFactory categorySynthesisOptionControlFactory =
                 new SynthesisOptionControlFactory(client, formToolkit);
-        categorySynthesisOptionControlFactory.isCategoryFactory = true;
-        categoryFactories.put(option, categorySynthesisOptionControlFactory);
+        categorySynthesisOptionControlFactory.factoryCategory = option;
+        subCategoryFactories.put(option, categorySynthesisOptionControlFactory);
 
         return categorySynthesisOptionControlFactory;
     }

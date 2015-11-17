@@ -474,15 +474,15 @@ public final class SynthesisOption {
     }
 
     /**
-     * Sets the category for this option. Nested categories are not supported.
+     * Sets the category for this option.
      * 
      * @param newCategory
-     *            the new category for this option or <code>null</code> to reset the category.
+     *            the new category for this option or <code>null</code> to unset the category.
      * @return <code>this</code> {@link SynthesisOption} for convenience
      */
     public SynthesisOption setCategory(final SynthesisOption newCategory) {
         if (newCategory != null && !newCategory.isCategory()) {
-            throw new IllegalArgumentException("The synthesis option is not a category");
+            throw new IllegalArgumentException("The given synthesis option is not a category");
         }
         this.category = newCategory;
         return this;
