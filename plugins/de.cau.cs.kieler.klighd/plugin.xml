@@ -54,10 +54,6 @@
             id="de.cau.cs.kieler.klighd.actions.ManageLabelsAction">
       </action>
       <action
-            class="de.cau.cs.kieler.klighd.actions.MetaFocusAction"
-            id="de.cau.cs.kieler.klighd.actions.MetaFocusAction">
-      </action>
-      <action
             class="de.cau.cs.kieler.klighd.actions.ScaleUpAction"
             id="de.cau.cs.kieler.klighd.actions.ScaleUpAction">
       </action>
