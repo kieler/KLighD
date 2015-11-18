@@ -19,6 +19,7 @@ import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventLi
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Set;
 
@@ -28,8 +29,9 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
-import de.cau.cs.kieler.kiml.util.selection.SelectionIterator;
+import de.cau.cs.kieler.kiml.util.selection.DefaultSelectionIterator;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
@@ -45,8 +47,8 @@ import edu.umd.cs.piccolo.util.PStack;
 /**
  * A simple selection event handler supporting click-based selections (no rubber band selection).<br>
  * It supports the selection of multiple elements if the CTRL/COMMAND key is pressed.<br>
- * In order to not interfere with the diagram panning the selection is done on mouse up events
- * (this is in contrast to the usual selection) if and only if the mouse pointer has not been moved
+ * In order to not interfere with the diagram panning the selection is done on mouse up events (this
+ * is in contrast to the usual selection) if and only if the mouse pointer has not been moved
  * between mouse down and mouse up.
  *
  * @author chsch
@@ -67,17 +69,12 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         this.includePortsWithinConnectedEdges =
                 viewer.getViewContext().getProperty(
                         KlighdSynthesisProperties.INCLUDE_PORTS_IN_CONNECTED_EDGES_SELECTIONS);
-        this.sourceIterator = null;
-        this.targetIterator = null;
     }
 
     private final IViewer viewer;
     private final PiccoloViewer diagramViewer;
     private final boolean multiSelection;
     private final boolean includePortsWithinConnectedEdges;
-    private SelectionIterator sourceIterator;
-    private SelectionIterator targetIterator;
-    
 
     private Point2D point = null;
 
@@ -258,18 +255,11 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                     selectedElements = Sets.newHashSet();
                 }
 
-                // Check if a dedicated SelectionIterator is defined and should be used
-                if (sourceIterator != null && targetIterator != null) {
-                    // Start the defined SelectionIterators to grab the connected Elements
-                    Iterators.addAll(selectedElements, KimlUtil.getConnectedElements(
-                            (KEdge) viewModelElement, sourceIterator, targetIterator));
-                } else {
-                    // add the currently found edge and its connected ones
-                    // to the set of elements to be selected,
-                    // adding ports if selected by KlighdProperty...
-                    Iterators.addAll(selectedElements, KimlUtil.getConnectedElements(
-                            (KEdge) viewModelElement, includePortsWithinConnectedEdges));
-                }
+                // add the currently found edge and its connected ones
+                // to the set of elements to be selected,
+                // adding ports if selected by KlighdProperty...
+                Iterators.addAll(selectedElements, getConnectedElements((KEdge) viewModelElement));
+
                 // ... start a new "pick" run ('nextPickedNode' takes care
                 // about ignoring the previously found ones), ...
                 pickPath.nextPickedNode();
@@ -301,5 +291,20 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
         } else {
             this.viewer.resetSelectionToDiagramElements(selectedElements);
         }
+    }
+
+    /**
+     * Provides an iterator for all {@link KGraphElement KGraphElements} connected to the selected
+     * edge. Can be overridden to use own customized
+     * {@link de.cau.cs.kieler.kiml.util.selection.SelectionIterator SelectionIterators}.
+     * 
+     * @param edge
+     *            the selected edge
+     * @return the iterator
+     */
+    private Iterator<KGraphElement> getConnectedElements(final KEdge edge) {
+        return KimlUtil.getConnectedElements(edge, new DefaultSelectionIterator(edge, 
+                includePortsWithinConnectedEdges, false), new DefaultSelectionIterator(edge, 
+                includePortsWithinConnectedEdges, true));
     }
 }
