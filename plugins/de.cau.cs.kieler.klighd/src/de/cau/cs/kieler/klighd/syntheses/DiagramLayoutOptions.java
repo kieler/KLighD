@@ -19,6 +19,7 @@ import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
+import de.cau.cs.kieler.kiml.options.HierarchyHandling;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortAlignment;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
@@ -141,8 +142,16 @@ public final class DiagramLayoutOptions {
 
     /**
      * @see LayoutOptions#LAYOUT_HIERARCHY
+     * @deprecated Use {@link #HIERARCHY_HANDLING} for finer control and the option to only layout a
+     *             certain slice of the layout tree
      */
     public static final IProperty<Boolean> LAYOUT_HIERARCHY = LayoutOptions.LAYOUT_HIERARCHY;
+
+    /**
+     * @see LayoutOptions#HIERARCHY_HANDLING
+     */
+    public static final IProperty<HierarchyHandling> HIERARCHY_HANDLING =
+            LayoutOptions.HIERARCHY_HANDLING;
 
     /**
      * @see LayoutOptions#OFFSET
