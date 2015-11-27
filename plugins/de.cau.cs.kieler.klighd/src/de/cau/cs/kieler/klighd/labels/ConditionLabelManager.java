@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 import de.cau.cs.kieler.core.kgraph.KLabel;
 
@@ -74,12 +74,15 @@ public class ConditionLabelManager extends AbstractKlighdLabelManager {
      */
     @Override
     public String resizeLabel(final KLabel label, final double targetWidth) {
-        if (condition.apply(label)) {
+        if (condition.test(label)) {
+            System.out.println("CASE A");
             return labelManager.resizeLabel(label, targetWidth);
         } else {
             if (filterOtherLabels) {
+                System.out.println("CASE B");
                 return "";
             } else {
+                System.out.println("CASE C");
                 return null;
             }
         }
