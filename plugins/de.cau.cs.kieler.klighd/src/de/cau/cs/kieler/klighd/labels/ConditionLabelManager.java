@@ -75,14 +75,11 @@ public class ConditionLabelManager extends AbstractKlighdLabelManager {
     @Override
     public String resizeLabel(final KLabel label, final double targetWidth) {
         if (condition.test(label)) {
-            System.out.println("CASE A");
             return labelManager.resizeLabel(label, targetWidth);
         } else {
             if (filterOtherLabels) {
-                System.out.println("CASE B");
                 return "";
             } else {
-                System.out.println("CASE C");
                 return null;
             }
         }
