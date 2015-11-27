@@ -77,7 +77,10 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     public static final IProperty<Boolean> SUPPRESS_SIZE_ESTIMATION = new Property<Boolean>(
             "klighd.suppressSizeEstimation", false);
 
-    /** property denoting whether to suppress edge adjustment or not. */
+    /**
+     * Whether to suppress edge adjustment or not. If active, this causes KLighD to not mess with source
+     * and target points of edges when applying layout information back to the view model.
+     */
     public static final IProperty<Boolean> SUPPRESS_EDGE_ADJUSTMENT = new Property<Boolean>(
             "klighd.suppressEdgeAdjustment", false);
 

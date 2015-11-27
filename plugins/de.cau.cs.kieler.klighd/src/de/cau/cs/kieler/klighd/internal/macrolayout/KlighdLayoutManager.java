@@ -832,19 +832,19 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     }
 
     /**
-     * Transfers the source edge layout to the target edge layout.
+     * Transfers information from one edge layout to the other. The transfer direction is determined by
+     * the transfer mode.
      *
      * @param viewModelEdgeLayout
-     *            the destination edge layout
+     *            the view model edge layout
      * @param layoutEdgeLayout
-     *            the origin edge layout
+     *            the layout edge layout
      * @param transferMode
-     *            if true the transfer is to be done from viewModel to layout graph, if false the
-     *            other way round
+     *            specifies where the source and edge layout actually come from, which influences what
+     *            gets transferred exactly.
      */
     private void transferEdgeLayout(final KEdgeLayout viewModelEdgeLayout,
-            final KEdgeLayout layoutEdgeLayout,
-            final EdgeLayoutTransferMode transferMode) {
+            final KEdgeLayout layoutEdgeLayout, final EdgeLayoutTransferMode transferMode) {
 
         final KEdge viewModelEdge = (KEdge) viewModelEdgeLayout.eContainer();
         final KEdge layoutEdge = (KEdge) layoutEdgeLayout.eContainer();
@@ -853,11 +853,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         //  to avoid unnecessary diagram refresh cycles
         final boolean deliver = viewModelEdgeLayout.eDeliver();
         viewModelEdgeLayout.eSetDeliver(false);
-
-        // copy all properties from the layoutEdgeLayout to the viewModelEdgeLayout,
-        //  esp. the concrete EDGE_ROUTING and the JUNCTION_POINTS
-        // the viewModel2LayoutGraph case this statement will have no effect
-        viewModelEdgeLayout.copyProperties(layoutEdgeLayout);
 
         // flag indicates direction view model to layout graph if true,
         // if false the other way round.
@@ -871,11 +866,18 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         if (viewModelEdgeLayout.getSourcePoint() == null) {
             viewModelEdgeLayout.setSourcePoint(KLayoutDataFactory.eINSTANCE.createKPoint());
         }
+        
         if (viewModel2LayoutGraph) {
             // transfer the source point without checking
             final KPoint sourcePoint = viewModelEdgeLayout.getSourcePoint();
             layoutEdgeLayout.getSourcePoint().setPos(sourcePoint.getX(), sourcePoint.getY());
         } else {
+            // we want to transfer the EDGE_ROUTING and JUNCTION_POINTS
+            viewModelEdgeLayout.setProperty(LayoutOptions.EDGE_TYPE,
+                    layoutEdgeLayout.getProperty(LayoutOptions.EDGE_TYPE));
+            viewModelEdgeLayout.setProperty(LayoutOptions.JUNCTION_POINTS,
+                    layoutEdgeLayout.getProperty(LayoutOptions.JUNCTION_POINTS));
+            
             final KNode layoutSourceNode = layoutEdge.getSource();
             final KVector offset = new KVector();
 

@@ -28,12 +28,12 @@ import com.google.common.collect.Maps;
  */
 public enum Colors {
 
-    /* shadings of black */
+    /* shades of black */
 
     /** black. */
     BLACK("black", 0, 0, 0),
 
-    /* shadings of blue */
+    /* shades of blue */
 
     /** AliceBlue. */
     ALICE_BLUE("AliceBlue", 240, 248, 255),
@@ -338,7 +338,7 @@ public enum Colors {
     /** turquoise4. */
     TURQUOISE_4("turquoise4", 0, 134, 139),
 
-    /* shadings of brown */
+    /* shades of brown */
 
     /** RosyBrown. */
     ROSY_BROWN("RosyBrown", 188, 143, 143),
@@ -427,7 +427,7 @@ public enum Colors {
     /** tan4. */
     TAN_4("tan4", 139, 90, 43),
 
-    /* shadings of gray */
+    /* 115 shades of gray */
 
     /** DarkSlateGray. */
     DARK_SLATE_GRAY("DarkSlateGray", 47, 79, 79),
@@ -774,7 +774,7 @@ public enum Colors {
     /** gray100. */
     GRAY_100("gray100", 255, 255, 255),
 
-    /* shadings of green */
+    /* shades of green */
 
     /** DarkGreen. */
     DARK_GREEN("DarkGreen", 0, 100, 0),
@@ -947,7 +947,7 @@ public enum Colors {
     /** khaki4. */
     KHAKI_4("khaki4", 139, 134, 78),
 
-    /* shadings of orange */
+    /* shades of orange */
 
     /** DarkOrange. */
     DARK_ORANGE("DarkOrange", 255, 140, 0),
@@ -1090,7 +1090,7 @@ public enum Colors {
     /** sienna4. */
     SIENNA_4("sienna4", 139, 71, 38),
 
-    /* shadings of red */
+    /* shades of red */
 
     /** DarkRed. */
     DARK_RED("DarkRed", 139, 0, 0),
@@ -1278,7 +1278,7 @@ public enum Colors {
     /** tomato4. */
     TOMATO_4("tomato4", 139, 54, 38),
 
-    /* shadings of violet */
+    /* shades of violet */
 
     /** DarkMagenta. */
     DARK_MAGENTA("DarkMagenta", 139, 0, 139),
@@ -1442,7 +1442,7 @@ public enum Colors {
     /** violet. */
     VIOLET("violet", 238, 130, 238),
 
-    /* shadings of white */
+    /* shades of white */
 
     /** AntiqueWhite. */
     ANTIQUE_WHITE("AntiqueWhite", 250, 235, 215),
@@ -1555,7 +1555,7 @@ public enum Colors {
     /** white. */
     WHITE("white", 255, 255, 255),
 
-    /* shadings of yellow */
+    /* shades of yellow */
 
     /** BlanchedAlmond. */
     BLANCHED_ALMOND("BlanchedAlmond", 255, 235, 205),
