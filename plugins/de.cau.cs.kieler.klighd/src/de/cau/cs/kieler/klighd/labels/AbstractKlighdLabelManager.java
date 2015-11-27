@@ -61,7 +61,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * Whether the manager's target width should be used or the one provided by the call to
      * {@link #manageLabelSize(Object, double)}.
      */
-    private boolean useFixedTargetWidth = true;
+    private boolean useFixedTargetWidth = false;
     /** The width to try and shorten labels to. */
     private double fixedTargetWidth;
 
