@@ -112,16 +112,30 @@ public final class LabelPredicates {
     }
     
     /**
-     * Returns a predicate that checks if an {@link EObject} is a node label.
+     * Returns a predicate that checks if an {@link EObject} is a centered edge label. Edge labels with
+     * undefined edge label placement are treated as centered edge labels.
      * 
      * @return the predicate.
      */
     public static Predicate<EObject> centerEdgeLabel() {
+        return centerEdgeLabel(true);
+    }
+    
+    /**
+     * Returns a predicate that checks if an {@link EObject} is a centered edge label.
+     * 
+     * @param includeUndefined
+     *            {@code true} if edge labels with undefined edge label placement should be treated
+     *            as center edge labels as well.
+     * @return the predicate.
+     */
+    public static Predicate<EObject> centerEdgeLabel(final boolean includeUndefined) {
         return isLabel().and(emfContainerInstanceOf(KEdge.class)).and(
                 (EObject label) -> {
                     KLayoutData ld = ((KLabel) label).getData(KLayoutData.class);
                     EdgeLabelPlacement elp = ld.getProperty(LayoutOptions.EDGE_LABEL_PLACEMENT);
-                    return elp == EdgeLabelPlacement.CENTER;
+                    return elp == EdgeLabelPlacement.CENTER
+                            || (includeUndefined && elp == EdgeLabelPlacement.UNDEFINED);
                 });
     }
     
