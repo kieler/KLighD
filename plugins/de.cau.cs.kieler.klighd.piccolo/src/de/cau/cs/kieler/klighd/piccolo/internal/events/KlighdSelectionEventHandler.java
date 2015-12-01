@@ -302,7 +302,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
      *            the selected edge
      * @return the iterator
      */
-    private Iterator<KGraphElement> getConnectedElements(final KEdge edge) {
+    protected Iterator<KGraphElement> getConnectedElements(final KEdge edge) {
         return KimlUtil.getConnectedElements(edge, new DefaultSelectionIterator(edge, 
                 includePortsWithinConnectedEdges, false), new DefaultSelectionIterator(edge, 
                 includePortsWithinConnectedEdges, true));
