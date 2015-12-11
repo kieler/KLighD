@@ -61,7 +61,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * Whether the manager's target width should be used or the one provided by the call to
      * {@link #manageLabelSize(Object, double)}.
      */
-    private boolean useFixedTargetWidth = true;
+    private boolean useFixedTargetWidth = false;
     /** The width to try and shorten labels to. */
     private double fixedTargetWidth;
 
@@ -123,27 +123,43 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
             KVector newLabelSize = null;
             String newLabelText = kLabel.getText();
 
-            if (isActive() && isInContext(kLabel)) {
-                double sizeToResizeTo = useFixedTargetWidth ? fixedTargetWidth : processorTargetWidth;
-                newLabelText = resizeLabel(kLabel, sizeToResizeTo);
-                
-                if (newLabelText != null) {
-                    kLabel.setText(newLabelText);
+            if (isActive()) {
+                if (isInContext(kLabel)) {
+                    // The label is not in the focus right now, so shorten it
+                    double sizeToResizeTo = useFixedTargetWidth
+                            ? fixedTargetWidth
+                            : processorTargetWidth;
+                    newLabelText = resizeLabel(kLabel, sizeToResizeTo);
                     
-                    // calculate the new Bounds of the text
-                    final FontData font = PlacementUtil.fontDataFor(kLabel);
-                    Bounds newSize = PlacementUtil.estimateTextSize(font, newLabelText);
-                    newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
-                }
-            }
+                    if (newLabelText != null) {
+                        kLabel.setText(newLabelText);
+                        
+                        // calculate the new Bounds of the text
+                        final FontData font = PlacementUtil.fontDataFor(kLabel);
+                        Bounds newSize = PlacementUtil.estimateTextSize(font, newLabelText);
+                        newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
+                    }
 
-            // Make sure KLighD knows if we shortened the label
-            if (newLabelSize == null) {
-                labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
-                        LabelManagementResult.MANAGED_UNMODIFIED);
-            } else {
-                labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
-                        LabelManagementResult.MANAGED_MODIFIED);
+                    // Make sure KLighD knows if we shortened the label
+                    if (newLabelSize == null) {
+                        labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                                LabelManagementResult.MANAGED_UNMODIFIED);
+                    } else {
+                        labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                                LabelManagementResult.MANAGED_MODIFIED);
+                    }
+                } else {
+                    // We won't modify the label's text, but we need to tell the layout algorithm
+                    // about its size when it's unshortened. If we don't, word-wrapped labels won't
+                    // have their height reset if they move into focus and thus consist of a single
+                    // line of text
+                    final FontData font = PlacementUtil.fontDataFor(kLabel);
+                    Bounds newSize = PlacementUtil.estimateTextSize(font, kLabel.getText());
+                    newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
+
+                    labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                            LabelManagementResult.MANAGED_UNMODIFIED);
+                }
             }
 
             return newLabelSize;

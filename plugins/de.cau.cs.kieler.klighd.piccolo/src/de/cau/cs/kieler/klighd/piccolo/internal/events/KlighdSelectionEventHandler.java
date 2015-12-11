@@ -30,6 +30,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
+import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.kiml.util.selection.DefaultSelectionIterator;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -250,15 +251,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
             if (viewModelElement instanceof KEdge) {
                 // in case a KEdge has been identified that edge might occlude another one that
                 //  shall be selected as well (mostly happens if edges are routed in orthogonal fashion);
-
-                if (selectedElements == null) {
-                    selectedElements = Sets.newHashSet();
-                }
-
-                // add the currently found edge and its connected ones
-                // to the set of elements to be selected,
-                // adding ports if selected by KlighdProperty...
-                Iterators.addAll(selectedElements, getConnectedElements((KEdge) viewModelElement));
+                selectedElements = performEdgeSelection(selectedElements, (KEdge) viewModelElement);
 
                 // ... start a new "pick" run ('nextPickedNode' takes care
                 // about ignoring the previously found ones), ...
@@ -274,8 +267,16 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                 //  that is not a KEdge so we have to stop and ignore 'viewModelElement' here
                 break;
 
+            } else if (viewModelElement instanceof KNode) {
+                // We selected a KNode. By default this should be the only selected Node,
+                // but certain circumstances might require to specialize the selection behaviour.
+                selectedElements = performNodeSelection((KNode) viewModelElement);
+
+                // Stop the loop after handling the node
+                break;
+
             } else {
-                // we identified a selectable view model element not being a KEdge, and
+                // we identified a selectable view model element not being a KEdge or KNode, and
                 //  the current loop iteration must be the first one since 'selectedElemets' is 'null'
                 // we just initialize 'selectedElements', put 'viewModelElement' in there, ...
                 selectedElements = Collections.singleton(viewModelElement);
@@ -294,6 +295,27 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
     }
 
     /**
+     * Handles the selection of a single edge.
+     * 
+     * @param selectedElements
+     *            The set of already selected elements
+     * @param edge
+     *            The selected edge
+     * @return The updated set of selected elements
+     */
+    protected Set<EObject> performEdgeSelection(final Set<EObject> selectedElements,
+            final KEdge edge) {
+        final Set<EObject> returnedElements =
+                selectedElements == null ? Sets.newHashSet() : selectedElements;
+
+        // add the currently found edge and its connected ones
+        // to the set of elements to be selected,
+        // adding ports if selected by KlighdProperty...
+        Iterators.addAll(returnedElements, getConnectedElements(edge));
+        return returnedElements;
+    }
+
+    /**
      * Provides an iterator for all {@link KGraphElement KGraphElements} connected to the selected
      * edge. Can be overridden to use own customized
      * {@link de.cau.cs.kieler.kiml.util.selection.SelectionIterator SelectionIterators}.
@@ -302,9 +324,21 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
      *            the selected edge
      * @return the iterator
      */
-    private Iterator<KGraphElement> getConnectedElements(final KEdge edge) {
+    protected Iterator<KGraphElement> getConnectedElements(final KEdge edge) {
         return KimlUtil.getConnectedElements(edge, new DefaultSelectionIterator(edge, 
                 includePortsWithinConnectedEdges, false), new DefaultSelectionIterator(edge, 
                 includePortsWithinConnectedEdges, true));
     }
+
+    /**
+     * Handles the selection of a single node.
+     * 
+     * @param node
+     *            The selected node
+     * @return The updated set of selected elements
+     */
+    protected Set<EObject> performNodeSelection(final KNode node) {
+        return Collections.singleton(node);
+    }
+
 }
