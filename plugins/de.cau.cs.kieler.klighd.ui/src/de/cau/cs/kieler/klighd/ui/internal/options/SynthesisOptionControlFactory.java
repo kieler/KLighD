@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +40,9 @@ import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
@@ -57,7 +59,8 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 /**
  * A factory providing methods for creating diagram synthesis option controls in the diagram side bar.
  * 
- * @author chsch, als
+ * @author chsch
+ * @author als
  */
 public class SynthesisOptionControlFactory {
 
@@ -66,19 +69,18 @@ public class SynthesisOptionControlFactory {
     /** the form toolkit used to create controls. */
     private FormToolkit formToolkit;
     /** The set of controls to be disposed when {@link #clear()} is called. */
-    private final Collection<Control> controls = new LinkedList<Control>();
+    private final Collection<Control> controls = Lists.newArrayList();
     /** This flag is true if this factory is factory for options of a subordinate synthesis. */
     private boolean isSubFactory = false;
     /** The title text of the parent form. */
     private final String parentTitle;
     /** The list of {SynthesisOptionControlFactory} for synthesis specific sections. */
-    private final List<SynthesisOptionControlFactory> subFactories =
-            new LinkedList<SynthesisOptionControlFactory>();
+    private final List<SynthesisOptionControlFactory> subFactories = Lists.newArrayList();
     /** If set, the category this factory is responsible for. */
     private SynthesisOption factoryCategory = null;
     /** The list of {SynthesisOptionControlFactory} for categories directly nested. */
     private final Map<SynthesisOption, SynthesisOptionControlFactory> subCategoryFactories =
-            new HashMap<SynthesisOption, SynthesisOptionControlFactory>();
+            Maps.newHashMap();
     
     /** Preference prefix for sub-factory. */
     private static final String SUB_FACTORY_PREFIX = "sidebar.synthesis.expansion.";
