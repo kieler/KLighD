@@ -222,7 +222,7 @@ public class SynthesisOptionControlFactory {
         // If category is given and the factory in not the factory for this factory create the factory.
         if (category != null && factoryCategory != category) {
             // Creates (if not already created) the factory and all its parents
-            createCategorySynthesisOptionControlFactories(category, context)
+            return createCategorySynthesisOptionControlFactories(category, context)
                     .createOptionControl(option, context);
         } else {
             if (option.isCheckOption()) {
