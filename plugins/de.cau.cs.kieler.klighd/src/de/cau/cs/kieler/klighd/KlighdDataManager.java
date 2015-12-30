@@ -33,6 +33,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -431,8 +433,14 @@ public final class KlighdDataManager {
                     // sort them s.t. the most concrete type is at position 0
                     Collections.sort(validTypes, TYPE_SORTER);
 
+                    Builder<ISynthesis> builder = ImmutableList.builder();
                     // and reveal the collection of related ISynthesis from the main mapping
-                    res = typeSynthesisMapping.get(validTypes.get(0));
+                    // for each of the valid types
+                    for (Class<?> validType : validTypes) {
+                        builder.addAll(typeSynthesisMapping.get(validType));
+                    }
+
+                    res = builder.build();
                 }
 
                 this.concreteTypeSynthesisMapping.put(type, res);

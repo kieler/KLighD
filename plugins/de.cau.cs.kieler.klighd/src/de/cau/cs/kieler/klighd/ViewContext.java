@@ -144,7 +144,6 @@ public class ViewContext extends MapPropertyHolder {
         super();
         this.businessModel = inputModel;
         if (otherContext != null) {
-            this.synthesisOptions.addAll(otherContext.synthesisOptions);
             this.synthesisOptionConfig.putAll(otherContext.synthesisOptionConfig);
         }
     }
@@ -411,6 +410,8 @@ public class ViewContext extends MapPropertyHolder {
      */
     public boolean update(final Object model, final IUpdateStrategy theUpdateStrategy,
             final IPropertyHolder properties) {
+        
+        childViewContexts.clear();
 
         if (model != null && model != this.businessModel) {
             this.businessModel = model;
@@ -771,7 +772,11 @@ public class ViewContext extends MapPropertyHolder {
                     + "The transformation " + this.diagramSynthesis
                     + " attempted to evaluate the transformation option \"null\".");
         }
-        return this.synthesisOptionConfig.get(option);
+        if (this.synthesisOptionConfig.containsKey(option)) {
+            return this.synthesisOptionConfig.get(option);
+        } else {
+            return option.getInitialValue();
+        }
     }
 
     /**
@@ -791,7 +796,9 @@ public class ViewContext extends MapPropertyHolder {
             return;
         }
 
-        if (option == null || !this.synthesisOptions.contains(option)) {
+        // This check is weakened since the condition '|| !this.synthesisOptions.contains(option)'
+        // was removed to support pre-configuration of synthesis options of child view contexts
+        if (option == null) {
             throw new IllegalArgumentException("KLighD transformation option handling: "
                     + "Attempted to configure illegal option ("
                     + (option == null ? null : option.getName())
@@ -855,5 +862,46 @@ public class ViewContext extends MapPropertyHolder {
         } else {
             return Collections.emptyList();
         }
+    }
+    
+
+    // ---------------------------------------------------------------------------------- //
+    //  Child ViewContext handling
+
+    private final List<ViewContext> childViewContexts = Lists.newLinkedList();
+
+    /**
+     * Returns the list of registered child {@link ViewContext}.<br>
+     * A child is a {@link ViewContext} which was created to translate a model with another
+     * synthesis, which result is contained in the view model.
+     * 
+     * @param recursive
+     *            if recursive is set true the list will also contain all nested child
+     *            {@link ViewContext}s.
+     * 
+     * @return list of child ViewContext
+     */
+    public List<ViewContext> getChildViewContexts(final boolean recursive) {
+        if (recursive) {
+            List<ViewContext> recursiveVCs = Lists.newLinkedList();
+            for (ViewContext vc : childViewContexts) {
+                recursiveVCs.add(vc);
+                recursiveVCs.addAll(vc.getChildViewContexts(true));
+            }
+            return recursiveVCs;
+        } else {
+            return childViewContexts;
+        }
+    }
+
+    /**
+     * Adds a {@link ViewContext} to the list of child {@link ViewContext}s.<br>
+     * The list will be cleared on each update.
+     * 
+     * @param child
+     *            the new child {@link ViewContext}.
+     */
+    public void addChildViewContext(final ViewContext child) {
+        this.childViewContexts.add(child);
     }
 }

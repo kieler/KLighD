@@ -69,22 +69,6 @@
       </context>
    </extension>
    <extension
-         point="org.eclipse.ui.views">
-      <category
-            id="de.cau.cs.kieler.klighd"
-            name="KIELER Lightweight Diagrams">
-      </category>
-      <view
-            allowMultiple="true"
-            category="de.cau.cs.kieler.klighd"
-            class="de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart"
-            icon="icons/klighd.gif"
-            id="de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart"
-            name="Lightweight Diagram"
-            restorable="true">
-      </view>
-   </extension>
-   <extension
          point="org.eclipse.ui.commands">
       <category
             id="de.cau.cs.kieler.klighd.ui"
