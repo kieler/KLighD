@@ -1667,6 +1667,10 @@ public class DiagramController {
         final KShapeLayout shapeLayout = nodeNode.getViewModelElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applyBounds(nodeNode, shapeLayout);
+            Float scale = shapeLayout.getProperty(LayoutOptions.SCALE_FACTOR);
+            if (scale != Float.valueOf(1f)) {
+                nodeNode.setScale(scale.doubleValue());
+            }
         }
     }
 
