@@ -869,11 +869,16 @@ public class DiagramController {
                 }
 
                 final float scale;
+                final boolean scaleHasChanged;
+                
+                // check whether the scale must be updated, only valid for KNodes
                 if (shapeNode instanceof KNodeNode) {
                     scale = ((KNodeNode) shapeNode).getViewModelElement().getData(KShapeLayout.class)
                                     .getProperty(LayoutOptions.SCALE_FACTOR);
+                    scaleHasChanged = scale != shapeNode.getScale();
                 } else {
                     scale = 1f;
+                    scaleHasChanged = false;
                 }
 
                 if (!shapeNode.getVisible()) {
@@ -884,7 +889,7 @@ public class DiagramController {
                     //  i.e. 'LAYOUT_DATA_UNCHANGED_VALUE' was notified
                     activity = new FadeNodeInActivity(shapeNode, bounds,
                             scale, animationTime > 0 ? animationTime : 1);
-                } else if (bounds == null) {
+                } else if (bounds == null && !scaleHasChanged) {
                     continue;
 
                 } else {

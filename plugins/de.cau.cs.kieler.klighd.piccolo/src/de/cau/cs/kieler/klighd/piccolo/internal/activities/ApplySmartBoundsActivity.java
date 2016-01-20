@@ -71,9 +71,21 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     @Override
     public void activityStarted() {
         this.sourceBounds = NodeUtil.determineBounds(node);
-        this.deltaBounds = new PBounds(targetBounds.x - sourceBounds.x, targetBounds.y
-                - sourceBounds.y, targetBounds.width - sourceBounds.width, targetBounds.height
-                - sourceBounds.height);
+
+        if (this.targetBounds == null) {
+            // this will happen in case the scale has been changed and subsequent layout
+            //  calculations have no effect on the position + size of node, e.g.,
+            //  because it is located in the top left corner of its parent
+            this.targetBounds = this.sourceBounds;
+            this.deltaBounds = null;
+
+        } else {
+            this.deltaBounds = new PBounds(
+                    targetBounds.x - sourceBounds.x,
+                    targetBounds.y - sourceBounds.y,
+                    targetBounds.width - sourceBounds.width,
+                    targetBounds.height - sourceBounds.height);
+        }
 
         this.sourceScale = node.getTransformReference(true).getScale();
         this.deltaScale = this.targetScale - this.sourceScale;
@@ -94,10 +106,16 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
         } else {
             // as long as the activity is not completed use the delta values
             node.setScale(sourceScale + zeroToOne * deltaScale);
-            NodeUtil.applyBounds(node, sourceBounds.getX() + zeroToOne * deltaBounds.getX(),
-                    sourceBounds.getY() + zeroToOne * deltaBounds.getY(), sourceBounds.getWidth()
-                            + zeroToOne * deltaBounds.getWidth(), sourceBounds.getHeight()
-                            + zeroToOne * deltaBounds.getHeight());
+
+            // 'deltaBounds == null' holds if a scale change didn't lead
+            //  to a positions change after computing a new layout
+            if (deltaBounds != null) {
+                NodeUtil.applyBounds(node,
+                    sourceBounds.getX() + zeroToOne * deltaBounds.getX(),
+                    sourceBounds.getY() + zeroToOne * deltaBounds.getY(),
+                    sourceBounds.getWidth() + zeroToOne * deltaBounds.getWidth(),
+                    sourceBounds.getHeight() + zeroToOne * deltaBounds.getHeight());
+            }
         }
         if (!stylesModified && zeroToOne > 1f / 2f) {
             stylesModified = true;
