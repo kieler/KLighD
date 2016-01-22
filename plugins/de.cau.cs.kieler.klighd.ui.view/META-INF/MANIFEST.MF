@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER Diagram View
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.view;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Activator: de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin
+Require-Bundle: org.eclipse.ui.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtend.lib,
+ de.cau.cs.kieler.core.krendering.extensions,
+ de.cau.cs.kieler.klay.layered,
+ de.cau.cs.kieler.klighd.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Kiel University
+Export-Package: de.cau.cs.kieler.klighd.ui.view,
+ de.cau.cs.kieler.klighd.ui.view.controller,
+ de.cau.cs.kieler.klighd.ui.view.controllers,
+ de.cau.cs.kieler.klighd.ui.view.menu,
+ de.cau.cs.kieler.klighd.ui.view.model,
+ de.cau.cs.kieler.klighd.ui.view.syntheses

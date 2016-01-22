@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="de.cau.cs.kieler.klighd.ui.view.controller" name="DiagramView Update Controller" schema="schema/controller.exsd"/>
+   <extension-point id="de.cau.cs.kieler.klighd.ui.view.editor" name="DiagramView Editor Controller Registration" schema="schema/editor.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="de.cau.cs.kieler.klighd"
+            class="de.cau.cs.kieler.klighd.ui.view.DiagramView"
+            icon="icons/full/etool16/diagrams_view.gif"
+            id="de.cau.cs.kieler.klighd.ui.view.diagram"
+            name="Diagram"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <action
+            class="de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction"
+            id="de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction">
+      </action>
+      <action
+            class="de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction"
+            id="de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction">
+      </action>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.ui.view.controller">
+      <controller
+            class="de.cau.cs.kieler.klighd.ui.view.controllers.XtextChangeUpdateController">
+      </controller>
+      <controller
+            class="de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController">
+      </controller>
+   </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.diagramSyntheses">
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ui.view.syntheses.MessageModelSynthesis"
+            id="de.cau.cs.kieler.klighd.ui.view.syntheses.MessageModelSynthesis">
+      </diagramSynthesis>
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ui.view.syntheses.ErrorModelSynthesis"
+            id="de.cau.cs.kieler.klighd.ui.view.syntheses.ErrorModelSynthesis">
+      </diagramSynthesis>
+      <diagramSynthesis
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ui.view.syntheses.EcoreModelSynthesis"
+            id="de.cau.cs.kieler.klighd.ui.view.syntheses.EcoreModelSynthesis">
+      </diagramSynthesis>
+         
+   </extension>
+</plugin>
