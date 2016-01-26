@@ -14,6 +14,9 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.geom.Rectangle2D;
 
+import org.eclipse.emf.ecore.EObject;
+
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -24,7 +27,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  *
  * @author chsch
  */
-public class KlighdDisposingLayer extends PLayer {
+public class KlighdDisposingLayer extends PLayer implements IKlighdNode {
 
     private static final long serialVersionUID = 4423173127127342353L;
 
@@ -37,6 +40,39 @@ public class KlighdDisposingLayer extends PLayer {
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PNode asPNode() {
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addChild(final IKlighdNode child) {
+        addChild(child.asPNode());
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EObject getViewModelElement() {
+        throw new UnsupportedOperationException(
+                "A layer does not represent a view model element!");
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSelectable() {
+        return false;
+    }
+    
     /**
      * {@inheritDoc}<br>
      * <br>

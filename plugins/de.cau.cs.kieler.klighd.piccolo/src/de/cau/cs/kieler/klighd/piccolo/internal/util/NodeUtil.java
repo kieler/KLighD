@@ -163,7 +163,7 @@ public final class NodeUtil {
      *            the {@link Bounds}
      */
     public static void applyBounds(final PNodeController<?> controller, final Bounds bounds) {
-        controller.getTransformedNode().setBounds(0, 0,  bounds.getWidth(), bounds.getHeight());
+        controller.getTransformedPNode().setBounds(0, 0,  bounds.getWidth(), bounds.getHeight());
 
         applyTranslation(controller, bounds);
     }
@@ -178,7 +178,7 @@ public final class NodeUtil {
      *            the {@link Bounds}
      */
     public static void applyTranslation(final PNodeController<?> controller, final Bounds bounds) {
-        final PNode transformedNode = controller.getTransformedNode();
+        final PNode transformedNode = controller.getTransformedPNode();
 
         // reset the current affine transform
         transformedNode.getTransformReference(true).setToIdentity();

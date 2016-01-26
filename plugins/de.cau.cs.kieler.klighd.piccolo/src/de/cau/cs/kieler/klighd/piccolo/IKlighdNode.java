@@ -13,11 +13,14 @@
  */
 package de.cau.cs.kieler.klighd.piccolo;
 
+import java.awt.geom.Rectangle2D;
+
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.krendering.KRendering;
+import edu.umd.cs.piccolo.PNode;
 
 /**
  * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing view
@@ -53,6 +56,25 @@ public interface IKlighdNode {
      *         selected, <code>false</code> otherwise.
      */
     boolean isSelectable();
+
+    /**
+     * @return this node's bounds object as defined by {@link PNode#getBoundsReference()}
+     */
+    Rectangle2D getBoundsReference();
+    
+    /**
+     * Convenience getter.
+     * 
+     * @return <code>this</code> {@link IKlighdNode} casted to {@link PNode}
+     */
+    PNode asPNode();
+    
+    /**
+     * @param child the child {@link IKlighdNode} to be added to the node's list of children
+     * 
+     * @see PNode#addChild(PNode)
+     */
+    void addChild(IKlighdNode child);
 
     /**
      * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing the

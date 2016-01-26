@@ -35,6 +35,7 @@ import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KCustomConnectionFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
@@ -210,11 +211,11 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         // As explained in the class doc, the representation of multiple junction points is realized
         //  by means of cameras. Since those support only PLayers as 'viewed' figures, create one
         //  serving as container for the junction point figure:
-        final PLayer junctionParent = new KlighdDisposingLayer();
+        final KlighdDisposingLayer junctionParent = new KlighdDisposingLayer();
 
         // Create the junction point figure the usual way
-        final PNode junctionFigure = handleAreaAndPointPlacementRendering(jpR, propagatedStyles,
-                junctionParent).getNode();
+        final IKlighdFigureNode junctionFigure = handleAreaAndPointPlacementRendering(
+                jpR, propagatedStyles, junctionParent).getNode();
 
         // Create a layer accommodating the concrete camera instances ...
         final PLayer displayedJunctions = new KlighdDisposingLayer();
@@ -259,8 +260,10 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
      * @param displayedJunctions
      *            the container {@link PLayer layer} comprising the concrete {@link PCamera cameras}
      */
-    private void updateJunctionPoints(final KEdgeNode parent, final PNode junctionFigure,
+    private void updateJunctionPoints(final KEdgeNode parent, final IKlighdFigureNode junctionFigure,
             final PLayer displayedJunctions) {
+
+        final PNode junctionFigureAsPNode = junctionFigure.asPNode();
 
         // get the points from the parent (structural) node
         final Point2D[] newJunctionPoints = parent.getJunctionPoints();
@@ -270,7 +273,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         // since a camera can be pointed to layers take the junctionFigures parent layer
         //  (see handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent)
-        final PLayer junctionParent = (PLayer) junctionFigure.getParent();
+        final PLayer junctionParent = (PLayer) junctionFigureAsPNode.getParent();
 
         // remove superfluous cameras in case the number of required juncts has decreased
         for (int i = 0; i < -missingJuncts; i++) {
@@ -298,7 +301,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             //  junctionFigure's transform (which is done by getFullBoundsReference)
             // in order to align the junction point figure as defined in attached
             //  KPointPlacement data based on the given junction point coordinates
-            cam.setBounds(junctionFigure.getFullBoundsReference());
+            cam.setBounds(junctionFigureAsPNode.getFullBoundsReference());
 
             // put the camera into the "camera container" -> invalidates the parent and the polyline
             displayedJunctions.addChild(cam);

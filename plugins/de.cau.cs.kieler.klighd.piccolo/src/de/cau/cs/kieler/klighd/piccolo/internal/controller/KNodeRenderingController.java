@@ -22,6 +22,7 @@ import de.cau.cs.kieler.core.krendering.KRendering;
 import de.cau.cs.kieler.core.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
@@ -82,7 +83,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      * {@inheritDoc}
      */
     @Override
-    protected PNodeController<?> createChildArea(final PNode parent, final KChildArea childArea,
+    protected PNodeController<?> createChildArea(final IKlighdNode parent, final KChildArea childArea,
             final Bounds initialBounds) {
 
         final KChildAreaNode childAreaNode = getRepresentation().getChildAreaNode();
@@ -103,12 +104,12 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
         NodeUtil.applyBounds(childAreaNode, initialBounds);
 
         // create a controller for the child area and return it
-        return new PNodeController<PNode>(childAreaNode) {
+        return new PNodeController<IKlighdNode.IKlighdFigureNode>(childAreaNode) {
 
             @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                NodeUtil.applyBounds(getNode(), bounds);
+                NodeUtil.applyBounds(getPNode(), bounds);
             }
         };
     }
@@ -119,7 +120,7 @@ public class KNodeRenderingController extends AbstractKGERenderingController<KNo
      * @param parent
      *            the parent Piccolo2D node
      */
-    private void createDefaultChildArea(final PNode parent) {
+    private void createDefaultChildArea(final KNodeNode parent) {
         // determine the initial bounds
         final Bounds bounds = PlacementUtil.evaluateAreaPlacement(null, parent.getBoundsReference());
 
