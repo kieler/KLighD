@@ -47,7 +47,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  */
 class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
 
-    public KGEShapeLayoutPNodeUpdater(final PNode theRepNode, final DiagramController theController) {
+    KGEShapeLayoutPNodeUpdater(final PNode theRepNode, final DiagramController theController) {
         super(KShapeLayout.class);
         this.controller = theController;
         this.nodeRep = theRepNode;

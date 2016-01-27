@@ -252,7 +252,7 @@ public class KNodeNode extends KNodeAbstractNode implements
      * {@inheritDoc}
      */
     @Override
-    public void setExpanded(boolean expanded) {
+    public void setExpanded(final boolean expanded) {
         super.setExpanded(expanded);
 
         // if the diagram is currently clipped to this node and this node was (still) collapsed

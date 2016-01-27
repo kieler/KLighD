@@ -467,6 +467,8 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * This class cares about tracking the corresponding {@link KRendering} element, contributing
      * semantic model data into drawn (vector graphic) images, and determining the visibility the
      * figure wrt. the diagram zoom scale while drawing the diagram.
+     * 
+     * @param <T> the concrete type describing the depicted figure
      */
     public static class KlighdFigureNode<T extends KRendering> extends KlighdNode implements
             IKlighdFigureNode {

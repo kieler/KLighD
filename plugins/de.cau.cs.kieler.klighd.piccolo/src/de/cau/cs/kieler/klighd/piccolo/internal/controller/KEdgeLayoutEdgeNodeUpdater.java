@@ -50,7 +50,7 @@ import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
  */
 class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
 
-    public KEdgeLayoutEdgeNodeUpdater(final KEdgeNode theEdgeRep,
+    KEdgeLayoutEdgeNodeUpdater(final KEdgeNode theEdgeRep,
             final DiagramController theController) {
         super(KEdgeLayout.class);
         this.controller = theController;
