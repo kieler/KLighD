@@ -47,7 +47,6 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KRenderingUtil;
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
 import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
-import de.cau.cs.kieler.core.krendering.KSpline;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.core.krendering.VerticalAlignment;
@@ -356,24 +355,8 @@ final class KGERenderingControllerHelper {
             final List<KStyle> propagatedStyles, final IKlighdNode parent, final Bounds initialBounds) {
 
         final KlighdPath path = new KlighdPath(line);
-        final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, initialBounds);
 
-        // use the additional variable while updating the line later on in order to avoid 'instanceof'
-        final int type;
-
-        if (line instanceof KSpline) {
-            // create the spline
-            path.setPathToSpline(points);
-            type = KRenderingPackage.KSPLINE;
-        } else if (line instanceof KRoundedBendsPolyline) {
-            // create the rounded bends polyline
-            path.setPathToRoundedBendPolyline(points, ((KRoundedBendsPolyline) line).getBendRadius());
-            type = KRenderingPackage.KROUNDED_BENDS_POLYLINE;
-        } else {
-            // create the polyline
-            path.setPathToPolyline(points);
-            type = KRenderingPackage.KPOLYLINE;
-        }
+        setPathToLine(path, line, initialBounds);
 
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
@@ -414,24 +397,35 @@ final class KGERenderingControllerHelper {
             @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-
-                final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, bounds);
-
-                if (type == KRenderingPackage.KSPLINE) {
-                    // update spline
-                    getNode().setPathToSpline(points);
-                } else if (type == KRenderingPackage.KROUNDED_BENDS_POLYLINE) {
-                    // update rounded bend polyline
-                    getNode().setPathToRoundedBendPolyline(points,
-                            ((KRoundedBendsPolyline) line).getBendRadius());
-                } else {
-                    // update polyline
-                    getNode().setPathToPolyline(points);
-                }
+                setPathToLine(path, line, bounds);
 
                 NodeUtil.applyTranslation(this, bounds);
             }
         };
+    }
+
+    private static void setPathToLine(final KlighdPath path, final KPolyline line, final Bounds bounds) {
+        
+        final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, bounds);
+        final int type = line.eClass().getClassifierID();
+
+        switch (type) {
+        case KRenderingPackage.KSPLINE:
+            path.setPathToSpline(bounds.toRectangle2D(), points);
+            break;
+            
+        case KRenderingPackage.KROUNDED_BENDS_POLYLINE:
+            path.setPathToRoundedBendPolyline(bounds.toRectangle2D(), points,
+                    ((KRoundedBendsPolyline) line).getBendRadius());
+            break;
+            
+        case KRenderingPackage.KPOLYGON:
+            path.setPathToPolygon(bounds.toRectangle2D(), points);
+            break;
+            
+        default:
+            path.setPathToPolyline(bounds.toRectangle2D(), points);
+        }
     }
 
     /**
@@ -456,9 +450,10 @@ final class KGERenderingControllerHelper {
             final AbstractKGERenderingController<?, ?> controller, final KPolygon polygon,
             final List<KStyle> propagatedStyles, final IKlighdNode parent, final Bounds initialBounds) {
 
-        // create the polygon
         final KlighdPath path = new KlighdPath(polygon);
-        path.setPathToPolygon(PiccoloPlacementUtil.evaluatePolylinePlacement(polygon, initialBounds));
+
+        setPathToLine(path, polygon, initialBounds);
+
         path.translate(initialBounds.getX(), initialBounds.getY());
         parent.addChild(path);
 
@@ -498,8 +493,8 @@ final class KGERenderingControllerHelper {
             @Override
             public void setBounds(final Bounds bounds) {
                 // apply the bounds
-                getNode().setPathToPolygon(
-                        (PiccoloPlacementUtil.evaluatePolylinePlacement(polygon, bounds)));
+                setPathToLine(path, polygon, bounds);
+
                 NodeUtil.applyTranslation(this, bounds);
             }
         };

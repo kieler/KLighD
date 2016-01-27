@@ -18,6 +18,7 @@ import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_SCALE_UPP
 import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_WIDTH_LOWER_BOUND;
 import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_WIDTH_UPPER_BOUND;
 
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import com.google.common.base.Predicates;
@@ -88,7 +89,6 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
     protected static boolean containsVisibilitySettings(final EMapPropertyHolder propertyConfig) {
         return Iterators.any(propertyConfig.getProperties().keySet().iterator(),
                 Predicates.in(VISIBILTY_DEFS));
-
     }
 
     private boolean outlineInvisible = false;
@@ -112,6 +112,14 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      */
     public KlighdNode() {
         this.addPropertyChangeListener(NodeDisposeListener.DISPOSE, new NodeDisposeListener(this));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Rectangle2D getAssignedBounds() {
+        return getBoundsReference();
     }
 
     /**

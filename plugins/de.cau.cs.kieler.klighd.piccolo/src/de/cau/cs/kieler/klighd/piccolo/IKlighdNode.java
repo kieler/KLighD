@@ -58,9 +58,13 @@ public interface IKlighdNode {
     boolean isSelectable();
 
     /**
-     * @return this node's bounds object as defined by {@link PNode#getBoundsReference()}
+     * @return the bounds that have been assigned to this node during the application of (macro)
+     *         layout data or the evaluation of micro layout placement data. Mostly, implementations
+     *         delegate to {@link PNode#getBoundsReference()}. For polylines, polygon, rounded bends
+     *         polylines, and curves, this methods shall return the bounds originally assigned to
+     *         those lines, rather than those bounds they actually cover. 
      */
-    Rectangle2D getBoundsReference();
+    Rectangle2D getAssignedBounds();
     
     /**
      * Convenience getter.

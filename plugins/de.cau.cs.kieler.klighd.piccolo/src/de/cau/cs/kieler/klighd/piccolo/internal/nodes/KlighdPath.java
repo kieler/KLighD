@@ -13,6 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
+import static de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath.PolylinePath.POLYGON;
+import static de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath.PolylinePath.POLYLINE;
+import static de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath.PolylinePath.ROUNDED_BENDS_POLYLINE;
+import static de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath.PolylinePath.SPLINE;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Shape;
@@ -25,12 +30,14 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.RGB;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.core.krendering.KRendering;
@@ -76,6 +83,13 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap();
 
+    /**
+     * Types of supported polyline paths, for internal use only.
+     */
+    enum PolylinePath {
+        POLYGON, POLYLINE, ROUNDED_BENDS_POLYLINE, SPLINE;
+    }
+
     private LineAttributes lineAttributes = new LineAttributes(1f);
     private Stroke stroke = new BasicStroke();
 
@@ -98,8 +112,18 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     private Shape origShape = new Rectangle2D.Float();
     private Shape shape = null;
 
+    private PolylinePath lineType = null;
+
     private Path shapePath = null;
 
+    // A field keeping the bounds being originally assigned to the figure;
+    // the assigned bounds are mostly the bounds of 'origShape'; in case of polylines or
+    //  polygons the bounding box of origShape will mostly differ from the assignedBounds
+    // imagine for example the polyline describing the body of a UML actor stick man figure
+    //  that may cover only the bottom-most 70% percent of the assigned (knode) bounds
+    // the polyline child circle figure denoting the actor's head shall be placed based on bounds
+    //  assigned to the polyline, rather the minimal bounds encompassing the polylines points 
+    private Rectangle2D assignedBounds = null;
 
     // A field to keep the list of points line points in mind. They are required while determining
     //  the rotation of edge decorators. By remembering them a re-extraction from the {@link Path2D
@@ -113,11 +137,6 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     //
     // private PAffineTransform internalXForm;
     // private AffineTransform inverseXForm;
-
-    private boolean isPolygon = false;
-    private boolean isPolyline = false;
-    private boolean isRoundedBendsPolyline = false;
-    private boolean isSpline = false;
 
     /**
      * Standard constructor.
@@ -143,11 +162,10 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      * @param newShape
      *            new associated shape of this {@link KlighdPath}
      */
-    private void setShape(final Shape newShape) {
+    private boolean setShape(final Shape newShape) {
         origShape = newShape;
         updateShape();
-        updateBoundsFromPath();
-        invalidatePaint();
+        return updateBoundsFromPath();
     }
 
     /**
@@ -168,15 +186,36 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     }
 
     /**
-     * Provides the information whether is path is a simple line or a shape with a closed periphery.
-     *
-     * @return true if the path is a polyline, rounded bend point polyline, or a spline; false
-     *         otherwise.
+     * {@inheritDoc}
      */
-    private boolean isLine() {
-        return isPolyline || isRoundedBendsPolyline || isSpline;
+    @Override
+    public Rectangle2D getAssignedBounds() {
+        if (assignedBounds == null || !isLineOrPolygon()) {            
+            return super.getAssignedBounds();
+        } else {
+            return assignedBounds;
+        }
     }
 
+    /**
+     * Provides the information whether is path is a simple line or a shape with a closed periphery.
+     *
+     * @return <code>true</code> if the path is a polyline, rounded bend point polyline, or a spline;
+     *         <code>false</code> otherwise.
+     */
+    private boolean isLine() {
+        return this.lineType != null && this.lineType != POLYGON;
+    }
+
+    /**
+     * Provides the information whether is path is a line defined by particular points.
+     *
+     * @return <code>true</code> if the path is a polygon, polyline, rounded bend point polyline,
+     *         or a spline; <code>false</code> otherwise.
+     */
+    private boolean isLineOrPolygon() {
+        return this.lineType != null;
+    }
 
     /* --------------------- */
     /*  style related stuff  */
@@ -501,7 +540,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     private void updateShape() {
         disposeSWTResource();
 
-        if (isLine() || isPolygon) {
+        if (isLineOrPolygon()) {
             shape = origShape;
 
         } else {
@@ -540,8 +579,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     /**
      * Recalculates the path's bounds by examining it's associated shape.
      */
-    private void updateBoundsFromPath() {
-        if (isLine() || isPolygon) {
+    private boolean updateBoundsFromPath() {
+        if (isLineOrPolygon()) {
             final Rectangle2D b = shape.getBounds2D();
             final float halfLW = lineAttributes.width / 2;
 
@@ -549,11 +588,11 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
             //  in determining the bounding box of horizontal and vertical lines.
             // This is important for being able to pick them, for instance.
 
-            super.setBounds(b.getX() - halfLW, b.getY() - halfLW,
+            return super.setBounds(b.getX() - halfLW, b.getY() - halfLW,
                     b.getWidth() + lineAttributes.width,
                     b.getHeight() + lineAttributes.width);
         } else {
-            super.setBounds(origShape.getBounds2D());
+            return super.setBounds(origShape.getBounds2D());
         }
     }
 
@@ -779,6 +818,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            the rectangle determining the new bounds
      */
     public void setPathToRectangle(final Rectangle2D rect) {
+        this.assignedBounds = null;
+        this.lineType = null;
         final Rectangle2D rectFloat = new Rectangle2D.Float();
         rectFloat.setFrame(rect);
         this.setShape(rectFloat);
@@ -793,6 +834,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            the rectangle determining the new bounds
      */
     public void setPathToRectangle(final Rectangle2D.Float rect) {
+        this.assignedBounds = null;
+        this.lineType = null;
         this.setShape(rect);
     }
 
@@ -810,6 +853,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      */
     public void setPathToRectangle(final float x, final float y, final float width,
             final float height) {
+        this.assignedBounds = null;
+        this.lineType = null;
         this.setShape(new Rectangle2D.Float(x, y, width, height));
     }
     /**
@@ -830,6 +875,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      */
     public void setPathToRoundRectangle(final float x, final float y, final float width,
             final float height, final float arcWidth, final float arcHeight) {
+        this.assignedBounds = null;
+        this.lineType = null;
         this.setShape(new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight));
     }
 
@@ -847,6 +894,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            height of the ellipse
      */
     public void setPathToEllipse(final float x, final float y, final float width, final float height) {
+        this.assignedBounds = null;
+        this.lineType = null;
         this.setShape(new Ellipse2D.Float(x, y, width, height));
     }
 
@@ -873,6 +922,8 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      */
     public void setPathToArc(final float x, final float y, final float width, final float height,
             final float angStart, final float angExtend, final int type) {
+        this.assignedBounds = null;
+        this.lineType = null;
         this.setShape(new Arc2D.Float(x, y, width, height, angStart, angExtend, type));
     }
 
@@ -884,14 +935,33 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            points to that lie along the generated path
      */
     public void setPathToSpline(final Point2D[] points) {
+        this.setPathToSpline(null, points);
+    }
+
+
+    /**
+     * Sets <code>this</code> path to a sequence of segments described by the points.
+     *
+     * @param theAssignedBounds
+     *            the bounds being assigned to this figure based on which the
+     *            child figures' bounds are determined
+     * @param points
+     *            points to that lie along the generated path
+     */
+    public void setPathToSpline(final Rectangle2D theAssignedBounds, final Point2D[] points) {
+        this.updateAssignedBoundsAndSetPathToLine(theAssignedBounds, points,
+                () -> this.doSetPathToSpline(points));
+    }
+
+    private boolean doSetPathToSpline(final Point2D[] points) {
         if (points.length == 0) {
-            return;
+            return false;
         }
 
-        this.isSpline = true;
+        this.lineType = SPLINE;
         final Path2D spline = PolylineUtil.createSplinePath(new Path2D.Float(), points);
         this.linePoints = PolylineUtil.createSplineApproximationPath(spline);
-        this.setShape(spline);
+        return this.setShape(spline);
     }
 
 
@@ -904,13 +974,35 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            the radius of the bend points
      */
     public void setPathToRoundedBendPolyline(final Point2D[] points, final float bendRadius) {
+        this.setPathToRoundedBendPolyline(null, points, bendRadius);
+    }
+
+
+    /**
+     * Sets <code>this</code> path to a sequence of segments described by the points.
+     *
+     * @param theAssignedBounds
+     *            the bounds being assigned to this figure based on which the
+     *            child figures' bounds are determined
+     * @param points
+     *            points to that lie along the generated path
+     * @param bendRadius
+     *            the radius of the bend points
+     */
+    public void setPathToRoundedBendPolyline(final Rectangle2D theAssignedBounds,
+            final Point2D[] points, final float bendRadius) {
+        this.updateAssignedBoundsAndSetPathToLine(theAssignedBounds, points,
+                () -> this.doSetPathToRoundedBendPolyline(points, bendRadius));
+    }
+
+    private boolean doSetPathToRoundedBendPolyline(final Point2D[] points, final float bendRadius) {
         if (points.length == 0) {
-            return;
+            return false;
         }
 
-        this.isRoundedBendsPolyline = true;
+        this.lineType = ROUNDED_BENDS_POLYLINE;
         this.linePoints = points;
-        this.setShape(
+        return this.setShape(
             PolylineUtil.createRoundedBendsPolylinePath(new Path2D.Float(), points, bendRadius, this));
     }
 
@@ -922,13 +1014,31 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            points to that lie along the generated path
      */
     public void setPathToPolyline(final Point2D[] points) {
+        this.setPathToPolyline(null, points);
+    }
+
+    /**
+     * Sets <code>this</code> path to a sequence of segments described by the points.
+     * 
+     * @param theAssignedBounds
+     *            the bounds being assigned to this figure based on which the
+     *            child figures' bounds are determined
+     * @param points
+     *            points to that lie along the generated path
+     */
+    public void setPathToPolyline(final Rectangle2D theAssignedBounds, final Point2D[] points) {
+        this.updateAssignedBoundsAndSetPathToLine(theAssignedBounds, points,
+                () -> this.doSetPathToPolyline(points));
+    }
+
+    private boolean doSetPathToPolyline(final Point2D[] points) {
         if (points.length == 0) {
-            return;
+            return false;
         }
 
-        this.isPolyline = true;
+        this.lineType = POLYLINE;
         this.linePoints = points;
-        this.setShape(PolylineUtil.createPolylinePath(new Path2D.Float(), points));
+        return this.setShape(PolylineUtil.createPolylinePath(new Path2D.Float(), points));
     }
 
 
@@ -939,12 +1049,42 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      *            points to that lie along the generated path
      */
     public void setPathToPolygon(final Point2D[] points) {
+        this.setPathToPolygon(null, points);
+    }
+
+    /**
+     * Sets <code>this</code> path to a sequence of segments described by the points.
+     * @param theAssignedBounds
+     *            the bounds being assigned to this figure based on which the
+     *            child figures' bounds are determined
+     * @param points
+     *            points to that lie along the generated path
+     */
+    public void setPathToPolygon(final Rectangle2D theAssignedBounds, final Point2D[] points) {
+        this.updateAssignedBoundsAndSetPathToLine(theAssignedBounds, points,
+                () -> this.doSetPathToPolygon(points));
+    }
+
+    private boolean doSetPathToPolygon(final Point2D[] points) {
         if (points.length == 0) {
-            return;
+            return false;
         }
 
-        this.isPolygon = true;
+        this.lineType = POLYGON;
         this.linePoints = points;
-        this.setShape(PolylineUtil.createPolygonPath(new Path2D.Float(), points));
+        return this.setShape(PolylineUtil.createPolygonPath(new Path2D.Float(), points));
+    }
+
+
+    private void updateAssignedBoundsAndSetPathToLine(final Rectangle2D newAssignedBounds,
+            final Point2D[] points, final Supplier<Boolean> setPathToLineSupplier) {
+
+        final Rectangle2D oldAssignedBounds = this.assignedBounds;        
+        this.assignedBounds = newAssignedBounds;
+
+        if (!setPathToLineSupplier.get().booleanValue()
+                && !Objects.equal(oldAssignedBounds, newAssignedBounds)) {
+            signalBoundsChanged();
+        }
     }
 }

@@ -44,6 +44,14 @@ public class KlighdDisposingLayer extends PLayer implements IKlighdNode {
      * {@inheritDoc}
      */
     @Override
+    public Rectangle2D getAssignedBounds() {
+        return getBoundsReference();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PNode asPNode() {
         return this;
     }
