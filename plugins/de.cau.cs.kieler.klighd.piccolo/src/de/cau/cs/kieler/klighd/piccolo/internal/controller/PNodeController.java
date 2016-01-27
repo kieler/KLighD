@@ -437,13 +437,12 @@ public abstract class PNodeController<T extends PNode> {
 
         // apply line style
         if (styles.lineStyle != null) {
-            if (styles.lineStyle.getLineStyle() == LineStyle.CUSTOM) {
-                this.setLineStyle(styles.lineStyle.getLineStyle(),
-                        Floats.toArray(styles.lineStyle.getDashPattern()),
-                        styles.lineStyle.getDashOffset());
-            } else {
-                this.setLineStyle(styles.lineStyle.getLineStyle(), null, 0f);
-            }
+            float[] pattern = styles.lineStyle.getLineStyle() == LineStyle.CUSTOM
+                    ? Floats.toArray(styles.lineStyle.getDashPattern()) : null;
+
+            this.setLineStyle(
+                    styles.lineStyle.getLineStyle(), pattern, styles.lineStyle.getDashOffset());
+
         } else {
             this.setLineStyle(LineStyle.SOLID, null, 0f);
         }

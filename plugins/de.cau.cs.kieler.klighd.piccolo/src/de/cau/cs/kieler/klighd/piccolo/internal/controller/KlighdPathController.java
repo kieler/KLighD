@@ -91,6 +91,10 @@ public abstract class KlighdPathController extends PNodeController<KlighdPath> {
     public void setLineStyle(final LineStyle lineStyle, final float[] dashPattern,
             final float dashOffset) {
         final LineAttributes lineAttributes = getNode().getLineAttributes();
+
+        lineAttributes.dash = null;
+        lineAttributes.dashOffset = dashOffset;
+
         switch (lineStyle) {
         case SOLID:
             lineAttributes.style = SWT.LINE_SOLID;
@@ -110,13 +114,9 @@ public abstract class KlighdPathController extends PNodeController<KlighdPath> {
         case CUSTOM:
             lineAttributes.style = SWT.LINE_CUSTOM;
             lineAttributes.dash = dashPattern;
-            lineAttributes.dashOffset = dashOffset;
-            return;
         }
-        lineAttributes.dash = null;
-        lineAttributes.dashOffset = 0f;
     }
-    
+
     /**
      * {@inheritDoc}
      */
