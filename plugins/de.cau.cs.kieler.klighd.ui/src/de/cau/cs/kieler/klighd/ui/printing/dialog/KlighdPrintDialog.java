@@ -61,8 +61,7 @@ public class KlighdPrintDialog extends TrayDialog {
 
     private DataBindingContext bindings;
     private final PrintOptions options;
-    private final boolean previewEnabled;
-
+    private final boolean diagramPrintOptionsAvailable;
 
     /**
      * Creates a new KLighD print dialog based on the given options.
@@ -77,7 +76,7 @@ public class KlighdPrintDialog extends TrayDialog {
         super(parentShell);
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.options = options;
-        this.previewEnabled = options instanceof DiagramPrintOptions;
+        this.diagramPrintOptionsAvailable = options instanceof DiagramPrintOptions;
     }
 
     /**
@@ -93,7 +92,7 @@ public class KlighdPrintDialog extends TrayDialog {
         super(shell);
         setShellStyle(getShellStyle() | SWT.MAX | SWT.RESIZE);
         this.options = options;
-        this.previewEnabled = options instanceof DiagramPrintOptions;
+        this.diagramPrintOptionsAvailable = options instanceof DiagramPrintOptions;
     }
 
     /**
@@ -182,7 +181,8 @@ public class KlighdPrintDialog extends TrayDialog {
         bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
 
         final boolean previewInitiallyOpen =
-                previewEnabled && DiagramPrintOptions.getInitiallyShowPreview() && checkPrinterData();
+                diagramPrintOptionsAvailable && DiagramPrintOptions.getInitiallyShowPreview()
+                        && checkPrinterData();
 
         final Composite result = new Composite(parent, SWT.NONE);
         DialogUtil.layout(result, 2);
@@ -262,6 +262,12 @@ public class KlighdPrintDialog extends TrayDialog {
     protected void createScalingBlockArea(final Composite parent) {
         DialogUtil.layoutSpanHorizontal(
                 ScalingBlock.createContents(parent, bindings, options), 2);
+        if (diagramPrintOptionsAvailable && DiagramPrintOptions.getAutoScaleTo100()) {
+            ScalingBlock.scaleOneToOne((DiagramPrintOptions) options); 
+        }
+        if (diagramPrintOptionsAvailable && DiagramPrintOptions.getAutoScaleToFit()) {
+            ScalingBlock.fitToPages((DiagramPrintOptions) options); 
+        }
     }
 
     /**
@@ -318,15 +324,15 @@ public class KlighdPrintDialog extends TrayDialog {
      *            <code>true</code> if preview is initially visible, <code>false</code> otherwise
      */
     protected void createActionsBlockArea(final Composite parent, final boolean previewInitiallyOpen) {
-        DialogUtil.layoutSpanHorizontal(
-                ActionsBlock.createContents(parent, this, previewEnabled, previewInitiallyOpen), 2);
+        DialogUtil.layoutSpanHorizontal(ActionsBlock.createContents(parent, this,
+                diagramPrintOptionsAvailable, previewInitiallyOpen), 2);
     }
 
     /**
      * Opens the print preview by injecting a corresponding {@link PrintPreviewTray}.
      */
     public void openPreview() {
-        if (previewEnabled) {
+        if (diagramPrintOptionsAvailable) {
             this.openTray(new PrintPreviewTray(bindings, (DiagramPrintOptions) options));
         }
     }

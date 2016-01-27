@@ -150,7 +150,7 @@ final class ScalingBlock {
 
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
-                    dOptions.setScaleFactor(1);
+                    scaleOneToOne(dOptions);
                 }
             });
 
@@ -158,20 +158,7 @@ final class ScalingBlock {
 
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
-                    // Calculate the minimum of necessary horizontal and vertical scale factors
-                    //  required to fit the whole diagram on the selected amount of pages.
-
-                    final PrintExporter exporter = dOptions.getExporter();
-                    final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
-                    final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
-
-                    final double scaleX = trimmedPrinterBounds.getWidth() * dOptions.getPagesWide()
-                            / diagramBounds.getWidth();
-
-                    final double scaleY = trimmedPrinterBounds.getHeight() * dOptions.getPagesTall()
-                            / diagramBounds.getHeight();
-
-                    dOptions.setScaleFactor(Math.min(scaleX, scaleY));
+                    fitToPages(dOptions);
                 }
             });
 
@@ -239,5 +226,40 @@ final class ScalingBlock {
         }
 
         return result;
+    }
+
+    /**
+     * Calculates the needed scaling to fit the diagram to the number of pages, currently set.
+     *
+     * @param dOptions
+     *            The {@link DiagramPrintOptions} which contain the current printer settings
+     */
+    public static void fitToPages(final DiagramPrintOptions dOptions) {
+        // Calculate the minimum of necessary horizontal and vertical scale factors
+        // required to fit the whole diagram on the selected amount of pages.
+
+        final PrintExporter exporter = dOptions.getExporter();
+        final Dimension2D diagramBounds = exporter.getDiagramBoundsIncludingTrim();
+        final Dimension2D trimmedPrinterBounds = exporter.getTrimmedTileBounds(dOptions);
+
+        final double scaleX =
+                trimmedPrinterBounds.getWidth() * dOptions.getPagesWide()
+                        / diagramBounds.getWidth();
+
+        final double scaleY =
+                trimmedPrinterBounds.getHeight() * dOptions.getPagesTall()
+                        / diagramBounds.getHeight();
+
+        dOptions.setScaleFactor(Math.min(scaleX, scaleY));
+    }
+
+    /**
+     * Sets the current scaling to 100%.
+     *
+     * @param dOptions
+     *            The {@link DiagramPrintOptions} which contain the current printer settings
+     */
+    public static void scaleOneToOne(final DiagramPrintOptions dOptions) {
+        dOptions.setScaleFactor(1);
     }
 }

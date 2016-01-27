@@ -34,6 +34,14 @@ public class DiagramPrintOptions extends PrintOptions {
     private static final String PREFERENCE_INITIALLY_SHOW_PREVIEW =
             "klighd.printing.initiallyShowPreview";
 
+    /** Id of the preference AUTO_SCALE_TO_FIT. */
+    private static final String PREFERENCE_AUTO_SCALE_TO_FIT =
+            "klighd.printing.autoScaleToFit";
+
+    /** Id of the preference AUTO_SCALE_TO_100. */
+    private static final String PREFERENCE_AUTO_SCALE_TO_100 =
+            "klighd.printing.autoScaleTo100";
+
     /**
      * Preference initializer making sure the required data contain valid values.
      *
@@ -56,6 +64,8 @@ public class DiagramPrintOptions extends PrintOptions {
         public void initializeDefaultPreferences() {
             super.initializeDefaultPreferences();
             PREF_STORE.setDefault(PREFERENCE_INITIALLY_SHOW_PREVIEW, false);
+            PREF_STORE.setDefault(PREFERENCE_AUTO_SCALE_TO_100, false);
+            PREF_STORE.setDefault(PREFERENCE_AUTO_SCALE_TO_FIT, false);
         }
     }
 
@@ -79,7 +89,59 @@ public class DiagramPrintOptions extends PrintOptions {
     public static void setInitiallyShowPreview(final boolean initiallyShow) {
         PREF_STORE.setValue(PREFERENCE_INITIALLY_SHOW_PREVIEW, initiallyShow);
     }
-    
+
+    /**
+     * Convenience getter.
+     *
+     * @return {@code true} the print should automatically be scaled to fit on one page,
+     *         {@code false] otherwise. 
+     */
+    public static boolean getAutoScaleToFit() {
+        return PREF_STORE.getBoolean(PREFERENCE_AUTO_SCALE_TO_FIT);
+    }
+
+    /**
+     * Convenience setter. Automatically makes sure that Scale To Fit and Scale to 100% are not
+     * active at the same time.
+     *
+     * @param autoScale
+     *            {@code true} the print should automatically be scaled to fit on one page,
+     *            {@code false] otherwise.
+
+     */
+    public static void setAutoScaleToFit(final boolean autoScale) {
+        if (autoScale) {
+            PREF_STORE.setValue(PREFERENCE_AUTO_SCALE_TO_100, false);
+        }
+        PREF_STORE.setValue(PREFERENCE_AUTO_SCALE_TO_FIT, autoScale);
+    }
+
+    /**
+     * Convenience getter.
+     *
+     * @return {@code true} the print should automatically be scaled to 100%,
+     *         {@code false] otherwise. 
+     */
+    public static boolean getAutoScaleTo100() {
+        return PREF_STORE.getBoolean(PREFERENCE_AUTO_SCALE_TO_100);
+    }
+
+    /**
+     * Convenience setter. Automatically makes sure that Scale To Fit and Scale to 100% are not
+     * active at the same time.
+     *
+     * @param autoScale
+     *            {@code true} the print should automatically be scaled to 100%,
+     *            {@code false] otherwise.
+
+     */
+    public static void setAutoScaleTo100(final boolean autoScale) {
+        if (autoScale) {
+            PREF_STORE.setValue(PREFERENCE_AUTO_SCALE_TO_FIT, false);
+        }
+        PREF_STORE.setValue(PREFERENCE_AUTO_SCALE_TO_100, autoScale);
+    }
+
     private PrintExporter exporter;
     private Dimension2D diagramBounds = null;
 
