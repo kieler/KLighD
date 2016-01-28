@@ -69,6 +69,24 @@ public class KChildAreaNode extends KlighdDisposingLayer implements IKlighdNode.
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PNode asPNode() {
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addChild(final IKlighdNode child) {
+        throw new UnsupportedOperationException(
+                "Adding child nodes to a KChildAreaNode is not permitted.");
+    }
+
+
+    /**
      * Get the EdgeLayer.
      *
      * @return a dedicated layer accommodating all attached {@link KEdgeNode KEdgeNodes}.

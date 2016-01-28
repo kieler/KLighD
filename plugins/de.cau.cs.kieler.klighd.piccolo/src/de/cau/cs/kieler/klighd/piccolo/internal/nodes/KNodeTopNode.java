@@ -47,7 +47,7 @@ public class KNodeTopNode extends KNodeAbstractNode {
 
         // add the child area immediately to the children list,
         //  this is not done in the super constructor as it must not be done in KNodeNode
-        this.addChild(childArea);
+        this.addChild(childArea.asPNode());
     }
 
     /**

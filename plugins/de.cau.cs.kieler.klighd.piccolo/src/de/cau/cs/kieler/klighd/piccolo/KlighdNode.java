@@ -115,6 +115,32 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final PNode asPNode() {
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addChild(final IKlighdNode child) {
+        addChild(child.asPNode());
+    }
+
+    /**
+     * Convenience method avoiding ambiguous call errors (IKlighdNode vs. PNode).
+     * 
+     * @param child the child to by added
+     */
+    public void addChild(final KlighdNode child) {
+        addChild(child.asPNode());
+    }
+
+
+    /**
      * Sets zoom scale dependent visibility bounds of <code>this</code> {@link KlighdNode}.<br>
      * Is just for internal use in order to avoid casts to <code>float</code>.
      *

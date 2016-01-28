@@ -19,6 +19,7 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Iterables.transform;
 
+import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
@@ -69,6 +70,8 @@ import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
@@ -138,7 +141,7 @@ public abstract class AbstractKGERenderingController
     private T repNode;
 
     /** the Piccolo2D node representing the rendering. */
-    private PNode renderingNode = null;
+    private IKlighdFigureNode renderingNode = null;
 
     /** the adapter currently installed on the rendering. */
     private CrossDocumentContentAdapter renderingDeepAdapter = null;
@@ -306,12 +309,14 @@ public abstract class AbstractKGERenderingController
 
         // remove the rendering node
         if (renderingNode != null) {
-            removeListeners(renderingNode);
-            renderingNode.removeFromParent();
+            final PNode asPNode = renderingNode.asPNode();
+            renderingNode = null;
+            
+            removeListeners(asPNode);
+            asPNode.removeFromParent();
 
             // dispose the SWT Resources employed by the out-dated pnodes
-            NodeDisposeListener.disposePNode(renderingNode);
-            renderingNode = null;
+            NodeDisposeListener.disposePNode(asPNode);
         }
 
         // get the current rendering
@@ -638,7 +643,7 @@ public abstract class AbstractKGERenderingController
         // validate all figures representing 'currentRendering'
         //  (should actually be only one, as we don't allow recursive renderingRefs)
         for (final PNodeController<?> nodeController : getPNodeController(currentRendering)) {
-            final PNode node = nodeController.getTransformedNode();
+            final PNode node = nodeController.getTransformedPNode();
             // in case styles of a detached KRendering are modified, e.g. if selection highlighting
             //  is removed from renderings that are not part of the diagram in the meantime
             //  'null' values may occur here
@@ -859,7 +864,7 @@ public abstract class AbstractKGERenderingController
      *            the parent Piccolo2D node
      */
     protected void handleChildren(final List<KRendering> children, final KPlacement placement,
-            final List<KStyle> styles, final PNode parent) {
+            final List<KStyle> styles, final IKlighdNode parent) {
         if (placement instanceof KGridPlacement) {
             // in case of grid-based child placement ...
             handleGridPlacementRendering((KGridPlacement) placement, children, styles, parent);
@@ -882,7 +887,7 @@ public abstract class AbstractKGERenderingController
      * @return the Piccolo2D node representing the rendering
      */
     protected PNodeController<?> handleAreaAndPointPlacementRendering(final KRendering rendering,
-            final PNode parent) {
+            final IKlighdNode parent) {
         return handleAreaAndPointPlacementRendering(rendering, Collections.<KStyle>emptyList(), parent);
     }
 
@@ -899,7 +904,7 @@ public abstract class AbstractKGERenderingController
      * @return the Piccolo2D node representing the rendering
      */
     protected PNodeController<?> handleAreaAndPointPlacementRendering(final KRendering rendering,
-            final List<KStyle> styles, final PNode parent) {
+            final List<KStyle> styles, final IKlighdNode parent) {
         final KPlacementData pcd = KRenderingUtil.getPlacementData(rendering);
         final KAreaPlacementData pad = KRenderingUtil.asAreaPlacementData(pcd);
         final KPointPlacementData ppd = KRenderingUtil.asPointPlacementData(pcd);
@@ -962,7 +967,7 @@ public abstract class AbstractKGERenderingController
      *            the parent Piccolo2D node
      */
     protected void handleGridPlacementRendering(final KGridPlacement gridPlacement,
-            final List<KRendering> renderings, final List<KStyle> styles, final PNode parent) {
+            final List<KRendering> renderings, final List<KStyle> styles, final IKlighdNode parent) {
         if (renderings.size() == 0) {
             return;
         }
@@ -993,9 +998,9 @@ public abstract class AbstractKGERenderingController
                         for (final PNodeController<?> controller : controllers) {
                             if (bounds[i] != null) {
                                 controller.setBounds(bounds[i++]);
-                                controller.getNode().setVisible(true);
+                                controller.getPNode().setVisible(true);
                             } else {
-                                controller.getNode().setVisible(false);
+                                controller.getPNode().setVisible(false);
                             }
                         }
                     }
@@ -1014,7 +1019,7 @@ public abstract class AbstractKGERenderingController
      *            the parent Piccolo2D node representing a polyline
      * @return the Piccolo2D node representing the rendering
      */
-    protected PNode handleDecoratorPlacementRendering(final KRendering rendering,
+    protected IKlighdFigureNode handleDecoratorPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final KlighdPath parent) {
         // determine the initial bounds and rotation
         final Decoration decoration = PiccoloPlacementUtil.evaluateDecoratorPlacement(
@@ -1024,7 +1029,7 @@ public abstract class AbstractKGERenderingController
         final KlighdDecoratorNode decorator = new KlighdDecoratorNode(rendering);
 
         // NodeUtil.applyTranslation(decorator, decoration.getOrigin());
-        parent.addChild(decorator);
+        parent.addChild((IKlighdFigureNode) decorator);
 
         // create the rendering and receive its controller
         final PNodeController<?> controller = createRendering(rendering, styles, decorator,
@@ -1099,7 +1104,7 @@ public abstract class AbstractKGERenderingController
      *            the initial bounds
      * @return the controller for the created Piccolo2D node
      */
-    protected PNodeController<?> createRendering(final KRendering rendering, final PNode parent,
+    protected PNodeController<?> createRendering(final KRendering rendering, final IKlighdNode parent,
             final Bounds initialBounds) {
         return this.createRendering(rendering, Collections.<KStyle>emptyList(), parent, initialBounds);
     }
@@ -1121,7 +1126,7 @@ public abstract class AbstractKGERenderingController
      * @return the controller for the created Piccolo2D node
      */
     protected PNodeController<?> createRendering(final KRendering rendering,
-            final List<KStyle> propagatedStyles, final PNode parent, final Bounds initialBounds) {
+            final List<KStyle> propagatedStyles, final IKlighdNode parent, final Bounds initialBounds) {
 
         final boolean isRenderingRef =
                 rendering.eClass() == KRenderingPackage.eINSTANCE.getKRenderingRef();
@@ -1153,7 +1158,7 @@ public abstract class AbstractKGERenderingController
         //  this is only done in the PNode initialization as adding and removing actions later in life
         //  of a KRendering/PNode is considered unlikely and thus not supported yet
         if (!rendering.getActions().isEmpty()) {
-            controller.getNode().setPickable(true);
+            controller.getPNode().setPickable(true);
         }
         return controller;
     }
@@ -1172,7 +1177,7 @@ public abstract class AbstractKGERenderingController
      *            the initial bounds
      * @return the controller for the created Piccolo2D node
      */
-    protected PNodeController<?> createChildArea(final PNode parent, final KChildArea childArea,
+    protected PNodeController<?> createChildArea(final IKlighdNode parent, final KChildArea childArea,
             final Bounds initialBounds) {
         throw new RuntimeException(
                 "Child area found in graph element which does not support a child area: "
@@ -1193,15 +1198,17 @@ public abstract class AbstractKGERenderingController
      * @param listener
      *            the listener
      */
-    protected void addListener(final String property, final PNode parent, final PNode node,
-            final PropertyChangeListener listener) {
-        parent.addPropertyChangeListener(property, listener);
+    protected void addListener(final String property, final IKlighdNode parent,
+            final IKlighdNode.IKlighdFigureNode node, final PropertyChangeListener listener) {
+        
+        parent.asPNode().addPropertyChangeListener(property, listener);
+        
+        final PNode nodeAsPNode = node.asPNode();        
         @SuppressWarnings("unchecked")
-        List<Pair<String, PropertyChangeListener>> listeners =
-                (List<Pair<String, PropertyChangeListener>>) node.getAttribute(PROPERTY_LISTENER_KEY);
+        List<Object> listeners = (List<Object>) nodeAsPNode.getAttribute(PROPERTY_LISTENER_KEY);
         if (listeners == null) {
             listeners = Lists.newLinkedList();
-            node.addAttribute(PROPERTY_LISTENER_KEY, listeners);
+            nodeAsPNode.addAttribute(PROPERTY_LISTENER_KEY, listeners);
         }
         listeners.add(new Pair<String, PropertyChangeListener>(property, listener));
     }

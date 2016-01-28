@@ -34,6 +34,7 @@ import de.cau.cs.kieler.core.krendering.VerticalAlignment;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import edu.umd.cs.piccolo.PNode;
@@ -49,7 +50,7 @@ import edu.umd.cs.piccolo.PNode;
  * @param <T>
  *            the type of the associated node
  */
-public abstract class PNodeController<T extends PNode> {
+public abstract class PNodeController<T extends IKlighdFigureNode> {
 
     /** the controller's node. */
     private T node;
@@ -74,13 +75,33 @@ public abstract class PNodeController<T extends PNode> {
     }
 
     /**
+     * Returns the associated node.
+     *
+     * @return the node
+     */
+    public final PNode getPNode() {
+        return node.asPNode();
+    }
+
+    /**
+     * Returns the {@link IKlighdFigureNode} being designated for applying rotations and translations.
+     * <br>
+     * Default implementation delegates to {@link #getNode()}.
+     *
+     * @return the {@link IKlighdFigureNode} being designated for applying rotations and translations.
+     */
+    public IKlighdFigureNode getTransformedNode() {
+        return getNode();
+    }
+
+    /**
      * Returns the {@link PNode} being designated for applying rotations and translations.<br>
      * Default implementation delegates to {@link #getNode()}.
      *
      * @return the {@link PNode} being designated for applying rotations and translations.
      */
-    public PNode getTransformedNode() {
-        return getNode();
+    public PNode getTransformedPNode() {
+        return getTransformedNode().asPNode();
     }
 
     /**
@@ -98,7 +119,7 @@ public abstract class PNodeController<T extends PNode> {
      *            the invisibility state
      */
     public void setInvisible(final boolean invisible) {
-        final PNode figure = getNode();
+        final PNode figure = getNode().asPNode();
         if (invisible != figure.getOccluded()) {
             figure.setOccluded(invisible);
 
@@ -227,7 +248,7 @@ public abstract class PNodeController<T extends PNode> {
         }
 
         final KPosition theAnchor = anchor != null ? anchor : CENTER;
-        final PNode rotatedNode = getTransformedNode();
+        final PNode rotatedNode = getTransformedNode().asPNode();
 
         final Point2D point =
                 PlacementUtil.evaluateKPosition(theAnchor, rotatedNode.getBoundsReference(), true);
