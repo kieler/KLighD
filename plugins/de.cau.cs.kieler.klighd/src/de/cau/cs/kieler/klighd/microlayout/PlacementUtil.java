@@ -522,6 +522,7 @@ public final class PlacementUtil {
                 // in case of no placement definition calculate the size of each child rendering and
                 // find the biggest rendering in width and height
                 final Bounds maxSize = new Bounds(givenBounds);
+
                 for (final KRendering child : container.getChildren()) {
                     final KPlacementData pd = getPlacementData(child);
 
@@ -547,6 +548,11 @@ public final class PlacementUtil {
                     } else {
                         Bounds.max(maxSize, childSize);
                     }
+                }
+
+                if (container instanceof KPolyline) {
+                    final Bounds pb = evaluatePolylineBounds((KPolyline) rendering, maxSize);
+                    Bounds.max(maxSize, pb);
                 }
                 return maxSize;
             }
@@ -1456,31 +1462,35 @@ public final class PlacementUtil {
      */
     private static Bounds evaluatePolylineBounds(final KPolyline line, final Bounds givenBounds) {
         if (line == null || line.getPoints().isEmpty()) {
-            return new Bounds(0, 0, givenBounds.width, givenBounds.height);
+            return Bounds.of(givenBounds.width, givenBounds.height);
         }
 
         // evaluate the points of the polyline inside the parent bounds to compute the bounding box
-        float minX = Float.MAX_VALUE;
+
+// chsch: considering the implementation of Bounds.max(...) determining the minimal x & y
+//         doesn't make any sense, does it?
+
+//        float minX = Float.MAX_VALUE;
         float maxX = Float.MIN_VALUE;
-        float minY = Float.MAX_VALUE;
+//        float minY = Float.MAX_VALUE;
         float maxY = Float.MIN_VALUE;
         for (final KPosition polylinePoint : line.getPoints()) {
             final Point point = evaluateKPosition(polylinePoint, givenBounds, true);
-            if (point.x < minX) {
-                minX = point.x;
-            }
+//            if (point.x < minX) {
+//                minX = point.x;
+//            }
             if (point.x > maxX) {
                 maxX = point.x;
             }
-            if (point.y < minY) {
-                minY = point.y;
-            }
+//            if (point.y < minY) {
+//                minY = point.y;
+//            }
             if (point.y > maxY) {
                 maxY = point.y;
             }
         }
 
-        return new Bounds(minX, minY, givenBounds.width - maxX, givenBounds.height - maxY);
+        return Bounds.max(Bounds.of(maxX, maxY), givenBounds);
     }
 
 
