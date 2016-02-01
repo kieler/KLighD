@@ -19,7 +19,6 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Iterables.transform;
 
-import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
@@ -912,9 +911,7 @@ public abstract class AbstractKGERenderingController
 
         final Bounds bounds;
         if (pointPlacement) {
-            bounds = PlacementUtil.evaluatePointPlacement(ppd,
-                    PlacementUtil.estimateSize(rendering, Bounds.of(0, 0)),
-                    parent.getAssignedBounds());
+            bounds = PlacementUtil.evaluatePointPlacement(rendering, ppd, parent.getAssignedBounds());
         } else {
             // determine the initial bounds
             bounds = PlacementUtil.evaluateAreaPlacement(pad, parent.getAssignedBounds());
@@ -928,8 +925,7 @@ public abstract class AbstractKGERenderingController
             addListener(PNode.PROPERTY_BOUNDS, parent, controller.getNode(),
                     new PropertyChangeListener() {
                         public void propertyChange(final PropertyChangeEvent e) {
-                            final Bounds bounds = PlacementUtil.evaluatePointPlacement(
-                                    ppd, PlacementUtil.estimateSize(rendering, Bounds.of(0, 0)),
+                            final Bounds bounds = PlacementUtil.evaluatePointPlacement(rendering, ppd,
                                     parent.getAssignedBounds());
 
                             // use the controller to apply the new bounds
