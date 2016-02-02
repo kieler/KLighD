@@ -405,8 +405,9 @@ public final class PlacementUtil {
         final Point refPoint;
         
         if (ref == null) {
-            // if the reference point is missing, assume the center as reference
-            refPoint = new Point(parentBounds.getWidth() / 2, parentBounds.getHeight() / 2);
+            // if the reference point is missing, assume the top left corner as reference
+            //  as requested by KIPRA-1785
+            refPoint = new Point(0, 0);
         } else {
             refPoint = evaluateKPosition(ref, parentBounds, true);
         }
