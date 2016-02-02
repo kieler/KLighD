@@ -190,12 +190,12 @@ public final class Iterables2 {
         private Iterator<T> srcIterator = null;
         private Queue<T> queue = null;
 
-        public SkipLastIterator(final Iterable<T> src, final int count) {
+        SkipLastIterator(final Iterable<T> src, final int count) {
             this.src = Preconditions.checkNotNull(src);
             this.count = count;
         }
 
-        public SkipLastIterator(final Iterator<T> src, final int count) {
+        SkipLastIterator(final Iterator<T> src, final int count) {
             this.src = null;
             this.srcIterator = Preconditions.checkNotNull(src);
             this.count = count;

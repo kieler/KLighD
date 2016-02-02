@@ -154,7 +154,7 @@ public final class GridPlacementUtil {
          * @param children
          *            the children to be placed inside the grid with their placementData
          */
-        public GridPlacer(final KGridPlacement gridPlacement, final List<KRendering> children) {
+        GridPlacer(final KGridPlacement gridPlacement, final List<KRendering> children) {
             this.parent = (KContainerRendering) gridPlacement.eContainer();
             this.children = children;
 
@@ -574,7 +574,7 @@ public final class GridPlacementUtil {
          * @param other
          *            the copied one
          */
-        public GridSizeAssignment(final GridSizeAssignment other) {
+        GridSizeAssignment(final GridSizeAssignment other) {
             this.calculatedColumnWidths =
                     other == null ? null : other.calculatedColumnWidths.clone();
             this.calculatedRowHeights =

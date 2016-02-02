@@ -138,8 +138,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
          * @param themainTransformationClazz
          *              the main transformation class
          */
-        public ViewSynthesisScope(
-                final Class<AbstractDiagramSynthesis<S>> themainTransformationClazz) {
+        ViewSynthesisScope(final Class<AbstractDiagramSynthesis<S>> themainTransformationClazz) {
             this.mainTransformationClazz = themainTransformationClazz;
         }
         

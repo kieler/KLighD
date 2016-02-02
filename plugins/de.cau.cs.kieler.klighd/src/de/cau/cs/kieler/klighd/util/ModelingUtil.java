@@ -462,7 +462,7 @@ public final class ModelingUtil {
 
         private EObject element;
 
-        public EContainerIterator(final EObject theElement, final boolean includingSelf) {
+        EContainerIterator(final EObject theElement, final boolean includingSelf) {
             if (theElement == null) {
                 throw new IllegalArgumentException("Class EContainerIterator:"
                         + "Constructor of EContainerIterator requires a non-null input.");

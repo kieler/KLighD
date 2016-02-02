@@ -208,7 +208,7 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
     public void notifyChanged(final Notification notification) {
         super.notifyChanged(notification);
         
-        switch(notification.getEventType()) {
+        switch (notification.getEventType()) {
         case Notification.SET:
         case Notification.ADD:
         case Notification.REMOVE:

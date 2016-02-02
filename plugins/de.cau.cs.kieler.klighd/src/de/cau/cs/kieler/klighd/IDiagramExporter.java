@@ -59,7 +59,7 @@ public interface IDiagramExporter {
      */
     public class ExportData {
 
-        // SUPPRESS CHECKSTYLE NEXT 9 Visibility|Javadoc
+        // SUPPRESS CHECKSTYLE NEXT 10 Visibility|Javadoc
         public final ViewContext viewContext;
         public final String format;
         public final OutputStream stream;
@@ -134,7 +134,7 @@ public interface IDiagramExporter {
          * @param description
          *            optional description to be inserted into the {@code desc} property of the
          *            generated SVG. Can be null.
-         */
+         */ // SUPPRESS CHECKSTYLE NEXT Number -- we need all these data
         public ExportData(final ViewContext viewContext, final String format,
                 final OutputStream stream, final boolean cameraViewport, final int scale,
                 final boolean textAsShapes, final boolean embedFonts, final String description) {
