@@ -970,7 +970,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         final Color c = gc.getForeground();
         gc.setClipping((Rectangle) null);
         gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
-        gc.drawRectangle(clip.x + 0, clip.y + 0 , clip.width + 0, clip.height + 0);
+        gc.drawRectangle(clip.x + 0, clip.y + 0, clip.width + 0, clip.height + 0);
         gc.setForeground(c);
     }
 

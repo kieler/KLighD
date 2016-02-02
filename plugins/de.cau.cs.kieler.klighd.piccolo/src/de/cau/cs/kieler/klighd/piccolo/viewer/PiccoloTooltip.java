@@ -110,7 +110,7 @@ public class PiccoloTooltip {
         /**
          * Constructor.
          */
-        public TooltipListener() {
+        TooltipListener() {
         }
 
         /**

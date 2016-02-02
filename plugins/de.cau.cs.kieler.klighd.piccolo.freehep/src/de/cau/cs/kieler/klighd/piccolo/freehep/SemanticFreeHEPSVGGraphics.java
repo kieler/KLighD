@@ -130,7 +130,7 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      * {@inheritDoc}
      */
     @Override
-    public void addSemanticData(KlighdSemanticDiagramData semanticData) {
+    public void addSemanticData(final KlighdSemanticDiagramData semanticData) {
         graphicsDelegate.addSemanticData(semanticData);
     }
 
@@ -138,7 +138,7 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      * {@inheritDoc}
      */
     @Override
-    public void startGroup(KlighdSemanticDiagramData semanticData) {
+    public void startGroup(final KlighdSemanticDiagramData semanticData) {
         graphicsDelegate.startGroup(semanticData);
     }
 

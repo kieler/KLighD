@@ -45,8 +45,7 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
      *            the controller that uses this switch and that is delegated to while calling
      *            further methods
      */
-    public PNodeConstructionKRenderingSwitch(
-            final AbstractKGERenderingController<?, ?> theController) {
+    PNodeConstructionKRenderingSwitch(final AbstractKGERenderingController<?, ?> theController) {
         this.controller = theController;
     }
 

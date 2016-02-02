@@ -77,8 +77,8 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
         }
 
         try {
-            return new SVGExporter().export(camera,
-                    new ExportData(viewContext, generator, output, false, 1, textAsShapes, embedFonts, description));
+            return new SVGExporter().export(camera, new ExportData(
+                    viewContext, generator, output, false, 1, textAsShapes, embedFonts, description));
 
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

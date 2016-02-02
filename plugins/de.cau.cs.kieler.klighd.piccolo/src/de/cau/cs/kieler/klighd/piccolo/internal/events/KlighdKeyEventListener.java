@@ -208,7 +208,7 @@ public class KlighdKeyEventListener implements KeyListener {
          *
          * @param ge
          */
-        public KlighdEventHelper(final GestureEvent ge) {
+        KlighdEventHelper(final GestureEvent ge) {
             this.mousePressed = false;
             this.button = 0;
             this.stateMask = ge.stateMask;
@@ -219,7 +219,7 @@ public class KlighdKeyEventListener implements KeyListener {
          *
          * @param ke
          */
-        public KlighdEventHelper(final KeyEvent ke) {
+        KlighdEventHelper(final KeyEvent ke) {
             this.mousePressed = false;
             this.button = 0;
             this.stateMask = ke.stateMask;
@@ -234,7 +234,7 @@ public class KlighdKeyEventListener implements KeyListener {
          *            result will include the events <code>button</code> information in only that
          *            case, <code>false</code> by default
          */
-        public KlighdEventHelper(final MouseEvent me, final boolean pressed) {
+        KlighdEventHelper(final MouseEvent me, final boolean pressed) {
             this.mousePressed = pressed;
             this.button = me.button;
             this.stateMask = me.stateMask;

@@ -213,7 +213,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
      */
     private final class KlighdOutlineCanvas extends KlighdCanvas {
 
-        public KlighdOutlineCanvas(final Composite parent, final int style) {
+        KlighdOutlineCanvas(final Composite parent, final int style) {
             super(parent, style);
         }
 

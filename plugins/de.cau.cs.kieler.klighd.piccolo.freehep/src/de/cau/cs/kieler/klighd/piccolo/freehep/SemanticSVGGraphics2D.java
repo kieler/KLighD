@@ -1,3 +1,4 @@
+// CHECKSTYLEOFF |
 // Copyright 2000-2007 FreeHEP
 package de.cau.cs.kieler.klighd.piccolo.freehep;
 

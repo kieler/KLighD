@@ -425,7 +425,7 @@ public final class NodeUtil {
 
         private PNode node;
 
-        public ParentIterator(final PNode child, final boolean includingSelf) {
+        ParentIterator(final PNode child, final boolean includingSelf) {
             if (child == null) {
                 throw new IllegalArgumentException("Class ParentIterator:"
                         + "Constructor of ParentIterator requires a non-null input.");
@@ -474,7 +474,7 @@ public final class NodeUtil {
 
         private IKNodeNode node;
 
-        public ParentINodeIterator(final IKNodeNode child, final boolean includingSelf) {
+        ParentINodeIterator(final IKNodeNode child, final boolean includingSelf) {
             if (child == null) {
                 throw new IllegalArgumentException("Class ParentINodeIterator:"
                         + "Constructor of ParentINodeIterator requires a non-null input.");

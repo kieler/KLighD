@@ -1073,7 +1073,7 @@ public abstract class AbstractKGERenderingController
          * @param theRendering
          *            the rendering being represented by this node.
          */
-        public KlighdDecoratorNode(final KRendering theRendering) {
+        KlighdDecoratorNode(final KRendering theRendering) {
             this.setRendering(theRendering);
             this.setPickable(true);
         }

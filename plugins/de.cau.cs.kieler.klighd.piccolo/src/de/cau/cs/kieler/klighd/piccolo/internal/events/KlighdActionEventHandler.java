@@ -286,7 +286,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
          * @param r
          *            the rendering the action is invoked on
          */
-        public ActionContext(final IViewer v, final Trigger t, final KGraphElement kge,
+        ActionContext(final IViewer v, final Trigger t, final KGraphElement kge,
                 final KRendering r, final PInputEvent event) {
             super(v, t, kge, r);
             this.event = event;

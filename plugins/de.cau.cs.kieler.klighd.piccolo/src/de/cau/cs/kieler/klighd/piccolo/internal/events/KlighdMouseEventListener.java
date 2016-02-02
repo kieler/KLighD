@@ -265,7 +265,7 @@ public class KlighdMouseEventListener implements MouseListener, MouseMoveListene
         public String paramString() {
             final StringBuffer str = new StringBuffer();
 
-            switch(eventType) {
+            switch (eventType) {
               case SWT.MouseDown:
                   str.append("MouseDown");
                   break;

@@ -37,7 +37,8 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
     private FontMetrics swtFm;
 
     /**
-     * @param font
+     * @param font the AWT {@link Font}
+     * @param swtFm the hooked SWT {@link FontMetrics}
      */
     protected PseudoAWTFontMetrics(final Font font, final FontMetrics swtFm) {
         super(font);
@@ -120,7 +121,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public int charWidth(int codePoint) {
+    public int charWidth(final int codePoint) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -128,7 +129,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public int charWidth(char ch) {
+    public int charWidth(final char ch) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -136,7 +137,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public int stringWidth(String str) {
+    public int stringWidth(final String str) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -144,7 +145,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public int charsWidth(char[] data, int off, int len) {
+    public int charsWidth(final char[] data, final int off, final int len) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -152,7 +153,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public int bytesWidth(byte[] data, int off, int len) {
+    public int bytesWidth(final byte[] data, final int off, final int len) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -176,7 +177,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public LineMetrics getLineMetrics(String str, Graphics context) {
+    public LineMetrics getLineMetrics(final String str, final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -184,7 +185,8 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public LineMetrics getLineMetrics(String str, int beginIndex, int limit, Graphics context) {
+    public LineMetrics getLineMetrics(
+            final String str, final int beginIndex, final int limit, final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -192,7 +194,8 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public LineMetrics getLineMetrics(char[] chars, int beginIndex, int limit, Graphics context) {
+    public LineMetrics getLineMetrics(
+            final char[] chars, final int beginIndex, final int limit, final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -200,8 +203,8 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public LineMetrics getLineMetrics(CharacterIterator ci, int beginIndex, int limit,
-            Graphics context) {
+    public LineMetrics getLineMetrics(final CharacterIterator ci, final int beginIndex, final int limit,
+            final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -209,7 +212,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public Rectangle2D getStringBounds(String str, Graphics context) {
+    public Rectangle2D getStringBounds(final String str, final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -217,7 +220,8 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public Rectangle2D getStringBounds(String str, int beginIndex, int limit, Graphics context) {
+    public Rectangle2D getStringBounds(
+            final String str, final int beginIndex, final int limit, final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -225,7 +229,8 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public Rectangle2D getStringBounds(char[] chars, int beginIndex, int limit, Graphics context) {
+    public Rectangle2D getStringBounds(
+            final char[] chars, final int beginIndex, final int limit, final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -233,8 +238,8 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public Rectangle2D getStringBounds(CharacterIterator ci, int beginIndex, int limit,
-            Graphics context) {
+    public Rectangle2D getStringBounds(final CharacterIterator ci, final int beginIndex, final int limit,
+            final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
@@ -242,7 +247,7 @@ public class PseudoAWTFontMetrics extends java.awt.FontMetrics {
      * {@inheritDoc}
      */
     @Override
-    public Rectangle2D getMaxCharBounds(Graphics context) {
+    public Rectangle2D getMaxCharBounds(final Graphics context) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 

@@ -131,8 +131,8 @@ public final class SVGGeneratorManager {
         KlighdAbstractSVGGraphics graphics = null;
         try {
 
-            final Constructor<? extends KlighdAbstractSVGGraphics> constr =
-                    clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class, Boolean.class, String.class);
+            final Constructor<? extends KlighdAbstractSVGGraphics> constr = clazz.getDeclaredConstructor(
+                    Rectangle2D.class, Boolean.class, Boolean.class, String.class);
             graphics = constr.newInstance(bounds, textAsShapes, embedFonts, description);
 
         } catch (final Exception e) {
