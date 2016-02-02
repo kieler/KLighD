@@ -335,22 +335,41 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     }
 
     /**
-     * Convenient function to assemble a pair of layout option and allowed values. The type of the
-     * elements within the 'values' parameter depends on the tyoe if the specified property. For
-     * instance, for an IProperty<Integer> one might pass a List<Integer> of size 2 to specify the
-     * lower and upper bound for the values.
+     * Convenience function to assemble a pair of layout option and allowed values. This method
+     * should be used in conjunction with {@link #getDisplayedLayoutOptions()}.
+     * <br>
+     * The type of the elements within the 'values' parameter depends on the type if the specified
+     * property. For instance, for an <code>IProperty&lt;Integer&gt;</code> one might pass a
+     * <code>List&lt;Integer&gt;</code> of size 2 to specify the lower and upper bound for the values.
      *
      * @param prop
      *            the desired property.
      * @param values
      *            the allowed values.
      * @return a pair with the property and the possible values.
-     * 
-     * @deprecated Use {@link DiagramSyntheses#specifyLayoutOption(String, List)}
      */
     protected Pair<IProperty<?>, List<?>> specifyLayoutOption(final IProperty<?> prop,
             final List<?> values) {
-        return Pair.<IProperty<? extends Object>, List<? extends Object>>of(prop, values);
+        return DiagramSyntheses.specifyLayoutOption(prop, values);
+    }
+
+    /**
+     * Convenience function to assemble a pair of layout option and allowed values. This method
+     * should be used in conjunction with {@link #getDisplayedLayoutOptions()}.
+     * <br>
+     * The type of the elements within the 'values' parameter depends on the type if the specified
+     * property. For instance, for an <code>IProperty&lt;Integer&gt;</code> one might pass a
+     * <code>List&lt;Integer&gt;</code> of size 2 to specify the lower and upper bound for the values.
+     *
+     * @param layoutOptionId
+     *            the desired layout option's id.
+     * @param values
+     *            the allowed values.
+     * @return a pair with the property and the possible values.
+     */
+    protected Pair<IProperty<?>, List<?>> specifyLayoutOption(final String layoutOptionId, 
+            final List<?> values) {
+        return DiagramSyntheses.specifyLayoutOption(layoutOptionId, values);
     }
 
 

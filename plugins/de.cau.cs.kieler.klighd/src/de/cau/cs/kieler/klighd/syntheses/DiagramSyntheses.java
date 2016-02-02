@@ -152,12 +152,12 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Convenient function to assemble a pair of layout option and allowed values. This method
-     * should be used in conjunction with
-     * {@link AbstractDiagramSynthesis#specifyLayoutOption(IProperty, List)}. The type of the
-     * elements within the 'values' parameter depends on the type of the specified property. For
-     * instance, for an IProperty<Integer> one might pass a List<Integer> of size 2 to specify the
-     * lower and upper bound for the values.
+     * Convenience function to assemble a pair of layout option and allowed values. This method
+     * should be used in conjunction with {@link AbstractDiagramSynthesis#getDisplayedLayoutOptions()}.
+     * <br>
+     * The type of the elements within the 'values' parameter depends on the type if the specified
+     * property. For instance, for an <code>IProperty&lt;Integer&gt;</code> one might pass a
+     * <code>List&lt;Integer&gt;</code> of size 2 to specify the lower and upper bound for the values.
      *
      * @param prop
      *            the desired property.
@@ -171,12 +171,12 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Convenient function to assemble a pair of layout option and allowed values. This method
-     * should be used in conjunction with
-     * {@link AbstractDiagramSynthesis#specifyLayoutOption(IProperty, List)}. The type of the
-     * elements within the 'values' parameter depends on the type of the specified property. For
-     * instance, for an IProperty<Integer> one might pass a List<Integer> of size 2 to specify the
-     * lower and upper bound for the values.
+     * Convenience function to assemble a pair of layout option and allowed values. This method
+     * should be used in conjunction with {@link AbstractDiagramSynthesis#getDisplayedLayoutOptions()}.
+     * <br>
+     * The type of the elements within the 'values' parameter depends on the type if the specified
+     * property. For instance, for an <code>IProperty&lt;Integer&gt;</code> one might pass a
+     * <code>List&lt;Integer&gt;</code> of size 2 to specify the lower and upper bound for the values.
      *
      * @param layoutOptionId
      *            the desired layout option's id.
