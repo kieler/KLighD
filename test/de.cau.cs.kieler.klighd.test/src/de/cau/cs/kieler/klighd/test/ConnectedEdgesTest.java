@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
@@ -38,6 +39,8 @@ import de.cau.cs.kieler.core.kgraph.text.KGraphStandaloneSetup;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
+import de.cau.cs.kieler.kiml.util.selection.DefaultSelectionIterator;
+import de.cau.cs.kieler.kiml.util.selection.SelectionIterator;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
@@ -162,7 +165,19 @@ public class ConnectedEdgesTest {
     public void test() {
         for (int i = 0; i < sourcePorts.size(); i++) {
             List<KEdge> edges = sourcePorts.get(i).getEdges();
-            Iterator<KEdge> it = KimlUtil.getConnectedEdges(sourcePorts.get(i).getEdges());
+            Iterator<KEdge> it =
+                    Iterators.concat(Iterators.transform(edges.iterator(),
+                            new Function<KEdge, Iterator<KEdge>>() {
+                                @Override
+                                public Iterator<KEdge> apply(KEdge input) {
+                                    SelectionIterator sourceIter =
+                                            new DefaultSelectionIterator(input, false, false);
+                                    SelectionIterator targetIter =
+                                            new DefaultSelectionIterator(input, false, true);
+                                    return Iterators.filter(KimlUtil.getConnectedElements(input,
+                                            sourceIter, targetIter), KEdge.class);
+                                }
+                            }));
 
             for (KEdge e : Iterables2.toIterable(it)) {
                 if (e.getSourcePort() == this.sourcePorts.get(i)) {
@@ -176,15 +191,27 @@ public class ConnectedEdgesTest {
         Assert.fail("At least one or both ports are not existing");
     }
 
-    private int test = 0;
+//    private int test = 0;
 
     private boolean findTarget(final KPort p, final int index) {
         KPort port = p;
         List<KPort> ports = new ArrayList<KPort>();
 
         while (port != null) {
-            test++;
-            Iterator<KEdge> it = KimlUtil.getConnectedEdges(port.getEdges());
+//            test++;
+            Iterator<KEdge> it =
+                    Iterators.concat(Iterators.transform(port.getEdges().iterator(),
+                            new Function<KEdge, Iterator<KEdge>>() {
+                                @Override
+                                public Iterator<KEdge> apply(KEdge input) {
+                                    SelectionIterator sourceIter =
+                                            new DefaultSelectionIterator(input, false, false);
+                                    SelectionIterator targetIter =
+                                            new DefaultSelectionIterator(input, false, true);
+                                    return Iterators.filter(KimlUtil.getConnectedElements(input,
+                                            sourceIter, targetIter), KEdge.class);
+                                }
+                            }));
             for (KEdge e : Iterables2.toIterable(it)) {
                 if (e.getTargetPort() == this.expectedTargetPorts.get(index)) {
                     return true;
