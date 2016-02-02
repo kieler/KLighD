@@ -692,9 +692,7 @@ final class KGERenderingControllerHelper {
         final Bounds bounds;
 
         if (ppd != null) {
-            bounds = PlacementUtil.evaluatePointPlacement(ppd,
-                    PlacementUtil.estimateSize(clipRendering, Bounds.of(0, 0)),
-                    imageBounds);
+            bounds = PlacementUtil.evaluatePointPlacement(clipRendering, ppd, imageBounds);
 
         } else if (apd != null) {
             bounds = PlacementUtil.evaluateAreaPlacement(apd, imageBounds);
