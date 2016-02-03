@@ -33,7 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 public abstract class KlighdCanvasExporter extends AbstractDiagramExporter implements
         IDiagramExporter {
 
-    private static final String IVALID_CONTROL_FAILURE =
+    private static final String INVALID_CONTROL_FAILURE =
             "KLighD diagram export: The SWT Control of type ## is not supported by this &&!";
 
     /**
@@ -46,7 +46,7 @@ public abstract class KlighdCanvasExporter extends AbstractDiagramExporter imple
             return export(canvas, data);
 
         } else {
-            final String msg = IVALID_CONTROL_FAILURE
+            final String msg = INVALID_CONTROL_FAILURE
                     .replace("##", control.getClass().getCanonicalName())
                     .replace("&&", this.getClass().getCanonicalName());
 
