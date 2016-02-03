@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -153,9 +154,28 @@ public class BitmapExporter extends KlighdCanvasExporter {
             System.gc();
 
             final String msg = ERROR_MSG_PREFIX + "Out of heap space memory!";
+            // a more detailed message is be provided by the UI integration
+            //  (SaveAsImageHandler in de.cau.cs.kieler.klighd.ui)
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
-        }
 
+        } catch (final SWTError e) {
+            final String hint = KlighdPlugin.LINE_SEPARATOR
+                    + "This may be due to a too large image. Try a tiled export with smaller tiles.";
+
+            final String msg = ERROR_MSG_PREFIX + "Export failed." + (
+                    !KlighdPlugin.IS_WINDOWS && e.code == SWT.ERROR_NO_HANDLES ? "" : hint);
+
+            final String msg2 = "Got an SWT Error while allocating the image buffer. "
+                    + "Error code is" + e.code + ":";
+
+            final IStatus[] detailStatus = new IStatus[] {
+                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg2, e)
+            };
+
+            // the multiStatus improves the error pop-up dialog: the detailStatus information
+            //  will be hidden until the user hits the details button
+            return new MultiStatus(KlighdPiccoloPlugin.PLUGIN_ID, 0, detailStatus, msg, null);
+        }
 
         // initialize a GC and graphics object that 'collects' all the drawing instructions
         final GC gc = new GC(image);

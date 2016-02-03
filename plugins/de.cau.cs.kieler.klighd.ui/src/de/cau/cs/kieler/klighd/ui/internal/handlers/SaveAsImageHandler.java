@@ -29,7 +29,7 @@ import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
  * An action which invokes the 'save-as-image' dialog and performs the diagram export.
@@ -43,6 +43,7 @@ public class SaveAsImageHandler extends AbstractHandler {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IWorkbenchPart part = HandlerUtil.getActivePart(event);
 
@@ -67,8 +68,15 @@ public class SaveAsImageHandler extends AbstractHandler {
         final IDiagramExporter exporter =
                 KlighdDataManager.getInstance().getExporter(dialog.getCurrentExporter().exporterId);
 
-        // execute the export process
-        final IStatus res = exporter.export(viewer.getControl(), dialog.getExportData());
+        IStatus res;
+        try {
+            // execute the export process
+            res = exporter.export(viewer.getControl(), dialog.getExportData());
+
+        } catch (final Throwable t) {
+            final String msg = "The diagram export could not be completed.";
+            res = new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, msg, t);
+        }
 
         if (res == Status.OK_STATUS) {
             final String title = "Diagram export successful.";
@@ -81,7 +89,7 @@ public class SaveAsImageHandler extends AbstractHandler {
             final String msg = "KLighD diagram export: " + exporter.getClass().getCanonicalName()
                     + " must return an IStatus!";
             StatusManager.getManager().handle(
-                    new Status(IStatus.WARNING, KlighdPiccoloPlugin.PLUGIN_ID, msg),
+                    new Status(IStatus.WARNING, KlighdUIPlugin.PLUGIN_ID, msg),
                     StatusManager.SHOW);
 
         } else if (res.getException() instanceof OutOfMemoryError) {
@@ -91,7 +99,9 @@ public class SaveAsImageHandler extends AbstractHandler {
             MessageDialog.openError(shell, title, msg);
 
         } else {
-            StatusManager.getManager().handle(res, StatusManager.BLOCK | StatusManager.SHOW);
+            StatusManager.getManager().handle(res,
+                    // without logging the status, no stack trace will be available
+                    StatusManager.BLOCK | StatusManager.SHOW | StatusManager.LOG);
         }
 
         return null;
