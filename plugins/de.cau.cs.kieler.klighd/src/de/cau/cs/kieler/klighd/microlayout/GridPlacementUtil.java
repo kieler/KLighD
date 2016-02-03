@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.microlayout;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asGridPlacement;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asGridPlacementData;
 import static de.cau.cs.kieler.core.krendering.KRenderingUtil.getPlacementData;
-import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.estimateSize;
+import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.basicEstimateSize;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -220,7 +220,7 @@ public final class GridPlacementUtil {
                     childMinSize = Bounds.of(estimatedSpacing.calculatedColumnWidths[column],
                             estimatedSpacing.calculatedRowHeights[row]);
                 } else {
-                    childMinSize = estimateSize(r, new Bounds(0, 0));
+                    childMinSize = basicEstimateSize(r, new Bounds(0, 0));
 
                     PlacementUtil.inverselyApplyBoundingBoxKPositions(
                             childMinSize, gpd.getTopLeft(), gpd.getBottomRight());
@@ -487,7 +487,7 @@ public final class GridPlacementUtil {
                 childAreaRowId = row;
             }
 
-            final Bounds cellSize = estimateSize(currentChild, new Bounds(0, 0));
+            final Bounds cellSize = basicEstimateSize(currentChild, new Bounds(0, 0));
 
             // evaluate the "winning" KGridPlacementData
             final KGridPlacementData gridData = asGridPlacementData(getPlacementData(currentChild));
