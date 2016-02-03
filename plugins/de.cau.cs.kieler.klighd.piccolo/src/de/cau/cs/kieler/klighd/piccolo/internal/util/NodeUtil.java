@@ -179,12 +179,21 @@ public final class NodeUtil {
      */
     public static void applyTranslation(final PNodeController<?> controller, final Bounds bounds) {
         final PNode transformedNode = controller.getTransformedPNode();
+        final PAffineTransform transform = transformedNode.getTransformReference(true);
 
-        // reset the current affine transform
-        transformedNode.getTransformReference(true).setToIdentity();
+        if (transform.getTranslateX() == bounds.getX()
+                && transform.getTranslateY() == bounds.getY()) {
+            return;
+        }
+
+        // reset the current affine transform,
+        //  this is required to ignore the previously configured rotation
+        transform.setToIdentity();
 
         // apply the translation
-        applyTranslation(transformedNode, bounds.getX(), bounds.getY());
+        // relying on #applyTranslation(PNode, float, float) doesn't work for (x,y) == (0,0)
+        //  because of the above transform reset (which by intention doesn't cause a notification)
+        transformedNode.setOffset(bounds.getX(), bounds.getY());
 
         // (re-)apply the rotation,
         //  'controller' is in charge of caching the required angle and anchor data
