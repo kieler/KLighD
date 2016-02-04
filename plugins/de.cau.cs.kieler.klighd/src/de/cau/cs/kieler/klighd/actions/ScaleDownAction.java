@@ -34,11 +34,21 @@ public class ScaleDownAction implements IAction {
         final IViewer viewer = context.getActiveViewer();
         final KNode node = context.getKNode();
 
-        final float scale = viewer.getScale(node);
-        if (scale > 1) {
-            viewer.scale(node, viewer.getScale(node) - 1);        
-        }
+        if (node == context.getViewContext().getViewModel()) {
+            // ... i.e. 'node' is the view model's root node
+            // scaling makes no sense
+            return ActionResult.createResult(false);
 
-        return ActionResult.createResult(true).dontAnimateLayout();
+        } else {
+            final float scale = viewer.getScale(node);
+
+            if (scale > 1) {
+                viewer.scale(node, viewer.getScale(node) - 1);
+                return ActionResult.createResult(true).dontAnimateLayout();
+
+            } else {
+                return ActionResult.createResult(false).dontAnimateLayout();
+            }
+        }
     }
 }
