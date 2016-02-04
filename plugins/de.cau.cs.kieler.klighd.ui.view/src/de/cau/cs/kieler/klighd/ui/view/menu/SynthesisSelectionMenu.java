@@ -142,8 +142,8 @@ public class SynthesisSelectionMenu extends MenuManager {
                 // Set selected synthesis item checked
                 if (getItems().length > 0) {
                     String selectedID = selections.get(newModelClassName);
-                    if (selectedID != null) {
-                        actionMap.get(selections.get(newModelClassName)).setChecked(true);
+                    if (selectedID != null && actionMap.containsKey(selectedID)) {
+                        actionMap.get(selectedID).setChecked(true);
                     } else {
                         String id = kdm.getSynthesisID(
                                 kdm.getAvailableSyntheses(newModelClass).iterator().next());
