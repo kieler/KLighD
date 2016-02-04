@@ -42,6 +42,7 @@ import de.cau.cs.kieler.core.krendering.Colors;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
@@ -447,6 +448,9 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                     //  is removed or a new one is added by the simple update strategy
                     //  don't do anything!!
                     return;
+
+                } else if (!(notification.getNotifier() instanceof KShapeLayout)) {
+                    return;
                 }
 
                 final int featureId = notification.getFeatureID(KShapeLayout.class);
@@ -504,9 +508,10 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
         // always reveal the current shape layout - it may be exchanged over the diagram's life time
         final KShapeLayout layoutData = rootNode.getData(KShapeLayout.class);
+        final float scale = layoutData.getProperty(LayoutOptions.SCALE_FACTOR).floatValue();
 
-        final float width = Math.max(layoutData.getWidth(), MIN_SIZE);
-        final float height = Math.max(layoutData.getHeight(), MIN_SIZE);
+        final float width = Math.max(layoutData.getWidth() * scale, MIN_SIZE);
+        final float height = Math.max(layoutData.getHeight() * scale, MIN_SIZE);
         outlineCanvas.getCamera().setViewBounds(
                 new Rectangle2D.Double(layoutData.getXpos(), layoutData.getYpos(), width, height));
 
