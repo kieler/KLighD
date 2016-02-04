@@ -41,6 +41,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     private double sourceScale;
     private double targetScale;
     private double deltaScale;
+    private boolean applyScale = false;
 
     /** a local memory indicating whether a style update took place already. */
     private boolean stylesModified = false;
@@ -89,6 +90,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
 
         this.sourceScale = node.getTransformReference(true).getScale();
         this.deltaScale = this.targetScale - this.sourceScale;
+        this.applyScale = deltaScale != 0d;
 
         node.setVisible(true);
         super.activityStarted();
@@ -101,11 +103,16 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     public void setRelativeTargetValue(final float zeroToOne) {
         if (zeroToOne == 1.0f) {
             // when the activity completes set the target bounds
-            node.setScale(targetScale);
+            if (applyScale) {
+                node.setScale(targetScale);
+            }
             NodeUtil.applyBounds(node, targetBounds);
+
         } else {
             // as long as the activity is not completed use the delta values
-            node.setScale(sourceScale + zeroToOne * deltaScale);
+            if (applyScale) {
+                node.setScale(sourceScale + zeroToOne * deltaScale);
+            }
 
             // 'deltaBounds == null' holds if a scale change didn't lead
             //  to a positions change after computing a new layout
@@ -117,6 +124,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
                     sourceBounds.getHeight() + zeroToOne * deltaBounds.getHeight());
             }
         }
+
         if (!stylesModified && zeroToOne > 1f / 2f) {
             stylesModified = true;
             final IInternalKGraphElementNode<?> gE = NodeUtil.asKGENode(node);
@@ -124,6 +132,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
                 gE.getRenderingController().modifyStyles();
             }
         }
+
         super.setRelativeTargetValue(zeroToOne);
     }
 
@@ -134,8 +143,11 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
      */
     @Override
     public void activityFinished() {
-        node.setScale(targetScale);
+        if (applyScale) {
+            node.setScale(targetScale);
+        }
         NodeUtil.applyBounds(node, targetBounds);
+
         if (!stylesModified) {
             stylesModified = true;
             final IInternalKGraphElementNode<?> gE = NodeUtil.asKGENode(node);
@@ -143,6 +155,7 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
                 gE.getRenderingController().modifyStyles();
             }
         }
+
         super.activityFinished();
 
         node.firePropertyChange(0, IKlighdNode.PROPERTY_BOUNDS_FINISHED, null, Boolean.TRUE);
@@ -154,23 +167,5 @@ public class ApplySmartBoundsActivity extends PInterpolatingActivity implements
     @Override
     protected boolean isAnimation() {
         return true;
-    }
-
-    /**
-     * Getter.
-     *
-     * @return the node
-     */
-    PNode getNode() {
-        return node;
-    }
-
-    /**
-     * Getter.
-     *
-     * @return the targetBounds
-     */
-    PBounds getTargetBounds() {
-        return targetBounds;
     }
 }
