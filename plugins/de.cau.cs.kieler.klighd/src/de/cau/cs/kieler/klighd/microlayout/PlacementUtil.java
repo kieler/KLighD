@@ -524,8 +524,6 @@ public final class PlacementUtil {
         
         switch (placementDataType) {
         case KRenderingPackage.KAREA_PLACEMENT_DATA:
-        // KGridPlacementData is a subclass of KAreaPlacementData, so accept them here, too
-        case KRenderingPackage.KGRID_PLACEMENT_DATA:
             bounds = estimateAreaPlacedChildSize(rendering, (KAreaPlacementData) placementData,
                     givenBounds);
             break;
