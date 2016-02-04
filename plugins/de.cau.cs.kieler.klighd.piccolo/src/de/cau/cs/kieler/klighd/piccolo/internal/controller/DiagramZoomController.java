@@ -285,7 +285,7 @@ public class DiagramZoomController {
             return;
         }
 
-        final PBounds nodeBounds = toPBounds(displayedKNode);
+        final PBounds nodeBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
 
         // it would be possible to use PCamera#scaleViewAboutPoint(scale, x, y),
         // however this method does not allow for animation
