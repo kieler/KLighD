@@ -40,7 +40,7 @@ public class FocusAndContextAction implements IAction {
      * The graph element that was most recently selected. Once a new element is selected, this one will
      * be moved out of focus again.
      */
-    private KGraphElement lastSelectedElement;
+    private KGraphElement lastSelectedElement = null;
     
     
     /**
@@ -49,13 +49,19 @@ public class FocusAndContextAction implements IAction {
     public ActionResult execute(final ActionContext context) {
         KGraphElement selectedElement = context.getKGraphElement();
         
-        // It's important to unfocus the last element first, because the newly focussed element may well
-        // be a part of the old focussed one
-        focusElement(lastSelectedElement, false);
-        focusElement(selectedElement, true);
-        lastSelectedElement = selectedElement;
+        // We need to check if the selection has changed at all
+        if (selectedElement == lastSelectedElement) {
+            return ActionResult.createResult(false);
+        } else {
+            // It's important to unfocus the last element first, because the newly focussed element may
+            // well be a part of the old focussed one
+            focusElement(lastSelectedElement, false);
+            focusElement(selectedElement, true);
+            lastSelectedElement = selectedElement;
+            
+            return ActionResult.createResult(true);
+        }
         
-        return ActionResult.createResult(true);
     }
     
     
