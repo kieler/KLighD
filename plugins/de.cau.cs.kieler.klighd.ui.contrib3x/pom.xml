@@ -9,6 +9,6 @@
   </parent>
   <groupId>de.cau.cs.kieler</groupId>
   <artifactId>de.cau.cs.kieler.klighd.ui.contrib3x</artifactId>
-  <version>0.1.3-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
