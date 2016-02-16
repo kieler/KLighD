@@ -251,7 +251,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                 it.addText(clazz.name.nullToEmpty).associateWith(clazz) => [
                                     it.fontSize = 15;
                                     it.fontBold = true;
-                                    it.cursorSelectable = true;
+                                    // it.cursorSelectable = true;
                                     it.setGridPlacementData.from(LEFT, 20, 0, TOP, 2, 0f).to(RIGHT, 20, 0, BOTTOM, 7, 0);
                                 ];
                             } else {
@@ -266,7 +266,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                     it.fontSize = 15;
                                     it.fontBold = true;
                                     it.fontItalic = clazz instanceof EClass && (clazz as EClass).isAbstract
-                                    it.cursorSelectable = true;
+                                    // it.cursorSelectable = true;
                                     it.setPointPlacementData(LEFT, 40, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 10, 10, 0, 0);
                                 ];
                             };
@@ -296,7 +296,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                         it.fontSize = 13;
                                         it.horizontalAlignment = H_LEFT
                                         it.verticalAlignment = V_CENTRAL
-                                        it.cursorSelectable = true;
+                                        // it.cursorSelectable = true;
                                         it.setPointPlacementData(LEFT, 25, 0, TOP, 0, 0.5f, H_LEFT, V_CENTRAL, 10, 3, 0, 0);
                                     ];
                                 ];
@@ -314,7 +314,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
                                 rect.addText(it.name /* + " (" + it.literal + ")" */) => [
                                     it.horizontalAlignment = H_CENTRAL
                                     it.verticalAlignment = V_CENTRAL
-                                    it.cursorSelectable = true;
+                                    // it.cursorSelectable = true;
                                     it.setSurroundingSpaceGrid(3, 0);
                                 ];
                             ];
