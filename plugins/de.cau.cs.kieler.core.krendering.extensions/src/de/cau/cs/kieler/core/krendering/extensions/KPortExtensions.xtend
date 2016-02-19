@@ -22,11 +22,11 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.VerticalAlignment
 import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
-import de.cau.cs.kieler.core.properties.IProperty
-import de.cau.cs.kieler.core.util.Maybe
+import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.elk.core.util.Maybe
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.kiml.options.PortSide
+import org.eclipse.elk.core.options.LayoutOptions
+import org.eclipse.elk.core.options.PortSide
 import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
 import javax.inject.Inject
@@ -266,7 +266,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::NORTH);
-            it.addLayoutParam(LayoutOptions::OFFSET, -portEdgeLength);
+            it.addLayoutParam(LayoutOptions::PORT_OFFSET, -portEdgeLength);
             it.setPortPos(node.nextNPortYPosition, 1);
             it.data += createEPortRendering(label).setRotation(-90f);
         ];
@@ -277,7 +277,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::SOUTH);
-            it.addLayoutParam(LayoutOptions::OFFSET, 0f);
+            it.addLayoutParam(LayoutOptions::PORT_OFFSET, 0f);
             it.setPortPos(node.nextSPortYPosition, node.height-1);
             it.data += createEPortRendering(label).setRotation(90f);
         ];
@@ -288,7 +288,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::WEST);
-            it.addLayoutParam(LayoutOptions::OFFSET, 0f);
+            it.addLayoutParam(LayoutOptions::PORT_OFFSET, 0f);
             it.setPortPos(-6, node.nextWPortYPosition);
             it.data += createWPortRendering(label);
         ];

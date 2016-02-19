@@ -24,16 +24,16 @@ import de.cau.cs.kieler.core.krendering.KRendering
 import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KText
 import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
-import de.cau.cs.kieler.core.properties.IProperty
+import org.eclipse.elk.graph.properties.IProperty
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.kiml.options.NodeLabelPlacement
-import de.cau.cs.kieler.kiml.options.PortLabelPlacement
 import de.cau.cs.kieler.kiml.util.KimlUtil
 
 import javax.inject.Inject
+import org.eclipse.elk.core.options.LayoutOptions
+import org.eclipse.elk.core.options.NodeLabelPlacement
+import org.eclipse.elk.core.options.PortLabelPlacement
+import org.eclipse.elk.core.options.EdgeLabelPlacement
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
