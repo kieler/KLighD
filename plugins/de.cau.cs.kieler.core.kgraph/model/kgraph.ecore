@@ -155,10 +155,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         transient="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="IProperty" instanceClassName="de.cau.cs.kieler.core.properties.IProperty">
+  <eClassifiers xsi:type="ecore:EDataType" name="IProperty" instanceClassName="org.eclipse.elk.graph.properties.IProperty">
     <eTypeParameters name="T"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IPropertyHolder" instanceClassName="de.cau.cs.kieler.core.properties.IPropertyHolder"
+  <eClassifiers xsi:type="ecore:EClass" name="IPropertyHolder" instanceClassName="org.eclipse.elk.graph.properties.IPropertyHolder"
       abstract="true" interface="true">
     <eOperations name="setProperty" eType="#//IPropertyHolder">
       <eTypeParameters name="T"/>

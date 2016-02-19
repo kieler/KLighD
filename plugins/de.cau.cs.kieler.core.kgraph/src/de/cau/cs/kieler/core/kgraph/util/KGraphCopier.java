@@ -13,13 +13,13 @@
  */
 package de.cau.cs.kieler.core.kgraph.util;
 
+import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.cau.cs.kieler.core.kgraph.EMapPropertyHolder;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
 
 /**
  * A copier that knows how to copy KGraphs with their properties. The default copier defined in
