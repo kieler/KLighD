@@ -22,20 +22,21 @@ import java.util.ListIterator;
 import java.util.Queue;
 import java.util.Random;
 
+import org.eclipse.elk.core.math.ElkMath;
+import org.eclipse.elk.core.options.LayoutOptions;
+import org.eclipse.elk.core.options.PortConstraints;
+import org.eclipse.elk.core.options.PortSide;
+import org.eclipse.elk.core.util.Pair;
+
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.math.KielerMath;
-import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.options.PortConstraints;
-import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
@@ -364,7 +365,7 @@ public class RandomGraphGenerator {
      */
     private void generateBipartite(final KNode parent, final int n, final int m,
             final float minPartition, final float maxPartition, final int hierarchyLevel) {
-        int n2 = KielerMath.boundi(Math.round(n * (minPartition + random.nextFloat()
+        int n2 = ElkMath.boundi(Math.round(n * (minPartition + random.nextFloat()
                 * (maxPartition - minPartition))), 1, n - 1);
         int n1 = n - n2;
         KNode[] nodes1 = new KNode[n1];

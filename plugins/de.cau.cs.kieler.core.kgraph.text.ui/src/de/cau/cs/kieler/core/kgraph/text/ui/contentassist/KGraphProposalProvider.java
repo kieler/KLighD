@@ -31,14 +31,15 @@ import org.eclipse.xtext.util.Strings;
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.KGraphResource;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.kiml.LayoutAlgorithmData;
-import de.cau.cs.kieler.kiml.LayoutMetaDataService;
-import de.cau.cs.kieler.kiml.LayoutOptionData;
-import de.cau.cs.kieler.kiml.LayoutOptionData.Type;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
-import de.cau.cs.kieler.kiml.ui.LayoutOptionLabelProvider;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.core.data.LayoutAlgorithmData;
+import org.eclipse.elk.core.service.LayoutMetaDataService;
+import org.eclipse.elk.core.data.LayoutOptionData;
+import org.eclipse.elk.core.data.LayoutOptionData.Type;
+import org.eclipse.elk.core.data.LayoutOptionData.Visibility;
+import org.eclipse.elk.core.options.LayoutOptions;
+import org.eclipse.elk.core.ui.ElkUiPlugin;
+import org.eclipse.elk.core.ui.LayoutOptionLabelProvider;
 
 /**
  * Custom proposal provider contributing KIELER Layout configuration proposals.
@@ -280,9 +281,9 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
         // create and register the completion proposal for every element in the list
         for (final LayoutOptionData optionData : layoutServices.getOptionData()) {
-            final StyledString displayString =
-                    new StyledString(optionData.toString(),
-                            (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
+            final StyledString displayString = new StyledString(optionData.toString(),
+                    (optionData.getVisibility() == Visibility.ADVANCED)
+                            ? StyledString.COUNTER_STYLER : null);
             displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
             final String proposal = getValueConverter().toString(optionData.getId(),
@@ -301,8 +302,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                     getValueConverter().toString(p.getId(),
                             grammarAccess.getQualifiedIDRule().getName());
             final StyledString displayString = new StyledString(proposal);
-            final Image image = KimlUiPlugin.getDefault().getImages().getPropText();
-
+            
+            final Image image = ElkUiPlugin.getImageDescriptor(ElkUiPlugin.IMG_TEXT).createImage();
             handleKeyProposal(context, acceptor, p.getId(), proposal, displayString, image);
         }
 

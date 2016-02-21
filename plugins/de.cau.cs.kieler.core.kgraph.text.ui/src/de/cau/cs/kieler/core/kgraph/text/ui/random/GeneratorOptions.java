@@ -18,16 +18,16 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.options.PortConstraints;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.MapPropertyHolder;
+import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.core.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.Messages;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.kiml.options.PortConstraints;
 
 /**
  * Property holder for random graph generator options.

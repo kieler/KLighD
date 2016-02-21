@@ -13,13 +13,12 @@ Require-Bundle: org.eclipse.xtext.ui,
  org.antlr.runtime,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
- de.cau.cs.kieler.core,
+ org.eclipse.elk.core.service,
+ org.eclipse.elk.core.ui,
  de.cau.cs.kieler.core.kgraph,
  de.cau.cs.kieler.core.kgraph.text;visibility:=reexport,
  de.cau.cs.kieler.core.krendering,
- de.cau.cs.kieler.kiml,
- de.cau.cs.kieler.kiml.formats,
- de.cau.cs.kieler.kiml.ui
+ de.cau.cs.kieler.kiml.formats
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

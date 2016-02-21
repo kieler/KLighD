@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.core.kgraph.text.ui.random.wizard;
 
+import org.eclipse.elk.core.options.PortConstraints;
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -28,8 +30,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.core.kgraph.text.ui.random.GeneratorOptions;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.kiml.options.PortConstraints;
 
 /**
  * The page for layout options.
