@@ -13,18 +13,13 @@
  */
 package de.cau.cs.kieler.core.krendering.util;
 
-import de.cau.cs.kieler.core.kgraph.EMapPropertyHolder;
-import de.cau.cs.kieler.core.kgraph.KGraphData;
-
 import de.cau.cs.kieler.core.krendering.*;
-
+import org.eclipse.elk.graph.EMapPropertyHolder;
+import org.eclipse.elk.graph.KGraphData;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -1070,13 +1065,13 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.properties.IPropertyHolder <em>IProperty Holder</em>}'.
+     * Creates a new adapter for an object of class '{@link org.eclipse.elk.graph.properties.IPropertyHolder <em>IProperty Holder</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.properties.IPropertyHolder
+     * @see org.eclipse.elk.graph.properties.IPropertyHolder
      * @generated
      */
     public Adapter createIPropertyHolderAdapter() {
@@ -1084,13 +1079,13 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.kgraph.EMapPropertyHolder <em>EMap Property Holder</em>}'.
+     * Creates a new adapter for an object of class '{@link org.eclipse.elk.graph.EMapPropertyHolder <em>EMap Property Holder</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.kgraph.EMapPropertyHolder
+     * @see org.eclipse.elk.graph.EMapPropertyHolder
      * @generated
      */
     public Adapter createEMapPropertyHolderAdapter() {
@@ -1098,13 +1093,13 @@ public class KRenderingAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link de.cau.cs.kieler.core.kgraph.KGraphData <em>Data</em>}'.
+     * Creates a new adapter for an object of class '{@link org.eclipse.elk.graph.KGraphData <em>Data</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see de.cau.cs.kieler.core.kgraph.KGraphData
+     * @see org.eclipse.elk.graph.KGraphData
      * @generated
      */
     public Adapter createKGraphDataAdapter() {

@@ -13,15 +13,13 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+
+import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
+import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 
 /**
  * <!-- begin-user-doc -->

@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.core.krendering;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**

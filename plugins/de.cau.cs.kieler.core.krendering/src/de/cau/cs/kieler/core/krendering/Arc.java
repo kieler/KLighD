@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
+import java.awt.geom.Arc2D;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

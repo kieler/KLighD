@@ -1,7 +1,7 @@
 package de.cau.cs.kieler.core.krendering;
 
 
-import de.cau.cs.kieler.core.kgraph.KGraphData;
+import org.eclipse.elk.graph.KGraphData;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -11,8 +11,8 @@ import org.eclipse.emf.common.util.EList;
  *
  * <!-- begin-model-doc -->
  * <br><br>
- * Instances of this class may be employed in {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} for accommodating
- * {@link KRendering KRenderings} that are shared by multiple other {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements}
+ * Instances of this class may be employed in {@link org.eclipse.elk.graph.KGraphElement KGraphElements} for accommodating
+ * {@link KRendering KRenderings} that are shared by multiple other {@link org.eclipse.elk.graph.KGraphElement KGraphElements}
  * and referenced by means of {@link KRenderingRef KRenderingRefs}.<br>
  * {@link KRenderingRef KRenderingRefs}, however, may reference any arbitrary {@link KRendering} its deposition in a KRenderingLibrary is
  * not required. Thus, KRenderingLibraries are just for structuring view models, they don't contribute any semantics.
