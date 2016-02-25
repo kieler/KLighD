@@ -5,7 +5,7 @@
     modelName="KRendering" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
     copyrightFields="false" usedGenPackages="../../org.eclipse.elk.graph/model/kgraph.genmodel#//graph">
   <foreignModel>krendering.ecore</foreignModel>
-  <genPackages prefix="KRendering" basePackage="de.cau.cs.kieler.core" disposableProviderFactory="true"
+  <genPackages prefix="KRendering" basePackage="de.cau.cs.kieler.klighd" disposableProviderFactory="true"
       fileExtensions="krender" ecorePackage="krendering.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="krendering.ecore#//LineStyle">
       <genEnumLiterals ecoreEnumLiteral="krendering.ecore#//LineStyle/SOLID"/>
