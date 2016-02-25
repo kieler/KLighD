@@ -13,15 +13,17 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import org.eclipse.emf.ecore.EClass;
-
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KSpline;
+
+import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>KSpline</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * </p>
  *
  * @generated
  */

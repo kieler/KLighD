@@ -54,7 +54,7 @@
       </eGenericType>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="../../org.eclipse.elk.graph/model/kgraph.ecore#//KGraphData #//KStyleHolder">
+  <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData #//KStyleHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Abstract class to define members of a shapeType.&#xA;Is placed inside a parent Container&#xA;can reference another Rendering instead of redefining it&#xA;A rendering can contain placementData to define the size of a derived object&#xA;"/>
     </eAnnotations>
@@ -240,7 +240,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KStyle" abstract="true" eSuperTypes="../../org.eclipse.elk.graph/model/kgraph.ecore#//EMapPropertyHolder">
+  <eClassifiers xsi:type="ecore:EClass" name="KStyle" abstract="true" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//EMapPropertyHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Adds additional StyleInformation to a rendering.&#xA;can be set to propagate to children to make redefinining styles unneccessary"/>
     </eAnnotations>
@@ -258,9 +258,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selection" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KRenderingLibrary" eSuperTypes="../../org.eclipse.elk.graph/model/kgraph.ecore#//KGraphData">
+  <eClassifiers xsi:type="ecore:EClass" name="KRenderingLibrary" eSuperTypes="../../de.cau.cs.kieler.core.kgraph/model/kgraph.ecore#//KGraphData">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="&lt;br>&lt;br>&#xA;Instances of this class may be employed in {@link org.eclipse.elk.graph.KGraphElement KGraphElements} for accommodating&#xA;{@link KRendering KRenderings} that are shared by multiple other {@link org.eclipse.elk.graph.KGraphElement KGraphElements}&#xA;and referenced by means of {@link KRenderingRef KRenderingRefs}.&lt;br>&#xA;{@link KRenderingRef KRenderingRefs}, however, may reference any arbitrary {@link KRendering} its deposition in a KRenderingLibrary is&#xA;not required. Thus, KRenderingLibraries are just for structuring view models, they don't contribute any semantics."/>
+      <details key="documentation" value="&lt;br>&lt;br>&#xA;Instances of this class may be employed in {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} for accommodating&#xA;{@link KRendering KRenderings} that are shared by multiple other {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements}&#xA;and referenced by means of {@link KRenderingRef KRenderingRefs}.&lt;br>&#xA;{@link KRenderingRef KRenderingRefs}, however, may reference any arbitrary {@link KRendering} its deposition in a KRenderingLibrary is&#xA;not required. Thus, KRenderingLibraries are just for structuring view models, they don't contribute any semantics."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="renderings" upperBound="-1"
         eType="#//KStyleHolder" containment="true">

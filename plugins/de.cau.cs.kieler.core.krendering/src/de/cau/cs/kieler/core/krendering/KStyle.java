@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
-import org.eclipse.elk.graph.EMapPropertyHolder;
+import de.cau.cs.kieler.core.kgraph.EMapPropertyHolder;
 
 /**
  * <!-- begin-user-doc -->

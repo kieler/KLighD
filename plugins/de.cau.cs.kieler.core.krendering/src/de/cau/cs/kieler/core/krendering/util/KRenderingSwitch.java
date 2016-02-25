@@ -13,12 +13,16 @@
  */
 package de.cau.cs.kieler.core.krendering.util;
 
+import de.cau.cs.kieler.core.kgraph.EMapPropertyHolder;
+import de.cau.cs.kieler.core.kgraph.KGraphData;
+
 import de.cau.cs.kieler.core.krendering.*;
-import org.eclipse.elk.graph.EMapPropertyHolder;
-import org.eclipse.elk.graph.KGraphData;
+
 import org.eclipse.elk.graph.properties.IPropertyHolder;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.util.Switch;
 
 /**
@@ -59,7 +63,7 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
      * Checks whether this is a switch for the given package.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param ePackage the package in question.
+     * @parameter ePackage the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */

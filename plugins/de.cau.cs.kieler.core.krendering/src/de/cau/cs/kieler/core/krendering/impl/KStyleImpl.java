@@ -13,11 +13,11 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import org.eclipse.elk.graph.impl.EMapPropertyHolderImpl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import de.cau.cs.kieler.core.kgraph.impl.EMapPropertyHolderImpl;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
 import de.cau.cs.kieler.core.krendering.KStyle;
 

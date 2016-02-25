@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
-import org.eclipse.elk.graph.KGraphPackage;
+import de.cau.cs.kieler.core.kgraph.KGraphPackage;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;

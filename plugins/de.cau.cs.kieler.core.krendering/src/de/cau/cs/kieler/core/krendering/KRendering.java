@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.core.krendering;
 
-import org.eclipse.elk.graph.KGraphData;
+import de.cau.cs.kieler.core.kgraph.KGraphData;
+
 import org.eclipse.emf.common.util.EList;
 
 /**

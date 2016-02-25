@@ -13,15 +13,17 @@
  */
 package de.cau.cs.kieler.core.krendering.impl;
 
-import org.eclipse.emf.ecore.EClass;
-
 import de.cau.cs.kieler.core.krendering.KChildArea;
 import de.cau.cs.kieler.core.krendering.KRenderingPackage;
+
+import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>KChild Area</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * </p>
  *
  * @generated
  */
