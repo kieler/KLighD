@@ -15,6 +15,15 @@ package de.cau.cs.kieler.core.kgraph.text.ui.contentassist;
 
 import javax.inject.Inject;
 
+import org.eclipse.elk.core.data.LayoutAlgorithmData;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.elk.core.data.LayoutOptionData;
+import org.eclipse.elk.core.data.LayoutOptionData.Type;
+import org.eclipse.elk.core.data.LayoutOptionData.Visibility;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.ui.ElkUiPlugin;
+import org.eclipse.elk.core.ui.LayoutOptionLabelProvider;
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.viewers.StyledString;
@@ -31,15 +40,6 @@ import org.eclipse.xtext.util.Strings;
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.KGraphResource;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
-import org.eclipse.elk.graph.properties.IProperty;
-import org.eclipse.elk.core.data.LayoutAlgorithmData;
-import org.eclipse.elk.core.service.LayoutMetaDataService;
-import org.eclipse.elk.core.data.LayoutOptionData;
-import org.eclipse.elk.core.data.LayoutOptionData.Type;
-import org.eclipse.elk.core.data.LayoutOptionData.Visibility;
-import org.eclipse.elk.core.options.LayoutOptions;
-import org.eclipse.elk.core.ui.ElkUiPlugin;
-import org.eclipse.elk.core.ui.LayoutOptionLabelProvider;
 
 /**
  * Custom proposal provider contributing KIELER Layout configuration proposals.
@@ -303,7 +303,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                             grammarAccess.getQualifiedIDRule().getName());
             final StyledString displayString = new StyledString(proposal);
             
-            final Image image = ElkUiPlugin.getImageDescriptor(ElkUiPlugin.IMG_TEXT).createImage();
+            final Image image =
+                    ElkUiPlugin.getInstance().getImageRegistry().get(ElkUiPlugin.IMG_TEXT);
             handleKeyProposal(context, acceptor, p.getId(), proposal, displayString, image);
         }
 
@@ -391,7 +392,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 //  corresponding default value
 
                 case STRING:
-                    if (annotationName.equals(LayoutOptions.ALGORITHM.getId())) {
+                    if (annotationName.equals(CoreOptions.ALGORITHM.getId())) {
                         String displayString = null;
                         for (final LayoutAlgorithmData data : layoutServices.getAlgorithmData()) {
                             proposal = '"' + data.getId() + '"';
