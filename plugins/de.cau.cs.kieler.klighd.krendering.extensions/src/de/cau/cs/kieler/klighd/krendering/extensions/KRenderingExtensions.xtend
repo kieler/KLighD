@@ -13,10 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement
-import de.cau.cs.kieler.core.kgraph.KLabel
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.kgraph.KPort
 import de.cau.cs.kieler.klighd.krendering.Colors
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData
@@ -39,6 +35,7 @@ import de.cau.cs.kieler.klighd.krendering.KLineJoin
 import de.cau.cs.kieler.klighd.krendering.KLineStyle
 import de.cau.cs.kieler.klighd.krendering.KLineWidth
 import de.cau.cs.kieler.klighd.krendering.KPlacementData
+import de.cau.cs.kieler.klighd.krendering.KPointPlacementData
 import de.cau.cs.kieler.klighd.krendering.KPolygon
 import de.cau.cs.kieler.klighd.krendering.KPolyline
 import de.cau.cs.kieler.klighd.krendering.KPosition
@@ -61,10 +58,13 @@ import de.cau.cs.kieler.klighd.krendering.LineStyle
 import de.cau.cs.kieler.klighd.krendering.Trigger
 import de.cau.cs.kieler.klighd.krendering.Underline
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment
+import org.eclipse.elk.graph.KGraphElement
+import org.eclipse.elk.graph.KLabel
+import org.eclipse.elk.graph.KNode
+import org.eclipse.elk.graph.KPort
 import org.eclipse.emf.ecore.EClass
 
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
-import de.cau.cs.kieler.klighd.krendering.KPointPlacementData
 
 /**
  * This class contains lots of convenient helper functions for configuring KRendering-based view models, 

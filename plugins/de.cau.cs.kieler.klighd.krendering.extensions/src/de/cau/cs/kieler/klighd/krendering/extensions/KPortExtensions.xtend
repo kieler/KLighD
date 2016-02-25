@@ -13,8 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.kgraph.KPort
+import com.google.inject.Injector
+import com.google.inject.Scope
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
 import de.cau.cs.kieler.klighd.krendering.KFontSize
 import de.cau.cs.kieler.klighd.krendering.KRendering
@@ -22,27 +22,29 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
-import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.elk.core.util.Maybe
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout
-import org.eclipse.elk.core.options.LayoutOptions
-import org.eclipse.elk.core.options.PortSide
-import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.ArrayList
 import javax.inject.Inject
+import org.eclipse.elk.core.klayoutdata.KShapeLayout
+import org.eclipse.elk.core.options.PortSide
+import org.eclipse.elk.core.util.ElkUtil
+import org.eclipse.elk.core.util.Maybe
+import org.eclipse.elk.graph.KNode
+import org.eclipse.elk.graph.KPort
+import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.elk.core.options.CoreOptions
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
  * <br>
  * In order to employ them beyond KLighD diagram syntheses you best declare a field of type
- * {@link KNodeExtensions} in your class and annotate it with {@link javax.inject.Inject Inject}.<br>
+ * {@link KNodeExtensions} in your class and annotate it with {@link Inject Inject}.<br>
  * <br>
  * Make sure to bind the {@link ViewSynthesisShared} annotation in the employed
- * {@link com.google.inject.Injector Injector} to a {@link com.google.inject.Scope}, e.g. by calling
+ * {@link Injector Injector} to a {@link Scope}, e.g. by calling
  * {@code Guice.createInjector(KRenderingExtensionsPlugin.createSingletonScopeBindingModule());} or 
  * {@code Guice.createInjector(KRenderingExtensionsPlugin.createNoScopeBindingModule());}.<br>
  * <br>
- * By means of that {@link com.google.inject.Injector Injector} you may get a new instance of your class,
+ * By means of that {@link Injector Injector} you may get a new instance of your class,
  * or you may inject the above mentioned attribute within instances of your class, e.g. by calling
  * {@code injector.injectMembers(this)} in the constructor of your class.
  * 
@@ -88,7 +90,7 @@ class KPortExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KPort create port: KimlUtil::createInitializedPort internalCreatePort(ArrayList<Object> oc) {
+    def private KPort create port: ElkUtil::createInitializedPort internalCreatePort(ArrayList<Object> oc) {
     }
     
     /**
@@ -127,7 +129,7 @@ class KPortExtensions {
      * A convenience method to create a KPort without relating it to a business object.  
      */
     def KPort createPort() {
-        return KimlUtil.createInitializedPort;
+        return ElkUtil.createInitializedPort;
     }
     
     /**
@@ -254,7 +256,7 @@ class KPortExtensions {
         port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
-            it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::EAST);
+            it.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::EAST);
 //            it.addLayoutParam(LayoutOptions::OFFSET, -207f);
             it.setPortPos(node.width-1, node.nextEPortYPosition);
             it.data += createEPortRendering(label);
@@ -265,8 +267,8 @@ class KPortExtensions {
         port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
-            it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::NORTH);
-            it.addLayoutParam(LayoutOptions::PORT_OFFSET, -portEdgeLength);
+            it.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::NORTH);
+            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, -portEdgeLength);
             it.setPortPos(node.nextNPortYPosition, 1);
             it.data += createEPortRendering(label).setRotation(-90f);
         ];
@@ -276,8 +278,8 @@ class KPortExtensions {
         port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
-            it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::SOUTH);
-            it.addLayoutParam(LayoutOptions::PORT_OFFSET, 0f);
+            it.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::SOUTH);
+            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, 0f);
             it.setPortPos(node.nextSPortYPosition, node.height-1);
             it.data += createEPortRendering(label).setRotation(90f);
         ];
@@ -287,8 +289,8 @@ class KPortExtensions {
         port => [
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
-            it.addLayoutParam(LayoutOptions::PORT_SIDE, PortSide::WEST);
-            it.addLayoutParam(LayoutOptions::PORT_OFFSET, 0f);
+            it.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::WEST);
+            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, 0f);
             it.setPortPos(-6, node.nextWPortYPosition);
             it.data += createWPortRendering(label);
         ];

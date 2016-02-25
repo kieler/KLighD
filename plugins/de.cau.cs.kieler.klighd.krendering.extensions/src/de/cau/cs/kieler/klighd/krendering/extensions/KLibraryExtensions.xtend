@@ -13,12 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.krendering.extensions
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement
-import de.cau.cs.kieler.core.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
+import org.eclipse.elk.graph.KGraphElement
+import org.eclipse.elk.graph.KNode
 
 /**
  * Extension that allow a convenient use of the {@link KRenderingLibrary} mechanism.
