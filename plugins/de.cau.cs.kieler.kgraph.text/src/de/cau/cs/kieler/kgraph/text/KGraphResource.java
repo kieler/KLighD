@@ -18,8 +18,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
-import org.eclipse.elk.core.service.util.ElkServiceUtil;
 import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.core.util.GraphDataUtil;
 import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -78,7 +78,7 @@ public class KGraphResource extends LazyLinkingResource {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 // parse persisted key-value pairs using KIML's layout data service
-                ElkServiceUtil.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
+                GraphDataUtil.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
                 // validate layout data and references and fill in missing data
                 ElkUtil.validate((KNode) o);
             }
@@ -102,7 +102,7 @@ public class KGraphResource extends LazyLinkingResource {
         
         if (node != null) {
             // parse persisted key-value pairs using KIML's layout data service
-            ElkServiceUtil.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
+            GraphDataUtil.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
             // validate layout data and references and fill in missing data
             ElkUtil.validate(node);
         }
