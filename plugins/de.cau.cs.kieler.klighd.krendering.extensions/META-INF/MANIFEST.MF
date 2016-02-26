@@ -9,8 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  javax.inject;bundle-version="1.0.0",
  com.google.inject;bundle-version="3.0.0",
  org.eclipse.xtext.xbase.lib;bundle-version="2.4.0",
- de.cau.cs.kieler.klighd.krendering,
- org.eclipse.elk.core;bundle-version="0.1.0"
+ org.eclipse.elk.core;bundle-version="0.1.0",
+ de.cau.cs.kieler.klighd.krendering
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cau.cs.kieler.klighd.krendering.extensions

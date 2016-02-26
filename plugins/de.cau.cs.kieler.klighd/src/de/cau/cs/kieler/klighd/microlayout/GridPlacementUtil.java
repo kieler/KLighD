@@ -13,27 +13,28 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asGridPlacement;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asGridPlacementData;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.getPlacementData;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.asGridPlacement;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.asGridPlacementData;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.getPlacementData;
 import static de.cau.cs.kieler.klighd.microlayout.PlacementUtil.basicEstimateSize;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.elk.core.math.ElkMath;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.Property;
+
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KGridPlacement;
-import de.cau.cs.kieler.core.krendering.KGridPlacementData;
-import de.cau.cs.kieler.core.krendering.KPosition;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.math.KielerMath;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
+import de.cau.cs.kieler.klighd.krendering.KGridPlacement;
+import de.cau.cs.kieler.klighd.krendering.KGridPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KPosition;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 
 /**
  * A utility class for evaluating the grid micro layout of KRenderings.
@@ -233,9 +234,9 @@ public final class GridPlacementUtil {
                 // e.g. how big must a column be to fit all the minSizes
 
                 // size for this element is size of child elements or minSize
-                this.columnMaxMinWidth[column] = KielerMath.maxf(
+                this.columnMaxMinWidth[column] = ElkMath.maxf(
                         gpd.getMinCellWidth(), childMinSize.width, this.columnMaxMinWidth[column]);
-                this.rowMaxMinHeight[row] = KielerMath.maxf(
+                this.rowMaxMinHeight[row] = ElkMath.maxf(
                         gpd.getMinCellHeight(), childMinSize.height, this.rowMaxMinHeight[row]);
             }
 

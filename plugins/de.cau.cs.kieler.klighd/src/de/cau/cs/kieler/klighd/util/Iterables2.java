@@ -17,13 +17,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
+import org.eclipse.elk.core.util.Pair;
+
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-
-import de.cau.cs.kieler.core.util.Pair;
 
 /**
  * This class provides some convenience methods that I miss in

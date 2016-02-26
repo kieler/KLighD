@@ -17,15 +17,14 @@ import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KGraphPackage;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Point;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.Trigger;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -247,6 +246,23 @@ public interface IAction {
             }
         }
 
+        /**
+         * Creates a new {@link ActionResult} instance .
+         *
+         * @param actionRequiresLayout
+         *            flag indicating whether the action performed changes on the diagram requiring
+         *            a subsequent layout re-computation
+         * @return the requested {@link ActionResult}
+         */
+        public static ActionResult createResult(final boolean actionRequiresLayout) {
+            if (actionRequiresLayout) {
+                return new ActionResult(actionRequiresLayout);
+            } else {
+                return new ActionResult(actionRequiresLayout).dontZoom();
+            }
+        }
+
+        
         /**
          * Schedule animation during the subsequent automatic layout run.
          *

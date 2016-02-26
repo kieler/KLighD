@@ -15,12 +15,13 @@ package de.cau.cs.kieler.klighd.util;
 
 import java.util.Map;
 
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
+import org.eclipse.elk.graph.properties.MapPropertyHolder;
+import org.eclipse.elk.graph.properties.Property;
+
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 

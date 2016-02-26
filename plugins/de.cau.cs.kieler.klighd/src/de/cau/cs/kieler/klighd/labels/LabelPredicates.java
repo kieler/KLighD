@@ -14,15 +14,14 @@ package de.cau.cs.kieler.klighd.labels;
 
 import java.util.function.Predicate;
 
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.EdgeLabelPlacement;
+import org.eclipse.elk.graph.KEdge;
+import org.eclipse.elk.graph.KLabel;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.KPort;
 import org.eclipse.emf.ecore.EObject;
-
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 
 
 
@@ -133,7 +132,7 @@ public final class LabelPredicates {
         return isLabel().and(emfContainerInstanceOf(KEdge.class)).and(
                 (EObject label) -> {
                     KLayoutData ld = ((KLabel) label).getData(KLayoutData.class);
-                    EdgeLabelPlacement elp = ld.getProperty(LayoutOptions.EDGE_LABEL_PLACEMENT);
+                    EdgeLabelPlacement elp = ld.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
                     return elp == EdgeLabelPlacement.CENTER
                             || (includeUndefined && elp == EdgeLabelPlacement.UNDEFINED);
                 });

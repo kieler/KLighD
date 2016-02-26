@@ -21,8 +21,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Strings;
 
-import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;

@@ -14,10 +14,11 @@ package de.cau.cs.kieler.klighd.ui.view.syntheses.action;
 
 import java.util.Iterator;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
+import org.eclipse.elk.graph.KNode;
+
 import de.cau.cs.kieler.klighd.IAction;
-import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.ui.view.syntheses.EcoreModelSynthesis;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
 /**
  * Expands all details areas of the ecore representation of the model.

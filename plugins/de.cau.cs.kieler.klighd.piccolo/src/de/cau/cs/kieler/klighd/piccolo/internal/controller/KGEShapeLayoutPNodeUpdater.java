@@ -15,13 +15,13 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.geom.AffineTransform;
 
+import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.graph.KGraphPackage;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;

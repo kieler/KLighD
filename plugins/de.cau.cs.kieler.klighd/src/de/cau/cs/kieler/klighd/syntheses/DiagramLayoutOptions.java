@@ -15,21 +15,21 @@ package de.cau.cs.kieler.klighd.syntheses;
 
 import java.util.EnumSet;
 
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.kiml.options.Direction;
-import de.cau.cs.kieler.kiml.options.EdgeRouting;
-import de.cau.cs.kieler.kiml.options.HierarchyHandling;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.options.PortAlignment;
-import de.cau.cs.kieler.kiml.options.PortConstraints;
-import de.cau.cs.kieler.kiml.options.PortLabelPlacement;
-import de.cau.cs.kieler.kiml.options.PortSide;
-import de.cau.cs.kieler.kiml.options.SizeConstraint;
-import de.cau.cs.kieler.kiml.options.SizeOptions;
-import de.cau.cs.kieler.kiml.util.BoxLayoutProvider;
-import de.cau.cs.kieler.kiml.util.FixedLayoutProvider;
-import de.cau.cs.kieler.kiml.util.nodespacing.Spacing.Margins;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.Direction;
+import org.eclipse.elk.core.options.EdgeRouting;
+import org.eclipse.elk.core.options.HierarchyHandling;
+import org.eclipse.elk.core.options.PortAlignment;
+import org.eclipse.elk.core.options.PortConstraints;
+import org.eclipse.elk.core.options.PortLabelPlacement;
+import org.eclipse.elk.core.options.PortSide;
+import org.eclipse.elk.core.options.SizeConstraint;
+import org.eclipse.elk.core.options.SizeOptions;
+import org.eclipse.elk.core.util.BoxLayoutProvider;
+import org.eclipse.elk.core.util.FixedLayoutProvider;
+import org.eclipse.elk.core.util.nodespacing.Spacing.Margins;
+import org.eclipse.elk.graph.properties.IProperty;
 
 /**
  * A library class listing the typical/relevant layout options to set in diagram synthesis
@@ -43,6 +43,8 @@ import de.cau.cs.kieler.kiml.util.nodespacing.Spacing.Margins;
  */
 public final class DiagramLayoutOptions {
 
+    // MIGRATE The names of the underlying options have changed. Should these names change as well?
+    
     private DiagramLayoutOptions() {
     }
 
@@ -60,7 +62,7 @@ public final class DiagramLayoutOptions {
      *
      * @see LayoutOptions#ALGORITHM
      */
-    public static final IProperty<String> ALGORITHM = LayoutOptions.ALGORITHM;
+    public static final IProperty<String> ALGORITHM = CoreOptions.ALGORITHM;
 
     /**
      * @see BoxLayoutProvider
@@ -118,118 +120,118 @@ public final class DiagramLayoutOptions {
      * @see LayoutOptions#ADDITIONAL_PORT_SPACE;
      */
     public static final IProperty<Margins> ADDITIONAL_PORT_SPACE =
-            LayoutOptions.ADDITIONAL_PORT_SPACE;
+            CoreOptions.SPACING_PORT_SURROUNDING;
 
     /**
      * @see LayoutOptions#BORDER_SPACING
      */
-    public static final IProperty<Float> BORDER_SPACING = LayoutOptions.BORDER_SPACING;
+    public static final IProperty<Float> BORDER_SPACING = CoreOptions.SPACING_BORDER;
 
     /**
      * @see LayoutOptions#DIRECTION
      */
-    public static final IProperty<Direction> DIRECTION = LayoutOptions.DIRECTION;
+    public static final IProperty<Direction> DIRECTION = CoreOptions.DIRECTION;
 
     /**
      * @see LayoutOptions#EDGE_ROUTING
      */
-    public static final IProperty<EdgeRouting> EDGE_ROUTING = LayoutOptions.EDGE_ROUTING;
+    public static final IProperty<EdgeRouting> EDGE_ROUTING = CoreOptions.EDGE_ROUTING;
 
     /**
      * @see LayoutOptions#LABEL_SPACING
      */
-    public static final IProperty<Float> LABEL_SPACING = LayoutOptions.LABEL_SPACING;
+    public static final IProperty<Float> LABEL_SPACING = CoreOptions.SPACING_LABEL;
 
     /**
      * @see LayoutOptions#LAYOUT_HIERARCHY
      * @deprecated Use {@link #HIERARCHY_HANDLING} for finer control and the option to only layout a
      *             certain slice of the layout tree
      */
-    public static final IProperty<Boolean> LAYOUT_HIERARCHY = LayoutOptions.LAYOUT_HIERARCHY;
+    public static final IProperty<Boolean> LAYOUT_HIERARCHY = CoreOptions.LAYOUT_HIERARCHY;
 
     /**
      * @see LayoutOptions#HIERARCHY_HANDLING
      */
     public static final IProperty<HierarchyHandling> HIERARCHY_HANDLING =
-            LayoutOptions.HIERARCHY_HANDLING;
+            CoreOptions.HIERARCHY_HANDLING;
 
     /**
      * @see LayoutOptions#OFFSET
      */
-    public static final IProperty<Float> OFFSET = LayoutOptions.OFFSET;
+    public static final IProperty<Float> OFFSET = CoreOptions.PORT_BORDER_OFFSET;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT
      */
-    public static final IProperty<PortAlignment> PORT_ALIGNMENT = LayoutOptions.PORT_ALIGNMENT;
+    public static final IProperty<PortAlignment> PORT_ALIGNMENT = CoreOptions.PORT_ALIGNMENT_BASIC;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT_EAST
      */
-    public static final IProperty<PortAlignment> PORT_ALIGNMENT_EAST = LayoutOptions.PORT_ALIGNMENT_EAST;
+    public static final IProperty<PortAlignment> PORT_ALIGNMENT_EAST = CoreOptions.PORT_ALIGNMENT_EAST;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT_NORTH
      */
     public static final IProperty<PortAlignment> PORT_ALIGNMENT_NORTH =
-            LayoutOptions.PORT_ALIGNMENT_NORTH;
+            CoreOptions.PORT_ALIGNMENT_NORTH;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT_SOUTH
      */
     public static final IProperty<PortAlignment> PORT_ALIGNMENT_SOUTH =
-            LayoutOptions.PORT_ALIGNMENT_SOUTH;
+            CoreOptions.PORT_ALIGNMENT_SOUTH;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT_WEST
      */
-    public static final IProperty<PortAlignment> PORT_ALIGNMENT_WEST = LayoutOptions.PORT_ALIGNMENT_WEST;
+    public static final IProperty<PortAlignment> PORT_ALIGNMENT_WEST = CoreOptions.PORT_ALIGNMENT_WEST;
 
     /**
      * @see LayoutOptions#PORT_ANCHOR
      */
-    public static final IProperty<KVector> PORT_ANCHOR = LayoutOptions.PORT_ANCHOR;
+    public static final IProperty<KVector> PORT_ANCHOR = CoreOptions.PORT_ANCHOR;
 
     /**
      * @see LayoutOptions#PORT_CONSTRAINTS
      */
-    public static final IProperty<PortConstraints> PORT_CONSTRAINTS = LayoutOptions.PORT_CONSTRAINTS;
+    public static final IProperty<PortConstraints> PORT_CONSTRAINTS = CoreOptions.PORT_CONSTRAINTS;
 
     /**
      * @see LayoutOptions#PORT_INDEX
      */
-    public static final IProperty<Integer> PORT_INDEX = LayoutOptions.PORT_INDEX;
+    public static final IProperty<Integer> PORT_INDEX = CoreOptions.PORT_INDEX;
 
     /**
      * @see LayoutOptions#PORT_LABEL_PLACEMENT
      */
     public static final IProperty<PortLabelPlacement> PORT_LABEL_PLACEMENT =
-            LayoutOptions.PORT_LABEL_PLACEMENT;
+            CoreOptions.PORT_LABELS_PLACEMENT;
 
     /**
      * @see LayoutOptions#PORT_SPACING
      */
-    public static final IProperty<Float> PORT_SPACING = LayoutOptions.PORT_SPACING;
+    public static final IProperty<Float> PORT_SPACING = CoreOptions.SPACING_PORT;
 
     /**
      * @see LayoutOptions#PORT_SIDE
      */
-    public static final IProperty<PortSide> PORT_SIDE = LayoutOptions.PORT_SIDE;
+    public static final IProperty<PortSide> PORT_SIDE = CoreOptions.PORT_SIDE;
 
     /**
      * @see LayoutOptions#SIZE_CONSTRAINT
      */
     public static final IProperty<EnumSet<SizeConstraint>> SIZE_CONSTRAINT =
-            LayoutOptions.SIZE_CONSTRAINT;
+            CoreOptions.NODE_SIZE_CONSTRAINTS;
 
     /**
      * @see LayoutOptions#SIZE_OPTIONS
      */
-    public static final IProperty<EnumSet<SizeOptions>> SIZE_OPTIONS = LayoutOptions.SIZE_OPTIONS;
+    public static final IProperty<EnumSet<SizeOptions>> SIZE_OPTIONS = CoreOptions.NODE_SIZE_OPTIONS;
 
     /**
      * @see LayoutOptions#SPACING
      */
-    public static final IProperty<Float> SPACING = LayoutOptions.SPACING;
+    public static final IProperty<Float> SPACING = CoreOptions.SPACING_NODE;
 
 }

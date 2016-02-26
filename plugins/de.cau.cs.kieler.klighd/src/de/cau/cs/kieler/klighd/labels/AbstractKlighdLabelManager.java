@@ -13,13 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.labels.ILabelManager;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.graph.KLabel;
 import org.eclipse.swt.graphics.FontData;
 
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.labels.ILabelManager;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 

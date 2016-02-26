@@ -17,10 +17,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
+import org.eclipse.elk.core.klayoutdata.KInsets;
+import org.eclipse.elk.core.klayoutdata.KLayoutDataFactory;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.util.Pair;
 
 /**
  * A convenience class representing floating-point-precise bounds and lots of helpful operations on

@@ -15,14 +15,13 @@ package de.cau.cs.kieler.klighd.krendering;
 
 import java.util.List;
 
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.graph.KGraphData;
+import org.eclipse.elk.graph.KNode;
+
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.core.kgraph.KGraphData;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
 

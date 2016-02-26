@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.labels;
 
 import java.util.function.Predicate;
 
-import de.cau.cs.kieler.core.kgraph.KLabel;
+import org.eclipse.elk.graph.KLabel;
 
 /**
  * Compound label manager that executes a child label manager if a given condition is true for a label.

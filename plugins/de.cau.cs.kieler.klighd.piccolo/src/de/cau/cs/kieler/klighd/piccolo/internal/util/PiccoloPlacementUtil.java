@@ -15,14 +15,15 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.geom.Point2D;
 
-import de.cau.cs.kieler.core.krendering.KDecoratorPlacementData;
-import de.cau.cs.kieler.core.krendering.KPlacementData;
-import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KPosition;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KRenderingUtil;
-import de.cau.cs.kieler.core.util.Pair;
+import org.eclipse.elk.core.util.Pair;
+
+import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KPolyline;
+import de.cau.cs.kieler.klighd.krendering.KPosition;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;

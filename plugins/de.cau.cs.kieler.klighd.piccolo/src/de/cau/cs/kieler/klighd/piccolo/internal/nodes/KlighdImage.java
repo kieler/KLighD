@@ -31,8 +31,8 @@ import org.osgi.framework.Bundle;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.core.krendering.KImage;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
+import de.cau.cs.kieler.klighd.krendering.KImage;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;

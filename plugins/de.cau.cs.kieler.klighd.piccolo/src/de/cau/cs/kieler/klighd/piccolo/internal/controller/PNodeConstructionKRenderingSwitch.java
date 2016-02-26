@@ -15,21 +15,21 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.util.List;
 
-import de.cau.cs.kieler.core.krendering.KArc;
-import de.cau.cs.kieler.core.krendering.KChildArea;
-import de.cau.cs.kieler.core.krendering.KCustomRendering;
-import de.cau.cs.kieler.core.krendering.KEllipse;
-import de.cau.cs.kieler.core.krendering.KImage;
-import de.cau.cs.kieler.core.krendering.KPolygon;
-import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KRectangle;
-import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
-import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
-import de.cau.cs.kieler.core.krendering.KSpline;
-import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
+import de.cau.cs.kieler.klighd.krendering.KArc;
+import de.cau.cs.kieler.klighd.krendering.KChildArea;
+import de.cau.cs.kieler.klighd.krendering.KCustomRendering;
+import de.cau.cs.kieler.klighd.krendering.KEllipse;
+import de.cau.cs.kieler.klighd.krendering.KImage;
+import de.cau.cs.kieler.klighd.krendering.KPolygon;
+import de.cau.cs.kieler.klighd.krendering.KPolyline;
+import de.cau.cs.kieler.klighd.krendering.KRectangle;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KRoundedBendsPolyline;
+import de.cau.cs.kieler.klighd.krendering.KRoundedRectangle;
+import de.cau.cs.kieler.klighd.krendering.KSpline;
+import de.cau.cs.kieler.klighd.krendering.KStyle;
+import de.cau.cs.kieler.klighd.krendering.KText;
+import de.cau.cs.kieler.klighd.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 

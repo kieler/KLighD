@@ -15,17 +15,17 @@ package de.cau.cs.kieler.klighd.internal;
 
 import java.util.List;
 
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.properties.IProperty;
+
 import com.google.common.base.Function;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
  * Internal interface of diagram synthesis implementations. It has been introduced to simplify the

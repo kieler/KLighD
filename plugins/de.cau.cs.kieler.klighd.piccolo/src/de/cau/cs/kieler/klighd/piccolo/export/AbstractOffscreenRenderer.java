@@ -13,9 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
+
 import de.cau.cs.kieler.klighd.IOffscreenRenderer;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;

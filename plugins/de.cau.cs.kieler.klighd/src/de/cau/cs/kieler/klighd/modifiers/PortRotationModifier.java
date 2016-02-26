@@ -13,11 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.modifiers;
 
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.krendering.KRotation;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.PortSide;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.options.PortSide;
+import org.eclipse.elk.graph.KPort;
+
 import de.cau.cs.kieler.klighd.IStyleModifier;
+import de.cau.cs.kieler.klighd.krendering.KRotation;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 

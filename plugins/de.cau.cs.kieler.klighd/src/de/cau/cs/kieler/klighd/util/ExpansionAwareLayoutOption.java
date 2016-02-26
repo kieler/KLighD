@@ -17,13 +17,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.util.IDataObject;
-import de.cau.cs.kieler.kiml.LayoutMetaDataService;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.elk.core.util.GraphDataUtil;
+import org.eclipse.elk.core.util.IDataObject;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
+import org.eclipse.elk.graph.properties.MapPropertyHolder;
+import org.eclipse.elk.graph.properties.Property;
 
 /**
  * Contributes support for declarative layout option value definitions depending on the
@@ -188,7 +188,7 @@ public final class ExpansionAwareLayoutOption {
                     final String key = keyVals.next().trim();
                     if (keyVals.hasNext()) {
                         final String value = keyVals.next().trim();
-                        KimlUtil.loadDataElement(dataService, holder, key, value);
+                        GraphDataUtil.loadDataElement(dataService, holder, key, value);
                     }
                 }
             }

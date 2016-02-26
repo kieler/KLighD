@@ -16,13 +16,14 @@ package de.cau.cs.kieler.klighd.internal.macrolayout;
 import java.util.Iterator;
 import java.util.List;
 
-import de.cau.cs.kieler.core.krendering.KPolygon;
-import de.cau.cs.kieler.core.krendering.KPosition;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KRenderingUtil;
-import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
-import de.cau.cs.kieler.core.math.KVector;
+import org.eclipse.elk.core.math.KVector;
+
+import de.cau.cs.kieler.klighd.krendering.KPolygon;
+import de.cau.cs.kieler.klighd.krendering.KPosition;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
+import de.cau.cs.kieler.klighd.krendering.KRoundedRectangle;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 

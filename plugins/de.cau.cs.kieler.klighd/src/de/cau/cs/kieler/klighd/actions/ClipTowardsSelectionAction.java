@@ -13,9 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.jface.viewers.TreePath;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;

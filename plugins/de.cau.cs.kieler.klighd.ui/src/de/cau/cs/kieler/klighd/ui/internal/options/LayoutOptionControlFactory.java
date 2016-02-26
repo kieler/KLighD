@@ -18,6 +18,11 @@ import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
+import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.elk.core.data.LayoutOptionData;
+import org.eclipse.elk.core.math.ElkMath;
+import org.eclipse.elk.core.service.DiagramLayoutEngine;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -36,17 +41,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.math.KielerMath;
-import de.cau.cs.kieler.kiml.LayoutMetaDataService;
-import de.cau.cs.kieler.kiml.LayoutOptionData;
-import de.cau.cs.kieler.kiml.config.DefaultLayoutConfig;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.config.LayoutContext;
-import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
-import de.cau.cs.kieler.kiml.service.DiagramLayoutEngine;
-import de.cau.cs.kieler.kiml.service.EclipseLayoutConfig;
-import de.cau.cs.kieler.kiml.service.LayoutOptionManager;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ISourceProxy;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
@@ -268,7 +262,7 @@ public class LayoutOptionControlFactory {
                             DATA_SELECTION_LISTENER);
                     if (sliderListener != null) {
                         final float initialValue =
-                                KielerMath.boundf(((Number) defaultValue).floatValue(),
+                                ElkMath.boundf(((Number) defaultValue).floatValue(),
                                         sliderListener.minFloat, sliderListener.maxFloat);
                         final int selection = Math.round((initialValue - sliderListener.minFloat)
                                 / (sliderListener.maxFloat - sliderListener.minFloat)
@@ -365,7 +359,7 @@ public class LayoutOptionControlFactory {
             // set initial value for the slider
             float initialValue = ((Number) defaultLayoutConfig.getOptionValue(optionData,
                     defaultLayoutContext)).floatValue();
-            initialValue = KielerMath.boundf(initialValue, sliderListener.minFloat,
+            initialValue = ElkMath.boundf(initialValue, sliderListener.minFloat,
                     sliderListener.maxFloat);
 
             label.setText(optionData.getName() + ": " + initialValue);

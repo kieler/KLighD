@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.internal;
 
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-
 /**
  * In interface of classes contributing an {@link ILayoutConfig}.<br>
  * It is currently implemented by the {@link de.cau.cs.kieler.klighd.IDiagramWorkbenchPart

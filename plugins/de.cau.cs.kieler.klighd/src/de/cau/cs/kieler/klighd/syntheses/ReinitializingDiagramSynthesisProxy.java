@@ -16,6 +16,11 @@ package de.cau.cs.kieler.klighd.syntheses;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.core.util.WrappedException;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
@@ -30,19 +35,13 @@ import com.google.inject.Provider;
 import com.google.inject.Scope;
 import com.google.inject.TypeLiteral;
 
-import de.cau.cs.kieler.core.WrappedException;
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.krendering.ViewSynthesisShared;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
+import de.cau.cs.kieler.klighd.krendering.KText;
+import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared;
 
 
 /**
@@ -249,7 +248,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
                             + "." + nl + "Is that class free of compiler errors?" + nl
                             + "Does it extend " + AbstractDiagramSynthesis.class.getCanonicalName()
                             + "?" + nl + "See exception trace below.";
-            throw new WrappedException(e, msg);
+            throw new WrappedException(msg, e);
         }
         return res; 
     }

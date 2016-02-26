@@ -13,8 +13,9 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+
+import de.cau.cs.kieler.klighd.krendering.KStyle;
 
 /**
  * The interface for classes implementing a style modifier that update

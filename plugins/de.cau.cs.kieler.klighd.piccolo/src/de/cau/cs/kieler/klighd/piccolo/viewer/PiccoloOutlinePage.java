@@ -24,6 +24,11 @@ import java.util.Collections;
 
 import javax.swing.Timer;
 
+import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.swt.SWT;
@@ -37,13 +42,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.Colors;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
@@ -508,7 +508,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
         // always reveal the current shape layout - it may be exchanged over the diagram's life time
         final KShapeLayout layoutData = rootNode.getData(KShapeLayout.class);
-        final float scale = layoutData.getProperty(LayoutOptions.SCALE_FACTOR).floatValue();
+        final float scale = layoutData.getProperty(CoreOptions.SCALE_FACTOR).floatValue();
 
         final float width = Math.max(layoutData.getWidth() * scale, MIN_SIZE);
         final float height = Math.max(layoutData.getHeight() * scale, MIN_SIZE);

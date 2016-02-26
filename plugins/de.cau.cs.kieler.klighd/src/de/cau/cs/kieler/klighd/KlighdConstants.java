@@ -20,10 +20,9 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.core.krendering.KColor;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
+import de.cau.cs.kieler.klighd.krendering.KColor;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
 /**

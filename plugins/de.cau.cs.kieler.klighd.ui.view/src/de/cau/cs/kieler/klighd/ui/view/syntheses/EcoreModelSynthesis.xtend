@@ -13,28 +13,28 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.syntheses
 
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.krendering.Colors
-import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-import de.cau.cs.kieler.core.properties.IProperty
-import de.cau.cs.kieler.core.util.Pair
-import de.cau.cs.kieler.kiml.options.Direction
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.klay.layered.properties.FixedAlignment
-import de.cau.cs.kieler.klay.layered.properties.Properties
 import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
+import de.cau.cs.kieler.klighd.krendering.Colors
+import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KPolylineExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
-import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.List
 import javax.inject.Inject
+import org.eclipse.elk.alg.layered.properties.FixedAlignment
+import org.eclipse.elk.alg.layered.properties.LayeredOptions
+import org.eclipse.elk.core.options.CoreOptions
+import org.eclipse.elk.core.util.Pair
+import org.eclipse.elk.graph.KNode
+import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.util.formallang.FollowerFunctionImpl.Direction
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 
@@ -81,8 +81,8 @@ class EcoreModelSynthesis extends AbstractDiagramSynthesis<EObject> {
 
     override getDisplayedLayoutOptions() {
         return newLinkedList(
-            new Pair<IProperty<?>, List<?>>(LayoutOptions::DIRECTION, Direction::values.drop(1).sortBy[it.name]),
-            new Pair<IProperty<?>, List<?>>(LayoutOptions::SPACING, newArrayList(0, 150))
+            new Pair<IProperty<?>, List<?>>(CoreOptions::DIRECTION, Direction::values.drop(1).sortBy[it.name]),
+            new Pair<IProperty<?>, List<?>>(CoreOptions::SPACING_NODE, newArrayList(0, 150))
         );
     }
 
@@ -91,8 +91,8 @@ class EcoreModelSynthesis extends AbstractDiagramSynthesis<EObject> {
     override KNode transform(EObject model) {
         val rootNode = createNode();
         
-        rootNode.addLayoutParam(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.klay.layered");
-        rootNode.setLayoutOption(Properties::FIXED_ALIGNMENT, FixedAlignment.BALANCED);
+        rootNode.addLayoutParam(CoreOptions::ALGORITHM, "de.cau.cs.kieler.klay.layered");
+        rootNode.setLayoutOption(LayeredOptions::FIXED_ALIGNMENT, FixedAlignment.BALANCED);
         
         // transform root object
         rootNode.children += model.translateEObject

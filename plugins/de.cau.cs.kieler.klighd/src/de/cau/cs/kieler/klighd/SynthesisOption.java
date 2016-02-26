@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd;
 
 import java.util.List;
 
-import de.cau.cs.kieler.core.util.Pair;
+import org.eclipse.elk.core.util.Pair;
 
 /**
  * Represents a view synthesis option provided by implementations of
