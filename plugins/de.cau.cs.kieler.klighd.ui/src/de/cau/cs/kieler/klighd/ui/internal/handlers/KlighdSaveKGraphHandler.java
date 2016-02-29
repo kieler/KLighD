@@ -82,6 +82,15 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * Handler to store the view model KGraph (or a subgraph) of a KlighD view to a file. This class is
  * mainly intended to support debugging purposes.
  * 
+ * For "chunky", we export 4 types of diagrams:
+ *      flat_           Every compound node with its children and none of the children being expanded
+ *      expanded_       Every compound node with all of its children being expanded
+ *      expanded_flat   Every compound node with its children of size as if they were expanded but all
+ *                      further children removed 
+ *      inchierarchy_   Incrementally expanded diagrams, starting with the top-level compound node and 
+ *                      zero expanded children. Afterwards compound nodes are expanded one after another 
+ *                      in a breath-first order.
+ * 
  * @author uru
  */
 @SuppressWarnings("restriction")
@@ -225,16 +234,17 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
         final Queue<KNode> expandedNodes = Lists.newLinkedList();
         String path = destination + File.separator;
         
-        
         flatNodes.add(subgraph);
         expandedNodes.add(subgraph);
 
+        // --------
+        // #1 flat_
         // expand the flat versions
         while (!flatNodes.isEmpty()) {
             final KNode n = flatNodes.poll();
 
             if (n.getChildren().size() > 1) {
-                String filename = "flat_" + getModelPathName(n) + KGRAPH_FILE_EXTENSION;
+                String filename = "flat_" + getModelPathName(n, viewContext) + KGRAPH_FILE_EXTENSION;
                 System.out.println("Exporting: " + filename);
                 URI uri = URI.createPlatformResourceURI(path + filename, true);
                 export(n, uri, EMPTY, true);
@@ -258,25 +268,66 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             }
         }
 
+        // ----------------
+        // #2 inchierarchy_
+        // collapse everything again
+        for (KNode node : expandedNodes) {
+            if (node != subgraph) {
+                viewContext.getViewer().collapse(node);
+            }
+        }
+        final Queue<KNode> increaseHierarchy = Lists.newLinkedList();
+        increaseHierarchy.add(subgraph);
+        LightDiagramServices.layoutDiagram(viewContext, false);
+        int i = 0;
+        // SUPPRESS CHECKSTYLE NEXT MagicNumber
+        int requiredPaddingZeroes = (int) Math.ceil(Math.log(expandedNodes.size()) / Math.log(10));
+        do {
+            
+            KNode toExpand = increaseHierarchy.poll();
+            viewContext.getViewer().expand(toExpand);
+            LightDiagramServices.layoutDiagram(viewContext, false);
+            
+            String filename =
+                    "inchierarchy_" + getModelPathName(subgraph, viewContext) + "_"
+                            + String.format("%0" + requiredPaddingZeroes + "d", i++)
+                            + KGRAPH_FILE_EXTENSION;
+            System.out.println("Exporting: " + filename);
+            URI uri = URI.createPlatformResourceURI(path + filename, true);
+            export(subgraph, uri, EMPTY, false);
+
+            for (KNode child : toExpand.getChildren()) {
+                if (!child.getChildren().isEmpty()) {
+                    increaseHierarchy.add(child);
+                }
+            }
+
+        } while (!increaseHierarchy.isEmpty());
+
         // export the expanded versions
         while (!expandedNodes.isEmpty()) {
             final KNode n = expandedNodes.poll();
 
             if (n.getChildren().size() > 1) {
-                String filename = getModelPathName(n) + KGRAPH_FILE_EXTENSION;
+                String filename = getModelPathName(n, viewContext) + KGRAPH_FILE_EXTENSION;
                 System.out.println("Exporting: " + filename);
                 URI uri = URI.createPlatformResourceURI(path + "expanded_" + filename, true);
-                // export fully expanded
+
+                // ----------------
+                // #3 expanded_
                 export(n, uri, EMPTY, false);
                 
                 uri = URI.createPlatformResourceURI(path + "expanded_flat_" + filename, true);
+                
+                // ----------------
+                // #4 expanded_flat_
                 // remove children of compound nodes and export again
                 export(n, uri, EMPTY, true);
             }
         }
     }
     
-    private String getModelPathName(final KNode node) {
+    private String getModelPathName(final KNode node, final ViewContext vc) {
         String s = "";
         KNode parent = node;
         while (parent != null) {
@@ -285,7 +336,11 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             s = "-" + name + s;
             parent = parent.getParent();
         }
-        return s.substring(1);
+        s = s.substring(1);
+        if (vc != null && vc.getDiagramWorkbenchPart() != null) {
+            s = vc.getDiagramWorkbenchPart().getTitle() + "-" + s;
+        }
+        return s;
     }
     
     private void export(final KNode subgraph, final URI fileOutputURI,
