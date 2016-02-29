@@ -20,8 +20,13 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.DiagramLayoutEngine;
+import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
+import org.eclipse.elk.core.service.ElkServicePlugin;
+import org.eclipse.elk.core.util.IElkCancelIndicator;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
@@ -31,7 +36,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -240,7 +244,7 @@ public final class LightDiagramServices {
      *            the viewContext whose diagram is to be arranged
      */
     public static void layoutDiagram(final ViewContext viewContext) {
-        layoutDiagram(viewContext, (List<ILayoutConfig>) null);
+        layoutDiagram(viewContext, (List<LayoutConfigurator>) null);
     }
 
     /**
@@ -255,7 +259,7 @@ public final class LightDiagramServices {
      *            a list of layout options
      */
     public static void layoutDiagram(final ViewContext viewContext,
-            final List<ILayoutConfig> options) {
+            final List<LayoutConfigurator> options) {
         layoutDiagram(null, null, viewContext, null, null, null, options);
     }
 
@@ -271,7 +275,7 @@ public final class LightDiagramServices {
      *            layout with or without animation
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate) {
-        layoutDiagram(viewContext, animate, (List<ILayoutConfig>) null);
+        layoutDiagram(viewContext, animate, (List<LayoutConfigurator>) null);
     }
 
     /**
@@ -288,7 +292,7 @@ public final class LightDiagramServices {
      *            a list of layout options
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
-            final List<ILayoutConfig> options) {
+            final List<LayoutConfigurator> options) {
         layoutDiagram(null, null, viewContext, animate, null, null, options);
     }
 
@@ -319,7 +323,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle,
-            final List<ILayoutConfig> options) {
+            final List<LayoutConfigurator> options) {
         layoutDiagram(null, null, viewContext, null, zoomStyle, null, options);
     }
 
@@ -357,7 +361,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle,
-            final KNode focusNode, final List<ILayoutConfig> options) {
+            final KNode focusNode, final List<LayoutConfigurator> options) {
         layoutDiagram(null, null, viewContext, null, zoomStyle, focusNode, options);
     }
 
@@ -373,7 +377,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
             final ZoomStyle zoomStyle) {
-        layoutDiagram(viewContext, animate, zoomStyle, (List<ILayoutConfig>) null);
+        layoutDiagram(viewContext, animate, zoomStyle, (List<LayoutConfigurator>) null);
     }
 
     /**
@@ -389,7 +393,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
-            final ZoomStyle zoomStyle, final List<ILayoutConfig> options) {
+            final ZoomStyle zoomStyle, final List<LayoutConfigurator> options) {
         layoutDiagram(null, null, viewContext, animate, zoomStyle, null, options);
     }
 
@@ -427,7 +431,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate,
-            final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
+            final ZoomStyle zoomStyle, final KNode focusNode, final List<LayoutConfigurator> options) {
         layoutDiagram(null, null, viewContext, animate, zoomStyle, focusNode, options);
     }
 
@@ -443,7 +447,7 @@ public final class LightDiagramServices {
      *            the diagram view part showing the diagram to layout
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
-        layoutDiagram(viewPart, (List<ILayoutConfig>) null);
+        layoutDiagram(viewPart, (List<LayoutConfigurator>) null);
     }
 
     /**
@@ -459,7 +463,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart,
-            final List<ILayoutConfig> options) {
+            final List<LayoutConfigurator> options) {
         layoutDiagram(viewPart, null, null, null, null, null, options);
     }
 
@@ -477,7 +481,7 @@ public final class LightDiagramServices {
      *            layout with or without animation
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
-        layoutDiagram(viewPart, animate, (List<ILayoutConfig>) null);
+        layoutDiagram(viewPart, animate, (List<LayoutConfigurator>) null);
     }
 
     /**
@@ -495,7 +499,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
-            final List<ILayoutConfig> options) {
+            final List<LayoutConfigurator> options) {
         layoutDiagram(viewPart, null, null, animate, null, null, options);
     }
 
@@ -528,7 +532,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final ZoomStyle zoomStyle,
-            final List<ILayoutConfig> options) {
+            final List<LayoutConfigurator> options) {
         layoutDiagram(viewPart, null, null, null, zoomStyle, null, null);
     }
 
@@ -566,7 +570,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart,
-            final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
+            final ZoomStyle zoomStyle, final KNode focusNode, final List<LayoutConfigurator> options) {
         layoutDiagram(viewPart, null, null, null, zoomStyle, focusNode, null);
     }
 
@@ -600,7 +604,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
-            final ZoomStyle zoomStyle, final List<ILayoutConfig> options) {
+            final ZoomStyle zoomStyle, final List<LayoutConfigurator> options) {
         layoutDiagram(viewPart, null, null, animate, zoomStyle, null, options);
     }
 
@@ -638,7 +642,7 @@ public final class LightDiagramServices {
      *            an optional list of layout options
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate,
-            final ZoomStyle zoomStyle, final KNode focusNode, final List<ILayoutConfig> options) {
+            final ZoomStyle zoomStyle, final KNode focusNode, final List<LayoutConfigurator> options) {
         layoutDiagram(viewPart, null, null, animate, zoomStyle, focusNode, options);
     }
 
@@ -666,7 +670,7 @@ public final class LightDiagramServices {
     private static void layoutDiagram(final IDiagramWorkbenchPart workbenchPart,
             final IViewer diagramViewer, final ViewContext viewContext,
             final Boolean animate, final ZoomStyle zoomStyle, final KNode focusNode,
-            final List<ILayoutConfig> options) {
+            final List<LayoutConfigurator> options) {
 
         final Pair<IDiagramWorkbenchPart, ViewContext> pair =
                 determineDWPandVC(workbenchPart, diagramViewer, viewContext);
@@ -692,43 +696,47 @@ public final class LightDiagramServices {
             theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE, zoomStyle);
             theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE, focusNode);
 
-            // Activate the KIML Service plug-in so all layout options are loaded
-            KimlServicePlugin.getDefault();
-
+            // Activate the ELK Service plug-in so all layout options are loaded
+            ElkServicePlugin.getInstance();
+            
+            // Our parameters for the layout run
+            Parameters layoutParameters = new Parameters();
+            final LayoutConfigurator extendedConfigurator = layoutParameters.addLayoutRun();
+            
+            // Animation
             final boolean doAnimate = animate != null
                     ? animate.booleanValue() : KlighdPlugin.getDefault()
                             .getPreferenceStore().getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-
-            final CompoundLayoutConfig extendedOptions = new CompoundLayoutConfig();
-            extendedOptions.add(new VolatileLayoutConfig()
-                    .setValue(LayoutOptions.ANIMATE, doAnimate));
+            layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
 
             if (thePart instanceof ILayoutConfigProvider) {
-                extendedOptions.add(((ILayoutConfigProvider) thePart).getLayoutConfig());
+                extendedConfigurator.overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
             }
 
-            if (options != null && !options.isEmpty()) {
-                extendedOptions.addAll(Collections2.filter(options, Predicates.notNull()));
+            if (options != null) {
+                for (LayoutConfigurator c : Collections2.filter(options, Predicates.notNull())) {
+                    extendedConfigurator.overrideWith(c);
+                }
             }
 
-            final List<? extends ILayoutConfig> additionalConfigs =
+            final List<? extends LayoutConfigurator> additionalConfigs =
                     theViewContext.getAdditionalLayoutConfigs();
 
             final Object diagramPart = recorder != null ? recorder : theViewContext;
 
-            final ILayoutCancelationIndicator cancelationIndicator = thePart != null
+            final IElkCancelIndicator cancelationIndicator = thePart != null
                     ? new DispositionAwareCancelationHandle(thePart) : null;
 
             if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart, cancelationIndicator,
-                        extendedOptions);
-
+                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
+                        layoutParameters);
             } else {
-                final List<ILayoutConfig> configs = Lists.<ILayoutConfig>newArrayList(extendedOptions);
-                configs.addAll(additionalConfigs);
+                for (LayoutConfigurator c : additionalConfigs) {
+                    layoutParameters.addLayoutRun(c);
+                }
 
-                DiagramLayoutEngine.INSTANCE.layout(thePart, diagramPart, cancelationIndicator,
-                        Iterables.toArray(configs, ILayoutConfig.class));
+                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
+                        layoutParameters);
             }
 
         } else {
@@ -780,7 +788,7 @@ public final class LightDiagramServices {
      *
      * @author chsch
      */
-    private static final class DispositionAwareCancelationHandle implements ILayoutCancelationIndicator {
+    private static final class DispositionAwareCancelationHandle implements IElkCancelIndicator {
 
         private final IDiagramWorkbenchPart workbenchPart;
 

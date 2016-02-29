@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.syntheses;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.core.util.WrappedException;
 import org.eclipse.elk.graph.KGraphElement;
@@ -335,7 +336,7 @@ public class ReinitializingDiagramSynthesisProxy<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
-    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+    public List<? extends LayoutConfigurator> getAdditionalLayoutConfigs() {
         if (this.transformationDelegate == null) {
             this.transformationDelegate = getNewDelegateInstance();
         }

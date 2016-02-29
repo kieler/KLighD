@@ -1,23 +1,22 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
- * http://www.informatik.uni-kiel.de/rtsys/kieler/
- *
- * Copyright 2012 by
+ * http://rtsys.informatik.uni-kiel.de/kieler
+ * 
+ * Copyright ${year} by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
- *
+ * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
 import org.eclipse.elk.core.klayoutdata.KInsets;
@@ -28,6 +27,7 @@ import org.eclipse.elk.core.klayoutdata.KPoint;
 import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.service.IDiagramLayoutConnector;
 import org.eclipse.elk.core.service.LayoutMapping;
 import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.KEdge;
@@ -38,6 +38,7 @@ import org.eclipse.elk.graph.KLabeledGraphElement;
 import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.KPort;
 import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.elk.graph.util.KGraphSwitch;
 import org.eclipse.emf.common.notify.Notification;
@@ -71,26 +72,36 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
- * A diagram layout manager for KLighD viewers that supports instances of {@link KNode}, as well as
- * the parts and viewers provided by KLighD.<br>
- * <br>
- * If the {@link KNode} instances have attached {@code KRendering} data the manager uses them to
- * compute the node insets as well as the minimal node size.<br>
- * <br>
- * <b>Note:</b> During the {@link #applyLayout(LayoutMapping)} phase layout data that have been
+ * A diagram layout connector for KLighD viewers that supports instances of {@link KNode}, as well as
+ * the parts and viewers provided by KLighD.
+ * 
+ * <p>If the {@link KNode} instances have attached {@code KRendering} data the manager uses them to
+ * compute the node insets as well as the minimal node size.</p>
+ * 
+ * <p><b>Note:</b> During the {@link #applyLayout(LayoutMapping)} phase layout data that have been
  * scaled according to a corresponding {@link LayoutOptions#SCALE_FACTOR} are normalized to scaling
  * <code>1.0f</code>, since the scaling is implemented on figure level by means of affine
  * transforms. In addition, the scale adjustment need not be reverted before the subsequent layout
- * run.
+ * run.</p>
  *
  * @author mri
  * @author chsch
  * @author msp
- *
- * @kieler.design proposed by chsch
- * @kieler.rating proposed yellow by chsch
+ * @author cds
  */
-public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement> {
+public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
+
+    /**
+     * Defines the possible transfer modes used to layout the graph.
+     */
+    private static enum EdgeLayoutTransferMode {
+        /** Model transfered from the model to layout graph. */
+        VIEW_MODEL_TO_LAYOUT_GRAPH,
+        /** Layout graph to view model without adjustments. */
+        LAYOUT_GRAPH_TO_VIEW_MODEL,
+        /** Layout graph to view model with adjustments. */
+        LAYOUT_GRAPH_TO_VIEW_MODEL_ADJUSTMENT
+    }
 
     /**
      * A dummy value used in fired {@link Notification Notifications} indicating a completed update
@@ -110,19 +121,6 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     /** edges that have been excluded from the layout. */
     private static final IProperty<List<KEdge>> EXCLUDED_EDGES = new Property<List<KEdge>>(
             "krendering.layout.excludedEdges");
-
-    /**
-     * Defines the possible transfer modes used to layout the graph.
-     */
-    private static enum EdgeLayoutTransferMode {
-        /** Model transfered from the model to layout graph. */
-        VIEW_MODEL_TO_LAYOUT_GRAPH,
-        /** Layout graph to view model without adjustments. */
-        LAYOUT_GRAPH_TO_VIEW_MODEL,
-        /** Layout graph to view model with adjustments. */
-        LAYOUT_GRAPH_TO_VIEW_MODEL_ADJUSTMENT
-    }
-
     /**
      * A property that is used to tell KIML about the workbench part this layout manager is
      * responsible for. Note that this property is not referred to by KIML immediately, it rather
@@ -132,45 +130,27 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     private static final IProperty<IWorkbenchPart> WORKBENCH_PART = new Property<IWorkbenchPart>(
             "klighd.layout.workbenchPart");
 
-    /** the property layout configurator. */
-    private final KGraphPropertyLayoutConfig propertyLayoutConfig = new KGraphPropertyLayoutConfig();
-
+    /**
+     * Static predicate definition avoiding the recurring creation and disposal of instances of the
+     * filter predicate.
+     */
+    private static final Predicate<KNode> NODE_FILTER = Predicates.and(
+            RenderingContextData.IS_ACTIVE,
+            KlighdPredicates.kgePropertyPredicate(CoreOptions.NO_LAYOUT, false, true));
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Layout Graph Building
+    
     /**
      * {@inheritDoc}
      */
-    public IMutableLayoutConfig getDiagramConfig() {
-        return propertyLayoutConfig;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean supports(final Object object) {
-        // KGraph instances are supported
-        //  Tests here for KGraphElement rather than KNode since this method e.g. invoked while
-        //  populating the layout view, which provides also port, edge, and label properties.
-        if (object instanceof KGraphElement) {
-            return true;
-        } else if (object instanceof ViewContext) {
-            return true;
-        } else if (object instanceof IViewer) {
-            return true;
-        } else if (object instanceof IDiagramWorkbenchPart) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public LayoutMapping buildLayoutGraph(final IWorkbenchPart workbenchPart,
-            final Object diagramPart) {
+    @Override
+    public LayoutMapping buildLayoutGraph(final IWorkbenchPart workbenchPart, final Object diagramPart) {
         final KNode graph;
         final ViewContext viewContext;
 
         // search for the root node
-
         if (diagramPart instanceof KNode) {
             graph = (KNode) diagramPart;
             viewContext = null;
@@ -202,11 +182,13 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
         final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation);
 
         if (viewContext != null) {
+            // MIGRATE Is this line even necessary?
             mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
 
             // remember the layout recorder if any
             mapping.setProperty(KlighdInternalProperties.RECORDER, viewContext.getLayoutRecorder());
         }
+        
         return mapping;
     }
 
@@ -221,6 +203,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     public LayoutMapping buildLayoutGraph(final KNode graph,
             final boolean performSizeEstimation) {
+        
         // MIGRATE Set Workbench part here?!?
         final LayoutMapping mapping = new LayoutMapping(null);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
@@ -245,15 +228,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         return mapping;
     }
-
-    /**
-     * Static predicate definition avoiding the recurring creation and disposal of instances of the
-     * filter predicate.
-     */
-    private static final Predicate<KNode> NODE_FILTER = Predicates.and(
-            RenderingContextData.IS_ACTIVE,
-            KlighdPredicates.kgePropertyPredicate(CoreOptions.NO_LAYOUT, false, true));
-
+    
     /**
      * Processes all child nodes of the given parent node.
      *
@@ -268,6 +243,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private void processNodes(final LayoutMapping mapping,
             final KNode parent, final KNode layoutParent, final boolean performSizeEstimation) {
+        
         // iterate through the parent's active children and put copies in the layout graph;
         //  a child is active if it contains RenderingContextData and the 'true' value wrt.
         //  the property KlighdConstants.ACTIVE, see the predicate definition above
@@ -299,6 +275,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private void createNode(final LayoutMapping mapping, final KNode node,
             final KNode layoutParent, final boolean performSizeEstimation) {
+        
         final KNode layoutNode = ElkUtil.createInitializedNode();
         // set the node layout
         // initialize with defaultLayout and try to get specific layout attached to the node
@@ -432,6 +409,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      *            be estimated     */
     private void createPort(final LayoutMapping mapping, final KPort port,
             final KNode layoutNode, final boolean estimateLabelSizes) {
+        
         final KPort layoutPort = ElkUtil.createInitializedPort();
 
         // set the port layout
@@ -461,6 +439,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private void processConnections(final LayoutMapping mapping,
             final boolean estimateLabelSizes) {
+        
         final BiMap<Object, KGraphElement> graphMap = mapping.getGraphMap().inverse();
 
         // iterate through the list of collected edges
@@ -515,6 +494,7 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
     private void createEdge(final LayoutMapping mapping, final KEdge edge,
             final KNode layoutSource, final KNode layoutTarget, final KPort layoutSourcePort,
             final KPort layoutTargetPort, final boolean estimateLabelSizes) {
+        
         final KEdge layoutEdge = ElkUtil.createInitializedEdge();
 
         // set the edge layout
@@ -618,12 +598,16 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         mapping.getGraphMap().put(layoutLabel, label);
     }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Layout Application
 
     /**
      * {@inheritDoc}
      */
-    public void applyLayout(final LayoutMapping mapping, final boolean zoomToFit,
-            final int animationTime) {
+    @Override
+    public void applyLayout(final LayoutMapping mapping, final IPropertyHolder settings) {
         // get the animation recorder if anyone has been attached above ...
         final ILayoutRecorder recorder = mapping.getProperty(KlighdInternalProperties.RECORDER);
 
@@ -637,13 +621,12 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
             }
             recorder.startRecording();
             applyLayout(mapping, suppressEdgeAdjustment);
-            recorder.stopRecording(animationTime);
-
+            recorder.stopRecording(calcAnimationTime(mapping, settings, false));
         } else {
             applyLayout(mapping, false);
         }
     }
-
+    
     /**
      * Applies the computed layout back to the graph.
      *
@@ -655,13 +638,15 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
      */
     private void applyLayout(final LayoutMapping mapping,
             final boolean suppressEdgeAdjustment) {
+        
         final Set<Entry<KGraphElement, Object>> elementMappings =
                 mapping.getGraphMap().entrySet();
 
         // apply the layout of all mapped layout elements back to the associated element
         for (final Entry<KGraphElement, Object> elementMapping : elementMappings) {
             final KGraphElement layoutElement = elementMapping.getKey();
-            // MIGRATE This can now be Object? Evil?!?
+            
+            // Since we built the layout graph, we know that this must be a KGraphElement
             final KGraphElement element = (KGraphElement) elementMapping.getValue();
 
             new KGraphSwitch<Boolean>() {
@@ -1181,13 +1166,58 @@ public class KlighdLayoutManager implements IDiagramLayoutManager<KGraphElement>
 
         return point;
     }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Animation Time
 
     /**
-     * {@inheritDoc}
+     * Calculates animation time for the given graph size. If the viewer is not visible,
+     * the animation time is 0.
+     * 
+     * @param mapping a mapping of the layout graph
+     * @param config the layout configurator from which to read animation settings, or {@code null}
+     * @param viewerNotVisible whether the diagram viewer is currently not visible
+     * @return number of milliseconds to animate, or 0 if no animation is desired
      */
-    public void undoLayout(final LayoutMapping mapping) {
-        throw new UnsupportedOperationException(
-                "Undo is not supported by the KLighD KRendering layout manager.");
+    private int calcAnimationTime(final LayoutMapping mapping, final IPropertyHolder settings,
+            final boolean viewerNotVisible) {
+        
+        boolean animate = settings.getProperty(CoreOptions.ANIMATE);
+        if (animate) {
+            int minTime = settings.getProperty(CoreOptions.MIN_ANIM_TIME);
+            if (minTime < 0) {
+                minTime = 0;
+            }
+            int maxTime = settings.getProperty(CoreOptions.MAX_ANIM_TIME);
+            if (maxTime < minTime) {
+                maxTime = minTime;
+            }
+            int factor = settings.getProperty(CoreOptions.ANIM_TIME_FACTOR);
+            if (factor > 0) {
+                int graphSize = countNodes(mapping.getLayoutGraph());
+                int time = minTime + (int) (factor * Math.sqrt(graphSize));
+                return time <= maxTime ? time : maxTime;
+            } else {
+                return minTime;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Counts the total number of children in the given node, including deep hierarchies.
+     * 
+     * @param node
+     *            parent node
+     * @return number of children and grandchildren in the given parent
+     */
+    private static int countNodes(final KNode node) {
+        int count = 0;
+        for (KNode child : node.getChildren()) {
+            count += countNodes(child) + 1;
+        }
+        return count;
     }
 
 }

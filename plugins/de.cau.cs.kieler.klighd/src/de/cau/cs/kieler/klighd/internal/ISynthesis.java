@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.internal;
 
 import java.util.List;
 
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.elk.graph.KNode;
@@ -121,10 +122,10 @@ public interface ISynthesis {
     Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element);
 
     /**
-     * Returns a list of {@link ILayoutConfig ILayoutConfigs} to be handed over to KIML in order to
-     * cause additional layout runs corresponding to the provided configurations.
+     * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
+     * order to cause additional layout runs corresponding to the provided configurations.
      * 
-     * @return a {@link List} of {@link ILayoutConfig ILayoutConfigs}
+     * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
      */
-    List<? extends ILayoutConfig> getAdditionalLayoutConfigs();
+    List<? extends LayoutConfigurator> getAdditionalLayoutConfigs();
 }

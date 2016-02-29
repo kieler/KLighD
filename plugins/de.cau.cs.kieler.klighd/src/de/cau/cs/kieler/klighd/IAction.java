@@ -17,6 +17,7 @@ import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.elk.graph.KGraphPackage;
 import org.eclipse.elk.graph.KNode;
@@ -208,7 +209,7 @@ public interface IAction {
 
         private static final IPreferenceStore STORE = KlighdPlugin.getDefault().getPreferenceStore();
 
-        private List<ILayoutConfig> layoutConfigs = null;
+        private List<LayoutConfigurator> layoutConfigs = null;
 
         private boolean actionPerformed = true;
         private Boolean animateLayout = null;
@@ -221,7 +222,9 @@ public interface IAction {
             this.actionPerformed = theActionPerformed;
         }
 
-        private ActionResult(final boolean theActionPerformed, final List<ILayoutConfig> theConfigs) {
+        private ActionResult(final boolean theActionPerformed,
+                final List<LayoutConfigurator> theConfigs) {
+            
             this.actionPerformed = theActionPerformed;
             this.layoutConfigs = theConfigs;
         }
@@ -233,12 +236,13 @@ public interface IAction {
          *            flag indicating whether the action performed changes on the diagram requiring
          *            a subsequent layout re-computation
          * @param config
-         *            some additional {@link ILayoutConfig ILayoutConfigs} to by incorporated,
+         *            some additional {@link LayoutConfigurator LayoutConfigurators} to by incorporated,
          *            will be ignored if {@code actionRequiresLayout == false}
          * @return the requested {@link ActionResult}
          */
         public static ActionResult createResult(final boolean actionRequiresLayout,
-                final ILayoutConfig... config) {
+                final LayoutConfigurator... config) {
+            
             if (actionRequiresLayout) {
                 return new ActionResult(actionRequiresLayout, Arrays.asList(config));
             } else {
@@ -379,9 +383,9 @@ public interface IAction {
         /**
          * Getter.
          *
-         * @return the attached {@link ILayoutConfig}
+         * @return the attached {@link LayoutConfigurator LayoutConfigurators}
          */
-        public List<ILayoutConfig> getLayoutConfigs() {
+        public List<LayoutConfigurator> getLayoutConfigs() {
             return this.layoutConfigs;
         }
 

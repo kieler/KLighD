@@ -168,13 +168,6 @@ public final class KlighdConstants {
     public static final Bounds MINIMAL_NODE_BOUNDS = Bounds.immutableCopy(new Bounds(10, 10));
     
     /**
-     * The priority of the {@link de.cau.cs.kieler.kiml.config.ILayoutConfig ILayoutConfig} employed
-     * in the side bar layout configuration tools of KLighD diagrams.
-     */
-    // SUPPRESS CHECKSTYLE NEXT MagicNumber
-    public static final int SIDE_BAR_LAYOUT_CONFIG_PRIORITY = VolatileLayoutConfig.DEFAULT_PRIORITY - 25;
-
-    /**
      * Constant definition of <i>printout</i> export format, required e.g. in the registration of
      * {@link IExportBranding IExportBrandings}.
      */

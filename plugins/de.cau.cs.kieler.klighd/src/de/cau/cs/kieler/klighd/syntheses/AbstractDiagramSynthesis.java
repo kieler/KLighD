@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.elk.graph.KNode;
@@ -390,7 +391,7 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     /**
      * {@inheritDoc}
      */
-    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+    public List<? extends LayoutConfigurator> getAdditionalLayoutConfigs() {
         return Collections.emptyList();
     }
 

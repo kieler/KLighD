@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
 import org.eclipse.elk.core.util.ElkUtil;
@@ -855,7 +856,7 @@ public class ViewContext extends MapPropertyHolder {
      *
      * @return a map of options (map keys) and related values (map values)
      */
-    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+    public List<? extends LayoutConfigurator> getAdditionalLayoutConfigs() {
         if (this.diagramSynthesis != null) {
             return this.diagramSynthesis.getAdditionalLayoutConfigs();
         } else {
