@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.ui.parts;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -207,7 +208,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     /**
      * {@inheritDoc}
      */
-    public ILayoutConfig getLayoutConfig() {
+    public LayoutConfigurator getLayoutConfig() {
         return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
 

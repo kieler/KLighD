@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.KNode;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -817,9 +818,9 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
      * {@inheritDoc}
      */
     @Override
-    public ILayoutConfig getLayoutConfig() {
+    public LayoutConfigurator getLayoutConfig() {
         if (controller != null) {
-            ILayoutConfig layoutConfig = controller.getLayoutConfig();
+            LayoutConfigurator layoutConfig = controller.getLayoutConfig();
             if (layoutConfig != null) {
                 return layoutConfig;
             }

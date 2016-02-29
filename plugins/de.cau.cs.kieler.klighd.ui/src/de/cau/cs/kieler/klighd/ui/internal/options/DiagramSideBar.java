@@ -20,6 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.jface.action.IAction;
@@ -77,7 +78,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 public final class DiagramSideBar {
 
     /** The priority of the {@link ILayoutConfig} employed in side bars. */
-    public static final int LAYOUT_CONFIG_PRIORITY = KlighdConstants.SIDE_BAR_LAYOUT_CONFIG_PRIORITY;
+//    public static final int LAYOUT_CONFIG_PRIORITY = KlighdConstants.SIDE_BAR_LAYOUT_CONFIG_PRIORITY;
 
     /** The initial width of the option pane and the diagram viewer. */
     private static final int INITIAL_OPTIONS_FORM_WIDTH = 230;
@@ -102,7 +103,10 @@ public final class DiagramSideBar {
     private boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
 
     /** The layout configurator that stores the values set by the layout option controls. */
-    private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
+    // MIGRATE Is this the right way to create a new Layout Configurator?
+    // was:
+//  private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
+    private final LayoutConfigurator layoutConfig = new LayoutConfigurator();
 
     private final Composite sideBarParent;
 
@@ -164,7 +168,7 @@ public final class DiagramSideBar {
      *
      * @return the employed {@link ILayoutConfig}
      */
-    public ILayoutConfig getLayoutConfig() {
+    public LayoutConfigurator getLayoutConfig() {
         return this.layoutConfig;
     }
 

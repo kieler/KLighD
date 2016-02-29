@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.controller;
 
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -225,7 +226,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * 
      * @return configuration or null
      */
-    public ILayoutConfig getLayoutConfig() {
+    public LayoutConfigurator getLayoutConfig() {
         return null;
     }
 

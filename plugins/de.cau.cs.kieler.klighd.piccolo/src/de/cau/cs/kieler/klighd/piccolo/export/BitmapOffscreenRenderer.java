@@ -25,6 +25,8 @@ import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
+import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;
+import de.cau.cs.kieler.klighd.util.RunnableWithResult;
 
 /**
  * A concrete implementation of {@link de.cau.cs.kieler.klighd.IOffscreenRenderer

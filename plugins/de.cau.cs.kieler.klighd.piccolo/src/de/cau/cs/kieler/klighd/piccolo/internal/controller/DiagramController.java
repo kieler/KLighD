@@ -57,7 +57,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.krendering.KPolyline;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
@@ -862,7 +862,7 @@ public class DiagramController {
                 final PBounds bounds;
 
                 // check whether an actual bounds change occurred, and if so get the new bounds
-                if (recordedChange.getValue() == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+                if (recordedChange.getValue() == KlighdDiagramLayoutConnector.LAYOUT_DATA_UNCHANGED_VALUE) {
                     bounds = null;
                 } else {
                     bounds = (PBounds) recordedChange.getValue();

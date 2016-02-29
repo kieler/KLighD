@@ -22,7 +22,7 @@ import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
@@ -95,11 +95,11 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
 
             final Object newValue = notification.getNewValue();
 
-            if (newValue == KlighdLayoutManager.LAYOUT_DATA_CHANGED_VALUE) {
+            if (newValue == KlighdDiagramLayoutConnector.LAYOUT_DATA_CHANGED_VALUE) {
                 dataCompletelyChanged = true;
                 unchanged = false;
 
-            } else if (newValue == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+            } else if (newValue == KlighdDiagramLayoutConnector.LAYOUT_DATA_UNCHANGED_VALUE) {
                 dataCompletelyChanged = false;
                 unchanged = true;
 
@@ -133,7 +133,7 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 // if the layout data did not change, provide that information anyway,
                 //  since nodeRep may be invisible and is set visible by updating the layout data
                 controller.recordChange((IKGraphElementNode) nodeRep,
-                        KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE);
+                        KlighdDiagramLayoutConnector.LAYOUT_DATA_UNCHANGED_VALUE);
             } else {
                 controller.recordChange((IKGraphElementNode) nodeRep, getBounds(shL));
             }

@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import java.awt.geom.Point2D;
 import java.util.List;
 
+import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.elk.graph.KNode;
 import org.eclipse.swt.SWT;
@@ -237,7 +238,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         final boolean animate = resultOfLastAction.getAnimateLayout();
         final ZoomStyle zoomStyle = ZoomStyle.create(resultOfLastActionRequiringLayout, vc);
         final KNode focusNode = resultOfLastActionRequiringLayout.getFocusNode();
-        final List<ILayoutConfig> layoutConfigs = resultOfLastAction.getLayoutConfigs();
+        final List<LayoutConfigurator> layoutConfigs = resultOfLastAction.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager
         //  finish the processing of 'inputEvent' quickly.

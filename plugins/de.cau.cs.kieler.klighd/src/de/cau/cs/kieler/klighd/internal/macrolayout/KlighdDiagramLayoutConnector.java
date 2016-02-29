@@ -179,11 +179,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 ? true : !viewContext.getProperty(KlighdSynthesisProperties.SUPPRESS_SIZE_ESTIMATION);
 
         // create the mapping
-        final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation);
+        final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation, viewContext.getDiagramWorkbenchPart());
 
         if (viewContext != null) {
             // MIGRATE Is this line even necessary?
-            mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
+//            mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
 
             // remember the layout recorder if any
             mapping.setProperty(KlighdInternalProperties.RECORDER, viewContext.getLayoutRecorder());
@@ -202,10 +202,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @return the layout graph mapping
      */
     public LayoutMapping buildLayoutGraph(final KNode graph,
-            final boolean performSizeEstimation) {
+            final boolean performSizeEstimation, final IWorkbenchPart diagramWorkbenchPart) {
         
         // MIGRATE Set Workbench part here?!?
-        final LayoutMapping mapping = new LayoutMapping(null);
+        final LayoutMapping mapping = new LayoutMapping(diagramWorkbenchPart);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
 
         // set the parent element
