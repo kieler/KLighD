@@ -46,7 +46,7 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ISourceProxy;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.internal.macrolayout.KLighDLayoutConfigurationStore;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutConfigurationStore;
 
 /**
  * A factory for controls for layout options.

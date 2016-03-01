@@ -69,7 +69,7 @@
    <extension
          point="org.eclipse.elk.core.layoutProviders">
       <provider
-            class="de.cau.cs.kieler.klighd.KLighDOptions">
+            class="de.cau.cs.kieler.klighd.KlighdOptions">
       </provider>
 
    </extension>

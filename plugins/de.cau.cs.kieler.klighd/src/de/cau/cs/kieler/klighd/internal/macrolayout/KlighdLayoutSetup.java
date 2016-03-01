@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
+import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.core.service.ILayoutSetup;
 import org.eclipse.elk.graph.KGraphElement;
 
@@ -70,12 +71,9 @@ public final class KlighdLayoutSetup implements ILayoutSetup {
         @Override
         public void configure(final Binder binder) {
             binder.bind(IDiagramLayoutConnector.class).to(KlighdDiagramLayoutConnector.class);
-            
-            // MIGRATE Create a proper configuration store for KLighD
-//            binder.bind(ILayoutConfigurationStore.Provider.class)
-//            .to(GmfLayoutConfigurationStore.Provider.class);
+            binder.bind(ILayoutConfigurationStore.Provider.class)
+                    .to(KlighdLayoutConfigurationStore.Provider.class);
         }
-        
     }
 
 }

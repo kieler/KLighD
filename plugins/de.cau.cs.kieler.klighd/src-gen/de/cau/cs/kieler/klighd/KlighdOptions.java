@@ -1,5 +1,6 @@
 package de.cau.cs.kieler.klighd;
 
+import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import java.util.EnumSet;
 import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
@@ -9,7 +10,7 @@ import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 
 @SuppressWarnings("all")
-public class KLighDOptions implements ILayoutMetaDataProvider {
+public class KlighdOptions implements ILayoutMetaDataProvider {
   /**
    * Default value for {@link #ELEMENT_IN_FOCUS}.
    */
@@ -39,6 +40,9 @@ public class KLighDOptions implements ILayoutMetaDataProvider {
   
   public final static IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
             "de.cau.cs.kieler.klighd.minimalNodeSize");
+  
+  public final static IProperty<IViewer> VIEWER = new Property<IViewer>(
+            "de.cau.cs.kieler.klighd.viewer");
   
   public void apply(final ILayoutMetaDataProvider.Registry registry) {
     registry.register(new LayoutOptionData(
@@ -86,6 +90,18 @@ public class KLighDOptions implements ILayoutMetaDataProvider {
         KVector.class,
         null,
         LayoutOptionData.Visibility.HIDDEN
+    ));
+    registry.register(new LayoutOptionData(
+        "de.cau.cs.kieler.klighd.viewer",
+        "",
+        "Klighd Viewer",
+        null,
+        null,
+        LayoutOptionData.Type.UNDEFINED,
+        IViewer.class,
+        null,
+        LayoutOptionData.Visibility.HIDDEN
+        , "klighd.viewer"
     ));
   }
 }
