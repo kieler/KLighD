@@ -30,23 +30,23 @@ import javax.inject.Inject
 import org.eclipse.elk.alg.layered.properties.FixedAlignment
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
 import org.eclipse.elk.core.options.CoreOptions
+import org.eclipse.elk.core.options.Direction
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.KNode
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.util.formallang.FollowerFunctionImpl.Direction
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 
 /**
- * Diagram synthesis of a {@link EcoreModelWrapper}.
+ * Diagram synthesis of a {@link EObject}.
  * 
  * @author als
  * @kieler.design 2014-07-30 proposed
  * @kieler.rating 2014-07-30 proposed yellow
  * 
  */
-class EcoreModelSynthesis extends AbstractDiagramSynthesis<EObject> {
+class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
 
     @Inject
     extension KNodeExtensions
@@ -68,7 +68,7 @@ class EcoreModelSynthesis extends AbstractDiagramSynthesis<EObject> {
 
     // -------------------------------------------------------------------------
     // Constants
-    public static val String ID = "de.cau.cs.kieler.klighd.ui.view.syntheses.EcoreModelSynthesis";
+    public static val String ID = "de.cau.cs.kieler.klighd.ui.view.syntheses.EObjectFallbackSynthesis";
 
     // Options
     public static val SynthesisOption EXPAND_DETAILS = SynthesisOption::createCheckOption("Expand all Details",
@@ -92,7 +92,7 @@ class EcoreModelSynthesis extends AbstractDiagramSynthesis<EObject> {
         val rootNode = createNode();
         
         rootNode.addLayoutParam(CoreOptions::ALGORITHM, "de.cau.cs.kieler.klay.layered");
-        rootNode.setLayoutOption(LayeredOptions::FIXED_ALIGNMENT, FixedAlignment.BALANCED);
+        rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_FIXED_ALIGNMENT, FixedAlignment.BALANCED);
         
         // transform root object
         rootNode.children += model.translateEObject
