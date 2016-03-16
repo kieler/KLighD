@@ -309,7 +309,9 @@ public class GeneratorOptions extends MapPropertyHolder {
                     }
                     setProperty(option, value);
                     // check lower and upper bounds of the generator option
-                    checkProperties(option);
+                    // FIXME elkMigrate
+                    // reactivate once checking is implemented again
+                    // checkProperties(option);
                 }
             }
         } catch (IllegalAccessException exception) {
