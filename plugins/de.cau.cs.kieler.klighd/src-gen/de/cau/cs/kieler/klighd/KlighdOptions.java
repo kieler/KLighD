@@ -21,7 +21,9 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
    */
   public final static IProperty<Boolean> ELEMENT_IN_FOCUS = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.elementInFocus",
-            ELEMENT_IN_FOCUS_DEFAULT);
+            ELEMENT_IN_FOCUS_DEFAULT,
+            null,
+            null);
   
   /**
    * Default value for {@link #TOOLTIP}.
@@ -30,7 +32,9 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
   
   public final static IProperty<String> TOOLTIP = new Property<String>(
             "de.cau.cs.kieler.klighd.tooltip",
-            TOOLTIP_DEFAULT);
+            TOOLTIP_DEFAULT,
+            null,
+            null);
   
   /**
    * Compound option containing pairs of layout option definitions for the collapsed and expanded state of a KNode
@@ -51,6 +55,8 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
         "Element in Focus",
         "Whether an element is in the focus rather than in the context.",
         ELEMENT_IN_FOCUS_DEFAULT,
+        null,
+        null,
         LayoutOptionData.Type.BOOLEAN,
         boolean.class,
         EnumSet.of(LayoutOptionData.Target.PARENTS, LayoutOptionData.Target.NODES, LayoutOptionData.Target.PORTS, LayoutOptionData.Target.LABELS),
@@ -63,6 +69,8 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
         "Tooltip",
         null,
         TOOLTIP_DEFAULT,
+        null,
+        null,
         LayoutOptionData.Type.STRING,
         String.class,
         EnumSet.of(LayoutOptionData.Target.NODES),
@@ -75,6 +83,8 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
         "Expansion Aware Options",
         "Compound option containing pairs of layout option definitions for the collapsed and expanded state of a KNode",
         null,
+        null,
+        null,
         LayoutOptionData.Type.OBJECT,
         ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData.class,
         null,
@@ -86,6 +96,8 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
         "Minimal Node Size",
         null,
         null,
+        null,
+        null,
         LayoutOptionData.Type.OBJECT,
         KVector.class,
         null,
@@ -95,6 +107,8 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
         "de.cau.cs.kieler.klighd.viewer",
         "",
         "Klighd Viewer",
+        null,
+        null,
         null,
         null,
         LayoutOptionData.Type.UNDEFINED,
