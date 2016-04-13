@@ -21,9 +21,9 @@ import java.util.Set;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.KVectorChain;
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
-import org.eclipse.elk.core.options.LayoutOptions;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.PortConstraints;
 import org.eclipse.elk.core.options.PortSide;
@@ -331,7 +331,7 @@ public final class KimlUtil {
      */
     public static KVector resizeNode(final KNode node) {
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-        Set<SizeConstraint> sizeConstraint = nodeLayout.getProperty(LayoutOptions.SIZE_CONSTRAINT);
+        Set<SizeConstraint> sizeConstraint = nodeLayout.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
         if (sizeConstraint.isEmpty()) {
             return null;
         }
@@ -339,17 +339,17 @@ public final class KimlUtil {
         float newWidth = 0, newHeight = 0;
 
         if (sizeConstraint.contains(SizeConstraint.PORTS)) {
-            PortConstraints portConstraints = nodeLayout.getProperty(LayoutOptions.PORT_CONSTRAINTS);
+            PortConstraints portConstraints = nodeLayout.getProperty(CoreOptions.PORT_CONSTRAINTS);
             float minNorth = 2, minEast = 2, minSouth = 2, minWest = 2;
             Direction direction = node.getParent() == null
-                    ? nodeLayout.getProperty(LayoutOptions.DIRECTION)
-                    : node.getParent().getData(KShapeLayout.class).getProperty(LayoutOptions.DIRECTION);
+                    ? nodeLayout.getProperty(CoreOptions.DIRECTION)
+                    : node.getParent().getData(KShapeLayout.class).getProperty(CoreOptions.DIRECTION);
             for (KPort port : node.getPorts()) {
                 KShapeLayout portLayout = port.getData(KShapeLayout.class);
-                PortSide portSide = portLayout.getProperty(LayoutOptions.PORT_SIDE);
+                PortSide portSide = portLayout.getProperty(CoreOptions.PORT_SIDE);
                 if (portSide == PortSide.UNDEFINED) {
                     portSide = calcPortSide(port, direction);
-                    portLayout.setProperty(LayoutOptions.PORT_SIDE, portSide);
+                    portLayout.setProperty(CoreOptions.PORT_SIDE, portSide);
                 }
                 if (portConstraints == PortConstraints.FIXED_POS) {
                     switch (portSide) {
@@ -409,16 +409,16 @@ public final class KimlUtil {
             final boolean movePorts, final boolean moveLabels) {
         
         KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-        Set<SizeConstraint> sizeConstraint = nodeLayout.getProperty(LayoutOptions.SIZE_CONSTRAINT);
+        Set<SizeConstraint> sizeConstraint = nodeLayout.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
         
         KVector oldSize = new KVector(nodeLayout.getWidth(), nodeLayout.getHeight());
         KVector newSize;
         
         // Calculate the new size
         if (sizeConstraint.contains(SizeConstraint.MINIMUM_SIZE)) {
-            Set<SizeOptions> sizeOptions = nodeLayout.getProperty(LayoutOptions.SIZE_OPTIONS);
-            float minWidth = nodeLayout.getProperty(LayoutOptions.MIN_WIDTH);
-            float minHeight = nodeLayout.getProperty(LayoutOptions.MIN_HEIGHT);
+            Set<SizeOptions> sizeOptions = nodeLayout.getProperty(CoreOptions.NODE_SIZE_OPTIONS);
+            float minWidth = nodeLayout.getProperty(CoreOptions.NODE_SIZE_MIN_WIDTH);
+            float minHeight = nodeLayout.getProperty(CoreOptions.NODE_SIZE_MIN_HEIGHT);
             
             // If minimum width or height are not set, maybe default to default values
             if (sizeOptions.contains(SizeOptions.DEFAULT_MINIMUM_SIZE)) {
@@ -444,18 +444,18 @@ public final class KimlUtil {
         // update port positions
         if (movePorts) {
             Direction direction = node.getParent() == null
-                    ? nodeLayout.getProperty(LayoutOptions.DIRECTION)
-                    : node.getParent().getData(KShapeLayout.class).getProperty(LayoutOptions.DIRECTION);
+                    ? nodeLayout.getProperty(CoreOptions.DIRECTION)
+                    : node.getParent().getData(KShapeLayout.class).getProperty(CoreOptions.DIRECTION);
             boolean fixedPorts =
-                    nodeLayout.getProperty(LayoutOptions.PORT_CONSTRAINTS) == PortConstraints.FIXED_POS;
+                    nodeLayout.getProperty(CoreOptions.PORT_CONSTRAINTS) == PortConstraints.FIXED_POS;
             
             for (KPort port : node.getPorts()) {
                 KShapeLayout portLayout = port.getData(KShapeLayout.class);
-                PortSide portSide = portLayout.getProperty(LayoutOptions.PORT_SIDE);
+                PortSide portSide = portLayout.getProperty(CoreOptions.PORT_SIDE);
                 
                 if (portSide == PortSide.UNDEFINED) {
                     portSide = calcPortSide(port, direction);
-                    portLayout.setProperty(LayoutOptions.PORT_SIDE, portSide);
+                    portLayout.setProperty(CoreOptions.PORT_SIDE, portSide);
                 }
                 
                 switch (portSide) {
@@ -512,17 +512,17 @@ public final class KimlUtil {
         }
         
         // set fixed size option for the node: now the size is assumed to stay as determined here
-        nodeLayout.setProperty(LayoutOptions.SIZE_CONSTRAINT, SizeConstraint.fixed());
+        nodeLayout.setProperty(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.fixed());
         
         return new KVector(widthRatio, heightRatio);
     }
 
     /**
-     * Applies the scaling factor configured in terms of {@link LayoutOptions#SCALE_FACTOR} in its
+     * Applies the scaling factor configured in terms of {@link CoreOptions#SCALE_FACTOR} in its
      * {@link KShapeLayout} to {@code node} 's size data, and updates the layout data of
      * {@code node}'s ports and labels accordingly.<br>
      * <b>Note:</b> The scaled layout data won't be reverted during the layout process, see
-     * {@link LayoutOptions#SCALE_FACTOR}.
+     * {@link CoreOptions#SCALE_FACTOR}.
      * 
      * @author chsch
      * 
@@ -531,7 +531,7 @@ public final class KimlUtil {
      */
     public static void applyConfiguredNodeScaling(final KNode node) {
         final KShapeLayout shapeLayout = node.getData(KShapeLayout.class);
-        final float scalingFactor = shapeLayout.getProperty(LayoutOptions.SCALE_FACTOR);
+        final float scalingFactor = shapeLayout.getProperty(CoreOptions.SCALE_FACTOR);
 
         if (scalingFactor == 1f) {
             return;
@@ -548,7 +548,7 @@ public final class KimlUtil {
             kgeLayout.setSize(scalingFactor * kgeLayout.getWidth(),
                     scalingFactor * kgeLayout.getHeight());
             
-            final KVector anchor = kgeLayout.getProperty(LayoutOptions.PORT_ANCHOR);
+            final KVector anchor = kgeLayout.getProperty(CoreOptions.PORT_ANCHOR);
             if (anchor != null) {
                 anchor.x *= scalingFactor;
                 anchor.y *= scalingFactor;
@@ -1016,7 +1016,7 @@ public final class KimlUtil {
         // Make sure the node has a size if the size constraints are fixed
         KShapeLayout sl = node.getData(KShapeLayout.class);
         if (sl != null) {
-            Set<SizeConstraint> sc = sl.getProperty(LayoutOptions.SIZE_CONSTRAINT);
+            Set<SizeConstraint> sc = sl.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
             
             if (sc.equals(SizeConstraint.fixed()) && sl.getWidth() == 0f && sl.getHeight() == 0f) {
                 sl.setWidth(DEFAULT_MIN_WIDTH * 2 * 2);
@@ -1027,9 +1027,9 @@ public final class KimlUtil {
         // label
         ensureLabel(node);
         if (sl != null) {
-            Set<NodeLabelPlacement> nlp = sl.getProperty(LayoutOptions.NODE_LABEL_PLACEMENT);
+            Set<NodeLabelPlacement> nlp = sl.getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
             if (nlp.equals(NodeLabelPlacement.fixed())) {
-                sl.setProperty(LayoutOptions.NODE_LABEL_PLACEMENT, NodeLabelPlacement.insideCenter());
+                sl.setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideCenter());
             }
         }
         
@@ -1065,9 +1065,9 @@ public final class KimlUtil {
 
         KLayoutData ld = edge.getData(KLayoutData.class);
         if (ld != null) {
-            EdgeLabelPlacement elp = ld.getProperty(LayoutOptions.EDGE_LABEL_PLACEMENT);
+            EdgeLabelPlacement elp = ld.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
             if (elp == EdgeLabelPlacement.UNDEFINED) {
-                ld.setProperty(LayoutOptions.EDGE_LABEL_PLACEMENT, EdgeLabelPlacement.CENTER);
+                ld.setProperty(CoreOptions.EDGE_LABELS_PLACEMENT, EdgeLabelPlacement.CENTER);
             }
         }
     }

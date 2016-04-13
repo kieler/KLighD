@@ -29,7 +29,6 @@ import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.data.LayoutOptionData.Target;
 import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.klayoutdata.KLayoutDataFactory;
-import org.eclipse.elk.core.service.DiagramLayoutEngine;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.graph.KEdge;
 import org.eclipse.elk.graph.KGraphElement;
@@ -40,10 +39,7 @@ import org.eclipse.elk.graph.KPort;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyValueProxy;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
-
-import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -76,6 +72,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         @Override
         public ILayoutConfigurationStore get(final IWorkbenchPart workbenchPart,
                 final Object context) {
+            
             if (context instanceof KGraphElement) {
                 try {
                     return new KlighdLayoutConfigurationStore(workbenchPart,
@@ -177,47 +174,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
                 graphElement.getData().add(elementLayout);
             }
             elementLayout.setProperty(optionData, value);
-            refreshModel();
         }
-    }
-
-    /**
-     * Refresh the model in case the domain model was modified by this layout configurator.
-     *
-     * @param element
-     *            the affected model element
-     * @param layoutContext
-     *            the layout context
-     */
-    private void refreshModel() {
-
-        // if (element == layoutContext.getProperty(LayoutContext.DOMAIN_MODEL)) {
-
-        final ViewContext viewContext = getViewContext();
-        if (viewContext == null) {
-            return;
-        }
-
-        // update the view context in order to re-apply the view synthesis
-        viewContext.update();
-
-        Display.getDefault().asyncExec(new Runnable() {
-            public void run() {
-                // final IWorkbenchPart workbenchPart =
-                // layoutContext.getProperty(EclipseLayoutConfig.WORKBENCH_PART);
-                if (workbenchPart != null) {
-                    // re-apply auto-layout with the new configuration
-                    DiagramLayoutEngine.invokeLayout(workbenchPart, null, true, false, false,
-                            false);
-
-                    if (workbenchPart instanceof IDiagramWorkbenchPart.IDiagramEditorPart) {
-                        // mark the editor as dirty
-                        ((IDiagramWorkbenchPart.IDiagramEditorPart) workbenchPart).setDirty(true);
-                    }
-                }
-            }
-        });
-        // }
     }
 
     /**
@@ -353,12 +310,13 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         } else if (graphElement instanceof KPort) {
             return EnumSet.of(Target.PORTS);
         } else if (graphElement instanceof KNode) {
-            Set<Target> partTarget = EnumSet.of(Target.NODES);
-            if (!((KNode) graphElement).getChildren().isEmpty()) {
-                partTarget.add(Target.PARENTS);
+            if (((KNode) graphElement).getChildren().isEmpty()) {
+                return EnumSet.of(Target.NODES);
+            } else {
+                return EnumSet.of(Target.NODES, Target.PARENTS);
             }
-            return partTarget;
         }
+        
         return EnumSet.noneOf(LayoutOptionData.Target.class);
     }
 
