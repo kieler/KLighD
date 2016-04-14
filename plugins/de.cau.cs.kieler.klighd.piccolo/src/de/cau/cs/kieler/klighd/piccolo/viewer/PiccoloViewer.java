@@ -23,16 +23,16 @@ import javax.swing.Timer;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.ViewChangeType;
@@ -591,7 +591,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     public void scale(final KNode diagramElement, final float factor) {
         final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
         if (layoutData != null) {
-            layoutData.setProperty(LayoutOptions.SCALE_FACTOR, factor);
+            layoutData.setProperty(CoreOptions.SCALE_FACTOR, factor);
         }
 
         if (isExpanded(diagramElement)) {
@@ -607,7 +607,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     public float getScale(final KNode diagramElement) {
         final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
         if (layoutData != null) {
-            return layoutData.getProperty(LayoutOptions.SCALE_FACTOR);
+            return layoutData.getProperty(CoreOptions.SCALE_FACTOR);
         } else {
             return 1f;
         }

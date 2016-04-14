@@ -46,6 +46,7 @@ import java.io.OutputStream;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
+import org.eclipse.elk.core.util.Pair;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontData;
@@ -60,7 +61,6 @@ import org.eclipse.swt.graphics.RGB;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;

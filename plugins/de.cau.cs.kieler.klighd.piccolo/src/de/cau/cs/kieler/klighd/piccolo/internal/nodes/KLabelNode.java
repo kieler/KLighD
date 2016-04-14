@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import de.cau.cs.kieler.core.kgraph.KLabel;
+import org.eclipse.elk.graph.KLabel;
+
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KLabelRenderingController;
 

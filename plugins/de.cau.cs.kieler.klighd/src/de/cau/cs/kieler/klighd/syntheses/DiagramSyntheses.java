@@ -16,37 +16,37 @@ package de.cau.cs.kieler.klighd.syntheses;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.elk.core.data.LayoutOptionData;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.KPort;
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
-import de.cau.cs.kieler.core.krendering.KBackground;
-import de.cau.cs.kieler.core.krendering.KBottomPosition;
-import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KInvisibility;
-import de.cau.cs.kieler.core.krendering.KLeftPosition;
-import de.cau.cs.kieler.core.krendering.KLineStyle;
-import de.cau.cs.kieler.core.krendering.KLineWidth;
-import de.cau.cs.kieler.core.krendering.KPosition;
-import de.cau.cs.kieler.core.krendering.KRectangle;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KRightPosition;
-import de.cau.cs.kieler.core.krendering.KRoundedRectangle;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.krendering.KTopPosition;
-import de.cau.cs.kieler.core.krendering.LineStyle;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.LayoutMetaDataService;
-import de.cau.cs.kieler.kiml.LayoutOptionData;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KBackground;
+import de.cau.cs.kieler.klighd.krendering.KBottomPosition;
+import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
+import de.cau.cs.kieler.klighd.krendering.KInvisibility;
+import de.cau.cs.kieler.klighd.krendering.KLeftPosition;
+import de.cau.cs.kieler.klighd.krendering.KLineStyle;
+import de.cau.cs.kieler.klighd.krendering.KLineWidth;
+import de.cau.cs.kieler.klighd.krendering.KPosition;
+import de.cau.cs.kieler.klighd.krendering.KRectangle;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
+import de.cau.cs.kieler.klighd.krendering.KRightPosition;
+import de.cau.cs.kieler.klighd.krendering.KRoundedRectangle;
+import de.cau.cs.kieler.klighd.krendering.KText;
+import de.cau.cs.kieler.klighd.krendering.KTopPosition;
+import de.cau.cs.kieler.klighd.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -678,7 +678,7 @@ public final class DiagramSyntheses {
      * @return <code>node</code> for convenience
      */
     public static KNode initiallyScale(final KNode node, final float scale) {
-        node.getData(KLayoutData.class).setProperty(LayoutOptions.SCALE_FACTOR, scale);
+        node.getData(KLayoutData.class).setProperty(CoreOptions.SCALE_FACTOR, scale);
         return node;
     }
 

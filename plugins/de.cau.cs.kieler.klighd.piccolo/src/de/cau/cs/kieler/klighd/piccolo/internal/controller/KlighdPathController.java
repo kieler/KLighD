@@ -17,10 +17,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.core.krendering.KShadow;
-import de.cau.cs.kieler.core.krendering.LineCap;
-import de.cau.cs.kieler.core.krendering.LineJoin;
-import de.cau.cs.kieler.core.krendering.LineStyle;
+import de.cau.cs.kieler.klighd.krendering.KShadow;
+import de.cau.cs.kieler.klighd.krendering.LineCap;
+import de.cau.cs.kieler.klighd.krendering.LineJoin;
+import de.cau.cs.kieler.klighd.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;

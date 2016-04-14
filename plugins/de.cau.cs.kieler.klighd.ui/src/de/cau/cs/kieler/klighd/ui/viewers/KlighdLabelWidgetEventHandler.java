@@ -23,8 +23,8 @@ import org.eclipse.swt.graphics.Color;
 
 import com.google.common.base.Strings;
 
-import de.cau.cs.kieler.core.krendering.KText;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;

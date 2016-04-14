@@ -13,10 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.labels.ILabelManager;
-import de.cau.cs.kieler.kiml.labels.LabelManagementOptions;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.labels.ILabelManager;
+import org.eclipse.elk.core.labels.LabelManagementOptions;
+import org.eclipse.elk.graph.KNode;
+
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.labels.AbstractKlighdLabelManager;
 

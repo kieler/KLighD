@@ -15,17 +15,18 @@ package de.cau.cs.kieler.klighd.internal;
 
 import java.util.List;
 
+import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.properties.IProperty;
+
 import com.google.common.base.Function;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.DisplayedActionData;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
  * Internal interface of diagram synthesis implementations. It has been introduced to simplify the
@@ -121,10 +122,10 @@ public interface ISynthesis {
     Function<String, Void> getTextUpdateFunction(final KText kText, final KGraphElement element);
 
     /**
-     * Returns a list of {@link ILayoutConfig ILayoutConfigs} to be handed over to KIML in order to
-     * cause additional layout runs corresponding to the provided configurations.
+     * Returns a list of {@link LayoutConfigurator LayoutConfigurators} to be handed over to ELK in
+     * order to cause additional layout runs corresponding to the provided configurations.
      * 
-     * @return a {@link List} of {@link ILayoutConfig ILayoutConfigs}
+     * @return a {@link List} of {@link LayoutConfigurator LayoutConfigurators}
      */
-    List<? extends ILayoutConfig> getAdditionalLayoutConfigs();
+    List<? extends LayoutConfigurator> getAdditionalLayoutConfigs();
 }

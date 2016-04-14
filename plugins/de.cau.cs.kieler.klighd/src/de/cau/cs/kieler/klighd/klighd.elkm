@@ -1,0 +1,39 @@
+package de.cau.cs.kieler.klighd
+
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData
+import org.eclipse.elk.core.math.KVector
+
+bundle {
+    label "Klighd"
+    class KlighdOptions 
+    idPrefix de.cau.cs.kieler.klighd 
+}
+
+advanced option elementInFocus: boolean {
+    label "Element in Focus"
+    description "Whether an element is in the focus rather than in the context."
+    default = false
+    targets parents,nodes,ports,labels
+    legacyIds klighd.^labels.elementInFocus
+}
+
+option tooltip: String {
+    label "Tooltip"
+    default = null
+    targets nodes
+    legacyIds klighd.tooltip
+}
+
+programmatic option expansionAwareLayoutOption: ExpansionAwareLayoutOptionData {
+    label "Expansion Aware Options"
+    description "Compound option containing pairs of layout option definitions for the collapsed and expanded state of a KNode"
+}
+
+programmatic option minimalNodeSize: KVector {
+    label "Minimal Node Size" 
+}
+
+programmatic option viewer: IViewer {
+    label "Klighd Viewer"
+    legacyIds klighd.viewer
+}

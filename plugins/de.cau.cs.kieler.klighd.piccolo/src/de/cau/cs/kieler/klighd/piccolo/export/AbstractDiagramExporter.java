@@ -20,10 +20,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.eclipse.elk.core.util.Pair;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
-import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;

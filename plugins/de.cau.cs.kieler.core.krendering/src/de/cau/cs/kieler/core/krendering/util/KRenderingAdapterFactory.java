@@ -18,7 +18,7 @@ import de.cau.cs.kieler.core.kgraph.KGraphData;
 
 import de.cau.cs.kieler.core.krendering.*;
 
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;

@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
+import org.eclipse.elk.graph.KNode;
 
 /**
  * The interface for classes implementing an update strategy for a specific model class. These

@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
@@ -28,8 +30,6 @@ import com.google.common.collect.ImmutableList;
 
 import de.cau.cs.kieler.core.kgraph.KGraphElement;
 import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 /**
@@ -78,7 +78,7 @@ public class KGraphResource extends LazyLinkingResource {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 // parse persisted key-value pairs using KIML's layout data service
-                KimlUtil.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
+                KimlUtilLegacyLoading.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
                 // validate layout data and references and fill in missing data
                 KimlUtil.validate((KNode) o);
             }
@@ -99,9 +99,10 @@ public class KGraphResource extends LazyLinkingResource {
         EObject refreshed = NodeModelUtils.findActualSemanticObjectFor(NodeModelUtils
                 .findLeafNodeAtOffset(this.getParseResult().getRootNode(), offset));
         KNode node = (KNode) EcoreUtil2.getRootContainer(refreshed);
+        
         if (node != null) {
             // parse persisted key-value pairs using KIML's layout data service
-            KimlUtil.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
+            KimlUtilLegacyLoading.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
             // validate layout data and references and fill in missing data
             KimlUtil.validate(node);
         }
@@ -114,7 +115,8 @@ public class KGraphResource extends LazyLinkingResource {
      * {@link de.cau.cs.kieler.core.kgraph.PersistentEntry PersistentEntry}s.
      */
     public void doSave(final OutputStream outputStream, final Map<?, ?> options) throws IOException {
-        if (!this.getContents().isEmpty()) {
+        
+    	if (!this.getContents().isEmpty()) {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 KimlUtil.persistDataElements((KNode) o);

@@ -15,16 +15,16 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.klayoutdata.KInsets;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -224,7 +224,7 @@ public class DiagramZoomController {
 
             while (parent != null && parent != displayedKNode.getParent()) {
                 final KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
-                final double scale = parentLayout.getProperty(LayoutOptions.SCALE_FACTOR).doubleValue();
+                final double scale = parentLayout.getProperty(CoreOptions.SCALE_FACTOR).doubleValue();
 
                 focusBounds.setSize(scale * focusBounds.width, scale * focusBounds.height);
                 focusBounds.setOrigin(scale * focusBounds.x, scale * focusBounds.y);
@@ -325,7 +325,7 @@ public class DiagramZoomController {
      */
     public static PBounds toPBounds(final KNode node) {
         final KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-        final float scale = nodeLayout.getProperty(LayoutOptions.SCALE_FACTOR);
+        final float scale = nodeLayout.getProperty(CoreOptions.SCALE_FACTOR);
         return new PBounds(nodeLayout.getXpos(), nodeLayout.getYpos(),
                 nodeLayout.getWidth() * scale, nodeLayout.getHeight() * scale);
     }
@@ -357,7 +357,7 @@ public class DiagramZoomController {
     private PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
         double maxX = nodeBounds.getWidth();
         double maxY = nodeBounds.getHeight();
-        final float scale = node.getData(KShapeLayout.class).getProperty(LayoutOptions.SCALE_FACTOR);
+        final float scale = node.getData(KShapeLayout.class).getProperty(CoreOptions.SCALE_FACTOR);
 
         // these min values are <= 0 at all times!
         double minX = 0;

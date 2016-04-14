@@ -13,9 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import de.cau.cs.kieler.core.krendering.HorizontalAlignment;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.VerticalAlignment;
+import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PAffineTransform;

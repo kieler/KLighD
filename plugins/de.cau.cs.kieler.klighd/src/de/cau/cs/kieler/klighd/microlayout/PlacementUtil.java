@@ -13,15 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterators.filter;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asAreaPlacementData;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.asPointPlacementData;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.getPlacementData;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullBottomPosition;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullLeftPosition;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullRightPosition;
-import static de.cau.cs.kieler.core.krendering.KRenderingUtil.toNonNullTopPosition;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.asAreaPlacementData;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.asPointPlacementData;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.getPlacementData;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullBottomPosition;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullLeftPosition;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullRightPosition;
+import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullTopPosition;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -32,6 +30,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.elk.core.klayoutdata.KInsets;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KLabel;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -46,42 +53,33 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.PersistentEntry;
-import de.cau.cs.kieler.core.krendering.KAreaPlacementData;
-import de.cau.cs.kieler.core.krendering.KChildArea;
-import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KFontBold;
-import de.cau.cs.kieler.core.krendering.KFontItalic;
-import de.cau.cs.kieler.core.krendering.KFontName;
-import de.cau.cs.kieler.core.krendering.KFontSize;
-import de.cau.cs.kieler.core.krendering.KGridPlacement;
-import de.cau.cs.kieler.core.krendering.KImage;
-import de.cau.cs.kieler.core.krendering.KLeftPosition;
-import de.cau.cs.kieler.core.krendering.KPlacement;
-import de.cau.cs.kieler.core.krendering.KPlacementData;
-import de.cau.cs.kieler.core.krendering.KPointPlacementData;
-import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KPosition;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KStyle;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.krendering.KTopPosition;
-import de.cau.cs.kieler.core.krendering.KXPosition;
-import de.cau.cs.kieler.core.krendering.KYPosition;
-import de.cau.cs.kieler.core.krendering.util.KRenderingSwitch;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.klayoutdata.KInsets;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KChildArea;
+import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
+import de.cau.cs.kieler.klighd.krendering.KFontBold;
+import de.cau.cs.kieler.klighd.krendering.KFontItalic;
+import de.cau.cs.kieler.klighd.krendering.KFontName;
+import de.cau.cs.kieler.klighd.krendering.KFontSize;
+import de.cau.cs.kieler.klighd.krendering.KGridPlacement;
+import de.cau.cs.kieler.klighd.krendering.KImage;
+import de.cau.cs.kieler.klighd.krendering.KLeftPosition;
+import de.cau.cs.kieler.klighd.krendering.KPlacement;
+import de.cau.cs.kieler.klighd.krendering.KPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KPointPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KPolyline;
+import de.cau.cs.kieler.klighd.krendering.KPosition;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KStyle;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
+import de.cau.cs.kieler.klighd.krendering.KTopPosition;
+import de.cau.cs.kieler.klighd.krendering.KXPosition;
+import de.cau.cs.kieler.klighd.krendering.KYPosition;
+import de.cau.cs.kieler.klighd.krendering.util.KRenderingSwitch;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 
@@ -808,13 +806,13 @@ public final class PlacementUtil {
             final List<KStyle> styles = Lists.newLinkedList(kText.getStyles());            
             for (final KRendering k : Iterables2.toIterable(Iterators.filter(
                     ModelingUtil.eAllContainers(kText), KRendering.class))) {
-                Iterables.addAll(styles, filter(k.getStyles(), FILTER));
+                Iterables.addAll(styles, Iterables.filter(k.getStyles(), FILTER));
             }
             
-            kFontName = Iterables.getLast(filter(styles, KFontName.class), null);
-            kFontSize = Iterables.getLast(filter(styles, KFontSize.class), null);
-            kFontBold = Iterables.getLast(filter(styles, KFontBold.class), null);
-            kFontItalic = Iterables.getLast(filter(styles, KFontItalic.class), null);
+            kFontName = Iterables.getLast(Iterables.filter(styles, KFontName.class), null);
+            kFontSize = Iterables.getLast(Iterables.filter(styles, KFontSize.class), null);
+            kFontBold = Iterables.getLast(Iterables.filter(styles, KFontBold.class), null);
+            kFontItalic = Iterables.getLast(Iterables.filter(styles, KFontItalic.class), null);
         }
 
         final String fontName = kFontName != null
@@ -836,8 +834,8 @@ public final class PlacementUtil {
             // setting the font name and size layout options is expected by the Graphviz layouter
             //  as it does not rely on given sizes but computes it on its own based on the given
             //  label text and font configuration 
-            layoutData.setProperty(LayoutOptions.FONT_NAME, fontName);
-            layoutData.setProperty(LayoutOptions.FONT_SIZE, fontSize);
+            layoutData.setProperty(CoreOptions.FONT_NAME, fontName);
+            layoutData.setProperty(CoreOptions.FONT_SIZE, fontSize);
         }
 
         return new FontData(fontName, fontSize, fontStyle);
@@ -873,13 +871,13 @@ public final class PlacementUtil {
      * @param kLabel
      *            the {@link KLabel} whose size is to be estimated.
      * @param setFontLayoutOptions
-     *            if <code>true</code> the layout options {@link LayoutOptions#FONT_NAME} and
-     *            {@link LayoutOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
+     *            if <code>true</code> the layout options {@link CoreOptions#FONT_NAME} and
+     *            {@link CoreOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
      *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
      * @return the minimal bounds for the {@link KLabel}
      */
     public static Bounds estimateTextSize(final KLabel kLabel, final boolean setFontLayoutOptions) {
-        final KText text = Iterators.getNext(filter(
+        final KText text = Iterators.getNext(Iterators.filter(
                 ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class), KText.class), null);
 
         return estimateTextSize(text, kLabel.getText(), 

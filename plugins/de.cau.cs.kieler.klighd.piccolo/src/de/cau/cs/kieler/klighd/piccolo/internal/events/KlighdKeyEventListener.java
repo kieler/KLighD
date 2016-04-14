@@ -13,12 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.events;
 
-import java.awt.Component;
-import java.awt.event.InputEvent;
-
 import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.LEFT_BUTTON;
 import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.MIDDLE_BUTTON;
 import static de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.RIGHT_BUTTON;
+
+import java.awt.Component;
+import java.awt.event.InputEvent;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.GestureEvent;

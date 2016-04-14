@@ -30,6 +30,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.util.WrappedException;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
+import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -56,12 +62,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import de.cau.cs.kieler.core.WrappedException;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
@@ -365,7 +365,7 @@ public class DiagramEditorPart extends EditorPart implements
     /**
      * {@inheritDoc}
      */
-    public ILayoutConfig getLayoutConfig() {
+    public LayoutConfigurator getLayoutConfig() {
         return this.sideBar != null ? this.sideBar.getLayoutConfig() : null;
     }
 

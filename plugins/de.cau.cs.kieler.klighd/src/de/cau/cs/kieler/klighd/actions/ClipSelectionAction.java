@@ -13,11 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Iterables;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
 

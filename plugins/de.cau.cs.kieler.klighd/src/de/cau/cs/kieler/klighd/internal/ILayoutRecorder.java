@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.internal;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
+import org.eclipse.elk.graph.KNode;
+
 import de.cau.cs.kieler.klighd.ZoomStyle;
 
 /**

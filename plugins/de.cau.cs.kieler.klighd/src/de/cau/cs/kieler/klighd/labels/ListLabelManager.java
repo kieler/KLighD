@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import de.cau.cs.kieler.core.kgraph.KLabel;
+import org.eclipse.elk.graph.KLabel;
 
 /**
  * Takes a list of label managers that do the work of resizing labels. The label managers are asked to

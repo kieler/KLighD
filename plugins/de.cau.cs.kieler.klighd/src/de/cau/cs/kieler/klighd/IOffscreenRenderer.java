@@ -18,10 +18,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
-
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
+import org.eclipse.elk.graph.properties.Property;
 
 /**
  * Implementations of this interface are able to render diagram formats like PNG or SVG without

@@ -19,11 +19,11 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.spi.RegistryContributor;
+import org.eclipse.elk.core.util.WrappedException;
 import org.osgi.framework.Bundle;
 
 import com.google.common.base.Strings;
 
-import de.cau.cs.kieler.core.WrappedException;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 
 /**
@@ -98,10 +98,10 @@ public class GuiceBasedSynthesisFactory implements IExecutableExtension,
             
             return new ReinitializingDiagramSynthesisProxy(clazz);
         } catch (final ClassNotFoundException e) {
-            throw new WrappedException(e,
-                    "KLighD: Registered diagram synthesis class could not be loaded properly via the "
-                    + GuiceBasedSynthesisFactory.class.getSimpleName()
-                    + ". Did you miss to provide the related bundle id in the extension (plugin.xml)?");
+            throw new WrappedException(
+                "KLighD: Registered diagram synthesis class could not be loaded properly via the "
+                + GuiceBasedSynthesisFactory.class.getSimpleName()
+                + ". Did you miss to provide the related bundle id in the extension (plugin.xml)?", e);
         }
     }
 }

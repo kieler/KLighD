@@ -18,6 +18,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.graph.KGraphData;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KGraphPackage;
+import org.eclipse.elk.graph.impl.IPropertyToObjectMapImpl;
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
@@ -31,13 +37,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-import de.cau.cs.kieler.core.kgraph.KGraphData;
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 
 /**

@@ -20,6 +20,19 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.core.util.WrappedException;
+import org.eclipse.elk.graph.KGraphData;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KGraphPackage;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
+import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
@@ -31,19 +44,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.WrappedException;
-import de.cau.cs.kieler.core.kgraph.KGraphData;
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -157,7 +157,7 @@ public class ViewContext extends MapPropertyHolder {
      * @return a new empty view model root node
      */
     private KNode createViewModel() {
-        return KimlUtil.createInitializedNode();
+        return ElkUtil.createInitializedNode();
     }
 
     /**
@@ -856,7 +856,7 @@ public class ViewContext extends MapPropertyHolder {
      *
      * @return a map of options (map keys) and related values (map values)
      */
-    public List<? extends ILayoutConfig> getAdditionalLayoutConfigs() {
+    public List<? extends LayoutConfigurator> getAdditionalLayoutConfigs() {
         if (this.diagramSynthesis != null) {
             return this.diagramSynthesis.getAdditionalLayoutConfigs();
         } else {

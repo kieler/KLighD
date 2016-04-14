@@ -15,11 +15,11 @@ package de.cau.cs.kieler.klighd.piccolo;
 
 import java.awt.geom.Rectangle2D;
 
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
 import edu.umd.cs.piccolo.PNode;
 
 /**

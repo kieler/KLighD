@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import de.cau.cs.kieler.core.kgraph.KLabel;
+import org.eclipse.elk.graph.KLabel;
+
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 

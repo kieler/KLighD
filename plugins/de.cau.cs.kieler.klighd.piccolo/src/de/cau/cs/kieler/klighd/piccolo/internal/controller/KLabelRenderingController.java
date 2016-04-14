@@ -17,14 +17,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
+import org.eclipse.elk.graph.KLabel;
+
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KRenderingUtil;
-import de.cau.cs.kieler.core.krendering.KText;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;

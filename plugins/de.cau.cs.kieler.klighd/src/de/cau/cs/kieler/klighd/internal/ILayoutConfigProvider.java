@@ -13,10 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.internal;
 
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
+import org.eclipse.elk.core.LayoutConfigurator;
 
 /**
- * In interface of classes contributing an {@link ILayoutConfig}.<br>
+ * In interface of classes contributing a {@link LayoutConfigurator}.<br>
  * It is currently implemented by the {@link de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
  * IDiagramWorkbenchParts} in <code>de.cau.cs.kieler.klighd.ui</code>. This interface is separated
  * from {@link de.cau.cs.kieler.klighd.IDiagramWorkbenchPart IDiagramWorkbenchPart} since it
@@ -32,18 +32,18 @@ public interface ILayoutConfigProvider {
     /**
      * Getter.
      *
-     * @return the {@link ILayoutConfig} provided by the implementing class
+     * @return the {@link LayoutConfigurator} provided by the implementing class
      */
-    ILayoutConfig getLayoutConfig();
+    LayoutConfigurator getLayoutConfig();
 
     /**
-     * Drops all layout configurations in the employed {@link ILayoutConfig} and performs a
+     * Drops all layout configurations in the employed {@link LayoutConfigurator} and performs a
      * subsequent layout run.
      */
     void resetLayoutConfig();
 
     /**
-     * Drops all layout configurations in the employed {@link ILayoutConfig}.
+     * Drops all layout configurations in the employed {@link LayoutConfigurator}.
      *
      * @param doLayout
      *            if <code>true</code> a subsequent layout run will be triggered

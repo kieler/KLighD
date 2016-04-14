@@ -15,23 +15,23 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.geom.Point2D;
 
+import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
+import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
+import org.eclipse.elk.core.klayoutdata.KPoint;
+import org.eclipse.elk.core.math.ElkMath;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.math.KVectorChain;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.EdgeRouting;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KEdge;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingUtil;
-import de.cau.cs.kieler.core.krendering.KSpline;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.math.KVectorChain;
-import de.cau.cs.kieler.core.math.KielerMath;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
-import de.cau.cs.kieler.kiml.options.EdgeRouting;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.klighd.krendering.KPolyline;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
+import de.cau.cs.kieler.klighd.krendering.KSpline;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
@@ -132,11 +132,11 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
         KVectorChain bendPoints = edgeLayout.createVectorChain();
 
         // for connections that support splines the control points are passed without change
-        final boolean layoutedAsSpline = edgeLayout.getProperty(LayoutOptions.EDGE_ROUTING)
+        final boolean layoutedAsSpline = edgeLayout.getProperty(CoreOptions.EDGE_ROUTING)
                 == EdgeRouting.SPLINES;
         // in other cases an approximation is used // SUPPRESS CHECKSTYLE NEXT MagicNumber
         if (renderedAsPolyline && layoutedAsSpline && bendPoints.size() >= 4) {
-            bendPoints = KielerMath.approximateBezierSpline(bendPoints);
+            bendPoints = ElkMath.approximateBezierSpline(bendPoints);
         }
 
         // build the bend point array
@@ -158,7 +158,7 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
     // method is package protected as it is used in DiagramController, too
     static Point2D[] getJunctionPoints(final KEdgeLayout edgeLayout) {
 
-        final KVectorChain junctionPoints = edgeLayout.getProperty(LayoutOptions.JUNCTION_POINTS);
+        final KVectorChain junctionPoints = edgeLayout.getProperty(CoreOptions.JUNCTION_POINTS);
 
         if (junctionPoints == null || junctionPoints.isEmpty()) {
             return new Point2D[0];

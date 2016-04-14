@@ -13,12 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.internal.util;
 
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.PersistentEntry;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.Property;
+
 import com.google.common.base.Predicate;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.PersistentEntry;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;

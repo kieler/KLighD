@@ -19,12 +19,12 @@ import de.cau.cs.kieler.core.krendering.KRenderingFactory
 import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline
 import de.cau.cs.kieler.core.krendering.KSpline
 import de.cau.cs.kieler.core.krendering.ViewSynthesisShared
-import de.cau.cs.kieler.core.properties.IProperty
+import org.eclipse.elk.graph.properties.IProperty
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout
-import de.cau.cs.kieler.kiml.util.KimlUtil
 import java.util.List
 import java.util.Map
 import javax.inject.Inject
+import de.cau.cs.kieler.kiml.util.KimlUtil
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>

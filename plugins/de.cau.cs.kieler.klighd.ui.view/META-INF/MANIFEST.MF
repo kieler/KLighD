@@ -7,9 +7,10 @@ Bundle-Activator: de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin
 Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.xtext.ui,
  org.eclipse.xtend.lib,
- de.cau.cs.kieler.core.krendering.extensions,
- de.cau.cs.kieler.klay.layered,
- de.cau.cs.kieler.klighd.ui
+ org.eclipse.elk.core,
+ de.cau.cs.kieler.klighd.ui,
+ de.cau.cs.kieler.klighd.krendering.extensions,
+ org.eclipse.elk.alg.layered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Kiel University

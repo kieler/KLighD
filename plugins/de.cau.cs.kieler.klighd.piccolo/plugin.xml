@@ -3,16 +3,6 @@
 <plugin>
    <extension-point id="svgGenerators" name="SVG Generators" schema="schema/svgGenerators.exsd"/>
    <extension
-         point="de.cau.cs.kieler.kiml.layoutProviders">
-      <layoutOption
-            appliesTo="nodes"
-            default="null"
-            id="klighd.tooltip"
-            name="Tooltip"
-            type="string">
-      </layoutOption>
-   </extension>
-   <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <exporter
             class="de.cau.cs.kieler.klighd.piccolo.export.BitmapExporter"

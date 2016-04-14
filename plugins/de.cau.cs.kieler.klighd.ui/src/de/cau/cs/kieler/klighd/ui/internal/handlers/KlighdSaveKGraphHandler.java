@@ -28,6 +28,19 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.options.Direction;
+import org.eclipse.elk.core.options.PortConstraints;
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.core.util.GraphDataUtil;
+import org.eclipse.elk.graph.KEdge;
+import org.eclipse.elk.graph.KGraphData;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.KPort;
+import org.eclipse.elk.graph.impl.KGraphDataImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -48,29 +61,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphData;
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.kgraph.impl.KGraphDataImpl;
-import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KImage;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingLibrary;
-import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.Direction;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.options.PortConstraints;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
+import de.cau.cs.kieler.klighd.krendering.KImage;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
@@ -380,7 +381,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
                 // we wrap the subgraph into a new psuedo root node
                 // to retain external ports
-                KNode newRoot = KimlUtil.createInitializedNode();
+                KNode newRoot = ElkUtil.createInitializedNode();
                 newRoot.getChildren().add(subgraphCopy);
                 // give the root a proper dimension
                 KShapeLayout rsl = newRoot.getData(KShapeLayout.class);
@@ -444,15 +445,15 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                                 //  because that's the one we wanna layout and hence be able 
                                 //  to move external ports
                                 if (removeChildren && isPopulated && currentNode != copyRoot) {
-                                    ld.setProperty(LayoutOptions.PORT_CONSTRAINTS,
+                                    ld.setProperty(CoreOptions.PORT_CONSTRAINTS,
                                             PortConstraints.FIXED_POS);
                                     Direction dir = currentNode.getParent().getData(KLayoutData.class)
-                                                      .getProperty(LayoutOptions.DIRECTION);
+                                                      .getProperty(CoreOptions.DIRECTION);
                                     // due to a previous FREE, ports might have been moved to
                                     // different sides
                                     for (KPort p : currentNode.getPorts()) {
                                         p.getData(KLayoutData.class).setProperty(
-                                                LayoutOptions.PORT_SIDE, KimlUtil.calcPortSide(p, dir));
+                                                CoreOptions.PORT_SIDE, ElkUtil.calcPortSide(p, dir));
                                     }
                                 }
 
@@ -494,7 +495,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
 
                 // persist layout options and friends
-                KimlUtil.persistDataElements(copy);
+                ElkUtil.persistDataElements(copy);
     
                 // remove children if requested. Do this after the previous removal
                 // happening to make sure all rendering libraries are considered etc

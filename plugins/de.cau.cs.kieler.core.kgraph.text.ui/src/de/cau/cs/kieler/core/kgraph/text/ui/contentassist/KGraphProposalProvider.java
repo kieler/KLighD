@@ -15,6 +15,15 @@ package de.cau.cs.kieler.core.kgraph.text.ui.contentassist;
 
 import javax.inject.Inject;
 
+import org.eclipse.elk.core.data.LayoutAlgorithmData;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.elk.core.data.LayoutOptionData;
+import org.eclipse.elk.core.data.LayoutOptionData.Type;
+import org.eclipse.elk.core.data.LayoutOptionData.Visibility;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.ui.ElkUiPlugin;
+import org.eclipse.elk.core.ui.LayoutOptionLabelProvider;
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.viewers.StyledString;
@@ -31,14 +40,6 @@ import org.eclipse.xtext.util.Strings;
 import de.cau.cs.kieler.core.kgraph.PersistentEntry;
 import de.cau.cs.kieler.core.kgraph.text.KGraphResource;
 import de.cau.cs.kieler.core.kgraph.text.services.KGraphGrammarAccess;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.kiml.LayoutAlgorithmData;
-import de.cau.cs.kieler.kiml.LayoutMetaDataService;
-import de.cau.cs.kieler.kiml.LayoutOptionData;
-import de.cau.cs.kieler.kiml.LayoutOptionData.Type;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.ui.KimlUiPlugin;
-import de.cau.cs.kieler.kiml.ui.LayoutOptionLabelProvider;
 
 /**
  * Custom proposal provider contributing KIELER Layout configuration proposals.
@@ -280,9 +281,9 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
         // create and register the completion proposal for every element in the list
         for (final LayoutOptionData optionData : layoutServices.getOptionData()) {
-            final StyledString displayString =
-                    new StyledString(optionData.toString(),
-                            (optionData.isAdvanced()) ? StyledString.COUNTER_STYLER : null);
+            final StyledString displayString = new StyledString(optionData.toString(),
+                    (optionData.getVisibility() == Visibility.ADVANCED)
+                            ? StyledString.COUNTER_STYLER : null);
             displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
             final String proposal = getValueConverter().toString(optionData.getId(),
@@ -301,8 +302,9 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                     getValueConverter().toString(p.getId(),
                             grammarAccess.getQualifiedIDRule().getName());
             final StyledString displayString = new StyledString(proposal);
-            final Image image = KimlUiPlugin.getDefault().getImages().getPropText();
-
+            
+            final Image image =
+                    ElkUiPlugin.getInstance().getImageRegistry().get(ElkUiPlugin.IMG_TEXT);
             handleKeyProposal(context, acceptor, p.getId(), proposal, displayString, image);
         }
 
@@ -390,7 +392,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 //  corresponding default value
 
                 case STRING:
-                    if (annotationName.equals(LayoutOptions.ALGORITHM.getId())) {
+                    if (annotationName.equals(CoreOptions.ALGORITHM.getId())) {
                         String displayString = null;
                         for (final LayoutAlgorithmData data : layoutServices.getAlgorithmData()) {
                             proposal = '"' + data.getId() + '"';

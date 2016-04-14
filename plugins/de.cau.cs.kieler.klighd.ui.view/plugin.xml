@@ -46,8 +46,8 @@
             id="de.cau.cs.kieler.klighd.ui.view.syntheses.ErrorModelSynthesis">
       </diagramSynthesis>
       <diagramSynthesis
-            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ui.view.syntheses.EcoreModelSynthesis"
-            id="de.cau.cs.kieler.klighd.ui.view.syntheses.EcoreModelSynthesis">
+            class="de.cau.cs.kieler.klighd.syntheses.GuiceBasedSynthesisFactory:de.cau.cs.kieler.klighd.ui.view.syntheses.EObjectFallbackSynthesis"
+            id="de.cau.cs.kieler.klighd.ui.view.syntheses.EObjectFallbackSynthesis">
       </diagramSynthesis>
          
    </extension>

@@ -13,16 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.syntheses
 
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.krendering.Colors
-import de.cau.cs.kieler.core.krendering.KRoundedRectangle
-import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
+import de.cau.cs.kieler.klighd.krendering.Colors
+import de.cau.cs.kieler.klighd.krendering.KRoundedRectangle
+import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.ui.view.model.ErrorModel
 import de.cau.cs.kieler.klighd.ui.view.model.MessageModel
 import de.cau.cs.kieler.klighd.ui.view.syntheses.action.ErrorModelShowExceptionAction
 import javax.inject.Inject
+import org.eclipse.elk.graph.KNode
 
 /**
  * Diagram synthesis for a {@link MessageModel}.

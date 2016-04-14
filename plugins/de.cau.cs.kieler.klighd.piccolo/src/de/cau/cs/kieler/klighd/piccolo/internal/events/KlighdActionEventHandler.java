@@ -16,6 +16,9 @@ package de.cau.cs.kieler.klighd.piccolo.internal.events;
 import java.awt.geom.Point2D;
 import java.util.List;
 
+import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
@@ -25,12 +28,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KAction;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.Trigger;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -40,6 +37,9 @@ import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
+import de.cau.cs.kieler.klighd.krendering.KAction;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
@@ -238,7 +238,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         final boolean animate = resultOfLastAction.getAnimateLayout();
         final ZoomStyle zoomStyle = ZoomStyle.create(resultOfLastActionRequiringLayout, vc);
         final KNode focusNode = resultOfLastActionRequiringLayout.getFocusNode();
-        final List<ILayoutConfig> layoutConfigs = resultOfLastAction.getLayoutConfigs();
+        final List<LayoutConfigurator> layoutConfigs = resultOfLastAction.getLayoutConfigs();
 
         // Execute the layout asynchronously in order to let the KLighdInputManager
         //  finish the processing of 'inputEvent' quickly.

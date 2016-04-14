@@ -19,6 +19,7 @@ import static com.google.common.collect.Lists.reverse;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.elk.core.util.Pair;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -28,7 +29,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 

@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import de.cau.cs.kieler.core.krendering.KChildArea;
+import de.cau.cs.kieler.klighd.krendering.KChildArea;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PLayer;

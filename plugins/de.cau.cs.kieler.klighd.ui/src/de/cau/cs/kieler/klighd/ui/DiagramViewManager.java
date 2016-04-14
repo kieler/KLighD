@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
@@ -29,7 +30,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramServices;

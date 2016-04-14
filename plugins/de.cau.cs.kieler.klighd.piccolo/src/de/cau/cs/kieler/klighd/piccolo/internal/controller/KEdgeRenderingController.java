@@ -20,20 +20,20 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.elk.graph.KEdge;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.krendering.KCustomRendering;
-import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KRenderingPackage;
-import de.cau.cs.kieler.core.krendering.KRenderingRef;
-import de.cau.cs.kieler.core.krendering.KRoundedBendsPolyline;
-import de.cau.cs.kieler.core.krendering.KSpline;
-import de.cau.cs.kieler.core.krendering.KStyle;
+import de.cau.cs.kieler.klighd.krendering.KCustomRendering;
+import de.cau.cs.kieler.klighd.krendering.KPolyline;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
+import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KRoundedBendsPolyline;
+import de.cau.cs.kieler.klighd.krendering.KSpline;
+import de.cau.cs.kieler.klighd.krendering.KStyle;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;

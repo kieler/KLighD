@@ -14,10 +14,11 @@ package de.cau.cs.kieler.klighd.ui.view.syntheses.action;
 
 import java.util.Iterator;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
+import org.eclipse.elk.graph.KNode;
+
 import de.cau.cs.kieler.klighd.IAction;
+import de.cau.cs.kieler.klighd.ui.view.syntheses.EObjectFallbackSynthesis;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
-import de.cau.cs.kieler.klighd.ui.view.syntheses.EcoreModelSynthesis;
 
 /**
  * Expands all details areas of the ecore representation of the model.
@@ -42,7 +43,7 @@ public class EcoreModelExpandDetailsAction implements IAction {
             // Expand or collapse all nodes
             while (nodeIter.hasNext()) {
                 if ((boolean) context.getViewContext()
-                        .getOptionValue(EcoreModelSynthesis.EXPAND_DETAILS)) {
+                        .getOptionValue(EObjectFallbackSynthesis.EXPAND_DETAILS)) {
                     context.getActiveViewer().expand(nodeIter.next());
                 } else {
                     context.getActiveViewer().collapse(nodeIter.next());

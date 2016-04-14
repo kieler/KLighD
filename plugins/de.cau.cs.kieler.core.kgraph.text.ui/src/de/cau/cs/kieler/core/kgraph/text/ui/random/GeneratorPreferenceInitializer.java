@@ -24,7 +24,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.cau.cs.kieler.core.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.core.kgraph.text.ui.internal.KGraphActivator;
 import de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.Messages;
-import de.cau.cs.kieler.core.properties.IProperty;
+import org.eclipse.elk.graph.properties.IProperty;
 
 /**
  * Preference initializer for graph generation options.

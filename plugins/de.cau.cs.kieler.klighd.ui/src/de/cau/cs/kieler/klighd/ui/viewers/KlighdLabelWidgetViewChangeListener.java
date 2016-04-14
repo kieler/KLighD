@@ -16,13 +16,13 @@ package de.cau.cs.kieler.klighd.ui.viewers;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.swt.custom.StyledText;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;

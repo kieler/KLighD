@@ -13,17 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.options.PortSide;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
  * A collection of KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty IProperties}

@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.util;
 
 import java.awt.geom.Point2D;
 
-import de.cau.cs.kieler.core.util.Pair;
+import org.eclipse.elk.core.util.Pair;
 
 /**
  * A utility class providing math functionality based on data structures used in Piccolo.

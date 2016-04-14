@@ -24,6 +24,23 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KEdge;
+import org.eclipse.elk.graph.KGraphData;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KGraphPackage;
+import org.eclipse.elk.graph.KLabel;
+import org.eclipse.elk.graph.KLabeledGraphElement;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.KPort;
+import org.eclipse.elk.graph.impl.IPropertyToObjectMapImpl;
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.swt.widgets.Display;
@@ -39,30 +56,13 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphData;
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KGraphPackage;
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.kgraph.KLabeledGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.kgraph.impl.IPropertyToObjectMapImpl;
-import de.cau.cs.kieler.core.krendering.KPolyline;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingUtil;
-import de.cau.cs.kieler.core.krendering.KSpline;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.Property;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataPackage;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutManager;
+import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.krendering.KPolyline;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
+import de.cau.cs.kieler.klighd.krendering.KSpline;
 import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
@@ -862,7 +862,7 @@ public class DiagramController {
                 final PBounds bounds;
 
                 // check whether an actual bounds change occurred, and if so get the new bounds
-                if (recordedChange.getValue() == KlighdLayoutManager.LAYOUT_DATA_UNCHANGED_VALUE) {
+                if (recordedChange.getValue() == KlighdDiagramLayoutConnector.LAYOUT_DATA_UNCHANGED_VALUE) {
                     bounds = null;
                 } else {
                     bounds = (PBounds) recordedChange.getValue();
@@ -874,7 +874,7 @@ public class DiagramController {
                 // check whether the scale must be updated, only valid for KNodes
                 if (shapeNode instanceof KNodeNode) {
                     scale = ((KNodeNode) shapeNode).getViewModelElement().getData(KShapeLayout.class)
-                                    .getProperty(LayoutOptions.SCALE_FACTOR);
+                                    .getProperty(CoreOptions.SCALE_FACTOR);
                     scaleHasChanged = scale != shapeNode.getScale();
                 } else {
                     scale = 1f;
@@ -1625,16 +1625,16 @@ public class DiagramController {
 
     private boolean isAutomaticallyArranged(final KGraphElement element) {
         KLayoutData layoutData = this.topNode.getViewModelElement().getData(KLayoutData.class);
-        if (layoutData == null || layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
+        if (layoutData == null || layoutData.getProperty(CoreOptions.NO_LAYOUT)) {
             return false;
         }
         layoutData = element.getData(KLayoutData.class);
-        if (layoutData != null && layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
+        if (layoutData != null && layoutData.getProperty(CoreOptions.NO_LAYOUT)) {
             return false;
         }
         final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
         layoutData = container == null ? null : container.getData(KLayoutData.class);
-        if (layoutData != null && layoutData.getProperty(LayoutOptions.NO_LAYOUT)) {
+        if (layoutData != null && layoutData.getProperty(CoreOptions.NO_LAYOUT)) {
             return false;
         }
         return true;
@@ -1667,7 +1667,7 @@ public class DiagramController {
         final KShapeLayout shapeLayout = nodeNode.getViewModelElement().getData(KShapeLayout.class);
         if (shapeLayout != null) {
             NodeUtil.applyBounds(nodeNode, shapeLayout);
-            Float scale = shapeLayout.getProperty(LayoutOptions.SCALE_FACTOR);
+            Float scale = shapeLayout.getProperty(CoreOptions.SCALE_FACTOR);
             if (scale != Float.valueOf(1f)) {
                 nodeNode.setScale(scale.doubleValue());
             }
