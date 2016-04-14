@@ -20,6 +20,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.elk.core.util.GraphDataUtil;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -41,11 +46,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.config.ILayoutConfig;
-import de.cau.cs.kieler.kiml.config.VolatileLayoutConfig;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
@@ -97,7 +97,7 @@ public class ViewChangedNotificationSuppressionTest {
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
-        KimlUtil.loadDataElements((KNode) viewContext.getInputModel());
+        GraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
         // the zoom to fit causes the VIEW_PORT change events the listeners are waiting for
@@ -248,9 +248,15 @@ public class ViewChangedNotificationSuppressionTest {
         secondListenerEmployed = true;
     }
 
-    private static final List<ILayoutConfig> CONF = Lists.<ILayoutConfig>newArrayList(
-            new VolatileLayoutConfig().setValue(LayoutOptions.MIN_ANIMATION_TIME, _40_MILLISECONDS)
-                    .setValue(LayoutOptions.MAX_ANIMATION_TIME, _40_MILLISECONDS));
+    private static final List<LayoutConfigurator> CONF = Lists.newArrayList();
+    
+    static {
+        final LayoutConfigurator lc = new LayoutConfigurator();
+        lc.configure(KGraphElement.class)
+                .setProperty(CoreOptions.MIN_ANIM_TIME, _40_MILLISECONDS)
+                .setProperty(CoreOptions.MAX_ANIM_TIME, _40_MILLISECONDS);
+        CONF.add(lc);
+    }
 
     private static final Function<ViewContext, Object> MODEL_QUERY =
             new Function<ViewContext, Object>() {

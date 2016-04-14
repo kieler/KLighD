@@ -17,6 +17,11 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -43,15 +48,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.Colors;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.test.KlighdTestPlugin;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -207,12 +207,12 @@ public class DiagramClipTest {
             final float zoom = viewer.getZoomLevel();
 
             final KShapeLayout port0Layout = clip.getPorts().get(0).getData(KShapeLayout.class);
-            final KVector port0pos = KimlUtil.toAbsolute(port0Layout.createVector(), clip);
+            final KVector port0pos = ElkUtil.toAbsolute(port0Layout.createVector(), clip);
             port0pos.add(port0Layout.getWidth() / 2, port0Layout.getHeight() / 2);
             port0pos.scale(zoom);
 
             final KShapeLayout portXLayout = Iterables.getLast(clip.getPorts()).getData(KShapeLayout.class);
-            final KVector portXpos = KimlUtil.toAbsolute(portXLayout.createVector(), clip);
+            final KVector portXpos = ElkUtil.toAbsolute(portXLayout.createVector(), clip);
             portXpos.add(1, portXLayout.getHeight() / 2);
             portXpos.scale(zoom);
 

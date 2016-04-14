@@ -18,6 +18,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.elk.core.klayoutdata.KIdentifier;
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.core.util.selection.DefaultSelectionIterator;
+import org.eclipse.elk.core.util.selection.SelectionIterator;
+import org.eclipse.elk.graph.KEdge;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.KPort;
+import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.hamcrest.core.IsInstanceOf;
@@ -31,16 +40,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.core.kgraph.PersistentEntry;
-import de.cau.cs.kieler.core.kgraph.text.KGraphStandaloneSetup;
-import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
-import de.cau.cs.kieler.kiml.util.selection.DefaultSelectionIterator;
-import de.cau.cs.kieler.kiml.util.selection.SelectionIterator;
+import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
@@ -174,7 +174,7 @@ public class ConnectedEdgesTest {
                                             new DefaultSelectionIterator(input, false, false);
                                     SelectionIterator targetIter =
                                             new DefaultSelectionIterator(input, false, true);
-                                    return Iterators.filter(KimlUtil.getConnectedElements(input,
+                                    return Iterators.filter(ElkUtil.getConnectedElements(input,
                                             sourceIter, targetIter), KEdge.class);
                                 }
                             }));
@@ -208,7 +208,7 @@ public class ConnectedEdgesTest {
                                             new DefaultSelectionIterator(input, false, false);
                                     SelectionIterator targetIter =
                                             new DefaultSelectionIterator(input, false, true);
-                                    return Iterators.filter(KimlUtil.getConnectedElements(input,
+                                    return Iterators.filter(ElkUtil.getConnectedElements(input,
                                             sourceIter, targetIter), KEdge.class);
                                 }
                             }));

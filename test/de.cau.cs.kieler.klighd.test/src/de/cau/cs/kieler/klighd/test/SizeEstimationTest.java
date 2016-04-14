@@ -16,14 +16,17 @@ package de.cau.cs.kieler.klighd.test;
 // SUPPRESS CHECKSTYLE NEXT 2 LineLength
 import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_HEIGHT;
 import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_WIDTH;
-import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_IGNORE;
 import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_HEIGHT;
+import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_IGNORE;
 import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.KLIGHD_TESTING_WIDTH;
 import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.PRED_TESTING_HEIGHT;
 import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.PRED_TESTING_WIDTH;
 
 import java.util.Iterator;
 
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.junit.Test;
@@ -33,12 +36,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.text.KGraphStandaloneSetup;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.core.util.Pair;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;

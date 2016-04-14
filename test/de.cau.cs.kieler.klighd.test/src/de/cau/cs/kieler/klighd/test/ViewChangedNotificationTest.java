@@ -16,6 +16,9 @@ package de.cau.cs.kieler.klighd.test;
 import java.net.URL;
 import java.util.Iterator;
 
+import org.eclipse.elk.core.util.GraphDataUtil;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -34,9 +37,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
@@ -85,7 +85,7 @@ public class ViewChangedNotificationTest {
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
-        KimlUtil.loadDataElements((KNode) viewContext.getInputModel());
+        GraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
         // the zoom to fit causes the VIEW_PORT change events the listener is waiting for

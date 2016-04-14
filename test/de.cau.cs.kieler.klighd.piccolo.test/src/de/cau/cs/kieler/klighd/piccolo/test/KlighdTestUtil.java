@@ -1,10 +1,10 @@
 package de.cau.cs.kieler.klighd.piccolo.test;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.KPort;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.graph.KEdge;
+import org.eclipse.elk.graph.KLabel;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.KPort;
 
 /**
  * 
@@ -40,8 +40,8 @@ public class KlighdTestUtil {
      * @return the new child node
      */
     public static KNode addchild(final KNode node) {
-        KNode child = KimlUtil.createInitializedNode();
-        KLabel l = KimlUtil.createInitializedLabel(child);
+        KNode child = ElkUtil.createInitializedNode();
+        KLabel l = ElkUtil.createInitializedLabel(child);
         l.setText(node.toString() + "child" + node.getChildren().size());
         // child.getLabels().add(l);
         node.getChildren().add(child);
@@ -63,12 +63,12 @@ public class KlighdTestUtil {
      */
     public static KEdge connectNodes(final KNode source, final KNode target, final KPort sourcePort,
             final KPort targetPort) {
-        KEdge e = KimlUtil.createInitializedEdge();
+        KEdge e = ElkUtil.createInitializedEdge();
         e.setSource(source);
         e.setTarget(target);
         e.setSourcePort(sourcePort);
         e.setTargetPort(targetPort);
-        KLabel l = KimlUtil.createInitializedLabel(e);
+        KLabel l = ElkUtil.createInitializedLabel(e);
         l.setText(source.toString() + " to " + target.toString());
         return e;
     }
@@ -81,8 +81,8 @@ public class KlighdTestUtil {
      * @return the added port
      */
     public static KPort addport(final KNode node) {
-        KPort p = KimlUtil.createInitializedPort();
-        KLabel l = KimlUtil.createInitializedLabel(p);
+        KPort p = ElkUtil.createInitializedPort();
+        KLabel l = ElkUtil.createInitializedLabel(p);
         l.setText("port" + node.getPorts().size());
         node.getPorts().add(p);
         return p;

@@ -15,20 +15,20 @@ package de.cau.cs.kieler.klighd.test;
 
 import java.util.Iterator;
 
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.graph.KGraphData;
+import org.eclipse.elk.graph.KGraphFactory;
+import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.PersistentEntry;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.core.kgraph.KGraphData;
-import de.cau.cs.kieler.core.kgraph.KGraphFactory;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.kgraph.PersistentEntry;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
-import de.cau.cs.kieler.kiml.util.LayoutOptionProxy;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -101,7 +101,7 @@ public final class SizeEstimationTrainer {
             KShapeLayout sl = node.getData(KShapeLayout.class);
             if (sl != null) {
                 node.getData().remove(sl);
-                KimlUtil.validate(node);
+                ElkUtil.validate(node);
                 sl = node.getData(KShapeLayout.class);
             }
             Bounds b = PlacementUtil.estimateSize(node);

@@ -13,10 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.test;
 
+import org.eclipse.elk.graph.KNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;

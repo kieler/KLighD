@@ -21,6 +21,11 @@ import static de.cau.cs.kieler.klighd.util.ModelingUtil.selfAndEAllContentsOfTyp
 import static de.cau.cs.kieler.klighd.util.ModelingUtil.selfAndEAllContentsOfType2;
 
 import java.util.Iterator;
+
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KLabel;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.hamcrest.Factory;
 import org.hamcrest.FeatureMatcher;
@@ -30,14 +35,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KLabel;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KContainerRendering;
-import de.cau.cs.kieler.core.krendering.KRendering;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
+import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
+import de.cau.cs.kieler.klighd.krendering.KText;
 
 
 
@@ -58,14 +59,14 @@ public class ModelingUtilTest {
         final KRenderingFactory rFac = KRenderingFactory.eINSTANCE;
 
 
-        final KNode a = KimlUtil.createInitializedNode();
-        final KNode b = KimlUtil.createInitializedNode();
-        final KNode c = KimlUtil.createInitializedNode();
+        final KNode a = ElkUtil.createInitializedNode();
+        final KNode b = ElkUtil.createInitializedNode();
+        final KNode c = ElkUtil.createInitializedNode();
 
         a.getChildren().add(b);
         b.getChildren().add(c);
 
-        KimlUtil.createInitializedLabel(a).getData().add(rFac.createKText());
+        ElkUtil.createInitializedLabel(a).getData().add(rFac.createKText());
 
         final KContainerRendering bRect = rFac.createKRectangle();
         bRect.getChildren().add(rFac.createKText());

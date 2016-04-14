@@ -13,18 +13,18 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.test.highlightedEdgeToForeground
 
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.kgraph.KPort
-import de.cau.cs.kieler.core.krendering.Colors
-import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-import de.cau.cs.kieler.kiml.options.EdgeRouting
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.kiml.options.PortConstraints
-import de.cau.cs.kieler.kiml.options.PortSide
+import de.cau.cs.kieler.klighd.krendering.Colors
+import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import javax.inject.Inject
+import org.eclipse.elk.core.options.CoreOptions
+import org.eclipse.elk.core.options.EdgeRouting
+import org.eclipse.elk.core.options.PortConstraints
+import org.eclipse.elk.core.options.PortSide
+import org.eclipse.elk.graph.KNode
+import org.eclipse.elk.graph.KPort
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 
@@ -48,16 +48,16 @@ class HighlightedEdgeToForegroundTestModelGen {
     
     def KNode getTestModel() {
         val root = createNode();
-        root.addLayoutParam(LayoutOptions.SPACING, 100f)
-        root.addLayoutParam(LayoutOptions.BORDER_SPACING, 0f)
+        root.addLayoutParam(CoreOptions.SPACING_NODE, 100f)
+        root.addLayoutParam(CoreOptions.SPACING_BORDER, 0f)
 
         root.children += createNode() => [
             // the visible container node
             it.addRectangle.lineWidth = 3;
 
-            it.addLayoutParam(LayoutOptions.SPACING, 100f)
-            it.addLayoutParam(LayoutOptions.BORDER_SPACING, 50f)
-            it.addLayoutParam(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
+            it.addLayoutParam(CoreOptions.SPACING_NODE, 100f)
+            it.addLayoutParam(CoreOptions.SPACING_BORDER, 50f)
+            it.addLayoutParam(CoreOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
 
             // explicitly configured the edge spacing factors
             //  after the introduction of the 'edgeNodeSpacingFactor'
@@ -66,8 +66,8 @@ class HighlightedEdgeToForegroundTestModelGen {
             it.setLayoutOption("de.cau.cs.kieler.klay.layered.edgeSpacingFactor", 0.5f)
             it.setLayoutOption("de.cau.cs.kieler.klay.layered.edgeNodeSpacingFactor", 0.5f)
 
-            it.ports += createPort.addLayoutParam(LayoutOptions.PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
-            it.ports += createPort.addLayoutParam(LayoutOptions.PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
+            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
+            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
 
             it.children += createChildNode;
             it.children += createChildNode;
@@ -122,9 +122,9 @@ class HighlightedEdgeToForegroundTestModelGen {
         return createNode => [
             it.addRectangle.lineWidth = 3;
             it.setNodeSize(100, 100);
-            it.addLayoutParam(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
-            it.ports += createPort.addLayoutParam(LayoutOptions.PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
-            it.ports += createPort.addLayoutParam(LayoutOptions.PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
+            it.addLayoutParam(CoreOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
+            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
+            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
         ]
     }
     

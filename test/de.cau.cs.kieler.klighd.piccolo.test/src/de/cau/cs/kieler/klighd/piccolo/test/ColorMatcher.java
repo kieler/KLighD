@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.test;
 
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.util.Pair;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -21,9 +23,7 @@ import org.eclipse.swt.widgets.Control;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-import de.cau.cs.kieler.core.krendering.Colors;
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.util.Pair;
+import de.cau.cs.kieler.klighd.krendering.Colors;
 
 /**
  * A dedicated {@link BaseMatcher} matching {@link RGB} color specifications, accepts a delta of 10

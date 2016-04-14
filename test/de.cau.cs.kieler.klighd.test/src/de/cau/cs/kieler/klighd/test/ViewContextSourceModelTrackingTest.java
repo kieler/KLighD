@@ -18,6 +18,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.elk.core.klayoutdata.KLayoutData;
+import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.graph.KEdge;
+import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -37,19 +42,14 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import de.cau.cs.kieler.core.kgraph.KEdge;
-import de.cau.cs.kieler.core.kgraph.KGraphElement;
-import de.cau.cs.kieler.core.kgraph.KNode;
-import de.cau.cs.kieler.core.krendering.KRectangle;
-import de.cau.cs.kieler.core.krendering.KRenderingFactory;
-import de.cau.cs.kieler.core.krendering.KText;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
-import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.internal.util.SourceModelTrackingAdapter;
+import de.cau.cs.kieler.klighd.krendering.KRectangle;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.syntheses.DuplicatingDiagramSynthesis;
 
@@ -101,15 +101,15 @@ public class ViewContextSourceModelTrackingTest {
     @Test
     public void test00() {
         final Object elementB = new Object();
-        final KNode nodeB = KimlUtil.createInitializedNode();        
+        final KNode nodeB = ElkUtil.createInitializedNode();        
         nodeB.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementB);
         
         final Object elementA = new Object();
-        final KNode nodeA = KimlUtil.createInitializedNode();
+        final KNode nodeA = ElkUtil.createInitializedNode();
         nodeA.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementA);
         nodeA.getChildren().add(nodeB);
 
-        final KNode root = KimlUtil.createInitializedNode();
+        final KNode root = ElkUtil.createInitializedNode();
         root.getChildren().add(nodeA);
         
         final SourceModelTrackingAdapter adapter = new SourceModelTrackingAdapter();
@@ -153,7 +153,7 @@ public class ViewContextSourceModelTrackingTest {
         final KNode viewModel = viewContext.getViewModel();
 
         final EObject sourceModel = new EObjectImpl() { };
-        final KNode newModel = KimlUtil.createInitializedNode();        
+        final KNode newModel = ElkUtil.createInitializedNode();        
         newModel.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT,
                 sourceModel);
 
@@ -204,13 +204,13 @@ public class ViewContextSourceModelTrackingTest {
     }
     
     private KNode createSimpleNetwork() {
-        final KNode sourceNode1 = KimlUtil.createInitializedNode();
-        final KNode sourceNode2 = KimlUtil.createInitializedNode();
-        final KEdge sourceEdge = KimlUtil.createInitializedEdge();
+        final KNode sourceNode1 = ElkUtil.createInitializedNode();
+        final KNode sourceNode2 = ElkUtil.createInitializedNode();
+        final KEdge sourceEdge = ElkUtil.createInitializedEdge();
         sourceEdge.setSource(sourceNode1);
         sourceEdge.setTarget(sourceNode2);
         
-        final KNode sourceRoot = KimlUtil.createInitializedNode();
+        final KNode sourceRoot = ElkUtil.createInitializedNode();
         sourceRoot.getChildren().add(sourceNode1);
         sourceRoot.getChildren().add(sourceNode2);
         return sourceRoot;
