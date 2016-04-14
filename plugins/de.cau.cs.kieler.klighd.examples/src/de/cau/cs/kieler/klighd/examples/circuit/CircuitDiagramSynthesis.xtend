@@ -13,26 +13,26 @@
  */
 package de.cau.cs.kieler.klighd.examples.circuit
 
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.krendering.KRendering
-import de.cau.cs.kieler.core.krendering.KRenderingFactory
-import de.cau.cs.kieler.core.krendering.LineCap
-import de.cau.cs.kieler.core.krendering.LineJoin
-import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KLabelExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-import de.cau.cs.kieler.kiml.options.EdgeRouting
-import de.cau.cs.kieler.kiml.options.LayoutOptions
-import de.cau.cs.kieler.kiml.options.PortConstraints
-import de.cau.cs.kieler.kiml.options.PortSide
 import de.cau.cs.kieler.klighd.KlighdConstants
+import de.cau.cs.kieler.klighd.krendering.KRendering
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
+import de.cau.cs.kieler.klighd.krendering.LineCap
+import de.cau.cs.kieler.klighd.krendering.LineJoin
+import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KLabelExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KPolylineExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import javax.inject.Inject
+import org.eclipse.elk.core.options.CoreOptions
+import org.eclipse.elk.core.options.EdgeRouting
+import org.eclipse.elk.core.options.PortConstraints
+import org.eclipse.elk.core.options.PortSide
+import org.eclipse.elk.graph.KNode
 
 /**
  * An exemplary diagram synthesis illustrating the generation of diagrams containing nodes with ports.
@@ -102,7 +102,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         
         // we want the (potentially) contained edges to be routed in orthogonal style,
         //  this option is evaluated by the layout algorithm
-        circuitNode.setLayoutOption(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
+        circuitNode.setLayoutOption(CoreOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
 
         val atomicCircuit = circuit.innerCircuits.empty;
         
@@ -123,7 +123,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                 //  a negative number causes the port to be moved inside the knode
                 // we, however, want this movement only in case of non-atomic circuits,
                 //  i.e. such containing an inner circuit network
-                it.setLayoutOption(LayoutOptions.OFFSET, if (atomicCircuit) 0f else -3f);
+                it.setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, if (atomicCircuit) 0f else -3f);
                 
                 // attach a simple rectangular figure filled with black color
                 //  and slightly rounded corners 
@@ -150,7 +150,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             // the expansion aware option setting is only required if collapsing and expanding
             //  of composite circuits is desired - lets give it try here ;-)
             default: circuitNode.setNodeSize(40, 40).setExpansionAwareLayoutOption(
-                LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_ORDER, PortConstraints.FREE
+                CoreOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_ORDER, PortConstraints.FREE
             ).addRoundedRectangle(3, 5) => [
                 // those hierarchic nodes shall be represented by a rectangle with asymmetrically
                 //  rounded corners, this simplifies from distinction from wire bend points
@@ -231,12 +231,12 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
 
     def KRendering createNotGateRendering(KNode node) {
         node.setNodeSize(30,30);
-        node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
+        node.setLayoutOption(CoreOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
         
-        node.ports.head.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.WEST);
+        node.ports.head.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.WEST);
         node.ports.last => [
-            it.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.EAST);
-            it.setLayoutOption(LayoutOptions.OFFSET, 0f);
+            it.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.EAST);
+            it.setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, 0f);
             it.setPortSize(5, 5);
             it.data.removeAll(it.data.filter(typeof(KRendering)));
             
@@ -260,13 +260,13 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
     
     def KRendering createAndGateRendering(KNode node) {
         node.setNodeSize(40,30);
-        node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
+        node.setLayoutOption(CoreOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
         
         node.ports.forEach[
-            it.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.WEST);
+            it.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.WEST);
         ];
-        node.ports.last.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.EAST)
-                       .setLayoutOption(LayoutOptions.OFFSET, -1f);
+        node.ports.last.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.EAST)
+                       .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -1f);
         
         node.addRectangle => [
             it.invisible = true;
@@ -302,14 +302,14 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
     
     def KRendering createOrGateRendering(KNode node) {
         node.setNodeSize(40,30);
-        node.setLayoutOption(LayoutOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
+        node.setLayoutOption(CoreOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
         
         node.ports.forEach[
-            it.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.WEST)
-              .setLayoutOption(LayoutOptions.OFFSET, -8f);
+            it.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.WEST)
+              .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -8f);
         ];
-        node.ports.last.setLayoutOption(LayoutOptions.PORT_SIDE, PortSide.EAST)
-                       .setLayoutOption(LayoutOptions.OFFSET, -1f);
+        node.ports.last.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.EAST)
+                       .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -1f);
         
         node.addRectangle => [
             it.invisible = true;

@@ -16,27 +16,26 @@ package de.cau.cs.kieler.klighd.examples.ecore
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.krendering.Colors
-import de.cau.cs.kieler.core.krendering.KContainerRendering
-import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-import de.cau.cs.kieler.core.util.Pair
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData
-import de.cau.cs.kieler.kiml.options.Direction
-import de.cau.cs.kieler.kiml.options.EdgeType
-import de.cau.cs.kieler.kiml.options.LayoutOptions
 import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
+import de.cau.cs.kieler.klighd.krendering.Colors
+import de.cau.cs.kieler.klighd.krendering.KContainerRendering
+import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KPolylineExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
 import java.util.List
 import java.util.Set
 import javax.inject.Inject
+import org.eclipse.elk.core.klayoutdata.KLayoutData
+import org.eclipse.elk.core.options.CoreOptions
+import org.eclipse.elk.core.options.Direction
+import org.eclipse.elk.core.options.EdgeType
+import org.eclipse.elk.graph.KNode
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
@@ -118,8 +117,8 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
      */
     override public getDisplayedLayoutOptions() {
         return ImmutableList::of(
-            specifyLayoutOption(LayoutOptions::DIRECTION, Direction::values().drop(1).sortBy[ it.name ]),
-            specifyLayoutOption(LayoutOptions::SPACING, newArrayList(0, 255))
+            specifyLayoutOption(CoreOptions::DIRECTION, Direction::values().drop(1).sortBy[ it.name ]),
+            specifyLayoutOption(CoreOptions::SPACING_NODE, newArrayList(0, 255))
         );
     }
 
@@ -134,9 +133,9 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
      */
 	override KNode transform(EModelElementCollection choice) {		
 		return createNode() => [
-            it.addLayoutParam(LayoutOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
-            it.addLayoutParam(LayoutOptions::SPACING, 75f);
-            it.addLayoutParam(LayoutOptions::DIRECTION, Direction::UP);
+            it.addLayoutParam(CoreOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
+            it.addLayoutParam(CoreOptions::SPACING_NODE, 75f);
+            it.addLayoutParam(CoreOptions::DIRECTION, Direction::UP);
 		
             // The chosen (depicted) classifiers. This list will be supplemented with related classifiers,
             //  depending on the value of CLASS_FILTER.
@@ -342,7 +341,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	def createAssociationConnection(EReference ref) {
 	    visitedRefs += ref;
 	    ref.createEdge() => [
-            it.addLayoutParam(LayoutOptions::EDGE_TYPE, EdgeType::ASSOCIATION);
+            it.addLayoutParam(CoreOptions::EDGE_TYPE, EdgeType::ASSOCIATION);
     		it.source = ref.eContainer.node;
 	       	it.target = ref.EType.node;
 	       	// add semantic data
@@ -379,7 +378,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	
 	def createInheritanceConnection(EClass child, EClass parent) {
 		new Pair(child, parent).createEdge() => [
-            it.addLayoutParam(LayoutOptions::EDGE_TYPE, EdgeType::GENERALIZATION);
+            it.addLayoutParam(CoreOptions::EDGE_TYPE, EdgeType::GENERALIZATION);
             // add semantic data
             it.getData(typeof(KLayoutData)).setProperty(KlighdProperties.SEMANTIC_DATA, 
                         KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "inheritence"))

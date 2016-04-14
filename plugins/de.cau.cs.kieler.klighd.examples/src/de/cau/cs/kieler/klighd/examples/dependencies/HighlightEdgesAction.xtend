@@ -1,18 +1,16 @@
 package de.cau.cs.kieler.klighd.examples.dependencies
 
 import com.google.common.collect.Lists
-import de.cau.cs.kieler.core.kgraph.KEdge
-import de.cau.cs.kieler.core.kgraph.KNode
-import de.cau.cs.kieler.core.krendering.KPolyline
-import de.cau.cs.kieler.core.krendering.KRendering
-import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
-import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-import de.cau.cs.kieler.klighd.IAction
-import java.util.List
-import de.cau.cs.kieler.klighd.IAction.ActionContext
-import de.cau.cs.kieler.klighd.IAction.ActionResult
 import com.google.inject.Guice
 import com.google.inject.Inject
+import de.cau.cs.kieler.klighd.IAction
+import de.cau.cs.kieler.klighd.krendering.KPolyline
+import de.cau.cs.kieler.klighd.krendering.KRendering
+import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
+import java.util.List
+import org.eclipse.elk.graph.KEdge
+import org.eclipse.elk.graph.KNode
 
 class HighlightEdgesAction implements IAction {
 

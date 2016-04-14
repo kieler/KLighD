@@ -13,12 +13,13 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.emf.ecore.editor,
  org.eclipse.xtext.xbase.lib;bundle-version="2.4.0",
  org.eclipse.uml2.uml;bundle-version="4.0.0";resolution:=optional,
- de.cau.cs.kieler.core.krendering.extensions,
  de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.kivi,
  de.cau.cs.kieler.klighd.ui.view,
- de.cau.cs.kieler.kiml.ogdf;bundle-version="0.5.0";resolution:=optional,
- de.cau.cs.kieler.klay.layered;bundle-version="0.6.0";resolution:=optional
+ de.cau.cs.kieler.klighd.krendering.extensions,
+ de.cau.cs.kieler.kiml.ogdf;resolution:=optional,
+ org.eclipse.elk.alg.layered;resolution:=optional,
+ org.eclipse.elk.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.cau.cs.kieler.klighd.examples.circuit,
  de.cau.cs.kieler.klighd.examples.circuit.impl,
