@@ -17,6 +17,7 @@ import java.util.Iterator;
 
 import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.util.ElkUtil;
+import org.eclipse.elk.core.util.internal.LayoutOptionProxy;
 import org.eclipse.elk.graph.KGraphData;
 import org.eclipse.elk.graph.KGraphFactory;
 import org.eclipse.elk.graph.KNode;
