@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
     
     private static final String BUNDLE_NAME =
-            "de.cau.cs.kieler.core.kgraph.text.ui.random.wizard.messages"; //$NON-NLS-1$
+            "de.cau.cs.kieler.kgraph.text.ui.random.wizard.messages"; //$NON-NLS-1$
     
     public static String RandomGraphPage_nodes_group_caption;
     public static String RandomGraphPage_number_of_nodes_min;

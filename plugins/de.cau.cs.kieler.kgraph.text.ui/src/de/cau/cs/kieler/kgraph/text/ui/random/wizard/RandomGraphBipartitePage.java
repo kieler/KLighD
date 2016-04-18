@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Spinner;
 
 import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
 import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.EdgeDetermination;
+import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.RandVal;
 
 /**
  * The options page for the bipartite graph type.
@@ -136,8 +137,9 @@ public class RandomGraphBipartitePage extends AbstractRandomGraphPage {
         label.setText(Messages.RandomGraphBipartitePage_partition_min);
         final Spinner partitionMinSpinner = new Spinner(partitionGroup, SWT.BORDER | SWT.SINGLE);
         partitionMinSpinner.setToolTipText(Messages.RandomGraphBipartitePage_partition_min_help);
+
         partitionMinSpinner.setValues(
-                (int) (getOptions().getProperty(GeneratorOptions.MIN_PARTITION_FRAC) * 100),
+                (int) (getOptions().getProperty(GeneratorOptions.PARTITION_FRAC).min() * 100),
                 1, 99, 2, 1, 10);
         GridData gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
@@ -149,42 +151,24 @@ public class RandomGraphBipartitePage extends AbstractRandomGraphPage {
         final Spinner partitionMaxSpinner = new Spinner(partitionGroup, SWT.BORDER | SWT.SINGLE);
         partitionMaxSpinner.setToolTipText(Messages.RandomGraphBipartitePage_partition_max_help);
         partitionMaxSpinner.setValues(
-                (int) (getOptions().getProperty(GeneratorOptions.MAX_PARTITION_FRAC) * 100),
+                (int) (getOptions().getProperty(GeneratorOptions.PARTITION_FRAC).max() * 100),
                 1, 99, 2, 1, 10);
         gridData = new GridData(SWT.LEFT, SWT.NONE, false, false);
         gridData.widthHint = 80;
         partitionMaxSpinner.setLayoutData(gridData);
         
         // Event Listeners
+        RandVal partitionFrac = RandVal.minMax(0, 0);
         partitionMinSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                getOptions().setProperty(GeneratorOptions.MIN_PARTITION_FRAC,
-                        partitionMinSpinner.getSelection() / 100f);
-                validate();
+                partitionFrac.setMin(partitionMinSpinner.getSelection() / 100);
             }
         });
 
         partitionMaxSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
-                getOptions().setProperty(GeneratorOptions.MAX_PARTITION_FRAC,
-                        partitionMaxSpinner.getSelection() / 100f);
-                validate();
+                partitionFrac.setMax(partitionMaxSpinner.getSelection() / 100);
             }
         });
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void validate() {
-        if (getOptions().getProperty(GeneratorOptions.MIN_PARTITION_FRAC)
-                > getOptions().getProperty(GeneratorOptions.MAX_PARTITION_FRAC)) {
-            setErrorMessage(Messages.RandomGraphBipartitePage_partition_error);
-            setPageComplete(false);
-        } else {
-            super.validate();
-        }
-    }
-    
 }
