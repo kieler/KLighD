@@ -320,34 +320,7 @@ public class LayoutOptionControlFactory {
      */
     private void createControl(final LayoutOptionData optionData, final Float minValue,
             final Float maxValue, final Collection<?> availableValues) {
-// chsch: deactivated the following part in order to get rid of the dependency to kiml.ui,
-//  employing the fully-fledged layout algorithm selection dialog is not considered appropriate anyway,
-//  see KIPRA-1448
-//        if (optionData.equals(LayoutOptions.ALGORITHM)) {
-//            final Button button =
-//                    formToolkit.createButton(parent, "Select Layout Algorithm...", SWT.PUSH);
-//            button.setToolTipText(optionData.getDescription());
-//            button.addSelectionListener(new AlgorithmListener());
-//            final GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-//            // gridData.horizontalSpan = 2;
-//            button.setLayoutData(gridData);
-//            button.setData(optionData);
-//            controls.add(button);
-//            // set initial value for the algorithm selection dialog
-//            final String algorithmHint =
-//                    defaultLayoutContext.getProperty(DefaultLayoutConfig.CONTENT_HINT);
-//            if (algorithmHint != null && algorithmHint.length() > 0) {
-//                lightLayoutConfig.setValue(optionData, algorithmHint);
-//            }
-//
-//            // chsch: via this tweak we get more space below the 'Select ...' button as in GridData
-//            //  one can only specify vertical indentation on the top side of the widget
-//            final Composite dummy = new Composite(parent, SWT.NONE | SWT.NO_BACKGROUND);
-//            dummy.setLayoutData(new GridData(1, 1));
-//            controls.add(dummy);
-//
-//            return;
-//        }
+        
         final Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
         label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
         controls.add(label);
@@ -614,43 +587,6 @@ public class LayoutOptionControlFactory {
             }
         }
     }
-
-// chsch: deactivated the following part in order to get rid of the dependency to kiml.ui,
-//  employing the fully-fledged layout algorithm selection dialog is not considered appropriate anyway,
-//  see KIPRA-1448
-//    /**
-//     * A listener for the layout algorithm selection button.
-//     */
-//    private class AlgorithmListener extends SelectionAdapter {
-//
-//        @Override
-//        public void widgetSelected(final SelectionEvent event) {
-//            final String initialValue =
-//                    (String) lightLayoutConfig.getGlobalValue(LayoutOptions.ALGORITHM);
-//            final Dialog dialog = new AlgorithmSelectionDialog(parent.getShell(),
-//                    initialValue);
-//            dialog.addAlgorithmSelectionListener(new ISelectionChangedListener() {
-//                public void selectionChanged(final SelectionChangedEvent event) {
-//                    // instantly update the layout when an algorithm is selected
-//                    final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-//                    if (!selection.isEmpty()
-//                            && selection.getFirstElement() instanceof ILayoutMetaData) {
-//                        ILayoutMetaData layoutData = (ILayoutMetaData) selection.getFirstElement();
-//                        lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, layoutData.getId());
-//                        refreshLayout(true);
-//                    }
-//                }
-//            });
-//            if (dialog.open() == AlgorithmSelectionDialog.OK) {
-//                lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, dialog.getSelectedHint());
-//            } else {
-//                lightLayoutConfig.setValue(LayoutOptions.ALGORITHM, initialValue);
-//            }
-//
-//            // trigger a new layout on the displayed diagram
-//            refreshLayout(true);
-//        }
-//    }
 
     /**
      * A listener for enumeration values.
