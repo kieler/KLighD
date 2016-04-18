@@ -109,7 +109,6 @@ public class LayoutOptionControlFactory {
         this.viewContext = theViewContext;
         this.workbenchPart = viewContext.getDiagramWorkbenchPart();
 
-        final Object input = this.viewContext.getInputModel();
         final KNode viewModel = this.viewContext.getViewModel();
         
         // We need to obtain the LayoutConfigurationManager responsible for the view context to get
@@ -121,55 +120,6 @@ public class LayoutOptionControlFactory {
         final ILayoutConfigurationStore.Provider layoutConfigStoreProvider =
                 injector.getInstance(ILayoutConfigurationStore.Provider.class);
         layoutConfigStore = layoutConfigStoreProvider.get(workbenchPart, viewModel);
-        
-        // TODO The following code actually looks at the input model, which I presume was done
-        //      to support semantic layout configs, which we don't have anymore. Confirm with chsch.
-//        // create the layout configurator
-//        if (input instanceof ISourceProxy) {
-////            defaultLayoutConfig = ((ISourceProxy) input).execute(
-////                    new Function<Object, LayoutConfigurator>() {
-////
-////                public LayoutConfigurator apply(final Object inputModel) {
-////                    // question: shall we check for Iterables here, as well?
-////                    // skip this for now as our diagram syntheses usually take a single source element
-////                    //  rather than an iterable, although this is possible (see Ecore example)
-////                    return optionManager.createConfig(inputModel, KGRAPH_CONFIG);
-////                }
-////            });
-//
-//        } else {
-//            final EObject inputModel;
-//
-//            // question: why do we only accept EObjects here?
-//
-//            if (input instanceof EObject) {
-//                inputModel = (EObject) input;
-//            } else if (input instanceof Iterable) {
-//                inputModel = Iterables.getFirst(
-//                        Iterables.filter((Iterable<?>) input, EObject.class), null);
-//            } else {
-//                inputModel = null;
-//            }
-//
-//            defaultLayoutConfig = optionManager.createConfig(inputModel, KGRAPH_CONFIG);
-//        }
-//
-////        // create and enrich the layout context
-////        defaultLayoutContext = new LayoutContext();
-////        defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
-////
-////        // chsch: deactivated the following declaration as it may disturb the layout massively
-////        //  in case 'inputModel' is NOT represented by 'viewModel' (but, e.g., its first child)
-////        //  and a semantic layout config is associated with the input model's root element;
-////        // in that case those layout settings are taken into 'lightLayoutConfig',
-////        //  and, thus, applied to all view model elements (view model nodes), which is wrong, of course!
-////        // defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
-////        defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
-////
-////        defaultLayoutContext.setProperty(
-////                LayoutContext.OPT_TARGETS, EnumSet.of(LayoutOptionData.Target.PARENTS));
-//
-//        optionManager.enrich(defaultLayoutContext, defaultLayoutConfig, true);
     }
     
     /**
