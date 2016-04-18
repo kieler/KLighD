@@ -77,9 +77,6 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  */
 public final class DiagramSideBar {
 
-    /** The priority of the {@link ILayoutConfig} employed in side bars. */
-//    public static final int LAYOUT_CONFIG_PRIORITY = KlighdConstants.SIDE_BAR_LAYOUT_CONFIG_PRIORITY;
-
     /** The initial width of the option pane and the diagram viewer. */
     private static final int INITIAL_OPTIONS_FORM_WIDTH = 230;
 
@@ -101,12 +98,6 @@ public final class DiagramSideBar {
     private boolean zoomButtonsVisible = KlighdPreferences.isShowZoomConfigButtons();
 
     private boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
-
-    /** The layout configurator that stores the values set by the layout option controls. */
-    // MIGRATE Is this the right way to create a new Layout Configurator?
-    // was:
-//  private final VolatileLayoutConfig layoutConfig = new VolatileLayoutConfig(LAYOUT_CONFIG_PRIORITY);
-    private final LayoutConfigurator layoutConfig = new LayoutConfigurator();
 
     private final Composite sideBarParent;
 
@@ -164,12 +155,12 @@ public final class DiagramSideBar {
     }
 
     /**
-     * Provides the {@link ILayoutConfig} with layout settings from <code>this</code> side bar.
+     * Provides the {@link LayoutConfigurator} with layout settings from <code>this</code> side bar.
      *
-     * @return the employed {@link ILayoutConfig}
+     * @return the employed {@link LayoutConfigurator}
      */
     public LayoutConfigurator getLayoutConfig() {
-        return this.layoutConfig;
+        return layoutOptionControlFactory.getLayoutConfig();
     }
 
     /**
@@ -309,7 +300,7 @@ public final class DiagramSideBar {
 
         // create the factory for layout option controls to fill the options container
         layoutOptionControlFactory = new LayoutOptionControlFactory(
-                layoutOptionsContainer, optionsformToolkit, layoutConfig);
+                layoutOptionsContainer, optionsformToolkit);
 
         // prepare the form layout data for each of the above created widgets
         final FormData diagramContainerLayoutData = new FormData();

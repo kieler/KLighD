@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.klighd.ui.internal.options;
 
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
@@ -22,9 +21,11 @@ import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.math.ElkMath;
-import org.eclipse.elk.core.service.DiagramLayoutEngine;
+import org.eclipse.elk.core.service.ILayoutConfigurationStore;
+import org.eclipse.elk.core.service.LayoutConfigurationManager;
+import org.eclipse.elk.core.service.LayoutConnectorsService;
+import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.elk.graph.KNode;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,16 +38,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
+import com.google.inject.Injector;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.ISourceProxy;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdLayoutConfigurationStore;
 
 /**
  * A factory for controls for layout options.
@@ -65,12 +63,12 @@ public class LayoutOptionControlFactory {
     private IDiagramWorkbenchPart workbenchPart;
     /** the form toolkit used to create controls. */
     private FormToolkit formToolkit;
-    /** The layout configurator for retrieving initial values of controls. */
-//    private ILayoutConfig defaultLayoutConfig;
-    /** The layout context for retrieving initial values of controls. */
-//    private LayoutContext defaultLayoutContext;
     /** The layout configurator that stores the values set by option controls. */
-//    private VolatileLayoutConfig lightLayoutConfig;
+    private LayoutConfigurator layoutConfig;
+    /** The layout configuration manager for retrieving initial values of controls. */
+    private LayoutConfigurationManager layoutConfigManager;
+    /** The layout configuration store for retrieving initial values of controls. */
+    private ILayoutConfigurationStore layoutConfigStore;
     /** The set of controls to be disposed when {@link #clear()} is called. */
     private final Collection<Control> controls = new LinkedList<Control>();
     /** Whether the layout shall be refreshed automatically. */
@@ -81,9 +79,6 @@ public class LayoutOptionControlFactory {
     /** widget data identifier for the attached selection listener. */
     private static final String DATA_SELECTION_LISTENER = "klighd.selectionListener";
 
-    /** a {@link KLighDLayoutConfigurationStore} instance required for computing the defaults. */
-//    private static final ILayoutConfig KGRAPH_CONFIG = new KLighDLayoutConfigurationStore();
-
     /**
      * Create an option control factory.
      *
@@ -91,21 +86,13 @@ public class LayoutOptionControlFactory {
      *            the parent container
      * @param formToolkit
      *            the form toolkit used to create controls
-     * @param theLightLayoutConfig
-     *            the layout configuration to the user-chosen values in
      */
-    public LayoutOptionControlFactory(final Composite parent, final FormToolkit formToolkit,
-            final LayoutConfigurator theLightLayoutConfig) {
+    public LayoutOptionControlFactory(final Composite parent, final FormToolkit formToolkit) {
         this.parent = parent;
         this.formToolkit = formToolkit;
-//        this.lightLayoutConfig = theLightLayoutConfig;
 
         // configure the parent's layout
-        this.parent.setLayout(new GridLayout(1, false)); // chsch: changed this from 2 to 1
-
-        // set a dummy configurator with default values
-//        defaultLayoutConfig = new DefaultLayoutConfig();
-//        defaultLayoutContext = new LayoutContext();
+        this.parent.setLayout(new GridLayout(1, false));
     }
 
     /**
@@ -117,27 +104,38 @@ public class LayoutOptionControlFactory {
      *            the viewContext belonging to the current diagram
      */
     public void initialize(final ViewContext theViewContext) {
-//        lightLayoutConfig.clearOptionValues(LayoutContext.global());
-//
-//        this.viewContext = theViewContext;
-//        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
-//
-//        final Object input = this.viewContext.getInputModel();
-//        final KNode viewModel = this.viewContext.getViewModel();
-//
-//        final LayoutOptionManager optionManager = DiagramLayoutEngine.INSTANCE.getOptionManager();
-//
+        layoutConfig = new LayoutConfigurator();
+        
+        this.viewContext = theViewContext;
+        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
+
+        final Object input = this.viewContext.getInputModel();
+        final KNode viewModel = this.viewContext.getViewModel();
+        
+        // We need to obtain the LayoutConfigurationManager responsible for the view context to get
+        // our hands at default option values later
+        Injector injector = LayoutConnectorsService.getInstance().getInjector(null, theViewContext);
+        layoutConfigManager = injector.getInstance(LayoutConfigurationManager.class);
+        
+        // We also need to get the configuration store for the top-level diagram element
+        final ILayoutConfigurationStore.Provider layoutConfigStoreProvider =
+                injector.getInstance(ILayoutConfigurationStore.Provider.class);
+        layoutConfigStore = layoutConfigStoreProvider.get(workbenchPart, viewModel);
+        
+        // TODO The following code actually looks at the input model, which I presume was done
+        //      to support semantic layout configs, which we don't have anymore. Confirm with chsch.
 //        // create the layout configurator
 //        if (input instanceof ISourceProxy) {
-//            defaultLayoutConfig = ((ISourceProxy) input).execute(new Function<Object, ILayoutConfig>() {
-//
-//                public ILayoutConfig apply(final Object inputModel) {
-//                    // question: shall we check for Iterables here, as well?
-//                    // skip this for now as our diagram syntheses usually take a single source element
-//                    //  rather than an iterable, although this is possible (see Ecore example)
-//                    return optionManager.createConfig(inputModel, KGRAPH_CONFIG);
-//                }
-//            });
+////            defaultLayoutConfig = ((ISourceProxy) input).execute(
+////                    new Function<Object, LayoutConfigurator>() {
+////
+////                public LayoutConfigurator apply(final Object inputModel) {
+////                    // question: shall we check for Iterables here, as well?
+////                    // skip this for now as our diagram syntheses usually take a single source element
+////                    //  rather than an iterable, although this is possible (see Ecore example)
+////                    return optionManager.createConfig(inputModel, KGRAPH_CONFIG);
+////                }
+////            });
 //
 //        } else {
 //            final EObject inputModel;
@@ -156,22 +154,32 @@ public class LayoutOptionControlFactory {
 //            defaultLayoutConfig = optionManager.createConfig(inputModel, KGRAPH_CONFIG);
 //        }
 //
-//        // create and enrich the layout context
-//        defaultLayoutContext = new LayoutContext();
-//        defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
-//
-//        // chsch: deactivated the following declaration as it may disturb the layout massively
-//        //  in case 'inputModel' is NOT represented by 'viewModel' (but, e.g., its first child)
-//        //  and a semantic layout config is associated with the input model's root element;
-//        // in that case those layout settings are taken into 'lightLayoutConfig',
-//        //  and, thus, applied to all view model elements (view model nodes), which is wrong, of course!
-//        // defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
-//        defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
-//
-//        defaultLayoutContext.setProperty(
-//                LayoutContext.OPT_TARGETS, EnumSet.of(LayoutOptionData.Target.PARENTS));
+////        // create and enrich the layout context
+////        defaultLayoutContext = new LayoutContext();
+////        defaultLayoutContext.setProperty(EclipseLayoutConfig.WORKBENCH_PART, workbenchPart);
+////
+////        // chsch: deactivated the following declaration as it may disturb the layout massively
+////        //  in case 'inputModel' is NOT represented by 'viewModel' (but, e.g., its first child)
+////        //  and a semantic layout config is associated with the input model's root element;
+////        // in that case those layout settings are taken into 'lightLayoutConfig',
+////        //  and, thus, applied to all view model elements (view model nodes), which is wrong, of course!
+////        // defaultLayoutContext.setProperty(LayoutContext.DOMAIN_MODEL, inputModel);
+////        defaultLayoutContext.setProperty(LayoutContext.DIAGRAM_PART, viewModel);
+////
+////        defaultLayoutContext.setProperty(
+////                LayoutContext.OPT_TARGETS, EnumSet.of(LayoutOptionData.Target.PARENTS));
 //
 //        optionManager.enrich(defaultLayoutContext, defaultLayoutConfig, true);
+    }
+    
+    /**
+     * Provides the {@link LayoutConfigurator} with layout settings from the controls created by this
+     * factory. The returned config can change, so don't attempt to cache it.
+     *
+     * @return the employed {@link LayoutConfigurator}
+     */
+    public LayoutConfigurator getLayoutConfig() {
+        return layoutConfig;
     }
 
     /**
@@ -205,10 +213,10 @@ public class LayoutOptionControlFactory {
      * @param optionId a layout option identifier
      */
     public void createControl(final String optionId) {
-//        final LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
-//        if (optionData != null) {
-//            createControl(optionData, null, null, null);
-//        }
+        final LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
+        if (optionData != null) {
+            createControl(optionData, null, null, null);
+        }
     }
 
     /**
@@ -219,10 +227,10 @@ public class LayoutOptionControlFactory {
      * @param maxValue the maximal value for the option
      */
     public void createControl(final String optionId, final Float minValue, final Float maxValue) {
-//        final LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
-//        if (optionData != null) {
-//            createControl(optionData, minValue, maxValue, null);
-//        }
+        final LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
+        if (optionData != null) {
+            createControl(optionData, minValue, maxValue, null);
+        }
     }
 
     /**
@@ -232,10 +240,10 @@ public class LayoutOptionControlFactory {
      * @param availableValues the set of values to offer
      */
     public void createControl(final String optionId, final Collection<?> availableValues) {
-//        final LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
-//        if (optionData != null) {
-//            createControl(optionData, null, null, availableValues);
-//        }
+        final LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
+        if (optionData != null) {
+            createControl(optionData, null, null, availableValues);
+        }
     }
 
     /**
@@ -247,59 +255,59 @@ public class LayoutOptionControlFactory {
     @SuppressWarnings("incomplete-switch")
     public void resetToDefaults(final boolean doLayout) {
         // temporarily disable auto-refresh to avoid multiple layout runs triggered by listeners
-//        autoRefreshLayout = false;
-//        lightLayoutConfig.clearOptionValues(LayoutContext.global());
-//        for (final Control control : controls) {
-//            if (control.getData() instanceof LayoutOptionData) {
-//                final LayoutOptionData optionData = (LayoutOptionData) control.getData();
-//                final Object defaultValue = defaultLayoutConfig.getOptionValue(optionData,
-//                        defaultLayoutContext);
-//
-//                switch (optionData.getType()) {
-//                case INT:
-//                case FLOAT: {
-//                    final Scale slider = (Scale) control;
-//                    final SliderListener sliderListener = (SliderListener) control.getData(
-//                            DATA_SELECTION_LISTENER);
-//                    if (sliderListener != null) {
-//                        final float initialValue =
-//                                ElkMath.boundf(((Number) defaultValue).floatValue(),
-//                                        sliderListener.minFloat, sliderListener.maxFloat);
-//                        final int selection = Math.round((initialValue - sliderListener.minFloat)
-//                                / (sliderListener.maxFloat - sliderListener.minFloat)
-//                                * (slider.getMaximum() - slider.getMinimum())) + slider.getMinimum();
-//                        slider.setSelection(selection);
-//                    }
-//                    break;
-//                }
-//
-//                case BOOLEAN:
-//                case ENUM: {
-//                    // the composite's children store the available values in their 'Data' fields
-//                    final Composite composite = (Composite) control;
-//                    final Control selection = Iterators.find(Iterators.forArray(composite.getChildren()),
-//                            new Predicate<Control>() {
-//                        public boolean apply(final Control input) {
-//                            if (input.getData() != null) {
-//                                return input.getData().equals(defaultValue);
-//                            }
-//                            return false;
-//                        }
-//                    }, null);
-//                    for (final Control c : composite.getChildren()) {
-//                        ((Button) c).setSelection(c == selection);
-//                    }
-//                    break;
-//                }
-//
-//                }
-//            }
-//        }
-//        autoRefreshLayout = true;
-//
-//        if (doLayout) {
-//            refreshLayout(true);
-//        }
+        autoRefreshLayout = false;
+        layoutConfig = new LayoutConfigurator();
+        for (final Control control : controls) {
+            if (control.getData() instanceof LayoutOptionData) {
+                final LayoutOptionData optionData = (LayoutOptionData) control.getData();
+                final Object defaultValue = layoutConfigManager.getOptionValue(optionData,
+                        layoutConfigStore);
+
+                switch (optionData.getType()) {
+                case INT:
+                case FLOAT: {
+                    final Scale slider = (Scale) control;
+                    final SliderListener sliderListener = (SliderListener) control.getData(
+                            DATA_SELECTION_LISTENER);
+                    if (sliderListener != null) {
+                        final float initialValue =
+                                ElkMath.boundf(((Number) defaultValue).floatValue(),
+                                        sliderListener.minFloat, sliderListener.maxFloat);
+                        final int selection = Math.round((initialValue - sliderListener.minFloat)
+                                / (sliderListener.maxFloat - sliderListener.minFloat)
+                                * (slider.getMaximum() - slider.getMinimum())) + slider.getMinimum();
+                        slider.setSelection(selection);
+                    }
+                    break;
+                }
+
+                case BOOLEAN:
+                case ENUM: {
+                    // the composite's children store the available values in their 'Data' fields
+                    final Composite composite = (Composite) control;
+                    final Control selection = Iterators.find(Iterators.forArray(composite.getChildren()),
+                            new Predicate<Control>() {
+                        public boolean apply(final Control input) {
+                            if (input.getData() != null) {
+                                return input.getData().equals(defaultValue);
+                            }
+                            return false;
+                        }
+                    }, null);
+                    for (final Control c : composite.getChildren()) {
+                        ((Button) c).setSelection(c == selection);
+                    }
+                    break;
+                }
+
+                }
+            }
+        }
+        autoRefreshLayout = true;
+
+        if (doLayout) {
+            refreshLayout(true);
+        }
     }
 
     /**
@@ -340,136 +348,136 @@ public class LayoutOptionControlFactory {
 //
 //            return;
 //        }
-//        final Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
-//        label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-//        controls.add(label);
-//
-//        switch (optionData.getType()) {
-//        case INT:
-//        case FLOAT: {
-//            final Scale slider = new Scale(parent, SWT.NONE);
-//            // the following setting is needed on windows
-//            slider.setBackground(parent.getBackground());
-//            slider.setToolTipText(optionData.getDescription());
-//            final SliderListener sliderListener = new SliderListener(label, optionData,
-//                    getMinValue(optionData, minValue), getMaxValue(optionData, maxValue));
-//            final GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
-//            slider.setLayoutData(gridData);
-//            slider.setData(optionData);
-//            controls.add(slider);
-//            // set initial value for the slider
-//            float initialValue = ((Number) defaultLayoutConfig.getOptionValue(optionData,
-//                    defaultLayoutContext)).floatValue();
-//            initialValue = ElkMath.boundf(initialValue, sliderListener.minFloat,
-//                    sliderListener.maxFloat);
-//
-//            label.setText(optionData.getName() + ": " + initialValue);
-//
-//            final int selection = Math.round((initialValue - sliderListener.minFloat)
-//                    / (sliderListener.maxFloat - sliderListener.minFloat)
-//                    * (slider.getMaximum() - slider.getMinimum())) + slider.getMinimum();
-//            slider.setSelection(selection);
-//
-//            // add selection listener for instant layout updates
-//            slider.addSelectionListener(sliderListener);
-//            slider.setData(DATA_SELECTION_LISTENER, sliderListener);
-//            break;
-//        }
-//
-//        case BOOLEAN: {
-//            final Composite valuesContainer = formToolkit.createComposite(parent);
-//            valuesContainer.setLayout(new GridLayout(2, false));
-//            final Button trueButton = formToolkit.createButton(valuesContainer, "True", SWT.RADIO);
-//            trueButton.setToolTipText(optionData.getDescription());
-//            trueButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-//            trueButton.setData(true);
-//            final Button falseButton = formToolkit.createButton(valuesContainer, "False", SWT.RADIO);
-//            falseButton.setToolTipText(optionData.getDescription());
-//            falseButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-//            falseButton.setData(false);
-//            valuesContainer.setData(optionData);
-//            controls.add(valuesContainer);
-//            // set initial value for the radio buttons
-//            if ((Boolean) defaultLayoutConfig.getOptionValue(optionData, defaultLayoutContext)) {
-//                trueButton.setSelection(true);
-//            } else {
-//                falseButton.setSelection(true);
-//            }
-//            // add selection listeners for instant layout updates
-//            trueButton.addSelectionListener(new EnumerationListener(optionData, Boolean.TRUE));
-//            falseButton.addSelectionListener(new EnumerationListener(optionData, Boolean.FALSE));
-//            break;
-//        }
-//
-//        case ENUM: {
-//            final Composite valuesContainer = formToolkit.createComposite(parent);
-//            valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
-//            Object[] values;
-//            if (availableValues != null) {
-//                values = availableValues.toArray();
-//            } else {
-//                @SuppressWarnings({ "rawtypes", "unchecked" })
-//                final Class<Enum> clazz = (Class<Enum>) optionData.getOptionClass();
-//                values = clazz.getEnumConstants();
-//            }
-//            final Object initialValue = defaultLayoutConfig.getOptionValue(optionData,
-//                    defaultLayoutContext);
-//            for (final Object value : values) {
-//                final Button button = formToolkit.createButton(valuesContainer, getUserValue(value),
-//                        SWT.RADIO);
-//                button.setToolTipText(optionData.getDescription());
-//                button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-//                button.setData(value);
-//                if (value.equals(initialValue)) {
-//                    button.setSelection(true);
-//                }
-//                button.addSelectionListener(new EnumerationListener(optionData, value));
-//            }
-//            valuesContainer.setData(optionData);
-//            controls.add(valuesContainer);
-//            break;
-//        }
-//
-//        case ENUMSET: {
-//            final Composite valuesContainer = formToolkit.createComposite(parent);
-//            valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
-//
-//            final Object[] values;
-//            if (availableValues != null) {
-//                values = availableValues.toArray();
-//
-//            } else {
-//                final Label errorLabel = new Label(parent, SWT.NONE);
-//                errorLabel.setText("This option type requires pre-defined values.");
-//                errorLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
-//                controls.add(errorLabel);
-//                break;
-//            }
-//
-//            final Object initialValue = defaultLayoutConfig.getOptionValue(optionData,
-//                    defaultLayoutContext);
-//            for (final Object value : values) {
-//                final Button button = formToolkit.createButton(valuesContainer, getUserValue(value),
-//                        SWT.RADIO);
-//                button.setToolTipText(optionData.getDescription());
-//                button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-//                button.setData(value);
-//                if (value.equals(initialValue)) {
-//                    button.setSelection(true);
-//                }
-//                button.addSelectionListener(new EnumerationListener(optionData, value));
-//            }
-//            valuesContainer.setData(optionData);
-//            controls.add(valuesContainer);
-//            break;
-//        }
-//
-//        default:
-//            final Label errorLabel = new Label(parent, SWT.NONE);
-//            errorLabel.setText("This option type is not supported");
-//            errorLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
-//            controls.add(errorLabel);
-//        }
+        final Label label = formToolkit.createLabel(parent, optionData.getName() + ":");
+        label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        controls.add(label);
+
+        switch (optionData.getType()) {
+        case INT:
+        case FLOAT: {
+            final Scale slider = new Scale(parent, SWT.NONE);
+            // the following setting is needed on windows
+            slider.setBackground(parent.getBackground());
+            slider.setToolTipText(optionData.getDescription());
+            final SliderListener sliderListener = new SliderListener(label, optionData,
+                    getMinValue(optionData, minValue), getMaxValue(optionData, maxValue));
+            final GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+            slider.setLayoutData(gridData);
+            slider.setData(optionData);
+            controls.add(slider);
+            // set initial value for the slider
+            float initialValue = ((Number) layoutConfigManager.getOptionValue(optionData,
+                    layoutConfigStore)).floatValue();
+            initialValue = ElkMath.boundf(initialValue, sliderListener.minFloat,
+                    sliderListener.maxFloat);
+
+            label.setText(optionData.getName() + ": " + initialValue);
+
+            final int selection = Math.round((initialValue - sliderListener.minFloat)
+                    / (sliderListener.maxFloat - sliderListener.minFloat)
+                    * (slider.getMaximum() - slider.getMinimum())) + slider.getMinimum();
+            slider.setSelection(selection);
+
+            // add selection listener for instant layout updates
+            slider.addSelectionListener(sliderListener);
+            slider.setData(DATA_SELECTION_LISTENER, sliderListener);
+            break;
+        }
+
+        case BOOLEAN: {
+            final Composite valuesContainer = formToolkit.createComposite(parent);
+            valuesContainer.setLayout(new GridLayout(2, false));
+            final Button trueButton = formToolkit.createButton(valuesContainer, "True", SWT.RADIO);
+            trueButton.setToolTipText(optionData.getDescription());
+            trueButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+            trueButton.setData(true);
+            final Button falseButton = formToolkit.createButton(valuesContainer, "False", SWT.RADIO);
+            falseButton.setToolTipText(optionData.getDescription());
+            falseButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+            falseButton.setData(false);
+            valuesContainer.setData(optionData);
+            controls.add(valuesContainer);
+            // set initial value for the radio buttons
+            if ((Boolean) layoutConfigManager.getOptionValue(optionData, layoutConfigStore)) {
+                trueButton.setSelection(true);
+            } else {
+                falseButton.setSelection(true);
+            }
+            // add selection listeners for instant layout updates
+            trueButton.addSelectionListener(new EnumerationListener(optionData, Boolean.TRUE));
+            falseButton.addSelectionListener(new EnumerationListener(optionData, Boolean.FALSE));
+            break;
+        }
+
+        case ENUM: {
+            final Composite valuesContainer = formToolkit.createComposite(parent);
+            valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
+            Object[] values;
+            if (availableValues != null) {
+                values = availableValues.toArray();
+            } else {
+                @SuppressWarnings({ "rawtypes", "unchecked" })
+                final Class<Enum> clazz = (Class<Enum>) optionData.getOptionClass();
+                values = clazz.getEnumConstants();
+            }
+            final Object initialValue = layoutConfigManager.getOptionValue(optionData,
+                    layoutConfigStore);
+            for (final Object value : values) {
+                final Button button = formToolkit.createButton(valuesContainer, getUserValue(value),
+                        SWT.RADIO);
+                button.setToolTipText(optionData.getDescription());
+                button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                button.setData(value);
+                if (value.equals(initialValue)) {
+                    button.setSelection(true);
+                }
+                button.addSelectionListener(new EnumerationListener(optionData, value));
+            }
+            valuesContainer.setData(optionData);
+            controls.add(valuesContainer);
+            break;
+        }
+
+        case ENUMSET: {
+            final Composite valuesContainer = formToolkit.createComposite(parent);
+            valuesContainer.setLayout(new GridLayout(ENUM_GRID_COLS, false));
+
+            final Object[] values;
+            if (availableValues != null) {
+                values = availableValues.toArray();
+
+            } else {
+                final Label errorLabel = new Label(parent, SWT.NONE);
+                errorLabel.setText("This option type requires pre-defined values.");
+                errorLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+                controls.add(errorLabel);
+                break;
+            }
+
+            final Object initialValue = layoutConfigManager.getOptionValue(optionData,
+                    layoutConfigStore);
+            for (final Object value : values) {
+                final Button button = formToolkit.createButton(valuesContainer, getUserValue(value),
+                        SWT.RADIO);
+                button.setToolTipText(optionData.getDescription());
+                button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+                button.setData(value);
+                if (value.equals(initialValue)) {
+                    button.setSelection(true);
+                }
+                button.addSelectionListener(new EnumerationListener(optionData, value));
+            }
+            valuesContainer.setData(optionData);
+            controls.add(valuesContainer);
+            break;
+        }
+
+        default:
+            final Label errorLabel = new Label(parent, SWT.NONE);
+            errorLabel.setText("This option type is not supported");
+            errorLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+            controls.add(errorLabel);
+        }
     }
 
     /** The default value for the lower bound. */
@@ -486,10 +494,10 @@ public class LayoutOptionControlFactory {
         if (requested != null) {
             return requested;
         }
-//        final Object lowerBound = optionData.getLowerBound();
-//        if (lowerBound instanceof Number) {
-//            return ((Number) lowerBound).floatValue();
-//        }
+        final Object lowerBound = optionData.getLowerBound();
+        if (lowerBound instanceof Number) {
+            return ((Number) lowerBound).floatValue();
+        }
         return DEFAULT_MIN;
     }
 
@@ -507,10 +515,10 @@ public class LayoutOptionControlFactory {
         if (requested != null) {
             return requested;
         }
-//        final Object upperBound = optionData.getUpperBound();
-//        if (upperBound instanceof Number) {
-//            return ((Number) upperBound).floatValue();
-//        }
+        final Object upperBound = optionData.getUpperBound();
+        if (upperBound instanceof Number) {
+            return ((Number) upperBound).floatValue();
+        }
         return DEFAULT_MAX;
     }
 
@@ -596,14 +604,14 @@ public class LayoutOptionControlFactory {
          */
         @SuppressWarnings({ "incomplete-switch" })
         public void setOptionValue(final float optionValue) {
-//            switch (optionData.getType()) {
-//            case INT:
-//                lightLayoutConfig.setValue(optionData, (int) optionValue);
-//                break;
-//            case FLOAT:
-//                lightLayoutConfig.setValue(optionData, optionValue);
-//                break;
-//            }
+            switch (optionData.getType()) {
+            case INT:
+                layoutConfig.configure(KGraphElement.class).setProperty(optionData, (int) optionValue);
+                break;
+            case FLOAT:
+                layoutConfig.configure(KGraphElement.class).setProperty(optionData, (float) optionValue);
+                break;
+            }
         }
     }
 
@@ -660,7 +668,7 @@ public class LayoutOptionControlFactory {
          * @param optionData the layout option that is affected by the button
          * @param value the enumeration value to set when selection is triggered
          */
-        public EnumerationListener(final LayoutOptionData optionData, final Object value) {
+        EnumerationListener(final LayoutOptionData optionData, final Object value) {
             this.optionData = optionData;
             this.value = value;
         }
@@ -670,10 +678,10 @@ public class LayoutOptionControlFactory {
          */
         @Override
         public void widgetSelected(final SelectionEvent event) {
-//            if (((Button) event.widget).getSelection()) {
-//                lightLayoutConfig.setValue(optionData, value);
-//                refreshLayout(true);
-//            }
+            if (((Button) event.widget).getSelection()) {
+                layoutConfig.configure(KGraphElement.class).setProperty(optionData, value);
+                refreshLayout(true);
+            }
         }
     }
 
