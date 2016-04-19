@@ -18,14 +18,17 @@ Require-Bundle: org.eclipse.xtext.ui,
  org.eclipse.elk.graph,
  de.cau.cs.kieler.kiml.formats,
  de.cau.cs.kieler.kgraph.text,
+ de.cau.cs.kieler.kgraph.text.ide,
  org.eclipse.xtext.ui.codetemplates.ui
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.cau.cs.kieler.kgraph.text.ui.contentassist,
- de.cau.cs.kieler.kgraph.text.ui.random,
+Export-Package: de.cau.cs.kieler.kgraph.text.ui,
+ de.cau.cs.kieler.kgraph.text.ui.contentassist,
+ de.cau.cs.kieler.kgraph.text.ui.internal,
+ de.cau.cs.kieler.kgraph.text.ui.labeling,
+ de.cau.cs.kieler.kgraph.text.ui.outline,
  de.cau.cs.kieler.kgraph.text.ui.quickfix,
- de.cau.cs.kieler.kgraph.text.ui.contentassist.antlr,
- de.cau.cs.kieler.kgraph.text.ui.contentassist.antlr.internal,
- de.cau.cs.kieler.kgraph.text.ui.internal
-Bundle-Activator: de.cau.cs.kieler.kgraph.text.ui.internal.KGraphActivator
+ de.cau.cs.kieler.kgraph.text.ui.random,
+ de.cau.cs.kieler.kgraph.text.ui.random.wizard
+Bundle-Activator: de.cau.cs.kieler.kgraph.text.ui.internal.TextActivator

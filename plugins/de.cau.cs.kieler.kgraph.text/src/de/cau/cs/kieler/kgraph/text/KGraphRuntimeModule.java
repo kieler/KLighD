@@ -22,7 +22,13 @@ import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
 import org.eclipse.xtext.resource.XtextResource;
 
 import de.cau.cs.kieler.kgraph.text.scoping.KGraphQualifiedNameProvider;
+import de.cau.cs.kieler.kgraph.text.serializer.CustomKGraphSemanticSequencer;
+import de.cau.cs.kieler.kgraph.text.serializer.CustomKGraphSyntacticSequencer;
+import de.cau.cs.kieler.kgraph.text.serializer.KGraphSemanticSequencer;
+import de.cau.cs.kieler.kgraph.text.serializer.KGraphSyntacticSequencer;
 import de.cau.cs.kieler.kgraph.text.serializer.KGraphTransientValueService;
+import de.cau.cs.kieler.kgraph.text.validation.KGraphJavaValidator;
+import de.cau.cs.kieler.kgraph.text.validation.KGraphValidator;
 
 /**
  * This class defines some customizations on the textual KGraph editing tooling.
@@ -51,7 +57,7 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
     /**
      * Registers a customized {@link ITransientValueService}. Although the serialization is
      * configured in the
-     * {@link de.cau.cs.kieler.kgraph.text.serializer.KGraphSemanticSequencer
+     * {@link de.cau.cs.kieler.kgraph.text.serializer.CustomKGraphSemanticSequencer
      * KGraphSemanticSequencer} the transient value service is obviously involved while serializing
      * portions of models after apply semantic modification (quick fixes). This feature is used in
      * combination with my test case trainer, see
@@ -88,6 +94,30 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
     @Override
     public Class<? extends ILinker> bindILinker() {
         return MyLinker.class;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends KGraphValidator> bindKGraphValidator() {
+        return KGraphJavaValidator.class;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends KGraphSemanticSequencer> bindISemanticSequencer() {
+        return CustomKGraphSemanticSequencer.class;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends KGraphSyntacticSequencer> bindISyntacticSequencer() {
+        return CustomKGraphSyntacticSequencer.class;
     }
 
     /**

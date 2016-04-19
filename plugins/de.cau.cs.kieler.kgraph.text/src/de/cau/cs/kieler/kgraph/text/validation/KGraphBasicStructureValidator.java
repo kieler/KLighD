@@ -36,7 +36,7 @@ import com.google.common.collect.Multimap;
  * @author chsch 
  * @author csp
  */
-public class KGraphBasicStructureValidator extends AbstractKGraphJavaValidator {
+public class KGraphBasicStructureValidator extends KGraphValidator {
 
     
     /** Error message for duplicate ids. */

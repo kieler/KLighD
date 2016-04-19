@@ -69,7 +69,7 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
  * @author chsch
  */
 @SuppressWarnings("restriction")
-public class KGraphSemanticSequencer extends AbstractKGraphSemanticSequencer {
+public class CustomKGraphSemanticSequencer extends KGraphSemanticSequencer {
     
     @Inject
     private KGraphGrammarAccess grammarAccess;

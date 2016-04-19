@@ -18,5 +18,5 @@ package de.cau.cs.kieler.kgraph.text.serializer;
  *
  * @author msp
  */
-public class KGraphSyntacticSequencer extends AbstractKGraphSyntacticSequencer {
+public class CustomKGraphSyntacticSequencer extends KGraphSyntacticSequencer {
 }

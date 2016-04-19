@@ -23,7 +23,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
-import de.cau.cs.kieler.kgraph.text.ui.internal.KGraphActivator;
+import de.cau.cs.kieler.kgraph.text.ui.internal.TextActivator;
 import de.cau.cs.kieler.kgraph.text.ui.random.wizard.Messages;
 
 /**
@@ -39,7 +39,7 @@ public class GeneratorPreferenceInitializer extends AbstractPreferenceInitialize
     @Override
     public void initializeDefaultPreferences() {
         try {
-            IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
+            IPreferenceStore preferenceStore = TextActivator.getInstance().getPreferenceStore();
             for (Field field : GeneratorOptions.class.getFields()) {
                 if (IProperty.class.isAssignableFrom(field.getType())) {
                     IProperty<?> option = (IProperty<?>) field.get(null);

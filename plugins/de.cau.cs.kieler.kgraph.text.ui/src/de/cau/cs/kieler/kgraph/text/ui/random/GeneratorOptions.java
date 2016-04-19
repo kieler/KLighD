@@ -27,7 +27,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
-import de.cau.cs.kieler.kgraph.text.ui.internal.KGraphActivator;
+import de.cau.cs.kieler.kgraph.text.ui.internal.TextActivator;
 import de.cau.cs.kieler.kgraph.text.ui.random.wizard.Messages;
 
 /**
@@ -254,7 +254,7 @@ public class GeneratorOptions extends MapPropertyHolder {
      * Save all options that are stored in this property holder in the plugin preferences.
      */
     public void savePreferences() {
-        IPreferenceStore preferenceStore = KGraphActivator.getInstance().getPreferenceStore();
+        IPreferenceStore preferenceStore = TextActivator.getInstance().getPreferenceStore();
         for (Map.Entry<IProperty<?>, Object> entry : getAllProperties().entrySet()) {
             Object value = entry.getValue();
             if (value instanceof Boolean) {
@@ -278,7 +278,7 @@ public class GeneratorOptions extends MapPropertyHolder {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void loadPreferences() {
-        KGraphActivator instance = KGraphActivator.getInstance();
+        TextActivator instance = TextActivator.getInstance();
         if (instance != null) {
             preferenceStore = instance.getPreferenceStore();
         }
