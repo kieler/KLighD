@@ -17,7 +17,10 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.elk.core;visibility:=reexport,
  org.eclipse.elk.graph;visibility:=reexport,
  de.cau.cs.kieler.klighd.krendering;visibility:=reexport,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtext.xbase,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -29,4 +32,8 @@ Export-Package: de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.kgraph.text.services,
  de.cau.cs.kieler.kgraph.text.parser.antlr,
  de.cau.cs.kieler.kgraph.text.parser.antlr.internal,
- de.cau.cs.kieler.kgraph.text.generator
+ de.cau.cs.kieler.kgraph.text.generator,
+ de.cau.cs.kieler.kgraph.text.grandom,
+ de.cau.cs.kieler.kgraph.text.grandom.util,
+ de.cau.cs.kieler.kgraph.text.grandom.impl
+

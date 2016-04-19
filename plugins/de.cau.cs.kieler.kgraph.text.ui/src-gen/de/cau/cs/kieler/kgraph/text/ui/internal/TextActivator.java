@@ -7,7 +7,9 @@ import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import de.cau.cs.kieler.kgraph.text.GRandomRuntimeModule;
 import de.cau.cs.kieler.kgraph.text.KGraphRuntimeModule;
+import de.cau.cs.kieler.kgraph.text.ui.GRandomUiModule;
 import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
 import java.util.Collections;
 import java.util.Map;
@@ -24,6 +26,7 @@ import org.osgi.framework.BundleContext;
 public class TextActivator extends AbstractUIPlugin {
 
 	public static final String DE_CAU_CS_KIELER_KGRAPH_TEXT_KGRAPH = "de.cau.cs.kieler.kgraph.text.KGraph";
+	public static final String DE_CAU_CS_KIELER_KGRAPH_TEXT_GRANDOM = "de.cau.cs.kieler.kgraph.text.GRandom";
 	
 	private static final Logger logger = Logger.getLogger(TextActivator.class);
 	
@@ -76,12 +79,18 @@ public class TextActivator extends AbstractUIPlugin {
 		if (DE_CAU_CS_KIELER_KGRAPH_TEXT_KGRAPH.equals(grammar)) {
 			return new KGraphRuntimeModule();
 		}
+		if (DE_CAU_CS_KIELER_KGRAPH_TEXT_GRANDOM.equals(grammar)) {
+			return new GRandomRuntimeModule();
+		}
 		throw new IllegalArgumentException(grammar);
 	}
 	
 	protected Module getUiModule(String grammar) {
 		if (DE_CAU_CS_KIELER_KGRAPH_TEXT_KGRAPH.equals(grammar)) {
 			return new KGraphUiModule(this);
+		}
+		if (DE_CAU_CS_KIELER_KGRAPH_TEXT_GRANDOM.equals(grammar)) {
+			return new GRandomUiModule(this);
 		}
 		throw new IllegalArgumentException(grammar);
 	}
