@@ -135,6 +135,44 @@
              name="KGraph Text">
        </handler>
     </extension>
+    
+    <extension
+         point="org.eclipse.ui.commands">
+       <command
+            categoryId="org.eclipse.ui.category.file"
+            defaultHandler="de.cau.cs.kieler.kgraph.text.ui.random.GRandomHandler"
+            id="de.cau.cs.kieler.kgraph.text.ui.random.generate"
+            name="Generate Random Graphs">
+       </command>
+    </extension>
+    
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution
+             allPopups="false"
+             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+          <command
+                commandId="de.cau.cs.kieler.kgraph.text.ui.random.generate"
+                icon="icons/ico.png"
+                label="Generate Random Graphs"
+                tooltip="Generate Random Graphs according to the specification.">
+             <visibleWhen
+                   checkEnabled="false">
+                <iterate
+                      ifEmpty="false"
+                      operator="and">
+                   <adapt
+                         type="org.eclipse.core.resources.IResource">
+                      <test
+                            forcePluginActivation="false"
+                            property="org.eclipse.core.resources.extension"
+                            value="rdg">
+                      </test>
+                   </adapt>
+                </iterate>
+             </visibleWhen>
+          </command>
+       </menuContribution>
+    </extension>
 
     <!-- - - - - - - -->
     <!--    XTEXT    -->

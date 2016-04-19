@@ -20,12 +20,9 @@ public class GRandomLabelProvider extends DefaultEObjectLabelProvider {
 	}
 
 	// Labels and icons can be computed like this:
-	
-//	String text(Greeting ele) {
-//		return "A greeting to " + ele.getName();
-//	}
-//
-//	String image(Greeting ele) {
-//		return "Greeting.gif";
-//	}
+
+	public Object text(final Object element) {
+	    String simpleName = element.getClass().getSimpleName();
+	    return simpleName.subSequence(0, simpleName.length() - 4);
+	}
 }
