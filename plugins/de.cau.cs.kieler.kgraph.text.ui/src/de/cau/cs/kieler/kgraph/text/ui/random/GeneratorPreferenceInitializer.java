@@ -22,6 +22,7 @@ import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
 import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.kgraph.text.ui.internal.TextActivator;
 import de.cau.cs.kieler.kgraph.text.ui.random.wizard.Messages;

@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.EdgeDetermination;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.EdgeDetermination;
 
 /**
  * The options page for the custom graph type.

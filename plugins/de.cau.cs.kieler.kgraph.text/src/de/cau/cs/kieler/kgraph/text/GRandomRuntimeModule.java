@@ -3,9 +3,20 @@
  */
 package de.cau.cs.kieler.kgraph.text;
 
+import org.eclipse.xtext.formatting.IFormatter;
+
+import de.cau.cs.kieler.kgraph.text.formatting.GRandomFormatter;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 public class GRandomRuntimeModule extends AbstractGRandomRuntimeModule {
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends IFormatter> bindIFormatter() {
+        return GRandomFormatter.class;
+    }
 }

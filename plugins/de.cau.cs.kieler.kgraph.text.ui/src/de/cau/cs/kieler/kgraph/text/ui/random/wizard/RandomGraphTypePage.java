@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
 
 /**
  * The random graph wizard page which lets the user select a graph type. The graph type implies what

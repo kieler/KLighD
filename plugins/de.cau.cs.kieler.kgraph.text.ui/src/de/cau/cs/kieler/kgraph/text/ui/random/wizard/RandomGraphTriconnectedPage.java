@@ -18,7 +18,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
 
 /**
  * The options page for the TRICONNECTED graph type.

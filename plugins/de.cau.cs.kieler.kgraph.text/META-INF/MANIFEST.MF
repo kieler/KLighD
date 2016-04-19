@@ -20,20 +20,21 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.xbase,
  org.eclipse.emf.ecore,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ org.eclipse.core.resources
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.kgraph.text.formatting,
- de.cau.cs.kieler.kgraph.text.scoping,
- de.cau.cs.kieler.kgraph.text.serializer,
- de.cau.cs.kieler.kgraph.text.validation,
- de.cau.cs.kieler.kgraph.text.services,
- de.cau.cs.kieler.kgraph.text.parser.antlr,
- de.cau.cs.kieler.kgraph.text.parser.antlr.internal,
  de.cau.cs.kieler.kgraph.text.generator,
  de.cau.cs.kieler.kgraph.text.grandom,
+ de.cau.cs.kieler.kgraph.text.grandom.impl,
  de.cau.cs.kieler.kgraph.text.grandom.util,
- de.cau.cs.kieler.kgraph.text.grandom.impl
+ de.cau.cs.kieler.kgraph.text.parser.antlr,
+ de.cau.cs.kieler.kgraph.text.parser.antlr.internal,
+ de.cau.cs.kieler.kgraph.text.scoping,
+ de.cau.cs.kieler.kgraph.text.serializer,
+ de.cau.cs.kieler.kgraph.text.services,
+ de.cau.cs.kieler.kgraph.text.validation
 

@@ -11,9 +11,9 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.kgraph.text.ui.random;
+package de.cau.cs.kieler.kgraph.text.grandom;
 
-import static de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.*;
+import static de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +44,7 @@ import org.eclipse.elk.graph.properties.IProperty;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.RandVal;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.RandVal;
 
 /**
  * The random graph generator for KGraphs.

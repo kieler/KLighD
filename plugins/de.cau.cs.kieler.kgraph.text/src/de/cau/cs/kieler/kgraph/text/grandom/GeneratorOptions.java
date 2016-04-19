@@ -11,24 +11,14 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.kgraph.text.ui.random;
+package de.cau.cs.kieler.kgraph.text.grandom;
 
-import java.lang.reflect.Field;
-import java.util.Map;
 import java.util.Random;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.options.PortConstraints;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.elk.graph.properties.Property;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.statushandlers.StatusManager;
-
-import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
-import de.cau.cs.kieler.kgraph.text.ui.internal.TextActivator;
-import de.cau.cs.kieler.kgraph.text.ui.random.wizard.Messages;
 
 /**
  * Property holder for random graph generator options.
@@ -248,83 +238,7 @@ public class GeneratorOptions extends MapPropertyHolder {
     public static final IProperty<RandVal> EXACT_RELATIVE_HIER = new Property<RandVal>(
             "basic.EXACT_RELATIVE_HIER", null);  
 
-    //~~~~~~~~~~~~~~~~  Utility methods for preference handling
-
-    /**
-     * Save all options that are stored in this property holder in the plugin preferences.
-     */
-    public void savePreferences() {
-        IPreferenceStore preferenceStore = TextActivator.getInstance().getPreferenceStore();
-        for (Map.Entry<IProperty<?>, Object> entry : getAllProperties().entrySet()) {
-            Object value = entry.getValue();
-            if (value instanceof Boolean) {
-                preferenceStore.setValue(entry.getKey().getId(), (Boolean) value);
-            } else if (value instanceof Integer) {
-                preferenceStore.setValue(entry.getKey().getId(), (Integer) value);
-            } else if (value instanceof Float) {
-                preferenceStore.setValue(entry.getKey().getId(), (Float) value);
-            } else if (value instanceof Double) {
-                preferenceStore.setValue(entry.getKey().getId(), (Double) value);
-            } else {
-                preferenceStore.setValue(entry.getKey().getId(), value.toString());
-            }
-        }
-    }
-
-    private IPreferenceStore preferenceStore;
-    /**
-     * Load preferences for all options that are defined as fields of type {@link IProperty} in
-     * this class. The property types are derived from their default values.
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void loadPreferences() {
-        TextActivator instance = TextActivator.getInstance();
-        if (instance != null) {
-            preferenceStore = instance.getPreferenceStore();
-        }
-        try {
-            for (Field field : getClass().getFields()) {
-                if (IProperty.class.isAssignableFrom(field.getType())) {
-                    IProperty<Object> option = (IProperty<Object>) field.get(this);
-                    Object value;
-                    if (option.getDefault() instanceof Boolean) {
-                        value = preferenceStore.getBoolean(option.getId());
-                    } else if (option.getDefault() instanceof Integer) {
-                        value = preferenceStore.getInt(option.getId());
-                    } else if (option.getDefault() instanceof Float) {
-                        value = preferenceStore.getFloat(option.getId());
-                    } else if (option.getDefault() instanceof Double) {
-                        value = preferenceStore.getDouble(option.getId());
-                    } else if (option.getDefault() instanceof Enum) {
-                        String serializedValue = preferenceStore.getString(option.getId());
-                        try {
-                            value = Enum.valueOf((Class<? extends Enum>) option.getDefault().getClass(),
-                                    serializedValue);
-                        } catch (IllegalArgumentException exception) {
-                            value = null;
-                        }
-                    } else if (option.getDefault() instanceof RandVal) {
-                        value = option.getDefault();
-                    } else {
-                        value = preferenceStore.getString(option.getId());
-                    }
-                    setProperty(option, value);
-                    // check lower and upper bounds of the generator option
-                    // FIXME elkMigrate
-                    // reactivate once checking is implemented again
-                    // checkProperties(option);
-                }
-            }
-        } catch (IllegalAccessException exception) {
-            IStatus status = new Status(IStatus.ERROR, KGraphUiModule.PLUGIN_ID,
-                    Messages.RandomGraphWizard_load_preferences_error, exception);
-            StatusManager.getManager().handle(status);
-        }
-    }
-
-    public IPreferenceStore getPreferenceStore() {
-        return preferenceStore;
-    }
+   
 
     public static class RandVal {
         private double min;

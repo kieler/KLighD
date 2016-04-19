@@ -29,9 +29,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.EdgeDetermination;
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.RandVal;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.EdgeDetermination;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.RandVal;
 
 /**
  * The options page for the bipartite graph type.

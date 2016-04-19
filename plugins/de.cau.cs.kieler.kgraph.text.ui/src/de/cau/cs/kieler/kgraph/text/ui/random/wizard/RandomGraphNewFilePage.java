@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions.FileFormat;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.FileFormat;
 
 /**
  * The wizard page from which to select the file where the graph is generated into.

@@ -44,9 +44,10 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
+import de.cau.cs.kieler.kgraph.text.grandom.RandomGraphGenerator;
 import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
-import de.cau.cs.kieler.kgraph.text.ui.random.RandomGraphGenerator;
+import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptionsUtil;
 
 /**
  * The new-wizard for creating random KGraphs.
@@ -100,7 +101,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     @Override
     public void addPages() {
         // load the generation options from the preferences
-        options.loadPreferences();
+        GeneratorOptionsUtil.loadPreferences(options);
         
         newFilePage = new RandomGraphNewFilePage(selection, options);
         typePage = new RandomGraphTypePage(options);
@@ -206,7 +207,7 @@ public class RandomGraphWizard extends Wizard implements INewWizard {
     public boolean performFinish() {
         // save all generation options into the plugin preferences
         options.setProperty(GeneratorOptions.FILE_NAME, newFilePage.getFileName());
-        options.savePreferences();
+        GeneratorOptionsUtil.savePreferences(options);
         
         // if necessary ask the user to verify his decisions on the number of generated graphs
         if (options.getProperty(GeneratorOptions.NUMBER_OF_GRAPHS) > SOFT_LIMIT_GRAPHS) {

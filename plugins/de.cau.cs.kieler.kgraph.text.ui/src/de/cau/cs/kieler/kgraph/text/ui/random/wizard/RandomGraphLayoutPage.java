@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptions;
+import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
 
 /**
  * The page for layout options.
