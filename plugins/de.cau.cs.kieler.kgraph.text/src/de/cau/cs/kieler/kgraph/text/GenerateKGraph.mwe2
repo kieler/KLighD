@@ -39,7 +39,8 @@ Workflow {
             referencedResource = "platform:/resource/org.eclipse.elk.graph/model/kgraph.genmodel"
             
             serializer = {
-                generateStub = false
+                // to generate the stubs for Semantic/Syntactic Sequencers
+                generateStub = true
             }
             validator = {
                 // composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"

@@ -74,7 +74,7 @@ import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequence
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 
 @SuppressWarnings("all")
-public class KGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer {
+public abstract class AbstractKGraphSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 
 	@Inject
 	private KGraphGrammarAccess grammarAccess;

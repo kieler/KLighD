@@ -22,10 +22,6 @@ import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
 import org.eclipse.xtext.resource.XtextResource;
 
 import de.cau.cs.kieler.kgraph.text.scoping.KGraphQualifiedNameProvider;
-import de.cau.cs.kieler.kgraph.text.serializer.CustomKGraphSemanticSequencer;
-import de.cau.cs.kieler.kgraph.text.serializer.CustomKGraphSyntacticSequencer;
-import de.cau.cs.kieler.kgraph.text.serializer.KGraphSemanticSequencer;
-import de.cau.cs.kieler.kgraph.text.serializer.KGraphSyntacticSequencer;
 import de.cau.cs.kieler.kgraph.text.serializer.KGraphTransientValueService;
 import de.cau.cs.kieler.kgraph.text.validation.KGraphJavaValidator;
 import de.cau.cs.kieler.kgraph.text.validation.KGraphValidator;
@@ -104,22 +100,6 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
         return KGraphJavaValidator.class;
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<? extends KGraphSemanticSequencer> bindISemanticSequencer() {
-        return CustomKGraphSemanticSequencer.class;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<? extends KGraphSyntacticSequencer> bindISyntacticSequencer() {
-        return CustomKGraphSyntacticSequencer.class;
-    }
-
     /**
      * FIXME
      * Temporary fix for an issue where KEdge#target is set to null again

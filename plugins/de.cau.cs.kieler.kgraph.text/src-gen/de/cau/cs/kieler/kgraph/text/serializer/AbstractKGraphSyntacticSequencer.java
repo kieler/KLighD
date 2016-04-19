@@ -19,7 +19,7 @@ import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISyn
 import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 
 @SuppressWarnings("all")
-public class KGraphSyntacticSequencer extends AbstractSyntacticSequencer {
+public abstract class AbstractKGraphSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected KGraphGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_KContainerRendering___LeftCurlyBracketKeyword_3_0_____ActionsKeyword_3_1_1_0_ColonKeyword_3_1_1_1___or___StylesKeyword_3_1_0_0_ColonKeyword_3_1_0_1____a_RightCurlyBracketKeyword_3_3__q;
