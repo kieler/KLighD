@@ -13,7 +13,7 @@ Workflow {
                 baseName = "de.cau.cs.kieler.kgraph.text"
                 rootPath = rootPath
                 runtimeTest = {
-                    enabled = true
+                    //enabled = true
                 }
                 eclipsePlugin = {
                     enabled = true

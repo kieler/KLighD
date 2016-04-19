@@ -8,3 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.cau.cs.kieler.kgraph.text,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide
+Export-Package: de.cau.cs.kieler.kgraph.text.ide.contentassist.antlr.internal,
+ de.cau.cs.kieler.kgraph.text.ide.contentassist.antlr
+

@@ -2848,10 +2848,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_BOOLEAN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8236:14: ( ( 'true' | 'false' ) )
-            // InternalKGraph.g:8236:16: ( 'true' | 'false' )
+            // InternalKGraph.g:8346:14: ( ( 'true' | 'false' ) )
+            // InternalKGraph.g:8346:16: ( 'true' | 'false' )
             {
-            // InternalKGraph.g:8236:16: ( 'true' | 'false' )
+            // InternalKGraph.g:8346:16: ( 'true' | 'false' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -2869,7 +2869,7 @@ public class InternalKGraphLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // InternalKGraph.g:8236:17: 'true'
+                    // InternalKGraph.g:8346:17: 'true'
                     {
                     match("true"); 
 
@@ -2877,7 +2877,7 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalKGraph.g:8236:24: 'false'
+                    // InternalKGraph.g:8346:24: 'false'
                     {
                     match("false"); 
 
@@ -2903,10 +2903,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_RED;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8238:10: ( ( '0' .. '9' )+ 'r' )
-            // InternalKGraph.g:8238:12: ( '0' .. '9' )+ 'r'
+            // InternalKGraph.g:8348:10: ( ( '0' .. '9' )+ 'r' )
+            // InternalKGraph.g:8348:12: ( '0' .. '9' )+ 'r'
             {
-            // InternalKGraph.g:8238:12: ( '0' .. '9' )+
+            // InternalKGraph.g:8348:12: ( '0' .. '9' )+
             int cnt2=0;
             loop2:
             do {
@@ -2920,7 +2920,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // InternalKGraph.g:8238:13: '0' .. '9'
+            	    // InternalKGraph.g:8348:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -2953,10 +2953,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_GREEN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8240:12: ( ( '0' .. '9' )+ 'g' )
-            // InternalKGraph.g:8240:14: ( '0' .. '9' )+ 'g'
+            // InternalKGraph.g:8350:12: ( ( '0' .. '9' )+ 'g' )
+            // InternalKGraph.g:8350:14: ( '0' .. '9' )+ 'g'
             {
-            // InternalKGraph.g:8240:14: ( '0' .. '9' )+
+            // InternalKGraph.g:8350:14: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -2970,7 +2970,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // InternalKGraph.g:8240:15: '0' .. '9'
+            	    // InternalKGraph.g:8350:15: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -3003,10 +3003,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_BLUE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8242:11: ( ( '0' .. '9' )+ 'b' )
-            // InternalKGraph.g:8242:13: ( '0' .. '9' )+ 'b'
+            // InternalKGraph.g:8352:11: ( ( '0' .. '9' )+ 'b' )
+            // InternalKGraph.g:8352:13: ( '0' .. '9' )+ 'b'
             {
-            // InternalKGraph.g:8242:13: ( '0' .. '9' )+
+            // InternalKGraph.g:8352:13: ( '0' .. '9' )+
             int cnt4=0;
             loop4:
             do {
@@ -3020,7 +3020,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt4) {
             	case 1 :
-            	    // InternalKGraph.g:8242:14: '0' .. '9'
+            	    // InternalKGraph.g:8352:14: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -3053,10 +3053,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_ALPHA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8244:12: ( ( '0' .. '9' )+ 'a' )
-            // InternalKGraph.g:8244:14: ( '0' .. '9' )+ 'a'
+            // InternalKGraph.g:8354:12: ( ( '0' .. '9' )+ 'a' )
+            // InternalKGraph.g:8354:14: ( '0' .. '9' )+ 'a'
             {
-            // InternalKGraph.g:8244:14: ( '0' .. '9' )+
+            // InternalKGraph.g:8354:14: ( '0' .. '9' )+
             int cnt5=0;
             loop5:
             do {
@@ -3070,7 +3070,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt5) {
             	case 1 :
-            	    // InternalKGraph.g:8244:15: '0' .. '9'
+            	    // InternalKGraph.g:8354:15: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -3103,10 +3103,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_FSIZE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8246:12: ( ( '0' .. '9' )+ 'pt' )
-            // InternalKGraph.g:8246:14: ( '0' .. '9' )+ 'pt'
+            // InternalKGraph.g:8356:12: ( ( '0' .. '9' )+ 'pt' )
+            // InternalKGraph.g:8356:14: ( '0' .. '9' )+ 'pt'
             {
-            // InternalKGraph.g:8246:14: ( '0' .. '9' )+
+            // InternalKGraph.g:8356:14: ( '0' .. '9' )+
             int cnt6=0;
             loop6:
             do {
@@ -3120,7 +3120,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt6) {
             	case 1 :
-            	    // InternalKGraph.g:8246:15: '0' .. '9'
+            	    // InternalKGraph.g:8356:15: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -3154,10 +3154,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_DEGREES;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8248:14: ( ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) 'deg' )
-            // InternalKGraph.g:8248:16: ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) 'deg'
+            // InternalKGraph.g:8358:14: ( ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) 'deg' )
+            // InternalKGraph.g:8358:16: ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) 'deg'
             {
-            // InternalKGraph.g:8248:16: ( '+' | '-' )?
+            // InternalKGraph.g:8358:16: ( '+' | '-' )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -3183,7 +3183,7 @@ public class InternalKGraphLexer extends Lexer {
 
             }
 
-            // InternalKGraph.g:8248:27: ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ )
+            // InternalKGraph.g:8358:27: ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ )
             int alt12=2;
             int LA12_0 = input.LA(1);
 
@@ -3201,9 +3201,9 @@ public class InternalKGraphLexer extends Lexer {
             }
             switch (alt12) {
                 case 1 :
-                    // InternalKGraph.g:8248:28: ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )?
+                    // InternalKGraph.g:8358:28: ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )?
                     {
-                    // InternalKGraph.g:8248:28: ( '0' .. '9' )+
+                    // InternalKGraph.g:8358:28: ( '0' .. '9' )+
                     int cnt8=0;
                     loop8:
                     do {
@@ -3217,7 +3217,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt8) {
                     	case 1 :
-                    	    // InternalKGraph.g:8248:29: '0' .. '9'
+                    	    // InternalKGraph.g:8358:29: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -3233,7 +3233,7 @@ public class InternalKGraphLexer extends Lexer {
                         cnt8++;
                     } while (true);
 
-                    // InternalKGraph.g:8248:40: ( '.' ( '0' .. '9' )* )?
+                    // InternalKGraph.g:8358:40: ( '.' ( '0' .. '9' )* )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -3242,10 +3242,10 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     switch (alt10) {
                         case 1 :
-                            // InternalKGraph.g:8248:41: '.' ( '0' .. '9' )*
+                            // InternalKGraph.g:8358:41: '.' ( '0' .. '9' )*
                             {
                             match('.'); 
-                            // InternalKGraph.g:8248:45: ( '0' .. '9' )*
+                            // InternalKGraph.g:8358:45: ( '0' .. '9' )*
                             loop9:
                             do {
                                 int alt9=2;
@@ -3258,7 +3258,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                 switch (alt9) {
                             	case 1 :
-                            	    // InternalKGraph.g:8248:46: '0' .. '9'
+                            	    // InternalKGraph.g:8358:46: '0' .. '9'
                             	    {
                             	    matchRange('0','9'); 
 
@@ -3280,10 +3280,10 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalKGraph.g:8248:59: '.' ( '0' .. '9' )+
+                    // InternalKGraph.g:8358:59: '.' ( '0' .. '9' )+
                     {
                     match('.'); 
-                    // InternalKGraph.g:8248:63: ( '0' .. '9' )+
+                    // InternalKGraph.g:8358:63: ( '0' .. '9' )+
                     int cnt11=0;
                     loop11:
                     do {
@@ -3297,7 +3297,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // InternalKGraph.g:8248:64: '0' .. '9'
+                    	    // InternalKGraph.g:8358:64: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -3337,10 +3337,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_PERCENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8250:14: ( ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) '%' )
-            // InternalKGraph.g:8250:16: ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) '%'
+            // InternalKGraph.g:8360:14: ( ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) '%' )
+            // InternalKGraph.g:8360:16: ( '+' | '-' )? ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ ) '%'
             {
-            // InternalKGraph.g:8250:16: ( '+' | '-' )?
+            // InternalKGraph.g:8360:16: ( '+' | '-' )?
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -3366,7 +3366,7 @@ public class InternalKGraphLexer extends Lexer {
 
             }
 
-            // InternalKGraph.g:8250:27: ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ )
+            // InternalKGraph.g:8360:27: ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? | '.' ( '0' .. '9' )+ )
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -3384,9 +3384,9 @@ public class InternalKGraphLexer extends Lexer {
             }
             switch (alt18) {
                 case 1 :
-                    // InternalKGraph.g:8250:28: ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )?
+                    // InternalKGraph.g:8360:28: ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )?
                     {
-                    // InternalKGraph.g:8250:28: ( '0' .. '9' )+
+                    // InternalKGraph.g:8360:28: ( '0' .. '9' )+
                     int cnt14=0;
                     loop14:
                     do {
@@ -3400,7 +3400,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt14) {
                     	case 1 :
-                    	    // InternalKGraph.g:8250:29: '0' .. '9'
+                    	    // InternalKGraph.g:8360:29: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -3416,7 +3416,7 @@ public class InternalKGraphLexer extends Lexer {
                         cnt14++;
                     } while (true);
 
-                    // InternalKGraph.g:8250:40: ( '.' ( '0' .. '9' )* )?
+                    // InternalKGraph.g:8360:40: ( '.' ( '0' .. '9' )* )?
                     int alt16=2;
                     int LA16_0 = input.LA(1);
 
@@ -3425,10 +3425,10 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     switch (alt16) {
                         case 1 :
-                            // InternalKGraph.g:8250:41: '.' ( '0' .. '9' )*
+                            // InternalKGraph.g:8360:41: '.' ( '0' .. '9' )*
                             {
                             match('.'); 
-                            // InternalKGraph.g:8250:45: ( '0' .. '9' )*
+                            // InternalKGraph.g:8360:45: ( '0' .. '9' )*
                             loop15:
                             do {
                                 int alt15=2;
@@ -3441,7 +3441,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                 switch (alt15) {
                             	case 1 :
-                            	    // InternalKGraph.g:8250:46: '0' .. '9'
+                            	    // InternalKGraph.g:8360:46: '0' .. '9'
                             	    {
                             	    matchRange('0','9'); 
 
@@ -3463,10 +3463,10 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalKGraph.g:8250:59: '.' ( '0' .. '9' )+
+                    // InternalKGraph.g:8360:59: '.' ( '0' .. '9' )+
                     {
                     match('.'); 
-                    // InternalKGraph.g:8250:63: ( '0' .. '9' )+
+                    // InternalKGraph.g:8360:63: ( '0' .. '9' )+
                     int cnt17=0;
                     loop17:
                     do {
@@ -3480,7 +3480,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt17) {
                     	case 1 :
-                    	    // InternalKGraph.g:8250:64: '0' .. '9'
+                    	    // InternalKGraph.g:8360:64: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -3519,15 +3519,15 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_TFLOAT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8252:13: ( ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ ) )
-            // InternalKGraph.g:8252:15: ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // InternalKGraph.g:8362:13: ( ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ ) )
+            // InternalKGraph.g:8362:15: ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
             {
-            // InternalKGraph.g:8252:15: ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // InternalKGraph.g:8362:15: ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
             int alt42=4;
             alt42 = dfa42.predict(input);
             switch (alt42) {
                 case 1 :
-                    // InternalKGraph.g:8252:16: ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? )
+                    // InternalKGraph.g:8362:16: ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? )
                     {
                     if ( input.LA(1)=='+'||input.LA(1)=='-' ) {
                         input.consume();
@@ -3538,7 +3538,7 @@ public class InternalKGraphLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // InternalKGraph.g:8252:26: ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? )
+                    // InternalKGraph.g:8362:26: ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? )
                     int alt29=2;
                     int LA29_0 = input.LA(1);
 
@@ -3556,9 +3556,9 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     switch (alt29) {
                         case 1 :
-                            // InternalKGraph.g:8252:27: ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                            // InternalKGraph.g:8362:27: ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                             {
-                            // InternalKGraph.g:8252:27: ( '0' .. '9' )+
+                            // InternalKGraph.g:8362:27: ( '0' .. '9' )+
                             int cnt19=0;
                             loop19:
                             do {
@@ -3572,7 +3572,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                 switch (alt19) {
                             	case 1 :
-                            	    // InternalKGraph.g:8252:28: '0' .. '9'
+                            	    // InternalKGraph.g:8362:28: '0' .. '9'
                             	    {
                             	    matchRange('0','9'); 
 
@@ -3588,7 +3588,7 @@ public class InternalKGraphLexer extends Lexer {
                                 cnt19++;
                             } while (true);
 
-                            // InternalKGraph.g:8252:39: ( '.' ( '0' .. '9' )* )?
+                            // InternalKGraph.g:8362:39: ( '.' ( '0' .. '9' )* )?
                             int alt21=2;
                             int LA21_0 = input.LA(1);
 
@@ -3597,10 +3597,10 @@ public class InternalKGraphLexer extends Lexer {
                             }
                             switch (alt21) {
                                 case 1 :
-                                    // InternalKGraph.g:8252:40: '.' ( '0' .. '9' )*
+                                    // InternalKGraph.g:8362:40: '.' ( '0' .. '9' )*
                                     {
                                     match('.'); 
-                                    // InternalKGraph.g:8252:44: ( '0' .. '9' )*
+                                    // InternalKGraph.g:8362:44: ( '0' .. '9' )*
                                     loop20:
                                     do {
                                         int alt20=2;
@@ -3613,7 +3613,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                         switch (alt20) {
                                     	case 1 :
-                                    	    // InternalKGraph.g:8252:45: '0' .. '9'
+                                    	    // InternalKGraph.g:8362:45: '0' .. '9'
                                     	    {
                                     	    matchRange('0','9'); 
 
@@ -3631,7 +3631,7 @@ public class InternalKGraphLexer extends Lexer {
 
                             }
 
-                            // InternalKGraph.g:8252:58: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                            // InternalKGraph.g:8362:58: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                             int alt24=2;
                             int LA24_0 = input.LA(1);
 
@@ -3640,7 +3640,7 @@ public class InternalKGraphLexer extends Lexer {
                             }
                             switch (alt24) {
                                 case 1 :
-                                    // InternalKGraph.g:8252:59: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+                                    // InternalKGraph.g:8362:59: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
                                     {
                                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                                         input.consume();
@@ -3651,7 +3651,7 @@ public class InternalKGraphLexer extends Lexer {
                                         recover(mse);
                                         throw mse;}
 
-                                    // InternalKGraph.g:8252:69: ( '+' | '-' )?
+                                    // InternalKGraph.g:8362:69: ( '+' | '-' )?
                                     int alt22=2;
                                     int LA22_0 = input.LA(1);
 
@@ -3677,7 +3677,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                     }
 
-                                    // InternalKGraph.g:8252:80: ( '0' .. '9' )+
+                                    // InternalKGraph.g:8362:80: ( '0' .. '9' )+
                                     int cnt23=0;
                                     loop23:
                                     do {
@@ -3691,7 +3691,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                         switch (alt23) {
                                     	case 1 :
-                                    	    // InternalKGraph.g:8252:81: '0' .. '9'
+                                    	    // InternalKGraph.g:8362:81: '0' .. '9'
                                     	    {
                                     	    matchRange('0','9'); 
 
@@ -3717,10 +3717,10 @@ public class InternalKGraphLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // InternalKGraph.g:8252:94: '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                            // InternalKGraph.g:8362:94: '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                             {
                             match('.'); 
-                            // InternalKGraph.g:8252:98: ( '0' .. '9' )+
+                            // InternalKGraph.g:8362:98: ( '0' .. '9' )+
                             int cnt25=0;
                             loop25:
                             do {
@@ -3734,7 +3734,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                 switch (alt25) {
                             	case 1 :
-                            	    // InternalKGraph.g:8252:99: '0' .. '9'
+                            	    // InternalKGraph.g:8362:99: '0' .. '9'
                             	    {
                             	    matchRange('0','9'); 
 
@@ -3750,7 +3750,7 @@ public class InternalKGraphLexer extends Lexer {
                                 cnt25++;
                             } while (true);
 
-                            // InternalKGraph.g:8252:110: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                            // InternalKGraph.g:8362:110: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                             int alt28=2;
                             int LA28_0 = input.LA(1);
 
@@ -3759,7 +3759,7 @@ public class InternalKGraphLexer extends Lexer {
                             }
                             switch (alt28) {
                                 case 1 :
-                                    // InternalKGraph.g:8252:111: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+                                    // InternalKGraph.g:8362:111: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
                                     {
                                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                                         input.consume();
@@ -3770,7 +3770,7 @@ public class InternalKGraphLexer extends Lexer {
                                         recover(mse);
                                         throw mse;}
 
-                                    // InternalKGraph.g:8252:121: ( '+' | '-' )?
+                                    // InternalKGraph.g:8362:121: ( '+' | '-' )?
                                     int alt26=2;
                                     int LA26_0 = input.LA(1);
 
@@ -3796,7 +3796,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                     }
 
-                                    // InternalKGraph.g:8252:132: ( '0' .. '9' )+
+                                    // InternalKGraph.g:8362:132: ( '0' .. '9' )+
                                     int cnt27=0;
                                     loop27:
                                     do {
@@ -3810,7 +3810,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                         switch (alt27) {
                                     	case 1 :
-                                    	    // InternalKGraph.g:8252:133: '0' .. '9'
+                                    	    // InternalKGraph.g:8362:133: '0' .. '9'
                                     	    {
                                     	    matchRange('0','9'); 
 
@@ -3842,9 +3842,9 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalKGraph.g:8252:147: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                    // InternalKGraph.g:8362:147: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                     {
-                    // InternalKGraph.g:8252:147: ( '0' .. '9' )+
+                    // InternalKGraph.g:8362:147: ( '0' .. '9' )+
                     int cnt30=0;
                     loop30:
                     do {
@@ -3858,7 +3858,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt30) {
                     	case 1 :
-                    	    // InternalKGraph.g:8252:148: '0' .. '9'
+                    	    // InternalKGraph.g:8362:148: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -3875,7 +3875,7 @@ public class InternalKGraphLexer extends Lexer {
                     } while (true);
 
                     match('.'); 
-                    // InternalKGraph.g:8252:163: ( '0' .. '9' )*
+                    // InternalKGraph.g:8362:163: ( '0' .. '9' )*
                     loop31:
                     do {
                         int alt31=2;
@@ -3888,7 +3888,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt31) {
                     	case 1 :
-                    	    // InternalKGraph.g:8252:164: '0' .. '9'
+                    	    // InternalKGraph.g:8362:164: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -3900,7 +3900,7 @@ public class InternalKGraphLexer extends Lexer {
                         }
                     } while (true);
 
-                    // InternalKGraph.g:8252:175: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                    // InternalKGraph.g:8362:175: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                     int alt34=2;
                     int LA34_0 = input.LA(1);
 
@@ -3909,7 +3909,7 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     switch (alt34) {
                         case 1 :
-                            // InternalKGraph.g:8252:176: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+                            // InternalKGraph.g:8362:176: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
                             {
                             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                                 input.consume();
@@ -3920,7 +3920,7 @@ public class InternalKGraphLexer extends Lexer {
                                 recover(mse);
                                 throw mse;}
 
-                            // InternalKGraph.g:8252:186: ( '+' | '-' )?
+                            // InternalKGraph.g:8362:186: ( '+' | '-' )?
                             int alt32=2;
                             int LA32_0 = input.LA(1);
 
@@ -3946,7 +3946,7 @@ public class InternalKGraphLexer extends Lexer {
 
                             }
 
-                            // InternalKGraph.g:8252:197: ( '0' .. '9' )+
+                            // InternalKGraph.g:8362:197: ( '0' .. '9' )+
                             int cnt33=0;
                             loop33:
                             do {
@@ -3960,7 +3960,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                 switch (alt33) {
                             	case 1 :
-                            	    // InternalKGraph.g:8252:198: '0' .. '9'
+                            	    // InternalKGraph.g:8362:198: '0' .. '9'
                             	    {
                             	    matchRange('0','9'); 
 
@@ -3986,10 +3986,10 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // InternalKGraph.g:8252:211: '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                    // InternalKGraph.g:8362:211: '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                     {
                     match('.'); 
-                    // InternalKGraph.g:8252:215: ( '0' .. '9' )+
+                    // InternalKGraph.g:8362:215: ( '0' .. '9' )+
                     int cnt35=0;
                     loop35:
                     do {
@@ -4003,7 +4003,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt35) {
                     	case 1 :
-                    	    // InternalKGraph.g:8252:216: '0' .. '9'
+                    	    // InternalKGraph.g:8362:216: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -4019,7 +4019,7 @@ public class InternalKGraphLexer extends Lexer {
                         cnt35++;
                     } while (true);
 
-                    // InternalKGraph.g:8252:227: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
+                    // InternalKGraph.g:8362:227: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )?
                     int alt38=2;
                     int LA38_0 = input.LA(1);
 
@@ -4028,7 +4028,7 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     switch (alt38) {
                         case 1 :
-                            // InternalKGraph.g:8252:228: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+                            // InternalKGraph.g:8362:228: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
                             {
                             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                                 input.consume();
@@ -4039,7 +4039,7 @@ public class InternalKGraphLexer extends Lexer {
                                 recover(mse);
                                 throw mse;}
 
-                            // InternalKGraph.g:8252:238: ( '+' | '-' )?
+                            // InternalKGraph.g:8362:238: ( '+' | '-' )?
                             int alt36=2;
                             int LA36_0 = input.LA(1);
 
@@ -4065,7 +4065,7 @@ public class InternalKGraphLexer extends Lexer {
 
                             }
 
-                            // InternalKGraph.g:8252:249: ( '0' .. '9' )+
+                            // InternalKGraph.g:8362:249: ( '0' .. '9' )+
                             int cnt37=0;
                             loop37:
                             do {
@@ -4079,7 +4079,7 @@ public class InternalKGraphLexer extends Lexer {
 
                                 switch (alt37) {
                             	case 1 :
-                            	    // InternalKGraph.g:8252:250: '0' .. '9'
+                            	    // InternalKGraph.g:8362:250: '0' .. '9'
                             	    {
                             	    matchRange('0','9'); 
 
@@ -4105,9 +4105,9 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // InternalKGraph.g:8252:263: ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+                    // InternalKGraph.g:8362:263: ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
                     {
-                    // InternalKGraph.g:8252:263: ( '0' .. '9' )+
+                    // InternalKGraph.g:8362:263: ( '0' .. '9' )+
                     int cnt39=0;
                     loop39:
                     do {
@@ -4121,7 +4121,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt39) {
                     	case 1 :
-                    	    // InternalKGraph.g:8252:264: '0' .. '9'
+                    	    // InternalKGraph.g:8362:264: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -4146,7 +4146,7 @@ public class InternalKGraphLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // InternalKGraph.g:8252:285: ( '+' | '-' )?
+                    // InternalKGraph.g:8362:285: ( '+' | '-' )?
                     int alt40=2;
                     int LA40_0 = input.LA(1);
 
@@ -4172,7 +4172,7 @@ public class InternalKGraphLexer extends Lexer {
 
                     }
 
-                    // InternalKGraph.g:8252:296: ( '0' .. '9' )+
+                    // InternalKGraph.g:8362:296: ( '0' .. '9' )+
                     int cnt41=0;
                     loop41:
                     do {
@@ -4186,7 +4186,7 @@ public class InternalKGraphLexer extends Lexer {
 
                         switch (alt41) {
                     	case 1 :
-                    	    // InternalKGraph.g:8252:297: '0' .. '9'
+                    	    // InternalKGraph.g:8362:297: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -4224,10 +4224,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_NATURAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8254:14: ( ( '0' .. '9' )+ )
-            // InternalKGraph.g:8254:16: ( '0' .. '9' )+
+            // InternalKGraph.g:8364:14: ( ( '0' .. '9' )+ )
+            // InternalKGraph.g:8364:16: ( '0' .. '9' )+
             {
-            // InternalKGraph.g:8254:16: ( '0' .. '9' )+
+            // InternalKGraph.g:8364:16: ( '0' .. '9' )+
             int cnt43=0;
             loop43:
             do {
@@ -4241,7 +4241,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt43) {
             	case 1 :
-            	    // InternalKGraph.g:8254:17: '0' .. '9'
+            	    // InternalKGraph.g:8364:17: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -4273,10 +4273,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8256:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // InternalKGraph.g:8256:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalKGraph.g:8366:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // InternalKGraph.g:8366:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
-            // InternalKGraph.g:8256:11: ( '^' )?
+            // InternalKGraph.g:8366:11: ( '^' )?
             int alt44=2;
             int LA44_0 = input.LA(1);
 
@@ -4285,7 +4285,7 @@ public class InternalKGraphLexer extends Lexer {
             }
             switch (alt44) {
                 case 1 :
-                    // InternalKGraph.g:8256:11: '^'
+                    // InternalKGraph.g:8366:11: '^'
                     {
                     match('^'); 
 
@@ -4303,7 +4303,7 @@ public class InternalKGraphLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalKGraph.g:8256:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalKGraph.g:8366:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop45:
             do {
                 int alt45=2;
@@ -4352,11 +4352,11 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8258:13: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' )
-            // InternalKGraph.g:8258:15: '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+            // InternalKGraph.g:8368:13: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' )
+            // InternalKGraph.g:8368:15: '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
             {
             match('\"'); 
-            // InternalKGraph.g:8258:19: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
+            // InternalKGraph.g:8368:19: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
             loop46:
             do {
                 int alt46=3;
@@ -4372,7 +4372,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt46) {
             	case 1 :
-            	    // InternalKGraph.g:8258:20: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
+            	    // InternalKGraph.g:8368:20: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
             	    {
             	    match('\\'); 
             	    if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||(input.LA(1)>='t' && input.LA(1)<='u') ) {
@@ -4388,7 +4388,7 @@ public class InternalKGraphLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // InternalKGraph.g:8258:65: ~ ( ( '\\\\' | '\"' ) )
+            	    // InternalKGraph.g:8368:65: ~ ( ( '\\\\' | '\"' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -4425,12 +4425,12 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8260:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalKGraph.g:8260:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalKGraph.g:8370:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalKGraph.g:8370:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalKGraph.g:8260:24: ( options {greedy=false; } : . )*
+            // InternalKGraph.g:8370:24: ( options {greedy=false; } : . )*
             loop47:
             do {
                 int alt47=2;
@@ -4455,7 +4455,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt47) {
             	case 1 :
-            	    // InternalKGraph.g:8260:52: .
+            	    // InternalKGraph.g:8370:52: .
             	    {
             	    matchAny(); 
 
@@ -4485,12 +4485,12 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8262:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalKGraph.g:8262:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalKGraph.g:8372:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalKGraph.g:8372:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalKGraph.g:8262:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalKGraph.g:8372:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop48:
             do {
                 int alt48=2;
@@ -4503,7 +4503,7 @@ public class InternalKGraphLexer extends Lexer {
 
                 switch (alt48) {
             	case 1 :
-            	    // InternalKGraph.g:8262:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalKGraph.g:8372:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -4523,7 +4523,7 @@ public class InternalKGraphLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalKGraph.g:8262:40: ( ( '\\r' )? '\\n' )?
+            // InternalKGraph.g:8372:40: ( ( '\\r' )? '\\n' )?
             int alt50=2;
             int LA50_0 = input.LA(1);
 
@@ -4532,9 +4532,9 @@ public class InternalKGraphLexer extends Lexer {
             }
             switch (alt50) {
                 case 1 :
-                    // InternalKGraph.g:8262:41: ( '\\r' )? '\\n'
+                    // InternalKGraph.g:8372:41: ( '\\r' )? '\\n'
                     {
-                    // InternalKGraph.g:8262:41: ( '\\r' )?
+                    // InternalKGraph.g:8372:41: ( '\\r' )?
                     int alt49=2;
                     int LA49_0 = input.LA(1);
 
@@ -4543,7 +4543,7 @@ public class InternalKGraphLexer extends Lexer {
                     }
                     switch (alt49) {
                         case 1 :
-                            // InternalKGraph.g:8262:41: '\\r'
+                            // InternalKGraph.g:8372:41: '\\r'
                             {
                             match('\r'); 
 
@@ -4575,10 +4575,10 @@ public class InternalKGraphLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalKGraph.g:8264:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalKGraph.g:8264:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalKGraph.g:8374:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // InternalKGraph.g:8374:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // InternalKGraph.g:8264:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalKGraph.g:8374:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt51=0;
             loop51:
             do {
@@ -5692,7 +5692,7 @@ public class InternalKGraphLexer extends Lexer {
             this.transition = DFA42_transition;
         }
         public String getDescription() {
-            return "8252:15: ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )";
+            return "8362:15: ( ( '+' | '-' ) ( ( '0' .. '9' )+ ( '.' ( '0' .. '9' )* )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? ) | ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )? | ( '0' .. '9' )+ ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )";
         }
     }
     static final String DFA52_eotS =
