@@ -27,6 +27,9 @@ Workflow {
             }
         }
         
+        /*
+         * The KGraph Text Language
+         */
         language = StandardLanguage {
             name = "de.cau.cs.kieler.kgraph.text.KGraph"
             fileExtensions = "kgt"
@@ -42,10 +45,31 @@ Workflow {
                 // composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
             }
             
+        }
+        
+        /*
+         * The GRandom Language
+         */
+        language = StandardLanguage {
+            name = "de.cau.cs.kieler.kgraph.text.grandom.GRandom"
+            fileExtensions = "rdg"
+
+            serializer = {
+                generateStub = false
+            }
+            validator = {
+                // composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+            }
+            
+            
+        }
             
             
             
             /*
+             * Options from the old mwe2 workflow for future reference in case something breaks. 
+             */
+           /*
             fragment = grammarAccess.GrammarAccessFragment {}
 
             // the serialization component
@@ -101,7 +125,7 @@ Workflow {
             // quickfix API 
             fragment = quickfix.QuickfixProviderFragment {}
             */
-        }
+    
     }
 }
 
