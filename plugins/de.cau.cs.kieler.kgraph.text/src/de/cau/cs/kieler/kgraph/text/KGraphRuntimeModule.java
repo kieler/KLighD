@@ -15,12 +15,14 @@ package de.cau.cs.kieler.kgraph.text;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.conversion.IValueConverterService;
+import org.eclipse.xtext.formatting.IFormatter;
 import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.linking.impl.Linker;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
 import org.eclipse.xtext.resource.XtextResource;
 
+import de.cau.cs.kieler.kgraph.text.formatting.KGraphFormatter;
 import de.cau.cs.kieler.kgraph.text.scoping.KGraphQualifiedNameProvider;
 import de.cau.cs.kieler.kgraph.text.serializer.KGraphTransientValueService;
 import de.cau.cs.kieler.kgraph.text.validation.KGraphJavaValidator;
@@ -48,6 +50,14 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
     @Override
     public Class<? extends IValueConverterService> bindIValueConverterService() {
         return KGraphValueConverters.class;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends IFormatter> bindIFormatter() {
+        return KGraphFormatter.class;
     }
     
     /**
