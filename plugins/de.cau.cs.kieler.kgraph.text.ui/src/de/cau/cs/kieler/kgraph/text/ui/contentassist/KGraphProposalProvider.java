@@ -281,9 +281,12 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
 
         // create and register the completion proposal for every element in the list
         for (final LayoutOptionData optionData : layoutServices.getOptionData()) {
-            final StyledString displayString = new StyledString(optionData.toString(),
+            final StyledString displayString = new StyledString();
+            
+            displayString.append(optionData.getName(),
                     (optionData.getVisibility() == Visibility.ADVANCED)
                             ? StyledString.COUNTER_STYLER : null);
+            
             displayString.append(" (" + optionData.getId() + ")", StyledString.QUALIFIER_STYLER);
 
             final String proposal = getValueConverter().toString(optionData.getId(),
@@ -292,7 +295,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             final LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
             final Image image = labelProvider.getImage(optionData.getDefault());
 
-            handleKeyProposal(context, acceptor, optionData.getId(), proposal, displayString, image);
+            handleKeyProposal(context, acceptor, optionData.getId(), proposal, displayString, image, optionData);
         }
 
         // additional properties as specified for the kgraph text format
@@ -305,15 +308,15 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             
             final Image image =
                     ElkUiPlugin.getInstance().getImageRegistry().get(ElkUiPlugin.IMG_TEXT);
-            handleKeyProposal(context, acceptor, p.getId(), proposal, displayString, image);
+            handleKeyProposal(context, acceptor, p.getId(), proposal, displayString, image, null);
         }
 
     }
 
     private void handleKeyProposal(final ContentAssistContext context,
             final ICompletionProposalAcceptor acceptor, final String id, final String proposal,
-            final StyledString displayString, final Image image) {
-
+            final StyledString displayString, final Image image, final LayoutOptionData layoutData) {
+        
         if (isValidProposal(proposal, context.getPrefix(), context)) {
             // accept the proposal with unmodified prefix
             acceptor.accept(doCreateProposal(proposal, displayString, image,
@@ -340,6 +343,34 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 }
                 if (isValidProposal(proposal, prefix.toString(), context)) {
                     // accept the proposal with unmodified prefix
+                    acceptor.accept(doCreateProposal(proposal, displayString, image,
+                            getPriorityHelper().getDefaultPriority(), context));
+                }
+            }
+        }
+        
+        // if we look for a layout option, we have more options
+        if (layoutData != null) {
+
+            String lowerCasePrefix = context.getPrefix().toLowerCase();
+            // check for the option's name
+            String optionName = layoutData.getName().toLowerCase();
+            if (isValidProposal(optionName, lowerCasePrefix, context)) {
+                if (isValidProposal(optionName.toLowerCase(), lowerCasePrefix, context)) {
+                    acceptor.accept(doCreateProposal(proposal, displayString, image,
+                            getPriorityHelper().getDefaultPriority(), context));
+                }
+            }
+            
+            // check if its a prefix of some group
+            String[] split;
+            if (layoutData.getGroup().contains(".")) {
+                split = layoutData.getGroup().split(".");
+            } else {
+                split = new String[]{layoutData.getGroup()};
+            }
+            for (String chunk : split) {
+                if (isValidProposal(chunk.toLowerCase(), lowerCasePrefix, context)) {
                     acceptor.accept(doCreateProposal(proposal, displayString, image,
                             getPriorityHelper().getDefaultPriority(), context));
                 }
