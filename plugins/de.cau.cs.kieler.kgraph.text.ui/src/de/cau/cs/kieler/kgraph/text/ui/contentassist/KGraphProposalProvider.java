@@ -295,7 +295,8 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             final LayoutOptionLabelProvider labelProvider = new LayoutOptionLabelProvider(optionData);
             final Image image = labelProvider.getImage(optionData.getDefault());
 
-            handleKeyProposal(context, acceptor, optionData.getId(), proposal, displayString, image, optionData);
+            handleKeyProposal(context, acceptor, optionData.getId(), proposal, displayString, image,
+                    optionData);
         }
 
         // additional properties as specified for the kgraph text format
@@ -363,16 +364,19 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
             }
             
             // check if its a prefix of some group
-            String[] split;
-            if (layoutData.getGroup().contains(".")) {
-                split = layoutData.getGroup().split(".");
-            } else {
-                split = new String[]{layoutData.getGroup()};
-            }
-            for (String chunk : split) {
-                if (isValidProposal(chunk.toLowerCase(), lowerCasePrefix, context)) {
-                    acceptor.accept(doCreateProposal(proposal, displayString, image,
-                            getPriorityHelper().getDefaultPriority(), context));
+            String group = layoutData.getGroup();
+            if (group != null && !group.isEmpty()) {
+                String[] split;
+                if (group.contains(".")) {
+                    split = group.split(".");
+                } else {
+                    split = new String[] { group };
+                }
+                for (String chunk : split) {
+                    if (isValidProposal(chunk.toLowerCase(), lowerCasePrefix, context)) {
+                        acceptor.accept(doCreateProposal(proposal, displayString, image,
+                                getPriorityHelper().getDefaultPriority(), context));
+                    }
                 }
             }
         }
