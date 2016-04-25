@@ -13,7 +13,9 @@ Workflow {
                 baseName = "de.cau.cs.kieler.kgraph.text"
                 rootPath = rootPath
                 runtimeTest = {
-                    //enabled = true
+                    enabled = true
+                    // test plugins are located in a separate folder 
+                    root  = "../../test/de.cau.cs.kieler.kgraph.text.tests"
                 }
                 eclipsePlugin = {
                     enabled = true
