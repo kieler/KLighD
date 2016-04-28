@@ -29,6 +29,7 @@ import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.data.LayoutOptionData.Target;
 import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.klayoutdata.KLayoutDataFactory;
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.graph.KEdge;
 import org.eclipse.elk.graph.KGraphElement;
@@ -39,6 +40,10 @@ import org.eclipse.elk.graph.KPort;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyValueProxy;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.swt.SWTException;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
@@ -47,9 +52,11 @@ import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
+import de.cau.cs.kieler.klighd.util.RunnableWithResult;
 
 // MIGRATE This whole class is a pile of poo and needs to be cleaned up if everything is working.
 /**
@@ -70,13 +77,10 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     public static final class Provider implements ILayoutConfigurationStore.Provider {
 
         @Override
-        public ILayoutConfigurationStore get(final IWorkbenchPart workbenchPart,
-                final Object context) {
-            
+        public ILayoutConfigurationStore get(final IWorkbenchPart workbenchPart, final Object context) {
             if (context instanceof KGraphElement) {
                 try {
-                    return new KlighdLayoutConfigurationStore(workbenchPart,
-                            (KGraphElement) context);
+                    return new KlighdLayoutConfigurationStore(workbenchPart, (KGraphElement) context);
                 } catch (IllegalArgumentException e) {
                     // Fall back to null
                 }
@@ -112,7 +116,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     public Object getOptionValue(final String optionId) {
         LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(optionId);
 
-        if (graphElement == null) {
+        if (optionData == null || graphElement == null) {
             return null;
         }
 
@@ -126,34 +130,88 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
             return ((IPropertyValueProxy) value).resolveValue(optionData);
 
         } else if (value == null) {
-
             // check whether an expansion aware layout option set is present
             final ExpansionAwareLayoutOptionData ealo =
                     elementLayout.getProperty(ExpansionAwareLayoutOption.OPTION);
+            
             if (ealo == null) {
-                return null;
-            }
-
-            final KNode node;
-            if (graphElement instanceof KNode) {
-                node = (KNode) graphElement;
-
-            } else if (graphElement instanceof KPort) {
-                node = ((KPort) graphElement).getNode();
-
+                // We provide special support for certain layout options
+                return getSpecialLayoutOptionValue(optionData);
             } else {
-                return null;
+                final KNode node;
+                if (graphElement instanceof KNode) {
+                    node = (KNode) graphElement;
+                    
+                } else if (graphElement instanceof KPort) {
+                    node = ((KPort) graphElement).getNode();
+                    
+                } else {
+                    return null;
+                }
+                
+                final RenderingContextData rcd = RenderingContextData.get(node);
+                final boolean expanded = !node.getChildren().isEmpty()
+                        && rcd.getProperty(KlighdInternalProperties.POPULATED);
+                
+                return ealo.getValue(optionData, expanded);
             }
-
-            final RenderingContextData rcd = RenderingContextData.get(node);
-            final boolean expanded = !node.getChildren().isEmpty()
-                    && rcd.getProperty(KlighdInternalProperties.POPULATED);
-
-            return ealo.getValue(optionData, expanded);
-
         } else {
             return value;
         }
+    }
+
+     /** The aspect ratio is rounded to two decimal places. */
+     private static final float ASPECT_RATIO_ROUND = 100;
+
+    /**
+     * We support special layout options whose value we infer if they are not explicitly set on the
+     * element. This method assumes that this is indeed the case and returns the special layout option
+     * value, if any.
+     * 
+     * @param optionData the option whose value to return.
+     * @return the value or {@code null} if it is not a special layout option.
+     */
+    private Object getSpecialLayoutOptionValue(final LayoutOptionData optionData) {
+        if (optionData.equals(CoreOptions.ASPECT_RATIO) && getContainer() == null) {
+            // Get aspect ratio for the current diagram
+            final IViewer viewer = getViewer();
+            if (viewer == null || viewer.getControl() == null) {
+                System.out.println("NO VIEWER");
+                return null;
+            }
+
+            final Control control = viewer.getControl();
+
+            final RunnableWithResult<Float> runnable = new AbstractRunnableWithResult<Float>() {
+
+                public void run() {
+                    final Point size;
+
+                    try {
+                        size = control.getSize();
+                    } catch (final SWTException exception) {
+                        // ignore exception
+                        return;
+                    }
+
+                    if (size.x == 0 || size.y == 0) {
+                        return;
+                    }
+
+                    setResult(Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND);
+                }
+            };
+
+            if (control.getDisplay() == Display.getCurrent()) {
+                runnable.run();
+            } else {
+                control.getDisplay().syncExec(runnable);
+            }
+
+            return runnable.getResult();
+        }
+
+        return null;
     }
 
     /**
@@ -178,18 +236,6 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     }
 
     /**
-     * Reveals the KLighD {@link ViewContext} from the given layout context.
-     *
-     * @param context
-     *            a layout context
-     * @return the corresponding KLighD (context) {@link IViewer}, or {@code null}
-     */
-    private ViewContext getViewContext() {
-        final IViewer viewer = getViewer();
-        return viewer != null ? viewer.getViewContext() : null;
-    }
-
-    /**
      * Reveals the KLighD (context) {@link IViewer} from the given layout context.
      *
      * @param context
@@ -210,7 +256,6 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     }
 
     /**
-     * 
      * {@inheritDoc}
      */
     public Collection<String> getAffectedOptions() {
@@ -286,6 +331,11 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
             if (!entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
                 options.add(entry.getKey().getId());
             }
+        }
+        
+        // handle special layout options
+        if (getContainer() == null) {
+            options.add(CoreOptions.ASPECT_RATIO.getId());
         }
 
         return options;
@@ -365,127 +415,6 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         return null;
     }
 
-    // private Object getContextValue(final IProperty<?> property, final LayoutContext context) {
-    // Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
-    //
-    // if (!(diagramPart instanceof KGraphElement)) {
-    // diagramPart = getViewModel(context);
-    // }
-    //
-    // if (diagramPart == null) {
-    // return null;
-    // }
-    //
-    // final KGraphElement affectedElement = getAffectedElement(context, false);
-    // if (affectedElement == null) {
-    // return null;
-    // }
-    //
-    // final ViewContext viewContext = getViewContext(context);
-    // final KGraphElement viewElement = (KGraphElement) diagramPart;
-    //
-    // if (property.equals(LayoutContext.DIAGRAM_PART)) {
-    // return viewElement;
-    //
-    // } else if (property.equals(LayoutContext.CONTAINER_DIAGRAM_PART)) {
-    // // find the parent node for the selected graph element
-    // return getParentNode(viewElement);
-    //
-    // } else if (property.equals(LayoutContext.DOMAIN_MODEL)) {
-    // // determine the domain model element
-    // if (viewContext != null) {
-    // return viewContext.getSourceElement(viewElement);
-    // }
-    //
-    // } else if (property.equals(LayoutContext.CONTAINER_DOMAIN_MODEL)) {
-    // // determine the domain model element of the parent node
-    // final KNode parentNode = getParentNode(viewElement);
-    //
-    // // determine the domain model element
-    // if (parentNode != null && viewContext != null) {
-    // return viewContext.getSourceElement(parentNode);
-    // }
-    //
-    // final Object domainModel = context.getProperty(LayoutContext.DOMAIN_MODEL);
-    // if (domainModel instanceof KGraphElement) {
-    // return getParentNode((KGraphElement) domainModel);
-    // }
-    //
-    // } else if (property.equals(LayoutContext.OPT_TARGETS)) {
-    // // add layout option target types
-    // return new DefaultLayoutConfig.OptionTargetSwitch().doSwitch(affectedElement);
-    //
-    // } else if (property.equals(DefaultLayoutConfig.HAS_PORTS)) {
-    // // determine whether the graph element is a node with ports
-    // if (affectedElement instanceof KNode) {
-    // return !((KNode) affectedElement).getPorts().isEmpty();
-    // }
-    //
-    // } else if (property.equals(EclipseLayoutConfig.ASPECT_RATIO)) {
-    // // get aspect ratio for the current diagram
-    // final IViewer viewer = getViewer(context);
-    // if (viewer == null || viewer.getControl() == null) {
-    // return null;
-    // }
-    //
-    // final Control control = viewer.getControl();
-    //
-    // final RunnableWithResult<Float> runnable = new AbstractRunnableWithResult<Float>() {
-    //
-    // public void run() {
-    // final Point size;
-    //
-    // try {
-    // size = control.getSize();
-    // } catch (final SWTException exception) {
-    // // ignore exception
-    // return;
-    // }
-    //
-    // if (size.x == 0 || size.y == 0) {
-    // return;
-    // }
-    //
-    // setResult(
-    // Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND);
-    // }
-    // };
-    //
-    // if (control.getDisplay() == Display.getCurrent()) {
-    // runnable.run();
-    // } else {
-    // control.getDisplay().syncExec(runnable);
-    // }
-    //
-    // return runnable.getResult();
-    //
-    // } else if (property.equals(DefaultLayoutConfig.CONTENT_HINT)) {
-    // // check whether a hint for the layout algorithm has been set
-    // final KLayoutData elementLayout = affectedElement.getData(KLayoutData.class);
-    // if (elementLayout != null) {
-    // return elementLayout.getProperty(LayoutOptions.ALGORITHM);
-    // }
-    //
-    // } else if (property.equals(DefaultLayoutConfig.CONTAINER_HINT)) {
-    // // check whether a hint for the layout algorithm has been set on the parent node
-    // Object parentElement = context.getProperty(LayoutContext.CONTAINER_DOMAIN_MODEL);
-    // if (!(parentElement instanceof KGraphElement)) {
-    // parentElement = getParentNode(viewElement);
-    // }
-    //
-    // if (parentElement != null) {
-    // final KLayoutData parentLayout =
-    // ((KGraphElement) parentElement).getData(KLayoutData.class);
-    //
-    // if (parentLayout != null) {
-    // return parentLayout.getProperty(LayoutOptions.ALGORITHM);
-    // }
-    // }
-    // }
-    //
-    // return null;
-    // }
-
     // /**
     // * Reveals the KLighD {@link KNode view model} from the given layout context.
     // *
@@ -563,8 +492,5 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
 
     // /** layout context property for the (context) viewer. */
     // private static final IProperty<IViewer> VIEWER = new Property<IViewer>("klighd.viewer");
-
-    // /** The aspect ratio is rounded at two decimal places. */
-    // private static final float ASPECT_RATIO_ROUND = 100;
 
 }

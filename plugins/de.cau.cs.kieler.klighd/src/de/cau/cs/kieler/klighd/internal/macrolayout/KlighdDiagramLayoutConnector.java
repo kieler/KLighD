@@ -182,9 +182,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation, viewContext.getDiagramWorkbenchPart());
 
         if (viewContext != null) {
-            // MIGRATE Is this line even necessary?
-//            mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
-
             // remember the layout recorder if any
             mapping.setProperty(KlighdInternalProperties.RECORDER, viewContext.getLayoutRecorder());
         }
@@ -204,7 +201,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     public LayoutMapping buildLayoutGraph(final KNode graph,
             final boolean performSizeEstimation, final IWorkbenchPart diagramWorkbenchPart) {
         
-        // MIGRATE Set Workbench part here?!?
         final LayoutMapping mapping = new LayoutMapping(diagramWorkbenchPart);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
 
