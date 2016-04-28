@@ -5,7 +5,7 @@ import org.eclipse.elk.core.math.KVector
 
 bundle {
     label "Klighd"
-    class KlighdOptions 
+    metadataClass KlighdOptions 
     idPrefix de.cau.cs.kieler.klighd 
 }
 
