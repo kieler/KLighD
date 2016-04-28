@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.kgraph.text.ui.contentassist;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
 import org.eclipse.elk.core.data.LayoutAlgorithmData;
@@ -24,6 +27,8 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.ui.ElkUiPlugin;
 import org.eclipse.elk.core.ui.LayoutOptionLabelProvider;
 import org.eclipse.elk.graph.PersistentEntry;
+import org.eclipse.elk.graph.properties.AdvancedPropertyValue;
+import org.eclipse.elk.graph.properties.ExperimentalPropertyValue;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -419,7 +424,16 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 case ENUMSET:
                     for (int j = 0; j < optionData.getChoices().length; j++) {
                         proposal = optionData.getChoices()[j];
-                        acceptor.accept(createCompletionProposal(proposal, context));
+                        
+                        StyledString displayString = new StyledString(proposal);
+                        if (isExperimentalPropertyValue(optionData.getEnumValue(j))) {
+                            displayString.append(" - Experimental", StyledString.COUNTER_STYLER);
+                        } else if (isAdvancedPropertyValue(optionData.getEnumValue(j))) {
+                            displayString.append(" - Advanced", StyledString.COUNTER_STYLER);
+                        }
+                        
+                        acceptor.accept(createCompletionProposal(
+                                proposal, displayString, null, context));
                     }
                     break;
 
@@ -476,5 +490,35 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 }
             }
         }
+    }
+
+    private boolean isExperimentalPropertyValue(final Enum<?> enumValue) {
+        if (enumValue != null) {
+            try {
+                Annotation[] annotations =
+                        enumValue.getClass().getField(enumValue.name()).getAnnotations();
+                return Arrays.stream(annotations)
+                        .anyMatch(a -> a instanceof AdvancedPropertyValue);
+            } catch (NoSuchFieldException | SecurityException e) {
+                return false;
+            }
+        }
+        
+        return false;
+    }
+
+    private boolean isAdvancedPropertyValue(final Enum<?> enumValue) {
+        if (enumValue != null) {
+            try {
+                Annotation[] annotations =
+                        enumValue.getClass().getField(enumValue.name()).getAnnotations();
+                return Arrays.stream(annotations)
+                        .anyMatch(a -> a instanceof ExperimentalPropertyValue);
+            } catch (NoSuchFieldException | SecurityException e) {
+                return false;
+            }
+        }
+        
+        return false;
     }
 }
