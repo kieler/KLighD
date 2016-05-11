@@ -74,6 +74,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GRandom.ecore#//Nodes/ports"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GRandom.ecore#//Nodes/labels"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GRandom.ecore#//Nodes/size"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GRandom.ecore#//Nodes/removeIsolated"/>
     </genClasses>
     <genClasses ecoreClass="GRandom.ecore#//Size">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GRandom.ecore#//Size/height"/>

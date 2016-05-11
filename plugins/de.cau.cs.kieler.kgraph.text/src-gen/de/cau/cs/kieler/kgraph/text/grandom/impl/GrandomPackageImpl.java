@@ -552,6 +552,16 @@ public class GrandomPackageImpl extends EPackageImpl implements GrandomPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getNodes_RemoveIsolated()
+  {
+    return (EAttribute)nodesEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getSize()
   {
     return sizeEClass;
@@ -876,6 +886,7 @@ public class GrandomPackageImpl extends EPackageImpl implements GrandomPackage
     createEReference(nodesEClass, NODES__PORTS);
     createEAttribute(nodesEClass, NODES__LABELS);
     createEReference(nodesEClass, NODES__SIZE);
+    createEAttribute(nodesEClass, NODES__REMOVE_ISOLATED);
 
     sizeEClass = createEClass(SIZE);
     createEReference(sizeEClass, SIZE__HEIGHT);
@@ -980,6 +991,7 @@ public class GrandomPackageImpl extends EPackageImpl implements GrandomPackage
     initEReference(getNodes_Ports(), this.getPorts(), null, "ports", null, 0, 1, Nodes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getNodes_Labels(), ecorePackage.getEBoolean(), "labels", null, 0, 1, Nodes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNodes_Size(), this.getSize(), null, "size", null, 0, 1, Nodes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getNodes_RemoveIsolated(), ecorePackage.getEBoolean(), "removeIsolated", null, 0, 1, Nodes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(sizeEClass, Size.class, "Size", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSize_Height(), this.getDoubleQuantity(), null, "height", null, 0, 1, Size.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

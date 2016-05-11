@@ -56,7 +56,10 @@ Edges:
 Nodes:
     {Nodes}
     'nodes' '=' nNodes=DoubleQuantity ( '{'
-       ((ports=Ports)? & (labels?=Labels)? & (size=Size)?)
+       ((ports=Ports)? & 
+        (labels?=Labels)? & 
+        (size=Size)? &
+        (removeIsolated?='remove isolated')? )
     '}'
     )?
 ;

@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.impl.NodesImpl#getPorts <em>Ports</em>}</li>
  *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.impl.NodesImpl#isLabels <em>Labels</em>}</li>
  *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.impl.NodesImpl#getSize <em>Size</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.impl.NodesImpl#isRemoveIsolated <em>Remove Isolated</em>}</li>
  * </ul>
  *
  * @generated
@@ -85,6 +86,26 @@ public class NodesImpl extends MinimalEObjectImpl.Container implements Nodes
    * @ordered
    */
   protected Size size;
+
+  /**
+   * The default value of the '{@link #isRemoveIsolated() <em>Remove Isolated</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isRemoveIsolated()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean REMOVE_ISOLATED_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isRemoveIsolated() <em>Remove Isolated</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isRemoveIsolated()
+   * @generated
+   * @ordered
+   */
+  protected boolean removeIsolated = REMOVE_ISOLATED_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -279,6 +300,29 @@ public class NodesImpl extends MinimalEObjectImpl.Container implements Nodes
    * <!-- end-user-doc -->
    * @generated
    */
+  public boolean isRemoveIsolated()
+  {
+    return removeIsolated;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setRemoveIsolated(boolean newRemoveIsolated)
+  {
+    boolean oldRemoveIsolated = removeIsolated;
+    removeIsolated = newRemoveIsolated;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, GrandomPackage.NODES__REMOVE_ISOLATED, oldRemoveIsolated, removeIsolated));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -312,6 +356,8 @@ public class NodesImpl extends MinimalEObjectImpl.Container implements Nodes
         return isLabels();
       case GrandomPackage.NODES__SIZE:
         return getSize();
+      case GrandomPackage.NODES__REMOVE_ISOLATED:
+        return isRemoveIsolated();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -337,6 +383,9 @@ public class NodesImpl extends MinimalEObjectImpl.Container implements Nodes
         return;
       case GrandomPackage.NODES__SIZE:
         setSize((Size)newValue);
+        return;
+      case GrandomPackage.NODES__REMOVE_ISOLATED:
+        setRemoveIsolated((Boolean)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -364,6 +413,9 @@ public class NodesImpl extends MinimalEObjectImpl.Container implements Nodes
       case GrandomPackage.NODES__SIZE:
         setSize((Size)null);
         return;
+      case GrandomPackage.NODES__REMOVE_ISOLATED:
+        setRemoveIsolated(REMOVE_ISOLATED_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -386,6 +438,8 @@ public class NodesImpl extends MinimalEObjectImpl.Container implements Nodes
         return labels != LABELS_EDEFAULT;
       case GrandomPackage.NODES__SIZE:
         return size != null;
+      case GrandomPackage.NODES__REMOVE_ISOLATED:
+        return removeIsolated != REMOVE_ISOLATED_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -403,6 +457,8 @@ public class NodesImpl extends MinimalEObjectImpl.Container implements Nodes
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (labels: ");
     result.append(labels);
+    result.append(", removeIsolated: ");
+    result.append(removeIsolated);
     result.append(')');
     return result.toString();
   }

@@ -169,7 +169,7 @@ public class GRandomSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 *     Nodes returns Nodes
 	 *
 	 * Constraint:
-	 *     (nNodes=DoubleQuantity (ports=Ports | labels?=Labels | size=Size)*)
+	 *     (nNodes=DoubleQuantity (ports=Ports | labels?=Labels | size=Size | removeIsolated?='remove isolated')*)
 	 */
 	protected void sequence_Nodes(ISerializationContext context, Nodes semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -145,6 +145,7 @@ class GRandomGraphMaker {
             genOpt.setProperty(CREATE_NODE_LABELS, nodes.labels)
             ports(nodes, genOpt, r)
             size(nodes, r, genOpt)
+            genOpt.setProperty(ISOLATED_NODES, !nodes.removeIsolated)
         }
     }
 

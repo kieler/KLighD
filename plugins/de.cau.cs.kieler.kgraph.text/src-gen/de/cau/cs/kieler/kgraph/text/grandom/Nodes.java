@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.Nodes#getPorts <em>Ports</em>}</li>
  *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.Nodes#isLabels <em>Labels</em>}</li>
  *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.Nodes#getSize <em>Size</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.kgraph.text.grandom.Nodes#isRemoveIsolated <em>Remove Isolated</em>}</li>
  * </ul>
  *
  * @see de.cau.cs.kieler.kgraph.text.grandom.GrandomPackage#getNodes()
@@ -129,5 +130,31 @@ public interface Nodes extends EObject
    * @generated
    */
   void setSize(Size value);
+
+  /**
+   * Returns the value of the '<em><b>Remove Isolated</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Remove Isolated</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Remove Isolated</em>' attribute.
+   * @see #setRemoveIsolated(boolean)
+   * @see de.cau.cs.kieler.kgraph.text.grandom.GrandomPackage#getNodes_RemoveIsolated()
+   * @model
+   * @generated
+   */
+  boolean isRemoveIsolated();
+
+  /**
+   * Sets the value of the '{@link de.cau.cs.kieler.kgraph.text.grandom.Nodes#isRemoveIsolated <em>Remove Isolated</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Remove Isolated</em>' attribute.
+   * @see #isRemoveIsolated()
+   * @generated
+   */
+  void setRemoveIsolated(boolean value);
 
 } // Nodes

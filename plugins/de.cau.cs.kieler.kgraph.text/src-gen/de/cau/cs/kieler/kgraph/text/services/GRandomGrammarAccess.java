@@ -507,15 +507,19 @@ public class GRandomGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cLabelsLabelsParserRuleCall_4_1_1_0 = (RuleCall)cLabelsAssignment_4_1_1.eContents().get(0);
 		private final Assignment cSizeAssignment_4_1_2 = (Assignment)cUnorderedGroup_4_1.eContents().get(2);
 		private final RuleCall cSizeSizeParserRuleCall_4_1_2_0 = (RuleCall)cSizeAssignment_4_1_2.eContents().get(0);
+		private final Assignment cRemoveIsolatedAssignment_4_1_3 = (Assignment)cUnorderedGroup_4_1.eContents().get(3);
+		private final Keyword cRemoveIsolatedRemoveIsolatedKeyword_4_1_3_0 = (Keyword)cRemoveIsolatedAssignment_4_1_3.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
 		
 		//Nodes:
 		//	{Nodes}
-		//	'nodes' '=' nNodes=DoubleQuantity ('{' (ports=Ports? & labels?=Labels? & size=Size?)
+		//	'nodes' '=' nNodes=DoubleQuantity ('{' (ports=Ports? & labels?=Labels? & size=Size? &
+		//	removeIsolated?='remove isolated'?)
 		//	'}')?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Nodes} 'nodes' '=' nNodes=DoubleQuantity ('{' (ports=Ports? & labels?=Labels? & size=Size?) '}')?
+		//{Nodes} 'nodes' '=' nNodes=DoubleQuantity ('{' (ports=Ports? & labels?=Labels? & size=Size? &
+		//removeIsolated?='remove isolated'?) '}')?
 		public Group getGroup() { return cGroup; }
 		
 		//{Nodes}
@@ -533,13 +537,13 @@ public class GRandomGrammarAccess extends AbstractGrammarElementFinder {
 		//DoubleQuantity
 		public RuleCall getNNodesDoubleQuantityParserRuleCall_3_0() { return cNNodesDoubleQuantityParserRuleCall_3_0; }
 		
-		//('{' (ports=Ports? & labels?=Labels? & size=Size?) '}')?
+		//('{' (ports=Ports? & labels?=Labels? & size=Size? & removeIsolated?='remove isolated'?) '}')?
 		public Group getGroup_4() { return cGroup_4; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_4_0() { return cLeftCurlyBracketKeyword_4_0; }
 		
-		//(ports=Ports? & labels?=Labels? & size=Size?)
+		//(ports=Ports? & labels?=Labels? & size=Size? & removeIsolated?='remove isolated'?)
 		public UnorderedGroup getUnorderedGroup_4_1() { return cUnorderedGroup_4_1; }
 		
 		//ports=Ports?
@@ -559,6 +563,12 @@ public class GRandomGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Size
 		public RuleCall getSizeSizeParserRuleCall_4_1_2_0() { return cSizeSizeParserRuleCall_4_1_2_0; }
+		
+		//removeIsolated?='remove isolated'?
+		public Assignment getRemoveIsolatedAssignment_4_1_3() { return cRemoveIsolatedAssignment_4_1_3; }
+		
+		//'remove isolated'
+		public Keyword getRemoveIsolatedRemoveIsolatedKeyword_4_1_3_0() { return cRemoveIsolatedRemoveIsolatedKeyword_4_1_3_0; }
 		
 		//'}'
 		public Keyword getRightCurlyBracketKeyword_4_2() { return cRightCurlyBracketKeyword_4_2; }
@@ -1336,7 +1346,8 @@ public class GRandomGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Nodes:
 	//	{Nodes}
-	//	'nodes' '=' nNodes=DoubleQuantity ('{' (ports=Ports? & labels?=Labels? & size=Size?)
+	//	'nodes' '=' nNodes=DoubleQuantity ('{' (ports=Ports? & labels?=Labels? & size=Size? &
+	//	removeIsolated?='remove isolated'?)
 	//	'}')?;
 	public NodesElements getNodesAccess() {
 		return pNodes;

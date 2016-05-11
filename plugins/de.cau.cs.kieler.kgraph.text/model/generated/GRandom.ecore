@@ -65,6 +65,7 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labels" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="size" eType="#//Size" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="removeIsolated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Size">
     <eStructuralFeatures xsi:type="ecore:EReference" name="height" eType="#//DoubleQuantity"

@@ -1052,6 +1052,29 @@ ruleNodes returns [EObject current=null]
 							getUnorderedGroupHelper().returnFromSelection(grammarAccess.getNodesAccess().getUnorderedGroup_4_1());
 						}
 					)
+				)|
+				(
+					{getUnorderedGroupHelper().canSelect(grammarAccess.getNodesAccess().getUnorderedGroup_4_1(), 3)}?=>(
+						{
+							getUnorderedGroupHelper().select(grammarAccess.getNodesAccess().getUnorderedGroup_4_1(), 3);
+						}
+									({true}?=>((
+										lv_removeIsolated_9_0='remove isolated'
+										{
+											newLeafNode(lv_removeIsolated_9_0, grammarAccess.getNodesAccess().getRemoveIsolatedRemoveIsolatedKeyword_4_1_3_0());
+										}
+										{
+											if ($current==null) {
+												$current = createModelElement(grammarAccess.getNodesRule());
+											}
+											setWithLastConsumed($current, "removeIsolated", true, "remove isolated");
+										}
+									)
+									))
+						{ 
+							getUnorderedGroupHelper().returnFromSelection(grammarAccess.getNodesAccess().getUnorderedGroup_4_1());
+						}
+					)
 				)
 						)*
 					)
@@ -1060,9 +1083,9 @@ ruleNodes returns [EObject current=null]
 					  getUnorderedGroupHelper().leave(grammarAccess.getNodesAccess().getUnorderedGroup_4_1());
 					}
 			)
-			otherlv_9='}'
+			otherlv_10='}'
 			{
-				newLeafNode(otherlv_9, grammarAccess.getNodesAccess().getRightCurlyBracketKeyword_4_2());
+				newLeafNode(otherlv_10, grammarAccess.getNodesAccess().getRightCurlyBracketKeyword_4_2());
 			}
 		)?
 	)

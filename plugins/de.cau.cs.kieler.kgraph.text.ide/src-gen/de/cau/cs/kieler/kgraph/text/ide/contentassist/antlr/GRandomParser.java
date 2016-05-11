@@ -109,6 +109,7 @@ public class GRandomParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNodesAccess().getPortsAssignment_4_1_0(), "rule__Nodes__PortsAssignment_4_1_0");
 					put(grammarAccess.getNodesAccess().getLabelsAssignment_4_1_1(), "rule__Nodes__LabelsAssignment_4_1_1");
 					put(grammarAccess.getNodesAccess().getSizeAssignment_4_1_2(), "rule__Nodes__SizeAssignment_4_1_2");
+					put(grammarAccess.getNodesAccess().getRemoveIsolatedAssignment_4_1_3(), "rule__Nodes__RemoveIsolatedAssignment_4_1_3");
 					put(grammarAccess.getSizeAccess().getHeightAssignment_1_1_1_0_2(), "rule__Size__HeightAssignment_1_1_1_0_2");
 					put(grammarAccess.getSizeAccess().getWidthAssignment_1_1_1_1_2(), "rule__Size__WidthAssignment_1_1_1_1_2");
 					put(grammarAccess.getPortsAccess().getLabelsAssignment_2_1_0(), "rule__Ports__LabelsAssignment_2_1_0");

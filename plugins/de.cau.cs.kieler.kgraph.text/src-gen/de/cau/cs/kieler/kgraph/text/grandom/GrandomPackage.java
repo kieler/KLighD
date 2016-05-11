@@ -415,13 +415,22 @@ public interface GrandomPackage extends EPackage
   int NODES__SIZE = 3;
 
   /**
+   * The feature id for the '<em><b>Remove Isolated</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NODES__REMOVE_ISOLATED = 4;
+
+  /**
    * The number of structural features of the '<em>Nodes</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int NODES_FEATURE_COUNT = 4;
+  int NODES_FEATURE_COUNT = 5;
 
   /**
    * The meta object id for the '{@link de.cau.cs.kieler.kgraph.text.grandom.impl.SizeImpl <em>Size</em>}' class.
@@ -1084,6 +1093,17 @@ public interface GrandomPackage extends EPackage
   EReference getNodes_Size();
 
   /**
+   * Returns the meta object for the attribute '{@link de.cau.cs.kieler.kgraph.text.grandom.Nodes#isRemoveIsolated <em>Remove Isolated</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Remove Isolated</em>'.
+   * @see de.cau.cs.kieler.kgraph.text.grandom.Nodes#isRemoveIsolated()
+   * @see #getNodes()
+   * @generated
+   */
+  EAttribute getNodes_RemoveIsolated();
+
+  /**
    * Returns the meta object for class '{@link de.cau.cs.kieler.kgraph.text.grandom.Size <em>Size</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1672,6 +1692,14 @@ public interface GrandomPackage extends EPackage
      * @generated
      */
     EReference NODES__SIZE = eINSTANCE.getNodes_Size();
+
+    /**
+     * The meta object literal for the '<em><b>Remove Isolated</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NODES__REMOVE_ISOLATED = eINSTANCE.getNodes_RemoveIsolated();
 
     /**
      * The meta object literal for the '{@link de.cau.cs.kieler.kgraph.text.grandom.impl.SizeImpl <em>Size</em>}' class.
