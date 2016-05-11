@@ -409,6 +409,9 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                 // find the specific option an display all possible values
                 LayoutOptionData optionData = layoutServices.getOptionData(annotationName);
 
+                // FIXME this has two issues,
+                //  first we should also check for the elk prefix now,
+                //  second we have groups now which make this guess too simple
                 // if option data is null, try to add the kieler prefix
                 if (optionData == null) {
                     optionData = layoutServices.getOptionData("de.cau.cs.kieler." + annotationName);
