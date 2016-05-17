@@ -9,6 +9,13 @@
       </viewer>
    </extension>
    <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.cau.cs.kieler.klighd"
+            name="KIELER Lightweight Diagrams">
+      </category>
+   </extension>
+   <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="de.cau.cs.kieler.klighd.ui.isKlighdContext">
