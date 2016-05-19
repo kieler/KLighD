@@ -2,7 +2,7 @@ package de.cau.cs.kieler.klighd.examples.ecore
 
 import de.cau.cs.kieler.klighd.ui.view.controller.AbstractViewUpdateController
 import de.cau.cs.kieler.klighd.ui.view.controllers.EditorSaveAdapter
-import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
+import de.cau.cs.kieler.klighd.ui.view.model.MessageModel
 import java.lang.reflect.Method
 import java.util.List
 import org.eclipse.core.runtime.IPath
@@ -10,14 +10,10 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EModelElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.presentation.EcoreEditor
-import org.eclipse.jface.action.IMenuManager
-import org.eclipse.jface.action.IToolBarManager
 import org.eclipse.jface.viewers.IStructuredSelection
 import org.eclipse.jface.viewers.SelectionChangedEvent
 import org.eclipse.ui.IEditorPart
-import org.eclipse.ui.IMemento
 import org.eclipse.ui.part.FileEditorInput
-import de.cau.cs.kieler.klighd.ui.view.model.MessageModel
 
 /**
  * View controller for ecore modeling editor.
@@ -57,17 +53,8 @@ class EcoreDiagramSynthesisController extends AbstractViewUpdateController imple
 		return ID
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	override void addContributions(IToolBarManager toolBar, IMenuManager menu) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	override void copy(AbstractViewUpdateController source) {
-	}
+    // -- Activation
+    // -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
@@ -92,6 +79,9 @@ class EcoreDiagramSynthesisController extends AbstractViewUpdateController imple
 		editor = null
 	}
 
+    // -- Diagram Selection Change Event
+    // -------------------------------------------------------------------------
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -101,38 +91,9 @@ class EcoreDiagramSynthesisController extends AbstractViewUpdateController imple
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	override void onDiagramUpdate(Object model, KlighdSynthesisProperties properties) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	override void reset() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	override void saveState(IMemento memento) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	override void loadState(IMemento memento) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	override void onDispose() {
-	}
-
 	// -- Save Listener
 	// -------------------------------------------------------------------------
+	
 	/**
 	 * {@inheritDoc}
 	 */

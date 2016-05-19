@@ -13,10 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.controller;
 
-import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 
@@ -28,6 +28,30 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * Abstract controller for the {@link DiagramView}.
  * <p>
  * The controller handles the update of the displayed model.
+ * <p>
+ * The minimal implementation of a controller provides an ID via {@link #getID()} and reacts on
+ * {@link #onActivate(IEditorPart)} invocation by adding some kind of change listener to the editor
+ * and calling {@link #updateModel(Object)} to show the current model of the editor. On all further
+ * changes which should cause an updated of the diagram, the controller{@link #updateModel(Object)}
+ * should be invoked. When {@link #onDeactivate()} is invoked the controller should stop listen on
+ * the editor and wait until its reactivation. All invocations of {@link #updateModel(Object)} will
+ * be ignored.
+ * <p>
+ * The controller can override {@link #addContributions(IToolBarManager, IMenuManager)} to provide
+ * editor specific items to the menu or toolbar. <br>
+ * if the controller overrides {@link #selectionChanged(SelectionChangedEvent)} it can react on
+ * changes in the selection of diagram elements. <br>
+ * If the controller wants to react on the actual update of the diagram it should override
+ * {@link #onDiagramUpdate(Object, KlighdSynthesisProperties)}.
+ * <p>
+ * If the controller has an internal state influencing its behavior, the controller should override
+ * the following methods:
+ * <ul>
+ * <li>{@link #saveState(IMemento)}</li>
+ * <li>{@link #loadState(IMemento)}</li>
+ * <li>{@link #reset()}</li>
+ * <li>{@link #copy(AbstractViewUpdateController)}</li>
+ * </ul>
  * 
  * @author als
  * @kieler.design 2015-06-29 proposed
@@ -79,38 +103,6 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * @return the ID
      */
     public abstract String getID();
-
-    // -- Initialization
-    // -------------------------------------------------------------------------
-
-    /**
-     * Copies all preferences from the source controller into this controller.
-     * 
-     * @param source
-     *            the source controller
-     */
-    public abstract void copy(final AbstractViewUpdateController source);
-
-    /**
-     * Resets all properties to default values.
-     */
-    public abstract void reset();
-
-    /**
-     * Saves configuration into a memento.
-     * 
-     * @param memento
-     *            configuration store
-     */
-    public abstract void saveState(IMemento memento);
-
-    /**
-     * Loads saved configuration form a memento.
-     * 
-     * @param memento
-     *            saved configuration
-     */
-    public abstract void loadState(IMemento memento);
 
     // -- Activation
     // -------------------------------------------------------------------------
@@ -221,34 +213,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
         }
     }
 
-    /**
-     * Returns the layout configuration for the diagram.
-     * 
-     * @return configuration or null
-     */
-    public LayoutConfigurator getLayoutConfig() {
-        return null;
-    }
-
-    // -- Events
-    // -------------------------------------------------------------------------
-
-    /**
-     * Invoked when the {@link DiagramView} finished updating the displayed diagram.
-     * 
-     * @param model
-     *            displayed model
-     * @param properties
-     *            used properties
-     */
-    public abstract void onDiagramUpdate(Object model, KlighdSynthesisProperties properties);
-
-    /**
-     * Invoked when the related {@link DiagramView} is disposed.
-     */
-    public abstract void onDispose();
-
-    // -- View
+    // -- Diagram View Callbacks
     // -------------------------------------------------------------------------
 
     /**
@@ -259,8 +224,69 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * @param menu
      *            the Menu
      */
-    public abstract void addContributions(IToolBarManager toolBar, IMenuManager menu);
+    public void addContributions(final IToolBarManager toolBar, final IMenuManager menu) {
+    }
 
+    /**
+     * Invoked when the related {@link DiagramView} is disposed.
+     */
+    public void onDispose() {
+    }
+    
+    /**
+     * Invoked when the {@link DiagramView} finished updating the displayed diagram.
+     * 
+     * @param model
+     *            displayed model
+     * @param properties
+     *            used properties
+     */
+    public void onDiagramUpdate(final Object model, final KlighdSynthesisProperties properties) {
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void selectionChanged(final SelectionChangedEvent event) {
+    }
+
+    // -- Internal state
+    // -------------------------------------------------------------------------
+
+    /**
+     * Copies all preferences from the source controller into this controller.
+     * 
+     * @param source
+     *            the source controller
+     */
+    public void copy(final AbstractViewUpdateController source) {
+    }
+
+    /**
+     * Resets all properties to default values.
+     */
+    public void reset() {
+    }
+
+    /**
+     * Saves configuration into a memento.
+     * 
+     * @param memento
+     *            configuration store
+     */
+    public void saveState(final IMemento memento) {
+    }
+
+    /**
+     * Loads saved configuration form a memento.
+     * 
+     * @param memento
+     *            saved configuration
+     */
+    public void loadState(final IMemento memento) {
+    }
+    
     // -- Getter
     // -------------------------------------------------------------------------
 

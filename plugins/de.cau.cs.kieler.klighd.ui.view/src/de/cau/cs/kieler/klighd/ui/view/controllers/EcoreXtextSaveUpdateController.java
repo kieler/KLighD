@@ -15,15 +15,11 @@ package de.cau.cs.kieler.klighd.ui.view.controllers;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IMemento;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 
 import de.cau.cs.kieler.klighd.ui.view.controller.AbstractViewUpdateController;
-import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * Simple controller for XText and Ecore model editors which performs a diagram update when the
@@ -60,19 +56,8 @@ public class EcoreXtextSaveUpdateController extends AbstractViewUpdateController
         return ID;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addContributions(final IToolBarManager toolBar, final IMenuManager menu) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void copy(final AbstractViewUpdateController source) {
-    }
+    // -- Activation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -91,6 +76,9 @@ public class EcoreXtextSaveUpdateController extends AbstractViewUpdateController
         saveAdapter.deactivate();
     }
 
+    // -- Diagram Selection Change Event
+    // -------------------------------------------------------------------------
+    
     /**
      * {@inheritDoc}
      */
@@ -100,41 +88,6 @@ public class EcoreXtextSaveUpdateController extends AbstractViewUpdateController
             XtextSelectionHighlighter.highlightSelection((XtextEditor) getEditor(),
                     event.getSelection());
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onDiagramUpdate(final Object model, final KlighdSynthesisProperties properties) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void reset() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void saveState(final IMemento memento) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void loadState(final IMemento memento) {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onDispose() {
     }
 
     // -- Save Listener
