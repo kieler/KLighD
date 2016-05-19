@@ -14,13 +14,16 @@
 package de.cau.cs.kieler.klighd.ui.view.controller;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
+import org.eclipse.xtext.ui.editor.XtextEditor;
 
 import de.cau.cs.kieler.klighd.ui.view.DiagramView;
 import de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin;
@@ -76,6 +79,11 @@ public final class ViewUpdateControllerFactory {
         try {
             instance.loadControllerExtension();
             instance.loadEditorExtension();
+            // Set default editor
+            instance.defaultControllerMapping.put(IEditingDomainProvider.class,
+                    "de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController");
+            instance.defaultControllerMapping.put(XtextEditor.class,
+                    "de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController");
         } catch (final Exception e) {
             StatusManager.getManager()
                     .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
@@ -108,7 +116,9 @@ public final class ViewUpdateControllerFactory {
             new HashMap<String, Class<? extends AbstractViewUpdateController>>();
     /** The mapping of editor-IDs to the corresponding controller IDs. */
     private final HashMap<String, String> editorControllerMapping = new HashMap<String, String>();
-
+    /** The mapping of editor classes to the corresponding default controller IDs. */
+    private final HashMap<Class<?>, String> defaultControllerMapping = new HashMap<Class<?>, String>();
+    
     // -- Extension Point Parsing
     // -------------------------------------------------------------------------
 
@@ -192,10 +202,21 @@ public final class ViewUpdateControllerFactory {
      */
     public static boolean isHandledEditor(final IEditorPart editor) {
         if (editor != null) {
-            return ViewUpdateControllerFactory.getInstance().editorControllerMapping
-                    .containsKey(editor.getEditorSite().getId());
+            // Test if any controller is registered for the editor ID
+            if (ViewUpdateControllerFactory.getInstance().editorControllerMapping
+                    .containsKey(editor.getEditorSite().getId())) {
+                return true;
+            } else {
+                // Test if any default controller can handle this editor
+                for (Class<?> supportedEditorClass : ViewUpdateControllerFactory
+                        .getInstance().defaultControllerMapping.keySet()) {
+                    if (supportedEditorClass.isInstance(editor)) {
+                        return true;
+                    }
+                }
+            }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -207,8 +228,20 @@ public final class ViewUpdateControllerFactory {
      */
     public static String getHandlingControllerID(final IEditorPart editor) {
         if (editor != null) {
-            return ViewUpdateControllerFactory.getInstance().editorControllerMapping
+            // Find controller registered for the editor ID
+            String id = ViewUpdateControllerFactory.getInstance().editorControllerMapping
                     .get(editor.getEditorSite().getId());
+            if (id == null) {
+                // Test if any default controller can handle this editor
+                for (Entry<Class<?>, String> editorClassIdEntry : ViewUpdateControllerFactory
+                        .getInstance().defaultControllerMapping.entrySet()) {
+                    if (editorClassIdEntry.getKey().isInstance(editor)) {
+                        return editorClassIdEntry.getValue();
+                    }
+                }
+            } else {
+                return id;
+            }
         }
         return null;
     }
