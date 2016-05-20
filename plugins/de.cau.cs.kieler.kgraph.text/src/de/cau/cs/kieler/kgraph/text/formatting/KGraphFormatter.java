@@ -61,6 +61,12 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
             c.setNoLinewrap().after(star);
             c.setNoSpace().after(star);
         }
+        for (Keyword equals : f.findKeywords("=")) {
+            c.setNoLinewrap().after(equals);
+            c.setNoLinewrap().before(equals);
+            c.setSpace(" ").before(equals);
+            c.setSpace(" ").after(equals);
+        }
         
         // line wrapping for comments
         c.setLinewrap(0, 1, 2).before(f.getSL_COMMENTRule());
@@ -79,12 +85,15 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         c.setLinewrap().before(f.getKNodeLayoutAccess().getPosKeyword_0_0_0());
         c.setLinewrap().before(f.getKNodeLayoutAccess().getSizeKeyword_0_1_0());
         c.setLinewrap().before(f.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0());
+        c.setLinewrap().before(f.getKNodeLayoutAccess().getPersistentEntriesAssignment_0_2_2());
         c.setLinewrap().before(f.getKNodeLayoutAccess().getInsetsKeyword_1_0_0());
         c.setLinewrap().before(f.getKShapeLayoutAccess().getPosKeyword_1_0_0());
         c.setLinewrap().before(f.getKShapeLayoutAccess().getSizeKeyword_1_1_0());
         c.setLinewrap().before(f.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0());
+        c.setLinewrap().before(f.getKShapeLayoutAccess().getPersistentEntriesAssignment_1_2_2());
         c.setLinewrap().before(f.getKEdgeLayoutAccess().getPointsKeyword_0_0_0());
         c.setLinewrap().before(f.getKEdgeLayoutAccess().getPropertiesKeyword_1_0());
+        c.setLinewrap().before(f.getKEdgeLayoutAccess().getPersistentEntriesAssignment_1_2());
         c.setLinewrap().before(f.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0());
         c.setLinewrap().before(f.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0());
         c.setLinewrap().before(f.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0());
