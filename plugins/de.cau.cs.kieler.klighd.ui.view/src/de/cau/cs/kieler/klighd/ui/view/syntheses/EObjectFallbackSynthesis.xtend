@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.ui.view.syntheses
 import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.krendering.Colors
+import de.cau.cs.kieler.klighd.krendering.LineStyle
 import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
@@ -24,6 +25,7 @@ import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KPolylineExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
+import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction
 import de.cau.cs.kieler.klighd.util.KlighdProperties
@@ -31,6 +33,7 @@ import java.util.List
 import javax.inject.Inject
 import org.eclipse.elk.alg.layered.properties.FixedAlignment
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
+import org.eclipse.elk.core.klayoutdata.KShapeLayout
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.Direction
 import org.eclipse.elk.core.options.PortSide
@@ -39,8 +42,11 @@ import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.KNode
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.util.EContentsEList
 
+import static extension com.google.common.collect.Iterators.*
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 
 /**
@@ -84,10 +90,12 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     // Options
     public static val SynthesisOption EXPAND_DETAILS = SynthesisOption::createCheckOption("Expand all Details",
         false).setUpdateAction(EcoreModelExpandDetailsAction.ID);
-
+    public static val SynthesisOption SHOW_REFERENCES = SynthesisOption::createCheckOption("Show References",
+        false);
+        
     // Sidebar
     override getDisplayedSynthesisOptions() {
-        return newLinkedList(EXPAND_DETAILS);
+        return newLinkedList(EXPAND_DETAILS, SHOW_REFERENCES);
     }
 
     override getDisplayedLayoutOptions() {
@@ -103,10 +111,11 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         val rootNode = createNode();
         
         rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_FIXED_ALIGNMENT, FixedAlignment.BALANCED);
+        rootNode.setLayoutOption(LayeredOptions::SPACING_EDGE_NODE_SPACING_FACTOR, 1.1f);
         
         // transform root object
         rootNode.children += model.translateEObject
-        // transform and connect all succeeding objects
+        // transform and connect all contained objects
         rootNode.children += model.eAllContents.map [
             val child = it.translateEObject;
             val container = it.eContainer;
@@ -115,11 +124,32 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                     it.source = container.translateEObject;
                     it.sourcePort = it.eContainingFeature.translateContainment(it.source)
                     it.target = child;
-                    it.addPolyline.addHeadArrowDecorator;
+                    it.addPolyline => [
+                        addHeadArrowDecorator
+                        addJunctionPointDecorator
+                    ]
                 ]
             }
             return child;
         ].toIterable;
+        if (SHOW_REFERENCES.booleanValue) {
+            for ( source : model.eAllContents.concat(newArrayList(model).iterator).toIterable) {
+                for (val featureIterator = source.eCrossReferences().iterator() as EContentsEList.FeatureIterator<EObject>;
+                        featureIterator.hasNext(); )  {
+                    val target = featureIterator.next() as EObject;
+                    val eReference = featureIterator.feature() as EReference;
+                    createEdge => [
+                        it.source = source.translateEObject;
+                        it.sourcePort = eReference.translateContainment(it.source)
+                        it.target = target.translateEObject;
+                        it.addPolyline => [
+                            addHeadArrowDecorator
+                            lineStyle = LineStyle.DASH
+                        ];
+                    ]
+                }
+            }
+        }
 
         return rootNode;
     }
@@ -250,6 +280,10 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         port.setPortPos(node.width-1, node.nextEPortYPosition);
         port.createLabel => [
             text = containerFeature.name
+            val size = PlacementUtil.estimateTextSize(it)
+            val data = getData(KShapeLayout)
+            data.width = size.width
+            data.height = size.height
         ]
     }
 
