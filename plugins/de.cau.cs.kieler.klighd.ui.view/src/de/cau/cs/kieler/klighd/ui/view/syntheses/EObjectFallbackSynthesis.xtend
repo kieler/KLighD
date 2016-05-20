@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsA
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.List
 import javax.inject.Inject
+import org.eclipse.elk.alg.layered.LayeredLayoutProvider
 import org.eclipse.elk.alg.layered.properties.FixedAlignment
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
 import org.eclipse.elk.core.options.CoreOptions
@@ -91,7 +92,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     override KNode transform(EObject model) {
         val rootNode = createNode();
         
-        rootNode.addLayoutParam(CoreOptions::ALGORITHM, "de.cau.cs.kieler.klay.layered");
+        rootNode.addLayoutParam(CoreOptions::ALGORITHM, LayeredLayoutProvider.ID);
         rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_FIXED_ALIGNMENT, FixedAlignment.BALANCED);
         
         // transform root object
