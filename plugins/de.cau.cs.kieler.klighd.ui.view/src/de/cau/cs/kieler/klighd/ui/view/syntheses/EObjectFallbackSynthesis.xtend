@@ -19,8 +19,10 @@ import de.cau.cs.kieler.klighd.krendering.Colors
 import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KLabelExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KPolylineExtensions
+import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction
@@ -31,10 +33,13 @@ import org.eclipse.elk.alg.layered.properties.FixedAlignment
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.Direction
+import org.eclipse.elk.core.options.PortSide
+import org.eclipse.elk.core.util.ElkUtil
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.KNode
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 
@@ -53,6 +58,12 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
 
     @Inject
     extension KEdgeExtensions
+    
+    @Inject
+    extension KPortExtensions  
+      
+    @Inject
+    extension KLabelExtensions
 
     @Inject
     extension KRenderingExtensions
@@ -91,7 +102,6 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     override KNode transform(EObject model) {
         val rootNode = createNode();
         
-        rootNode.addLayoutParam(CoreOptions::ALGORITHM, "de.cau.cs.kieler.klay.layered");
         rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_FIXED_ALIGNMENT, FixedAlignment.BALANCED);
         
         // transform root object
@@ -103,6 +113,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
             if (container != null) {
                 createEdge => [
                     it.source = container.translateEObject;
+                    it.sourcePort = it.eContainingFeature.translateContainment(it.source)
                     it.target = child;
                     it.addPolyline.addHeadArrowDecorator;
                 ]
@@ -114,7 +125,9 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     }
 
     /**
-     * Translate a single EObject with super type and attributes into a node
+     * Translate a single EObject with super type and attributes into a node.
+     * <p>
+     * Uses internal cache to create only one node per object.
      */
     private def create node : object.createNode translateEObject(EObject object) {
         node.associateWith(object);
@@ -223,6 +236,21 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                     ];
                 }
             ];
+    }
+    
+    /**
+     * Translate a structural container feature into a port.
+     * <p>
+     * Uses internal cache to create only one port per feature and node.
+     */
+    private def create port : ElkUtil::createInitializedPort translateContainment(EStructuralFeature containerFeature, KNode node) {
+        node.ports += port;
+        port.setPortSize(portEdgeLength, portEdgeLength)
+        port.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::EAST);
+        port.setPortPos(node.width-1, node.nextEPortYPosition);
+        port.createLabel => [
+            text = containerFeature.name
+        ]
     }
 
     /**
