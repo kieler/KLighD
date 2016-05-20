@@ -34,6 +34,7 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.List
 import java.util.Map
 import javax.inject.Inject
+import org.eclipse.elk.alg.layered.p4nodes.bk.EdgeStraighteningStrategy
 import org.eclipse.elk.alg.layered.properties.FixedAlignment
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
 import org.eclipse.elk.core.klayoutdata.KShapeLayout
@@ -122,6 +123,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         val rootNode = createNode();
         
         rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_FIXED_ALIGNMENT, FixedAlignment.BALANCED);
+        rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_EDGE_STRAIGHTENING, EdgeStraighteningStrategy.IMPROVE_STRAIGHTNESS);
         rootNode.setLayoutOption(LayeredOptions::SPACING_EDGE_NODE_SPACING_FACTOR, 1.1f);
         
         // transform root object
