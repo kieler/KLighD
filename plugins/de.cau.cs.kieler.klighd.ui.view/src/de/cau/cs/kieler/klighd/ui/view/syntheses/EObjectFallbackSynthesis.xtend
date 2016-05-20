@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.syntheses
 
+import com.google.common.collect.HashBasedTable
+import com.google.common.collect.Table
 import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.krendering.Colors
@@ -30,6 +32,7 @@ import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.ui.view.syntheses.action.EcoreModelExpandDetailsAction
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.List
+import java.util.Map
 import javax.inject.Inject
 import org.eclipse.elk.alg.layered.properties.FixedAlignment
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
@@ -40,13 +43,13 @@ import org.eclipse.elk.core.options.PortSide
 import org.eclipse.elk.core.util.ElkUtil
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.KNode
+import org.eclipse.elk.graph.KPort
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EContentsEList
 
-import static extension com.google.common.collect.Iterators.*
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 
 /**
@@ -107,41 +110,59 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
 
     // -------------------------------------------------------------------------
     // Synthesis
+    
+    val Map<EObject, KNode> nodeCache = newHashMap
+    val Table<EStructuralFeature, KNode, KPort> portCache = HashBasedTable.create
+    
     override KNode transform(EObject model) {
+        // Init cache
+        nodeCache.clear
+        portCache.clear
+        
         val rootNode = createNode();
         
         rootNode.setLayoutOption(LayeredOptions::NODE_PLACEMENT_BK_FIXED_ALIGNMENT, FixedAlignment.BALANCED);
         rootNode.setLayoutOption(LayeredOptions::SPACING_EDGE_NODE_SPACING_FACTOR, 1.1f);
         
         // transform root object
-        rootNode.children += model.translateEObject
-        // transform and connect all contained objects
-        rootNode.children += model.eAllContents.map [
-            val child = it.translateEObject;
-            val container = it.eContainer;
-            if (container != null) {
+        rootNode.children += model.transformToNode
+        // transform all contained objects
+        rootNode.children += model.eAllContents.map[transformToNode].toIterable
+        // add references
+        for (eObject : nodeCache.keySet) {
+            // Create containment edge
+            val eContainer = eObject.eContainer;
+            if (eContainer != null) {
                 createEdge => [
-                    it.source = container.translateEObject;
-                    it.sourcePort = it.eContainingFeature.translateContainment(it.source)
-                    it.target = child;
+                    val sourceNode = nodeCache.get(eContainer);
+                    it.source = sourceNode
+                    val eContainingFeature = eObject.eContainingFeature
+                    if (portCache.contains(eContainingFeature, sourceNode)) {
+                        it.sourcePort = portCache.get(eContainingFeature, sourceNode)
+                    } else {
+                        it.sourcePort = eContainingFeature.transformToPort(sourceNode)
+                    }
+                    it.target = nodeCache.get(eObject);
                     it.addPolyline => [
                         addHeadArrowDecorator
                         addJunctionPointDecorator
                     ]
                 ]
             }
-            return child;
-        ].toIterable;
-        if (SHOW_REFERENCES.booleanValue) {
-            for ( source : model.eAllContents.concat(newArrayList(model).iterator).toIterable) {
-                for (val featureIterator = source.eCrossReferences().iterator() as EContentsEList.FeatureIterator<EObject>;
-                        featureIterator.hasNext(); )  {
-                    val target = featureIterator.next() as EObject;
+            // Create reference edges
+            if (SHOW_REFERENCES.booleanValue) {
+                for (val featureIterator = eObject.eCrossReferences().iterator() as EContentsEList.FeatureIterator<EObject>; featureIterator.hasNext(); )  {
+                    val targetEObject = featureIterator.next() as EObject;
                     val eReference = featureIterator.feature() as EReference;
                     createEdge => [
-                        it.source = source.translateEObject;
-                        it.sourcePort = eReference.translateContainment(it.source)
-                        it.target = target.translateEObject;
+                        val sourceNode = nodeCache.get(eObject);
+                        it.source = sourceNode
+                        if (portCache.contains(eReference, sourceNode)) {
+                            it.sourcePort = portCache.get(eReference, sourceNode)
+                        } else {
+                            it.sourcePort = eReference.transformToPort(sourceNode)
+                        }
+                        it.target = nodeCache.get(targetEObject);
                         it.addPolyline => [
                             addHeadArrowDecorator
                             lineStyle = LineStyle.DASH
@@ -156,10 +177,9 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
 
     /**
      * Translate a single EObject with super type and attributes into a node.
-     * <p>
-     * Uses internal cache to create only one node per object.
      */
-    private def create node : object.createNode translateEObject(EObject object) {
+    private def transformToNode(EObject object) {
+        val node = object.createNode
         node.associateWith(object);
         
         node.setLayoutOption(KlighdProperties::EXPAND, EXPAND_DETAILS.booleanValue);
@@ -266,16 +286,20 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                     ];
                 }
             ];
+        
+        // Add to cache
+        nodeCache.put(object, node)
+        
+        return node
     }
     
     /**
      * Translate a structural container feature into a port.
-     * <p>
-     * Uses internal cache to create only one port per feature and node.
      */
-    private def create port : ElkUtil::createInitializedPort translateContainment(EStructuralFeature containerFeature, KNode node) {
+    private def transformToPort(EStructuralFeature containerFeature, KNode node) {
+        val port = ElkUtil::createInitializedPort
         node.ports += port;
-        port.setPortSize(portEdgeLength, portEdgeLength)
+        port.setPortSize(portEdgeLength, portEdgeLength);
         port.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::EAST);
         port.setPortPos(node.width-1, node.nextEPortYPosition);
         port.createLabel => [
@@ -285,6 +309,11 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
             data.width = size.width
             data.height = size.height
         ]
+        
+        // Add to cache
+        portCache.put(containerFeature, node, port)     
+        
+        return port   
     }
 
     /**
