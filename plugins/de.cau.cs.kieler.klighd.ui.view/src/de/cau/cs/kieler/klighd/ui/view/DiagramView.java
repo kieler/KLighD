@@ -75,8 +75,9 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * 
- * This {@link DiagramViewPart} displays a diagram of a related editor and provides several
- * functionality.
+ * This {@link DiagramViewPart} displays a diagram related to an open editor.
+ * <p>
+ * The retrieval of the model and the update of the diagram is handled by a {@link AbstractViewUpdateController}.
  * 
  * @author als
  * @kieler.design 2015-06-22 proposed
@@ -883,6 +884,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             final AbstractViewUpdateController usedController, final IEditorPart sourceEditor,
             final boolean isErrorModel) {
         try {
+            // No updates if view is disposed
+            if (isDisposed()) {
+                return;
+            }
+            
             // Get correct synthesis
             String synthesisID = synthesisSelection.getSynthesis(model);
             if (synthesisID == null) {
