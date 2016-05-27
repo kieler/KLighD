@@ -58,7 +58,7 @@ public class KlighdOptions implements ILayoutMetaDataProvider {
         null,
         null,
         LayoutOptionData.Type.BOOLEAN,
-        boolean.class,
+        Boolean.class,
         EnumSet.of(LayoutOptionData.Target.PARENTS, LayoutOptionData.Target.NODES, LayoutOptionData.Target.PORTS, LayoutOptionData.Target.LABELS),
         LayoutOptionData.Visibility.ADVANCED
         , "klighd.labels.elementInFocus"
