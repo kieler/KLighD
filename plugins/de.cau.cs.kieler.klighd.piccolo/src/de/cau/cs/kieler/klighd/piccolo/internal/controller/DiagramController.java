@@ -492,83 +492,81 @@ public class DiagramController {
             return;
         }
         
-//      Code currently disabled due to unwanted side effects - nbw
-//        RenderingContextData contextData = RenderingContextData.get(diagramElement);
-//
-//        switch (diagramElement.eClass().getClassifierID()) {
-//        case KGraphPackage.KNODE:
-//            hideNode((KNode) diagramElement);
-//            break;
-//        case KGraphPackage.KEDGE:
-//            hideEdge((KEdge) diagramElement);
-//            break;
-//        case KGraphPackage.KPORT:
-//            KPortNode portRep = contextData.getProperty(PORT_REP);
-//            if (portRep != null) {
-//                portRep.setVisible(false);
-//                contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
-//            }
-//            break;
-//        case KGraphPackage.KLABEL:
-//            KLabelNode labelRep = contextData.getProperty(LABEL_REP);
-//            if (labelRep != null) {
-//                labelRep.setVisible(false);
-//                contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
-//            }
-//            break;
-//        }
-        remove(diagramElement, false);
+        RenderingContextData contextData = RenderingContextData.get(diagramElement);
+
+        switch (diagramElement.eClass().getClassifierID()) {
+        case KGraphPackage.KNODE:
+            hideNode((KNode) diagramElement);
+            break;
+        case KGraphPackage.KEDGE:
+            hideEdge((KEdge) diagramElement);
+            break;
+        case KGraphPackage.KPORT:
+            KPortNode portRep = contextData.getProperty(PORT_REP);
+            if (portRep != null) {
+                portRep.setVisible(false);
+                contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
+            }
+            break;
+        case KGraphPackage.KLABEL:
+            KLabelNode labelRep = contextData.getProperty(LABEL_REP);
+            if (labelRep != null) {
+                labelRep.setVisible(false);
+                contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
+            }
+            break;
+        }
         
     }
 
-//    /**
-//     * Hides the representation of a node, hiding all incoming or outgoing edges with it.
-//     * 
-//     * @param node
-//     *            The {@link KNode} to be hidden
-//     */
-//    private void hideNode(final KNode node) {
-//        RenderingContextData contextData = RenderingContextData.get(node);
-//        KNodeAbstractNode nodeRep = contextData.getProperty(REP);
-//
-//        final KNodeNode nodeNode;
-//        if (nodeRep instanceof KNodeTopNode) {
-//            // if the node is the current top-node something went wrong
-//            throw new RuntimeException("The top-node can never be hidden");
-//        } else {
-//            nodeNode = (KNodeNode) nodeRep;
-//        }
-//
-//        if (nodeNode != null) {
-//            nodeNode.setVisible(false);
-//            contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
-//
-//            // hide all incoming edges
-//            for (final KEdge incomingEdge : node.getIncomingEdges()) {
-//                hideEdge(incomingEdge);
-//            }
-//
-//            // hide all outgoing edges
-//            for (final KEdge outgoingEdge : node.getOutgoingEdges()) {
-//                hideEdge(outgoingEdge);
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Hides the representation of an edge.
-//     * 
-//     * @param edge
-//     *            The {@link KEdge} to be hidden.
-//     */
-//    private void hideEdge(final KEdge edge) {
-//        RenderingContextData contextData = RenderingContextData.get(edge);
-//        KEdgeNode edgeRep = contextData.getProperty(EDGE_REP);
-//        if (edgeRep != null) {
-//            edgeRep.setVisible(false);
-//            contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
-//        }
-//    }
+    /**
+     * Hides the representation of a node, hiding all incoming or outgoing edges with it.
+     * 
+     * @param node
+     *            The {@link KNode} to be hidden
+     */
+    private void hideNode(final KNode node) {
+        RenderingContextData contextData = RenderingContextData.get(node);
+        KNodeAbstractNode nodeRep = contextData.getProperty(REP);
+
+        final KNodeNode nodeNode;
+        if (nodeRep instanceof KNodeTopNode) {
+            // if the node is the current top-node something went wrong
+            throw new RuntimeException("The top-node can never be hidden");
+        } else {
+            nodeNode = (KNodeNode) nodeRep;
+        }
+
+        if (nodeNode != null) {
+            nodeNode.setVisible(false);
+            contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
+
+            // hide all incoming edges
+            for (final KEdge incomingEdge : node.getIncomingEdges()) {
+                hideEdge(incomingEdge);
+            }
+
+            // hide all outgoing edges
+            for (final KEdge outgoingEdge : node.getOutgoingEdges()) {
+                hideEdge(outgoingEdge);
+            }
+        }
+    }
+
+    /**
+     * Hides the representation of an edge.
+     * 
+     * @param edge
+     *            The {@link KEdge} to be hidden.
+     */
+    private void hideEdge(final KEdge edge) {
+        RenderingContextData contextData = RenderingContextData.get(edge);
+        KEdgeNode edgeRep = contextData.getProperty(EDGE_REP);
+        if (edgeRep != null) {
+            edgeRep.setVisible(false);
+            contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
+        }
+    }
 
     /**
      * Shows the given {@link KGraphElement} from the diagram by setting the related
@@ -586,100 +584,105 @@ public class DiagramController {
             return;
         }
 
-        add(diagramElement, true);
-//        RenderingContextData contextData = RenderingContextData.get(diagramElement);
-//
-//        switch (diagramElement.eClass().getClassifierID()) {
-//        case KGraphPackage.KNODE:
-//            showNode((KNode) diagramElement, parent);
-//            break;
-//        case KGraphPackage.KEDGE:
-//            showEdge((KEdge) diagramElement, parent);
-//            break;
-//        case KGraphPackage.KPORT:
-//            KPortNode portRep = contextData.getProperty(PORT_REP);
-//            if (portRep != null) {
-//                contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
-//                portRep.setVisible(true);
-//            } else {
-//                if (RenderingContextData.get(parent).getProperty(REP) != null) {
-//                    add(diagramElement, true);
-//                }
-//            }
-//            break;
-//        case KGraphPackage.KLABEL:
-//            KLabelNode labelRep = contextData.getProperty(LABEL_REP);
-//            if (labelRep != null) {
-//                contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
-//                labelRep.setVisible(true);
-//            } else {
-//                if (RenderingContextData.get(parent).getProperty(REP) != null) {
-//                    add(diagramElement, true);
-//                }
-//            }
-//            break;
-//        }
+        RenderingContextData contextData = RenderingContextData.get(diagramElement);
+
+        switch (diagramElement.eClass().getClassifierID()) {
+        case KGraphPackage.KNODE:
+            showNode((KNode) diagramElement, parent);
+            break;
+        case KGraphPackage.KEDGE:
+            showEdge((KEdge) diagramElement, parent);
+            break;
+        case KGraphPackage.KPORT:
+            KPortNode portRep = contextData.getProperty(PORT_REP);
+            if (portRep != null) {
+                contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
+                portRep.setVisible(true);
+            } else {
+                if (RenderingContextData.get(parent).getProperty(REP) != null) {
+                    add(diagramElement, true);
+                }
+            }
+            break;
+        case KGraphPackage.KLABEL:
+            KLabelNode labelRep = contextData.getProperty(LABEL_REP);
+            if (labelRep != null) {
+                contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
+                labelRep.setVisible(true);
+            } else {
+                if (RenderingContextData.get(parent).getProperty(REP) != null) {
+                    add(diagramElement, true);
+                }
+            }
+            break;
+        }
     }
 
-//    /**
-//     * 
-//     * @param diagramElement
-//     * @param parent
-//     */
-//    private void showNode(final KNode node, final KGraphElement parent) {
-//        RenderingContextData contextData = RenderingContextData.get(node);
-//        KNodeAbstractNode nodeRep = contextData.getProperty(REP);
-//
-//        final KNodeNode nodeNode;
-//        if (nodeRep instanceof KNodeTopNode) {
-//            // if the node is the current top-node something went wrong
-//            throw new RuntimeException("The top-node should never be hidden");
-//        } else {
-//            nodeNode = (KNodeNode) nodeRep;
-//        }
-//
-//        if (nodeNode != null) {
-//            contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
-//            nodeNode.setVisible(true);
-//
-//            // remove all incoming edges
-//            for (final KEdge incomingEdge : node.getIncomingEdges()) {
-//                showEdge(incomingEdge, (KGraphElement) incomingEdge.eContainer());
-//            }
-//
-//            // remove all outgoing edges
-//            for (final KEdge outgoingEdge : node.getOutgoingEdges()) {
-//                showEdge(outgoingEdge, (KGraphElement) outgoingEdge.eContainer());
-//            }
-//        } else {
-//            if (RenderingContextData.get(parent).getProperty(REP) != null) {
-//                add(node, true);                
-//            }
-//        }
-//    }
-//
-//    /**
-//     * @param diagramElement
-//     */
-//    private void showEdge(final KEdge edge, final KGraphElement parent) {
-//        RenderingContextData contextData = RenderingContextData.get(edge);
-//        KEdgeNode edgeRep = contextData.getProperty(EDGE_REP);
-//        if (edgeRep != null) {
-//            final KNode source = edge.getSource();
-//            final KNode target = edge.getTarget();
-//            final boolean sourceAndTargetActive = source != null && target != null
-//                    && RenderingContextData.get(source).getProperty(KlighdInternalProperties.ACTIVE)
-//                    && RenderingContextData.get(target).getProperty(KlighdInternalProperties.ACTIVE);
-//            if (sourceAndTargetActive) {
-//                contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
-//                edgeRep.setVisible(true);
-//            }
-//        } else {
-//            if (RenderingContextData.get(parent).getProperty(REP) != null) {
-//                add(edge, true);                
-//            }
-//        }
-//    }
+    /**
+     * Shows the representation of the given node as well as the incoming and outgoing edges.
+     * If no representation is available yet, a new representation is added.
+     * 
+     * @param node the node to be shown
+     * @param parent the parent {@link KGraphElement} of the node
+     */
+    private void showNode(final KNode node, final KGraphElement parent) {
+        RenderingContextData contextData = RenderingContextData.get(node);
+        KNodeAbstractNode nodeRep = contextData.getProperty(REP);
+
+        final KNodeNode nodeNode;
+        if (nodeRep instanceof KNodeTopNode) {
+            // if the node is the current top-node something went wrong
+            throw new RuntimeException("The top-node should never be hidden");
+        } else {
+            nodeNode = (KNodeNode) nodeRep;
+        }
+
+        if (nodeNode != null) {
+            contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
+            nodeNode.setVisible(true);
+
+            // remove all incoming edges
+            for (final KEdge incomingEdge : node.getIncomingEdges()) {
+                showEdge(incomingEdge, (KGraphElement) incomingEdge.eContainer());
+            }
+
+            // remove all outgoing edges
+            for (final KEdge outgoingEdge : node.getOutgoingEdges()) {
+                showEdge(outgoingEdge, (KGraphElement) outgoingEdge.eContainer());
+            }
+        } else {
+            if (RenderingContextData.get(parent).getProperty(REP) != null) {
+                add(node, true);                
+            }
+        }
+    }
+
+    /**
+     * Shows the representation of an edge if both source and target are visible.
+     * If no representation is available yet, a new representation is added.
+     * 
+     * @param edge the edge to be shown
+     * @param parent the parent {@link KGraphElement} of the node
+     */
+    private void showEdge(final KEdge edge, final KGraphElement parent) {
+        RenderingContextData contextData = RenderingContextData.get(edge);
+        KEdgeNode edgeRep = contextData.getProperty(EDGE_REP);
+        if (edgeRep != null) {
+            final KNode source = edge.getSource();
+            final KNode target = edge.getTarget();
+            final boolean sourceAndTargetActive = source != null && target != null
+                    && RenderingContextData.get(source).getProperty(KlighdInternalProperties.ACTIVE)
+                    && RenderingContextData.get(target).getProperty(KlighdInternalProperties.ACTIVE);
+            if (sourceAndTargetActive) {
+                contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
+                edgeRep.setVisible(true);
+            }
+        } else {
+            if (RenderingContextData.get(parent).getProperty(REP) != null) {
+                add(edge, true);                
+            }
+        }
+    }
 
     private static final String INVALID_CLIP_NODE_ERROR_MSG =
             "KLighD: Diagram shall be clipped to KNode XX that is (currently) not depicted in the"
