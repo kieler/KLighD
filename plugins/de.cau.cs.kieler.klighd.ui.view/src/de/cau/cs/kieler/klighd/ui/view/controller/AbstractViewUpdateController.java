@@ -30,23 +30,21 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * The controller handles the update of the displayed model.
  * <p>
  * The minimal implementation of a controller provides an ID via {@link #getID()} and reacts on
- * {@link #onActivate(IEditorPart)} invocation by adding some kind of change listener to the editor
- * and calling {@link #updateModel(Object)} to show the current model of the editor. On all further
- * changes which should cause an updated of the diagram, the controller{@link #updateModel(Object)}
- * should be invoked. When {@link #onDeactivate()} is invoked the controller should stop listen on
- * the editor and wait until its reactivation. All invocations of {@link #updateModel(Object)} will
- * be ignored.
+ * {@link #onActivate(IEditorPart)} by adding some kind of change listener to the editor and calling
+ * {@link #updateModel(Object)} to show the current model. On all further changes which should cause
+ * an updated of the diagram, the controller should call {@link #updateModel(Object)}. When
+ * {@link #onDeactivate()} is invoked the controller should stop listen on the editor and wait until
+ * its reactivation. All invocations of {@link #updateModel(Object)} will be ignored.
  * <p>
  * The controller can override {@link #addContributions(IToolBarManager, IMenuManager)} to provide
  * editor specific items to the menu or toolbar. <br>
- * if the controller overrides {@link #selectionChanged(SelectionChangedEvent)} it can react on
+ * If the controller overrides {@link #selectionChanged(SelectionChangedEvent)} it can react on
  * changes in the selection of diagram elements. <br>
  * If the controller wants to react on the actual update of the diagram it should override
  * {@link #onDiagramUpdate(Object, KlighdSynthesisProperties)}.
  * <p>
  * If the controller has an internal state influencing its behavior, the controller should override
  * the following methods:
- * <ul>
  * <li>{@link #saveState(IMemento)}</li>
  * <li>{@link #loadState(IMemento)}</li>
  * <li>{@link #reset()}</li>
@@ -63,13 +61,16 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
 
     /** The related {@link DiagramView}. */
     private DiagramView diagramView;
-    /** Indicated if this controller is active and should update the {@link DiagramView}. */
+    /**
+     * The editor this controller is activated for. Also indicates if this controller is active and
+     * should update the {@link DiagramView}.
+     */
     private IEditorPart editor;
     /** The current model. */
     private Object model;
     /** The current properties. */
     private KlighdSynthesisProperties properties;
-    
+
     /**
      * Default Constructor.
      * <p>
@@ -80,7 +81,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
 
     /**
      * Initializes this controller. This method is called once by the
-     * {@link ViewUpdateControllerFactory} and must not be call again afterwards.
+     * {@link ViewUpdateControllerFactory} and must not be invoked again afterwards.
      * 
      * @param diagramView
      *            the {@link DiagramView}}
@@ -117,12 +118,11 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
         if (this.diagramView == null) {
             throw new IllegalStateException("Controller is not initialized");
         }
-        if (editor != null) {
-            this.editor = editor;
-            onActivate(editor);
-        } else {
+        if (editor == null) {
             throw new NullPointerException("Cannot activate UpdateController without editor");
         }
+        this.editor = editor;
+        onActivate(editor);
     }
 
     /**
@@ -154,7 +154,8 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     public abstract void onDeactivate();
 
     /**
-     * Returns is this controller is currently active and can update die {@link DiagramView}.
+     * Returns if true this controller is currently active and can update die {@link DiagramView},
+     * false otherwise.
      * 
      * @return active state
      */
@@ -166,12 +167,12 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     // -------------------------------------------------------------------------
 
     /**
-     * Perform an update of the {@link DiagramView} with the update model and properties.
+     * Performs an update of the {@link DiagramView} with the given model and properties.
      * 
      * @param model
-     *            the model may be null to show no model
+     *            the model, may be null to show no model
      * @param properties
-     *            the properties for the synthesis of the model, may be to use standard
+     *            the properties for the synthesis of the model, may be null to use standard
      *            configuration
      */
     protected final void updateModel(final Object model,
@@ -201,9 +202,9 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     }
 
     /**
-     * The synthesis properties to use when displaying the model. Returns never null.
+     * The synthesis properties to use when displaying the model.
      * 
-     * @return the properties
+     * @return the properties, never null
      */
     public final KlighdSynthesisProperties getProperties() {
         if (properties != null) {
@@ -220,9 +221,9 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * Adds the controller related actions to the menu and toolbar.
      * 
      * @param toolBar
-     *            the Toolbar
+     *            the toolbar
      * @param menu
-     *            the Menu
+     *            the menu
      */
     public void addContributions(final IToolBarManager toolBar, final IMenuManager menu) {
     }
@@ -232,7 +233,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      */
     public void onDispose() {
     }
-    
+
     /**
      * Invoked when the {@link DiagramView} finished updating the displayed diagram.
      * 
@@ -243,7 +244,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      */
     public void onDiagramUpdate(final Object model, final KlighdSynthesisProperties properties) {
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -286,7 +287,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      */
     public void loadState(final IMemento memento) {
     }
-    
+
     // -- Getter
     // -------------------------------------------------------------------------
 
@@ -302,7 +303,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     /**
      * Returns the {@link DiagramView} of this controller.
      * 
-     * @return The related {@link DiagramView}
+     * @return The related {@link DiagramView}, never null
      */
     public DiagramView getDiagramView() {
         return diagramView;
