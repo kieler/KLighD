@@ -1220,6 +1220,10 @@ public class DiagramController {
         for (final KEdge outgoingEdge : node.getOutgoingEdges()) {
             removeEdge(outgoingEdge, releaseControllers);
         }
+        
+        // If this node contains further children remove these as well. 
+        // Cross-hierarchy edges might be left over if we don't do this.
+        removeChildren(node);
 
         // remove the node representation from the containing child area
         nodeNode.removeFromParent();
