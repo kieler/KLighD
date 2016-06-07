@@ -351,7 +351,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 //  in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
                 //   definitions are also relevant
                 nodeLayout.setProperty(CoreOptions.NODE_SIZE_MIN_WIDTH, size.getWidth());
-                nodeLayout.setProperty(CoreOptions.NODE_SIZE_MIN_WIDTH, size.getHeight());
+                nodeLayout.setProperty(CoreOptions.NODE_SIZE_MIN_HEIGHT, size.getHeight());
                 if (!isCompoundNode) {
                     // in case of non-compound nodes the node size is usually taken from the layoutLayout
                     layoutLayout.setSize(size.getWidth(), size.getHeight());
