@@ -167,6 +167,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
                         it.target = nodeCache.get(targetEObject);
                         it.addPolyline => [
                             addHeadArrowDecorator
+                            addJunctionPointDecorator
                             lineStyle = LineStyle.DASH
                         ];
                     ]
