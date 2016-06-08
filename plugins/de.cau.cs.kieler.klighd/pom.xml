@@ -7,6 +7,7 @@
     <artifactId>plugins</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+
   <groupId>de.cau.cs.kieler</groupId>
   <artifactId>de.cau.cs.kieler.klighd</artifactId>
   <version>0.9.0-SNAPSHOT</version>
@@ -20,17 +21,11 @@
         <groupId>org.eclipse.xtext</groupId>
         <artifactId>xtext-maven-plugin</artifactId>
       </plugin>
+
       <!-- Generate Xtend code. -->
       <plugin>
         <groupId>org.eclipse.xtend</groupId>
         <artifactId>xtend-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
