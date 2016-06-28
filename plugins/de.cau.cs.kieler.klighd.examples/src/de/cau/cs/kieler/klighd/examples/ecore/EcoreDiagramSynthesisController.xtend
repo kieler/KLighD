@@ -98,8 +98,17 @@ class EcoreDiagramSynthesisController extends AbstractViewUpdateController imple
 	 * {@inheritDoc}
 	 */
 	override void onEditorSaved(IEditorPart editor) {
-		updateModel(this.editor.readModel)
-	}
+        if (diagramView.isLinkedWithActiveEditor) {
+            updateModel(this.editor.readModel)
+        }
+    }
+	
+    /**
+     * {@inheritDoc}
+     */
+    override refresh() {
+        updateModel(this.editor.readModel)
+    }
 
 	// -- Utility
 	// -------------------------------------------------------------------------

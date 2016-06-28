@@ -99,7 +99,17 @@ public class XtextChangeUpdateController extends AbstractViewUpdateController
      */
     @Override
     public void onModelChanged(final XtextEditor editor, final XtextResource resource) {
-        updateModel(EditorUtil.readModelFromXtextEditor(editor));
+        if (getDiagramView().isLinkedWithActiveEditor()) {
+            updateModel(EditorUtil.readModelFromXtextEditor(editor));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void refresh() {
+        updateModel(EditorUtil.readModelFromXtextEditor((XtextEditor) getEditor()));
     }
 
 }

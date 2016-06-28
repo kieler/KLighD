@@ -42,9 +42,13 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * The implementation of a controller must provide an ID via {@link #getID()} and react on
  * {@link #onActivate(IEditorPart)} by adding some kind of change listener to the editor and calling
  * {@link #updateModel(Object)} to show the current model. On all further changes which should cause
- * an updated of the diagram, the controller should call {@link #updateModel(Object)}. When
+ * an updated of the diagram, the controller should call {@link #updateModel(Object)}, iff
+ * {@link DiagramView#isLinkedWithActiveEditor()} returns true, otherwise the controller must
+ * preserve the model when the view was last linked and do not update the diagram. When
  * {@link #onDeactivate()} is invoked the controller should stop listening to the editor and wait
- * until its reactivation. All invocations of {@link #updateModel(Object)} will be ignored.
+ * until its reactivation. All invocations of {@link #updateModel(Object)} will be ignored. When the
+ * controller is ordered to {@link #refresh()} it should reload the model form the editor and invoke
+ * {@link #updateModel(Object)}, ignoring {@link DiagramView#isLinkedWithActiveEditor()} state.
  * <p>
  * The controller can override {@link #addContributions(IToolBarManager, IMenuManager)} to provide
  * editor specific items to the menu or toolbar. <br>
@@ -223,6 +227,11 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
             return new KlighdSynthesisProperties();
         }
     }
+    
+    /**
+     * Reloads the model from the editor and updates the diagram.
+     */
+    public abstract void refresh();
 
     // -- Diagram View Callbacks
     // -------------------------------------------------------------------------

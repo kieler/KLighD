@@ -227,7 +227,9 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
             @Override
             public void run() {
-                updateDiagram();
+                if (controller != null) {
+                    controller.refresh();
+                }
             }
         };
         refreshAction.setId("refreshAction");
