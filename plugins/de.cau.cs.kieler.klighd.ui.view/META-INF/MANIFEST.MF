@@ -4,7 +4,8 @@ Bundle-Name: KIELER Diagram View
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.ui.view;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin
-Require-Bundle: org.eclipse.ui.ide,
+Require-Bundle: org.eclipse.emf,
+ org.eclipse.ui.ide,
  org.eclipse.xtext.ui,
  org.eclipse.xtend.lib,
  org.eclipse.elk.core,

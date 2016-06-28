@@ -13,17 +13,22 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.eclipse.xtext.ui.editor.XtextEditor;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.ui.view.DiagramView;
 import de.cau.cs.kieler.klighd.ui.view.KlighdViewPlugin;
@@ -55,6 +60,9 @@ public final class ViewUpdateControllerFactory {
 
     /** Name of the 'editor' element. */
     private static final String ELEMENT_EDITOR = "editor";
+    
+    /** Name of the 'editor' element. */
+    private static final String ELEMENT_FALLBACK_CONTROLLER = "fallbackController";
 
     /** Name of the 'class' attribute in the extension points. */
     private static final String ATTRIBUTE_CLASS = "class";
@@ -63,7 +71,28 @@ public final class ViewUpdateControllerFactory {
     private static final String ATTRIBUTE_EDITOR = "editorID";
 
     /** Name of the 'id' attribute in the extension points. */
+    private static final String ATTRIBUTE_EDITOR_CLASS = "editorClass";
+    
+    /** Name of the 'id' attribute in the extension points. */
     private static final String ATTRIBUTE_CONTROLLER = "controllerID";
+    
+    // -- Class sorter --
+    /** Sorts a list of types s.t. a super type is place after a sub type. */
+    private static final Comparator<Class<?>> TYPE_SORTER = new Comparator<Class<?>>() {
+
+        /**
+         * {@inheritDoc}
+         */
+        public int compare(final Class<?> o1, final Class<?> o2) {
+            if (o1.isAssignableFrom(o2)) {
+                return 1;
+            } else if (o2.isAssignableFrom(o1)) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    };
 
     // -- SINGLETON --
 
@@ -79,11 +108,6 @@ public final class ViewUpdateControllerFactory {
         try {
             instance.loadControllerExtension();
             instance.loadEditorExtension();
-            // Set default editor
-            instance.defaultControllerMapping.put(IEditingDomainProvider.class,
-                    "de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController");
-            instance.defaultControllerMapping.put(XtextEditor.class,
-                    "de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController");
         } catch (final Exception e) {
             StatusManager.getManager()
                     .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
@@ -112,12 +136,12 @@ public final class ViewUpdateControllerFactory {
     /**
      * The mapping of IDs to the corresponding classes of {@link AbstractViewUpdateController} .
      */
-    private final HashMap<String, Class<? extends AbstractViewUpdateController>> idControllerMapping =
+    private final Map<String, Class<? extends AbstractViewUpdateController>> idControllerMapping =
             new HashMap<String, Class<? extends AbstractViewUpdateController>>();
     /** The mapping of editor-IDs to the corresponding controller IDs. */
-    private final HashMap<String, String> editorControllerMapping = new HashMap<String, String>();
-    /** The mapping of editor classes to the corresponding default controller IDs. */
-    private final HashMap<Class<?>, String> defaultControllerMapping = new HashMap<Class<?>, String>();
+    private final Map<String, String> editorControllerMapping = new HashMap<String, String>();
+    /** The mapping of editor classes to the corresponding fallback controller IDs. */
+    private final Map<Class<?>, String> fallbackControllerMapping = new HashMap<Class<?>, String>();
     
     // -- Extension Point Parsing
     // -------------------------------------------------------------------------
@@ -161,7 +185,7 @@ public final class ViewUpdateControllerFactory {
 
         for (final IConfigurationElement element : extensions) {
             if (ELEMENT_EDITOR.equals(element.getName())) {
-                // initialize controller classes from the extension point
+                // Associate controllers with editor IDs
                 try {
                     String editor = element.getAttribute(ATTRIBUTE_EDITOR);
                     String controller = element.getAttribute(ATTRIBUTE_CONTROLLER);
@@ -169,6 +193,18 @@ public final class ViewUpdateControllerFactory {
                         throw new NullPointerException("Cannot retrive id or class");
                     }
                     if (idControllerMapping.containsKey(controller)) {
+                        if (editorControllerMapping.containsKey(editor)) {
+                            String otherControllerID = editorControllerMapping.get(editor);
+                            if (otherControllerID != null) {
+                                StatusManager.getManager()
+                                .handle(new Status(IStatus.WARNING, KlighdViewPlugin.PLUGIN_ID,
+                                        this.getClass().getName()
+                                                + ": Multiple controllers are registered for the editor "
+                                                + editor + "! The controller "
+                                                + controller + " will override "
+                                                + otherControllerID + "."));
+                            }
+                        }
                         editorControllerMapping.put(editor, controller);
                     } else {
                         // Log error if controller id is not registered
@@ -183,6 +219,43 @@ public final class ViewUpdateControllerFactory {
                             .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
                                     this.getClass().getName()
                                             + ": Error while parsing editor extension point",
+                                    exception));
+                }
+            } else if (ELEMENT_FALLBACK_CONTROLLER.equals(element.getName())) {
+                // Associate fallback controllers with editor classes
+                try {
+                    Class<?> editorClass = Class.forName(element.getAttribute(ATTRIBUTE_EDITOR_CLASS));
+                    String controller = element.getAttribute(ATTRIBUTE_CONTROLLER);
+                    if (controller == null) {
+                        throw new NullPointerException("Cannot retrive controller class");
+                    }
+                    if (idControllerMapping.containsKey(controller)) {
+                        if (fallbackControllerMapping.containsKey(editorClass)) {
+                            String otherControllerID = fallbackControllerMapping.get(editorClass);
+                            if (otherControllerID != null) {
+                                StatusManager.getManager()
+                                .handle(new Status(IStatus.WARNING, KlighdViewPlugin.PLUGIN_ID,
+                                        this.getClass().getName()
+                                                + ": Multiple fallback controllers are registered for the editor class "
+                                                + editorClass.getName() + "! The controller "
+                                                + controller + " will override "
+                                                + otherControllerID + "."));
+                            }
+                        }
+                        fallbackControllerMapping.put(editorClass, controller);
+                    } else {
+                        // Log error if controller id is not registered
+                        StatusManager.getManager().handle(
+                                new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                                        this.getClass().getName() + ": Given controller id ["
+                                                + controller + "] is not registered"),
+                                StatusManager.LOG);
+                    }
+                } catch (final Exception exception) {
+                    StatusManager.getManager()
+                            .handle(new Status(IStatus.ERROR, KlighdViewPlugin.PLUGIN_ID,
+                                    this.getClass().getName()
+                                            + ": Error while parsing editor fallback extension point",
                                     exception));
                 }
             }
@@ -207,13 +280,8 @@ public final class ViewUpdateControllerFactory {
                     .containsKey(editor.getEditorSite().getId())) {
                 return true;
             } else {
-                // Test if any default controller can handle this editor
-                for (Class<?> supportedEditorClass : ViewUpdateControllerFactory
-                        .getInstance().defaultControllerMapping.keySet()) {
-                    if (supportedEditorClass.isInstance(editor)) {
-                        return true;
-                    }
-                }
+                // Test if any fallback controller can handle this editor
+                return hasFallbackController(editor);
             }
         }
         return false;
@@ -232,13 +300,9 @@ public final class ViewUpdateControllerFactory {
             String id = ViewUpdateControllerFactory.getInstance().editorControllerMapping
                     .get(editor.getEditorSite().getId());
             if (id == null) {
-                // Test if any default controller can handle this editor
-                for (Entry<Class<?>, String> editorClassIdEntry : ViewUpdateControllerFactory
-                        .getInstance().defaultControllerMapping.entrySet()) {
-                    if (editorClassIdEntry.getKey().isInstance(editor)) {
-                        return editorClassIdEntry.getValue();
-                    }
-                }
+                // Test if any fallback controller can handle this editor
+                return getFallbackController(editor);
+
             } else {
                 return id;
             }
@@ -278,5 +342,45 @@ public final class ViewUpdateControllerFactory {
         }
         return null;
     }
-
+    
+    /**
+     * Check whether a fallback controller exists which can handle the given editor.
+     * 
+     * @param editor the editor to find a matching fallback controller.
+     * @return true if fallback controller exists
+     */
+    private static boolean hasFallbackController(final IEditorPart editor) {
+        final Class<?> editorClass = editor.getClass();
+        return Iterables.tryFind(ViewUpdateControllerFactory.getInstance().fallbackControllerMapping.keySet(), 
+                new Predicate<Class<?>>() {
+            public boolean apply(final Class<?> supportedEditorClass) {
+                return supportedEditorClass.isAssignableFrom(editorClass);
+            }
+        }).isPresent();
+    }
+    
+    /**
+     * Returns the fallback controller which can handle the given editor.
+     * 
+     * @param editor the editor to find a matching fallback controller.
+     * @return the fallback controller or null
+     */
+    private static String getFallbackController(final IEditorPart editor) {
+        final Class<?> editorClass = editor.getClass();
+        List<Class<?>> validControllers = 
+                Lists.newArrayList(Iterables.filter(
+                        ViewUpdateControllerFactory.getInstance().fallbackControllerMapping.keySet(), 
+                        new Predicate<Class<?>>() {
+            public boolean apply(final Class<?> supportedEditorClass) {
+                return supportedEditorClass.isAssignableFrom(editorClass);
+            }
+        }));
+        if (!validControllers.isEmpty()) {
+          Collections.sort(validControllers, TYPE_SORTER);
+          // Return most specific controller
+          return ViewUpdateControllerFactory.getInstance().fallbackControllerMapping.get(validControllers.get(0));
+        } else {
+            return null;
+        }
+    }
 }

@@ -36,7 +36,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * de.cau.cs.kieler.klighd.ui.view.controller<br>
  * To associate a specific editor with the controller, the editor ID must be registered in the
  * extension point: de.cau.cs.kieler.klighd.ui.view.editor<br>
- * It is also possible to register a controller as default controller for a class of editors but the
+ * It is also possible to register a controller as fallback controller for a class of editors but the
  * association with an specific editor ID will always be more dominant.
  * <p>
  * The implementation of a controller must provide an ID via {@link #getID()} and react on

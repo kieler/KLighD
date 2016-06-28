@@ -18,7 +18,10 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="editor"/>
+            <choice>
+               <element ref="editor"/>
+               <element ref="fallbackController"/>
+            </choice>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -50,7 +53,7 @@
    <element name="editor">
       <annotation>
          <documentation>
-            The registered editor associations are managed in the ModelUpdateControllerManager class.
+            Associates a specific editor with a controller, handling the display of the model in the diagram view.
          </documentation>
       </annotation>
       <complexType>
@@ -59,6 +62,33 @@
                <documentation>
                   The ID of the editor part.
                </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="controllerID" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The ID of the controller.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="fallbackController">
+      <annotation>
+         <documentation>
+            Registers a controller for a class of editors to display their content in the diagram view if no specific controller is associated to the editor id.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="editorClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The editor class.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="controllerID" type="string" use="required">

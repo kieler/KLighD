@@ -306,4 +306,15 @@
          </parameter>
       </key>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.ui.view.editor">
+      <fallbackController
+            controllerID="de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController"
+            editorClass="org.eclipse.emf.edit.domain.IEditingDomainProvider">
+      </fallbackController>
+      <fallbackController
+            controllerID="de.cau.cs.kieler.klighd.ui.view.controllers.EcoreXtextSaveUpdateController"
+            editorClass="org.eclipse.xtext.ui.editor.XtextEditor">
+      </fallbackController>
+   </extension>
 </plugin>
