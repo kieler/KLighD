@@ -70,7 +70,6 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * @kieler.rating 2015-06-29 proposed yellow
  *
  */
-// CHECKSTYLEOFF HiddenField
 public abstract class AbstractViewUpdateController implements ISelectionChangedListener {
 
     /** The related {@link DiagramView}. */
@@ -79,11 +78,11 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * The editor this controller is activated for. Also indicates if this controller is active and
      * should update the {@link DiagramView}.
      */
-    private IEditorPart editor;
+    private IEditorPart activeEditor;
     /** The current model. */
-    private Object model;
+    private Object currentModel;
     /** The current properties. */
-    private KlighdSynthesisProperties properties;
+    private KlighdSynthesisProperties currentProperties;
 
     /**
      * Default Constructor.
@@ -97,17 +96,17 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * Initializes this controller. This method is called once by the
      * {@link ViewUpdateControllerFactory} and must not be invoked again afterwards.
      * 
-     * @param diagramView
+     * @param parentDiagramView
      *            the {@link DiagramView}}
      */
-    public void initialize(final DiagramView diagramView) {
-        if (diagramView == null) {
+    public void initialize(final DiagramView parentDiagramView) {
+        if (parentDiagramView == null) {
             throw new IllegalArgumentException("Cannot initialze Controller without View");
         }
-        if (this.diagramView != null) {
+        if (diagramView != null) {
             throw new IllegalStateException("Controller is already initialized");
         }
-        this.diagramView = diagramView;
+        diagramView = parentDiagramView;
     }
 
     /**
@@ -129,13 +128,13 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      *            the associated editor
      */
     public final void activate(final IEditorPart editor) {
-        if (this.diagramView == null) {
+        if (diagramView == null) {
             throw new IllegalStateException("Controller is not initialized");
         }
         if (editor == null) {
             throw new NullPointerException("Cannot activate UpdateController without editor");
         }
-        this.editor = editor;
+        activeEditor = editor;
         onActivate(editor);
     }
 
@@ -144,7 +143,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      */
     public final void deactivate() {
         onDeactivate();
-        this.editor = null;
+        activeEditor = null;
     }
 
     /**
@@ -174,7 +173,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * @return active state
      */
     public final boolean isActive() {
-        return editor != null;
+        return activeEditor != null;
     }
 
     // -- Update
@@ -191,8 +190,8 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      */
     protected final void updateModel(final Object model,
             final KlighdSynthesisProperties properties) {
-        this.model = model;
-        this.properties = properties;
+        currentModel = model;
+        currentProperties = properties;
         diagramView.updateDiagram();
     }
 
@@ -203,7 +202,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      *            the model may be null to show no model
      */
     protected final void updateModel(final Object model) {
-        updateModel(model, properties);
+        updateModel(model, currentProperties);
     }
 
     /**
@@ -212,7 +211,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * @return the model or null if no model available
      */
     public final Object getModel() {
-        return model;
+        return currentModel;
     }
 
     /**
@@ -221,8 +220,8 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * @return the properties, never null
      */
     public final KlighdSynthesisProperties getProperties() {
-        if (properties != null) {
-            return properties;
+        if (currentProperties != null) {
+            return currentProperties;
         } else {
             return new KlighdSynthesisProperties();
         }
@@ -316,7 +315,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
      * @return The related editor or null if this controller is not active
      */
     public IEditorPart getEditor() {
-        return editor;
+        return activeEditor;
     }
 
     /**
