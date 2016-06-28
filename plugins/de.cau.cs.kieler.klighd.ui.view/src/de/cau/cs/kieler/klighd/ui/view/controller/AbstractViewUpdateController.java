@@ -25,22 +25,32 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
  * 
- * Abstract controller for the {@link DiagramView}.
- * <p>
  * The controller handles the update of the displayed model.
  * <p>
- * The minimal implementation of a controller provides an ID via {@link #getID()} and reacts on
+ * The controller is supposed to connect the {@link DiagramView} to a specific editor type.
+ * Primarily the controller should listen for changes in the editor, retrieve the editor's content,
+ * translate it into a model the the {@link DiagramView} can synthesize a diagram from and deliver
+ * it to the {@link DiagramView} by calling {@link AbstractViewUpdateController#updateModel(Object)}
+ * <p>
+ * A controller must be registered via the extension point:
+ * de.cau.cs.kieler.klighd.ui.view.controller<br>
+ * To associate a specific editor with the controller, the editor ID must be registered in the
+ * extension point: de.cau.cs.kieler.klighd.ui.view.editor<br>
+ * It is also possible to register a controller as default controller for a class of editors but the
+ * association with an specific editor ID will always be more dominant.
+ * <p>
+ * The implementation of a controller must provide an ID via {@link #getID()} and react on
  * {@link #onActivate(IEditorPart)} by adding some kind of change listener to the editor and calling
  * {@link #updateModel(Object)} to show the current model. On all further changes which should cause
  * an updated of the diagram, the controller should call {@link #updateModel(Object)}. When
- * {@link #onDeactivate()} is invoked the controller should stop listen on the editor and wait until
- * its reactivation. All invocations of {@link #updateModel(Object)} will be ignored.
+ * {@link #onDeactivate()} is invoked the controller should stop listening to the editor and wait
+ * until its reactivation. All invocations of {@link #updateModel(Object)} will be ignored.
  * <p>
  * The controller can override {@link #addContributions(IToolBarManager, IMenuManager)} to provide
  * editor specific items to the menu or toolbar. <br>
- * If the controller overrides {@link #selectionChanged(SelectionChangedEvent)} it can react on
+ * If the controller overrides {@link #selectionChanged(SelectionChangedEvent)} it can react to
  * changes in the selection of diagram elements. <br>
- * If the controller wants to react on the actual update of the diagram it should override
+ * If the controller wants to react to the actual update of the diagram it should override
  * {@link #onDiagramUpdate(Object, KlighdSynthesisProperties)}.
  * <p>
  * If the controller has an internal state influencing its behavior, the controller should override
@@ -52,7 +62,7 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * </ul>
  * 
  * @author als
- * @kieler.design 2015-06-29 proposed
+ * @kieler.design 2016-06-28 KI-124 uru, nbw, cds
  * @kieler.rating 2015-06-29 proposed yellow
  *
  */
@@ -99,7 +109,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     /**
      * Returns the ID of this controller.
      * <p>
-     * This must be consistent to the ID used in the registration in the extension point.
+     * This must be consistent with the ID used in the registration in the extension point.
      * 
      * @return the ID
      */
@@ -154,7 +164,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     public abstract void onDeactivate();
 
     /**
-     * Returns if true this controller is currently active and can update die {@link DiagramView},
+     * Returns true if this controller is currently active and can update the {@link DiagramView},
      * false otherwise.
      * 
      * @return active state
@@ -256,7 +266,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     // -------------------------------------------------------------------------
 
     /**
-     * Copies all preferences from the source controller into this controller.
+     * Copies the internal state from the source controller into this controller.
      * 
      * @param source
      *            the source controller
@@ -265,7 +275,7 @@ public abstract class AbstractViewUpdateController implements ISelectionChangedL
     }
 
     /**
-     * Resets all properties to default values.
+     * Resets the internal state to default values.
      */
     public void reset() {
     }
