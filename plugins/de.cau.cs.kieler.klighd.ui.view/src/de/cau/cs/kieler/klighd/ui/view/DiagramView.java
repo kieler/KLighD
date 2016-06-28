@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.ui.view;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -48,6 +50,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -130,20 +133,21 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     /** Active related editor. */
     private IEditorPart editor;
 
-    /** Stores saved selection of synthesis options according to their model type. */
+    /** Stores used synthesis options. */
     private final Map<SynthesisOption, Object> recentSynthesisOptions =
             Collections.synchronizedMap(Maps.newHashMap());
 
-    /** Stores syntheses used by model. */
+    /** Stores displayed syntheses. */
     private final Set<ISynthesis> usedSyntheses = Collections.synchronizedSet(Sets.newHashSet());
 
     /** The responsible controller performing model updates. */
     private AbstractViewUpdateController controller = null;
 
-    /** The until now instantiated controllers. */
+    /** The already instantiated controllers. */
     private final List<AbstractViewUpdateController> controllers =
             new ArrayList<AbstractViewUpdateController>();
 
+    /** The adapter listening on open, closed and activated editors. */
     private final DiagramViewEditorAdapter editorAdapter;
 
     // -- Toolbar --
@@ -311,6 +315,10 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     public void init(final IViewSite site) throws PartInitException {
         super.init(site);
         editorAdapter.activate();
+        if (isPrimaryView()) {
+            // The primary view is loaded separately from the secondary (forked) views because it may be reopened
+            loadSettings();
+        }
     }
 
     /**
@@ -319,7 +327,10 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     @Override
     public void init(final IViewSite site, final IMemento memento) throws PartInitException {
         super.init(site, memento);
-        if (memento != null) {
+        if (isPrimaryView() && hasSettings()) {
+            // The primary view is loaded separately from the secondary (forked) views because it may be reopened
+            loadSettings();
+        } else if (memento != null) {
             loadState(memento);
         }
         editorAdapter.activate();
@@ -380,6 +391,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
      */
     @Override
     public void dispose() {
+        // Save before disposing
+        if (isPrimaryView()) {
+            // The primary view is saved separately from the secondary (forked) views because it can be reopened
+            saveSettings();
+        }
         super.dispose();
         views.remove(this);
         editorAdapter.deactivate();
@@ -617,6 +633,62 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     public SynthesisSelectionMenu getSynthesisSelectionMenu() {
         return synthesisSelection;
     }
+    
+    // -- Primary View specific methods
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Returns whether this view instance is the primary view. The primary view can only be opened
+     * by the user and is not created by forking another view.
+     * 
+     * @return true if this this view instance is the primary view, false otherwise
+     */
+    public boolean isPrimaryView() {
+        return this.getViewSite().getSecondaryId() == null;
+    }
+
+    /**
+     * Returns whether saved settings exists or not.
+     * 
+     * @return true if saved settings exist, false otherwise
+     */
+    public boolean hasSettings() {
+        return KlighdViewPlugin.getDefault().getDialogSettings().get(ID) != null;
+    }
+
+    /**
+     * Saves the settings of this view in the dialog setting.<bR>
+     * This should only performed for the primary view.
+     */
+    private void saveSettings() {
+        try {
+            XMLMemento memento = XMLMemento.createWriteRoot(ID);
+            saveState(memento);
+            StringWriter writer = new StringWriter();
+            memento.save(writer);
+            KlighdViewPlugin.getDefault().getDialogSettings().put(ID, writer.toString());
+        } catch (Exception e) {
+            StatusManager.getManager().handle(new Status(IStatus.WARNING,
+                    KlighdViewPlugin.PLUGIN_ID, "Cannot save view settings", e), StatusManager.LOG);
+        }
+    }
+
+    /**
+     * Loads the settings for this view from the dialog setting.<bR>
+     * This should only performed for the primary view.
+     */
+    private void loadSettings() {
+        try {
+            IDialogSettings dialogSettings = KlighdViewPlugin.getDefault().getDialogSettings();
+            String settingsString = dialogSettings.get(ID);
+            if (settingsString != null) {
+                loadState(XMLMemento.createReadRoot(new StringReader(settingsString)));
+            }
+        } catch (Exception e) {
+            StatusManager.getManager().handle(new Status(IStatus.WARNING,
+                    KlighdViewPlugin.PLUGIN_ID, "Cannot save view settings", e), StatusManager.LOG);
+        }
+    }
 
     // -- Editor
     // -------------------------------------------------------------------------
@@ -724,7 +796,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         }
     }
 
-    // -- Options
+    // -- Synthesis Options
     // -------------------------------------------------------------------------
 
     /**
@@ -752,49 +824,6 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             for (SynthesisOption option : allUsedSyntheisOptions) {
                 recentSynthesisOptions.put(option, viewContext.getOptionValue(option));
             }
-
-            // Save only the synthesis options of the root synthesis option as default options for
-            // other unconfigured views
-            IPreferenceStore preferenceStore = KlighdViewPlugin.getDefault().getPreferenceStore();
-            String synthesisIDPrefix =
-                    KlighdDataManager.getInstance().getSynthesisID(usedRootSynthesis) + ".";
-            for (SynthesisOption option : usedRootSynthesis.getDisplayedSynthesisOptions()) {
-                if (recentSynthesisOptions.containsKey(option)) {
-                    Object value = recentSynthesisOptions.get(option);
-                    if (value != null && !value.equals(option.getInitialValue())) {
-                        String id =
-                                synthesisIDPrefix + Integer.toString(option.getName().hashCode());
-                        preferenceStore.putValue(id,
-                                SynthesisOptionsPersistence.serialize(option, value));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Load default options configuration for the given synthesis if the options are locally
-     * unconfigured.
-     * 
-     * @param synthesisID
-     *            the id of the synthesis the options are loaded for.
-     */
-    private synchronized void loadPreferredSynthesisOptions(final String synthesisID) {
-        ISynthesis synthesis = KlighdDataManager.getInstance().getDiagramSynthesisById(synthesisID);
-        // If unconfigured
-        if (!usedSyntheses.contains(synthesis)) {
-            // Load default configuration form preferences
-            IPreferenceStore preferenceStore = KlighdViewPlugin.getDefault().getPreferenceStore();
-            String synthesisIDPrefix = synthesisID + ".";
-            for (SynthesisOption option : synthesis.getDisplayedSynthesisOptions()) {
-                String id = synthesisIDPrefix + Integer.toString(option.getName().hashCode());
-                Object value =
-                        SynthesisOptionsPersistence.parse(option, preferenceStore.getString(id));
-                if (value != null) {
-                    recentSynthesisOptions.put(option, value);
-                }
-            }
-            usedSyntheses.add(synthesis);
         }
     }
 
@@ -901,8 +930,6 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
             // Save previous synthesis options to restore later
             storeCurrentSynthesisOptions();
-            // Load preferred synthesis options
-            loadPreferredSynthesisOptions(synthesisID);
 
             // configure options
             properties.configureSynthesisOptionValues(recentSynthesisOptions);
@@ -967,7 +994,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                 success = LightDiagramServices.updateDiagram(this.getViewer().getViewContext(),
                         model, properties);
 
-                // Update side if the synthesis option changed due to child syntheses
+                // Update sidebar if the synthesis option changed due to child syntheses
                 if (success && (!viewContext.getChildViewContexts(false).isEmpty()
                         || hadChildContexts)) {
                     this.updateOptions(true);
@@ -999,4 +1026,5 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
         }
     }
+
 }
