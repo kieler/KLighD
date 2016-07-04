@@ -144,8 +144,8 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     private AbstractViewUpdateController controller = null;
 
     /** The already instantiated controllers. */
-    private final List<AbstractViewUpdateController> controllers =
-            new ArrayList<AbstractViewUpdateController>();
+    private final Map<String, AbstractViewUpdateController> controllers =
+            new HashMap<String, AbstractViewUpdateController>();
 
     /** The adapter listening on open, closed and activated editors. */
     private final DiagramViewEditorAdapter editorAdapter;
@@ -401,7 +401,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         super.dispose();
         views.remove(this);
         editorAdapter.deactivate();
-        for (AbstractViewUpdateController c : controllers) {
+        for (AbstractViewUpdateController c : controllers.values()) {
             c.onDispose();
         }
     }
@@ -428,11 +428,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                 newDiagramView.synthesisSelection.copy(synthesisSelection);
                 newDiagramView.recentSynthesisOptions.putAll(recentSynthesisOptions);
                 newDiagramView.usedSyntheses.addAll(usedSyntheses);
-                for (AbstractViewUpdateController updateController : controllers) {
+                for (AbstractViewUpdateController updateController : controllers.values()) {
                     AbstractViewUpdateController controllerCopy = ViewUpdateControllerFactory
                             .getNewInstance(updateController.getID(), newDiagramView);
                     controllerCopy.copy(updateController);
-                    newDiagramView.controllers.add(controllerCopy);
+                    newDiagramView.controllers.put(controllerCopy.getID(), controllerCopy);
                 }
                 newDiagramView.setEditor(editor);
             }
@@ -497,7 +497,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                 synthesisSelection.saveState(memento.createChild("synthesisSelection"));
 
                 IMemento controllersMemento = memento.createChild("controllers");
-                for (AbstractViewUpdateController c : controllers) {
+                for (AbstractViewUpdateController c : controllers.values()) {
                     c.saveState(controllersMemento.createChild(c.getID()));
                 }
             }
@@ -593,11 +593,12 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             IMemento controllersMemento = memento.getChild("controllers");
             if (controllersMemento != null) {
                 for (IMemento controllerMemento : controllersMemento.getChildren()) {
+                    String controllerID = controllerMemento.getType();
                     AbstractViewUpdateController newController = ViewUpdateControllerFactory
-                            .getNewInstance(controllerMemento.getType(), this);
+                            .getNewInstance(controllerID, this);
                     if (newController != null) {
                         newController.loadState(controllerMemento);
-                        controllers.add(newController);
+                        controllers.put(controllerID, newController);
                     }
                 }
             }
@@ -624,7 +625,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         }
         recentSynthesisOptions.clear();
         usedSyntheses.clear();
-        for (AbstractViewUpdateController c : controllers) {
+        for (AbstractViewUpdateController c : controllers.values()) {
             c.reset();
         }
     }
@@ -760,21 +761,16 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                         ViewUpdateControllerFactory.getHandlingControllerID(editor);
                 if (responsibleControllerID != null) {
 
-                    // search for responsible controller in instance list
-                    AbstractViewUpdateController alreadyInstaciatedController = null;
-                    for (AbstractViewUpdateController controllerCandidate : controllers) {
-                        if (controllerCandidate.getID().equals(responsibleControllerID)) {
-                            alreadyInstaciatedController = controllerCandidate;
-                            break;
-                        }
-                    }
+                    // search for instantiated responsible controller
+                    AbstractViewUpdateController alreadyInstantiatedController =
+                            controllers.get(responsibleControllerID);
                     // create controller if necessary
-                    if (alreadyInstaciatedController != null) {
-                        controller = alreadyInstaciatedController;
+                    if (alreadyInstantiatedController != null) {
+                        controller = alreadyInstantiatedController;
                     } else {
                         controller = ViewUpdateControllerFactory
                                 .getNewInstance(responsibleControllerID, this);
-                        controllers.add(controller);
+                        controllers.put(responsibleControllerID, controller);
                     }
 
                     // Update controller specific contributions
