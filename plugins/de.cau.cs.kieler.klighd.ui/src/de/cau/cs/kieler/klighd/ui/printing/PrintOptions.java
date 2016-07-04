@@ -693,7 +693,6 @@ public class PrintOptions {
             } catch (SWTError e) {
                 // We could get a 'No more handles' error if we are trying to use a printer that 
                 // has been removed from the system. Try the default instead. 
-            } finally {
                 disposePrinter();
                 this.printerData.driver = null;
                 this.printerData.name = null;
