@@ -361,6 +361,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
         // Register selection listener
         ((ContextViewer) getViewer()).addSelectionChangedListener(this);
+        
+        // Handle secondary view info
+        if (!isPrimaryView()) {
+            SecondaryViewInfoHelper.secondaryViewCreated(this, parent);
+        }
     }
 
     /**
@@ -404,6 +409,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         for (AbstractViewUpdateController c : controllers.values()) {
             c.onDispose();
         }
+        
+        // Handle secondary view info
+        if (!isPrimaryView()) {
+            SecondaryViewInfoHelper.secondaryViewDisposed(this);
+        }        
     }
 
     /**
