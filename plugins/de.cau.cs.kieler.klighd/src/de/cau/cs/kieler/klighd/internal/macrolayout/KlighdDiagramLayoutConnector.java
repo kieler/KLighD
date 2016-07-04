@@ -179,9 +179,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 ? true : !viewContext.getProperty(KlighdSynthesisProperties.SUPPRESS_SIZE_ESTIMATION);
 
         // create the mapping
-        final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation, viewContext.getDiagramWorkbenchPart());
+        final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation);
 
         if (viewContext != null) {
+            mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
+            
             // remember the layout recorder if any
             mapping.setProperty(KlighdInternalProperties.RECORDER, viewContext.getLayoutRecorder());
         }
@@ -198,10 +200,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            whether the size of nodes & labels should be automatically estimated.
      * @return the layout graph mapping
      */
-    public LayoutMapping buildLayoutGraph(final KNode graph,
-            final boolean performSizeEstimation, final IWorkbenchPart diagramWorkbenchPart) {
+    public LayoutMapping buildLayoutGraph(final KNode graph, final boolean performSizeEstimation) {
         
-        final LayoutMapping mapping = new LayoutMapping(diagramWorkbenchPart);
+        final LayoutMapping mapping = new LayoutMapping(null);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
 
         // set the parent element
@@ -350,7 +351,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 //  in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
                 //   definitions are also relevant
                 nodeLayout.setProperty(CoreOptions.NODE_SIZE_MIN_WIDTH, size.getWidth());
-                nodeLayout.setProperty(CoreOptions.NODE_SIZE_MIN_WIDTH, size.getHeight());
+                nodeLayout.setProperty(CoreOptions.NODE_SIZE_MIN_HEIGHT, size.getHeight());
                 if (!isCompoundNode) {
                     // in case of non-compound nodes the node size is usually taken from the layoutLayout
                     layoutLayout.setSize(size.getWidth(), size.getHeight());

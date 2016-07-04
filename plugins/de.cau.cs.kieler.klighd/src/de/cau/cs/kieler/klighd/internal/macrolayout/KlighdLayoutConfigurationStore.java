@@ -50,7 +50,6 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
@@ -58,7 +57,6 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import de.cau.cs.kieler.klighd.util.RunnableWithResult;
 
-// MIGRATE This whole class is a pile of poo and needs to be cleaned up if everything is working.
 /**
  * A layout configuration which derives layout options from properties attached to layout data of
  * graph elements.
@@ -176,7 +174,6 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
             // Get aspect ratio for the current diagram
             final IViewer viewer = getViewer();
             if (viewer == null || viewer.getControl() == null) {
-                System.out.println("NO VIEWER");
                 return null;
             }
 
@@ -414,83 +411,4 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         }
         return null;
     }
-
-    // /**
-    // * Reveals the KLighD {@link KNode view model} from the given layout context.
-    // *
-    // * @param context
-    // * a layout context
-    // * @return the corresponding KLighD (context) {@link IViewer}, or {@code null}
-    // */
-    // private KNode getViewModel(final LayoutContext context) {
-    // final IViewer viewer = getViewer(context);
-    // return viewer != null ? viewer.getViewContext().getViewModel() : null;
-    // }
-
-    // /**
-    // * Returns the graph element that shall be subject to modifications by this layout
-    // configurator.
-    // *
-    // * @param context
-    // * a layout context
-    // * @param considerDomainModel
-    // * whether associated domain model elements should be queried. This should be the
-    // * case for 'writing actions' that yield persistent changes in the domain model.
-    // * @return the graph element that shall be modified in the given context, or {@code null}
-    // */
-    // private KGraphElement getAffectedElement(final LayoutContext context,
-    // final boolean considerDomainModel) {
-    //
-    // if (considerDomainModel) {
-    // // the use case here is that for kgraph domain models (i.e. .kgt .kgx files)
-    // // any changed property should be written back to the originating domain model.
-    // //
-    // // however, when retrieving these properties during layout they are
-    // // already copied to the diagram element and further properties
-    // // that were added during diagram synthesis would be neglected.
-    // final Object domainElement = context.getProperty(LayoutContext.DOMAIN_MODEL);
-    // if (domainElement instanceof KGraphElement) {
-    // return (KGraphElement) domainElement;
-    // }
-    // }
-    //
-    // final Object diagramPart = context.getProperty(LayoutContext.DIAGRAM_PART);
-    // if (diagramPart instanceof KGraphElement) {
-    // return (KGraphElement) diagramPart;
-    // }
-    //
-    // return getViewModel(context);
-    // }
-
-    // /**
-    // * {@inheritDoc}
-    // */
-    // public boolean isSet(final LayoutOptionData optionData, final LayoutContext context) {
-    // final KGraphElement element = getAffectedElement(context, true);
-    // if (element != null) {
-    // final KLayoutData elementLayout = element.getData(KLayoutData.class);
-    // if (elementLayout != null) {
-    // return elementLayout.getProperties().containsKey(optionData);
-    // }
-    // }
-    // return false;
-    // }
-
-    // /**
-    // * {@inheritDoc}
-    // */
-    // public void clearOptionValues(final LayoutContext context) {
-    // final KGraphElement element = getAffectedElement(context, true);
-    // if (element != null) {
-    // final KLayoutData elementLayout = element.getData(KLayoutData.class);
-    // if (elementLayout != null) {
-    // elementLayout.getProperties().clear();
-    // refreshModel(element, context);
-    // }
-    // }
-    // }
-
-    // /** layout context property for the (context) viewer. */
-    // private static final IProperty<IViewer> VIEWER = new Property<IViewer>("klighd.viewer");
-
 }

@@ -16,10 +16,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="de.cau.cs.kieler.klighd"
-            name="KIELER Lightweight Diagrams">
-      </category>
       <view
             allowMultiple="true"
             category="de.cau.cs.kieler.klighd"

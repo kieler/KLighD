@@ -32,6 +32,7 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 
@@ -686,10 +687,18 @@ public class PrintOptions {
                 //  string leads to an error so set at least 'driver' to 'null'
                 this.printerData.driver = null;
             }
-
-            this.printer = new Printer(this.printerData);
+            
+            try {
+                this.printer = new Printer(this.printerData);
+            } catch (SWTError e) {
+                // We could get a 'No more handles' error if we are trying to use a printer that 
+                // has been removed from the system. Try the default instead. 
+                disposePrinter();
+                this.printerData.driver = null;
+                this.printerData.name = null;
+                this.printer = new Printer(this.printerData);
+            }
             return printer;
-
         } else {
             return null;
         }
