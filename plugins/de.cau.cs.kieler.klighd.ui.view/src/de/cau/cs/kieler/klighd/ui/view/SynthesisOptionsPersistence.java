@@ -25,7 +25,7 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
  * @kieler.design 2015-11-18 proposed
  * @kieler.rating 2015-11-18 proposed yellow
  */
-public final class SynthesisOptionsPersistence {
+final class SynthesisOptionsPersistence {
 
     /**
      * Private constructor to prevent instantiation of utility class.
