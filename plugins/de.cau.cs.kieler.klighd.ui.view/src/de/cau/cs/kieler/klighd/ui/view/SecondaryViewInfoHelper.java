@@ -15,8 +15,10 @@ package de.cau.cs.kieler.klighd.ui.view;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -70,16 +72,11 @@ final class SecondaryViewInfoHelper {
      */
     public static void secondaryViewCreated(final DiagramView view, final Composite viewComposite) {
         if (!suppressInfo && viewShowingInfo == null) {
-            Control diagramComposite = view.getViewer().getControl();
-
             // Add info box
             Composite infoBox = new Composite(viewComposite, SWT.NONE);
-            // Set container position on top of the diagram canvas
-            FormData data = new FormData();
-            data.top = new FormAttachment(diagramComposite, 0, SWT.TOP);
-            infoBox.setLayoutData(data);
-            // Set layout for children
             infoBox.setLayout(new RowLayout());
+            GridData layoutData = new GridData(SWT.FILL, SWT.TOP, true, false);
+            infoBox.setLayoutData(layoutData);
 
             final Label infoText = new Label(infoBox, SWT.NONE);
             infoText.setText("This is a forked view.");

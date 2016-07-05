@@ -37,6 +37,9 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
@@ -343,9 +346,23 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
      */
     @Override
     public void createPartControl(final Composite parent) {
-        super.createPartControl(parent);
+        // Setup parent composite
         viewComposite = parent;
-
+        GridLayout layout = new GridLayout(1, false);
+        parent.setLayout(layout);
+        
+        // Handle secondary view info
+        if (!isPrimaryView()) {
+            SecondaryViewInfoHelper.secondaryViewCreated(this, parent);
+        }
+        
+        // Create a composite that will hold the diagram viewer
+        Composite diagramComposite = new Composite(parent, SWT.NONE);
+        GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        diagramComposite.setLayoutData(layoutData);
+        super.createDiagramViewer(diagramComposite);
+        
+        // Retrieve stuff we want to have access to later
         IActionBars bars = getViewSite().getActionBars();
         toolBarManager = bars.getToolBarManager();
         menuManager = bars.getMenuManager();
@@ -361,11 +378,6 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
         // Register selection listener
         ((ContextViewer) getViewer()).addSelectionChangedListener(this);
-        
-        // Handle secondary view info
-        if (!isPrimaryView()) {
-            SecondaryViewInfoHelper.secondaryViewCreated(this, parent);
-        }
     }
 
     /**

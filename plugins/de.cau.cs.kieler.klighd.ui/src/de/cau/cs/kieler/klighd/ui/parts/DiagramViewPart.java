@@ -53,6 +53,10 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * A view which is able to display models in lightweight diagrams.
+ * 
+ * <p>This class may well be subclassed to use it as a base for custom viewers. In that case, you will want to
+ * override {@link #createPartControl(Composite)} and therein call {@link #createDiagramViewer(Composite)} to
+ * create the diagram viewer.</p>
  *
  * @author mri
  * @author chsch
@@ -91,7 +95,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
     private DiagramSideBar sideBar;
 
     private Composite diagramComposite;
-
+    
+    private DropTarget dropTarget;
+    
     /**
      * Listens to resize changes and triggers a re-layout of the diagram in case a zoom style is
      * defined.
@@ -100,11 +106,23 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
             DiagramWorkbenchParts.createDiagramAreaChangeListener(this);
 
     /**
-     * {@inheritDoc}
+     * Calls {@link #createDiagramViewer(Composite)}. If this method is overridden, feel free to call
+     * that method yourself instead of calling this implementation.
      */
     @Override
     public void createPartControl(final Composite parent) {
-
+        createDiagramViewer(parent);
+    }
+    
+    /**
+     * Creates the context viewer and the composite it is placed in and sets up everything properly. You may want to
+     * pass a parent composite that will only contain the diagram composite. This is because the diagram sidebar will
+     * use that same composite to place the sidebar in.
+     * 
+     * @param parent the control the composite should be placed in.
+     * @return the composite that holds the context viewer.
+     */
+    protected Composite createDiagramViewer(final Composite parent) {
         // introduce a new Composite that accommodates the visualized content
         this.diagramComposite = new Composite(parent, SWT.NONE);
         this.diagramComposite.setVisible(false);
@@ -135,6 +153,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
         // the configuration of the context menu, selection provider,
         // and UI (key binding) context activation is done in the UiContextViewer
+        
+        return diagramComposite;
     }
 
     /**
@@ -243,6 +263,10 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
             this.sideBar.dispose();
         }
         this.sideBar = null;
+        
+        if (dropTarget != null && !dropTarget.isDisposed()) {
+            dropTarget.dispose();
+        }
 
         final IViewSite viewSite = this.getViewSite();
         viewSite.setSelectionProvider(null);
@@ -394,6 +418,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      */
     private void installDropHandler(final Composite parent) {
         final DropTarget target = new DropTarget(parent, DND.DROP_COPY | DND.DROP_DEFAULT);
+        dropTarget = target;
+        
         final ResourceTransfer resourceTransfer = ResourceTransfer.getInstance();
         target.setTransfer(new Transfer[] { resourceTransfer });
         target.addDropListener(new DropTargetListener() {
