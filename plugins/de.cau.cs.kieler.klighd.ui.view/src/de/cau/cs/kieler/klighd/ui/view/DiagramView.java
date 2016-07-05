@@ -34,19 +34,27 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
@@ -348,18 +356,29 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     public void createPartControl(final Composite parent) {
         // Setup parent composite
         viewComposite = parent;
-        GridLayout layout = new GridLayout(1, false);
-        parent.setLayout(layout);
+        GridLayout gridLayout = new GridLayout(1, false);
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        parent.setLayout(gridLayout);
         
         // Handle secondary view info
-        if (!isPrimaryView()) {
-            SecondaryViewInfoHelper.secondaryViewCreated(this, parent);
+        if (!isPrimaryView() && SecondaryViewInfoHelper.shouldShowInfoBar(this)) {
+            createInfoBar(parent);
         }
         
-        // Create a composite that will hold the diagram viewer
-        Composite diagramComposite = new Composite(parent, SWT.NONE);
+        // Create a composite that will hold the diagram viewer composite and put some space around it
+        Composite diagramCompositeContainer = new Composite(parent, SWT.NONE);
+        
+        FillLayout fillLayout = new FillLayout();
+        fillLayout.marginHeight = 5;
+        fillLayout.marginWidth = 5;
+        diagramCompositeContainer.setLayout(fillLayout);
+        
         GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        diagramComposite.setLayoutData(layoutData);
+        diagramCompositeContainer.setLayoutData(layoutData);
+        
+        // Create the actual diagram composite
+        Composite diagramComposite = new Composite(diagramCompositeContainer, SWT.NONE);
         super.createDiagramViewer(diagramComposite);
         
         // Retrieve stuff we want to have access to later
@@ -378,6 +397,60 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
         // Register selection listener
         ((ContextViewer) getViewer()).addSelectionChangedListener(this);
+    }
+
+    /**
+     * Creates the info bar that tells the user what a secondary view is.
+     */
+    private void createInfoBar(final Composite parent) {
+        // Info bar composite
+        Composite infoBar = new Composite(parent, SWT.NONE);
+        infoBar.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+        infoBar.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+        
+        GridLayout layout = new GridLayout(3, false);
+        layout.marginHeight = 0;
+        infoBar.setLayout(layout);
+
+        // Information image
+        final Label infoImage = new Label(infoBar, SWT.NONE);
+        infoImage.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK));
+        infoImage.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        
+        // Information text
+        final Link infoLink = new Link(infoBar, SWT.NONE);
+        infoLink.setText("This is a forked diagram view. <a>Learn more...</a>");
+        infoLink.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+
+        // Mighty button of dismissal
+        final Button dismissButton = new Button(infoBar, SWT.PUSH);
+        dismissButton.setText("Got It");
+        dismissButton.setToolTipText("Dismiss message and never show it again.");
+        dismissButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+        
+        // Event listeners
+        infoLink.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                MessageDialog.openInformation(infoLink.getShell(),
+                        "Forked Diagram Views",
+                        "Forked diagram views are a copy of the diagram view they are forked from. "
+                        + "There is only one primary diagram view, but arbitrarily many forked views. "
+                        + "Forked views have a different icon than the primary view. "
+                        + "They do not save any changes you make to display settings: "
+                        + "Forked views are a sandbox you can safely play around in.");
+            }
+        });
+        
+        dismissButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                // Hide info box
+                infoBar.dispose();
+                viewComposite.layout();
+                SecondaryViewInfoHelper.infoBarDismissed();
+            }
+        });
     }
 
     /**
