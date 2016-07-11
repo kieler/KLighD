@@ -121,14 +121,13 @@ public class EcoreXtextSaveUpdateController extends AbstractViewUpdateController
      *            IEditorPart containing model
      * @return EObject model
      */
-    protected static EObject readModel(final IEditorPart editor) {
-        EObject model = null;
+    protected EObject readModel(final IEditorPart editor) {
         if (editor instanceof XtextEditor) { // Get model from XTextEditor
             return EditorUtil.readModelFromXtextEditor((XtextEditor) editor);
         } else if (editor instanceof IEditingDomainProvider) { // Get model from EMF TreeEditor
             return EditorUtil.readModelFromEMFEditor((IEditingDomainProvider) editor);
         }
-        return model;
+        return null;
     }
 
 }
