@@ -42,6 +42,7 @@ import org.eclipse.elk.core.klayoutdata.KShapeLayout
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.Direction
 import org.eclipse.elk.core.options.PortSide
+import org.eclipse.elk.core.options.SizeConstraint
 import org.eclipse.elk.core.util.ElkUtil
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.KNode
@@ -188,6 +189,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         node.associateWith(object);
         
         node.setLayoutOption(KlighdProperties::EXPAND, EXPAND_DETAILS.booleanValue);
+        node.setLayoutOption(CoreOptions.NODE_SIZE_CONSTRAINTS, SizeConstraint.free);
 
         val eclass = object.eClass;
         val hasAttributes = !eclass.EAllAttributes.empty
