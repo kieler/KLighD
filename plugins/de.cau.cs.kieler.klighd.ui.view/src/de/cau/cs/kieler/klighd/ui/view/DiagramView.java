@@ -130,6 +130,9 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     /** The icon for forking a view. */
     private static final ImageDescriptor FORK_ICON =
             KlighdViewPlugin.getImageDescriptor("icons/full/etool16/fork.png");
+    /** The icon for a forked view. */
+    private static final ImageDescriptor FORKED_ICON =
+            KlighdViewPlugin.getImageDescriptor("icons/full/etool16/forked_diagram_view.png");
 
     // -- Instance list --
 
@@ -332,6 +335,12 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             // The primary view is loaded separately from the secondary (forked) views because it may be reopened
             loadSettings();
         }
+        // Adjust icon for forked views
+        if (!isPrimaryView()) {
+            // Set the icon for the forked view
+            this.setTitleImage(FORKED_ICON.createImage());
+        }        
+
     }
 
     /**
@@ -346,6 +355,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         } else if (memento != null) {
             loadState(memento);
         }
+        // Adjust icon for forked views
+        if (!isPrimaryView()) {
+            // Set the icon for the forked view
+            this.setTitleImage(FORKED_ICON.createImage());
+        }        
         editorAdapter.activate();
     }
 
@@ -513,6 +527,8 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             // Configure child view
             if (newViewPart instanceof DiagramView) {
                 DiagramView newDiagramView = (DiagramView) newViewPart;
+                // Icon
+                newDiagramView.setTitleImage(FORKED_ICON.createImage());                
                 // Menu
                 newDiagramView.linkCheckAction.setChecked(false);
                 newDiagramView.synchronizeSelectionCheckAction
