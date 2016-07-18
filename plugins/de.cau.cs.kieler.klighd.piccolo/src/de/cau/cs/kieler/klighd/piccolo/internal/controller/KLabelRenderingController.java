@@ -17,6 +17,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
+import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.graph.KLabel;
 
 import com.google.common.collect.Iterables;
@@ -30,6 +31,7 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KLabelNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PNode;
 
 /**
@@ -92,6 +94,11 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
             throw new RuntimeException("KLabel " + getGraphElement()
                     + " must (deeply) contain exactly 1 KText element.");
         }
+        
+        // Transfer selectability from KLabel to KText to properly handle the selection handlers
+        kText.setProperty(KlighdProperties.NOT_SELECTABLE,
+                getGraphElement().getData(KShapeLayout.class)
+                    .getProperty(KlighdProperties.NOT_SELECTABLE));
         
         // create the rendering
         final PNodeController<?> controller =
