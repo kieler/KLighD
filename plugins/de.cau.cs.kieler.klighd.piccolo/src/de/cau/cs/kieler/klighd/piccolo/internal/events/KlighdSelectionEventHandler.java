@@ -263,6 +263,10 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
             } else if (selectedElements != null) {
                 // the fact that 'selectedElements' is non-null implies that the above case
                 //  must have been executed beforehand meaning we're selecting one or multiple KEdges
+                // We modified the pickPath in the process, resulting in subsequent handlers not 
+                // receiving a proper node stack. So first reset the pickPath.
+                pickPath.reset();
+
                 // the execution of the above statements now gave a selectable view element
                 //  that is not a KEdge so we have to stop and ignore 'viewModelElement' here
                 break;

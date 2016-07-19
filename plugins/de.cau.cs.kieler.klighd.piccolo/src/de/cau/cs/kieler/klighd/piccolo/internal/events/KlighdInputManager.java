@@ -191,7 +191,7 @@ public class KlighdInputManager extends PInputManager implements IKlighdInputEve
      */
     @Override
     public void mouseReleased(final PInputEvent event) {
-        this.dispatchEventToListener(event, MouseEvent.MOUSE_PRESSED, getMouseFocus());
+        this.dispatchEventToListener(event, MouseEvent.MOUSE_RELEASED, getMouseFocus());
     }
 
     /**
