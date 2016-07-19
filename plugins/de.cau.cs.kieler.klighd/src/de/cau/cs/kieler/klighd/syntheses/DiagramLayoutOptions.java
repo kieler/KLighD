@@ -16,9 +16,11 @@ package de.cau.cs.kieler.klighd.syntheses;
 import java.util.EnumSet;
 
 import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.options.BoxLayouterOptions;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
 import org.eclipse.elk.core.options.EdgeRouting;
+import org.eclipse.elk.core.options.FixedLayouterOptions;
 import org.eclipse.elk.core.options.HierarchyHandling;
 import org.eclipse.elk.core.options.PortAlignment;
 import org.eclipse.elk.core.options.PortConstraints;
@@ -67,12 +69,12 @@ public final class DiagramLayoutOptions {
     /**
      * @see BoxLayoutProvider
      */
-    public static final String BOX = BoxLayoutProvider.ID;
+    public static final String BOX = BoxLayouterOptions.ALGORITHM_ID;
 
     /**
      * @see FixedLayoutProvider
      */
-    public static final String FIXED = FixedLayoutProvider.ID;
+    public static final String FIXED = FixedLayouterOptions.ALGORITHM_ID;
 
     /**
      * Our default layouter for layer-based diagrams with and without ports, implemented in Java.<br>
