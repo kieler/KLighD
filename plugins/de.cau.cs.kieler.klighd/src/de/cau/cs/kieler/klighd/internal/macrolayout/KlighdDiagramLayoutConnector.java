@@ -179,7 +179,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 ? true : !viewContext.getProperty(KlighdSynthesisProperties.SUPPRESS_SIZE_ESTIMATION);
 
         // create the mapping
-        final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation);
+        final LayoutMapping mapping = buildLayoutGraph(graph, performSizeEstimation, workbenchPart);
 
         if (viewContext != null) {
             mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
@@ -198,11 +198,14 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the graph to build the layout graph from
      * @param performSizeEstimation
      *            whether the size of nodes & labels should be automatically estimated.
+     * @param workbenchPart
+     *            the workbenchPart in which the layout takes place, if any
      * @return the layout graph mapping
      */
-    public LayoutMapping buildLayoutGraph(final KNode graph, final boolean performSizeEstimation) {
+    public LayoutMapping buildLayoutGraph(final KNode graph, final boolean performSizeEstimation,
+            final IWorkbenchPart workbenchPart) {
         
-        final LayoutMapping mapping = new LayoutMapping(null);
+        final LayoutMapping mapping = new LayoutMapping(workbenchPart);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
 
         // set the parent element
