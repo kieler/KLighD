@@ -41,7 +41,7 @@ import org.osgi.framework.Bundle;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
@@ -208,7 +208,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         //  the canvas size may not be determined - it is required for proper zooming
         this.getViewSite().getPage().bringToTop(this);
 
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
 
         // setting the diagram composite visible strictly after applying the initial layout avoids
         //  flickering and suppresses the DiagramAreaChangeListener from getting active too early
@@ -321,7 +323,9 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
             @Override
             public void run() {
-                LightDiagramServices.updateDiagram(DiagramViewPart.this.getViewContext(), false);
+                new LightDiagramLayoutConfig(DiagramViewPart.this.getViewContext())
+                    .animate(false)
+                    .update();
             }
         });
 
@@ -338,7 +342,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
             @Override
             public void run() {
-                LightDiagramServices.layoutDiagram(DiagramViewPart.this);
+                new LightDiagramLayoutConfig(DiagramViewPart.this)
+                    .layout();
             }
         });
 

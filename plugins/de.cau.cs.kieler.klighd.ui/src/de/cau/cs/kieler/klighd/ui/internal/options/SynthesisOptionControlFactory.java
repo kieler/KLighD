@@ -48,7 +48,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -417,8 +417,10 @@ public class SynthesisOptionControlFactory {
                         if (option.getUpdateAction() != null) {
                             invokeUpdateAction(option.getUpdateAction(), context);
                         } else {
-                            LightDiagramServices.updateDiagram(context, null, properties,
-                                    option.getAnimateUpdate());
+                            new LightDiagramLayoutConfig(context)
+                                .properties(properties)
+                                .animate(option.getAnimateUpdate())
+                                .update();
                         }
                     }
                 });
@@ -478,8 +480,10 @@ public class SynthesisOptionControlFactory {
                                 if (option.getUpdateAction() != null) {
                                     invokeUpdateAction(option.getUpdateAction(), context);
                                 } else {
-                                    LightDiagramServices.updateDiagram(context, null, properties,
-                                            option.getAnimateUpdate());
+                                    new LightDiagramLayoutConfig(context)
+                                        .properties(properties)
+                                        .animate(option.getAnimateUpdate())
+                                        .update();
                                 }
                             }
                         });
@@ -599,8 +603,10 @@ public class SynthesisOptionControlFactory {
                         if (option.getUpdateAction() != null) {
                             invokeUpdateAction(option.getUpdateAction(), context);
                         } else {
-                            LightDiagramServices.updateDiagram(context, null, properties,
-                                    option.getAnimateUpdate());
+                            new LightDiagramLayoutConfig(context)
+                                .properties(properties)
+                                .animate(option.getAnimateUpdate())
+                                .update();
                         }
                     }
                 });
@@ -638,9 +644,12 @@ public class SynthesisOptionControlFactory {
                         .getViewModel(), null));
 
         if (result.getActionPerformed()) {
-            LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
-                    ZoomStyle.create(result, viewContext), result.getFocusNode(),
-                    result.getLayoutConfigs());
+            new LightDiagramLayoutConfig(viewContext)
+                .animate(result.getAnimateLayout())
+                .zoomStyle(ZoomStyle.create(result, viewContext))
+                .focusNode(result.getFocusNode())
+                .options(result.getLayoutConfigs())
+                .layout();
         } else {
             viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
         }

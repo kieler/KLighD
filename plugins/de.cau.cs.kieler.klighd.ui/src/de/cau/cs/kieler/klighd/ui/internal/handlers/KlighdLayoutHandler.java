@@ -20,7 +20,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 
 /**
  * Handler for execution of automatic layout in KLighD triggered by menu, toolbar, or keyboard
@@ -41,7 +41,7 @@ public class KlighdLayoutHandler extends AbstractHandler {
         // get the active editor, which is expected to contain the diagram for applying layout
         IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
         if (editorPart instanceof IDiagramWorkbenchPart) {
-            LightDiagramServices.layoutDiagram((IDiagramWorkbenchPart) editorPart);
+            new LightDiagramLayoutConfig((IDiagramWorkbenchPart) editorPart).layout();
         }
         // the else case should not happen as this handler is only active for
         //  IDiagramWorkbenchPart.IDiagramEditorParts, see registration in plugin.xml

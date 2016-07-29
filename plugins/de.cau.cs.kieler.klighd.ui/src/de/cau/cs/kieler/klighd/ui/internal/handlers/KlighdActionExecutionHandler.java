@@ -35,7 +35,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext;
 import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.util.Iterables2;
@@ -129,8 +129,12 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
             final ActionResult result = resultOfLastRunRequiringLayout;
             final ZoomStyle zoomStyle = ZoomStyle.create(result, viewContext);
 
-            LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
-                    zoomStyle, result.getFocusNode(), result.getLayoutConfigs());
+            new LightDiagramLayoutConfig(viewContext)
+                .animate(result.getAnimateLayout())
+                .zoomStyle(zoomStyle)
+                .focusNode(result.getFocusNode())
+                .options(result.getLayoutConfigs())
+                .layout();
 
         } else if (resultOfLastRun != null) {
             viewContext.getLayoutRecorder().stopRecording(

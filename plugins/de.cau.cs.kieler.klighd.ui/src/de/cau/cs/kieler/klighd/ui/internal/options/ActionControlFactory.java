@@ -41,7 +41,7 @@ import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
@@ -173,9 +173,12 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                 }
 
                 if (anyActionPerformed) {
-                    LightDiagramServices.layoutDiagram(viewContext, result.getAnimateLayout(),
-                            ZoomStyle.create(result, viewContext), result.getFocusNode(),
-                            result.getLayoutConfigs());
+                    new LightDiagramLayoutConfig(viewContext)
+                            .animate(result.getAnimateLayout())
+                            .zoomStyle(ZoomStyle.create(result, viewContext))
+                            .focusNode(result.getFocusNode())
+                            .options(result.getLayoutConfigs())
+                            .layout();
                 } else {
                     viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
                 }

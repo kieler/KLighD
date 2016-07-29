@@ -34,7 +34,6 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
 import org.eclipse.elk.core.options.PortConstraints;
 import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.core.util.GraphDataUtil;
 import org.eclipse.elk.graph.KEdge;
 import org.eclipse.elk.graph.KGraphData;
 import org.eclipse.elk.graph.KGraphElement;
@@ -64,7 +63,7 @@ import com.google.common.collect.Sets;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdTreeSelection;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
@@ -265,7 +264,9 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
             // if we expanded some nodes, perform layout
             if (!n.getChildren().isEmpty()) {
-                LightDiagramServices.layoutDiagram(viewContext, false);
+                new LightDiagramLayoutConfig(viewContext)
+                    .animate(false)
+                    .layout();
             }
         }
 
@@ -279,7 +280,9 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
         }
         final Queue<KNode> increaseHierarchy = Lists.newLinkedList();
         increaseHierarchy.add(subgraph);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
         int i = 0;
         // SUPPRESS CHECKSTYLE NEXT MagicNumber
         int requiredPaddingZeroes = (int) Math.ceil(Math.log(expandedNodes.size()) / Math.log(10));
@@ -287,7 +290,9 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             
             KNode toExpand = increaseHierarchy.poll();
             viewContext.getViewer().expand(toExpand);
-            LightDiagramServices.layoutDiagram(viewContext, false);
+            new LightDiagramLayoutConfig(viewContext)
+                .animate(false)
+                .layout();
             
             String filename =
                     "inchierarchy_" + getModelPathName(subgraph, viewContext) + "_"

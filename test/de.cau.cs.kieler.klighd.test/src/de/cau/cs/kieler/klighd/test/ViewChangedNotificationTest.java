@@ -40,7 +40,7 @@ import com.google.common.collect.Sets;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -124,7 +124,9 @@ public class ViewChangedNotificationTest {
      */
     @After
     public void postProcess() {
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
 
         while (failure == null && !finished) {
             if (respectDeadline && System.currentTimeMillis() > deadline) {

@@ -74,7 +74,7 @@ import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -253,7 +253,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         layoutAction = new Action("Arrange diagram", IAction.AS_PUSH_BUTTON) {
             @Override
             public void run() {
-                LightDiagramServices.layoutDiagram(DiagramView.this);
+                new LightDiagramLayoutConfig(DiagramView.this).layout();
             }
         };
         layoutAction.setId("layoutAction");
@@ -1100,8 +1100,10 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                 }
 
                 // update case (keeps options and sidebar)
-                success = LightDiagramServices.updateDiagram(this.getViewer().getViewContext(),
-                        model, properties);
+                success = new LightDiagramLayoutConfig(this.getViewer().getViewContext())
+                                .model(model)
+                                .properties(properties)
+                                .update();
 
                 // Update sidebar if the synthesis option changed due to child syntheses
                 if (success && (!viewContext.getChildViewContexts(false).isEmpty()

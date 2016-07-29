@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Display;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
 
@@ -128,7 +129,7 @@ public final class DiagramWorkbenchParts {
 
                 if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                         || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                    LightDiagramServices.layoutDiagram(diagramWorkbenchPart);
+                    new LightDiagramLayoutConfig(diagramWorkbenchPart).layout();
                     oldAspectRatio = aspectRatio;
 
                 } else {

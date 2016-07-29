@@ -65,7 +65,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
@@ -299,7 +299,10 @@ public class DiagramEditorPart extends EditorPart implements
                             return;
                         }
 
-                        LightDiagramServices.layoutDiagram(viewContext, false, getInitialZoomStyle());
+                        new LightDiagramLayoutConfig(viewContext)
+                            .animate(false)
+                            .zoomStyle(getInitialZoomStyle())
+                            .layout();
 
                         if (control.isDisposed()) {
                             return;

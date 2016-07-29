@@ -49,7 +49,7 @@ import com.google.common.collect.Maps;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
@@ -281,11 +281,15 @@ public class ViewChangedNotificationSuppressionTest {
         final Object modelElement = MODEL_QUERY.apply(viewContext);
 
         viewContext.getViewer().collapse(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
     }
 
 
@@ -302,11 +306,15 @@ public class ViewChangedNotificationSuppressionTest {
         final Object modelElement = MODEL_QUERY.apply(viewContext);
 
         viewContext.getViewer().collapse(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
     }
 
     @Test
@@ -322,11 +330,15 @@ public class ViewChangedNotificationSuppressionTest {
 
         viewContext.getViewer().collapse(modelElement);
 
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
     }
 
     @Test
@@ -343,11 +355,15 @@ public class ViewChangedNotificationSuppressionTest {
         final Object modelElement = MODEL_QUERY.apply(viewContext);
 
         viewContext.getViewer().collapse(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, false);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .layout();
     }
 
 
@@ -355,11 +371,16 @@ public class ViewChangedNotificationSuppressionTest {
         final Object modelElement = MODEL_QUERY.apply(viewContext);
 
         shell.open();
-        LightDiagramServices.layoutDiagram(viewContext, false, ZoomStyle.ZOOM_TO_FIT);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .zoomStyle(ZoomStyle.ZOOM_TO_FIT)
+            .layout();
         waitALongMoment();
 
         viewContext.getViewer().collapse(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, CONF);
+        new LightDiagramLayoutConfig(viewContext)
+            .options(CONF)
+            .layout();
         waitALongMoment();
 
         viewContext.getViewer().clip(modelElement);
@@ -368,7 +389,9 @@ public class ViewChangedNotificationSuppressionTest {
         waitALongMoment();
 
         viewContext.getViewer().expand(modelElement);
-        LightDiagramServices.layoutDiagram(viewContext, CONF);
+        new LightDiagramLayoutConfig(viewContext)
+            .options(CONF)
+            .layout();
         waitALongMoment();
 
         viewContext.getViewer().clip(null);

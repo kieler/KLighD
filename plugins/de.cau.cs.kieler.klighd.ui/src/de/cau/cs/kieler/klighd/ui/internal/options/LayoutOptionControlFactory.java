@@ -43,7 +43,7 @@ import com.google.common.collect.Iterators;
 import com.google.inject.Injector;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 
 /**
@@ -149,11 +149,9 @@ public class LayoutOptionControlFactory {
      */
     private void refreshLayout(final boolean animate) {
         if (autoRefreshLayout) {
-            if (animate) {
-                LightDiagramServices.layoutDiagram(viewContext);
-            } else {
-                LightDiagramServices.layoutDiagram(viewContext, false);
-            }
+            new LightDiagramLayoutConfig(viewContext)
+                    .animate(animate)
+                    .layout();
         }
     }
 

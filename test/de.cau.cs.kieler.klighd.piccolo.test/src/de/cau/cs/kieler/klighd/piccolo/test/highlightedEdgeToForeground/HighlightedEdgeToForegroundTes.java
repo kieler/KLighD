@@ -37,7 +37,7 @@ import com.google.inject.Module;
 import com.google.inject.Scopes;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.krendering.Colors;
@@ -92,7 +92,10 @@ public class HighlightedEdgeToForegroundTes {
         new ContextViewer(shell).setModel(viewContext, true);
 
         viewContext.update(null);
-        LightDiagramServices.layoutDiagram(viewContext, false, ZoomStyle.ZOOM_TO_ACTUAL_SIZE);
+        new LightDiagramLayoutConfig(viewContext)
+            .animate(false)
+            .zoomStyle(ZoomStyle.ZOOM_TO_ACTUAL_SIZE)
+            .layout();
 
         shell.layout(true, true);
         shell.open();

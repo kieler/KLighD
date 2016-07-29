@@ -33,7 +33,7 @@ import de.cau.cs.kieler.klighd.IAction.ActionResult;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
@@ -251,7 +251,12 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  flag of 'inputEvent' properly.
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                LightDiagramServices.layoutDiagram(vc, animate, zoomStyle, focusNode, layoutConfigs);
+                new LightDiagramLayoutConfig(vc)
+                        .animate(animate)
+                        .zoomStyle(zoomStyle)
+                        .focusNode(focusNode)
+                        .options(layoutConfigs)
+                        .layout();
             }
         });
 

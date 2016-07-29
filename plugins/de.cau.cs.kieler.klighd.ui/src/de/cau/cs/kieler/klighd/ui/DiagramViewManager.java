@@ -32,7 +32,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart;
@@ -206,7 +206,10 @@ public final class DiagramViewManager implements IPartListener {
         }
 
         // update the view context
-        if (!LightDiagramServices.updateDiagram(viewContext, model, properties)) {
+        if (!(new LightDiagramLayoutConfig(viewContext)
+                    .model(model)
+                    .properties(properties)
+                    .update())) {
             return null;
         }
 
@@ -243,7 +246,9 @@ public final class DiagramViewManager implements IPartListener {
      * @return the view with the identifier or null on failure
      */
     public static IDiagramWorkbenchPart updateView(final ViewContext viewContext, final Object model) {
-        boolean res = LightDiagramServices.updateDiagram(viewContext, model);
+        boolean res = new LightDiagramLayoutConfig(viewContext)
+                            .model(model)
+                            .update();
         return res ? viewContext.getDiagramWorkbenchPart() : null;
     }
 

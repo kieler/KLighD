@@ -18,7 +18,7 @@ import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 
 import de.cau.cs.kieler.klighd.IOffscreenRenderer;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
+import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -73,7 +73,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
 
         if (properties == null) {
             // layout the diagram
-            LightDiagramServices.layoutDiagram(viewContext);
+            new LightDiagramLayoutConfig(viewContext).layout();
 
         } else {
             // expand the desired elements...
@@ -94,7 +94,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
 
             if (!properties.getProperty(IOffscreenRenderer.NO_LAYOUT)) {
                 // layout the diagram
-                LightDiagramServices.layoutDiagram(viewContext);
+                new LightDiagramLayoutConfig(viewContext).layout();
             }
         }
 
