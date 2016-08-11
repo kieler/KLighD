@@ -61,7 +61,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             case "JavaSE-1.6": "1.6"
             case "JavaSE-1.7": "1.7"
             case "JavaSE-1.8": "1.8"
-            default: "1.5"
+            default: "1.8"
         }
         
         '''
@@ -87,16 +87,16 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             
             import javax.inject.Inject
             
-            import de.cau.cs.kieler.core.kgraph.KNode
-            import de.cau.cs.kieler.core.krendering.KRenderingFactory
-            import de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KEdgeExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KPortExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KLabelExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KRenderingExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KContainerRenderingExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KPolylineExtensions
-            import de.cau.cs.kieler.core.krendering.extensions.KColorExtensions
+            import org.eclipse.elk.graph.KNode
+            import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
+            import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
+            import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
+            import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
+            import de.cau.cs.kieler.klighd.krendering.extensions.KLabelExtensions
+            import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
+            import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
+            import de.cau.cs.kieler.klighd.krendering.extensions.KPolylineExtensions
+            import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
             import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
             
             import static de.cau.cs.kieler.klighd.syntheses.DiagramLayoutOptions.*
@@ -142,15 +142,15 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             import static de.cau.cs.kieler.klighd.syntheses.DiagramLayoutOptions.*;
             import static de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*;
             
-            import de.cau.cs.kieler.core.kgraph.KNode;
-            import de.cau.cs.kieler.kiml.util.KimlUtil;
+            import org.eclipse.elk.graph.KNode;
+            import org.eclipse.elk.core.util.ElkUtil;
             import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
             import «projectInfo.sourceModelClassFullyQualified»;
             
             public class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
             
                 public KNode transform(final «projectInfo.sourceModelClassSimple» model) {
-                    final KNode root = KimlUtil.createInitializedNode();
+                    final KNode root = ElkUtil.createInitializedNode();
                     associateWith(root, model);
                     
                     // Your dsl element <-> diagram figure mapping goes here!!
