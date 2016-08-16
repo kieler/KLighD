@@ -46,6 +46,21 @@ public class LightDiagramLayoutConfig {
     private Boolean animate;
 
     /**
+     * The minimal time for animations, in milliseconds.
+     */
+    private Integer minAnimationTime;
+    
+    /**
+     * The maximal time for animations, in milliseconds.
+     */
+    private Integer maxAnimationTime;
+    
+    /**
+     * Factor for computation of animation time.
+     */
+    private Integer animationTimeFactor;
+    
+    /**
      * The {@link ZoomStyle} to be employed.
      */
     private ZoomStyle zoomStyle;
@@ -97,48 +112,86 @@ public class LightDiagramLayoutConfig {
     /**
      * Update the model in the configuration. Will be used when calling {@link #update()}.
      * 
-     * @param model
+     * @param theModel
      *            the new model to be used in the configuration.
      * @return the configuration
      */
-    public LightDiagramLayoutConfig model(final Object model) {
-        this.model = model;
+    public LightDiagramLayoutConfig model(final Object theModel) {
+        this.model = theModel;
         return this;
     }
 
     /**
      * Configure the animation of the layout.
      * 
-     * @param animate
+     * @param doAnimate
      *            flag to determine if the layout should be animated
      * @return the configuration
      */
-    public LightDiagramLayoutConfig animate(final Boolean animate) {
-        this.animate = animate;
+    public LightDiagramLayoutConfig animate(final Boolean doAnimate) {
+        this.animate = doAnimate;
+        return this;
+    }
+
+    /**
+     * Configure the minimal animation time.
+     * 
+     * @param theMinAnimationTime
+     *            the minimal time for animations, in milliseconds
+     * @return the configuration
+     */
+    public LightDiagramLayoutConfig minAnimationTime(final Integer theMinAnimationTime) {
+        this.minAnimationTime = theMinAnimationTime;
+        return this;
+    }
+
+    /**
+     * Configure the maximal animation time.
+     * 
+     * @param theMaxAnimationTime
+     *            the maximal time for animations, in milliseconds
+     * @return the configuration
+     */
+    public LightDiagramLayoutConfig maxAnimationTime(final Integer theMaxAnimationTime) {
+        this.maxAnimationTime = theMaxAnimationTime;
+        return this;
+    }
+
+    /**
+     * Configure the animation time factor.
+     * 
+     * @param theAnimationTimeFactor
+     *            Factor for computation of animation time. The higher the value, the longer the
+     *            animation time. If the value is 0, the resulting time is always equal to the
+     *            minimum defined by 'Minimal Animation Time'.
+     * @return the configuration
+     */
+    public LightDiagramLayoutConfig animationTimeFactor(final Integer theAnimationTimeFactor) {
+        this.animationTimeFactor = theAnimationTimeFactor;
         return this;
     }
 
     /**
      * Configuration for the {@link ZoomStyle} of the layout.
      * 
-     * @param zoomStyle
+     * @param theZoomStyle
      *            the {@link ZoomStyle} to be used.
      * @return the configuration
      */
-    public LightDiagramLayoutConfig zoomStyle(final ZoomStyle zoomStyle) {
-        this.zoomStyle = zoomStyle;
+    public LightDiagramLayoutConfig zoomStyle(final ZoomStyle theZoomStyle) {
+        this.zoomStyle = theZoomStyle;
         return this;
     }
 
     /**
      * Sets the node to focus on.
      * 
-     * @param focusNode
+     * @param theFocusNode
      *            the {@link KNode} to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} is set.
      * @return the configuration
      */
-    public LightDiagramLayoutConfig focusNode(final KNode focusNode) {
-        this.focusNode = focusNode;
+    public LightDiagramLayoutConfig focusNode(final KNode theFocusNode) {
+        this.focusNode = theFocusNode;
         return this;
     }
 
@@ -146,24 +199,24 @@ public class LightDiagramLayoutConfig {
      * List of {@link LayoutConfigurator LayoutConfigurators} that should override the default
      * configuration.
      * 
-     * @param options
+     * @param theOptions
      *            the list of {@link LayoutConfigurator LayoutConfigurators}
      * @return the configuration
      */
-    public LightDiagramLayoutConfig options(final List<LayoutConfigurator> options) {
-        this.options = options;
+    public LightDiagramLayoutConfig options(final List<LayoutConfigurator> theOptions) {
+        this.options = theOptions;
         return this;
     }
 
     /**
      * {@link IPropertyHolder} to modify the update behaviour of this layout.
      * 
-     * @param properties
+     * @param theProperties
      *            the {@link IPropertyHolder} containing the settings.
      * @return the configuration
      */
-    public LightDiagramLayoutConfig properties(final IPropertyHolder properties) {
-        this.properties = properties;
+    public LightDiagramLayoutConfig properties(final IPropertyHolder theProperties) {
+        this.properties = theProperties;
         return this;
     }
 
@@ -186,6 +239,33 @@ public class LightDiagramLayoutConfig {
      */
     Boolean animate() {
         return this.animate;
+    }
+
+    /**
+     * The minimal time for animations.
+     * 
+     * @return the minimal time for animations, in milliseconds
+     */
+    Integer minAnimationTime() {
+        return this.minAnimationTime;
+    }
+
+    /**
+     * The maximal time for animations.
+     * 
+     * @return the maximal time for animations, in milliseconds
+     */
+    Integer maxAnimationTime() {
+        return this.maxAnimationTime;
+    }
+
+    /**
+     * The animation time factor.
+     * 
+     * @return Factor for computation of animation time.
+     */
+    Integer animationTimeFactor() {
+        return this.animationTimeFactor;
     }
 
     /**

@@ -923,6 +923,20 @@ public final class LightDiagramServices {
                             .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
             layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
 
+            // Animation time properties
+            if (config.animationTimeFactor() != null) {
+                    layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIM_TIME_FACTOR, 
+                            config.animationTimeFactor());
+            }
+            if (config.minAnimationTime() != null) {
+                layoutParameters.getGlobalSettings().setProperty(CoreOptions.MIN_ANIM_TIME, 
+                        config.minAnimationTime());
+            }
+            if (config.maxAnimationTime() != null) {
+                layoutParameters.getGlobalSettings().setProperty(CoreOptions.MAX_ANIM_TIME, 
+                        config.maxAnimationTime());
+            }
+
             if (thePart instanceof ILayoutConfigProvider) {
                 extendedConfigurator
                         .overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
