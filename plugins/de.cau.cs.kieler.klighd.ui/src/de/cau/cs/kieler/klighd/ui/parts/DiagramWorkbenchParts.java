@@ -129,7 +129,7 @@ public final class DiagramWorkbenchParts {
 
                 if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                         || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                    new LightDiagramLayoutConfig(diagramWorkbenchPart).layout();
+                    new LightDiagramLayoutConfig(diagramWorkbenchPart).performLayout();
                     oldAspectRatio = aspectRatio;
 
                 } else {

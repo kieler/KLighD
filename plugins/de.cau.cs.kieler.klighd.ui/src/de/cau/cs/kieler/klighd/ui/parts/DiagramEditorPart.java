@@ -302,7 +302,7 @@ public class DiagramEditorPart extends EditorPart implements
                         new LightDiagramLayoutConfig(viewContext)
                             .animate(false)
                             .zoomStyle(getInitialZoomStyle())
-                            .layout();
+                            .performLayout();
 
                         if (control.isDisposed()) {
                             return;

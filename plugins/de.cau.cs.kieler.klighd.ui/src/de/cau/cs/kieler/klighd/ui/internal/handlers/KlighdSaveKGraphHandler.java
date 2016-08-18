@@ -266,7 +266,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             if (!n.getChildren().isEmpty()) {
                 new LightDiagramLayoutConfig(viewContext)
                     .animate(false)
-                    .layout();
+                    .performLayout();
             }
         }
 
@@ -282,7 +282,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
         increaseHierarchy.add(subgraph);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
         int i = 0;
         // SUPPRESS CHECKSTYLE NEXT MagicNumber
         int requiredPaddingZeroes = (int) Math.ceil(Math.log(expandedNodes.size()) / Math.log(10));
@@ -292,7 +292,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
             viewContext.getViewer().expand(toExpand);
             new LightDiagramLayoutConfig(viewContext)
                 .animate(false)
-                .layout();
+                .performLayout();
             
             String filename =
                     "inchierarchy_" + getModelPathName(subgraph, viewContext) + "_"

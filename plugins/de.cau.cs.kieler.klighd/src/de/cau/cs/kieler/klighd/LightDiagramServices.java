@@ -75,7 +75,7 @@ public final class LightDiagramServices {
      */
     public static boolean updateDiagram(final ViewContext viewContext) {
         return new LightDiagramLayoutConfig(viewContext)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -96,7 +96,7 @@ public final class LightDiagramServices {
     public static boolean updateDiagram(final ViewContext viewContext, final boolean animate) {
         return new LightDiagramLayoutConfig(viewContext)
                     .animate(animate)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -117,7 +117,7 @@ public final class LightDiagramServices {
     public static boolean updateDiagram(final ViewContext viewContext, final Object model) {
         return new LightDiagramLayoutConfig(viewContext)
                     .model(model)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -140,7 +140,7 @@ public final class LightDiagramServices {
             final IPropertyHolder properties) {
         return new LightDiagramLayoutConfig(viewContext)
                     .properties(properties)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -165,7 +165,7 @@ public final class LightDiagramServices {
         return new LightDiagramLayoutConfig(viewContext)
                     .model(model)
                     .animate(animate)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -191,7 +191,7 @@ public final class LightDiagramServices {
         return new LightDiagramLayoutConfig(viewContext)
                     .model(model)
                     .properties(properties)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -217,7 +217,7 @@ public final class LightDiagramServices {
         return new LightDiagramLayoutConfig(viewContext)
                     .properties(properties)
                     .animate(animate)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -246,7 +246,7 @@ public final class LightDiagramServices {
                     .animate(animate)
                     .model(model)
                     .properties(properties)
-                    .update();
+                    .performUpdate();
     }
 
     /**
@@ -300,7 +300,7 @@ public final class LightDiagramServices {
             diagramWP.getSite().getPage().bringToTop(diagramWP);
         }
 
-        config.layout();
+        config.performLayout();
 
         return true;
     }
@@ -320,7 +320,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final ViewContext viewContext) {
         new LightDiagramLayoutConfig(viewContext)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -341,7 +341,7 @@ public final class LightDiagramServices {
             final List<LayoutConfigurator> options) {
         new LightDiagramLayoutConfig(viewContext)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -361,7 +361,7 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final ViewContext viewContext, final boolean animate) {
         new LightDiagramLayoutConfig(viewContext)
                 .animate(animate)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -385,7 +385,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewContext)
                 .animate(animate)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -404,7 +404,7 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final ViewContext viewContext, final ZoomStyle zoomStyle) {
         new LightDiagramLayoutConfig(viewContext)
                 .zoomStyle(zoomStyle)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -427,7 +427,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewContext)
                 .zoomStyle(zoomStyle)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -451,7 +451,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewContext)
                 .zoomStyle(zoomStyle)
                 .focusNode(focusNode)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -478,7 +478,7 @@ public final class LightDiagramServices {
                 .zoomStyle(zoomStyle)
                 .focusNode(focusNode)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -499,7 +499,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewContext)
                 .animate(animate)
                 .zoomStyle(zoomStyle)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -523,7 +523,7 @@ public final class LightDiagramServices {
                 .animate(animate)
                 .zoomStyle(zoomStyle)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -548,7 +548,7 @@ public final class LightDiagramServices {
                 .animate(animate)
                 .zoomStyle(zoomStyle)
                 .focusNode(focusNode)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -577,7 +577,7 @@ public final class LightDiagramServices {
                 .zoomStyle(zoomStyle)
                 .focusNode(focusNode)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
 
@@ -596,7 +596,7 @@ public final class LightDiagramServices {
      */
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart) {
         new LightDiagramLayoutConfig(viewPart)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -618,7 +618,7 @@ public final class LightDiagramServices {
             final List<LayoutConfigurator> options) {
         new LightDiagramLayoutConfig(viewPart)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
 
@@ -640,7 +640,7 @@ public final class LightDiagramServices {
     public static void layoutDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
         new LightDiagramLayoutConfig(viewPart)
                 .animate(animate)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -665,7 +665,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewPart)
                 .animate(animate)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -686,7 +686,7 @@ public final class LightDiagramServices {
             final ZoomStyle zoomStyle) {
         new LightDiagramLayoutConfig(viewPart)
                 .zoomStyle(zoomStyle)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -710,7 +710,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewPart)
                 .zoomStyle(zoomStyle)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -734,7 +734,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewPart)
                 .zoomStyle(zoomStyle)
                 .focusNode(focusNode)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -761,7 +761,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewPart)
                 .zoomStyle(zoomStyle)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -783,7 +783,7 @@ public final class LightDiagramServices {
         new LightDiagramLayoutConfig(viewPart)
                 .animate(animate)
                 .zoomStyle(zoomStyle)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -808,7 +808,7 @@ public final class LightDiagramServices {
                 .animate(animate)
                 .zoomStyle(zoomStyle)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -833,7 +833,7 @@ public final class LightDiagramServices {
                 .animate(animate)
                 .zoomStyle(zoomStyle)
                 .focusNode(focusNode)
-                .layout();
+                .performLayout();
     }
 
     /**
@@ -862,7 +862,7 @@ public final class LightDiagramServices {
                 .zoomStyle(zoomStyle)
                 .focusNode(focusNode)
                 .options(options)
-                .layout();
+                .performLayout();
     }
 
 

@@ -209,7 +209,7 @@ public final class DiagramViewManager implements IPartListener {
         if (!(new LightDiagramLayoutConfig(viewContext)
                     .model(model)
                     .properties(properties)
-                    .update())) {
+                    .performUpdate())) {
             return null;
         }
 
@@ -248,7 +248,7 @@ public final class DiagramViewManager implements IPartListener {
     public static IDiagramWorkbenchPart updateView(final ViewContext viewContext, final Object model) {
         boolean res = new LightDiagramLayoutConfig(viewContext)
                             .model(model)
-                            .update();
+                            .performUpdate();
         return res ? viewContext.getDiagramWorkbenchPart() : null;
     }
 

@@ -178,7 +178,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                             .zoomStyle(ZoomStyle.create(result, viewContext))
                             .focusNode(result.getFocusNode())
                             .options(result.getLayoutConfigs())
-                            .layout();
+                            .performLayout();
                 } else {
                     viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
                 }

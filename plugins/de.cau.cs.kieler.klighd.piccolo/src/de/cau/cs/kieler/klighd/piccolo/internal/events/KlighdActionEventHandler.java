@@ -256,7 +256,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
                         .zoomStyle(zoomStyle)
                         .focusNode(focusNode)
                         .options(layoutConfigs)
-                        .layout();
+                        .performLayout();
             }
         });
 

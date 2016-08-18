@@ -26,6 +26,14 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * {@link LightDiagramServices#updateDiagram(LightDiagramLayoutConfig). These configuration holders
  * should be disposed of after use. For this reason there are no public getters available.
  * 
+ * Example:
+ * <code>
+ * new LightDiagramLayoutConfig(viewContext)
+ *          .zoomStyle(zoomStyle)
+ *          .focusNode(focusNode)
+ *          .layout();
+ * </code>
+ * 
  * @author enbewe
  */
 public class LightDiagramLayoutConfig {
@@ -110,7 +118,7 @@ public class LightDiagramLayoutConfig {
     // Modification of the configuration
 
     /**
-     * Update the model in the configuration. Will be used when calling {@link #update()}.
+     * Update the model in the configuration. Will be used when calling {@link #performUpdate()}.
      * 
      * @param theModel
      *            the new model to be used in the configuration.
@@ -224,7 +232,7 @@ public class LightDiagramLayoutConfig {
     // Reading the configuration in LightDiagramServices
 
     /**
-     * Returns the new model to be used during {@link #update()}.
+     * Returns the new model to be used during {@link #performUpdate()}.
      * 
      * @return the new model.
      */
@@ -332,7 +340,7 @@ public class LightDiagramLayoutConfig {
      * Use this configuration and start a layout run. Convenient shorthand for
      * <code>LightDiagramServices.layoutDiagram(config)</code>.
      */
-    public void layout() {
+    public void performLayout() {
         LightDiagramServices.layoutDiagram(this);
     }
 
@@ -343,7 +351,7 @@ public class LightDiagramLayoutConfig {
      * @return <code>true</code> if update could be performed successfully, <code>false</code>
      *         otherwise
      */
-    public boolean update() {
+    public boolean performUpdate() {
         return LightDiagramServices.updateDiagram(this);
     }
 

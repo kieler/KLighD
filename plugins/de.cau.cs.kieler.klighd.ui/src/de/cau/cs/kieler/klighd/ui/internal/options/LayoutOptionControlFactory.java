@@ -151,7 +151,7 @@ public class LayoutOptionControlFactory {
         if (autoRefreshLayout) {
             new LightDiagramLayoutConfig(viewContext)
                     .animate(animate)
-                    .layout();
+                    .performLayout();
         }
     }
 

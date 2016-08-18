@@ -41,7 +41,7 @@ public class KlighdLayoutHandler extends AbstractHandler {
         // get the active editor, which is expected to contain the diagram for applying layout
         IEditorPart editorPart = HandlerUtil.getActiveEditor(event);
         if (editorPart instanceof IDiagramWorkbenchPart) {
-            new LightDiagramLayoutConfig((IDiagramWorkbenchPart) editorPart).layout();
+            new LightDiagramLayoutConfig((IDiagramWorkbenchPart) editorPart).performLayout();
         }
         // the else case should not happen as this handler is only active for
         //  IDiagramWorkbenchPart.IDiagramEditorParts, see registration in plugin.xml

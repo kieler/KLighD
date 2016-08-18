@@ -95,7 +95,7 @@ public class HighlightedEdgeToForegroundTes {
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
             .zoomStyle(ZoomStyle.ZOOM_TO_ACTUAL_SIZE)
-            .layout();
+            .performLayout();
 
         shell.layout(true, true);
         shell.open();

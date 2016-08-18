@@ -420,7 +420,7 @@ public class SynthesisOptionControlFactory {
                             new LightDiagramLayoutConfig(context)
                                 .properties(properties)
                                 .animate(option.getAnimateUpdate())
-                                .update();
+                                .performUpdate();
                         }
                     }
                 });
@@ -483,7 +483,7 @@ public class SynthesisOptionControlFactory {
                                     new LightDiagramLayoutConfig(context)
                                         .properties(properties)
                                         .animate(option.getAnimateUpdate())
-                                        .update();
+                                        .performUpdate();
                                 }
                             }
                         });
@@ -606,7 +606,7 @@ public class SynthesisOptionControlFactory {
                             new LightDiagramLayoutConfig(context)
                                 .properties(properties)
                                 .animate(option.getAnimateUpdate())
-                                .update();
+                                .performUpdate();
                         }
                     }
                 });
@@ -649,7 +649,7 @@ public class SynthesisOptionControlFactory {
                 .zoomStyle(ZoomStyle.create(result, viewContext))
                 .focusNode(result.getFocusNode())
                 .options(result.getLayoutConfigs())
-                .layout();
+                .performLayout();
         } else {
             viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
         }

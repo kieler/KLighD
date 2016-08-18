@@ -253,7 +253,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         layoutAction = new Action("Arrange diagram", IAction.AS_PUSH_BUTTON) {
             @Override
             public void run() {
-                new LightDiagramLayoutConfig(DiagramView.this).layout();
+                new LightDiagramLayoutConfig(DiagramView.this).performLayout();
             }
         };
         layoutAction.setId("layoutAction");
@@ -1103,7 +1103,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                 success = new LightDiagramLayoutConfig(this.getViewer().getViewContext())
                                 .model(model)
                                 .properties(properties)
-                                .update();
+                                .performUpdate();
 
                 // Update sidebar if the synthesis option changed due to child syntheses
                 if (success && (!viewContext.getChildViewContexts(false).isEmpty()

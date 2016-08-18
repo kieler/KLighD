@@ -283,13 +283,13 @@ public class ViewChangedNotificationSuppressionTest {
         viewContext.getViewer().collapse(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
     }
 
 
@@ -308,13 +308,13 @@ public class ViewChangedNotificationSuppressionTest {
         viewContext.getViewer().collapse(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
     }
 
     @Test
@@ -332,13 +332,13 @@ public class ViewChangedNotificationSuppressionTest {
 
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
     }
 
     @Test
@@ -357,13 +357,13 @@ public class ViewChangedNotificationSuppressionTest {
         viewContext.getViewer().collapse(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
         waitAMoment();
 
         viewContext.getViewer().expand(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
     }
 
 
@@ -374,13 +374,13 @@ public class ViewChangedNotificationSuppressionTest {
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
             .zoomStyle(ZoomStyle.ZOOM_TO_FIT)
-            .layout();
+            .performLayout();
         waitALongMoment();
 
         viewContext.getViewer().collapse(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .options(CONF)
-            .layout();
+            .performLayout();
         waitALongMoment();
 
         viewContext.getViewer().clip(modelElement);
@@ -391,7 +391,7 @@ public class ViewChangedNotificationSuppressionTest {
         viewContext.getViewer().expand(modelElement);
         new LightDiagramLayoutConfig(viewContext)
             .options(CONF)
-            .layout();
+            .performLayout();
         waitALongMoment();
 
         viewContext.getViewer().clip(null);

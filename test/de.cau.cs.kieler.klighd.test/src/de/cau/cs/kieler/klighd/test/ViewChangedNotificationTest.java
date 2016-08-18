@@ -126,7 +126,7 @@ public class ViewChangedNotificationTest {
     public void postProcess() {
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
 
         while (failure == null && !finished) {
             if (respectDeadline && System.currentTimeMillis() > deadline) {

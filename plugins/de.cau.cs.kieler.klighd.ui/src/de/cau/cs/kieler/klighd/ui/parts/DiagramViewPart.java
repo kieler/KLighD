@@ -210,7 +210,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
         new LightDiagramLayoutConfig(viewContext)
             .animate(false)
-            .layout();
+            .performLayout();
 
         // setting the diagram composite visible strictly after applying the initial layout avoids
         //  flickering and suppresses the DiagramAreaChangeListener from getting active too early
@@ -325,7 +325,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
             public void run() {
                 new LightDiagramLayoutConfig(DiagramViewPart.this.getViewContext())
                     .animate(false)
-                    .update();
+                    .performUpdate();
             }
         });
 
@@ -343,7 +343,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
             @Override
             public void run() {
                 new LightDiagramLayoutConfig(DiagramViewPart.this)
-                    .layout();
+                    .performLayout();
             }
         });
 

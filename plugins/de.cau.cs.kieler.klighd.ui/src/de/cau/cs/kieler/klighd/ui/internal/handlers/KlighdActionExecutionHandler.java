@@ -134,7 +134,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
                 .zoomStyle(zoomStyle)
                 .focusNode(result.getFocusNode())
                 .options(result.getLayoutConfigs())
-                .layout();
+                .performLayout();
 
         } else if (resultOfLastRun != null) {
             viewContext.getLayoutRecorder().stopRecording(

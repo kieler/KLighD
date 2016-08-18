@@ -73,7 +73,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
 
         if (properties == null) {
             // layout the diagram
-            new LightDiagramLayoutConfig(viewContext).layout();
+            new LightDiagramLayoutConfig(viewContext).performLayout();
 
         } else {
             // expand the desired elements...
@@ -94,7 +94,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
 
             if (!properties.getProperty(IOffscreenRenderer.NO_LAYOUT)) {
                 // layout the diagram
-                new LightDiagramLayoutConfig(viewContext).layout();
+                new LightDiagramLayoutConfig(viewContext).performLayout();
             }
         }
 
