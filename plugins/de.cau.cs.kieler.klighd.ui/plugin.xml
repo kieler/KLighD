@@ -40,7 +40,7 @@
                     variable="activeMenuSelection">
                  <iterate>
                     <instanceof
-                          value="de.cau.cs.kieler.core.kgraph.KNode">
+                          value="org.eclipse.elk.graph.KNode">
                     </instanceof>
                  </iterate>
               </with>
@@ -119,7 +119,7 @@
                    </with>
                    <iterate>
                       <instanceof
-                            value="de.cau.cs.kieler.core.kgraph.KGraphElement">
+                            value="org.eclipse.elk.graph.KGraphElement">
                       </instanceof>
                    </iterate>
                     </or>
