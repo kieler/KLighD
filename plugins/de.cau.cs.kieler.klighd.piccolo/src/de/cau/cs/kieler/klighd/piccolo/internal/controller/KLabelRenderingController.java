@@ -96,9 +96,13 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
         }
         
         // Transfer selectability from KLabel to KText to properly handle the selection handlers
-        kText.setProperty(KlighdProperties.NOT_SELECTABLE,
-                getGraphElement().getData(KShapeLayout.class)
-                    .getProperty(KlighdProperties.NOT_SELECTABLE));
+        // Should only apply if the KText is not configured but KLabel is configured  
+        if (!kText.getProperties().contains(KlighdProperties.NOT_SELECTABLE)
+                && getGraphElement().getData(KShapeLayout.class).getProperties()
+                        .contains(KlighdProperties.NOT_SELECTABLE)) {
+            kText.setProperty(KlighdProperties.NOT_SELECTABLE, getGraphElement()
+                    .getData(KShapeLayout.class).getProperty(KlighdProperties.NOT_SELECTABLE));
+        }
         
         // create the rendering
         final PNodeController<?> controller =
