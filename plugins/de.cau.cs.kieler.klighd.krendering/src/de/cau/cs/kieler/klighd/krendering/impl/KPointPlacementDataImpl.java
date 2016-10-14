@@ -13,18 +13,20 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.klighd.krendering.KPointPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KPosition;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,6 +34,7 @@ import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KPointPlacementDataImpl#getReferencePoint <em>Reference Point</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KPointPlacementDataImpl#getHorizontalAlignment <em>Horizontal Alignment</em>}</li>
@@ -41,7 +44,6 @@ import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KPointPlacementDataImpl#getMinWidth <em>Min Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KPointPlacementDataImpl#getMinHeight <em>Min Height</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

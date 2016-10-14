@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import org.eclipse.elk.graph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -114,6 +115,43 @@ public interface KRenderingPackage extends EPackage {
     int KPOSITION_FEATURE_COUNT = 2;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.impl.KStyleHolderImpl <em>KStyle Holder</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.klighd.krendering.impl.KStyleHolderImpl
+     * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getKStyleHolder()
+     * @generated
+     */
+    int KSTYLE_HOLDER = 46;
+
+    /**
+     * The feature id for the '<em><b>Styles</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_HOLDER__STYLES = 0;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_HOLDER__ID = 1;
+
+    /**
+     * The number of structural features of the '<em>KStyle Holder</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSTYLE_HOLDER_FEATURE_COUNT = 2;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl <em>KRendering</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -124,31 +162,13 @@ public interface KRenderingPackage extends EPackage {
     int KRENDERING = 1;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KRENDERING__PROPERTIES = KGraphPackage.KGRAPH_DATA__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KRENDERING__PERSISTENT_ENTRIES = KGraphPackage.KGRAPH_DATA__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int KRENDERING__STYLES = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 0;
+    int KRENDERING__STYLES = KSTYLE_HOLDER__STYLES;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -157,7 +177,25 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING__ID = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 1;
+    int KRENDERING__ID = KSTYLE_HOLDER__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRENDERING__PROPERTIES = KSTYLE_HOLDER_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRENDERING__PERSISTENT_ENTRIES = KSTYLE_HOLDER_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -166,7 +204,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING__PARENT = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 2;
+    int KRENDERING__PARENT = KSTYLE_HOLDER_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Placement Data</b></em>' containment reference.
@@ -175,7 +213,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING__PLACEMENT_DATA = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 3;
+    int KRENDERING__PLACEMENT_DATA = KSTYLE_HOLDER_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Actions</b></em>' containment reference list.
@@ -184,7 +222,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING__ACTIONS = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 4;
+    int KRENDERING__ACTIONS = KSTYLE_HOLDER_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>KRendering</em>' class.
@@ -193,7 +231,7 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int KRENDERING_FEATURE_COUNT = KGraphPackage.KGRAPH_DATA_FEATURE_COUNT + 5;
+    int KRENDERING_FEATURE_COUNT = KSTYLE_HOLDER_FEATURE_COUNT + 5;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.impl.KContainerRenderingImpl <em>KContainer Rendering</em>}' class.
@@ -204,24 +242,6 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     int KCONTAINER_RENDERING = 9;
-
-    /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCONTAINER_RENDERING__PROPERTIES = KRENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCONTAINER_RENDERING__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -240,6 +260,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KCONTAINER_RENDERING__ID = KRENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCONTAINER_RENDERING__PROPERTIES = KRENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCONTAINER_RENDERING__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -306,24 +344,6 @@ public interface KRenderingPackage extends EPackage {
     int KELLIPSE = 2;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KELLIPSE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KELLIPSE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -340,6 +360,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KELLIPSE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KELLIPSE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KELLIPSE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -406,24 +444,6 @@ public interface KRenderingPackage extends EPackage {
     int KRECTANGLE = 3;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KRECTANGLE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KRECTANGLE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -440,6 +460,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KRECTANGLE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRECTANGLE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRECTANGLE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -506,24 +544,6 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_RECTANGLE = 4;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KROUNDED_RECTANGLE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KROUNDED_RECTANGLE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -540,6 +560,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KROUNDED_RECTANGLE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_RECTANGLE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_RECTANGLE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -624,24 +662,6 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYLINE = 5;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KPOLYLINE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KPOLYLINE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -658,6 +678,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KPOLYLINE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYLINE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYLINE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -742,24 +780,6 @@ public interface KRenderingPackage extends EPackage {
     int KPOLYGON = 6;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KPOLYGON__PROPERTIES = KPOLYLINE__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KPOLYGON__PERSISTENT_ENTRIES = KPOLYLINE__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -776,6 +796,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KPOLYGON__ID = KPOLYLINE__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYGON__PROPERTIES = KPOLYLINE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KPOLYGON__PERSISTENT_ENTRIES = KPOLYLINE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -860,24 +898,6 @@ public interface KRenderingPackage extends EPackage {
     int KIMAGE = 7;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KIMAGE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KIMAGE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -894,6 +914,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KIMAGE__ID = KCONTAINER_RENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KIMAGE__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KIMAGE__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1097,24 +1135,6 @@ public interface KRenderingPackage extends EPackage {
     int KARC = 10;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KARC__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KARC__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1131,6 +1151,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KARC__ID = KCONTAINER_RENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KARC__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KARC__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1334,24 +1372,6 @@ public interface KRenderingPackage extends EPackage {
     int KRENDERING_REF = 13;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KRENDERING_REF__PROPERTIES = KRENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KRENDERING_REF__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1368,6 +1388,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KRENDERING_REF__ID = KRENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRENDERING_REF__PROPERTIES = KRENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KRENDERING_REF__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1425,24 +1463,6 @@ public interface KRenderingPackage extends EPackage {
     int KCHILD_AREA = 14;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCHILD_AREA__PROPERTIES = KRENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCHILD_AREA__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1459,6 +1479,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KCHILD_AREA__ID = KRENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCHILD_AREA__PROPERTIES = KRENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCHILD_AREA__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1507,24 +1545,6 @@ public interface KRenderingPackage extends EPackage {
     int KTEXT = 15;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT__PROPERTIES = KRENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KTEXT__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1541,6 +1561,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KTEXT__ID = KRENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT__PROPERTIES = KRENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KTEXT__PERSISTENT_ENTRIES = KRENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -1791,24 +1829,6 @@ public interface KRenderingPackage extends EPackage {
     int KCUSTOM_RENDERING = 21;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCUSTOM_RENDERING__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KCUSTOM_RENDERING__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1825,6 +1845,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KCUSTOM_RENDERING__ID = KCONTAINER_RENDERING__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCUSTOM_RENDERING__PROPERTIES = KCONTAINER_RENDERING__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KCUSTOM_RENDERING__PERSISTENT_ENTRIES = KCONTAINER_RENDERING__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -2496,24 +2534,6 @@ public interface KRenderingPackage extends EPackage {
     int KSPLINE = 33;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSPLINE__PROPERTIES = KPOLYLINE__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSPLINE__PERSISTENT_ENTRIES = KPOLYLINE__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2530,6 +2550,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KSPLINE__ID = KPOLYLINE__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__PROPERTIES = KPOLYLINE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KSPLINE__PERSISTENT_ENTRIES = KPOLYLINE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -3242,24 +3280,6 @@ public interface KRenderingPackage extends EPackage {
     int KROUNDED_BENDS_POLYLINE = 41;
 
     /**
-     * The feature id for the '<em><b>Properties</b></em>' map.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KROUNDED_BENDS_POLYLINE__PROPERTIES = KPOLYLINE__PROPERTIES;
-
-    /**
-     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KROUNDED_BENDS_POLYLINE__PERSISTENT_ENTRIES = KPOLYLINE__PERSISTENT_ENTRIES;
-
-    /**
      * The feature id for the '<em><b>Styles</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3276,6 +3296,24 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KROUNDED_BENDS_POLYLINE__ID = KPOLYLINE__ID;
+
+    /**
+     * The feature id for the '<em><b>Properties</b></em>' map.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_BENDS_POLYLINE__PROPERTIES = KPOLYLINE__PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int KROUNDED_BENDS_POLYLINE__PERSISTENT_ENTRIES = KPOLYLINE__PERSISTENT_ENTRIES;
 
     /**
      * The feature id for the '<em><b>Parent</b></em>' container reference.
@@ -3658,43 +3696,6 @@ public interface KRenderingPackage extends EPackage {
      * @ordered
      */
     int KPOINT_PLACEMENT_DATA_FEATURE_COUNT = KPLACEMENT_DATA_FEATURE_COUNT + 7;
-
-    /**
-     * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.impl.KStyleHolderImpl <em>KStyle Holder</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see de.cau.cs.kieler.klighd.krendering.impl.KStyleHolderImpl
-     * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getKStyleHolder()
-     * @generated
-     */
-    int KSTYLE_HOLDER = 46;
-
-    /**
-     * The feature id for the '<em><b>Styles</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTYLE_HOLDER__STYLES = 0;
-
-    /**
-     * The feature id for the '<em><b>Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTYLE_HOLDER__ID = 1;
-
-    /**
-     * The number of structural features of the '<em>KStyle Holder</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int KSTYLE_HOLDER_FEATURE_COUNT = 2;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.impl.KInvisibilityImpl <em>KInvisibility</em>}' class.

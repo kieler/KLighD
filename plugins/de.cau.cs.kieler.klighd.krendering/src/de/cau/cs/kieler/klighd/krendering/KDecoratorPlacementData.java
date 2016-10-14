@@ -25,6 +25,7 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData#getAbsolute <em>Absolute</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData#getXOffset <em>XOffset</em>}</li>
@@ -34,7 +35,6 @@ package de.cau.cs.kieler.klighd.krendering;
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData#getHeight <em>Height</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData#getRelative <em>Relative</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKDecoratorPlacementData()
  * @model
@@ -145,10 +145,6 @@ public interface KDecoratorPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Width</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Width</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * width of the decorator
@@ -174,10 +170,6 @@ public interface KDecoratorPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Height</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Height</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * height of the decorator
@@ -203,10 +195,6 @@ public interface KDecoratorPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Relative</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Relative</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * relative position based on the size of the decorated object

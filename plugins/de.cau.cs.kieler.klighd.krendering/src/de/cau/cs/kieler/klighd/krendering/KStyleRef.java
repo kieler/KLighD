@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.krendering;
 
 import org.eclipse.emf.common.util.EList;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>KStyle Ref</b></em>'.
@@ -27,11 +26,11 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KStyleRef#getStyleHolder <em>Style Holder</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KStyleRef#getReferencedTypes <em>Referenced Types</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKStyleRef()
  * @model
@@ -68,10 +67,6 @@ public interface KStyleRef extends KStyle {
      * Returns the value of the '<em><b>Referenced Types</b></em>' attribute list.
      * The list contents are of type {@link java.lang.Class}&lt;de.cau.cs.kieler.klighd.krendering.KStyle>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Referenced Types</em>' attribute list isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * A list of {@link KStyle} class instances (List&lt;Class&lt;KStyle&gt;&gt;) that is used for filtering the styles being "imported" from <code>styleHolder</code>; if it is empty all styles of <code>styleHolder</code> are (transitively) evaluated.

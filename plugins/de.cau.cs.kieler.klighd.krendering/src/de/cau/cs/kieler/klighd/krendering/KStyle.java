@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import org.eclipse.elk.graph.EMapPropertyHolder;
+import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,12 +27,12 @@ import org.eclipse.elk.graph.EMapPropertyHolder;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KStyle#isPropagateToChildren <em>Propagate To Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KStyle#getModifierId <em>Modifier Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KStyle#isSelection <em>Selection</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKStyle()
  * @model abstract="true"
@@ -42,10 +42,6 @@ public interface KStyle extends EMapPropertyHolder {
     /**
      * Returns the value of the '<em><b>Propagate To Children</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Propagate To Children</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * defines whether child elements of the rendering should inherit this style

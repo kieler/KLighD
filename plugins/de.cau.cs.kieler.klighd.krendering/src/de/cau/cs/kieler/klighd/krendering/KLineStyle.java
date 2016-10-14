@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.krendering;
 
 import org.eclipse.emf.common.util.EList;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>KLine Style</b></em>'.
@@ -28,12 +27,12 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KLineStyle#getLineStyle <em>Line Style</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KLineStyle#getDashPattern <em>Dash Pattern</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KLineStyle#getDashOffset <em>Dash Offset</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKLineStyle()
  * @model
@@ -74,7 +73,7 @@ public interface KLineStyle extends KStyle {
      * The list contents are of type {@link java.lang.Float}.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Dash Pattern</em>' attribute isn't clear,
+     * If the meaning of the '<em>Dash Pattern</em>' attribute list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->

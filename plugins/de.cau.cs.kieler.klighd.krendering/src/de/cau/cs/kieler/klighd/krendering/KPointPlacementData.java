@@ -25,6 +25,7 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPointPlacementData#getReferencePoint <em>Reference Point</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}</li>
@@ -34,7 +35,6 @@ package de.cau.cs.kieler.klighd.krendering;
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPointPlacementData#getMinWidth <em>Min Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPointPlacementData#getMinHeight <em>Min Height</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKPointPlacementData()
  * @model
@@ -65,6 +65,35 @@ public interface KPointPlacementData extends KPlacementData {
      * @generated
      */
     void setReferencePoint(KPosition value);
+
+    /**
+     * Returns the value of the '<em><b>Horizontal Alignment</b></em>' attribute.
+     * The default value is <code>"LEFT"</code>.
+     * The literals are from the enumeration {@link de.cau.cs.kieler.klighd.krendering.HorizontalAlignment}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Horizontal alignment of the child w.r.t. to the reference point that is based on the parent's bounds.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Horizontal Alignment</em>' attribute.
+     * @see de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
+     * @see #setHorizontalAlignment(HorizontalAlignment)
+     * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKPointPlacementData_HorizontalAlignment()
+     * @model default="LEFT"
+     * @generated
+     */
+    HorizontalAlignment getHorizontalAlignment();
+
+    /**
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Horizontal Alignment</em>' attribute.
+     * @see de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
+     * @see #getHorizontalAlignment()
+     * @generated
+     */
+    void setHorizontalAlignment(HorizontalAlignment value);
 
     /**
      * Returns the value of the '<em><b>Vertical Alignment</b></em>' attribute.
@@ -148,10 +177,6 @@ public interface KPointPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Min Width</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Min Width</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Minimal width of the element. When children are smaller or not present, this size will be used.
@@ -177,10 +202,6 @@ public interface KPointPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Min Height</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Min Height</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Minimal height of the element. When children are smaller or not present, this size will be used.
@@ -202,34 +223,5 @@ public interface KPointPlacementData extends KPlacementData {
      * @generated
      */
     void setMinHeight(float value);
-
-    /**
-     * Returns the value of the '<em><b>Horizontal Alignment</b></em>' attribute.
-     * The default value is <code>"LEFT"</code>.
-     * The literals are from the enumeration {@link de.cau.cs.kieler.klighd.krendering.HorizontalAlignment}.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Horizontal alignment of the child w.r.t. to the reference point that is based on the parent's bounds.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Horizontal Alignment</em>' attribute.
-     * @see de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
-     * @see #setHorizontalAlignment(HorizontalAlignment)
-     * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKPointPlacementData_HorizontalAlignment()
-     * @model default="LEFT"
-     * @generated
-     */
-    HorizontalAlignment getHorizontalAlignment();
-
-    /**
-     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KPointPlacementData#getHorizontalAlignment <em>Horizontal Alignment</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Horizontal Alignment</em>' attribute.
-     * @see de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
-     * @see #getHorizontalAlignment()
-     * @generated
-     */
-    void setHorizontalAlignment(HorizontalAlignment value);
 
 } // KPointPlacementData

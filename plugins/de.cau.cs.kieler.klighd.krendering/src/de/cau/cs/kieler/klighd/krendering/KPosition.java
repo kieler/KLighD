@@ -26,11 +26,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPosition#getX <em>X</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPosition#getY <em>Y</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKPosition()
  * @model
@@ -40,10 +40,6 @@ public interface KPosition extends EObject {
     /**
      * Returns the value of the '<em><b>X</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>X</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the x-position relative to the parent based on absolute coordinates or relative parent width
@@ -69,10 +65,6 @@ public interface KPosition extends EObject {
     /**
      * Returns the value of the '<em><b>Y</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Y</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the y-position relative to the parent based on absolute coordinates or relative parent height

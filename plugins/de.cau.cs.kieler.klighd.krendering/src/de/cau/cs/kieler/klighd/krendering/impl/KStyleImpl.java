@@ -13,13 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.elk.graph.impl.EMapPropertyHolderImpl;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import de.cau.cs.kieler.klighd.kgraph.impl.EMapPropertyHolderImpl;
 
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.KStyle;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,12 +30,12 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KStyleImpl#isPropagateToChildren <em>Propagate To Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KStyleImpl#getModifierId <em>Modifier Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KStyleImpl#isSelection <em>Selection</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -13,15 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import de.cau.cs.kieler.klighd.krendering.KColor;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.KShadow;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,13 +31,13 @@ import de.cau.cs.kieler.klighd.krendering.KShadow;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KShadowImpl#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KShadowImpl#getYOffset <em>YOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KShadowImpl#getBlur <em>Blur</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KShadowImpl#getColor <em>Color</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

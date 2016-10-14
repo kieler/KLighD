@@ -13,14 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.krendering.KColor;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,12 +30,12 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KColorImpl#getRed <em>Red</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KColorImpl#getGreen <em>Green</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KColorImpl#getBlue <em>Blue</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

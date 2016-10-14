@@ -13,21 +13,25 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KPlacement;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,11 +39,11 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KContainerRenderingImpl#getChildren <em>Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KContainerRenderingImpl#getChildPlacement <em>Child Placement</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

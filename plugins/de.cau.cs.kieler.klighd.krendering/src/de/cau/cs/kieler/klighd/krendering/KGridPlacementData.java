@@ -25,28 +25,23 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KGridPlacementData#getMinCellWidth <em>Min Cell Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KGridPlacementData#getMinCellHeight <em>Min Cell Height</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KGridPlacementData#getFlexibleWidth <em>Flexible Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KGridPlacementData#getFlexibleHeight <em>Flexible Height</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKGridPlacementData()
  * @model
  * @generated
  */
 public interface KGridPlacementData extends KAreaPlacementData {
-
     /**
      * Returns the value of the '<em><b>Min Cell Width</b></em>' attribute.
      * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Min Cell Width</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * force layout to make the column that contains the element this placementdata is assigned to as wide as defined here. If another element in that column has a maxCellWidth that is less than this minWidth, the maxWidth is ignored.
@@ -73,10 +68,6 @@ public interface KGridPlacementData extends KAreaPlacementData {
      * Returns the value of the '<em><b>Min Cell Height</b></em>' attribute.
      * The default value is <code>"0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Min Cell Height</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * force layout to make the row that contains the element this placementdata is assigned to as high as defined here. If another element in that column has a maxCellHeight that is less than this minHeight, the maxHeight is ignored.

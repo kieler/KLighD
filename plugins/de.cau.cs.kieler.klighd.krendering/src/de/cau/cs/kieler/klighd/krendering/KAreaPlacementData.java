@@ -16,7 +16,7 @@ package de.cau.cs.kieler.klighd.krendering;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>KDirect Placement Data</b></em>'.
+ * A representation of the model object '<em><b>KArea Placement Data</b></em>'.
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
@@ -25,11 +25,11 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAreaPlacementData#getTopLeft <em>Top Left</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAreaPlacementData#getBottomRight <em>Bottom Right</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKAreaPlacementData()
  * @model
@@ -39,10 +39,6 @@ public interface KAreaPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Top Left</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Top Left</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * top left corner of the area used by the element the placement is attached to
@@ -68,10 +64,6 @@ public interface KAreaPlacementData extends KPlacementData {
     /**
      * Returns the value of the '<em><b>Bottom Right</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Bottom Right</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * bottom right corner of the area used by the element the placement is attached to
@@ -94,4 +86,4 @@ public interface KAreaPlacementData extends KPlacementData {
      */
     void setBottomRight(KPosition value);
 
-} // KDirectPlacementData
+} // KAreaPlacementData

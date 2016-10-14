@@ -26,12 +26,12 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KGridPlacement#getNumColumns <em>Num Columns</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KGridPlacement#getTopLeft <em>Top Left</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KGridPlacement#getBottomRight <em>Bottom Right</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKGridPlacement()
  * @model
@@ -41,10 +41,6 @@ public interface KGridPlacement extends KPlacement {
     /**
      * Returns the value of the '<em><b>Num Columns</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Num Columns</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * The number of columns the grid should have
@@ -71,10 +67,6 @@ public interface KGridPlacement extends KPlacement {
     /**
      * Returns the value of the '<em><b>Top Left</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Top Left</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the top left position of the grid
@@ -100,10 +92,6 @@ public interface KGridPlacement extends KPlacement {
     /**
      * Returns the value of the '<em><b>Bottom Right</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Bottom Right</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the bottom right position of the grid

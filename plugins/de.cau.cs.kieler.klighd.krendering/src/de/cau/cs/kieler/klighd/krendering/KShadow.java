@@ -21,13 +21,13 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KShadow#getXOffset <em>XOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KShadow#getYOffset <em>YOffset</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KShadow#getBlur <em>Blur</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KShadow#getColor <em>Color</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKShadow()
  * @model
@@ -38,10 +38,6 @@ public interface KShadow extends KStyle {
      * Returns the value of the '<em><b>XOffset</b></em>' attribute.
      * The default value is <code>"3"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>XOffset</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Determines x offset from element.
@@ -68,10 +64,6 @@ public interface KShadow extends KStyle {
      * Returns the value of the '<em><b>YOffset</b></em>' attribute.
      * The default value is <code>"3"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>YOffset</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Determines y offset from element.
@@ -98,10 +90,6 @@ public interface KShadow extends KStyle {
      * Returns the value of the '<em><b>Blur</b></em>' attribute.
      * The default value is <code>"0.0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Blur</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * The amount of blur for this shadow.
@@ -127,10 +115,6 @@ public interface KShadow extends KStyle {
     /**
      * Returns the value of the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Color</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * The color this shadow effect should have.

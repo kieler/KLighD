@@ -25,10 +25,10 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KLineWidth#getLineWidth <em>Line Width</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKLineWidth()
  * @model
@@ -39,10 +39,6 @@ public interface KLineWidth extends KStyle {
      * Returns the value of the '<em><b>Line Width</b></em>' attribute.
      * The default value is <code>"1.0"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Line Width</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the line width of the element

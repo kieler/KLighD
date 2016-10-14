@@ -13,21 +13,25 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
+import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+import de.cau.cs.kieler.klighd.krendering.KStyle;
+import de.cau.cs.kieler.klighd.krendering.KStyleHolder;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
-import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
-import de.cau.cs.kieler.klighd.krendering.KStyle;
-import de.cau.cs.kieler.klighd.krendering.KStyleHolder;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,11 +39,11 @@ import de.cau.cs.kieler.klighd.krendering.KStyleHolder;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KStyleHolderImpl#getStyles <em>Styles</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KStyleHolderImpl#getId <em>Id</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -63,6 +67,7 @@ public class KStyleHolderImpl extends EObjectImpl implements KStyleHolder {
      * @ordered
      */
     protected static final String ID_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
      * <!-- begin-user-doc -->

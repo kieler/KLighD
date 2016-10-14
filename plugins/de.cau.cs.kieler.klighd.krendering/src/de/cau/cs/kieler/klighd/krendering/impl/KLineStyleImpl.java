@@ -13,17 +13,21 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
-
 import de.cau.cs.kieler.klighd.krendering.KLineStyle;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.LineStyle;
+
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,12 +35,12 @@ import de.cau.cs.kieler.klighd.krendering.LineStyle;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KLineStyleImpl#getLineStyle <em>Line Style</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KLineStyleImpl#getDashPattern <em>Dash Pattern</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KLineStyleImpl#getDashOffset <em>Dash Offset</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

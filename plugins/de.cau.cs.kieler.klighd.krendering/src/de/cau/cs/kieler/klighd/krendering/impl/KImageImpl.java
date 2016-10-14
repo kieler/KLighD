@@ -13,15 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import de.cau.cs.kieler.klighd.krendering.KImage;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,13 +31,13 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KImageImpl#getBundleName <em>Bundle Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KImageImpl#getImagePath <em>Image Path</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KImageImpl#getImageObject <em>Image Object</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KImageImpl#getClipShape <em>Clip Shape</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

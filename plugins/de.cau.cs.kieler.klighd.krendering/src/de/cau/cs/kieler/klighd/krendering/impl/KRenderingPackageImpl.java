@@ -13,17 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.elk.graph.KGraphPackage;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.ETypeParameter;
-import org.eclipse.emf.ecore.impl.EPackageImpl;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+
+import de.cau.cs.kieler.klighd.kgraph.impl.KGraphPackageImpl;
 
 import de.cau.cs.kieler.klighd.krendering.Arc;
 import de.cau.cs.kieler.klighd.krendering.Colors;
@@ -89,6 +81,18 @@ import de.cau.cs.kieler.klighd.krendering.LineStyle;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.krendering.Underline;
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypeParameter;
+
+import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -577,14 +581,16 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         isInited = true;
 
-        // Initialize simple dependencies
-        KGraphPackage.eINSTANCE.eClass();
+        // Obtain or create and register interdependencies
+        KGraphPackageImpl theKGraphPackage = (KGraphPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(KGraphPackage.eNS_URI) instanceof KGraphPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(KGraphPackage.eNS_URI) : KGraphPackage.eINSTANCE);
 
         // Create package meta-data objects
         theKRenderingPackage.createPackageContents();
+        theKGraphPackage.createPackageContents();
 
         // Initialize created meta-data
         theKRenderingPackage.initializePackageContents();
+        theKGraphPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theKRenderingPackage.freeze();
@@ -2337,8 +2343,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kColoringEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
-        kRenderingEClass.getESuperTypes().add(theKGraphPackage.getKGraphData());
         kRenderingEClass.getESuperTypes().add(this.getKStyleHolder());
+        kRenderingEClass.getESuperTypes().add(theKGraphPackage.getKGraphData());
         kEllipseEClass.getESuperTypes().add(this.getKContainerRendering());
         kRectangleEClass.getESuperTypes().add(this.getKContainerRendering());
         kRoundedRectangleEClass.getESuperTypes().add(this.getKContainerRendering());

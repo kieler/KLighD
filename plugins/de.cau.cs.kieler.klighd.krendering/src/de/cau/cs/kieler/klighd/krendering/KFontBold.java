@@ -25,10 +25,10 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KFontBold#isBold <em>Bold</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKFontBold()
  * @model
@@ -39,10 +39,6 @@ public interface KFontBold extends KStyle {
      * Returns the value of the '<em><b>Bold</b></em>' attribute.
      * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Bold</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Set true to draw the text bold.

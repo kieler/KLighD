@@ -13,16 +13,18 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.krendering.KColor;
 import de.cau.cs.kieler.klighd.krendering.KColoring;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,6 +32,7 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KColoringImpl#getColor <em>Color</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KColoringImpl#getAlpha <em>Alpha</em>}</li>
@@ -37,7 +40,6 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KColoringImpl#getTargetAlpha <em>Target Alpha</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KColoringImpl#getGradientAngle <em>Gradient Angle</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

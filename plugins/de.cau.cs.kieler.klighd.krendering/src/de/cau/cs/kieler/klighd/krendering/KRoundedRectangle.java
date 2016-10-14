@@ -27,11 +27,11 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRoundedRectangle#getCornerWidth <em>Corner Width</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRoundedRectangle#getCornerHeight <em>Corner Height</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKRoundedRectangle()
  * @model
@@ -41,10 +41,6 @@ public interface KRoundedRectangle extends KContainerRendering {
     /**
      * Returns the value of the '<em><b>Corner Width</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Corner Width</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * width of a corner in pixels
@@ -70,10 +66,6 @@ public interface KRoundedRectangle extends KContainerRendering {
     /**
      * Returns the value of the '<em><b>Corner Height</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Corner Height</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * height of a corner in pixels

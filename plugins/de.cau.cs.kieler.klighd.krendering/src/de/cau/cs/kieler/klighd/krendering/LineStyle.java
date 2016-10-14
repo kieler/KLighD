@@ -80,7 +80,9 @@ public enum LineStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    DASHDOTDOT(4, "DASHDOTDOT", "DASHDOTDOT"), /**
+    DASHDOTDOT(4, "DASHDOTDOT", "DASHDOTDOT"),
+
+    /**
      * The '<em><b>CUSTOM</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -208,6 +210,8 @@ public enum LineStyle implements Enumerator {
      * Returns the '<em><b>Line Style</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param literal the literal.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static LineStyle get(String literal) {
@@ -224,6 +228,8 @@ public enum LineStyle implements Enumerator {
      * Returns the '<em><b>Line Style</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param name the name.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static LineStyle getByName(String name) {
@@ -240,6 +246,8 @@ public enum LineStyle implements Enumerator {
      * Returns the '<em><b>Line Style</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param value the integer value.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static LineStyle get(int value) {

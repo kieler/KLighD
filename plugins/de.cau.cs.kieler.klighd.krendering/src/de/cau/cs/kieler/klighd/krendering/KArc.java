@@ -25,12 +25,12 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KArc#getStartAngle <em>Start Angle</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KArc#getArcAngle <em>Arc Angle</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KArc#getArcType <em>Arc Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKArc()
  * @model
@@ -40,10 +40,6 @@ public interface KArc extends KContainerRendering {
     /**
      * Returns the value of the '<em><b>Start Angle</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Start Angle</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * startingAngle of the arc (0° = rightmost vertical line) on an ellipse
@@ -69,10 +65,6 @@ public interface KArc extends KContainerRendering {
     /**
      * Returns the value of the '<em><b>Arc Angle</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Arc Angle</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the angle the arc should cover (counterclockwise)
@@ -99,10 +91,6 @@ public interface KArc extends KContainerRendering {
      * Returns the value of the '<em><b>Arc Type</b></em>' attribute.
      * The literals are from the enumeration {@link de.cau.cs.kieler.klighd.krendering.Arc}.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Arc Type</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Sets the type the arc is supposed to have. See Arc Enum.

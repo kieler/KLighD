@@ -25,13 +25,13 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KImage#getBundleName <em>Bundle Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KImage#getImagePath <em>Image Path</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KImage#getImageObject <em>Image Object</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KImage#getClipShape <em>Clip Shape</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKImage()
  * @model
@@ -41,10 +41,6 @@ public interface KImage extends KContainerRendering {
     /**
      * Returns the value of the '<em><b>Bundle Name</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Bundle Name</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Name of the bundle where the image can be found. Note that the imagePath is relative to this bundle. 
@@ -70,10 +66,6 @@ public interface KImage extends KContainerRendering {
     /**
      * Returns the value of the '<em><b>Image Path</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Image Path</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the path to the image on the filesystem relative to the bundleName (and its according position)
@@ -99,10 +91,6 @@ public interface KImage extends KContainerRendering {
     /**
      * Returns the value of the '<em><b>Image Object</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Image Object</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the image to be used as JavaObject

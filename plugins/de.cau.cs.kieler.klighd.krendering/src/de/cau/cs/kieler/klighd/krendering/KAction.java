@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#getActionId <em>Action Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#getTrigger <em>Trigger</em>}</li>
@@ -33,7 +34,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#isShiftPressed <em>Shift Pressed</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKAction()
  * @model

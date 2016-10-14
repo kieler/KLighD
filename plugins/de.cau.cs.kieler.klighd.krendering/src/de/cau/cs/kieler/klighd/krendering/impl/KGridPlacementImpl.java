@@ -13,16 +13,18 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import de.cau.cs.kieler.klighd.krendering.KGridPlacement;
 import de.cau.cs.kieler.klighd.krendering.KPosition;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,12 +32,12 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KGridPlacementImpl#getNumColumns <em>Num Columns</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KGridPlacementImpl#getTopLeft <em>Top Left</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KGridPlacementImpl#getBottomRight <em>Bottom Right</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

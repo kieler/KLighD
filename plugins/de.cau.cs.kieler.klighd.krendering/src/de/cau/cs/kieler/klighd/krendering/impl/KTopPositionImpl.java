@@ -13,10 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.ecore.EClass;
-
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.KTopPosition;
+
+import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->

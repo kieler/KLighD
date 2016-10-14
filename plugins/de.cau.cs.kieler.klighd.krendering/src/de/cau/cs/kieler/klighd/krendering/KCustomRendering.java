@@ -21,12 +21,12 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KCustomRendering#getClassName <em>Class Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KCustomRendering#getBundleName <em>Bundle Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KCustomRendering#getFigureObject <em>Figure Object</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKCustomRendering()
  * @model

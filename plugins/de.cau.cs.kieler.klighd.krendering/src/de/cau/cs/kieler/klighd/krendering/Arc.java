@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import java.awt.geom.Arc2D;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -133,6 +132,8 @@ public enum Arc implements Enumerator {
      * Returns the '<em><b>Arc</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param literal the literal.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Arc get(String literal) {
@@ -149,6 +150,8 @@ public enum Arc implements Enumerator {
      * Returns the '<em><b>Arc</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param name the name.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Arc getByName(String name) {
@@ -165,6 +168,8 @@ public enum Arc implements Enumerator {
      * Returns the '<em><b>Arc</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param value the integer value.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Arc get(int value) {

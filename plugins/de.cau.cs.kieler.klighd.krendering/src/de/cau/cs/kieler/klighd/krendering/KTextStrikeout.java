@@ -25,11 +25,11 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KTextStrikeout#getStruckOut <em>Struck Out</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KTextStrikeout#getColor <em>Color</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKTextStrikeout()
  * @model
@@ -40,10 +40,6 @@ public interface KTextStrikeout extends KStyle {
      * Returns the value of the '<em><b>Struck Out</b></em>' attribute.
      * The default value is <code>"true"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Struck Out</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Set true to draw the text with a strikeout.
@@ -69,10 +65,6 @@ public interface KTextStrikeout extends KStyle {
     /**
      * Returns the value of the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Color</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Color the strikeout is supposed to have.

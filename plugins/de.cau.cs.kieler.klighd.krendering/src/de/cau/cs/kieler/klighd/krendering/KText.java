@@ -25,12 +25,12 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KText#getText <em>Text</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KText#isCursorSelectable <em>Cursor Selectable</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KText#isEditable <em>Editable</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKText()
  * @model
@@ -40,10 +40,6 @@ public interface KText extends KRendering {
     /**
      * Returns the value of the '<em><b>Text</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Text</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the text to be displayed
@@ -70,10 +66,6 @@ public interface KText extends KRendering {
      * Returns the value of the '<em><b>Cursor Selectable</b></em>' attribute.
      * The default value is <code>"false"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Cursor Selectable</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Determines the interactive selectability of the text string similar to the text selectability in text, table, or tree viewers.

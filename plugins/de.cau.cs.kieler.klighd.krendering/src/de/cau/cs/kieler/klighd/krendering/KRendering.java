@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.krendering;
 
-import org.eclipse.elk.graph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -31,26 +32,22 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRendering#getParent <em>Parent</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRendering#getPlacementData <em>Placement Data</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRendering#getActions <em>Actions</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKRendering()
  * @model abstract="true"
  * @generated
  */
-public interface KRendering extends KGraphData, KStyleHolder {
+public interface KRendering extends KStyleHolder, KGraphData {
     /**
      * Returns the value of the '<em><b>Parent</b></em>' container reference.
      * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.klighd.krendering.KContainerRendering#getChildren <em>Children</em>}'.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Parent</em>' container reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the rendering containing this rendering
@@ -77,10 +74,6 @@ public interface KRendering extends KGraphData, KStyleHolder {
     /**
      * Returns the value of the '<em><b>Placement Data</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Placement Data</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Information where and how this Rendering shall be placed. If no placementdata is given this defaults to an AreaPlacementdata filling the bounds of the parent.

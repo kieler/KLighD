@@ -37,7 +37,9 @@ public enum LineJoin implements Enumerator {
      * @generated
      * @ordered
      */
-    JOIN_MITER(0, "JOIN_MITER", "JOIN_MITER"), /**
+    JOIN_MITER(0, "JOIN_MITER", "JOIN_MITER"),
+
+    /**
      * The '<em><b>JOIN ROUND</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -45,7 +47,9 @@ public enum LineJoin implements Enumerator {
      * @generated
      * @ordered
      */
-    JOIN_ROUND(1, "JOIN_ROUND", "JOIN_ROUND"), /**
+    JOIN_ROUND(1, "JOIN_ROUND", "JOIN_ROUND"),
+
+    /**
      * The '<em><b>JOIN BEVEL</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -125,6 +129,8 @@ public enum LineJoin implements Enumerator {
      * Returns the '<em><b>Line Join</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param literal the literal.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static LineJoin get(String literal) {
@@ -141,6 +147,8 @@ public enum LineJoin implements Enumerator {
      * Returns the '<em><b>Line Join</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param name the name.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static LineJoin getByName(String name) {
@@ -157,6 +165,8 @@ public enum LineJoin implements Enumerator {
      * Returns the '<em><b>Line Join</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param value the integer value.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static LineJoin get(int value) {

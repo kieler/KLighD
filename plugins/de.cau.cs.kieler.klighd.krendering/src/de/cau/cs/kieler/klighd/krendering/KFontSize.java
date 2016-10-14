@@ -25,11 +25,11 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KFontSize#getSize <em>Size</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KFontSize#isScaleWithZoom <em>Scale With Zoom</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKFontSize()
  * @model
@@ -40,10 +40,6 @@ public interface KFontSize extends KStyle {
      * Returns the value of the '<em><b>Size</b></em>' attribute.
      * The default value is <code>"10"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Size</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Desired size of the font.
@@ -70,10 +66,6 @@ public interface KFontSize extends KStyle {
      * Returns the value of the '<em><b>Scale With Zoom</b></em>' attribute.
      * The default value is <code>"false"</code>.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Scale With Zoom</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * whether the font size should increase when the user is zooming out to have text still be readable even when the containing object shrinks.

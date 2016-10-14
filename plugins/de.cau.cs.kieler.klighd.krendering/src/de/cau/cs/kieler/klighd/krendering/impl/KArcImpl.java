@@ -13,13 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import de.cau.cs.kieler.klighd.krendering.Arc;
 import de.cau.cs.kieler.klighd.krendering.KArc;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,12 +29,12 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KArcImpl#getStartAngle <em>Start Angle</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KArcImpl#getArcAngle <em>Arc Angle</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KArcImpl#getArcType <em>Arc Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

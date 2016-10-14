@@ -13,12 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.krendering.util;
 
+import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+
 import de.cau.cs.kieler.klighd.krendering.*;
-import org.eclipse.elk.graph.EMapPropertyHolder;
-import org.eclipse.elk.graph.KGraphData;
+
 import org.eclipse.elk.graph.properties.IPropertyHolder;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.util.Switch;
 
 /**
@@ -87,8 +91,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
             case KRenderingPackage.KRENDERING: {
                 KRendering kRendering = (KRendering)theEObject;
                 T1 result = caseKRendering(kRendering);
-                if (result == null) result = caseKGraphData(kRendering);
                 if (result == null) result = caseKStyleHolder(kRendering);
+                if (result == null) result = caseKGraphData(kRendering);
                 if (result == null) result = caseEMapPropertyHolder(kRendering);
                 if (result == null) result = caseIPropertyHolder(kRendering);
                 if (result == null) result = defaultCase(theEObject);
@@ -99,8 +103,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKEllipse(kEllipse);
                 if (result == null) result = caseKContainerRendering(kEllipse);
                 if (result == null) result = caseKRendering(kEllipse);
-                if (result == null) result = caseKGraphData(kEllipse);
                 if (result == null) result = caseKStyleHolder(kEllipse);
+                if (result == null) result = caseKGraphData(kEllipse);
                 if (result == null) result = caseEMapPropertyHolder(kEllipse);
                 if (result == null) result = caseIPropertyHolder(kEllipse);
                 if (result == null) result = defaultCase(theEObject);
@@ -111,8 +115,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKRectangle(kRectangle);
                 if (result == null) result = caseKContainerRendering(kRectangle);
                 if (result == null) result = caseKRendering(kRectangle);
-                if (result == null) result = caseKGraphData(kRectangle);
                 if (result == null) result = caseKStyleHolder(kRectangle);
+                if (result == null) result = caseKGraphData(kRectangle);
                 if (result == null) result = caseEMapPropertyHolder(kRectangle);
                 if (result == null) result = caseIPropertyHolder(kRectangle);
                 if (result == null) result = defaultCase(theEObject);
@@ -123,8 +127,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKRoundedRectangle(kRoundedRectangle);
                 if (result == null) result = caseKContainerRendering(kRoundedRectangle);
                 if (result == null) result = caseKRendering(kRoundedRectangle);
-                if (result == null) result = caseKGraphData(kRoundedRectangle);
                 if (result == null) result = caseKStyleHolder(kRoundedRectangle);
+                if (result == null) result = caseKGraphData(kRoundedRectangle);
                 if (result == null) result = caseEMapPropertyHolder(kRoundedRectangle);
                 if (result == null) result = caseIPropertyHolder(kRoundedRectangle);
                 if (result == null) result = defaultCase(theEObject);
@@ -135,8 +139,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKPolyline(kPolyline);
                 if (result == null) result = caseKContainerRendering(kPolyline);
                 if (result == null) result = caseKRendering(kPolyline);
-                if (result == null) result = caseKGraphData(kPolyline);
                 if (result == null) result = caseKStyleHolder(kPolyline);
+                if (result == null) result = caseKGraphData(kPolyline);
                 if (result == null) result = caseEMapPropertyHolder(kPolyline);
                 if (result == null) result = caseIPropertyHolder(kPolyline);
                 if (result == null) result = defaultCase(theEObject);
@@ -148,8 +152,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseKPolyline(kPolygon);
                 if (result == null) result = caseKContainerRendering(kPolygon);
                 if (result == null) result = caseKRendering(kPolygon);
-                if (result == null) result = caseKGraphData(kPolygon);
                 if (result == null) result = caseKStyleHolder(kPolygon);
+                if (result == null) result = caseKGraphData(kPolygon);
                 if (result == null) result = caseEMapPropertyHolder(kPolygon);
                 if (result == null) result = caseIPropertyHolder(kPolygon);
                 if (result == null) result = defaultCase(theEObject);
@@ -160,8 +164,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKImage(kImage);
                 if (result == null) result = caseKContainerRendering(kImage);
                 if (result == null) result = caseKRendering(kImage);
-                if (result == null) result = caseKGraphData(kImage);
                 if (result == null) result = caseKStyleHolder(kImage);
+                if (result == null) result = caseKGraphData(kImage);
                 if (result == null) result = caseEMapPropertyHolder(kImage);
                 if (result == null) result = caseIPropertyHolder(kImage);
                 if (result == null) result = defaultCase(theEObject);
@@ -178,8 +182,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KContainerRendering kContainerRendering = (KContainerRendering)theEObject;
                 T1 result = caseKContainerRendering(kContainerRendering);
                 if (result == null) result = caseKRendering(kContainerRendering);
-                if (result == null) result = caseKGraphData(kContainerRendering);
                 if (result == null) result = caseKStyleHolder(kContainerRendering);
+                if (result == null) result = caseKGraphData(kContainerRendering);
                 if (result == null) result = caseEMapPropertyHolder(kContainerRendering);
                 if (result == null) result = caseIPropertyHolder(kContainerRendering);
                 if (result == null) result = defaultCase(theEObject);
@@ -190,8 +194,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKArc(kArc);
                 if (result == null) result = caseKContainerRendering(kArc);
                 if (result == null) result = caseKRendering(kArc);
-                if (result == null) result = caseKGraphData(kArc);
                 if (result == null) result = caseKStyleHolder(kArc);
+                if (result == null) result = caseKGraphData(kArc);
                 if (result == null) result = caseEMapPropertyHolder(kArc);
                 if (result == null) result = caseIPropertyHolder(kArc);
                 if (result == null) result = defaultCase(theEObject);
@@ -218,8 +222,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KRenderingRef kRenderingRef = (KRenderingRef)theEObject;
                 T1 result = caseKRenderingRef(kRenderingRef);
                 if (result == null) result = caseKRendering(kRenderingRef);
-                if (result == null) result = caseKGraphData(kRenderingRef);
                 if (result == null) result = caseKStyleHolder(kRenderingRef);
+                if (result == null) result = caseKGraphData(kRenderingRef);
                 if (result == null) result = caseEMapPropertyHolder(kRenderingRef);
                 if (result == null) result = caseIPropertyHolder(kRenderingRef);
                 if (result == null) result = defaultCase(theEObject);
@@ -229,8 +233,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KChildArea kChildArea = (KChildArea)theEObject;
                 T1 result = caseKChildArea(kChildArea);
                 if (result == null) result = caseKRendering(kChildArea);
-                if (result == null) result = caseKGraphData(kChildArea);
                 if (result == null) result = caseKStyleHolder(kChildArea);
+                if (result == null) result = caseKGraphData(kChildArea);
                 if (result == null) result = caseEMapPropertyHolder(kChildArea);
                 if (result == null) result = caseIPropertyHolder(kChildArea);
                 if (result == null) result = defaultCase(theEObject);
@@ -240,8 +244,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 KText kText = (KText)theEObject;
                 T1 result = caseKText(kText);
                 if (result == null) result = caseKRendering(kText);
-                if (result == null) result = caseKGraphData(kText);
                 if (result == null) result = caseKStyleHolder(kText);
+                if (result == null) result = caseKGraphData(kText);
                 if (result == null) result = caseEMapPropertyHolder(kText);
                 if (result == null) result = caseIPropertyHolder(kText);
                 if (result == null) result = defaultCase(theEObject);
@@ -286,8 +290,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 T1 result = caseKCustomRendering(kCustomRendering);
                 if (result == null) result = caseKContainerRendering(kCustomRendering);
                 if (result == null) result = caseKRendering(kCustomRendering);
-                if (result == null) result = caseKGraphData(kCustomRendering);
                 if (result == null) result = caseKStyleHolder(kCustomRendering);
+                if (result == null) result = caseKGraphData(kCustomRendering);
                 if (result == null) result = caseEMapPropertyHolder(kCustomRendering);
                 if (result == null) result = caseIPropertyHolder(kCustomRendering);
                 if (result == null) result = defaultCase(theEObject);
@@ -381,8 +385,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseKPolyline(kSpline);
                 if (result == null) result = caseKContainerRendering(kSpline);
                 if (result == null) result = caseKRendering(kSpline);
-                if (result == null) result = caseKGraphData(kSpline);
                 if (result == null) result = caseKStyleHolder(kSpline);
+                if (result == null) result = caseKGraphData(kSpline);
                 if (result == null) result = caseEMapPropertyHolder(kSpline);
                 if (result == null) result = caseIPropertyHolder(kSpline);
                 if (result == null) result = defaultCase(theEObject);
@@ -459,8 +463,8 @@ public class KRenderingSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseKPolyline(kRoundedBendsPolyline);
                 if (result == null) result = caseKContainerRendering(kRoundedBendsPolyline);
                 if (result == null) result = caseKRendering(kRoundedBendsPolyline);
-                if (result == null) result = caseKGraphData(kRoundedBendsPolyline);
                 if (result == null) result = caseKStyleHolder(kRoundedBendsPolyline);
+                if (result == null) result = caseKGraphData(kRoundedBendsPolyline);
                 if (result == null) result = caseEMapPropertyHolder(kRoundedBendsPolyline);
                 if (result == null) result = caseIPropertyHolder(kRoundedBendsPolyline);
                 if (result == null) result = defaultCase(theEObject);

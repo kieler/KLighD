@@ -13,12 +13,14 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import de.cau.cs.kieler.klighd.krendering.KCustomRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,12 +28,12 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KCustomRenderingImpl#getClassName <em>Class Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KCustomRenderingImpl#getBundleName <em>Bundle Name</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KCustomRenderingImpl#getFigureObject <em>Figure Object</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

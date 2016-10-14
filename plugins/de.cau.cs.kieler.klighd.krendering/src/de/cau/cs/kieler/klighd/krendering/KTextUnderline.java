@@ -25,11 +25,11 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KTextUnderline#getUnderline <em>Underline</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KTextUnderline#getColor <em>Color</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKTextUnderline()
  * @model
@@ -40,10 +40,6 @@ public interface KTextUnderline extends KStyle {
      * Returns the value of the '<em><b>Underline</b></em>' attribute.
      * The literals are from the enumeration {@link de.cau.cs.kieler.klighd.krendering.Underline}.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Underline</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * The style of the underline.
@@ -71,10 +67,6 @@ public interface KTextUnderline extends KStyle {
     /**
      * Returns the value of the '<em><b>Color</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Color</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Color the underline is supposed to have.

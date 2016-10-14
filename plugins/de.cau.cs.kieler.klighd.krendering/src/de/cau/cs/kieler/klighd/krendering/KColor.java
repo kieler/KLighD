@@ -26,12 +26,12 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KColor#getRed <em>Red</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KColor#getGreen <em>Green</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KColor#getBlue <em>Blue</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKColor()
  * @model

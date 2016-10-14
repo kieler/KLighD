@@ -26,11 +26,11 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPolyline#getPoints <em>Points</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KPolyline#getJunctionPointRendering <em>Junction Point Rendering</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKPolyline()
  * @model
@@ -41,10 +41,6 @@ public interface KPolyline extends KContainerRendering {
      * Returns the value of the '<em><b>Points</b></em>' containment reference list.
      * The list contents are of type {@link de.cau.cs.kieler.klighd.krendering.KPosition}.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Points</em>' containment reference list isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * points that are visited by the polyline in order of definition

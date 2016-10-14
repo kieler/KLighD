@@ -50,7 +50,9 @@ public enum Trigger implements Enumerator {
      * @generated
      * @ordered
      */
-    DOUBLECLICK(1, "DOUBLECLICK", "DOUBLECLICK"), /**
+    DOUBLECLICK(1, "DOUBLECLICK", "DOUBLECLICK"),
+
+    /**
      * The '<em><b>SINGLE OR MULTICLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -58,7 +60,9 @@ public enum Trigger implements Enumerator {
      * @generated
      * @ordered
      */
-    SINGLE_OR_MULTICLICK(2, "SINGLE_OR_MULTICLICK", "SINGLE_OR_MULTICLICK"), /**
+    SINGLE_OR_MULTICLICK(2, "SINGLE_OR_MULTICLICK", "SINGLE_OR_MULTICLICK"),
+
+    /**
      * The '<em><b>MIDDLE SINGLECLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -66,7 +70,9 @@ public enum Trigger implements Enumerator {
      * @generated
      * @ordered
      */
-    MIDDLE_SINGLECLICK(3, "MIDDLE_SINGLECLICK", "MIDDLE_SINGLECLICK"), /**
+    MIDDLE_SINGLECLICK(3, "MIDDLE_SINGLECLICK", "MIDDLE_SINGLECLICK"),
+
+    /**
      * The '<em><b>MIDDLE DOUBLECLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -74,7 +80,9 @@ public enum Trigger implements Enumerator {
      * @generated
      * @ordered
      */
-    MIDDLE_DOUBLECLICK(4, "MIDDLE_DOUBLECLICK", "MIDDLE_DOUBLECLICK"), /**
+    MIDDLE_DOUBLECLICK(4, "MIDDLE_DOUBLECLICK", "MIDDLE_DOUBLECLICK"),
+
+    /**
      * The '<em><b>MIDDLE SINGLE OR MULTICLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -87,10 +95,6 @@ public enum Trigger implements Enumerator {
     /**
      * The '<em><b>SINGLECLICK</b></em>' literal value.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of '<em><b>SINGLECLICK</b></em>' literal object isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Fires on a left button's single click.&lt;br&gt;
@@ -107,10 +111,6 @@ public enum Trigger implements Enumerator {
     /**
      * The '<em><b>DOUBLECLICK</b></em>' literal value.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of '<em><b>DOUBLECLICK</b></em>' literal object isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Fires on left button's double (and more) click(s).
@@ -208,6 +208,8 @@ public enum Trigger implements Enumerator {
      * Returns the '<em><b>Trigger</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param literal the literal.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Trigger get(String literal) {
@@ -224,6 +226,8 @@ public enum Trigger implements Enumerator {
      * Returns the '<em><b>Trigger</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param name the name.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Trigger getByName(String name) {
@@ -240,6 +244,8 @@ public enum Trigger implements Enumerator {
      * Returns the '<em><b>Trigger</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param value the integer value.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Trigger get(int value) {

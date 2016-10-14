@@ -29,11 +29,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KXPosition#getAbsolute <em>Absolute</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KXPosition#getRelative <em>Relative</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKXPosition()
  * @model abstract="true"
@@ -43,10 +43,6 @@ public interface KXPosition<T extends KXPosition<T>> extends EObject {
     /**
      * Returns the value of the '<em><b>Absolute</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Absolute</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * define absolute position in pixels
@@ -72,10 +68,6 @@ public interface KXPosition<T extends KXPosition<T>> extends EObject {
     /**
      * Returns the value of the '<em><b>Relative</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Relative</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * define relative position based on parent size in range of 0 to 1

@@ -25,11 +25,11 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRotation#getRotation <em>Rotation</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRotation#getRotationAnchor <em>Rotation Anchor</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKRotation()
  * @model

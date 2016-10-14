@@ -13,14 +13,16 @@
  */
 package de.cau.cs.kieler.klighd.krendering.impl;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import de.cau.cs.kieler.klighd.krendering.KAction;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,6 +30,7 @@ import de.cau.cs.kieler.klighd.krendering.Trigger;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#getActionId <em>Action Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#getTrigger <em>Trigger</em>}</li>
@@ -35,7 +38,6 @@ import de.cau.cs.kieler.klighd.krendering.Trigger;
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KActionImpl#isShiftPressed <em>Shift Pressed</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

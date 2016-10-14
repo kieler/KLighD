@@ -25,6 +25,7 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KColoring#getColor <em>Color</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KColoring#getAlpha <em>Alpha</em>}</li>
@@ -32,7 +33,6 @@ package de.cau.cs.kieler.klighd.krendering;
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KColoring#getTargetAlpha <em>Target Alpha</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KColoring#getGradientAngle <em>Gradient Angle</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKColoring()
  * @model abstract="true"

@@ -26,11 +26,11 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KContainerRendering#getChildren <em>Children</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KContainerRendering#getChildPlacement <em>Child Placement</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKContainerRendering()
  * @model abstract="true"
@@ -42,10 +42,6 @@ public interface KContainerRendering extends KRendering {
      * The list contents are of type {@link de.cau.cs.kieler.klighd.krendering.KRendering}.
      * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.klighd.krendering.KRendering#getParent <em>Parent</em>}'.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Children</em>' containment reference list isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the children of this rendering
@@ -61,10 +57,6 @@ public interface KContainerRendering extends KRendering {
     /**
      * Returns the value of the '<em><b>Child Placement</b></em>' containment reference.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Child Placement</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * the placement type to use for placeing the children

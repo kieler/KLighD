@@ -25,10 +25,10 @@ package de.cau.cs.kieler.klighd.krendering;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KRoundedBendsPolyline#getBendRadius <em>Bend Radius</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKRoundedBendsPolyline()
  * @model
@@ -38,10 +38,6 @@ public interface KRoundedBendsPolyline extends KPolyline {
     /**
      * Returns the value of the '<em><b>Bend Radius</b></em>' attribute.
      * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Bend Radius</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
      * Radius of the rounded corners.
