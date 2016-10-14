@@ -17,6 +17,10 @@ import com.google.common.collect.HashBasedTable
 import com.google.common.collect.Table
 import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KPort
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.Colors
 import de.cau.cs.kieler.klighd.krendering.LineStyle
 import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
@@ -37,15 +41,11 @@ import javax.inject.Inject
 import org.eclipse.elk.alg.layered.p4nodes.bk.EdgeStraighteningStrategy
 import org.eclipse.elk.alg.layered.properties.FixedAlignment
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
-import org.eclipse.elk.core.klayoutdata.KShapeLayout
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.Direction
 import org.eclipse.elk.core.options.PortSide
 import org.eclipse.elk.core.options.SizeConstraint
-import org.eclipse.elk.core.util.ElkUtil
 import org.eclipse.elk.core.util.Pair
-import org.eclipse.elk.graph.KNode
-import org.eclipse.elk.graph.KPort
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -303,7 +303,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
      * Translate a structural container feature into a port.
      */
     private def transformToPort(EStructuralFeature containerFeature, KNode node) {
-        val port = ElkUtil::createInitializedPort
+        val port = KGraphUtil::createInitializedPort
         node.ports += port;
         port.setPortSize(portEdgeLength, portEdgeLength);
         port.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::EAST);

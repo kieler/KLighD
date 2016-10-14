@@ -13,13 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.ui.view.syntheses
 
+import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis
 import de.cau.cs.kieler.klighd.ui.view.model.MessageModel
 import javax.inject.Inject
-import org.eclipse.elk.graph.KNode
 
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
 
