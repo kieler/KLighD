@@ -16,8 +16,6 @@ package de.cau.cs.kieler.klighd.util;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
@@ -30,6 +28,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 
 /**
  * A specialized EContentAdapter that attaches itself only to children of a certain type. This type

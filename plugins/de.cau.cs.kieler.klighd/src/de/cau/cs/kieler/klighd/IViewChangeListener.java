@@ -19,11 +19,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * Defines the notification API to be implemented by concrete listeners being informed about changes

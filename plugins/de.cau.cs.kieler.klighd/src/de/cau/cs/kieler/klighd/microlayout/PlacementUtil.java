@@ -30,15 +30,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.elk.core.klayoutdata.KInsets;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -55,6 +49,11 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KInsets;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KChildArea;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
@@ -490,12 +489,10 @@ public final class PlacementUtil {
      * @return the estimated size or (0, 0) if no text is contained.
      */
     public static Bounds estimateSize(final KNode node) {
-        final KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
         final KRendering nodeRendering = node.getData(KRendering.class);
 
-        if (nodeLayout != null && nodeRendering != null) {
-            return estimateSize(nodeRendering,
-                    new Bounds(nodeLayout.getWidth(), nodeLayout.getHeight()));
+        if (nodeRendering != null) {
+            return estimateSize(nodeRendering, new Bounds(node.getWidth(), node.getHeight()));
         } else {
             return new Bounds(0, 0);
         }
@@ -763,9 +760,7 @@ public final class PlacementUtil {
         // Check if we really have a KText instance; the rendering ref could have insidiously referenced
         // some arbitrary object
         if (kText instanceof KText) {
-            final KLayoutData layoutData =
-                    setFontLayoutOptions ? kLabel.getData(KLayoutData.class) : null;
-            return fontDataFor((KText) kText, layoutData);
+            return fontDataFor((KText) kText, kLabel);
         } else {
             return fontDataFor((KText) null, null);
         }
@@ -788,13 +783,13 @@ public final class PlacementUtil {
      * 
      * @param kText
      *            the rendering whose font information to retrieve.
-     * @param layoutData
+     * @param graphElement
      *            if unequal to <code>null</code> the layout options {@link LayoutOptions#FONT_NAME}
      *            and {@link LayoutOptions#FONT_SIZE} will be set/updated to the determined font
      *            name & size values
      * @return font information for the given rendering.
      */
-    private static FontData fontDataFor(final KText kText, final KLayoutData layoutData) {
+    private static FontData fontDataFor(final KText kText, final KGraphElement graphElement) {
         KFontName kFontName = null;
         KFontSize kFontSize = null;
         KFontBold kFontBold = null;
@@ -830,12 +825,12 @@ public final class PlacementUtil {
         fontStyle = kFontItalic != null && kFontItalic.isItalic()
                 ? fontStyle | SWT.ITALIC : fontStyle;
 
-        if (layoutData != null) {
+        if (graphElement != null) {
             // setting the font name and size layout options is expected by the Graphviz layouter
             //  as it does not rely on given sizes but computes it on its own based on the given
             //  label text and font configuration 
-            layoutData.setProperty(CoreOptions.FONT_NAME, fontName);
-            layoutData.setProperty(CoreOptions.FONT_SIZE, fontSize);
+            graphElement.setProperty(CoreOptions.FONT_NAME, fontName);
+            graphElement.setProperty(CoreOptions.FONT_SIZE, fontSize);
         }
 
         return new FontData(fontName, fontSize, fontStyle);
@@ -880,8 +875,7 @@ public final class PlacementUtil {
         final KText text = Iterators.getNext(Iterators.filter(
                 ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class), KText.class), null);
 
-        return estimateTextSize(text, kLabel.getText(), 
-                setFontLayoutOptions ? kLabel.getData(KLayoutData.class) : null);
+        return estimateTextSize(text, kLabel.getText(), setFontLayoutOptions ? kLabel : null);
     }
 
     private static final Predicate<KStyle> FILTER = new Predicate<KStyle>() {
@@ -916,14 +910,14 @@ public final class PlacementUtil {
      *            <code>null</code>
      * @param text
      *            the actual text string whose size is to be estimated; maybe <code>null</code>
-     * @param layoutData
+     * @param graphElement
      *            if unequal to <code>null</code> the layout options {@link LayoutOptions#FONT_NAME}
      *            and {@link LayoutOptions#FONT_SIZE} will be set/updated to the font name & size
      *            values determined during the size estimation
      * @return the minimal bounds for the string
      */
     private static Bounds estimateTextSize(final KText kText, final String text,
-            final KLayoutData layoutData) {
+            final KGraphElement graphElement) {
         if (kText != null) {
             // special handling required for the regression tests
             // I don't trust in the different SWT implementations to
@@ -945,7 +939,7 @@ public final class PlacementUtil {
             }
         }
 
-        return estimateTextSize(fontDataFor(kText, layoutData), text);
+        return estimateTextSize(fontDataFor(kText, graphElement), text);
     }
 
     /**

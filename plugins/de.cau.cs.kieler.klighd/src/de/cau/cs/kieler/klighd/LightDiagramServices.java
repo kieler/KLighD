@@ -28,7 +28,6 @@ import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
 import org.eclipse.elk.core.service.ElkServicePlugin;
 import org.eclipse.elk.core.util.IElkCancelIndicator;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -40,6 +39,7 @@ import com.google.common.collect.Iterables;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
@@ -901,78 +901,69 @@ public final class LightDiagramServices {
 
         final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
         final KNode viewModel = theViewContext.getViewModel();
-        final KLayoutData layoutData =
-                viewModel != null ? viewModel.getData(KLayoutData.class) : null;
 
-        if (layoutData != null) {
-            theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE,
-                    config.zoomStyle());
-            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE,
-                    config.focusNode());
+        theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE,
+                config.zoomStyle());
+        theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE,
+                config.focusNode());
 
-            // Activate the ELK Service plug-in so all layout options are loaded
-            ElkServicePlugin.getInstance();
+        // Activate the ELK Service plug-in so all layout options are loaded
+        ElkServicePlugin.getInstance();
 
-            // Our parameters for the layout run
-            Parameters layoutParameters = new Parameters();
-            final LayoutConfigurator extendedConfigurator = layoutParameters.addLayoutRun();
+        // Our parameters for the layout run
+        Parameters layoutParameters = new Parameters();
+        final LayoutConfigurator extendedConfigurator = layoutParameters.addLayoutRun();
 
-            // Animation
-            final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
-                    : KlighdPlugin.getDefault().getPreferenceStore()
-                            .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-            layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
+        // Animation
+        final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
+                : KlighdPlugin.getDefault().getPreferenceStore()
+                        .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+        layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
 
-            // Animation time properties
-            if (config.animationTimeFactor() != null) {
-                    layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIM_TIME_FACTOR, 
-                            config.animationTimeFactor());
+        // Animation time properties
+        if (config.animationTimeFactor() != null) {
+                layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIM_TIME_FACTOR, 
+                        config.animationTimeFactor());
+        }
+        if (config.minAnimationTime() != null) {
+            layoutParameters.getGlobalSettings().setProperty(CoreOptions.MIN_ANIM_TIME, 
+                    config.minAnimationTime());
+        }
+        if (config.maxAnimationTime() != null) {
+            layoutParameters.getGlobalSettings().setProperty(CoreOptions.MAX_ANIM_TIME, 
+                    config.maxAnimationTime());
+        }
+
+        if (thePart instanceof ILayoutConfigProvider) {
+            extendedConfigurator
+                    .overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
+        }
+
+        if (config.options() != null) {
+            for (LayoutConfigurator c : Collections2.filter(config.options(),
+                    Predicates.notNull())) {
+                extendedConfigurator.overrideWith(c);
             }
-            if (config.minAnimationTime() != null) {
-                layoutParameters.getGlobalSettings().setProperty(CoreOptions.MIN_ANIM_TIME, 
-                        config.minAnimationTime());
-            }
-            if (config.maxAnimationTime() != null) {
-                layoutParameters.getGlobalSettings().setProperty(CoreOptions.MAX_ANIM_TIME, 
-                        config.maxAnimationTime());
-            }
+        }
 
-            if (thePart instanceof ILayoutConfigProvider) {
-                extendedConfigurator
-                        .overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
-            }
+        final List<? extends LayoutConfigurator> additionalConfigs =
+                theViewContext.getAdditionalLayoutConfigs();
 
-            if (config.options() != null) {
-                for (LayoutConfigurator c : Collections2.filter(config.options(),
-                        Predicates.notNull())) {
-                    extendedConfigurator.overrideWith(c);
-                }
-            }
+        final Object diagramPart = recorder != null ? recorder : theViewContext;
 
-            final List<? extends LayoutConfigurator> additionalConfigs =
-                    theViewContext.getAdditionalLayoutConfigs();
+        final IElkCancelIndicator cancelationIndicator =
+                thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
 
-            final Object diagramPart = recorder != null ? recorder : theViewContext;
-
-            final IElkCancelIndicator cancelationIndicator =
-                    thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
-
-            if (additionalConfigs.isEmpty()) {
-                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                        layoutParameters);
-            } else {
-                for (LayoutConfigurator c : additionalConfigs) {
-                    layoutParameters.addLayoutRun(c);
-                }
-
-                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                        layoutParameters);
-            }
-
+        if (additionalConfigs.isEmpty()) {
+            DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
+                    layoutParameters);
         } else {
-            if (recorder != null) {
-                recorder.stopRecording(config.zoomStyle(), null, 0);
+            for (LayoutConfigurator c : additionalConfigs) {
+                layoutParameters.addLayoutRun(c);
             }
+
+            DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
+                    layoutParameters);
         }
     }
 

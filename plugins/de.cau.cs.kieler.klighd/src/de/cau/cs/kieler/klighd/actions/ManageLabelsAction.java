@@ -13,12 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.labels.ILabelManager;
 import org.eclipse.elk.core.labels.LabelManagementOptions;
-import org.eclipse.elk.graph.KNode;
 
 import de.cau.cs.kieler.klighd.IAction;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.labels.AbstractKlighdLabelManager;
 
 /**
@@ -52,9 +51,7 @@ public final class ManageLabelsAction implements IAction {
     private boolean execute(final KNode node) {
         boolean actuallyDidStuff = false;
         
-        KLayoutData layoutData = node.getData(KLayoutData.class);
-        ILabelManager labelManager =
-                layoutData.getProperty(LabelManagementOptions.LABEL_MANAGER);
+        ILabelManager labelManager = node.getProperty(LabelManagementOptions.LABEL_MANAGER);
         
         // We are looking for AbstractKlighdLabelManager instances...
         if (labelManager instanceof AbstractKlighdLabelManager) {

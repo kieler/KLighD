@@ -13,10 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
-import org.eclipse.elk.graph.KNode;
-
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * Sets the diagram clip to the parent {@link KNode} of the currently clipped {@link KNode} if

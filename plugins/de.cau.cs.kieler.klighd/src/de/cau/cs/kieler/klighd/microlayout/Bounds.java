@@ -17,10 +17,11 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
-import org.eclipse.elk.core.klayoutdata.KInsets;
-import org.eclipse.elk.core.klayoutdata.KLayoutDataFactory;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.util.Pair;
+
+import de.cau.cs.kieler.klighd.kgraph.KGraphFactory;
+import de.cau.cs.kieler.klighd.kgraph.KInsets;
 
 /**
  * A convenience class representing floating-point-precise bounds and lots of helpful operations on
@@ -64,7 +65,7 @@ public class Bounds {
         this.y = 0;
         this.width = width;
         this.height = height;
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -80,7 +81,7 @@ public class Bounds {
         this.y = 0;
         this.width = (float) width;
         this.height = (float) height;
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -94,7 +95,7 @@ public class Bounds {
         this.y = bounds.y;
         this.width = bounds.width;
         this.height = bounds.height;
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -106,7 +107,7 @@ public class Bounds {
     public Bounds(final org.eclipse.swt.graphics.Point point) {
         this.width = point.x;
         this.height = point.y;
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -120,7 +121,7 @@ public class Bounds {
         this.y = rect.y;
         this.width = rect.width;
         this.height = rect.height;
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -134,7 +135,7 @@ public class Bounds {
         this.y = (float) rect.getY();
         this.width = (float) rect.getWidth();
         this.height = (float) rect.getHeight();
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -154,7 +155,7 @@ public class Bounds {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -168,7 +169,7 @@ public class Bounds {
         this.y = bounds.y;
         this.width = bounds.width;
         this.height = bounds.height;
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**
@@ -182,7 +183,7 @@ public class Bounds {
         this.y = (float) bounds.getY();
         this.width = (float) bounds.getWidth();
         this.height = (float) bounds.getHeight();
-        this.insets = KLayoutDataFactory.eINSTANCE.createKInsets();
+        this.insets = KGraphFactory.eINSTANCE.createKInsets();
     }
 
     /**

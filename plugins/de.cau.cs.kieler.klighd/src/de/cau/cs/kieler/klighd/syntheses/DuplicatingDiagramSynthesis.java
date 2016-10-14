@@ -15,9 +15,10 @@ package de.cau.cs.kieler.klighd.syntheses;
 
 import java.util.Map;
 
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * A duplicating diagram synthesis performing à la {@link org.eclipse.emf.ecore.util.EcoreUtil#copy

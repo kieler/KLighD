@@ -15,9 +15,9 @@ package de.cau.cs.kieler.klighd;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**

@@ -13,13 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.labels.ILabelManager;
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.elk.graph.KLabel;
 import org.eclipse.swt.graphics.FontData;
 
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -118,7 +116,6 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     public final KVector manageLabelSize(final Object label, final double processorTargetWidth) {
         if (label instanceof KLabel) {
             KLabel kLabel = (KLabel) label;
-            final KShapeLayout labelLayout = kLabel.getData(KShapeLayout.class);
 
             KVector newLabelSize = null;
             String newLabelText = kLabel.getText();
@@ -142,10 +139,10 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
 
                     // Make sure KLighD knows if we shortened the label
                     if (newLabelSize == null) {
-                        labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                        kLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                                 LabelManagementResult.MANAGED_UNMODIFIED);
                     } else {
-                        labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                        kLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                                 LabelManagementResult.MANAGED_MODIFIED);
                     }
                 } else {
@@ -157,7 +154,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
                     Bounds newSize = PlacementUtil.estimateTextSize(font, kLabel.getText());
                     newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
 
-                    labelLayout.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                    kLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                             LabelManagementResult.MANAGED_UNMODIFIED);
                 }
             }
@@ -196,7 +193,6 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      *         {@code false} otherwise.
      */
     private boolean isInContext(final KLabel label) {
-        KLayoutData layoutData = label.getData(KLayoutData.class);
-        return !layoutData.getProperty(KlighdLabelProperties.ELEMENT_IN_FOCUS);
+        return !label.getProperty(KlighdLabelProperties.ELEMENT_IN_FOCUS);
     }
 }

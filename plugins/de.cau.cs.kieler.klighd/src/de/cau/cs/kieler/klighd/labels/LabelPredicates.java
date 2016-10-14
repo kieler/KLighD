@@ -14,17 +14,14 @@ package de.cau.cs.kieler.klighd.labels;
 
 import java.util.function.Predicate;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
 import org.eclipse.emf.ecore.EObject;
 
-
-
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
  * Utility class that can build many commonly used label filter predicates.
@@ -131,8 +128,8 @@ public final class LabelPredicates {
     public static Predicate<EObject> centerEdgeLabel(final boolean includeUndefined) {
         return isLabel().and(emfContainerInstanceOf(KEdge.class)).and(
                 (EObject label) -> {
-                    KLayoutData ld = ((KLabel) label).getData(KLayoutData.class);
-                    EdgeLabelPlacement elp = ld.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
+                    EdgeLabelPlacement elp = ((KLabel) label).getProperty(
+                            CoreOptions.EDGE_LABELS_PLACEMENT);
                     return elp == EdgeLabelPlacement.CENTER
                             || (includeUndefined && elp == EdgeLabelPlacement.UNDEFINED);
                 });

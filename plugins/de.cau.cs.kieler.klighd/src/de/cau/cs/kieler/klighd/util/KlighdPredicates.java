@@ -19,9 +19,6 @@ import static de.cau.cs.kieler.klighd.util.KlighdProperties.EXPANDED_RENDERING;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.emf.ecore.EClass;
@@ -33,6 +30,8 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KStyle;
 
@@ -101,16 +100,12 @@ public final class KlighdPredicates {
         return new Predicate<S>() {
             public boolean apply(final S properties) {
 
-                if (properties != null) {
-                    final T value = properties.getProperty(property);
-                    if (value != null) {
-                        return value.equals(expected);
-                    } else {
-                        return unsetEqualsTrue;
-                    }
+                final T value = properties.getProperty(property);
+                if (value != null) {
+                    return value.equals(expected);
+                } else {
+                    return unsetEqualsTrue;
                 }
-
-                return false;
             }
         };
     }
@@ -136,17 +131,12 @@ public final class KlighdPredicates {
         return new Predicate<S>() {
             public boolean apply(final S node) {
 
-                final KLayoutData data = node.getData(KLayoutData.class);
-                if (data != null) {
-                    final T value = data.getProperty(property);
-                    if (value != null) {
-                        return value.equals(expected);
-                    } else {
-                        return unsetEqualsTrue;
-                    }
+                final T value = node.getProperty(property);
+                if (value != null) {
+                    return value.equals(expected);
+                } else {
+                    return unsetEqualsTrue;
                 }
-
-                return false;
             }
         };
     }

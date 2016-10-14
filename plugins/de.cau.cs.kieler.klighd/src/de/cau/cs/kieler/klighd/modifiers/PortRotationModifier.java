@@ -13,11 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.modifiers;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.options.PortSide;
-import org.eclipse.elk.graph.KPort;
 
 import de.cau.cs.kieler.klighd.IStyleModifier;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.krendering.KRotation;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
@@ -61,14 +60,13 @@ public class PortRotationModifier implements IStyleModifier {
         }
 
         final KRotation rotation = (KRotation) context.getStyle();
-        final KShapeLayout portLayout = port.getData(KShapeLayout.class);
 
         // If the current port side differs from the original side ...
-        if (portLayout.getProperty(KlighdProperties.LAYOUT_PORT_SIDE) != portLayout
-                .getProperty(KlighdProperties.ORIGINAL_PORT_SIDE)) {
+        if (port.getProperty(KlighdProperties.LAYOUT_PORT_SIDE)
+                != port.getProperty(KlighdProperties.ORIGINAL_PORT_SIDE)) {
 
-            final PortSide original = portLayout.getProperty(KlighdProperties.ORIGINAL_PORT_SIDE);
-            final PortSide layouted = portLayout.getProperty(KlighdProperties.LAYOUT_PORT_SIDE);
+            final PortSide original = port.getProperty(KlighdProperties.ORIGINAL_PORT_SIDE);
+            final PortSide layouted = port.getProperty(KlighdProperties.LAYOUT_PORT_SIDE);
 
             // ... determine the angle the port figure must be rotated.
 

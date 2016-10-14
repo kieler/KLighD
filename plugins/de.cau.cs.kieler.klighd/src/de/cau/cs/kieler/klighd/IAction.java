@@ -18,12 +18,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KGraphPackage;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Point;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;

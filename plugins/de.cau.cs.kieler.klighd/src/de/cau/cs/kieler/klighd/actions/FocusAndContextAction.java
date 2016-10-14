@@ -13,14 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KLabeledGraphElement;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
-
 import de.cau.cs.kieler.klighd.IAction;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
 
 /**
@@ -102,8 +100,7 @@ public class FocusAndContextAction implements IAction {
      *            whether the element is now focussed or not.
      */
     private void focusGraphElement(final KGraphElement element, final boolean focus) {
-        KLayoutData elementLayout = element.getData(KLayoutData.class);
-        elementLayout.setProperty(KlighdLabelProperties.ELEMENT_IN_FOCUS, focus);
+        element.setProperty(KlighdLabelProperties.ELEMENT_IN_FOCUS, focus);
     }
     
     /**

@@ -27,16 +27,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.data.LayoutOptionData.Target;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.klayoutdata.KLayoutDataFactory;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KLabeledGraphElement;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyValueProxy;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -51,6 +43,13 @@ import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData;
@@ -219,16 +218,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         Object value = optionData.parseValue(valueString);
 
         if (graphElement != null) {
-            KLayoutData elementLayout = graphElement.getData(KLayoutData.class);
-            if (elementLayout == null) {
-                if (graphElement instanceof KEdge) {
-                    elementLayout = KLayoutDataFactory.eINSTANCE.createKEdgeLayout();
-                } else {
-                    elementLayout = KLayoutDataFactory.eINSTANCE.createKShapeLayout();
-                }
-                graphElement.getData().add(elementLayout);
-            }
-            elementLayout.setProperty(optionData, value);
+            graphElement.setProperty(optionData, value);
         }
     }
 

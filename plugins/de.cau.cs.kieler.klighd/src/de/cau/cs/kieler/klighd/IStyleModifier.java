@@ -13,14 +13,13 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-
+import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.krendering.KStyle;
 
 /**
  * The interface for classes implementing a style modifier that update
  * {@link de.cau.cs.kieler.core.krendering.KStyle KStyles} after the automatic layout application.
- * This way we can realize specialties like the layout dependent visibility of swim lane-like
+ * This way we can realize specialities like the layout dependent visibility of swim lane-like
  * separator lines, for example.<br>
  * <br>
  * {@link #modify(StyleModificationContext)} is supposed to return {@code true} if a modification

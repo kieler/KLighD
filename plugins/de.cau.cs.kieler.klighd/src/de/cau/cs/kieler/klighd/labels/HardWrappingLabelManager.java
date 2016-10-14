@@ -13,9 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import org.eclipse.elk.graph.KLabel;
 import org.eclipse.swt.graphics.FontData;
 
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**

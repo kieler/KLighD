@@ -18,11 +18,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KGraphPackage;
-import org.eclipse.elk.graph.impl.IPropertyToObjectMapImpl;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -37,6 +32,11 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
+import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 
@@ -52,8 +52,7 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 public class SourceModelTrackingAdapter extends EContentAdapter {
 
     private static final Predicate<Object> CANDIDATES = KlighdPredicates.instanceOf(
-            KGraphElement.class, KLayoutData.class, KRendering.class,
-            IPropertyToObjectMapImpl.class);
+            KGraphElement.class, KRendering.class, IPropertyToObjectMapImpl.class);
     
     private static final IProperty<Object> MODEL_ELEMENT = KlighdInternalProperties.MODEL_ELEMEMT;
 
@@ -222,9 +221,9 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         final Object newValue = notification.getNewValue();
 
         
-        final KGraphData notifier;
+        final EMapPropertyHolder notifier;
         if (notification.getFeature() == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()
-                && notification.getNotifier() instanceof KGraphData) {
+                && notification.getNotifier() instanceof EMapPropertyHolder) {
             notifier = (KGraphData) notification.getNotifier();
             
         } else if (notification.getNotifier() instanceof IPropertyToObjectMapImpl) {
@@ -262,56 +261,36 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
     private void addTracedElement(final EObject element) {
         synchronized (mapsMonitor) {
 
-            final EObject viewElement;
-            if (element instanceof KLayoutData) {
-                viewElement = element.eContainer();
-            } else {
-                viewElement = element;
-            }
-            
-            final Object sourceElement = internalGetSourceElement(viewElement);
+            final Object sourceElement = internalGetSourceElement(element);
 
             if (sourceElement != null
-                    && !sourceTargetsMap.containsEntry(sourceElement, viewElement)) {
+                    && !sourceTargetsMap.containsEntry(sourceElement, element)) {
                 // since during the additions of KGraphElements this method is called for
                 //  their layout data as well, so entries might get duplicated
                 // therefore, we here filter that explicitly out
                 //  alternatively we might employ a HashMultiMap
-                this.sourceTargetsMap.put(sourceElement, viewElement);
-                this.targetSourceMap.put(viewElement, sourceElement);
+                this.sourceTargetsMap.put(sourceElement, element);
+                this.targetSourceMap.put(element, sourceElement);
             }
         }
     }
 
     private Object internalGetSourceElement(final EObject viewElement) {
-        final Object model;
+        Object model = null;
         if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(viewElement)) {
             model = ((KGraphData) viewElement).getProperty(MODEL_ELEMENT);
         } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(viewElement)) {
-            final KLayoutData layoutData = ((KGraphElement) viewElement).getData(KLayoutData.class);
-            if (layoutData != null) {
-                model = layoutData.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
-            } else {
-                model = null;
-            }
-        } else {
-            model = null;
+            model = ((KGraphElement) viewElement).getProperty(
+                    KlighdInternalProperties.MODEL_ELEMEMT);
         }
-
+        
         return model;
     }
     
     private void removeTracedElement(final EObject element) {
         synchronized (mapsMonitor) {
-            final EObject viewElement;
-            if (element instanceof KLayoutData) {
-                viewElement = element.eContainer();
-            } else {
-                viewElement = element;
-            }
-            
-            final Object o = this.targetSourceMap.remove(viewElement);
-            this.sourceTargetsMap.remove(o, viewElement);
+            final Object o = this.targetSourceMap.remove(element);
+            this.sourceTargetsMap.remove(o, element);
         }
     }
 }

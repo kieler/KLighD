@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.internal.util;
 
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 
@@ -23,6 +21,8 @@ import com.google.common.base.Predicate;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 
 /**
  * A collection of internal KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty
@@ -144,7 +144,9 @@ public final class KlighdInternalProperties {
      * in {@link de.cau.cs.kieler.core.krendering.KText KText} data.
      */
     // SUPPRESS CHECKSTYLE NEXT LineLength
-    public static final Predicate<PersistentEntry> PRED_TESTING_HEIGHT = new Predicate<PersistentEntry>() {
+    public static final Predicate<PersistentEntry> PRED_TESTING_HEIGHT
+        = new Predicate<PersistentEntry>() {
+        
         public boolean apply(final PersistentEntry pe) {
             return pe.getKey().equals(KLIGHD_TESTING_HEIGHT.getId());
         }
@@ -155,7 +157,9 @@ public final class KlighdInternalProperties {
      * in {@link de.cau.cs.kieler.core.krendering.KText KText} data.
      */
     // SUPPRESS CHECKSTYLE NEXT LineLength
-    public static final Predicate<PersistentEntry> PRED_TESTING_WIDTH = new Predicate<PersistentEntry>() {
+    public static final Predicate<PersistentEntry> PRED_TESTING_WIDTH
+        = new Predicate<PersistentEntry>() {
+        
         public boolean apply(final PersistentEntry pe) {
             return pe.getKey().equals(KLIGHD_TESTING_WIDTH.getId());
         }

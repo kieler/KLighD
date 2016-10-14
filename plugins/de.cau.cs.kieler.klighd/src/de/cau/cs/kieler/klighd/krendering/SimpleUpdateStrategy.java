@@ -15,15 +15,13 @@ package de.cau.cs.kieler.klighd.krendering;
 
 import java.util.List;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KNode;
-
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * A simple update strategy for KGraph with KRendering which merges by copying the new model.
@@ -68,9 +66,9 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
         newModel.getData().clear();
         
         // compose a collection of the baseModel's data that are to be replaced by those of newModel
+        // TODO: This originally included KShapeLayouts as well. Not doing so may mess up things.
         final List<KGraphData> obsoleteData =
                 Lists.newArrayList(Iterables.concat(
-                        Iterables.filter(baseModel.getData(), KShapeLayout.class),
                         Iterables.filter(baseModel.getData(), KRendering.class),
                         Iterables.filter(baseModel.getData(), KRenderingLibrary.class)));
 

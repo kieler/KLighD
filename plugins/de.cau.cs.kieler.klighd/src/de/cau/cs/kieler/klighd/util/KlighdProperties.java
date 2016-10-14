@@ -13,16 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.PortSide;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
@@ -132,8 +131,7 @@ public final class KlighdProperties {
      * @return the selectability of the given {@link KGraphElement}
      */
     public static boolean isSelectable(final KGraphElement kge) {
-        final KLayoutData layoutData = kge != null ? kge.getData(KLayoutData.class) : null;
-        return layoutData != null && !layoutData.getProperty(KlighdProperties.NOT_SELECTABLE);
+        return !kge.getProperty(KlighdProperties.NOT_SELECTABLE);
     }
 
     /**

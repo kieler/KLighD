@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.internal.macrolayout;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.core.service.ILayoutSetup;
-import org.eclipse.elk.graph.KGraphElement;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -26,6 +25,7 @@ import com.google.inject.util.Modules;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 
 /**
  * Defines how KLighD connects to the Eclipse Layout Kernel.

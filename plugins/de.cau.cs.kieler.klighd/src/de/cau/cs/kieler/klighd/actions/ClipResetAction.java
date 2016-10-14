@@ -13,10 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
-import org.eclipse.elk.graph.KNode;
-
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * Resets the diagram clip the root {@link KNode} of the current view model.

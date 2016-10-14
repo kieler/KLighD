@@ -18,18 +18,17 @@ import java.util.Map;
 
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.data.LayoutOptionData;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KBottomPosition;
@@ -85,7 +84,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement, T> S setLayoutOption(final S element,
             final IProperty<T> option, final T value) {
-        element.getData(KLayoutData.class).setProperty(option, value);
+        element.setProperty(option, value);
         return element;
     }
 
@@ -114,7 +113,7 @@ public final class DiagramSyntheses {
             if (value instanceof String) {
                 realValue = option.parseValue((String) value);
             }
-            element.getData(KLayoutData.class).setProperty(option, realValue);
+            element.setProperty(option, realValue);
         }
         return element;
     }
@@ -140,12 +139,12 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setLayoutOptions(final S element,
             final Map<IProperty<?>, ?> optionValueMap) {
-        final KLayoutData sl = element.getData(KLayoutData.class);
-        if (sl != null && optionValueMap != null) {
+        
+        if (optionValueMap != null) {
             for (final Map.Entry<IProperty<?>, ?> entry : optionValueMap.entrySet()) {
                 @SuppressWarnings("unchecked")
                 final IProperty<Object> key = (IProperty<Object>) entry.getKey();
-                sl.setProperty(key, entry.getValue());
+                element.setProperty(key, entry.getValue());
             }
         }
         return element;
@@ -216,10 +215,8 @@ public final class DiagramSyntheses {
      */
     public static <T> KNode setExpansionAwareLayoutOption(final KNode node, final IProperty<T> option,
             final T collapsedValue, final T expandedValue) {
-        final KLayoutData sl = node.getData(KLayoutData.class);
-        if (sl != null) {
-            ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
-        }
+        
+        ExpansionAwareLayoutOption.setProperty(node, option, collapsedValue, expandedValue);
         return node;
     }
 
@@ -244,10 +241,8 @@ public final class DiagramSyntheses {
      */
     public static <T> KPort setExpansionAwareLayoutOption(final KPort port,
             final IProperty<T> option, final T collapsedValue, final T expandedValue) {
-        final KLayoutData sl = port.getData(KLayoutData.class);
-        if (sl != null) {
-            ExpansionAwareLayoutOption.setProperty(sl, option, collapsedValue, expandedValue);
-        }
+        
+        ExpansionAwareLayoutOption.setProperty(port, option, collapsedValue, expandedValue);
         return port;
     }
 
@@ -302,8 +297,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setUpperVisibilityScaleBound(final S kgraphElement,
             final Number upperBound) {
-        kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND, upperBound);
+        kgraphElement.setProperty(KlighdProperties.VISIBILITY_SCALE_UPPER_BOUND, upperBound);
         return kgraphElement;
     }
 
@@ -321,8 +315,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setLowerVisibilityScaleBound(final S kgraphElement,
             final Number lowerBound) {
-        kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND, lowerBound);
+        kgraphElement.setProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND, lowerBound);
         return kgraphElement;
     }
 
@@ -377,8 +370,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setUpperVisibilityHeightBound(final S kgraphElement,
             final Number upperBound) {
-        kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_HEIGHT_UPPER_BOUND, upperBound);
+        kgraphElement.setProperty(KlighdProperties.VISIBILITY_HEIGHT_UPPER_BOUND, upperBound);
         return kgraphElement;
     }
 
@@ -397,8 +389,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setLowerVisibilityHeightBound(final S kgraphElement,
             final Number lowerBound) {
-        kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_HEIGHT_LOWER_BOUND, lowerBound);
+        kgraphElement.setProperty(KlighdProperties.VISIBILITY_HEIGHT_LOWER_BOUND, lowerBound);
         return kgraphElement;
     }
 
@@ -455,8 +446,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setUpperVisibilityWidthBound(final S kgraphElement,
             final Number upperBound) {
-        kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_WIDTH_UPPER_BOUND, upperBound);
+        kgraphElement.setProperty(KlighdProperties.VISIBILITY_WIDTH_UPPER_BOUND, upperBound);
         return kgraphElement;
     }
 
@@ -475,8 +465,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setLowerVisibilityWidthBound(final S kgraphElement,
             final Number lowerBound) {
-        kgraphElement.getData(KLayoutData.class).setProperty(
-                KlighdProperties.VISIBILITY_WIDTH_LOWER_BOUND, lowerBound);
+        kgraphElement.setProperty(KlighdProperties.VISIBILITY_WIDTH_LOWER_BOUND, lowerBound);
         return kgraphElement;
     }
 
@@ -620,7 +609,7 @@ public final class DiagramSyntheses {
      * @return <code>node</code> for convenience
      */
     public static KNode initiallyCollapse(final KNode node) {
-        node.getData(KLayoutData.class).setProperty(KlighdProperties.EXPAND, false);
+        node.setProperty(KlighdProperties.EXPAND, false);
         return node;
     }
 
@@ -634,7 +623,7 @@ public final class DiagramSyntheses {
      * @return <code>node</code> for convenience
      */
     public static KNode initiallyExpand(final KNode node) {
-        node.getData(KLayoutData.class).setProperty(KlighdProperties.EXPAND, true);
+        node.setProperty(KlighdProperties.EXPAND, true);
         return node;
     }
 
@@ -648,7 +637,7 @@ public final class DiagramSyntheses {
      * @return <code>kge</code> for convenience
      */
     public static <S extends KGraphElement> S initiallyHide(final S kge) {
-        kge.getData(KLayoutData.class).setProperty(KlighdProperties.SHOW, false);
+        kge.setProperty(KlighdProperties.SHOW, false);
         return kge;
     }
 
@@ -664,7 +653,7 @@ public final class DiagramSyntheses {
      * @return <code>kge</code> for convenience
      */
     public static <S extends KGraphElement> S initiallyShow(final S kge) {
-        kge.getData(KLayoutData.class).setProperty(KlighdProperties.SHOW, true);
+        kge.setProperty(KlighdProperties.SHOW, true);
         return kge;
     }
 
@@ -678,7 +667,7 @@ public final class DiagramSyntheses {
      * @return <code>node</code> for convenience
      */
     public static KNode initiallyScale(final KNode node, final float scale) {
-        node.getData(KLayoutData.class).setProperty(CoreOptions.SCALE_FACTOR, scale);
+        node.setProperty(CoreOptions.SCALE_FACTOR, scale);
         return node;
     }
 
@@ -739,7 +728,7 @@ public final class DiagramSyntheses {
      * @return the <code>kge</code> for convenience
      */
     public static <S extends KGraphElement> S suppressSelectability(final S kge) {
-        kge.getData(KLayoutData.class).setProperty(KlighdProperties.NOT_SELECTABLE, true);
+        kge.setProperty(KlighdProperties.NOT_SELECTABLE, true);
         return kge;
     }
 
@@ -771,7 +760,7 @@ public final class DiagramSyntheses {
      */
     public static <S extends KGraphElement> S setSemanticData(final S kge,
             final KlighdSemanticDiagramData data) {
-        kge.getData(KLayoutData.class).setProperty(KlighdProperties.SEMANTIC_DATA, data);
+        kge.setProperty(KlighdProperties.SEMANTIC_DATA, data);
         return kge;
     }
 
@@ -807,7 +796,7 @@ public final class DiagramSyntheses {
      * @return <code>kge</code> for convenience
      */
     public static <S extends KGraphElement> S setTooltip(final S kge, final String tooltip) {
-        kge.getData(KLayoutData.class).setProperty(KlighdProperties.TOOLTIP, tooltip);
+        kge.setProperty(KlighdProperties.TOOLTIP, tooltip);
         return kge;
     }
 

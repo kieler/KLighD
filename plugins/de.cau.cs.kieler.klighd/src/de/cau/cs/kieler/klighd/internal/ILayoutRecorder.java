@@ -13,9 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.internal;
 
-import org.eclipse.elk.graph.KNode;
-
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * A dedicated interface enable the separation of the features provided by

@@ -17,11 +17,11 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 

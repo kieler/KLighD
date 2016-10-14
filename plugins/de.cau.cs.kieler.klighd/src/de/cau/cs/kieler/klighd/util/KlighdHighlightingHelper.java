@@ -16,15 +16,15 @@ package de.cau.cs.kieler.klighd.util;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KLabeledGraphElement;
-import org.eclipse.elk.graph.KPort;
 import org.eclipse.swt.graphics.Color;
 
 import com.google.common.collect.Iterables;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KColor;
 import de.cau.cs.kieler.klighd.krendering.KForeground;
