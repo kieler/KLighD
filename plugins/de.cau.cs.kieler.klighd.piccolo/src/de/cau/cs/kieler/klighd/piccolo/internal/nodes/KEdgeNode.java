@@ -16,8 +16,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.eclipse.elk.graph.KEdge;
-
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
 import edu.umd.cs.piccolo.PNode;

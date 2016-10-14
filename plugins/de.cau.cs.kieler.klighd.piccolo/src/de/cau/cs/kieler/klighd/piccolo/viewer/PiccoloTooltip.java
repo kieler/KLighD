@@ -16,14 +16,13 @@ package de.cau.cs.kieler.klighd.piccolo.viewer;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 
 import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
@@ -176,8 +175,7 @@ public class PiccoloTooltip {
             }
 
             if (tooltipText == null && kge != null) {
-                final KLayoutData l = kge.getData(KLayoutData.class);
-                tooltipText = l.getProperty(KlighdProperties.TOOLTIP);
+                tooltipText = kge.getProperty(KlighdProperties.TOOLTIP);
             }
 
             // return if no tooltip was assembled

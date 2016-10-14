@@ -27,12 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KGraphPackage;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.impl.IPropertyToObjectMapImpl;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -51,6 +46,10 @@ import com.google.common.collect.Multimap;
 import de.cau.cs.kieler.klighd.IStyleModifier.StyleModificationContext;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KChildArea;
 import de.cau.cs.kieler.klighd.krendering.KColor;
@@ -825,17 +824,12 @@ public abstract class AbstractKGERenderingController
         final Iterable<KStyle> localModifiedStyles = filter(styles, MODIFIED_STYLE_FILTER);
         modifiableStylesPresent |= localModifiedStyles.iterator().hasNext();
 
-        final KLayoutData layoutData = getGraphElement().getData(KLayoutData.class);
-        if (layoutData == null) {
-            return;
-        }
-
         boolean deliver;
         for (final KStyle s: localModifiedStyles) {
             deliver  = s.eDeliver();
             s.eSetDeliver(false);
             KlighdDataManager.getInstance().getStyleModifierById(s.getModifierId()).modify(
-                    singletonModContext.configure(s, layoutData));
+                    singletonModContext.configure(s, getGraphElement()));
             s.eSetDeliver(deliver);
         }
     }

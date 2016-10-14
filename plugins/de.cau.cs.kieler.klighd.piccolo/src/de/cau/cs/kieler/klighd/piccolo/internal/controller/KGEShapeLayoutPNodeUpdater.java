@@ -15,14 +15,13 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.geom.AffineTransform;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.graph.KGraphPackage;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
@@ -112,10 +111,10 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 unchanged = false;
 
                 switch (((EStructuralFeature) notification.getFeature()).getFeatureID()) {
-                case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS:
-                case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS:
-                case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH:
-                case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT:
+                case KGraphPackage.KSHAPE_LAYOUT__XPOS:
+                case KGraphPackage.KSHAPE_LAYOUT__YPOS:
+                case KGraphPackage.KSHAPE_LAYOUT__WIDTH:
+                case KGraphPackage.KSHAPE_LAYOUT__HEIGHT:
                     break;
                 default:
                     return;
@@ -152,14 +151,14 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                 final double offsetY = localTransform.getTranslateY();
 
                 switch (notification.getFeatureID(KShapeLayout.class)) {
-                case KLayoutDataPackage.KSHAPE_LAYOUT__XPOS: {
+                case KGraphPackage.KSHAPE_LAYOUT__XPOS: {
                     final double newX = shL.getXpos();
                     if (newX != offsetX) {
                         nodeRep.setOffset(newX, offsetY);
                     }
                     break;
                 }
-                case KLayoutDataPackage.KSHAPE_LAYOUT__YPOS: {
+                case KGraphPackage.KSHAPE_LAYOUT__YPOS: {
                     final double oldY = offsetY;
                     final double newY = shL.getYpos();
                     if (newY != oldY) {
@@ -167,7 +166,7 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                     }
                     break;
                 }
-                case KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH: {
+                case KGraphPackage.KSHAPE_LAYOUT__WIDTH: {
                     final double oldWidth = nodeRep.getWidth();
                     final double newWidth = shL.getWidth();
                     if (oldWidth != newWidth) {
@@ -175,7 +174,7 @@ class KGEShapeLayoutPNodeUpdater extends LimitedKGraphContentAdapter {
                     }
                     break;
                 }
-                case KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT: {
+                case KGraphPackage.KSHAPE_LAYOUT__HEIGHT: {
                     final double oldHeight = nodeRep.getHeight();
                     final double newHeight = shL.getHeight();
                     if (oldHeight != newHeight) {

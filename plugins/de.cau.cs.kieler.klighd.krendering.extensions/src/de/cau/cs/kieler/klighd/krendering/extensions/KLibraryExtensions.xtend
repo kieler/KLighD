@@ -17,8 +17,8 @@ import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
-import org.eclipse.elk.graph.KGraphElement
-import org.eclipse.elk.graph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 
 /**
  * Extension that allow a convenient use of the {@link KRenderingLibrary} mechanism.

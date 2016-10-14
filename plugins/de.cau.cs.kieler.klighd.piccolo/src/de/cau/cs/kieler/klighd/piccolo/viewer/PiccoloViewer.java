@@ -23,10 +23,7 @@ import javax.swing.Timer;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -41,6 +38,8 @@ import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
@@ -589,10 +588,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * {@inheritDoc}
      */
     public void scale(final KNode diagramElement, final float factor) {
-        final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
-        if (layoutData != null) {
-            layoutData.setProperty(CoreOptions.SCALE_FACTOR, factor);
-        }
+        diagramElement.setProperty(CoreOptions.SCALE_FACTOR, factor);
 
         if (isExpanded(diagramElement)) {
             controller.getZoomController().setFocusNode(diagramElement);
@@ -605,12 +601,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * {@inheritDoc}
      */
     public float getScale(final KNode diagramElement) {
-        final KShapeLayout layoutData = diagramElement.getData(KShapeLayout.class);
-        if (layoutData != null) {
-            return layoutData.getProperty(CoreOptions.SCALE_FACTOR);
-        } else {
-            return 1f;
-        }
+        return diagramElement.getProperty(CoreOptions.SCALE_FACTOR);
     }
 
     /**

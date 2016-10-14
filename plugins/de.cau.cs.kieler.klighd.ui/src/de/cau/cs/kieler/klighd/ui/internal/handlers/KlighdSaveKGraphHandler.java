@@ -28,18 +28,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
 import org.eclipse.elk.core.options.PortConstraints;
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
-import org.eclipse.elk.graph.impl.KGraphDataImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -66,6 +57,13 @@ import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
+import de.cau.cs.kieler.klighd.kgraph.impl.KGraphDataImpl;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KImage;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
@@ -371,8 +369,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
                 // the new root's position is at 0,0 now
                 KNode subgraphCopy = (KNode) copier.get(subgraph);
-                KShapeLayout sl = subgraphCopy.getData(KShapeLayout.class);
-                sl.setPos(0, 0);
+                subgraphCopy.setPos(0, 0);
 
                 // move all rendering libraries that we can find to the newly promoted root
                 Iterable<KRenderingLibrary> libs =
@@ -386,17 +383,15 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
                 // we wrap the subgraph into a new psuedo root node
                 // to retain external ports
-                KNode newRoot = ElkUtil.createInitializedNode();
+                KNode newRoot = KGraphUtil.createInitializedNode();
                 newRoot.getChildren().add(subgraphCopy);
                 // give the root a proper dimension
-                KShapeLayout rsl = newRoot.getData(KShapeLayout.class);
-                rsl.setWidth(sl.getWidth());
-                rsl.setHeight(sl.getHeight());
+                newRoot.setWidth(subgraphCopy.getWidth());
+                newRoot.setHeight(subgraphCopy.getHeight());
 
                 // expand the subgraph by default
-                KLayoutData ld = subgraphCopy.getData(KLayoutData.class);
-                ld.setProperty(KlighdInternalProperties.POPULATED, true);
-                ld.setProperty(KlighdProperties.EXPAND, true);
+                subgraphCopy.setProperty(KlighdInternalProperties.POPULATED, true);
+                subgraphCopy.setProperty(KlighdProperties.EXPAND, true);
 
                 exportGraph = newRoot;
             }
@@ -407,8 +402,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                 // care: do not iterate over the elements of the 'copy' as the subgraph
                 // was already removed from its original containment
                 EObject copyRoot = copier.get(subgraph);
-                Iterator<KGraphElement> kgeIt =
-                        ModelingUtil.selfAndEAllContentsOfType2(copyRoot,
+                Iterator<KGraphElement> kgeIt = ModelingUtil.selfAndEAllContentsOfType2(copyRoot,
                                 KGraphElement.class);
 
                 while (kgeIt.hasNext()) {
@@ -422,9 +416,8 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                             // remember whether a node was expanded / collapsed
                             if (kge instanceof KNode && kge != exportGraph) {
                                 KNode currentNode = (KNode) kge;
-                                KLayoutData ld = kge.getData(KLayoutData.class);
                                 boolean isPopulated = d.getProperty(KlighdInternalProperties.POPULATED);
-                                ld.setProperty(KlighdProperties.EXPAND, isPopulated);
+                                kge.setProperty(KlighdProperties.EXPAND, isPopulated);
                                 
                                 // since the populated state is only attached to the transient 
                                 // rendering context that we throw away here, we have to remember 
@@ -437,9 +430,9 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                                 // state of a node
                                 // here we want to persist the options based on the current state.
                                 ExpansionAwareLayoutOptionData ealo =
-                                        ld.getProperty(ExpansionAwareLayoutOption.OPTION);
+                                        kge.getProperty(ExpansionAwareLayoutOption.OPTION);
                                 if (ealo != null) {
-                                    ld.copyProperties(ealo.getValues(isPopulated));
+                                    kge.copyProperties(ealo.getValues(isPopulated));
                                 }
                                 
                                 // we make an exception if children of expanded compound
@@ -450,15 +443,15 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                                 //  because that's the one we wanna layout and hence be able 
                                 //  to move external ports
                                 if (removeChildren && isPopulated && currentNode != copyRoot) {
-                                    ld.setProperty(CoreOptions.PORT_CONSTRAINTS,
+                                    kge.setProperty(CoreOptions.PORT_CONSTRAINTS,
                                             PortConstraints.FIXED_POS);
-                                    Direction dir = currentNode.getParent().getData(KLayoutData.class)
-                                                      .getProperty(CoreOptions.DIRECTION);
+                                    Direction dir = currentNode.getParent().getProperty(
+                                            CoreOptions.DIRECTION);
                                     // due to a previous FREE, ports might have been moved to
                                     // different sides
                                     for (KPort p : currentNode.getPorts()) {
-                                        p.getData(KLayoutData.class).setProperty(
-                                                CoreOptions.PORT_SIDE, ElkUtil.calcPortSide(p, dir));
+                                        p.setProperty(CoreOptions.PORT_SIDE,
+                                                KGraphUtil.calcPortSide(p, dir));
                                     }
                                 }
 
@@ -500,7 +493,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
 
 
                 // persist layout options and friends
-                ElkUtil.persistDataElements(copy);
+                KGraphUtil.persistDataElements(copy);
     
                 // remove children if requested. Do this after the previous removal
                 // happening to make sure all rendering libraries are considered etc
@@ -510,9 +503,8 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
                     while (childrenIterator.hasNext()) {
                         KNode child = childrenIterator.next();
                         child.getChildren().clear();
-                        KLayoutData ld = child.getData(KLayoutData.class);
-                        ld.setProperty(KlighdProperties.EXPAND, false);
-                        ld.setProperty(KlighdProperties.MINIMAL_NODE_SIZE, null);
+                        child.setProperty(KlighdProperties.EXPAND, false);
+                        child.setProperty(KlighdProperties.MINIMAL_NODE_SIZE, null);
 
                         // remove the collapsed rendering
                         Iterator<KGraphData> dataIt = child.getData().iterator();
@@ -563,7 +555,6 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
     }
     
     private void recursivelyRemoveInvalidEdges(final KNode parent) {
-        
         final Iterator<KEdge> edgeIt = parent.getOutgoingEdges().iterator();
         while (edgeIt.hasNext()) {
             KEdge edge = edgeIt.next();

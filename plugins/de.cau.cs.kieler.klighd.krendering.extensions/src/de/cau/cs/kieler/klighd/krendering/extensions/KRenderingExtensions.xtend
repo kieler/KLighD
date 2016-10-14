@@ -58,13 +58,13 @@ import de.cau.cs.kieler.klighd.krendering.LineStyle
 import de.cau.cs.kieler.klighd.krendering.Trigger
 import de.cau.cs.kieler.klighd.krendering.Underline
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment
-import org.eclipse.elk.graph.KGraphElement
-import org.eclipse.elk.graph.KLabel
-import org.eclipse.elk.graph.KNode
-import org.eclipse.elk.graph.KPort
 import org.eclipse.emf.ecore.EClass
 
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KPort
+import de.cau.cs.kieler.klighd.kgraph.KLabel
 
 /**
  * This class contains lots of convenient helper functions for configuring KRendering-based view models, 

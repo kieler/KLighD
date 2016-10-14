@@ -13,9 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KLabeledGraphElement;
-
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 

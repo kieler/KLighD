@@ -18,13 +18,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.graph.KNode;
-
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingController;
@@ -100,8 +98,7 @@ public class KNodeNode extends KNodeAbstractNode implements
     public KNodeNode(final KNode node, final boolean edgesFirst) {
         super(node, edgesFirst);
 
-        this.visibilityHelper =
-                KGraphElementNode.evaluateVisibilityDefinitions(node.getData(KLayoutData.class), null);
+        this.visibilityHelper = KGraphElementNode.evaluateVisibilityDefinitions(node, null);
 
         this.childAreaCamera = new PCamera() {
 

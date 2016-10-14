@@ -13,8 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
-import org.eclipse.elk.graph.KPort;
-
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KForeground;
 import de.cau.cs.kieler.klighd.krendering.KRectangle;

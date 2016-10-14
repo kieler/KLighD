@@ -15,6 +15,10 @@ package de.cau.cs.kieler.klighd.krendering.extensions
 
 import com.google.inject.Injector
 import com.google.inject.Scope
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KPort
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
 import de.cau.cs.kieler.klighd.krendering.KFontSize
 import de.cau.cs.kieler.klighd.krendering.KRendering
@@ -24,14 +28,10 @@ import de.cau.cs.kieler.klighd.krendering.VerticalAlignment
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
 import java.util.ArrayList
 import javax.inject.Inject
-import org.eclipse.elk.core.klayoutdata.KShapeLayout
-import org.eclipse.elk.core.options.PortSide
-import org.eclipse.elk.core.util.ElkUtil
-import org.eclipse.elk.core.util.Maybe
-import org.eclipse.elk.graph.KNode
-import org.eclipse.elk.graph.KPort
-import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.elk.core.options.CoreOptions
+import org.eclipse.elk.core.options.PortSide
+import org.eclipse.elk.core.util.Maybe
+import org.eclipse.elk.graph.properties.IProperty
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
@@ -84,13 +84,10 @@ class KPortExtensions {
     @Inject
     extension KRenderingExtensions;
     
-    @Inject
-    extension KNodeExtensions;
-    
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KPort create port: ElkUtil::createInitializedPort internalCreatePort(ArrayList<Object> oc) {
+    def private KPort create port: KGraphUtil::createInitializedPort internalCreatePort(ArrayList<Object> oc) {
     }
     
     /**
@@ -129,7 +126,7 @@ class KPortExtensions {
      * A convenience method to create a KPort without relating it to a business object.  
      */
     def KPort createPort() {
-        return ElkUtil.createInitializedPort;
+        return KGraphUtil.createInitializedPort;
     }
     
     /**
@@ -420,25 +417,22 @@ class KPortExtensions {
 
 
     def KPort setPortSize(KPort port, float with, float height) {
-        return port => [
-            getData(typeof(KShapeLayout)).setSize(with, height)
-        ];
+        port.setSize(with, height);
+        return port;
     }
     
     def KPort setPortPos(KPort port, float x, float y) {
-        return port => [
-            getData(typeof(KShapeLayout)).setPos(x, y)
-        ];
+        port.setPos(x, y);
+        return port;
     }
     
     def <T> KPort addLayoutParam(KPort port, IProperty<? super T> property, T value) {
-        return port => [
-            it.getData(typeof(KShapeLayout)).setProperty(property, value)
-        ];
+        port.setProperty(property, value);
+        return port;
     }
     
     def KShapeLayout getShapeLayout(KPort port){
-        port.getData(typeof(KShapeLayout))
+        return port;
     }
 
     def KFontSize create it: createKFontSize portLabelFontSize() {

@@ -21,13 +21,13 @@ import static de.cau.cs.kieler.klighd.util.KlighdProperties.VISIBILITY_WIDTH_UPP
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
-import org.eclipse.elk.graph.EMapPropertyHolder;
 import org.eclipse.elk.graph.properties.IProperty;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 
+import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera.KlighdPickPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
@@ -584,7 +584,8 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
          * {@inheritDoc}
          */
         @Override
-        protected void setScaleAndSizeBasedVisibilityBounds(final EMapPropertyHolder propertyConfig) {
+        protected void setScaleAndSizeBasedVisibilityBounds(
+                final EMapPropertyHolder propertyConfig) {
             super.setScaleAndSizeBasedVisibilityBounds(propertyConfig);
             this.propagateVisibilityToChildren =
                     propertyConfig.getProperty(KlighdProperties.VISIBILITY_PROPAGATE_TO_CHILDREN);

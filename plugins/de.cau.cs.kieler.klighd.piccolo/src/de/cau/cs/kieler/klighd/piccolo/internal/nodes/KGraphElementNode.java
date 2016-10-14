@@ -16,11 +16,11 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.emf.ecore.EObject;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;

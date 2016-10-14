@@ -24,21 +24,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KGraphPackage;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KLabeledGraphElement;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
-import org.eclipse.elk.graph.impl.IPropertyToObjectMapImpl;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.common.notify.Notification;
@@ -59,6 +46,17 @@ import com.google.common.collect.Sets;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KEdgeLayout;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
+import de.cau.cs.kieler.klighd.kgraph.impl.IPropertyToObjectMapImpl;
 import de.cau.cs.kieler.klighd.krendering.KPolyline;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
@@ -452,8 +450,8 @@ public class DiagramController {
 
         // check whether the lower visibility scale bound is exceeded
         final float viewScale = (float) canvasCamera.getViewTransformReference().getScaleX();
-        final float lowerBound = diagramElement.getData(KLayoutData.class)
-                .getProperty(KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
+        final float lowerBound = diagramElement.getProperty(
+                KlighdProperties.VISIBILITY_SCALE_LOWER_BOUND).floatValue();
 
         if (viewScale < lowerBound) {
             return false;
@@ -876,8 +874,8 @@ public class DiagramController {
                 
                 // check whether the scale must be updated, only valid for KNodes
                 if (shapeNode instanceof KNodeNode) {
-                    scale = ((KNodeNode) shapeNode).getViewModelElement().getData(KShapeLayout.class)
-                                    .getProperty(CoreOptions.SCALE_FACTOR);
+                    scale = ((KNodeNode) shapeNode).getViewModelElement()
+                            .getProperty(CoreOptions.SCALE_FACTOR);
                     scaleHasChanged = scale != shapeNode.getScale();
                 } else {
                     scale = 1f;
@@ -1041,8 +1039,7 @@ public class DiagramController {
     private static final Predicate<KGraphElement> NON_HIDDEN_KGE_FILTER =
             new Predicate<KGraphElement>() {
         public boolean apply(final KGraphElement kge) {
-            final KGraphData data = kge.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
-            return data.getProperty(KlighdProperties.SHOW);
+            return kge.getProperty(KlighdProperties.SHOW);
         }
     };
 
@@ -1106,8 +1103,7 @@ public class DiagramController {
 
         // if there is no Piccolo2D representation of the node create it
         if (nodeNode == null) {
-            final KGraphData data = node.getData(KLayoutDataPackage.eINSTANCE.getKLayoutData());
-            if (!forceShow && !data.getProperty(KlighdProperties.SHOW)) {
+            if (!forceShow && !node.getProperty(KlighdProperties.SHOW)) {
                 contextData.setProperty(KlighdInternalProperties.ACTIVE, false);
                 return;
             }
@@ -1119,7 +1115,7 @@ public class DiagramController {
 
             addExpansionListener(nodeNode);
 
-            expand = data == null || data.getProperty(KlighdProperties.EXPAND) ?  1 : 0;
+            expand = node.getProperty(KlighdProperties.EXPAND) ?  1 : 0;
             // in case the EXPAND property is not set the default value 'true' is returned
 
         } else {
@@ -1567,13 +1563,10 @@ public class DiagramController {
 
         // if the label's text is overriden by means of a property, use that property
         String labelText = label.getText();
-        final KLayoutData layoutData = label.getData(KLayoutData.class);
-        if (layoutData != null) {
-            final String labelTextOverride =
-                    layoutData.getProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE);
-            if (labelTextOverride != null) {
-                labelText = labelTextOverride;
-            }
+        final String labelTextOverride =
+                label.getProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE);
+        if (labelTextOverride != null) {
+            labelText = labelTextOverride;
         }
         labelNode.setText(labelText);
 
@@ -1631,17 +1624,16 @@ public class DiagramController {
 
 
     private boolean isAutomaticallyArranged(final KGraphElement element) {
-        KLayoutData layoutData = this.topNode.getViewModelElement().getData(KLayoutData.class);
-        if (layoutData == null || layoutData.getProperty(CoreOptions.NO_LAYOUT)) {
+        if (topNode.getViewModelElement().getProperty(CoreOptions.NO_LAYOUT)) {
             return false;
         }
-        layoutData = element.getData(KLayoutData.class);
-        if (layoutData != null && layoutData.getProperty(CoreOptions.NO_LAYOUT)) {
+        
+        if (element.getProperty(CoreOptions.NO_LAYOUT)) {
             return false;
         }
+        
         final KNode container = ModelingUtil.eContainerOfType(element, KNode.class);
-        layoutData = container == null ? null : container.getData(KLayoutData.class);
-        if (layoutData != null && layoutData.getProperty(CoreOptions.NO_LAYOUT)) {
+        if (container != null && container.getProperty(CoreOptions.NO_LAYOUT)) {
             return false;
         }
         return true;
@@ -1671,13 +1663,10 @@ public class DiagramController {
             node.eAdapters().add(new KGEShapeLayoutPNodeUpdater(nodeNode, this));
         }
 
-        final KShapeLayout shapeLayout = nodeNode.getViewModelElement().getData(KShapeLayout.class);
-        if (shapeLayout != null) {
-            NodeUtil.applyBounds(nodeNode, shapeLayout);
-            Float scale = shapeLayout.getProperty(CoreOptions.SCALE_FACTOR);
-            if (scale != Float.valueOf(1f)) {
-                nodeNode.setScale(scale.doubleValue());
-            }
+        NodeUtil.applyBounds(nodeNode, (KShapeLayout) nodeNode.getViewModelElement());
+        Float scale = nodeNode.getViewModelElement().getProperty(CoreOptions.SCALE_FACTOR);
+        if (scale != Float.valueOf(1f)) {
+            nodeNode.setScale(scale.doubleValue());
         }
     }
 
@@ -1705,10 +1694,7 @@ public class DiagramController {
             port.eAdapters().add(new KGEShapeLayoutPNodeUpdater(portNode, this));
         }
 
-        final KShapeLayout shapeLayout = portNode.getViewModelElement().getData(KShapeLayout.class);
-        if (shapeLayout != null) {
-            NodeUtil.applyBounds(portNode, shapeLayout);
-        }
+        NodeUtil.applyBounds(portNode, (KShapeLayout) portNode.getViewModelElement());
     }
 
     /**
@@ -1735,10 +1721,7 @@ public class DiagramController {
             label.eAdapters().add(new KGEShapeLayoutPNodeUpdater(labelNode, this));
         }
 
-        final KShapeLayout shapeLayout = labelNode.getViewModelElement().getData(KShapeLayout.class);
-        if (shapeLayout != null) {
-            NodeUtil.applyBounds(labelNode, shapeLayout);
-        }
+        NodeUtil.applyBounds(labelNode, (KShapeLayout) labelNode.getViewModelElement());
     }
 
     /**
@@ -1766,16 +1749,12 @@ public class DiagramController {
         }
 
         final KEdge edge = edgeRep.getViewModelElement();
-        final KEdgeLayout edgeLayout = edge.getData(KEdgeLayout.class);
-        if (edgeLayout != null) {
-            final KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
-            final boolean renderedAsPolyline = rendering instanceof KPolyline
-                    && !(rendering instanceof KSpline);
+        final KRendering rendering = KRenderingUtil.dereference(edge.getData(KRendering.class));
+        final boolean renderedAsPolyline = rendering instanceof KPolyline
+                && !(rendering instanceof KSpline);
 
-            edgeRep.setBendPoints(KEdgeLayoutEdgeNodeUpdater.getBendPoints(edgeLayout,
-                    renderedAsPolyline));
-            edgeRep.setJunctionPoints(KEdgeLayoutEdgeNodeUpdater.getJunctionPoints(edgeLayout));
-        }
+        edgeRep.setBendPoints(KEdgeLayoutEdgeNodeUpdater.getBendPoints(edge, renderedAsPolyline));
+        edgeRep.setJunctionPoints(KEdgeLayoutEdgeNodeUpdater.getJunctionPoints(edge));
     }
 
     /**

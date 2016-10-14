@@ -17,12 +17,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.graph.KLabel;
-
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
@@ -98,10 +96,9 @@ public class KLabelRenderingController extends AbstractKGERenderingController<KL
         // Transfer selectability from KLabel to KText to properly handle the selection handlers
         // Should only apply if the KText is not configured but KLabel is configured  
         if (!kText.getProperties().contains(KlighdProperties.NOT_SELECTABLE)
-                && getGraphElement().getData(KShapeLayout.class).getProperties()
-                        .contains(KlighdProperties.NOT_SELECTABLE)) {
-            kText.setProperty(KlighdProperties.NOT_SELECTABLE, getGraphElement()
-                    .getData(KShapeLayout.class).getProperty(KlighdProperties.NOT_SELECTABLE));
+                && getGraphElement().getProperties().contains(KlighdProperties.NOT_SELECTABLE)) {
+            kText.setProperty(KlighdProperties.NOT_SELECTABLE,
+                    getGraphElement().getProperty(KlighdProperties.NOT_SELECTABLE));
         }
         
         // create the rendering

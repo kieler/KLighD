@@ -24,11 +24,8 @@ import java.util.Collections;
 
 import javax.swing.Timer;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.swt.SWT;
@@ -43,6 +40,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
@@ -454,10 +454,10 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 }
 
                 final int featureId = notification.getFeatureID(KShapeLayout.class);
-                if (featureId == KLayoutDataPackage.KSHAPE_LAYOUT__WIDTH
-                        || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__HEIGHT
-                        || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__XPOS
-                        || featureId == KLayoutDataPackage.KSHAPE_LAYOUT__YPOS) {
+                if (featureId == KGraphPackage.KSHAPE_LAYOUT__WIDTH
+                        || featureId == KGraphPackage.KSHAPE_LAYOUT__HEIGHT
+                        || featureId == KGraphPackage.KSHAPE_LAYOUT__XPOS
+                        || featureId == KGraphPackage.KSHAPE_LAYOUT__YPOS) {
 
                     if (cameraTimer != null) {
                         cameraTimer.restart();

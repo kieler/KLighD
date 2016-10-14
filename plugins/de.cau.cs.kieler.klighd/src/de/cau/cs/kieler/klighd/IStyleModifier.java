@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.krendering.KStyle;
 
@@ -51,7 +52,7 @@ public interface IStyleModifier {
     public static class StyleModificationContext {
 
         private KStyle style;
-        private KLayoutData layoutData;
+        private KGraphElement graphElement;
         
         
         /**
@@ -65,14 +66,14 @@ public interface IStyleModifier {
          * 
          * @param theStyle
          *            the style to be modified
-         * @param theLayoutData
-         *            the layout data to be examined during the modification
+         * @param theGraphElement
+         *            the graph element to be examined during the modification
          * @return <code>this</code> StyleModificationContext
          */
         public StyleModificationContext configure(final KStyle theStyle,
-                final KLayoutData theLayoutData) {
+                final KGraphElement theGraphElement) {
             this.style = theStyle;
-            this.layoutData = theLayoutData;
+            this.graphElement = theGraphElement;
             return this;
         }
         
@@ -84,11 +85,10 @@ public interface IStyleModifier {
         }
         
         /**
-         * @return the {@link KLayoutData} of the {@link de.cau.cs.kieler.core.kgraph.KGraphElement
-         *         KGraphElement} the {@link KStyle} to be modified belongs to
+         * @return the {@link KGraphElement} the {@link KStyle} to be modified belongs to
          */
-        public KLayoutData getLayoutData() {
-            return this.layoutData;
+        public KGraphElement getGraphElement() {
+            return this.graphElement;
         }
     }
 }

@@ -15,9 +15,7 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.Rectangle2D;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.graph.KNode;
-
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -181,8 +179,7 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
 
         if (kpc.isAddSemanticData()) {
             final KlighdSemanticDiagramData sd =
-                    getViewModelElement().getData(KLayoutData.class).getProperty(
-                            KlighdProperties.SEMANTIC_DATA);
+                    getViewModelElement().getProperty(KlighdProperties.SEMANTIC_DATA);
             kpc.getKlighdGraphics().startGroup(sd);
         }
 

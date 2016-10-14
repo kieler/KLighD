@@ -15,27 +15,24 @@ package de.cau.cs.kieler.klighd.krendering.extensions
 
 import com.google.inject.Injector
 import com.google.inject.Scope
+import de.cau.cs.kieler.klighd.kgraph.KEdge
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement
+import de.cau.cs.kieler.klighd.kgraph.KLabel
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KPort
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KColor
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
 import javax.inject.Inject
-import org.eclipse.elk.core.klayoutdata.KLayoutData
-import org.eclipse.elk.core.klayoutdata.KShapeLayout
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.EdgeLabelPlacement
 import org.eclipse.elk.core.options.NodeLabelPlacement
 import org.eclipse.elk.core.options.PortLabelPlacement
-import org.eclipse.elk.core.util.ElkUtil
-import org.eclipse.elk.graph.KEdge
-import org.eclipse.elk.graph.KGraphElement
-import org.eclipse.elk.graph.KLabel
-import org.eclipse.elk.graph.KLabeledGraphElement
-import org.eclipse.elk.graph.KNode
-import org.eclipse.elk.graph.KPort
 import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.core.runtime.CoreException
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
@@ -72,7 +69,7 @@ class KLabelExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KLabel create node: ElkUtil::createInitializedLabel(labeledElement) getLabel(Iterable<?> o,
+    def private KLabel create node: KGraphUtil::createInitializedLabel(labeledElement) getLabel(Iterable<?> o,
             KLabeledGraphElement labeledElement) {
     }
     
@@ -88,7 +85,7 @@ class KLabelExtensions {
      * It is just syntactic sugar.  
      */
     def KLabel createLabel(KLabeledGraphElement labeledElement) {
-        return ElkUtil::createInitializedLabel(labeledElement)
+        return KGraphUtil::createInitializedLabel(labeledElement)
     }
     
     /**
@@ -117,17 +114,17 @@ class KLabelExtensions {
     
     
     def KLabel setLabelSize(KLabel label, float width, float height) {
-        label.getData(typeof(KShapeLayout)).setSize(width, height)
+        label.setSize(width, height)
         return label;
     }
     
     def KLabel setLabelPos(KLabel label, float x, float y) {
-        label.getData(typeof(KShapeLayout)).setPos(x, y)
+        label.setPos(x, y)
         return label;
     }
     
     def <T> KLabel addLayoutParam(KLabel label, IProperty<? super T> property, T value) {
-        label?.getData(typeof(KLayoutData))?.setProperty(property, value)
+        label?.setProperty(property, value)
         return label;
     }
 
@@ -1047,7 +1044,7 @@ class KLabelExtensions {
      * Internal helper for setting layout options without the need to check for KNode, KEdge, ...
      */
     def private <S, T extends KGraphElement> T setLayoutOption(T kgraphElement, IProperty<S> option, S value) {
-        kgraphElement?.getData(typeof(KLayoutData))?.setProperty(option, value)
+        kgraphElement?.setProperty(option, value)
         return kgraphElement
     }
 

@@ -13,13 +13,13 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.export;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 
 import de.cau.cs.kieler.klighd.IOffscreenRenderer;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -98,6 +98,6 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
             }
         }
 
-        return viewContext.getViewModel().getData(KShapeLayout.class);
+        return viewContext.getViewModel();
     }
 }

@@ -15,6 +15,8 @@ package de.cau.cs.kieler.klighd.krendering.extensions
 
 import com.google.inject.Injector
 import com.google.inject.Scope
+import de.cau.cs.kieler.klighd.kgraph.KEdge
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KPolyline
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KRoundedBendsPolyline
@@ -23,10 +25,7 @@ import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
 import java.util.List
 import java.util.Map
 import javax.inject.Inject
-import org.eclipse.elk.graph.KEdge
 import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.elk.core.util.ElkUtil
-import org.eclipse.elk.core.klayoutdata.KEdgeLayout
 
 /**
  * Provides some helpful extension methods for simplifying the composition of KGraph/KRendering-based view models.<br>
@@ -64,7 +63,7 @@ class KEdgeExtensions {
     /**
      * A convenient getter preserving the element image relation by a create extension.
      */ 
-    def private KEdge create port: ElkUtil::createInitializedEdge internalCreateEdge(List<Object> oc) {
+    def private KEdge create port: KGraphUtil::createInitializedEdge internalCreateEdge(List<Object> oc) {
     }
 
     /**
@@ -149,7 +148,7 @@ class KEdgeExtensions {
      * A convenience method to create a KEdge without relating it to a business object. 
      */
     def KEdge createEdge() {
-        return ElkUtil::createInitializedEdge()
+        return KGraphUtil::createInitializedEdge()
     }
     
     /**
@@ -262,9 +261,8 @@ class KEdgeExtensions {
     
     
     def <T> KEdge addLayoutParam(KEdge edge, IProperty<? super T> property, T value) {
-        edge => [
-            it.getData(typeof(KEdgeLayout)).setProperty(property, value)
-        ];
+        edge.setProperty(property, value);
+        return edge;
     }
     
     def KPolyline addPolyline(KEdge e) {

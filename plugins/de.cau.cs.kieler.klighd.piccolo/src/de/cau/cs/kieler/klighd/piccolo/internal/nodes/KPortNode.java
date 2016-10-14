@@ -13,8 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
-import org.eclipse.elk.graph.KPort;
-
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KPortRenderingController;
 import edu.umd.cs.piccolo.PNode;

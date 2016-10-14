@@ -15,19 +15,19 @@ package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import java.awt.geom.Point2D;
 
-import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
-import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
-import org.eclipse.elk.core.klayoutdata.KPoint;
 import org.eclipse.elk.core.math.ElkMath;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.KVectorChain;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeRouting;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KEdge;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KEdgeLayout;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KPoint;
 import de.cau.cs.kieler.klighd.krendering.KPolyline;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
@@ -74,9 +74,9 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
         if (notifier instanceof KEdgeLayout) {
             final int featureId = notification.getFeatureID(KEdgeLayout.class);
 
-            if (featureId == KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS
-                    || featureId == KLayoutDataPackage.KEDGE_LAYOUT__SOURCE_POINT
-                    || featureId == KLayoutDataPackage.KEDGE_LAYOUT__TARGET_POINT) {
+            if (featureId == KGraphPackage.KEDGE_LAYOUT__BEND_POINTS
+                    || featureId == KGraphPackage.KEDGE_LAYOUT__SOURCE_POINT
+                    || featureId == KGraphPackage.KEDGE_LAYOUT__TARGET_POINT) {
                 edL = (KEdgeLayout) notifier;
             } else {
                 edL = null;
@@ -84,8 +84,8 @@ class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
         } else if (notifier instanceof KPoint) {
             final int featureId = notification.getFeatureID(KPoint.class);
 
-            if (featureId == KLayoutDataPackage.KPOINT__X
-                    || featureId == KLayoutDataPackage.KPOINT__Y) {
+            if (featureId == KGraphPackage.KPOINT__X
+                    || featureId == KGraphPackage.KPOINT__Y) {
                 edL = (KEdgeLayout) ((EObject) notifier).eContainer();
 
             } else {

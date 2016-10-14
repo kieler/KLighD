@@ -31,9 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.LayoutConfigurator;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.util.WrappedException;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.emf.common.util.URI;
@@ -70,6 +68,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
@@ -350,9 +349,7 @@ public class DiagramEditorPart extends EditorPart implements
      */
     protected boolean requiresInitialLayout(final ViewContext viewContext) {
         final KNode viewModel = viewContext.getViewModel();
-        final KShapeLayout diagramLayout = viewModel.getData(KShapeLayout.class);
-
-        return diagramLayout.getWidth() == 0 && diagramLayout.getHeight() == 0; 
+        return viewModel.getWidth() == 0 && viewModel.getHeight() == 0; 
     }
 
     /**

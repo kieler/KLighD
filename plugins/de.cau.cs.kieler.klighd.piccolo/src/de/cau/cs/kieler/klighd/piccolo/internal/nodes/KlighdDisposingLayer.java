@@ -12,6 +12,7 @@
  * See the file epl-v10.html for the license text.
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
+
 import java.awt.geom.Rectangle2D;
 
 import org.eclipse.emf.ecore.EObject;

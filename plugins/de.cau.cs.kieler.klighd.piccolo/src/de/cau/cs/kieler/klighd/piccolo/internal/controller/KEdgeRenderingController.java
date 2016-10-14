@@ -20,11 +20,11 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.elk.graph.KEdge;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.krendering.KCustomRendering;
 import de.cau.cs.kieler.klighd.krendering.KPolyline;
 import de.cau.cs.kieler.klighd.krendering.KRendering;

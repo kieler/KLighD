@@ -13,21 +13,17 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.elk.core.klayoutdata.KInsets;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KInsets;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PAffineTransform;
@@ -127,20 +123,9 @@ public class DiagramZoomController {
      */
     private void zoomToActualSize(final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
-        final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
-
-        if (nodeLayout == null) {
-            final String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to actual size' as the displayed node's layout data are "
-                    + "unavailable. This is most likely due to a failed incremental update before.";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
-                    StatusManager.LOG);
-            return;
-        }
-
+        
         final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
-
+        
         this.canvasCamera.animateViewToTransform(
                 PAffineTransform.getTranslateInstance(-newBounds.x, -newBounds.y), duration);
     }
@@ -151,17 +136,6 @@ public class DiagramZoomController {
      */
     private void zoomToFit(final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
-        final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
-
-        if (nodeLayout == null) {
-            final String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to fit' as the displayed node's layout data are "
-                    + "unavailable. This is most likely due to a failed incremental update before.";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
-                    StatusManager.LOG);
-            return;
-        }
 
         final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
 
@@ -203,17 +177,6 @@ public class DiagramZoomController {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
         // fetch bounds of the whole visible diagram
-        final KShapeLayout nodeLayout = displayedKNode.getData(KShapeLayout.class);
-        if (nodeLayout == null) {
-            final String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to focus' as the displayed node's layout data are "
-                    + "unavailable. This is most likely due to a failed incremental update before.";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
-                    StatusManager.LOG);
-            return;
-        }
-
         final PBounds focusBounds = toPBoundsIncludingPortsAndLabels(focus);
 
         // we need the bounds in view coordinates (absolute), hence for
@@ -223,16 +186,15 @@ public class DiagramZoomController {
             KNode parent = focus.getParent();
 
             while (parent != null && parent != displayedKNode.getParent()) {
-                final KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
-                final double scale = parentLayout.getProperty(CoreOptions.SCALE_FACTOR).doubleValue();
+                final double scale = parent.getProperty(CoreOptions.SCALE_FACTOR).doubleValue();
 
                 focusBounds.setSize(scale * focusBounds.width, scale * focusBounds.height);
                 focusBounds.setOrigin(scale * focusBounds.x, scale * focusBounds.y);
 
-                final KInsets insets = parentLayout.getInsets();
+                final KInsets insets = parent.getInsets();
                 focusBounds.moveBy(insets.getLeft(), insets.getTop());
 
-                focusBounds.moveBy(parentLayout.getXpos(), parentLayout.getYpos());
+                focusBounds.moveBy(parent.getXpos(), parent.getYpos());
                 parent = parent.getParent();
             }
         }
@@ -273,17 +235,6 @@ public class DiagramZoomController {
      */
     public void zoomToLevel(final float newZoomLevel, final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
-        final KShapeLayout topNodeLayout = displayedKNode.getData(KShapeLayout.class);
-
-        if (topNodeLayout == null) {
-            final String msg = "KLighD DiagramController: "
-                    + "Failed to apply 'zoom to level' as the displayed node's layout data are "
-                    + "unavailable. This is most likely due to a failed incremental update before.";
-            StatusManager.getManager().handle(
-                    new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg),
-                    StatusManager.LOG);
-            return;
-        }
 
         final PBounds nodeBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
 
@@ -324,10 +275,9 @@ public class DiagramZoomController {
      * @return the corresponding {@link PBounds}
      */
     public static PBounds toPBounds(final KNode node) {
-        final KShapeLayout nodeLayout = node.getData(KShapeLayout.class);
-        final float scale = nodeLayout.getProperty(CoreOptions.SCALE_FACTOR);
-        return new PBounds(nodeLayout.getXpos(), nodeLayout.getYpos(),
-                nodeLayout.getWidth() * scale, nodeLayout.getHeight() * scale);
+        final float scale = node.getProperty(CoreOptions.SCALE_FACTOR);
+        return new PBounds(node.getXpos(), node.getYpos(),
+                node.getWidth() * scale, node.getHeight() * scale);
     }
 
     /**
@@ -357,7 +307,7 @@ public class DiagramZoomController {
     private PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
         double maxX = nodeBounds.getWidth();
         double maxY = nodeBounds.getHeight();
-        final float scale = node.getData(KShapeLayout.class).getProperty(CoreOptions.SCALE_FACTOR);
+        final float scale = node.getProperty(CoreOptions.SCALE_FACTOR);
 
         // these min values are <= 0 at all times!
         double minX = 0;
@@ -367,27 +317,26 @@ public class DiagramZoomController {
 
         // incorporate only those contained ports & labels that are actually visible
         //  others may not have reasonable positions
-        for (final KGraphElement element : Iterables.filter(
+        for (final KShapeLayout element : Iterables.filter(
                 Iterables.concat(node.getPorts(), node.getLabels()), isDisplayedFilter)) {
-            final KShapeLayout pL = element.getData(KShapeLayout.class);
             float val;
 
-            val = pL.getXpos() * scale;
+            val = element.getXpos() * scale;
             if (val < minX) {
                 minX = val;
             }
 
-            val = pL.getYpos() * scale;
+            val = element.getYpos() * scale;
             if (val < minY) {
                 minY = val;
             }
 
-            val = pL.getXpos() * scale + pL.getWidth() * scale;
+            val = element.getXpos() * scale + element.getWidth() * scale;
             if (val > maxX) {
                 maxX = val;
             }
 
-            val = pL.getYpos() * scale + pL.getHeight() * scale;
+            val = element.getYpos() * scale + element.getHeight() * scale;
             if (val > maxY) {
                 maxY = val;
             }
