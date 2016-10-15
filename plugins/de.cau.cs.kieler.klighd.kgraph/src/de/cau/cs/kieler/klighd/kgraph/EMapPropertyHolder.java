@@ -44,48 +44,48 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface EMapPropertyHolder extends EObject, IPropertyHolder {
 	/**
-	 * Returns the value of the '<em><b>Properties</b></em>' map.
-	 * The key is of type {@link org.eclipse.elk.graph.properties.IProperty<?>},
-	 * and the value is of type {@link java.lang.Object},
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Properties</b></em>' map.
+     * The key is of type {@link org.eclipse.elk.graph.properties.IProperty<?>},
+     * and the value is of type {@link java.lang.Object},
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Properties</em>' map isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Properties</em>' map.
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getEMapPropertyHolder_Properties()
-	 * @model mapType="de.cau.cs.kieler.klighd.kgraph.IPropertyToObjectMap<de.cau.cs.kieler.klighd.kgraph.IProperty<?>, org.eclipse.emf.ecore.EJavaObject>" transient="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Properties</em>' map.
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getEMapPropertyHolder_Properties()
+     * @model mapType="de.cau.cs.kieler.klighd.kgraph.IPropertyToObjectMap<de.cau.cs.kieler.klighd.kgraph.IProperty<?>, org.eclipse.emf.ecore.EJavaObject>" transient="true"
+     * @generated
+     */
 	EMap<IProperty<?>, Object> getProperties();
 
 	/**
-	 * Returns the value of the '<em><b>Persistent Entries</b></em>' containment reference list.
-	 * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.PersistentEntry}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Persistent Entries</b></em>' containment reference list.
+     * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.PersistentEntry}.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Persistent Entries</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Persistent Entries</em>' containment reference list.
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getEMapPropertyHolder_PersistentEntries()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Persistent Entries</em>' containment reference list.
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getEMapPropertyHolder_PersistentEntries()
+     * @model containment="true"
+     * @generated
+     */
 	EList<PersistentEntry> getPersistentEntries();
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Serialize all entries of the properties map using {@link Object#toString()}
-	 * and write them into the list of persistent entries. The previous content is cleared.
-	 * <!-- end-model-doc -->
-	 * @model
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Serialize all entries of the properties map using {@link Object#toString()}
+     * and write them into the list of persistent entries. The previous content is cleared.
+     * <!-- end-model-doc -->
+     * @model
+     * @generated
+     */
 	void makePersistent();
 
 } // EMapPropertyHolder

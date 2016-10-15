@@ -48,102 +48,102 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface KEdgeLayout extends KLayoutData {
 	/**
-	 * Returns the value of the '<em><b>Bend Points</b></em>' containment reference list.
-	 * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.KPoint}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Bend Points</b></em>' containment reference list.
+     * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.KPoint}.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * The coordinates of bend points must obey the general rules for edge
-	 * coordinates defined above.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Bend Points</em>' containment reference list.
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKEdgeLayout_BendPoints()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * The coordinates of bend points must obey the general rules for edge
+     * coordinates defined above.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Bend Points</em>' containment reference list.
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKEdgeLayout_BendPoints()
+     * @model containment="true"
+     * @generated
+     */
 	EList<KPoint> getBendPoints();
 
 	/**
-	 * Returns the value of the '<em><b>Source Point</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Source Point</b></em>' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * The source point is the point at which the edge touches the source node
-	 * or source port. The coordinates of source points must obey the general
-	 * rules for edge coordinates defined above.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Source Point</em>' containment reference.
-	 * @see #setSourcePoint(KPoint)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKEdgeLayout_SourcePoint()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * The source point is the point at which the edge touches the source node
+     * or source port. The coordinates of source points must obey the general
+     * rules for edge coordinates defined above.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Source Point</em>' containment reference.
+     * @see #setSourcePoint(KPoint)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKEdgeLayout_SourcePoint()
+     * @model containment="true" required="true"
+     * @generated
+     */
 	KPoint getSourcePoint();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KEdgeLayout#getSourcePoint <em>Source Point</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KEdgeLayout#getSourcePoint <em>Source Point</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Source Point</em>' containment reference.
-	 * @see #getSourcePoint()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Source Point</em>' containment reference.
+     * @see #getSourcePoint()
+     * @generated
+     */
 	void setSourcePoint(KPoint value);
 
 	/**
-	 * Returns the value of the '<em><b>Target Point</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Target Point</b></em>' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * The target point is the point at which the edge touches the target node
-	 * or target port. The coordinates of target points must obey the general
-	 * rules for edge coordinates defined above.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Target Point</em>' containment reference.
-	 * @see #setTargetPoint(KPoint)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKEdgeLayout_TargetPoint()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * The target point is the point at which the edge touches the target node
+     * or target port. The coordinates of target points must obey the general
+     * rules for edge coordinates defined above.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Target Point</em>' containment reference.
+     * @see #setTargetPoint(KPoint)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKEdgeLayout_TargetPoint()
+     * @model containment="true" required="true"
+     * @generated
+     */
 	KPoint getTargetPoint();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KEdgeLayout#getTargetPoint <em>Target Point</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KEdgeLayout#getTargetPoint <em>Target Point</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Target Point</em>' containment reference.
-	 * @see #getTargetPoint()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Target Point</em>' containment reference.
+     * @see #getTargetPoint()
+     * @generated
+     */
 	void setTargetPoint(KPoint value);
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Set the source point, bend points, and target point of this edge layout
-	 * from the given vector chain. The vector chain should contain at least
-	 * two points; the first point is taken as source point, while the last one is
-	 * taken as target point.
-	 * @param points the new points for this edge layout
-	 * <!-- end-model-doc -->
-	 * @model pointsDataType="de.cau.cs.kieler.klighd.kgraph.KVectorChain"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Set the source point, bend points, and target point of this edge layout
+     * from the given vector chain. The vector chain should contain at least
+     * two points; the first point is taken as source point, while the last one is
+     * taken as target point.
+     * @param points the new points for this edge layout
+     * <!-- end-model-doc -->
+     * @model pointsDataType="de.cau.cs.kieler.klighd.kgraph.KVectorChain"
+     * @generated
+     */
 	void applyVectorChain(KVectorChain points);
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Create a vector chain from the points of this edge layout. The resulting
-	 * vector chain contains at least two points; the first point is the source point,
-	 * while the last one is the target point.
-	 * @return the points of this edge layout
-	 * <!-- end-model-doc -->
-	 * @model dataType="de.cau.cs.kieler.klighd.kgraph.KVectorChain"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Create a vector chain from the points of this edge layout. The resulting
+     * vector chain contains at least two points; the first point is the source point,
+     * while the last one is the target point.
+     * @return the points of this edge layout
+     * <!-- end-model-doc -->
+     * @model dataType="de.cau.cs.kieler.klighd.kgraph.KVectorChain"
+     * @generated
+     */
 	KVectorChain createVectorChain();
 
 } // KEdgeLayout

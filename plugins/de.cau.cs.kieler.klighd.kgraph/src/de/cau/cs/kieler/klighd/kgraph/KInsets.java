@@ -42,104 +42,104 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface KInsets extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Top</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Top</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * This is the minimal distance to the top side of a parent node.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Top</em>' attribute.
-	 * @see #setTop(float)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Top()
-	 * @model
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * This is the minimal distance to the top side of a parent node.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Top</em>' attribute.
+     * @see #setTop(float)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Top()
+     * @model
+     * @generated
+     */
 	float getTop();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getTop <em>Top</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getTop <em>Top</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Top</em>' attribute.
-	 * @see #getTop()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Top</em>' attribute.
+     * @see #getTop()
+     * @generated
+     */
 	void setTop(float value);
 
 	/**
-	 * Returns the value of the '<em><b>Bottom</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Bottom</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * This is the minimal distance to the bottom side of a parent node.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Bottom</em>' attribute.
-	 * @see #setBottom(float)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Bottom()
-	 * @model
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * This is the minimal distance to the bottom side of a parent node.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Bottom</em>' attribute.
+     * @see #setBottom(float)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Bottom()
+     * @model
+     * @generated
+     */
 	float getBottom();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getBottom <em>Bottom</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getBottom <em>Bottom</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Bottom</em>' attribute.
-	 * @see #getBottom()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Bottom</em>' attribute.
+     * @see #getBottom()
+     * @generated
+     */
 	void setBottom(float value);
 
 	/**
-	 * Returns the value of the '<em><b>Left</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Left</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * This is the minimal distance to the left side of a parent node.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Left</em>' attribute.
-	 * @see #setLeft(float)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Left()
-	 * @model
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * This is the minimal distance to the left side of a parent node.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Left</em>' attribute.
+     * @see #setLeft(float)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Left()
+     * @model
+     * @generated
+     */
 	float getLeft();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getLeft <em>Left</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getLeft <em>Left</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Left</em>' attribute.
-	 * @see #getLeft()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Left</em>' attribute.
+     * @see #getLeft()
+     * @generated
+     */
 	void setLeft(float value);
 
 	/**
-	 * Returns the value of the '<em><b>Right</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Right</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Right</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Right</em>' attribute.
-	 * @see #setRight(float)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Right()
-	 * @model
-	 * @generated
-	 */
+     * @return the value of the '<em>Right</em>' attribute.
+     * @see #setRight(float)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKInsets_Right()
+     * @model
+     * @generated
+     */
 	float getRight();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getRight <em>Right</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KInsets#getRight <em>Right</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Right</em>' attribute.
-	 * @see #getRight()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Right</em>' attribute.
+     * @see #getRight()
+     * @generated
+     */
 	void setRight(float value);
 
 } // KInsets

@@ -31,28 +31,28 @@ package de.cau.cs.kieler.klighd.kgraph;
  */
 public interface KLayoutData extends KGraphData {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Whether the concrete layout data have been modified since the layout data instance
-	 * was created or the modification flag was reset. For shape layouts this refers to the
-	 * position or size, and for edge layouts it refers to the source point, target point, or
-	 * bend points.
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Whether the concrete layout data have been modified since the layout data instance
+     * was created or the modification flag was reset. For shape layouts this refers to the
+     * position or size, and for edge layouts it refers to the source point, target point, or
+     * bend points.
+     * <!-- end-model-doc -->
+     * @model kind="operation" required="true"
+     * @generated
+     */
 	boolean isModified();
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Reset the modification flag to {@code false}. Layout algorithms should not do this.
-	 * <!-- end-model-doc -->
-	 * @model
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Reset the modification flag to {@code false}. Layout algorithms should not do this.
+     * <!-- end-model-doc -->
+     * @model
+     * @generated
+     */
 	void resetModificationFlag();
 
 } // KLayoutData

@@ -41,45 +41,45 @@ import org.eclipse.emf.ecore.EClass;
  */
 public interface KGraphElement extends EMapPropertyHolder {
 	/**
-	 * Returns the value of the '<em><b>Data</b></em>' containment reference list.
-	 * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.KGraphData}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Data</b></em>' containment reference list.
+     * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.KGraphData}.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Each element of this list may contain additional data for the model element.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Data</em>' containment reference list.
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKGraphElement_Data()
-	 * @model containment="true"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Each element of this list may contain additional data for the model element.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Data</em>' containment reference list.
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKGraphElement_Data()
+     * @model containment="true"
+     * @generated
+     */
 	EList<KGraphData> getData();
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Returns the first data instance that matches the given class. Classes
-	 * can be obtained using the static package methods of the corresponding
-	 * EMF model.
-	 * @return graph data for the given type, or {@code null} if there is none
-	 * <!-- end-model-doc -->
-	 * @model
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Returns the first data instance that matches the given class. Classes
+     * can be obtained using the static package methods of the corresponding
+     * EMF model.
+     * @return graph data for the given type, or {@code null} if there is none
+     * <!-- end-model-doc -->
+     * @model
+     * @generated
+     */
 	KGraphData getData(EClass type);
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Returns the first data instance that matches the given class.
-	 * @param type the class of graph data to retrieve
-	 * @return graph data for the given type, or {@code null} if there is none
-	 * <!-- end-model-doc -->
-	 * @model
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * Returns the first data instance that matches the given class.
+     * @param type the class of graph data to retrieve
+     * @return graph data for the given type, or {@code null} if there is none
+     * <!-- end-model-doc -->
+     * @model
+     * @generated
+     */
 	<T extends KGraphData> T getData(Class<T> type);
 
 } // KGraphElement

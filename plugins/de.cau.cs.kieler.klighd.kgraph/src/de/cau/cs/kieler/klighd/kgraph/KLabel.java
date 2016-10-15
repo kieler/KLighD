@@ -37,57 +37,57 @@ package de.cau.cs.kieler.klighd.kgraph;
  */
 public interface KLabel extends KGraphElement, KShapeLayout {
 	/**
-	 * Returns the value of the '<em><b>Text</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Text</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Text</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Text</em>' attribute.
-	 * @see #setText(String)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKLabel_Text()
-	 * @model
-	 * @generated
-	 */
+     * @return the value of the '<em>Text</em>' attribute.
+     * @see #setText(String)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKLabel_Text()
+     * @model
+     * @generated
+     */
 	String getText();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KLabel#getText <em>Text</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KLabel#getText <em>Text</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Text</em>' attribute.
-	 * @see #getText()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Text</em>' attribute.
+     * @see #getText()
+     * @generated
+     */
 	void setText(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Parent</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement#getLabels <em>Labels</em>}'.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Parent</b></em>' container reference.
+     * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement#getLabels <em>Labels</em>}'.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parent</em>' container reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parent</em>' container reference.
-	 * @see #setParent(KLabeledGraphElement)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKLabel_Parent()
-	 * @see de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement#getLabels
-	 * @model opposite="labels" required="true" transient="false"
-	 * @generated
-	 */
+     * @return the value of the '<em>Parent</em>' container reference.
+     * @see #setParent(KLabeledGraphElement)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKLabel_Parent()
+     * @see de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement#getLabels
+     * @model opposite="labels" required="true" transient="false"
+     * @generated
+     */
 	KLabeledGraphElement getParent();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KLabel#getParent <em>Parent</em>}' container reference.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KLabel#getParent <em>Parent</em>}' container reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Parent</em>' container reference.
-	 * @see #getParent()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Parent</em>' container reference.
+     * @see #getParent()
+     * @generated
+     */
 	void setParent(KLabeledGraphElement value);
 
 } // KLabel

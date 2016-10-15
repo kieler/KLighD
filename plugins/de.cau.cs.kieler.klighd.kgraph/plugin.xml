@@ -20,7 +20,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated kgraph -->
       <package
-            uri="http://kieler.cs.cau.de/KGraph"
+            uri="http://kieler.cs.cau.de/KlighdGraph"
             class="de.cau.cs.kieler.klighd.kgraph.KGraphPackage"
             genModel="model/kgraph.genmodel"/>
    </extension>

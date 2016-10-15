@@ -44,163 +44,163 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
  */
 public class IPropertyToObjectMapImpl extends EObjectImpl implements BasicEMap.Entry<IProperty<?>,Object> {
 	/**
-	 * The cached value of the '{@link #getTypedKey() <em>Key</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getTypedKey() <em>Key</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTypedKey()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getTypedKey()
+     * @generated
+     * @ordered
+     */
 	protected IProperty<?> key;
 
 	/**
-	 * The default value of the '{@link #getTypedValue() <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getTypedValue() <em>Value</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTypedValue()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getTypedValue()
+     * @generated
+     * @ordered
+     */
 	protected static final Object VALUE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getTypedValue() <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getTypedValue() <em>Value</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTypedValue()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getTypedValue()
+     * @generated
+     * @ordered
+     */
 	protected Object value = VALUE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected IPropertyToObjectMapImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return KGraphPackage.Literals.IPROPERTY_TO_OBJECT_MAP;
-	}
+        return KGraphPackage.Literals.IPROPERTY_TO_OBJECT_MAP;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public IProperty<?> getTypedKey() {
-		return key;
-	}
+        return key;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setTypedKey(IProperty<?> newKey) {
-		IProperty<?> oldKey = key;
-		key = newKey;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY, oldKey, key));
-	}
+        IProperty<?> oldKey = key;
+        key = newKey;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY, oldKey, key));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Object getTypedValue() {
-		return value;
-	}
+        return value;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setTypedValue(Object newValue) {
-		Object oldValue = value;
-		value = newValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE, oldValue, value));
-	}
+        Object oldValue = value;
+        value = newValue;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE, oldValue, value));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
-				return getTypedKey();
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
-				return getTypedValue();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
+                return getTypedKey();
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
+                return getTypedValue();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
-				setTypedKey((IProperty<?>)newValue);
-				return;
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
-				setTypedValue(newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
+                setTypedKey((IProperty<?>)newValue);
+                return;
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
+                setTypedValue(newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
-				setTypedKey((IProperty<?>)null);
-				return;
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
-				setTypedValue(VALUE_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
+                setTypedKey((IProperty<?>)null);
+                return;
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
+                setTypedValue(VALUE_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
-				return key != null;
-			case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__KEY:
+                return key != null;
+            case KGraphPackage.IPROPERTY_TO_OBJECT_MAP__VALUE:
+                return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+        }
+        return super.eIsSet(featureID);
+    }
 
     /**
      * <!-- begin-user-doc -->
@@ -225,81 +225,81 @@ public class IPropertyToObjectMapImpl extends EObjectImpl implements BasicEMap.E
     }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected int hash = -1;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public int getHash() {
-		if (hash == -1) {
-			Object theKey = getKey();
-			hash = (theKey == null ? 0 : theKey.hashCode());
-		}
-		return hash;
-	}
+        if (hash == -1) {
+            Object theKey = getKey();
+            hash = (theKey == null ? 0 : theKey.hashCode());
+        }
+        return hash;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setHash(int hash) {
-		this.hash = hash;
-	}
+        this.hash = hash;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public IProperty<?> getKey() {
-		return getTypedKey();
-	}
+        return getTypedKey();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setKey(IProperty<?> key) {
-		setTypedKey(key);
-	}
+        setTypedKey(key);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Object getValue() {
-		return getTypedValue();
-	}
+        return getTypedValue();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Object setValue(Object value) {
-		Object oldValue = getValue();
-		setTypedValue(value);
-		return oldValue;
-	}
+        Object oldValue = getValue();
+        setTypedValue(value);
+        return oldValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	public EMap<IProperty<?>, Object> getEMap() {
-		EObject container = eContainer();
-		return container == null ? null : (EMap<IProperty<?>, Object>)container.eGet(eContainmentFeature());
-	}
+        EObject container = eContainer();
+        return container == null ? null : (EMap<IProperty<?>, Object>)container.eGet(eContainmentFeature());
+    }
 
 } //IPropertyToObjectMapImpl

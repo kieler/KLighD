@@ -37,20 +37,20 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface KLabeledGraphElement extends KGraphElement {
 	/**
-	 * Returns the value of the '<em><b>Labels</b></em>' containment reference list.
-	 * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.KLabel}.
-	 * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.klighd.kgraph.KLabel#getParent <em>Parent</em>}'.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Labels</b></em>' containment reference list.
+     * The list contents are of type {@link de.cau.cs.kieler.klighd.kgraph.KLabel}.
+     * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.klighd.kgraph.KLabel#getParent <em>Parent</em>}'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * An edge may have multiple labels.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Labels</em>' containment reference list.
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKLabeledGraphElement_Labels()
-	 * @see de.cau.cs.kieler.klighd.kgraph.KLabel#getParent
-	 * @model opposite="parent" containment="true"
-	 * @generated
-	 */
+     * <!-- begin-model-doc -->
+     * An edge may have multiple labels.
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Labels</em>' containment reference list.
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKLabeledGraphElement_Labels()
+     * @see de.cau.cs.kieler.klighd.kgraph.KLabel#getParent
+     * @model opposite="parent" containment="true"
+     * @generated
+     */
 	EList<KLabel> getLabels();
 
 } // KLabeledGraphElement

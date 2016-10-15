@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="kgraph" nsURI="http://kieler.cs.cau.de/KGraph" nsPrefix="kgraph">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="kgraph" nsURI="http://kieler.cs.cau.de/KlighdGraph" nsPrefix="klighdgraph">
   <eClassifiers xsi:type="ecore:EClass" name="KGraphElement" abstract="true" eSuperTypes="#//EMapPropertyHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This is the superclass of all elements of a graph such as nodes, edges, ports,&#xA;and labels. A graph element may contain an arbitrary number of additional&#xA;data instances."/>

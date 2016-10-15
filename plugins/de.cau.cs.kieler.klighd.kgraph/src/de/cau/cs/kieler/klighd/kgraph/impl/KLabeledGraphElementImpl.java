@@ -44,133 +44,133 @@ import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
  */
 public abstract class KLabeledGraphElementImpl extends KGraphElementImpl implements KLabeledGraphElement {
 	/**
-	 * The cached value of the '{@link #getLabels() <em>Labels</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getLabels() <em>Labels</em>}' containment reference list.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLabels()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getLabels()
+     * @generated
+     * @ordered
+     */
 	protected EList<KLabel> labels;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected KLabeledGraphElementImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return KGraphPackage.Literals.KLABELED_GRAPH_ELEMENT;
-	}
+        return KGraphPackage.Literals.KLABELED_GRAPH_ELEMENT;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EList<KLabel> getLabels() {
-		if (labels == null) {
-			labels = new EObjectContainmentWithInverseEList<KLabel>(KLabel.class, this, KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS, KGraphPackage.KLABEL__PARENT);
-		}
-		return labels;
-	}
+        if (labels == null) {
+            labels = new EObjectContainmentWithInverseEList<KLabel>(KLabel.class, this, KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS, KGraphPackage.KLABEL__PARENT);
+        }
+        return labels;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLabels()).basicAdd(otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
-	}
+        switch (featureID) {
+            case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
+                return ((InternalEList<InternalEObject>)(InternalEList<?>)getLabels()).basicAdd(otherEnd, msgs);
+        }
+        return super.eInverseAdd(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
-				return ((InternalEList<?>)getLabels()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID) {
+            case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
+                return ((InternalEList<?>)getLabels()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
-				return getLabels();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
+                return getLabels();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
-				getLabels().clear();
-				getLabels().addAll((Collection<? extends KLabel>)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
+                getLabels().clear();
+                getLabels().addAll((Collection<? extends KLabel>)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
-				getLabels().clear();
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
+                getLabels().clear();
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
-				return labels != null && !labels.isEmpty();
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case KGraphPackage.KLABELED_GRAPH_ELEMENT__LABELS:
+                return labels != null && !labels.isEmpty();
+        }
+        return super.eIsSet(featureID);
+    }
 
 } //KLabeledGraphElementImpl

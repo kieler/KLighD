@@ -36,29 +36,29 @@ package de.cau.cs.kieler.klighd.kgraph;
  */
 public interface KIdentifier extends KGraphData {
 	/**
-	 * Returns the value of the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Id</em>' attribute.
-	 * @see #setId(String)
-	 * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKIdentifier_Id()
-	 * @model required="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Id</em>' attribute.
+     * @see #setId(String)
+     * @see de.cau.cs.kieler.klighd.kgraph.KGraphPackage#getKIdentifier_Id()
+     * @model required="true"
+     * @generated
+     */
 	String getId();
 
 	/**
-	 * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KIdentifier#getId <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.kgraph.KIdentifier#getId <em>Id</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Id</em>' attribute.
-	 * @see #getId()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Id</em>' attribute.
+     * @see #getId()
+     * @generated
+     */
 	void setId(String value);
 
 } // KIdentifier

@@ -27,22 +27,22 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
  */
 public class KGraphDataImpl extends EMapPropertyHolderImpl implements KGraphData {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected KGraphDataImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return KGraphPackage.Literals.KGRAPH_DATA;
-	}
+        return KGraphPackage.Literals.KGRAPH_DATA;
+    }
 
 } //KGraphDataImpl

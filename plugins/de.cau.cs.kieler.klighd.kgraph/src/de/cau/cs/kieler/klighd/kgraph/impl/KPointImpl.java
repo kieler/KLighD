@@ -41,223 +41,223 @@ import de.cau.cs.kieler.klighd.kgraph.KPoint;
  */
 public class KPointImpl extends EObjectImpl implements KPoint {
 	/**
-	 * The default value of the '{@link #getX() <em>X</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getX() <em>X</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getX()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getX()
+     * @generated
+     * @ordered
+     */
 	protected static final float X_EDEFAULT = 0.0F;
 
 	/**
-	 * The cached value of the '{@link #getX() <em>X</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getX() <em>X</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getX()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getX()
+     * @generated
+     * @ordered
+     */
 	protected float x = X_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getY() <em>Y</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getY() <em>Y</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getY()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getY()
+     * @generated
+     * @ordered
+     */
 	protected static final float Y_EDEFAULT = 0.0F;
 
 	/**
-	 * The cached value of the '{@link #getY() <em>Y</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getY() <em>Y</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getY()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getY()
+     * @generated
+     * @ordered
+     */
 	protected float y = Y_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected KPointImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return KGraphPackage.Literals.KPOINT;
-	}
+        return KGraphPackage.Literals.KPOINT;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public float getX() {
-		return x;
-	}
+        return x;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setX(float newX) {
-		float oldX = x;
-		x = newX;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPOINT__X, oldX, x));
-	}
+        float oldX = x;
+        x = newX;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPOINT__X, oldX, x));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public float getY() {
-		return y;
-	}
+        return y;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setY(float newY) {
-		float oldY = y;
-		y = newY;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPOINT__Y, oldY, y));
-	}
+        float oldY = y;
+        y = newY;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPOINT__Y, oldY, y));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setPos(float x, float y) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void applyVector(KVector pos) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public KVector createVector() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case KGraphPackage.KPOINT__X:
-				return getX();
-			case KGraphPackage.KPOINT__Y:
-				return getY();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case KGraphPackage.KPOINT__X:
+                return getX();
+            case KGraphPackage.KPOINT__Y:
+                return getY();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case KGraphPackage.KPOINT__X:
-				setX((Float)newValue);
-				return;
-			case KGraphPackage.KPOINT__Y:
-				setY((Float)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case KGraphPackage.KPOINT__X:
+                setX((Float)newValue);
+                return;
+            case KGraphPackage.KPOINT__Y:
+                setY((Float)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case KGraphPackage.KPOINT__X:
-				setX(X_EDEFAULT);
-				return;
-			case KGraphPackage.KPOINT__Y:
-				setY(Y_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case KGraphPackage.KPOINT__X:
+                setX(X_EDEFAULT);
+                return;
+            case KGraphPackage.KPOINT__Y:
+                setY(Y_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case KGraphPackage.KPOINT__X:
-				return x != X_EDEFAULT;
-			case KGraphPackage.KPOINT__Y:
-				return y != Y_EDEFAULT;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case KGraphPackage.KPOINT__X:
+                return x != X_EDEFAULT;
+            case KGraphPackage.KPOINT__Y:
+                return y != Y_EDEFAULT;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+        if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (x: ");
-		result.append(x);
-		result.append(", y: ");
-		result.append(y);
-		result.append(')');
-		return result.toString();
-	}
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (x: ");
+        result.append(x);
+        result.append(", y: ");
+        result.append(y);
+        result.append(')');
+        return result.toString();
+    }
 
 } //KPointImpl
