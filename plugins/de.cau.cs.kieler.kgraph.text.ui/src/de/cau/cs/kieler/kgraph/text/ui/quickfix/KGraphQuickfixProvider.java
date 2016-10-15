@@ -13,7 +13,6 @@
  */
 package de.cau.cs.kieler.kgraph.text.ui.quickfix;
 
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification;
@@ -23,6 +22,7 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 
 import de.cau.cs.kieler.kgraph.text.validation.KGraphJavaValidator;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * The KGraph/KRendering-specific

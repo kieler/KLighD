@@ -13,14 +13,14 @@
  */
 package de.cau.cs.kieler.kgraph.text.scoping;
 
-import org.eclipse.elk.core.klayoutdata.KIdentifier;
-import org.eclipse.elk.graph.KGraphElement;
 import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
 
 import com.google.inject.Inject;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
 import de.cau.cs.kieler.klighd.krendering.KStyleHolder;
 
 /**

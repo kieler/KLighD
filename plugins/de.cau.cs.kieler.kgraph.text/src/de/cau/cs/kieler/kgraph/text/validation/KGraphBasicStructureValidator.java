@@ -16,17 +16,18 @@ package de.cau.cs.kieler.kgraph.text.validation;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.elk.core.klayoutdata.KIdentifier;
-import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.xtext.validation.Check;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Multimap;
+
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
  * An {@link org.eclipse.emf.ecore.EValidator EValidator} for basic structural analysis of KGraphs.
@@ -47,7 +48,7 @@ public class KGraphBasicStructureValidator extends KGraphValidator {
     /** Internally used to mark a node as duplicate. */
     private static final String CONSEQUENTIAL_ERROR = "knode invalid";
     /** Attribute of the KIdentifier. */
-    private static final EAttribute ID_REF = KLayoutDataPackage.eINSTANCE.getKIdentifier_Id();
+    private static final EAttribute ID_REF = KGraphPackage.eINSTANCE.getKIdentifier_Id();
 
     /**
      * Check whether all nodes have unique ids and for each node, all contained ports have unique

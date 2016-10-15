@@ -14,14 +14,6 @@
 
 package de.cau.cs.kieler.kgraph.text.ui;
 
-import org.eclipse.elk.core.klayoutdata.KIdentifier;
-import org.eclipse.elk.core.klayoutdata.KLayoutDataFactory;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 
@@ -31,6 +23,14 @@ import com.google.inject.Provider;
 import de.cau.cs.kieler.kiml.formats.AbstractEmfHandler;
 import de.cau.cs.kieler.kiml.formats.IGraphTransformer;
 import de.cau.cs.kieler.kiml.formats.TransformationData;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KGraphFactory;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary;
@@ -41,6 +41,8 @@ import de.cau.cs.kieler.klighd.krendering.KStyleRef;
 
 /**
  * Xtext based handler for the KGraph format.
+ * 
+ * TODO This thing needs to be adapted
  *
  * @author msp
  */
@@ -164,7 +166,7 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
         if (graphElement != null) {
             KIdentifier identifier = graphElement.getData(KIdentifier.class);
             if (identifier == null) {
-                identifier = KLayoutDataFactory.eINSTANCE.createKIdentifier();
+                identifier = KGraphFactory.eINSTANCE.createKIdentifier();
                 graphElement.getData().add(identifier);
             }
             if (identifier.getId() == null || identifier.getId().length() == 0) {
@@ -192,7 +194,7 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
      * {@inheritDoc}
      */
     @Override
-    public String serialize(final TransformationData<KNode, KNode> transData) {
+    public String serialize(final TransformationData<org.eclipse.elk.graph.KNode, KNode> transData) {
         for (KNode graph : transData.getTargetGraphs()) {
             generateMissingIdentifiers(graph);
         }
@@ -215,15 +217,17 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
     /**
      * {@inheritDoc}
      */
-    public IGraphTransformer<KNode, KNode> getImporter() {
-        return TRANSFORMER;
+    public IGraphTransformer<KNode, org.eclipse.elk.graph.KNode> getImporter() {
+        // TODO Implement
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public IGraphTransformer<KNode, KNode> getExporter() {
-        return TRANSFORMER;
+    public IGraphTransformer<org.eclipse.elk.graph.KNode, KNode> getExporter() {
+        // TODO Implement
+        return null;
     }
     
     

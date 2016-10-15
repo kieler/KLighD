@@ -13,14 +13,6 @@
  */
 package de.cau.cs.kieler.kgraph.text.ui.labeling;
 
-import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
-import org.eclipse.elk.core.klayoutdata.KIdentifier;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -30,6 +22,12 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import com.google.inject.Inject;
 
 import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.krendering.KArc;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KBottomPosition;
@@ -108,27 +106,6 @@ public class KGraphLabelProvider extends DefaultEObjectLabelProvider {
             }
         }
         return text.toString();
-    }
-    
-    /**
-     * Create text for a KShapeLayout.
-     * 
-     * @param shapeLayout a shape layout
-     * @return the displayed text
-     */
-    public String text(final KShapeLayout shapeLayout) {
-        return "x=" + shapeLayout.getXpos() + ", y=" + shapeLayout.getYpos()
-                + ", w=" + shapeLayout.getWidth() + ", h=" + shapeLayout.getHeight();
-    }
-    
-    /**
-     * Create text for a KEdgeLayout.
-     * 
-     * @param edgeLayout an edge layout
-     * @return the displayed text
-     */
-    public String text(final KEdgeLayout edgeLayout) {
-        return edgeLayout.createVectorChain().toString();
     }
     
     /**

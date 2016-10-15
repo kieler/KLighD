@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -41,6 +40,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+
 /**
  * A command handler that can be used to convert a graph from one format into another. The default
  * implementation only copies input models and makes certain modifications if the target format
@@ -50,6 +51,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * <p>Note that plug-ins containing subclasses of this handler must define their own convert graphs
  * command. Only then can they declare menu contributions that reference their new command, which
  * in turn defines their new subclass as command handler.</p>
+ * 
+ * TODO This probably won't work yet
  * 
  * @author msp
  * @kieler.rating proposed yellow 2012-11-06 cds msp

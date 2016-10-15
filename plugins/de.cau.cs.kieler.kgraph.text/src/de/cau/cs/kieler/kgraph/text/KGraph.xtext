@@ -2,8 +2,7 @@ grammar de.cau.cs.kieler.kgraph.text.KGraph
 hidden(WS, ML_COMMENT, SL_COMMENT)
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-import "http://elk.eclipse.org/KGraph"
-import "http://elk.eclipse.org/KLayoutData"
+import "platform:/resource/de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore"
 import "http://kieler.cs.cau.de/KRendering"
 
 
@@ -12,40 +11,55 @@ import "http://kieler.cs.cau.de/KRendering"
 ParentKNode returns KNode:
     {KNode}
     ('kgraph' (data+=KIdentifier)?)?
-    data+=KNodeLayout
+    (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
+        & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
+        & ('properties' ':' (persistentEntries+=Property)*)?)
+    (('insets' ':' insets=KInsets) | insets=EmptyKInsets)
     (labels+=KLabel | children+=KNode | ports+=KPort | outgoingEdges+=KEdge
     	| data+=KRendering | data+=KRenderingLibrary)*;
 
 KNode returns KNode:
     {KNode}
-    'knode' (data+=KIdentifier)? (('{'
-        data+=KNodeLayout
+    'knode' (data+=KIdentifier)? ('{'
+        (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
+            & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
+            & ('properties' ':' (persistentEntries+=Property)*)?)
+        (('insets' ':' insets=KInsets) | insets=EmptyKInsets)
         (labels+=KLabel | children+=KNode | ports+=KPort | outgoingEdges+=KEdge
         	| data+=KRendering | data+=KRenderingLibrary)*
-    '}') | data+=EmptyKNodeLayout);
+    '}')?;
 
 KEdge returns KEdge:
     'kedge' (data+=KIdentifier)? '(' (':' sourcePort=[KPort|QualifiedID])?
             '->' target=[KNode|QualifiedID]
             (':' targetPort=[KPort|QualifiedID])? ')'
-            (('{'
-        data+=KEdgeLayout
+            ('{'
+        (('points' ':'
+            ((sourcePoint=KPoint ((';' (bendPoints+=KPoint ';')* targetPoint=KPoint)
+                | targetPoint=EmptyKPoint))
+            | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
+        ) | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
+        ('properties' ':' (persistentEntries+=Property)*)?
         (labels+=KLabel | data+=KRendering)*
-    '}') | data+=EmptyKEdgeLayout);
+    '}')?;
 
 KLabel returns KLabel:
     {KLabel}
-    'klabel' (data+=KIdentifier)? (text=STRING)? (('{'
-        data+=KShapeLayout
+    'klabel' (data+=KIdentifier)? (text=STRING)? ('{'
+        (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
+        & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
+        & ('properties' ':' (persistentEntries+=Property)*)?)
         (data+=KRendering)*
-    '}') | data+=EmptyKShapeLayout);
+    '}')?;
 
 KPort returns KPort:
     {KPort}
-    'kport' (data+=KIdentifier)? (('{'
-        data+=KShapeLayout
+    'kport' (data+=KIdentifier)? ('{'
+        (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
+        & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
+        & ('properties' ':' (persistentEntries+=Property)*)?)
         (labels+=KLabel | data+=KRendering)*
-    '}') | data+=EmptyKShapeLayout);
+    '}')?;
 
 
 //-------------- KLayoutData ---------------
@@ -56,15 +70,6 @@ Property returns PersistentEntry:
 KIdentifier returns KIdentifier:
     id=QualifiedID ('[' (persistentEntries+=Property)* ']')?;
 
-KNodeLayout returns KShapeLayout:
-    (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
-	    & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
-	    & ('properties' ':' (persistentEntries+=Property)*)?)
-    (('insets' ':' insets=KInsets) | insets=EmptyKInsets);
-
-EmptyKNodeLayout returns KShapeLayout:
-    insets=EmptyKInsets;
-
 KInsets returns KInsets:
     {KInsets}
     (('top' '=' top=Float)? & ('bottom' '=' bottom=Float)?
@@ -72,26 +77,6 @@ KInsets returns KInsets:
 
 EmptyKInsets returns KInsets:
     {KInsets};
-
-KShapeLayout returns KShapeLayout:
-    {KShapeLayout}
-    (('pos' ':' (('x' '=' xpos=Float)? & ('y' '=' ypos=Float)?))?
-    & ('size' ':' (('width' '=' width=Float)? & ('height' '=' height=Float)?))?
-    & ('properties' ':' (persistentEntries+=Property)*)?);
-
-EmptyKShapeLayout returns KShapeLayout:
-    {KShapeLayout};
-
-KEdgeLayout returns KEdgeLayout:
-    (('points' ':'
-        ((sourcePoint=KPoint ((';' (bendPoints+=KPoint ';')* targetPoint=KPoint)
-            | targetPoint=EmptyKPoint))
-        | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
-    ) | (sourcePoint=EmptyKPoint targetPoint=EmptyKPoint))
-    ('properties' ':' (persistentEntries+=Property)*)?;
-
-EmptyKEdgeLayout returns KEdgeLayout:
-    sourcePoint=EmptyKPoint targetPoint=EmptyKPoint;
 
 KPoint returns KPoint:
     x=Float ',' y=Float;

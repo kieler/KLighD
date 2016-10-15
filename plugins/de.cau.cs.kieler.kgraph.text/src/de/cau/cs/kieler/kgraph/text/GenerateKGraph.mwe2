@@ -36,9 +36,8 @@ Workflow {
             name = "de.cau.cs.kieler.kgraph.text.KGraph"
             fileExtensions = "kgt"
             
+            referencedResource = "platform:/resource/de.cau.cs.kieler.klighd.kgraph/model/kgraph.genmodel"
             referencedResource = "platform:/resource/de.cau.cs.kieler.klighd.krendering/model/krendering.genmodel"
-            referencedResource = "platform:/resource/org.eclipse.elk.core/model/klayoutdata.genmodel"
-            referencedResource = "platform:/resource/org.eclipse.elk.graph/model/kgraph.genmodel"
             
             serializer = {
                 // to generate the stubs for Semantic/Syntactic Sequencers

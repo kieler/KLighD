@@ -26,7 +26,6 @@ import org.eclipse.elk.core.data.LayoutOptionData.Visibility;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.ui.ElkUiPlugin;
 import org.eclipse.elk.core.ui.LayoutOptionLabelProvider;
-import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.elk.graph.properties.AdvancedPropertyValue;
 import org.eclipse.elk.graph.properties.ExperimentalPropertyValue;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -45,6 +44,7 @@ import org.eclipse.xtext.util.Strings;
 
 import de.cau.cs.kieler.kgraph.text.KGraphResource;
 import de.cau.cs.kieler.kgraph.text.services.KGraphGrammarAccess;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 
 /**
  * Custom proposal provider contributing KIELER Layout configuration proposals.

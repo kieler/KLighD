@@ -13,17 +13,16 @@
  */
 package de.cau.cs.kieler.kgraph.text.ui.outline;
 
-import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
-import org.eclipse.elk.core.klayoutdata.KIdentifier;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.klayoutdata.KPoint;
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
+import de.cau.cs.kieler.klighd.kgraph.KPoint;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.krendering.KPlacement;
 import de.cau.cs.kieler.klighd.krendering.KPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KPosition;
@@ -31,6 +30,8 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
 
 /**
  * Customization of the default outline structure.
+ * 
+ * TODO There's probably things to be done here.
  * 
  * @author msp
  */
@@ -54,23 +55,13 @@ public class KGraphOutlineTreeProvider extends DefaultOutlineTreeProvider {
     }
     
     /**
-     * If a layout data instance has no properties, it is regarded as a leaf.
-     * 
-     * @param layoutData a shape layout or edge layout
-     * @return true if the layout data has no properties
-     */
-    protected boolean _isLeaf(final KLayoutData layoutData) {
-        return layoutData.getProperties().isEmpty();
-    }
-    
-    /**
      * Create children for edge layouts.
      * 
      * @param parentNode the parent outline node
      * @param edgeLayout an edge layout
      */
-    protected void _createChildren(final IOutlineNode parentNode, final KEdgeLayout edgeLayout) {
-        for (EObject childElement : edgeLayout.eContents()) {
+    protected void _createChildren(final IOutlineNode parentNode, final KEdge edge) {
+        for (EObject childElement : edge.eContents()) {
             // persistent entries are parsed to the properties map, so they don't need to be displayed
             if (!(childElement instanceof PersistentEntry)
                     // points are already displayed in the text of the edge layout

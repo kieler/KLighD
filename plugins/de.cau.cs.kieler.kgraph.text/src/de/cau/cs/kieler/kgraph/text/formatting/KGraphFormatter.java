@@ -82,18 +82,28 @@ public class KGraphFormatter extends AbstractDeclarativeFormatter {
         c.setLinewrap().before(f.getKStyleHolderRule());
         
         // line wrapping for key-value sections
-        c.setLinewrap().before(f.getKNodeLayoutAccess().getPosKeyword_0_0_0());
-        c.setLinewrap().before(f.getKNodeLayoutAccess().getSizeKeyword_0_1_0());
-        c.setLinewrap().before(f.getKNodeLayoutAccess().getPropertiesKeyword_0_2_0());
-        c.setLinewrap().before(f.getKNodeLayoutAccess().getPersistentEntriesAssignment_0_2_2());
-        c.setLinewrap().before(f.getKNodeLayoutAccess().getInsetsKeyword_1_0_0());
-        c.setLinewrap().before(f.getKShapeLayoutAccess().getPosKeyword_1_0_0());
-        c.setLinewrap().before(f.getKShapeLayoutAccess().getSizeKeyword_1_1_0());
-        c.setLinewrap().before(f.getKShapeLayoutAccess().getPropertiesKeyword_1_2_0());
-        c.setLinewrap().before(f.getKShapeLayoutAccess().getPersistentEntriesAssignment_1_2_2());
-        c.setLinewrap().before(f.getKEdgeLayoutAccess().getPointsKeyword_0_0_0());
-        c.setLinewrap().before(f.getKEdgeLayoutAccess().getPropertiesKeyword_1_0());
-        c.setLinewrap().before(f.getKEdgeLayoutAccess().getPersistentEntriesAssignment_1_2());
+        c.setLinewrap().before(f.getParentKNodeAccess().getPosKeyword_2_0_0());
+        c.setLinewrap().before(f.getParentKNodeAccess().getSizeKeyword_2_1_0());
+        c.setLinewrap().before(f.getParentKNodeAccess().getPropertiesKeyword_2_2_0());
+        c.setLinewrap().before(f.getParentKNodeAccess().getPersistentEntriesAssignment_2_2_2());
+        c.setLinewrap().before(f.getParentKNodeAccess().getInsetsKeyword_3_0_0());
+        c.setLinewrap().before(f.getKNodeAccess().getPosKeyword_3_1_0_0());
+        c.setLinewrap().before(f.getKNodeAccess().getSizeKeyword_3_1_1_0());
+        c.setLinewrap().before(f.getKNodeAccess().getPropertiesKeyword_3_1_2_0());
+        c.setLinewrap().before(f.getKNodeAccess().getPersistentEntriesAssignment_3_1_2_2());
+        c.setLinewrap().before(f.getKNodeAccess().getInsetsKeyword_3_2_0_0());
+        c.setLinewrap().before(f.getKPortAccess().getPosKeyword_3_1_0_0());
+        c.setLinewrap().before(f.getKPortAccess().getSizeKeyword_3_1_1_0());
+        c.setLinewrap().before(f.getKPortAccess().getPropertiesKeyword_3_1_2_0());
+        c.setLinewrap().before(f.getKPortAccess().getPersistentEntriesAssignment_3_1_2_2());
+        c.setLinewrap().before(f.getKLabelAccess().getPosKeyword_4_1_0_0());
+        c.setLinewrap().before(f.getKLabelAccess().getSizeKeyword_4_1_1_0());
+        c.setLinewrap().before(f.getKLabelAccess().getPropertiesKeyword_4_1_2_0());
+        c.setLinewrap().before(f.getKLabelAccess().getPersistentEntriesAssignment_4_1_2_2());
+        c.setLinewrap().before(f.getKEdgeAccess().getPointsKeyword_8_1_0_0());
+        c.setLinewrap().before(f.getKEdgeAccess().getPropertiesKeyword_8_2_0());
+        c.setLinewrap().before(f.getKEdgeAccess().getPersistentEntriesAssignment_8_2_2());
+        
         c.setLinewrap().before(f.getKSimpleRenderingAccess().getStylesKeyword_3_1_0_0());
         c.setLinewrap().before(f.getKSimpleRenderingAccess().getActionsKeyword_3_1_1_0());
         c.setLinewrap().before(f.getKContainerRenderingAccess().getStylesKeyword_3_1_0_0());

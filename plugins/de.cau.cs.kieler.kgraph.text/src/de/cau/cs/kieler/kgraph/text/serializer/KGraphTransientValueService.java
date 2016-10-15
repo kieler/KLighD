@@ -13,11 +13,11 @@
  */
 package de.cau.cs.kieler.kgraph.text.serializer;
 
-import org.eclipse.elk.graph.KGraphPackage;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.parsetree.reconstr.impl.DefaultTransientValueService;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 
 /**

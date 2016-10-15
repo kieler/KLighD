@@ -33,7 +33,6 @@ import java.util.Random
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IProject
 import org.eclipse.elk.core.options.PortConstraints
-import org.eclipse.elk.graph.KNode
 import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -41,6 +40,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions.*
 import org.eclipse.core.runtime.CoreException
 import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptionsUtil
+import de.cau.cs.kieler.klighd.kgraph.KNode
 
 class GRandomGraphMaker {
 

@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.util.Maybe;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -48,6 +47,7 @@ import de.cau.cs.kieler.kgraph.text.grandom.GeneratorOptions;
 import de.cau.cs.kieler.kgraph.text.grandom.RandomGraphGenerator;
 import de.cau.cs.kieler.kgraph.text.ui.KGraphUiModule;
 import de.cau.cs.kieler.kgraph.text.ui.random.GeneratorOptionsUtil;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
  * The new-wizard for creating random KGraphs.

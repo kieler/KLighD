@@ -18,10 +18,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.core.util.GraphDataUtil;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.EObject;
@@ -31,6 +27,10 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.SaveOptions;
 
 import com.google.common.collect.ImmutableList;
+
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 
 /**
  * A customized {@link LazyLinkingResource} handling the (de-) serialization of
@@ -78,9 +78,9 @@ public class KGraphResource extends LazyLinkingResource {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
                 // parse persisted key-value pairs using KIML's layout data service
-                GraphDataUtil.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
+                KGraphDataUtil.loadDataElements((KNode) o, ADDITIONAL_PROPERTIES);
                 // validate layout data and references and fill in missing data
-                ElkUtil.validate((KNode) o);
+                KGraphUtil.validate((KNode) o);
             }
         }
     }
@@ -102,9 +102,9 @@ public class KGraphResource extends LazyLinkingResource {
         
         if (node != null) {
             // parse persisted key-value pairs using KIML's layout data service
-            GraphDataUtil.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
+            KGraphDataUtil.loadDataElements(node, true, ADDITIONAL_PROPERTIES);
             // validate layout data and references and fill in missing data
-            ElkUtil.validate(node);
+            KGraphUtil.validate(node);
         }
     }
     
@@ -119,7 +119,7 @@ public class KGraphResource extends LazyLinkingResource {
     	if (!this.getContents().isEmpty()) {
             EObject o = this.getContents().get(0);
             if (o instanceof KNode) {
-                ElkUtil.persistDataElements((KNode) o);
+                KGraphUtil.persistDataElements((KNode) o);
             }
         }
         

@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.kgraph.text.scoping;
 
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphPackage;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.scoping.IScope;
@@ -22,6 +20,9 @@ import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 
 import com.google.inject.Inject;
+
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 
 /**
  * This class contains custom scoping description.

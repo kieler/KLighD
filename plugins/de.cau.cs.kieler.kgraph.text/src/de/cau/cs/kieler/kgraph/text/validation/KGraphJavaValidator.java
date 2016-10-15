@@ -15,10 +15,6 @@ package de.cau.cs.kieler.kgraph.text.validation;
 
 import java.util.Iterator;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.graph.KGraphPackage;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.xtext.validation.Check;
 
 import com.google.common.base.Function;
@@ -26,6 +22,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KText;
 
@@ -106,8 +105,7 @@ public class KGraphJavaValidator extends KGraphBasicStructureValidator {
                     TRAIN_KNODE_INFO);
         } else {
             // otherwise provide the 'ignore' info marker
-            boolean ignored = Iterables.any(
-                    node.getData(KShapeLayout.class).getPersistentEntries(),
+            boolean ignored = Iterables.any(node.getPersistentEntries(),
                     new Predicate<PersistentEntry>() {
                         public boolean apply(final PersistentEntry pe) {
                             return pe.getKey().equals("klighd.testing.ignore");
