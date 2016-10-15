@@ -106,4 +106,12 @@ public final class KGraphUtil {
       throw new UnsupportedOperationException("TODO: auto-generated method stub");
     }
 
+    /**
+     * @param o
+     */
+    public static void validate(KNode o) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
