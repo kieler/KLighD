@@ -19,7 +19,8 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  de.cau.cs.kieler.klighd.krendering.extensions,
  de.cau.cs.kieler.kiml.ogdf;resolution:=optional,
  org.eclipse.elk.alg.layered;resolution:=optional,
- org.eclipse.elk.core
+ org.eclipse.elk.core,
+ de.cau.cs.kieler.klighd.kgraph;bundle-version="0.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.cau.cs.kieler.klighd.examples.circuit,
  de.cau.cs.kieler.klighd.examples.circuit.impl,

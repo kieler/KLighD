@@ -13,12 +13,12 @@ import javax.inject.Inject
 import org.eclipse.elk.alg.layered.p4nodes.NodePlacementStrategy
 import org.eclipse.elk.alg.layered.properties.LayeredOptions
 import org.eclipse.elk.core.options.CoreOptions
-import org.eclipse.elk.graph.KEdge
-import org.eclipse.elk.graph.KNode
 import org.eclipse.uml2.uml.Actor
 import org.eclipse.uml2.uml.Association
 import org.eclipse.uml2.uml.Model
 import org.eclipse.uml2.uml.UseCase
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KEdge
 
 /**
  * This exemplary diagram synthesis implementation generates KGraph/KRendering model

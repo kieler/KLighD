@@ -9,8 +9,8 @@ import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.extensions.KColorExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import java.util.List
-import org.eclipse.elk.graph.KEdge
-import org.eclipse.elk.graph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KEdge
 
 class HighlightEdgesAction implements IAction {
 

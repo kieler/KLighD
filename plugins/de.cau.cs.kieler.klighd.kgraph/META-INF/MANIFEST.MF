@@ -11,7 +11,8 @@ Export-Package: de.cau.cs.kieler.klighd.kgraph,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.elk.graph,
- org.eclipse.elk.core
+ org.eclipse.elk.core,
+ com.google.guava;bundle-version="15.0.0"
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy

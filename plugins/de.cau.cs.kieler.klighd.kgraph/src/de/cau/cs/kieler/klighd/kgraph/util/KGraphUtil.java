@@ -94,4 +94,16 @@ public final class KGraphUtil {
         
     }
 
+    public static void configureWithDefaultValues(KNode node) {
+      throw new UnsupportedOperationException("TODO: auto-generated method stub");
+    }
+
+    public static void configureWithDefaultValues(KPort port) {
+      throw new UnsupportedOperationException("TODO: auto-generated method stub");
+    }
+
+    public static void configureWithDefaultValues(KEdge edge) {
+      throw new UnsupportedOperationException("TODO: auto-generated method stub");
+    }
+
 }

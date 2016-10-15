@@ -1,5 +1,5 @@
 /*
- * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+	 * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
@@ -31,11 +31,9 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
 import java.util.List
 import java.util.Set
 import javax.inject.Inject
-import org.eclipse.elk.core.klayoutdata.KLayoutData
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.Direction
 import org.eclipse.elk.core.options.EdgeType
-import org.eclipse.elk.graph.KNode
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
@@ -47,6 +45,7 @@ import org.eclipse.emf.ecore.EcorePackage
 import static de.cau.cs.kieler.klighd.KlighdConstants.*
 
 import static extension com.google.common.base.Strings.*
+import de.cau.cs.kieler.klighd.kgraph.KNode
 
 /**
  * This diagram synthesis implementation demonstrates the usage of KLighD for the purpose of
@@ -223,7 +222,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 		classes.filterNull.forEach[ EClassifier clazz |
             rootNode.children += clazz.createNode().associateWith(clazz) => [
                 // add semantic information
-                it.getData(typeof(KLayoutData)).setProperty(KlighdProperties.SEMANTIC_DATA, 
+                it.setProperty(KlighdProperties.SEMANTIC_DATA, 
                         KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "classifier"))
                 it.addRectangle => [
                     it.lineWidth = 1.5f;
@@ -345,7 +344,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     		it.source = ref.eContainer.node;
 	       	it.target = ref.EType.node;
 	       	// add semantic data
-	       	it.getData(typeof(KLayoutData)).setProperty(KlighdProperties.SEMANTIC_DATA, 
+	       	it.setProperty(KlighdProperties.SEMANTIC_DATA, 
                         KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "association"))
 	        it.addPolyline() => [
 	            it.lineWidth = 2;
@@ -380,7 +379,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 		new Pair(child, parent).createEdge() => [
             it.addLayoutParam(CoreOptions::EDGE_TYPE, EdgeType::GENERALIZATION);
             // add semantic data
-            it.getData(typeof(KLayoutData)).setProperty(KlighdProperties.SEMANTIC_DATA, 
+            it.setProperty(KlighdProperties.SEMANTIC_DATA, 
                         KlighdSemanticDiagramData.of(KlighdConstants.SEMANTIC_DATA_CLASS, "inheritence"))
     	    it.source = child.node;
 	        it.target = parent.node;

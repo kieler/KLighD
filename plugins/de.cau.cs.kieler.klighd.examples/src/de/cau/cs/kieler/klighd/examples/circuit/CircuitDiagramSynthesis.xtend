@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.examples.circuit
 
 import de.cau.cs.kieler.klighd.KlighdConstants
+import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.LineCap
@@ -32,7 +33,6 @@ import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.EdgeRouting
 import org.eclipse.elk.core.options.PortConstraints
 import org.eclipse.elk.core.options.PortSide
-import org.eclipse.elk.graph.KNode
 
 /**
  * An exemplary diagram synthesis illustrating the generation of diagrams containing nodes with ports.
