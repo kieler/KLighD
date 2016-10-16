@@ -162,6 +162,14 @@ public class KLabelImpl extends KGraphElementImpl implements KLabel {
      * @ordered
      */
 	protected String text = TEXT_EDEFAULT;
+    
+    /**
+     * <!-- begin-user-doc -->
+     * Whether the position or size has been modified.
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    private boolean modified = false;
 
 	/**
      * <!-- begin-user-doc -->
@@ -374,67 +382,73 @@ public class KLabelImpl extends KGraphElementImpl implements KLabel {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public void setPos(float x, float y) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void setPos(float newXpos, float newYpos) {
+        float oldXpos = xpos, oldYpos = ypos;
+        xpos = newXpos;
+        ypos = newYpos;
+        if (newXpos != oldXpos || newYpos != oldYpos) {
+            modified = true;
+        }
+        if (eNotificationRequired()) {
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__YPOS, oldYpos, ypos));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__XPOS, oldXpos, xpos));
+        }
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public void applyVector(KVector pos) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void applyVector(KVector pos) {
+        setPos((float) pos.x, (float) pos.y);
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public KVector createVector() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public KVector createVector() {
+        return new KVector(xpos, ypos);
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public void setSize(float width, float height) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void setSize(float newWidth, float newHeight) {
+        float oldWidth = width, oldHeight = height;
+        width = newWidth;
+        height = newHeight;
+        if (newWidth != oldWidth || newHeight != oldHeight) {
+            modified = true;
+        }
+        if (eNotificationRequired()) {
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__WIDTH, oldWidth, width));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__HEIGHT, oldHeight, height));
+        }
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public boolean isModified() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public boolean isModified() {
+        return modified;
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public void resetModificationFlag() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void resetModificationFlag() {
+        modified = false;
     }
 
 	/**

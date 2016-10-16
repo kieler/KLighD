@@ -242,12 +242,23 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
 	public Map<IProperty<?>, Object> getAllProperties() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+        EMap<IProperty<?>, Object> props = getProperties();
+        // check for unresolved properties
+        for (Map.Entry<IProperty<?>, Object> entry : props) {
+            if (entry.getValue() instanceof IPropertyValueProxy) {
+                IPropertyValueProxy proxy = (IPropertyValueProxy) entry.getValue();
+                // Try to resolve the proxy's value, maybe the layout option was 
+                // registered by now. If not, we preserve the proxy. 
+                Object value = proxy.resolveValue(entry.getKey());
+                if (value != null) {
+                    entry.setValue(value);
+                }
+            }
+        }
+        return props.map();
     }
 
 	/**

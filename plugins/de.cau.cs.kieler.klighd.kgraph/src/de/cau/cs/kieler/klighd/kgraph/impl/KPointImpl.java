@@ -14,11 +14,8 @@
 package de.cau.cs.kieler.klighd.kgraph.impl;
 
 import org.eclipse.elk.core.math.KVector;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
@@ -144,34 +141,39 @@ public class KPointImpl extends EObjectImpl implements KPoint {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public void setPos(float x, float y) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void setPos(float newX, float newY) {
+        float oldX = x, oldY = y;
+        x = newX;
+        y = newY;
+        if ((newX != oldX || newY != oldY) && eContainer instanceof KEdgeImpl) {
+            ((KEdgeImpl) eContainer).modified = true;
+        }
+        if (eNotificationRequired()) {
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPOINT__X, oldX, x));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPOINT__Y, oldY, y));
+        }
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
+     * {@inheritDoc}
+     * <!-- end-user-doc -->
+     * @generated NOT
      */
-	public void applyVector(KVector pos) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void applyVector(KVector pos) {
+        setPos((float) pos.x, (float) pos.y);
     }
 
-	/**
+    /**
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
+     * {@inheritDoc}
+     * <!-- end-user-doc -->
+     * @generated NOT
      */
-	public KVector createVector() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public KVector createVector() {
+        return new KVector(x, y);
     }
 
 	/**

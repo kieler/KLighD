@@ -14,19 +14,16 @@
 package de.cau.cs.kieler.klighd.kgraph.impl;
 
 import java.util.Collection;
+import java.util.ListIterator;
 
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.KVectorChain;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -34,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KEdgeLayout;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphFactory;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -119,6 +117,14 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
      * @ordered
      */
 	protected KPort targetPort;
+    
+    /**
+     * <!-- begin-user-doc -->
+     * Whether the position or size has been modified.
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    protected boolean modified = false;
 
 	/**
      * <!-- begin-user-doc -->
@@ -433,45 +439,79 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public void applyVectorChain(KVectorChain points) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void applyVectorChain(KVectorChain points) {
+        if (sourcePoint == null) {
+            setSourcePoint(KGraphFactory.eINSTANCE.createKPoint());
+        }
+        KVector firstPoint = points.getFirst();
+        sourcePoint.setX((float) firstPoint.x);
+        sourcePoint.setY((float) firstPoint.y);
+        
+        // reuse as many existing bend points as possible
+        ListIterator<KPoint> oldPointIter = getBendPoints().listIterator();
+        ListIterator<KVector> newPointIter = points.listIterator(1);
+        while (newPointIter.nextIndex() < points.size() - 1) {
+            KVector nextPoint = newPointIter.next();
+            KPoint kpoint;
+            if (oldPointIter.hasNext()) {
+                kpoint = oldPointIter.next();
+            } else {
+                kpoint = KGraphFactory.eINSTANCE.createKPoint();
+                oldPointIter.add(kpoint);
+            }
+            kpoint.setX((float) nextPoint.x);
+            kpoint.setY((float) nextPoint.y);
+        }
+        while (oldPointIter.hasNext()) {
+            oldPointIter.next();
+            oldPointIter.remove();
+        }
+        
+        if (targetPoint == null) {
+            setTargetPoint(KGraphFactory.eINSTANCE.createKPoint());
+        }
+        KVector lastPoint = points.getLast();
+        targetPoint.setX((float) lastPoint.x);
+        targetPoint.setY((float) lastPoint.y);
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public KVectorChain createVectorChain() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public KVectorChain createVectorChain() {
+        KVectorChain vectorChain = new KVectorChain();
+        if (sourcePoint != null) {
+            vectorChain.add(sourcePoint.getX(), sourcePoint.getY());
+        }
+        for (KPoint bendPoint : getBendPoints()) {
+            vectorChain.add(bendPoint.getX(), bendPoint.getY());
+        }
+        if (targetPoint != null) {
+            vectorChain.add(targetPoint.getX(), targetPoint.getY());
+        }
+        return vectorChain;
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public boolean isModified() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public boolean isModified() {
+        return modified;
     }
 
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
-	public void resetModificationFlag() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
+    public void resetModificationFlag() {
+        modified = false;
     }
 
 	/**
