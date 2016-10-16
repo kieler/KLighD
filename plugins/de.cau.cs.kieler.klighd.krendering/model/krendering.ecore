@@ -54,7 +54,7 @@
       </eGenericType>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="#//KStyleHolder ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphData">
+  <eClassifiers xsi:type="ecore:EClass" name="KRendering" abstract="true" eSuperTypes="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphData #//KStyleHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Abstract class to define members of a shapeType.&#xA;Is placed inside a parent Container&#xA;can reference another Rendering instead of redefining it&#xA;A rendering can contain placementData to define the size of a derived object&#xA;"/>
     </eAnnotations>

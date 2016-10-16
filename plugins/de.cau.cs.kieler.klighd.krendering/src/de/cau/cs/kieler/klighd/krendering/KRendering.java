@@ -43,7 +43,7 @@ import org.eclipse.emf.common.util.EList;
  * @model abstract="true"
  * @generated
  */
-public interface KRendering extends KStyleHolder, KGraphData {
+public interface KRendering extends KGraphData, KStyleHolder {
     /**
      * Returns the value of the '<em><b>Parent</b></em>' container reference.
      * It is bidirectional and its opposite is '{@link de.cau.cs.kieler.klighd.krendering.KContainerRendering#getChildren <em>Children</em>}'.

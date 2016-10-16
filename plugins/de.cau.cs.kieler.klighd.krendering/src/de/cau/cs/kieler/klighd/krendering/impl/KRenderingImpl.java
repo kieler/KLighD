@@ -20,12 +20,15 @@ import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 
 import de.cau.cs.kieler.klighd.kgraph.impl.IPropertyToObjectMapImpl;
 
+import de.cau.cs.kieler.klighd.kgraph.impl.KGraphDataImpl;
 import de.cau.cs.kieler.klighd.krendering.KAction;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 
+import de.cau.cs.kieler.klighd.krendering.KStyle;
+import de.cau.cs.kieler.klighd.krendering.KStyleHolder;
 import java.util.Collection;
 import java.util.Map;
 
@@ -57,8 +60,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl#getProperties <em>Properties</em>}</li>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl#getPersistentEntries <em>Persistent Entries</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl#getStyles <em>Styles</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl#getId <em>Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl#getParent <em>Parent</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl#getPlacementData <em>Placement Data</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.impl.KRenderingImpl#getActions <em>Actions</em>}</li>
@@ -66,26 +69,36 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public abstract class KRenderingImpl extends KStyleHolderImpl implements KRendering {
+public abstract class KRenderingImpl extends KGraphDataImpl implements KRendering {
     /**
-     * The cached value of the '{@link #getProperties() <em>Properties</em>}' map.
+     * The cached value of the '{@link #getStyles() <em>Styles</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getProperties()
+     * @see #getStyles()
      * @generated
      * @ordered
      */
-    protected EMap<IProperty<?>, Object> properties;
+    protected EList<KStyle> styles;
 
     /**
-     * The cached value of the '{@link #getPersistentEntries() <em>Persistent Entries</em>}' containment reference list.
+     * The default value of the '{@link #getId() <em>Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getPersistentEntries()
+     * @see #getId()
      * @generated
      * @ordered
      */
-    protected EList<PersistentEntry> persistentEntries;
+    protected static final String ID_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getId()
+     * @generated
+     * @ordered
+     */
+    protected String id = ID_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getPlacementData() <em>Placement Data</em>}' containment reference.
@@ -131,11 +144,11 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
      * <!-- end-user-doc -->
      * @generated
      */
-    public EMap<IProperty<?>, Object> getProperties() {
-        if (properties == null) {
-            properties = new EcoreEMap<IProperty<?>,Object>(KGraphPackage.Literals.IPROPERTY_TO_OBJECT_MAP, IPropertyToObjectMapImpl.class, this, KRenderingPackage.KRENDERING__PROPERTIES);
+    public EList<KStyle> getStyles() {
+        if (styles == null) {
+            styles = new EObjectContainmentEList<KStyle>(KStyle.class, this, KRenderingPackage.KRENDERING__STYLES);
         }
-        return properties;
+        return styles;
     }
 
     /**
@@ -143,11 +156,20 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<PersistentEntry> getPersistentEntries() {
-        if (persistentEntries == null) {
-            persistentEntries = new EObjectContainmentEList<PersistentEntry>(PersistentEntry.class, this, KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES);
-        }
-        return persistentEntries;
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setId(String newId) {
+        String oldId = id;
+        id = newId;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, KRenderingPackage.KRENDERING__ID, oldId, id));
     }
 
     /**
@@ -251,61 +273,6 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
      * <!-- end-user-doc -->
      * @generated
      */
-    public void makePersistent() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T> IPropertyHolder setProperty(IProperty<? super T> property, T value) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T> T getProperty(IProperty<T> property) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public IPropertyHolder copyProperties(IPropertyHolder holder) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public Map<IProperty<?>, Object> getAllProperties() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -325,10 +292,8 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case KRenderingPackage.KRENDERING__PROPERTIES:
-                return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
-            case KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES:
-                return ((InternalEList<?>)getPersistentEntries()).basicRemove(otherEnd, msgs);
+            case KRenderingPackage.KRENDERING__STYLES:
+                return ((InternalEList<?>)getStyles()).basicRemove(otherEnd, msgs);
             case KRenderingPackage.KRENDERING__PARENT:
                 return basicSetParent(null, msgs);
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
@@ -361,11 +326,10 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case KRenderingPackage.KRENDERING__PROPERTIES:
-                if (coreType) return getProperties();
-                else return getProperties().map();
-            case KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES:
-                return getPersistentEntries();
+            case KRenderingPackage.KRENDERING__STYLES:
+                return getStyles();
+            case KRenderingPackage.KRENDERING__ID:
+                return getId();
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent();
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
@@ -385,12 +349,12 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case KRenderingPackage.KRENDERING__PROPERTIES:
-                ((EStructuralFeature.Setting)getProperties()).set(newValue);
+            case KRenderingPackage.KRENDERING__STYLES:
+                getStyles().clear();
+                getStyles().addAll((Collection<? extends KStyle>)newValue);
                 return;
-            case KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES:
-                getPersistentEntries().clear();
-                getPersistentEntries().addAll((Collection<? extends PersistentEntry>)newValue);
+            case KRenderingPackage.KRENDERING__ID:
+                setId((String)newValue);
                 return;
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)newValue);
@@ -414,11 +378,11 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KRENDERING__PROPERTIES:
-                getProperties().clear();
+            case KRenderingPackage.KRENDERING__STYLES:
+                getStyles().clear();
                 return;
-            case KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES:
-                getPersistentEntries().clear();
+            case KRenderingPackage.KRENDERING__ID:
+                setId(ID_EDEFAULT);
                 return;
             case KRenderingPackage.KRENDERING__PARENT:
                 setParent((KContainerRendering)null);
@@ -441,10 +405,10 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case KRenderingPackage.KRENDERING__PROPERTIES:
-                return properties != null && !properties.isEmpty();
-            case KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES:
-                return persistentEntries != null && !persistentEntries.isEmpty();
+            case KRenderingPackage.KRENDERING__STYLES:
+                return styles != null && !styles.isEmpty();
+            case KRenderingPackage.KRENDERING__ID:
+                return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
             case KRenderingPackage.KRENDERING__PARENT:
                 return getParent() != null;
             case KRenderingPackage.KRENDERING__PLACEMENT_DATA:
@@ -462,20 +426,10 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == IPropertyHolder.class) {
+        if (baseClass == KStyleHolder.class) {
             switch (derivedFeatureID) {
-                default: return -1;
-            }
-        }
-        if (baseClass == EMapPropertyHolder.class) {
-            switch (derivedFeatureID) {
-                case KRenderingPackage.KRENDERING__PROPERTIES: return KGraphPackage.EMAP_PROPERTY_HOLDER__PROPERTIES;
-                case KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES: return KGraphPackage.EMAP_PROPERTY_HOLDER__PERSISTENT_ENTRIES;
-                default: return -1;
-            }
-        }
-        if (baseClass == KGraphData.class) {
-            switch (derivedFeatureID) {
+                case KRenderingPackage.KRENDERING__STYLES: return KRenderingPackage.KSTYLE_HOLDER__STYLES;
+                case KRenderingPackage.KRENDERING__ID: return KRenderingPackage.KSTYLE_HOLDER__ID;
                 default: return -1;
             }
         }
@@ -489,24 +443,30 @@ public abstract class KRenderingImpl extends KStyleHolderImpl implements KRender
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == IPropertyHolder.class) {
+        if (baseClass == KStyleHolder.class) {
             switch (baseFeatureID) {
-                default: return -1;
-            }
-        }
-        if (baseClass == EMapPropertyHolder.class) {
-            switch (baseFeatureID) {
-                case KGraphPackage.EMAP_PROPERTY_HOLDER__PROPERTIES: return KRenderingPackage.KRENDERING__PROPERTIES;
-                case KGraphPackage.EMAP_PROPERTY_HOLDER__PERSISTENT_ENTRIES: return KRenderingPackage.KRENDERING__PERSISTENT_ENTRIES;
-                default: return -1;
-            }
-        }
-        if (baseClass == KGraphData.class) {
-            switch (baseFeatureID) {
+                case KRenderingPackage.KSTYLE_HOLDER__STYLES: return KRenderingPackage.KRENDERING__STYLES;
+                case KRenderingPackage.KSTYLE_HOLDER__ID: return KRenderingPackage.KRENDERING__ID;
                 default: return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (eIsProxy()) return super.toString();
+
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (id: ");
+        result.append(id);
+        result.append(')');
+        return result.toString();
     }
 
 } //KRenderingImpl

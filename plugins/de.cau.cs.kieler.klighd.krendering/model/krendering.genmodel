@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="KIELER - Kiel Integrated Environment for Layout Eclipse RichClient&#xA;&#xA;http://www.informatik.uni-kiel.de/rtsys/kieler/&#xA;&#xA;Copyright 2012 by&#xA;+ Kiel University&#xA;  + Department of Computer Science&#xA;    + Real-Time and Embedded Systems Group&#xA;&#xA;This code is provided under the terms of the Eclipse Public License (EPL).&#xA;See the file epl-v10.html for the license text."
     modelDirectory="/de.cau.cs.kieler.klighd.krendering/src" modelPluginID="de.cau.cs.kieler.klighd.krendering"
     modelName="KRendering" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
-    copyrightFields="false">
+    copyrightFields="false" usedGenPackages="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.genmodel#//kgraph">>
   <foreignModel>krendering.ecore</foreignModel>
   <genPackages prefix="KRendering" basePackage="de.cau.cs.kieler.klighd" disposableProviderFactory="true"
       fileExtensions="krender" ecorePackage="krendering.ecore#/">
@@ -440,129 +440,6 @@
     <genClasses ecoreClass="krendering.ecore#//KLineJoin">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineJoin/lineJoin"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KLineJoin/miterLimit"/>
-    </genClasses>
-  </genPackages>
-  <genPackages prefix="KGraph" basePackage="de.cau.cs.kieler.klighd" ecorePackage="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#/">
-    <genDataTypes ecoreDataType="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IProperty">
-      <genTypeParameters ecoreTypeParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IProperty/T"/>
-    </genDataTypes>
-    <genDataTypes ecoreDataType="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KVector"/>
-    <genDataTypes ecoreDataType="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KVectorChain"/>
-    <genClasses image="false" ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphElement/data"/>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphElement/getData">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphElement/getData/type"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphElement/getData.1">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphElement/getData.1/type"/>
-        <genTypeParameters ecoreTypeParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphElement/getData.1/T"/>
-      </genOperations>
-    </genClasses>
-    <genClasses image="false" ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLabeledGraphElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLabeledGraphElement/labels"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KGraphData"/>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KNode">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KNode/children"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KNode/parent"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KNode/ports"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KNode/outgoingEdges"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KNode/incomingEdges"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdge">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdge/source"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdge/target"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdge/sourcePort"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdge/targetPort"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPort">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPort/node"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPort/edges"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLabel">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLabel/text"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLabel/parent"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//EMapPropertyHolder">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//EMapPropertyHolder/properties"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//EMapPropertyHolder/persistentEntries"/>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//EMapPropertyHolder/makePersistent"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyToObjectMap">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyToObjectMap/key"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyToObjectMap/value"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder">
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/setProperty">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/setProperty/property"/>
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/setProperty/value"/>
-        <genTypeParameters ecoreTypeParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/setProperty/T"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/getProperty">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/getProperty/property"/>
-        <genTypeParameters ecoreTypeParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/getProperty/T"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/copyProperties">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/copyProperties/holder"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//IPropertyHolder/getAllProperties"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//PersistentEntry">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//PersistentEntry/key"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//PersistentEntry/value"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/xpos"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/ypos"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/width"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/height"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/insets"/>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/setPos">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/setPos/x"/>
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/setPos/y"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/applyVector">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/applyVector/pos"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/createVector"/>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/setSize">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/setSize/width"/>
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KShapeLayout/setSize/height"/>
-      </genOperations>
-    </genClasses>
-    <genClasses image="false" ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdgeLayout">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdgeLayout/bendPoints"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdgeLayout/sourcePoint"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdgeLayout/targetPoint"/>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdgeLayout/applyVectorChain">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdgeLayout/applyVectorChain/points"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KEdgeLayout/createVectorChain"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLayoutData">
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLayoutData/isModified"/>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KLayoutData/resetModificationFlag"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/x"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/y"/>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/setPos">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/setPos/x"/>
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/setPos/y"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/applyVector">
-        <genParameters ecoreParameter="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/applyVector/pos"/>
-      </genOperations>
-      <genOperations ecoreOperation="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KPoint/createVector"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KInsets">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KInsets/top"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KInsets/bottom"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KInsets/left"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KInsets/right"/>
-    </genClasses>
-    <genClasses ecoreClass="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KIdentifier">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.ecore#//KIdentifier/id"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

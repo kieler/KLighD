@@ -581,16 +581,14 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
         isInited = true;
 
-        // Obtain or create and register interdependencies
-        KGraphPackageImpl theKGraphPackage = (KGraphPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(KGraphPackage.eNS_URI) instanceof KGraphPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(KGraphPackage.eNS_URI) : KGraphPackage.eINSTANCE);
+        // Initialize simple dependencies
+        KGraphPackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
         theKRenderingPackage.createPackageContents();
-        theKGraphPackage.createPackageContents();
 
         // Initialize created meta-data
         theKRenderingPackage.initializePackageContents();
-        theKGraphPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theKRenderingPackage.freeze();
@@ -2343,8 +2341,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         kColoringEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
-        kRenderingEClass.getESuperTypes().add(this.getKStyleHolder());
         kRenderingEClass.getESuperTypes().add(theKGraphPackage.getKGraphData());
+        kRenderingEClass.getESuperTypes().add(this.getKStyleHolder());
         kEllipseEClass.getESuperTypes().add(this.getKContainerRendering());
         kRectangleEClass.getESuperTypes().add(this.getKContainerRendering());
         kRoundedRectangleEClass.getESuperTypes().add(this.getKContainerRendering());
