@@ -21,13 +21,13 @@ import java.util.List;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.LayoutConfigurator;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.DiagramLayoutEngine;
 import org.eclipse.elk.core.service.DiagramLayoutEngine.Parameters;
 import org.eclipse.elk.core.service.ElkServicePlugin;
 import org.eclipse.elk.core.util.IElkCancelIndicator;
 import org.eclipse.elk.core.util.Pair;
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -35,6 +35,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
@@ -51,6 +52,10 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * @kieler.rating proposed yellow by chsch
  */
 public final class LightDiagramServices {
+
+    private static final List<IProperty<?>> GLOBALOPTIONS =
+            Lists.newArrayList(CoreOptions.ANIMATE, CoreOptions.ANIM_TIME_FACTOR,
+                    CoreOptions.MIN_ANIM_TIME, CoreOptions.MAX_ANIM_TIME);
 
     /**
      * A private constructor to prevent instantiation.
@@ -873,6 +878,7 @@ public final class LightDiagramServices {
      * @param config
      *            The {@link LightDiagramLayoutConfig} to be used in this layout process.
      */
+    @SuppressWarnings("unchecked")
     public static void layoutDiagram(final LightDiagramLayoutConfig config) {
 
         if (config == null) {
@@ -932,6 +938,15 @@ public final class LightDiagramServices {
         if (config.maxAnimationTime() != null) {
             layoutParameters.getGlobalSettings().setProperty(CoreOptions.MAX_ANIM_TIME, 
                     config.maxAnimationTime());
+        }
+        
+        // Copy global properties from root node. This might overwrite
+        // options defined by the LightDiagramLayoutConfig
+        for (@SuppressWarnings("rawtypes") IProperty property : GLOBALOPTIONS) {
+            if (viewModel.getProperties().containsKey(property)) {
+                layoutParameters.getGlobalSettings().setProperty(
+                        property, viewModel.getProperty(property));
+            }
         }
 
         if (thePart instanceof ILayoutConfigProvider) {
