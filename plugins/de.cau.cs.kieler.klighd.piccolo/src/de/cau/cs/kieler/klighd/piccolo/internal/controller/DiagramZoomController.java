@@ -348,7 +348,7 @@ public class DiagramZoomController {
             nodeBounds.setRect(nodeBounds.getX() + minX, nodeBounds.getY() + minY,
                     maxX - minX, maxY - minY);
         } else {
-            final KInsets insets = node.getData(KShapeLayout.class).getInsets();
+            final KInsets insets = node.getInsets();
             nodeBounds.setRect(nodeBounds.getX() + insets.getLeft() * scale,
                     nodeBounds.getY() + insets.getTop() * scale,
                     maxX - insets.getLeft() - insets.getRight() * scale,

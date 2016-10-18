@@ -21,9 +21,6 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.LayoutConfigurator;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.klayoutdata.KLayoutDataPackage;
-import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.core.util.WrappedException;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -643,7 +640,7 @@ public class ViewContext extends MapPropertyHolder {
      *            a member of the view model, must not by <code>null</code>
      */
     public void associateSourceTargetPair(final Object source, final EObject target) {
-        if (KLayoutDataPackage.eINSTANCE.getKLayoutData().isInstance(target)) {
+        if (KGraphPackage.eINSTANCE.getKLayoutData().isInstance(target)) {
             return;
         }
         if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(target)) {

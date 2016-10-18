@@ -275,7 +275,7 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KLayoutData" abstract="true" interface="true"
-      eSuperTypes="#//KGraphData">
+      eSuperTypes="#//EMapPropertyHolder">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Common interface for shape layouts and edge layouts. Shape layouts are&#xA;used by nodes, ports, and labels, while edge layouts are used by edges."/>
     </eAnnotations>

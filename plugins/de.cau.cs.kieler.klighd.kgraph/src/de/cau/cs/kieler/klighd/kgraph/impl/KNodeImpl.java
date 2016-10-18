@@ -16,24 +16,18 @@ package de.cau.cs.kieler.klighd.kgraph.impl;
 import java.util.Collection;
 
 import org.eclipse.elk.core.math.KVector;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
-import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
@@ -732,11 +726,6 @@ public class KNodeImpl extends KLabeledGraphElementImpl implements KNode {
      */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == KGraphData.class) {
-            switch (derivedFeatureID) {
-                default: return -1;
-            }
-        }
         if (baseClass == KLayoutData.class) {
             switch (derivedFeatureID) {
                 default: return -1;
@@ -762,11 +751,6 @@ public class KNodeImpl extends KLabeledGraphElementImpl implements KNode {
      */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == KGraphData.class) {
-            switch (baseFeatureID) {
-                default: return -1;
-            }
-        }
         if (baseClass == KLayoutData.class) {
             switch (baseFeatureID) {
                 default: return -1;

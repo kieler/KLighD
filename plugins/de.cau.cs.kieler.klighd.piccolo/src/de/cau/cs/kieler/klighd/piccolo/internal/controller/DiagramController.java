@@ -2128,12 +2128,10 @@ public class DiagramController {
      * changed (or the {@link KlighdLabelProperties#LABEL_TEXT_OVERRIDE} property value changes), the
      * label's {@link KLabelNode} has its text updated, which in turn causes its PNode to be updated.
      */
-    private final class TextSyncAdapter extends LimitedKGraphContentAdapter {
+    private final class TextSyncAdapter extends AdapterImpl {
         private final KLabelNode labelRep;
 
         private TextSyncAdapter(final KLabelNode theLabelRep) {
-            super(KLayoutData.class);
-
             this.labelRep = theLabelRep;
         }
 

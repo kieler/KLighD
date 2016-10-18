@@ -22,6 +22,7 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeRouting;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
@@ -34,25 +35,17 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.krendering.KSpline;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
-import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 
 /**
- * A specialized {@link LimitedKGraphContentAdapter}, which is in charge of synchronizing the points
- * of the {@link KEdgeNode} that represents of the {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}
- * this adapter is attached to.<br>
- * <br>
- * Due to the fact that EMF Compare's standard mergers replace whole instances of
- * {@link KEdgeLayout} when some of the attribute values have changed, such updaters are attached to
- * the {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}. They propagate themselves to the available
- * {@link KEdgeLayout KEdgeLayouts} or those that are added afterwards.
+ * A specialized EMF adapter which is in charge of synchronizing the points of the
+ * {@link KEdgeNode} that represents of the {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}
+ * this adapter is attached to.
  *
  * @author chsch
  */
-class KEdgeLayoutEdgeNodeUpdater extends LimitedKGraphContentAdapter {
+class KEdgeLayoutEdgeNodeUpdater extends AdapterImpl {
 
-    KEdgeLayoutEdgeNodeUpdater(final KEdgeNode theEdgeRep,
-            final DiagramController theController) {
-        super(KEdgeLayout.class);
+    KEdgeLayoutEdgeNodeUpdater(final KEdgeNode theEdgeRep, final DiagramController theController) {
         this.controller = theController;
         this.edgeRep = theEdgeRep;
     }

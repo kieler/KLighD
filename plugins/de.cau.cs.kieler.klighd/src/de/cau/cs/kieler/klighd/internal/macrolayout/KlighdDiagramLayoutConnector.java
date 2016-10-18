@@ -15,8 +15,8 @@ package de.cau.cs.kieler.klighd.internal.macrolayout;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.elk.core.klayoutdata.KEdgeLayout;
 import org.eclipse.elk.core.klayoutdata.KInsets;
@@ -61,8 +61,6 @@ import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
-import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
-import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
 import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
 import de.cau.cs.kieler.klighd.labels.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -91,18 +89,6 @@ import de.cau.cs.kieler.klighd.util.RenderingContextData;
  * @author cds
  */
 public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
-
-    /**
-     * Defines the possible transfer modes used to layout the graph.
-     */
-    private static enum EdgeLayoutTransferMode {
-        /** Model transfered from the model to layout graph. */
-        VIEW_MODEL_TO_LAYOUT_GRAPH,
-        /** Layout graph to view model without adjustments. */
-        LAYOUT_GRAPH_TO_VIEW_MODEL,
-        /** Layout graph to view model with adjustments. */
-        LAYOUT_GRAPH_TO_VIEW_MODEL_ADJUSTMENT
-    }
 
     /**
      * A dummy value used in fired {@link Notification Notifications} indicating a completed update
@@ -675,7 +661,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     de.cau.cs.kieler.klighd.kgraph.KEdge edge =
                             (de.cau.cs.kieler.klighd.kgraph.KEdge) element;
                     
-                    transferLayoutEdgeToViewModelEdgeLayout(layoutLayout, edge,
+                    transferLayoutEdgeLayoutToViewModelEdge(layoutLayout, edge,
                             !suppressEdgeAdjustment);
                     return true;
                 }
@@ -763,7 +749,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         targetShapeLayout.resetModificationFlag();
 
         if (adjustScaling) {
-            final KGraphPackage pack = KGraphPackage.eINSTANCE;
+            final de.cau.cs.kieler.klighd.kgraph.KGraphPackage pack =
+                    de.cau.cs.kieler.klighd.kgraph.KGraphPackage.eINSTANCE;
             final EObject container = sourceShapeLayout.eContainer();
             final float scale;
 
@@ -798,7 +785,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         //  bringing the observing diagram controller to update the displayed diagram
         targetShapeLayout.eSetDeliver(deliver);
         if (deliver) {
-
             // for efficiency reasons just fire a single notification with values indicating
             //  whether actually some change occurred in the shape layout
             // the information whether 'no change' happened is required for, e.g., updating the
@@ -886,7 +872,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         //  bringing the observing diagram controller to update the displayed diagram
         targetShapeLayout.eSetDeliver(deliver);
         if (deliver) {
-
             // for efficiency reasons just fire a single notification with values indicating
             //  whether actually some change occurred in the shape layout
             // the information whether 'no change' happened is required for, e.g., updating the
@@ -895,7 +880,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     ? LAYOUT_DATA_CHANGED_VALUE : LAYOUT_DATA_UNCHANGED_VALUE;
 
             targetShapeLayout.eNotify(new ENotificationImpl((InternalEObject) targetShapeLayout,
-                    Notification.SET, KLayoutDataPackage.eINSTANCE.getKShapeLayout_Xpos(),
+                    Notification.SET, de.cau.cs.kieler.klighd.kgraph.KGraphPackage.eINSTANCE.getKShapeLayout_Xpos(),
                     null, newValue));
         }
 
@@ -924,8 +909,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     private void transferViewModelEdgeLayoutToLayoutEdge(
             final de.cau.cs.kieler.klighd.kgraph.KEdge viewModelEdge,
             final KEdgeLayout layoutEdgeLayout) {
-
-        final KEdge layoutEdge = (KEdge) layoutEdgeLayout.eContainer();
 
         // do not notify listeners about any change on the displayed KGraph in order
         //  to avoid unnecessary diagram refresh cycles
@@ -986,7 +969,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the view model edge layout
      * @param adjustments
      */
-    private void transferLayoutEdgeToViewModelEdgeLayout(final KEdgeLayout layoutEdgeLayout,
+    private void transferLayoutEdgeLayoutToViewModelEdge(final KEdgeLayout layoutEdgeLayout,
             final de.cau.cs.kieler.klighd.kgraph.KEdge viewModelEdge,
             final boolean adjustments) {
 
@@ -1131,9 +1114,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         // reactivate notifications & fire a notification
         //  bringing the observing diagram controller to update the displayed diagram
         viewModelEdge.eSetDeliver(deliver);
-        viewModelEdge.eNotify(new ENotificationImpl(
+        ENotificationImpl notification = new ENotificationImpl(
                 (InternalEObject) viewModelEdge, Notification.SET,
-                KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS, null, null));
+                de.cau.cs.kieler.klighd.kgraph.KGraphPackage.KEDGE__BEND_POINTS, null, null);
+        viewModelEdge.eNotify(notification);
     }
 
     /**
@@ -1190,7 +1174,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         // notify the listeners
         edge.eSetDeliver(deliver);
         edge.eNotify(new ENotificationImpl((InternalEObject) edge, Notification.SET,
-                KLayoutDataPackage.KEDGE_LAYOUT__BEND_POINTS, null, null));
+                de.cau.cs.kieler.klighd.kgraph.KGraphPackage.KEDGE__BEND_POINTS, null, null));
     }
 
     /**

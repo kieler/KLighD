@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
-import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
@@ -57,8 +56,8 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
      * If no visibility settings are configured in <code>layoutData</code> <code>null</code> is
      * returned, anyway.
      *
-     * @param layoutData
-     *            the {@link KLayoutData} to be assessed for visibility settings, should not be
+     * @param element
+     *            the graph element to be assessed for visibility settings, should not be
      *            <code>null</code>
      * @param kgeNode
      *            the {@link KGraphElementNode} to be configured with <code>layoutData</code>'s
@@ -71,20 +70,20 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
      *         but <code>layoutData</code> contains visibility settings (in case a delegate
      *         {@link KlighdNode} is required like for {@link KNodeNode KNodeNodes})
      */
-    protected static KlighdNode evaluateVisibilityDefinitions(
-            final KLayoutData layoutData, final KGraphElementNode<?> kgeNode) {
+    protected static KlighdNode evaluateVisibilityDefinitions(final KGraphElement element,
+            final KGraphElementNode<?> kgeNode) {
 
-        if (layoutData == null) {
+        if (element == null) {
             return null;
         }
 
-        final boolean evaluate = containsVisibilitySettings(layoutData);
+        final boolean evaluate = containsVisibilitySettings(element);
 
         if (!evaluate) {
             return null;
 
         } else if (kgeNode != null) {
-            kgeNode.setScaleAndSizeBasedVisibilityBounds(layoutData);
+            kgeNode.setScaleAndSizeBasedVisibilityBounds(element);
             return kgeNode;
 
         } else {
@@ -92,7 +91,7 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
                 private static final long serialVersionUID = 1L;
 
                 /* Constructor */ {
-                    this.setScaleAndSizeBasedVisibilityBounds(layoutData);
+                    this.setScaleAndSizeBasedVisibilityBounds(element);
                 }
 
                 public EObject getViewModelElement() {
@@ -118,7 +117,7 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
         this.graphElement = element;
 
         final boolean visibilitySettingsDefined =
-                evaluateVisibilityDefinitions(element.getData(KLayoutData.class), this) != null;
+                evaluateVisibilityDefinitions(element, this) != null;
 
         final boolean isEdge = element instanceof KEdge;
         final KGraphElementNode<?> thisNode = this;
@@ -207,7 +206,7 @@ public abstract class KGraphElementNode<T extends KGraphElement> extends KlighdN
         final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
 
         if (kpc.isAddSemanticData()) {
-            final KlighdSemanticDiagramData sd = getViewModelElement().getData(KLayoutData.class)
+            final KlighdSemanticDiagramData sd = getViewModelElement()
                     .getProperty(KlighdProperties.SEMANTIC_DATA);
             kpc.getKlighdGraphics().startGroup(sd);
         }

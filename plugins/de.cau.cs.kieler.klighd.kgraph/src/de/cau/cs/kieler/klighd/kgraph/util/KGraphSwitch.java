@@ -114,7 +114,6 @@ public class KGraphSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKShapeLayout(kNode);
                 if (result == null) result = caseKGraphElement(kNode);
                 if (result == null) result = caseKLayoutData(kNode);
-                if (result == null) result = caseKGraphData(kNode);
                 if (result == null) result = caseEMapPropertyHolder(kNode);
                 if (result == null) result = caseIPropertyHolder(kNode);
                 if (result == null) result = defaultCase(theEObject);
@@ -127,7 +126,6 @@ public class KGraphSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKEdgeLayout(kEdge);
                 if (result == null) result = caseKGraphElement(kEdge);
                 if (result == null) result = caseKLayoutData(kEdge);
-                if (result == null) result = caseKGraphData(kEdge);
                 if (result == null) result = caseEMapPropertyHolder(kEdge);
                 if (result == null) result = caseIPropertyHolder(kEdge);
                 if (result == null) result = defaultCase(theEObject);
@@ -140,7 +138,6 @@ public class KGraphSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKShapeLayout(kPort);
                 if (result == null) result = caseKGraphElement(kPort);
                 if (result == null) result = caseKLayoutData(kPort);
-                if (result == null) result = caseKGraphData(kPort);
                 if (result == null) result = caseEMapPropertyHolder(kPort);
                 if (result == null) result = caseIPropertyHolder(kPort);
                 if (result == null) result = defaultCase(theEObject);
@@ -152,9 +149,8 @@ public class KGraphSwitch<T> extends Switch<T> {
                 if (result == null) result = caseKGraphElement(kLabel);
                 if (result == null) result = caseKShapeLayout(kLabel);
                 if (result == null) result = caseKLayoutData(kLabel);
-                if (result == null) result = caseIPropertyHolder(kLabel);
-                if (result == null) result = caseKGraphData(kLabel);
                 if (result == null) result = caseEMapPropertyHolder(kLabel);
+                if (result == null) result = caseIPropertyHolder(kLabel);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -187,7 +183,6 @@ public class KGraphSwitch<T> extends Switch<T> {
                 KShapeLayout kShapeLayout = (KShapeLayout)theEObject;
                 T result = caseKShapeLayout(kShapeLayout);
                 if (result == null) result = caseKLayoutData(kShapeLayout);
-                if (result == null) result = caseKGraphData(kShapeLayout);
                 if (result == null) result = caseEMapPropertyHolder(kShapeLayout);
                 if (result == null) result = caseIPropertyHolder(kShapeLayout);
                 if (result == null) result = defaultCase(theEObject);
@@ -197,7 +192,6 @@ public class KGraphSwitch<T> extends Switch<T> {
                 KEdgeLayout kEdgeLayout = (KEdgeLayout)theEObject;
                 T result = caseKEdgeLayout(kEdgeLayout);
                 if (result == null) result = caseKLayoutData(kEdgeLayout);
-                if (result == null) result = caseKGraphData(kEdgeLayout);
                 if (result == null) result = caseEMapPropertyHolder(kEdgeLayout);
                 if (result == null) result = caseIPropertyHolder(kEdgeLayout);
                 if (result == null) result = defaultCase(theEObject);
@@ -206,7 +200,6 @@ public class KGraphSwitch<T> extends Switch<T> {
             case KGraphPackage.KLAYOUT_DATA: {
                 KLayoutData kLayoutData = (KLayoutData)theEObject;
                 T result = caseKLayoutData(kLayoutData);
-                if (result == null) result = caseKGraphData(kLayoutData);
                 if (result == null) result = caseEMapPropertyHolder(kLayoutData);
                 if (result == null) result = caseIPropertyHolder(kLayoutData);
                 if (result == null) result = defaultCase(theEObject);

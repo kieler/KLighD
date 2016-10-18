@@ -19,7 +19,6 @@ import de.cau.cs.kieler.klighd.KlighdConstants
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
-import de.cau.cs.kieler.klighd.kgraph.KShapeLayout
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.Colors
 import de.cau.cs.kieler.klighd.krendering.LineStyle
@@ -311,9 +310,8 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         port.createLabel => [
             text = containerFeature.name
             val size = PlacementUtil.estimateTextSize(it)
-            val data = getData(KShapeLayout)
-            data.width = size.width
-            data.height = size.height
+            it.width = size.width
+            it.height = size.height
         ]
         
         // Add to cache

@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KEdgeLayout;
-import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphFactory;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
@@ -700,11 +699,6 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
      */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == KGraphData.class) {
-            switch (derivedFeatureID) {
-                default: return -1;
-            }
-        }
         if (baseClass == KLayoutData.class) {
             switch (derivedFeatureID) {
                 default: return -1;
@@ -728,11 +722,6 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
      */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == KGraphData.class) {
-            switch (baseFeatureID) {
-                default: return -1;
-            }
-        }
         if (baseClass == KLayoutData.class) {
             switch (baseFeatureID) {
                 default: return -1;

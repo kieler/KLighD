@@ -13,6 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.kgraph;
 
+import org.eclipse.elk.graph.properties.IPropertyHolder;
+import org.eclipse.emf.ecore.EObject;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +32,7 @@ package de.cau.cs.kieler.klighd.kgraph;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface KLayoutData extends KGraphData {
+public interface KLayoutData extends EMapPropertyHolder {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

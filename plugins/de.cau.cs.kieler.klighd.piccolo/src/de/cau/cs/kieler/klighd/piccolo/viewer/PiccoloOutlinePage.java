@@ -28,6 +28,7 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -53,7 +54,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
-import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -437,7 +437,7 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
         // add listeners to layout changes and canvas resizing
         rootNode = topNode.getViewModelElement();
-        nodeLayoutAdapter = new LimitedKGraphContentAdapter(KShapeLayout.class) {
+        nodeLayoutAdapter = new AdapterImpl() {
 
             @Override
             public void notifyChanged(final Notification notification) {
@@ -507,13 +507,12 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         }
 
         // always reveal the current shape layout - it may be exchanged over the diagram's life time
-        final KShapeLayout layoutData = rootNode.getData(KShapeLayout.class);
-        final float scale = layoutData.getProperty(CoreOptions.SCALE_FACTOR).floatValue();
+        final float scale = rootNode.getProperty(CoreOptions.SCALE_FACTOR).floatValue();
 
-        final float width = Math.max(layoutData.getWidth() * scale, MIN_SIZE);
-        final float height = Math.max(layoutData.getHeight() * scale, MIN_SIZE);
+        final float width = Math.max(rootNode.getWidth() * scale, MIN_SIZE);
+        final float height = Math.max(rootNode.getHeight() * scale, MIN_SIZE);
         outlineCanvas.getCamera().setViewBounds(
-                new Rectangle2D.Double(layoutData.getXpos(), layoutData.getYpos(), width, height));
+                new Rectangle2D.Double(rootNode.getXpos(), rootNode.getYpos(), width, height));
 
         adjustOutlineRect();
     }

@@ -65,8 +65,8 @@ public final class KGraphDataUtil {
     }
     
     /**
-     * Calls {@link #loadDataElements(KNode, boolean, IProperty...)} with {@code clearProperties} set to
-     * {@code false}.
+     * Calls {@link #loadDataElements(KNode, boolean, IProperty...)} with {@code clearProperties}
+     * set to {@code false}.
      * 
      * @param graph
      *            the root element of the graph to load elements of.

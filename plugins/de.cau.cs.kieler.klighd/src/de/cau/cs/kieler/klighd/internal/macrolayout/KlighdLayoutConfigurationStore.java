@@ -47,7 +47,6 @@ import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
-import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;
@@ -117,19 +116,14 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
             return null;
         }
 
-        final KLayoutData elementLayout = graphElement.getData(KLayoutData.class);
-        if (elementLayout == null) {
-            return null;
-        }
-
-        final Object value = elementLayout.getProperties().get(optionData);
+        final Object value = graphElement.getProperties().get(optionData);
         if (value instanceof IPropertyValueProxy) {
             return ((IPropertyValueProxy) value).resolveValue(optionData);
 
         } else if (value == null) {
             // check whether an expansion aware layout option set is present
             final ExpansionAwareLayoutOptionData ealo =
-                    elementLayout.getProperty(ExpansionAwareLayoutOption.OPTION);
+                    graphElement.getProperty(ExpansionAwareLayoutOption.OPTION);
             
             if (ealo == null) {
                 // We provide special support for certain layout options
@@ -230,13 +224,12 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      * @return the corresponding KLighD (context) {@link IViewer}, or {@code null}
      */
     private IViewer getViewer() {
-        final KLayoutData elementLayout = graphElement.getData(KLayoutData.class);
-        IViewer viewer = elementLayout.getProperty(KlighdOptions.VIEWER);
+        IViewer viewer = graphElement.getProperty(KlighdOptions.VIEWER);
 
         if (viewer == null) {
             if (workbenchPart instanceof IDiagramWorkbenchPart) {
                 viewer = ((IDiagramWorkbenchPart) workbenchPart).getViewer();
-                elementLayout.setProperty(KlighdOptions.VIEWER, viewer);
+                graphElement.setProperty(KlighdOptions.VIEWER, viewer);
             }
         }
         return viewer;
@@ -247,11 +240,6 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      */
     public Collection<String> getAffectedOptions() {
         if (graphElement == null) {
-            return Collections.emptyList();
-        }
-
-        final KLayoutData elementLayout = graphElement.getData(KLayoutData.class);
-        if (elementLayout == null) {
             return Collections.emptyList();
         }
 
@@ -266,15 +254,14 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         // EMapPropertyHolder#getAllProperties()
         while (allProperties == null) {
             try {
-                allProperties = elementLayout.getAllProperties();
+                allProperties = graphElement.getAllProperties();
 
             } catch (final ConcurrentModificationException e) {
                 // add an info to the log and retry...
                 final String msg = "Concurrent modification in KGraphPropertyLayoutConfig:"
-                        + KlighdPlugin.LINE_SEPARATOR + "  elementLayout == " + elementLayout
                         + KlighdPlugin.LINE_SEPARATOR + "  element == " + graphElement
                         + KlighdPlugin.LINE_SEPARATOR + "  sourceElement == "
-                        + elementLayout.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
+                        + graphElement.getProperty(KlighdInternalProperties.MODEL_ELEMEMT);
 
                 KlighdPlugin.getDefault().getLog()
                         .log(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, msg));

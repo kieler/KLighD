@@ -909,7 +909,7 @@ public class KGraphPackageImpl extends EPackageImpl implements KGraphPackage {
         eMapPropertyHolderEClass.getESuperTypes().add(this.getIPropertyHolder());
         kShapeLayoutEClass.getESuperTypes().add(this.getKLayoutData());
         kEdgeLayoutEClass.getESuperTypes().add(this.getKLayoutData());
-        kLayoutDataEClass.getESuperTypes().add(this.getKGraphData());
+        kLayoutDataEClass.getESuperTypes().add(this.getEMapPropertyHolder());
         kIdentifierEClass.getESuperTypes().add(this.getKGraphData());
 
         // Initialize classes and features; add operations and parameters

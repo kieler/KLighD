@@ -838,29 +838,29 @@ public interface KGraphPackage extends EPackage {
 	/**
      * The feature id for the '<em><b>Properties</b></em>' map.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KLAYOUT_DATA__PROPERTIES = KGRAPH_DATA__PROPERTIES;
+    int KLAYOUT_DATA__PROPERTIES = EMAP_PROPERTY_HOLDER__PROPERTIES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KLAYOUT_DATA__PERSISTENT_ENTRIES = KGRAPH_DATA__PERSISTENT_ENTRIES;
+    int KLAYOUT_DATA__PERSISTENT_ENTRIES = EMAP_PROPERTY_HOLDER__PERSISTENT_ENTRIES;
 
-	/**
+    /**
      * The number of structural features of the '<em>KLayout Data</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KLAYOUT_DATA_FEATURE_COUNT = KGRAPH_DATA_FEATURE_COUNT + 0;
+	int KLAYOUT_DATA_FEATURE_COUNT = EMAP_PROPERTY_HOLDER_FEATURE_COUNT + 0;
 
 	/**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.kgraph.KShapeLayout <em>KShape Layout</em>}' class.
@@ -875,22 +875,22 @@ public interface KGraphPackage extends EPackage {
 	/**
      * The feature id for the '<em><b>Properties</b></em>' map.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KSHAPE_LAYOUT__PROPERTIES = KLAYOUT_DATA__PROPERTIES;
+    int KSHAPE_LAYOUT__PROPERTIES = KLAYOUT_DATA__PROPERTIES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KSHAPE_LAYOUT__PERSISTENT_ENTRIES = KLAYOUT_DATA__PERSISTENT_ENTRIES;
+    int KSHAPE_LAYOUT__PERSISTENT_ENTRIES = KLAYOUT_DATA__PERSISTENT_ENTRIES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Xpos</b></em>' attribute.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -957,22 +957,22 @@ public interface KGraphPackage extends EPackage {
 	/**
      * The feature id for the '<em><b>Properties</b></em>' map.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KEDGE_LAYOUT__PROPERTIES = KLAYOUT_DATA__PROPERTIES;
+    int KEDGE_LAYOUT__PROPERTIES = KLAYOUT_DATA__PROPERTIES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Persistent Entries</b></em>' containment reference list.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int KEDGE_LAYOUT__PERSISTENT_ENTRIES = KLAYOUT_DATA__PERSISTENT_ENTRIES;
+    int KEDGE_LAYOUT__PERSISTENT_ENTRIES = KLAYOUT_DATA__PERSISTENT_ENTRIES;
 
-	/**
+    /**
      * The feature id for the '<em><b>Bend Points</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

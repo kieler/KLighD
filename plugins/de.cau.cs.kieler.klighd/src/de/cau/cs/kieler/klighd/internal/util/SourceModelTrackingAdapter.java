@@ -224,10 +224,10 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         final EMapPropertyHolder notifier;
         if (notification.getFeature() == KGraphPackage.eINSTANCE.getEMapPropertyHolder_Properties()
                 && notification.getNotifier() instanceof EMapPropertyHolder) {
-            notifier = (KGraphData) notification.getNotifier();
+            notifier = (EMapPropertyHolder) notification.getNotifier();
             
         } else if (notification.getNotifier() instanceof IPropertyToObjectMapImpl) {
-            notifier = (KGraphData) ((EObject) notification.getNotifier()).eContainer();
+            notifier = (EMapPropertyHolder) ((EObject) notification.getNotifier()).eContainer();
 
         } else {
             return;
@@ -277,11 +277,8 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
 
     private Object internalGetSourceElement(final EObject viewElement) {
         Object model = null;
-        if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(viewElement)) {
-            model = ((KGraphData) viewElement).getProperty(MODEL_ELEMENT);
-        } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(viewElement)) {
-            model = ((KGraphElement) viewElement).getProperty(
-                    KlighdInternalProperties.MODEL_ELEMEMT);
+        if (KGraphPackage.eINSTANCE.getEMapPropertyHolder().isInstance(viewElement)) {
+            model = ((EMapPropertyHolder) viewElement).getProperty(MODEL_ELEMENT);
         }
         
         return model;

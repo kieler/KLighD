@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.krendering.extensions
 import com.google.inject.Injector
 import com.google.inject.Scope
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
-import de.cau.cs.kieler.klighd.kgraph.KLayoutData
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
@@ -155,7 +154,7 @@ class KNodeExtensions {
      * Internal helper for setting layout options without the need to check for KNode, KEdge, ...
      */
     def private <S, T extends KGraphElement> T setLayoutOption(T kgraphElement, IProperty<S> option, S value) {
-        kgraphElement?.getData(typeof(KLayoutData))?.setProperty(option, value)
+        kgraphElement?.setProperty(option, value)
         return kgraphElement
     }    
     
