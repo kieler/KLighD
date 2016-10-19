@@ -2,6 +2,7 @@ package de.cau.cs.kieler.klighd
 
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData
 import org.eclipse.elk.core.math.KVector
+import de.cau.cs.kieler.klighd.krendering.KRendering
 
 bundle {
     label "Klighd"
@@ -27,13 +28,21 @@ option tooltip: String {
 programmatic option expansionAwareLayoutOption: ExpansionAwareLayoutOptionData {
     label "Expansion Aware Options"
     description "Compound option containing pairs of layout option definitions for the collapsed and expanded state of a KNode"
+    targets parents
 }
 
 programmatic option minimalNodeSize: KVector {
-    label "Minimal Node Size" 
+    label "Minimal Node Size"
+    targets nodes 
 }
 
 programmatic option viewer: IViewer {
     label "Klighd Viewer"
     legacyIds klighd.viewer
+    targets parents
+}
+
+programmatic option kRendering: KRendering {
+    label "KlighD KRendering"
+    targets edges,labels,nodes,ports
 }
