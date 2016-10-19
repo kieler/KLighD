@@ -759,7 +759,7 @@ public final class PlacementUtil {
         
         // Check if we really have a KText instance; the rendering ref could have insidiously referenced
         // some arbitrary object
-        if (kText instanceof KText) {
+        if (kText instanceof KText && setFontLayoutOptions) {
             return fontDataFor((KText) kText, kLabel);
         } else {
             return fontDataFor((KText) null, null);

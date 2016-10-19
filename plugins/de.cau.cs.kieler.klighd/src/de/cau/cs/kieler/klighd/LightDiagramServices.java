@@ -908,78 +908,85 @@ public final class LightDiagramServices {
         final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
         final KNode viewModel = theViewContext.getViewModel();
 
-        theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE,
-                config.zoomStyle());
-        theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE,
-                config.focusNode());
-
-        // Activate the ELK Service plug-in so all layout options are loaded
-        ElkServicePlugin.getInstance();
-
-        // Our parameters for the layout run
-        Parameters layoutParameters = new Parameters();
-        final LayoutConfigurator extendedConfigurator = layoutParameters.addLayoutRun();
-
-        // Animation
-        final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
-                : KlighdPlugin.getDefault().getPreferenceStore()
-                        .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
-        layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
-
-        // Animation time properties
-        if (config.animationTimeFactor() != null) {
-                layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIM_TIME_FACTOR, 
-                        config.animationTimeFactor());
-        }
-        if (config.minAnimationTime() != null) {
-            layoutParameters.getGlobalSettings().setProperty(CoreOptions.MIN_ANIM_TIME, 
-                    config.minAnimationTime());
-        }
-        if (config.maxAnimationTime() != null) {
-            layoutParameters.getGlobalSettings().setProperty(CoreOptions.MAX_ANIM_TIME, 
-                    config.maxAnimationTime());
+        if (viewModel != null) {
+            theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE,
+                    config.zoomStyle());
+            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE,
+                    config.focusNode());
+    
+            // Activate the ELK Service plug-in so all layout options are loaded
+            ElkServicePlugin.getInstance();
+    
+            // Our parameters for the layout run
+            Parameters layoutParameters = new Parameters();
+            final LayoutConfigurator extendedConfigurator = layoutParameters.addLayoutRun();
+    
+            // Animation
+            final boolean doAnimate = config.animate() != null ? config.animate().booleanValue()
+                    : KlighdPlugin.getDefault().getPreferenceStore()
+                            .getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
+            layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIMATE, doAnimate);
+    
+            // Animation time properties
+            if (config.animationTimeFactor() != null) {
+                    layoutParameters.getGlobalSettings().setProperty(CoreOptions.ANIM_TIME_FACTOR, 
+                            config.animationTimeFactor());
+            }
+            if (config.minAnimationTime() != null) {
+                layoutParameters.getGlobalSettings().setProperty(CoreOptions.MIN_ANIM_TIME, 
+                        config.minAnimationTime());
+            }
+            if (config.maxAnimationTime() != null) {
+                layoutParameters.getGlobalSettings().setProperty(CoreOptions.MAX_ANIM_TIME, 
+                        config.maxAnimationTime());
+            }
+            
+            // Copy global properties from root node. This might overwrite
+            // options defined by the LightDiagramLayoutConfig
+            for (@SuppressWarnings("rawtypes") IProperty property : GLOBALOPTIONS) {
+                if (viewModel.getProperties().containsKey(property)) {
+                    layoutParameters.getGlobalSettings().setProperty(
+                            property, viewModel.getProperty(property));
+                }
+            }
+    
+            if (thePart instanceof ILayoutConfigProvider) {
+                extendedConfigurator
+                        .overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
+            }
+    
+            if (config.options() != null) {
+                for (LayoutConfigurator c : Collections2.filter(config.options(),
+                        Predicates.notNull())) {
+                    extendedConfigurator.overrideWith(c);
+                }
+            }
+    
+            final List<? extends LayoutConfigurator> additionalConfigs =
+                    theViewContext.getAdditionalLayoutConfigs();
+    
+            final Object diagramPart = recorder != null ? recorder : theViewContext;
+    
+            final IElkCancelIndicator cancelationIndicator =
+                    thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
+    
+            if (additionalConfigs.isEmpty()) {
+                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
+                        layoutParameters);
+            } else {
+                for (LayoutConfigurator c : additionalConfigs) {
+                    layoutParameters.addLayoutRun(c);
+                }
+    
+                DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
+                        layoutParameters);
+            }
+        } else {
+            if (recorder != null) {
+                recorder.stopRecording(config.zoomStyle(), null, 0);
+            }
         }
         
-        // Copy global properties from root node. This might overwrite
-        // options defined by the LightDiagramLayoutConfig
-        for (@SuppressWarnings("rawtypes") IProperty property : GLOBALOPTIONS) {
-            if (viewModel.getProperties().containsKey(property)) {
-                layoutParameters.getGlobalSettings().setProperty(
-                        property, viewModel.getProperty(property));
-            }
-        }
-
-        if (thePart instanceof ILayoutConfigProvider) {
-            extendedConfigurator
-                    .overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
-        }
-
-        if (config.options() != null) {
-            for (LayoutConfigurator c : Collections2.filter(config.options(),
-                    Predicates.notNull())) {
-                extendedConfigurator.overrideWith(c);
-            }
-        }
-
-        final List<? extends LayoutConfigurator> additionalConfigs =
-                theViewContext.getAdditionalLayoutConfigs();
-
-        final Object diagramPart = recorder != null ? recorder : theViewContext;
-
-        final IElkCancelIndicator cancelationIndicator =
-                thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
-
-        if (additionalConfigs.isEmpty()) {
-            DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                    layoutParameters);
-        } else {
-            for (LayoutConfigurator c : additionalConfigs) {
-                layoutParameters.addLayoutRun(c);
-            }
-
-            DiagramLayoutEngine.invokeLayout(thePart, diagramPart, cancelationIndicator,
-                    layoutParameters);
-        }
     }
 
     private static Pair<IDiagramWorkbenchPart, ViewContext> determineDWPandVC(
