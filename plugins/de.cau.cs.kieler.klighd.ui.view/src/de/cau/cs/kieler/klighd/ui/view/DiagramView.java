@@ -125,8 +125,8 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     private static final ImageDescriptor ARRANGE_ICON =
             KlighdViewPlugin.getImageDescriptor("icons/full/menu16/arrange.gif");
     /** The icon for linking the view with the current editor. */
-    private static final ImageDescriptor LINK_ICON = AbstractUIPlugin
-            .imageDescriptorFromPlugin("org.eclipse.ui", "icons/full/elcl16/synced.gif");
+    private static final ImageDescriptor LINK_ICON = 
+            KlighdViewPlugin.getImageDescriptor("icons/full/etool16/synced.gif");
     /** The icon for forking a view. */
     private static final ImageDescriptor FORK_ICON =
             KlighdViewPlugin.getImageDescriptor("icons/full/etool16/fork.png");
