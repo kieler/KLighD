@@ -214,7 +214,7 @@ public final class KGraphDataUtil {
          * using a special tree iterator that skips over properties of EMapPropertyHolders. Magic!
          * (KIPRA-1541)
          */
-        TreeIterator<EObject> iterator = new PropertiesSkippingTreeIterator(graph, false);
+        TreeIterator<EObject> iterator = new PropertiesSkippingTreeIterator(graph, true);
         while (iterator.hasNext()) {
             EObject eObject = iterator.next();
             if (eObject instanceof EMapPropertyHolder
