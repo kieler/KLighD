@@ -140,8 +140,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // search for the root node
         if (diagramPart instanceof de.cau.cs.kieler.klighd.kgraph.KNode) {
-            viewModel = (de.cau.cs.kieler.klighd.kgraph.KNode) diagramPart;
             viewContext = null;
+            viewModel = (de.cau.cs.kieler.klighd.kgraph.KNode) diagramPart;
         } else if (diagramPart instanceof ViewContext) {
             viewContext = (ViewContext) diagramPart;
             viewModel = viewContext.getViewModel();

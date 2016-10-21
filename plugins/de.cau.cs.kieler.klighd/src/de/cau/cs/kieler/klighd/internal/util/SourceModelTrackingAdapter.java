@@ -33,7 +33,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
-import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.kgraph.impl.IPropertyToObjectMapImpl;
@@ -160,11 +159,10 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         case Notification.UNSET:
         case Notification.ADD:
         case Notification.REMOVE:
-            final EObject newValue = (EObject) notification.getNewValue();
-
             if (CANDIDATES.apply(notification.getNewValue())
                     || CANDIDATES.apply(notification.getOldValue())) {
 
+                final EObject newValue = (EObject) notification.getNewValue();
                 if (newValue instanceof IPropertyToObjectMapImpl
                     && ((IPropertyToObjectMapImpl) newValue).getKey() != MODEL_ELEMENT) {
                     return;
