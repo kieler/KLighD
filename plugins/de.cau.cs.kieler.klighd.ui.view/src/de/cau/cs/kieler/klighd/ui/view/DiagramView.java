@@ -115,7 +115,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
     private static final String NO_MODEL_LINKED = "No model in active editor";
     private static final String UPDATE_DIAGRAM_EXCEPTION = "Displaying diagram failed!";
     private static final String NO_SYNTHESIS = "No Synthesis available!";
-    private static final String DIAGRAM_IS_NULL = "Diagram is null or empty. Inernal KLighD error.";
+    private static final String DIAGRAM_IS_NULL = "Diagram is null or empty. Internal KLighD error.";
 
     // -- Icons --
     /** The icon for refreshing view content. */
@@ -126,7 +126,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             KlighdViewPlugin.getImageDescriptor("icons/full/menu16/arrange.gif");
     /** The icon for linking the view with the current editor. */
     private static final ImageDescriptor LINK_ICON = 
-            KlighdViewPlugin.getImageDescriptor("icons/full/etool16/synced.gif");
+            KlighdViewPlugin.getImageDescriptor("icons/full/elcl16/synced.png");
     /** The icon for forking a view. */
     private static final ImageDescriptor FORK_ICON =
             KlighdViewPlugin.getImageDescriptor("icons/full/etool16/fork.png");
