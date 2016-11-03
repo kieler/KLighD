@@ -118,7 +118,8 @@ public class SimpleUpdateStrategy implements IUpdateStrategy {
             baseInsets.setTop(newInsets.getTop());
             baseInsets.setBottom(newInsets.getBottom());
         }
-        
+
+        baseLayout.getProperties().clear();
         baseLayout.copyProperties(newLayout);
     }
 }
