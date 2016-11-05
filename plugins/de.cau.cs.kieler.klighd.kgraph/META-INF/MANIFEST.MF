@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: KIELER Lightweight Diagrams Graph Model
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.kgraph;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-ClassPath: .
@@ -13,6 +13,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.elk.graph,
  org.eclipse.elk.core,
  com.google.guava;bundle-version="15.0.0"
-Bundle-Vendor: %providerName
+Bundle-Vendor: Kiel University
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
