@@ -56,11 +56,14 @@ import com.google.common.collect.Iterators;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
 import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
 import de.cau.cs.kieler.klighd.labels.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -577,11 +580,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
             // attach a reference to the label's root rendering to the label so that our layout
             // algorithms know how to estimate text sizes.
-            // TODO This doesn't work anymore, thereby breaking label management.
-            //      Should probably become a layout option or something.
-//            KRenderingRef rootRenderingRef = KRenderingFactory.eINSTANCE.createKRenderingRef();
-//            rootRenderingRef.setRendering(rootRendering);
-//            layoutLabel.getData().add(rootRenderingRef);
+            KRenderingRef rootRenderingRef = KRenderingFactory.eINSTANCE.createKRenderingRef();
+            rootRenderingRef.setRendering(rootRendering);
+            layoutLabel.getData(KLayoutData.class).setProperty(KlighdOptions.K_RENDERING, rootRenderingRef);
         }
 
         layoutLabel.setText(label.getText());

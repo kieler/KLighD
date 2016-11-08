@@ -753,7 +753,7 @@ public final class PlacementUtil {
         EObject kText = null;
         if (rendering instanceof KRenderingRef) {
             kText = ((KRenderingRef) rendering).getRendering();
-        } else if (rendering instanceof KText) {
+        } else if (setFontLayoutOptions && rendering instanceof KText) {
             kText = (KText) rendering;
         }
         
