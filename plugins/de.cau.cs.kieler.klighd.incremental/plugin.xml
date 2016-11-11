@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <updateStrategy
+            class="de.cau.cs.kieler.klighd.incremental.UpdateStrategy"
+            id="de.cau.cs.kieler.klighd.incremental.UpdateStrategy">
+      </updateStrategy>
+   </extension>
+
+</plugin>
