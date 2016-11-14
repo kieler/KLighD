@@ -16,11 +16,7 @@ package de.cau.cs.kieler.klighd.incremental;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -33,10 +29,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.incremental.diff.Comparison;
+import de.cau.cs.kieler.klighd.incremental.merge.KGraphMerger;
 import de.cau.cs.kieler.klighd.incremental.util.UIDAdapter;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
@@ -73,9 +70,9 @@ public class UpdateStrategy implements IUpdateStrategy {
      * {@inheritDoc}
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-        final boolean debug = true;
+        final boolean debug = false;
+        System.out.println("update " + System.currentTimeMillis());
         if (debug) {
-            System.out.println("update " + System.currentTimeMillis());
             serialize("origin.kgx", EcoreUtil.copy(baseModel));
             serialize("new.kgx", EcoreUtil.copy(newModel));
         }
@@ -106,32 +103,13 @@ public class UpdateStrategy implements IUpdateStrategy {
             return;
         }
         
-        Set<String> baseIds = baseAdapter.getIds();
-        Set<String> newIds = newAdapter.getIds();
-
-        Set<String> removedIds = Sets.difference(baseIds, newIds).immutableCopy();
-        Queue<String> addedIds = new LinkedList<String>(Sets.difference(newIds, baseIds));
-        
-        for (String id : removedIds) {
-            KNode nodeToRemove = baseAdapter.getNode(id);
-            nodeToRemove.getParent().getChildren().remove(nodeToRemove);
-        }
-        
-        while (!addedIds.isEmpty()) {
-            String id = addedIds.poll();
-            KNode nodeToAdd = newAdapter.getNode(id);
-            KNode baseParent = baseAdapter.getNode(newAdapter.getId(nodeToAdd.getParent()));
-            if (baseParent == null) {
-                addedIds.add(id);
-                continue;
-            }
-            nodeToAdd.getParent().getChildren().remove(nodeToAdd);
-            baseParent.getChildren().add(nodeToAdd);
-        }
-        
-        newModel.eAdapters().remove(newAdapter);
         try {
-            
+            Comparison comparison = new Comparison(baseAdapter, newAdapter);
+            KGraphMerger merger = new KGraphMerger(baseModel, comparison);
+            merger.merge();
+
+            newModel.eAdapters().remove(newAdapter);
+
         } catch (RuntimeException e) {
             final String msg = "KLighD: Incremental update of diagram by means of the EMF"
                     + "Compare-based update strategy failed.";
@@ -166,9 +144,9 @@ public class UpdateStrategy implements IUpdateStrategy {
         Resource resource = set.createResource(fileURI);
 
         for (EObject object : objects) {
-            if (object instanceof KNode) {
+//            if (object instanceof KNode) {
 //                KimlUtil.persistDataElements((KNode) object);
-            }
+//            }
             resource.getContents().add(object);
         }
 
@@ -181,8 +159,10 @@ public class UpdateStrategy implements IUpdateStrategy {
         resource.unload();
     }
 
-	public boolean requiresDiagramSynthesisReRun(ViewContext viewContext) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public boolean requiresDiagramSynthesisReRun(final ViewContext viewContext) {
+        return true;
+    }
 }

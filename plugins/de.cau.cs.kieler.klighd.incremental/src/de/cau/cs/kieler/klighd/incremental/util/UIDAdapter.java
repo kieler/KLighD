@@ -27,8 +27,13 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
+import de.cau.cs.kieler.klighd.KlighdOptions;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * @author carsten
@@ -36,12 +41,11 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  */
 public class UIDAdapter extends EContentAdapter {
 
-    private static final Predicate<Object> INSTANCE_OF_KNODE =
-            KlighdPredicates.instanceOf(KNode.class);
+    private static final Predicate<Object> CANDIDATES = KlighdPredicates.instanceOf(KNode.class);
     private static final String ID_SEPARATOR = "$";
     private BiMap<String, KNode> ids = HashBiMap.create();
     private boolean invalid = false;
-    
+
     /**
      * @param node
      * @return
@@ -49,15 +53,19 @@ public class UIDAdapter extends EContentAdapter {
     public String getId(final KNode node) {
         return ids.inverse().get(node);
     }
-    
+
     public Set<String> getIds() {
         return ids.keySet();
     }
-    
+
     public KNode getNode(final String id) {
         return ids.get(id);
     }
-    
+
+    public BiMap<String, KNode> getMap() {
+        return ids;
+    }
+
     public boolean isInvalid() {
         return invalid;
     }
@@ -68,68 +76,40 @@ public class UIDAdapter extends EContentAdapter {
     @Override
     public void setTarget(final EObject target) {
         basicSetTarget(target);
-        
+
         if (target instanceof KNode) {
             addId((KNode) target);
+        } else if (target instanceof KEdge) {
+            addId((KEdge) target);
         }
 
-        final Iterator<? extends Notifier> eContents =
-                resolve() ? target.eContents().iterator()
-                        : ((InternalEList<? extends Notifier>) target.eContents())
-                                .basicIterator();
+        final Iterator<? extends Notifier> eContents = resolve() ? target.eContents().iterator()
+                : ((InternalEList<? extends Notifier>) target.eContents()).basicIterator();
 
-        for (final Iterator<? extends Notifier> i =
-                Iterators.filter(eContents, INSTANCE_OF_KNODE); i.hasNext();) {
+        for (final Iterator<? extends Notifier> i = Iterators.filter(eContents, CANDIDATES); i
+                .hasNext();) {
             final Notifier notifier = i.next();
             addAdapter(notifier);
         }
     }
-    
+
     @Override
     protected void unsetTarget(final EObject target) {
         basicUnsetTarget(target);
-        
-        if (target instanceof KNode) {
-            removeId((KNode) target);
-        }
-        
-        final Iterator<? extends Notifier> eContents =
-                resolve() ? target.eContents().iterator()
-                        : ((InternalEList<? extends Notifier>) target.eContents())
-                                .basicIterator();
 
-        for (final Iterator<? extends Notifier> i =
-                Iterators.filter(eContents, INSTANCE_OF_KNODE); i.hasNext();) {
+        if (CANDIDATES.apply(target)) {
+            removeId(target);
+        }
+
+        final Iterator<? extends Notifier> eContents = resolve() ? target.eContents().iterator()
+                : ((InternalEList<? extends Notifier>) target.eContents()).basicIterator();
+
+        for (final Iterator<? extends Notifier> i = Iterators.filter(eContents, CANDIDATES); i
+                .hasNext();) {
             final Notifier notifier = i.next();
             removeAdapter(notifier, false, true);
         }
     }
-
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    protected void addAdapter(final Notifier notifier) {
-//        super.addAdapter(notifier);
-//        
-////        System.out.println("added adapter to " + notifier);
-//        if (notifier instanceof KNode) {
-//            addId((KNode) notifier);
-//        }
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    protected void removeAdapter(final Notifier notifier) {
-//        super.removeAdapter(notifier);
-//
-////        System.out.println("removed adapter from " + notifier);
-//        if (notifier instanceof KNode) {
-//            removeId((KNode) notifier);
-//        }
-//    }
 
     /**
      * {@inheritDoc}
@@ -142,8 +122,8 @@ public class UIDAdapter extends EContentAdapter {
         case Notification.UNSET:
         case Notification.ADD:
         case Notification.REMOVE:
-            if (INSTANCE_OF_KNODE.apply(notification.getNewValue())
-                    || INSTANCE_OF_KNODE.apply(notification.getOldValue())) {
+            if (CANDIDATES.apply(notification.getNewValue())
+                    || CANDIDATES.apply(notification.getOldValue())) {
 
                 super.handleContainment(notification);
             }
@@ -152,22 +132,20 @@ public class UIDAdapter extends EContentAdapter {
             // this case has been copied from the super implementation and augmented by the filter
 
             @SuppressWarnings("unchecked")
-            final Iterable<Notifier> newValues =
-                    (Iterable<Notifier>) Iterables.filter((Iterable<?>) notification.getNewValue(),
-                            INSTANCE_OF_KNODE);
+            final Iterable<Notifier> newValues = (Iterable<Notifier>) Iterables
+                    .filter((Iterable<?>) notification.getNewValue(), CANDIDATES);
 
             for (final Notifier newOne : newValues) {
                 this.addAdapter(newOne);
             }
             break;
-            
+
         case Notification.REMOVE_MANY:
             // this case has been copied from the super implementation and augmented by the filter
 
             @SuppressWarnings("unchecked")
-            final Iterable<Notifier> oldValues =
-                    (Iterable<Notifier>) Iterables.filter((Iterable<?>) notification.getOldValue(),
-                            INSTANCE_OF_KNODE);
+            final Iterable<Notifier> oldValues = (Iterable<Notifier>) Iterables
+                    .filter((Iterable<?>) notification.getOldValue(), CANDIDATES);
 
             for (final Notifier oldOne : oldValues) {
                 this.removeAdapter(oldOne);
@@ -177,18 +155,22 @@ public class UIDAdapter extends EContentAdapter {
 
     private void addId(final KNode node) {
         KNode parent = node.getParent();
-        
-        StringBuilder builder = new StringBuilder();
-        // Labels
-        if (node.getLabels().size() > 0) {
-            String text = node.getLabels().get(0).getText();
-            if (text != null && text.length() > 0) {
-                builder.append(text);
-            }
+        String localId = "";
+        if (parent == null) {
+            localId = "root";
+        } else {
+            KIdentifier identifier = node.getData(KIdentifier.class);
+            if (identifier != null) {
+                localId = identifier.getId();
+            } else if (node.getLabels().size() > 0) {
+                for (KLabel label : node.getLabels()) {
+                    localId += label.getText();
+                }
+            } 
+//            else {
+//                throw new RuntimeException("Could not creat UID for " + node);
+//            }
         }
-        String localId =
-//                node.getProperty(null);
-                parent != null ? builder.toString() : "root";
         String parentId = parent != null ? getId(parent) : "";
         String id = parentId + ID_SEPARATOR + localId;
         System.out.println("new: " + id);
@@ -198,7 +180,11 @@ public class UIDAdapter extends EContentAdapter {
         }
     }
 
-    private void removeId(final KNode node) {
+    private void addId(final KEdge target) {
+
+    }
+
+    private void removeId(final EObject node) {
         String id = ids.inverse().remove(node);
         System.out.println("removed: " + id);
     }
