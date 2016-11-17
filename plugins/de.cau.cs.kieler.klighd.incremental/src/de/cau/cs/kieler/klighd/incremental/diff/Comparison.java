@@ -19,6 +19,8 @@ import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.incremental.util.UIDAdapter;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
@@ -29,12 +31,12 @@ public class Comparison {
 
     private UIDAdapter baseAdapter;
     private UIDAdapter newAdapter;
-    private MapDifference<String, KNode> difference;
+    private MapDifference<String, KNode> nodeDifference;
 
     public Comparison(UIDAdapter baseAdapter, UIDAdapter newAdapter) {
         this.baseAdapter = baseAdapter;
         this.newAdapter = newAdapter;
-        difference = Maps.difference(baseAdapter.getMap(), newAdapter.getMap());
+        nodeDifference = Maps.difference(baseAdapter.getNodeMap(), newAdapter.getNodeMap());
     }
     
     public UIDAdapter getBaseAdapter() {
@@ -48,21 +50,29 @@ public class Comparison {
     public KNode lookupBaseNode(final KNode newNode) {
         return baseAdapter.getNode(newAdapter.getId(newNode));
     }
+
+    public KEdge lookupBaseEdge(final KEdge newEdge) {
+        return baseAdapter.getEdge(newAdapter.getId(newEdge));
+    }
+
+    public KLabel lookupBaseLabel(final KLabel newLabel) {
+        return baseAdapter.getLabel(newAdapter.getId(newLabel));
+    }
     
     public Map<String, KNode> getAddedNodes() {
-        return difference.entriesOnlyOnRight();
+        return nodeDifference.entriesOnlyOnRight();
     }
     
     public Map<String, KNode> getRemovedNodes() {
-        return difference.entriesOnlyOnLeft();
+        return nodeDifference.entriesOnlyOnLeft();
     }
     
     public Map<String, ValueDifference<KNode>> getChangedNodes() {
-        return difference.entriesDiffering();
+        return nodeDifference.entriesDiffering();
     }
     
     public Map<String, KNode> getUnchangedNodes() {
-        return difference.entriesInCommon();
+        return nodeDifference.entriesInCommon();
     }
 
 }

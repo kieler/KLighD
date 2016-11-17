@@ -27,13 +27,12 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * @author carsten
@@ -41,29 +40,60 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties;
  */
 public class UIDAdapter extends EContentAdapter {
 
-    private static final Predicate<Object> CANDIDATES = KlighdPredicates.instanceOf(KNode.class);
+    private static final Predicate<Object> CANDIDATES =
+            KlighdPredicates.instanceOf(KNode.class, KLabel.class, KEdge.class);
     private static final String ID_SEPARATOR = "$";
-    private BiMap<String, KNode> ids = HashBiMap.create();
+    private BiMap<String, KNode> nodes = HashBiMap.create();
+    private BiMap<String, KEdge> edges = HashBiMap.create();
+    private BiMap<String, KLabel> labels = HashBiMap.create();
     private boolean invalid = false;
 
-    /**
-     * @param node
-     * @return
-     */
     public String getId(final KNode node) {
-        return ids.inverse().get(node);
+        return nodes.inverse().get(node);
     }
 
-    public Set<String> getIds() {
-        return ids.keySet();
+    public String getId(final KEdge edge) {
+        return edges.inverse().get(edge);
+    }
+
+    public String getId(final KLabel label) {
+        return labels.inverse().get(label);
+    }
+
+    public Set<String> getNodeIds() {
+        return nodes.keySet();
+    }
+
+    public Set<String> getEdgeIds() {
+        return edges.keySet();
+    }
+
+    public Set<String> getLabelIds() {
+        return labels.keySet();
     }
 
     public KNode getNode(final String id) {
-        return ids.get(id);
+        return nodes.get(id);
     }
 
-    public BiMap<String, KNode> getMap() {
-        return ids;
+    public KEdge getEdge(final String id) {
+        return edges.get(id);
+    }
+
+    public KLabel getLabel(final String id) {
+        return labels.get(id);
+    }
+
+    public BiMap<String, KNode> getNodeMap() {
+        return nodes;
+    }
+
+    public BiMap<String, KEdge> getEdgeMap() {
+        return edges;
+    }
+
+    public BiMap<String, KLabel> getLabelMap() {
+        return labels;
     }
 
     public boolean isInvalid() {
@@ -81,6 +111,8 @@ public class UIDAdapter extends EContentAdapter {
             addId((KNode) target);
         } else if (target instanceof KEdge) {
             addId((KEdge) target);
+        } else if (target instanceof KLabel) {
+            addId((KLabel) target);
         }
 
         final Iterator<? extends Notifier> eContents = resolve() ? target.eContents().iterator()
@@ -96,9 +128,13 @@ public class UIDAdapter extends EContentAdapter {
     @Override
     protected void unsetTarget(final EObject target) {
         basicUnsetTarget(target);
-
-        if (CANDIDATES.apply(target)) {
-            removeId(target);
+        
+        if (target instanceof KNode) {
+            removeId((KNode) target);
+        } else if (target instanceof KEdge) {
+            removeId((KEdge) target);
+        } else if (target instanceof KLabel) {
+            removeId((KLabel) target);
         }
 
         final Iterator<? extends Notifier> eContents = resolve() ? target.eContents().iterator()
@@ -153,12 +189,19 @@ public class UIDAdapter extends EContentAdapter {
         }
     }
 
-    private void addId(final KNode node) {
+    private String addId(final KNode node) {
+        String id = getId(node);
+        if (id != null) {
+            return id;
+        }
         KNode parent = node.getParent();
+        String parentId;
         String localId = "";
         if (parent == null) {
+            parentId = "";
             localId = "root";
         } else {
+            parentId = getId(parent);
             KIdentifier identifier = node.getData(KIdentifier.class);
             if (identifier != null) {
                 localId = identifier.getId();
@@ -166,27 +209,84 @@ public class UIDAdapter extends EContentAdapter {
                 for (KLabel label : node.getLabels()) {
                     localId += label.getText();
                 }
-            } 
-//            else {
-//                throw new RuntimeException("Could not creat UID for " + node);
-//            }
+            }
         }
-        String parentId = parent != null ? getId(parent) : "";
-        String id = parentId + ID_SEPARATOR + localId;
-        System.out.println("new: " + id);
-        if (ids.put(id, node) != null) {
+        id = parentId + ID_SEPARATOR + localId;
+        System.out.println("new node: " + id);
+        if (nodes.put(id, node) != null) {
             invalid = true;
-            System.out.println("invalid: " + id);
+            System.out.println("invalid node: " + id);
+            return null;
         }
+        return id;
     }
 
-    private void addId(final KEdge target) {
-
+    private String addId(final KEdge edge) {
+        String id = getId(edge);
+        if (id != null) {
+            return id;
+        }
+        KNode parent = edge.getSource();
+        String parentId = getId(parent);
+        String localId = "";
+        KIdentifier identifier = edge.getData(KIdentifier.class);
+        if (identifier != null) {
+            localId = identifier.getId();
+        } else {
+            localId = "E" + parent.getOutgoingEdges().indexOf(edge);
+        }
+        id = parentId + ID_SEPARATOR + localId;
+        System.out.println("new edge: " + id);
+        if (edges.put(id, edge) != null) {
+            invalid = true;
+            System.out.println("invalid edge: " + id);
+            return null;
+        }
+        return id;
     }
 
-    private void removeId(final EObject node) {
-        String id = ids.inverse().remove(node);
-        System.out.println("removed: " + id);
+    private String addId(final KLabel label) {
+        String id = getId(label);
+        if (id != null) {
+            return id;
+        }
+        KLabeledGraphElement parent = label.getParent();
+        String parentId = "";
+        if (parent instanceof KNode) {
+            parentId = getId((KNode) parent);
+        } else if (parent instanceof KEdge) {
+            parentId = getId((KEdge) parent);
+        }
+        String localId;
+        KIdentifier identifier = label.getData(KIdentifier.class);
+        if (identifier != null) {
+            localId = identifier.getId();
+        } else {
+            localId = "L" + parent.getLabels().indexOf(label);
+        }
+        id = parentId + ID_SEPARATOR + localId;
+        System.out.println("new label: " + id);
+        if (labels.put(id, label) != null) {
+            invalid = true;
+            System.out.println("invalid label: " + id);
+            return null;
+        }
+        return id;
+    }
+
+    private void removeId(final KNode node) {
+        String id = nodes.inverse().remove(node);
+        System.out.println("removed node: " + id);
+    }
+
+    private void removeId(final KEdge edge) {
+        String id = edges.inverse().remove(edge);
+        System.out.println("removed edge: " + id);
+    }
+
+    private void removeId(final KLabel label) {
+        String id = labels.inverse().remove(label);
+        System.out.println("removed label: " + id);
     }
 
 }

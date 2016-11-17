@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.incremental;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -28,13 +27,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.incremental.diff.Comparison;
 import de.cau.cs.kieler.klighd.incremental.merge.KGraphMerger;
 import de.cau.cs.kieler.klighd.incremental.util.UIDAdapter;
+import de.cau.cs.kieler.klighd.incremental.util.UIDAdapters;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 
@@ -54,8 +52,6 @@ public class UpdateStrategy implements IUpdateStrategy {
 
     /** the priority for this update strategy. */
     public static final int PRIORITY = 30;
-    
-    private static Map<ViewContext, UIDAdapter> uidAdapters = Maps.newHashMap();
     
     private SimpleUpdateStrategy fallbackDelegate = null;
 
@@ -81,23 +77,19 @@ public class UpdateStrategy implements IUpdateStrategy {
             System.out.println("simple init: Empty base model.");
             return;
         }
-        UIDAdapter baseAdapter = uidAdapters.get(viewContext);
-        if (baseAdapter == null) {
-            baseAdapter = new UIDAdapter();
-            baseModel.eAdapters().add(baseAdapter);
-            if (baseAdapter.isInvalid()) {
-                baseModel.eAdapters().remove(baseAdapter);
-                fallback(baseModel, newModel, viewContext);
-                System.out.println("simple update: Duplicate UID in base model!");
-                return;
-            } else {
-                uidAdapters.put(viewContext, baseAdapter);
-            }
+        System.out.println("retrieving base adapter");
+        UIDAdapter baseAdapter = UIDAdapters.retrieveAdapter(baseModel);
+        if (baseAdapter.isInvalid()) {
+            UIDAdapters.removeAdapter(baseModel);
+            fallback(baseModel, newModel, viewContext);
+            System.out.println("simple update: Duplicate UID in base model!");
+            return;
         }
-        UIDAdapter newAdapter = new UIDAdapter();
-        newModel.eAdapters().add(newAdapter);
+        System.out.flush();
+        System.out.println("retrieving new adapter");
+        UIDAdapter newAdapter = UIDAdapters.retrieveAdapter(newModel);
         if (newAdapter.isInvalid()) {
-            newModel.eAdapters().remove(newAdapter);
+            UIDAdapters.removeAdapter(newModel);
             fallback(baseModel, newModel, viewContext);
             System.out.println("simple update: Duplicate UID in new model!");
             return;
@@ -105,10 +97,10 @@ public class UpdateStrategy implements IUpdateStrategy {
         
         try {
             Comparison comparison = new Comparison(baseAdapter, newAdapter);
-            KGraphMerger merger = new KGraphMerger(baseModel, comparison);
+            KGraphMerger merger = new KGraphMerger(comparison);
             merger.merge();
 
-            newModel.eAdapters().remove(newAdapter);
+            UIDAdapters.removeAdapter(newModel);
 
         } catch (RuntimeException e) {
             final String msg = "KLighD: Incremental update of diagram by means of the EMF"
