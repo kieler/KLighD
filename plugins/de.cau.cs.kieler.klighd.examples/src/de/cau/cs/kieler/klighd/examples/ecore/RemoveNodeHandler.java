@@ -18,7 +18,7 @@ import java.util.Iterator;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -38,8 +38,8 @@ public class RemoveNodeHandler extends AbstractHandler {
         if (s instanceof Iterable<?>) {
             Iterator<?> i = ((Iterable<?>) s).iterator();
             if (i.hasNext()) {
-                KNode n = (KNode) i.next();
-                ((KNode) n.eContainer()).getChildren().remove(n);
+                ElkNode n = (ElkNode) i.next();
+                ((ElkNode) n.eContainer()).getChildren().remove(n);
             }
         }
         return null;
