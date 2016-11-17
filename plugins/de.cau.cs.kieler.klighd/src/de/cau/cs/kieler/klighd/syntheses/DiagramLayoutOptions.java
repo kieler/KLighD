@@ -160,7 +160,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#OFFSET
      */
-    public static final IProperty<Float> OFFSET = CoreOptions.PORT_BORDER_OFFSET;
+    public static final IProperty<Double> OFFSET = CoreOptions.PORT_BORDER_OFFSET;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT

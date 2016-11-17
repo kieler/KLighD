@@ -265,7 +265,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::NORTH);
-            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, -portEdgeLength);
+            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, -portEdgeLength as double);
             it.setPortPos(node.nextNPortYPosition, 1);
             it.data += createEPortRendering(label).setRotation(-90f);
         ];
@@ -276,7 +276,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::SOUTH);
-            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, 0f);
+            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, 0.0);
             it.setPortPos(node.nextSPortYPosition, node.height-1);
             it.data += createEPortRendering(label).setRotation(90f);
         ];
@@ -287,7 +287,7 @@ class KPortExtensions {
             node.ports += it;
             it.setPortSize(portEdgeLength, portEdgeLength)
             it.addLayoutParam(CoreOptions::PORT_SIDE, PortSide::WEST);
-            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, 0f);
+            it.addLayoutParam(CoreOptions::PORT_BORDER_OFFSET, 0.0);
             it.setPortPos(-6, node.nextWPortYPosition);
             it.data += createWPortRendering(label);
         ];
