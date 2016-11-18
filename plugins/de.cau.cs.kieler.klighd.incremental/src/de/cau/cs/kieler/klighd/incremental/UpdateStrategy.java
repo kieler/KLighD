@@ -1,17 +1,15 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
- * http://www.informatik.uni-kiel.de/rtsys/kieler/
+ * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2014 by
+ * Copyright 2016 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
  */
-
 package de.cau.cs.kieler.klighd.incremental;
 
 import java.io.IOException;
@@ -29,16 +27,18 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.incremental.diff.Comparison;
+import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
+import de.cau.cs.kieler.klighd.incremental.merge.KGraphDataFilter;
 import de.cau.cs.kieler.klighd.incremental.merge.KGraphMerger;
 import de.cau.cs.kieler.klighd.incremental.util.UIDAdapter;
 import de.cau.cs.kieler.klighd.incremental.util.UIDAdapters;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 
 /**
- * Implements an incremental update strategy which uses EMF Compare
- * to compare and merge the KGraph view models.
+ * Implements an incremental update strategy which uses {@link UIDAdapter}s to match and merge the
+ * KGraph view models.
  * 
  * @author csp
  */
@@ -52,7 +52,7 @@ public class UpdateStrategy implements IUpdateStrategy {
 
     /** the priority for this update strategy. */
     public static final int PRIORITY = 30;
-    
+
     private SimpleUpdateStrategy fallbackDelegate = null;
 
     /**
@@ -67,48 +67,49 @@ public class UpdateStrategy implements IUpdateStrategy {
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
         final boolean debug = false;
-        System.out.println("update " + System.currentTimeMillis());
+
         if (debug) {
+            System.out.println("update " + System.currentTimeMillis());
             serialize("origin.kgx", EcoreUtil.copy(baseModel));
             serialize("new.kgx", EcoreUtil.copy(newModel));
         }
         if (baseModel.getChildren().isEmpty()) {
+            logFallback(IStatus.INFO, "Empty base model.");
             fallback(baseModel, newModel, viewContext);
-            System.out.println("simple init: Empty base model.");
             return;
         }
-        System.out.println("retrieving base adapter");
+
+        // System.out.println("retrieving base adapter");
         UIDAdapter baseAdapter = UIDAdapters.retrieveAdapter(baseModel);
         if (baseAdapter.isInvalid()) {
             UIDAdapters.removeAdapter(baseModel);
+            logFallback(IStatus.WARNING, "Duplicate UID in base model.");
             fallback(baseModel, newModel, viewContext);
-            System.out.println("simple update: Duplicate UID in base model!");
             return;
         }
-        System.out.flush();
-        System.out.println("retrieving new adapter");
+        // System.out.println("retrieving new adapter");
         UIDAdapter newAdapter = UIDAdapters.retrieveAdapter(newModel);
         if (newAdapter.isInvalid()) {
             UIDAdapters.removeAdapter(newModel);
+            logFallback(IStatus.WARNING, "Duplicate UID in new model.");
             fallback(baseModel, newModel, viewContext);
-            System.out.println("simple update: Duplicate UID in new model!");
             return;
         }
-        
+
         try {
-            Comparison comparison = new Comparison(baseAdapter, newAdapter);
-            KGraphMerger merger = new KGraphMerger(comparison);
+            KComparison comparison = new KComparison(baseAdapter, newAdapter);
+            KGraphMerger merger = new KGraphMerger(comparison, new KGraphDataFilter());
             merger.merge();
 
             UIDAdapters.removeAdapter(newModel);
 
         } catch (RuntimeException e) {
-            final String msg = "KLighD: Incremental update of diagram by means of the EMF"
-                    + "Compare-based update strategy failed.";
+            final String msg = "KLighD: Incremental update of diagram by means of "
+                    + "the incremental update strategy failed.";
             StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, e),
                     StatusManager.LOG);
             e.printStackTrace();
-            
+
             // if incremental updating failed, apply the SimpleUpdateStrategy
             fallback(baseModel, newModel, viewContext);
         }
@@ -116,6 +117,12 @@ public class UpdateStrategy implements IUpdateStrategy {
         if (debug) {
             serialize("merged.kgx", EcoreUtil.copy(baseModel));
         }
+    }
+
+    private void logFallback(final int severity, final String reason) {
+        StatusManager.getManager().handle(
+                new Status(severity, PLUGIN_ID, "Fallback to simple update. Reason: " + reason),
+                StatusManager.LOG);
     }
 
     private void fallback(final KNode baseModel, final KNode newModel,
@@ -136,9 +143,9 @@ public class UpdateStrategy implements IUpdateStrategy {
         Resource resource = set.createResource(fileURI);
 
         for (EObject object : objects) {
-//            if (object instanceof KNode) {
-//                KimlUtil.persistDataElements((KNode) object);
-//            }
+            if (object instanceof KGraphElement) {
+                ((KNode) object).makePersistent();
+            }
             resource.getContents().add(object);
         }
 

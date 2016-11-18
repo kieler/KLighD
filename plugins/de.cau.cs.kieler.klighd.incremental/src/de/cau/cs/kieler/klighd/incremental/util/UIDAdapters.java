@@ -16,24 +16,29 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import com.google.common.collect.Maps;
-
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
- * @author carsten
- *
+ * Utility class to manage existing {@link UIDAdapter}s.
+ * 
+ * @author csp
  */
 public final class UIDAdapters {
 
     private static Map<KNode, WeakReference<UIDAdapter>> adapters =
             new WeakHashMap<KNode, WeakReference<UIDAdapter>>();
-//            Maps.newHashMap();
 
     private UIDAdapters() {
-
     }
 
+    /**
+     * Gets the adapter saved for the given node. If there is none, a new one is created and added
+     * to the node.
+     * 
+     * @param node
+     *            the node to retrieve or add the adapter for.
+     * @return the existing or newly created adapter.
+     */
     public static UIDAdapter retrieveAdapter(final KNode node) {
         WeakReference<UIDAdapter> candidate = adapters.get(node);
         // If the map yields a value for node, the node's adapter can't be garbage collected,
@@ -52,6 +57,12 @@ public final class UIDAdapters {
         return newAdapter;
     }
 
+    /**
+     * Removes the adapter from the given node if one is present.
+     * 
+     * @param node
+     *            the node to remove the adapter for.
+     */
     public static void removeAdapter(final KNode node) {
         WeakReference<UIDAdapter> adapter = adapters.get(node);
         // If the map yields a value for node, the node's adapter can't be garbage collected,

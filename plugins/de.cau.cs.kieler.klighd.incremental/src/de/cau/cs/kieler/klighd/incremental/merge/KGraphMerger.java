@@ -17,14 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference.ValueDifference;
 
-import de.cau.cs.kieler.klighd.incremental.diff.Comparison;
-import de.cau.cs.kieler.klighd.incremental.diff.KNodeEqualityHelper;
+import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -32,20 +30,34 @@ import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 
 /**
- * @author carsten
- *
+ * Recursively merge two KGraphs.
+ * 
+ * @author csp
  */
 public class KGraphMerger {
 
-    private Comparison comparison;
-    private KGraphDataFilter filter = new KGraphDataFilter();
+    private KComparison comparison;
+    private KGraphDataFilter filter;
 
-    public KGraphMerger(final Comparison comparison) {
+    /**
+     * Create a new merger working with the given comparison.
+     * 
+     * @param comparison
+     *            the comparison to work on.
+     * @param filter
+     *            the filter defining which KGraphData is merged.
+     */
+    public KGraphMerger(final KComparison comparison, final KGraphDataFilter filter) {
         this.comparison = comparison;
+        this.filter = filter;
     }
 
+    /**
+     * Initiate the merge.
+     */
     public void merge() {
         handleRemovedNodes();
         handleAddedNodes();
@@ -59,32 +71,57 @@ public class KGraphMerger {
         }
     }
 
+    private void removeNode(final KNode node) {
+        for (KEdge edge : node.getOutgoingEdges()) {
+            edge.setTarget(null);
+        }
+        for (KEdge edge : node.getIncomingEdges()) {
+            edge.setSource(null);
+        }
+        node.getParent().getChildren().remove(node);
+    }
+
     private void handleAddedNodes() {
         for (KNode node : comparison.getAddedNodes().values()) {
             System.out.println("adding node " + node);
             addNode(node);
         }
-        // Add edges after adding the nodes to be sure that all targets are available.
+        // Add edges after adding the nodes to ensure that all targets are available.
         for (KNode node : comparison.getAddedNodes().values()) {
             System.out.println("adding edges for node " + node);
             handleEdges(comparison.lookupBaseNode(node), node);
         }
     }
 
+    private void addNode(final KNode node) {
+        if (node.getParent() == null) {
+            throw new RuntimeException(
+                    "could not add node " + comparison.getNewAdapter().getId(node));
+        }
+        KNode baseParent = comparison.lookupBaseNode(node.getParent());
+        if (baseParent == null) {
+            // The new node's parent is missing in the base model as well.
+            // Add it and its children (including this node) first.
+            addNode(node.getParent());
+        } else {
+            if (comparison.lookupBaseNode(node) == null) {
+                KNode nodeCopy = EcoreUtil.copy(node);
+                baseParent.getChildren().add(nodeCopy);
+            }
+        }
+    }
+
     private void handleChangedNodes() {
-        for (ValueDifference<KNode> diff : comparison.getChangedNodes().values()) {
-            // System.out.println("changed node: " + diff.leftValue());
-            // System.out.println(
-            // "ecore equals: " + equalityHelper.equals(diff.leftValue(), diff.rightValue()));
+        for (ValueDifference<KNode> diff : comparison.getMatchedNodes().values()) {
             System.out.println("updating node " + diff.leftValue());
-            // if (!equalityHelper.equals(diff.leftValue(), diff.rightValue())) {
+            // TODO Maybe check if update is really necessary
             updateKnode(diff.leftValue(), diff.rightValue());
-            // }
         }
     }
 
     private void updateKnode(final KNode baseNode, final KNode newNode) {
         updateGraphElement(baseNode, newNode);
+        updateShapeLayout(baseNode, newNode);
         copyInsets(newNode.getInsets(), baseNode.getInsets());
         handleLabels(baseNode, newNode);
         handleEdges(baseNode, newNode);
@@ -119,7 +156,7 @@ public class KGraphMerger {
         if (baseSource != baseEdge.getSource()) {
             baseEdge.setSource(baseSource);
         }
-        // handleLabels(baseEdge, newEdge);
+        handleLabels(baseEdge, newEdge);
     }
 
     private void handleLabels(final KLabeledGraphElement baseElement,
@@ -132,7 +169,6 @@ public class KGraphMerger {
             KLabel baseLabel = comparison.lookupBaseLabel(newLabel);
             if (baseLabel != null) {
                 oldLabels.remove(baseLabel);
-                // newLabels.add(baseLabel);
                 updateLabel(baseLabel, newLabel);
             } else {
                 newLabels.add(newLabel);
@@ -144,6 +180,7 @@ public class KGraphMerger {
 
     private void updateLabel(final KLabel baseLabel, final KLabel newLabel) {
         updateGraphElement(baseLabel, newLabel);
+        updateShapeLayout(baseLabel, newLabel);
         baseLabel.setText(newLabel.getText());
         copyInsets(newLabel.getInsets(), baseLabel.getInsets());
     }
@@ -158,39 +195,18 @@ public class KGraphMerger {
         baseElement.copyProperties(newElement);
     }
 
-    private void removeNode(final KNode node) {
-        for (KEdge edge : node.getOutgoingEdges()) {
-            edge.setTarget(null);
-        }
-        for (KEdge edge : node.getIncomingEdges()) {
-            edge.setSource(null);
-        }
-        node.getParent().getChildren().remove(node);
-    }
-
-    private void addNode(final KNode node) {
-        if (node.getParent() == null) {
-            throw new RuntimeException(
-                    "could not add node " + comparison.getNewAdapter().getId(node));
-        }
-        KNode baseParent = comparison.lookupBaseNode(node.getParent());
-        if (baseParent == null) {
-            // The new node's parent is missing in the base model as well.
-            // Add it and its children (including this node) first.
-            addNode(node.getParent());
-        } else {
-            if (comparison.lookupBaseNode(node) == null) {
-                KNode nodeCopy = EcoreUtil.copy(node);
-                baseParent.getChildren().add(nodeCopy);
-            }
-        }
+    private void updateShapeLayout(final KShapeLayout baseElement, final KShapeLayout newElement) {
+        baseElement.setPos(newElement.getXpos(), newElement.getYpos());
+        baseElement.setSize(newElement.getWidth(), newElement.getHeight());
     }
 
     private void copyInsets(final KInsets sourceInsets, final KInsets targetInsets) {
-        // targetInsets.setLeft(sourceInsets.getLeft());
-        // targetInsets.setRight(sourceInsets.getRight());
-        // targetInsets.setTop(sourceInsets.getTop());
-        // targetInsets.setBottom(sourceInsets.getBottom());
+        if (targetInsets != null && sourceInsets != null) {
+            targetInsets.setLeft(sourceInsets.getLeft());
+            targetInsets.setRight(sourceInsets.getRight());
+            targetInsets.setTop(sourceInsets.getTop());
+            targetInsets.setBottom(sourceInsets.getBottom());
+        }
     }
 
 }
