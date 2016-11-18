@@ -18,6 +18,8 @@ import java.util.Set;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -240,6 +242,34 @@ public class UIDAdapter extends EContentAdapter {
         }
     }
 
+    // TODO: Just duplicated here to ensure compatibility with emf 2.10 for the build.
+    protected void removeAdapter(Notifier notifier, boolean checkContainer, boolean checkResource)
+    {
+      if (checkContainer || checkResource)
+      {
+        InternalEObject internalEObject = (InternalEObject) notifier;
+        if (checkResource)
+        {
+          Resource eDirectResource = internalEObject.eDirectResource();
+          if (eDirectResource != null && eDirectResource.eAdapters().contains(this))
+          {
+            return;
+          }
+        }
+        if (checkContainer)
+        {
+          InternalEObject eInternalContainer = internalEObject.eInternalContainer();
+          if (eInternalContainer != null && eInternalContainer.eAdapters().contains(this))
+          {
+            return;
+          }
+        }
+      }
+
+      removeAdapter(notifier);
+    }    
+    
+    
     /**
      * {@inheritDoc}
      */
