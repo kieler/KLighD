@@ -53,7 +53,8 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  */
 public class UIDAdapter extends EContentAdapter {
 
-    private static boolean debug = true;
+    //FIXME Remove before flight!
+    private boolean debug = false;
 
     private static final Predicate<Object> CANDIDATES =
             KlighdPredicates.instanceOf(KNode.class, KLabel.class, KEdge.class);

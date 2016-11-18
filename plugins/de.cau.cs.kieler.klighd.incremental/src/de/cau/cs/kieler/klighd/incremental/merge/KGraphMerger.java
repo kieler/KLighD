@@ -38,6 +38,9 @@ import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
  * @author csp
  */
 public class KGraphMerger {
+    
+    //FIXME Remove before flight!
+    private boolean debug = false;
 
     private KComparison comparison;
     private KGraphDataFilter filter;
@@ -66,7 +69,9 @@ public class KGraphMerger {
 
     private void handleRemovedNodes() {
         for (KNode node : comparison.getRemovedNodes().values()) {
-            System.out.println("removing node " + node);
+            if (debug) {
+                System.out.println("removing node " + node);
+            }
             removeNode(node);
         }
     }
@@ -83,12 +88,16 @@ public class KGraphMerger {
 
     private void handleAddedNodes() {
         for (KNode node : comparison.getAddedNodes().values()) {
-            System.out.println("adding node " + node);
+            if (debug) {
+                System.out.println("adding node " + node);
+            }
             addNode(node);
         }
         // Add edges after adding the nodes to ensure that all targets are available.
         for (KNode node : comparison.getAddedNodes().values()) {
-            System.out.println("adding edges for node " + node);
+            if (debug) {
+                System.out.println("adding edges for node " + node);
+            }
             handleEdges(comparison.lookupBaseNode(node), node);
         }
     }
@@ -113,7 +122,9 @@ public class KGraphMerger {
 
     private void handleChangedNodes() {
         for (ValueDifference<KNode> diff : comparison.getMatchedNodes().values()) {
-            System.out.println("updating node " + diff.leftValue());
+            if (debug) {
+                System.out.println("updating node " + diff.leftValue());
+            }
             // TODO Maybe check if update is really necessary
             updateKnode(diff.leftValue(), diff.rightValue());
         }
@@ -133,16 +144,22 @@ public class KGraphMerger {
         for (KEdge newEdge : Lists.newLinkedList(newNode.getOutgoingEdges())) {
             KEdge baseEdge = comparison.lookupBaseEdge(newEdge);
             if (baseEdge == null) {
-                System.out.println("new edge " + newEdge);
+                if (debug) {
+                    System.out.println("new edge " + newEdge);
+                }
                 baseEdge = EcoreUtil.copy(newEdge);
                 updateEdge(baseEdge, newEdge);
             } else {
-                System.out.println("update edge " + baseEdge);
+                if (debug) {
+                    System.out.println("update edge " + baseEdge);
+                }
                 oldEdges.remove(baseEdge);
                 updateEdge(baseEdge, newEdge);
             }
         }
-        System.out.println("remove edges " + oldEdges.toString());
+        if (debug) {
+            System.out.println("remove edges " + oldEdges.toString());
+        }
         baseNode.getOutgoingEdges().removeAll(oldEdges);
     }
 
@@ -196,8 +213,9 @@ public class KGraphMerger {
     }
 
     private void updateShapeLayout(final KShapeLayout baseElement, final KShapeLayout newElement) {
-        baseElement.setPos(newElement.getXpos(), newElement.getYpos());
-        baseElement.setSize(newElement.getWidth(), newElement.getHeight());
+        //FIXME
+//        baseElement.setPos(newElement.getXpos(), newElement.getYpos());
+//        baseElement.setSize(newElement.getWidth(), newElement.getHeight());
     }
 
     private void copyInsets(final KInsets sourceInsets, final KInsets targetInsets) {
