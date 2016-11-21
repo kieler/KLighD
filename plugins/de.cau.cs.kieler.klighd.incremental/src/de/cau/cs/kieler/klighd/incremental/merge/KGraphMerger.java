@@ -17,10 +17,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.elk.graph.properties.IProperty;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference.ValueDifference;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.common.collect.Sets.SetView;
 
 import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
@@ -210,12 +215,17 @@ public class KGraphMerger {
         newData.removeIf(filter.negate());
         baseData.addAll(newData);
         baseElement.copyProperties(newElement);
+        EMap<IProperty<?>, Object> baseProperties = baseElement.getProperties();
+        LinkedList<IProperty<?>> removedProperties = Lists.newLinkedList(Sets.difference(
+                baseProperties.keySet(), newElement.getProperties().keySet()));
+        for (IProperty<?> property : removedProperties) {
+            baseProperties.removeKey(property);
+        }
     }
 
     private void updateShapeLayout(final KShapeLayout baseElement, final KShapeLayout newElement) {
-        //FIXME
-//        baseElement.setPos(newElement.getXpos(), newElement.getYpos());
-//        baseElement.setSize(newElement.getWidth(), newElement.getHeight());
+        baseElement.setPos(newElement.getXpos(), newElement.getYpos());
+        baseElement.setSize(newElement.getWidth(), newElement.getHeight());
     }
 
     private void copyInsets(final KInsets sourceInsets, final KInsets targetInsets) {
