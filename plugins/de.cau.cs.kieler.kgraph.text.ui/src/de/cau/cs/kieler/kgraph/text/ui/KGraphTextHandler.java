@@ -14,6 +14,7 @@
 
 package de.cau.cs.kieler.kgraph.text.ui;
 
+import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 
@@ -194,7 +195,7 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
      * {@inheritDoc}
      */
     @Override
-    public String serialize(final TransformationData<org.eclipse.elk.graph.KNode, KNode> transData) {
+    public String serialize(final TransformationData<ElkNode, KNode> transData) {
         for (KNode graph : transData.getTargetGraphs()) {
             generateMissingIdentifiers(graph);
         }
@@ -217,7 +218,7 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
     /**
      * {@inheritDoc}
      */
-    public IGraphTransformer<KNode, org.eclipse.elk.graph.KNode> getImporter() {
+    public IGraphTransformer<KNode, ElkNode> getImporter() {
         // TODO Implement
         return null;
     }
@@ -225,7 +226,7 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
     /**
      * {@inheritDoc}
      */
-    public IGraphTransformer<org.eclipse.elk.graph.KNode, KNode> getExporter() {
+    public IGraphTransformer<ElkNode, KNode> getExporter() {
         // TODO Implement
         return null;
     }
