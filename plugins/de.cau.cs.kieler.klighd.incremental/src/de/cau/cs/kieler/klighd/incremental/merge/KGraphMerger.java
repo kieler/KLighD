@@ -73,7 +73,7 @@ public class KGraphMerger {
     }
 
     private void handleRemovedNodes() {
-        for (KNode node : comparison.getRemovedNodes().values()) {
+        for (KNode node : comparison.getRemovedNodes()) {
             if (debug) {
                 System.out.println("removing node " + node);
             }
@@ -92,14 +92,14 @@ public class KGraphMerger {
     }
 
     private void handleAddedNodes() {
-        for (KNode node : comparison.getAddedNodes().values()) {
+        for (KNode node : comparison.getAddedNodes()) {
             if (debug) {
                 System.out.println("adding node " + node);
             }
             addNode(node);
         }
         // Add edges after adding the nodes to ensure that all targets are available.
-        for (KNode node : comparison.getAddedNodes().values()) {
+        for (KNode node : comparison.getAddedNodes()) {
             if (debug) {
                 System.out.println("adding edges for node " + node);
             }

@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.incremental.diff;
 
+import java.util.Collection;
 import java.util.Map;
 
 import com.google.common.collect.MapDifference;
@@ -78,6 +79,17 @@ public class KComparison {
     }
 
     /**
+     * Get the node from the new model with the same id as the given node.
+     * 
+     * @param baseNode
+     *            the node to get the corresponding new node to.
+     * @return the new node, or {@code null} if none found.
+     */
+    public KNode lookupNewNode(final KNode baseNode) {
+        return newAdapter.getNode(baseAdapter.getId(baseNode));
+    }
+
+    /**
      * Get the edge from the base model with the same id as the given edge.
      * 
      * @param newEdge
@@ -86,6 +98,17 @@ public class KComparison {
      */
     public KEdge lookupBaseEdge(final KEdge newEdge) {
         return baseAdapter.getEdge(newAdapter.getId(newEdge));
+    }
+
+    /**
+     * Get the edge from the new model with the same id as the given edge.
+     * 
+     * @param baseEdge
+     *            the edge to get the corresponding new edge to.
+     * @return the new edge, or {@code null} if none found.
+     */
+    public KEdge lookupNewEdge(final KEdge baseEdge) {
+        return newAdapter.getEdge(baseAdapter.getId(baseEdge));
     }
 
     /**
@@ -100,30 +123,41 @@ public class KComparison {
     }
 
     /**
+     * Get the label from the new model with the same id as the given label.
+     * 
+     * @param baseLabel
+     *            the label to get the corresponding new label to.
+     * @return the new label, or {@code null} if none found.
+     */
+    public KLabel lookupNewLabel(final KLabel baseLabel) {
+        return newAdapter.getLabel(baseAdapter.getId(baseLabel));
+    }
+
+    /**
      * Get newly added nodes.
      * 
-     * @return a map from ids to newly added nodes.
+     * @return the newly added nodes.
      */
-    public Map<String, KNode> getAddedNodes() {
-        return nodeDifference.entriesOnlyOnRight();
+    public Collection<KNode> getAddedNodes() {
+        return nodeDifference.entriesOnlyOnRight().values();
     }
 
     /**
      * Get removed nodes.
      * 
-     * @return a map from ids to removed nodes.
+     * @return removed nodes.
      */
-    public Map<String, KNode> getRemovedNodes() {
-        return nodeDifference.entriesOnlyOnLeft();
+    public Collection<KNode> getRemovedNodes() {
+        return nodeDifference.entriesOnlyOnLeft().values();
     }
 
     /**
      * Get matched nodes, that are present in both models.
      * 
-     * @return a map from ids to pairs of nodes.
+     * @return pairs of matched nodes.
      */
-    public Map<String, ValueDifference<KNode>> getMatchedNodes() {
-        return nodeDifference.entriesDiffering();
+    public Collection<ValueDifference<KNode>> getMatchedNodes() {
+        return nodeDifference.entriesDiffering().values();
     }
 
 }
