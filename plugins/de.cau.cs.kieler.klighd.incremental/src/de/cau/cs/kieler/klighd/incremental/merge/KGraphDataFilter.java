@@ -14,18 +14,13 @@ package de.cau.cs.kieler.klighd.incremental.merge;
 
 import java.util.function.Predicate;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
-import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
-import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
- * Filters, which features should be in scope for matching.
- * @author csp
+ * Filters, which {@link KGraphData} should be merged.
  *
+ * @author csp
  */
 public class KGraphDataFilter implements Predicate<KGraphData> {
 

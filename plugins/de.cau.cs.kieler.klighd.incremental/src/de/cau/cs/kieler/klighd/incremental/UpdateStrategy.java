@@ -104,8 +104,7 @@ public class UpdateStrategy implements IUpdateStrategy {
             UIDAdapters.removeAdapter(newModel);
 
         } catch (RuntimeException e) {
-            final String msg = "KLighD: Incremental update of diagram by means of "
-                    + "the incremental update strategy failed.";
+            final String msg = "KLighD: Incremental update of diagram failed.";
             StatusManager.getManager().handle(new Status(IStatus.ERROR, PLUGIN_ID, msg, e),
                     StatusManager.LOG);
             e.printStackTrace();
