@@ -243,6 +243,7 @@ public class UIDAdapter extends EContentAdapter {
     }
 
     // TODO: Just duplicated here to ensure compatibility with emf 2.10 for the build.
+    //CHECKSTYLEOFF a
     protected void removeAdapter(Notifier notifier, boolean checkContainer, boolean checkResource)
     {
       if (checkContainer || checkResource)
@@ -267,7 +268,8 @@ public class UIDAdapter extends EContentAdapter {
       }
 
       removeAdapter(notifier);
-    }    
+    }
+    //CHECKSTYLEON a
     
     
     /**
