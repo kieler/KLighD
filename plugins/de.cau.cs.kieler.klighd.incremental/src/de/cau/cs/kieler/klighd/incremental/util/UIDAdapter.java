@@ -236,7 +236,7 @@ public class UIDAdapter extends EContentAdapter {
         for (final Iterator<? extends Notifier> i = Iterators.filter(eContents, CANDIDATES); i
                 .hasNext();) {
             final Notifier notifier = i.next();
-            removeAdapter(notifier, false, true);
+            removeAdapter(notifier);
         }
     }
 
