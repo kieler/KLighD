@@ -25,7 +25,7 @@ import de.cau.cs.kieler.klighd.kgraph.KPort;
  * An {@link EcoreUtil.Copier ecore copier} that maps {@link KPort KPorts} to their copy and tracks
  * nodes whose ports have been updaten.
  * 
- * @author carsten
+ * @author csp
  */
 public class KNodeCopier extends Copier {
 
