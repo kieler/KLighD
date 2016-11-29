@@ -781,25 +781,24 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         targetShapeLayout.resetModificationFlag();
 
         // MIGRATE Parent insets need to be applied to coordinates
-        if (adjustScaling) {
-            final KGraphPackage pack = KGraphPackage.eINSTANCE;
-            final EObject container = sourceShape.eContainer();
-            final float scale;
-
-            if (pack.getKNode().isInstance(container)) {
-                scale = sourceShape.getProperty(CoreOptions.SCALE_FACTOR);
-                targetShapeLayout.setPos((float) sourceShape.getX(), (float) sourceShape.getY());
-                targetShapeLayout.setSize((float) sourceShape.getWidth() / scale,
+        final ElkNode containingGraph = ElkGraphUtil.containingGraph(sourceShape);
+        
+        if (adjustScaling && containingGraph != null) {
+            final float scale = containingGraph.getProperty(CoreOptions.SCALE_FACTOR);
+            
+            if (sourceShape instanceof ElkNode) {
+                targetShapeLayout.setPos(
+                        (float) sourceShape.getX(),
+                        (float) sourceShape.getY());
+                targetShapeLayout.setSize(
+                        (float) sourceShape.getWidth() / scale,
                         (float) sourceShape.getHeight() / scale);
-
-            } else if (pack.getKPort().isInstance(container)
-                    || pack.getKLabel().isInstance(container)) {
-                
-                scale = ((ElkGraphElement) container.eContainer()).getProperty(
-                        CoreOptions.SCALE_FACTOR);
-                targetShapeLayout.setPos((float) sourceShape.getX() / scale,
+            } else if (sourceShape instanceof ElkPort || sourceShape instanceof ElkLabel) {
+                targetShapeLayout.setPos(
+                        (float) sourceShape.getX() / scale,
                         (float) sourceShape.getY() / scale);
-                targetShapeLayout.setSize((float) sourceShape.getWidth() / scale,
+                targetShapeLayout.setSize(
+                        (float) sourceShape.getWidth() / scale,
                         (float) sourceShape.getHeight() / scale);
 
                 final KVector anchor = targetShapeLayout.getProperty(CoreOptions.PORT_ANCHOR);
@@ -810,9 +809,12 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             }
 
         } else {
-            targetShapeLayout.setPos((float) sourceShape.getX(), (float) sourceShape.getY());
+            targetShapeLayout.setPos(
+                    (float) sourceShape.getX(),
+                    (float) sourceShape.getY());
             targetShapeLayout.setSize(
-                    (float) sourceShape.getWidth(), (float) sourceShape.getHeight());
+                    (float) sourceShape.getWidth(),
+                    (float) sourceShape.getHeight());
         }
 
         // reactivate notifications & fire a notification
@@ -826,9 +828,12 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final Object newValue = targetShapeLayout.isModified()
                     ? LAYOUT_DATA_CHANGED_VALUE : LAYOUT_DATA_UNCHANGED_VALUE;
 
-            targetShapeLayout.eNotify(new ENotificationImpl((InternalEObject) targetShapeLayout,
-                    Notification.SET, KGraphPackage.eINSTANCE.getKShapeLayout_Xpos(),
-                    null, newValue));
+            targetShapeLayout.eNotify(new ENotificationImpl(
+                    (InternalEObject) targetShapeLayout,
+                    Notification.SET,
+                    KGraphPackage.eINSTANCE.getKShapeLayout_Xpos(),
+                    null,
+                    newValue));
         }
 
         if (copyInsets) {
