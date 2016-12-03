@@ -49,7 +49,7 @@ class UML2UseCaseDiagramSynthesis extends AbstractDiagramSynthesis<Model> {
     override transform(Model model) {
         // create the root node representing the diagram canvas ...
         return model.createNode() => [
-            it.addLayoutParam(CoreOptions::SPACING_NODE, 40f);
+            it.addLayoutParam(CoreOptions::SPACING_NODE_NODE, 40f);
             it.addLayoutParam(LayeredOptions::NODE_PLACEMENT_STRATEGY, NodePlacementStrategy::LINEAR_SEGMENTS);
             // ... and add the diagram elements
             it.children += model.packagedElements.map[

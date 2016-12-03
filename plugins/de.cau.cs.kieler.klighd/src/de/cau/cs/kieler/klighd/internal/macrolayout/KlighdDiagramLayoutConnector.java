@@ -18,7 +18,7 @@ import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.elk.core.math.ElkInsets;
+import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
@@ -748,12 +748,12 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     }
     
     private void copyInsets(final KInsets sourceInsets, final ElkShape shape) {
-        ElkInsets insets = new ElkInsets(
+        ElkPadding insets = new ElkPadding(
                 sourceInsets.getTop(),
                 sourceInsets.getRight(),
                 sourceInsets.getBottom(),
                 sourceInsets.getLeft());
-        shape.setProperty(CoreOptions.INSETS, insets);
+        shape.setProperty(CoreOptions.PADDING, insets);
     }
 
     /**
@@ -763,7 +763,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the source shape layout
      * @param targetShapeLayout
      *            the target shape layout
-     * @param copyInsets
+     * @param copyPadding
      *            <code>true</code> if insets shall be copied
      * @param adjustScaling
      *            if <code>true</code> the <code>sourceShapeLayout</code>'s data will be adjusted
@@ -772,7 +772,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      */
     private void shapeLayoutToViewModel(
             final ElkShape sourceShape, final KShapeLayout targetShapeLayout,
-            final boolean copyInsets, final boolean adjustScaling) {
+            final boolean copyPadding, final boolean adjustScaling) {
 
         // do not notify listeners about any change on the displayed KGraph in order
         //  to avoid unnecessary diagram refresh cycles
@@ -836,19 +836,19 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     newValue));
         }
 
-        if (copyInsets) {
-            copyInsets(sourceShape, targetShapeLayout.getInsets());
+        if (copyPadding) {
+            copyPadding(sourceShape, targetShapeLayout.getInsets());
         }
     }
     
-    private void copyInsets(final ElkShape shape, final KInsets targetInsets) {
-        ElkInsets insets = shape.getProperty(CoreOptions.INSETS);
+    private void copyPadding(final ElkShape shape, final KInsets targetPadding) {
+        ElkPadding padding = shape.getProperty(CoreOptions.PADDING);
         
-        if (insets != null) {
-            targetInsets.setLeft((float) insets.getLeft());
-            targetInsets.setRight((float) insets.getRight());
-            targetInsets.setTop((float) insets.getTop());
-            targetInsets.setBottom((float) insets.getBottom());
+        if (padding != null) {
+            targetPadding.setLeft((float) padding.getLeft());
+            targetPadding.setRight((float) padding.getRight());
+            targetPadding.setTop((float) padding.getTop());
+            targetPadding.setBottom((float) padding.getBottom());
         }
     }
 
@@ -868,8 +868,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     de.cau.cs.kieler.klighd.kgraph.KGraphFactory.eINSTANCE.createKPoint());
         }
         
-        // We need to apply the effective parent insets that apply to the edge
-        final KInsets parentInsets = effectiveInsetsForEdge(viewModelEdge);
+        // We need to apply the effective parent padding that apply to the edge
+        final KInsets parentPadding = effectivePaddingForEdge(viewModelEdge);
         
         // We need an edge section to work with (and only one)
         final ElkEdgeSection layoutEdgeSection = ElkGraphUtil.firstEdgeSection(
@@ -879,8 +879,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final KPoint sourcePoint = viewModelEdge.getSourcePoint();
         if (sourcePoint != null) {
             layoutEdgeSection.setStartLocation(
-                    sourcePoint.getX() + parentInsets.getLeft(),
-                    sourcePoint.getY() + parentInsets.getTop());
+                    sourcePoint.getX() + parentPadding.getLeft(),
+                    sourcePoint.getY() + parentPadding.getTop());
         }
 
         // transfer the bend points, reusing any existing KPoint instances
@@ -899,8 +899,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             }
             
             destPoint.set(
-                    originPoint.getX() + parentInsets.getLeft(),
-                    originPoint.getY() + parentInsets.getTop());
+                    originPoint.getX() + parentPadding.getLeft(),
+                    originPoint.getY() + parentPadding.getTop());
         }
         
         // remove any superfluous points
@@ -913,18 +913,18 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final KPoint targetPoint = viewModelEdge.getTargetPoint();
         if (targetPoint != null) {
             layoutEdgeSection.setEndLocation(
-                    targetPoint.getX() + parentInsets.getLeft(),
-                    targetPoint.getY() + parentInsets.getTop());
+                    targetPoint.getX() + parentPadding.getLeft(),
+                    targetPoint.getY() + parentPadding.getTop());
         }
     }
 
     /**
-     * Returns the insets that apply to the coordinates of the given view model edge.
+     * Returns the padding that apply to the coordinates of the given view model edge.
      * 
      * @param viewModelEdge the view model edge.
-     * @return the effective insets.
+     * @return the effective padding.
      */
-    private KInsets effectiveInsetsForEdge(final KEdge viewModelEdge) {
+    private KInsets effectivePaddingForEdge(final KEdge viewModelEdge) {
         KNode relativeNode;
         if (KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())) {
             relativeNode = viewModelEdge.getSource();

@@ -117,7 +117,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
     override public getDisplayedLayoutOptions() {
         return ImmutableList::of(
             specifyLayoutOption(CoreOptions::DIRECTION, Direction::values().drop(1).sortBy[ it.name ]),
-            specifyLayoutOption(CoreOptions::SPACING_NODE, newArrayList(0, 255))
+            specifyLayoutOption(CoreOptions::SPACING_NODE_NODE, newArrayList(0, 255))
         );
     }
 
@@ -133,7 +133,7 @@ class EcoreDiagramSynthesis extends AbstractDiagramSynthesis<EModelElementCollec
 	override KNode transform(EModelElementCollection choice) {		
 		return createNode() => [
             it.addLayoutParam(CoreOptions::ALGORITHM, "de.cau.cs.kieler.kiml.ogdf.planarization");
-            it.addLayoutParam(CoreOptions::SPACING_NODE, 75f);
+            it.addLayoutParam(CoreOptions::SPACING_NODE_NODE, 75f);
             it.addLayoutParam(CoreOptions::DIRECTION, Direction::UP);
 		
             // The chosen (depicted) classifiers. This list will be supplemented with related classifiers,

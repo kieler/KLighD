@@ -105,7 +105,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
     override getDisplayedLayoutOptions() {
         return newLinkedList(
             new Pair<IProperty<?>, List<?>>(CoreOptions::DIRECTION, Direction::values.drop(1).sortBy[it.name]),
-            new Pair<IProperty<?>, List<?>>(CoreOptions::SPACING_NODE, newArrayList(0, 150))
+            new Pair<IProperty<?>, List<?>>(CoreOptions::SPACING_NODE_NODE, newArrayList(0, 150))
         );
     }
 
