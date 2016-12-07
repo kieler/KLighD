@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.syntheses;
 import java.util.EnumSet;
 
 import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.math.Spacing.Margins;
 import org.eclipse.elk.core.options.BoxLayouterOptions;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
@@ -30,7 +31,6 @@ import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.core.options.SizeOptions;
 import org.eclipse.elk.core.util.BoxLayoutProvider;
 import org.eclipse.elk.core.util.FixedLayoutProvider;
-import org.eclipse.elk.core.util.nodespacing.Spacing.Margins;
 import org.eclipse.elk.graph.properties.IProperty;
 
 /**

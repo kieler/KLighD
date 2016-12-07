@@ -212,7 +212,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         mapping.setParentElement(viewModel);
 
         final ElkNode layoutGraph = ElkGraphUtil.createGraph();
-        shapeLayoutToLayoutGraph(viewModel, layoutGraph, false, false);
+        shapeLayoutToLayoutGraph(viewModel, layoutGraph, false);
 
         mapping.getGraphMap().put(layoutGraph, viewModel);
         mapping.setLayoutGraph(layoutGraph);
@@ -301,7 +301,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         
         // there is layoutData attached to the node,
         // so take that as node layout instead of the default-layout
-        shapeLayoutToLayoutGraph(node, layoutNode, false, false);
+        shapeLayoutToLayoutGraph(node, layoutNode, false);
 
         // In the following the minimal width and height of the node is determined, which
         //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
@@ -353,10 +353,19 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             size = minSize;
         }
 
-        // set insets if available
+        // compute insets required by micro layout
+        //  remember these insets, we need to subtract them again when transferring the layout
         KInsets insets = KGraphFactory.eINSTANCE.createKInsets();
         PlacementUtil.calculateInsets(displayedRendering, insets, size);
-        copyInsets(insets, layoutNode);
+        // KLighD is somewhat mean and doesn't care about existing insets
+        node.setInsets(insets);
+        // add the computed insets to the padding for layout
+        //  note that this is still done on the viewModel's node (the value is transfered later)
+        ElkPadding padding = node.getProperty(CoreOptions.PADDING);
+        padding.left += insets.getLeft();
+        padding.right += insets.getRight();
+        padding.top += insets.getTop();
+        padding.bottom += insets.getBottom();
 
         layoutParent.getChildren().add(layoutNode);
         mapping.getGraphMap().put(layoutNode, node);
@@ -384,7 +393,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final List<de.cau.cs.kieler.klighd.kgraph.KEdge> edges = mapping.getProperty(EDGES);
         Iterables.addAll(edges,
                 Iterables.filter(node.getOutgoingEdges(), RenderingContextData.IS_ACTIVE));
-        }
+    }
 
     /**
      * Creates a layout port for the port attached to the given layout node.
@@ -402,7 +411,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final ElkNode layoutNode, final boolean estimateLabelSizes) {
         
         final ElkPort layoutPort = ElkGraphUtil.createPort(layoutNode);
-        shapeLayoutToLayoutGraph(port, layoutPort, false, false);
+        shapeLayoutToLayoutGraph(port, layoutPort, false);
 
         mapping.getGraphMap().put(layoutPort, port);
 
@@ -530,7 +539,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final ElkLabel layoutLabel =
                 ElkGraphUtil.createLabel(label.getText(), layoutLabeledElement);
 
-        shapeLayoutToLayoutGraph(label, layoutLabel, false, false);
+        shapeLayoutToLayoutGraph(label, layoutLabel, false);
 
         // integrate the minimal estimated label size based on the updated layoutLayout
         // - manipulating the labelLayout may cause immediate glitches in the diagram
@@ -620,7 +629,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkNode(final ElkNode layoutNode) {
                     final KNode node = (KNode) element;
                     
-                    shapeLayoutToViewModel(layoutNode, node, true, true);
+                    shapeLayoutToViewModel(mapping, layoutNode, node, true, true);
                     node.setProperty(INITIAL_NODE_SIZE, false);
 
                     // transfer the scale factor value since KIML might have reset it
@@ -642,7 +651,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkPort(final ElkPort layoutPort) {
                     final KPort port = (KPort) element;
                     
-                    shapeLayoutToViewModel(layoutPort, port, false, true);
+                    shapeLayoutToViewModel(mapping, layoutPort, port, false, true);
                     port.setProperty(KlighdProperties.LAYOUT_PORT_SIDE,
                             layoutPort.getProperty(CoreOptions.PORT_SIDE));
                     return true;
@@ -652,7 +661,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkLabel(final ElkLabel layoutLabel) {
                     final KLabel label = (KLabel) element;
                     
-                    shapeLayoutToViewModel(layoutLabel, label, false, true);
+                    shapeLayoutToViewModel(mapping, layoutLabel, label, false, true);
 
                     // if the label's text was changed during layout, remember the new text in a
                     // special property
@@ -705,10 +714,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      */
     private void shapeLayoutToLayoutGraph(
             final KShapeLayout sourceShapeLayout, final ElkShape targetShape,
-            final boolean copyInsets, final boolean adjustScaling) {
+            final boolean adjustScaling) {
         // Attention: Layout options are transfered by the {@link KGraphPropertyLayoutConfig}
 
-        // MIGRATE Parent insets need to be applied to coordinates
         if (adjustScaling) {
             final KGraphPackage pack = KGraphPackage.eINSTANCE;
             final EObject container = sourceShapeLayout.eContainer();
@@ -741,19 +749,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             targetShape.setLocation(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
             targetShape.setDimensions(sourceShapeLayout.getWidth(), sourceShapeLayout.getHeight());
         }
-
-        if (copyInsets) {
-            copyInsets(sourceShapeLayout.getInsets(), targetShape);
-        }
-    }
-    
-    private void copyInsets(final KInsets sourceInsets, final ElkShape shape) {
-        ElkPadding insets = new ElkPadding(
-                sourceInsets.getTop(),
-                sourceInsets.getRight(),
-                sourceInsets.getBottom(),
-                sourceInsets.getLeft());
-        shape.setProperty(CoreOptions.PADDING, insets);
     }
 
     /**
@@ -770,7 +765,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            s.t. the scaling of the corresponding node will be reverted to 100%, since the
      *            scaling is implemented by means of affine transforms on figure level.
      */
-    private void shapeLayoutToViewModel(
+    private void shapeLayoutToViewModel(final LayoutMapping mapping,
             final ElkShape sourceShape, final KShapeLayout targetShapeLayout,
             final boolean copyPadding, final boolean adjustScaling) {
 
@@ -781,15 +776,24 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         targetShapeLayout.resetModificationFlag();
 
         // MIGRATE Parent insets need to be applied to coordinates
+        KVector offset = new KVector();
         final ElkNode containingGraph = ElkGraphUtil.containingGraph(sourceShape);
+        if (copyPadding && containingGraph != null) {
+            KNode viewModelNode = (KNode) mapping.getGraphMap().get(containingGraph);
+            KInsets parentInsets = viewModelNode.getInsets();
+            if (parentInsets != null) {
+                // offset 
+                offset.add(-parentInsets.getLeft(), -parentInsets.getTop());
+            }
+        }
         
         if (adjustScaling && containingGraph != null) {
             final float scale = containingGraph.getProperty(CoreOptions.SCALE_FACTOR);
             
             if (sourceShape instanceof ElkNode) {
                 targetShapeLayout.setPos(
-                        (float) sourceShape.getX(),
-                        (float) sourceShape.getY());
+                        (float) (sourceShape.getX() + offset.x),
+                        (float) (sourceShape.getY() + offset.y));
                 targetShapeLayout.setSize(
                         (float) sourceShape.getWidth() / scale,
                         (float) sourceShape.getHeight() / scale);
@@ -810,8 +814,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         } else {
             targetShapeLayout.setPos(
-                    (float) sourceShape.getX(),
-                    (float) sourceShape.getY());
+                    (float) (sourceShape.getX() + offset.x),
+                    (float) (sourceShape.getY() + offset.y));
             targetShapeLayout.setSize(
                     (float) sourceShape.getWidth(),
                     (float) sourceShape.getHeight());
@@ -837,18 +841,17 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         }
 
         if (copyPadding) {
-            copyPadding(sourceShape, targetShapeLayout.getInsets());
-        }
-    }
-    
-    private void copyPadding(final ElkShape shape, final KInsets targetPadding) {
-        ElkPadding padding = shape.getProperty(CoreOptions.PADDING);
-        
-        if (padding != null) {
-            targetPadding.setLeft((float) padding.getLeft());
-            targetPadding.setRight((float) padding.getRight());
-            targetPadding.setTop((float) padding.getTop());
-            targetPadding.setBottom((float) padding.getBottom());
+            // free node's padding of the insets again
+            KNode node = (KNode) mapping.getGraphMap().get(sourceShape);
+            KInsets insets = node.getInsets();
+            
+            if (insets != null) {
+                ElkPadding padding = node.getProperty(CoreOptions.PADDING);
+                padding.left -= insets.getLeft();
+                padding.right -= insets.getRight();
+                padding.top -= insets.getTop();
+                padding.bottom -= insets.getBottom();
+            }
         }
     }
 
