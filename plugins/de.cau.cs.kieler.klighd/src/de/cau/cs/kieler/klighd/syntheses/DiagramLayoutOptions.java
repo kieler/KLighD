@@ -15,8 +15,8 @@ package de.cau.cs.kieler.klighd.syntheses;
 
 import java.util.EnumSet;
 
+import org.eclipse.elk.core.math.ElkMargin;
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.elk.core.math.Spacing.Margins;
 import org.eclipse.elk.core.options.BoxLayouterOptions;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
@@ -121,13 +121,8 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#ADDITIONAL_PORT_SPACE;
      */
-    public static final IProperty<Margins> ADDITIONAL_PORT_SPACE =
+    public static final IProperty<ElkMargin> ADDITIONAL_PORT_SPACE =
             CoreOptions.SPACING_PORT_SURROUNDING;
-
-    /**
-     * @see LayoutOptions#BORDER_SPACING
-     */
-    public static final IProperty<Float> BORDER_SPACING = CoreOptions.SPACING_BORDER;
 
     /**
      * @see LayoutOptions#DIRECTION
