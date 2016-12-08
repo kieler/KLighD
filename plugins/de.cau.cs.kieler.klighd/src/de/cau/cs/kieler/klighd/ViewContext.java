@@ -41,6 +41,7 @@ import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.internal.util.SourceModelTrackingAdapter;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -640,10 +641,10 @@ public class ViewContext extends MapPropertyHolder {
      *            a member of the view model, must not by <code>null</code>
      */
     public void associateSourceTargetPair(final Object source, final EObject target) {
-        if (KGraphPackage.eINSTANCE.getKLayoutData().isInstance(target)) {
-            return;
-        }
-        if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(target)) {
+        if (KGraphPackage.eINSTANCE.getKGraphData().isInstance(target)) {
+            ((KGraphData) target).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
+
+        } else if (KGraphPackage.eINSTANCE.getKGraphElement().isInstance(target)) {
             ((KGraphElement) target).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, source);
         }
     }
