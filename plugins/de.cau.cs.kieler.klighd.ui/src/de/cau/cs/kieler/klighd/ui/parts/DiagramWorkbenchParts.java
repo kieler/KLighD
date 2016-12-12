@@ -58,7 +58,7 @@ public final class DiagramWorkbenchParts {
     public static class DiagramAreaChangeListener extends ControlAdapter {
 
         /** The aspect ratio is rounded at two decimal places. */
-        private static final float ASPECT_RATIO_ROUND = 100;
+        private static final double ASPECT_RATIO_ROUND = 100;
 
         private double oldAspectRatio = -1;
 
@@ -124,7 +124,7 @@ public final class DiagramWorkbenchParts {
 
             // assure that the composite's size is settled before we execute the layout
             if (size.x > 0 && size.y > 0) {
-                final Float aspectRatio =
+                final double aspectRatio =
                         Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND;
 
                 if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
