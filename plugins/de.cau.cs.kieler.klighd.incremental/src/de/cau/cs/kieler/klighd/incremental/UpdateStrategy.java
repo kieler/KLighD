@@ -66,20 +66,12 @@ public class UpdateStrategy implements IUpdateStrategy {
      * {@inheritDoc}
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
-        final boolean debug = false;
-
-        if (debug) {
-            System.out.println("update " + System.currentTimeMillis());
-            serialize("origin.kgx", EcoreUtil.copy(baseModel));
-            serialize("new.kgx", EcoreUtil.copy(newModel));
-        }
         if (baseModel.getChildren().isEmpty()) {
             logFallback(IStatus.INFO, "Empty base model.");
             fallback(baseModel, newModel, viewContext);
             return;
         }
 
-        // System.out.println("retrieving base adapter");
         UIDAdapter baseAdapter = UIDAdapters.retrieveAdapter(baseModel);
         if (baseAdapter.isInvalid()) {
             UIDAdapters.removeAdapter(baseModel);
@@ -87,7 +79,6 @@ public class UpdateStrategy implements IUpdateStrategy {
             fallback(baseModel, newModel, viewContext);
             return;
         }
-        // System.out.println("retrieving new adapter");
         UIDAdapter newAdapter = UIDAdapters.retrieveAdapter(newModel);
         if (newAdapter.isInvalid()) {
             UIDAdapters.removeAdapter(newModel);
@@ -112,10 +103,6 @@ public class UpdateStrategy implements IUpdateStrategy {
             // if incremental updating failed, apply the SimpleUpdateStrategy
             fallback(baseModel, newModel, viewContext);
         }
-
-        if (debug) {
-            serialize("merged.kgx", EcoreUtil.copy(baseModel));
-        }
     }
 
     private void logFallback(final int severity, final String reason) {
@@ -131,30 +118,6 @@ public class UpdateStrategy implements IUpdateStrategy {
             this.fallbackDelegate = new SimpleUpdateStrategy();
         }
         this.fallbackDelegate.update(baseModel, newModel, viewContext);
-    }
-
-    /** A helper for debugging purposes! */
-    // @SuppressWarnings("unused")
-    private void serialize(final String path, final EObject... objects) {
-        URI fileURI = URI.createURI("platform:/meta/" + PLUGIN_ID + "/" + path, false);
-
-        ResourceSet set = new ResourceSetImpl();
-        Resource resource = set.createResource(fileURI);
-
-        for (EObject object : objects) {
-            if (object instanceof KGraphElement) {
-                ((KNode) object).makePersistent();
-            }
-            resource.getContents().add(object);
-        }
-
-        try {
-            resource.save(Collections.emptyMap());
-            // System.out.println("written "+ fileURI);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        resource.unload();
     }
 
     /**

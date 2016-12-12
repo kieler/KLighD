@@ -53,9 +53,6 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  */
 public class UIDAdapter extends EContentAdapter {
 
-    //FIXME Remove before flight!
-    private boolean debug = false;
-
     private static final Predicate<Object> CANDIDATES =
             KlighdPredicates.instanceOf(KNode.class, KLabel.class, KEdge.class);
     private static final String ID_SEPARATOR = "$";
@@ -315,14 +312,8 @@ public class UIDAdapter extends EContentAdapter {
             }
         }
         id = parentId + ID_SEPARATOR + localId;
-        if (debug) {
-            System.out.println("new node: " + id);
-        }
         if (nodes.put(id, node) != null) {
             invalid = true;
-            if (debug) {
-                System.out.println("invalid node: " + id);
-            }
             return null;
         }
         return id;
@@ -351,14 +342,8 @@ public class UIDAdapter extends EContentAdapter {
             localId = "E" + parent.getOutgoingEdges().indexOf(edge);
         }
         id = parentId + ID_SEPARATOR + localId;
-        if (debug) {
-            System.out.println("new edge: " + id);
-        }
         if (edges.put(id, edge) != null) {
             invalid = true;
-            if (debug) {
-                System.out.println("invalid edge: " + id);
-            }
             return null;
         }
         return id;
@@ -392,14 +377,8 @@ public class UIDAdapter extends EContentAdapter {
             localId = "L" + parent.getLabels().indexOf(label);
         }
         id = parentId + ID_SEPARATOR + localId;
-        if (debug) {
-            System.out.println("new label: " + id);
-        }
         if (labels.put(id, label) != null) {
             invalid = true;
-            if (debug) {
-                System.out.println("invalid label: " + id);
-            }
             return null;
         }
         return id;
@@ -412,10 +391,7 @@ public class UIDAdapter extends EContentAdapter {
      *            the node to remove.
      */
     private void removeId(final KNode node) {
-        String id = nodes.inverse().remove(node);
-        if (debug) {
-            System.out.println("removed node: " + id);
-        }
+        nodes.inverse().remove(node);
     }
 
     /**
@@ -425,10 +401,7 @@ public class UIDAdapter extends EContentAdapter {
      *            the edge to remove.
      */
     private void removeId(final KEdge edge) {
-        String id = edges.inverse().remove(edge);
-        if (debug) {
-            System.out.println("removed edge: " + id);
-        }
+        edges.inverse().remove(edge);
     }
 
     /**
@@ -438,10 +411,7 @@ public class UIDAdapter extends EContentAdapter {
      *            the label to remove.
      */
     private void removeId(final KLabel label) {
-        String id = labels.inverse().remove(label);
-        if (debug) {
-            System.out.println("removed label: " + id);
-        }
+        labels.inverse().remove(label);
     }
 
 }
