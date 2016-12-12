@@ -24,7 +24,7 @@ import org.eclipse.elk.core.math.ElkMath;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.core.service.LayoutConfigurationManager;
 import org.eclipse.elk.core.service.LayoutConnectorsService;
-import org.eclipse.elk.graph.KGraphElement;
+import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -527,10 +527,12 @@ public class LayoutOptionControlFactory {
         public void setOptionValue(final float optionValue) {
             switch (optionData.getType()) {
             case INT:
-                layoutConfig.configure(KGraphElement.class).setProperty(optionData, (int) optionValue);
+                layoutConfig.configure(ElkGraphElement.class).setProperty(
+                        optionData, (int) optionValue);
                 break;
             case FLOAT:
-                layoutConfig.configure(KGraphElement.class).setProperty(optionData, (float) optionValue);
+                layoutConfig.configure(ElkGraphElement.class).setProperty(
+                        optionData, (float) optionValue);
                 break;
             }
         }
@@ -563,7 +565,7 @@ public class LayoutOptionControlFactory {
         @Override
         public void widgetSelected(final SelectionEvent event) {
             if (((Button) event.widget).getSelection()) {
-                layoutConfig.configure(KGraphElement.class).setProperty(optionData, value);
+                layoutConfig.configure(ElkGraphElement.class).setProperty(optionData, value);
                 refreshLayout(true);
             }
         }

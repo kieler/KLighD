@@ -14,9 +14,8 @@ package de.cau.cs.kieler.klighd.ui.view.syntheses.action;
 
 import java.util.Iterator;
 
-import org.eclipse.elk.graph.KNode;
-
 import de.cau.cs.kieler.klighd.IAction;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.ui.view.syntheses.EObjectFallbackSynthesis;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 

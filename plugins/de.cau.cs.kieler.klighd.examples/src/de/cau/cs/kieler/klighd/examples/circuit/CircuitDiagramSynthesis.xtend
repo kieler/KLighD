@@ -123,7 +123,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
                 //  a negative number causes the port to be moved inside the knode
                 // we, however, want this movement only in case of non-atomic circuits,
                 //  i.e. such containing an inner circuit network
-                it.setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, if (atomicCircuit) 0f else -3f);
+                it.setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, if (atomicCircuit) 0.0 else -3.0);
                 
                 // attach a simple rectangular figure filled with black color
                 //  and slightly rounded corners 
@@ -236,7 +236,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         node.ports.head.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.WEST);
         node.ports.last => [
             it.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.EAST);
-            it.setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, 0f);
+            it.setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, 0.0);
             it.setPortSize(5, 5);
             it.data.removeAll(it.data.filter(typeof(KRendering)));
             
@@ -266,7 +266,7 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
             it.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.WEST);
         ];
         node.ports.last.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.EAST)
-                       .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -1f);
+                       .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -1.0);
         
         node.addRectangle => [
             it.invisible = true;
@@ -306,10 +306,10 @@ class CircuitDiagramSynthesis extends AbstractDiagramSynthesis<Circuit> {
         
         node.ports.forEach[
             it.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.WEST)
-              .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -8f);
+              .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -8.0);
         ];
         node.ports.last.setLayoutOption(CoreOptions.PORT_SIDE, PortSide.EAST)
-                       .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -1f);
+                       .setLayoutOption(CoreOptions.PORT_BORDER_OFFSET, -1.0);
         
         node.addRectangle => [
             it.invisible = true;

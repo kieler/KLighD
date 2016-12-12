@@ -23,17 +23,17 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Set;
 
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.core.util.selection.DefaultSelectionIterator;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.DefaultSelectionIterator;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController.JunctionPointCamera;
@@ -329,7 +329,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
      * @return the iterator
      */
     protected Iterator<KGraphElement> getConnectedElements(final KEdge edge) {
-        return ElkUtil.getConnectedElements(edge, new DefaultSelectionIterator(edge, 
+        return KGraphUtil.getConnectedElements(edge, new DefaultSelectionIterator(edge, 
                 includePortsWithinConnectedEdges, false), new DefaultSelectionIterator(edge, 
                 includePortsWithinConnectedEdges, true));
     }

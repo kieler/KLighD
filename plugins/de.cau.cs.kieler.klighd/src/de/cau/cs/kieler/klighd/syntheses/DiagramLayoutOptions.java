@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.syntheses;
 
 import java.util.EnumSet;
 
+import org.eclipse.elk.core.math.ElkMargin;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.BoxLayouterOptions;
 import org.eclipse.elk.core.options.CoreOptions;
@@ -30,7 +31,6 @@ import org.eclipse.elk.core.options.SizeConstraint;
 import org.eclipse.elk.core.options.SizeOptions;
 import org.eclipse.elk.core.util.BoxLayoutProvider;
 import org.eclipse.elk.core.util.FixedLayoutProvider;
-import org.eclipse.elk.core.util.nodespacing.Spacing.Margins;
 import org.eclipse.elk.graph.properties.IProperty;
 
 /**
@@ -121,13 +121,8 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#ADDITIONAL_PORT_SPACE;
      */
-    public static final IProperty<Margins> ADDITIONAL_PORT_SPACE =
+    public static final IProperty<ElkMargin> ADDITIONAL_PORT_SPACE =
             CoreOptions.SPACING_PORT_SURROUNDING;
-
-    /**
-     * @see LayoutOptions#BORDER_SPACING
-     */
-    public static final IProperty<Float> BORDER_SPACING = CoreOptions.SPACING_BORDER;
 
     /**
      * @see LayoutOptions#DIRECTION
@@ -142,7 +137,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#LABEL_SPACING
      */
-    public static final IProperty<Float> LABEL_SPACING = CoreOptions.SPACING_LABEL;
+    public static final IProperty<Float> LABEL_SPACING = CoreOptions.SPACING_LABEL_LABEL;
 
     /**
      * @see LayoutOptions#LAYOUT_HIERARCHY
@@ -160,7 +155,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#OFFSET
      */
-    public static final IProperty<Float> OFFSET = CoreOptions.PORT_BORDER_OFFSET;
+    public static final IProperty<Double> OFFSET = CoreOptions.PORT_BORDER_OFFSET;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT
@@ -213,7 +208,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#PORT_SPACING
      */
-    public static final IProperty<Float> PORT_SPACING = CoreOptions.SPACING_PORT;
+    public static final IProperty<Float> PORT_SPACING = CoreOptions.SPACING_PORT_PORT;
 
     /**
      * @see LayoutOptions#PORT_SIDE
@@ -234,6 +229,6 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#SPACING
      */
-    public static final IProperty<Float> SPACING = CoreOptions.SPACING_NODE;
+    public static final IProperty<Float> SPACING = CoreOptions.SPACING_NODE_NODE;
 
 }

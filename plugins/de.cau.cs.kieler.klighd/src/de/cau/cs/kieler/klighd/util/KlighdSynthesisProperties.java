@@ -79,8 +79,11 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
             "klighd.suppressSizeEstimation", false);
 
     /**
-     * Whether to suppress edge adjustment or not. If active, this causes KLighD to not mess with source
-     * and target points of edges when applying layout information back to the view model.
+     * Whether to suppress edge adjustment or not. If edge adjustment is active, KLighD makes sure
+     * that the source and target point of each edge really connects to the node's border (or the
+     * port), even if the layout algorithm did not compute the coordinates that way. If edge
+     * adjustment is suppressed, KLighD applies the coordinates computed by the layout algorithm
+     * without messing with them.
      */
     public static final IProperty<Boolean> SUPPRESS_EDGE_ADJUSTMENT = new Property<Boolean>(
             "klighd.suppressEdgeAdjustment", false);
