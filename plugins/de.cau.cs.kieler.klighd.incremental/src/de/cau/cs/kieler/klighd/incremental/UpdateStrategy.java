@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
+import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.incremental.diff.KComparison;
 import de.cau.cs.kieler.klighd.incremental.merge.KGraphDataFilter;
@@ -53,7 +54,7 @@ public class UpdateStrategy implements IUpdateStrategy {
     /** the priority for this update strategy. */
     public static final int PRIORITY = 30;
 
-    private SimpleUpdateStrategy fallbackDelegate = null;
+    private IUpdateStrategy fallbackDelegate = null;
 
     /**
      * {@inheritDoc}
@@ -114,10 +115,14 @@ public class UpdateStrategy implements IUpdateStrategy {
     private void fallback(final KNode baseModel, final KNode newModel,
             final ViewContext viewContext) {
 
-        if (this.fallbackDelegate == null) {
-            this.fallbackDelegate = new SimpleUpdateStrategy();
+        if (fallbackDelegate == null) {
+            fallbackDelegate =
+                    KlighdDataManager.getInstance().getNextPrioritizedUpdateStrategy(this);
+            if (fallbackDelegate == null) {
+                fallbackDelegate = new SimpleUpdateStrategy();
+            }
         }
-        this.fallbackDelegate.update(baseModel, newModel, viewContext);
+        fallbackDelegate.update(baseModel, newModel, viewContext);
     }
 
     /**
