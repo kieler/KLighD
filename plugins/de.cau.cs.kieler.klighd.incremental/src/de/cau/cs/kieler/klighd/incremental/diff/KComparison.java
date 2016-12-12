@@ -13,7 +13,6 @@
 package de.cau.cs.kieler.klighd.incremental.diff;
 
 import java.util.Collection;
-import java.util.Map;
 
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
