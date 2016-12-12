@@ -152,7 +152,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     }
 
      /** The aspect ratio is rounded to two decimal places. */
-     private static final float ASPECT_RATIO_ROUND = 100;
+     private static final double ASPECT_RATIO_ROUND = 100;
 
     /**
      * We support special layout options whose value we infer if they are not explicitly set on the
@@ -172,7 +172,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
 
             final Control control = viewer.getControl();
 
-            final RunnableWithResult<Float> runnable = new AbstractRunnableWithResult<Float>() {
+            final RunnableWithResult<Double> runnable = new AbstractRunnableWithResult<Double>() {
 
                 public void run() {
                     final Point size;
