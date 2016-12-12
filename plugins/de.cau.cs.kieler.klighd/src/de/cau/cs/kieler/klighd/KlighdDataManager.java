@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -129,6 +130,9 @@ public final class KlighdDataManager {
 
     /** the mapping of ids on the associated update strategies. */
     private Map<String, IUpdateStrategy> idUpdateStrategyMapping = Maps.newHashMap();
+    
+    /** the mapping of priorities on the associated update strategies, sorted by priority. */
+    private TreeMap<Integer, IUpdateStrategy> priorityUpdateStrategyMapping = Maps.newTreeMap();
 
     private IUpdateStrategy highestPriorityUpdateStrategy = null;
 
@@ -258,6 +262,8 @@ public final class KlighdDataManager {
                             reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null);
                         } else {
                             idUpdateStrategyMapping.put(id, updateStrategy);
+                            priorityUpdateStrategyMapping.put(updateStrategy.getPriority(),
+                                    updateStrategy);
                             if (this.highestPriorityUpdateStrategy == null
                                     || this.highestPriorityUpdateStrategy.getPriority() < updateStrategy
                                             .getPriority()) {
@@ -564,6 +570,27 @@ public final class KlighdDataManager {
      */
     public IUpdateStrategy getHighestPriorityUpdateStrategy() {
         return this.highestPriorityUpdateStrategy;
+    }
+    
+    /**
+     * Returns one of those registered {@link IUpdateStrategy IUpdateStrategies} with the highest
+     * priority strictly less than the given strategy. If multiple {@link IUpdateStrategy
+     * IUpdateStrategies} with such a priority are registered, no assertion on the provided one can
+     * be made!
+     * 
+     * @param strategy
+     *            the update strategy to return the next lower prioritized to.
+     * @return one of those registered {@link IUpdateStrategy IUpdateStrategies} with the highest
+     *         priority strictly less than the given strategy or {@code null} if none applicable.
+     */
+    public IUpdateStrategy getNextPrioritizedUpdateStrategy(final IUpdateStrategy strategy) {
+        Entry<Integer, IUpdateStrategy> lowerEntry =
+                priorityUpdateStrategyMapping.lowerEntry(strategy.getPriority());
+        if (lowerEntry != null) {
+            return lowerEntry.getValue();
+        } else {
+            return null;
+        }
     }
 
 
