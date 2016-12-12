@@ -587,7 +587,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     /**
      * {@inheritDoc}
      */
-    public void scale(final KNode diagramElement, final float factor) {
+    public void scale(final KNode diagramElement, final double factor) {
         diagramElement.setProperty(CoreOptions.SCALE_FACTOR, factor);
 
         if (isExpanded(diagramElement)) {
@@ -600,8 +600,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     /**
      * {@inheritDoc}
      */
-    public float getScale(final KNode diagramElement) {
-        return diagramElement.getProperty(CoreOptions.SCALE_FACTOR);
+    public double getScale(final KNode diagramElement) {
+        return diagramElement.getProperty(CoreOptions.SCALE_FACTOR).floatValue();
     }
 
     /**

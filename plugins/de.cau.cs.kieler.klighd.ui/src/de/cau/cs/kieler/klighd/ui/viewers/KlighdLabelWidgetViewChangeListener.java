@@ -46,7 +46,7 @@ class KlighdLabelWidgetViewChangeListener implements IViewChangeListener {
      * @param labelWidget
      *            the employed labelWidget
      */
-    public KlighdLabelWidgetViewChangeListener(final PiccoloViewerUI viewer,
+    KlighdLabelWidgetViewChangeListener(final PiccoloViewerUI viewer,
             final StyledText labelWidget) {
         this.viewer = viewer;
         this.labelWidget = labelWidget;

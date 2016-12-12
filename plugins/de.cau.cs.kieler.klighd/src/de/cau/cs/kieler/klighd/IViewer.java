@@ -527,7 +527,7 @@ public interface IViewer {
      * @param factor
      *            the absolute factor by which the representing node is to be scaled
      */
-    void scale(Object semanticElement, float factor);
+    void scale(Object semanticElement, double factor);
 
     /**
      * Scales the given {@link KGraphElement} in the diagram, i.e. increases or decreases its size
@@ -538,7 +538,7 @@ public interface IViewer {
      * @param factor
      *            the absolute factor by which the representing node is to be scaled
      */
-    void scale(KNode diagramElement, float factor);
+    void scale(KNode diagramElement, double factor);
 
     /**
      * Provides the scale factor being currently applied to the diagram node representing the given
@@ -548,7 +548,7 @@ public interface IViewer {
      *            the semantic element being represented by a diagram node
      * @return the scale factor of the corresponding diagram node
      */
-    float getScale(Object semanticElement);
+    double getScale(Object semanticElement);
 
     /**
      * Provides the scale factor being currently applied to the given diagram node.
@@ -557,7 +557,7 @@ public interface IViewer {
      *            the diagram node whose scale factory is requested
      * @return the scale factor of the given diagram node
      */
-    float getScale(KNode diagramElement);
+    double getScale(KNode diagramElement);
 
 
     /* ----------------------------- */

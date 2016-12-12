@@ -436,14 +436,14 @@ public abstract class AbstractViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public void scale(final Object semanticElement, final float scale) {
+    public void scale(final Object semanticElement, final double scale) {
         getContextViewer().scale(semanticElement, scale);
     }
 
     /**
      * {@inheritDoc}
      */
-    public float getScale(final Object semanticElement) {
+    public double getScale(final Object semanticElement) {
         return getContextViewer().getScale(semanticElement);
     }
 

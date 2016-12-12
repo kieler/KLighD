@@ -454,7 +454,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                         }
                         break;
                     }
-                case FLOAT:
+                case DOUBLE:
                 case INT:
                 case OBJECT:
 
@@ -463,7 +463,7 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                     case STRING:
                         proposal = "\"\"";
                         break;
-                    case FLOAT:
+                    case DOUBLE:
                         proposal = "0.0";
                         break;
                     case INT:

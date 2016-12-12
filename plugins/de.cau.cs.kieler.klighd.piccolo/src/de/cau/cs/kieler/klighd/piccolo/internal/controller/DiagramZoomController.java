@@ -275,7 +275,7 @@ public class DiagramZoomController {
      * @return the corresponding {@link PBounds}
      */
     public static PBounds toPBounds(final KNode node) {
-        final float scale = node.getProperty(CoreOptions.SCALE_FACTOR);
+        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
         return new PBounds(node.getXpos(), node.getYpos(),
                 node.getWidth() * scale, node.getHeight() * scale);
     }
@@ -307,7 +307,7 @@ public class DiagramZoomController {
     private PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
         double maxX = nodeBounds.getWidth();
         double maxY = nodeBounds.getHeight();
-        final float scale = node.getProperty(CoreOptions.SCALE_FACTOR);
+        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
 
         // these min values are <= 0 at all times!
         double minX = 0;
@@ -319,7 +319,7 @@ public class DiagramZoomController {
         //  others may not have reasonable positions
         for (final KShapeLayout element : Iterables.filter(
                 Iterables.concat(node.getPorts(), node.getLabels()), isDisplayedFilter)) {
-            float val;
+            double val;
 
             val = element.getXpos() * scale;
             if (val < minX) {

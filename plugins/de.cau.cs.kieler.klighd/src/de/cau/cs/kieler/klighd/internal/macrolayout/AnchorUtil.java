@@ -93,7 +93,7 @@ public final class AnchorUtil {
      *             if {@code width} or {@code height} are negative.
      */
     public static KVector nearestBorderPoint(final KVector point, final double width,
-            final double height, final KRendering rendering, final float scale) {
+            final double height, final KRendering rendering, final double scale) {
 
         if (width < 0 || height < 0) {
             throw new IllegalArgumentException("width (" + width + ") and height (" + height
