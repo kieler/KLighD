@@ -383,28 +383,28 @@ public class StringViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public void scale(final Object semanticElement, final float factor) {
+    public void scale(final Object semanticElement, final double factor) {
         // do nothing
     }
 
     /**
      * {@inheritDoc}
      */
-    public void scale(final KNode diagramElement, final float factor) {
+    public void scale(final KNode diagramElement, final double factor) {
         // do nothing
     }
 
     /**
      * {@inheritDoc}
      */
-    public float getScale(final Object semanticElement) {
+    public double getScale(final Object semanticElement) {
         return 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public float getScale(final KNode diagramElement) {
+    public double getScale(final KNode diagramElement) {
         return 0;
     }
 

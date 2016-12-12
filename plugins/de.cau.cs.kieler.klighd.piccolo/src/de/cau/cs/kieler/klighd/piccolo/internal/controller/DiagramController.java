@@ -85,7 +85,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.util.LimitedKGraphContentAdapter;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.PNode;
@@ -869,7 +868,7 @@ public class DiagramController {
                     bounds = (PBounds) recordedChange.getValue();
                 }
 
-                final float scale;
+                final double scale;
                 final boolean scaleHasChanged;
                 
                 // check whether the scale must be updated, only valid for KNodes
@@ -878,7 +877,7 @@ public class DiagramController {
                             .getProperty(CoreOptions.SCALE_FACTOR);
                     scaleHasChanged = scale != shapeNode.getScale();
                 } else {
-                    scale = 1f;
+                    scale = 1.0;
                     scaleHasChanged = false;
                 }
 
@@ -889,13 +888,13 @@ public class DiagramController {
                     // note the special behavior of FadeNodeInActivity if 'bounds' is 'null',
                     //  i.e. 'LAYOUT_DATA_UNCHANGED_VALUE' was notified
                     activity = new FadeNodeInActivity(shapeNode, bounds,
-                            scale, animationTime > 0 ? animationTime : 1);
+                            (float) scale, animationTime > 0 ? animationTime : 1);
                 } else if (bounds == null && !scaleHasChanged) {
                     continue;
 
                 } else {
                     activity = new ApplySmartBoundsActivity(shapeNode, bounds,
-                            scale, animationTime > 0 ? animationTime : 1);
+                            (float) scale, animationTime > 0 ? animationTime : 1);
                 }
             }
             if (animationTime > 0) {
@@ -1664,8 +1663,8 @@ public class DiagramController {
         }
 
         NodeUtil.applyBounds(nodeNode, (KShapeLayout) nodeNode.getViewModelElement());
-        Float scale = nodeNode.getViewModelElement().getProperty(CoreOptions.SCALE_FACTOR);
-        if (scale != Float.valueOf(1f)) {
+        Double scale = nodeNode.getViewModelElement().getProperty(CoreOptions.SCALE_FACTOR);
+        if (scale != Double.valueOf(1.0)) {
             nodeNode.setScale(scale.doubleValue());
         }
     }

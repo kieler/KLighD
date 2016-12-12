@@ -137,7 +137,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#LABEL_SPACING
      */
-    public static final IProperty<Float> LABEL_SPACING = CoreOptions.SPACING_LABEL_LABEL;
+    public static final IProperty<Double> LABEL_SPACING = CoreOptions.SPACING_LABEL_LABEL;
 
     /**
      * @see LayoutOptions#LAYOUT_HIERARCHY
@@ -208,7 +208,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#PORT_SPACING
      */
-    public static final IProperty<Float> PORT_SPACING = CoreOptions.SPACING_PORT_PORT;
+    public static final IProperty<Double> PORT_SPACING = CoreOptions.SPACING_PORT_PORT;
 
     /**
      * @see LayoutOptions#PORT_SIDE
@@ -229,6 +229,6 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#SPACING
      */
-    public static final IProperty<Float> SPACING = CoreOptions.SPACING_NODE_NODE;
+    public static final IProperty<Double> SPACING = CoreOptions.SPACING_NODE_NODE;
 
 }

@@ -666,7 +666,7 @@ public final class DiagramSyntheses {
      *            the initial scale factor of <code>node</code>'s representation in the diagram
      * @return <code>node</code> for convenience
      */
-    public static KNode initiallyScale(final KNode node, final float scale) {
+    public static KNode initiallyScale(final KNode node, final double scale) {
         node.setProperty(CoreOptions.SCALE_FACTOR, scale);
         return node;
     }

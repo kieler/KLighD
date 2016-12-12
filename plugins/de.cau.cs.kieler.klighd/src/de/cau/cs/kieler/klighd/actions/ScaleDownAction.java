@@ -40,7 +40,7 @@ public class ScaleDownAction implements IAction {
             return ActionResult.createResult(false);
 
         } else {
-            final float scale = viewer.getScale(node);
+            final double scale = viewer.getScale(node);
 
             if (scale > 1) {
                 viewer.scale(node, viewer.getScale(node) - 1);

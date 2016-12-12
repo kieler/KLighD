@@ -343,8 +343,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             //   handed over by means of the MIN_WIDTH/MIN_HEIGHT properties
             //  in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
             //   definitions are also relevant
-            node.setProperty(CoreOptions.NODE_SIZE_MIN_WIDTH, size.getWidth());
-            node.setProperty(CoreOptions.NODE_SIZE_MIN_HEIGHT, size.getHeight());
+            node.setProperty(CoreOptions.NODE_SIZE_MIN_WIDTH, (double) size.getWidth());
+            node.setProperty(CoreOptions.NODE_SIZE_MIN_HEIGHT, (double) size.getHeight());
             if (!isCompoundNode) {
                 // in case of non-compound nodes the node size is usually taken from the layoutLayout
                 layoutNode.setDimensions(size.getWidth(), size.getHeight());
@@ -720,7 +720,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         if (adjustScaling) {
             final KGraphPackage pack = KGraphPackage.eINSTANCE;
             final EObject container = sourceShapeLayout.eContainer();
-            final float scale;
+            final double scale;
 
             if (pack.getKNode().isInstance(container)) {
                 scale = sourceShapeLayout.getProperty(CoreOptions.SCALE_FACTOR);
@@ -788,22 +788,22 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         }
         
         if (adjustScaling && containingGraph != null) {
-            final float scale = containingGraph.getProperty(CoreOptions.SCALE_FACTOR);
+            final double scale = containingGraph.getProperty(CoreOptions.SCALE_FACTOR);
             
             if (sourceShape instanceof ElkNode) {
                 targetShapeLayout.setPos(
                         (float) (sourceShape.getX() + offset.x),
                         (float) (sourceShape.getY() + offset.y));
                 targetShapeLayout.setSize(
-                        (float) sourceShape.getWidth() / scale,
-                        (float) sourceShape.getHeight() / scale);
+                        (float) (sourceShape.getWidth() / scale),
+                        (float) (sourceShape.getHeight() / scale));
             } else if (sourceShape instanceof ElkPort || sourceShape instanceof ElkLabel) {
                 targetShapeLayout.setPos(
-                        (float) sourceShape.getX() / scale,
-                        (float) sourceShape.getY() / scale);
+                        (float) (sourceShape.getX() / scale),
+                        (float) (sourceShape.getY() / scale));
                 targetShapeLayout.setSize(
-                        (float) sourceShape.getWidth() / scale,
-                        (float) sourceShape.getHeight() / scale);
+                        (float) (sourceShape.getWidth() / scale),
+                        (float) (sourceShape.getHeight() / scale));
 
                 final KVector anchor = targetShapeLayout.getProperty(CoreOptions.PORT_ANCHOR);
                 if (anchor != null) {
@@ -1215,7 +1215,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final KRendering portRendering, final KVector offset, final boolean adjustPortPos) {
 
         KVector p = new KVector(originPoint);
-        final float scale = node.getProperty(CoreOptions.SCALE_FACTOR);
+        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
 
         if (port == null) {
             p.add(offset);
