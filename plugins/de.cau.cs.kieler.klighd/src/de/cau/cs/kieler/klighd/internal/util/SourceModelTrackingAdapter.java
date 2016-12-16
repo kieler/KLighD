@@ -234,7 +234,6 @@ public class SourceModelTrackingAdapter extends EContentAdapter {
         if (type == Notification.SET
                 && ((IPropertyToObjectMapImpl) notification.getNotifier()).getKey() == MODEL_ELEMENT
                 && newValue != null) {
-            removeAdapter(notifier);
             addTracedElement(notifier);
             return;
 
