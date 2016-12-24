@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -616,6 +617,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     private void applyLayout(final LayoutMapping mapping, final boolean suppressEdgeAdjustment) {
         final Set<Entry<ElkGraphElement, Object>> elementMappings =
                 mapping.getGraphMap().entrySet();
+        
+        final Set<ElkGraphElement> processedElements = new HashSet<>();
 
         // apply the layout of all mapped layout elements back to the associated element
         for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {
@@ -644,6 +647,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkEdge(final ElkEdge layoutEdge) {
                     KEdge edge = (KEdge) element;
                     edgeLayoutToViewModel(layoutEdge, edge, mapping, !suppressEdgeAdjustment);
+                    
                     return true;
                 }
 
@@ -1014,8 +1018,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             checkAndCopyPoint(
                     sourceVector,
                     viewModelEdge.getSourcePoint(),
-                    viewModelEdge.getSource(),
-                    viewModelEdge.getSourcePort(),
+                    layoutSourceNode,
+                    layoutSourcePort,
                     viewModelEdge.getSource().getData(KRendering.class),
                     sourcePortRendering,
                     offset,
@@ -1108,8 +1112,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             checkAndCopyPoint(
                     targetVector,
                     viewModelEdge.getTargetPoint(),
-                    viewModelEdge.getTarget(),
-                    viewModelEdge.getTargetPort(),
+                    layoutTargetNode,
+                    layoutTargetPort,
                     viewModelEdge.getTarget().getData(KRendering.class),
                     targetPortRendering,
                     offset,
@@ -1211,7 +1215,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      */
     // SUPPRESS CHECKSTYLE NEXT Parameter
     private void checkAndCopyPoint(final KVector originPoint, final KPoint destinationPoint,
-            final KNode node, final KPort port, final KRendering nodeRendering,
+            final ElkNode node, final ElkPort port, final KRendering nodeRendering,
             final KRendering portRendering, final KVector offset, final boolean adjustPortPos) {
 
         KVector p = new KVector(originPoint);
@@ -1223,9 +1227,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     nodeRendering, scale);
         } else {
             if (adjustPortPos) {
-                offset.add(-port.getXpos() / scale, -port.getYpos() / scale);
+                offset.add(-port.getX() / scale, -port.getY() / scale);
             } else {
-                offset.add(-port.getXpos(), -port.getYpos());
+                offset.add(-port.getX(), -port.getY());
             }
 
             p.add(offset);
