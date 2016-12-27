@@ -1001,20 +1001,20 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             // wrt. the scaling factor being associated with the port's parent node
             final boolean adjustSourcePortPosition;
             
-            if (!KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())) {
-                adjustSourcePortPosition = false;
-                offset.x = -layoutSourceNode.getX();
-                offset.y = -layoutSourceNode.getY();
-            } else {
+            if (KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())) {
                 adjustSourcePortPosition = true;
                 offset.x = relativeNodeInsets.getLeft();
                 offset.y = relativeNodeInsets.getTop();
+            } else {
+                adjustSourcePortPosition = false;
+                offset.x = -layoutSourceNode.getX();
+                offset.y = -layoutSourceNode.getY();
             }
 
             final KRendering sourcePortRendering = viewModelEdge.getSourcePort() == null
                     ? null
                     : viewModelEdge.getSourcePort().getData(KRendering.class);
-
+            
             checkAndCopyPoint(
                     sourceVector,
                     viewModelEdge.getSourcePoint(),
@@ -1085,25 +1085,26 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             
             offset.reset();
             
-            if (layoutSourceNode.getParent() == layoutTargetNode.getParent()) {
+            if (KGraphUtil.isSibling(viewModelEdge.getSource(), viewModelEdge.getTarget())) {
                 adjustTargetPortPosition = false;
                 
-                // The source and target are on the same level; just subtract the target position
-                offset.x = -layoutTargetNode.getX();
-                offset.y = -layoutTargetNode.getY();
-            } else {
-                // The source and target are on different levels; transform coordinate system
-                if (!ElkGraphUtil.isDescendant(layoutTargetNode, layoutSourceNode)) {
-                    adjustTargetPortPosition = true;
-                } else {
-                    adjustTargetPortPosition = false;
-                }
-//                ElkUtil.toAbsolute(offset, layoutEdge.getContainingNode());
-//                ElkUtil.toRelative(offset, layoutTargetNode.getParent());
+            } else if (KGraphUtil.isDescendant(viewModelEdge.getTarget(),
+                    viewModelEdge.getSource())) {
                 
-                offset.x -= layoutTargetNode.getX();
-                offset.y -= layoutTargetNode.getY();
+                adjustTargetPortPosition = true;
+                offset.x = relativeNodeInsets.getLeft();
+                offset.y = relativeNodeInsets.getTop();
+                
+            } else {
+                adjustTargetPortPosition = false;
+                offset.x = layoutTargetNode.getX();
+                offset.y = layoutTargetNode.getY();
             }
+            
+            // Adjust offset by the target node position (what is left after applying the offset
+            // to the target point should be the port position relative to the target node)
+            offset.x -= layoutTargetNode.getX();
+            offset.y -= layoutTargetNode.getY();
 
             final KRendering targetPortRendering = viewModelEdge.getTargetPort() == null
                     ? null

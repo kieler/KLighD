@@ -514,5 +514,17 @@ public final class KGraphUtil {
         }
         return false;
     }
+    
+    /**
+     * Determines whether the given two nodes are siblings, that is if they have the same parent
+     * node. If they do not have a parent node they are not considered siblings.
+     * 
+     * @param node1 the first node.
+     * @param node2 the second node.
+     * @return {@code true} if the two nodes have the same non-{@code null} parent.
+     */
+    public static boolean isSibling(final KNode node1, final KNode node2) {
+        return node1.getParent() == node2.getParent() && node1.getParent() != null;
+    }
 
 }
