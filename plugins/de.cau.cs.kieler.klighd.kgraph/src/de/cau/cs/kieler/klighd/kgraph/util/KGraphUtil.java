@@ -196,9 +196,16 @@ public final class KGraphUtil {
         
         // Label
         ensureLabel(node);
-        Set<NodeLabelPlacement> nlp = node.getProperty(CoreOptions.NODE_LABELS_PLACEMENT);
-        if (nlp.equals(NodeLabelPlacement.fixed())) {
-            node.setProperty(CoreOptions.NODE_LABELS_PLACEMENT, NodeLabelPlacement.insideCenter());
+        if (!node.getProperties().containsKey(CoreOptions.NODE_LABELS_PLACEMENT)) {
+            // If the node has children, we need to get the label out of the way a bit (we're not
+            // setting it up such that padding is computed to reserve space for the label, though)
+            if (node.getChildren().isEmpty()) {
+                node.setProperty(CoreOptions.NODE_LABELS_PLACEMENT,
+                        NodeLabelPlacement.insideCenter());
+            } else {
+                node.setProperty(CoreOptions.NODE_LABELS_PLACEMENT,
+                        NodeLabelPlacement.insideTopCenter());
+            }
         }
     }
 
