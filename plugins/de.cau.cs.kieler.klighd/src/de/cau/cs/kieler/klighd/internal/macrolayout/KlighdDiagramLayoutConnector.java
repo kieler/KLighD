@@ -632,7 +632,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkNode(final ElkNode layoutNode) {
                     final KNode node = (KNode) element;
                     
-                    shapeLayoutToViewModel(mapping, layoutNode, node, true, true);
+                    shapeToViewModel(mapping, layoutNode, node, true, true);
                     node.setProperty(INITIAL_NODE_SIZE, false);
 
                     // transfer the scale factor value since KIML might have reset it
@@ -646,7 +646,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 @Override
                 public Boolean caseElkEdge(final ElkEdge layoutEdge) {
                     KEdge edge = (KEdge) element;
-                    edgeLayoutToViewModel(layoutEdge, edge, mapping, !suppressEdgeAdjustment);
+                    edgeToViewModel(layoutEdge, edge, mapping, !suppressEdgeAdjustment);
                     
                     return true;
                 }
@@ -655,7 +655,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkPort(final ElkPort layoutPort) {
                     final KPort port = (KPort) element;
                     
-                    shapeLayoutToViewModel(mapping, layoutPort, port, false, true);
+                    shapeToViewModel(mapping, layoutPort, port, false, true);
                     port.setProperty(KlighdProperties.LAYOUT_PORT_SIDE,
                             layoutPort.getProperty(CoreOptions.PORT_SIDE));
                     return true;
@@ -665,7 +665,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkLabel(final ElkLabel layoutLabel) {
                     final KLabel label = (KLabel) element;
                     
-                    shapeLayoutToViewModel(mapping, layoutLabel, label, false, true);
+                    shapeToViewModel(mapping, layoutLabel, label, false, true);
 
                     // if the label's text was changed during layout, remember the new text in a
                     // special property
@@ -769,7 +769,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            s.t. the scaling of the corresponding node will be reverted to 100%, since the
      *            scaling is implemented by means of affine transforms on figure level.
      */
-    private void shapeLayoutToViewModel(final LayoutMapping mapping,
+    private void shapeToViewModel(final LayoutMapping mapping,
             final ElkShape sourceShape, final KShapeLayout targetShapeLayout,
             final boolean copyPadding, final boolean adjustScaling) {
 
@@ -779,7 +779,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         targetShapeLayout.eSetDeliver(false);
         targetShapeLayout.resetModificationFlag();
 
-        // MIGRATE Parent insets need to be applied to coordinates
+        // Parent insets need to be applied to coordinates
         KVector offset = new KVector();
         final ElkNode containingGraph = ElkGraphUtil.containingGraph(sourceShape);
         if (copyPadding && containingGraph != null) {
@@ -867,9 +867,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @param layoutEdge
      *            the layout edge layout
      */
-    private void edgeLayoutToLayoutGraph(final KEdge viewModelEdge,
-            final ElkEdge layoutEdge) {
-
+    private void edgeLayoutToLayoutGraph(final KEdge viewModelEdge, final ElkEdge layoutEdge) {
         if (viewModelEdge.getSourcePoint() == null) {
             viewModelEdge.setSourcePoint(
                     de.cau.cs.kieler.klighd.kgraph.KGraphFactory.eINSTANCE.createKPoint());
@@ -886,8 +884,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final KPoint sourcePoint = viewModelEdge.getSourcePoint();
         if (sourcePoint != null) {
             layoutEdgeSection.setStartLocation(
-                    sourcePoint.getX() + parentPadding.getLeft(),
-                    sourcePoint.getY() + parentPadding.getTop());
+                    sourcePoint.getX(),
+                    sourcePoint.getY());
         }
 
         // transfer the bend points, reusing any existing KPoint instances
@@ -906,8 +904,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             }
             
             destPoint.set(
-                    originPoint.getX() + parentPadding.getLeft(),
-                    originPoint.getY() + parentPadding.getTop());
+                    originPoint.getX(),
+                    originPoint.getY());
         }
         
         // remove any superfluous points
@@ -920,9 +918,12 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final KPoint targetPoint = viewModelEdge.getTargetPoint();
         if (targetPoint != null) {
             layoutEdgeSection.setEndLocation(
-                    targetPoint.getX() + parentPadding.getLeft(),
-                    targetPoint.getY() + parentPadding.getTop());
+                    targetPoint.getX(),
+                    targetPoint.getY());
         }
+        
+        // convert to the proper ELK coordinate system
+        KGraphUtil.toELKGraphCoordinateSystem(layoutEdge, parentPadding);
     }
 
     /**
@@ -951,13 +952,22 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the view model edge layout
      * @param adjustments
      */
-    private void edgeLayoutToViewModel(final ElkEdge layoutEdge,
+    private void edgeToViewModel(final ElkEdge layoutEdge,
             final KEdge viewModelEdge, final LayoutMapping mapping, final boolean adjustments) {
 
-        // do not notify listeners about any change on the displayed KGraph in order
+        // Do not notify listeners about any change on the displayed KGraph in order
         // to avoid unnecessary diagram refresh cycles
         final boolean deliver = viewModelEdge.eDeliver();
         viewModelEdge.eSetDeliver(false);
+        
+        // Find the KNode the view model edge coordinates are relative to
+        KNode kgraphEdgeCoordinatesOrigin =
+                KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())
+                    ? viewModelEdge.getSource()
+                    : viewModelEdge.getSource().getParent();
+        
+        // The coordinate systems of the layout and the view model edge can differ, so translate!
+        KGraphUtil.toKGraphCoordinateSystem(layoutEdge, kgraphEdgeCoordinatesOrigin.getInsets());
         
         // we want to transfer the EDGE_ROUTING and JUNCTION_POINTS since those may contain
         // information produced by the layout algorithm
@@ -967,13 +977,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 layoutEdge.getProperty(CoreOptions.JUNCTION_POINTS));
         
         final ElkEdgeSection layoutEdgeSection = layoutEdge.getSections().get(0);
-        
-        // Because of the way we construct the ELK Graph, the edge coordinates are relative to the
-        // correct node: the edge's containing node. However, they don't take insets into account,
-        // so we need to find the relevant insets
-        KNode relativeNode = (KNode) mapping.getGraphMap().get(layoutEdge.getContainingNode());
-        KInsets relativeNodeInsets = relativeNode.getInsets();
-        
         final KVector offset = new KVector();
         
         
@@ -986,8 +989,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 ElkGraphUtil.connectableShapeToPort(layoutEdge.getSources().get(0));
         
         final KVector sourceVector = new KVector(
-                layoutEdgeSection.getStartX() - relativeNodeInsets.getLeft(),
-                layoutEdgeSection.getStartY() - relativeNodeInsets.getTop());
+                layoutEdgeSection.getStartX(), layoutEdgeSection.getStartY());
         
         if (viewModelEdge.getSourcePoint() == null) {
             viewModelEdge.setSourcePoint(KGraphFactory.eINSTANCE.createKPoint());
@@ -1003,12 +1005,17 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             
             if (KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())) {
                 adjustSourcePortPosition = true;
-                offset.x = relativeNodeInsets.getLeft();
-                offset.y = relativeNodeInsets.getTop();
+                
+                KInsets sourceInsets = viewModelEdge.getSource().getInsets();
+                offset.x = sourceInsets.getLeft();
+                offset.y = sourceInsets.getTop();
             } else {
                 adjustSourcePortPosition = false;
-                offset.x = -layoutSourceNode.getX();
-                offset.y = -layoutSourceNode.getY();
+                
+                KVector sourcePositionInsetsAdjusted =
+                        insetsAdjustedPosition(layoutSourceNode, mapping);
+                offset.x = -sourcePositionInsetsAdjusted.x;
+                offset.y = -sourcePositionInsetsAdjusted.y;
             }
 
             final KRendering sourcePortRendering = viewModelEdge.getSourcePort() == null
@@ -1025,7 +1032,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     offset,
                     adjustSourcePortPosition);
         } else {
-            viewModelEdge.getSourcePoint().setPos((float) sourceVector.x, (float) sourceVector.y);
+            viewModelEdge.getSourcePoint().setPos(
+                    (float) sourceVector.x,
+                    (float) sourceVector.y);
         }
         viewModelEdge.getSourcePoint().eSetDeliver(sourcePointDeliver);
         
@@ -1046,10 +1055,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 destBendIter.add(destPoint);
             }
 
-            // MIGRATE Insets of parent node!
             destPoint.setPos(
-                    (float) originPoint.getX() - relativeNodeInsets.getLeft(),
-                    (float) originPoint.getY() - relativeNodeInsets.getTop());
+                    (float) originPoint.getX(),
+                    (float) originPoint.getY());
         }
         
         // remove any superfluous points
@@ -1068,8 +1076,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 ElkGraphUtil.connectableShapeToPort(layoutEdge.getTargets().get(0));
         
         final KVector targetVector = new KVector(
-                layoutEdgeSection.getEndX() - relativeNodeInsets.getLeft(),
-                layoutEdgeSection.getEndY() - relativeNodeInsets.getTop());
+                layoutEdgeSection.getEndX(), layoutEdgeSection.getEndY());
 
         if (viewModelEdge.getTargetPoint() == null) {
             viewModelEdge.setTargetPoint(KGraphFactory.eINSTANCE.createKPoint());
@@ -1092,8 +1099,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     viewModelEdge.getSource())) {
                 
                 adjustTargetPortPosition = true;
-                offset.x = relativeNodeInsets.getLeft();
-                offset.y = relativeNodeInsets.getTop();
+                KInsets sourceInsets = viewModelEdge.getSource().getInsets();
+                offset.x = sourceInsets.getLeft();
+                offset.y = sourceInsets.getTop();
                 
             } else {
                 adjustTargetPortPosition = false;
@@ -1131,6 +1139,25 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 (InternalEObject) viewModelEdge, Notification.SET,
                 KGraphPackage.KEDGE__BEND_POINTS, null, null);
         viewModelEdge.eNotify(notification);
+    }
+    
+    /**
+     * Returns the node's position not relative to its parent's top left corder, but to the top
+     * left corner of the parent's padding area.
+     */
+    private KVector insetsAdjustedPosition(final ElkNode elknode, final LayoutMapping mapping) {
+        KVector result = new KVector(elknode.getX(), elknode.getY());
+        
+        if (elknode.getParent() != null) {
+            KNode parentKNode = (KNode) mapping.getGraphMap().get(elknode.getParent());
+            KInsets parentInsets = parentKNode.getInsets();
+            
+            if (parentInsets != null) {
+                result.sub(parentInsets.getLeft(), parentInsets.getTop());
+            }
+        }
+        
+        return result;
     }
 
     /**

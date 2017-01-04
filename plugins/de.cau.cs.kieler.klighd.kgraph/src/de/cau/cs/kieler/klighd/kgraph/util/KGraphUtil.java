@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.kgraph.util;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
@@ -22,9 +23,12 @@ import org.eclipse.elk.core.options.EdgeLabelPlacement;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.PortSide;
 import org.eclipse.elk.core.options.SizeConstraint;
+import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.graph.ElkEdge;
 import org.eclipse.elk.graph.ElkGraphElement;
+import org.eclipse.elk.graph.ElkNode;
 import org.eclipse.elk.graph.ElkPort;
+import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
@@ -373,6 +377,109 @@ public final class KGraphUtil {
             // port is on the bottom
             return PortSide.SOUTH;
         }
+    }
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // INTERPLAY WITH THE ELK GRAPH
+    
+    /**
+     * Translates all coordinates of the given edge from ELK's to KLighD's coordinate system. ELK
+     * uses an edge's containing node's top left corner as the point all edge coordinates will be
+     * relative to. KLighD uses either the source node's parent, or the source node itself. This
+     * method converts from ELK- to KLighD-compatible coordinates, including all routing
+     * information as well as junction points and labels.
+     * 
+     * <p>If insets are passed to the method, those should be the insets of the {@link KNode} the
+     * edge coordinates are relative to in the KLighD graph. In that case, the resulting edge
+     * coordinates will not be relative to that node's top left corner, but to the top left corner
+     * of its inset area, which is the way it works in KLighD.
+     * 
+     * @param elkedge the edge whose layout information to change.
+     * @param insets optional insets of the node the edge coordinates are relative to in the
+     *               KLighD graph.
+     * @throws IllegalArgumentException if the edge does not have exactly one source and exactly
+     *                                  one target.
+     */
+    public static void toKGraphCoordinateSystem(final ElkEdge elkedge, final KInsets insets) {
+        // Find the edge's end points
+        if (elkedge.getSources().size() != 1 || elkedge.getTargets().size() != 1) {
+            throw new IllegalArgumentException("Edge must have exactly one source and one target");
+        }
+        
+        ElkNode source = ElkGraphUtil.connectableShapeToNode(elkedge.getSources().get(0));
+        ElkNode target = ElkGraphUtil.connectableShapeToNode(elkedge.getTargets().get(0));
+        
+        // First, find the node the edge coordinates would be relative to in KLighD. This is
+        // usually the source's parent node, unless the edge connects a node to one of its
+        // descendants
+        ElkNode coordinateOrigin = ElkGraphUtil.isDescendant(target, source)
+                ? source
+                : source.getParent();
+        
+        // Calculate the offset from the edge's current coordinate origin to the new one (if the
+        // two differ)
+        KVector offset = new KVector();
+        
+        if (coordinateOrigin != elkedge.getContainingNode()) {
+            ElkUtil.toAbsolute(offset, elkedge.getContainingNode());
+            ElkUtil.toRelative(offset, coordinateOrigin);
+        }
+        
+        // KLighD's coordinates are not relative to the top left border of a node, but to the top
+        // left corner of its insets area
+        if (insets != null) {
+            offset.sub(insets.getLeft(), insets.getTop());
+        }
+        
+        // Apply the offset to things
+        ElkUtil.translate(elkedge, offset.x, offset.y);
+    }
+    
+    /**
+     * Translates all coordinates of the given edge from KLighD's to ELK's coordinate system. This
+     * is the inverse of {@link #toKGraphCoordinateSystem(ElkEdge, KInsets)}. See that method for
+     * details.
+     * 
+     * @param elkedge the edge whose layout information to change.
+     * @param insets optional insets of the node the edge coordinates are relative to in the
+     *               KLighD graph.
+     * @throws IllegalArgumentException if the edge does not have exactly one source and exactly
+     *                                  one target.
+     */
+    public static void toELKGraphCoordinateSystem(final ElkEdge elkedge, final KInsets insets) {
+        // Find the edge's end points
+        if (elkedge.getSources().size() != 1 || elkedge.getTargets().size() != 1) {
+            throw new IllegalArgumentException("Edge must have exactly one source and one target");
+        }
+        
+        ElkNode source = ElkGraphUtil.connectableShapeToNode(elkedge.getSources().get(0));
+        ElkNode target = ElkGraphUtil.connectableShapeToNode(elkedge.getTargets().get(0));
+        
+        // First, find the node the edge coordinates would be relative to in KLighD. This is
+        // usually the source's parent node, unless the edge connects a node to one of its
+        // descendants
+        ElkNode coordinateOrigin = ElkGraphUtil.isDescendant(target, source)
+                ? source
+                : source.getParent();
+        
+        // Calculate the offset from the edge's current coordinate origin to the new one (if the
+        // two differ)
+        KVector offset = new KVector();
+        
+        if (coordinateOrigin != elkedge.getContainingNode()) {
+            ElkUtil.toAbsolute(offset, coordinateOrigin);
+            ElkUtil.toRelative(offset, elkedge.getContainingNode());
+        }
+        
+        // KLighD's coordinates are not relative to the top left border of a node, but to the top
+        // left corner of its insets area
+        if (insets != null) {
+            offset.add(insets.getLeft(), insets.getTop());
+        }
+        
+        // Apply the offset to things
+        ElkUtil.translate(elkedge, offset.x, offset.y);
     }
     
     
