@@ -8,5 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  de.cau.cs.kieler.klighd,
- de.cau.cs.kieler.klighd.piccolo,
- de.cau.cs.kieler.klighd.examples
+ de.cau.cs.kieler.klighd.piccolo
