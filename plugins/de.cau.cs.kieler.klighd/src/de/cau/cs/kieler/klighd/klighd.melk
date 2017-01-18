@@ -3,6 +3,7 @@ package de.cau.cs.kieler.klighd
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData
 import org.eclipse.elk.core.math.KVector
 import de.cau.cs.kieler.klighd.krendering.KRendering
+import org.eclipse.swt.graphics.RGB
 
 bundle {
     label "Klighd"
@@ -45,4 +46,21 @@ programmatic option viewer: IViewer {
 programmatic option kRendering: KRendering {
     label "KlighD KRendering"
     targets edges,labels,nodes,ports
+}
+
+group svgExport {
+    programmatic option transparentBackground: boolean {
+        label "Transparent SVG Background"
+        description "Whether the background should be left transparent or not"
+        default = false
+        targets parents
+    }
+    
+    programmatic option backgroundColor: RGB {
+        label "Background Color"
+        description "Color of the background if not transparent"
+        default = KlighdConstants.WHITE
+        targets parents
+        requires transparentBackground == false
+    }
 }

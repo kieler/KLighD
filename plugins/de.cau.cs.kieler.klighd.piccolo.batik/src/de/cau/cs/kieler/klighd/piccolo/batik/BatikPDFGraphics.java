@@ -128,7 +128,12 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         final GraphicContextDefaults defaults = new GraphicContextDefaults();
         ctx.setGraphicContextDefaults(defaults);
 
-        defaults.setBackground(Color.WHITE);
+        // Check if the background should be exported
+        if (!data.getTransparentBackground()) {
+            // Create a background with the configured color
+            defaults.setBackground(new Color(data.getBackgroundColor().red,
+                    data.getBackgroundColor().green, data.getBackgroundColor().blue));
+        }
 
         // this setting influences the default stroke color as well as the default paint (fill)
         // color!!

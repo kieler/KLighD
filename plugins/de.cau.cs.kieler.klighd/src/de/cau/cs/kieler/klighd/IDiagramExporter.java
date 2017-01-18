@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Control;
 
 /**
@@ -72,7 +73,11 @@ public interface IDiagramExporter {
         public final String description;
 
         private TilingData tilingInfo;
-
+        
+        private boolean transparentBackground;
+        private RGB backgroundColor;
+        
+        
         /**
          * Constructor.
          *
@@ -110,6 +115,8 @@ public interface IDiagramExporter {
             this.isEmbedFonts = embedFonts;
             this.tilingInfo = TilingData.createNonTiledData();
             this.description = null;
+            this.transparentBackground = false;
+            this.backgroundColor = KlighdConstants.WHITE;
         }
 
         /**
@@ -149,6 +156,8 @@ public interface IDiagramExporter {
             this.isEmbedFonts = embedFonts;
             this.tilingInfo = TilingData.createNonTiledData();
             this.description = description;
+            this.transparentBackground = false;
+            this.backgroundColor = KlighdConstants.WHITE;
         }
 
         /**
@@ -185,6 +194,8 @@ public interface IDiagramExporter {
             this.isEmbedFonts = embedFonts;
             this.tilingInfo = TilingData.createNonTiledData();
             this.description = null;
+            this.transparentBackground = false;
+            this.backgroundColor = KlighdConstants.WHITE;        
         }
 
         /**
@@ -258,6 +269,38 @@ public interface IDiagramExporter {
             }
             this.tilingInfo = tilingInfo;
         }
+        
+        
+        /**
+         * @return the backgroundColor
+         */
+        public RGB getBackgroundColor() {
+            return backgroundColor;
+        }
+        
+        /**
+         * @param backgroundColor the backgroundColor to set
+         */
+        public void setBackgroundColor(final RGB backgroundColor) {
+            this.backgroundColor = backgroundColor;
+        }
+        
+        /**
+         * 
+         * @return if the background should be transparent
+         */
+        public boolean getTransparentBackground() {
+            return transparentBackground;
+        }
+        
+        /**
+         * @param transparentBackground the transparentBackground to set
+         */
+        public void setTransparentBackground(final boolean transparentBackground) {
+            this.transparentBackground = transparentBackground;
+        }
+        
+        
     }
 
     /**

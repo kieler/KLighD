@@ -75,7 +75,7 @@ public class SaveAsImageDialog extends Dialog {
     /** the default dialog width. */
     private static final int DEFAULT_WIDTH = 500;
     /** the default dialog height. */
-    private static final int DEFAULT_HEIGHT = 330;
+    private static final int DEFAULT_HEIGHT = 400;
 
     /** the preference key for the file path. */
     private static final String PREFERENCE_FILE_PATH = "saveAsImageDialog.filePath"; //$NON-NLS-1$
@@ -94,6 +94,9 @@ public class SaveAsImageDialog extends Dialog {
         = "saveAsImageDialog.textAsShapes"; //$NON-NLS-1$
     /** the preference key for the embed fonts property. */
     private static final String PREFERENCE_EMBED_FONTS
+    = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
+    /** the preference key for the transparent background property. */
+    private static final String PREFERENCE_TRANSPARENT_BACKGROUND
     = "saveAsImageDialog.embedFonts"; //$NON-NLS-1$
     /** the preference keys for the tiling information. */
     private static final String PREFERENCE_TILING_IS_MAXSIZE =
@@ -126,6 +129,8 @@ public class SaveAsImageDialog extends Dialog {
     private Button textAsShapesCheckbox;
     /** the camera embed fonts checkbox. */
     private Button embedFontsCheckbox;
+    /** the transparent background checkbox. */
+    private Button transparentBackgroundCheckbox;
     /** the message image. */
     private Label messageImageLabel;
     /** the message label. */
@@ -410,6 +415,12 @@ public class SaveAsImageDialog extends Dialog {
         embedFontsCheckbox.setText(Messages.SaveAsImageDialog_embed_fonts);
         embedFontsCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_EMBED_FONTS));
 
+        // transparent background
+        transparentBackgroundCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+        transparentBackgroundCheckbox.setText(Messages.SaveAsImageDialog_transparent_background);
+        transparentBackgroundCheckbox
+        .setSelection(preferenceStore.getBoolean(PREFERENCE_TRANSPARENT_BACKGROUND));
+
         updateEmbedFontsCheckbox(textAsShapesCheckbox.getSelection(), embedFontsCheckbox.getSelection());
         textAsShapesCheckbox.addSelectionListener(new SelectionAdapter() {
             private boolean prevEmbedFonts = embedFontsCheckbox.getSelection();
@@ -637,6 +648,8 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_CAMERA_VIEWPORT, cameraViewportCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
         preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
+        preferenceStore.setValue(PREFERENCE_TRANSPARENT_BACKGROUND,
+                transparentBackgroundCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_EMBED_FONTS, embedFontsCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_TILING_IS_MAXSIZE, tilingInfo.isMaxsize);
         if (tilingInfo.isMaxsize) {
@@ -664,7 +677,8 @@ public class SaveAsImageDialog extends Dialog {
                 new Path(fileText.getText()), workspacePathCheckbox.getSelection(),
                 cameraViewportCheckbox.getSelection(), scaleSlider.getSelection(),
                 textAsShapesCheckbox.getSelection(), embedFontsCheckbox.getSelection());
-
+        exportData.setTransparentBackground(transparentBackgroundCheckbox.getSelection());
+        
         if (currentExporter.supportsTiling && tilingInfo.isTiled) {
             exportData.setTilingInfo(tilingInfo);
         }

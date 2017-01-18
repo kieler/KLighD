@@ -49,6 +49,7 @@ public class Messages extends NLS {
     public static String SaveAsImageDialog_use_camera_viewport_caption;
     public static String SaveAsImageDialog_text_as_shapes;
     public static String SaveAsImageDialog_embed_fonts;
+    public static String SaveAsImageDialog_transparent_background;
     public static String SaveAsImageDialog_tiling;
     public static String SaveAsImageDialog_tiling_options_caption;
     

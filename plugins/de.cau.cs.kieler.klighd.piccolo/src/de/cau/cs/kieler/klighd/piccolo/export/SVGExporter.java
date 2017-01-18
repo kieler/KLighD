@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.Status;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
-import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -103,9 +102,12 @@ public class SVGExporter extends KlighdCanvasExporter {
         //  (in case of an SVG output)
         graphics.setClip(extendedBounds);
 
-        // explicitly initialize the white background (required especially for SVG exports)
-        graphics.setFillColor(KlighdConstants.WHITE);
-        graphics.fill(extendedBounds);
+        // Check whether the background should be drawn
+        if (!data.getTransparentBackground()) {
+            // explicitly initialize the background with the color requested
+            graphics.setFillColor(data.getBackgroundColor());
+            graphics.fill(extendedBounds);
+        }
 
         // do the actual diagram drawing work
         drawDiagram(exportConfig, graphics, camera,
