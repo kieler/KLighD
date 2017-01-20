@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Textual ELK KGraph Language UI
 Bundle-Vendor: Kiel University
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.42.0.qualifier
 Bundle-SymbolicName: de.cau.cs.kieler.kgraph.text.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext.ui,

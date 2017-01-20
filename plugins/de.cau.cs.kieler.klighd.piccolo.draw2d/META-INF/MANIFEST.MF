@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KLighD Piccolo Binding Extension Supporting Draw2d Figures
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.draw2d;singleton:=true
-Bundle-Version: 0.6.0.qualifier
+Bundle-Version: 0.42.0.qualifier
 Bundle-Vendor: Kiel University
-Fragment-Host: de.cau.cs.kieler.klighd.piccolo;bundle-version="[0.10.0,0.11.0)"
+Fragment-Host: de.cau.cs.kieler.klighd.piccolo
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava;bundle-version="10.0.0",
  org.eclipse.draw2d;bundle-version="3.7.0"
