@@ -61,7 +61,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.XMLMemento;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -384,7 +383,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         Composite diagramCompositeContainer = new Composite(parent, SWT.NONE);
         
         FillLayout fillLayout = new FillLayout();
-        fillLayout.marginHeight = 5;
+        fillLayout.marginHeight = 5; // SUPPRESS CHECKSTYLE NEXT 2 MagicNumber
         fillLayout.marginWidth = 5;
         diagramCompositeContainer.setLayout(fillLayout);
         
@@ -422,7 +421,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         infoBar.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
         infoBar.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
         
-        GridLayout layout = new GridLayout(3, false);
+        GridLayout layout = new GridLayout(3, false); // SUPPRESS CHECKSTYLE MagicNumber
         layout.marginHeight = 0;
         infoBar.setLayout(layout);
 

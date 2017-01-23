@@ -23,7 +23,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Kiel University
 Export-Package: de.cau.cs.kieler.klighd.ui,
  de.cau.cs.kieler.klighd.ui.internal;x-friends:="de.cau.cs.kieler.klighd.ui.contrib3x",
- de.cau.cs.kieler.klighd.ui.internal.handlers;x-friends:="de.cau.cs.kieler.klighd.ui.contrib3x",
+ de.cau.cs.kieler.klighd.ui.internal.handlers;x-friends:="de.cau.cs.kieler.klighd.ui.contrib3x,de.cau.cs.kieler.klighd.ui.view",
  de.cau.cs.kieler.klighd.ui.internal.options;x-internal:=true,
  de.cau.cs.kieler.klighd.ui.modifymodel,
  de.cau.cs.kieler.klighd.ui.parts,

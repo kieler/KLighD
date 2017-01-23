@@ -41,7 +41,7 @@ public class XtextEditorModelChangeAdapter implements IXtextModelListener {
          * @param resource
          *            the models resource
          */
-        void onModelChanged(final XtextEditor editor, final XtextResource resource);
+        void onModelChanged(XtextEditor editor, XtextResource resource);
     }
 
     /** The listener to be notified by this adapter. */

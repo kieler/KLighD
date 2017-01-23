@@ -14,14 +14,12 @@
 package de.cau.cs.kieler.klighd.ui.parts;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -36,7 +34,6 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
-import org.osgi.framework.Bundle;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -46,6 +43,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
+import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.options.DiagramSideBar;
 import de.cau.cs.kieler.klighd.ui.printing.PrintAction;
 import de.cau.cs.kieler.klighd.ui.viewers.UiContextViewer;
@@ -65,9 +63,6 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  */
 public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         ILayoutConfigProvider {
-
-    /** The KIML UI plug-in's id, used for avoiding a hard dependency for just revealing the image. */
-    public static final String KIML_UI_PLUGIN_ID = "de.cau.cs.kieler.kiml.ui";
 
     /** The id this {@link ViewPart} is registered with in the extension point. */
     public static final String VIEW_ID = "de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart";
@@ -330,15 +325,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         });
 
         // automatic layout button
-        toolBar.add(new Action("Arrange", IAction.AS_PUSH_BUTTON) {
-            // Constructor
-            {
-                final Bundle kimlUI = Platform.getBundle(KIML_UI_PLUGIN_ID);
-                if (kimlUI != null) {
-                    setImageDescriptor(ImageDescriptor.createFromURL(
-                        kimlUI.getEntry("icons/menu16/kieler-arrange.gif")));
-                }
-            }
+        toolBar.add(new Action("Arrange", 
+                KlighdUIPlugin.getImageDescriptor("icons/menu16/arrange.gif")) {
 
             @Override
             public void run() {

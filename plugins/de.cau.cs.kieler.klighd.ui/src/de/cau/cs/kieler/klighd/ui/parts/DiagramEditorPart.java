@@ -423,7 +423,7 @@ public class DiagramEditorPart extends EditorPart implements
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Object getAdapter(final Class type) {
         if (type == IContentOutlinePage.class && viewer instanceof IDiagramOutlinePage.Provider) {
 
