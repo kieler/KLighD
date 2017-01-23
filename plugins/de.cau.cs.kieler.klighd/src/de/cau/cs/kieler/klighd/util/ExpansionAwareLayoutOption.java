@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.elk.core.data.LayoutMetaDataService;
-import org.eclipse.elk.core.util.GraphDataUtil;
+import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.util.IDataObject;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
@@ -165,7 +165,6 @@ public final class ExpansionAwareLayoutOption {
          * </pre>.
          */
         public void parse(final String string) {
-            final LayoutMetaDataService dataService = LayoutMetaDataService.getInstance();
             final Iterator<String> definitions =
                     Arrays.asList(string.trim().split("\\(\\(|;;|\\)\\)")).iterator();
             
@@ -188,7 +187,7 @@ public final class ExpansionAwareLayoutOption {
                     final String key = keyVals.next().trim();
                     if (keyVals.hasNext()) {
                         final String value = keyVals.next().trim();
-                        GraphDataUtil.loadDataElement(dataService, holder, key, value);
+                        setOption(holder, key, value);
                     }
                 }
             }
@@ -219,6 +218,23 @@ public final class ExpansionAwareLayoutOption {
             }
 
             return result.replaceFirst(",, $", "");
+        }
+        
+        /**
+         * Set a layout option using a serialized key / value pair.
+         * 
+         * @param holder theproperty holder to modify
+         * @param id the layout option identifier
+         * @param value the value for the layout option
+         */
+        private static void setOption(final IPropertyHolder holder, final String id, final String value) {
+            LayoutOptionData optionData = LayoutMetaDataService.getInstance().getOptionData(id);
+            if (optionData != null) {
+                Object obj = optionData.parseValue(value);
+                if (obj != null) {
+                    holder.setProperty(optionData, obj);
+                }
+            }
         }
     }
 }
