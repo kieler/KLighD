@@ -140,13 +140,6 @@ public final class DiagramLayoutOptions {
     public static final IProperty<Double> LABEL_SPACING = CoreOptions.SPACING_LABEL_LABEL;
 
     /**
-     * @see LayoutOptions#LAYOUT_HIERARCHY
-     * @deprecated Use {@link #HIERARCHY_HANDLING} for finer control and the option to only layout a
-     *             certain slice of the layout tree
-     */
-    public static final IProperty<Boolean> LAYOUT_HIERARCHY = CoreOptions.LAYOUT_HIERARCHY;
-
-    /**
      * @see LayoutOptions#HIERARCHY_HANDLING
      */
     public static final IProperty<HierarchyHandling> HIERARCHY_HANDLING =
