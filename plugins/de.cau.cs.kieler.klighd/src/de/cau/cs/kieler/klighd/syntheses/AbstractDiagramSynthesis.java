@@ -565,11 +565,17 @@ public abstract class AbstractDiagramSynthesis<S> implements ISynthesis {
     }
 
     /**
-     * Getter.
+     * Getter for the {@link ViewContext} being used within this diagram synthesis.
+     * <br>
+     * Normally you don't need to access this ViewContext in you application code, but there
+     * are some special cases where it is convenient to access this.
+     * <br>
+     * Make sure to not keep references on the view context for too long, as it might lead to 
+     * memory leaks. 
      *
-     * @return the currently used transformation context or <code>null</code> if no one is set.
+     * @return the currently used transformation context or <code>null</code> if none is set.
      */
-    protected ViewContext getUsedContext() {
+    public ViewContext getUsedContext() {
         return this.currentContext;
     }
 
