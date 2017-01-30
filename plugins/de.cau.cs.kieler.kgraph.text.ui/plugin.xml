@@ -125,17 +125,7 @@
           </command>
       </menuContribution>
      </extension>
-    <extension
-          point="de.cau.cs.kieler.kiml.formats.graphFormats">
-       <handler
-             class="de.cau.cs.kieler.kgraph.text.ui.KGraphExecutableExtensionFactory:de.cau.cs.kieler.kgraph.text.ui.KGraphTextHandler"
-             description="Xtext-based notation for the KGraph format."
-             extensions="kgt"
-             id="de.cau.cs.kieler.kgraph.text"
-             name="KGraph Text">
-       </handler>
-    </extension>
-    
+
     <extension
          point="org.eclipse.ui.commands">
        <command

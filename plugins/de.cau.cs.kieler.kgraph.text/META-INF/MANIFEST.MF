@@ -21,6 +21,7 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
  org.eclipse.core.resources,
+ de.cau.cs.kieler.formats.kgraph,
  de.cau.cs.kieler.klighd.kgraph
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
