@@ -40,7 +40,7 @@
                     variable="activeMenuSelection">
                  <iterate>
                     <instanceof
-                          value="org.eclipse.elk.graph.ElkNode">
+                          value="de.cau.cs.kieler.klighd.kgraph.KNode">
                     </instanceof>
                  </iterate>
               </with>
