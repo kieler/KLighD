@@ -12,7 +12,6 @@
  */
 package de.cau.cs.kieler.klighd.internal.macrolayout;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -133,7 +132,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * Static predicate definition avoiding the recurring creation and disposal of instances of the
      * filter predicate.
      */
-    private static final Predicate<de.cau.cs.kieler.klighd.kgraph.KNode> NODE_FILTER =
+    private static final Predicate<KNode> NODE_FILTER =
             Predicates.and(
                     RenderingContextData.IS_ACTIVE,
                     KlighdPredicates.kgePropertyPredicate(CoreOptions.NO_LAYOUT, false, true));
@@ -147,13 +146,13 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      */
     @Override
     public LayoutMapping buildLayoutGraph(final IWorkbenchPart workbenchPart, final Object diagramPart) {
-        final de.cau.cs.kieler.klighd.kgraph.KNode viewModel;
+        final KNode viewModel;
         final ViewContext viewContext;
 
         // search for the root node
-        if (diagramPart instanceof de.cau.cs.kieler.klighd.kgraph.KNode) {
+        if (diagramPart instanceof KNode) {
             viewContext = null;
-            viewModel = (de.cau.cs.kieler.klighd.kgraph.KNode) diagramPart;
+            viewModel = (KNode) diagramPart;
         } else if (diagramPart instanceof ViewContext) {
             viewContext = (ViewContext) diagramPart;
             viewModel = viewContext.getViewModel();
@@ -203,11 +202,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the workbenchPart in which the layout takes place, if any
      * @return the layout graph mapping
      */
-    public LayoutMapping buildLayoutGraph(final de.cau.cs.kieler.klighd.kgraph.KNode viewModel,
+    public LayoutMapping buildLayoutGraph(final KNode viewModel,
             final boolean performSizeEstimation, final IWorkbenchPart workbenchPart) {
         
         final LayoutMapping mapping = new LayoutMapping(workbenchPart);
-        mapping.setProperty(EDGES, new LinkedList<de.cau.cs.kieler.klighd.kgraph.KEdge>());
+        mapping.setProperty(EDGES, new LinkedList<KEdge>());
 
         // set the parent element
         mapping.setParentElement(viewModel);
@@ -391,7 +390,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         }
 
         // store all the edges to process them later
-        final List<de.cau.cs.kieler.klighd.kgraph.KEdge> edges = mapping.getProperty(EDGES);
+        final List<KEdge> edges = mapping.getProperty(EDGES);
         Iterables.addAll(edges,
                 Iterables.filter(node.getOutgoingEdges(), RenderingContextData.IS_ACTIVE));
     }
@@ -510,7 +509,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         mapping.getGraphMap().put(layoutEdge, edge);
 
         // process labels
-        for (final de.cau.cs.kieler.klighd.kgraph.KLabel label
+        for (final KLabel label
                 : Iterables.filter(edge.getLabels(), RenderingContextData.IS_ACTIVE)) {
             
             createLabel(mapping, label, layoutEdge, estimateLabelSizes, true);
@@ -618,8 +617,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final Set<Entry<ElkGraphElement, Object>> elementMappings =
                 mapping.getGraphMap().entrySet();
         
-        final Set<ElkGraphElement> processedElements = new HashSet<>();
-
         // apply the layout of all mapped layout elements back to the associated element
         for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {
             final ElkGraphElement layoutElement = elementMapping.getKey();
@@ -870,7 +867,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     private void edgeLayoutToLayoutGraph(final KEdge viewModelEdge, final ElkEdge layoutEdge) {
         if (viewModelEdge.getSourcePoint() == null) {
             viewModelEdge.setSourcePoint(
-                    de.cau.cs.kieler.klighd.kgraph.KGraphFactory.eINSTANCE.createKPoint());
+                    KGraphFactory.eINSTANCE.createKPoint());
         }
         
         // We need to apply the effective parent padding that apply to the edge
@@ -1047,7 +1044,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final ListIterator<KPoint> destBendIter = viewModelEdge.getBendPoints().listIterator();
         while (originBendIter.hasNext()) {
             final ElkBendPoint originPoint = originBendIter.next();
-            de.cau.cs.kieler.klighd.kgraph.KPoint destPoint;
+            KPoint destPoint;
             if (destBendIter.hasNext()) {
                 destPoint = destBendIter.next();
             } else {
@@ -1166,7 +1163,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *
      * @param edge an excluded edge
      */
-    private void handleExcludedEdge(final de.cau.cs.kieler.klighd.kgraph.KEdge edge) {
+    private void handleExcludedEdge(final KEdge edge) {
         boolean deliver = edge.eDeliver();
         edge.eSetDeliver(false);
         edge.getBendPoints().clear();
@@ -1190,7 +1187,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         
         KPoint sourceKPoint = edge.getSourcePoint();
         if (sourceKPoint == null) {
-            sourceKPoint = de.cau.cs.kieler.klighd.kgraph.KGraphFactory.eINSTANCE.createKPoint();
+            sourceKPoint = KGraphFactory.eINSTANCE.createKPoint();
             edge.setSourcePoint(sourceKPoint);
         }
         sourceKPoint.applyVector(sourcePoint);
@@ -1205,7 +1202,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             KGraphUtil.toAbsolute(targetPoint, targetNode.getParent());
             KGraphUtil.toRelative(targetPoint, sourceNode.getParent());
         }
-        de.cau.cs.kieler.klighd.kgraph.KPoint targetKPoint = edge.getTargetPoint();
+        KPoint targetKPoint = edge.getTargetPoint();
         if (targetKPoint == null) {
             targetKPoint = KGraphFactory.eINSTANCE.createKPoint();
             edge.setTargetPoint(targetKPoint);
@@ -1278,10 +1275,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @param remotePort the remote port, or {@code null}
      * @return the intersection with the center element's border
      */
-    private KVector toElementBorder(final de.cau.cs.kieler.klighd.kgraph.KNode centerNode,
-            final de.cau.cs.kieler.klighd.kgraph.KPort centerPort,
-            final de.cau.cs.kieler.klighd.kgraph.KNode remoteNode,
-            final de.cau.cs.kieler.klighd.kgraph.KPort remotePort) {
+    private KVector toElementBorder(final KNode centerNode,
+            final KPort centerPort,
+            final KNode remoteNode,
+            final KPort remotePort) {
 
         KVector point = new KVector();
         if (remotePort == null) {
