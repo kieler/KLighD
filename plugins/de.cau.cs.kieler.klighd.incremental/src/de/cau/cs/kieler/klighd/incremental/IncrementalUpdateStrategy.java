@@ -12,17 +12,8 @@
  */
 package de.cau.cs.kieler.klighd.incremental;
 
-import java.io.IOException;
-import java.util.Collections;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
@@ -33,7 +24,6 @@ import de.cau.cs.kieler.klighd.incremental.merge.KGraphDataFilter;
 import de.cau.cs.kieler.klighd.incremental.merge.KGraphMerger;
 import de.cau.cs.kieler.klighd.incremental.util.UIDAdapter;
 import de.cau.cs.kieler.klighd.incremental.util.UIDAdapters;
-import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
 
@@ -43,16 +33,16 @@ import de.cau.cs.kieler.klighd.krendering.SimpleUpdateStrategy;
  * 
  * @author csp
  */
-public class UpdateStrategy implements IUpdateStrategy {
+public class IncrementalUpdateStrategy implements IUpdateStrategy {
 
     /** The id used at registration of this strategy in the plugin.xml. */
-    public static final String ID = UpdateStrategy.class.getCanonicalName();
+    public static final String ID = IncrementalUpdateStrategy.class.getCanonicalName();
 
     /** This plugin's id. */
     public static final String PLUGIN_ID = "de.cau.cs.kieler.klighd.incremental";
 
     /** the priority for this update strategy. */
-    public static final int PRIORITY = 30;
+    public static final int PRIORITY = 10;
 
     private IUpdateStrategy fallbackDelegate = null;
 

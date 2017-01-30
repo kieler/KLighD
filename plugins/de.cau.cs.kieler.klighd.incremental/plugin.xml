@@ -4,8 +4,8 @@
    <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <updateStrategy
-            class="de.cau.cs.kieler.klighd.incremental.UpdateStrategy"
-            id="de.cau.cs.kieler.klighd.incremental.UpdateStrategy">
+            class="de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy"
+            id="de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy">
       </updateStrategy>
    </extension>
 
