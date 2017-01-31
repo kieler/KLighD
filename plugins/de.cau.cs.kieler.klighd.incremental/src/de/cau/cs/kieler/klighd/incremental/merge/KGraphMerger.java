@@ -38,6 +38,7 @@ import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPoint;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 
@@ -222,6 +223,16 @@ public class KGraphMerger {
         }
         handleLabels(baseEdge, newEdge);
         handlePorts(baseEdge, newEdge);
+
+        // Transfer source and target points from new model to base model
+        baseEdge.setSourcePoint(newEdge.getSourcePoint());
+        baseEdge.setTargetPoint(newEdge.getTargetPoint());
+        // Transfer bend points
+        EList<KPoint> bendPoints = baseEdge.getBendPoints();
+        bendPoints.clear();
+        for (KPoint kPoint : newEdge.getBendPoints()) {
+            bendPoints.add(EcoreUtil.copy(kPoint));
+        }        
     }
 
     /**
@@ -346,6 +357,8 @@ public class KGraphMerger {
         baseElement.setSize(newElement.getWidth(), newElement.getHeight());
     }
 
+    
+    
     /**
      * Copy inset values. Does nothing if one of the given insets is {@code null}.
      * 
