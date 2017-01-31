@@ -667,7 +667,7 @@ public class KLabelImpl extends KGraphElementImpl implements KLabel {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("KPort");
+		StringBuilder builder = new StringBuilder("KLabel");
 		
 		// Label text
         if (text != null && text.length() > 0) {
