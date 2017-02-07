@@ -9,7 +9,7 @@
 	</extension>
 	
 	<extension
-          point="de.cau.cs.kieler.kiml.formats.graphFormats">
+          point="de.cau.cs.kieler.formats.graphFormats">
             
        <!-- If injection of the xtext resource is required, use following prefix
             de.cau.cs.kieler.kgraph.text.ui.KGraphExecutableExtensionFactory: -->

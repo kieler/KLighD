@@ -33,9 +33,9 @@ import de.cau.cs.kieler.core.krendering.KRenderingRef;
 import de.cau.cs.kieler.core.krendering.KStyle;
 import de.cau.cs.kieler.core.krendering.KStyleHolder;
 import de.cau.cs.kieler.core.krendering.KStyleRef;
-import de.cau.cs.kieler.kiml.formats.AbstractEmfHandler;
-import de.cau.cs.kieler.kiml.formats.IGraphTransformer;
-import de.cau.cs.kieler.kiml.formats.TransformationData;
+import de.cau.cs.kieler.formats.AbstractEmfHandler;
+import de.cau.cs.kieler.formats.IGraphTransformer;
+import de.cau.cs.kieler.formats.TransformationData;
 import de.cau.cs.kieler.kiml.klayoutdata.KIdentifier;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 

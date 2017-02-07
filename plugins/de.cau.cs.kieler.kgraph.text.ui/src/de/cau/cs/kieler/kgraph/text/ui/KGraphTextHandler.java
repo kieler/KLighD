@@ -21,9 +21,9 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import de.cau.cs.kieler.kiml.formats.AbstractEmfHandler;
-import de.cau.cs.kieler.kiml.formats.IGraphTransformer;
-import de.cau.cs.kieler.kiml.formats.TransformationData;
+import de.cau.cs.kieler.formats.AbstractEmfHandler;
+import de.cau.cs.kieler.formats.IGraphTransformer;
+import de.cau.cs.kieler.formats.TransformationData;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
