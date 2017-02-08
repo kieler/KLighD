@@ -162,6 +162,9 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
     /** The adapter listening on open, closed and activated editors. */
     private final DiagramViewEditorAdapter editorAdapter;
+    
+    /** A flag to indicate that the next diagram update should use the simple update strategy. */
+    private boolean simpleUpdate;
 
     // -- Toolbar --
     /** The toolbar manager. */
@@ -895,10 +898,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             getViewSite().getActionBars().updateActionBars();
 
             // Activate new controller
+            simpleUpdate = true;
             if (controller != null) {
                 controller.activate(editor);
             } else {
-                // Since no controller is active no model message will be displayed
+                // Since no controller is active "no model message" will be displayed
                 updateDiagram();
             }
         }
@@ -955,14 +959,16 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
      * Updates the diagram.
      */
     public void updateDiagram() {
+        // Copy properties to prevent side effects on the user properties object when this view overrides any properties
+        KlighdSynthesisProperties updateProperties = new KlighdSynthesisProperties();
         if (controller != null) {
-            updateDiagram(controller.getModel(), controller.getProperties());
+            updateProperties.copyProperties(controller.getProperties());
+            updateDiagram(controller.getModel(), updateProperties);
         } else {
-            KlighdSynthesisProperties properties = new KlighdSynthesisProperties();
             if (this.getViewer() != null && this.getViewer().getViewContext() != null) {
-                properties.copyProperties(this.getViewContext());
+                updateProperties.copyProperties(this.getViewContext());
             }
-            updateDiagram(null, properties);
+            updateDiagram(null, updateProperties);
         }
     }
 
@@ -988,13 +994,15 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
             }
         }
         final Object finalDisplayModel = displayModel;
+        final boolean finalSimpleUpdate = simpleUpdate;
+        simpleUpdate = false;
 
         // Start update job
         new UIJob(UPDATE_JOB) {
 
             @Override
             public IStatus runInUIThread(final IProgressMonitor monitor) {
-                doUpdateDiagram(finalDisplayModel, properties, controller, editor, false);
+                doUpdateDiagram(finalDisplayModel, properties, controller, editor, false, finalSimpleUpdate);
                 return Status.OK_STATUS;
             }
         }.schedule();
@@ -1016,10 +1024,12 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
      * @param isErrorModel
      *            true indicates an re-invocation of update to show an error model concerning an
      *            error occurred in the actual update.
+     * @param useSimpleUpdateStrategy
+     *            perform update using the simple update strategy
      */
     private void doUpdateDiagram(final Object model, final KlighdSynthesisProperties properties,
             final AbstractViewUpdateController usedController, final IEditorPart sourceEditor,
-            final boolean isErrorModel) {
+            final boolean isErrorModel, final boolean useSimpleUpdateStrategy) {
         try {
             // No updates if view is disposed
             if (isDisposed()) {
@@ -1097,6 +1107,11 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                 if (editor != null) {
                     viewContext.setSourceWorkbenchPart(editor);
                 }
+                
+                // Activate simple update strategy if requested
+                if (useSimpleUpdateStrategy) {
+                    properties.useSimpleUpdateStrategy();
+                }
 
                 // update case (keeps options and sidebar)
                 success = new LightDiagramLayoutConfig(this.getViewer().getViewContext())
@@ -1127,7 +1142,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         } catch (Exception e) {
             if (!isErrorModel) {
                 doUpdateDiagram(new ErrorModel(UPDATE_DIAGRAM_EXCEPTION, e), properties,
-                        usedController, sourceEditor, true);
+                        usedController, sourceEditor, true, true);
             } else {
                 StatusManager.getManager().handle(new Status(IStatus.WARNING,
                         KlighdViewPlugin.PLUGIN_ID, e.getLocalizedMessage(), e),
