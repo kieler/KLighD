@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KLighD Tests
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.test;singleton:=true
-Bundle-Version: 0.42.0.qualifier
+Bundle-Version: 0.43.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.8.0",
  org.eclipse.core.runtime,

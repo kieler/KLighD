@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Xtend-based Extension Library
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.krendering.extensions
-Bundle-Version: 0.42.0.qualifier
+Bundle-Version: 0.43.0.qualifier
 Bundle-Activator: de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensionsPlugin
 Bundle-Vendor: Kiel University
 Require-Bundle: org.eclipse.core.runtime,
