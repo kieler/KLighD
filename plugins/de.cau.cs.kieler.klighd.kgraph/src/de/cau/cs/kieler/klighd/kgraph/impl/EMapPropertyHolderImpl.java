@@ -207,7 +207,16 @@ public abstract class EMapPropertyHolderImpl extends EObjectImpl implements EMap
         return defaultValue;
 	}
 
-	/**
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    public boolean hasProperty(IProperty<?> property) {
+        return getProperties().containsKey(property);
+    }
+
+    /**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated NOT
