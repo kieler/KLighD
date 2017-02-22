@@ -974,8 +974,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 layoutEdge.getProperty(CoreOptions.JUNCTION_POINTS));
         
         final ElkEdgeSection layoutEdgeSection = layoutEdge.getSections().get(0);
-        final KVector offset = new KVector();
-        
         
         // SOURCE POINT
         
@@ -1000,6 +998,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             // wrt. the scaling factor being associated with the port's parent node
             final boolean adjustSourcePortPosition;
             
+            final KVector offset = new KVector();
             if (KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())) {
                 adjustSourcePortPosition = true;
                 
@@ -1087,8 +1086,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             //  wrt. the scaling factor being associated with the port's parent node
             final boolean adjustTargetPortPosition;
             
-            offset.reset();
-            
+            final KVector offset = new KVector();
             if (KGraphUtil.isSibling(viewModelEdge.getSource(), viewModelEdge.getTarget())) {
                 adjustTargetPortPosition = false;
                 
@@ -1108,8 +1106,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             
             // Adjust offset by the target node position (what is left after applying the offset
             // to the target point should be the port position relative to the target node)
-            offset.x -= layoutTargetNode.getX();
-            offset.y -= layoutTargetNode.getY();
+            KVector targetPositionInsetsAdjusted = 
+                    insetsAdjustedPosition(layoutTargetNode, mapping);
+            offset.sub(targetPositionInsetsAdjusted);
 
             final KRendering targetPortRendering = viewModelEdge.getTargetPort() == null
                     ? null
@@ -1243,26 +1242,25 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final ElkNode node, final ElkPort port, final KRendering nodeRendering,
             final KRendering portRendering, final KVector offset, final boolean adjustPortPos) {
 
-        KVector p = new KVector(originPoint);
+        // 'p' is relative to the 'node'
+        KVector p = originPoint.clone().add(offset);
         final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
 
         if (port == null) {
-            p.add(offset);
-            p = AnchorUtil.nearestBorderPoint(p, node.getWidth(), node.getHeight(),
+            p = AnchorUtil.nearestBorderPoint(p, node.getWidth(), node.getHeight(), 
                     nodeRendering, scale);
+            destinationPoint.applyVector(p.sub(offset));
         } else {
+            KVector portPos = new KVector(port.getX(), port.getY());
             if (adjustPortPos) {
-                offset.add(-port.getX() / scale, -port.getY() / scale);
-            } else {
-                offset.add(-port.getX(), -port.getY());
-            }
-
-            p.add(offset);
-            p = AnchorUtil.nearestBorderPoint(p, port.getWidth(), port.getHeight(),
+                portPos.scale(1 / scale);
+            } 
+            // make 'p' relative to the port's top left corner 
+            p.sub(portPos);
+            p = AnchorUtil.nearestBorderPoint(p, port.getWidth(), port.getHeight(), 
                     portRendering, scale);
+            destinationPoint.applyVector(p.sub(offset).add(portPos));
         }
-
-        destinationPoint.applyVector(p.sub(offset));
     }
 
     /**
