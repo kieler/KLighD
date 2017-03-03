@@ -13,7 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import org.eclipse.elk.graph.ElkLabel;
+
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -32,21 +33,21 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
      * {@inheritDoc}
      */
     @Override
-    public String resizeLabel(final KLabel label, final double targetWidth) {
+    public String resizeLabel(final ElkLabel label, final double targetWidth) {
         // Check if the label is bigger than the targetWidth
         Bounds textBounds = PlacementUtil.estimateTextSize(
-                PlacementUtil.fontDataFor(label), label.getText());
+                LabelManagementUtil.fontDataFor(label), label.getText());
         
         if (textBounds.getWidth() > targetWidth) {
             // Size of three ellipses
             final float ellipseWidth = PlacementUtil.estimateTextSize(
-                    PlacementUtil.fontDataFor(label), ELLIPSES).getWidth();
+                    LabelManagementUtil.fontDataFor(label), ELLIPSES).getWidth();
             String calculatedText = "";
 
             // If there is enough space for some text and ellipses, calculate the fitting text
             if (targetWidth > ellipseWidth) {
                 calculatedText = LabelManagementUtil.findFittingString(label.getText(),
-                        PlacementUtil.fontDataFor(label), targetWidth - ellipseWidth);
+                        LabelManagementUtil.fontDataFor(label), targetWidth - ellipseWidth);
 
                 // Delete whitespaces
                 calculatedText = calculatedText.trim();                

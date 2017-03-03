@@ -15,20 +15,20 @@ package de.cau.cs.kieler.klighd.labels;
 
 import org.eclipse.elk.core.labels.ILabelManager;
 import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
-import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
  * Abstract superclass for {@link ILabelManager}s to be used with KLighD. All a subclass needs to to
- * is to implement {@link #resizeLabel(KLabel, double)}, everything else is taken care of by this
+ * is to implement {@link #resizeLabel(ElkLabel, double)}, everything else is taken care of by this
  * class.
  * 
  * <p>
  * This class manages an activity state. Label managers inheriting from this class can be switched
- * on or off, as required. If a label manager is switched off, {@link #resizeLabel(KLabel, double)}
+ * on or off, as required. If a label manager is switched off, {@link #resizeLabel(ElkLabel, double)}
  * is not called.
  * </p>
  * 
@@ -114,35 +114,35 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * {@inheritDoc}
      */
     public final KVector manageLabelSize(final Object label, final double processorTargetWidth) {
-        if (label instanceof KLabel) {
-            KLabel kLabel = (KLabel) label;
+        if (label instanceof ElkLabel) {
+            ElkLabel elkLabel = (ElkLabel) label;
 
             KVector newLabelSize = null;
-            String newLabelText = kLabel.getText();
+            String newLabelText = elkLabel.getText();
 
             if (isActive()) {
-                if (isInContext(kLabel)) {
+                if (isInContext(elkLabel)) {
                     // The label is not in the focus right now, so shorten it
                     double sizeToResizeTo = useFixedTargetWidth
                             ? fixedTargetWidth
                             : processorTargetWidth;
-                    newLabelText = resizeLabel(kLabel, sizeToResizeTo);
+                    newLabelText = resizeLabel(elkLabel, sizeToResizeTo);
                     
                     if (newLabelText != null) {
-                        kLabel.setText(newLabelText);
+                        elkLabel.setText(newLabelText);
                         
                         // calculate the new Bounds of the text
-                        final FontData font = PlacementUtil.fontDataFor(kLabel);
+                        final FontData font = LabelManagementUtil.fontDataFor(elkLabel);
                         Bounds newSize = PlacementUtil.estimateTextSize(font, newLabelText);
                         newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
                     }
 
                     // Make sure KLighD knows if we shortened the label
                     if (newLabelSize == null) {
-                        kLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                        elkLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                                 LabelManagementResult.MANAGED_UNMODIFIED);
                     } else {
-                        kLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                        elkLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                                 LabelManagementResult.MANAGED_MODIFIED);
                     }
                 } else {
@@ -150,11 +150,11 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
                     // about its size when it's unshortened. If we don't, word-wrapped labels won't
                     // have their height reset if they move into focus and thus consist of a single
                     // line of text
-                    final FontData font = PlacementUtil.fontDataFor(kLabel);
-                    Bounds newSize = PlacementUtil.estimateTextSize(font, kLabel.getText());
+                    final FontData font = LabelManagementUtil.fontDataFor(elkLabel);
+                    Bounds newSize = PlacementUtil.estimateTextSize(font, elkLabel.getText());
                     newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
 
-                    kLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                    elkLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
                             LabelManagementResult.MANAGED_UNMODIFIED);
                 }
             }
@@ -167,9 +167,9 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     }
 
     /**
-     * Does the actual work of resizing the given label, which is guaranteed to be a {@link KLabel}.
-     * Apart from this minor detail, this method should adhere to the contract specified on the
-     * {@link #manageLabelSize(Object, double)} method.
+     * Does the actual work of resizing the given label, which is guaranteed to be an
+     * {@link ElkLabel}. Apart from this minor detail, this method should adhere to the contract
+     * specified on the {@link #manageLabelSize(Object, double)} method.
      * 
      * <p>
      * This method should not be called directly by label management clients. The only reason for it
@@ -182,7 +182,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      *            the width the label's new dimensions should try not to exceed.
      * @return the shortened text of the label as a string
      */
-    public abstract String resizeLabel(final KLabel label, final double targetWidth);
+    public abstract String resizeLabel(ElkLabel label, double targetWidth);
 
     /**
      * Check whether a label is in context or not.
@@ -192,7 +192,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * @return {@code true} if the label is part of the context instead of being in focus,
      *         {@code false} otherwise.
      */
-    private boolean isInContext(final KLabel label) {
+    private boolean isInContext(final ElkLabel label) {
         return !label.getProperty(KlighdLabelProperties.ELEMENT_IN_FOCUS);
     }
 }

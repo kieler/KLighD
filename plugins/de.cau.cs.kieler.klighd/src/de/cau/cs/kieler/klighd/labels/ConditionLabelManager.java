@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.labels;
 
 import java.util.function.Predicate;
 
-import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import org.eclipse.elk.graph.ElkLabel;
 
 
 /**
@@ -26,7 +26,7 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel;
 public class ConditionLabelManager extends AbstractKlighdLabelManager {
     
     /** Condition which will be checked before resizing the label. */
-    private Predicate<? super KLabel> condition;
+    private Predicate<? super ElkLabel> condition;
     /** The label manager that does the actual managing. */
     private AbstractKlighdLabelManager labelManager;
     /** Decides whether the label which don't fullfill the condition are displayed or not. */
@@ -43,7 +43,7 @@ public class ConditionLabelManager extends AbstractKlighdLabelManager {
      *            the label manager that will do the resizing if the condition applies.
      */
     public ConditionLabelManager(final AbstractKlighdLabelManager labelManager,
-            final Predicate<? super KLabel> condition) {
+            final Predicate<? super ElkLabel> condition) {
         
         this(labelManager, condition, true);
     }
@@ -63,7 +63,7 @@ public class ConditionLabelManager extends AbstractKlighdLabelManager {
      *            the empty string.
      */
     public ConditionLabelManager(final AbstractKlighdLabelManager labelManager,
-            final Predicate<? super KLabel> condition, final boolean filterOtherLabels) {
+            final Predicate<? super ElkLabel> condition, final boolean filterOtherLabels) {
         
         this.condition = condition;
         this.labelManager = labelManager;
@@ -74,7 +74,7 @@ public class ConditionLabelManager extends AbstractKlighdLabelManager {
      * {@inheritDoc}
      */
     @Override
-    public String resizeLabel(final KLabel label, final double targetWidth) {
+    public String resizeLabel(final ElkLabel label, final double targetWidth) {
         if (condition.test(label)) {
             return labelManager.resizeLabel(label, targetWidth);
         } else {

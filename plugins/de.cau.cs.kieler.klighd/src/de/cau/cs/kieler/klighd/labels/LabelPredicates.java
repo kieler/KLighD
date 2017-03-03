@@ -16,12 +16,11 @@ import java.util.function.Predicate;
 
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
+import org.eclipse.elk.graph.ElkEdge;
+import org.eclipse.elk.graph.ElkLabel;
+import org.eclipse.elk.graph.ElkNode;
+import org.eclipse.elk.graph.ElkPort;
 import org.eclipse.emf.ecore.EObject;
-
-import de.cau.cs.kieler.klighd.kgraph.KEdge;
-import de.cau.cs.kieler.klighd.kgraph.KLabel;
-import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
  * Utility class that can build many commonly used label filter predicates.
@@ -63,7 +62,7 @@ public final class LabelPredicates {
      * @return the predicate.
      */
     private static Predicate<EObject> isLabel() {
-        return (EObject eo) -> KLabel.class.isInstance(eo);
+        return (EObject eo) -> ElkLabel.class.isInstance(eo);
     }
     
     /**
@@ -86,7 +85,7 @@ public final class LabelPredicates {
      * @return the predicate.
      */
     public static Predicate<EObject> nodeLabel() {
-        return isLabel().and(emfContainerInstanceOf(KNode.class));
+        return isLabel().and(emfContainerInstanceOf(ElkNode.class));
     }
     
     /**
@@ -95,7 +94,7 @@ public final class LabelPredicates {
      * @return the predicate.
      */
     public static Predicate<EObject> portLabel() {
-        return isLabel().and(emfContainerInstanceOf(KPort.class));
+        return isLabel().and(emfContainerInstanceOf(ElkPort.class));
     }
     
     /**
@@ -104,7 +103,7 @@ public final class LabelPredicates {
      * @return the predicate.
      */
     public static Predicate<EObject> edgeLabel() {
-        return isLabel().and(emfContainerInstanceOf(KEdge.class));
+        return isLabel().and(emfContainerInstanceOf(ElkEdge.class));
     }
     
     /**
@@ -126,9 +125,9 @@ public final class LabelPredicates {
      * @return the predicate.
      */
     public static Predicate<EObject> centerEdgeLabel(final boolean includeUndefined) {
-        return isLabel().and(emfContainerInstanceOf(KEdge.class)).and(
+        return isLabel().and(emfContainerInstanceOf(ElkEdge.class)).and(
                 (EObject label) -> {
-                    EdgeLabelPlacement elp = ((KLabel) label).getProperty(
+                    EdgeLabelPlacement elp = ((ElkLabel) label).getProperty(
                             CoreOptions.EDGE_LABELS_PLACEMENT);
                     return elp == EdgeLabelPlacement.CENTER
                             || (includeUndefined && elp == EdgeLabelPlacement.UNDEFINED);

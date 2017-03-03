@@ -12,8 +12,13 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
+import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
+import de.cau.cs.kieler.klighd.KlighdOptions;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -30,7 +35,31 @@ public final class LabelManagementUtil {
     private LabelManagementUtil() {
         
     }
+
     
+    /**
+     * Determines the font data associated with the given label. This method requires the label to
+     * have the {@link KlighdOptions#K_RENDERING} property set to the rendering which will be used
+     * to actually render the label later.
+     * 
+     * @param label
+     *            the label whose font data to retrieve.
+     * @return the font data.
+     */
+    public static FontData fontDataFor(final ElkLabel label) {
+        // Try finding the KText we will inspect for the font
+        KRendering kText = null;
+        
+        KRendering kRendering = label.getProperty(KlighdOptions.K_RENDERING);
+
+        if (kRendering instanceof KText) {
+            kText = kRendering;
+        } else if (kRendering instanceof KRenderingRef) {
+            kText = ((KRenderingRef) kRendering).getRendering();
+        }
+        
+        return PlacementUtil.fontDataFor((KText) kText);
+    }
 
     /**
      * Determines the first part of the String which fits in a certain width depending on the font.

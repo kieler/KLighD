@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import org.eclipse.elk.graph.ElkLabel;
 
 /**
  * Takes a list of label managers that do the work of resizing labels. The label managers are asked to
@@ -54,7 +54,7 @@ public class ListLabelManager extends AbstractKlighdLabelManager {
      * {@inheritDoc}
      */
     @Override
-    public String resizeLabel(final KLabel label, final double targetWidth) {
+    public String resizeLabel(final ElkLabel label, final double targetWidth) {
         String newLabelText = null;
         
         for (AbstractKlighdLabelManager manager : labelManagers) {

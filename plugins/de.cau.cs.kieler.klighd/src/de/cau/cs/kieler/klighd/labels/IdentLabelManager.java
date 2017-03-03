@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.labels;
 
-import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import org.eclipse.elk.graph.ElkLabel;
 
 /**
  * Label manager that leaves the label text untouched.
@@ -26,7 +26,7 @@ public class IdentLabelManager extends AbstractKlighdLabelManager {
      * {@inheritDoc}
      */
     @Override
-    public String resizeLabel(final KLabel label, final double targetWidth) {
+    public String resizeLabel(final ElkLabel label, final double targetWidth) {
         return null;
     }
 
