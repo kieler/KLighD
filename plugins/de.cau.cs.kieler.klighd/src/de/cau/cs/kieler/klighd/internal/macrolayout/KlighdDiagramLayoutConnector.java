@@ -46,6 +46,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.base.Strings;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -61,6 +62,7 @@ import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KGraphFactory;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLayoutData;
@@ -273,6 +275,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final ElkNode layoutParent, final boolean performSizeEstimation) {
         
         final ElkNode layoutNode = ElkGraphUtil.createNode(layoutParent);
+        
+        KIdentifier id = node.getData(KIdentifier.class);
+        if (id != null && !Strings.isNullOrEmpty(id.getId())) {
+            layoutNode.setIdentifier(id.getId());
+        }
 
         // first check whether children of 'node' shall be taken into account at all.
         // note that all KNodes of a view model are set 'POPULATED' except the
@@ -411,6 +418,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final ElkNode layoutNode, final boolean estimateLabelSizes) {
         
         final ElkPort layoutPort = ElkGraphUtil.createPort(layoutNode);
+        KIdentifier id = port.getData(KIdentifier.class);
+        if (id != null && !Strings.isNullOrEmpty(id.getId())) {
+            layoutPort.setIdentifier(id.getId());
+        }
         shapeLayoutToLayoutGraph(port, layoutPort, false);
 
         mapping.getGraphMap().put(layoutPort, port);
@@ -493,6 +504,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         
         final ElkEdge layoutEdge = ElkGraphUtil.createSimpleEdge(layoutSource, layoutTarget);
 
+        KIdentifier id = edge.getData(KIdentifier.class);
+        if (id != null && !Strings.isNullOrEmpty(id.getId())) {
+            layoutEdge.setIdentifier(id.getId());
+        }
+        
         // set the edge layout
         edgeLayoutToLayoutGraph(edge, layoutEdge);
 
@@ -538,6 +554,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         
         final ElkLabel layoutLabel =
                 ElkGraphUtil.createLabel(label.getText(), layoutLabeledElement);
+        
+        KIdentifier id = label.getData(KIdentifier.class);
+        if (id != null && !Strings.isNullOrEmpty(id.getId())) {
+            layoutLabel.setIdentifier(id.getId());
+        }
 
         shapeLayoutToLayoutGraph(label, layoutLabel, false);
 
