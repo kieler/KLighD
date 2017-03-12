@@ -43,6 +43,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -61,7 +62,6 @@ import de.cau.cs.kieler.klighd.krendering.KPolyline;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.krendering.KSpline;
-import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
@@ -1563,7 +1563,7 @@ public class DiagramController {
         // if the label's text is overriden by means of a property, use that property
         String labelText = label.getText();
         final String labelTextOverride =
-                label.getProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE);
+                label.getProperty(KlighdOptions.LABELS_TEXT_OVERRIDE);
         if (labelTextOverride != null) {
             labelText = labelTextOverride;
         }
@@ -2126,6 +2126,8 @@ public class DiagramController {
      * This adapter listens for changes on a {@code KLabel} instance. Whenever the label text was
      * changed (or the {@link KlighdLabelProperties#LABEL_TEXT_OVERRIDE} property value changes), the
      * label's {@link KLabelNode} has its text updated, which in turn causes its PNode to be updated.
+     * The adapter is installed on the label, and then installs itself on the label's properties as
+     * well as the {@link KlighdLabelProperties#LABEL_TEXT_OVERRIDE} property.
      */
     private final class TextSyncAdapter extends AdapterImpl {
         private final KLabelNode labelRep;
@@ -2133,11 +2135,11 @@ public class DiagramController {
         private TextSyncAdapter(final KLabelNode theLabelRep) {
             this.labelRep = theLabelRep;
         }
-
+        
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
-
+            
             // flag that indicates whether we have found a new text for our label or not
             boolean foundNewText = false;
             String newText = null;
@@ -2153,20 +2155,25 @@ public class DiagramController {
                     break;
                 }
             } else {
+                // If a LABELS_TEXT_OVERRIDE was added or removed, we need to sign up (or off)
+                // for change notifications
+                handleContainment(notification);
+                
                 // otherwise, it may be that the LABEL_TEXT_OVERRIDE property was set or changed; we
                 // find the corresponding property-to-object map entry and find out if the property
                 // equals LABEL_TEXT_OVERRIDE; if so, we apply the property value as the new text
                 IPropertyToObjectMapImpl entry = null;
-
+                
                 if (notification.getNotifier() instanceof KLayoutData
                     && notification.getNewValue() instanceof IPropertyToObjectMapImpl) {
 
                     entry = (IPropertyToObjectMapImpl) notification.getNewValue();
+                    
                 } else if (notification.getNotifier() instanceof IPropertyToObjectMapImpl) {
                     entry = (IPropertyToObjectMapImpl) notification.getNotifier();
                 }
 
-                if (entry != null && entry.getKey().equals(KlighdLabelProperties.LABEL_TEXT_OVERRIDE)) {
+                if (entry != null && entry.getKey().equals(KlighdOptions.LABELS_TEXT_OVERRIDE)) {
                     foundNewText = true;
                     newText = (String) entry.getValue();
                 }
@@ -2187,6 +2194,36 @@ public class DiagramController {
                 } else {
                     labelRep.setText(newText);
                 }
+            }
+        }
+
+        private void handleContainment(final Notification notification) {
+            // We only care about properties
+            if (notification.getFeature()
+                    != KGraphPackage.Literals.EMAP_PROPERTY_HOLDER__PROPERTIES) {
+                return;
+            }
+            
+            switch (notification.getEventType()) {
+            case Notification.ADD:
+                // Sign up for changes to the LABELS_TEXT_OVERRIDE property
+                if (notification.getNewValue() instanceof IPropertyToObjectMapImpl) {
+                    IPropertyToObjectMapImpl mapEntry =
+                            (IPropertyToObjectMapImpl) notification.getNewValue();
+                    if (!mapEntry.eAdapters().contains(this)) {
+                        mapEntry.eAdapters().add(this);
+                    }
+                }
+                break;
+                
+            case Notification.REMOVE:
+                // Sign off from changes to the LABELS_TEXT_OVERRIDE property
+                if (notification.getOldValue() instanceof IPropertyToObjectMapImpl) {
+                    IPropertyToObjectMapImpl mapEntry =
+                            (IPropertyToObjectMapImpl) notification.getOldValue();
+                    mapEntry.eAdapters().remove(this);
+                }
+                break;
             }
         }
     }

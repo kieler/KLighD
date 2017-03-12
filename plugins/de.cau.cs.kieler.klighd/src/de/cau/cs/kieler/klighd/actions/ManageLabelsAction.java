@@ -22,7 +22,8 @@ import de.cau.cs.kieler.klighd.labels.AbstractKlighdLabelManager;
 
 /**
  * An action that toggles the activity state of {@link AbstractKlighdLabelManager} instances attached
- * to a given graph.
+ * to a given graph. Use this action to toggle label management on and off using the diagram side
+ * bar.
  * 
  * @author cds
  */

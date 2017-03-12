@@ -4,19 +4,12 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
 import org.eclipse.elk.core.math.KVector
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import org.eclipse.swt.graphics.RGB
+import de.cau.cs.kieler.klighd.^labels.LabelManagementResult
 
 bundle {
     label "Klighd"
     metadataClass KlighdOptions 
     idPrefix de.cau.cs.kieler.klighd 
-}
-
-advanced option elementInFocus: boolean {
-    label "Element in Focus"
-    description "Whether an element is in the focus rather than in the context."
-    default = false
-    targets parents,nodes,ports,labels
-    legacyIds klighd.^labels.elementInFocus
 }
 
 option tooltip: String {
@@ -62,5 +55,33 @@ group svgExport {
         default = KlighdConstants.WHITE
         targets parents
         requires transparentBackground == false
+    }
+}
+
+group ^labels {
+    advanced option elementInFocus : boolean {
+        label "Element in Focus"
+        description
+            "Whether an element is in the focus rather than in the context. Can be used by label managers
+            to decide whether (and how much) to shorten labels."
+        default = false
+        targets parents,nodes,ports,labels
+    }
+    
+    output option managementResult : LabelManagementResult {
+        label "Label Management Result"
+        description
+            "Output option that indicates how a given label was or was not affected by
+            label management during automatic layout."
+        default = LabelManagementResult.UNMANAGED
+        targets labels
+    }
+
+    output option textOverride : String {
+        label "Label Text Override"
+        description
+            "Output option that, if set, replaces the original label text."
+        default = null
+        targets labels
     }
 }

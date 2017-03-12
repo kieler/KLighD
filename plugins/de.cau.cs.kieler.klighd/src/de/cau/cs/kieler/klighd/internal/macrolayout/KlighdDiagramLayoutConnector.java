@@ -74,7 +74,6 @@ import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
-import de.cau.cs.kieler.klighd.labels.KlighdLabelProperties;
 import de.cau.cs.kieler.klighd.labels.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -688,11 +687,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     // if the label's text was changed during layout, remember the new text in a
                     // special property
                     LabelManagementResult managementResult =
-                            layoutLabel.getProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT);
+                            layoutLabel.getProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT);
                     if (managementResult != LabelManagementResult.UNMANAGED) {
                         // TODO: This may in the future set the KText's text instead.
                         // However, doing so now doesn't do anything yet...
-                        label.setProperty(KlighdLabelProperties.LABEL_TEXT_OVERRIDE,
+                        label.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE,
                                     layoutLabel.getText());
                         String origLabelText = ((KLabel) element).getText();
                         

@@ -18,6 +18,7 @@ import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
+import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -139,10 +140,10 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
 
                     // Make sure KLighD knows if we shortened the label
                     if (newLabelSize == null) {
-                        elkLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                        elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
                                 LabelManagementResult.MANAGED_UNMODIFIED);
                     } else {
-                        elkLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                        elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
                                 LabelManagementResult.MANAGED_MODIFIED);
                     }
                 } else {
@@ -154,7 +155,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
                     Bounds newSize = PlacementUtil.estimateTextSize(font, elkLabel.getText());
                     newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
 
-                    elkLabel.setProperty(KlighdLabelProperties.LABEL_MANAGEMENT_RESULT,
+                    elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
                             LabelManagementResult.MANAGED_UNMODIFIED);
                 }
             }
@@ -193,6 +194,6 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      *         {@code false} otherwise.
      */
     private boolean isInContext(final ElkLabel label) {
-        return !label.getProperty(KlighdLabelProperties.ELEMENT_IN_FOCUS);
+        return !label.getProperty(KlighdOptions.LABELS_ELEMENT_IN_FOCUS);
     }
 }
