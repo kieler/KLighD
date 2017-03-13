@@ -1110,26 +1110,26 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             if (KGraphUtil.isSibling(viewModelEdge.getSource(), viewModelEdge.getTarget())) {
                 adjustTargetPortPosition = false;
                 
-            } else if (KGraphUtil.isDescendant(viewModelEdge.getTarget(),
-                    viewModelEdge.getSource())) {
-                
-                adjustTargetPortPosition = true;
-                KInsets sourceInsets = viewModelEdge.getSource().getInsets();
-                offset.x = sourceInsets.getLeft();
-                offset.y = sourceInsets.getTop();
+                // The source and target are on the same level, so just subtract the target
+                // position
+                offset.x = -layoutTargetNode.getX();
+                offset.y = -layoutTargetNode.getY();
                 
             } else {
-                adjustTargetPortPosition = false;
-                offset.x = layoutTargetNode.getX();
-                offset.y = layoutTargetNode.getY();
+                // The source and target are on different levels, so transform coordinate system
+                KNode referenceNode = viewModelEdge.getSource();
+                if (KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())) {
+                    adjustTargetPortPosition = false;
+                } else {
+                    adjustTargetPortPosition = true;
+                    referenceNode = referenceNode.getParent();
+                }
+                KGraphUtil.toAbsolute(offset, referenceNode);
+                KGraphUtil.toRelative(offset, viewModelEdge.getTarget().getParent());
+                offset.x -= layoutTargetNode.getX();
+                offset.y -= layoutTargetNode.getY();
             }
-            
-            // Adjust offset by the target node position (what is left after applying the offset
-            // to the target point should be the port position relative to the target node)
-            KVector targetPositionInsetsAdjusted = 
-                    insetsAdjustedPosition(layoutTargetNode, mapping);
-            offset.sub(targetPositionInsetsAdjusted);
-
+                
             final KRendering targetPortRendering = viewModelEdge.getTargetPort() == null
                     ? null
                     : viewModelEdge.getTargetPort().getData(KRendering.class);
