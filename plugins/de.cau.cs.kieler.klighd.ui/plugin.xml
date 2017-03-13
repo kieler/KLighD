@@ -119,7 +119,7 @@
                    </with>
                    <iterate>
                       <instanceof
-                            value="org.eclipse.elk.graph.ElkGraphElement">
+                            value="de.cau.cs.kieler.klighd.kgraph.KGraphElement">
                       </instanceof>
                    </iterate>
                     </or>
