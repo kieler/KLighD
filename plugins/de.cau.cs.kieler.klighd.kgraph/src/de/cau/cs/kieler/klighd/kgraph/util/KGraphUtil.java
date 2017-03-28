@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.kgraph.util;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.Direction;
@@ -48,6 +47,7 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 
 /**
  * Utility methods to operate on KGraphs.
@@ -176,6 +176,67 @@ public final class KGraphUtil {
                         targetPort.getEdges().add(edge);
                     }
                 }
+            }
+        }
+    }
+    
+    /**
+     * Adds a default label to the graph element based on the {@link KIdentifier}. Depending on the
+     * elements type, hints on the placement of the label are set, e.g. a centered, inside label
+     * placement for atomic nodes.
+     * 
+     * @param ele
+     *            the element to configure.
+     */
+    public static void configureWithDefaultLabel(final KLabeledGraphElement ele) {
+        ensureLabel(ele);
+
+        if (ele instanceof KNode) {
+            if (!ele.getProperties().containsKey(CoreOptions.NODE_LABELS_PLACEMENT)) {
+                // If the node has children, we need to get the label out of the way a bit (we're
+                // not setting it up such that padding is computed to reserve space for the label,
+                // though)
+                if (((KNode) ele).getChildren().isEmpty()) {
+                    ele.setProperty(CoreOptions.NODE_LABELS_PLACEMENT,
+                            NodeLabelPlacement.insideCenter());
+                } else {
+                    ele.setProperty(CoreOptions.NODE_LABELS_PLACEMENT,
+                            NodeLabelPlacement.insideTopCenter());
+                }
+            }
+        } else if (ele instanceof KEdge) {
+            EdgeLabelPlacement elp = ele.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT);
+            if (elp == EdgeLabelPlacement.UNDEFINED) {
+                ele.setProperty(CoreOptions.EDGE_LABELS_PLACEMENT, EdgeLabelPlacement.CENTER);
+            }
+        }
+    }
+    
+    /**
+     * Sets a default size to the passed element which is based on {@link #DEFAULT_MIN_WIDTH} and
+     * {@link #DEFAULT_MIN_HEIGHT} in conjunction with a scaling factor based on the type of the
+     * element.
+     * 
+     * @param ele
+     *            the element to configure.
+     */
+    public static void configurWithDefaultSize(final KShapeLayout ele) {
+        if (ele instanceof KNode) {
+            KNode node = (KNode) ele;
+            // Make sure the node has a size if the size constraints are fixed
+            Set<SizeConstraint> sc = node.getProperty(CoreOptions.NODE_SIZE_CONSTRAINTS);
+
+            if (sc.equals(SizeConstraint.fixed()) 
+                    && node.getWidth() == 0f && node.getHeight() == 0f) {
+                node.setWidth(DEFAULT_MIN_WIDTH * 2);
+                node.setHeight(DEFAULT_MIN_HEIGHT * 2);
+            }
+        } else if (ele instanceof KPort) {
+            KPort port = (KPort) ele;
+
+            if (port != null && port.getWidth() == 0f && port.getHeight() == 0f) {
+                port.setWidth(DEFAULT_MIN_WIDTH / 2 / 2);
+                port.setHeight(DEFAULT_MIN_HEIGHT / 2 / 2);
             }
         }
     }
