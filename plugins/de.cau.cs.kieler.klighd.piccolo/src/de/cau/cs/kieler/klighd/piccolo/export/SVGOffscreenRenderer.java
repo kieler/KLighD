@@ -64,6 +64,8 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                 ? properties.getProperty(GENERATOR) : GENERATOR.getDefault();
         final String description = properties != null
                 ? properties.getProperty(DESCRIPTION) : DESCRIPTION.getDefault();
+        final String additionalRootData = properties != null
+                ? properties.getProperty(ADDITIONAL_ROOT_DATA) : ADDITIONAL_ROOT_DATA.getDefault();
         final boolean transparentBackground = properties != null
                 ? properties.getProperty(KlighdOptions.SVG_EXPORT_TRANSPARENT_BACKGROUND)
                 : KlighdOptions.SVG_EXPORT_TRANSPARENT_BACKGROUND.getDefault();
@@ -89,6 +91,7 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
                     embedFonts, description);
             data.setBackgroundColor(backgroundColor);
             data.setTransparentBackground(transparentBackground);
+            data.additionalRootData(additionalRootData);
             return new SVGExporter().export(camera, data);
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

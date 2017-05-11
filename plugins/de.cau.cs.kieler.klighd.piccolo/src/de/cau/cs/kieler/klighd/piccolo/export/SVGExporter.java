@@ -89,8 +89,9 @@ public class SVGExporter extends KlighdCanvasExporter {
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdAbstractSVGGraphics graphics;
         try {
-            graphics = SVGGeneratorManager.createGraphics(
-                data.format, extendedBounds, data.isTextAsShapes, data.isEmbedFonts, data.description);
+            graphics = SVGGeneratorManager.createGraphics(data.format, extendedBounds,
+                    data.isTextAsShapes, data.isEmbedFonts, data.description,
+                    data.additionalRootData());
 
         } catch (final IllegalArgumentException e) {
             final String msg = "KLighD SVG export: Failed to load SVG exporter backend.";

@@ -60,7 +60,7 @@ public interface IDiagramExporter {
      */
     public class ExportData {
 
-        // SUPPRESS CHECKSTYLE NEXT 10 Visibility|Javadoc
+        // SUPPRESS CHECKSTYLE NEXT 11 Visibility|Javadoc
         public final ViewContext viewContext;
         public final String format;
         public final OutputStream stream;
@@ -72,6 +72,7 @@ public interface IDiagramExporter {
         public final boolean isEmbedFonts;
         public final String description;
 
+        private String additionalRootData;
         private TilingData tilingInfo;
         
         private boolean transparentBackground;
@@ -298,6 +299,20 @@ public interface IDiagramExporter {
          */
         public void setTransparentBackground(final boolean transparentBackground) {
             this.transparentBackground = transparentBackground;
+        }
+        
+        /**
+         * @return the additional data to be placed in the root element of SVGs
+         */
+        public String additionalRootData() {
+            return additionalRootData;
+        }
+        
+        /**
+         * @param newRootData the new additional data to be placed in the root element of SVGs
+         */
+        public void additionalRootData(final String newRootData) {
+            this.additionalRootData = newRootData;
         }
         
         

@@ -42,6 +42,7 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
     private boolean textAsShapes;
     private boolean embedFonts;
     private String description;
+    private String additionalRootData;
 
     /**
      * @param bounds
@@ -55,11 +56,12 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
      *            generated SVG. Can be null.
      */
     public SemanticFreeHEPSVGGraphics(final Rectangle2D bounds, final Boolean textAsShapes,
-            final Boolean embedFonts, final String description) {
+            final Boolean embedFonts, final String description, final String additionalRootData) {
         super(null);
         this.bounds = bounds;
         this.textAsShapes = textAsShapes;
         this.description = description;
+        this.additionalRootData = additionalRootData;
         if (!textAsShapes) {
             this.setCanHandleMultiline(true);
         }
@@ -82,6 +84,10 @@ public class SemanticFreeHEPSVGGraphics extends KlighdAbstractSVGGraphics {
         if (description != null) {
             props.setProperty(SemanticSVGGraphics2D.DESCRIPTION, description);
         }
+        if (additionalRootData != null) {
+            props.setProperty(SemanticSVGGraphics2D.ADDITIONAL_ROOT_DATA, additionalRootData);
+        }
+        
         graphicsDelegate.setProperties(props);
 
         // start

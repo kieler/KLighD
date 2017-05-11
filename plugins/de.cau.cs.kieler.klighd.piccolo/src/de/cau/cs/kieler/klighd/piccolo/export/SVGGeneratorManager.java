@@ -110,6 +110,35 @@ public final class SVGGeneratorManager {
      */
     public static KlighdAbstractSVGGraphics createGraphics(final String id, final Rectangle2D bounds,
             final boolean textAsShapes, final boolean embedFonts, final String description) {
+        return createGraphics(id, bounds, textAsShapes, embedFonts, description, null);
+    }
+    
+    /**
+     * Instantiates the {@link KlighdAbstractSVGGraphics} registered with id {@code id} if known.
+     * Throws an {@link IllegalArgumentException} providing some details on the failure if
+     * instantiation fails.
+     *
+     * @param id
+     *            the id of the svg generator, most probably specified in
+     *            {@link de.cau.cs.kieler.klighd.KlighdConstants KlighdConstants}.
+     * @param bounds
+     *            the expected bounds of the svg being generated.
+     * @param textAsShapes
+     *            whether texts should be transformed to paths.
+     * @param embedFonts
+     *            whether the texts' fonts shall be embedded in the output
+     * @param description
+     *            optional description to be inserted into the {@code desc} property of the
+     *            generated SVG. Can be null.
+     * @param additionalRootData
+     *            optional String that can be inserted into the svg tag. Can be null
+     * @throws IllegalArgumentException
+     *             when the graphics object cannot be created.
+     * @return a instance of a svg generator initialized with the passed parameters.
+     */
+    public static KlighdAbstractSVGGraphics createGraphics(final String id,
+            final Rectangle2D bounds, final boolean textAsShapes, final boolean embedFonts,
+            final String description, final String additionalRootData) {
         final String graphicsClass = getInstance().generatorsMap.get(id);
 
         if (Strings.isNullOrEmpty(graphicsClass)) {
@@ -131,9 +160,11 @@ public final class SVGGeneratorManager {
         KlighdAbstractSVGGraphics graphics = null;
         try {
 
-            final Constructor<? extends KlighdAbstractSVGGraphics> constr = clazz.getDeclaredConstructor(
-                    Rectangle2D.class, Boolean.class, Boolean.class, String.class);
-            graphics = constr.newInstance(bounds, textAsShapes, embedFonts, description);
+            final Constructor<? extends KlighdAbstractSVGGraphics> constr =
+                    clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class, Boolean.class,
+                            String.class, String.class);
+            graphics = constr.newInstance(bounds, textAsShapes, embedFonts, description,
+                    additionalRootData);
 
         } catch (final Exception e) {
             // nothing
