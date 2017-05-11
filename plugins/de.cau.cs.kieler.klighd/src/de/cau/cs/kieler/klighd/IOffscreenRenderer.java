@@ -98,6 +98,12 @@ public interface IOffscreenRenderer {
             "de.cau.cs.kieler.klighd.offscreenRendering.description", null);
 
     /**
+     * Property definition for embedding user-defined data in the root svg tag.
+     */
+    IProperty<String> ADDITIONAL_ROOT_DATA = new Property<String>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.additionalRootData", null);
+
+    /**
      * Renders the provided <code>viewModel</code> into the (standard) diagram format supported by
      * <code>this</code> {@link IOffscreenRenderer} and returns a {@link String}-based
      * representation.<br>

@@ -134,6 +134,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     
     public static final String DESCRIPTION = rootKey + ".Description";
     
+    public static final String ADDITIONAL_ROOT_DATA = rootKey + ".AdditionalData";
+        
     private SVGFontTable fontTable;
 
     private static final UserProperties defaultProperties = new UserProperties();
@@ -162,6 +164,8 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         defaultProperties.setProperty(EMBED_FONTS, false);
         defaultProperties.setProperty(TEXT_AS_SHAPES, true);
         defaultProperties.setProperty(DESCRIPTION, "");
+        
+        defaultProperties.setProperty(ADDITIONAL_ROOT_DATA, "");
     }
 
     public static Properties getDefaultProperties() {
@@ -376,6 +380,12 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         os.println("     height=\"" + h + "px\"");
         os.println("     viewBox=\"" + bbx + " " + bby + " " + bbw + " " + bbh
                 + "\"");
+        
+        // KIPRA-1849 Allow adding additional data to the root element
+        if (!getProperty(ADDITIONAL_ROOT_DATA).equals("")) {
+            os.println("     " + getProperty(ADDITIONAL_ROOT_DATA));
+        }
+        
         os.println("     >");
         closeTags.push("</svg>");
         if (writeComments) {
