@@ -1519,6 +1519,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_CLASS)) {
                 sb.append("class" + "=\"" + e.getValue() + "\"");
 
+            } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_RAW)) {
+                sb.append(e.getValue());
+                
             } else {
                 sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");
             }
@@ -1544,6 +1547,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
             // special tags
             if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_ID)) {
                 sb.append("id" + "=\"" + e.getValue() + "\"");
+
+            } else if (e.getKey().equals(KlighdConstants.SEMANTIC_DATA_RAW)) {
+                sb.append(e.getValue());
 
             } else {
                 sb.append("klighd:" + e.getKey() + "=\"" + e.getValue() + "\"");

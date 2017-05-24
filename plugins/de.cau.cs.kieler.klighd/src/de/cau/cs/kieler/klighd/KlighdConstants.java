@@ -192,6 +192,17 @@ public final class KlighdConstants {
     public static final String SEMANTIC_DATA_CLASS = "__class";
 
     /**
+     * Special type of semantic data that is not handled by klighd but instead placed in the SVG as
+     * raw data.
+     * 
+     * @see de.cau.cs.kieler.klighd.util.KlighdProperties#SEMANTIC_DATA
+     *      KlighdProperties#SEMANTIC_DATA
+     */
+    public static final String SEMANTIC_DATA_RAW = "__raw";
+
+    
+    
+    /**
      * Hidden default constructor.
      */
     private KlighdConstants() {

@@ -292,6 +292,7 @@ public final class KlighdProperties {
      *
      * @see KlighdConstants#SEMANTIC_DATA_ID
      * @see KlighdConstants#SEMANTIC_DATA_CLASS
+     * @see KlighdConstants#SEMANTIC_DATA_RAW
      */
     public static final IProperty<KlighdSemanticDiagramData> SEMANTIC_DATA =
             new Property<KlighdSemanticDiagramData>("klighd.semanticData", null);
