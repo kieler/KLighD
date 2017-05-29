@@ -303,7 +303,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         //  will be false if all children are inactive and not added to the layout graph later on
         final boolean isCompoundNode = isPopulated
                 && Iterables.any(node.getChildren(), RenderingContextData.IS_ACTIVE);
-        final Bounds size;
         
         // there is layoutData attached to the node,
         // so take that as node layout instead of the default-layout
@@ -335,34 +334,40 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 new KVector(minSize.getWidth(), minSize.getHeight()));
         node.eSetDeliver(deliver);
 
+        // compute insets required by micro layout
+        // remember these insets, we need to subtract them again when transferring the layout
+        KInsets insets = KGraphFactory.eINSTANCE.createKInsets();
+
         // if a rendering definition is given ...
         if (displayedRendering != null) {
             // ... calculate the minimal required size based on the determined 'minSize' bounds
+            final Bounds size;
             if (performSizeEstimation) {
                 size = Bounds.max(minSize, PlacementUtil.estimateSize(displayedRendering, minSize));
             } else {
                 size = minSize;
             }
 
+            PlacementUtil.calculateInsets(displayedRendering, insets, size);
+
             // integrate the minimal estimated node size
-            //  in case of a compound node, the minimal node size to be preserved by KIML must be
-            //   handed over by means of the MIN_WIDTH/MIN_HEIGHT properties
-            //  in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
-            //   definitions are also relevant
-            KVector theMinSize = new KVector(size.getWidth(), size.getHeight());
+            // in case of a compound node, the minimal node size to be preserved by KIML must be
+            // handed over by means of the MIN_WIDTH/MIN_HEIGHT properties
+            // in case of non-compound nodes with SizeConstraint::MINIMUM_SIZE set, the property
+            // definitions are also relevant
+            final KVector theMinSize =
+                    new KVector(size.getWidth() + insets.getLeft() + insets.getRight(),
+                            size.getHeight() + insets.getTop() + insets.getBottom());
             node.setProperty(CoreOptions.NODE_SIZE_MINIMUM, theMinSize);
             if (!isCompoundNode) {
-                // in case of non-compound nodes the node size is usually taken from the layoutLayout
+                // in case of non-compound nodes the node size is usually taken from the
+                // layoutLayout
                 layoutNode.setDimensions(size.getWidth(), size.getHeight());
             }
         } else {
-            size = minSize;
+            PlacementUtil.calculateInsets(displayedRendering, insets, minSize);
         }
 
-        // compute insets required by micro layout
-        //  remember these insets, we need to subtract them again when transferring the layout
-        KInsets insets = KGraphFactory.eINSTANCE.createKInsets();
-        PlacementUtil.calculateInsets(displayedRendering, insets, size);
         // KLighD is somewhat mean and doesn't care about existing insets
         node.setInsets(insets);
         // The Insets are used in {@link KlighdLayoutConfigurationStore} to retrieve the padding
