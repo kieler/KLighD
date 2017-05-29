@@ -18,7 +18,6 @@ import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.IDiagramLayoutConnector;
@@ -366,13 +365,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         PlacementUtil.calculateInsets(displayedRendering, insets, size);
         // KLighD is somewhat mean and doesn't care about existing insets
         node.setInsets(insets);
-        // add the computed insets to the padding for layout
-        //  note that this is still done on the viewModel's node (the value is transfered later)
-        ElkPadding padding = node.getProperty(CoreOptions.PADDING);
-        padding.left += insets.getLeft();
-        padding.right += insets.getRight();
-        padding.top += insets.getTop();
-        padding.bottom += insets.getBottom();
+        // The Insets are used in {@link KlighdLayoutConfigurationStore} to retrieve the padding
+        // of the node
 
         layoutParent.getChildren().add(layoutNode);
         mapping.getGraphMap().put(layoutNode, node);
@@ -638,6 +632,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         final Set<Entry<ElkGraphElement, Object>> elementMappings =
                 mapping.getGraphMap().entrySet();
         
+        // We need to process labels after the edges because during edge handling
+        // the insets are handled and the source data adjusted accordingly.
+        // We store the labels here to have them ready after the main switch.
+        List<ElkLabel> graphLabels = new LinkedList<ElkLabel>();
+        
         // apply the layout of all mapped layout elements back to the associated element
         for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {
             final ElkGraphElement layoutElement = elementMapping.getKey();
@@ -681,27 +680,8 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
                 @Override
                 public Boolean caseElkLabel(final ElkLabel layoutLabel) {
-                    final KLabel label = (KLabel) element;
-                    
-                    shapeToViewModel(mapping, layoutLabel, label, false, true);
-
-                    // if the label's text was changed during layout, remember the new text in a
-                    // special property
-                    LabelManagementResult managementResult =
-                            layoutLabel.getProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT);
-                    if (managementResult != LabelManagementResult.UNMANAGED) {
-                        // TODO: This may in the future set the KText's text instead.
-                        // However, doing so now doesn't do anything yet...
-                        label.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE,
-                                    layoutLabel.getText());
-                        String origLabelText = ((KLabel) element).getText();
-                        
-                        if (origLabelText.equals(layoutLabel.getText())) {
-                            label.setProperty(KlighdProperties.TOOLTIP, null);
-                        } else {
-                            label.setProperty(KlighdProperties.TOOLTIP, origLabelText);
-                        }
-                    }
+                    // Store the label for later use
+                    graphLabels.add(layoutLabel);
                     return true;
                 }
             } /**/.doSwitch(layoutElement);
@@ -713,6 +693,31 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             for (final KEdge edge : excludedEdges) {
                 handleExcludedEdge(edge);
             }
+        }
+
+        // Handle all the stored labels now, after edges have already been applied
+        for (ElkLabel layoutLabel : graphLabels) {
+            final KLabel label = (KLabel) mapping.getGraphMap().get(layoutLabel);
+            
+            shapeToViewModel(mapping, layoutLabel, label, false, true);
+            
+            // if the label's text was changed during layout, remember the new text in a
+            // special property
+            LabelManagementResult managementResult =
+                    layoutLabel.getProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT);
+            if (managementResult != LabelManagementResult.UNMANAGED) {
+                // TODO: This may in the future set the KText's text instead.
+                // However, doing so now doesn't do anything yet...
+                label.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE,
+                        layoutLabel.getText());
+                String origLabelText = label.getText();
+                
+                if (origLabelText.equals(layoutLabel.getText())) {
+                    label.setProperty(KlighdProperties.TOOLTIP, null);
+                } else {
+                    label.setProperty(KlighdProperties.TOOLTIP, origLabelText);
+                }
+            }            
         }
     }
     
@@ -860,20 +865,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     KGraphPackage.eINSTANCE.getKShapeLayout_Xpos(),
                     null,
                     newValue));
-        }
-
-        if (copyPadding) {
-            // free node's padding of the insets again
-            KNode node = (KNode) mapping.getGraphMap().get(sourceShape);
-            KInsets insets = node.getInsets();
-            
-            if (insets != null) {
-                ElkPadding padding = node.getProperty(CoreOptions.PADDING);
-                padding.left -= insets.getLeft();
-                padding.right -= insets.getRight();
-                padding.top -= insets.getTop();
-                padding.bottom -= insets.getBottom();
-            }
         }
     }
 

@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.data.LayoutOptionData.Target;
+import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -119,7 +120,8 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         final Object value = graphElement.getProperties().get(optionData);
         if (value instanceof IPropertyValueProxy) {
             return ((IPropertyValueProxy) value).resolveValue(optionData);
-
+        } else if (optionData.equals(CoreOptions.PADDING)) {
+            return getPaddingLayoutOptionValue();
         } else if (value == null) {
             // check whether an expansion aware layout option set is present
             final ExpansionAwareLayoutOptionData ealo =
@@ -154,6 +156,26 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      /** The aspect ratio is rounded to two decimal places. */
      private static final double ASPECT_RATIO_ROUND = 100;
 
+    /**
+     * When asked about the padding of the node we need to take the node insets into account.
+     * 
+     * @return The adjusted padding of the node, or {@code null} if graphElement is not a
+     *         {@link KNode}
+     */
+     private Object getPaddingLayoutOptionValue() {
+         if (graphElement instanceof KNode) {
+             KNode node = (KNode) graphElement;
+             ElkPadding padding = new ElkPadding(node.getProperty(CoreOptions.PADDING));
+             padding.left += node.getInsets().getLeft();
+             padding.right += node.getInsets().getRight();
+             padding.top += node.getInsets().getTop();
+             padding.bottom += node.getInsets().getBottom();
+             return padding;
+         }
+         return null;
+     }
+     
+     
     /**
      * We support special layout options whose value we infer if they are not explicitly set on the
      * element. This method assumes that this is indeed the case and returns the special layout option
