@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -332,7 +333,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
         } else if (strStr != null) {
             return strStr.entrySet().iterator();
         } else {
-            return Iterators.emptyIterator();
+            return Collections.emptyIterator();
         }
     }
 
@@ -379,7 +380,7 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
             final int noOfLine) {
 
         return strFunTextLine == null
-                ? Iterators.<Map.Entry<String, String>>emptyIterator()
+                ? Collections.<Map.Entry<String, String>>emptyIterator()
                 : Iterators.transform(strFunTextLine.entrySet().iterator(),
                         new TextLineTransformFunction(new TextLineFunctionInput(viewContext,
                                 viewModelElement, textLine, noOfLine)));

@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.eclipse.emf.common.util.AbstractTreeIterator;
@@ -144,7 +145,7 @@ public final class ModelingUtil {
 
         } else if (types.length == 0) {
             // because the empty disjunction is defined to evaluate to 'false' ...
-            return Iterators.emptyIterator();
+            return Collections.emptyIterator();
 
         } else {
             final Predicate<Object> p = KlighdPredicates.instanceOf(types);
@@ -256,7 +257,7 @@ public final class ModelingUtil {
 
         } else if (types.length == 0) {
             // because the empty disjunction is defined to evaluate to 'false' ...
-            return Iterators.emptyIterator();
+            return Collections.emptyIterator();
 
         } else {
 

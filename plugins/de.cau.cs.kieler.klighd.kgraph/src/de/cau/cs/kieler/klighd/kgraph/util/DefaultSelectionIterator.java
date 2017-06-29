@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.kgraph.util;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.google.common.base.Predicate;
@@ -74,7 +75,7 @@ public class DefaultSelectionIterator extends SelectionIterator {
                 // return an empty iterator if no target/source port is configured
                 // or if the target/source port has been visited already, in order
                 // to break infinite loops
-                return Iterators.<KGraphElement>emptyIterator();
+                return Collections.<KGraphElement>emptyIterator();
             }
 
             visited.add(port);
@@ -99,7 +100,7 @@ public class DefaultSelectionIterator extends SelectionIterator {
                 return resultEdges;
             }
         } else {
-            return Iterators.<KGraphElement>emptyIterator();
+            return Collections.<KGraphElement>emptyIterator();
         }
     }
 }

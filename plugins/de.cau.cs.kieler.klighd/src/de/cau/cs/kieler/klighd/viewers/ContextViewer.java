@@ -372,7 +372,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
         final KNode clip = activeViewer.getClip();
 
         if (!activeViewer.isVisible(clip, false)) {
-            return Iterators.emptyIterator();
+            return Collections.emptyIterator();
 
         } else {
             return new AbstractTreeIterator<KNode>(clip) {
@@ -406,7 +406,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
         final KNode clip = activeViewer.getClip();
 
         if (!activeViewer.isVisible(clip, false)) {
-            return Iterators.emptyIterator();
+            return Collections.emptyIterator();
 
         } else {
             return new AbstractTreeIterator<KGraphElement>(clip) {
