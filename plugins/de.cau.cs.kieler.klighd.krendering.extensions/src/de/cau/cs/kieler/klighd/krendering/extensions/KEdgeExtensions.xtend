@@ -256,7 +256,7 @@ class KEdgeExtensions {
      * getSemanticObject returns the primary (semantic) object of an edge.
      */
     def Object getSemanticObject(KEdge edge) {
-        (getInternalEdgeMap.filter[p1, p2|p2==edge].keySet.head.head as List<Object>).head
+        ((getInternalEdgeMap.filter[p1, p2|p2 == edge].keySet.head as List<?>).head as List<Object>).head
     }
     
     
