@@ -14,10 +14,10 @@
 package de.cau.cs.kieler.klighd.krendering;
 
 import static com.google.common.collect.Iterators.concat;
-import static com.google.common.collect.Iterators.emptyIterator;
 import static com.google.common.collect.Iterators.singletonIterator;
 import static com.google.common.collect.Iterators.transform;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.google.common.base.Function;
@@ -74,7 +74,7 @@ public final class KRenderingUtil {
             }));
             
         } else {
-            children = emptyIterator();
+            children = Collections.emptyIterator();
         }
         return concat(singletonIterator(rendering), children);
     }
