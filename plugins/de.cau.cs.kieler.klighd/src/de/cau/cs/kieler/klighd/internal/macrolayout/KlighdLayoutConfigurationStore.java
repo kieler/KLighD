@@ -185,7 +185,8 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      * @return the value or {@code null} if it is not a special layout option.
      */
     private Object getSpecialLayoutOptionValue(final LayoutOptionData optionData) {
-        if (optionData.equals(CoreOptions.ASPECT_RATIO) && getContainer() == null) {
+        if (optionData.equals(CoreOptions.ASPECT_RATIO) 
+                && (getContainer() == null || isSingleNodeOnRootLevel())) {
             // Get aspect ratio for the current diagram
             final IViewer viewer = getViewer();
             if (viewer == null || viewer.getControl() == null) {
@@ -330,7 +331,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         }
         
         // handle special layout options
-        if (getContainer() == null) {
+        if (getContainer() == null || isSingleNodeOnRootLevel()) {
             options.add(CoreOptions.ASPECT_RATIO.getId());
         }
 
@@ -409,5 +410,20 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
             }
         }
         return null;
+    }
+    
+    /**
+     * @return {@code true} if and only if {@code graphElement} is a {@link KNode} and it node is
+     *         the sole child of the root node.
+     */
+    private boolean isSingleNodeOnRootLevel() {
+        if (graphElement instanceof KNode) {
+            KNode node = (KNode) graphElement;
+            return node.getParent() != null 
+                    && node.getParent().getParent() == null
+                    && node.getParent().getChildren().size() == 1;
+        }
+        
+        return false; 
     }
 }
