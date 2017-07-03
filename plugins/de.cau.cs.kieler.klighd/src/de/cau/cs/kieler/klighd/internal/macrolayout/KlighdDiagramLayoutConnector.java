@@ -370,6 +370,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // KLighD is somewhat mean and doesn't care about existing insets
         node.setInsets(insets);
+        node.getProperty(CoreOptions.PADDING);
         // The Insets are used in {@link KlighdLayoutConfigurationStore} to retrieve the padding
         // of the node
 
