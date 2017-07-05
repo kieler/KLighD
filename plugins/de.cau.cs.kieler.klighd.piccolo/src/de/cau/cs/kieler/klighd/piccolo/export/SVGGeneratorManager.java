@@ -110,7 +110,7 @@ public final class SVGGeneratorManager {
      */
     public static KlighdAbstractSVGGraphics createGraphics(final String id, final Rectangle2D bounds,
             final boolean textAsShapes, final boolean embedFonts, final String description) {
-        return createGraphics(id, bounds, textAsShapes, embedFonts, description, null);
+        return createGraphics(id, bounds, textAsShapes, embedFonts, description, null, null);
     }
     
     /**
@@ -130,6 +130,8 @@ public final class SVGGeneratorManager {
      * @param description
      *            optional description to be inserted into the {@code desc} property of the
      *            generated SVG. Can be null.
+     * @param css
+     *            optional css stylesheet file to be referenced in the svg file
      * @param additionalRootData
      *            optional String that can be inserted into the svg tag. Can be null
      * @throws IllegalArgumentException
@@ -138,7 +140,7 @@ public final class SVGGeneratorManager {
      */
     public static KlighdAbstractSVGGraphics createGraphics(final String id,
             final Rectangle2D bounds, final boolean textAsShapes, final boolean embedFonts,
-            final String description, final String additionalRootData) {
+            final String description, final String css, final String additionalRootData) {
         final String graphicsClass = getInstance().generatorsMap.get(id);
 
         if (Strings.isNullOrEmpty(graphicsClass)) {
@@ -162,8 +164,8 @@ public final class SVGGeneratorManager {
 
             final Constructor<? extends KlighdAbstractSVGGraphics> constr =
                     clazz.getDeclaredConstructor(Rectangle2D.class, Boolean.class, Boolean.class,
-                            String.class, String.class);
-            graphics = constr.newInstance(bounds, textAsShapes, embedFonts, description,
+                            String.class, String.class, String.class);
+            graphics = constr.newInstance(bounds, textAsShapes, embedFonts, description, css,
                     additionalRootData);
 
         } catch (final Exception e) {

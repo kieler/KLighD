@@ -135,7 +135,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
     public static final String DESCRIPTION = rootKey + ".Description";
     
     public static final String ADDITIONAL_ROOT_DATA = rootKey + ".AdditionalData";
-        
+    
+    public static final String CSS = rootKey + ".css";
+    
     private SVGFontTable fontTable;
 
     private static final UserProperties defaultProperties = new UserProperties();
@@ -166,6 +168,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         defaultProperties.setProperty(DESCRIPTION, "");
         
         defaultProperties.setProperty(ADDITIONAL_ROOT_DATA, "");
+        defaultProperties.setProperty(CSS, "");
     }
 
     public static Properties getDefaultProperties() {
@@ -345,6 +348,12 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         imageNumber = 0;
 
         os.println("<?xml version=\"1.0\" standalone=\"no\"?>");
+        
+        // Insert css document if path is set
+        if (!getProperty(CSS).equals("")) {
+            os.println("<?xml-stylesheet href=\""+ getProperty(CSS) +"\" type=\"text/css\"?>");
+        }
+        
         if (getProperty(VERSION).equals(VERSION_1_1)) {
             // no DTD anymore
         } else {

@@ -98,6 +98,12 @@ public interface IOffscreenRenderer {
             "de.cau.cs.kieler.klighd.offscreenRendering.description", null);
 
     /**
+     * Property definition for embedding css stylesheet in the svg.
+     */
+    IProperty<String> CSS = new Property<String>(
+            "de.cau.cs.kieler.klighd.offscreenRendering.css", null);
+
+    /**
      * Property definition for embedding user-defined data in the root svg tag.
      */
     IProperty<String> ADDITIONAL_ROOT_DATA = new Property<String>(

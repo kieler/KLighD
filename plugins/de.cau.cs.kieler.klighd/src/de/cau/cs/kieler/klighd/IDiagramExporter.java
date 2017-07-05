@@ -72,6 +72,7 @@ public interface IDiagramExporter {
         public final boolean isEmbedFonts;
         public final String description;
 
+        private String css;
         private String additionalRootData;
         private TilingData tilingInfo;
         
@@ -299,6 +300,20 @@ public interface IDiagramExporter {
          */
         public void setTransparentBackground(final boolean transparentBackground) {
             this.transparentBackground = transparentBackground;
+        }
+        
+        /**
+         * @return the css file to be placed in the SVG
+         */
+        public String css() {
+            return css;
+        }
+        
+        /**
+         * @param newCss the new css file to be placed in the SVG
+         */
+        public void css(final String newCss) {
+            this.css = newCss;
         }
         
         /**
