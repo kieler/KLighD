@@ -653,7 +653,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         final boolean drawBackground = !isLine() && (paint != null || paintGradient != null);
 
         // if not even a background is painted, don't attach the semantic data at all
-        if (!drawForeground && drawBackground) {
+        if (drawBackground) {
             addSemanticData(kpc);
         }
 
@@ -684,7 +684,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
             }
         }
 
-        if (drawForeground) {
+        if (!drawBackground && drawForeground) {
             addSemanticData(kpc);
         }
 

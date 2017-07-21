@@ -244,6 +244,7 @@ public class Draw2DNode extends KCustomFigureNode {
         // paintContext.pushClip(getBounds());
         
         this.graphics.setKlighdSWTGraphics((KlighdSWTGraphicsEx) kpc.getKlighdGraphics());
+        addSemanticData(kpc);
         try {
             figure.paint(this.graphics);
         } catch (final Throwable throwable) {
