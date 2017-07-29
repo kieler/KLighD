@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2015 by
+ * Copyright 2015, 2017 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,9 +16,11 @@ package de.cau.cs.kieler.klighd.labels;
 import org.eclipse.elk.core.labels.ILabelManager;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.graph.ElkLabel;
-import org.eclipse.swt.graphics.FontData;
 
 import de.cau.cs.kieler.klighd.KlighdOptions;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -131,11 +133,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
                     
                     if (newLabelText != null) {
                         elkLabel.setText(newLabelText);
-                        
-                        // calculate the new Bounds of the text
-                        final FontData font = LabelManagementUtil.fontDataFor(elkLabel);
-                        Bounds newSize = PlacementUtil.estimateTextSize(font, newLabelText);
-                        newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
+                        newLabelSize = calculateFinalLabelSize(elkLabel, newLabelText);
                     }
 
                     // Make sure KLighD knows if we shortened the label
@@ -149,12 +147,9 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
                 } else {
                     // We won't modify the label's text, but we need to tell the layout algorithm
                     // about its size when it's unshortened. If we don't, word-wrapped labels won't
-                    // have their height reset if they move into focus and thus consist of a single
-                    // line of text
-                    final FontData font = LabelManagementUtil.fontDataFor(elkLabel);
-                    Bounds newSize = PlacementUtil.estimateTextSize(font, elkLabel.getText());
-                    newLabelSize = new KVector(newSize.getWidth(), newSize.getHeight());
-
+                    // have their height reset if they move into focus and thus consist of their
+                    // original text
+                    newLabelSize = calculateFinalLabelSize(elkLabel, elkLabel.getText());
                     elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
                             LabelManagementResult.MANAGED_UNMODIFIED);
                 }
@@ -165,6 +160,46 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
 
         // This isn't a KLabel or this label manager is not active...
         return null;
+    }
+    
+    /**
+     * Calculates the final size of the given label if it were to display the given text.
+     * 
+     * @param elkLabel
+     *            the label.
+     * @param text
+     *            the text.
+     * @return the label's new size.
+     */
+    private KVector calculateFinalLabelSize(final ElkLabel elkLabel, final String text) {
+        // Find the label's rendering
+        KRendering rootRendering = elkLabel.getProperty(KlighdOptions.K_RENDERING);
+        if (rootRendering instanceof KRenderingRef) {
+            rootRendering = ((KRenderingRef) rootRendering).getRendering();
+        }
+        
+        Bounds newSize = null;
+        
+        if (rootRendering instanceof KText) {
+            // This is the easy case that we can handle quickly
+            newSize = PlacementUtil.estimateTextSize(((KText) rootRendering), text);
+        } else {
+            // Employ the big guns! Find the KText hidden in the rendering hierarchy, temporarily
+            // set its text override, estimate the size of the whole rendering, and kill the
+            // override again
+            KText kText = LabelManagementUtil.ktextFor(elkLabel);
+            kText.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE, text);
+            
+            newSize = PlacementUtil.estimateSize(rootRendering, new Bounds(0, 0));
+            
+            kText.setProperty(KlighdOptions.LABELS_TEXT_OVERRIDE, null);
+        }
+        
+        if (newSize != null) {
+            return new KVector(newSize.getWidth(), newSize.getHeight());
+        } else {
+            return new KVector();
+        }
     }
 
     /**
