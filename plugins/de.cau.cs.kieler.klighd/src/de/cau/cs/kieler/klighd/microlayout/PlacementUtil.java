@@ -26,6 +26,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +49,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KChildArea;
@@ -72,6 +75,7 @@ import de.cau.cs.kieler.klighd.krendering.KPosition;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
+import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.krendering.KStyle;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
@@ -746,23 +750,19 @@ public final class PlacementUtil {
      * @return font information for the given label.
      */
     public static FontData fontDataFor(final KLabel kLabel, final boolean setFontLayoutOptions) {
-        final Object rendering = Iterators.getNext(
-                ModelingUtil.eAllContentsOfType2(kLabel, KRenderingRef.class, KText.class),
+        final KRendering rootRendering = Iterators.getNext(
+                ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class),
                 null);
         
-        EObject kText = null;
-        if (rendering instanceof KRenderingRef) {
-            kText = ((KRenderingRef) rendering).getRendering();
-        } else if (setFontLayoutOptions && rendering instanceof KText) {
-            kText = (KText) rendering;
-        }
+        final Iterator<KText> kTexts = Iterators.filter(
+                KRenderingUtil.selfAndAllChildren(rootRendering), KText.class);
+        final KText kText = Iterators.getNext(kTexts, null);
         
-        // Check if we really have a KText instance; the rendering ref could have insidiously referenced
-        // some arbitrary object
-        if (kText instanceof KText && setFontLayoutOptions) {
-            return fontDataFor((KText) kText, kLabel);
+        // Check if we have found a KText thingy
+        if (setFontLayoutOptions) {
+            return fontDataFor(kText, kLabel);
         } else {
-            return fontDataFor((KText) null, null);
+            return fontDataFor(kText, null);
         }
     }
     
@@ -836,6 +836,12 @@ public final class PlacementUtil {
         return new FontData(fontName, fontSize, fontStyle);
     }
 
+    private static final Predicate<KStyle> FILTER = new Predicate<KStyle>() {
+        public boolean apply(final KStyle style) {
+            return style.isPropagateToChildren();
+        }
+    };
+
     /**
      * Returns the minimal bounds for a KText.
      * 
@@ -844,45 +850,29 @@ public final class PlacementUtil {
      * @return the minimal bounds for the {@link KText}
      */
     public static Bounds estimateTextSize(final KText kText) {
-        return estimateTextSize(kText, kText.getText());
-    }
-
-    /**
-     * Returns the minimal bounds for a KLabel. Font configurations like font name, size, and style
-     * may be provided via an attached {@link KText} rendering.
-     * 
-     * @param kLabel
-     *            the {@link KLabel} whose size is to be estimated.
-     * @return the minimal bounds for the {@link KLabel}
-     */
-    public static Bounds estimateTextSize(final KLabel kLabel) {
-        return estimateTextSize(kLabel, false);
-    }
-
-    /**
-     * Returns the minimal bounds for a KLabel. Font configurations like font name, size, and style
-     * may be provided via an attached {@link KText} rendering.
-     * 
-     * @param kLabel
-     *            the {@link KLabel} whose size is to be estimated.
-     * @param setFontLayoutOptions
-     *            if <code>true</code> the layout options {@link CoreOptions#FONT_NAME} and
-     *            {@link CoreOptions#FONT_SIZE} are set/updated on <code>kLabel</code>'s layout
-     *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
-     * @return the minimal bounds for the {@link KLabel}
-     */
-    public static Bounds estimateTextSize(final KLabel kLabel, final boolean setFontLayoutOptions) {
-        final KText text = Iterators.getNext(Iterators.filter(
-                ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class), KText.class), null);
-
-        return estimateTextSize(text, kLabel.getText(), setFontLayoutOptions ? kLabel : null);
-    }
-
-    private static final Predicate<KStyle> FILTER = new Predicate<KStyle>() {
-        public boolean apply(final KStyle style) {
-            return style.isPropagateToChildren();
+        if (kText.getText() == null) {
+            // If the KText has a text override property set on it, use that
+            if (kText.hasProperty(KlighdOptions.LABELS_TEXT_OVERRIDE)) {
+                return estimateTextSize(kText,
+                        kText.getProperty(KlighdOptions.LABELS_TEXT_OVERRIDE));
+            }
+            
+            // We have nothing to go on here... Try to find the KText's parent label, if any
+            EObject o = kText.eContainer();
+            while (o instanceof KRendering) {
+                o = o.eContainer();
+            }
+            
+            if (o instanceof KLabel) {
+                return estimateTextSize(kText, ((KLabel) o).getText());
+            } else {
+                // Give up
+                return estimateTextSize(kText, null);
+            }
+        } else {
+            return estimateTextSize(kText, kText.getText());
         }
-    };
+    }
     
     /**
      * Returns the minimal bounds for a string based on configurations of a {@link KText}. The
@@ -897,27 +887,6 @@ public final class PlacementUtil {
      * @return the minimal bounds for the string
      */
     public static Bounds estimateTextSize(final KText kText, final String text) {
-        return estimateTextSize(kText, text, null);
-    };
-    
-    /**
-     * Returns the minimal bounds for a string based on configurations of a {@link KText}. The
-     * string is handed over separately in order to allow the text size estimation for
-     * {@link KLabel KLabels}, whose text string is given outside of the {@link KText} rendering.
-     * 
-     * @param kText
-     *            the KText providing font configurations like font name, size, and style; maybe
-     *            <code>null</code>
-     * @param text
-     *            the actual text string whose size is to be estimated; maybe <code>null</code>
-     * @param graphElement
-     *            if unequal to <code>null</code> the layout options {@link LayoutOptions#FONT_NAME}
-     *            and {@link LayoutOptions#FONT_SIZE} will be set/updated to the font name & size
-     *            values determined during the size estimation
-     * @return the minimal bounds for the string
-     */
-    private static Bounds estimateTextSize(final KText kText, final String text,
-            final KGraphElement graphElement) {
         if (kText != null) {
             // special handling required for the regression tests
             // I don't trust in the different SWT implementations to
@@ -939,7 +908,7 @@ public final class PlacementUtil {
             }
         }
 
-        return estimateTextSize(fontDataFor(kText, graphElement), text);
+        return estimateTextSize(fontDataFor(kText, null), text);
     }
 
     /**

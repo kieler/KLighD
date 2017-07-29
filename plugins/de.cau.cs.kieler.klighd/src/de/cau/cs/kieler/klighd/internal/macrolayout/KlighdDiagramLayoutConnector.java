@@ -570,8 +570,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         if (rootRendering != null) {
             if (estimateSize) {
                 // calculate the minimal size need for the rendering ...
-                final Bounds minSize =
-                        PlacementUtil.estimateTextSize(label, setFontLayoutOptions);
+                final Bounds minSize = PlacementUtil.estimateSize(rootRendering, new Bounds(0, 0));
                 
                 final double minWidth = minSize.getWidth() > layoutLabel.getWidth()
                         ? minSize.getWidth()
@@ -580,10 +579,11 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         ? minSize.getHeight()
                         : layoutLabel.getHeight();
                 
-                // ... and update the node size if it exceeds its size
+                // ... and update the label size if the calculated size is larger
                 layoutLabel.setDimensions(minWidth, minHeight);
-
-            } else if (setFontLayoutOptions) {
+            }
+            
+            if (setFontLayoutOptions) {
                 PlacementUtil.fontDataFor(label, true);
             }
 
