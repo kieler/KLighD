@@ -503,6 +503,24 @@ public final class PlacementUtil {
     }
 
     /**
+     * Returns the minimal size of a {@link KLabel} based on the minimal size of contained
+     * {@link KText KTexts} if present.
+     * 
+     * @param label
+     *            the label to estimate the size for
+     * @return the estimated size or (0, 0) if no text is contained.
+     */
+    public static Bounds estimateSize(final KLabel label) {
+        final KRendering labelRendering = label.getData(KRendering.class);
+
+        if (labelRendering != null) {
+            return estimateSize(labelRendering, new Bounds(label.getWidth(), label.getHeight()));
+        } else {
+            return estimateTextSize((KText) null, label.getText());
+        }
+    }
+
+    /**
      * Estimates the minimal size of a KRendering.<br>
      * The the previous defined size is incorporated while resolving relative placement/size
      * constraints.

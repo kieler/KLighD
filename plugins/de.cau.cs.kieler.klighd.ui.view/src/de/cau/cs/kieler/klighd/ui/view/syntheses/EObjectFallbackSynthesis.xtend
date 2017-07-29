@@ -310,7 +310,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         port.setPortPos(node.width-1, node.nextEPortYPosition);
         port.createLabel => [
             text = containerFeature.name
-            val size = PlacementUtil.estimateTextSize(it)
+            val size = PlacementUtil.estimateSize(it)
             it.width = size.width
             it.height = size.height
         ]
