@@ -77,6 +77,13 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
  * @author chsch
  */
 final class KGERenderingControllerHelper {
+    
+    /**
+     * Indicates that a new rendering should be added to the end of its new parent's list of
+     * children. This is only used by few methods.
+     */
+    public static final int INSERT_CHILD_AT_END = -1;
+    
 
     /**
      * Standard constructor.
@@ -353,13 +360,45 @@ final class KGERenderingControllerHelper {
     static PNodeController<KlighdPath> createLine(
             final AbstractKGERenderingController<?, ?> controller, final KPolyline line,
             final List<KStyle> propagatedStyles, final IKlighdNode parent, final Bounds initialBounds) {
+        
+        return createLine(controller, line, propagatedStyles, parent, INSERT_CHILD_AT_END,
+                initialBounds);
+    }
+
+    /**
+     * Creates a {@code PSWTAdvancedPath} representation for the {@code KPolyline} or
+     * {@code KSpline}.
+     *
+     * @param controller
+     *            the {@link AbstractKGERenderingController} that is delegated to in this method (and
+     *            should be the caller of this method)
+     * @param line
+     *            the polyline or spline rendering
+     * @param styles
+     *            the styles container for the rendering
+     * @param propagatedStyles
+     *            the styles propagated to the rendering's children
+     * @param parent
+     *            the parent Piccolo node
+     * @param initialBounds
+     *            the initial bounds
+     * @return the controller for the created Piccolo node
+     */
+    static PNodeController<KlighdPath> createLine(
+            final AbstractKGERenderingController<?, ?> controller, final KPolyline line,
+            final List<KStyle> propagatedStyles, final IKlighdNode parent, final int childIndex,
+            final Bounds initialBounds) {
 
         final KlighdPath path = new KlighdPath(line);
 
         setPathToLine(path, line, initialBounds);
 
         path.translate(initialBounds.getX(), initialBounds.getY());
-        parent.addChild(path);
+        if (childIndex == -1) {
+            parent.addChild(path);
+        } else {
+            parent.addChild(childIndex, path);
+        }
 
         // handle children
         if (line.getChildren().size() > 0) {

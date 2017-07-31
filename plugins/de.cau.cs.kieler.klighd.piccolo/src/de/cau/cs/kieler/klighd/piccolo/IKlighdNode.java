@@ -79,6 +79,14 @@ public interface IKlighdNode {
      * @see PNode#addChild(PNode)
      */
     void addChild(IKlighdNode child);
+    
+    /**
+     * @param index where to insert the child in its new parent's list of children.
+     * @param child the child {@link IKlighdNode} to be added to the node's list of children
+     * 
+     * @see PNode#addChild(int, PNode)
+     */
+    void addChild(int index, IKlighdNode child);
 
     /**
      * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing the

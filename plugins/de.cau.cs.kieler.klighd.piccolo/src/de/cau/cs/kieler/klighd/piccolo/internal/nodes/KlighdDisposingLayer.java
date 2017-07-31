@@ -65,6 +65,11 @@ public class KlighdDisposingLayer extends PLayer implements IKlighdNode {
         addChild(child.asPNode());
     }
     
+    @Override
+    public void addChild(final int index, final IKlighdNode child) {
+        addChild(index, child.asPNode());
+    }
+    
     /**
      * {@inheritDoc}
      */

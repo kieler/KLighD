@@ -53,6 +53,7 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
     private List<KStyle> childPropagatedStyles = null;
     private IKlighdNode parent = null;
     private Bounds initialBounds = null;
+    private int childInsertIndex = -1;
 
     /**
      * A.
@@ -66,9 +67,17 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
      */
     public void configure(final List<KStyle> theChildPropagatedStyles, final IKlighdNode theParent,
             final Bounds theInitialBounds) {
+        
+        configure(theChildPropagatedStyles, theParent, theInitialBounds,
+                KGERenderingControllerHelper.INSERT_CHILD_AT_END);
+    }
+
+    public void configure(final List<KStyle> theChildPropagatedStyles, final IKlighdNode theParent,
+            final Bounds theInitialBounds, final int theChildInsertIndex) {
         this.childPropagatedStyles = theChildPropagatedStyles;
         this.parent = theParent;
         this.initialBounds = theInitialBounds;
+        this.childInsertIndex = theChildInsertIndex;
     }
 
     // Ellipse
@@ -103,21 +112,21 @@ class PNodeConstructionKRenderingSwitch extends KRenderingSwitch<PNodeController
     @Override
     public PNodeController<?> caseKSpline(final KSpline spline) {
         return KGERenderingControllerHelper.createLine(controller, spline, childPropagatedStyles,
-                parent, initialBounds);
+                parent, childInsertIndex, initialBounds);
     }
 
     // Polyline
     @Override
     public PNodeController<?> caseKPolyline(final KPolyline polyline) {
         return KGERenderingControllerHelper.createLine(controller, polyline, childPropagatedStyles,
-                parent, initialBounds);
+                parent, childInsertIndex, initialBounds);
     }
 
     // RoundedBendPolyline
     @Override
     public PNodeController<?> caseKRoundedBendsPolyline(final KRoundedBendsPolyline polyline) {
         return KGERenderingControllerHelper.createLine(controller, polyline, childPropagatedStyles,
-                parent, initialBounds);
+                parent, childInsertIndex, initialBounds);
     }
 
     // Polygon

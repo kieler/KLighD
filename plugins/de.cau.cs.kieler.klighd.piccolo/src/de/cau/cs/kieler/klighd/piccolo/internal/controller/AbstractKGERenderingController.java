@@ -1128,8 +1128,10 @@ public abstract class AbstractKGERenderingController
         final List<KStyle> childPropagatedStyles =
                 determinePropagationStyles(renderingStyles, propagatedStyles, isRenderingRef);
 
-        // create the rendering and return its controller
-        kSwitch.configure(childPropagatedStyles, parent, initialBounds);
+        // Create the rendering and return its controller. We configure the switch to insert new
+        // children at the head of their new parent's list of children. This will only apply to
+        // polylines and is meant to keep edge renderings under edge labels to enable inline labels
+        kSwitch.configure(childPropagatedStyles, parent, initialBounds, 0);
         final PNodeController<?> controller = kSwitch.doSwitch(rendering);
 
         // determine the styles for this rendering

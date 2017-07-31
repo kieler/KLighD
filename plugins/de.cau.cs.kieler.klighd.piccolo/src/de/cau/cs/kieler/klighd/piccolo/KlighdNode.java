@@ -136,7 +136,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      */
     @Override
     public void addChild(final IKlighdNode child) {
-        addChild(child.asPNode());
+        super.addChild(child.asPNode());
     }
 
     /**
@@ -145,7 +145,21 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * @param child the child to by added
      */
     public void addChild(final KlighdNode child) {
-        addChild(child.asPNode());
+        super.addChild(child.asPNode());
+    }
+    
+    @Override
+    public void addChild(final int index, final IKlighdNode child) {
+        super.addChild(index, child.asPNode());
+    }
+
+    /**
+     * Convenience method avoiding ambiguous call errors (IKlighdNode vs. PNode).
+     * 
+     * {@inheritDoc}
+     */
+    public void addChild(final int index, final KlighdNode child) {
+        super.addChild(index, child.asPNode());
     }
 
 
