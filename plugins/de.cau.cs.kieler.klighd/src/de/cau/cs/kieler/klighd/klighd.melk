@@ -4,7 +4,7 @@ import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLay
 import org.eclipse.elk.core.math.KVector
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import org.eclipse.swt.graphics.RGB
-import de.cau.cs.kieler.klighd.^labels.LabelManagementResult
+import de.cau.cs.kieler.klighd.^labels.management.LabelManagementResult
 
 bundle {
     label "Klighd"

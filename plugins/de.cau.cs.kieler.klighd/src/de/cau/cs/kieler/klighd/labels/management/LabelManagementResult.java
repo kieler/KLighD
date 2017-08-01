@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.labels;
+package de.cau.cs.kieler.klighd.labels.management;
 
 /**
  * Enumeration of different outcomes of label management for a given label. Depending on the actual

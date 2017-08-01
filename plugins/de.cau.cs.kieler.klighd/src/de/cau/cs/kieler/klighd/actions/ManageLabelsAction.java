@@ -18,7 +18,7 @@ import org.eclipse.elk.core.labels.LabelManagementOptions;
 
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.klighd.labels.AbstractKlighdLabelManager;
+import de.cau.cs.kieler.klighd.labels.management.AbstractKlighdLabelManager;
 
 /**
  * An action that toggles the activity state of {@link AbstractKlighdLabelManager} instances attached

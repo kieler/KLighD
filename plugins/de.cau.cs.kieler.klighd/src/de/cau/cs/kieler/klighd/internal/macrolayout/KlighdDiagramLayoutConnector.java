@@ -74,7 +74,7 @@ import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
-import de.cau.cs.kieler.klighd.labels.LabelManagementResult;
+import de.cau.cs.kieler.klighd.labels.management.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
