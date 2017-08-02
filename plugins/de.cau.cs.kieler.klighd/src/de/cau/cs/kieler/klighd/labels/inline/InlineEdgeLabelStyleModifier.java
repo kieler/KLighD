@@ -36,9 +36,11 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 
 /**
  * Switches label decorations on and off depending on the direction of the edge segment their
- * inline edge label is placed on.
+ * inline edge label is placed on. Visibility can be switched on and off depending simply on the
+ * orientation of the edge segment a label is on. Visibility can additionally depend on the
+ * direction one would have to travel along the edge segment to get to the edge's target.
  * 
- * TODO Document usage.
+ * <p>To use this stuff on a rendering, simply call {@link #install(KRendering, Visibility)}.</p>
  * 
  * @author cds
  */

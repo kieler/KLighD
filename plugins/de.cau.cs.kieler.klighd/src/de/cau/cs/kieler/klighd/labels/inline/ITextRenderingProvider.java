@@ -18,7 +18,10 @@ import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
- * TODO Document.
+ * Implementors of this interface know how to provide text renderings for labels. The produced
+ * renderings are not limited to a simple {@link KText} instance, but can instead be an arbitrarily
+ * complex rendering hierarchy. The only requirement is that the hierarchy includes exactly one
+ * {@link KText} somewhere, and that this instance cannot have a text set on it.
  * 
  * @author cds
  */
@@ -26,10 +29,9 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 public interface ITextRenderingProvider {
     
     /**
-     * Creates a rendering for the given label and adds it to the given container. Most
-     * implementations will probably want to create a {@link KText} here, but more complicated
-     * rendering hierarchies are possible as well. The rendering is returned to have its placement
-     * set up according to the decorators added to the container previously.
+     * Creates a rendering for the given label and adds it to the given container.The rendering is
+     * returned to have its placement set up according to the decorators added to the container
+     * previously.
      * 
      * @param container
      *            the container to add the rendering to.

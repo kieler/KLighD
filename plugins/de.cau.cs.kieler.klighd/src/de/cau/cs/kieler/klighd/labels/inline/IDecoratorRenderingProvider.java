@@ -19,7 +19,10 @@ import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.labels.inline.InlineLabelConfigurator.LayoutMode;
 
 /**
- * TODO Document.
+ * Implementors of this interface create decorations for a label's rendering. Since decorations
+ * may take up space around the edges of the label's container rendering, they indicate the amount
+ * of space that needs to be left between the borders and the actual text rendering by returning
+ * an appropriate {@link ElkPadding} instance.
  * 
  * @author cds
  */

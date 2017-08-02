@@ -39,9 +39,50 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTopPosition;
 
 /**
+ * Central configuration class for inline center edge label placement. Basically, create a new
+ * instance of this class using {@link #create()}, configure it using the {@code with...} methods
+ * and {@link #addDecoratorRenderingProvider(IDecoratorRenderingProvider)}, and either apply it to
+ * {@link #applyTo(KLabel)} for a single label or {@link #applyToAll(KNode, boolean)} for all
+ * labels in a graph.
  * 
+ * <p>The configuration consists of several parts, each of which configured with sensible
+ * defaults.</p>
+ * 
+ * 
+ * <h3>Layout Mode</h3>
+ * 
+ * <p>This setting decides whether the resulting label renderings should only work with horizontal
+ * or vertical layout directions or with both. This may influence the amount of padding between a
+ * label's border and its text inserted by decorators (see below). It may also influence the amount
+ * of renderings added to the label: if vertical layout directions are never used, no renderings
+ * need to be added that are only used for such directions.</p>
+ * 
+ * <p>By default, everything gets set up for arbitrary layout directions.</p>
+ * 
+ * 
+ * <h3>Decorator Rendering Providers</h3>
+ * 
+ * <p>Inline labels will usually require some sort of special rendering since simply displaying its
+ * text would result in the label's edge crossing the text out. The least one would want is to add
+ * some kind of a background that hides the edge behind the label, but an arbitrary number of
+ * decorators can be added to each label. Decorations can be shown or hidden depending on whether
+ * the label ends up being placed on a horizontal or on a vertical edge segment, as controlled by
+ * the {@link InlineEdgeLabelStyleModifier}.</p>
+ * 
+ * <p>By default, labels are decorated with a slightly translucent white background.</p>
+ * 
+ * 
+ * <h3>Text Rendering Provider</h3>
+ * 
+ * <p>The label text must be rendered using a {@link KText}, which is provided by a text rendering
+ * provider.</p>
+ * 
+ * <p>By default, an empty {@link KText} is used to render a label.</p>
  * 
  * @author cds
+ * @see IDecoratorRenderingProvider
+ * @see ITextRenderingProvider
+ * @see InlineEdgeLabelStyleModifier
  */
 public final class InlineLabelConfigurator {
     

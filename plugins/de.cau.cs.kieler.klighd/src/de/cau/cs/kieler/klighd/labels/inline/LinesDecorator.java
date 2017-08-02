@@ -26,7 +26,10 @@ import de.cau.cs.kieler.klighd.labels.inline.InlineEdgeLabelStyleModifier.Visibi
 import de.cau.cs.kieler.klighd.labels.inline.InlineLabelConfigurator.LayoutMode;
 
 /**
- * TODO Document.
+ * Decorator that adds lines or brackets to a label's rendering. Depending on the
+ * {@link LayoutMode layout mode}, the label is either surrounded by lines to its left or right, or
+ * to its top or bottom, or both. In the latter case, the lines will dynamically adapt to changes
+ * in the layout direction.
  * 
  * @author cds
  */

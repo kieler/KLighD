@@ -27,7 +27,7 @@ import de.cau.cs.kieler.klighd.labels.inline.InlineEdgeLabelStyleModifier.Visibi
 import de.cau.cs.kieler.klighd.labels.inline.InlineLabelConfigurator.LayoutMode;
 
 /**
- * TODO Document.
+ * Surrounds labels with directional arrows the point to the edge head.
  * 
  * @author cds
  */

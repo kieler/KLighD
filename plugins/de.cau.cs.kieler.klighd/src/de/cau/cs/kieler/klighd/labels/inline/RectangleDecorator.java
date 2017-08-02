@@ -22,7 +22,8 @@ import de.cau.cs.kieler.klighd.krendering.KRectangle;
 import de.cau.cs.kieler.klighd.labels.inline.InlineLabelConfigurator.LayoutMode;
 
 /**
- * TODO Document.
+ * Decorator that uses a rectangle as big as the final label. The rectangle can have a background
+ * color as well as an optional border color.
  * 
  * @author cds
  */
