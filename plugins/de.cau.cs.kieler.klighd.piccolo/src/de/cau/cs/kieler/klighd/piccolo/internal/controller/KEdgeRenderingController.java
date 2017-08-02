@@ -160,7 +160,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         // create the rendering
         @SuppressWarnings("unchecked")
         final PNodeController<KlighdPath> controller = (PNodeController<KlighdPath>) createRendering(
-                rendering, parent, new Bounds(1, 1));
+                rendering, parent, new Bounds(1, 1), true);
 
         if (rendering instanceof KSpline) {
             controller.getNode().setPathToSpline(parent.getBendPoints());

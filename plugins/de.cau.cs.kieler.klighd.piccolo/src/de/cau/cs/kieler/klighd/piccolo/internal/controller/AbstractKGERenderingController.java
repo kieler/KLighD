@@ -1080,6 +1080,7 @@ public abstract class AbstractKGERenderingController
         }
     }
 
+    
 
     /**
      * Creates the Piccolo2D node representing the rendering inside the given parent with initial
@@ -1095,10 +1096,30 @@ public abstract class AbstractKGERenderingController
      */
     protected PNodeController<?> createRendering(final KRendering rendering, final IKlighdNode parent,
             final Bounds initialBounds) {
-        return this.createRendering(rendering, Collections.<KStyle>emptyList(), parent, initialBounds);
+        return this.createRendering(
+                rendering, Collections.<KStyle>emptyList(), parent, initialBounds, false);
     }
 
-    private PNodeConstructionKRenderingSwitch kSwitch = new PNodeConstructionKRenderingSwitch(this);
+    /**
+     * Creates the Piccolo2D node representing the rendering inside the given parent with initial
+     * bounds.
+     *
+     * @param rendering
+     *            the rendering
+     * @param parent
+     *            the parent Piccolo2D node
+     * @param initialBounds
+     *            the initial bounds
+     * @param insertAtBack
+     *            {@code true} if the new element should be inserted at the back of the Z order
+     *            instead of at the front.
+     * @return the controller for the created Piccolo2D node
+     */
+    protected PNodeController<?> createRendering(final KRendering rendering, final IKlighdNode parent,
+            final Bounds initialBounds, final boolean insertAtBack) {
+        return this.createRendering(
+                rendering, Collections.<KStyle>emptyList(), parent, initialBounds, insertAtBack);
+    }
 
     /**
      * Creates the Piccolo2D node representing the rendering inside the given parent with initial
@@ -1117,6 +1138,32 @@ public abstract class AbstractKGERenderingController
     protected PNodeController<?> createRendering(final KRendering rendering,
             final List<KStyle> propagatedStyles, final IKlighdNode parent, final Bounds initialBounds) {
 
+        return this.createRendering(rendering, propagatedStyles, parent, initialBounds, false);
+    }
+
+    private PNodeConstructionKRenderingSwitch kSwitch = new PNodeConstructionKRenderingSwitch(this);
+
+    /**
+     * Creates the Piccolo2D node representing the rendering inside the given parent with initial
+     * bounds.
+     *
+     * @param rendering
+     *            the rendering
+     * @param propagatedStyles
+     *            the styles propagated to the rendering
+     * @param parent
+     *            the parent Piccolo2D node
+     * @param initialBounds
+     *            the initial bounds
+     * @param insertAtBack
+     *            {@code true} if the new element should be inserted at the back of the Z order
+     *            instead of at the front.
+     * @return the controller for the created Piccolo2D node
+     */
+    protected PNodeController<?> createRendering(final KRendering rendering,
+            final List<KStyle> propagatedStyles, final IKlighdNode parent, final Bounds initialBounds,
+            final boolean insertAtBack) {
+
         final boolean isRenderingRef =
                 rendering.eClass() == KRenderingPackage.eINSTANCE.getKRenderingRef();
 
@@ -1128,10 +1175,15 @@ public abstract class AbstractKGERenderingController
         final List<KStyle> childPropagatedStyles =
                 determinePropagationStyles(renderingStyles, propagatedStyles, isRenderingRef);
 
-        // Create the rendering and return its controller. We configure the switch to insert new
-        // children at the head of their new parent's list of children. This will only apply to
-        // polylines and is meant to keep edge renderings under edge labels to enable inline labels
-        kSwitch.configure(childPropagatedStyles, parent, initialBounds, 0);
+        // Create the rendering and return its controller. We optionally configure the switch to
+        // insert new children at the head of their new parent's list of children. This will only
+        // apply to polylines and is meant to keep edge renderings under edge labels to enable
+        // inline labels
+        if (insertAtBack) {
+            kSwitch.configure(childPropagatedStyles, parent, initialBounds, 0);
+        } else {
+            kSwitch.configure(childPropagatedStyles, parent, initialBounds);
+        }
         final PNodeController<?> controller = kSwitch.doSwitch(rendering);
 
         // determine the styles for this rendering
