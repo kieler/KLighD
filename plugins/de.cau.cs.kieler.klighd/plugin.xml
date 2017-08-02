@@ -25,6 +25,10 @@
             class="de.cau.cs.kieler.klighd.modifiers.PortRotationModifier"
             id="de.cau.cs.kieler.klighd.modifiers.PortRotationModifier">
       </styleModifier>
+      <styleModifier
+            class="de.cau.cs.kieler.klighd.labels.inline.InlineEdgeLabelStyleModifier"
+            id="de.cau.cs.kieler.klighd.labels.inline.inlineEdgeLabelStyleModifier">
+      </styleModifier>
       <action
             class="de.cau.cs.kieler.klighd.actions.CollapseExpandAction"
             id="de.cau.cs.kieler.klighd.actions.CollapseExpandAction">
