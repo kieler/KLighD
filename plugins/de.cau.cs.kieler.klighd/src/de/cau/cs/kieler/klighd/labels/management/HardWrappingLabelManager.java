@@ -19,17 +19,19 @@ import org.eclipse.swt.graphics.FontData;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
- * Label manager which hard wraps the text so it fits a certain width. Hard wrapping means that a new
- * line is inserted after the last character that still fits into the target width, regardless of
- * whether the line break interrupts a word or not.
+ * Label manager which hard wraps the text so it fits a certain width. Hard wrapping means that a
+ * new line is inserted after the last character that still fits into the target width, regardless
+ * of whether the line break interrupts a word or not.
+ * 
+ * <p>
+ * It does not make sense to put this label manager into {@link Mode#ALWAYS_ON}. If a label does not
+ * exceed a target width, there's no sense in inserting wraps anywhere.
+ * </p>
  * 
  * @author ybl
  */
 public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String resizeLabel(final ElkLabel label, final double targetWidth) {
         final FontData font = LabelManagementUtil.fontDataFor(label);

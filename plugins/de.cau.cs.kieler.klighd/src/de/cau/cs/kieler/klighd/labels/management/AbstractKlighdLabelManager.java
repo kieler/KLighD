@@ -30,15 +30,31 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * class.
  * 
  * <p>
- * This class manages an activity state. Label managers inheriting from this class can be switched
- * on or off, as required. If a label manager is switched off, {@link #resizeLabel(ElkLabel, double)}
- * is not called.
+ * A label manager first and foremost has an activity state. Its
+ * {@link #resizeLabel(ElkLabel, double)} method is only ever called if it is active, which it is by
+ * default.
+ * </p>
+ * 
+ * <p>
+ * Whether that method is called for a specific label depends on whether the label is in the focus
+ * or in the context. Label management is only ever applied to labels that are not in the focus, as
+ * determined by looking at the {@link KlighdOptions#LABELS_ELEMENT_IN_FOCUS} property.
+ * </p>
+ * 
+ * <p>
+ * If a label is part of the context, the label manager goes to work. Whether it actually does
+ * anything depends on its {@link Mode mode of operation}. The first, {@link Mode#TARGET_WIDTH},
+ * does things only if the label currently exceeds the target width supplied to the label manager.
+ * The second, {@link Mode#FIXED_TARGET_WIDTH}, does things only if the label currently exceeds a
+ * fixed target width set on the label manager by calling {@link #setFixedTargetWidth(double)}. The
+ * third, {@link Mode#ALWAYS_ON}, always tries to do things, regardless of the target width. Whether
+ * a label manager supports all three modes depends on the label manager implementation.
  * </p>
  * 
  * <h3>Technical Remarks</h3>
  * 
  * <p>
- * The label passed to this manager is the one from the layout KGraph fed to the layout algorithm,
+ * The label passed to this manager is the one from the layout ElkGraph fed to the layout algorithm,
  * not the one used in KLighD's view model. This means that we need to remember the label's new text
  * somewhere. We actually remember it by modifying the text of the layout graph's label. When
  * applying the layout results,
@@ -55,20 +71,68 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * @author ybl
  */
 public abstract class AbstractKlighdLabelManager implements ILabelManager {
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Modes of Operation
+    
+    /**
+     * The modes a label manager can operate in.
+     */
+    public static enum Mode {
+        /**
+         * Labels are only shortened if they exceed the target width received from the outside.
+         * This will usually be a target width computed by the layout algorithm this label manager
+         * is called by. This is the default mode.
+         */
+        TARGET_WIDTH,
+        
+        /**
+         * Labels are shortened if they exceed a fixed target width set on the label manager. The
+         * target width computed by layout algorithms is ignored. For this to make sense the fixed
+         * target width needs to be configured by calling
+         * {@link AbstractKlighdLabelManager#setFixedTargetWidth(double)}.
+         */
+        FIXED_TARGET_WIDTH,
+        
+        /**
+         * Labels are shortened regardless of whether or not they exceed any target width. The
+         * target width may still be used by a label manager to determine the amount of shortening.
+         */
+        ALWAYS_ON;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Configuration
+    
+    /** Constant indicating that no valid fixed target width is set. */
+    public static final double NO_FIXED_TARGET_WIDTH = -1;
     
     /** Whether the label manager is currently active or not. */
     private boolean active = true;
-    /**
-     * Whether the manager's target width should be used or the one provided by the call to
-     * {@link #manageLabelSize(Object, double)}.
-     */
-    private boolean useFixedTargetWidth = false;
+    /** Our mode of operation. */
+    private Mode mode = Mode.TARGET_WIDTH;
     /** The width to try and shorten labels to. */
-    private double fixedTargetWidth;
+    private double fixedTargetWidth = NO_FIXED_TARGET_WIDTH;
 
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Label Manager Configuration
+    
+    /**
+     * Activates or deactivates this label manager.
+     * 
+     * @param isActive
+     *            {@code true} if the label manager should potentially do things to labels,
+     *            {@code false} if it should leave them alone. This method call can be chained with
+     *            other configuration method calls.
+     * @return this label manager.
+     */
+    public final AbstractKlighdLabelManager setActive(final boolean isActive) {
+        this.active = isActive;
+        
+        return this;
+    }
     
     /**
      * Checks whether this label manager is currently active.
@@ -80,31 +144,61 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     }
     
     /**
-     * Activates or deactivates this label manager.
+     * Returns the mode this label manager is configured to operate in.
      * 
-     * @param isActive
-     *            {@code true} if the label manager should shorten labels, {@code false} if it
-     *            should leave them alone. This method call can be chained with other configuration
-     *            method calls.
+     * @return the label manager's mode.
+     */
+    public final Mode getMode() {
+        return mode;
+    }
+    
+    /**
+     * Sets the mode this label manager should operate in. Note that if the mode is set to
+     * {@link Mode#FIXED_TARGET_WIDTH}, a fixed target width needs to be configured by calling
+     * {@link #setFixedTargetWidth(double)}.This method call can be chained with other configuration
+     * method calls.
+     * 
+     * @param newMode
+     *            the new mode.
      * @return this label manager.
      */
-    public final AbstractKlighdLabelManager setActive(final boolean isActive) {
-        this.active = isActive;
+    public final AbstractKlighdLabelManager setMode(final Mode newMode) {
+        mode = newMode;
         
         return this;
     }
     
     /**
-     * Override the target width provided by each call to {@link #manageLabelSize(Object, double)}
-     * with a fixed target width. This method call can be chained with other configuration method calls.
+     * Returns the fixed target width this label manager is configured with, if any.
+     * 
+     * @return fixed target width or {@link #NO_FIXED_TARGET_WIDTH} if none is configured.
+     */
+    public final double getFixedTargetWidth() {
+        return fixedTargetWidth;
+    }
+    
+    /**
+     * Set the fixed non-negative target width to be used. The fixed target width is only meaningful
+     * if the label manager's state is {@link Mode#FIXED_TARGET_WIDTH} or {@link Mode#ALWAYS_ON}. In
+     * the latter case, the fixed target width is used as the target width which label managers may
+     * or may not pay attention to. To stop that from happening, call this method with a negative
+     * value.
+     * 
+     * <p>
+     * This method call can be chained with other configuration method calls.
+     * </p>
      * 
      * @param targetWidth
-     *            the new target width to shorten labels to.
+     *            the new target width to shorten labels to or a negative value if no fixed target
+     *            width should be used.
      * @return this label manager.
      */
-    public final AbstractKlighdLabelManager fixTargetWidth(final double targetWidth) {
-        this.fixedTargetWidth = targetWidth;
-        useFixedTargetWidth = true;
+    public final AbstractKlighdLabelManager setFixedTargetWidth(final double targetWidth) {
+        if (targetWidth < 0) {
+            fixedTargetWidth = NO_FIXED_TARGET_WIDTH;
+        } else {
+            this.fixedTargetWidth = targetWidth;
+        }
         
         return this;
     }
@@ -113,9 +207,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     //////////////////////////////////////////////////////////////////////////////////////////
     // Label Resizing
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final KVector manageLabelSize(final Object label, final double processorTargetWidth) {
         if (label instanceof ElkLabel) {
             ElkLabel elkLabel = (ElkLabel) label;
@@ -126,10 +218,10 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
             if (isActive()) {
                 if (isInContext(elkLabel)) {
                     // The label is not in the focus right now, so shorten it
-                    double sizeToResizeTo = useFixedTargetWidth
-                            ? fixedTargetWidth
-                            : processorTargetWidth;
-                    newLabelText = resizeLabel(elkLabel, sizeToResizeTo);
+                    double effectiveTargetWidth =
+                            determineEffectiveTargetWidth(processorTargetWidth);
+                    
+                    newLabelText = resizeLabel(elkLabel, effectiveTargetWidth);
                     
                     if (newLabelText != null) {
                         elkLabel.setText(newLabelText);
@@ -156,10 +248,38 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
             }
 
             return newLabelSize;
+            
+        } else {
+            // This isn't an ElkLabel
+            return null;
         }
-
-        // This isn't a KLabel or this label manager is not active...
-        return null;
+    }
+    
+    /**
+     * Determines which target width to pass on to the label manager implementation. Depends on the
+     * mode and on whether a fixed target width was set.
+     * 
+     * @param suppliedTargetWidth
+     *            the target width passed to {@link #manageLabelSize(Object, double)}.
+     * @return the target width to use.
+     */
+    private double determineEffectiveTargetWidth(final double suppliedTargetWidth) {
+        switch (mode) {
+        case TARGET_WIDTH:
+            return suppliedTargetWidth;
+            
+        case FIXED_TARGET_WIDTH:
+            return fixedTargetWidth;
+            
+        case ALWAYS_ON:
+            return fixedTargetWidth != NO_FIXED_TARGET_WIDTH
+                ? fixedTargetWidth
+                : suppliedTargetWidth;
+        }
+    
+        // This should never happen
+        assert false;
+        return suppliedTargetWidth;
     }
     
     /**
@@ -203,24 +323,6 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     }
 
     /**
-     * Does the actual work of resizing the given label, which is guaranteed to be an
-     * {@link ElkLabel}. Apart from this minor detail, this method should adhere to the contract
-     * specified on the {@link #manageLabelSize(Object, double)} method.
-     * 
-     * <p>
-     * This method should not be called directly by label management clients. The only reason for it
-     * to be public is that compound label managers need to call this method on child label managers.
-     * </p>
-     * 
-     * @param label
-     *            the label to shorten.
-     * @param targetWidth
-     *            the width the label's new dimensions should try not to exceed.
-     * @return the shortened text of the label as a string
-     */
-    public abstract String resizeLabel(ElkLabel label, double targetWidth);
-
-    /**
      * Check whether a label is in context or not.
      * 
      * @param label
@@ -231,4 +333,37 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     private boolean isInContext(final ElkLabel label) {
         return !label.getProperty(KlighdOptions.LABELS_ELEMENT_IN_FOCUS);
     }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Subclass
+
+    /**
+     * Does the actual work of resizing the given label, which is guaranteed to be an
+     * {@link ElkLabel}. Apart from this minor detail, this method should pretty much adhere to the
+     * contract specified on the {@link #manageLabelSize(Object, double)} method.
+     * 
+     * <p>
+     * Label managers will usually want to check which mode of operation they are in. For some, it
+     * won't make any difference. For others, it will be of particular interest whether the mode is
+     * {@link Mode#ALWAYS_ON} or not. If it is, they will always want to do their thing, regardless
+     * of whether the label currently exceeds the desired size or not.
+     * </p>
+     * 
+     * <p>
+     * This method should not be called directly by label management clients. The only reason for it
+     * to be public is that compound label managers need to call this method on child label
+     * managers.
+     * </p>
+     * 
+     * @param label
+     *            the label to shorten.
+     * @param targetWidth
+     *            the width the label's new dimensions should try not to exceed. This can be the
+     *            target width supplied to label management from the outside or a fixed width set on
+     *            the label manager.
+     * @return the shortened text of the label as a string
+     */
+    public abstract String resizeLabel(ElkLabel label, double targetWidth);
+    
 }

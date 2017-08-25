@@ -89,8 +89,8 @@ public final class LabelManagementUtil {
         Bounds newSize = PlacementUtil.estimateTextSize(fontData, textWithoutWraps);
         String newText = "";
 
-        // Guess how many characters will fit into the target width (and make sure it's not more than
-        // the number of characters we actually have)
+        // Guess how many characters will fit into the target width (and make sure it's not more
+        // than the number of characters we actually have)
         int newTextLength = (int) (targetWidth / (newSize.getWidth() / textWithoutWraps.length()));
         newTextLength = Math.min(newTextLength, textWithoutWraps.length());
 
@@ -107,7 +107,9 @@ public final class LabelManagementUtil {
             }
         } else {
             // There is some space for more characters
-            while (newSize.getWidth() < targetWidth && newTextLength < textWithoutWraps.length() - 1) {
+            while (newSize.getWidth() < targetWidth
+                    && newTextLength < textWithoutWraps.length() - 1) {
+                
                 newTextLength++;
                 String newTextCandidate = textWithoutWraps.substring(0, newTextLength);
                 newSize = PlacementUtil.estimateTextSize(fontData, newTextCandidate);

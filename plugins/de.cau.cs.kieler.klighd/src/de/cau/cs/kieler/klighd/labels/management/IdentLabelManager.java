@@ -22,9 +22,6 @@ import org.eclipse.elk.graph.ElkLabel;
  */
 public class IdentLabelManager extends AbstractKlighdLabelManager {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String resizeLabel(final ElkLabel label, final double targetWidth) {
         return null;

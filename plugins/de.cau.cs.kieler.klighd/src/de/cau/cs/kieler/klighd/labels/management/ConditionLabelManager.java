@@ -1,5 +1,5 @@
 /*
- * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+     * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
@@ -19,7 +19,9 @@ import org.eclipse.elk.graph.ElkLabel;
 
 
 /**
- * Compound label manager that executes a child label manager if a given condition is true for a label.
+ * Compound label manager that executes a child label manager if a given condition is true for a
+ * label. The condition label manager works regardless of a mode. This is left to the child label
+ * manager.
  * 
  * @author ybl
  */
@@ -69,10 +71,8 @@ public class ConditionLabelManager extends AbstractKlighdLabelManager {
         this.labelManager = labelManager;
         this.filterOtherLabels = filterOtherLabels;
     }
+    
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String resizeLabel(final ElkLabel label, final double targetWidth) {
         if (condition.test(label)) {

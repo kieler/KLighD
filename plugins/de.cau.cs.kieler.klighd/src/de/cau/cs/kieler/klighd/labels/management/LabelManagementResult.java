@@ -20,21 +20,21 @@ package de.cau.cs.kieler.klighd.labels.management;
  * @author cds
  */
 public enum LabelManagementResult {
-    
+
     /**
      * No label management algorithm active for a given label.
      */
     UNMANAGED,
-    
+
     /**
      * A label management algorithm is active for a given label, but has not modified its text.
      */
     MANAGED_UNMODIFIED,
-    
+
     /**
-     * A label management algorithm is active for a given label and has modified its text. The new text
-     * can be retrieved from the label's text property in the layout graph.
+     * A label management algorithm is active for a given label and has modified its text. The new
+     * text can be retrieved from the label's text property in the layout graph.
      */
     MANAGED_MODIFIED;
-    
+
 }

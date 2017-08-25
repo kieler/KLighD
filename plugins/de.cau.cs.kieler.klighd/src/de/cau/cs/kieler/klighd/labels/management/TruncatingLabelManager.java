@@ -15,12 +15,18 @@ package de.cau.cs.kieler.klighd.labels.management;
 
 import org.eclipse.elk.graph.ElkLabel;
 
+import de.cau.cs.kieler.klighd.labels.management.AbstractKlighdLabelManager.Mode;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
  * Modifies the size of labels by truncating them once the target width is reached. The rest of the
  * label's text is replaced by an ellipsis.
+ * 
+ * <p>
+ * It does not make sense to put this label manager into {@link Mode#ALWAYS_ON}. If a label does not
+ * exceed a target width, there's no sense in truncating anything.
+ * </p>
  * 
  * @author ybl
  */
@@ -29,9 +35,6 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
     /** The string appended to a truncated label text. */
     private static final String ELLIPSES = "...";
     
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String resizeLabel(final ElkLabel label, final double targetWidth) {
         // Check if the label is bigger than the targetWidth

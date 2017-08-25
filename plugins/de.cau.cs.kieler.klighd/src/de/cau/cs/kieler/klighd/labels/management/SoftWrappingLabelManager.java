@@ -16,20 +16,23 @@ package de.cau.cs.kieler.klighd.labels.management;
 import org.eclipse.elk.graph.ElkLabel;
 import org.eclipse.swt.graphics.FontData;
 
+import de.cau.cs.kieler.klighd.labels.management.AbstractKlighdLabelManager.Mode;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
- * Label manager which soft wraps the text so it fits a certain width. Soft wrapping only inserts line
- * breaks between words. If a word is longer than the target width, the width of the longest word is
- * used as the target width instead.
+ * Label manager which soft wraps the text so it fits a certain width. Soft wrapping only inserts
+ * line breaks between words. If a word is longer than the target width, the width of the longest
+ * word is used as the target width instead.
+ * 
+ * <p>
+ * It does not make sense to put this label manager into {@link Mode#ALWAYS_ON}. If a label does not
+ * exceed a target width, there's no sense in inserting wraps anywhere.
+ * </p>
  * 
  * @author ybl
  */
 public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String resizeLabel(final ElkLabel label, final double targetWidth) {
         final FontData font = LabelManagementUtil.fontDataFor(label);
