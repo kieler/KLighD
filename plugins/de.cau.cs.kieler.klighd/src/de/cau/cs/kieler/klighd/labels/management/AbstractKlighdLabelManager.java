@@ -44,11 +44,11 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * <p>
  * If a label is part of the context, the label manager goes to work. Whether it actually does
  * anything depends on its {@link Mode mode of operation}. The first, {@link Mode#TARGET_WIDTH},
- * does things only if the label currently exceeds the target width supplied to the label manager.
- * The second, {@link Mode#FIXED_TARGET_WIDTH}, does things only if the label currently exceeds a
- * fixed target width set on the label manager by calling {@link #setFixedTargetWidth(double)}. The
- * third, {@link Mode#ALWAYS_ON}, always tries to do things, regardless of the target width. Whether
- * a label manager supports all three modes depends on the label manager implementation.
+ * does things only if the label currently exceeds the target width. That target width can either be
+ * the original target width supplied when the label manager was called, or a fixed target width
+ * configured by a call to {@link #setFixedTargetWidth(double)}. The other mode,
+ * {@link Mode#ALWAYS_ON}, always tries to do things, regardless of the target width. Whether a
+ * label manager supports both modes depends on the label manager implementation.
  * </p>
  * 
  * <h3>Technical Remarks</h3>
@@ -80,19 +80,11 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      */
     public static enum Mode {
         /**
-         * Labels are only shortened if they exceed the target width received from the outside.
-         * This will usually be a target width computed by the layout algorithm this label manager
-         * is called by. This is the default mode.
+         * Labels are only shortened if they exceed the target width. This will either be a target
+         * width computed by the layout algorithm this label manager is called by, or a fixed
+         * target width. This is the default mode.
          */
         TARGET_WIDTH,
-        
-        /**
-         * Labels are shortened if they exceed a fixed target width set on the label manager. The
-         * target width computed by layout algorithms is ignored. For this to make sense the fixed
-         * target width needs to be configured by calling
-         * {@link AbstractKlighdLabelManager#setFixedTargetWidth(double)}.
-         */
-        FIXED_TARGET_WIDTH,
         
         /**
          * Labels are shortened regardless of whether or not they exceed any target width. The
@@ -218,8 +210,9 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
             if (isActive()) {
                 if (isInContext(elkLabel)) {
                     // The label is not in the focus right now, so shorten it
-                    double effectiveTargetWidth =
-                            determineEffectiveTargetWidth(processorTargetWidth);
+                    double effectiveTargetWidth = fixedTargetWidth != NO_FIXED_TARGET_WIDTH
+                            ? fixedTargetWidth
+                            : processorTargetWidth;
                     
                     newLabelText = resizeLabel(elkLabel, effectiveTargetWidth);
                     
@@ -253,33 +246,6 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
             // This isn't an ElkLabel
             return null;
         }
-    }
-    
-    /**
-     * Determines which target width to pass on to the label manager implementation. Depends on the
-     * mode and on whether a fixed target width was set.
-     * 
-     * @param suppliedTargetWidth
-     *            the target width passed to {@link #manageLabelSize(Object, double)}.
-     * @return the target width to use.
-     */
-    private double determineEffectiveTargetWidth(final double suppliedTargetWidth) {
-        switch (mode) {
-        case TARGET_WIDTH:
-            return suppliedTargetWidth;
-            
-        case FIXED_TARGET_WIDTH:
-            return fixedTargetWidth;
-            
-        case ALWAYS_ON:
-            return fixedTargetWidth != NO_FIXED_TARGET_WIDTH
-                ? fixedTargetWidth
-                : suppliedTargetWidth;
-        }
-    
-        // This should never happen
-        assert false;
-        return suppliedTargetWidth;
     }
     
     /**
