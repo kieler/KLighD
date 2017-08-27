@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2015 by
+ * Copyright 2015, 2017 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -29,11 +29,12 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * </p>
  * 
  * @author ybl
+ * @author cds
  */
 public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
 
     @Override
-    public String resizeLabel(final ElkLabel label, final double targetWidth) {
+    public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         final FontData font = LabelManagementUtil.fontDataFor(label);
 
         if (PlacementUtil.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
@@ -51,7 +52,7 @@ public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
 
                 // Break if the targetWidth is too small to find something
                 if (fittingString.equals("")) {
-                    return "";
+                    return Result.modified("");
                 }
                 
                 resultText.append(fittingString).append("\n");
@@ -59,10 +60,12 @@ public class HardWrappingLabelManager extends AbstractKlighdLabelManager {
             }
             
             // Delete last \n
-            return resultText.substring(0, resultText.length() - 1);
+            return Result.modified(resultText.substring(0, resultText.length() - 1));
+            
+        } else {
+            // We label wasn't too long
+            return Result.unmodified();
         }
-        
-        return null;
     }
 
 }

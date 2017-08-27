@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2015 by
+ * Copyright 2015, 2017 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -19,12 +19,15 @@ import org.eclipse.elk.graph.ElkLabel;
  * Label manager that leaves the label text untouched.
  * 
  * @author ybl
+ * @author cds
  */
 public class IdentLabelManager extends AbstractKlighdLabelManager {
 
     @Override
-    public String resizeLabel(final ElkLabel label, final double targetWidth) {
-        return null;
+    protected Result doResizeLabel(final ElkLabel label, final double targetWidth) {
+        // We don't do anything to any label
+        return Result.unmodified();
     }
+
 
 }

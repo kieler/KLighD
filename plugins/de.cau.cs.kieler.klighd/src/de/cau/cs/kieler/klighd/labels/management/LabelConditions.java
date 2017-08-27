@@ -28,12 +28,12 @@ import org.eclipse.emf.ecore.EObject;
  * @see ConditionLabelManager
  * @author cds
  */
-public final class LabelPredicates {
+public final class LabelConditions {
     
     /**
      * Utility class, not to be instantiated.
      */
-    private LabelPredicates() {
+    private LabelConditions() {
         
     }
     
@@ -107,8 +107,8 @@ public final class LabelPredicates {
     }
     
     /**
-     * Returns a predicate that checks if an {@link EObject} is a centered edge label. Edge labels with
-     * undefined edge label placement are treated as centered edge labels.
+     * Returns a predicate that checks if an {@link EObject} is a centered edge label. Edge labels
+     * with undefined edge label placement are treated as centered edge labels.
      * 
      * @return the predicate.
      */

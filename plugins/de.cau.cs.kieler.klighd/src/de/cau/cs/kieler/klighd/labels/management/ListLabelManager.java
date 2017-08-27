@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2015 by
+ * Copyright 2015, 2017 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -27,6 +27,7 @@ import org.eclipse.elk.graph.ElkLabel;
  * </p>
  * 
  * @author ybl
+ * @author cds
  */
 public class ListLabelManager extends AbstractKlighdLabelManager {
     
@@ -55,22 +56,46 @@ public class ListLabelManager extends AbstractKlighdLabelManager {
     
     
     @Override
-    public String resizeLabel(final ElkLabel label, final double targetWidth) {
+    public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         String newLabelText = null;
+        boolean foundActiveLabelManager = false;
         
         for (AbstractKlighdLabelManager manager : labelManagers) {
-            newLabelText = manager.resizeLabel(label, targetWidth);
+            Result result = manager.manageElkLabelSize(label, targetWidth);
             
-            if (newLabelText != null) {
+            if (result.isUnmodified()) {
+                // The label manager was active, but didn't do anything; we'll continue
+                foundActiveLabelManager = true;
+                
+            } else if (result.isModified()) {
+                // The manager actually did stuff!
+                foundActiveLabelManager = true;
+                
+                newLabelText = result.getNewText();
                 label.setText(newLabelText);
                 
+                // Whether we'll continue depends on the settings
                 if (stopOnFirstHit) {
                     break;
                 }
             }
         }
         
-        return newLabelText;
+        // What we return depends on what has happened
+        if (foundActiveLabelManager) {
+            if (newLabelText == null) {
+                // None of the managers touched the text, although at least one was active
+                return Result.unmodified();
+                
+            } else {
+                // At least one manager modified the text
+                return Result.modified(newLabelText);
+            }
+            
+        } else {
+            // We haven't found a single active label manager, so pretend that we're inactive, too
+            return Result.inactive();
+        }
     }
 
 }

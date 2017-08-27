@@ -1,9 +1,9 @@
 /*
-     * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2015 by
+ * Copyright 2015, 2017 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -24,6 +24,7 @@ import org.eclipse.elk.graph.ElkLabel;
  * manager.
  * 
  * @author ybl
+ * @author cds
  */
 public class ConditionLabelManager extends AbstractKlighdLabelManager {
     
@@ -74,14 +75,14 @@ public class ConditionLabelManager extends AbstractKlighdLabelManager {
     
 
     @Override
-    public String resizeLabel(final ElkLabel label, final double targetWidth) {
+    public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         if (condition.test(label)) {
-            return labelManager.resizeLabel(label, targetWidth);
+            return labelManager.manageElkLabelSize(label, targetWidth);
         } else {
             if (filterOtherLabels) {
-                return "";
+                return Result.modified("");
             } else {
-                return null;
+                return Result.unmodified();
             }
         }
     }
