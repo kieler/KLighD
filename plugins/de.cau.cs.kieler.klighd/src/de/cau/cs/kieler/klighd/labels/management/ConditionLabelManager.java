@@ -23,6 +23,14 @@ import org.eclipse.elk.graph.ElkLabel;
  * label. The condition label manager works regardless of a mode. This is left to the child label
  * manager.
  * 
+ * <p>
+ * If the condition is only based on what graph element the label belongs to, either subclass
+ * {@link AbstractTypeDependentLabelManager} or wrap your label manager in a
+ * {@link TypeConditionLabelManager} instead.
+ * </p>
+ * 
+ * @see AbstractTypeDependentLabelManager
+ * @see TypeConditionLabelManager
  * @author ybl
  * @author cds
  */

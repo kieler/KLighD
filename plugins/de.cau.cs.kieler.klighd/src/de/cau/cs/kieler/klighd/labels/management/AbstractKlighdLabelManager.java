@@ -15,13 +15,7 @@ package de.cau.cs.kieler.klighd.labels.management;
 
 import org.eclipse.elk.core.labels.ILabelManager;
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.elk.graph.ElkEdge;
-import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkLabel;
-import org.eclipse.elk.graph.ElkNode;
-import org.eclipse.elk.graph.ElkPort;
-import org.eclipse.elk.graph.util.ElkGraphUtil;
 
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
@@ -63,21 +57,9 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * <h3>Notes for Subclasses</h3>
  * 
  * <p>
- * To distinguish between different types of labels, subclasses can implement one of the following
- * methods:
- * </p>
- * 
- * <ul>
- * <li>{@link #doResizeEdgeCenterLabel(ElkLabel, double)}</li>
- * <li>{@link #doResizeEdgeEndLabel(ElkLabel, double)}</li>
- * <li>{@link #doResizeNodeLabel(ElkLabel, double)}</li>
- * <li>{@link #doResizePortLabel(ElkLabel, double)}</li>
- * </ul>
- * 
- * <p>
- * If the distinction between those types is not important, overriding
- * {@link #doResizeLabel(ElkLabel, double)} is a good idea. That method is the one which by default
- * delegates to the more specific ones.
+ * Subclasses only need to override {@link #doResizeLabel(ElkLabel, double)} is a good idea. If
+ * behavior related to the label manager's activity state or labels in focus or context should be
+ * changed, override {@link #manageElkLabelSize(ElkLabel, double)} as well.
  * </p>
  * 
  * 
@@ -215,7 +197,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
 
             double effectiveTargetWidth = fixedTargetWidth != NO_FIXED_TARGET_WIDTH
                     ? fixedTargetWidth
-                            : targetWidth;
+                    : targetWidth;
             Result managementResult = manageElkLabelSize(elkLabel, effectiveTargetWidth);
             
             // What happens next depends on the result...
@@ -230,7 +212,8 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
                 // The label was modified, so return the new size
                 elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
                         LabelManagementResult.MANAGED_MODIFIED);
-                return calculateFinalLabelSize(elkLabel, managementResult.getNewText());
+                elkLabel.setText(managementResult.getNewText());
+                return calculateFinalLabelSize(elkLabel, elkLabel.getText());
                 
             } else {
                 // We didn't even want to do anything...
@@ -359,98 +342,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * @return the result of doing things to the label.
      */
     protected Result doResizeLabel(final ElkLabel label, final double targetWidth) {
-        // Check what kind of a label this is
-        ElkGraphElement labeledElement = ElkGraphUtil.elementLabeledBy(label);
-        
-        if (labeledElement instanceof ElkEdge) {
-            switch (label.getProperty(CoreOptions.EDGE_LABELS_PLACEMENT)) {
-            case CENTER:
-            case UNDEFINED:
-                return doResizeEdgeCenterLabel(label, targetWidth);
-                
-            case HEAD:
-            case TAIL:
-                return doResizeEdgeEndLabel(label, targetWidth);
-            }
-        } else if (labeledElement instanceof ElkPort) {
-            return doResizePortLabel(label, targetWidth);
-        } else if (labeledElement instanceof ElkNode) {
-            return doResizeNodeLabel(label, targetWidth);
-        }
-        
         // Shouldn't happen, but if it does, tell everyone that we didn't do nothin'
-        return Result.unmodified();
-    }
-
-    /**
-     * Does the actual work of resizing a given edge end label. 
-     * 
-     * @implSpec
-     * The default implementation simply returns {@link Result#unmodified()}.
-     * 
-     * @param label
-     *            the label to shorten.
-     * @param targetWidth
-     *            the width the label's new dimensions should try not to exceed. This can be the
-     *            target width supplied to label management from the outside or a fixed width set on
-     *            the label manager.
-     * @return the result of doing things to the label.
-     */
-    protected Result doResizeEdgeEndLabel(final ElkLabel label, final double targetWidth) {
-        return Result.unmodified();
-    }
-
-    /**
-     * Does the actual work of resizing a given edge center label.
-     * 
-     * @implSpec
-     * The default implementation simply returns {@link Result#unmodified()}.
-     * 
-     * @param label
-     *            the label to shorten.
-     * @param targetWidth
-     *            the width the label's new dimensions should try not to exceed. This can be the
-     *            target width supplied to label management from the outside or a fixed width set on
-     *            the label manager.
-     * @return the result of doing things to the label.
-     */
-    protected Result doResizeEdgeCenterLabel(final ElkLabel label, final double targetWidth) {
-        return Result.unmodified();
-    }
-
-    /**
-     * Does the actual work of resizing a given port label.
-     * 
-     * @implSpec
-     * The default implementation simply returns {@link Result#unmodified()}.
-     * 
-     * @param label
-     *            the label to shorten.
-     * @param targetWidth
-     *            the width the label's new dimensions should try not to exceed. This can be the
-     *            target width supplied to label management from the outside or a fixed width set on
-     *            the label manager.
-     * @return the result of doing things to the label.
-     */
-    protected Result doResizePortLabel(final ElkLabel label, final double targetWidth) {
-        return Result.unmodified();
-    }
-
-    /**
-     * Does the actual work of resizing a given node label.
-     * 
-     * @implSpec
-     * The default implementation simply returns {@link Result#unmodified()}.
-     * 
-     * @param label
-     *            the label to shorten.
-     * @param targetWidth
-     *            the width the label's new dimensions should try not to exceed. This can be the
-     *            target width supplied to label management from the outside or a fixed width set on
-     *            the label manager.
-     * @return the result of doing things to the label.
-     */
-    protected Result doResizeNodeLabel(final ElkLabel label, final double targetWidth) {
         return Result.unmodified();
     }
     
