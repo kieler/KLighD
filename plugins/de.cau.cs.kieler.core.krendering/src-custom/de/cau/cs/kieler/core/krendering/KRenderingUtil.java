@@ -14,7 +14,6 @@
 package de.cau.cs.kieler.core.krendering;
 
 import static com.google.common.collect.Iterators.concat;
-import static com.google.common.collect.Iterators.emptyIterator;
 import static com.google.common.collect.Iterators.singletonIterator;
 import static com.google.common.collect.Iterators.transform;
 
@@ -74,7 +73,7 @@ public final class KRenderingUtil {
             }));
             
         } else {
-            children = emptyIterator();
+            children = Collections.emptyIterator();
         }
         return concat(singletonIterator(rendering), children);
     }

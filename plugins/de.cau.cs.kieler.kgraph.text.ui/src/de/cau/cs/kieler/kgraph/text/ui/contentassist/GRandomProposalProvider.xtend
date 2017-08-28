@@ -85,7 +85,7 @@ class GRandomProposalProvider extends AbstractGRandomProposalProvider {
         val value = keyword.value
         val styled = new StyledString(value)
         val doc = documentation.get(value)
-        if (doc != null) 
+        if (doc !== null) 
             styled.append(new StyledString(": " + doc, StyledString.COUNTER_STYLER))
         return styled
     }
@@ -101,7 +101,7 @@ class GRandomProposalProvider extends AbstractGRandomProposalProvider {
     }
     
     def Configuration findConfig(RandGraph root, EObject node) {
-        if (root != null && root.configs != null)
+        if (root !== null && root.configs !== null)
             for (Configuration c: root.configs)
                 if (node.in(c))
                     return c    

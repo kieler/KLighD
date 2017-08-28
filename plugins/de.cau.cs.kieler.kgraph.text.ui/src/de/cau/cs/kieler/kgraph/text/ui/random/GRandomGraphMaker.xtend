@@ -112,7 +112,7 @@ class GRandomGraphMaker {
 
     private def random(Configuration g) {
         val seed = g.seed
-        if (seed == null)
+        if (seed === null)
             return new Random()
         else
             return new Random(seed)
@@ -286,7 +286,7 @@ class GRandomGraphMaker {
     }
 
     private def exists(Object o) {
-        return o != null
+        return o !== null
     }
 
 

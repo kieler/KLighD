@@ -44,12 +44,12 @@ class KLibraryExtensions {
      */
     def KRenderingLibrary getLibrary(KNode node) {
         var parent = node
-        while (parent.parent != null) {
+        while (parent.parent !== null) {
             parent = parent.getParent()
         }
 
         var library = parent.getData(typeof(KRenderingLibrary))
-        if (library == null) {
+        if (library === null) {
             library = createKRenderingLibrary()
             parent.data.add(library)
         }
@@ -69,7 +69,7 @@ class KLibraryExtensions {
     def KRenderingRef getFromLibrary(KRenderingLibrary library, String id) {
         val rendering = library.renderings.findFirst[r|r.id == id] as KRendering
 
-        if (rendering != null) {
+        if (rendering !== null) {
             val ref = createKRenderingRef()
             ref.rendering = rendering
             return ref

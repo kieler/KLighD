@@ -136,7 +136,7 @@ class EObjectFallbackSynthesis extends AbstractDiagramSynthesis<EObject> {
         for (eObject : nodeCache.keySet) {
             // Create containment edge
             val eContainer = eObject.eContainer;
-            if (eContainer != null) {
+            if (eContainer !== null) {
                 createEdge => [
                     val sourceNode = nodeCache.get(eContainer);
                     it.source = sourceNode

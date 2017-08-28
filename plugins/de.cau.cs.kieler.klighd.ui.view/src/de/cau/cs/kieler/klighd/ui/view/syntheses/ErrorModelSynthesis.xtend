@@ -53,14 +53,14 @@ class ErrorModelSynthesis extends AbstractDiagramSynthesis<ErrorModel> {
         // create basic representation with super synthesis
         val rootNode = (model as MessageModel).transform;
         // Adjust diagram
-        if (rootNode != null && !rootNode.children.empty) {
+        if (rootNode !== null && !rootNode.children.empty) {
             val messageNode = rootNode.children.head;
             val messageRect = messageNode.data.filter(KRoundedRectangle).head;
-            if (messageRect != null) {
+            if (messageRect !== null) {
                 // title text red
                 messageRect.children.head.foreground = Colors.RED;
                 // link to exception if available
-                if (model.stackTrace != null) {
+                if (model.stackTrace !== null) {
                     // Add text below message
                     messageRect.addText("[Show Exception]") => [
                         foreground = Colors.BLUE;

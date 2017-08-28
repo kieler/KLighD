@@ -69,7 +69,7 @@ class MessageModelSynthesis extends AbstractDiagramSynthesis<MessageModel> {
                     it.setGridPlacement(1);
                     it.lineWidth = 2;
                     //title
-                    if (model.getTitle != null) {
+                    if (model.getTitle !== null) {
                         it.addText(model.getTitle) => [
                             it.fontSize = 12;
                             it.setFontBold = true;
@@ -78,10 +78,10 @@ class MessageModelSynthesis extends AbstractDiagramSynthesis<MessageModel> {
                         ]
                     }
                     //message
-                    if (model.getMessage != null) {
+                    if (model.getMessage !== null) {
                         it.addText(model.getMessage) => [
                             it.fontSize = 12;
-                            if (model.getTitle != null) {
+                            if (model.getTitle !== null) {
                                 it.setGridPlacementData().from(LEFT, 8, 0, TOP, 0, 0).to(RIGHT, 8, 0, BOTTOM, 4, 0);
                             } else {
                                 it.setGridPlacementData().from(LEFT, 8, 0, TOP, 8, 0).to(RIGHT, 8, 0, BOTTOM, 8, 0);
