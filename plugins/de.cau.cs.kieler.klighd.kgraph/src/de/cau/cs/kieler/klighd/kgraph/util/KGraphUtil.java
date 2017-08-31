@@ -53,7 +53,6 @@ import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
-import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil.PropertiesSkippingTreeIterator;
 
 /**
  * Utility methods to operate on KGraphs.
