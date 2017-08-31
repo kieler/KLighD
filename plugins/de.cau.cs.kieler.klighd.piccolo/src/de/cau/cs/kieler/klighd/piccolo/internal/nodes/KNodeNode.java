@@ -560,6 +560,11 @@ public class KNodeNode extends KNodeAbstractNode implements
                     // do not draw the node's figure on the main diagram if it is clipped to this node
                     continue;
                 }
+                if (each == this.portLayer && each.getVisible() // implies isRootLayer == true
+                        && this.getCamerasReference().contains(paintContext.getCamera())) {
+                    // do not draw the node's external ports on the main diagram if it is clipped to this node
+                    continue;
+                }
                 if (each == this.childAreaCamera && each.getVisible() // implies isRootLayer == true
                         && !this.getCamerasReference().contains(paintContext.getCamera())) {
                     // do not draw the childAreaCamera on the outline view if the diagram is clipped
