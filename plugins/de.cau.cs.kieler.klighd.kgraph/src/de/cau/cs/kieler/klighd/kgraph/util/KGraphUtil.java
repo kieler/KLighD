@@ -53,6 +53,7 @@ import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil.PropertiesSkippingTreeIterator;
 
 /**
  * Utility methods to operate on KGraphs.
@@ -331,15 +332,21 @@ public final class KGraphUtil {
      * explanation of why this is necessary, see the implementation of
      * {@link KGraphDataUtil#loadDataElements()}.
      */
-    private static class PersistentEntriesSkippingTreeIterator
+    public static class PersistentEntriesSkippingTreeIterator
             extends AbstractTreeIterator<EObject> {
         /** Bogus serial version ID. */
         private static final long serialVersionUID = 1L;
 
         /**
-         * {@inheritDoc}.
+         * Creates a tree iterator that skips persistent entries.
+         *
+         * @param object
+         *            The object to start the iteration on. Is expected to be an EObject.
+         * @param includeRoot
+         *            Flag to indicate whether the passed object should be included in the iterator.
          */
-        PersistentEntriesSkippingTreeIterator(final Object object, final boolean includeRoot) {
+        public PersistentEntriesSkippingTreeIterator(final Object object,
+                final boolean includeRoot) {
             super(object, includeRoot);
         }
 

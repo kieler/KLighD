@@ -138,14 +138,19 @@ public final class KGraphDataUtil {
      * 
      * @author cds
      */
-    private static class PropertiesSkippingTreeIterator extends AbstractTreeIterator<EObject> {
+    public static class PropertiesSkippingTreeIterator extends AbstractTreeIterator<EObject> {
         /** Bogus serial version ID. */
         private static final long serialVersionUID = 1L;
 
         /**
-         * {@inheritDoc}.
+         * Creates a tree iterator that skips properties.
+         *
+         * @param object
+         *            The object to start the iteration on. Is expected to be an EObject.
+         * @param includeRoot
+         *            Flag to indicate whether the passed object should be included in the iterator.
          */
-        PropertiesSkippingTreeIterator(final Object object, final boolean includeRoot) {
+        public PropertiesSkippingTreeIterator(final Object object, final boolean includeRoot) {
             super(object, includeRoot);
         }
 
