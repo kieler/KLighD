@@ -68,10 +68,10 @@ public class SVGExporter extends KlighdCanvasExporter {
     public IStatus export(final KlighdMainCamera camera, final ExportData data) {
 
         final Iterable<IExportBranding> brandings =
-                KlighdDataManager.getExportBrandingByFormat(data.format, data.viewContext);
+                KlighdDataManager.getExportBrandingByFormat(data.format(), data.viewContext());
 
         // ... an determine the bounds of the diagram to be exported
-        final PBounds bounds = this.getExportedBounds(camera, data.isCameraViewport);
+        final PBounds bounds = this.getExportedBounds(camera, data.cameraViewport());
 
         final Trim diagramTrim = getMaximumDiagramTrim(brandings, bounds);
         final Trim diagramTileTrim = getMaximumDiagramTileTrim(brandings);
@@ -83,14 +83,14 @@ public class SVGExporter extends KlighdCanvasExporter {
         final Dimension tileBounds = extendedBounds.getBounds().getSize();
 
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(data.viewContext, bounds, tileBounds).setBrandingsAndTrim(
+                new DiagramExportConfig(data.viewContext(), bounds, tileBounds).setBrandingsAndTrim(
                         brandings, diagramTrim, diagramTileTrim);
 
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdAbstractSVGGraphics graphics;
         try {
-            graphics = SVGGeneratorManager.createGraphics(data.format, extendedBounds,
-                    data.isTextAsShapes, data.isEmbedFonts, data.description, data.css(),
+            graphics = SVGGeneratorManager.createGraphics(data.format(), extendedBounds,
+                    data.textAsShapes(), data.embedFonts(), data.description(), data.css(),
                     data.additionalRootData());
 
         } catch (final IllegalArgumentException e) {
@@ -104,9 +104,9 @@ public class SVGExporter extends KlighdCanvasExporter {
         graphics.setClip(extendedBounds);
 
         // Check whether the background should be drawn
-        if (!data.getTransparentBackground()) {
+        if (!data.transparentBackground()) {
             // explicitly initialize the background with the color requested
-            graphics.setFillColor(data.getBackgroundColor());
+            graphics.setFillColor(data.backgroundColor());
             graphics.fill(extendedBounds);
         }
 

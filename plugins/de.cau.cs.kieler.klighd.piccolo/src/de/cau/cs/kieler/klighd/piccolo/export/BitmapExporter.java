@@ -67,19 +67,19 @@ public class BitmapExporter extends KlighdCanvasExporter {
         final KlighdMainCamera camera = canvas.getCamera();
 
         // ... and determine the bounds of the diagram to be exported
-        final Rectangle2D bounds = getExportedBounds(camera, data.isCameraViewport);
+        final Rectangle2D bounds = getExportedBounds(camera, data.cameraViewport());
 
         final Iterable<IExportBranding> brandings =
-               KlighdDataManager.getExportBrandingByFormat(data.format, data.viewContext);
+               KlighdDataManager.getExportBrandingByFormat(data.format(), data.viewContext());
 
-        final TilingData tilingInfo = data.getTilingInfo();
+        final TilingData tilingInfo = data.tilingInfo();
 
         final Trim trim = getMaximumDiagramTrim(brandings, bounds);
         final Trim tileTrimScaled = getMaximumDiagramTileTrim(brandings);
 
         // determine the employed image's size
-        final double width = data.scale * (bounds.getWidth() + trim.getWidth());
-        final double height = data.scale * (bounds.getHeight() + trim.getHeight());
+        final double width = data.scale() * (bounds.getWidth() + trim.getWidth());
+        final double height = data.scale() * (bounds.getHeight() + trim.getHeight());
 
         // if export is tiled, compute resp. receive the needed number of rows and columns
         final int rows, columns;
@@ -110,9 +110,9 @@ public class BitmapExporter extends KlighdCanvasExporter {
         final int pages = columns * rows;
         final Dimension tileBounds = new Dimension(tileWidth, tileHeight);
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(data.viewContext, bounds, tileBounds, data.scale, pages)
+                new DiagramExportConfig(data.viewContext(), bounds, tileBounds, data.scale(), pages)
                 .setBrandingsAndTrim(brandings, trim, tileTrimScaled)
-                .setExportViewport(data.isCameraViewport);
+                .setExportViewport(data.cameraViewport());
 
         final Rectangle tileClip = getBasicTileClip(tileBounds, tileTrimScaled);
 
@@ -200,9 +200,9 @@ public class BitmapExporter extends KlighdCanvasExporter {
 
         // translate the requested format identifier
         final int format;
-        if (data.format.equals(SUB_FORMAT_JPEG)) {
+        if (data.format().equals(SUB_FORMAT_JPEG)) {
             format = SWT.IMAGE_JPEG;
-        } else if (data.format.equals(SUB_FORMAT_PNG)) {
+        } else if (data.format().equals(SUB_FORMAT_PNG)) {
             format = SWT.IMAGE_PNG;
         } else {
             // default format is bmp
@@ -214,7 +214,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
         IStatus status;
 
         try {
-            if (data.getTilingInfo().isTiled) {
+            if (data.tilingInfo().isTiled) {
                 stream = data.createOutputStream(exportConfig.row, exportConfig.column);
             } else {
                 stream = data.createOutputStream();

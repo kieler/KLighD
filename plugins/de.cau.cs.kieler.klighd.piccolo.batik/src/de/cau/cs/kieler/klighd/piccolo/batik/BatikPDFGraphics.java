@@ -107,7 +107,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         final PCamera camera = ((KlighdCanvas) control).getCamera();
 
         Rectangle2D bounds = null;
-        if (data.isCameraViewport) {
+        if (data.cameraViewport()) {
             bounds = camera.getBounds();
         } else {
             // we want the svg to contain all elements, not just the visible area
@@ -123,16 +123,16 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
 
         // assemble context
         final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
-        ctx.setEmbeddedFontsOn(data.isEmbedFonts);
+        ctx.setEmbeddedFontsOn(data.embedFonts());
 
         final GraphicContextDefaults defaults = new GraphicContextDefaults();
         ctx.setGraphicContextDefaults(defaults);
 
         // Check if the background should be exported
-        if (!data.getTransparentBackground()) {
+        if (!data.transparentBackground()) {
             // Create a background with the configured color
-            defaults.setBackground(new Color(data.getBackgroundColor().red,
-                    data.getBackgroundColor().green, data.getBackgroundColor().blue));
+            defaults.setBackground(new Color(data.backgroundColor().red,
+                    data.backgroundColor().green, data.backgroundColor().blue));
         }
 
         // this setting influences the default stroke color as well as the default paint (fill)
@@ -168,7 +168,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // create and configure the graphics object
-        graphicsDelegate = new SVGGraphics2D(ctx, data.isTextAsShapes);
+        graphicsDelegate = new SVGGraphics2D(ctx, data.textAsShapes());
         graphicsDelegate.setSVGCanvasSize(new Dimension((int) Math.ceil(bounds.getWidth()),
                 (int) Math.ceil(bounds.getHeight())));
 
@@ -179,7 +179,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         paintContext.setRenderQuality(PPaintContext.HIGH_QUALITY_RENDERING);
 
         // perform the painting
-        if (data.isCameraViewport) {
+        if (data.cameraViewport()) {
             // only render the current viewport
             camera.fullPaint(paintContext);
         } else {

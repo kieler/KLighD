@@ -23,6 +23,7 @@ import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
@@ -89,12 +90,15 @@ public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
         }
 
         try {
-            ExportData data = new ExportData(viewContext, generator, output, false, 1, textAsShapes,
-                    embedFonts, description);
-            data.setBackgroundColor(backgroundColor);
-            data.setTransparentBackground(transparentBackground);
-            data.additionalRootData(additionalRootData);
-            data.css(css);
+            ExportData data = new ExportDataBuilder(viewContext, generator, output)
+                    .textAsShapes(textAsShapes)
+                    .embedFonts(embedFonts)
+                    .description(description)
+                    .backgroundColor(backgroundColor)
+                    .transparentBackground(transparentBackground)
+                    .additionalRootData(additionalRootData)
+                    .css(css)
+                    .build();
             return new SVGExporter().export(camera, data);
         } catch (final RuntimeException e) {
             return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID,

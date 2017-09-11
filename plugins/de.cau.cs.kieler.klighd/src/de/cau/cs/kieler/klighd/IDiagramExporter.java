@@ -42,6 +42,7 @@ public interface IDiagramExporter {
 
     /**
      * Exports the diagram depicted by the given <code>control</code>.
+     * 
      * @param control
      *            the control to export
      * @param data
@@ -54,150 +55,143 @@ public interface IDiagramExporter {
     IStatus export(Control control, ExportData data);
 
     /**
-     * A data record encapsulating the information needed to export a diagram to the file system.<br>
+     * A data record encapsulating the information needed to export a diagram to the file
+     * system.<br>
      *
      * @author csp
      */
     public class ExportData {
 
-        // SUPPRESS CHECKSTYLE NEXT 11 Visibility|Javadoc
-        public final ViewContext viewContext;
-        public final String format;
-        public final OutputStream stream;
-        public final IPath path;
-        public final boolean isWorkspacePath;
-        public final boolean isCameraViewport;
-        public final int scale;
-        public final boolean isTextAsShapes;
-        public final boolean isEmbedFonts;
-        public final String description;
+        private final ViewContext viewContext;
+        private final String format;
+        private final OutputStream stream;
+        private final IPath path;
+        private final boolean isWorkspacePath;
+        private final boolean isCameraViewport;
+        private final int scale;
+        private final boolean isTextAsShapes;
+        private final boolean isEmbedFonts;
+        private final String description;
+        private final String css;
+        private final String additionalRootData;
+        private final TilingData tilingInfo;
+        private final boolean transparentBackground;
+        private final RGB backgroundColor;
 
-        private String css;
-        private String additionalRootData;
-        private TilingData tilingInfo;
-        
-        private boolean transparentBackground;
-        private RGB backgroundColor;
-        
-        
-        /**
-         * Constructor.
-         *
-         * @param viewContext
-         *            the {@link ViewContext} providing access to the diagram' view & source model
-         * @param format
-         *            id of the format to transform the diagram into
-         * @param path
-         *            the path to write the image to (either file system or workspace)
-         * @param isWorkspacePath
-         *            whether the given path should be interpreted as file system or workspace
-         *            relative
-         * @param cameraViewport
-         *            if <code>true</code> only the actually visible area is to be exported,
-         *            otherwise export the whole diagram
-         * @param scale
-         *            the scale factor to apply while constructing the image, is usually only valid
-         *            in case of raster (bitmap) images
-         * @param textAsShapes
-         *            whether text should be rendered as shapes (only vector images)
-         * @param embedFonts
-         *            whether the texts' fonts shall be embedded in the output (only vector images)
-         */ // SUPPRESS CHECKSTYLE NEXT Number -- we need all these data
-        public ExportData(final ViewContext viewContext, final String format, final IPath path,
-                final boolean isWorkspacePath, final boolean cameraViewport, final int scale,
-                final boolean textAsShapes, final boolean embedFonts) {
-            this.viewContext = viewContext;
-            this.format = format;
-            this.stream = null;
-            this.path = path;
-            this.isWorkspacePath = isWorkspacePath;
-            this.isCameraViewport = cameraViewport;
-            this.scale = scale;
-            this.isTextAsShapes = textAsShapes;
-            this.isEmbedFonts = embedFonts;
-            this.tilingInfo = TilingData.createNonTiledData();
-            this.description = null;
-            this.transparentBackground = false;
-            this.backgroundColor = KlighdConstants.WHITE;
+        private ExportData(final ExportDataBuilder builder) {
+            this.viewContext = builder.viewContext;
+            this.format = builder.format;
+            this.stream = builder.stream;
+            this.path = builder.path;
+            this.isWorkspacePath = builder.isWorkspacePath;
+            this.isCameraViewport = builder.isCameraViewport;
+            this.scale = builder.scale;
+            this.isTextAsShapes = builder.isTextAsShapes;
+            this.isEmbedFonts = builder.isEmbedFonts;
+            this.description = builder.description;
+            this.css = builder.css;
+            this.additionalRootData = builder.additionalRootData;
+            this.tilingInfo = builder.tilingInfo;
+            this.transparentBackground = builder.transparentBackground;
+            this.backgroundColor = builder.backgroundColor;
         }
 
         /**
-         * Constructor.
-         *
-         * @param viewContext
-         *            the {@link ViewContext} providing access to the diagram' view & source model
-         * @param format
-         *            id of the format to transform the diagram into
-         * @param stream
-         *            the output stream
-         * @param cameraViewport
-         *            if <code>true</code> only the actually visible area is to be exported,
-         *            otherwise export the whole diagram
-         * @param scale
-         *            the scale factor to apply while constructing the image, is usually only valid
-         *            in case of raster (bitmap) images
-         * @param textAsShapes
-         *            whether text should be rendered as shapes (only vector images)
-         * @param embedFonts
-         *            whether the texts' fonts shall be embedded in the output (only vector images)
-         * @param description
-         *            optional description to be inserted into the {@code desc} property of the
-         *            generated SVG. Can be null.
-         */ // SUPPRESS CHECKSTYLE NEXT Number -- we need all these data
-        public ExportData(final ViewContext viewContext, final String format,
-                final OutputStream stream, final boolean cameraViewport, final int scale,
-                final boolean textAsShapes, final boolean embedFonts, final String description) {
-            this.viewContext = viewContext;
-            this.format = format;
-            this.stream = stream;
-            this.path = null;
-            this.isWorkspacePath = false;
-            this.isCameraViewport = cameraViewport;
-            this.scale = scale;
-            this.isTextAsShapes = textAsShapes;
-            this.isEmbedFonts = embedFonts;
-            this.tilingInfo = TilingData.createNonTiledData();
-            this.description = description;
-            this.transparentBackground = false;
-            this.backgroundColor = KlighdConstants.WHITE;
-        }
-
-        /**
-         * Constructor.
-         *
-         * @param viewContext
-         *            the {@link ViewContext} providing access to the diagram' view & source model
-         * @param format
-         *            id of the format to transform the diagram into
-         * @param stream
-         *            the output stream
-         * @param cameraViewport
-         *            if <code>true</code> only the actually visible area is to be exported,
-         *            otherwise export the whole diagram
-         * @param scale
-         *            the scale factor to apply while constructing the image, is usually only valid
-         *            in case of raster (bitmap) images
-         * @param textAsShapes
-         *            whether text should be rendered as shapes (only vector images)
-         * @param embedFonts
-         *            whether the texts' fonts shall be embedded in the output (only vector images)
+         * @return The used {@code ViewContext}
          */
-        public ExportData(final ViewContext viewContext, final String format,
-                final OutputStream stream, final boolean cameraViewport, final int scale,
-                final boolean textAsShapes, final boolean embedFonts) {
-            this.viewContext = viewContext;
-            this.format = format;
-            this.stream = stream;
-            this.path = null;
-            this.isWorkspacePath = false;
-            this.isCameraViewport = cameraViewport;
-            this.scale = scale;
-            this.isTextAsShapes = textAsShapes;
-            this.isEmbedFonts = embedFonts;
-            this.tilingInfo = TilingData.createNonTiledData();
-            this.description = null;
-            this.transparentBackground = false;
-            this.backgroundColor = KlighdConstants.WHITE;        
+        public ViewContext viewContext() {
+            return viewContext;
+        }
+
+        /**
+         * @return A string representing the chosen export format
+         */
+        public String format() {
+            return format;
+        }
+
+        /**
+         * @return The path used for the export
+         */
+        public IPath path() {
+            return path;
+        }
+
+        /**
+         * @return Flag to indicate if the path is relative to the workspace
+         */
+        public boolean workspacePath() {
+            return isWorkspacePath;
+        }
+
+        /**
+         * @return Flag to indicate whether the current camera viewport is used
+         */
+        public boolean cameraViewport() {
+            return isCameraViewport;
+        }
+
+        /**
+         * @return The scaling used in the export
+         */
+        public int scale() {
+            return scale;
+        }
+
+        /**
+         * @return Flag to export texts as shapes in SVG export
+         */
+        public boolean textAsShapes() {
+            return isTextAsShapes;
+        }
+
+        /**
+         * @return Flag to indicate whether fonts should be embedded in PDF export
+         */
+        public boolean embedFonts() {
+            return isEmbedFonts;
+        }
+
+        /**
+         * @return The description to be placed in the exported data during SVG export
+         */
+        public String description() {
+            return description;
+        }
+
+        /**
+         * @return The css file to be referenced in SVG export
+         */
+        public String css() {
+            return css;
+        }
+
+        /**
+         * @return Additional data to be placed in the SVG tag during export
+         */
+        public String additionalRootData() {
+            return additionalRootData;
+        }
+
+        /**
+         * @return {@code TilingData} to control tiled bitmap export
+         */
+        public TilingData tilingInfo() {
+            return tilingInfo;
+        }
+
+        /**
+         * @return Flag whether the background should be drawn or left transparent
+         */
+        public boolean transparentBackground() {
+            return transparentBackground;
+        }
+
+        /**
+         * @return The {@code RGB} object to be used for background if not transparent
+         */
+        public RGB backgroundColor() {
+            return backgroundColor;
         }
 
         /**
@@ -209,7 +203,7 @@ public interface IDiagramExporter {
          *             if there is a problem obtaining an open output stream.
          */
         public OutputStream createOutputStream() throws IOException {
-            if (path == null) {
+            if (stream != null) {
                 return stream;
             } else {
                 return createOutputStream(path);
@@ -232,7 +226,7 @@ public interface IDiagramExporter {
          */
         public OutputStream createOutputStream(final int row, final int col) throws IOException {
             if (path == null) {
-                throw new IllegalArgumentException("Not tileable.");
+                throw new IllegalStateException("Export not tileable.");
             }
             final String ext = path.getFileExtension();
             final String name = path.removeFileExtension().lastSegment() + "_" + row + "-" + col;
@@ -240,6 +234,15 @@ public interface IDiagramExporter {
             return createOutputStream(aPath);
         }
 
+        /**
+         * Create a new output stream from a given path.
+         * 
+         * @param aPath
+         *            The path to use for the output stream
+         * @return The new output stream
+         * @throws IOException
+         *             If there is a problem obtaining an open output stream.
+         */
         private OutputStream createOutputStream(final IPath aPath) throws IOException {
             if (isWorkspacePath) {
                 // workspace path
@@ -253,84 +256,6 @@ public interface IDiagramExporter {
                 return outputStream;
             }
         }
-
-        /**
-         * @return the tilingInfo
-         */
-        public TilingData getTilingInfo() {
-            return tilingInfo;
-        }
-
-        /**
-         * @param tilingInfo
-         *            the tilingInfo to set
-         */
-        public void setTilingInfo(final TilingData tilingInfo) {
-            if (path == null) {
-                throw new IllegalArgumentException("Not tileable.");
-            }
-            this.tilingInfo = tilingInfo;
-        }
-        
-        
-        /**
-         * @return the backgroundColor
-         */
-        public RGB getBackgroundColor() {
-            return backgroundColor;
-        }
-        
-        /**
-         * @param backgroundColor the backgroundColor to set
-         */
-        public void setBackgroundColor(final RGB backgroundColor) {
-            this.backgroundColor = backgroundColor;
-        }
-        
-        /**
-         * 
-         * @return if the background should be transparent
-         */
-        public boolean getTransparentBackground() {
-            return transparentBackground;
-        }
-        
-        /**
-         * @param transparentBackground the transparentBackground to set
-         */
-        public void setTransparentBackground(final boolean transparentBackground) {
-            this.transparentBackground = transparentBackground;
-        }
-        
-        /**
-         * @return the css file to be placed in the SVG
-         */
-        public String css() {
-            return css;
-        }
-        
-        /**
-         * @param newCss the new css file to be placed in the SVG
-         */
-        public void css(final String newCss) {
-            this.css = newCss;
-        }
-        
-        /**
-         * @return the additional data to be placed in the root element of SVGs
-         */
-        public String additionalRootData() {
-            return additionalRootData;
-        }
-        
-        /**
-         * @param newRootData the new additional data to be placed in the root element of SVGs
-         */
-        public void additionalRootData(final String newRootData) {
-            this.additionalRootData = newRootData;
-        }
-        
-        
     }
 
     /**
@@ -381,8 +306,8 @@ public interface IDiagramExporter {
          * @return the tiled information.
          */
         public static TilingData createTiledData(final int rows, final int cols) {
-            return new TilingData(-1, -1, Math.max(1, rows), Math.max(1, cols), rows > 1
-                    || cols > 1, false);
+            return new TilingData(-1, -1, Math.max(1, rows), Math.max(1, cols),
+                    rows > 1 || cols > 1, false);
         }
 
         /**
@@ -396,6 +321,205 @@ public interface IDiagramExporter {
          */
         public static TilingData createMaxSizeTiledData(final int maxWidth, final int maxHeight) {
             return new TilingData(Math.max(1, maxWidth), Math.max(1, maxHeight), 1, 1, true, true);
+        }
+    }
+
+    /**
+     * Builder for {@code ExportData}.
+     */
+    public static class ExportDataBuilder {
+
+        private final ViewContext viewContext;
+        private final String format;
+        private final OutputStream stream;
+        private final IPath path;
+        private final boolean isWorkspacePath;
+
+        private boolean isCameraViewport = false;
+        private int scale = 1;
+        private boolean isTextAsShapes = false;
+        private boolean isEmbedFonts = false;
+        private String description = null;
+        private String css = null;
+        private String additionalRootData = null;
+        private TilingData tilingInfo = TilingData.createNonTiledData();
+        private boolean transparentBackground = false;
+        private RGB backgroundColor = KlighdConstants.WHITE;
+
+        /**
+         * Creates a builder for the given {@code ViewContext} using the specified
+         * {@code OutputStream}. This constructor does not allow tiling the export.
+         * 
+         * @param viewContext
+         *            The {@code ViewContext} that will be exported.
+         * @param format
+         *            The format to export in.
+         * @param stream
+         *            The {@code OutputStream} to write the export to.
+         */
+        public ExportDataBuilder(final ViewContext viewContext, final String format,
+                final OutputStream stream) {
+            this.viewContext = viewContext;
+            this.format = format;
+            this.stream = stream;
+            this.path = null;
+            this.isWorkspacePath = false;
+        }
+
+        /**
+         * Creates a builder for the given {@code ViewContext} using the specified path. The path
+         * can be absolute or relative to the workspace.
+         * 
+         * @param viewContext
+         *            The {@code ViewContext} that will be exported.
+         * @param format
+         *            The format to export in.
+         * @param path
+         *            The path of the output file.
+         * @param isWorkspacePath
+         *            Flag to indicate the path is relative to the workspace.
+         */
+        public ExportDataBuilder(final ViewContext viewContext, final String format,
+                final IPath path, final boolean isWorkspacePath) {
+            this.viewContext = viewContext;
+            this.format = format;
+            this.stream = null;
+            this.path = path;
+            this.isWorkspacePath = true;
+        }
+
+        /**
+         * Configures the export to use the current camera viewport.
+         * 
+         * @param cameraViewport
+         *            Flag whether the camera viewport should be used.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder cameraViewport(final boolean cameraViewport) {
+            this.isCameraViewport = cameraViewport;
+            return this;
+        }
+
+        /**
+         * Scaling factor for the export.
+         * 
+         * @param theScale
+         *            The scaling factor to be used.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder scale(final int theScale) {
+            this.scale = theScale;
+            return this;
+        }
+
+        /**
+         * Configures texts in SVG export to be embedded as shapes instead of texts.
+         * 
+         * @param textAsShapes
+         *            Flag to indicate shapes
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder textAsShapes(final boolean textAsShapes) {
+            this.isTextAsShapes = textAsShapes;
+            return this;
+        }
+
+        /**
+         * Configures the export to PDF to embed the used fonts in PDF.
+         * 
+         * @param embedFonts
+         *            Whether fonts should be embedded
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder embedFonts(final boolean embedFonts) {
+            this.isEmbedFonts = embedFonts;
+            return this;
+        }
+
+        /**
+         * Description to be placed in the exported file, e.g. during SVG export.
+         * 
+         * @param theDescription
+         *            The image description
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder description(final String theDescription) {
+            this.description = theDescription;
+            return this;
+        }
+
+        /**
+         * Path to a css file to be referenced in exported SVG.
+         * 
+         * @param theCss
+         *            The path to the css file.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder css(final String theCss) {
+            this.css = theCss;
+            return this;
+        }
+
+        /**
+         * Data to be placed in the root SVG element. Can be used for i.e. namespace declarations.
+         * 
+         * @param theAdditionalRootData
+         *            String to be placed in the root SVG tag.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder additionalRootData(final String theAdditionalRootData) {
+            this.additionalRootData = theAdditionalRootData;
+            return this;
+        }
+
+        /**
+         * Configuration for tiled bitmap export.
+         * 
+         * @param theTilingInfo
+         *            The configuration to be used.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder tilingInfo(final TilingData theTilingInfo) {
+            if (path == null && !TilingData.NON_TILED.equals(theTilingInfo)) {
+                // Tiling is only supported for exports using path specifications
+                throw new IllegalStateException("Tiling not supported with stream export objects");
+            }
+            this.tilingInfo = theTilingInfo;
+            return this;
+        }
+
+        /**
+         * Flag to suppress drawing of the background and use transparent background instead.
+         * 
+         * @param theTransparentBackground
+         *            {@code true} if the background should be transparent, {@code false} otherwise.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder transparentBackground(final boolean theTransparentBackground) {
+            this.transparentBackground = theTransparentBackground;
+            return this;
+        }
+
+        /**
+         * Configures the background color of the exported image, if not transparent.
+         * 
+         * @param theBackgroundColor
+         *            {@code RGB} to be used as the background color.
+         * @return The current builder for comfortable usage
+         */
+        public ExportDataBuilder backgroundColor(final RGB theBackgroundColor) {
+            this.backgroundColor = theBackgroundColor;
+            return this;
+        }
+
+        /**
+         * Finalizes the build and creates the {@code ExportData}.
+         * 
+         * @return The finished {@code ExportData}.
+         */
+        public ExportData build() {
+            // TODO validate?
+            return new ExportData(this);
         }
     }
 }

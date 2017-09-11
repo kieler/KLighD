@@ -50,6 +50,7 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
+import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
 import de.cau.cs.kieler.klighd.IDiagramExporter.TilingData;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdDataManager.ExporterDescriptor;
@@ -673,15 +674,19 @@ public class SaveAsImageDialog extends Dialog {
         updateFileText();
 
         currentExporter = descriptors.get(imageFormatCombo.getSelectionIndex());
-        exportData = new ExportData(viewContext, currentExporter.subFormatId,
-                new Path(fileText.getText()), workspacePathCheckbox.getSelection(),
-                cameraViewportCheckbox.getSelection(), scaleSlider.getSelection(),
-                textAsShapesCheckbox.getSelection(), embedFontsCheckbox.getSelection());
-        exportData.setTransparentBackground(transparentBackgroundCheckbox.getSelection());
+        ExportDataBuilder builder = new ExportDataBuilder(viewContext, currentExporter.subFormatId,
+                new Path(fileText.getText()), workspacePathCheckbox.getSelection())
+                .cameraViewport(cameraViewportCheckbox.getSelection())
+                .scale(scaleSlider.getSelection())
+                .textAsShapes(textAsShapesCheckbox.getSelection())
+                .embedFonts(embedFontsCheckbox.getSelection())
+                .transparentBackground(transparentBackgroundCheckbox.getSelection());
         
         if (currentExporter.supportsTiling && tilingInfo.isTiled) {
-            exportData.setTilingInfo(tilingInfo);
+            builder.tilingInfo(tilingInfo);
         }
+
+        exportData = builder.build();
 
         // has to be last because it disposes the dialog
         super.okPressed();
