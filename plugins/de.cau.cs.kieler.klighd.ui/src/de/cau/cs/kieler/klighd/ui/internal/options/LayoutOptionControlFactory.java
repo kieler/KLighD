@@ -508,7 +508,7 @@ public class LayoutOptionControlFactory {
         @Override
         public void widgetSelected(final SelectionEvent event) {
             final Scale slider = (Scale) event.widget;
-            final double sliderValue = slider.getSelection() - slider.getMinimum()
+            final double sliderValue = (float) (slider.getSelection() - slider.getMinimum())
                     / (slider.getMaximum() - slider.getMinimum());
             final double optionValue = minVal + sliderValue * (maxVal - minVal);
             setOptionValue(optionValue);
