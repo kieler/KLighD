@@ -385,7 +385,7 @@ public interface IDiagramExporter {
             this.format = format;
             this.stream = null;
             this.path = path;
-            this.isWorkspacePath = true;
+            this.isWorkspacePath = isWorkspacePath;
         }
 
         /**
