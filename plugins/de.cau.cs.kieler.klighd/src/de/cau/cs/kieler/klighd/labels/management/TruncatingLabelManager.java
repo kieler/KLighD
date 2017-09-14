@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2015 by
+ * Copyright 2015, 2017 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.labels.management;
 
 import org.eclipse.elk.graph.ElkLabel;
 
-import de.cau.cs.kieler.klighd.labels.management.AbstractKlighdLabelManager.Mode;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -29,6 +28,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * </p>
  * 
  * @author ybl
+ * @author cds
  */
 public class TruncatingLabelManager extends AbstractKlighdLabelManager {
 
@@ -36,7 +36,7 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
     private static final String ELLIPSES = "...";
     
     @Override
-    public String resizeLabel(final ElkLabel label, final double targetWidth) {
+    public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
         // Check if the label is bigger than the targetWidth
         Bounds textBounds = PlacementUtil.estimateTextSize(
                 LabelManagementUtil.fontDataFor(label), label.getText());
@@ -56,10 +56,12 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
                 calculatedText = calculatedText.trim();                
             }
             
-            return calculatedText + ELLIPSES;
+            return Result.modified(calculatedText + ELLIPSES);
+            
+        } else {
+            // We label wasn't too long
+            return Result.unmodified();
         }
-        
-        return null;
     }
 
 }

@@ -3,7 +3,7 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  * 
- * Copyright 2015, 2017 by
+ * Copyright 2017 by
  * + Christian-Albrechts-University of Kiel
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,18 +16,16 @@ package de.cau.cs.kieler.klighd.labels.management;
 import org.eclipse.elk.graph.ElkLabel;
 
 /**
- * Label manager that leaves the label text untouched.
+ * Label manager that sets the text of unfocussed labels to the empty string, effectively hiding
+ * them.
  * 
- * @author ybl
  * @author cds
  */
-public class IdentLabelManager extends AbstractKlighdLabelManager {
+public class HidingLabelManager extends AbstractKlighdLabelManager {
 
     @Override
     protected Result doResizeLabel(final ElkLabel label, final double targetWidth) {
-        // We don't do anything to any label
-        return Result.unmodified();
+        return Result.modified("");
     }
-
 
 }

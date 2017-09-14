@@ -25,20 +25,22 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
 /**
- * Abstract superclass for {@link ILabelManager}s to be used with KLighD. All a subclass needs to to
- * is to implement {@link #resizeLabel(ElkLabel, double)}, everything else is taken care of by this
- * class.
+ * Abstract superclass for {@link ILabelManager}s to be used with KLighD. Ensures that the label is
+ * in fact an {@link ElkLabel} instance and then delegates to
+ * {@link #manageElkLabelSize(ElkLabel, double)}, which is the entry method that should be used
+ * inside this framework (which is of particular interest to composite label managers).
  * 
  * <p>
  * A label manager first and foremost has an activity state. Its
- * {@link #resizeLabel(ElkLabel, double)} method is only ever called if it is active, which it is by
- * default.
+ * {@link #doResizeLabel(ElkLabel, double)} method is only ever called if it is active, which it is
+ * by default.
  * </p>
  * 
  * <p>
- * Whether that method is called for a specific label depends on whether the label is in the focus
- * or in the context. Label management is only ever applied to labels that are not in the focus, as
- * determined by looking at the {@link KlighdOptions#LABELS_ELEMENT_IN_FOCUS} property.
+ * Whether that method is called for a specific label depends on whether the label is part of the
+ * focus or the context. By default, label management is only ever applied to labels that are not
+ * focussed, as determined by looking at the {@link KlighdOptions#LABELS_ELEMENT_IN_FOCUS} property.
+ * That behavior can be changed by overriding {@link #manageElkLabelSize(ElkLabel, double)}.
  * </p>
  * 
  * <p>
@@ -50,6 +52,16 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * {@link Mode#ALWAYS_ON}, always tries to do things, regardless of the target width. Whether a
  * label manager supports both modes depends on the label manager implementation.
  * </p>
+ * 
+ * 
+ * <h3>Notes for Subclasses</h3>
+ * 
+ * <p>
+ * Subclasses only need to override {@link #doResizeLabel(ElkLabel, double)} is a good idea. If
+ * behavior related to the label manager's activity state or labels in focus or context should be
+ * changed, override {@link #manageElkLabelSize(ElkLabel, double)} as well.
+ * </p>
+ * 
  * 
  * <h3>Technical Remarks</h3>
  * 
@@ -71,27 +83,6 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * @author ybl
  */
 public abstract class AbstractKlighdLabelManager implements ILabelManager {
-
-    //////////////////////////////////////////////////////////////////////////////////////////
-    // Modes of Operation
-    
-    /**
-     * The modes a label manager can operate in.
-     */
-    public static enum Mode {
-        /**
-         * Labels are only shortened if they exceed the target width. This will either be a target
-         * width computed by the layout algorithm this label manager is called by, or a fixed
-         * target width. This is the default mode.
-         */
-        TARGET_WIDTH,
-        
-        /**
-         * Labels are shortened regardless of whether or not they exceed any target width. The
-         * target width may still be used by a label manager to determine the amount of shortening.
-         */
-        ALWAYS_ON;
-    }
 
 
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -200,47 +191,35 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
     // Label Resizing
 
     @Override
-    public final KVector manageLabelSize(final Object label, final double processorTargetWidth) {
+    public final KVector manageLabelSize(final Object label, final double targetWidth) {
         if (label instanceof ElkLabel) {
             ElkLabel elkLabel = (ElkLabel) label;
 
-            KVector newLabelSize = null;
-            String newLabelText = elkLabel.getText();
-
-            if (isActive()) {
-                if (isInContext(elkLabel)) {
-                    // The label is not in the focus right now, so shorten it
-                    double effectiveTargetWidth = fixedTargetWidth != NO_FIXED_TARGET_WIDTH
-                            ? fixedTargetWidth
-                            : processorTargetWidth;
-                    
-                    newLabelText = resizeLabel(elkLabel, effectiveTargetWidth);
-                    
-                    if (newLabelText != null) {
-                        elkLabel.setText(newLabelText);
-                        newLabelSize = calculateFinalLabelSize(elkLabel, newLabelText);
-                    }
-
-                    // Make sure KLighD knows if we shortened the label
-                    if (newLabelSize == null) {
-                        elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
-                                LabelManagementResult.MANAGED_UNMODIFIED);
-                    } else {
-                        elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
-                                LabelManagementResult.MANAGED_MODIFIED);
-                    }
-                } else {
-                    // We won't modify the label's text, but we need to tell the layout algorithm
-                    // about its size when it's unshortened. If we don't, word-wrapped labels won't
-                    // have their height reset if they move into focus and thus consist of their
-                    // original text
-                    newLabelSize = calculateFinalLabelSize(elkLabel, elkLabel.getText());
-                    elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
-                            LabelManagementResult.MANAGED_UNMODIFIED);
-                }
+            double effectiveTargetWidth = fixedTargetWidth != NO_FIXED_TARGET_WIDTH
+                    ? fixedTargetWidth
+                    : targetWidth;
+            Result managementResult = manageElkLabelSize(elkLabel, effectiveTargetWidth);
+            
+            // What happens next depends on the result...
+            if (managementResult.isUnmodified()) {
+                // The label wasn't modified, but we need to tell the layout algorithm about the
+                // label's unmodified size to restore that after old label management results
+                elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
+                        LabelManagementResult.MANAGED_UNMODIFIED);
+                return calculateFinalLabelSize(elkLabel, elkLabel.getText());
+                
+            } else if (managementResult.isModified()) {
+                // The label was modified, so return the new size
+                elkLabel.setProperty(KlighdOptions.LABELS_MANAGEMENT_RESULT,
+                        LabelManagementResult.MANAGED_MODIFIED);
+                elkLabel.setText(managementResult.getNewText());
+                return calculateFinalLabelSize(elkLabel, elkLabel.getText());
+                
+            } else {
+                // We didn't even want to do anything...
+                // TODO: Should this case be handled just like the unmodified case?
+                return null;
             }
-
-            return newLabelSize;
             
         } else {
             // This isn't an ElkLabel
@@ -288,6 +267,10 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
         }
     }
 
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Utility Methods
+
     /**
      * Check whether a label is in context or not.
      * 
@@ -296,18 +279,49 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * @return {@code true} if the label is part of the context instead of being in focus,
      *         {@code false} otherwise.
      */
-    private boolean isInContext(final ElkLabel label) {
+    protected final boolean isInContext(final ElkLabel label) {
         return !label.getProperty(KlighdOptions.LABELS_ELEMENT_IN_FOCUS);
     }
 
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Subclass
-
+    
     /**
-     * Does the actual work of resizing the given label, which is guaranteed to be an
-     * {@link ElkLabel}. Apart from this minor detail, this method should pretty much adhere to the
-     * contract specified on the {@link #manageLabelSize(Object, double)} method.
+     * Manages the given label. This method includes checks as to whether the label manager is
+     * active (in which case subclass implementations are not called) and in focus (in which case
+     * subclass implementations are not called either). If label management should be applied, this
+     * method calls {@link #doResizeLabel(ElkLabel, double)}.
+     * 
+     * <p>
+     * The method can be overridden to change that behavior, but it is recommended to always return
+     * {@link Result#inactive()} if {@link #isActive()} returns {@code false}.
+     * </p>
+     * 
+     * <p>
+     * Composite label managers should call this method on their children.
+     * </p>
+     * 
+     * @param label
+     *            the label to be managed.
+     * @param targetWidth
+     *            the target width, either supplied by the outside or fixed on this manager.
+     * @return label management result.
+     */
+    protected Result manageElkLabelSize(final ElkLabel label, final double targetWidth) {
+        if (isActive()) {
+            if (isInContext(label)) {
+                return doResizeLabel(label, targetWidth);
+            } else {
+                return Result.unmodified();
+            }
+        } else {
+            return Result.inactive();
+        }
+    }
+    
+    /**
+     * Attempts to resize the given label.
      * 
      * <p>
      * Label managers will usually want to check which mode of operation they are in. For some, it
@@ -316,11 +330,8 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      * of whether the label currently exceeds the desired size or not.
      * </p>
      * 
-     * <p>
-     * This method should not be called directly by label management clients. The only reason for it
-     * to be public is that compound label managers need to call this method on child label
-     * managers.
-     * </p>
+     * @implSpec The default implementation delegates to the appropriate of the more specific
+     *           methods. If none seems appropriate, it returns {@code Result#unmodified()}.
      * 
      * @param label
      *            the label to shorten.
@@ -328,8 +339,132 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      *            the width the label's new dimensions should try not to exceed. This can be the
      *            target width supplied to label management from the outside or a fixed width set on
      *            the label manager.
-     * @return the shortened text of the label as a string
+     * @return the result of doing things to the label.
      */
-    public abstract String resizeLabel(ElkLabel label, double targetWidth);
+    protected Result doResizeLabel(final ElkLabel label, final double targetWidth) {
+        // Shouldn't happen, but if it does, tell everyone that we didn't do nothin'
+        return Result.unmodified();
+    }
+    
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Inner Classes
+    
+    /**
+     * The modes a label manager can operate in.
+     */
+    public static enum Mode {
+        /**
+         * Labels are only shortened if they exceed the target width. This will either be a target
+         * width computed by the layout algorithm this label manager is called by, or a fixed
+         * target width. This is the default mode.
+         */
+        TARGET_WIDTH,
+        
+        /**
+         * Labels are shortened regardless of whether or not they exceed any target width. The
+         * target width may still be used by a label manager to determine the amount of shortening.
+         */
+        ALWAYS_ON;
+    }
+    
+    /**
+     * Class used to represent results produced by label managers.
+     */
+    public static final class Result {
+        
+        /** Single instance used to represent results of inactive label managers. */
+        private static final Result RESULT_INACTIVE =
+                new Result(LabelManagementResult.UNMANAGED, null);
+        /** Single instance used to represent labels unmodified by active label managers. */
+        private static final Result RESULT_UNMODIFIED =
+                new Result(LabelManagementResult.MANAGED_UNMODIFIED, null);
+        
+        /** The label management result. */
+        private final LabelManagementResult result;
+        /** The new text assigned to a label, if any. */
+        private final String newText;
+        
+        
+        /**
+         * Private constructor. Use the create methods.
+         */
+        private Result(final LabelManagementResult result, final String newText) {
+            this.result = result;
+            this.newText = newText;
+        }
+        
+        
+        /**
+         * Creates a result representing an inactive label manager.
+         * 
+         * @return the result.
+         */
+        public static Result inactive() {
+            return RESULT_INACTIVE;
+        }
+        
+        /**
+         * Creates a result representing an active label manager not having done anything to a
+         * label.
+         * 
+         * @return the result.
+         */
+        public static Result unmodified() {
+            return RESULT_UNMODIFIED;
+        }
+        
+        /**
+         * Creates a result representing an active label manager having modified a label's text.
+         * 
+         * @param text
+         *            the label's new text.
+         * @return the result.
+         */
+        public static Result modified(final String text) {
+            return new Result(LabelManagementResult.MANAGED_MODIFIED, text);
+        }
+        
+        
+        /**
+         * Checks if the result was produced by an inactive label manager.
+         * 
+         * @return {@code true} if the label manager was inactive.
+         */
+        public boolean isInactive() {
+            return result == LabelManagementResult.UNMANAGED;
+        }
+
+        /**
+         * Checks if the result was produced by an active label manager that didn't do anything to
+         * a label.
+         * 
+         * @return {@code true} if the label manager was active, but didn't do anything.
+         */
+        public boolean isUnmodified() {
+            return result == LabelManagementResult.MANAGED_UNMODIFIED;
+        }
+
+        /**
+         * Checks if the result was produced by an active label manager that modified a label. The
+         * label's new text can be retrieved by calling {@link #getNewText()}.
+         * 
+         * @return {@code true} if the label manager was active and has modified a label's text.
+         */
+        public boolean isModified() {
+            return result == LabelManagementResult.MANAGED_MODIFIED;
+        }
+        
+        /**
+         * Returns a label's new text, if any. There only is a text if {@link #isModified()} returns
+         * {@code true}.
+         * 
+         * @return the new text or {@code null} if the text was actually not modified.
+         */
+        public String getNewText() {
+            return newText;
+        }
+        
+    }
     
 }
