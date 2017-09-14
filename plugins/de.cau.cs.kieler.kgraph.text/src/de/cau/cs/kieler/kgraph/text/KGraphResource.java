@@ -28,13 +28,15 @@ import org.eclipse.xtext.resource.SaveOptions;
 
 import com.google.common.collect.ImmutableList;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 
 /**
  * A customized {@link LazyLinkingResource} handling the (de-) serialization of
- * {@link de.cau.cs.kieler.core.properties.IProperty}s correctly.
+ * {@link IProperty}s correctly.
  * 
  * Deactivates the syntax validation during the serialization since it relies on the
  * ITransientValueService of the out-dated parse tree constructor.
@@ -87,7 +89,7 @@ public class KGraphResource extends LazyLinkingResource {
     
     /**
      * Method delegates to {@link LazyLinkingResource#update(int, int, String)} and re-loads
-     * affected {@link de.cau.cs.kieler.core.properties.IProperty}s.
+     * affected {@link IProperty}s.
      * 
      * @param offset the offset of the modified text position.
      * @param replacedTextLength the length of the modified part.
@@ -111,8 +113,8 @@ public class KGraphResource extends LazyLinkingResource {
     /**
      * {@inheritDoc}<br>
      * This customized implementation serializes attached
-     * {@link de.cau.cs.kieler.core.properties.IProperty IProperty}s into
-     * {@link de.cau.cs.kieler.core.kgraph.PersistentEntry PersistentEntry}s.
+     * {@link IProperty}s into
+     * {@link PersistentEntry}s.
      */
     public void doSave(final OutputStream outputStream, final Map<?, ?> options) throws IOException {
         

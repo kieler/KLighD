@@ -34,7 +34,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
  * PLayer} {@link KNodeNode} and {@link KNodeTopNode} cannot inherit this class, which I regret very
  * much.<br>
  * This class cares about tracking the corresponding
- * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} element, contributing semantic
+ * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} element, contributing semantic
  * model data into drawn (vector graphic) images, and determining the visibility the pseudo figure
  * wrt. the diagram zoom scale while drawing the diagram.
  *

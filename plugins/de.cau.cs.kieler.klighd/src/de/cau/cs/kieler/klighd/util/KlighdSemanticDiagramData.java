@@ -114,8 +114,8 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
 
     /**
      * @param viewModelElement
-     *            the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     *            {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} this semantic data
+     *            the {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} this semantic data
      *            record corresponds to, I don't want to enforce strictly the view element this
      *            record is attached to for flexibility reasons
      * @param keyValues
@@ -145,8 +145,8 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
      * @param viewContext
      *            the {@link ViewContext} of the diagram
      * @param viewModelElement
-     *            the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     *            {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} this semantic data
+     *            the {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} this semantic data
      *            record corresponds to, I don't want to enforce strictly the view element this
      *            record is attached to for flexibility reasons
      * @param keyValues
@@ -232,8 +232,8 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
      *            key's value is requested.<br>
      *            The input provided to the function is a record offering configured
      *            {@link ViewContext} and the configured view model element (
-     *            {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     *            {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}); both may be
+     *            {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}); both may be
      *            <code>null</code>!
      *
      * @return <code>this</code> {@link KlighdSemanticDiagramData} for convenience
@@ -258,8 +258,8 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
      *            key's value is requested.<br>
      *            The input provided to the function is a record offering configured
      *            {@link ViewContext} and the configured view model element (
-     *            {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     *            {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}); both may be
+     *            {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}); both may be
      *            <code>null</code>!
      *
      * @return <code>this</code> {@link KlighdSemanticDiagramData} for convenience
@@ -276,8 +276,8 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
      *            key's value is requested.<br>
      *            The input provided to the function is a record offering the configured
      *            {@link ViewContext}, the configured view model element (
-     *            {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     *            {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}), the line of text
+     *            {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}), the line of text
      *            to being exported, and the number of the line of text within the multi-line text;
      *            both the {@link ViewContext} and the view model element may be <code>null</code>!
      *
@@ -304,8 +304,8 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
      *            key's value is requested.<br>
      *            The input provided to the function is a record offering the configured
      *            {@link ViewContext}, the configured view model element (
-     *            {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     *            {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}), the line of text
+     *            {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}), the line of text
      *            to being exported, and the number of the line of text within the multi-line text;
      *            both the {@link ViewContext} and the view model element may be <code>null</code>!
      * 

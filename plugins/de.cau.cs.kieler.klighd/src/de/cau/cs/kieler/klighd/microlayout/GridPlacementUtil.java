@@ -58,8 +58,8 @@ public final class GridPlacementUtil {
 
     /**
      * Property definition allowing attach the determined position of the
-     * {@link de.cau.cs.kieler.core.kgraph.KNode KNode's}
-     * {@link de.cau.cs.kieler.core.krendering.KChildArea KChildArea} within the grid. This reduces
+     * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode's}
+     * {@link de.cau.cs.kieler.klighd.krendering.KChildArea KChildArea} within the grid. This reduces
      * searching especially the child area is hidden in nested grids.
      */
     public static final IProperty<Pair<Integer, Integer>> CHILD_AREA_POSITION
@@ -434,7 +434,7 @@ public final class GridPlacementUtil {
      * <code>childPlacement instanceof KGridPlacement</code> and updates the placement data of
      * internal KRenderings if necessary.<br>
      * <br>
-     * {@link de.cau.cs.kieler.core.properties.IProperty IProperties} for delivering those data.
+     * {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties} for delivering those data.
      *
      * @param container
      *            the {@link KContainerRendering} to be evaluated

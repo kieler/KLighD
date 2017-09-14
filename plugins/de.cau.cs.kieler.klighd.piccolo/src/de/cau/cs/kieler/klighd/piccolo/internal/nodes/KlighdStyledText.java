@@ -45,7 +45,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * {@link #addChild(edu.umd.cs.piccolo.PNode) addChild(PNode)}/
  * {@link #removeChild(edu.umd.cs.piccolo.PNode) removeChild(PNode)} in case of rendering changes,
  * by {@link #setBounds(double, double, double, double)} in case of layout changes, and in case of
- * pure style changes by the {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}
+ * pure style changes by the {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement}
  * rendering controllers ({@link
  * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController #updateStyles()
  * AbstractKGERenderingController#updateStyles()}) after all rendering and style changes are

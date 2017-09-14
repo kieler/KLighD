@@ -25,7 +25,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 
 /**
- * A collection of KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty IProperties}
+ * A collection of KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties}
  * that may be used while interacting with KLighD, e.g. in custom diagram synthesis or action
  * implementations.
  *
@@ -50,14 +50,14 @@ public final class KlighdProperties {
      * each automatic layout run.<br>
      * <br>
      * <b>Caution</b>: This property has been defined in
-     * {@link de.cau.cs.kieler.core.krendering.extensions.KNodeExtensions KNodeExtensions}, too, in
+     * {@link de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions KNodeExtensions}, too, in
      * order to enable the independence of both bundles. This is possible as {@link IProperty
      * IProperties} are determined to be equal or unequal based on their id's.<br>
      * <br>
      * Besides, it is registered as a layout option in plugin.xml in order to get values of
      * persisted diagrams loaded properly, see
-     * {@link de.cau.cs.kieler.kiml.util.KimlUtil#loadDataElements(de.cau.cs.kieler.core.kgraph.KNode)
-     * KimlUtil#loadDataElements(de.cau.cs.kieler.core.kgraph.KNode)}.
+     * {@link de.cau.cs.kieler.kiml.util.KimlUtil#loadDataElements(de.cau.cs.kieler.klighd.kgraph.KNode)
+     * KimlUtil#loadDataElements(de.cau.cs.kieler.klighd.kgraph.KNode)}.
      */
     public static final IProperty<KVector> MINIMAL_NODE_SIZE = new Property<KVector>(
             "de.cau.cs.kieler.klighd.minimalNodeSize", new KVector(
@@ -65,18 +65,18 @@ public final class KlighdProperties {
                     KlighdConstants.MINIMAL_NODE_BOUNDS.getHeight()));
 
     /**
-     * Property to be attached to root {@link de.cau.cs.kieler.core.krendering.KRendering
-     * KRendering} objects of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} during the view
-     * synthesis process indicating that the {@link de.cau.cs.kieler.core.krendering.KRendering
+     * Property to be attached to root {@link de.cau.cs.kieler.klighd.krendering.KRendering
+     * KRendering} objects of {@link de.cau.cs.kieler.klighd.kgraph.KNode KNodes} during the view
+     * synthesis process indicating that the {@link de.cau.cs.kieler.klighd.krendering.KRendering
      * KRendering} is to be shown in the collapsed state of the node.
      */
     public static final IProperty<Boolean> COLLAPSED_RENDERING = new Property<Boolean>(
             "de.cau.cs.kieler.klighd.collapsedRendering", false);
 
     /**
-     * Property to be attached to root {@link de.cau.cs.kieler.core.krendering.KRendering
-     * KRendering} objects of {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} during the view
-     * synthesis process indicating that the {@link de.cau.cs.kieler.core.krendering.KRendering
+     * Property to be attached to root {@link de.cau.cs.kieler.klighd.krendering.KRendering
+     * KRendering} objects of {@link de.cau.cs.kieler.klighd.kgraph.KNode KNodes} during the view
+     * synthesis process indicating that the {@link de.cau.cs.kieler.klighd.krendering.KRendering
      * KRendering} is to be shown in the expanded state of the node.
      */
     public static final IProperty<Boolean> EXPANDED_RENDERING = new Property<Boolean>(
@@ -92,7 +92,7 @@ public final class KlighdProperties {
 
     /**
      * Property indicating the auto incorporation of a
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} (kge) into the corresponding
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} (kge) into the corresponding
      * diagram if the value is true.<br>
      * This property is currently to be attached to the kge's
      * {@link de.cau.cs.kieler.kiml.klayoutdata.KLayoutData } data during the view synthesis process.
@@ -113,8 +113,8 @@ public final class KlighdProperties {
 
     /**
      * Property determining the selectability of a certain
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.core.krendering.KText KText}. If it is set to <code>true</code> that
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.klighd.krendering.KText KText}. If it is set to <code>true</code> that
      * particular diagram element cannot be selected, and the (geometrically) underlying element will
      * be selected if possible.<br>
      * If a {@link KNode} is not selectable the selection attempt is stopped!
@@ -164,7 +164,7 @@ public final class KlighdProperties {
 
     /**
      * Property determining the visibility of a certain
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in the outline diagram view.
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} in the outline diagram view.
      * If it is set to <code>true</code> that particular rendering element is not shown in the
      * outline.
      */
@@ -173,7 +173,7 @@ public final class KlighdProperties {
 
     /**
      * Property determining the visibility of a certain
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in exported diagram diagram
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} in exported diagram diagram
      * images. If it is set to <code>true</code> that particular rendering element is not shown in
      * exported images.
      */
@@ -182,7 +182,7 @@ public final class KlighdProperties {
 
     /**
      * Property determining the visibility of a certain
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} in diagram printouts. If it is
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} in diagram printouts. If it is
      * set to <code>true</code> that particular rendering element is not shown in diagram printouts.
      */
     public static final IProperty<Boolean> PRINTOUT_INVISIBLE = new Property<Boolean>(
@@ -190,8 +190,8 @@ public final class KlighdProperties {
 
     /**
      * Property determining the upper visibility bound of a certain
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
      * If the diagram is shown in equal or higher scale (>=) than the determined value the
      * corresponding diagram or figure element is not visible anymore.
      */
@@ -200,8 +200,8 @@ public final class KlighdProperties {
 
     /**
      * Property determining the lower visibility bound of a certain
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} wrt. the diagram scale/zoom.
      * If the diagram is shown in strictly lower scale (<) than the determined value the
      * corresponding diagram or figure element is not visible anymore.
      */
@@ -210,8 +210,8 @@ public final class KlighdProperties {
 
     /**
      * Property determining the upper visibility bound in terms of an absolute height value of a
-     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * certain {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}. If the diagram is shown in a
      * zoom scale leading to a height equal or higher (>=) than the determined value, the
      * corresponding diagram or figure element is not visible anymore.
      */
@@ -220,8 +220,8 @@ public final class KlighdProperties {
 
     /**
      * Property determining the lower visibility bound in terms of an absolute height value of a
-     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * certain {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}. If the diagram is shown in a
      * zoom scale leading to a strictly lower height (<) than the determined value, the
      * corresponding diagram or figure element is not visible anymore.
      */
@@ -230,8 +230,8 @@ public final class KlighdProperties {
 
     /**
      * Property determining the upper visibility bound in terms of an absolute width value of a
-     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * certain {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}. If the diagram is shown in a
      * zoom scale leading to a width equal or higher (>=) than the determined value, the
      * corresponding diagram or figure element is not visible anymore.
      */
@@ -240,8 +240,8 @@ public final class KlighdProperties {
 
     /**
      * Property determining the lower visibility bound in terms of an absolute width value of a
-     * certain {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}. If the diagram is shown in a
+     * certain {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}. If the diagram is shown in a
      * zoom scale leading to a strictly lower width (<) than the determined value, the corresponding
      * diagram or figure element is not visible anymore.
      */
@@ -250,7 +250,7 @@ public final class KlighdProperties {
 
     /**
      * Property determining whether the diagram zoom scale-based visibility configurations of the
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} it is defined on shall apply
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} it is defined on shall apply
      * to its children, as well. Configuring this property on {@link KGraphElement KGraphElements}
      * (' {@link KLayoutData}) will have no effect, {@link KGraphElement KGraphElements'} children
      * are automatically skipped by default.

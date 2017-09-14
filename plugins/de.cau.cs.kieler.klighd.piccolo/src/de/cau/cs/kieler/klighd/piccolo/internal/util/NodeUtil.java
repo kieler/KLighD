@@ -348,10 +348,10 @@ public final class NodeUtil {
 
     /**
      * Advancement of {@link PNode#getGlobalBounds()} respecting the current clip that may be set to
-     * a non-root {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.<br>
+     * a non-root {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}.<br>
      * <br>
      * It is used in {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController
-     * DiagramController#isVisible(de.cau.cs.kieler.core.kgraph.KGraphElement)}, for example.
+     * DiagramController#isVisible(de.cau.cs.kieler.klighd.kgraph.KGraphElement)}, for example.
      *
      * @param node
      *            the {@link PNode} to compute the bounds for

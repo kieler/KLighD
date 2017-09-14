@@ -39,7 +39,7 @@ import org.eclipse.elk.graph.properties.IProperty;
  * The offered set may be incomplete, refer to {@link LayoutOptions} for further option definitions.
  * However, keep in mind that some of the options defined there are set/overwritten by KLighD
  * internally, and some, e.g. the label concerning ones, are set in the helper functions, e.g. in
- * <code>de.cau.cs.kieler.core.krendering.extensions.KLabelExtensions</code>, already.
+ * <code>de.cau.cs.kieler.klighd.krendering.extensions.KLabelExtensions</code>, already.
  *
  * @author chsch
  */
@@ -52,8 +52,8 @@ public final class DiagramLayoutOptions {
 
     /**
      * Configures the layout algorithm which is used to arrange the children (nodes and their edges)
-     * of the {@link de.cau.cs.kieler.core.kgraph.KNode KNode} the option is set on. Setting this
-     * option on leaf {@link de.cau.cs.kieler.core.kgraph.KNode KNode} (without any children) has no
+     * of the {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode} the option is set on. Setting this
+     * option on leaf {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode} (without any children) has no
      * effect.<br>
      * Examples of valid algorithm ids are {@link #BOX}, {@link #FIXED}, {@link #KLAY_LAYERED},
      * {@link #GRAPHVIZ_DOT}, {@link #GRAPHVIZ_CIRCO}, {@link #OGDF_PLANARIZATION},

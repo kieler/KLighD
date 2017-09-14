@@ -29,7 +29,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 
 /**
  * Some outsourced calculations for rendering the different
- * {@link de.cau.cs.kieler.core.krendering.KPolyline KPolylines}. Unfortunately, AWT Geometry itself
+ * {@link de.cau.cs.kieler.klighd.krendering.KPolyline KPolylines}. Unfortunately, AWT Geometry itself
  * does not provide related classes for line paths with initialization methods taking arrays of
  * points.
  * 

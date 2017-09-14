@@ -26,37 +26,37 @@ import java.util.EnumSet;
 public enum ViewChangeType {
 
     /**
-     * Indicates a change of the {@link de.cau.cs.kieler.core.kgraph.KNode KNode} the diagram view
+     * Indicates a change of the {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode} the diagram view
      * is clipped to.
      */
     CLIP,
 
     /**
-     * Indicates a collapse of a {@link de.cau.cs.kieler.core.kgraph.KNode KNode} contained in the
+     * Indicates a collapse of a {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode} contained in the
      * view model.
      */
     COLLAPSE,
 
     /**
-     * Indicates an expansion of a {@link de.cau.cs.kieler.core.kgraph.KNode KNode} contained in the
+     * Indicates an expansion of a {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode} contained in the
      * view model.
      */
     EXPAND,
 
     /**
-     * Indicates the hiding of a {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}
+     * Indicates the hiding of a {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement}
      * contained in the view model.
      */
     HIDE,
 
     /**
-     * Indicates a change of the scale factor of a {@link de.cau.cs.kieler.core.kgraph.KNode KNode}
+     * Indicates a change of the scale factor of a {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}
      * contained view model.
      */
     SCALE,
 
     /**
-     * Indicates the show-up of a {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}
+     * Indicates the show-up of a {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement}
      * contained in the view model.
      */
     SHOW,

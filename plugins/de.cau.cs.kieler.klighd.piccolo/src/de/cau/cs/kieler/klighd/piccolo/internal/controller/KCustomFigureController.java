@@ -18,7 +18,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 
 /**
  * A specialized {@link PNodeController} dedicated to instances of
- * {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRendering}.
+ * {@link de.cau.cs.kieler.klighd.krendering.KCustomRendering KCustomRendering}.
  * 
  * @author chsch
  */

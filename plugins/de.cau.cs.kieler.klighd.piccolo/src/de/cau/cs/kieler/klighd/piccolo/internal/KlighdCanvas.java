@@ -161,7 +161,7 @@ public class KlighdCanvas extends PSWTCanvas {
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode KNodeTopNode} takes that
      * part; see
      * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController#DiagramController(
-     * de.cau.cs.kieler.core.kgraph.KNode, KlighdMainCamera, boolean, boolean)
+     * de.cau.cs.kieler.klighd.kgraph.KNode, KlighdMainCamera, boolean, boolean)
      * DiagramController.DiagramController(KNode, KlighdMainCamera, boolean, boolean)}.
      */
     @Override // SUPPRESS CHECKSTYLE Javadoc, see http://sourceforge.net/p/checkstyle/bugs/592/

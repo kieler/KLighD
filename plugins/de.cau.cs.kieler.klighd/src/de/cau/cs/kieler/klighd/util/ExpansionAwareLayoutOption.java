@@ -27,7 +27,7 @@ import org.eclipse.elk.graph.properties.Property;
 
 /**
  * Contributes support for declarative layout option value definitions depending on the
- * collapsed/expanded state of the {@link de.cau.cs.kieler.core.kgraph.KNode KNode}.
+ * collapsed/expanded state of the {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}.
  * 
  * @author chsch
  * 

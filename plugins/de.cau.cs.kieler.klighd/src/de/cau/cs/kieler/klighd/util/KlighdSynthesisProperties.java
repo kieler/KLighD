@@ -73,8 +73,8 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
                     ZoomConfigButtonsHandling.UNDEFINED);
 
     /** property denoting whether to suppress the automatic size estimation of
-     * {@link de.cau.cs.kieler.core.kgraph.KNode KNodes} and
-     * {@link de.cau.cs.kieler.core.kgraph.KLabel KLabels}. */
+     * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNodes} and
+     * {@link de.cau.cs.kieler.klighd.kgraph.KLabel KLabels}. */
     public static final IProperty<Boolean> SUPPRESS_SIZE_ESTIMATION = new Property<Boolean>(
             "klighd.suppressSizeEstimation", false);
 
@@ -313,8 +313,8 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
      * Configures the diagram viewer to include ports when selecting connected edges. <i>Connected
      * edges<i> refer to edges connected to the same port on different levels of nested nodes.
      * Usually such edges can be seen as a single logical connection that has been split, e.g., for
-     * technical reasons. If set each connected {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}
-     * "segment" and each {@link de.cau.cs.kieler.core.kgraph.KPort KPort} situated in between the
+     * technical reasons. If set each connected {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}
+     * "segment" and each {@link de.cau.cs.kieler.klighd.kgraph.KPort KPort} situated in between the
      * edges will be taken into selection, otherwise only the edges are taken.
      * 
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.

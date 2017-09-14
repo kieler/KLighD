@@ -38,7 +38,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 
 /**
  * A specialized EMF adapter which is in charge of synchronizing the points of the
- * {@link KEdgeNode} that represents of the {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}
+ * {@link KEdgeNode} that represents of the {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}
  * this adapter is attached to.
  *
  * @author chsch

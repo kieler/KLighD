@@ -28,14 +28,14 @@ public abstract class KCustomFigureNode extends KlighdNode.KlighdFigureNode<KCus
     private static final long serialVersionUID = -7601315964455163260L;
 
     /**
-     * Applies the settings of {@link de.cau.cs.kieler.core.krendering.KStyle KStyle} attached to
-     * respective {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRenderings} to the
+     * Applies the settings of {@link de.cau.cs.kieler.klighd.krendering.KStyle KStyle} attached to
+     * respective {@link de.cau.cs.kieler.klighd.krendering.KCustomRendering KCustomRenderings} to the
      * actual custom figure wrapped by <code>this</code> node.<br>
      * <br>
      * Subclasses have to implement this method.
      * 
      * @param styles
-     *            the record of {@link de.cau.cs.kieler.core.krendering.KStyle KStyles} to be
+     *            the record of {@link de.cau.cs.kieler.klighd.krendering.KStyle KStyles} to be
      *            applied to the actual custom figure
      */
     public abstract void applyStyles(final Styles styles);

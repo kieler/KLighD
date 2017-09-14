@@ -132,7 +132,7 @@ public final class Styles {
      *            into account (usually, if no 'selection' styles are present)
      * @param theRootRendering
      *            the root rendering of the current
-     *            {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement} to be highlighted
+     *            {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} to be highlighted
      *            (used for properly propagating default highlighting styles to those rendering
      *            referencing the root one via a {@link KStyleRef}).
      * @return the prepared {@link Styles} record

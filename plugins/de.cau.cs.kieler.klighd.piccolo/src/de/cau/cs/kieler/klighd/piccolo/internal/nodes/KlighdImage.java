@@ -54,7 +54,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * while drawing diagrams without animation. Instead the bounds are set top down by KlighD, see
  * {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.KGERenderingControllerHelper#createImage(
  * de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController,
- * de.cau.cs.kieler.core.krendering.KImage, java.util.List, edu.umd.cs.piccolo.PNode,
+ * de.cau.cs.kieler.klighd.krendering.KImage, java.util.List, edu.umd.cs.piccolo.PNode,
  * de.cau.cs.kieler.klighd.microlayout.Bounds)
  * KGERenderingControllerHelper#createImage(...)}.<br>
  * <br>

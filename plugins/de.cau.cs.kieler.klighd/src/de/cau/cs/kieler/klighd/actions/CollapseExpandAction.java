@@ -17,7 +17,7 @@ import de.cau.cs.kieler.klighd.IAction;
 
 /**
  * This is first draft of an {@link IAction} realizing the collapsing and expanding of
- * {@link de.cau.cs.kieler.core.kgraph.KNode KNodes}.
+ * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNodes}.
  * 
  * @author chsch
  * 
@@ -28,7 +28,7 @@ public class CollapseExpandAction implements IAction {
     
     /**
      * The extension id of this actions. This id is to be mentioned in instances of
-     * {@link de.cau.cs.kieler.core.krendering.KAction KAction}.
+     * {@link de.cau.cs.kieler.klighd.krendering.KAction KAction}.
      */
     public static final String ID = "de.cau.cs.kieler.klighd.actions.CollapseExpandAction";
     

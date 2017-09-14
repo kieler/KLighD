@@ -42,11 +42,11 @@ import edu.umd.cs.piccolo.util.PPickPath;
 /**
  * Common base class of KLighD-specific {@link PNode PNodes}.<br>
  * It enables, e.g., proper view-model-tracing by preserving the related
- * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/ {@link KRendering} view model
+ * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement}/ {@link KRendering} view model
  * element being accessible via {@link #getViewModelElement()}.<br>
  * <br>
  * Application-specific custom figures incorporated by means of
- * {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRenderings} may subclass
+ * {@link de.cau.cs.kieler.klighd.krendering.KCustomRendering KCustomRenderings} may subclass
  * {@link KlighdNode} of {@link KlighdNode.KlighdFigureNode} if beneficial, otherwise rely on
  * {@link IKlighdNode}.
  *
@@ -416,7 +416,7 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
      * we're using the occlusion flag for implementing single figure/rendering invisibility and as
      * we don't use on {@link edu.umd.cs.piccolo.util.PPickPath#nextPickedNode()
      * PPickPath#nextPickedNode()} (since we don't expected
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} occluding each other).
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElements} occluding each other).
      */
     @Override
     public boolean getPickable() {
@@ -619,9 +619,9 @@ public abstract class KlighdNode extends PNode implements IKlighdNode {
          * but just up to the parent {@link IKGraphElementNode}. The required corresponding calls of
          * {@link #validateFullPaint()} are triggered during the initialization of the figures (in
          * combination with applying the bounds due to corresponding {@link
-         * de.cau.cs.kieler.core.krendering.KPlacementData KPlacementData}) anyway, and in case of
+         * de.cau.cs.kieler.klighd.krendering.KPlacementData KPlacementData}) anyway, and in case of
          * pure style changes by the corresponding
-         * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement's} rendering controllers
+         * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement's} rendering controllers
          * ({@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController
          * #updateStyles() AbstractKGERenderingController#updateStyles()}) after all rendering and
          * style changes are performed.

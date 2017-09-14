@@ -154,7 +154,7 @@ public interface IViewChangeListener {
          * evaluation)!<br>
          * <br>
          * <b>Caution:</b> Traversal must be performed by the display (UI) thread for integrity
-         * reasons. {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} are likely to be returned
+         * reasons. {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdges} are likely to be returned
          * twice, as both outgoing as well as incoming edges of a {@link KNode} must be considered.
          *
          * @return the desired {@link org.eclipse.emf.common.util.TreeIterator TreeIterator}

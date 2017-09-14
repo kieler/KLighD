@@ -40,7 +40,6 @@ import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
@@ -210,9 +209,6 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         // setting the diagram composite visible strictly after applying the initial layout avoids
         //  flickering and suppresses the DiagramAreaChangeListener from getting active too early
         this.diagramComposite.setVisible(true);
-
-        // trigger the create success status
-        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CREATE_SUCCESS, viewContext);
     }
 
     /**
@@ -422,8 +418,8 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
                         && event.data instanceof IResource[]) {
                     final IResource[] resources = (IResource[]) event.data;
                     if (resources.length > 0) {
-                        KlighdPlugin.getTrigger().triggerDrop(getViewSite().getSecondaryId(),
-                                resources[0]);
+//                        KlighdPlugin.getTrigger().triggerDrop(getViewSite().getSecondaryId(),
+//                                resources[0]);
                     }
                 }
             }

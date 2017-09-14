@@ -37,7 +37,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
  * is set in the constructor. Once attached to such a child it attaches itself recursively to all
  * child's children.<br>
  * <br>
- * It is used to observe changes in {@link de.cau.cs.kieler.core.krendering.KRendering KRendering}
+ * It is used to observe changes in {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}
  * of {@link KGraphElement KGraphElements}, for example. The special benefit of this content adapter
  * type is the tolerance of complete exchanges of such objects, which happens e.g. while
  * incorporating EMF Compare.<br>

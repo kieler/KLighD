@@ -34,7 +34,6 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.internal.IKlighdTrigger;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 
@@ -213,9 +212,6 @@ public final class DiagramViewManager implements IPartListener {
             return null;
         }
 
-        // trigger the update status
-        KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.UPDATE, viewContext);
-
         return diagramView;
     }
 
@@ -322,16 +318,12 @@ public final class DiagramViewManager implements IPartListener {
                         .handle(new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, e
                                 .getMessage(), e));
 
-                // trigger the create failure status
-                KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CREATE_FAILURE, null);
                 return null;
             } catch (final IllegalArgumentException e) {
                 StatusManager.getManager().handle(
                         new Status(IStatus.ERROR, KlighdPlugin.PLUGIN_ID, "Invalid KLighD view id:"
                                 + "must not be empty or contain any colons."));
 
-                // trigger the create failure status
-                KlighdPlugin.getTrigger().triggerStatus(IKlighdTrigger.Status.CREATE_FAILURE, null);
                 return null;
             }
         } else {

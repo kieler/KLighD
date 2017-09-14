@@ -336,7 +336,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      *            the corresponding {@link ViewChangeType}
      * @param affectedElement
      *            a potentially affect few element, e.g. a collapsed or expanded
-     *            {@link de.cau.cs.kieler.core.kgraph.KNode KNode}, may be <code>null</code>
+     *            {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}, may be <code>null</code>
      */
     protected void notifyViewChangeListeners(final ViewChangeType type,
             final KGraphElement affectedElement) {

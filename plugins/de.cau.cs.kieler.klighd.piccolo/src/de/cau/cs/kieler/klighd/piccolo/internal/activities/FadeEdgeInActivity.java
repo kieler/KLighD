@@ -22,7 +22,7 @@ import edu.umd.cs.piccolo.activities.PInterpolatingActivity;
 /**
  * A custom {@link edu.umd.cs.piccolo.activities.PInterpolatingActivity PInterpolatingActivity} that
  * fades {@link edu.umd.cs.piccolo.PNode PNodes} representing
- * {@link de.cau.cs.kieler.core.kgraph.KEdge KEdges} into diagrams.
+ * {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdges} into diagrams.
  *
  * @author chsch
  */

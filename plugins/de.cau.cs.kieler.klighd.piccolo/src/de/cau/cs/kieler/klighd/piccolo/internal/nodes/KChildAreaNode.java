@@ -24,7 +24,7 @@ import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * A dedicated Piccolo2D node type whose instances represent
- * {@link de.cau.cs.kieler.core.krendering.KChildArea KChildAreas}.<br>
+ * {@link de.cau.cs.kieler.klighd.krendering.KChildArea KChildAreas}.<br>
  * <br>
  * Inherits from {@link KlighdDisposingLayer} in order to enable its observation by a
  * {@link edu.umd.cs.piccolo.PCamera PCamera}.

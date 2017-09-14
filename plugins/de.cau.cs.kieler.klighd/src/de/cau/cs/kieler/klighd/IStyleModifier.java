@@ -19,7 +19,7 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
 
 /**
  * The interface for classes implementing a style modifier that update
- * {@link de.cau.cs.kieler.core.krendering.KStyle KStyles} after the automatic layout application.
+ * {@link de.cau.cs.kieler.klighd.krendering.KStyle KStyles} after the automatic layout application.
  * This way we can realize specialities like the layout dependent visibility of swim lane-like
  * separator lines, for example.<br>
  * <br>
@@ -35,7 +35,7 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
 public interface IStyleModifier {
     
     /**
-     * Modifies a {@link de.cau.cs.kieler.core.krendering.KStyle KStyle} contributed in the
+     * Modifies a {@link de.cau.cs.kieler.klighd.krendering.KStyle KStyle} contributed in the
      * {@code context}.
      * 
      * @param context

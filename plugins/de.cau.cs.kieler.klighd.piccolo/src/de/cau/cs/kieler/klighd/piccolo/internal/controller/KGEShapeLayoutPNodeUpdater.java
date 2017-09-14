@@ -30,11 +30,11 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * An EMF adapter which is in charge of synchronizing the
- * position the PNode that represents of the {@link de.cau.cs.kieler.core.kgraph.KGraphElement
+ * position the PNode that represents of the {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement
  * KGraphElement} that this adapter is attached to. It is intended to be attached to
  * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNodes},
- * {@link de.cau.cs.kieler.core.kgraph.KPort KPorts}, and
- * {@link de.cau.cs.kieler.core.kgraph.KLabel KLabels}.
+ * {@link de.cau.cs.kieler.klighd.kgraph.KPort KPorts}, and
+ * {@link de.cau.cs.kieler.klighd.kgraph.KLabel KLabels}.
  *
  * @author chsch
  */

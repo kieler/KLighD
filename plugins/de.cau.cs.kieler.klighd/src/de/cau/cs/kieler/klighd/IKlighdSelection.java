@@ -44,12 +44,12 @@ public interface IKlighdSelection extends ISelection {
 
     /**
      * Provides an {@link Iterator} of the selected
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} and
-     * {@link de.cau.cs.kieler.core.krendering.KText KTexts}.
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElements} and
+     * {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}.
      * 
      * @return an {@link Iterator} of the selected
-     *         {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} and
-     *         {@link de.cau.cs.kieler.core.krendering.KText KTexts}
+     *         {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElements} and
+     *         {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}
      */
     Iterator<EObject> diagramElementsIterator();
 }

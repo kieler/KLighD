@@ -7,9 +7,12 @@
    </configIni>
 
    <launcherArgs>
-      <programArgs>-consoleLog ../kgraph.ecore</programArgs>
-      <vmArgs>-Djava.awt.headless=true</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+      <programArgs>-consoleLog ../kgraph.ecore
+      </programArgs>
+      <vmArgs>-Djava.awt.headless=true
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <vm>
@@ -20,26 +23,14 @@
       <plugin id="com.google.guava"/>
       <plugin id="com.google.inject"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="de.cau.cs.kieler.core"/>
-      <plugin id="de.cau.cs.kieler.core.kgraph"/>
-      <plugin id="de.cau.cs.kieler.core.kivi"/>
-      <plugin id="de.cau.cs.kieler.core.krendering"/>
-      <plugin id="de.cau.cs.kieler.core.krendering.extensions"/>
-      <plugin id="de.cau.cs.kieler.core.ui"/>
-      <plugin id="de.cau.cs.kieler.kiml"/>
       <plugin id="de.cau.cs.kieler.kiml.ogdf"/>
-      <plugin id="de.cau.cs.kieler.kiml.service"/>
       <plugin id="de.cau.cs.kieler.klighd"/>
-      <plugin id="de.cau.cs.kieler.klighd.examples"/>
-      <plugin id="de.cau.cs.kieler.klighd.kivi"/>
       <plugin id="de.cau.cs.kieler.klighd.offscreen.application"/>
       <plugin id="de.cau.cs.kieler.klighd.piccolo"/>
       <plugin id="de.cau.cs.kieler.klighd.piccolo.batik" fragment="true"/>
       <plugin id="de.cau.cs.kieler.klighd.piccolo.freehep" fragment="true"/>
-      <plugin id="de.cau.cs.kieler.klighd.piccolo.vectorgraphics2d" fragment="true"/>
       <plugin id="de.cau.cs.kieler.klighd.ui"/>
       <plugin id="de.cau.cs.kieler.klighd.ui.emf" fragment="true"/>
-      <plugin id="de.cau.cs.kieler.ksbase"/>
       <plugin id="edu.umd.cs.piccolo"/>
       <plugin id="javax.annotation"/>
       <plugin id="javax.inject"/>

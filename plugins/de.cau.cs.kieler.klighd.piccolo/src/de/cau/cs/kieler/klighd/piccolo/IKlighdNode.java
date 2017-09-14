@@ -39,20 +39,20 @@ public interface IKlighdNode {
     String PROPERTY_BOUNDS_FINISHED = "boundsFinished";
 
     /**
-     * @return the view model element ({@link de.cau.cs.kieler.core.kgraph.KGraphElement
-     *         KGraphElement} or {@link de.cau.cs.kieler.core.krendering.KRendering KRendering})
+     * @return the view model element ({@link de.cau.cs.kieler.klighd.kgraph.KGraphElement
+     *         KGraphElement} or {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering})
      *         represented by this {@link IKlighdNode}.
      */
     EObject getViewModelElement();
 
     /**
      * Provides the permission of the corresponding
-     * {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} to be selected.
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement}/
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} to be selected.
      *
      * @return <code>true</code> if the corresponding
-     *         {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElement}/
-     *         {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} is allowed to be
+     *         {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement}/
+     *         {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} is allowed to be
      *         selected, <code>false</code> otherwise.
      */
     boolean isSelectable();
@@ -90,9 +90,9 @@ public interface IKlighdNode {
 
     /**
      * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing the
-     * structural view model elements {@link de.cau.cs.kieler.core.kgraph.KNode KNode},
-     * {@link de.cau.cs.kieler.core.kgraph.KPort KPort}, {@link de.cau.cs.kieler.core.kgraph.KLabel
-     * KLabel}, and {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}.
+     * structural view model elements {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode},
+     * {@link de.cau.cs.kieler.klighd.kgraph.KPort KPort}, {@link de.cau.cs.kieler.klighd.kgraph.KLabel
+     * KLabel}, and {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}.
      *
      * @author chsch
      */
@@ -152,7 +152,7 @@ public interface IKlighdNode {
          * @return the {@link KRendering} represented by this {@link IKlighdFigureNode}, maybe
          *         <code>null</code> if this figure node does not represent a {@link KRendering} but
          *         is part of a custom figure contributed via a
-         *         {@link de.cau.cs.kieler.core.krendering.KCustomRendering KCustomRendering}, for
+         *         {@link de.cau.cs.kieler.klighd.krendering.KCustomRendering KCustomRendering}, for
          *         example.
          */
         KRendering getViewModelElement();

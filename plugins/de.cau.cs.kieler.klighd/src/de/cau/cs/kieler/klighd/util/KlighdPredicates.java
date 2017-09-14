@@ -155,7 +155,7 @@ public final class KlighdPredicates {
     /**
      * Provides a static predicate for testing an EObject whether it is a view model element that is
      * allowed to be selected by the user. Currently only {@link KGraphElement KGraphElements} and
-     * {@link de.cau.cs.kieler.core.krendering.KText KTexts} can be selected. The returned
+     * {@link de.cau.cs.kieler.klighd.krendering.KText KTexts} can be selected. The returned
      * {@link Predicate} tolerates <code>null</code> values and returns <code>false</code> in that
      * case.
      *

@@ -336,7 +336,7 @@ public class KlighdSaveKGraphHandler extends AbstractHandler {
         KNode parent = node;
         while (parent != null) {
             String name = parent.toString().replace("\"", "").replace(" ", "").replace("KNode", "");
-            name = name.replace("de.cau.cs.kieler.core.kgraph.impl.Impl", "Node");
+            name = name.replace("de.cau.cs.kieler.klighd.kgraph.impl.Impl", "Node");
             s = "-" + name + s;
             parent = parent.getParent();
         }

@@ -31,7 +31,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * Common interface of classes providing implementations of
- * {@link de.cau.cs.kieler.core.krendering.KAction KActions}.<br>
+ * {@link de.cau.cs.kieler.klighd.krendering.KAction KActions}.<br>
  * <br>
  * {@link IAction IActions} are currently assumed to be stateless and, thus, a singleton instance is
  * created only.

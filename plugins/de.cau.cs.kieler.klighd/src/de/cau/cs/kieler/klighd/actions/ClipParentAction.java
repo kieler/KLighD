@@ -30,7 +30,7 @@ public class ClipParentAction implements IAction {
 
     /**
      * The extension id of this actions. This id is to be mentioned in instances of
-     * {@link de.cau.cs.kieler.core.krendering.KAction KAction}.
+     * {@link de.cau.cs.kieler.klighd.krendering.KAction KAction}.
      */
     public static final String ID = "de.cau.cs.kieler.klighd.actions.ClipParentAction";
     

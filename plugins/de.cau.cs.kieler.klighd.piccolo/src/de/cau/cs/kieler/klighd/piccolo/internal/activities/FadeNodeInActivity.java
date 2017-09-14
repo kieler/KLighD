@@ -22,7 +22,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 /**
  * A custom {@link edu.umd.cs.piccolo.activities.PInterpolatingActivity PInterpolatingActivity} that
- * fades {@link PNode PNodes} representing {@link de.cau.cs.kieler.core.kgraph.KGraphElement
+ * fades {@link PNode PNodes} representing {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement
  * KGraphElements} (except KEdges) into a diagram.
  *
  * @author chsch
@@ -49,7 +49,7 @@ public class FadeNodeInActivity extends PInterpolatingActivity implements IStart
      *            is set invisible while re-adding to the diagram (see
      *            {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController#addNode(
      *            de.cau.cs.kieler.klighd.piccolo.internal.nodes.INode,
-     *            de.cau.cs.kieler.core.kgraph.KNode, boolean) DiagramController#addNode(...)}),
+     *            de.cau.cs.kieler.klighd.kgraph.KNode, boolean) DiagramController#addNode(...)}),
      *            e.g. after expanding the corresponding parent
      *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KChildAreaNode
      *            KChildAreaNode}

@@ -45,7 +45,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * An abstract base class for concrete KGraph/KRendering viewers. It provides implementations of
  * those methods concrete viewers are not in charge of implementing, e.g. the source model related
  * ones ({@link Object}-based) and the selection related ones. The view model related methods (
- * {@link KGraphElement}/{@link de.cau.cs.kieler.core.kgraph.KNode KNode}/{@link KText}-based ones)
+ * {@link KGraphElement}/{@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}/{@link KText}-based ones)
  * must be implemented by concrete viewers.
  *
  * @author mri
@@ -203,7 +203,7 @@ public abstract class AbstractViewer implements IViewer {
      *            the corresponding {@link ViewChangeType}
      * @param affectedElement
      *            a potentially affect few element, e.g. a collapsed or expanded
-     *            {@link de.cau.cs.kieler.core.kgraph.KNode KNode}, may be <code>null</code>
+     *            {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}, may be <code>null</code>
      * @param viewPort
      *            a {@link Rectangle2D} with the bounds of the currently visible diagram area
      * @param diagramScale

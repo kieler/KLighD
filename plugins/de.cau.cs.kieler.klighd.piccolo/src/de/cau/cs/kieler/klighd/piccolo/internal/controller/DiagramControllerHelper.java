@@ -82,7 +82,7 @@ public final class DiagramControllerHelper {
 
     /**
      * Updates the offset of the edge representation. Takes care about insets due to
-     * {@link de.cau.cs.kieler.core.krendering.KPlacementData KPlacementData} and the relocation
+     * {@link de.cau.cs.kieler.klighd.krendering.KPlacementData KPlacementData} and the relocation
      * performed in {@link #updateEdgeParent(KEdgeNode)}-
      * 
      * @param edgeNode

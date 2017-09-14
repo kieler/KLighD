@@ -25,7 +25,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 
 /**
- * A collection of internal KLighD-specific {@link de.cau.cs.kieler.core.properties.IProperty
+ * A collection of internal KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty
  * IProperties}.
  * 
  * @author chsch
@@ -43,8 +43,8 @@ public final class KlighdInternalProperties {
 
     /**
      * Property for preserving the domain model element being represented by a diagram element or
-     * diagram figure element. Is to be attached to {@link de.cau.cs.kieler.core.kgraph.KGraphData
-     * KGraphData}, for {@link de.cau.cs.kieler.core.kgraph.KGraphElement KGraphElements} it is to
+     * diagram figure element. Is to be attached to {@link de.cau.cs.kieler.klighd.kgraph.KGraphData
+     * KGraphData}, for {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElements} it is to
      * be attached to their layout data.
      */
     public static final IProperty<Object> MODEL_ELEMEMT = new Property<Object>("klighd.modelElement");
@@ -61,7 +61,7 @@ public final class KlighdInternalProperties {
             false);
     
     /**
-     * A property indicating whether a {@link de.cau.cs.kieler.core.kgraph.KGraphElement
+     * A property indicating whether a {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement
      * KGraphElement} is currently active. This is the case if and only if it is represented in the
      * diagram.<br>
      * <br>
@@ -72,13 +72,13 @@ public final class KlighdInternalProperties {
     public static final IProperty<Boolean> ACTIVE = new Property<Boolean>("klighd.active", false);
     
     /**
-     * A property indicating the selection of a {@link de.cau.cs.kieler.core.kgraph.KGraphElement
-     * KGraphElement} or a {@link de.cau.cs.kieler.core.krendering.KText KText}. It is used for
+     * A property indicating the selection of a {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement
+     * KGraphElement} or a {@link de.cau.cs.kieler.klighd.krendering.KText KText}. It is used for
      * communicating the 'selected' state of such an element from the
      * {@link de.cau.cs.kieler.klighd.viewers.ContextViewer ContextViewer}, which sets this
      * property, to concrete viewers, usually the PiccoloViewer and, more specifically, the
      * (Abstract)KGERenderingControllers. Those viewers will then have to update the respective
-     * diagram figures and incorporate the {@link de.cau.cs.kieler.core.krendering.KStyle KStyles}
+     * diagram figures and incorporate the {@link de.cau.cs.kieler.klighd.krendering.KStyle KStyles}
      * with flag 'selection' set.
      */
     public static final IProperty<Boolean> SELECTED = new Property<Boolean>("klighd.selected", false);
@@ -126,14 +126,14 @@ public final class KlighdInternalProperties {
             "klighd.testing.ignore", false);
 
     /**
-     * Property to be attached to the {@link de.cau.cs.kieler.core.krendering.KText KTexts} of a
+     * Property to be attached to the {@link de.cau.cs.kieler.klighd.krendering.KText KTexts} of a
      * view model for properly performing various regression tests.
      */
     public static final IProperty<Float> KLIGHD_TESTING_HEIGHT = new Property<Float>(
             "klighd.testing.height");
 
     /**
-     * Property to be attached to the {@link de.cau.cs.kieler.core.krendering.KText KTexts} of a
+     * Property to be attached to the {@link de.cau.cs.kieler.klighd.krendering.KText KTexts} of a
      * view model for properly performing various regression tests.
      */
     public static final IProperty<Float> KLIGHD_TESTING_WIDTH = new Property<Float>(
@@ -141,7 +141,7 @@ public final class KlighdInternalProperties {
     
     /**
      * Predicate definition that simplifies the testing for {@link #KLIGHD_TESTING_HEIGHT}
-     * in {@link de.cau.cs.kieler.core.krendering.KText KText} data.
+     * in {@link de.cau.cs.kieler.klighd.krendering.KText KText} data.
      */
     // SUPPRESS CHECKSTYLE NEXT LineLength
     public static final Predicate<PersistentEntry> PRED_TESTING_HEIGHT
@@ -154,7 +154,7 @@ public final class KlighdInternalProperties {
     
     /**
      * Predicate definition that simplifies the testing for {@link #KLIGHD_TESTING_WIDTH}
-     * in {@link de.cau.cs.kieler.core.krendering.KText KText} data.
+     * in {@link de.cau.cs.kieler.klighd.krendering.KText KText} data.
      */
     // SUPPRESS CHECKSTYLE NEXT LineLength
     public static final Predicate<PersistentEntry> PRED_TESTING_WIDTH

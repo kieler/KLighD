@@ -20,9 +20,9 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingC
 
 /**
  * Common interface of all KLighD-specific {@link edu.umd.cs.piccolo.PNode PNodes} representing the
- * structural view model elements {@link de.cau.cs.kieler.core.kgraph.KNode KNode},
- * {@link de.cau.cs.kieler.core.kgraph.KPort KPort}, {@link de.cau.cs.kieler.core.kgraph.KLabel
- * KLabel}, and {@link de.cau.cs.kieler.core.kgraph.KEdge KEdge}.
+ * structural view model elements {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode},
+ * {@link de.cau.cs.kieler.klighd.kgraph.KPort KPort}, {@link de.cau.cs.kieler.klighd.kgraph.KLabel
+ * KLabel}, and {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}.
  *
  * @author mri
  * @author chsch
@@ -40,7 +40,7 @@ public interface IInternalKGraphElementNode<T extends KGraphElement> extends IKG
     /**
      * Setter for memorizing the rendering controller that is in charge of managing the correct
      * display and update of the diagram figures based on
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} definitions attached to the
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} definitions attached to the
      * {@link KGraphElement KGraphElements}.
      *
      * @param controller
@@ -52,7 +52,7 @@ public interface IInternalKGraphElementNode<T extends KGraphElement> extends IKG
     /**
      * Getter for accessing the rendering controller that is in charge of managing the correct
      * display and update of the diagram figures based on
-     * {@link de.cau.cs.kieler.core.krendering.KRendering KRendering} definitions attached to the
+     * {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering} definitions attached to the
      * {@link KGraphElement KGraphElements}.
      *
      * @return the related rendering controller

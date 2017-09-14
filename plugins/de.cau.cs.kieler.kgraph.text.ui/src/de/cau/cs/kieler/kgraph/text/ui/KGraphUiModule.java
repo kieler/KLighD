@@ -23,7 +23,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class KGraphUiModule extends AbstractKGraphUiModule {
     
     /** Identifier of the KGraph Text UI plugin. */
-    public static final String PLUGIN_ID = "de.cau.cs.kieler.core.kgraph.text.ui";
+    public static final String PLUGIN_ID = "de.cau.cs.kieler.kgraph.text.ui";
 
     /**
      * Create a KGraph UI module.

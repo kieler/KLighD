@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.kgraph.text;
 
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.formatting.IFormatter;
@@ -81,7 +82,7 @@ public class KGraphRuntimeModule extends AbstractKGraphRuntimeModule {
 
     /**
      * Method registers a customized {@link org.eclipse.xtext.linking.lazy.LazyLinkingResource} in
-     * order to handle the (de-) serialization of {@link de.cau.cs.kieler.core.properties.IProperty}s
+     * order to handle the (de-) serialization of {@link IProperty}s
      * correctly.
      * 
      * @return the {@link KGraphResource} class

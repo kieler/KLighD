@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.kgraph.text.serializer;
 
+import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.parsetree.reconstr.impl.DefaultTransientValueService;
@@ -23,7 +24,7 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
 /**
  * A KGraph specific {@link org.eclipse.xtext.parsetree.reconstr.ITransientValueService
  * ITransientValueService}. Prevents serializer from trying to dump out eOpposite relations and
- * {@link de.cau.cs.kieler.core.properties.IProperty} data.
+ * {@link IProperty} data.
  * 
  * It is required while serializing portions of the model after applying semantic modifications via
  * quick fixes.

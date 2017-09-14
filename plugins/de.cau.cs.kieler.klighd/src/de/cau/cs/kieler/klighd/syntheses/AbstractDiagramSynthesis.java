@@ -66,7 +66,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * time calling {@link com.google.inject.Provider#get() get()} on this provider a new instance will
  * be obtained as long as the provided class is <b>not</b> declared as singleton (via
  * {@link javax.inject.Singleton &#64;Singleton}). The
- * {@link de.cau.cs.kieler.core.krendering.extensions.ViewSynthesisShared ViewSynthesisShared}
+ * {@link de.cau.cs.kieler.klighd.krendering.extensions.ViewSynthesisShared ViewSynthesisShared}
  * annotation helps if the described feature of employing helper classes is required.
  *
  * @param <S>
