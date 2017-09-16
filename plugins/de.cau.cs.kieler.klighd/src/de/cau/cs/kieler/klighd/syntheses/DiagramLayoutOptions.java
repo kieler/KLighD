@@ -122,7 +122,7 @@ public final class DiagramLayoutOptions {
      * @see LayoutOptions#ADDITIONAL_PORT_SPACE;
      */
     public static final IProperty<ElkMargin> ADDITIONAL_PORT_SPACE =
-            CoreOptions.SPACING_PORT_SURROUNDING;
+            CoreOptions.SPACING_PORTS_SURROUNDING;
 
     /**
      * @see LayoutOptions#DIRECTION
@@ -153,7 +153,7 @@ public final class DiagramLayoutOptions {
     /**
      * @see LayoutOptions#PORT_ALIGNMENT
      */
-    public static final IProperty<PortAlignment> PORT_ALIGNMENT = CoreOptions.PORT_ALIGNMENT_BASIC;
+    public static final IProperty<PortAlignment> PORT_ALIGNMENT = CoreOptions.PORT_ALIGNMENT_DEFAULT;
 
     /**
      * @see LayoutOptions#PORT_ALIGNMENT_EAST
