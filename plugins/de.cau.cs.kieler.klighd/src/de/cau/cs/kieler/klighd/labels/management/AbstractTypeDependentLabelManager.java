@@ -32,6 +32,7 @@ import de.cau.cs.kieler.klighd.labels.management.AbstractKlighdLabelManager.Resu
  *   <li>{@link #doResizeEdgeEndLabel(ElkLabel, double)}</li>
  *   <li>{@link #doResizeNodeLabel(ElkLabel, double)}</li>
  *   <li>{@link #doResizePortLabel(ElkLabel, double)}</li>
+ *   <li>{@link #doResizeCommentLabel(ElkLabel, double)}</li>
  * </ul>
  * 
  * <p>
@@ -109,7 +110,11 @@ public abstract class AbstractTypeDependentLabelManager extends AbstractKlighdLa
         } else if (labeledElement instanceof ElkPort) {
             return doResizePortLabel(label, targetWidth);
         } else if (labeledElement instanceof ElkNode) {
-            return doResizeNodeLabel(label, targetWidth);
+            if (labeledElement.getProperty(CoreOptions.COMMENT_BOX)) {
+                return doResizeCommentLabel(label, targetWidth);
+            } else {
+                return doResizeNodeLabel(label, targetWidth);
+            }
         }
         
         // Shouldn't happen, but if it does, tell everyone that we didn't do nothin'
@@ -171,7 +176,7 @@ public abstract class AbstractTypeDependentLabelManager extends AbstractKlighdLa
     }
 
     /**
-     * Implements {@link #doResizeLabel(ElkLabel, double)} for node labels.
+     * Implements {@link #doResizeLabel(ElkLabel, double)} for non-comment node labels.
      * 
      * @implSpec
      * The default implementation simply returns {@link Result#unmodified()}.
@@ -185,6 +190,24 @@ public abstract class AbstractTypeDependentLabelManager extends AbstractKlighdLa
      * @return the result of doing things to the label.
      */
     protected Result doResizeNodeLabel(final ElkLabel label, final double targetWidth) {
+        return defaultResult();
+    }
+
+    /**
+     * Implements {@link #doResizeLabel(ElkLabel, double)} for comment node labels.
+     * 
+     * @implSpec
+     * The default implementation simply returns {@link Result#unmodified()}.
+     * 
+     * @param label
+     *            the label to shorten.
+     * @param targetWidth
+     *            the width the label's new dimensions should try not to exceed. This can be the
+     *            target width supplied to label management from the outside or a fixed width set on
+     *            the label manager.
+     * @return the result of doing things to the label.
+     */
+    protected Result doResizeCommentLabel(final ElkLabel label, final double targetWidth) {
         return defaultResult();
     }
 

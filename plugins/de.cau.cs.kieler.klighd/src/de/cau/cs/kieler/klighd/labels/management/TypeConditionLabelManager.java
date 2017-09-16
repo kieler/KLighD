@@ -31,6 +31,7 @@ public final class TypeConditionLabelManager extends AbstractTypeDependentLabelM
     private boolean applyToEdgeCenterLabels = false;
     private boolean applyToNodeLabels = false;
     private boolean applyToPortLabels = false;
+    private boolean applyToCommentLabels = false;
 
     
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +105,8 @@ public final class TypeConditionLabelManager extends AbstractTypeDependentLabelM
     }
     
     /**
-     * Creates a new instance that wraps the given label manager and applies it to node labels.
+     * Creates a new instance that wraps the given label manager and applies it to non-comment node
+     * labels.
      * 
      * @param labelManager
      *            the label manager to wrap.
@@ -129,6 +131,21 @@ public final class TypeConditionLabelManager extends AbstractTypeDependentLabelM
         
         return new TypeConditionLabelManager(labelManager)
                 .applyToPortLabels(true);
+    }
+    
+    /**
+     * Creates a new instance that wraps the given label manager and applies it to comment node
+     * labels.
+     * 
+     * @param labelManager
+     *            the label manager to wrap.
+     * @return the new wrapping label manager.
+     */
+    public static TypeConditionLabelManager wrapForCommentLabels(
+            final AbstractKlighdLabelManager labelManager) {
+        
+        return new TypeConditionLabelManager(labelManager)
+                .applyToCommentLabels(true);
     }
 
     
@@ -175,10 +192,10 @@ public final class TypeConditionLabelManager extends AbstractTypeDependentLabelM
     }
     
     /**
-     * Configures the label manager to apply the wrapped manager to node labels.
+     * Configures the label manager to apply the wrapped manager to non-comment node labels.
      * 
      * @param apply
-     *            whether the wrapped label manager should be applied to node labels.
+     *            whether the wrapped label manager should be applied to non-comment node labels.
      * @return this label manager for method chaining.
      */
     public TypeConditionLabelManager applyToNodeLabels(final boolean apply) {
@@ -195,6 +212,18 @@ public final class TypeConditionLabelManager extends AbstractTypeDependentLabelM
      */
     public TypeConditionLabelManager applyToPortLabels(final boolean apply) {
         this.applyToPortLabels = apply;
+        return this;
+    }
+    
+    /**
+     * Configures the label manager to apply the wrapped manager to comment node labels.
+     * 
+     * @param apply
+     *            whether the wrapped label manager should be applied to comment node labels.
+     * @return this label manager for method chaining.
+     */
+    public TypeConditionLabelManager applyToCommentLabels(final boolean apply) {
+        this.applyToCommentLabels = apply;
         return this;
     }
 
@@ -232,6 +261,15 @@ public final class TypeConditionLabelManager extends AbstractTypeDependentLabelM
     @Override
     protected Result doResizeNodeLabel(final ElkLabel label, final double targetWidth) {
         if (applyToNodeLabels) {
+            return labelManager.doResizeLabel(label, targetWidth);
+        } else {
+            return defaultResult();
+        }
+    }
+
+    @Override
+    protected Result doResizeCommentLabel(final ElkLabel label, final double targetWidth) {
+        if (applyToCommentLabels) {
             return labelManager.doResizeLabel(label, targetWidth);
         } else {
             return defaultResult();
