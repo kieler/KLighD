@@ -13,8 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
+import org.eclipse.elk.core.options.CoreOptions;
+
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.KlighdOptions;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
@@ -79,13 +82,27 @@ public class FocusAndContextAction implements IAction {
             // Focus / unfocus the element itself
             focusGraphElement(element, focus);
             
-            // Focus / unfocus any of the element's labels, depending on what element we're dealing with
+            // Focus / unfocus any of the element's labels, depending on what element we're
+            // dealing with
+            if (element instanceof KLabeledGraphElement) {
+                focusGraphElementLabels((KLabeledGraphElement) element, focus);
+            }
+            
             if (element instanceof KNode) {
-                for (KPort port : ((KNode) element).getPorts()) {
+                KNode node = (KNode) element;
+                
+                for (KPort port : node.getPorts()) {
                     focusGraphElementLabels(port, focus);
                 }
-            } else if (element instanceof KLabeledGraphElement) {
-                focusGraphElementLabels((KLabeledGraphElement) element, focus);
+                
+                // Attached comments need to be focussed as well. By convention, they are connected
+                // to a node through edges that run from the comment to the node
+                for (KEdge edge : node.getIncomingEdges()) {
+                    if (edge.getSource().getProperty(CoreOptions.COMMENT_BOX)) {
+                        focusGraphElement(edge.getSource(), focus);
+                        focusGraphElementLabels(edge.getSource(), focus);
+                    }
+                }
             }
         }
     }
