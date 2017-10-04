@@ -87,7 +87,7 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             
             import javax.inject.Inject
             
-            import org.eclipse.elk.graph.KNode
+            import de.cau.cs.kieler.klighd.kgraph.KNode
             import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
             import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
             import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
@@ -142,15 +142,15 @@ class KlighdProjectContributor implements IProjectFactoryContributor {
             import static de.cau.cs.kieler.klighd.syntheses.DiagramLayoutOptions.*;
             import static de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*;
             
-            import org.eclipse.elk.graph.KNode;
-            import org.eclipse.elk.core.util.ElkUtil;
+            import de.cau.cs.kieler.klighd.kgraph.KNode;
+            import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
             import de.cau.cs.kieler.klighd.syntheses.AbstractDiagramSynthesis;
             import «projectInfo.sourceModelClassFullyQualified»;
             
             public class «projectInfo.transformationName» extends AbstractDiagramSynthesis<«projectInfo.sourceModelClassSimple»> {
             
                 public KNode transform(final «projectInfo.sourceModelClassSimple» model) {
-                    final KNode root = ElkUtil.createInitializedNode();
+                    final KNode root = KGraphUtil.createInitializedNode();
                     associateWith(root, model);
                     
                     // Your dsl element <-> diagram figure mapping goes here!!
