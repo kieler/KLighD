@@ -62,6 +62,7 @@ public class Messages extends NLS {
     public static String ExportUnderlyingKGraphDialog_path_is_not_valid_error;
     public static String ExportUnderlyingKGraphDialog_save_as_caption;
     public static String ExportUnderlyingKGraphDialog_title;
+    public static String ExportUnderlyingKGraphDialog_protectIP;
     
     public static String TilingDialog_title;
 

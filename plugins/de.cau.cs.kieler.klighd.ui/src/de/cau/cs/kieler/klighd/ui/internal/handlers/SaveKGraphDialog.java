@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.ui.internal.handlers;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -46,48 +47,56 @@ import de.cau.cs.kieler.klighd.ui.internal.Messages;
 /**
  * The 'KLighd-export-underlying-KGraph'-dialog.
  * 
- * This dialog provides the options to save the exported KGraph
- * to the workspace or the file system. The resulting file
- * has the '.kgx' extension.
+ * This dialog provides the options to save the exported KGraph to the workspace or the file system.
  * 
  * @author mkr
- *
  */
-public class KlighdSaveKGraphDialog extends Dialog {
-    
+public class SaveKGraphDialog extends Dialog {
+
     /** the preference key for the file path. */
-    private static final String PREFERENCE_FILE_PATH 
-                = "exportUnderlyingKGraphDialog.filePath"; //$NON-NLS-1$
+    private static final String PREFERENCE_FILE_PATH = "exportUnderlyingKGraphDialog.filePath"; //$NON-NLS-1$
     /** the preference key for the workspace path. */
-    private static final String PREFERENCE_WORKSPACE_PATH
-                = "exportUnderlyingKGraphDialog.workspacePath"; //$NON-NLS-1$
-    /** default file extension. */
-    private static final String EXTENSION = "kgx";
+    private static final String PREFERENCE_WORKSPACE_PATH =
+            "exportUnderlyingKGraphDialog.workspacePath"; //$NON-NLS-1$
+    /** Preference key to protect ip. */
+    private static final String PREFERENCE_PROTECT_IP =
+            "exportUnderlyingKGraphDialog.protectIP"; //$NON-NLS-1$
     
+    /** allowed file extensions. */
+//    private static final String[] EXTENSIONS = { "kgt", "kgx" }; //$NON-NLS-1$
+//    private static final String[] DESCRIPTIONS = { "KGraph Text", "KGraph XMI" }; //$NON-NLS-1$
+    private static final String[] EXTENSIONS = { "kgx" }; //$NON-NLS-1$
+    private static final String[] DESCRIPTIONS = { "KGraph XMI" }; //$NON-NLS-1$
+
     /** the preference store. */
-    private final IPreferenceStore preferenceStore = KlighdUIPlugin.getDefault().getPreferenceStore();
- 
+    private final IPreferenceStore preferenceStore =
+            KlighdUIPlugin.getDefault().getPreferenceStore();
+
     /** the file text. */
     private Text fileText;
     /** the workspace path checkbox. */
     private Button workspacePathCheckbox;
+    /** checkbox to remove potential intellectual property. */
+    private Button ipProtectCheckbox;
     /** the resulting save path. */
     private IPath resultPath;
     /** flag indicates whether its a workspace path or not. */
     private Boolean isWorkspacePath;
-       
+    /** flag indicates whether strings etc should be obfuscated. */
+    private Boolean protectIP;
+
     /**
-     * Constructs the dialog for exporting a underlying KGraph. 
+     * Constructs the dialog for exporting the KGraph.
      * 
      * @param parentShell
      *            the parent shell
      */
-    public KlighdSaveKGraphDialog(final Shell parentShell) {
-       super(parentShell);
-       this.isWorkspacePath = false;
-       this.resultPath = null;
+    public SaveKGraphDialog(final Shell parentShell) {
+        super(parentShell);
+        this.isWorkspacePath = false;
+        this.resultPath = null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -106,27 +115,33 @@ public class KlighdSaveKGraphDialog extends Dialog {
     protected Control createDialogArea(final Composite parent) {
         final Composite composite = (Composite) super.createDialogArea(parent);
         createExportGroup(composite);
-        
+
         return composite;
     }
-    
+
     private static final int FILE_GROUP_COLUMNS = 3;
     private static final int FILE_TEXT_WIDTH_HINT = 300;
     private static final int BROWSE_WIDTH_HINT = 150;
-    
+
+    /**
+     * Creates the main dialog components for this export dialog.
+     * 
+     * @param parent
+     *            The containing UI element
+     */
     private void createExportGroup(final Composite parent) {
         final Composite composite = createComposite(parent, FILE_GROUP_COLUMNS);
-        
-        // label
+
+        // File path label
         final Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.ExportUnderlyingKGraphDialog_file_caption);
-        
-        // file path text
+
+        // File path text
         fileText = new Text(composite, SWT.BORDER);
         // load path from preference store
         fileText.setText(preferenceStore.getString(PREFERENCE_FILE_PATH));
+        // Observe the file name for changes
         fileText.addModifyListener(new ModifyListener() {
-
             public void modifyText(final ModifyEvent e) {
                 validateFileText();
             }
@@ -134,7 +149,7 @@ public class KlighdSaveKGraphDialog extends Dialog {
         GridData gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
         gridData.widthHint = FILE_TEXT_WIDTH_HINT;
         fileText.setLayoutData(gridData);
-        
+
         // browse workspace button
         Button button = new Button(composite, SWT.PUSH);
         button.setText(Messages.ExportUnderlyingKGraphDialog_browse_workspace_caption);
@@ -148,10 +163,11 @@ public class KlighdSaveKGraphDialog extends Dialog {
                 handleWorkspaceBrowse();
             }
         });
-        
+
         // is workspace path checkbox
         workspacePathCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
-        workspacePathCheckbox.setText(Messages.ExportUnderlyingKGraphDialog_is_workspace_path_caption);
+        workspacePathCheckbox
+                .setText(Messages.ExportUnderlyingKGraphDialog_is_workspace_path_caption);
         gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
         gridData.horizontalSpan = 2;
         workspacePathCheckbox.setLayoutData(gridData);
@@ -177,8 +193,22 @@ public class KlighdSaveKGraphDialog extends Dialog {
                 handleFileSystemBrowse();
             }
         });
-    }
         
+        // Protext intellectual property button
+        ipProtectCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+        ipProtectCheckbox.setText(Messages.ExportUnderlyingKGraphDialog_protectIP);
+        gridData = new GridData(SWT.FILL, SWT.NONE, true, false);
+        gridData.horizontalSpan = 2;
+        ipProtectCheckbox.setLayoutData(gridData);
+        ipProtectCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_PROTECT_IP));
+        ipProtectCheckbox.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent event) {
+                preferenceStore.setValue(PREFERENCE_PROTECT_IP, ipProtectCheckbox.getSelection());
+            }
+        });
+    }
+
     private void validateFileText() {
         if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
             final IPath filePath = new Path(fileText.getText());
@@ -192,7 +222,8 @@ public class KlighdSaveKGraphDialog extends Dialog {
                 // workspace path
                 if (containerPath.segmentCount() == 0) {
                     // file path describes file outside a project
-                    setErrorStatus(Messages.ExportUnderlyingKGraphDialog_file_outside_project_error);
+                    setErrorStatus(
+                            Messages.ExportUnderlyingKGraphDialog_file_outside_project_error);
                     return;
                 }
                 final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -228,7 +259,7 @@ public class KlighdSaveKGraphDialog extends Dialog {
         }
         setOKStatus();
     }
-    
+
     private void handleWorkspaceBrowse() {
         // TODO a better workspace selection dialog would be good, but it seems
         // such a thing does not exist in Eclipse for some reason
@@ -239,27 +270,31 @@ public class KlighdSaveKGraphDialog extends Dialog {
             final String ext = filePath.getFileExtension();
             workspacePathCheckbox.setSelection(true);
             if (ext == null) {
-                fileText.setText(filePath.toOSString() + "." + EXTENSION);           
+                fileText.setText(filePath.toOSString() + "." + EXTENSIONS[0]);
             } else {
                 fileText.setText(filePath.toOSString());
             }
         }
     }
-    
+
     private void handleFileSystemBrowse() {
         final FileDialog fileDialog = new FileDialog(getShell(), SWT.SAVE);
         // FIXME this does not always work ... if the dialog concats the
         // extension it does not check if that file exists
         fileDialog.setOverwrite(true);
         // extensions passed to the dialog have to include the '.'
-        String newExt = EXTENSION;
-        if (newExt.charAt(0) != '.') {
-            newExt = '.' + EXTENSION;
+        String[] newExt = new String[EXTENSIONS.length];
+        for (int i = 0; i < EXTENSIONS.length; ++i) {
+            String ext = EXTENSIONS[i];
+            if (ext.charAt(0) == '.') {
+                newExt[i] = ext;
+            } else {
+                newExt[i] = '.' + ext;
+            }
         }
-        final String[] extensions = { newExt }; //$NON-NLS-1$
-        final String[] descriptions = {"kgx"}; //$NON-NLS-1$
+        final String[] extensions = newExt; // $NON-NLS-1$
         fileDialog.setFilterExtensions(extensions);
-        fileDialog.setFilterNames(descriptions);
+        fileDialog.setFilterNames(DESCRIPTIONS);
         fileDialog.setText(Messages.ExportUnderlyingKGraphDialog_save_as_caption);
         // open the dialog
         final String selectedFile = fileDialog.open();
@@ -269,33 +304,34 @@ public class KlighdSaveKGraphDialog extends Dialog {
             fileText.setText(selectedFile);
         }
     }
-    
+
     private void updateFileText() {
         if (fileText.getText().length() > 0 && Path.ROOT.isValidPath(fileText.getText())) {
             final IPath filePath = new Path(fileText.getText());
             if (filePath.getFileExtension() != null) {
-                if (!filePath.getFileExtension().equals(EXTENSION)) {
-                    fileText.setText(filePath.removeFileExtension().addFileExtension(EXTENSION)
+                if (Arrays.stream(EXTENSIONS)
+                        .noneMatch(ext -> filePath.getFileExtension().equals(ext))) {
+                    fileText.setText(filePath.removeFileExtension().addFileExtension(EXTENSIONS[0])
                             .toString());
                 }
             } else {
-                fileText.setText(filePath.addFileExtension(EXTENSION).toString());
+                fileText.setText(filePath.addFileExtension(EXTENSIONS[0]).toString());
             }
         }
     }
-    
+
     private void setErrorStatus(final String message) {
         getButton(IDialogConstants.OK_ID).setEnabled(false);
-        getButton(IDialogConstants.CANCEL_ID).getShell().setDefaultButton(
-                getButton(IDialogConstants.CANCEL_ID));
+        getButton(IDialogConstants.CANCEL_ID).getShell()
+                .setDefaultButton(getButton(IDialogConstants.CANCEL_ID));
     }
 
     private void setOKStatus() {
         getButton(IDialogConstants.OK_ID).setEnabled(true);
-        getButton(IDialogConstants.OK_ID).getShell().setDefaultButton(
-                getButton(IDialogConstants.OK_ID));
+        getButton(IDialogConstants.OK_ID).getShell()
+                .setDefaultButton(getButton(IDialogConstants.OK_ID));
     }
-    
+
     private Composite createComposite(final Composite parent, final int columns) {
         final Composite composite = new Composite(parent, SWT.NONE);
         final GridLayout gridLayout = new GridLayout(columns, false);
@@ -316,25 +352,31 @@ public class KlighdSaveKGraphDialog extends Dialog {
         super.configureShell(shell);
         shell.setText(Messages.ExportUnderlyingKGraphDialog_title);
     }
-    
+
     /**
      * 
-     * @return
-     *          the path to save the exported KGraph
+     * @return the path to save the exported KGraph
      */
     protected IPath getFilePath() {
         return resultPath;
     }
-    
+
     /**
      *
-     * @return
-     *          true, if save to workspace, false otherwise
+     * @return true, if save to workspace, false otherwise
      */
     protected boolean isWorkspacePath() {
         return isWorkspacePath;
     }
-     
+
+    /**
+     * 
+     * @return true, if IP should be protected as much as possible, false otherwise
+     */
+    protected boolean protectIP() {
+        return protectIP;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -345,7 +387,7 @@ public class KlighdSaveKGraphDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_WORKSPACE_PATH, workspacePathCheckbox.getSelection());
         return super.close();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -358,7 +400,8 @@ public class KlighdSaveKGraphDialog extends Dialog {
 
         resultPath = new Path(fileText.getText());
         isWorkspacePath = workspacePathCheckbox.getSelection();
-
+        protectIP = ipProtectCheckbox.getSelection();
+        
         // has to be last because it disposes the dialog
         super.okPressed();
     }

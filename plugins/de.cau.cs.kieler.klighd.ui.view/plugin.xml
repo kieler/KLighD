@@ -55,12 +55,12 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="de.cau.cs.kieler.klighd.ui"
-            defaultHandler="de.cau.cs.kieler.klighd.ui.internal.handlers.KlighdSaveKGraphHandler"
+            defaultHandler="de.cau.cs.kieler.klighd.ui.internal.handlers.SaveKGraphHandler"
             description="Allows to write the view model KGraph to a file."
             id="de.cau.cs.kieler.klighd.ui.savekgraph"
             name="Save View Model (KGraph)">
          <commandParameter
-               id="de.cau.cs.kieler.klighd.ui.view.savekgraphParameter"
+               id="de.cau.cs.kieler.klighd.ui.saveKGraph.exportType"
                name="ExportType"
                optional="true">
          </commandParameter>
@@ -210,7 +210,7 @@
                   label="Underlying KGraph"
                   style="push">
                <parameter
-                     name="de.cau.cs.kieler.klighd.ui.view.savekgraphParameter"
+                     name="de.cau.cs.kieler.klighd.ui.saveKGraph.exportType"
                      value="single">
                </parameter>
             </command>
@@ -220,7 +220,7 @@
                   label="KGraph Chunky"
                   style="push">
                <parameter
-                     name="de.cau.cs.kieler.klighd.ui.view.savekgraphParameter"
+                     name="de.cau.cs.kieler.klighd.ui.saveKGraph.exportType"
                      value="chunky">
                </parameter>
             </command>
