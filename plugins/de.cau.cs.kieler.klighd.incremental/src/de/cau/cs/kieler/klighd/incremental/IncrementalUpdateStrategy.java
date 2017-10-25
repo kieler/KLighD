@@ -58,7 +58,8 @@ public class IncrementalUpdateStrategy implements IUpdateStrategy {
      */
     public void update(final KNode baseModel, final KNode newModel, final ViewContext viewContext) {
         if (baseModel.getChildren().isEmpty()) {
-            logFallback(IStatus.INFO, "Empty base model.");
+            // Disable logging in this case, as this is no real problem but expected behaviour
+            // logFallback(IStatus.INFO, "Empty base model.");
             fallback(baseModel, newModel, viewContext);
             return;
         }
