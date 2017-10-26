@@ -189,18 +189,25 @@ public class KGraphMerger {
      *            the node to update from.
      */
     private void handleEdges(final KNode baseNode, final KNode newNode) {
-        Set<KEdge> oldEdges = new HashSet<KEdge>(baseNode.getOutgoingEdges());
+        Set<KEdge> oldEdges = null;
+        if (baseNode != null) {
+            oldEdges = new HashSet<KEdge>(baseNode.getOutgoingEdges());
+        }
         for (KEdge newEdge : Lists.newLinkedList(newNode.getOutgoingEdges())) {
             KEdge baseEdge = comparison.lookupBaseEdge(newEdge);
             if (baseEdge == null) {
                 baseEdge = EcoreUtil.copy(newEdge);
                 updateEdge(baseEdge, newEdge);
             } else {
-                oldEdges.remove(baseEdge);
+                if (oldEdges != null) {
+                    oldEdges.remove(baseEdge);
+                }
                 updateEdge(baseEdge, newEdge);
             }
         }
-        baseNode.getOutgoingEdges().removeAll(oldEdges);
+        if (baseNode != null) {
+            baseNode.getOutgoingEdges().removeAll(oldEdges);
+        }
     }
 
     /**
