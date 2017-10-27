@@ -621,10 +621,10 @@ final class KGERenderingControllerHelper {
 
         // create the image, the bounds of imageNode are set within the KlighdImage implementation
         if (image.getImageObject() instanceof Image) {
-            imageNode = new KlighdImage((Image) image.getImageObject());
+            imageNode = new KlighdImage((Image) image.getImageObject(), image);
 
         } else if (image.getImageObject() instanceof ImageData) {
-            imageNode = new KlighdImage((ImageData) image.getImageObject());
+            imageNode = new KlighdImage((ImageData) image.getImageObject(), image);
 
         } else if (image.getBundleName() == null) {
             final String msg =
@@ -671,7 +671,7 @@ final class KGERenderingControllerHelper {
                     return createDummy(parent, initialBounds);
 
                 } else {
-                    imageNode = new KlighdImage(bundleName, imagePath);
+                    imageNode = new KlighdImage(bundleName, imagePath, image);
                 }
             }
         }

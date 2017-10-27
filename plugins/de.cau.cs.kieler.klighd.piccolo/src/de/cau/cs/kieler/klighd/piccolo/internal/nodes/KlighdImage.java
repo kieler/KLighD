@@ -93,9 +93,12 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
     
     /**
      * Common private constructor.
+     *
+     * @param kImage
+     *            the {@link KImage} of this KlighdImage, especially for Properties
      */
-    private KlighdImage() {
-        super();
+    private KlighdImage(final KImage kImage) {
+        super(kImage);
     }
 
     /**
@@ -103,9 +106,11 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
      * 
      * @param image
      *            image to be displayed by this {@link KlighdImage}
+     * @param kImage
+     *            the {@link KImage} of this KlighdImage, especially for Properties
      */
-    public KlighdImage(final Image image) {
-        this();
+    public KlighdImage(final Image image, final KImage kImage) {
+        this(kImage);
         setImage(image);
     }
 
@@ -114,9 +119,11 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
      * 
      * @param image
      *            image to be displayed by this {@link KlighdImage}
+     * @param kImage
+     *            the {@link KImage} of this KlighdImage, especially for Properties
      */
-    public KlighdImage(final ImageData image) {
-        this();
+    public KlighdImage(final ImageData image, final KImage kImage) {
+        this(kImage);
         setImage(image);
     }
 
@@ -129,9 +136,11 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
      * @param path
      *            the image's path within <code>bundle</code>, must be a valid path within the given
      *            bundle (perform checks before calling this constructor!)
+     * @param kImage
+     *            the {@link KImage} of this KlighdImage, especially for Properties
      */
-    public KlighdImage(final String bundleName, final String path) {
-        this();
+    public KlighdImage(final String bundleName, final String path, final KImage kImage) {
+        this(kImage);
         setImage(bundleName, path);
      }
 
@@ -142,9 +151,11 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
      * 
      * @param input
      *            stream providing the image, will be read and converted to an Image internally
+     * @param kImage
+     *            the {@link KImage} of this KlighdImage, especially for Properties
      */
-    public KlighdImage(final InputStream input) {
-        this();
+    public KlighdImage(final InputStream input, final KImage kImage) {
+        this(kImage);
         try {
             setImage(input).close();
         } catch (final IOException e) {
