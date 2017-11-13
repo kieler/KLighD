@@ -493,6 +493,13 @@ public class KNodeNode extends KNodeAbstractNode implements
                         //  ('each != this.childArea' implies that 'each' is a KlighdFigureNode)
                         continue;
                     }
+
+                    if (this.isRootLayer && each == this.portLayer && each.getVisible()) {
+                        // do not pick the node's external ports on the main diagram if it is
+                        // clipped to this node
+                        continue;
+                    }
+                    
                     if (each.fullPick(pickPath)) {
                         return true;
                     }
