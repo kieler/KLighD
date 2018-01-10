@@ -57,9 +57,12 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * <h3>Notes for Subclasses</h3>
  * 
  * <p>
- * Subclasses only need to override {@link #doResizeLabel(ElkLabel, double)} is a good idea. If
- * behavior related to the label manager's activity state or labels in focus or context should be
- * changed, override {@link #manageElkLabelSize(ElkLabel, double)} as well.
+ * Subclasses only need to override {@link #doResizeLabel(ElkLabel, double)}. If behavior related
+ * to the label manager's activity state or labels in focus or context should be changed, override
+ * {@link #manageElkLabelSize(ElkLabel, double)} as well. If a label manager implementation
+ * distinguishes between different kinds of labels depending on what kind of graph element is
+ * labeled, consider subclassing {@link AbstractTypeDependentLabelManager} instead of subclassing
+ * this class directly.
  * </p>
  * 
  * 
@@ -81,6 +84,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * 
  * @author cds
  * @author ybl
+ * @see AbstractTypeDependentLabelManager
  */
 public abstract class AbstractKlighdLabelManager implements ILabelManager {
 
