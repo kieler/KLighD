@@ -139,12 +139,15 @@ public class KlighdCanvas extends PSWTCanvas {
                 inputManager = new KlighdInputManager();
                 addInputSource(inputManager);
 
-                KlighdCanvas.this.addListener(SWT.Dispose, new Listener() {
-                    public void handleEvent(final Event event) {
-                        removeInputSource(inputManager);
-                        inputManager = null;
-                    }
-                });
+                if (!KlighdCanvas.this.isDisposed()) {
+                    // TODO: Make sure this check doesn't lead to a memory leak 
+                    KlighdCanvas.this.addListener(SWT.Dispose, new Listener() {
+                        public void handleEvent(final Event event) {
+                            removeInputSource(inputManager);
+                            inputManager = null;
+                        }
+                    });
+                }
             }
             return inputManager;
         }
