@@ -26,7 +26,7 @@
             id="de.cau.cs.kieler.klighd.modifiers.PortRotationModifier">
       </styleModifier>
       <styleModifier
-            class="de.cau.cs.kieler.klighd.labels.inline.InlineEdgeLabelStyleModifier"
+            class="de.cau.cs.kieler.klighd.labels.decoration.EdgeLabelStyleModifier"
             id="de.cau.cs.kieler.klighd.labels.inline.inlineEdgeLabelStyleModifier">
       </styleModifier>
       <action

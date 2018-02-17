@@ -746,6 +746,20 @@ public final class KGraphUtil {
     }
     
     /**
+     * Returns the graph the given edge belongs to. If the target is a descendant of the source
+     * node, the latter is the contained graph. Otherwise, the source's parent is the contained
+     * node.
+     * 
+     * @param edge the edge.
+     * @return the graph that contains the edge.
+     */
+    public static KNode containedGraph(final KEdge edge) {
+        return isDescendant(edge.getTarget(), edge.getSource())
+            ? edge.getSource()
+            : edge.getSource().getParent();
+    }
+    
+    /**
      * Determines whether the given two nodes are siblings, that is if they have the same parent
      * node. If they do not have a parent node they are not considered siblings.
      * 

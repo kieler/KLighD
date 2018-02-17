@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.labels.inline;
+package de.cau.cs.kieler.klighd.labels.decoration;
 
 import org.eclipse.elk.core.math.ElkPadding;
 
@@ -23,8 +23,8 @@ import de.cau.cs.kieler.klighd.krendering.KPosition;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KXPosition;
 import de.cau.cs.kieler.klighd.krendering.KYPosition;
-import de.cau.cs.kieler.klighd.labels.inline.InlineEdgeLabelStyleModifier.Visibility;
-import de.cau.cs.kieler.klighd.labels.inline.InlineLabelConfigurator.LayoutMode;
+import de.cau.cs.kieler.klighd.labels.decoration.EdgeLabelStyleModifier.Visibility;
+import de.cau.cs.kieler.klighd.labels.decoration.LabelDecorationConfigurator.LayoutMode;
 
 /**
  * Surrounds labels with directional arrows the point to the edge head.
@@ -139,7 +139,7 @@ public final class DirectionalArrowsDecorator extends AbstractDecoratorRendering
 
         // Setup placement and visibility
         setPlacement(arrow, left(-4, 0), top(0, 0), left(0, 0), bottom(0, 0));
-        InlineEdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_LEFT);
+        EdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_LEFT);
         
         return arrow;
     }
@@ -155,7 +155,7 @@ public final class DirectionalArrowsDecorator extends AbstractDecoratorRendering
 
         // Setup placement and visibility
         setPlacement(arrow, right(0, 0), top(0, 0), right(-4, 0), bottom(0, 0));
-        InlineEdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_RIGHT);
+        EdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_RIGHT);
         
         return arrow;
     }
@@ -171,7 +171,7 @@ public final class DirectionalArrowsDecorator extends AbstractDecoratorRendering
         
         // Setup placement and visibility
         setPlacement(arrow, left(0, 0), top(-4, 0), right(0, 0), top(0, 0));
-        InlineEdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_UP);
+        EdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_UP);
         
         return arrow;
     }
@@ -187,7 +187,7 @@ public final class DirectionalArrowsDecorator extends AbstractDecoratorRendering
 
         // Setup placement and visibility
         setPlacement(arrow, left(0, 0), bottom(0, 0), right(0, 0), bottom(-4, 0));
-        InlineEdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_DOWN);
+        EdgeLabelStyleModifier.install(arrow, Visibility.DIRECTION_DOWN);
         
         return arrow;
     }

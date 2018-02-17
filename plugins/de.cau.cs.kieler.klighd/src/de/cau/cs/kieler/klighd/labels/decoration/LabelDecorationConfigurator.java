@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.labels.inline;
+package de.cau.cs.kieler.klighd.labels.decoration;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -39,52 +39,71 @@ import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.KTopPosition;
 
 /**
- * Central configuration class for inline center edge label placement. Basically, create a new
- * instance of this class using {@link #create()}, configure it using the {@code with...} methods
- * and {@link #addDecoratorRenderingProvider(IDecoratorRenderingProvider)}, and either apply it to
- * {@link #applyTo(KLabel)} for a single label or {@link #applyToAll(KNode, boolean)} for all
- * labels in a graph.
+ * Central configuration class for center edge label decorations. Decorations can be used to
+ * configure specific ways of rendering labels, to add directional decorators that point towards
+ * an edge's head, and to configure inline label placement (which usually requires special
+ * rendering).
  * 
- * <p>The configuration consists of several parts, each of which configured with sensible
- * defaults.</p>
+ * <p>
+ * To use the label decorations framework, create a new instance of this class using
+ * {@link #create()}, configure it using the {@code with...} methods and
+ * {@link #addDecoratorRenderingProvider(IDecoratorRenderingProvider)}, and either apply it to
+ * {@link #applyTo(KLabel)} for a single label or {@link #applyToAll(KNode, boolean)} for all labels
+ * in a graph.
+ * 
+ * <p>
+ * The configuration consists of several parts, each of which configured with sensible defaults.
+ * </p>
  * 
  * 
  * <h3>Layout Mode</h3>
  * 
- * <p>This setting decides whether the resulting label renderings should only work with horizontal
- * or vertical layout directions or with both. This may influence the amount of padding between a
+ * <p>
+ * This setting decides whether the resulting label renderings should only work with horizontal or
+ * vertical layout directions or with both. This may influence the amount of padding between a
  * label's border and its text inserted by decorators (see below). It may also influence the amount
  * of renderings added to the label: if vertical layout directions are never used, no renderings
- * need to be added that are only used for such directions.</p>
+ * need to be added that are only used for such directions.
+ * </p>
  * 
- * <p>By default, everything gets set up for arbitrary layout directions.</p>
+ * <p>
+ * By default, everything gets set up for arbitrary layout directions.
+ * </p>
  * 
  * 
  * <h3>Decorator Rendering Providers</h3>
  * 
- * <p>Inline labels will usually require some sort of special rendering since simply displaying its
+ * <p>
+ * Inline labels will usually require some sort of special rendering since simply displaying its
  * text would result in the label's edge crossing the text out. The least one would want is to add
  * some kind of a background that hides the edge behind the label, but an arbitrary number of
  * decorators can be added to each label. Decorations can be shown or hidden depending on whether
  * the label ends up being placed on a horizontal or on a vertical edge segment, as controlled by
- * the {@link InlineEdgeLabelStyleModifier}.</p>
+ * the {@link EdgeLabelStyleModifier}.
+ * </p>
  * 
- * <p>By default, labels are decorated with a slightly translucent white background.</p>
+ * <p>
+ * By default, labels are decorated with a slightly translucent white background.
+ * </p>
  * 
  * 
  * <h3>Text Rendering Provider</h3>
  * 
- * <p>The label text must be rendered using a {@link KText}, which is provided by a text rendering
- * provider.</p>
+ * <p>
+ * The label text must be rendered using a {@link KText}, which is provided by a text rendering
+ * provider.
+ * </p>
  * 
- * <p>By default, an empty {@link KText} is used to render a label.</p>
+ * <p>
+ * By default, an empty {@link KText} is used to render a label.
+ * </p>
  * 
  * @author cds
  * @see IDecoratorRenderingProvider
  * @see ITextRenderingProvider
- * @see InlineEdgeLabelStyleModifier
+ * @see EdgeLabelStyleModifier
  */
-public final class InlineLabelConfigurator {
+public final class LabelDecorationConfigurator {
     
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Variables
@@ -97,6 +116,8 @@ public final class InlineLabelConfigurator {
     private IDecoratorRenderingProvider defaultDecorator = RectangleDecorator.create();
     /** Rendering provider for the actual label text. */
     private ITextRenderingProvider labelTextRenderingProvider = this::createDefaultTextRenderer;
+    /** Whether labels should be configured to be inline. */
+    private boolean inlineLabels = false;
     
     // Just rendering things...
     private KRenderingFactory renderingFactory = KRenderingFactory.eINSTANCE;
@@ -108,7 +129,7 @@ public final class InlineLabelConfigurator {
     /**
      * Use static creation methods.
      */
-    private InlineLabelConfigurator() {
+    private LabelDecorationConfigurator() {
     }
     
     /**
@@ -116,8 +137,8 @@ public final class InlineLabelConfigurator {
      * 
      * @return the new configurator.
      */
-    public static InlineLabelConfigurator create() {
-        return new InlineLabelConfigurator();
+    public static LabelDecorationConfigurator create() {
+        return new LabelDecorationConfigurator();
     }
     
     /**
@@ -128,7 +149,7 @@ public final class InlineLabelConfigurator {
      *            the mode to assume.
      * @return this configurator for method chaining.
      */
-    public InlineLabelConfigurator withLayoutMode(final LayoutMode mode) {
+    public LabelDecorationConfigurator withLayoutMode(final LayoutMode mode) {
         Objects.requireNonNull(mode, "mode cannot be null");
         
         layoutMode = mode;
@@ -145,7 +166,7 @@ public final class InlineLabelConfigurator {
      *            the provider to add.
      * @return this configurator for method chaining.
      */
-    public InlineLabelConfigurator addDecoratorRenderingProvider(
+    public LabelDecorationConfigurator addDecoratorRenderingProvider(
             final IDecoratorRenderingProvider provider) {
         
         Objects.requireNonNull(provider, "provider cannot be null");
@@ -162,12 +183,25 @@ public final class InlineLabelConfigurator {
      *            the provider to use.
      * @return this configurator for method chaining.
      */
-    public InlineLabelConfigurator withLabelTextRenderingProvider(
+    public LabelDecorationConfigurator withLabelTextRenderingProvider(
             final ITextRenderingProvider provider) {
         
         Objects.requireNonNull(provider, "provider cannot be null");
         
         labelTextRenderingProvider = provider;
+        return this;
+    }
+    
+    /**
+     * Whether to configure the configurator to configure labels to be configured for inline label
+     * placement.
+     * 
+     * @param inline
+     *            {@code true} if labels should be configured to be inline labels.
+     * @return this configurator for method chaining.
+     */
+    public LabelDecorationConfigurator withInlineLabels(final boolean inline) {
+        inlineLabels = inline;
         return this;
     }
     
@@ -255,7 +289,7 @@ public final class InlineLabelConfigurator {
      * Sets any properties necessary to define the given label as an inline edge label.
      */
     private void setupLayoutProperties(final KLabel label) {
-        label.setProperty(CoreOptions.EDGE_LABELS_INLINE, true);
+        label.setProperty(CoreOptions.EDGE_LABELS_INLINE, inlineLabels);
     }
     
     /**

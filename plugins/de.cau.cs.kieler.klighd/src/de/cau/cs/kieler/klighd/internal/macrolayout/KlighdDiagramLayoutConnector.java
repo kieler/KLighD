@@ -981,10 +981,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         }
         
         // Find the KNode the view model edge coordinates are relative to
-        KNode kgraphEdgeCoordinatesOrigin =
-                KGraphUtil.isDescendant(viewModelEdge.getTarget(), viewModelEdge.getSource())
-                    ? viewModelEdge.getSource()
-                    : viewModelEdge.getSource().getParent();
+        KNode kgraphEdgeCoordinatesOrigin = KGraphUtil.containedGraph(viewModelEdge);
         
         // The coordinate systems of the layout and the view model edge can differ, so translate!
         KGraphUtil.toKGraphCoordinateSystem(layoutEdge, kgraphEdgeCoordinatesOrigin.getInsets());

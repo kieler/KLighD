@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.labels.inline;
+package de.cau.cs.kieler.klighd.labels.decoration;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KPoint;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KInvisibility;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
@@ -44,7 +45,7 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
  * 
  * @author cds
  */
-public class InlineEdgeLabelStyleModifier implements IStyleModifier {
+public class EdgeLabelStyleModifier implements IStyleModifier {
     
     /** Modifier ID. */
     public static final String ID =
@@ -78,9 +79,6 @@ public class InlineEdgeLabelStyleModifier implements IStyleModifier {
     ////////////////////////////////////////////////////////////////////////////////////////////
     // IStyleModifier
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean modify(final StyleModificationContext context) {
         if (!shouldProcess(context)) {
@@ -149,11 +147,6 @@ public class InlineEdgeLabelStyleModifier implements IStyleModifier {
         if (placement != EdgeLabelPlacement.CENTER && placement != EdgeLabelPlacement.UNDEFINED) {
             return false;
         }
-
-        // Center edge labels that are placed inline, to be perfectly precise
-        if (!context.getGraphElement().getProperty(CoreOptions.EDGE_LABELS_INLINE)) {
-            return false;
-        }
         
         // All clear!
         return true;
@@ -202,7 +195,7 @@ public class InlineEdgeLabelStyleModifier implements IStyleModifier {
         KPoint tailPoint = labelSegment.getFirst();
         KPoint headPoint = labelSegment.getSecond();
         
-        if (DoubleMath.fuzzyEquals(tailPoint.getX(), headPoint.getX(), TOLERANCE)) {
+        if (isVerticalLine(headPoint, tailPoint)) {
             // Vertical segment
             if (tailPoint.getY() < headPoint.getY()) {
                 return Visibility.DIRECTION_DOWN;
@@ -210,7 +203,7 @@ public class InlineEdgeLabelStyleModifier implements IStyleModifier {
                 return Visibility.DIRECTION_UP;
             }
             
-        } else if (DoubleMath.fuzzyEquals(tailPoint.getY(), headPoint.getY(), TOLERANCE)) {
+        } else if (isHorizontalLine(headPoint, tailPoint)) {
             // Horizontal segment
             if (tailPoint.getX() < headPoint.getX()) {
                 return Visibility.DIRECTION_RIGHT;
@@ -230,21 +223,22 @@ public class InlineEdgeLabelStyleModifier implements IStyleModifier {
     private Pair<KPoint, KPoint> computeLabelSegmentEndPoints(final KEdge edge,
             final KLabel label) {
         
+        boolean inlineLabel = label.getProperty(CoreOptions.EDGE_LABELS_INLINE);
+        double edgeLabelDistance =
+                KGraphUtil.containedGraph(edge).getProperty(CoreOptions.SPACING_EDGE_LABEL);
+        
         Rectangle2D.Float labelRect = new Rectangle2D.Float(
                 label.getXpos(), label.getYpos(), label.getWidth(), label.getHeight());
         
         // Retrieve all edge coordinates (except for the source point, we'll retrieve that soon)
-        List<KPoint> points = new ArrayList<>(edge.getBendPoints().size() + 2);
+        List<KPoint> points = new ArrayList<>(edge.getBendPoints().size() + 1);
         points.addAll(edge.getBendPoints());
         points.add(edge.getTargetPoint());
         
         // Iterate over all pairs of consecutive points
         KPoint prevPoint = edge.getSourcePoint();
         for (KPoint currPoint : points) {
-            boolean segmentFound = labelRect.intersectsLine(
-                    prevPoint.getX(), prevPoint.getY(), currPoint.getX(), currPoint.getY());
-            
-            if (segmentFound) {
+            if (isOnSegment(labelRect, prevPoint, currPoint, inlineLabel, edgeLabelDistance + 2)) {
                 return Pair.of(prevPoint, currPoint);
             }
             
@@ -254,6 +248,47 @@ public class InlineEdgeLabelStyleModifier implements IStyleModifier {
         
         // We haven't found and edge segment that intersects the label
         return null;
+    }
+    
+    /**
+     * Checks whether the label described by the given rectangle is on or next to the given line
+     * segment. If inline labels are enabled, this is easy. Otherwise, we need to check whether the
+     * label's distance from the segment lies inside a given maximum distance.
+     */
+    private boolean isOnSegment(final Rectangle2D.Float labelRect, final KPoint segmentStart,
+            final KPoint segmentEnd, final boolean inlineLabel, final double maxDistance) {
+
+        if (!inlineLabel) {
+            if (isHorizontalLine(segmentStart, segmentEnd)) {
+                if (segmentStart.getY() < labelRect.y) {
+                    return labelRect.y - segmentStart.getY() < maxDistance;
+                } else {
+                    return segmentStart.getY() - labelRect.y - labelRect.height < maxDistance;
+                }
+                
+            } else if (isVerticalLine(segmentStart, segmentEnd)) {
+                if (segmentStart.getX() < labelRect.x) {
+                    return labelRect.x - segmentStart.getX() < maxDistance;
+                } else {
+                    return segmentStart.getX() - labelRect.x - labelRect.width < maxDistance;
+                }
+            }
+        }
+        
+        // At this point we know that the line is either not perfectly horizontal or vertical, or
+        // that we have an inline label. Either way, we simply check whether the line segment
+        // intersects the label.
+        return labelRect.intersectsLine(
+                segmentStart.getX(), segmentStart.getY(),
+                segmentEnd.getX(), segmentEnd.getY());
+    }
+    
+    private boolean isHorizontalLine(final KPoint p1, final KPoint p2) {
+        return DoubleMath.fuzzyEquals(p1.getY(), p2.getY(), TOLERANCE);
+    }
+    
+    private boolean isVerticalLine(final KPoint p1, final KPoint p2) {
+        return DoubleMath.fuzzyEquals(p1.getX(), p2.getX(), TOLERANCE);
     }
 
 

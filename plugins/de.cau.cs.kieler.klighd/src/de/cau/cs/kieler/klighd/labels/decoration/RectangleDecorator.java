@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.labels.inline;
+package de.cau.cs.kieler.klighd.labels.decoration;
 
 import org.eclipse.elk.core.math.ElkPadding;
 
@@ -19,7 +19,7 @@ import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KForeground;
 import de.cau.cs.kieler.klighd.krendering.KRectangle;
-import de.cau.cs.kieler.klighd.labels.inline.InlineLabelConfigurator.LayoutMode;
+import de.cau.cs.kieler.klighd.labels.decoration.LabelDecorationConfigurator.LayoutMode;
 
 /**
  * Decorator that uses a rectangle as big as the final label. The rectangle can have a background

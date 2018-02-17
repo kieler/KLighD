@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.klighd.labels.inline;
+package de.cau.cs.kieler.klighd.labels.decoration;
 
 import org.eclipse.elk.core.math.ElkPadding;
 
@@ -22,8 +22,8 @@ import de.cau.cs.kieler.klighd.krendering.KPosition;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KXPosition;
 import de.cau.cs.kieler.klighd.krendering.KYPosition;
-import de.cau.cs.kieler.klighd.labels.inline.InlineEdgeLabelStyleModifier.Visibility;
-import de.cau.cs.kieler.klighd.labels.inline.InlineLabelConfigurator.LayoutMode;
+import de.cau.cs.kieler.klighd.labels.decoration.EdgeLabelStyleModifier.Visibility;
+import de.cau.cs.kieler.klighd.labels.decoration.LabelDecorationConfigurator.LayoutMode;
 
 /**
  * Decorator that adds lines or brackets to a label's rendering. Depending on the
@@ -141,8 +141,8 @@ public final class LinesDecorator extends AbstractDecoratorRenderingProvider {
             container.getChildren().add(bottomLine);
             
             if (layoutMode == LayoutMode.BOTH) {
-                InlineEdgeLabelStyleModifier.install(topLine, Visibility.SEGMENT_VERTICAL);
-                InlineEdgeLabelStyleModifier.install(bottomLine, Visibility.SEGMENT_VERTICAL);
+                EdgeLabelStyleModifier.install(topLine, Visibility.SEGMENT_VERTICAL);
+                EdgeLabelStyleModifier.install(bottomLine, Visibility.SEGMENT_VERTICAL);
             }
         }
         
@@ -159,8 +159,8 @@ public final class LinesDecorator extends AbstractDecoratorRenderingProvider {
             container.getChildren().add(rightLine);
             
             if (layoutMode == LayoutMode.BOTH) {
-                InlineEdgeLabelStyleModifier.install(leftLine, Visibility.SEGMENT_HORIZONTAL);
-                InlineEdgeLabelStyleModifier.install(rightLine, Visibility.SEGMENT_HORIZONTAL);
+                EdgeLabelStyleModifier.install(leftLine, Visibility.SEGMENT_HORIZONTAL);
+                EdgeLabelStyleModifier.install(rightLine, Visibility.SEGMENT_HORIZONTAL);
             }
         }
         
