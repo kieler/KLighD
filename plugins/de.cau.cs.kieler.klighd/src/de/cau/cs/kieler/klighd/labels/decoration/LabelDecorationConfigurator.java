@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.labels.decoration;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
@@ -108,6 +109,8 @@ public final class LabelDecorationConfigurator {
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Variables
     
+    /** A function that can be used to apply the configurator selectively. */
+    private Predicate<KLabel> labelFilter = (label) -> true;
     /** The layout mode to use. */
     private LayoutMode layoutMode = LayoutMode.BOTH;
     /** Rendering providers that contribute decorations. */
@@ -139,6 +142,21 @@ public final class LabelDecorationConfigurator {
      */
     public static LabelDecorationConfigurator create() {
         return new LabelDecorationConfigurator();
+    }
+    
+    /**
+     * Configures the configurator to use the given filter function to determine whether to apply
+     * decorations to a label or not.
+     * 
+     * @param filter
+     *            a filter function that returns {@code true} if a label should be decorated.
+     * @return this configurator for method chaining.
+     */
+    public LabelDecorationConfigurator withLabelFilter(final Predicate<KLabel> filter) {
+        Objects.requireNonNull(filter, "filter cannot be null");
+        
+        labelFilter = filter;
+        return this;
     }
     
     /**
@@ -270,7 +288,7 @@ public final class LabelDecorationConfigurator {
             return false;
         }
         
-        return true;
+        return labelFilter.test(label);
     }
     
     /**
