@@ -13,7 +13,11 @@
  */
 package de.cau.cs.kieler.klighd.actions;
 
+import java.util.List;
+
 import org.eclipse.elk.core.options.CoreOptions;
+
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.KlighdOptions;
@@ -22,13 +26,18 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.klighd.kgraph.KPort;
 
 /**
- * This action puts elements into the focus when clicked. Focussed elements usually have their labels
- * fully displayed, while unfocussed elements are usually subject to the current label management
- * strategy. Focussed / unfocussed elements can be distinguished by checking their
+ * This action puts elements into the focus when clicked. Focussed elements usually have their
+ * labels fully displayed, while unfocussed elements are usually subject to the current label
+ * management strategy. Focussed / unfocussed elements can be distinguished by checking their
  * {@link KlighdLabelProperties#ELEMENT_IN_FOCUS}.
+ * 
+ * <p>This class does not set the focussed state on the clicked element only, but also determines
+ * which other elements should change their focus state along with it. A simple example would be
+ * the ports of a node: if the node is focussed, labels of ports should usually be focussed as
+ * well. Subclasses can override the {@link #determineFocussedElements(KGraphElement)} method to
+ * determine what should change focus with a given element.</p>
  * 
  * @author ybl
  * @author cds
@@ -45,18 +54,16 @@ public class FocusAndContextAction implements IAction {
     private KGraphElement lastSelectedElement = null;
     
     
-    /**
-     * {@inheritDoc}
-     */
-    public ActionResult execute(final ActionContext context) {
+    @Override
+    public final ActionResult execute(final ActionContext context) {
         KGraphElement selectedElement = context.getKGraphElement();
         
         // We need to check if the selection has changed at all
         if (selectedElement == lastSelectedElement) {
             return ActionResult.createResult(false);
         } else {
-            // It's important to unfocus the last element first, because the newly focussed element may
-            // well be a part of the old focussed one
+            // It's important to unfocus the last element first, because the newly focussed element
+            // may well be a part of the old focussed one
             focusElement(lastSelectedElement, false);
             focusElement(selectedElement, true);
             lastSelectedElement = selectedElement;
@@ -64,7 +71,6 @@ public class FocusAndContextAction implements IAction {
             return ActionResult.createResult(true);
         }
     }
-    
     
     /**
      * Focusses or unfocusses the given element. We basically just call
@@ -88,24 +94,60 @@ public class FocusAndContextAction implements IAction {
                 focusGraphElementLabels((KLabeledGraphElement) element, focus);
             }
             
-            if (element instanceof KNode) {
-                KNode node = (KNode) element;
-                
-                for (KPort port : node.getPorts()) {
-                    focusGraphElementLabels(port, focus);
-                }
-                
-                // Attached comments need to be focussed as well. By convention, they are connected
-                // to a node through edges that run from the comment to the node
-                for (KEdge edge : node.getIncomingEdges()) {
-                    if (edge.getSource().getProperty(CoreOptions.COMMENT_BOX)) {
-                        focusGraphElement(edge.getSource(), focus);
-                        focusGraphElementLabels(edge.getSource(), focus);
-                    }
-                }
+            List<KGraphElement> furtherFocussedElements = determineFocussedElements(element);
+            if (furtherFocussedElements != null) {
+                furtherFocussedElements.stream().forEach(e -> focusElement(e, focus));
             }
         }
     }
+    
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Focus Selection
+    
+    /**
+     * Given a graph element about to change its focus state, returns a list of further elements
+     * that need to change their focus state as well. This method should not return labels, since
+     * all labels of the returned elements will have their state changed automatically.
+     * 
+     * <p>Care has to be taken when implementing this method to avoid endless loops since it will
+     * be called again with each of the elements it returns.</p>
+     *
+     * @implSpec The default implementation returns {@code null} for everything except nodes. Nodes
+     *           pass their focus state on to ports and to comment boxes attached to them.
+     * 
+     * @param element
+     *            the element that changes its focus state.
+     * @return list of elements that have to change state as well, or {@code null} if there are
+     *         none.
+     */
+    protected List<KGraphElement> determineFocussedElements(final KGraphElement element) {
+        if (element instanceof KNode) {
+            KNode node = (KNode) element;
+            
+            List<KGraphElement> result = Lists.newArrayList();
+            
+            // Include all ports
+            result.addAll(node.getPorts());
+            
+            // Include any connected comments. By convention, they are connected
+            // to a node through edges that run from the comment to the node
+            for (KEdge edge : node.getIncomingEdges()) {
+                if (edge.getSource().getProperty(CoreOptions.COMMENT_BOX)) {
+                    result.add(edge.getSource());
+                }
+            }
+            
+            return result;
+            
+        } else {
+            return null;
+        }
+    }
+    
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Utility Methods
     
     /**
      * Sets the focus property on the given graph element.
