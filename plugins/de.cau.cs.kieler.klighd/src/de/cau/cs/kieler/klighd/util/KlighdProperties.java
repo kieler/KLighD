@@ -303,4 +303,14 @@ public final class KlighdProperties {
      */
     public static final IProperty<Boolean> EDGES_FIRST = new Property<Boolean>(
             "klighd.edgesFirst", false);
+
+    /**
+     * Whether the ports and port labels of clipped nodes should be shown or not.
+     * By default the ports are shown, preventing problems with external ports.
+     * If clipped ports are not shown, Zoom to Fit will focus on the child elements of
+     * of the clipped node.
+     */
+    public static final IProperty<Boolean> SHOW_CLIPPED_PORTS =
+            new Property<Boolean>("klighd.showClippedPorts", true);
+
 }

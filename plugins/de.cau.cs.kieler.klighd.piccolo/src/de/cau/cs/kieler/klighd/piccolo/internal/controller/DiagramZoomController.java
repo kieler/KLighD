@@ -137,7 +137,9 @@ public class DiagramZoomController {
     private void zoomToFit(final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
-        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
+        final PBounds newBounds = this.diagramController.getShowClippedPorts()
+                ? toPBoundsIncludingPortsAndLabels(displayedKNode)
+                : toChildrenPBoundsWithoutPorts(displayedKNode);
 
         if (this.canvasCamera.getBoundsReference().isEmpty()) {
             // this case occurs while initializing the DiagramEditorPart
@@ -292,6 +294,67 @@ public class DiagramZoomController {
         return includePortAndLabelBounds(toPBounds(node), node);
     }
 
+    /**
+     * Checks <code>node</code>child elements without port to create 
+     * {@link PBounds} that fit all child elements, 
+     * respects an attached{@link LayoutOptions#SCALE_FACTOR}.
+     *
+     * @param node
+     *            the node
+     * @return the corresponding {@link PBounds}
+     */
+    public PBounds toChildrenPBoundsWithoutPorts(final KNode node) {
+        final PBounds childBounds = toPBounds(node);
+        double maxX = Double.NEGATIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+        double minX = Double.POSITIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
+
+        boolean includedElement = false;
+
+        for (final KShapeLayout element : Iterables.filter(
+                node.getChildren()
+                /*Iterables.concat(, node.getLabels())*/, isDisplayedFilter)) {
+            double val;
+
+            val = element.getXpos() * scale;
+            if (val < minX) {
+                minX = val;
+            }
+
+            val = element.getYpos() * scale;
+            if (val < minY) {
+                minY = val;
+            }
+
+            val = element.getXpos() * scale + element.getWidth() * scale;
+            if (val > maxX) {
+                maxX = val;
+            }
+
+            val = element.getYpos() * scale + element.getHeight() * scale;
+            if (val > maxY) {
+                maxY = val;
+
+            }
+            includedElement = true;
+        }
+        if (includedElement) {
+            childBounds.setRect(childBounds.getX() + minX, childBounds.getY() + minY,
+                    maxX - minX, maxY - minY);
+        } else {
+            final KInsets insets = node.getInsets();
+            childBounds.setRect(childBounds.getX() + insets.getLeft() * scale,
+                    childBounds.getY() + insets.getTop() * scale,
+                    childBounds.getWidth() - insets.getLeft() - insets.getRight() * scale,
+                    childBounds.getHeight() - insets.getTop() - insets.getBottom() * scale);
+        }
+
+     
+        return childBounds;
+    }
+    
     /**
      * This method checks for ports and labels of the given <code>node</code> and increases the
      * given <code>nodeBounds</code> accordingly.<br>
