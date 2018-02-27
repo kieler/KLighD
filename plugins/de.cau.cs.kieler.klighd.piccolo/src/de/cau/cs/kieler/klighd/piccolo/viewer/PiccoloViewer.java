@@ -262,12 +262,11 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      */
     @Override
     public void setModel(final KNode model, final boolean sync) {
-
-        final boolean edgesFirst =
-                getViewContext().getProperty(KlighdProperties.EDGES_FIRST).booleanValue();
-
+        
         // create a controller for the graph
-        controller = new DiagramController(model, canvas.getCamera(), sync, edgesFirst);
+        controller = new DiagramController(model, canvas.getCamera(), sync, 
+                getViewContext().getProperty(KlighdProperties.EDGES_FIRST).booleanValue(),
+                getViewContext().getProperty(KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue());
 
         // update the outline page
         if (outlinePage != null && !outlinePage.isDisposed()) {

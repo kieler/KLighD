@@ -74,6 +74,11 @@ public class KNodeNode extends KNodeAbstractNode implements
     /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
     private boolean isRootLayer = false;
 
+    /** Flag to indicate whether the ports of this node should be drawn when the diagram is clipped
+     * to this node.
+     */
+    private boolean showClippedPorts;
+    
     /**
      * tracks whether this node has been drawn once; required for {@link #isBoundsValidationRequired()}.
      */
@@ -94,10 +99,14 @@ public class KNodeNode extends KNodeAbstractNode implements
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
+     * @param showClippedPorts
+     *            determines whether the ports of this node should be drawn if the diagram is 
+     *            clipped to this node
      */
-    public KNodeNode(final KNode node, final boolean edgesFirst) {
+    public KNodeNode(final KNode node, final boolean edgesFirst, final boolean showClippedPorts) {
         super(node, edgesFirst);
 
+        this.showClippedPorts = showClippedPorts;
         this.visibilityHelper = KGraphElementNode.evaluateVisibilityDefinitions(node, null);
 
         this.childAreaCamera = new PCamera() {
@@ -493,10 +502,10 @@ public class KNodeNode extends KNodeAbstractNode implements
                         //  ('each != this.childArea' implies that 'each' is a KlighdFigureNode)
                         continue;
                     }
-
-                    if (this.isRootLayer && each == this.portLayer && each.getVisible()) {
+                    if (this.isRootLayer && each == this.portLayer && each.getVisible()
+                            && !showClippedPorts) {
                         // do not pick the node's external ports on the main diagram if it is
-                        // clipped to this node
+                        // clipped to this node and ports should be hidden.
                         continue;
                     }
                     
@@ -568,8 +577,10 @@ public class KNodeNode extends KNodeAbstractNode implements
                     continue;
                 }
                 if (each == this.portLayer && each.getVisible() // implies isRootLayer == true
-                        && this.getCamerasReference().contains(paintContext.getCamera())) {
-                    // do not draw the node's external ports on the main diagram if it is clipped to this node
+                        && this.getCamerasReference().contains(paintContext.getCamera())
+                        && !this.showClippedPorts) {
+                    // do not draw the node's external ports on the main diagram if it is clipped to
+                    // this node and the ports should be hidden
                     continue;
                 }
                 if (each == this.childAreaCamera && each.getVisible() // implies isRootLayer == true

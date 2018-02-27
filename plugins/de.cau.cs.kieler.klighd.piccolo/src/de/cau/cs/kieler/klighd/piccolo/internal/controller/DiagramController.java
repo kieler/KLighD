@@ -144,6 +144,9 @@ public class DiagramController {
     /** whether edges are drawn before nodes, i.e. nodes have priority over edges. */
     private final boolean edgesFirst;
 
+    /** whether ports of clipped nodes should be shown. */
+    private final boolean showClippedPorts;
+
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
 
@@ -166,14 +169,17 @@ public class DiagramController {
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
+     * @param showClippedPorts
+     *            determines whether the ports of the clipped node should be shown
      */
     public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
-            final boolean edgesFirst) {
+            final boolean edgesFirst, final boolean showClippedPorts) {
         DiagramControllerHelper.resetGraphElement(graph);
 
         this.sync = sync;
         this.edgesFirst = edgesFirst;
-
+        this.showClippedPorts = showClippedPorts;
+        
         this.canvasCamera = camera;
 
         // check whether the employed mainCamera has a component set that is a KlighdCanvas;
@@ -218,6 +224,15 @@ public class DiagramController {
         return sync;
     }
 
+    /**
+     * Returns whether the ports of clipped nodes should be shown.
+     * 
+     * @return true if ports of clipped nodes should be shown, false otherwise
+     */
+    public boolean getShowClippedPorts() {
+        return showClippedPorts;
+    }
+    
     /**
      * Returns the employed root camera.
      *
@@ -395,8 +410,14 @@ public class DiagramController {
             // corresponding parent node in case of labels and ports (and their labels)
 
             if (diagramElement instanceof KNode) {
-                // nothing to do
-                return true;
+                if (showClippedPorts) {
+                    // If ports of the clipped node should be shown,
+                    // we can just always treat these nodes as shown.
+                    return true;                    
+                } else {
+                    // Otherwise we treat the whole node as not shown
+                    return !getClip().equals((KNode) diagramElement);
+                }
             }
 
             if (diagramElement instanceof KEdge) {
@@ -1107,7 +1128,7 @@ public class DiagramController {
                 return;
             }
 
-            nodeNode = new KNodeNode(node, edgesFirst);
+            nodeNode = new KNodeNode(node, edgesFirst, showClippedPorts);
             contextData.setProperty(REP, nodeNode);
 
             updateRendering(nodeNode);
