@@ -410,8 +410,14 @@ public class DiagramController {
             // corresponding parent node in case of labels and ports (and their labels)
 
             if (diagramElement instanceof KNode) {
-                // nothing to do
-                return true;
+                if (showClippedPorts) {
+                    // If ports of the clipped node should be shown,
+                    // we can just always treat these nodes as shown.
+                    return true;                    
+                } else {
+                    // Otherwise we treat the whole node as not shown
+                    return !getClip().equals((KNode) diagramElement);
+                }
             }
 
             if (diagramElement instanceof KEdge) {
