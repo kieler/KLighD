@@ -169,7 +169,7 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
      * @param event
      *            the input event causing a selection update
      */
-    private void performSelection(final PInputEvent event) {
+    protected void performSelection(final PInputEvent event) {
         final PNode pickedNode = event.getPickedNode();
         final PPickPath pickPath;
 
