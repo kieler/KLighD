@@ -2,7 +2,6 @@ package de.cau.cs.kieler.klighd
 
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData
 import org.eclipse.elk.core.math.KVector
-import de.cau.cs.kieler.klighd.krendering.KRendering
 import org.eclipse.swt.graphics.RGB
 import de.cau.cs.kieler.klighd.^labels.management.LabelManagementResult
 
@@ -34,11 +33,6 @@ programmatic option viewer: IViewer {
     label "Klighd Viewer"
     legacyIds klighd.viewer
     targets parents
-}
-
-programmatic option kRendering: KRendering {
-    label "KlighD KRendering"
-    targets edges,labels,nodes,ports
 }
 
 group svgExport {

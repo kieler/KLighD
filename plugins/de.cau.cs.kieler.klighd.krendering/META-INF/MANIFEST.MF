@@ -11,8 +11,9 @@ Export-Package: de.cau.cs.kieler.klighd.krendering,
  de.cau.cs.kieler.klighd.krendering.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.elk.core,
  org.eclipse.elk.graph;visibility:=reexport,
- com.google.guava;bundle-version="10.0.1",
+ com.google.guava;bundle-version="15.0.0",
  com.google.inject,
  de.cau.cs.kieler.klighd.kgraph;visibility:=reexport
 Bundle-ActivationPolicy: lazy

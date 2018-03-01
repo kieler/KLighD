@@ -19,6 +19,7 @@ import org.eclipse.elk.graph.ElkLabel;
 
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingOptions;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -242,7 +243,7 @@ public abstract class AbstractKlighdLabelManager implements ILabelManager {
      */
     private KVector calculateFinalLabelSize(final ElkLabel elkLabel, final String text) {
         // Find the label's rendering
-        KRendering rootRendering = elkLabel.getProperty(KlighdOptions.K_RENDERING);
+        KRendering rootRendering = elkLabel.getProperty(KRenderingOptions.K_RENDERING);
         if (rootRendering instanceof KRenderingRef) {
             rootRendering = ((KRenderingRef) rootRendering).getRendering();
         }

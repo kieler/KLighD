@@ -73,6 +73,7 @@ import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
+import de.cau.cs.kieler.klighd.krendering.KRenderingOptions;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
 import de.cau.cs.kieler.klighd.labels.management.LabelManagementResult;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -591,7 +592,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             // algorithms know how to estimate text sizes.
             KRenderingRef rootRenderingRef = KRenderingFactory.eINSTANCE.createKRenderingRef();
             rootRenderingRef.setRendering(rootRendering);
-            layoutLabel.setProperty(KlighdOptions.K_RENDERING, rootRenderingRef);
+            layoutLabel.setProperty(KRenderingOptions.K_RENDERING, rootRenderingRef);
         }
 
         mapping.getGraphMap().put(layoutLabel, label);

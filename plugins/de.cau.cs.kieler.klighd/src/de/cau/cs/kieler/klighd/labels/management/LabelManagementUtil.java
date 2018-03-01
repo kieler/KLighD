@@ -21,6 +21,7 @@ import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.KRenderingOptions;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -51,7 +52,7 @@ public final class LabelManagementUtil {
      */
     public static KText ktextFor(final ElkLabel label) {
         // Try finding the KText we will inspect for the font
-        KRendering rootRendering = label.getProperty(KlighdOptions.K_RENDERING);
+        KRendering rootRendering = label.getProperty(KRenderingOptions.K_RENDERING);
         
         final Iterator<KText> kTexts = Iterators.filter(
                 KRenderingUtil.selfAndAllChildren(rootRendering), KText.class);
