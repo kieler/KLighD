@@ -11,18 +11,18 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.emf.codegen.ecore;resolution:=optional,
  org.eclipse.emf.mwe.utils;resolution:=optional,
  org.eclipse.emf.mwe2.launch;resolution:=optional,
- org.eclipse.elk.core.service,
  org.eclipse.xtext.util,
  org.antlr.runtime,
- org.eclipse.elk.core;visibility:=reexport,
- de.cau.cs.kieler.klighd.krendering;visibility:=reexport,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.xbase,
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
  org.eclipse.core.resources,
+ org.eclipse.elk.core;visibility:=reexport,
+ de.cau.cs.kieler.formats,
  de.cau.cs.kieler.formats.kgraph,
- de.cau.cs.kieler.klighd.kgraph
+ de.cau.cs.kieler.klighd.kgraph,
+ de.cau.cs.kieler.klighd.krendering;visibility:=reexport
 Import-Package: org.apache.log4j
 DynamicImport-Package: de.cau.cs.kieler.klighd.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

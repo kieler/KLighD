@@ -3,27 +3,22 @@
  *
  * http://www.informatik.uni-kiel.de/rtsys/kieler/
  *
- * Copyright 2008 by
+ * Copyright 2018 by
  * + Kiel University
  *     + Department of Computer Science
  *         + Real-Time and Embedded Systems Group
  *
  * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
  */
-
-package de.cau.cs.kieler.kgraph.text.ui;
+package de.cau.cs.kieler.kgraph.text;
 
 import org.eclipse.elk.graph.ElkNode;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
-import de.cau.cs.kieler.formats.AbstractEmfHandler;
-import de.cau.cs.kieler.formats.IGraphTransformer;
 import de.cau.cs.kieler.formats.TransformationData;
+import de.cau.cs.kieler.formats.kgraph.KGraphHandler;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KGraphData;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -40,18 +35,42 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
 import de.cau.cs.kieler.klighd.krendering.KStyleHolder;
 import de.cau.cs.kieler.klighd.krendering.KStyleRef;
 
-/**
+/** 
  * Xtext based handler for the KGraph format.
- * 
- * TODO This thing needs to be adapted
- *
- * @author msp
  */
-public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
+public class KGraphTextHandler extends KGraphHandler {
     
     /** The KGraph Text format identifier. */
     public static final String FORMAT = "de.cau.cs.kieler.kgraph.text";
     
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Resource Set Stuff
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ResourceSet createResourceSet() {
+        // if the language has not been registered yet,
+        // we presume nobody will do so and do it ourselves 
+        //  Note that it is not possible to use the 'KGraphExecutableExtensionFactory' 
+        //  during extension point registration of this handler, since said class lives in 'ui'
+        if (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("kgt")) {
+            KGraphStandaloneSetup.doSetup();
+        } 
+        return new XtextResourceSet();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String serialize(final TransformationData<ElkNode, KNode> transData) {
+        for (KNode graph : transData.getTargetGraphs()) {
+            generateMissingIdentifiers(graph);
+        }
+        return super.serialize(transData);
+    }
     
     /**
      * Check all cross-references of the given graph and generate identifiers where necessary.
@@ -175,62 +194,6 @@ public class KGraphTextHandler extends AbstractEmfHandler<KNode> {
             }
         }
     }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Resource Set Stuff
-    
-    /** the resource set provider injected by the KGraphExecutableExtensionFactory. */
-    @Inject private Provider<XtextResourceSet> resourceSetProvider;
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected ResourceSet createResourceSet() {
-        return resourceSetProvider.get();
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String serialize(final TransformationData<ElkNode, KNode> transData) {
-        for (KNode graph : transData.getTargetGraphs()) {
-            generateMissingIdentifiers(graph);
-        }
-        return super.serialize(transData);
-    }
-    
-    /** the identity transformer for KGraph. */
-    private static final IGraphTransformer<KNode, KNode> TRANSFORMER
-            = new IGraphTransformer<KNode, KNode>() {
-        
-        public void transform(final TransformationData<KNode, KNode> data) {
-            data.getTargetGraphs().add(data.getSourceGraph());
-        }
-        
-        public void transferLayout(final TransformationData<KNode, KNode> data) {
-            // nothing to do
-        }
-    };
-
-    /**
-     * {@inheritDoc}
-     */
-    public IGraphTransformer<KNode, ElkNode> getImporter() {
-        // TODO Implement
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IGraphTransformer<ElkNode, KNode> getExporter() {
-        // TODO Implement
-        return null;
-    }
-    
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // IdentifierGenerator

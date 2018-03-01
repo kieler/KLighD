@@ -11,10 +11,8 @@
 	<extension
           point="de.cau.cs.kieler.formats.graphFormats">
             
-       <!-- If injection of the xtext resource is required, use following prefix
-            de.cau.cs.kieler.kgraph.text.ui.KGraphExecutableExtensionFactory: -->
        <handler
-             class="de.cau.cs.kieler.formats.kgraph.KGraphHandler"
+             class="de.cau.cs.kieler.kgraph.text.KGraphTextHandler"
              description="Xtext-based notation for the KGraph format."
              extensions="kgt"
              id="de.cau.cs.kieler.kgraph.text"

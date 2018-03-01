@@ -40,6 +40,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.cau.cs.kieler.kgraph.text.KGraphTextHandler;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
