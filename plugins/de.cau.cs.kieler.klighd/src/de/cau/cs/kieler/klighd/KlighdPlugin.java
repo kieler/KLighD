@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -60,6 +61,9 @@ public class KlighdPlugin extends AbstractUIPlugin {
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+        // make sure that the layout meta data service has been initialized, 
+        //  in particular that the ElkReflect registry has been filled 
+        LayoutMetaDataService.getInstance();
     }
 
     /**
