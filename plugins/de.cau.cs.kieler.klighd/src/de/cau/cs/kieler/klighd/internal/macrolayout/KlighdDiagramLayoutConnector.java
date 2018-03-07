@@ -39,7 +39,6 @@ import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.elk.graph.util.ElkGraphSwitch;
 import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.ui.IWorkbenchPart;
@@ -50,6 +49,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -214,7 +214,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         mapping.setParentElement(viewModel);
 
         final ElkNode layoutGraph = ElkGraphUtil.createGraph();
-        shapeLayoutToLayoutGraph(viewModel, layoutGraph, false);
+        shapeLayoutToLayoutGraph(viewModel, layoutGraph);
 
         mapping.getGraphMap().put(layoutGraph, viewModel);
         mapping.setLayoutGraph(layoutGraph);
@@ -307,7 +307,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         
         // there is layoutData attached to the node,
         // so take that as node layout instead of the default-layout
-        shapeLayoutToLayoutGraph(node, layoutNode, false);
+        shapeLayoutToLayoutGraph(node, layoutNode);
 
         // In the following the minimal width and height of the node is determined, which
         //  is used as a basis for the size estimation (necessary for grid-based micro layouts).
@@ -423,7 +423,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         if (id != null && !Strings.isNullOrEmpty(id.getId())) {
             layoutPort.setIdentifier(id.getId());
         }
-        shapeLayoutToLayoutGraph(port, layoutPort, false);
+        shapeLayoutToLayoutGraph(port, layoutPort);
 
         mapping.getGraphMap().put(layoutPort, port);
 
@@ -561,7 +561,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             layoutLabel.setIdentifier(id.getId());
         }
 
-        shapeLayoutToLayoutGraph(label, layoutLabel, false);
+        shapeLayoutToLayoutGraph(label, layoutLabel);
 
         // integrate the minimal estimated label size based on the updated layoutLayout
         // - manipulating the labelLayout may cause immediate glitches in the diagram
@@ -642,7 +642,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         // We need to process labels after the edges because during edge handling
         // the insets are handled and the source data adjusted accordingly.
         // We store the labels here to have them ready after the main switch.
-        List<ElkLabel> graphLabels = new LinkedList<ElkLabel>();
+        List<ElkLabel> graphLabels = Lists.newArrayList();
         
         // apply the layout of all mapped layout elements back to the associated element
         for (final Entry<ElkGraphElement, Object> elementMapping : elementMappings) {
@@ -741,48 +741,13 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the target shape layout
      * @param copyInsets
      *            <code>true</code> if insets shall be copied
-     * @param adjustScaling
-     *            if <code>true</code> the <code>sourceShapeLayout</code>'s data will be adjusted
-     *            s.t. the scaling of the corresponding node will be reverted to 100%, since the
-     *            scaling is implemented by means of affine transforms on figure level.
      */
     private void shapeLayoutToLayoutGraph(
-            final KShapeLayout sourceShapeLayout, final ElkShape targetShape,
-            final boolean adjustScaling) {
+            final KShapeLayout sourceShapeLayout, final ElkShape targetShape) {
+
         // Attention: Layout options are transfered by the {@link KGraphPropertyLayoutConfig}
-
-        if (adjustScaling) {
-            final KGraphPackage pack = KGraphPackage.eINSTANCE;
-            final EObject container = sourceShapeLayout.eContainer();
-            final double scale;
-
-            if (pack.getKNode().isInstance(container)) {
-                scale = sourceShapeLayout.getProperty(CoreOptions.SCALE_FACTOR);
-                targetShape.setLocation(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
-                targetShape.setDimensions(sourceShapeLayout.getWidth() / scale,
-                        sourceShapeLayout.getHeight() / scale);
-
-            } else if (pack.getKPort().isInstance(container)
-                    || pack.getKLabel().isInstance(container)) {
-                
-                scale = ((KGraphElement) container.eContainer()).getProperty(
-                        CoreOptions.SCALE_FACTOR);
-                targetShape.setLocation(sourceShapeLayout.getXpos() / scale,
-                        sourceShapeLayout.getYpos() / scale);
-                targetShape.setDimensions(sourceShapeLayout.getWidth() / scale,
-                        sourceShapeLayout.getHeight() / scale);
-
-                final KVector anchor = targetShape.getProperty(CoreOptions.PORT_ANCHOR);
-                if (anchor != null) {
-                    anchor.x /= scale;
-                    anchor.y /= scale;
-                }
-            }
-
-        } else {
-            targetShape.setLocation(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
-            targetShape.setDimensions(sourceShapeLayout.getWidth(), sourceShapeLayout.getHeight());
-        }
+        targetShape.setLocation(sourceShapeLayout.getXpos(), sourceShapeLayout.getYpos());
+        targetShape.setDimensions(sourceShapeLayout.getWidth(), sourceShapeLayout.getHeight());
     }
 
     /**
