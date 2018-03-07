@@ -822,9 +822,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         }
         
         if (adjustScaling && containingGraph != null) {
-            final double scale = containingGraph.getProperty(CoreOptions.SCALE_FACTOR);
             
             if (sourceShape instanceof ElkNode) {
+                final double scale = sourceShape.getProperty(CoreOptions.SCALE_FACTOR);
                 targetShapeLayout.setPos(
                         (float) (sourceShape.getX() + offset.x),
                         (float) (sourceShape.getY() + offset.y));
@@ -832,6 +832,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         (float) (sourceShape.getWidth() / scale),
                         (float) (sourceShape.getHeight() / scale));
             } else if (sourceShape instanceof ElkPort || sourceShape instanceof ElkLabel) {
+                final double scale = ((ElkGraphElement) sourceShape.eContainer()).getProperty(CoreOptions.SCALE_FACTOR);
                 targetShapeLayout.setPos(
                         (float) (sourceShape.getX() / scale),
                         (float) (sourceShape.getY() / scale));
@@ -1139,33 +1140,34 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the rendering of the corresponding node
      * @param portRendering
      *            the rendering of the corresponding port, or {@code null}
-     * @param adjustPortPos
-     *            if <code>true</code> the port position will be adjusted by the scale factor
-     *            applied to its parent node
+     * @param adjustPortPosAndSize
+     *            if <code>true</code> the port's position and size will be adjusted 
+     *            by the scale factor applied to its parent node
      * @return a new point that represents {@code originPoint}, possibly altered such that it lies
      *         on the boundary of {@code node} or {@code port}.
      */
     private KVector checkAndCopyPoint(final KVector originPoint,
             final ElkNode node, final ElkPort port, final KRendering nodeRendering,
-            final KRendering portRendering, final boolean adjustPortPos) {
+            final KRendering portRendering, final boolean adjustPortPosAndSize) {
 
         // 'p' is relative to the 'node'
         KVector p = originPoint.clone();
         final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
 
         if (port == null) {
-            p = AnchorUtil.nearestBorderPoint(p, node.getWidth(), node.getHeight(),
-                    nodeRendering, scale);
+            p = AnchorUtil.nearestBorderPoint(p, node.getWidth(), node.getHeight(), nodeRendering, scale);
             return p;
         } else {
             KVector portPos = new KVector(port.getX(), port.getY());
-            if (adjustPortPos) {
+            KVector portSize = new KVector(port.getWidth(), port.getHeight()); 
+            if (adjustPortPosAndSize) {
                 portPos.scale(1 / scale);
+                portSize.scale(1 / scale);
             }
             // make 'p' relative to the port's top left corner
             p.sub(portPos);
-            p = AnchorUtil.nearestBorderPoint(p, port.getWidth(), port.getHeight(),
-                    portRendering, scale);
+             
+            p = AnchorUtil.nearestBorderPoint(p, portSize.x, portSize.y, portRendering, scale);
             return p.add(portPos);
         }
     }
