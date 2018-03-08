@@ -179,7 +179,9 @@ public class DiagramZoomController {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
         // fetch bounds of the whole visible diagram
-        final PBounds focusBounds = toPBoundsIncludingPortsAndLabels(focus);
+        final PBounds focusBounds = this.diagramController.getShowClippedPorts()
+                ? toPBoundsIncludingPortsAndLabels(focus)
+                : toChildrenPBoundsWithoutPorts(focus); 
 
         // we need the bounds in view coordinates (absolute), hence for
         // a KNode add the translations of all parent nodes
