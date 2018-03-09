@@ -100,7 +100,7 @@ public final class DiagramSideBar {
     private boolean initiallyExpanded = KlighdPreferences.isExpandSideBar();
 
     private final Composite sideBarParent;
-
+    
     /** the factory for action controls. */
     private ActionControlFactory actionControlFactory;
 
@@ -119,6 +119,9 @@ public final class DiagramSideBar {
     /** The composite that holds the zoom buttons in the canvas. */
     private Composite canvasZoomBtnsContainer;
 
+    /** The scrolled form that holds option forms. */
+    private ScrolledForm scrolledRootForm;
+    
     /** The form that holds actions. */
     private Form actionsForm;
 
@@ -263,11 +266,11 @@ public final class DiagramSideBar {
             initializeZoomButtons(sideZoomBtnsContainer);
         }
 
-        final ScrolledForm formRootScroller = optionsformToolkit.createScrolledForm(sideBarParent);
-        formRootScroller.setText(null);
-        sideBarControls.add(formRootScroller);
+        scrolledRootForm = optionsformToolkit.createScrolledForm(sideBarParent);
+        scrolledRootForm.setText(null);
+        sideBarControls.add(scrolledRootForm);
 
-        final Composite formRoot = formRootScroller.getBody();
+        final Composite formRoot = scrolledRootForm.getBody();
         formRoot.setLayout(new FormLayout());
 
         // create container for diagram synthesis options
@@ -314,7 +317,7 @@ public final class DiagramSideBar {
         arrowsContainerLayoutData.top = new FormAttachment(0);
         arrowsContainerLayoutData.bottom = new FormAttachment(sash);
         arrowsContainerLayoutData.left = new FormAttachment(diagramContainer);
-        arrowsContainerLayoutData.right = new FormAttachment(formRootScroller);
+        arrowsContainerLayoutData.right = new FormAttachment(scrolledRootForm);
         arrowsContainer.setLayoutData(arrowsContainerLayoutData);
 
         // initially put the sash outside its parent composite's visible area
@@ -342,7 +345,7 @@ public final class DiagramSideBar {
         formRootLayoutData.bottom = new FormAttachment(FULL);
         formRootLayoutData.left = new FormAttachment(sash);
         formRootLayoutData.right = new FormAttachment(FULL);
-        formRootScroller.setLayoutData(formRootLayoutData);
+        scrolledRootForm.setLayoutData(formRootLayoutData);
 
         final FormData acionsFormLayoutData = new FormData();
         acionsFormLayoutData.top = new FormAttachment(0);
@@ -846,6 +849,7 @@ public final class DiagramSideBar {
 
         // re-layout the view part's composite
         if (!this.sideBarParent.isDisposed()) {
+            scrolledRootForm.reflow(true); // Fixes KIPRA-1890
             this.sideBarParent.layout(true, true);
         }
 
