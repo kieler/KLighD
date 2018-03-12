@@ -111,6 +111,8 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     private static final float[] LINE_DASHDOT_ZERO = new float[]{9, 6, 3, 6};
     private static final float[] LINE_DASHDOTDOT_ZERO = new float[]{9, 3, 3, 3, 3, 3};
     
+    private static final int TRANSPARENCY_MASK = 0xFF << 24;
+    
     /**
      * true if multiline strings can be handled by exporter.
      */
@@ -614,20 +616,34 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
 
         ColorModel colorModel = null;
         final PaletteData palette = data.palette;
+        final boolean needsAlpha = data.transparentPixel != -1;
+
         if (palette.isDirect) {
-            colorModel =
-                    new DirectColorModel(data.depth, palette.redMask, palette.greenMask,
-                            palette.blueMask);
-            bufferedImage =
-                    new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(
-                            data.width, data.height), false, null);
+            if (needsAlpha) {
+                // Adjust the color space to allow transparency
+                colorModel = new DirectColorModel(data.depth + 8, palette.redMask,
+                        palette.greenMask, palette.blueMask, TRANSPARENCY_MASK);
+            } else {
+                colorModel = new DirectColorModel(data.depth, palette.redMask, palette.greenMask,
+                        palette.blueMask);
+            }
+            bufferedImage = new BufferedImage(colorModel,
+                    colorModel.createCompatibleWritableRaster(data.width, data.height), false,
+                    null);
             for (int y = 0; y < data.height; y++) {
                 for (int x = 0; x < data.width; x++) {
                     final int pixel = data.getPixel(x, y);
                     final RGB rgb = palette.getRGB(pixel);
                     // CHECKSTYLEOFF Magic Numbers
-                    bufferedImage.setRGB(x, y, rgb.red << 16 | rgb.green << 8 | rgb.blue);
+                    final int pixelValue = rgb.red << 16 | rgb.green << 8 | rgb.blue;
                     // CHECKSTYLEON Magic Numbers
+                    if (needsAlpha) {
+                        bufferedImage.setRGB(x, y, pixelValue);
+                    } else {
+                        final int alphaValue =
+                                pixelValue == data.transparentPixel ? 0 : TRANSPARENCY_MASK;
+                        bufferedImage.setRGB(x, y, alphaValue | pixelValue);
+                    }
                 }
             }
         } else {
@@ -641,7 +657,7 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
                 green[i] = (byte) rgb.green;
                 blue[i] = (byte) rgb.blue;
             }
-            if (data.transparentPixel != -1) {
+            if (needsAlpha) {
                 colorModel =
                         new IndexColorModel(data.depth, rgbs.length, red, green, blue,
                                 data.transparentPixel);
