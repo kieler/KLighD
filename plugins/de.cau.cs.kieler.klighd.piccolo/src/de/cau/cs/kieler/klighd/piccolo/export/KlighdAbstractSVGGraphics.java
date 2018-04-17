@@ -111,7 +111,9 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     private static final float[] LINE_DASHDOT_ZERO = new float[]{9, 6, 3, 6};
     private static final float[] LINE_DASHDOTDOT_ZERO = new float[]{9, 3, 3, 3, 3, 3};
     
+    // CHECKSTYLEOFF Magic Numbers
     private static final int TRANSPARENCY_MASK = 0xFF << 24;
+    // CHECKSTYLEON Magic Numbers
     
     /**
      * true if multiline strings can be handled by exporter.
@@ -621,8 +623,10 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
         if (palette.isDirect) {
             if (needsAlpha) {
                 // Adjust the color space to allow transparency
+                // CHECKSTYLEOFF Magic Numbers
                 colorModel = new DirectColorModel(data.depth + 8, palette.redMask,
                         palette.greenMask, palette.blueMask, TRANSPARENCY_MASK);
+                // CHECKSTYLEON Magic Numbers
             } else {
                 colorModel = new DirectColorModel(data.depth, palette.redMask, palette.greenMask,
                         palette.blueMask);
@@ -638,11 +642,11 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
                     final int pixelValue = rgb.red << 16 | rgb.green << 8 | rgb.blue;
                     // CHECKSTYLEON Magic Numbers
                     if (needsAlpha) {
-                        bufferedImage.setRGB(x, y, pixelValue);
-                    } else {
                         final int alphaValue =
                                 pixelValue == data.transparentPixel ? 0 : TRANSPARENCY_MASK;
                         bufferedImage.setRGB(x, y, alphaValue | pixelValue);
+                    } else {
+                        bufferedImage.setRGB(x, y, pixelValue);
                     }
                 }
             }
