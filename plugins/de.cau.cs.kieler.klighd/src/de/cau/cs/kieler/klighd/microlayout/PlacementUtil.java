@@ -945,7 +945,10 @@ public final class PlacementUtil {
 
     /**
      * Returns the minimal bounds required by a drawing of the string <code>text</code> while
-     * respecting the given <code>fontData</code>.
+     * respecting the given <code>fontData</code>. While being in an Eclipse context and having a
+     * {@link Display} (or having instantiated a {@link GC} using a {@link Display} during an
+     * earlier call), the method uses SWT's {@link GC} to perform estimations. Otherwise it falls
+     * back to AWT's {@link FontMetrics}.
      * 
      * @param fontData
      *            an SWT {@link FontData} record describing font name, size, and style
@@ -955,49 +958,68 @@ public final class PlacementUtil {
      */
     public static Bounds estimateTextSize(final FontData fontData, final String text) {
         final Display display = Display.getCurrent();
-        final Bounds textBounds;
-        
+        // if a GC has been instantiated before or a display is available.
         if (gc != null || display != null) {
-
-            // In order to estimate the required size of a given string according to the determined
-            // font, style, and size a GC is instantiated, configured, and queried.
-            if (gc == null) {
-                gc = new GC(display);
-                gc.setAntialias(SWT.OFF);
-            }
-
-            Font font = FONT_CACHE.get(fontData);
-            if (font == null) {
-                font = new Font(display, fontData);
-                FONT_CACHE.put(fontData, font);
-            }
-            gc.setFont(font);
-
-            if (Strings.isNullOrEmpty(text)) {
-                // if no text string is given, take the bounds of a space character,
-                textBounds = new Bounds(gc.textExtent(" "));
-            } else {
-                textBounds = new Bounds(gc.textExtent(text));
-            }
-            
+            return estimateTextSizeSWT(fontData, text, display);
         } else {
             // if no display is available fallback to awt metrics
+            return estimateTextSizeAWT(fontData, text);
+        }
+    }
 
-            fmg.setFont(new java.awt.Font(fontData.getName(), KTextUtil.swtFontStyle2Awt(fontData
-                    .getStyle()), fontData.getHeight()));
-            final FontMetrics fm = fmg.getFontMetrics();
+    /**
+     * Note that this method is synchronized since concurrent access to the static {@link #gc}
+     * object causes issues as described in KIPRA-1915.
+     */
+    private static synchronized Bounds estimateTextSizeSWT(final FontData fontData,
+            final String text, final Display display) {
 
-            if (Strings.isNullOrEmpty(text)) {
-                textBounds = new Bounds(fm.getStringBounds(" ", fmg));
-            } else {
-                textBounds = new Bounds(fm.getStringBounds(text, fmg));
-            }
+        // In order to estimate the required size of a given string according to the determined
+        // font, style, and size a GC is instantiated, configured, and queried.
+        if (gc == null) {
+            gc = new GC(display);
+            gc.setAntialias(SWT.OFF);
+        }
 
+        Font font = FONT_CACHE.get(fontData);
+        if (font == null) {
+            font = new Font(display, fontData);
+            FONT_CACHE.put(fontData, font);
+        }
+        gc.setFont(font);
+
+        final Bounds textBounds;
+        if (Strings.isNullOrEmpty(text)) {
+            // if no text string is given, take the bounds of a space character to get a proper
+            // value for the height
+            textBounds = new Bounds(gc.textExtent(" "));
+            textBounds.width = 0f; // omit the width in this case
+        } else {
+            textBounds = new Bounds(gc.textExtent(text));
         }
         
         return textBounds;
     }
+    
+    private static synchronized Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
+        fmg.setFont(new java.awt.Font(fontData.getName(), 
+                KTextUtil.swtFontStyle2Awt(fontData.getStyle()), 
+                fontData.getHeight()));
+        final FontMetrics fm = fmg.getFontMetrics();
 
+        final Bounds textBounds;
+        if (Strings.isNullOrEmpty(text)) {
+            // if no text string is given, take the bounds of a space character to get a proper
+            // value for the height
+            textBounds = new Bounds(fm.getStringBounds(" ", fmg));
+            textBounds.width = 0f; // omit the width in this case
+        } else {
+            textBounds = new Bounds(fm.getStringBounds(text, fmg));
+        }
+        
+        return textBounds;
+    }
+    
     /**
      * Returns the required minimal size of a {@link KRendering} width attached
      * {@link KPointPlacementData}.
