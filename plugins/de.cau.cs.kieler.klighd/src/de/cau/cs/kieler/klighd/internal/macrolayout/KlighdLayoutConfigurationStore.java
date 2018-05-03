@@ -305,6 +305,10 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         // first handle all expansion aware layout option sets
         if (node != null) {
             for (final Map.Entry<IProperty<?>, Object> entry : entrySet) {
+                if (entry == null || entry.getKey() == null) {
+                    // can happen when an input model is invalid (incorrect syntax in xtext, e.g.)
+                    continue;
+                }
                 if (entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
 
                     final ExpansionAwareLayoutOptionData ealo =
@@ -325,6 +329,10 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
 
         // then handle all normal layout options
         for (final Map.Entry<IProperty<?>, Object> entry : entrySet) {
+            if (entry == null || entry.getKey() == null) {
+             // can happen when an input model is invalid (incorrect syntax in xtext, e.g.)
+                continue;
+            }
             if (!entry.getKey().equals(ExpansionAwareLayoutOption.OPTION)) {
                 options.add(entry.getKey().getId());
             }
