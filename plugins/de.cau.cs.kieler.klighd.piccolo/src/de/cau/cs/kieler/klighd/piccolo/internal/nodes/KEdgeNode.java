@@ -17,10 +17,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolo.util.PPaintContext;
+import edu.umd.cs.piccolo.util.PPickPath;
 
 /**
  * The Piccolo2D node for representing a {@link KEdge}.<br>
@@ -196,5 +199,88 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
                 localBounds.x - 1, localBounds.y - 1, localBounds.width + 2, localBounds.height + 2);
         }
         super.repaintFrom(localBounds, childOrThis);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * <br>
+     * This specialization has been introduced to filter the edges of the currently clipped node,
+     * if the clipped ports should be hidden. 
+     */
+    @Override
+    public boolean fullPick(PPickPath pickPath) {
+        // Find the parent node. The edge should be contained in a KlighdDisposingLayer
+        // (the EdgeLayer), which should be contained in a KChildAreaNode.
+        // This KChildAreaNode should be contained in the wanted KNodeNode.
+        KNodeNode parentNode = null;
+        if (getParent() instanceof KlighdDisposingLayer) {
+            KlighdDisposingLayer pKDLayer = (KlighdDisposingLayer) getParent();
+            if (pKDLayer.getParent() instanceof KChildAreaNode) {
+                KChildAreaNode pCANode = (KChildAreaNode) pKDLayer.getParent();
+                if (pCANode.getParent() instanceof KNodeNode) {
+                    parentNode = (KNodeNode) pCANode.getParent();
+                }
+            }
+        }
+
+        // If something with the parent relationship is wrong, just relegate to the super
+        // implementation.
+        if (parentNode != null) {
+            // Find out if the parentNode is currently clipped to and if the ports should be hidden
+            // on the main camera
+            if (!parentNode.showClippedPorts() && parentNode.isRootLayer()) {
+                // Check if the edge is connected to the parentNode
+                final KNode parentKNode = parentNode.getViewModelElement();
+                final KEdge kEdge = getViewModelElement();
+                if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
+                    // This is a short hierarchy edge connected to the parent node, filter it out
+                    return false;
+                }
+            }
+        }
+        
+        return super.fullPick(pickPath);            
+    }
+    
+    /**
+     * {@inheritDoc}
+     * <br>
+     * This specialization has been introduced to filter the edges of the currently clipped node,
+     * if the clipped ports should be hidden. 
+     */
+    @Override
+    public void fullPaint(final PPaintContext paintContext) {
+        // Find the parent node. The edge should be contained in a KlighdDisposingLayer
+        // (the EdgeLayer), which should be contained in a KChildAreaNode.
+        // This KChildAreaNode should be contained in the wanted KNodeNode.
+        KNodeNode parentNode = null;
+        if (getParent() instanceof KlighdDisposingLayer) {
+            KlighdDisposingLayer pKDLayer = (KlighdDisposingLayer) getParent();
+            if (pKDLayer.getParent() instanceof KChildAreaNode) {
+                KChildAreaNode pCANode = (KChildAreaNode) pKDLayer.getParent();
+                if (pCANode.getParent() instanceof KNodeNode) {
+                    parentNode = (KNodeNode) pCANode.getParent();
+                }
+            }
+        }
+
+        // If something with the parent relationship is wrong, just relegate to the super
+        // implementation.
+        if (parentNode != null) {
+            // Find out if the parentNode is currently clipped to and if the ports should be hidden
+            // on the main camera
+            if (!parentNode.showClippedPorts() && parentNode.isRootLayer()
+                    && parentNode.getCamerasReference().contains(paintContext.getCamera())) {
+                // Check if the edge is connected to the parentNode
+                final KNode parentKNode = parentNode.getViewModelElement();
+                final KEdge kEdge = getViewModelElement();
+                if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
+                    // This is a short hierarchy edge connected to the parent node, filter it out
+                    return;
+                }
+            }
+        }
+        
+        super.fullPaint(paintContext);            
     }
 }

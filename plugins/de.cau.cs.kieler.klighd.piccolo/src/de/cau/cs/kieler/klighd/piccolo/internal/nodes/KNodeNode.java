@@ -286,6 +286,26 @@ public class KNodeNode extends KNodeAbstractNode implements
     }
 
     /**
+     * Get the flag to determine if the KNodeNode is currently observed by the
+     * {@link KlighdMainCamera}.
+     * 
+     * @return flag determining if the KNodeNode is currently observed by the
+     *         {@link KlighdMainCamera}.
+     */
+    public boolean isRootLayer() {
+        return isRootLayer;
+    }
+
+    /**
+     * Flag to control if the ports of the clipped node should be shown.
+     * 
+     * @return Flag to control if the ports of the clipped node should be shown.
+     */
+    public boolean showClippedPorts() {
+        return showClippedPorts;
+    }
+
+    /**
      * Adds the representation of a port to this node.
      *
      * @param port
