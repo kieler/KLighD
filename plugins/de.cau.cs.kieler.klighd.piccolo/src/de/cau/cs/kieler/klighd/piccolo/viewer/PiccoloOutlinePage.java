@@ -266,7 +266,8 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
 
             public void actionPerformed(final ActionEvent e) {
                 adjustCamera();
-                adjustOutlineRect();
+                // adjustCamera() invokes adjustOutlineRect() when it is done
+                // adjustOutlineRect();
             }
         });
         cameraTimer.setRepeats(false);
@@ -276,9 +277,15 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
                 new ActionListener() {
 
             public void actionPerformed(final ActionEvent e) {
-                if (cameraTimer.isRunning()) {
-                    return;
-                }
+                // The SWTTimerQueue is holding a lock on itself during operation but for 
+                // scheduling new events it needs the Display(Device) lock.
+                // This Thread has the Display(Device) lock during creation but tries to access the
+                // SWTTimer here, causing a wait on the SWTTimerQueue.
+
+                // if (cameraTimer.isRunning()) {
+                //     return;
+                // }
+                
                 adjustOutlineRect();
             }
         });
@@ -470,7 +477,6 @@ public class PiccoloOutlinePage implements IDiagramOutlinePage {
         outlineCanvas.addControlListener(canvasResizeListener);
 
         adjustCamera();
-        adjustOutlineRect();
 
         outlineCanvas.setVisible(visible);
     }
