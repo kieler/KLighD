@@ -9,6 +9,6 @@
   </parent>
   <groupId>de.cau.cs.kieler</groupId>
   <artifactId>de.cau.cs.kieler.klighd.test</artifactId>
-  <version>0.44.0-SNAPSHOT</version>
+  <version>0.45.0-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 </project>

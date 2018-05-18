@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Graph Model
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.kgraph;singleton:=true
-Bundle-Version: 0.44.0.qualifier
+Bundle-Version: 0.45.0.qualifier
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.cau.cs.kieler.klighd.kgraph,

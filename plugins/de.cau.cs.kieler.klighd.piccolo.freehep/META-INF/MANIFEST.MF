@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KIELER Lightweight Diagrams Vector Graphics Export Powered by FreeHEP
 Bundle-SymbolicName: de.cau.cs.kieler.klighd.piccolo.freehep;singleton:=true
-Bundle-Version: 0.44.0.qualifier
+Bundle-Version: 0.45.0.qualifier
 Bundle-Vendor: Kiel University
 Fragment-Host: de.cau.cs.kieler.klighd.piccolo
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
