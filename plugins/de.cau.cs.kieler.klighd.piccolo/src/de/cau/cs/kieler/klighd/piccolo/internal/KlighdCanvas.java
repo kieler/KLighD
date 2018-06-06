@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 
@@ -32,6 +33,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PInputManager;
 import edu.umd.cs.piccolo.event.PPanEventHandler;
@@ -61,6 +63,7 @@ public class KlighdCanvas extends PSWTCanvas {
      */
     private PInputManager inputManager;
 
+    
     /**
      * Construct a canvas with the basic scene graph consisting of a root node, a camera, and a
      * layer (via <code>super(...)</code> and {@link #createBasicSceneGraph()}). The original event
@@ -73,8 +76,28 @@ public class KlighdCanvas extends PSWTCanvas {
      *            {@link Composite} style of <code>this</code> {@link KlighdCanvas}
      */
     public KlighdCanvas(final Composite parent, final int style) {
+        this(parent, style, KlighdProperties.CANVAS_COLOR.getDefault());
+    }
+    
+    /**
+     * Construct a canvas with the basic scene graph consisting of a root node, a camera, and a
+     * layer (via <code>super(...)</code> and {@link #createBasicSceneGraph()}). The original event
+     * handlers for zooming and panning coming via <code>super(...)</code> are removed, appropriate
+     * ones are installed later on by users of this class.
+     *
+     * @param parent
+     *            component onto which the canvas is installed
+     * @param style
+     *            {@link Composite} style of <code>this</code> {@link KlighdCanvas}
+     * @param backgroundColor
+     *            The {@link Color} of the canvas background
+     */
+    public KlighdCanvas(final Composite parent, final int style, final Color backgroundColor) {
         super(parent, style);
-
+        
+        // Set the background color of the canvas
+        this.backgroundColor = backgroundColor;
+        
         // make sure this canvas is not stored in this horrible static reference!
         PSWTCanvas.CURRENT_CANVAS = null;
 

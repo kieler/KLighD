@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.awt.Color;
+
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.PortSide;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -313,4 +315,9 @@ public final class KlighdProperties {
     public static final IProperty<Boolean> SHOW_CLIPPED_PORTS =
             new Property<Boolean>("klighd.showClippedPorts", true);
 
+    /**
+     * Property to define the color of the canvas.
+     */
+    public static final IProperty<Color> CANVAS_COLOR =
+            new Property<Color>("klighd.canvas.color", Color.WHITE);
 }

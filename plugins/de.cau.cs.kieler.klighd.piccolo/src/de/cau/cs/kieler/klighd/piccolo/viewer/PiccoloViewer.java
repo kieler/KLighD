@@ -134,7 +134,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
             throw new IllegalArgumentException(msg);
         }
         this.parentViewer = theParentViewer;
-        this.canvas = new KlighdCanvas(parent, style);
+        this.canvas = new KlighdCanvas(parent, style,
+                theParentViewer.getViewContext().getProperty(KlighdProperties.CANVAS_COLOR));
 
         final KlighdMainCamera camera = canvas.getCamera();
         magnificationLensHandler = new KlighdMagnificationLensEventHandler(camera);

@@ -26,6 +26,7 @@ import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.RunnableWithResult;
 
 /**
@@ -76,7 +77,9 @@ public class BitmapOffscreenRenderer extends AbstractOffscreenRenderer {
                 ? properties.getProperty(IMAGE_SCALE) : IMAGE_SCALE.getDefault();
 
         final Shell shell = new Shell();
-        final KlighdCanvas canvas = new KlighdCanvas(shell, 0);
+        final KlighdCanvas canvas = new KlighdCanvas(shell, 0,
+                properties != null ? properties.getProperty(KlighdProperties.CANVAS_COLOR)
+                        : KlighdProperties.CANVAS_COLOR.getDefault());
 
         try {
             // build up the diagram, i.e. apply the necessary diagram syntheses, etc.
