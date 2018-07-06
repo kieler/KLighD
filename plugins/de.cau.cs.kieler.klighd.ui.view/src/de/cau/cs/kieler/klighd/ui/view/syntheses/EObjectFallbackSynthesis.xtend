@@ -37,9 +37,9 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.util.List
 import java.util.Map
 import javax.inject.Inject
+import org.eclipse.elk.alg.layered.options.EdgeStraighteningStrategy
 import org.eclipse.elk.alg.layered.options.FixedAlignment
 import org.eclipse.elk.alg.layered.options.LayeredOptions
-import org.eclipse.elk.alg.layered.p4nodes.bk.EdgeStraighteningStrategy
 import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.Direction
 import org.eclipse.elk.core.options.PortSide
