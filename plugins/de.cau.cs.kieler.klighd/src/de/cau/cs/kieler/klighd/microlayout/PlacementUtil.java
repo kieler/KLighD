@@ -936,9 +936,14 @@ public final class PlacementUtil {
     private static final Map<FontData, Font> FONT_CACHE = Maps.newHashMap();
 
     /**
-     * A singleton instance of {@link GC} that the text size estimation is delegated to.
+     * Thread-local storage for GCs. Implemented to prevent deadlocks as well as concurrent accesses
+     * to non-thread-safe GC as described in KIPRA-1915.
      */
-    private static GC gc = null;
+    private static final ThreadLocal<GCContainer> GC_CONTAINER = new ThreadLocal<GCContainer>() {
+        protected GCContainer initialValue() {
+            return new GCContainer(Display.getCurrent());
+        };
+    };
 
     private static BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Graphics2D fmg = bi.createGraphics();
@@ -946,8 +951,7 @@ public final class PlacementUtil {
     /**
      * Returns the minimal bounds required by a drawing of the string <code>text</code> while
      * respecting the given <code>fontData</code>. While being in an Eclipse context and having a
-     * {@link Display} (or having instantiated a {@link GC} using a {@link Display} during an
-     * earlier call), the method uses SWT's {@link GC} to perform estimations. Otherwise it falls
+     * {@link Display}, the method uses SWT's {@link GC} to perform estimations. Otherwise it falls
      * back to AWT's {@link FontMetrics}.
      * 
      * @param fontData
@@ -959,7 +963,7 @@ public final class PlacementUtil {
     public static Bounds estimateTextSize(final FontData fontData, final String text) {
         final Display display = Display.getCurrent();
         // if a GC has been instantiated before or a display is available.
-        if (gc != null || display != null) {
+        if (display != null) {
             return estimateTextSizeSWT(fontData, text, display);
         } else {
             // if no display is available fallback to awt metrics
@@ -967,19 +971,13 @@ public final class PlacementUtil {
         }
     }
 
-    /**
-     * Note that this method is synchronized since concurrent access to the static {@link #gc}
-     * object causes issues as described in KIPRA-1915.
-     */
-    private static synchronized Bounds estimateTextSizeSWT(final FontData fontData,
+    private static Bounds estimateTextSizeSWT(final FontData fontData,
             final String text, final Display display) {
 
         // In order to estimate the required size of a given string according to the determined
-        // font, style, and size a GC is instantiated, configured, and queried.
-        if (gc == null) {
-            gc = new GC(display);
-            gc.setAntialias(SWT.OFF);
-        }
+        // font, style, and size a thread-local GC is queried.
+        GC gc = GC_CONTAINER.get().gc;
+        gc.setAntialias(SWT.OFF);
 
         Font font = FONT_CACHE.get(fontData);
         if (font == null) {
@@ -1001,7 +999,7 @@ public final class PlacementUtil {
         return textBounds;
     }
     
-    private static synchronized Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
+    private static Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
         fmg.setFont(new java.awt.Font(fontData.getName(), 
                 KTextUtil.swtFontStyle2Awt(fontData.getStyle()), 
                 fontData.getHeight()));
