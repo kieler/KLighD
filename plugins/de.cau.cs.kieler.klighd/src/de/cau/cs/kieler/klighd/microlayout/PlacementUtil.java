@@ -936,15 +936,11 @@ public final class PlacementUtil {
     private static final Map<FontData, Font> FONT_CACHE = Maps.newHashMap();
 
     /**
-     * Thread-local storage for GCs. Implemented to prevent deadlocks as well as concurrent accesses
-     * to non-thread-safe GC as described in KIPRA-1915.
+     * Two instances of {@link GC} that the text size estimation is delegated to.
      */
-    private static final ThreadLocal<GCContainer> GC_CONTAINER = new ThreadLocal<GCContainer>() {
-        protected GCContainer initialValue() {
-            return new GCContainer(Display.getCurrent());
-        };
-    };
-
+    private static GC gc = null;
+    private static GC asyncGC = null;
+    
     private static BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Graphics2D fmg = bi.createGraphics();
 
@@ -973,27 +969,32 @@ public final class PlacementUtil {
 
     private static Bounds estimateTextSizeSWT(final FontData fontData,
             final String text, final Display display) {
-
         // In order to estimate the required size of a given string according to the determined
-        // font, style, and size a thread-local GC is queried.
-        GC gc = GC_CONTAINER.get().gc;
-        gc.setAntialias(SWT.OFF);
+        // font, style, and size a GC is instantiated, configured, and queried.
+        if (gc == null) {
+            gc = new GC(display);
+            gc.setAntialias(SWT.OFF);
+            asyncGC = new GC(display);
+            asyncGC.setAntialias(SWT.OFF);
+        }
+        
+        final GC myGC = Display.getCurrent() != null ? gc : asyncGC;        
 
         Font font = FONT_CACHE.get(fontData);
         if (font == null) {
             font = new Font(display, fontData);
             FONT_CACHE.put(fontData, font);
         }
-        gc.setFont(font);
+        myGC.setFont(font);
 
         final Bounds textBounds;
         if (Strings.isNullOrEmpty(text)) {
             // if no text string is given, take the bounds of a space character to get a proper
             // value for the height
-            textBounds = new Bounds(gc.textExtent(" "));
+            textBounds = new Bounds(myGC.textExtent(" "));
             textBounds.width = 0f; // omit the width in this case
         } else {
-            textBounds = new Bounds(gc.textExtent(text));
+            textBounds = new Bounds(myGC.textExtent(text));
         }
         
         return textBounds;
