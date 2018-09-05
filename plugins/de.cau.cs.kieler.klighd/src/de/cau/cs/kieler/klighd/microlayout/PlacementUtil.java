@@ -937,6 +937,10 @@ public final class PlacementUtil {
 
     /**
      * Two instances of {@link GC} that the text size estimation is delegated to.
+     * We use two instances here because label management uses size estimation in another thread
+     * and SWT is not exactly thread-safe.
+     * It is unclear if this solves the issue completely, but it should at least circumvent
+     * the most common case.
      */
     private static GC gc = null;
     private static GC asyncGC = null;
@@ -969,15 +973,22 @@ public final class PlacementUtil {
 
     private static Bounds estimateTextSizeSWT(final FontData fontData,
             final String text, final Display display) {
+
         // In order to estimate the required size of a given string according to the determined
-        // font, style, and size a GC is instantiated, configured, and queried.
+        // font, style, and size GCs are instantiated, configured, and queried.
         if (gc == null) {
+            // Create GC for the main thread
             gc = new GC(display);
             gc.setAntialias(SWT.OFF);
+            // Create (identical) GC for asynchronous threads
             asyncGC = new GC(display);
             asyncGC.setAntialias(SWT.OFF);
         }
         
+        // Find the GC suitable for this thread.
+        // The main/UI thread has direct access to the Display, 
+        // so we use that check as the distinguishing feature
+        // between the main thread and the other stuff
         final GC myGC = Display.getCurrent() != null ? gc : asyncGC;        
 
         Font font = FONT_CACHE.get(fontData);
