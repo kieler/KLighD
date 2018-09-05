@@ -963,7 +963,7 @@ public final class PlacementUtil {
     public static Bounds estimateTextSize(final FontData fontData, final String text) {
         final Display display = Display.getCurrent();
         // if a GC has been instantiated before or a display is available.
-        if (display != null) {
+        if (gc != null || display != null) {
             return estimateTextSizeSWT(fontData, text, display);
         } else {
             // if no display is available fallback to awt metrics
