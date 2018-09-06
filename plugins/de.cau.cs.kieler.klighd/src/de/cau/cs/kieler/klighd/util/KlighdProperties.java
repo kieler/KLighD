@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.klighd.util;
 
 import java.awt.Color;
+import java.util.Map;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.PortSide;
@@ -25,6 +26,7 @@ import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
+import de.cau.cs.kieler.klighd.microlayout.Bounds;
 
 /**
  * A collection of KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties}
@@ -320,4 +322,28 @@ public final class KlighdProperties {
      */
     public static final IProperty<Color> CANVAS_COLOR =
             new Property<Color>("klighd.canvas.color", Color.WHITE);
+    
+    /**
+     * Property determining the precalculated bounds of a {@link KText}. If this property is set the
+     * text size estimation will not call any other size estimation and use the bounds given by this
+     * property instead.
+     */
+    public static final IProperty<Bounds> CALCULATED_TEXT_BOUNDS =
+            new Property<Bounds>("klighd.calculated.text.bounds", null);
+    
+    /**
+     * Property holding the bounds of any {@link KRendering}. This property can be set if estimation
+     * of rendering sizes should not be calculated in time when needed, but up front for all 
+     * renderings.
+     */
+    public static final IProperty<Bounds> CALCULATED_BOUNDS = 
+            new Property<Bounds>("klighd.calculated.bounds", null);
+    
+    /**
+     * Property holding the bounds for all child {@link KRendering}s in a {@link KRenderingRef}.
+     * This property can be set if estimation of rendering sizes should not be calculated in time 
+     * when needed, but up front for all renderings.
+     */
+    public static final IProperty<Map<String, Bounds>> CALCULATED_BOUNDS_MAP = 
+            new Property<Map<String, Bounds>>("klighd.calculated.bounds.map", null);
 }
