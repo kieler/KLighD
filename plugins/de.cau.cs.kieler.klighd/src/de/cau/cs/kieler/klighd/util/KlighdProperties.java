@@ -340,10 +340,26 @@ public final class KlighdProperties {
             new Property<Bounds>("klighd.calculated.bounds", null);
     
     /**
+     * Property holding the bounds of any {@link KRendering}. This property can be set if estimation
+     * of rendering sizes should not be calculated in time when needed, but up front for all 
+     * renderings.
+     */
+    public static final IProperty<Double> CALCULATED_ROTATION = 
+            new Property<Double>("klighd.calculated.rotation", null);
+    
+    /**
      * Property holding the bounds for all child {@link KRendering}s in a {@link KRenderingRef}.
      * This property can be set if estimation of rendering sizes should not be calculated in time 
      * when needed, but up front for all renderings.
      */
     public static final IProperty<Map<String, Bounds>> CALCULATED_BOUNDS_MAP = 
             new Property<Map<String, Bounds>>("klighd.calculated.bounds.map", null);
+    
+    /**
+     * Property holding the bounds for all child {@link KRendering}s in a {@link KRenderingRef}.
+     * This property can be set if estimation of rendering sizes should not be calculated in time 
+     * when needed, but up front for all renderings.
+     */
+    public static final IProperty<Map<String, Double>> CALCULATED_ROTATION_MAP = 
+            new Property<Map<String, Double>>("klighd.calculated.rotation.map", null);
 }
