@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
 
 /**
  * A collection of KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties}
@@ -340,12 +341,13 @@ public final class KlighdProperties {
             new Property<Bounds>("klighd.calculated.bounds", null);
     
     /**
-     * Property holding the bounds of any {@link KRendering}. This property can be set if estimation
+     * Property holding the decoration of any {@link KRendering}. This property can be set if estimation
      * of rendering sizes should not be calculated in time when needed, but up front for all 
      * renderings.
+     * This only applies for renderings, that are decorations of edge renderings.
      */
-    public static final IProperty<Double> CALCULATED_ROTATION = 
-            new Property<Double>("klighd.calculated.rotation", null);
+    public static final IProperty<Double> CALCULATED_DECORATION = 
+            new Property<Double>("klighd.calculated.decoration", null);
     
     /**
      * Property holding the bounds for all child {@link KRendering}s in a {@link KRenderingRef}.
@@ -356,10 +358,11 @@ public final class KlighdProperties {
             new Property<Map<String, Bounds>>("klighd.calculated.bounds.map", null);
     
     /**
-     * Property holding the bounds for all child {@link KRendering}s in a {@link KRenderingRef}.
+     * Property holding the decorations for all child {@link KRendering}s in a {@link KRenderingRef}.
+     * This only applies for renderings, that are decorations of edge renderings.
      * This property can be set if estimation of rendering sizes should not be calculated in time 
      * when needed, but up front for all renderings.
      */
-    public static final IProperty<Map<String, Double>> CALCULATED_ROTATION_MAP = 
-            new Property<Map<String, Double>>("klighd.calculated.rotation.map", null);
+    public static final IProperty<Map<Decoration, Double>> CALCULATED_DECORATION_MAP = 
+            new Property<Map<Decoration, Double>>("klighd.calculated.decoration.map", null);
 }
