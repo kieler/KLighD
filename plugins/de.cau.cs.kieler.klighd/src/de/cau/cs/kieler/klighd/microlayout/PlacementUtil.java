@@ -942,18 +942,22 @@ public final class PlacementUtil {
     private static final Map<FontData, Font> FONT_CACHE = Maps.newHashMap();
 
     /**
-     * A singleton instance of {@link GC} that the text size estimation is delegated to.
+     * Two instances of {@link GC} that the text size estimation is delegated to.
+     * We use two instances here because label management uses size estimation in another thread
+     * and SWT is not exactly thread-safe.
+     * It is unclear if this solves the issue completely, but it should at least circumvent
+     * the most common case.
      */
     private static GC gc = null;
-
+    private static GC asyncGC = null;
+    
     private static BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Graphics2D fmg = bi.createGraphics();
 
     /**
      * Returns the minimal bounds required by a drawing of the string <code>text</code> while
      * respecting the given <code>fontData</code>. While being in an Eclipse context and having a
-     * {@link Display} (or having instantiated a {@link GC} using a {@link Display} during an
-     * earlier call), the method uses SWT's {@link GC} to perform estimations. Otherwise it falls
+     * {@link Display}, the method uses SWT's {@link GC} to perform estimations. Otherwise it falls
      * back to AWT's {@link FontMetrics}.
      * 
      * @param fontData
@@ -973,41 +977,47 @@ public final class PlacementUtil {
         }
     }
 
-    /**
-     * Note that this method is synchronized since concurrent access to the static {@link #gc}
-     * object causes issues as described in KIPRA-1915.
-     */
-    private static synchronized Bounds estimateTextSizeSWT(final FontData fontData,
+    private static Bounds estimateTextSizeSWT(final FontData fontData,
             final String text, final Display display) {
 
         // In order to estimate the required size of a given string according to the determined
-        // font, style, and size a GC is instantiated, configured, and queried.
+        // font, style, and size GCs are instantiated, configured, and queried.
         if (gc == null) {
+            // Create GC for the main thread
             gc = new GC(display);
             gc.setAntialias(SWT.OFF);
+            // Create (identical) GC for asynchronous threads
+            asyncGC = new GC(display);
+            asyncGC.setAntialias(SWT.OFF);
         }
+        
+        // Find the GC suitable for this thread.
+        // The main/UI thread has direct access to the Display, 
+        // so we use that check as the distinguishing feature
+        // between the main thread and the other stuff
+        final GC myGC = Display.getCurrent() != null ? gc : asyncGC;        
 
         Font font = FONT_CACHE.get(fontData);
         if (font == null) {
             font = new Font(display, fontData);
             FONT_CACHE.put(fontData, font);
         }
-        gc.setFont(font);
+        myGC.setFont(font);
 
         final Bounds textBounds;
         if (Strings.isNullOrEmpty(text)) {
             // if no text string is given, take the bounds of a space character to get a proper
             // value for the height
-            textBounds = new Bounds(gc.textExtent(" "));
+            textBounds = new Bounds(myGC.textExtent(" "));
             textBounds.width = 0f; // omit the width in this case
         } else {
-            textBounds = new Bounds(gc.textExtent(text));
+            textBounds = new Bounds(myGC.textExtent(text));
         }
         
         return textBounds;
     }
     
-    private static synchronized Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
+    private static Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
         fmg.setFont(new java.awt.Font(fontData.getName(), 
                 KTextUtil.swtFontStyle2Awt(fontData.getStyle()), 
                 fontData.getHeight()));
