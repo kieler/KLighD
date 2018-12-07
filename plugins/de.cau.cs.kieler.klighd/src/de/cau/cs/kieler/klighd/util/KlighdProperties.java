@@ -27,7 +27,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
+//import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
 
 /**
  * A collection of KLighD-specific {@link de.cau.cs.kieler.klighd.properties.IProperty IProperties}
@@ -346,8 +346,10 @@ public final class KlighdProperties {
      * renderings.
      * This only applies for renderings, that are decorations of edge renderings.
      */
-    public static final IProperty<Double> CALCULATED_DECORATION = 
-            new Property<Double>("klighd.calculated.decoration", null);
+    public static final IProperty<Object> CALCULATED_DECORATION =
+            new Property<Object>("klighd.calculated.decoration", null);
+    // TODO should be de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration instead of Object,
+    // but that causes a cyclic dependency between this package and piccolo
     
     /**
      * Property holding the bounds for all child {@link KRendering}s in a {@link KRenderingRef}.
@@ -363,6 +365,6 @@ public final class KlighdProperties {
      * This property can be set if estimation of rendering sizes should not be calculated in time 
      * when needed, but up front for all renderings.
      */
-    public static final IProperty<Map<Decoration, Double>> CALCULATED_DECORATION_MAP = 
-            new Property<Map<Decoration, Double>>("klighd.calculated.decoration.map", null);
+    public static final IProperty<Map<String, Object>> CALCULATED_DECORATION_MAP = 
+            new Property<Map<String, Object>>("klighd.calculated.decoration.map", null);
 }
