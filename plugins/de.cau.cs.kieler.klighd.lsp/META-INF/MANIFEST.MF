@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER Lightweight Diagrams as Language Server
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.lsp;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.cau.cs.kieler.klighd.lsp,
+ de.cau.cs.kieler.klighd.lsp.gson_utils
+Bundle-Vendor: Kiel University
+Bundle-Localization: plugin
+Bundle-ActivationPolicy: lazy
+Require-Bundle: com.google.gson;bundle-version="2.7.0",
+ com.google.inject;bundle-version="3.0.0",
+ org.eclipse.elk.alg.layered;bundle-version="0.5.0",
+ org.eclipse.elk.core;bundle-version="0.5.0",
+ org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.emf.ecore;bundle-version="2.12.0",
+ org.eclipse.xtext.ide;bundle-version="2.14.0",
+ org.eclipse.elk.graph;bundle-version="0.5.0",
+ org.eclipse.lsp4j;bundle-version="[0.4.1,0.5.0)",
+ org.eclipse.lsp4j.jsonrpc;bundle-version="[0.4.1,0.5.0)",
+ de.cau.cs.kieler.kgraph.text;bundle-version="0.44.0",
+ de.cau.cs.kieler.kgraph.text.ide;bundle-version="0.44.0",
+ de.cau.cs.kieler.klighd.kgraph;bundle-version="0.44.0",
+ io.typefox.sprotty.lib;bundle-version="1.0.0",
+ de.cau.cs.kieler.klighd;bundle-version="0.44.0",
+ de.cau.cs.kieler.graphs.klighd;bundle-version="0.44.0",
+ org.eclipse.xtext.xbase;bundle-version="2.14.0",
+ org.eclipse.elk.alg.common;bundle-version="0.5.0",
+ de.cau.cs.kieler.klighd.krendering.extensions;bundle-version="0.44.0",
+ de.cau.cs.kieler.klighd.piccolo;bundle-version="0.45.0",
+ org.eclipse.lsp4j.generator;bundle-version="[0.4.1,0.5.0)"
