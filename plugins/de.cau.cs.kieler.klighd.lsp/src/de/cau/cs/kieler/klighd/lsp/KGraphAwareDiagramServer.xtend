@@ -79,9 +79,7 @@ public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
     
     override protected handle(RequestModelAction request) {
         // if the source URI is different from the URI stored for this diagram server it indicates that a new 
-        // diagram is requested for a different source. So update the stored options, remove the data from the
-        // old URI and update the diagram.
-        // TODO: remove the data from the old URI.
+        // diagram is requested for a different source. So update the stored options and update the diagram.
         if ((model.type == 'NONE' || !getSourceUri().equals(request.options.get("sourceUri"))) 
             && languageServerExtension !== null
         ) {

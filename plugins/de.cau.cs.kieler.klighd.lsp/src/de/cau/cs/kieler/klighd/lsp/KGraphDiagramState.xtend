@@ -146,11 +146,15 @@ public class KGraphDiagramState {
     
     /**
      * Put method to put a new value in the uriString map under the given key.
+     * Also removes the stored data for the {@code clientId} if it was occupied previously.
      * 
      * @param key The key to access the map.
      * @param value The value to be stored in the map.
      */
     public def putURIString(String clientId, String uri) {
+        if (uriStringMap.containsKey(clientId)) {
+            remove(clientId)
+        }
         uriStringMap.put(clientId, uri)
     }
     
