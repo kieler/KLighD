@@ -21,7 +21,9 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetOptionParam
+import io.typefox.sprotty.api.ActionMessage
 import io.typefox.sprotty.api.IDiagramServer
+import io.typefox.sprotty.api.RequestModelAction
 import io.typefox.sprotty.server.xtext.ILanguageAwareDiagramServer
 import io.typefox.sprotty.server.xtext.ide.IdeLanguageServerExtension
 import java.util.List
@@ -54,6 +56,12 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
      */
     @Inject
     KGraphDiagramState diagramState
+    
+    /**
+     * Provider to create a new diagram server
+     */
+    @Inject
+    Provider<IDiagramServer> diagramServerProvider
 	
 	override protected initializeDiagramServer(IDiagramServer server) {
 		super.initializeDiagramServer(server)
@@ -71,6 +79,19 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
 		super.didClose(clientId)
 		LOG.info("Removed diagram server for " + clientId)
 	}
+	
+	override accept(ActionMessage message) {
+        val server = getDiagramServer(message.clientId)
+        // if a diagram server is requested for the same client, but a different source file, then close the old server.
+        if (message.action instanceof RequestModelAction
+            && !server.options.empty // if the server does not have options yet, the server has not been used yet and
+            // does not need to be relaunched.
+            && !(message.action as RequestModelAction).options.get("sourceUri")
+                .equals(server.options.get("sourceUri"))) {
+                didClose(message.clientId)
+            }
+        super.accept(message)
+    }
 	
 	override protected doUpdateDiagrams(String path, List<? extends ILanguageAwareDiagramServer> diagramServers) {
         if (diagramServers.empty) {
@@ -124,7 +145,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
     
     override getOptions(GetOptionParam param) {
         var int numIterations = 1
-        if (param.waitForDiagram) {
+        if (param.waitForDiagram) { // TODO: remove this parameter
             numIterations = 10
         }
         // A request to open and render a diagram was issued as well, so getting the options should wait, until the

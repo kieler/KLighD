@@ -21,7 +21,6 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import io.typefox.sprotty.api.Action
 import io.typefox.sprotty.api.ActionMessage
-import io.typefox.sprotty.api.RequestModelAction
 import io.typefox.sprotty.api.SModelRoot
 import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
 import org.apache.log4j.Logger
@@ -73,21 +72,6 @@ public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
             } else {
                 super.accept(message)
             }
-        }
-    }
-    
-    
-    override protected handle(RequestModelAction request) {
-        // if the source URI is different from the URI stored for this diagram server it indicates that a new 
-        // diagram is requested for a different source. So update the stored options and update the diagram.
-        if ((model.type == 'NONE' || !getSourceUri().equals(request.options.get("sourceUri"))) 
-            && languageServerExtension !== null
-        ) {
-            if (request.options !== null)
-                options = request.options
-            languageServerExtension.updateDiagram(this)
-        } else {
-            super.handle(request)
         }
     }
     
