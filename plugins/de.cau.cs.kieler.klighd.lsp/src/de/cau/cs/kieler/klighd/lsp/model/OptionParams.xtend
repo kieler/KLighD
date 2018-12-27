@@ -19,7 +19,7 @@ import org.eclipse.xtend.lib.annotations.Data
 /**
  * Data class to hold the parameters of the kCharts/getOptions message.
  * 
- * @author stu114054
+ * @author nir
  */
 @Data
 class GetOptionParam {
@@ -27,17 +27,12 @@ class GetOptionParam {
      * The {@code uri} pointing towards the resource of which the {@link SynthesisOption}s should be sent back.
      */
     String uri
-    
-    /**
-     * Indicates if a request for a diagram was issued at the same time, that this getOptions request could wait for.
-     */
-    boolean waitForDiagram
 }
 
 /**
  * Data class to hold the parameters of the kCharts/sendOptions message.
  * 
- * @author stu114054
+ * @author nir
  */
 @Data
 class SetOptionParam {
@@ -55,7 +50,7 @@ class SetOptionParam {
 /**
  * Data class to hold the identifying {@code name} for a {@link SynthesisOption} and a {@currentValue} of that option.
  * 
- * @author stu114054
+ * @author nir
  */
 @Data
 class SynthesisOptionValue {

@@ -144,33 +144,16 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
     }
     
     override getOptions(GetOptionParam param) {
-        var int numIterations = 1
-        if (param.waitForDiagram) { // TODO: remove this parameter
-            numIterations = 10
-        }
-        // A request to open and render a diagram was issued as well, so getting the options should wait, until the
-        // diagram is at least done saving its ViewContext. Wait at most 5 seconds.
-        var CompletableFuture<List<SynthesisOption>> synthesisOptionsFeature
-        for (var i = 0; i < numIterations; i++) {
-            synthesisOptionsFeature =  param.uri.doRead [ context |
-                synchronized (diagramState) {
-                    val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
-                    if (viewContext === null) {
-                        // A diagram for this file is currently not opened, so no options can be shown.
-                        return null
-                    }
-                    return viewContext.displayedSynthesisOptions
+        return param.uri.doRead [ context |
+            synchronized (diagramState) {
+                val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
+                if (viewContext === null) {
+                    // A diagram for this file is currently not opened, so no options can be shown.
+                    return null
                 }
-            ]
-            // return either if options have been found or the last iteration has been reached. Prevents unnecessary
-            // waiting
-            if (synthesisOptionsFeature.get !== null || i === numIterations - 1) {
-                return synthesisOptionsFeature
+                return viewContext.displayedSynthesisOptions
             }
-            synchronized(this) {
-                this.wait(500)
-            }
-        }
+        ]
     }
     
     override setOptions(SetOptionParam param) {
