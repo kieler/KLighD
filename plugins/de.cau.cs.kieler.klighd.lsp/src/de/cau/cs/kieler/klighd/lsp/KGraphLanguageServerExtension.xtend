@@ -169,11 +169,65 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                     // the options in the parameter are a newly generated object, so it needs to be matched to the 
                     // option of the viewContext
                     val synthesisOption = synthesisOptions.findFirst[name.equals(paramSynthesisOption.name)]
-                    viewContext.configureOption(synthesisOption, paramSynthesisOption.currentValue)
+                    configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
                 }
                 this.doUpdateDiagrams(#[context.resource.URI])
                 return "OK"
             }
         ]
+    }
+    
+    /**
+     * configures the {@code option} of the {@code viewContext} with the new {@code value} while regarding some special
+     * cases that arise when using an arbitrary Object as the value.
+     */
+    def void configureOption(SynthesisOption option, Object value, ViewContext viewContext) {
+        if (option.isChoiceOption) {
+            // Choice options are predefined with non-primitive types, so try to match the
+            // paramSynthesisOption with one of the options available for this choice.
+            if (option.values.contains(value)) {
+                // If the synthesis option values directly contain the new one from the parameter, just
+                // overwrite it.
+                viewContext.configureOption(option, value)
+                return
+            }
+            // If the string representation matches between an option value and the new value, use that.
+            var newOption = option.values.findFirst[toString.equals(value.toString)]
+            if (newOption instanceof SynthesisOption) {
+                viewContext.configureOption(option, value)
+                return
+            }
+            // Every number (including int) will be represented as a double in a possible JavaScript server.
+            // Because of that, try to match the new value to an int.
+            if (value instanceof Double
+                && Math.rint(value as Double) == value
+            ) {
+                val intValue = Math.round(value as Double)
+                newOption = option.values.findFirst[toString.equals(intValue.toString)]
+                if (newOption instanceof SynthesisOption) {
+                    viewContext.configureOption(option, value)
+                    return
+                }
+                // try to view the option as an Enum. If the ordinal matches, take that option.
+                for (optionValue: option.values) {
+                    if (optionValue instanceof Enum<?>
+                        && (optionValue as Enum<?>).ordinal == intValue
+                    ) {
+                        viewContext.configureOption(option, optionValue)
+                        return
+                    }
+                }
+            }
+        } else if (option.isRangeOption) {
+            // Range options are always declared as numbers, but floating point numbers are always stored as floats.
+            // If a double value comes back, convert it to a float.
+            if (value instanceof Double) {
+                viewContext.configureOption(option, value.floatValue)
+                return
+            }
+        } else {
+            viewContext.configureOption(option, value)
+            return
+        }
     }
 }

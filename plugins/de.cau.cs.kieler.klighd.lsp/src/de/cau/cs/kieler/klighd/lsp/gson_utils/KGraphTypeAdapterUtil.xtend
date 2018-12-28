@@ -121,7 +121,7 @@ public class KGraphTypeAdapterUtil {
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)
-        .registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
+//        .registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
         .registerTypeAdapterFactory(new EMapPropertyHolderTypeAdapterFactory(gsonBuilder))
         .setExclusionStrategies(
             new EObjectFieldExclusionStrategy, 
