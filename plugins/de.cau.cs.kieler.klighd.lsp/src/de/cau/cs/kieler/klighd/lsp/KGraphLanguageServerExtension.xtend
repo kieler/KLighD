@@ -26,8 +26,11 @@ import io.typefox.sprotty.api.IDiagramServer
 import io.typefox.sprotty.api.RequestModelAction
 import io.typefox.sprotty.server.xtext.ILanguageAwareDiagramServer
 import io.typefox.sprotty.server.xtext.ide.IdeLanguageServerExtension
+import java.util.ArrayList
 import java.util.List
 import java.util.concurrent.CompletableFuture
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.util.CancelIndicator
 
 import static io.typefox.sprotty.api.ServerStatus.Severity.*
 
@@ -56,12 +59,6 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
      */
     @Inject
     KGraphDiagramState diagramState
-    
-    /**
-     * Provider to create a new diagram server
-     */
-    @Inject
-    Provider<IDiagramServer> diagramServerProvider
 	
 	override protected initializeDiagramServer(IDiagramServer server) {
 		super.initializeDiagramServer(server)
@@ -99,36 +96,15 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         }
         return path.doRead [ context |
             val status = context.resource.shouldGenerate(context.cancelChecker)
+            val uri = context.resource.URI.toString
+            val model = context.resource.contents.head
+            val cancelChecker = context.cancelChecker
             
             return (diagramServers as List<KGraphAwareDiagramServer>).map [ server |
                 server -> {
                     server.status = status
                     if (status.severity !== ERROR) {
-                        // retrieve the view context that may contain updated options for the KGraphDiagramGenerator.
-                        var ViewContext oldVC = null
-                        synchronized(diagramState) {
-                            oldVC = diagramState.getKGraphContext(context.resource.URI.toString)    
-                        }
-                        // translate the resource to the KGraph model and store it in the diagram state.
-                        val kGraphContext = KGraphDiagramGenerator.translateModel(context.resource.contents.head, oldVC)
-                        synchronized (diagramState) {
-                            diagramState.putURIString(server.clientId, context.resource.URI.toString)
-                            diagramState.putKGraphContext(context.resource.URI.toString, kGraphContext)
-                        }
-                        
-                        // generate the SGraph model from the KGraph model and store every later relevant part in the
-                        // diagram state.
-                        val diagramGenerator = diagramGeneratorProvider.get
-                        val sGraph = diagramGenerator.toSGraph(
-                            kGraphContext.viewModel, context.resource.URI.toString, context.cancelChecker)
-                        synchronized (diagramState) {
-                            diagramState.putKGraphToSModelElementMap(context.resource.URI.toString,
-                                diagramGenerator.getKGraphToSModelElementMap)
-                            diagramState.putTexts(context.resource.URI.toString, diagramGenerator.getModelLabels)
-                            diagramState.putTextMapping(context.resource.URI.toString, diagramGenerator.getTextMapping)
-                        }
-                        // finally, match the diagram server with the generated SGraph by returning the SGraph.
-                        sGraph
+                        createModel(server, model, uri, cancelChecker)
                     } else {
                         null
                     }
@@ -141,6 +117,36 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             LOG.error('Error while processing build results', throwable)
             return null
         ]
+    }
+    
+    protected def createModel(KGraphAwareDiagramServer server, Object model, String uri, CancelIndicator cancelChecker) {
+        if (!(model instanceof EObject)) {
+            return null
+        }
+        // retrieve the view context that may contain updated options for the KGraphDiagramGenerator.
+        var ViewContext oldVC = null
+        synchronized(diagramState) {
+            oldVC = diagramState.getKGraphContext(uri)    
+        }
+        // translate the resource to the KGraph model and store it in the diagram state.
+        val kGraphContext = KGraphDiagramGenerator.translateModel(model as EObject, oldVC)
+        synchronized (diagramState) {
+            diagramState.putURIString(server.clientId, uri)
+            diagramState.putKGraphContext(uri, kGraphContext)
+        }
+        
+        // generate the SGraph model from the KGraph model and store every later relevant part in the
+        // diagram state.
+        val diagramGenerator = diagramGeneratorProvider.get
+        val sGraph = diagramGenerator.toSGraph(
+            kGraphContext.viewModel, uri, cancelChecker)
+        synchronized (diagramState) {
+            diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
+            diagramState.putTexts(uri, diagramGenerator.getModelLabels)
+            diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
+        }
+        // finally, match the diagram server with the generated SGraph by returning the SGraph.
+        sGraph
     }
     
     override getOptions(GetOptionParam param) {
@@ -229,5 +235,37 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             viewContext.configureOption(option, value)
             return
         }
+    }
+    
+    /**
+     * Creates and sends the diagram for an arbitrary snapshot object for any source model to the client.
+     */
+    def showSnapshot(String uri, Object model, CancelIndicator cancelIndicator) {
+        val clientId = 'widget-diagram' // TODO: send this with the request
+        if (diagramServers.empty) {
+            return "ERR"
+        }
+        // check if some diagram server already has a diagram for this uri.
+        val closeClientIds = new ArrayList
+        diagramServers.forEach[ cId, diagramServer |
+            if (clientId.equals(cId)) {
+                closeClientIds.add(cId)
+            }
+        ]
+        // if there is one, close it and open the diagram with a new, initialized diagram server
+        closeClientIds.forEach[this.didClose(it)]
+        val diagramServer = this.getDiagramServer(clientId)
+        if (diagramServer instanceof KGraphAwareDiagramServer) {
+            val sGraph = this.createModel(diagramServer, model, uri, cancelIndicator)
+            if (sGraph !== null) {
+                diagramServer.requestTextSizesAndUpdateModel(sGraph)
+            }
+            return "OK"
+        }
+        return "ERR"
+        
+        // with that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
+        // use the 'model' as its model.
+        // invoke a RequestModelAction with the model Object as its resource?
     }
 }
