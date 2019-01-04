@@ -22,7 +22,9 @@ import de.cau.cs.kieler.klighd.util.KlighdProperties
 import io.typefox.sprotty.api.Action
 import io.typefox.sprotty.api.ActionMessage
 import io.typefox.sprotty.api.SModelRoot
+import io.typefox.sprotty.api.SetModelAction
 import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
+import java.util.Map
 import org.apache.log4j.Logger
 
 /**
@@ -102,5 +104,17 @@ public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
             kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
         }
         updateModel(currentRoot)
+    }
+    
+    /**
+     * Initializes the stored options in this diagram server. Usable if a diagram server is created by something other
+     * than a {@link SetModelAction}.
+     * 
+     * @param options The options to be initialized on this diagram server.
+     */
+    public def initializeOptions(Map<String, String> options) {
+        if (getOptions.isEmpty) {
+            setOptions(options)
+        }
     }
 }

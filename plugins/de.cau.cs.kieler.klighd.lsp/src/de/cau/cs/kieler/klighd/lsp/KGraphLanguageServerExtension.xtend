@@ -25,6 +25,7 @@ import io.typefox.sprotty.api.ActionMessage
 import io.typefox.sprotty.api.IDiagramServer
 import io.typefox.sprotty.api.RequestModelAction
 import io.typefox.sprotty.server.xtext.ILanguageAwareDiagramServer
+import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
 import io.typefox.sprotty.server.xtext.ide.IdeLanguageServerExtension
 import java.util.ArrayList
 import java.util.List
@@ -97,7 +98,15 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         return path.doRead [ context |
             val status = context.resource.shouldGenerate(context.cancelChecker)
             val uri = context.resource.URI.toString
-            val model = context.resource.contents.head
+            var Object snapshotModel = null
+            synchronized(diagramState) {
+                snapshotModel = diagramState.getSnapshotModel(path)
+            }
+            val model = if (snapshotModel === null) {
+                            context.resource.contents.head
+                        } else {
+                            snapshotModel
+                        }
             val cancelChecker = context.cancelChecker
             
             return (diagramServers as List<KGraphAwareDiagramServer>).map [ server |
@@ -119,31 +128,31 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         ]
     }
     
-    protected def createModel(KGraphAwareDiagramServer server, Object model, String uri, CancelIndicator cancelChecker) {
+    protected def createModel(KGraphAwareDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
         if (!(model instanceof EObject)) {
             return null
         }
         // retrieve the view context that may contain updated options for the KGraphDiagramGenerator.
         var ViewContext oldVC = null
         synchronized(diagramState) {
-            oldVC = diagramState.getKGraphContext(uri)    
+            oldVC = diagramState.getKGraphContext(id)    
         }
         // translate the resource to the KGraph model and store it in the diagram state.
         val kGraphContext = KGraphDiagramGenerator.translateModel(model as EObject, oldVC)
         synchronized (diagramState) {
-            diagramState.putURIString(server.clientId, uri)
-            diagramState.putKGraphContext(uri, kGraphContext)
+            diagramState.putURIString(server.clientId, id)
+            diagramState.putKGraphContext(id, kGraphContext)
         }
         
         // generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         val diagramGenerator = diagramGeneratorProvider.get
         val sGraph = diagramGenerator.toSGraph(
-            kGraphContext.viewModel, uri, cancelChecker)
+            kGraphContext.viewModel, id, cancelChecker)
         synchronized (diagramState) {
-            diagramState.putKGraphToSModelElementMap(uri, diagramGenerator.getKGraphToSModelElementMap)
-            diagramState.putTexts(uri, diagramGenerator.getModelLabels)
-            diagramState.putTextMapping(uri, diagramGenerator.getTextMapping)
+            diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
+            diagramState.putTexts(id, diagramGenerator.getModelLabels)
+            diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
         }
         // finally, match the diagram server with the generated SGraph by returning the SGraph.
         sGraph
@@ -256,6 +265,12 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         closeClientIds.forEach[this.didClose(it)]
         val diagramServer = this.getDiagramServer(clientId)
         if (diagramServer instanceof KGraphAwareDiagramServer) {
+            synchronized(diagramState) {
+                diagramState.putSnapshotModel(uri, model)
+            }
+            diagramServer.initializeOptions(#{
+                LanguageAwareDiagramServer.OPTION_SOURCE_URI -> uri
+            }) 
             val sGraph = this.createModel(diagramServer, model, uri, cancelIndicator)
             if (sGraph !== null) {
                 diagramServer.requestTextSizesAndUpdateModel(sGraph)

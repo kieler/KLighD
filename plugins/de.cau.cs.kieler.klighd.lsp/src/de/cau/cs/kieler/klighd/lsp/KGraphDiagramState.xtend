@@ -55,6 +55,11 @@ public class KGraphDiagramState {
     private Map<String, Map<String, KText>> textMapping = new HashMap
     
     /**
+     * Contains the model of the currently drawn snapshot for the url of the model, if available.
+     */
+    private Map<String, Object> snapshotModelMapping = new HashMap
+    
+    /**
      * A map to map the sprotty client id to the uri leading to the resource.
      */
     private Map<String, String> uriStringMap = new HashMap
@@ -155,6 +160,25 @@ public class KGraphDiagramState {
     }
     
     /**
+     * Getter to access the value stored in the snapshotModel map.
+     * 
+     * @param key The key to access the value in the map.
+     */
+    public def Object getSnapshotModel(String key) {
+        snapshotModelMapping.get(key)
+    }
+    
+    /**
+     * Put method to put a new value in the uriString map under the given key.
+     * 
+     * @param key The key to access the map.
+     * @param value The value to be stored in the map.
+     */
+    public def putSnapshotModel(String key, Object value) {
+        snapshotModelMapping.put(key, value)
+    }
+    
+    /**
      * removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
      * 
      * @param clientId The client ID of the diagram server for that no map should store any data anymore.
@@ -166,6 +190,7 @@ public class KGraphDiagramState {
             kGraphToSModelElementMap.remove(key)
             texts.remove(key)
             textMapping.remove(key)
+            snapshotModelMapping.remove(key)
             uriStringMap.remove(clientId)
         }
     }
