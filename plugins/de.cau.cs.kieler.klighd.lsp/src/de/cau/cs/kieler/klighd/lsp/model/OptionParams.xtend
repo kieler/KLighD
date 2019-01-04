@@ -37,7 +37,7 @@ class GetOptionParam {
 @Data
 class SetOptionParam {
     /**
-     * The {@code uri} pointing towards the resource that should update its options
+     * The {@code uri} pointing towards the resource that should update its options.
      */
     String uri
     
@@ -49,13 +49,14 @@ class SetOptionParam {
 
 /**
  * Data class to hold the identifying {@code name} for a {@link SynthesisOption} and a {@currentValue} of that option.
+ * For unique identification also contains the type and the category.
  * 
  * @author nir
  */
 @Data
 class SynthesisOptionValue {
     /**
-     * Name of the {@link SynthesisOption}
+     * Name of the {@link SynthesisOption}.
      */
     String name
     
@@ -63,4 +64,16 @@ class SynthesisOptionValue {
      * Value that the {@link SynthesisOption} should currently have.
      */
     Object currentValue
+    
+    /**
+     * Type of the {@link SynthesisOption}.
+     */
+    String type
+    
+    /**
+     * The category of the {@SynthesisOption}.
+     */
+    SynthesisOptionValue category
+    
+    
 }
