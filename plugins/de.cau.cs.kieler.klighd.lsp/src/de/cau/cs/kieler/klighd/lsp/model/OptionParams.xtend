@@ -17,7 +17,7 @@ import java.util.List
 import org.eclipse.xtend.lib.annotations.Data
 
 /**
- * Data class to hold the parameters of the kCharts/getOptions message.
+ * Data class to hold the parameters of the keith/diagramOptions/getOptions message.
  * 
  * @author nir
  */
@@ -30,7 +30,7 @@ class GetOptionParam {
 }
 
 /**
- * Data class to hold the parameters of the kCharts/sendOptions message.
+ * Data class to hold the parameters of the keith/diagramOptions/sendOptions message.
  * 
  * @author nir
  */
@@ -74,6 +74,4 @@ class SynthesisOptionValue {
      * The category of the {@SynthesisOption}.
      */
     SynthesisOptionValue category
-    
-    
 }

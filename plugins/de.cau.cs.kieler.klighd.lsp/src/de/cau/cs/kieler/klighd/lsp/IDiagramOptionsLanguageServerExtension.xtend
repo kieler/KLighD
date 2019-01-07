@@ -25,15 +25,14 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
  * 
  * @author nir
  */
-@JsonSegment('keith')
+@JsonSegment('keith/diagramOptions')
 public interface IDiagramOptionsLanguageServerExtension {
     
     /**
      * Method called by a client to get a list of all {@link SynthesisOption}s defined for a diagram handled by 
      * the {@link KGraphLanguageServerExtension}.
      * 
-     * @param param Defines the {@code param.path} to the source model of that diagram and {@code param.waitForDiagram}
-     * indicates if a diagram generation was issued at the same time so this getOptions call may wait for that.
+     * @param param Defines the {@code param.path} to the source model of that diagram.
      * @return A list of all synthesis options, if the diagram for {@code param.path} is opened, {@code null} otherwise.
      */
     @JsonRequest('getOptions')
