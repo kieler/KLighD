@@ -125,6 +125,12 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * Generates unique IDs for any KGraphElement.
      */
     private KGraphElementIDGenerator idGen
+    
+    /**
+     * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
+     * element of each pair.
+     */
+    private List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
 
     /**
      * Creates a {@link ViewContext} containing the KGraph model for any {@link EObject} model with a registered 
@@ -165,6 +171,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         textMapping = new HashMap
         modelLabels = new ArrayList
         idGen = new KGraphElementIDGenerator
+        edgesToGenerate = new ArrayList
         
         // generate an SGraph root element around the translation of the parent KNode.
         diagramRoot = new SKGraph => [
@@ -173,7 +180,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             children = new ArrayList
         ]
         
-        diagramRoot.children.addAll(createNodesAndEdges(#[parentNode]))
+        diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot.children))
+        createEdges()
         
 //        val endTime = System.currentTimeMillis
 //        println("SGraph generation finished after " + (endTime - startTime) + "ms.")
@@ -191,8 +199,9 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * The edges are translated together with the nodes, because {@link KNode}s contain {@link KEdge}s in the field 
      * {@link KNode#getOutgoingEdges} as children, whereas outgoing {@link SEdge}s are siblings of their originating 
      * {@link SNode}s.
+     * The edges are stored to be generated later in the {@code edgesToGenerate} list and need to be generated later.
      */
-    private def List<SModelElement> createNodesAndEdges(List<KNode> nodes) {
+    private def List<SModelElement> createNodesAndPrepareEdges(List<KNode> nodes, List<SModelElement> parent) {
         val nodeAndEdgeElements = new ArrayList
         // add all node children
         for (node : nodes) {
@@ -202,17 +211,34 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             nodeElement.trace(node)
         }
         
-        // after all nodes have been generated, generate their edges as children. The order is important, because the 
-        // edges need to refer to the IDs of their source and target nodes, generated in the lines above.
+        // Add all edges in a list to be generated later, as they need their source and target nodes or ports
+        // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
+        // they can only be generated safely in the end.
         for (node : nodes) {
             for (edge : node.outgoingEdges) {
-                val SEdge edgeElement = generateEdge(edge)
-                nodeAndEdgeElements.add(edgeElement)
-                kGraphToSModelElementMap.put(edge, edgeElement)
-                edgeElement.trace(edge)
+                edgesToGenerate.add(edge -> parent)
             }
         }
         return nodeAndEdgeElements
+    }
+    
+    /**
+     * Function to be called after the the {@link SKGraph} has been generated and all edges are prepared to be added
+     * in the {@link edgesToGenerate} field. This method translates all {@link KEdge}s in the {@link edgesToGenerate}
+     * field to {@link SModelElement}s and adds them to their corresponding parent SModelElement.
+     * Also handles tracing and mapping between {@link KGraphElement}s and SModelElements.
+     */
+    private def createEdges() {
+        edgesToGenerate.forEach[ edgeAndParent |
+            val edge = edgeAndParent.key
+            val parent = edgeAndParent.value
+            val SEdge edgeElement = generateEdge(edge)
+            if (edgeElement !== null) {
+                parent.add(edgeElement)
+                kGraphToSModelElementMap.put(edge, edgeElement)
+                edgeElement.trace(edge)
+            }
+        ]
     }
     
     /**
@@ -275,7 +301,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         modelLabels.addAll(findTextsAndLabels(node.data))
         
         nodeElement.children.addAll(createPorts(node.ports))
-        nodeElement.children.addAll(createNodesAndEdges(node.children))
+        nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement.children))
         nodeElement.children.addAll(createLabels(node.labels))
         return nodeElement 
     }
@@ -290,15 +316,34 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         val fromElementId = 
             /* The source (target) of an edge can be a port or a node. Prefer the port, if available. */
             if (edge.sourcePort !== null) {
-                kGraphToSModelElementMap.get(edge.sourcePort).id
+                val element = kGraphToSModelElementMap.get(edge.sourcePort)
+                if (element === null) {
+                    // If the element is not a part of the view model, just ignore it.
+                    return null
+                }
+                element.id
             } else {
-                kGraphToSModelElementMap.get(edge.source).id
+                val element = kGraphToSModelElementMap.get(edge.source)
+                if (element === null) {
+                    return null
+                }
+                element.id
             }
         val toElementId = 
             if (edge.targetPort !== null) {
-                kGraphToSModelElementMap.get(edge.targetPort).id
+                val element = kGraphToSModelElementMap.get(edge.targetPort)
+                if (element === null) {
+                    return null
+                } else {
+                    element.id
+                }
             } else {
-                kGraphToSModelElementMap.get(edge.target).id
+                val element = kGraphToSModelElementMap.get(edge.target)
+                if (element === null) {
+                    return null
+                } else {
+                    element.id
+                }
             }
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
         
