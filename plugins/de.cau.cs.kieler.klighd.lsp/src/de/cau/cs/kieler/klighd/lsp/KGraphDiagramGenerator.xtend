@@ -133,10 +133,10 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     private List<Pair<KEdge, List<SModelElement>>> edgesToGenerate
 
     /**
-     * Creates a {@link ViewContext} containing the KGraph model for any {@link EObject} model with a registered 
+     * Creates a {@link ViewContext} containing the KGraph model for any {@link Object} model with a registered 
      * transformation in KLighD. 
      */
-    public static def ViewContext translateModel(EObject model, ViewContext oldVC) {
+    public static def ViewContext translateModel(Object model, ViewContext oldVC) {
         return LightDiagramServices.translateModel2(model, oldVC)
     }
 	

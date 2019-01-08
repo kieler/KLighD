@@ -30,7 +30,6 @@ import io.typefox.sprotty.server.xtext.ide.IdeLanguageServerExtension
 import java.util.ArrayList
 import java.util.List
 import java.util.concurrent.CompletableFuture
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.util.CancelIndicator
 
 import static io.typefox.sprotty.api.ServerStatus.Severity.*
@@ -129,16 +128,13 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
     }
     
     protected def createModel(KGraphAwareDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
-        if (!(model instanceof EObject)) {
-            return null
-        }
         // retrieve the view context that may contain updated options for the KGraphDiagramGenerator.
         var ViewContext oldVC = null
         synchronized(diagramState) {
             oldVC = diagramState.getKGraphContext(id)    
         }
         // translate the resource to the KGraph model and store it in the diagram state.
-        val kGraphContext = KGraphDiagramGenerator.translateModel(model as EObject, oldVC)
+        val kGraphContext = KGraphDiagramGenerator.translateModel(model, oldVC)
         synchronized (diagramState) {
             diagramState.putURIString(server.clientId, id)
             diagramState.putKGraphContext(id, kGraphContext)
