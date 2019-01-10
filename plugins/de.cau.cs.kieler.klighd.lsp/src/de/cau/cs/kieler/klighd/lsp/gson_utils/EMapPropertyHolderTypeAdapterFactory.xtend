@@ -17,6 +17,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder
 import de.cau.cs.kieler.klighd.lsp.utils.BoundsProperties
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 
 /**
  * Type adapter that adds fields to EMapPropertyHolder objects during serialization. The added fields are taken from
@@ -64,6 +65,10 @@ public class EMapPropertyHolderTypeAdapterFactory extends CustomizedTypeAdapterF
         if (source.hasProperty(BoundsProperties.CALCULATED_DECORATION_MAP)) {
             data.add("calculatedDecorationMap", gson.toJsonTree(
                 source.getProperty(BoundsProperties.CALCULATED_DECORATION_MAP)))
+        }
+        if (source.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
+            data.add("calculatedTextBounds", gson.toJsonTree(
+                source.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)))
         }
     }
     
