@@ -909,7 +909,9 @@ public final class PlacementUtil {
         if (kText != null) {
             // If the KText has already estimated bounds, use them.
             if (kText.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
-                return kText.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS);
+                // The bounds need to be copied, because otherwise they would be changed by the caller of this method,
+                // specifically the GridPlacementUtil.estimateGridSize::501 changes its cellSize (which is this object).
+                return new Bounds(kText.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS));
             }
             
             // special handling required for the regression tests
