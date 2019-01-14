@@ -23,6 +23,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphFactory
 import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KText
@@ -180,7 +181,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             children = new ArrayList
         ]
         
-        diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot.children))
+        diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot))
         createEdges()
         
 //        val endTime = System.currentTimeMillis
@@ -201,7 +202,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * {@link SNode}s.
      * The edges are stored to be generated later in the {@code edgesToGenerate} list and need to be generated later.
      */
-    private def List<SModelElement> createNodesAndPrepareEdges(List<KNode> nodes, List<SModelElement> parent) {
+    private def List<SModelElement> createNodesAndPrepareEdges(List<KNode> nodes, SModelElement parent) {
         val nodeAndEdgeElements = new ArrayList
         // add all node children
         for (node : nodes) {
@@ -209,18 +210,25 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             nodeAndEdgeElements.add(nodeElement)
             kGraphToSModelElementMap.put(node, nodeElement)
             nodeElement.trace(node)
-        }
-        
-        // Add all edges in a list to be generated later, as they need their source and target nodes or ports
-        // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
-        // they can only be generated safely in the end.
-        for (node : nodes) {
+            
+            // Add all edges in a list to be generated later, as they need their source and target nodes or ports
+            // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
+            // they can only be generated safely in the end.
             for (edge : node.outgoingEdges) {
-                edgesToGenerate.add(edge -> parent)
+                // if target node is directly or indirectly contained by the source node
+                if (KGraphUtil.isDescendant(edge.target, node)) {
+                    // then generated element of node (add to its children)
+                    edgesToGenerate.add(edge -> nodeElement.children)
+                } else {
+                    // otherwise the source node's parent generated element (add to its children)
+                    edgesToGenerate.add(edge -> parent.children)
+                }
             }
         }
         return nodeAndEdgeElements
     }
+    
+    
     
     /**
      * Function to be called after the the {@link SKGraph} has been generated and all edges are prepared to be added
@@ -301,7 +309,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         modelLabels.addAll(findTextsAndLabels(node.data))
         
         nodeElement.children.addAll(createPorts(node.ports))
-        nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement.children))
+        nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
         nodeElement.children.addAll(createLabels(node.labels))
         return nodeElement 
     }
