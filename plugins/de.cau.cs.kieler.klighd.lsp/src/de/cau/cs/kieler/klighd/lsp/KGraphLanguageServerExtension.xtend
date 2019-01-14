@@ -177,23 +177,21 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                 }
                 val synthesisOptions = viewContext.displayedSynthesisOptions
                 for (paramSynthesisOption : param.synthesisOptions) {
-                    // The options in the parameter are a newly generated object, so it needs to be matched to the 
-                    // option of the viewContext.
-                    val synthesisOption = synthesisOptions.findFirst [
-                        var boolean categoryEquals
-                        // Category matches, if both are null or their names match.
-                        if (getCategory === null) {
-                            categoryEquals = paramSynthesisOption.category === null
-                        } else {
-                            categoryEquals = paramSynthesisOption.category !== null
-                                && getCategory.name.equals(paramSynthesisOption.category.name)   
+                    // Translated type strings for the types Separator (3) and Category (4). Do not try to write these options. 
+                    if (!("3".equals(paramSynthesisOption.type) || "4".equals(paramSynthesisOption.type))) {
+                        // The options in the parameter are a newly generated object, so it needs to be matched to the 
+                        // option of the viewContext.
+                        val synthesisOption = synthesisOptions.findFirst [
+                            System.identityHashCode(it) === paramSynthesisOption.sourceHash
+                        ]
+                        if (synthesisOption === null) {
+                            // A changed option cannot be found.
+                            return "ERR"
                         }
-                        // The category, name and its type must match. This is enough to identify the option.
-                        return categoryEquals
-                            && name.equals(paramSynthesisOption.name)
-                            && typeEquals(paramSynthesisOption.type)
-                    ]
-                    configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
+                        else {                    
+                            configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
+                        }
+                    }
                 }
                 this.doUpdateDiagrams(#[context.resource.URI])
                 return "OK"
@@ -279,7 +277,9 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             }
             diagramServer.initializeOptions(#{
                 LanguageAwareDiagramServer.OPTION_SOURCE_URI -> uri
-            }) 
+            })
+            // with that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
+            // use the 'model' as its model.
             val sGraph = this.createModel(diagramServer, model, uri, cancelIndicator)
             if (sGraph !== null) {
                 diagramServer.requestTextSizesAndUpdateModel(sGraph)
@@ -287,35 +287,5 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             return "OK"
         }
         return "ERR"
-        
-        // with that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
-        // use the 'model' as its model.
-        // invoke a RequestModelAction with the model Object as its resource?
-    }
-    
-    /**
-     * Returns if the String representation of the type of the {@code option} matches the {@code type}.
-     */
-    def boolean typeEquals(SynthesisOption option, String type) {
-        switch(type) {
-            case "0": {
-                return option.isCheckOption
-            }
-            case "1": {
-                return option.isChoiceOption
-            }
-            case "2": {
-                return option.isRangeOption
-            }
-            case "3": {
-                return option.isSeparator
-            }
-            case "4": {
-                return option.isCategory
-            }
-            default: {
-                throw new IllegalArgumentException("Given type is no possible type of a synthesis option: " + type)
-            }
-        }
     }
 }

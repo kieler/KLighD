@@ -123,6 +123,7 @@ public class KGraphTypeAdapterUtil {
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)
 //        .registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
         .registerTypeAdapterFactory(new EMapPropertyHolderTypeAdapterFactory(gsonBuilder))
+        .registerTypeAdapterFactory(new SynthesisOptionTypeAdapterFactory())
         .setExclusionStrategies(
             new EObjectFieldExclusionStrategy, 
             new KRenderingRefFieldExclusionStrategy,

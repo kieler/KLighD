@@ -74,4 +74,9 @@ class SynthesisOptionValue {
      * The category of the {@SynthesisOption}.
      */
     SynthesisOptionValue category
+    
+    /**
+     * The identifying hash value of the {@SynthesisOption} this value belongs to.
+     */
+    int sourceHash
 }
