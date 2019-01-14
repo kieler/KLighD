@@ -439,7 +439,9 @@ public class Bounds {
 
     /**
      * An immutable variant of {@link Bounds} that can be used to make sure the bounds are not
-     * changed. Note that this can be ensured for usages in different packages only.
+     * changed. Note that this can be ensured for usages in different packages only. Since the fields in this class are
+     * package private, any instance of these ImmutableBounds used with KLighD methods from this package may still be
+     * changed.
      *
      * @author chsch
      */
@@ -483,6 +485,16 @@ public class Bounds {
 
         @Override
         void setBounds(final Bounds bounds) {
+            throw new UnsupportedOperationException(MSG);
+        }
+
+        @Override
+        void setBounds(final Rectangle2D rect) {
+            throw new UnsupportedOperationException(MSG);
+        }
+
+        @Override
+        public Bounds move(final float hor, final float vert) {
             throw new UnsupportedOperationException(MSG);
         }
     }
