@@ -249,6 +249,12 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             if (value instanceof Double) {
                 viewContext.configureOption(option, value.floatValue)
                 return
+            } else if (value instanceof String) {
+                viewContext.configureOption(option, Integer.parseInt(value))
+            } else {
+                throw new IllegalArgumentException("The value set to an option received from a JSON message can only"
+                    + "be a Double or a String! Found" + value.class
+                )
             }
         } else {
             viewContext.configureOption(option, value)
