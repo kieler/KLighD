@@ -134,7 +134,10 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             oldVC = diagramState.getKGraphContext(id)    
         }
         // translate the resource to the KGraph model and store it in the diagram state.
-        val kGraphContext = KGraphDiagramGenerator.translateModel(model, oldVC)
+        var ViewContext kGraphContext = null
+        synchronized (model) {
+            kGraphContext = KGraphDiagramGenerator.translateModel(model, oldVC)        
+        }
         synchronized (diagramState) {
             diagramState.putURIString(server.clientId, id)
             diagramState.putKGraphContext(id, kGraphContext)
