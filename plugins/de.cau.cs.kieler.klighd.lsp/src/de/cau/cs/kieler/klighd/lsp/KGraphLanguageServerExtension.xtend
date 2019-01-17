@@ -265,20 +265,23 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
     /**
      * Creates and sends the diagram for an arbitrary snapshot object for any source model to the client.
      */
-    def showSnapshot(String uri, Object model, CancelIndicator cancelIndicator) {
+    def showSnapshot(String uri, Object model, CancelIndicator cancelIndicator, boolean update) {
         val clientId = 'widget-diagram' // TODO: send this with the request
-        if (diagramServers.empty) {
-            return "ERR"
+//        if (diagramServers.empty) {
+//            return "ERR"
+//        }
+        if (!update) {
+            // check if some diagram server already has a diagram for this uri.
+            val closeClientIds = new ArrayList
+            diagramServers.forEach[ cId, diagramServer |
+                if (clientId.equals(cId)) {
+                    closeClientIds.add(cId)
+                }
+            ]
+            // if there is one, close it and open the diagram with a new, initialized diagram server
+            closeClientIds.forEach[this.didClose(it)]
         }
-        // check if some diagram server already has a diagram for this uri.
-        val closeClientIds = new ArrayList
-        diagramServers.forEach[ cId, diagramServer |
-            if (clientId.equals(cId)) {
-                closeClientIds.add(cId)
-            }
-        ]
-        // if there is one, close it and open the diagram with a new, initialized diagram server
-        closeClientIds.forEach[this.didClose(it)]
+        
         val diagramServer = this.getDiagramServer(clientId)
         if (diagramServer instanceof KGraphAwareDiagramServer) {
             synchronized(diagramState) {
@@ -289,7 +292,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             })
             // with that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
             // use the 'model' as its model.
-            val sGraph = this.createModel(diagramServer, model, uri, cancelIndicator)
+            val sGraph = this.createModel(diagramServer, model, uri, CancelIndicator.NullImpl)
             if (sGraph !== null) {
                 diagramServer.requestTextSizesAndUpdateModel(sGraph)
             }
