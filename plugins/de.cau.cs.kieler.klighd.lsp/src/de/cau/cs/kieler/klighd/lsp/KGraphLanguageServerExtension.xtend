@@ -218,9 +218,12 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             }
             // If the string representation matches between an option value and the new value, use that.
             var newOption = option.values.findFirst[toString.equals(value.toString)]
-            if (newOption instanceof SynthesisOption) {
-                viewContext.configureOption(option, value)
+            if (option.values.contains(newOption)) {
+                viewContext.configureOption(option, newOption)
                 return
+            }
+            if (newOption instanceof String) {
+                println("Here")
             }
             // Every number (including int) will be represented as a double in a possible JavaScript server.
             // Because of that, try to match the new value to an int.
@@ -229,8 +232,8 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             ) {
                 val intValue = Math.round(value as Double)
                 newOption = option.values.findFirst[toString.equals(intValue.toString)]
-                if (newOption instanceof SynthesisOption) {
-                    viewContext.configureOption(option, value)
+                if (option.values.contains(newOption)) {
+                    viewContext.configureOption(option, newOption)
                     return
                 }
                 // try to view the option as an Enum. If the ordinal matches, take that option.

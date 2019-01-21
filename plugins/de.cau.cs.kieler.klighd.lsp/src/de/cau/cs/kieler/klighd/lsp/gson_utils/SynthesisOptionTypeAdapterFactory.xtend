@@ -12,14 +12,16 @@
  */
 package de.cau.cs.kieler.klighd.lsp.gson_utils
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
+import com.google.gson.JsonNull
 import com.google.gson.JsonPrimitive
 import de.cau.cs.kieler.klighd.SynthesisOption
-import com.google.gson.JsonNull
 
 /**
  * Type adapter that adds fields to SynthesisOption objects during serialization. It adds the hash value of the object
  * under the field name 'sourceHash' so it can be uniquely identified.
+ * Also handles a consistent translation to string for the names of option values.
  * 
  * @author nir
  */
@@ -30,8 +32,24 @@ public class SynthesisOptionTypeAdapterFactory extends CustomizedTypeAdapterFact
     
     override protected void beforeWrite(SynthesisOption source, JsonElement toSerialize) {
         if (!(toSerialize instanceof JsonNull) && source !== null) {
+            // Add the hash value
             val json = toSerialize.getAsJsonObject()
             json.add("sourceHash", new JsonPrimitive(System.identityHashCode(source)))
+            
+            // rename enums
+            if (source.values !== null &&  !source.values.empty && source.values.head instanceof Enum) {
+                // Remove the values and add them back in with their string representation.
+                json.remove("values")
+                val values = new JsonArray
+                for (value : source.values) {
+                    values.add(new JsonPrimitive(value.toString))
+                }
+                json.add("values", values)
+                // Repeat the same for the initial value
+                json.remove("initialValue")
+                val initialValue = new JsonPrimitive(source.initialValue.toString)
+                json.add("initialValue", initialValue)
+            }
         }
     }
     
