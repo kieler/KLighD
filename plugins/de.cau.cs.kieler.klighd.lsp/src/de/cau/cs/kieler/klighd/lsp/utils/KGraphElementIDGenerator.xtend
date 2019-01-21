@@ -36,7 +36,12 @@ public class KGraphElementIDGenerator {
     /**
      * Internal map to remember the ID for all {@link KGraphElement}s for that IDs already have been generated.
      */
-    private Map<KGraphElement, String> idMap
+    private Map<KGraphElement, String> elementToIdMap
+    
+    /**
+     * Internal map to remember the {@link KGraphElement} for all IDs for that IDs already have been generated.
+     */
+    private Map<String, KGraphElement> idToElementMap
     
     /**
      * A random value used to generate unique IDs for elements without a name.
@@ -67,7 +72,8 @@ public class KGraphElementIDGenerator {
     public static final char LABEL_SEPARATOR = 'L'
     
     new() {
-        idMap = new HashMap
+        elementToIdMap = new HashMap
+        idToElementMap = new HashMap
         
         val r = new Random
         randomOffset = r.nextInt
@@ -80,8 +86,8 @@ public class KGraphElementIDGenerator {
         var String id = null
         
         // if the ID was already calculated, use that
-        if (idMap.get(element) !== null) {
-            return idMap.get(element)
+        if (elementToIdMap.get(element) !== null) {
+            return elementToIdMap.get(element)
         }
         
         // the root node is just called $root
@@ -99,47 +105,45 @@ public class KGraphElementIDGenerator {
         var String elementId = null
         
         val identifier = element.data.filter(KIdentifier)
+        var char elementSeparator
+        var int parentOffset
         
         switch (element) {
             KNode: {
-                if (identifier.empty) {
-                    val parentOffset = (parent as KNode).children.indexOf(element)
-                    elementId = "" + ID_SEPARATOR + NODE_SEPARATOR + (parentOffset + randomOffset)
-                } else {
-                    elementId = NODE_SEPARATOR + identifier.head.id
-                }
+                parentOffset = (parent as KNode).children.indexOf(element)
+                elementSeparator = NODE_SEPARATOR
             }
             KEdge: {
-                if (identifier.empty) {
-                    val parentOffset = (parent as KNode).outgoingEdges.indexOf(element)
-                    elementId = "" + ID_SEPARATOR + EDGE_SEPARATOR + (parentOffset + randomOffset)
-                } else {
-                    elementId = EDGE_SEPARATOR + identifier.head.id
-                }
+                parentOffset = (parent as KNode).outgoingEdges.indexOf(element)
+                elementSeparator = EDGE_SEPARATOR
             }
             KLabel: {
-                if (identifier.empty) {
-                    val parentOffset = (parent as KLabeledGraphElement).labels.indexOf(element)
-                    elementId = "" + ID_SEPARATOR + LABEL_SEPARATOR + (parentOffset + randomOffset)
-                } else {
-                    elementId = LABEL_SEPARATOR + identifier.head.id
-                }
+                parentOffset = (parent as KLabeledGraphElement).labels.indexOf(element)
+                elementSeparator = LABEL_SEPARATOR
             }
-            KPort: {
-                if (identifier.empty) {
-                    val parentOffset = (parent as KNode).ports.indexOf(element)
-                    elementId = "" + ID_SEPARATOR + PORT_SEPARATOR + (parentOffset + randomOffset)
-                } else {
-                    elementId = PORT_SEPARATOR + identifier.head.id
-                }
+            KPort: { 
+                parentOffset = (parent as KNode).ports.indexOf(element)
+                elementSeparator = PORT_SEPARATOR
             }
             default: {
                 throw new IllegalArgumentException("Can not generate an id for element of type " + element.class)
             }
         }
         
-        id = parentId + ID_SEPARATOR + elementId
-        idMap.put(element, id)
+        if (identifier.empty) {
+            elementId = "" + ID_SEPARATOR + elementSeparator + (parentOffset + randomOffset)
+        } else {
+            elementId = elementSeparator + identifier.head.id
+        }
+        
+        val baseId = parentId + ID_SEPARATOR + elementId
+        // If the KIdentifier is not unique between its siblings, make the ID unique with a counter in the end.
+        id = baseId
+        for (var cnt = 2; idToElementMap.containsKey(id); cnt++) {
+            id = baseId + ID_SEPARATOR + ID_SEPARATOR + "copy" + cnt
+        }
+        elementToIdMap.put(element, id)
+        idToElementMap.put(id, element)
         return id
     }
 }
