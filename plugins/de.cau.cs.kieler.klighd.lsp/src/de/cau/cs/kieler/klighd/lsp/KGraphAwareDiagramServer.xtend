@@ -57,6 +57,7 @@ public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
                 throw new NullPointerException("The id of the SGraph was not found in the diagramState")
             } else if (texts.empty) {
                 updateModel(newRoot)
+                return
             }
             val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
             dispatch(new RequestTextBoundsAction(textDiagram))
