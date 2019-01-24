@@ -66,9 +66,10 @@ public class KGraphLayoutEngine extends ElkLayoutEngine {
             configurators.add(configurator)
             lightDiagramLayoutConfig.options(configurators)
             
-            lightDiagramLayoutConfig.performLayout
-            
-            MicroLayoutUtil.calculateAbsoluteBounds(kGraphContext.viewModel)
+            synchronized(kGraphContext.viewModel) {
+                lightDiagramLayoutConfig.performLayout
+                MicroLayoutUtil.calculateAbsoluteBounds(kGraphContext.viewModel)
+            }
             
             // map layouted KGraph to SGraph
             KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
