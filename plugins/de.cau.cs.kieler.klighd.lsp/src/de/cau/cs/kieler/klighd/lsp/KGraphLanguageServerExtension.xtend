@@ -180,20 +180,17 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                 }
                 val synthesisOptions = viewContext.displayedSynthesisOptions
                 for (paramSynthesisOption : param.synthesisOptions) {
-                    // Translated type strings for the types Separator (3) and Category (4). Do not try to write these options. 
-                    if (!("3".equals(paramSynthesisOption.type) || "4".equals(paramSynthesisOption.type))) {
-                        // The options in the parameter are a newly generated object, so it needs to be matched to the 
-                        // option of the viewContext.
-                        val synthesisOption = synthesisOptions.findFirst [
-                            System.identityHashCode(it) === paramSynthesisOption.sourceHash
-                        ]
-                        if (synthesisOption === null) {
-                            // A changed option cannot be found.
-                            return "ERR"
-                        }
-                        else {                    
-                            configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
-                        }
+                    // The options in the parameter are a newly generated object, so it needs to be matched to the 
+                    // option of the viewContext.
+                    val synthesisOption = synthesisOptions.findFirst [
+                        System.identityHashCode(it) === paramSynthesisOption.sourceHash
+                    ]
+                    if (synthesisOption === null) {
+                        // A changed option cannot be found.
+                        return "ERR"
+                    }
+                    else {
+                        configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
                     }
                 }
                 this.doUpdateDiagrams(#[context.resource.URI])

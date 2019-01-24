@@ -48,32 +48,16 @@ class SetOptionParam {
 }
 
 /**
- * Data class to hold the identifying {@code name} for a {@link SynthesisOption} and a {@currentValue} of that option.
- * For unique identification also contains the type and the category.
+ * Data class to hold the identifying {@code sourceHash} for a {@link SynthesisOption} and a {@currentValue} of that option.
  * 
  * @author nir
  */
 @Data
 class SynthesisOptionValue {
     /**
-     * Name of the {@link SynthesisOption}.
-     */
-    String name
-    
-    /**
-     * Value that the {@link SynthesisOption} should currently have.
+     * Value that the {@link SynthesisOption} should currently has.
      */
     Object currentValue
-    
-    /**
-     * Type of the {@link SynthesisOption}.
-     */
-    String type
-    
-    /**
-     * The category of the {@SynthesisOption}.
-     */
-    SynthesisOptionValue category
     
     /**
      * The identifying hash value of the {@SynthesisOption} this value belongs to.
