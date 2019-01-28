@@ -267,6 +267,7 @@ public final class MicroLayoutUtil {
                 
                 // Now evaluate the decorator placement micro layout with the help of KLighD.
                 decoration = PiccoloPlacementUtil.evaluateDecoratorPlacement(placementData, path)
+                bounds = decoration.bounds
             }
         }
         // Decide if the bounds and decoration should be put in the boundsMap/decorationMap or in the rendering's
