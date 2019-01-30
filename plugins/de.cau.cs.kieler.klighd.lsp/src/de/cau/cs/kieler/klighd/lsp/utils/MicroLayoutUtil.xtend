@@ -153,6 +153,7 @@ public final class MicroLayoutUtil {
     /**
      * Calculate the size and position of all child renderings recursively. The boundsMap and decorationMap again indicate
      * if is should be stored in them (not null) or in the rendering's properties themselves.
+     * Inspired by {@link de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController}.
      * 
      * @param renderings The child renderings to calculate the sizes and decorations for.
      * @param placement The defined placement of the child renderings.
@@ -210,7 +211,7 @@ public final class MicroLayoutUtil {
     private static def void handleAreaAndPointAndDecoratorPlacementRendering(KRendering rendering, Bounds parentBounds,
         Map<String, Bounds> boundsMap, Map<String, Decoration> decorationMap, KGraphElement parent) {
         val placementData = rendering.placementData
-        var Bounds bounds = parentBounds
+        var Bounds bounds
         var Decoration decoration = null
         
         switch (placementData) {
@@ -268,6 +269,11 @@ public final class MicroLayoutUtil {
                 // Now evaluate the decorator placement micro layout with the help of KLighD.
                 decoration = PiccoloPlacementUtil.evaluateDecoratorPlacement(placementData, path)
                 bounds = decoration.bounds
+            }
+            default: {
+                // If no placementData is defined, assume the width and height of the parent object
+                // placed at the top left corner.
+                bounds = new Bounds(parentBounds.width, parentBounds.height)
             }
         }
         // Decide if the bounds and decoration should be put in the boundsMap/decorationMap or in the rendering's
