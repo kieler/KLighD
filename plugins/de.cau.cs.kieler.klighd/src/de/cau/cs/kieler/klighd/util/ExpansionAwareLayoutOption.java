@@ -90,13 +90,21 @@ public final class ExpansionAwareLayoutOption {
         private MapPropertyHolder expandedValues;
 
         /**
-         * Standard constructor, is called by KIML.
+         * Standard constructor, is called by ELK.
          */
         public ExpansionAwareLayoutOptionData() {
             this.collapsedValues = new MapPropertyHolder();
             this.expandedValues = new MapPropertyHolder();
         }
-        
+
+        /**
+         * Copy constructor, is called by ELK.
+         */
+        public ExpansionAwareLayoutOptionData(ExpansionAwareLayoutOptionData original) {
+            this.collapsedValues = new MapPropertyHolder().copyProperties(original.collapsedValues);
+            this.expandedValues = new MapPropertyHolder().copyProperties(original.expandedValues);
+        }
+
         /**
          * Adds a configuration of collapsed/expanded-dependent layout option values.
          * 

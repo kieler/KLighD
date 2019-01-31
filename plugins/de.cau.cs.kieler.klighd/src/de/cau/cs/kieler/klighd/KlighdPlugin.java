@@ -15,9 +15,12 @@ package de.cau.cs.kieler.klighd;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
+import org.eclipse.elk.graph.util.ElkReflect;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -64,6 +67,12 @@ public class KlighdPlugin extends AbstractUIPlugin {
         // make sure that the layout meta data service has been initialized, 
         //  in particular that the ElkReflect registry has been filled 
         LayoutMetaDataService.getInstance();
+        
+        ElkReflect.register(
+                ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData.class,
+                () -> new ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData(), 
+                (v) -> new ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData((ExpansionAwareLayoutOption.ExpansionAwareLayoutOptionData) v)
+        );
     }
 
     /**
