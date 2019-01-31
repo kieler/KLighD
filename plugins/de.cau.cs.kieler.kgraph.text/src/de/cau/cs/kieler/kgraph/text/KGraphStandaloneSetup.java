@@ -22,14 +22,15 @@ import com.google.inject.Injector;
  */
 public class KGraphStandaloneSetup extends KGraphStandaloneSetupGenerated {
     
-    private static Injector injector;
+    protected static Injector injector;
 
     /**
      * Create an injector and do EMF registration.
      */
-    public static void doSetup() {
+    public static Injector doSetup() {
         if (injector == null) {
             injector = new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration();
         }
+        return injector;
     }
 }
