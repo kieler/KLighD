@@ -11,4 +11,35 @@
   <artifactId>de.cau.cs.kieler.klighd.test</artifactId>
   <version>0.45.0-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <!-- include elk layered in the classpath, as otherwise the diagram layout operations won't complete properly yielding test failures -->
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.elk.alg.layered</id>
+                <versionRange>${elk-version}</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <excludes>
+            <exclude>de.cau.cs.kieler.klighd.test.SizeEstimationTestWithFailings</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

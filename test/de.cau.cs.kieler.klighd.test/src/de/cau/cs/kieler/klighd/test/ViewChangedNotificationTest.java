@@ -16,14 +16,13 @@ package de.cau.cs.kieler.klighd.test;
 import java.net.URL;
 import java.util.Iterator;
 
-import org.eclipse.elk.core.util.GraphDataUtil;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -31,7 +30,10 @@ import org.hamcrest.collection.IsIterableWithSize;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -44,6 +46,9 @@ import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
@@ -54,17 +59,23 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  *
  * @author chsch
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ViewChangedNotificationTest {
 
     private Shell shell = null;
     private ViewContext viewContext = null;
-    private boolean finished = false;
     private AssertionError failure = null;
-    private long deadline = 0;
-    private boolean respectDeadline = true;
     private int heightDelta = 0;
 
     // CHECKSTYLEOFF MagicNumber
+
+    @BeforeClass
+    public static void lookForElkLayered() {
+        Assert.assertNotNull(
+                "ELK Layered is not on the classpath, but it's required for properly executing the tests.",
+                LayoutMetaDataService.getInstance().getAlgorithmDataBySuffix("org.eclipse.elk.layered")
+        );
+    }
 
     /**
      * Prepares the test: creates a fresh {@link Shell} and attaches KLighD's diagramming
@@ -72,7 +83,10 @@ public class ViewChangedNotificationTest {
      */
     @Before
     public void prepare() {
-        shell = new Shell(Display.getDefault());
+        // chsch: on my windows 10 vm the minimal width of dialogs with title and/or close buttons is 136
+        //  which is too high for some tests below 100, so I request the modelless style here
+        // however, on linux the SWT.RESIZE flag is required to successfully run the tests 4-5b, so...
+        shell = new Shell(Display.getDefault(), SWT.RESIZE);
         shell.setSize(300, 200);
         shell.setLocation(100, 100);
         shell.setLayout(new FillLayout());
@@ -85,7 +99,7 @@ public class ViewChangedNotificationTest {
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
-        GraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
+        KGraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
         // the zoom to fit causes the VIEW_PORT change events the listener is waiting for
@@ -94,9 +108,7 @@ public class ViewChangedNotificationTest {
 
         shell.open();
 
-        finished = false;
         failure = null;
-        deadline = System.currentTimeMillis() + 3000;
     }
 
     /**
@@ -128,23 +140,24 @@ public class ViewChangedNotificationTest {
             .animate(false)
             .performLayout();
 
-        while (failure == null && !finished) {
-            if (respectDeadline && System.currentTimeMillis() > deadline) {
-                Assert.fail("Expected test time elapsed!");
-                break;
+        final int[] retry = new int[] {10};
+        final Runnable wakeUp = new Runnable() {
+            public void run() {
+                retry[0]--;
             }
-            try {
-                Display.getCurrent().readAndDispatch();
+        };
 
-                // since the VIEW_PORT notifications are timer-triggered
-                //  wait for some time before continuing
-                Thread.sleep(100);
-            } catch (final InterruptedException e) {
-                // nothing
+        final Display d = shell.getDisplay();
+
+        while (retry[0] != 0) {
+            if (!d.readAndDispatch()) {
+                d.timerExec(40, wakeUp);
+                d.sleep();
             }
         }
+        while (d.readAndDispatch());
 
-        shell.dispose();
+        shell.close();
 
         if (failure != null) {
             throw failure;
@@ -177,8 +190,6 @@ public class ViewChangedNotificationTest {
             } catch (final AssertionError e) {
                 failure = e;
             }
-
-            finished = true;
         }
     };
 

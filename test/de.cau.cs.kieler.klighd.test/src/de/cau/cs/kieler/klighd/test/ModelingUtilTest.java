@@ -22,10 +22,6 @@ import static de.cau.cs.kieler.klighd.util.ModelingUtil.selfAndEAllContentsOfTyp
 
 import java.util.Iterator;
 
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.hamcrest.Factory;
 import org.hamcrest.FeatureMatcher;
@@ -35,6 +31,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
@@ -59,14 +59,14 @@ public class ModelingUtilTest {
         final KRenderingFactory rFac = KRenderingFactory.eINSTANCE;
 
 
-        final KNode a = ElkUtil.createInitializedNode();
-        final KNode b = ElkUtil.createInitializedNode();
-        final KNode c = ElkUtil.createInitializedNode();
+        final KNode a = KGraphUtil.createInitializedNode();
+        final KNode b = KGraphUtil.createInitializedNode();
+        final KNode c = KGraphUtil.createInitializedNode();
 
         a.getChildren().add(b);
         b.getChildren().add(c);
 
-        ElkUtil.createInitializedLabel(a).getData().add(rFac.createKText());
+        KGraphUtil.createInitializedLabel(a).getData().add(rFac.createKText());
 
         final KContainerRendering bRect = rFac.createKRectangle();
         bRect.getChildren().add(rFac.createKText());

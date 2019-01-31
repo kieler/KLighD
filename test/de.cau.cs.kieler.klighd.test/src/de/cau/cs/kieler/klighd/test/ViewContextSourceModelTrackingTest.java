@@ -18,11 +18,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -47,6 +42,10 @@ import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.internal.util.SourceModelTrackingAdapter;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.KRectangle;
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -101,15 +100,15 @@ public class ViewContextSourceModelTrackingTest {
     @Test
     public void test00() {
         final Object elementB = new Object();
-        final KNode nodeB = ElkUtil.createInitializedNode();        
-        nodeB.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementB);
+        final KNode nodeB = KGraphUtil.createInitializedNode();        
+        nodeB.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementB);
         
         final Object elementA = new Object();
-        final KNode nodeA = ElkUtil.createInitializedNode();
-        nodeA.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementA);
+        final KNode nodeA = KGraphUtil.createInitializedNode();
+        nodeA.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, elementA);
         nodeA.getChildren().add(nodeB);
 
-        final KNode root = ElkUtil.createInitializedNode();
+        final KNode root = KGraphUtil.createInitializedNode();
         root.getChildren().add(nodeA);
         
         final SourceModelTrackingAdapter adapter = new SourceModelTrackingAdapter();
@@ -153,12 +152,11 @@ public class ViewContextSourceModelTrackingTest {
         final KNode viewModel = viewContext.getViewModel();
 
         final EObject sourceModel = new EObjectImpl() { };
-        final KNode newModel = ElkUtil.createInitializedNode();        
-        newModel.getData(KLayoutData.class).setProperty(KlighdInternalProperties.MODEL_ELEMEMT,
-                sourceModel);
-
+        final KNode newModel = KGraphUtil.createInitializedNode();
+        newModel.setProperty(KlighdInternalProperties.MODEL_ELEMEMT, sourceModel);
+        
         UPDATE_STRATEGY.update(viewModel, newModel, viewContext);
-
+        
         Assert.assertEquals(
                 viewContext.getSourceElement(viewContext.getViewModel()),
                 sourceModel);
@@ -181,7 +179,7 @@ public class ViewContextSourceModelTrackingTest {
     private ViewContext updateWith(final ViewContext viewContext, final KNode sourceRoot) {
         
         final KNode targetRoot = new DuplicatingDiagramSynthesis().transform(sourceRoot, viewContext);
-
+        
         UPDATE_STRATEGY.update(viewContext.getViewModel(), targetRoot, viewContext);
         
         Assert.assertEquals(sourceRoot,
@@ -204,13 +202,13 @@ public class ViewContextSourceModelTrackingTest {
     }
     
     private KNode createSimpleNetwork() {
-        final KNode sourceNode1 = ElkUtil.createInitializedNode();
-        final KNode sourceNode2 = ElkUtil.createInitializedNode();
-        final KEdge sourceEdge = ElkUtil.createInitializedEdge();
+        final KNode sourceNode1 = KGraphUtil.createInitializedNode();
+        final KNode sourceNode2 = KGraphUtil.createInitializedNode();
+        final KEdge sourceEdge = KGraphUtil.createInitializedEdge();
         sourceEdge.setSource(sourceNode1);
         sourceEdge.setTarget(sourceNode2);
         
-        final KNode sourceRoot = ElkUtil.createInitializedNode();
+        final KNode sourceRoot = KGraphUtil.createInitializedNode();
         sourceRoot.getChildren().add(sourceNode1);
         sourceRoot.getChildren().add(sourceNode2);
         return sourceRoot;
