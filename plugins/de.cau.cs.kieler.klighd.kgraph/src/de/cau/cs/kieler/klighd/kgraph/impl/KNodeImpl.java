@@ -444,8 +444,8 @@ public class KNodeImpl extends KLabeledGraphElementImpl implements KNode {
             modified = true;
         }
         if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__YPOS, oldYpos, ypos));
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__XPOS, oldXpos, xpos));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KNODE__YPOS, oldYpos, ypos));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KNODE__XPOS, oldXpos, xpos));
         }
     }
 
@@ -480,8 +480,8 @@ public class KNodeImpl extends KLabeledGraphElementImpl implements KNode {
             modified = true;
         }
         if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__WIDTH, oldWidth, width));
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__HEIGHT, oldHeight, height));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KNODE__WIDTH, oldWidth, width));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KNODE__HEIGHT, oldHeight, height));
         }
     }
 
