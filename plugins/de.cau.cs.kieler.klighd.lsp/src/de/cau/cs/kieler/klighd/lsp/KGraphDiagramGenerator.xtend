@@ -25,6 +25,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
+import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
@@ -435,11 +436,18 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         if (data instanceof KText) {
             // create a new Label with data as its text
             val label = KGraphFactory.eINSTANCE.createKLabel()
-            // KTexts in Labels have their texts stored inside their parent KLabel, not in the KText itself
-            if (data.eContainer instanceof KLabel) {
-                label.text = (data.eContainer as KLabel).text
+            // KTexts in Labels have their texts stored inside their ancestor KLabel, not in the KText itself
+            var container = data.eContainer
+            while (container instanceof KRendering) {
+                container = container.eContainer
+            }
+            if (container instanceof KLabel) {
+                label.text = container.text
             } else {
                 label.text = data.text
+            }
+            if (label.text === null) {
+                throw new IllegalStateException("Neither the KText nor its containing KLabel have a text!")
             }
             // need to put a copy of the text inside the new label because otherwise inserting it into the label will
             // modify the eContainer feature of the Text, which should not be changed
