@@ -245,7 +245,7 @@ public class KTextUnderlineImpl extends KStyleImpl implements KTextUnderline {
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (underline: ");
         result.append(underline);
         result.append(')');

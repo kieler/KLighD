@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="KIELER - Kiel Integrated Environment for Layout Eclipse RichClient&#xA;&#xA;http://www.informatik.uni-kiel.de/rtsys/kieler/&#xA;&#xA;Copyright 2012 by&#xA;+ Kiel University&#xA;  + Department of Computer Science&#xA;    + Real-Time and Embedded Systems Group&#xA;&#xA;This code is provided under the terms of the Eclipse Public License (EPL).&#xA;See the file epl-v10.html for the license text."
     modelDirectory="/de.cau.cs.kieler.klighd.krendering/src" modelPluginID="de.cau.cs.kieler.klighd.krendering"
     modelName="KRendering" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
-    copyrightFields="false" usedGenPackages="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.genmodel#//kgraph">>
+    copyrightFields="false" usedGenPackages="../../de.cau.cs.kieler.klighd.kgraph/model/kgraph.genmodel#//kgraph">
   <foreignModel>krendering.ecore</foreignModel>
   <genPackages prefix="KRendering" basePackage="de.cau.cs.kieler.klighd" disposableProviderFactory="true"
       fileExtensions="krender" ecorePackage="krendering.ecore#/">
@@ -60,10 +60,10 @@
     <genClasses image="false" ecoreClass="krendering.ecore#//KPosition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/x"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KPosition/y"/>
-      <genOperations ecoreOperation="krendering.ecore#//KPosition/equals">
+      <genOperations ecoreOperation="krendering.ecore#//KPosition/equals" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.equals(this,other);">
         <genParameters ecoreParameter="krendering.ecore#//KPosition/equals/other"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KPosition/setPositions">
+      <genOperations ecoreOperation="krendering.ecore#//KPosition/setPositions" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setPositions(this, x, y);">
         <genParameters ecoreParameter="krendering.ecore#//KPosition/setPositions/x"/>
         <genParameters ecoreParameter="krendering.ecore#//KPosition/setPositions/y"/>
       </genOperations>
@@ -151,18 +151,18 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColor/red"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColor/green"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColor/blue"/>
-      <genOperations ecoreOperation="krendering.ecore#//KColor/setColor">
+      <genOperations ecoreOperation="krendering.ecore#//KColor/setColor" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(this, red, green, blue);">
         <genParameters ecoreParameter="krendering.ecore#//KColor/setColor/red"/>
         <genParameters ecoreParameter="krendering.ecore#//KColor/setColor/green"/>
         <genParameters ecoreParameter="krendering.ecore#//KColor/setColor/blue"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColor/setColor.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColor/setColor.1" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(this, color);">
         <genParameters ecoreParameter="krendering.ecore#//KColor/setColor.1/color"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColor/setColor.2">
+      <genOperations ecoreOperation="krendering.ecore#//KColor/setColor.2" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(this, kColor);">
         <genParameters ecoreParameter="krendering.ecore#//KColor/setColor.2/kColor"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColor/equals">
+      <genOperations ecoreOperation="krendering.ecore#//KColor/equals" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.equals(this,other);">
         <genParameters ecoreParameter="krendering.ecore#//KColor/equals/other"/>
       </genOperations>
     </genClasses>
@@ -184,10 +184,10 @@
       <genTypeParameters ecoreTypeParameter="krendering.ecore#//KXPosition/T"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KXPosition/absolute"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KXPosition/relative"/>
-      <genOperations ecoreOperation="krendering.ecore#//KXPosition/equals">
+      <genOperations ecoreOperation="krendering.ecore#//KXPosition/equals" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.equals(this,other);">
         <genParameters ecoreParameter="krendering.ecore#//KXPosition/equals/other"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KXPosition/setPosition">
+      <genOperations ecoreOperation="krendering.ecore#//KXPosition/setPosition" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setPosition(it, absolute, relative);">
         <genParameters ecoreParameter="krendering.ecore#//KXPosition/setPosition/absolute"/>
         <genParameters ecoreParameter="krendering.ecore#//KXPosition/setPosition/relative"/>
       </genOperations>
@@ -196,10 +196,10 @@
       <genTypeParameters ecoreTypeParameter="krendering.ecore#//KYPosition/T"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KYPosition/absolute"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KYPosition/relative"/>
-      <genOperations ecoreOperation="krendering.ecore#//KYPosition/equals">
+      <genOperations ecoreOperation="krendering.ecore#//KYPosition/equals" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.equals(this,other);">
         <genParameters ecoreParameter="krendering.ecore#//KYPosition/equals/other"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KYPosition/setPosition">
+      <genOperations ecoreOperation="krendering.ecore#//KYPosition/setPosition" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setPosition(it, absolute, relative);">
         <genParameters ecoreParameter="krendering.ecore#//KYPosition/setPosition/absolute"/>
         <genParameters ecoreParameter="krendering.ecore#//KYPosition/setPosition/relative"/>
       </genOperations>
@@ -217,158 +217,179 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference krendering.ecore#//KColoring/targetColor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColoring/targetAlpha"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute krendering.ecore#//KColoring/gradientAngle"/>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(it, red, green, blue);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor/red"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor/green"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor/blue"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor.1" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(it, color);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.1/color"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor.2">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor.2" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(it, red, green, blue, alpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.2/red"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.2/green"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.2/blue"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.2/alpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor.3">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor.3" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColor(it, color, alpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.3/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor.3/alpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor2">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor2" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;this.setColor(color);&#xA;return it;">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor2/color"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor2.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColor2.1" body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;this.setColor(color);&#xA;this.setAlpha(alpha);&#xA;return it;">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor2.1/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColor2.1/alpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorCopyOf">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorCopyOf"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColorCopyOf(it, kColor);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorCopyOf/kColor"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorCopyOf.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorCopyOf.1"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setColorCopyOf(it, kColor, alpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorCopyOf.1/kColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorCopyOf.1/alpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorCopiedFrom">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorCopiedFrom"
+          body="return this.setColorCopyOf(coloring.getColor());">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorCopiedFrom/coloring"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorAndAlphaCopiedFrom">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorAndAlphaCopiedFrom"
+          body="return this.setColorCopyOf(coloring.getColor(), coloring.getAlpha());">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorAndAlphaCopiedFrom/coloring"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColor(it, red, green, blue);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor/red"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor/green"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor/blue"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor.1"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColor(it, color);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor.1/color"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor.2">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor.2"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColor(it, red, green, blue, alpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor.2/red"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor.2/green"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor.2/blue"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor.2/alpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor.3">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor.3"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColor(it, color, alpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor.3/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor.3/alpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor2">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor2"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;this.setTargetColor(targetColor);&#xA;return it;">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor2/targetColor"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor2.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColor2.1"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;this.setTargetColor(targetColor);&#xA;this.setTargetAlpha(targetAlpha);&#xA;return it;">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor2.1/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColor2.1/targetAlpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorCopyOf">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorCopyOf"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColorCopyOf(it, targetColor);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColorCopyOf/targetColor"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorCopyOf.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorCopyOf.1"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.setTargetColorCopyOf(it, targetColor, targetAlpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColorCopyOf.1/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColorCopyOf.1/targetAlpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorCopiedFrom">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorCopiedFrom"
+          body="return this.setTargetColorCopyOf(coloring.getTargetColor());">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColorCopiedFrom/coloring"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorAndAlphaCopiedFrom">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setTargetColorAndAlphaCopiedFrom"
+          body="return this.setTargetColorCopyOf(coloring.getTargetColor(), coloring.getTargetAlpha());">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setTargetColorAndAlphaCopiedFrom/coloring"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setGradientAngle2">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setGradientAngle2"
+          body="@SuppressWarnings(&quot;unchecked&quot;)&#xA;final T it = (T) this;&#xA;this.setGradientAngle(angle);&#xA;return it;">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setGradientAngle2/angle"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors" body="return this.setColor2(color).setTargetColor2(targetColor);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors/targetColor"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.1" body="return this.setColor2(color).setTargetColor2(targetColor).setGradientAngle2(angle);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.1/angle"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.2">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.2" body="return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.2/targetAlpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.3">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.3" body="return this.setColor2(color, alpha).setTargetColor2(targetColor, targetAlpha).setGradientAngle2(angle);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/targetAlpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.3/angle"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.4">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.4" body="return this.setColor(color).setTargetColor(targetColor);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.4/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.4/targetColor"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.5">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.5" body="return this.setColor(color).setTargetColor(targetColor).setGradientAngle2(angle);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.5/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.5/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.5/angle"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.6">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.6" body="return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.6/targetAlpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.7">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColors.7" body="return this.setColor(color, alpha).setTargetColor(targetColor, targetAlpha).setGradientAngle2(angle);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/targetAlpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColors.7/angle"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf"
+          body="return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf/targetColor"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.1">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.1"
+          body="return this.setColorCopyOf(color).setTargetColorCopyOf(targetColor);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.1/angle"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.2">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.2"
+          body="return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.2/targetAlpha"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.3">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiesOf.3"
+          body="return this.setColorCopyOf(color, alpha).setTargetColorCopyOf(targetColor, targetAlpha).setGradientAngle2(angle);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/color"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/alpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/targetColor"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/targetAlpha"/>
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiesOf.3/angle"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiedFrom">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsCopiedFrom"
+          body="return this.setColorsCopiesOf(coloring.getColor(), coloring.getTargetColor());">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsCopiedFrom/coloring"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsAlphasGradientAngleCopiedFrom">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/setColorsAlphasGradientAngleCopiedFrom"
+          body="return this.setColorsCopiesOf(coloring.getColor(), coloring.getAlpha(), coloring.getTargetColor(), coloring.getTargetAlpha()).setGradientAngle2(coloring.getGradientAngle());">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/setColorsAlphasGradientAngleCopiedFrom/coloring"/>
       </genOperations>
-      <genOperations ecoreOperation="krendering.ecore#//KColoring/equals">
+      <genOperations ecoreOperation="krendering.ecore#//KColoring/equals" body="return de.cau.cs.kieler.klighd.krendering.KRenderingUtil.equals(this,other);">
         <genParameters ecoreParameter="krendering.ecore#//KColoring/equals/other"/>
       </genOperations>
     </genClasses>

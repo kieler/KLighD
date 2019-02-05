@@ -244,7 +244,7 @@ public class KTextStrikeoutImpl extends KStyleImpl implements KTextStrikeout {
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (struckOut: ");
         result.append(struckOut);
         result.append(')');

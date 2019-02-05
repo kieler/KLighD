@@ -36,6 +36,11 @@ public enum Trigger implements Enumerator {
      * The '<em><b>SINGLECLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Fires on a left button's single click.&lt;br&gt;
+     * Note: Corresponding actions are not fired on the first click of a double, tripple, ... click.
+     * Thus, triggering the actions is delayed by the system wide double click period for assuring the absence of subsequent clicks.
+     * <!-- end-model-doc -->
      * @see #SINGLECLICK_VALUE
      * @generated
      * @ordered
@@ -46,6 +51,9 @@ public enum Trigger implements Enumerator {
      * The '<em><b>DOUBLECLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Fires on left button's double (and more) click(s).
+     * <!-- end-model-doc -->
      * @see #DOUBLECLICK_VALUE
      * @generated
      * @ordered
@@ -56,6 +64,9 @@ public enum Trigger implements Enumerator {
      * The '<em><b>SINGLE OR MULTICLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Fires on left button's first click regardless if more clicks follow within the system wide double click period.
+     * <!-- end-model-doc -->
      * @see #SINGLE_OR_MULTICLICK_VALUE
      * @generated
      * @ordered
@@ -66,6 +77,11 @@ public enum Trigger implements Enumerator {
      * The '<em><b>MIDDLE SINGLECLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Fires on middle button's single click.&lt;br&gt;
+     * Note: Corresponding actions are not fired on the first click of a double, tripple, ... click.
+     * Thus, triggering the actions is delayed by the system wide double click period for assuring the absence of subsequent clicks.
+     * <!-- end-model-doc -->
      * @see #MIDDLE_SINGLECLICK_VALUE
      * @generated
      * @ordered
@@ -76,6 +92,9 @@ public enum Trigger implements Enumerator {
      * The '<em><b>MIDDLE DOUBLECLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Fires on middle button's double (and more) click(s).
+     * <!-- end-model-doc -->
      * @see #MIDDLE_DOUBLECLICK_VALUE
      * @generated
      * @ordered
@@ -86,6 +105,9 @@ public enum Trigger implements Enumerator {
      * The '<em><b>MIDDLE SINGLE OR MULTICLICK</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * Fires on middle button's first click regardless if more clicks follow within the system wide double click period.
+     * <!-- end-model-doc -->
      * @see #MIDDLE_SINGLE_OR_MULTICLICK_VALUE
      * @generated
      * @ordered

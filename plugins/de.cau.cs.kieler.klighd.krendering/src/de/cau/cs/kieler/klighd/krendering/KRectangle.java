@@ -20,7 +20,7 @@ package de.cau.cs.kieler.klighd.krendering;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * define a rectangle by adding the topLeft and bottomRight coordinates
+ * Define a rectangular shape that fits inside the space defined (a) by the node it is attached to or (b) by the placementData that is attached to the rendering
  * <!-- end-model-doc -->
  *
  *

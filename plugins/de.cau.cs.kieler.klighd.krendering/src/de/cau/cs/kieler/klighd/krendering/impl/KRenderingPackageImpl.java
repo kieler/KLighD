@@ -563,7 +563,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link KRenderingPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
@@ -577,7 +577,8 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         if (isInited) return (KRenderingPackage)EPackage.Registry.INSTANCE.getEPackage(KRenderingPackage.eNS_URI);
 
         // Obtain or create and register package
-        KRenderingPackageImpl theKRenderingPackage = (KRenderingPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof KRenderingPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new KRenderingPackageImpl());
+        Object registeredKRenderingPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        KRenderingPackageImpl theKRenderingPackage = registeredKRenderingPackage instanceof KRenderingPackageImpl ? (KRenderingPackageImpl)registeredKRenderingPackage : new KRenderingPackageImpl();
 
         isInited = true;
 
@@ -593,7 +594,6 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         // Mark meta-data to indicate it can't be changed
         theKRenderingPackage.freeze();
 
-  
         // Update the registry and return the package
         EPackage.Registry.INSTANCE.put(KRenderingPackage.eNS_URI, theKRenderingPackage);
         return theKRenderingPackage;

@@ -348,7 +348,7 @@ public class KShadowImpl extends KStyleImpl implements KShadow {
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (xOffset: ");
         result.append(xOffset);
         result.append(", yOffset: ");
