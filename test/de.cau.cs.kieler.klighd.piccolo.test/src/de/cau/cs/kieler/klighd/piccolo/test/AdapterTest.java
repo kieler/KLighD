@@ -3,12 +3,8 @@ package de.cau.cs.kieler.klighd.piccolo.test;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KLabel;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
+import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.math.KVectorChain;
 import org.eclipse.emf.common.notify.Adapter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,6 +12,13 @@ import org.junit.Test;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KGraphFactory;
+import de.cau.cs.kieler.klighd.kgraph.KLabel;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPoint;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
@@ -40,27 +43,32 @@ public class AdapterTest {
     @Test
     public void layoutTest() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
-        final KNode root = ElkUtil.createInitializedNode();
-        final KLabel l = ElkUtil.createInitializedLabel(root);
+        final KNode root = KGraphUtil.createInitializedNode();
+        final KLabel l = KGraphUtil.createInitializedLabel(root);
         l.setText("rootnode");
         final KNode next = KlighdTestUtil.makeTestGraph(root);
         final KPort nextport = KlighdTestUtil.addport(next);
         final KLabel nextlabel = next.getLabels().get(0);
+        final KEdge edge = KlighdTestUtil.connectNodes(next, next, nextport, null);
+
         // create a controller for the graph
-        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false, false);
 
         // node layout
-        final KShapeLayout nodelayout = next.getData(KShapeLayout.class);
-        nodelayout.setPos(12, 32);
-        nodelayout.setSize(40, 40);
+        next.setPos(12, 32);
+        next.setSize(40, 40);
         // port layout
-        final KShapeLayout portlayout = nextport.getData(KShapeLayout.class);
-        portlayout.setPos(6, 7);
-        portlayout.setSize(5, 5);
+        nextport.setPos(6, 7);
+        nextport.setSize(5, 5);
         // label layout
-        final KShapeLayout labellayout = nextlabel.getData(KShapeLayout.class);
-        labellayout.setPos(2, 3);
-        labellayout.setSize(4, 5);
+        nextlabel.setPos(2, 3);
+        nextlabel.setSize(4, 5);
+        // edge layout
+        edge.applyVectorChain(
+            new KVectorChain(
+                new KVector(1,1), new KVector(1, 10), new KVector(10, 1)
+            )
+        );
 
         final KNodeAbstractNode node = controller.getNode();
         final PLayer nodeLayer = node.getChildAreaNode().getNodeLayer();
@@ -69,6 +77,8 @@ public class AdapterTest {
         final PNode pport = portlayer.getChild(3);
         final PLayer labellayer = ((KNodeNode) pnext).getLabelLayer();
         final PNode plabel = labellayer.getChild(0);
+        final PLayer edgeLayer = node.getChildAreaNode().getEdgeLayer();
+        final KEdgeNode edgeNode = (KEdgeNode) edgeLayer.getChild(0);
 
         final PAffineTransform porttransform = pport.getTransform();
         final PAffineTransform labeltransform = plabel.getTransform();
@@ -88,6 +98,37 @@ public class AdapterTest {
         Assert.assertEquals(7, porttransform.getTranslateY(), 0);
         Assert.assertEquals(5, pport.getBoundsReference().height, 0);
         Assert.assertEquals(5, pport.getBoundsReference().width, 0);
+
+        Assert.assertEquals(  3, edgeNode.getBendPoints().length);
+        Assert.assertEquals( 1d, edgeNode.getBendPoints()[0].getX(), 0);
+        Assert.assertEquals( 1d, edgeNode.getBendPoints()[0].getY(), 0);
+        Assert.assertEquals( 1d, edgeNode.getBendPoints()[1].getX(), 0);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[1].getY(), 0);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[2].getX(), 0);
+        Assert.assertEquals( 1d, edgeNode.getBendPoints()[2].getY(), 0);
+
+        final KPoint point = KGraphFactory.eINSTANCE.createKPoint();
+        point.setPos(10, 10);
+        edge.getBendPoints().add(point);
+
+        Assert.assertEquals(  4, edgeNode.getBendPoints().length);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[2].getX(), 0);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[2].getY(), 0);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[3].getX(), 0);
+        Assert.assertEquals( 1d, edgeNode.getBendPoints()[3].getY(), 0);
+
+        point.setPos(10, 20);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[2].getX(), 0);
+        Assert.assertEquals(20d, edgeNode.getBendPoints()[2].getY(), 0);
+
+        edge.getBendPoints().remove(0);
+        edge.getTargetPoint().setY(7);
+
+        Assert.assertEquals(  3, edgeNode.getBendPoints().length);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[1].getX(), 0);
+        Assert.assertEquals(20d, edgeNode.getBendPoints()[1].getY(), 0);
+        Assert.assertEquals(10d, edgeNode.getBendPoints()[2].getX(), 0);
+        Assert.assertEquals( 7d, edgeNode.getBendPoints()[2].getY(), 0);
     }
 
     /**
@@ -96,12 +137,12 @@ public class AdapterTest {
     @Test
     public void nodeTest() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
-        final KNode root = ElkUtil.createInitializedNode();
-        final KLabel l = ElkUtil.createInitializedLabel(root);
+        final KNode root = KGraphUtil.createInitializedNode();
+        final KLabel l = KGraphUtil.createInitializedLabel(root);
         l.setText("rootnode");
         KlighdTestUtil.makeTestGraph(root);
         // create a controller for the graph
-        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false, false);
         final KNodeAbstractNode topNode = controller.getNode();
         Assert.assertTrue(checkStructure(root, topNode));
     }
@@ -113,10 +154,10 @@ public class AdapterTest {
     public void nodeTestExpanded() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
-        final KNode root = ElkUtil.createInitializedNode();
-        final KLabel l = ElkUtil.createInitializedLabel(root);
+        final KNode root = KGraphUtil.createInitializedNode();
+        final KLabel l = KGraphUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false, false);
         controller.collapse(root);
         KlighdTestUtil.makeTestGraph(root);
         controller.expand(root);
@@ -131,10 +172,10 @@ public class AdapterTest {
     @Test
     public void nodeTestCollapsed() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
-        final KNode root = ElkUtil.createInitializedNode();
-        final KLabel l = ElkUtil.createInitializedLabel(root);
+        final KNode root = KGraphUtil.createInitializedNode();
+        final KLabel l = KGraphUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false, false);
         controller.collapse(root);
         KlighdTestUtil.makeTestGraph(root);
 
@@ -150,10 +191,10 @@ public class AdapterTest {
     public void adapterTest() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
-        final KNode root = ElkUtil.createInitializedNode();
-        final KLabel l = ElkUtil.createInitializedLabel(root);
+        final KNode root = KGraphUtil.createInitializedNode();
+        final KLabel l = KGraphUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false, false);
         final KNode child = KlighdTestUtil.makeTestGraph(root);
         // create a controller for the graph
         controller.getNode();
@@ -167,10 +208,10 @@ public class AdapterTest {
     public void adapterTestExpanded() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
-        final KNode root = ElkUtil.createInitializedNode();
-        final KLabel l = ElkUtil.createInitializedLabel(root);
+        final KNode root = KGraphUtil.createInitializedNode();
+        final KLabel l = KGraphUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false, false);
         final KNode child = KlighdTestUtil.makeTestGraph(root);
         controller.collapse(child);
         final KNode cc = KlighdTestUtil.addchild(child);
@@ -219,10 +260,10 @@ public class AdapterTest {
     public void adapterTestCollapsed() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
 
-        final KNode root = ElkUtil.createInitializedNode();
-        final KLabel l = ElkUtil.createInitializedLabel(root);
+        final KNode root = KGraphUtil.createInitializedNode();
+        final KLabel l = KGraphUtil.createInitializedLabel(root);
         l.setText("rootnode");
-        final DiagramController controller = new DiagramController(root, camera, true, false);
+        final DiagramController controller = new DiagramController(root, camera, true, false, false);
         final KNode child = KlighdTestUtil.makeTestGraph(root);
         controller.collapse(child);
         final KNode cc = KlighdTestUtil.addchild(child);

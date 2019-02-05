@@ -22,8 +22,9 @@ import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.EdgeRouting;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EContentAdapter;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KEdgeLayout;
@@ -43,11 +44,23 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
  *
  * @author chsch
  */
-class KEdgeLayoutEdgeNodeUpdater extends AdapterImpl {
+class KEdgeLayoutEdgeNodeUpdater extends EContentAdapter {
 
     KEdgeLayoutEdgeNodeUpdater(final KEdgeNode theEdgeRep, final DiagramController theController) {
         this.controller = theController;
         this.edgeRep = theEdgeRep;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void addAdapter(Notifier notifier) {
+        // this adapter needs to propagate itself to all the KPoints - and only to those KPoints -
+        //  being already contained by the associated KEdge, as well as those being added in future, so:
+        if (notifier instanceof KPoint) {
+            super.addAdapter(notifier);
+        }
     }
 
     private DiagramController controller = null;

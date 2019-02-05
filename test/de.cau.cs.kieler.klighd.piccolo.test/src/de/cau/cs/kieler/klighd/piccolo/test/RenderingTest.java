@@ -19,9 +19,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 
-import org.eclipse.elk.core.klayoutdata.KIdentifier;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -39,6 +36,9 @@ import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KEllipse;
 import de.cau.cs.kieler.klighd.krendering.KForeground;
@@ -105,7 +105,7 @@ public class RenderingTest {
     @Before
     public void initialize() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
-        new DiagramController(graph, camera, true, false);
+        new DiagramController(graph, camera, true, false, false);
     }
 
     /**
