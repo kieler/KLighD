@@ -12,6 +12,10 @@
  */
 package de.cau.cs.kieler.klighd.lsp.utils
 
+import com.google.common.base.Predicate
+import com.google.common.base.Strings
+import de.cau.cs.kieler.klighd.IStyleModifier.StyleModificationContext
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.KEdge
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement
@@ -29,6 +33,7 @@ import de.cau.cs.kieler.klighd.krendering.KPolyline
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
+import de.cau.cs.kieler.klighd.krendering.KStyle
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
@@ -40,6 +45,8 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+
+import static com.google.common.collect.Iterables.filter
 
 /**
  * Utility class to provide some functionality to persist micro layout bounds data for all {@link KRendering}s of a
@@ -196,6 +203,8 @@ public final class MicroLayoutUtil {
             } else {
                 boundsMap.put(rendering.id, bounds)
             }
+            // Process modifiable styles
+            processModifiableStyles(rendering.styles, parent)
             // Calculate the bounds and decorations of all child renderings.
             if (rendering instanceof KContainerRendering) {
                 handleChildren(rendering.children, rendering.childPlacement, bounds, boundsMap, decorationMap, parent)
@@ -289,6 +298,8 @@ public final class MicroLayoutUtil {
                 decorationMap.put(rendering.id, decoration)
             }
         }
+        // Process modifiable styles
+        processModifiableStyles(rendering.styles, parent)
         // Calculate the bounds and decorations of all child renderings.
         if (rendering instanceof KContainerRendering) {
             handleChildren(rendering.children, rendering.childPlacement, bounds, boundsMap, decorationMap, parent)
@@ -337,4 +348,37 @@ public final class MicroLayoutUtil {
      public static def setDecoration(KRendering rendering, Decoration decoration) {
          rendering.properties.put(BoundsProperties.CALCULATED_DECORATION, decoration)
      }
+    
+    
+    //
+    // TODO: really this now represents the AbstractKGERenderingController and prepares the graph for rendering
+    // without really rendering it with Piccolo2D if this stays here.
+    /**
+     * A filter that lets only styles with a valid modifier id pass.
+     */
+    static val Predicate<KStyle> MODIFIED_STYLE_FILTER = new Predicate<KStyle>() {
+        override apply(KStyle style) {
+            return !Strings.isNullOrEmpty(style.getModifierId())
+                    && KlighdDataManager.getInstance()
+                        .getStyleModifierById(style.getModifierId()) != null;
+        }
+    };
+
+    static val StyleModificationContext singletonModContext = new StyleModificationContext();
+    
+    /**
+     * @see de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles
+     */
+    static def void processModifiableStyles(List<KStyle> styles, KGraphElement parent) { // TODO: should be a layout post process?
+        val Iterable<KStyle> localModifiedStyles = filter(styles, MODIFIED_STYLE_FILTER);
+
+        var boolean deliver
+        for (s : localModifiedStyles) {
+            deliver  = s.eDeliver();
+            s.eSetDeliver(false);
+            KlighdDataManager.getInstance().getStyleModifierById(s.getModifierId()).modify(
+                    singletonModContext.configure(s, parent));
+            s.eSetDeliver(deliver);
+        }
+    }
 }
