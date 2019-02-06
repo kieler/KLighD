@@ -244,17 +244,21 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                 }
             }
         } else if (option.isRangeOption) {
-            // Range options are always declared as numbers, but floating point numbers are always stored as floats.
-            // If a double value comes back, convert it to a float.
-            if (value instanceof Double) {
-                viewContext.configureOption(option, value.floatValue)
+            val lowerBound = option.range.first
+            val upperBound = option.range.second
+            val stepSize = option.stepSize
+            val initialValue = option.initialValue as Number
+            if (lowerBound.equals(lowerBound.intValue())
+                && upperBound.equals(upperBound.intValue())
+                && stepSize.equals(stepSize.intValue())
+                && initialValue.equals(initialValue.intValue())) {
+                // The option contains an Integer
+                viewContext.configureOption(option, Integer.parseInt(value as String))
                 return
-            } else if (value instanceof String) {
-                viewContext.configureOption(option, Integer.parseInt(value))
             } else {
-                throw new IllegalArgumentException("The value set to an option received from a JSON message can only"
-                    + "be a Double or a String! Found" + value.class
-                )
+                // The option contains a Float
+                viewContext.configureOption(option, Float.parseFloat(value as String))
+                return
             }
         } else {
             viewContext.configureOption(option, value)
