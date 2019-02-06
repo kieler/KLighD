@@ -125,6 +125,7 @@ import com.google.gson.stream.JsonWriter;
 
 // TODO : remove this and change it to a reference to google gson's RuntimeTypeAdapterFactory
 // if https://github.com/google/gson/issues/1345 is implemented on google's side
+// And if the other improvement below is added.
 public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
  private final Class<?> baseType;
  private final String typeFieldName;
@@ -233,12 +234,15 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
          throw new JsonParseException("cannot serialize " + srcType.getName()
              + " because it already defines a field named " + typeFieldName);
        }
-       JsonObject clone = new JsonObject();
-       clone.add(typeFieldName, new JsonPrimitive(label));
-       for (Map.Entry<String, JsonElement> e : jsonObject.entrySet()) {
-         clone.add(e.getKey(), e.getValue());
-       }
-       Streams.write(clone, out);
+       // Improvement from gson code: Why is this cloned when it is not used otherwise? Do not clone and just use the
+       // jsonObject itself to add to the stream.
+//       JsonObject clone = new JsonObject();
+       jsonObject.add(typeFieldName, new JsonPrimitive(label));
+//       clone.add(typeFieldName, new JsonPrimitive(label));
+//       for (Map.Entry<String, JsonElement> e : jsonObject.entrySet()) {
+//         clone.add(e.getKey(), e.getValue());
+//       }
+       Streams.write(jsonObject, out);
      }
    }.nullSafe();
  }
