@@ -38,6 +38,7 @@ public class SynthesisOptionTypeAdapterFactory extends CustomizedTypeAdapterFact
             
             // rename enums
             if (source.values !== null &&  !source.values.empty && source.values.head instanceof Enum) {
+                // TODO: don't remove the field here, use an exclusion strategy instead and add them manually here.
                 // Remove the values and add them back in with their string representation.
                 json.remove("values")
                 val values = new JsonArray
