@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp.gson_utils
 
 import com.google.gson.GsonBuilder
+import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import io.typefox.sprotty.server.json.ActionTypeAdapter
@@ -36,6 +37,6 @@ public class KGraphTypeAdapterUtil {
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)
         .registerTypeHierarchyAdapter(EObject, new EObjectSerializer)
-        .registerTypeAdapterFactory(new SynthesisOptionTypeAdapterFactory())
+        .registerTypeAdapter(SynthesisOption, new SynthesisOptionSerializer)
     }
 }
