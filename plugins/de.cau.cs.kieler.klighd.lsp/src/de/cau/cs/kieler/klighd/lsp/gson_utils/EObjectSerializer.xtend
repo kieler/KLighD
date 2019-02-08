@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp.gson_utils
 
+import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
@@ -25,6 +26,8 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 import de.cau.cs.kieler.klighd.krendering.KStyle
 import de.cau.cs.kieler.klighd.krendering.KXPosition
 import de.cau.cs.kieler.klighd.krendering.KYPosition
+import de.cau.cs.kieler.klighd.krendering.impl.KRenderingRefImpl
+import de.cau.cs.kieler.klighd.krendering.impl.KTextImpl
 import de.cau.cs.kieler.klighd.lsp.utils.BoundsProperties
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.lang.reflect.Field
@@ -32,7 +35,6 @@ import java.lang.reflect.Modifier
 import java.lang.reflect.Type
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.impl.EObjectImpl
-import com.google.gson.JsonNull
 
 /**
  * Serializer that serializes any sub class of {@link EMapPropertyHolder} via reflection while ignoring fields of the
@@ -76,28 +78,37 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             class = class.superclass as Class<? extends EObject>
         }
         
-        if (class === EMapPropertyHolderImpl) {
-            val propertyHolder = source as EMapPropertyHolder
+        // A more efficient testing of properties depending on the sources class.
+        if (KRendering.isAssignableFrom(source.class)) {
+            val propertyHolder = source as KRendering // TODO: test this!
             // TODO: put these properties back in a 'properties' field containing these sub fields.
-            if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_BOUNDS)) {
-                jsonObject.add("calculatedBounds", context.serialize(
-                    propertyHolder.getProperty(BoundsProperties.CALCULATED_BOUNDS)))
-            }
-            if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_BOUNDS_MAP)) {
-                jsonObject.add("calculatedBoundsMap", context.serialize(
-                    propertyHolder.getProperty(BoundsProperties.CALCULATED_BOUNDS_MAP)))
-            }
-            if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_DECORATION)) {
-                jsonObject.add("calculatedDecoration", context.serialize(
-                    propertyHolder.getProperty(BoundsProperties.CALCULATED_DECORATION)))
-            }
-            if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_DECORATION_MAP)) {
-                jsonObject.add("calculatedDecorationMap", context.serialize(
-                    propertyHolder.getProperty(BoundsProperties.CALCULATED_DECORATION_MAP)))
-            }
-            if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
-                jsonObject.add("calculatedTextBounds", context.serialize(
-                    propertyHolder.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)))
+            if (source.class === KRenderingRefImpl) {
+                // Only KRenderingRefs have the bounds- and decoration maps.
+                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_BOUNDS_MAP)) {
+                    jsonObject.add("calculatedBoundsMap", context.serialize(
+                        propertyHolder.getProperty(BoundsProperties.CALCULATED_BOUNDS_MAP)))
+                }
+                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_DECORATION_MAP)) {
+                    jsonObject.add("calculatedDecorationMap", context.serialize(
+                        propertyHolder.getProperty(BoundsProperties.CALCULATED_DECORATION_MAP)))
+                }
+            } else {
+                // All other renderings contain calculatedBounds and -Decoration.
+                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_BOUNDS)) {
+                    jsonObject.add("calculatedBounds", context.serialize(
+                        propertyHolder.getProperty(BoundsProperties.CALCULATED_BOUNDS)))
+                }
+                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_DECORATION)) {
+                    jsonObject.add("calculatedDecoration", context.serialize(
+                        propertyHolder.getProperty(BoundsProperties.CALCULATED_DECORATION)))
+                }
+                if (source.class === KTextImpl) {
+                    // Only KTexts have the additional calculatedTextBounds property.
+                    if (propertyHolder.hasProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)) {
+                        jsonObject.add("calculatedTextBounds", context.serialize(
+                            propertyHolder.getProperty(KlighdProperties.CALCULATED_TEXT_BOUNDS)))
+                    }
+                }
             }
         }
         return jsonObject
@@ -138,7 +149,8 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             || KYPosition.isAssignableFrom(c)
     }
     
-    // TODO: Special handling of the "data" field.
+    // TODO: Special handling of the "data" field. (currently active rendering only.)
+    // TODO: Special handling of default values
     def specialHandling(Field f) {
         return false
     }
