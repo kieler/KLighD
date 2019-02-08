@@ -265,11 +265,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
     /**
      * Creates and sends the diagram for an arbitrary snapshot object for any source model to the client.
      */
-    def showSnapshot(String uri, Object model, CancelIndicator cancelIndicator, boolean update) {
-        val clientId = 'widget-diagram' // TODO: send this with the request
-//        if (diagramServers.empty) {
-//            return "ERR"
-//        }
+    def showSnapshot(String uri, String clientId, Object model, CancelIndicator cancelIndicator, boolean update) {
         if (!update) {
             // check if some diagram server already has a diagram for this uri.
             val closeClientIds = new ArrayList
