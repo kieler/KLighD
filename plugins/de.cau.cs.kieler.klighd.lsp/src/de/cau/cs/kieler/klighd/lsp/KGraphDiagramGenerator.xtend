@@ -304,10 +304,14 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         val nodeElement = configSElement(SKNode, idGen.getId(node))
         
         nodeElement.size = new Dimension(node.width, node.height)
+        val filteredData = node.data.filter [
+            KRendering.isAssignableFrom(it.class)
+            || KRenderingLibrary.isAssignableFrom(it.class)
+        ].toList
         
-        nodeElement.data = node.data
+        nodeElement.data = filteredData
         
-        modelLabels.addAll(findTextsAndLabels(node.data))
+        modelLabels.addAll(findTextsAndLabels(filteredData))
         
         nodeElement.children.addAll(createPorts(node.ports))
         nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
@@ -359,9 +363,10 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         edgeElement.sourceId = fromElementId
         edgeElement.targetId = toElementId
         
-        edgeElement.data = edge.data
+        val renderings = edge.data.filter [ KRendering.isAssignableFrom(it.class)].toList
+        edgeElement.data = renderings
         
-        modelLabels.addAll(findTextsAndLabels(edge.data))
+        modelLabels.addAll(findTextsAndLabels(renderings))
         
         edgeElement.children.addAll(createLabels(edge.labels))
 
@@ -374,9 +379,10 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     private def SKPort generatePort(KPort port) {
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
         
-        portElement.data = port.data
+        val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
+        portElement.data = renderings
         
-        modelLabels.addAll(findTextsAndLabels(port.data))
+        modelLabels.addAll(findTextsAndLabels(renderings))
         
         portElement.children.addAll(createLabels(port.labels))
 
@@ -393,11 +399,12 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         val SKLabel labelElement = configSElement(SKLabel, idGen.getId(label))
         labelElement.text = label.text
         
-        labelElement.data = label.data
+        val renderings = label.data.filter [ KRendering.isAssignableFrom(it.class)].toList
+        labelElement.data = renderings
         
         if (main) {
             // remember KLabel element for later size estimation
-            modelLabels.addAll(findTextsAndLabels(label.data))
+            modelLabels.addAll(findTextsAndLabels(renderings))
         }
         return labelElement
     }

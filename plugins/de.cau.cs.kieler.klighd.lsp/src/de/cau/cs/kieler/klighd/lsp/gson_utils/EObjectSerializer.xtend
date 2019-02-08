@@ -17,7 +17,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder
-import de.cau.cs.kieler.klighd.kgraph.KIdentifier
 import de.cau.cs.kieler.klighd.kgraph.KInsets
 import de.cau.cs.kieler.klighd.kgraph.impl.EMapPropertyHolderImpl
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
@@ -132,8 +131,7 @@ class EObjectSerializer implements JsonSerializer<EObject> {
      * @param c The class to be checked.
      */
     def shouldSkipClass(Class<? extends EObject> c) {
-        return KIdentifier.isAssignableFrom(c)
-            || KInsets    .isAssignableFrom(c)
+        return KInsets.isAssignableFrom(c)
     }
     
     /**
