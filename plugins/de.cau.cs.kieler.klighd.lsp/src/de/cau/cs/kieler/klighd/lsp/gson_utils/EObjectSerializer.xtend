@@ -21,6 +21,7 @@ import de.cau.cs.kieler.klighd.kgraph.KInsets
 import de.cau.cs.kieler.klighd.kgraph.impl.EMapPropertyHolderImpl
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KRendering
+import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 import de.cau.cs.kieler.klighd.krendering.KStyle
 import de.cau.cs.kieler.klighd.krendering.KXPosition
@@ -141,10 +142,11 @@ class EObjectSerializer implements JsonSerializer<EObject> {
      * @param c The class to be checked.
      */
     def needsTypeField(Class<? extends EObject> c) {
-        return KRendering.isAssignableFrom(c)
-            || KStyle    .isAssignableFrom(c)
-            || KXPosition.isAssignableFrom(c)
-            || KYPosition.isAssignableFrom(c)
+        return KRendering       .isAssignableFrom(c)
+            || KRenderingLibrary.isAssignableFrom(c)
+            || KStyle           .isAssignableFrom(c)
+            || KXPosition       .isAssignableFrom(c)
+            || KYPosition       .isAssignableFrom(c)
     }
     
     // TODO: Special handling of the "data" field. (currently active rendering only.)

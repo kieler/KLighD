@@ -314,6 +314,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         
         modelLabels.addAll(findTextsAndLabels(filteredData))
         
+        nodeElement.data = node.data.filter [ KRenderingLibrary.isAssignableFrom(it.class) ].toList
         nodeElement.children.addAll(createPorts(node.ports))
         nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
         nodeElement.children.addAll(createLabels(node.labels))
@@ -377,6 +378,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         modelLabels.addAll(findTextsAndLabels(renderings))
         
         edgeElement.children.addAll(createLabels(edge.labels))
+        
+        RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, true)
 
         return edgeElement
     }
@@ -392,6 +395,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         modelLabels.addAll(findTextsAndLabels(renderings))
         
         portElement.children.addAll(createLabels(port.labels))
+        
+        RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, true)
 
         return portElement
     }
@@ -411,6 +416,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         if (main) {
             // remember KLabel element for later size estimation
             modelLabels.addAll(findTextsAndLabels(renderings))
+        
+            RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, true)
         } else {
             // Add the renderings here already to the element.
             labelElement.data = renderings
@@ -475,7 +482,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                         ]
                     }
                 }
-                (sModelElement as SKNode).data = #[currentRendering]
+                (sModelElement as SKNode).data.add(currentRendering)
             } else {
                 if (renderings.empty) {
                     // TODO: create a default rendering for each type here (especially for KPorts) and remove the
