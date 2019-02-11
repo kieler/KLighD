@@ -34,6 +34,8 @@ import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
+import de.cau.cs.kieler.klighd.util.KlighdPredicates
+import de.cau.cs.kieler.klighd.util.RenderingContextData
 import io.typefox.sprotty.api.Dimension
 import io.typefox.sprotty.api.IDiagramState
 import io.typefox.sprotty.api.SEdge
@@ -183,7 +185,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         ]
         
         diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot))
-        createEdges()
+        // Do post processing.
+        postProcess()
         
 //        val endTime = System.currentTimeMillis
 //        println("SGraph generation finished after " + (endTime - startTime) + "ms.")
@@ -309,13 +312,19 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             || KRenderingLibrary.isAssignableFrom(it.class)
         ].toList
         
-        nodeElement.data = filteredData
-        
         modelLabels.addAll(findTextsAndLabels(filteredData))
         
         nodeElement.children.addAll(createPorts(node.ports))
         nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
         nodeElement.children.addAll(createLabels(node.labels))
+        
+        val renderingContextData = RenderingContextData.get(node)
+        renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
+        if (!node.children.empty) {
+            renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
+            // this should not be necessary, as it is the default case.
+//            DiagramSyntheses.initiallyExpand(node)
+        }
         return nodeElement 
     }
     
@@ -364,7 +373,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         edgeElement.targetId = toElementId
         
         val renderings = edge.data.filter [ KRendering.isAssignableFrom(it.class)].toList
-        edgeElement.data = renderings
         
         modelLabels.addAll(findTextsAndLabels(renderings))
         
@@ -380,7 +388,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
         
         val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
-        portElement.data = renderings
         
         modelLabels.addAll(findTextsAndLabels(renderings))
         
@@ -400,17 +407,19 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         labelElement.text = label.text
         
         val renderings = label.data.filter [ KRendering.isAssignableFrom(it.class)].toList
-        labelElement.data = renderings
         
         if (main) {
             // remember KLabel element for later size estimation
             modelLabels.addAll(findTextsAndLabels(renderings))
+        } else {
+            // Add the renderings here already to the element.
+            labelElement.data = renderings
         }
         return labelElement
     }
 
     /**
-     * generates a generic {@link SModelElement} with the defaults {@code id}, {@code type} already set and the 
+     * Generates a generic {@link SModelElement} with the defaults {@code id}, {@code type} already set and the 
      * {@code children} list already initialized.
      */
     private static def <E extends SModelElement> E configSElement(Class<E> elementClass, String idStr) {
@@ -418,6 +427,72 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             id = idStr
             type = findType(it)
             children = new ArrayList
+        ]
+    }
+    
+    /**
+     * Handles processing that has to happen after the generation of the SKGraph model depending on data that may only
+     * be accessible once all elements are generated.
+     */
+    def postProcess() {
+        // Create the edges all edges now that their source and target IDs are defined
+        createEdges()
+        
+        // Add all active renderings to the sModelElements.
+        this.kGraphToSModelElementMap.forEach [kGraphElement, sModelElement |
+            var KRendering currentRendering
+            val renderings = kGraphElement.data.filter(KRendering)
+            // Getting the current rendering similar to AbstractKGERenderingControlle#getCurrentRendering
+            if (kGraphElement instanceof KNode) {
+                // in case the node to be depicted is tagged as 'populated',
+                //  i.e. children are depicted in the diagram ...
+                if (RenderingContextData.get(kGraphElement).getProperty(KlighdInternalProperties.POPULATED)) {
+                    // ... look for a rendering tagged as 'expanded', ...
+                    currentRendering = renderings.findFirst [
+                        KlighdPredicates.isExpandedRendering().apply(it)
+                    ]
+        
+                    // ... and if none exists ...
+                    if (currentRendering === null) {
+                        // ... take the first one that is not marked as 'collapsed' one
+                        currentRendering = renderings.findFirst [
+                            !KlighdPredicates.isCollapsedRendering().apply(it)
+                        ] 
+                    }
+                } else {
+                    // in case the node to be depicted is tagged as 'not populated',
+                    //  i.e. no children are visible in the diagram
+                    // look for a rendering marked as 'collapsed' one, ...
+                    currentRendering = renderings.findFirst [
+                        KlighdPredicates.isCollapsedRendering().apply(it)
+                    ]
+        
+                    // ... and if none exists ...
+                    if (currentRendering === null) {
+                        // ... take the first one that is not marked as 'expanded' one
+                        currentRendering = renderings.findFirst [
+                            !KlighdPredicates.isExpandedRendering().apply(it)
+                        ]
+                    }
+                }
+                (sModelElement as SKNode).data = #[currentRendering]
+            } else {
+                if (renderings.empty) {
+                    // TODO: create a default rendering for each type here (especially for KPorts) and remove the
+                    // default port rendering on the client.
+                    currentRendering = null
+                } else {
+                    currentRendering = renderings.head
+                }
+                switch (sModelElement.class) {
+                    case SKEdge:
+                        (sModelElement as SKEdge).data = #[currentRendering]
+                    case SKPort:
+                        (sModelElement as SKPort).data = #[currentRendering]
+                    case SKLabel:
+                        (sModelElement as SKLabel).data = #[currentRendering]
+                }
+            }
         ]
     }
     
