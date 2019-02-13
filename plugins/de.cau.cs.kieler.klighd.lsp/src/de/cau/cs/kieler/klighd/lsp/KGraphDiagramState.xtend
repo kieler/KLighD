@@ -33,7 +33,7 @@ public class KGraphDiagramState {
     /**
      * A map mapping the id of a graph to the {@link ViewContext} containing that graph.
      */
-    public Map<String, ViewContext> kGraphContexts = new HashMap
+    private Map<String, ViewContext> kGraphContexts = new HashMap
     
     /**
      * A map that contains a key-value pair for each KGraphElement and its translated SModelElement counterpart.
