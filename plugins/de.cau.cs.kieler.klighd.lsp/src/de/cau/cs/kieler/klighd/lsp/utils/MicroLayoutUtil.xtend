@@ -86,9 +86,9 @@ public final class MicroLayoutUtil {
                     var decorationMap = new HashMap<String, Decoration>
                     handleKRendering(element, data.rendering, boundsMap, decorationMap)
                     // add new Property to contain the boundsMap
-                    data.properties.put(BoundsProperties.CALCULATED_BOUNDS_MAP, boundsMap)
+                    data.properties.put(SprottyProperties.CALCULATED_BOUNDS_MAP, boundsMap)
                     // and the decorationMap
-                    data.properties.put(BoundsProperties.CALCULATED_DECORATION_MAP, decorationMap)
+                    data.properties.put(SprottyProperties.CALCULATED_DECORATION_MAP, decorationMap)
                     // remember the id of the rendering in the reference
                     data.id = data.rendering.id
                     
@@ -339,14 +339,14 @@ public final class MicroLayoutUtil {
      * Convenience method to set the calculated bounds property of the given rendering
      */
     public static def setBounds(KRendering rendering, Bounds bounds) {
-        rendering.properties.put(BoundsProperties.CALCULATED_BOUNDS, bounds)
+        rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS, bounds)
     }
     
     /**
      * Convenience method to set the calculated decoration property of the given rendering
      */
      public static def setDecoration(KRendering rendering, Decoration decoration) {
-         rendering.properties.put(BoundsProperties.CALCULATED_DECORATION, decoration)
+         rendering.properties.put(SprottyProperties.CALCULATED_DECORATION, decoration)
      }
     
     

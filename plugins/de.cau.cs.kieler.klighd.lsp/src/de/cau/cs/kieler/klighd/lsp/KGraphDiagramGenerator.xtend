@@ -34,7 +34,9 @@ import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.util.KlighdPredicates
+import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.RenderingContextData
 import io.typefox.sprotty.api.Dimension
 import io.typefox.sprotty.api.IDiagramState
@@ -320,11 +322,16 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         nodeElement.children.addAll(createLabels(node.labels))
         
         val renderingContextData = RenderingContextData.get(node)
-        renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
-        if (!node.children.empty) {
+        // activate the element by default if it does not have an active/inactive status yet.
+        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
+            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
+        }
+        // Populate the children of this node only if child nodes exist and the node should be drawn extended initially.
+        val isExpanded = node.getProperty(KlighdProperties.EXPAND)
+        if (!node.children.empty && isExpanded) {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
-            // this should not be necessary, as it is the default case.
-//            DiagramSyntheses.initiallyExpand(node)
+        } else {
+            renderingContextData.setProperty(KlighdInternalProperties.POPULATED, false)
         }
         return nodeElement 
     }
@@ -379,7 +386,11 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         
         edgeElement.children.addAll(createLabels(edge.labels))
         
-        RenderingContextData.get(edge).setProperty(KlighdInternalProperties.ACTIVE, true)
+        // activate the element by default if it does not have an active/inactive status yet.
+        val renderingContextData = RenderingContextData.get(edge)
+        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
+            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
+        }
 
         return edgeElement
     }
@@ -396,7 +407,11 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         
         portElement.children.addAll(createLabels(port.labels))
         
-        RenderingContextData.get(port).setProperty(KlighdInternalProperties.ACTIVE, true)
+        // activate the element by default if it does not have an active/inactive status yet.
+        val renderingContextData = RenderingContextData.get(port)
+        if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
+            renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
+        }
 
         return portElement
     }
@@ -417,7 +432,11 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             // remember KLabel element for later size estimation
             modelLabels.addAll(findTextsAndLabels(renderings))
         
-            RenderingContextData.get(label).setProperty(KlighdInternalProperties.ACTIVE, true)
+            // activate the element by default if it does not have an active/inactive status yet.
+            val renderingContextData = RenderingContextData.get(label)
+            if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
+                renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
+            }
         } else {
             // Add the renderings here already to the element.
             labelElement.data = renderings
@@ -449,7 +468,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         this.kGraphToSModelElementMap.forEach [kGraphElement, sModelElement |
             var KRendering currentRendering
             val renderings = kGraphElement.data.filter(KRendering)
-            // Getting the current rendering similar to AbstractKGERenderingControlle#getCurrentRendering
+            // Getting the current rendering similar to AbstractKGERenderingController#getCurrentRendering
             if (kGraphElement instanceof KNode) {
                 // in case the node to be depicted is tagged as 'populated',
                 //  i.e. children are depicted in the diagram ...
@@ -466,6 +485,9 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                             !KlighdPredicates.isCollapsedRendering().apply(it)
                         ] 
                     }
+                    // also set the element as expanded.
+                    RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, true)
+//                    kGraphElement.setProperty(KlighdProperties.EXPAND, true)
                 } else {
                     // in case the node to be depicted is tagged as 'not populated',
                     //  i.e. no children are visible in the diagram
@@ -481,6 +503,9 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                             !KlighdPredicates.isExpandedRendering().apply(it)
                         ]
                     }
+                    // also set the element as not expanded.
+                    RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, false)
+//                    kGraphElement.setProperty(KlighdProperties.EXPAND, false)
                 }
                 (sModelElement as SKNode).data.add(currentRendering)
             } else {

@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.lsp.gson_utils
 import com.google.gson.GsonBuilder
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import io.typefox.sprotty.server.json.ActionTypeAdapter
 import java.awt.geom.Point2D
@@ -33,6 +34,7 @@ public class KGraphTypeAdapterUtil {
             new ActionTypeAdapter.Factory => [
                 addActionKind(RequestTextBoundsAction.KIND, RequestTextBoundsAction)
                 addActionKind(ComputedTextBoundsAction.KIND, ComputedTextBoundsAction)
+                addActionKind(PerformActionAction.KIND, PerformActionAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

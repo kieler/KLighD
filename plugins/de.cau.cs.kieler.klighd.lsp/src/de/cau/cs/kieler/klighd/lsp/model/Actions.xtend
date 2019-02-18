@@ -70,3 +70,25 @@ public class ComputedTextBoundsAction implements Action {
         initializer.accept(this)
     }
 }
+
+/**
+ * Sent from the client to the server to request a KlighD action to be performed on the current model.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class PerformActionAction implements Action {
+    public static val KIND = 'performAction'
+    private String kind = KIND
+    
+    private String actionId
+    private String kGraphElementId
+    private String kRenderingId
+    
+    public new() {}
+    public new(Consumer<PerformActionAction> initializer) {
+        initializer.accept(this)
+    }
+}

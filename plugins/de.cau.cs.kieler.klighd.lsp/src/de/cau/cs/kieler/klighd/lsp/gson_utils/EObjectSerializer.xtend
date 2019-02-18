@@ -28,7 +28,7 @@ import de.cau.cs.kieler.klighd.krendering.KXPosition
 import de.cau.cs.kieler.klighd.krendering.KYPosition
 import de.cau.cs.kieler.klighd.krendering.impl.KRenderingRefImpl
 import de.cau.cs.kieler.klighd.krendering.impl.KTextImpl
-import de.cau.cs.kieler.klighd.lsp.utils.BoundsProperties
+import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -84,23 +84,23 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             // TODO: put these properties back in a 'properties' field containing these sub fields.
             if (source.class === KRenderingRefImpl) {
                 // Only KRenderingRefs have the bounds- and decoration maps.
-                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_BOUNDS_MAP)) {
+                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_BOUNDS_MAP)) {
                     jsonObject.add("calculatedBoundsMap", context.serialize(
-                        propertyHolder.getProperty(BoundsProperties.CALCULATED_BOUNDS_MAP)))
+                        propertyHolder.getProperty(SprottyProperties.CALCULATED_BOUNDS_MAP)))
                 }
-                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_DECORATION_MAP)) {
+                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_DECORATION_MAP)) {
                     jsonObject.add("calculatedDecorationMap", context.serialize(
-                        propertyHolder.getProperty(BoundsProperties.CALCULATED_DECORATION_MAP)))
+                        propertyHolder.getProperty(SprottyProperties.CALCULATED_DECORATION_MAP)))
                 }
             } else {
                 // All other renderings contain calculatedBounds and -Decoration.
-                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_BOUNDS)) {
+                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_BOUNDS)) {
                     jsonObject.add("calculatedBounds", context.serialize(
-                        propertyHolder.getProperty(BoundsProperties.CALCULATED_BOUNDS)))
+                        propertyHolder.getProperty(SprottyProperties.CALCULATED_BOUNDS)))
                 }
-                if (propertyHolder.hasProperty(BoundsProperties.CALCULATED_DECORATION)) {
+                if (propertyHolder.hasProperty(SprottyProperties.CALCULATED_DECORATION)) {
                     jsonObject.add("calculatedDecoration", context.serialize(
-                        propertyHolder.getProperty(BoundsProperties.CALCULATED_DECORATION)))
+                        propertyHolder.getProperty(SprottyProperties.CALCULATED_DECORATION)))
                 }
                 if (source.class === KTextImpl) {
                     // Only KTexts have the additional calculatedTextBounds property.

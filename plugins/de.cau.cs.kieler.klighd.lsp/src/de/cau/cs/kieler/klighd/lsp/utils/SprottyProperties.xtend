@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright ${year} by
+ * Copyright 2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp.utils
 
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 import de.cau.cs.kieler.klighd.microlayout.Bounds
@@ -21,19 +22,19 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.elk.graph.properties.Property
 
 /**
- * A collection of {@link IProperty IProperties} that may be used to persist
- * {@link Bounds} and {@link Decoration} data to {@link KRendering}s and {@link KRenderingRef}s.
+ * A collection of {@link IProperty IProperties} that may be used to persist some additional data on
+ * {@link KGraphElement}s to allow functionality with a sprotty viewer.
  * 
- * @author stu114054
+ * @author nre
  */
-class BoundsProperties {
+class SprottyProperties {
     /**
      * Property holding the bounds of any {@link KRendering}. This property can be set if estimation
      * of rendering sizes should not be calculated in time when needed, but up front for all 
      * renderings.
      */
     public static final IProperty<Bounds> CALCULATED_BOUNDS = 
-            new Property<Bounds>("klighd.calculated.bounds", null);
+        new Property<Bounds>("klighd.lsp.calculated.bounds", null);
     
     /**
      * Property holding the decoration of any {@link KRendering}. This property can be set if estimation
@@ -42,7 +43,7 @@ class BoundsProperties {
      * This only applies for renderings, that are decorations of edge renderings.
      */
     public static final IProperty<Decoration> CALCULATED_DECORATION =
-            new Property<Decoration>("klighd.calculated.decoration", null);
+        new Property<Decoration>("klighd.lsp.calculated.decoration", null);
     
     /**
      * Property holding the bounds for all child {@link KRendering}s in a {@link KRenderingRef}.
@@ -50,7 +51,7 @@ class BoundsProperties {
      * when needed, but up front for all renderings.
      */
     public static final IProperty<Map<String, Bounds>> CALCULATED_BOUNDS_MAP = 
-            new Property<Map<String, Bounds>>("klighd.calculated.bounds.map", null);
+        new Property<Map<String, Bounds>>("klighd.lsp.calculated.bounds.map", null);
     
     /**
      * Property holding the decorations for all child {@link KRendering}s in a {@link KRenderingRef}.
@@ -59,5 +60,11 @@ class BoundsProperties {
      * when needed, but up front for all renderings.
      */
     public static final IProperty<Map<String, Decoration>> CALCULATED_DECORATION_MAP = 
-            new Property<Map<String, Decoration>>("klighd.calculated.decoration.map", null);
+        new Property<Map<String, Decoration>>("klighd.lsp.calculated.decoration.map", null);
+    
+    /**
+     * Property indicating if an element is currently drawn in its expanded state.
+     */
+    public static final IProperty<Boolean> EXPANDED =
+        new Property<Boolean>("klighd.lsp.expanded", true);
 }

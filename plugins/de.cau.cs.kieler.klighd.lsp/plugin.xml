@@ -13,5 +13,12 @@
          </run>
       </application>
    </extension>
+   <extension
+         point="de.cau.cs.kieler.klighd.extensions">
+      <viewer
+            class="de.cau.cs.kieler.klighd.lsp.SprottyViewer$Provider"
+            id="de.cau.cs.kieler.klighd.lsp.SprottyViewer">
+      </viewer>
+   </extension>
 
 </plugin>

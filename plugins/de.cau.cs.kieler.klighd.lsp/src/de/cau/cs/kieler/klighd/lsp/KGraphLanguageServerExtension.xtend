@@ -15,12 +15,15 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Singleton
+import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetOptionParam
+import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import io.typefox.sprotty.api.ActionMessage
 import io.typefox.sprotty.api.IDiagramServer
 import io.typefox.sprotty.api.RequestModelAction
@@ -134,25 +137,40 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             oldVC = diagramState.getKGraphContext(id)    
         }
         // translate the resource to the KGraph model and store it in the diagram state.
-        var ViewContext kGraphContext = null
+        var ViewContext theViewContext = null
+        var SprottyViewer viewer = null
         synchronized (model) {
-            if (oldVC === null) {                
-                kGraphContext = KGraphDiagramGenerator.translateModel(model, null)        
+            if (oldVC === null) {
+                // Configure the ViewContext and the Klighd synthesis to generate the KGraph model correctly.
+                val properties = new KlighdSynthesisProperties()
+                    .useViewer(SprottyViewer.ID)
+                    .useUpdateStrategy(IncrementalUpdateStrategy.ID)
+                // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
+                // TODO: The ViewContext should have a default constructor for non-SWT-based viewer.
+                theViewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
+                // Update the model and with that call the diagram synthesis.
+                theViewContext.update(model)
+                // Set up a dummy sprotty viewer for specific interactions.
+                viewer = theViewContext.createViewer(null, null) as SprottyViewer
+                viewer.viewContext = theViewContext
             } else {
                 oldVC.update(model)
-                kGraphContext = oldVC
+                theViewContext = oldVC
             }
         }
         synchronized (diagramState) {
             diagramState.putURIString(server.clientId, id)
-            diagramState.putKGraphContext(id, kGraphContext)
+            diagramState.putKGraphContext(id, theViewContext)
+            if (viewer !== null) {
+                diagramState.putViewer(id, viewer)
+            }
         }
         
         // generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         val diagramGenerator = diagramGeneratorProvider.get
         val sGraph = diagramGenerator.toSGraph(
-            kGraphContext.viewModel, id, cancelChecker)
+            theViewContext.viewModel, id, cancelChecker)
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putTexts(id, diagramGenerator.getModelLabels)

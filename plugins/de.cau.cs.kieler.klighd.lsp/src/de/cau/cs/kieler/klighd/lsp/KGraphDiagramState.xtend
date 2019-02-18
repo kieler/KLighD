@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Singleton
+import de.cau.cs.kieler.klighd.IViewer
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KText
@@ -58,6 +59,11 @@ public class KGraphDiagramState {
      * Contains the model of the currently drawn snapshot for the url of the model, if available.
      */
     private Map<String, Object> snapshotModelMapping = new HashMap
+    
+    /**
+     * Contains the {@link IViewer} displaying the current diagram.
+     */
+    private Map<String, IViewer> viewerMapping = new HashMap
     
     /**
      * A map to map the sprotty client id to the uri leading to the resource.
@@ -179,6 +185,25 @@ public class KGraphDiagramState {
     }
     
     /**
+     * Getter to access the value stored in the viewer map.
+     * 
+     * @param key The key to access the value in the map.
+     */
+    public def IViewer getViewer(String key) {
+        viewerMapping.get(key)
+    }
+    
+    /**
+     * Put method to put a new value in the viewer map under the given key.
+     * 
+     * @param key The key to access the map.
+     * @param value The value to be stored in the map.
+     */
+    public def putViewer(String key, IViewer value) {
+        viewerMapping.put(key, value)
+    }
+    
+    /**
      * removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
      * 
      * @param clientId The client ID of the diagram server for that no map should store any data anymore.
@@ -191,6 +216,7 @@ public class KGraphDiagramState {
             texts.remove(key)
             textMapping.remove(key)
             snapshotModelMapping.remove(key)
+            viewerMapping.remove(key)
             uriStringMap.remove(clientId)
         }
     }

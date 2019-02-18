@@ -13,16 +13,24 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
+import de.cau.cs.kieler.klighd.IAction
+import de.cau.cs.kieler.klighd.IAction.ActionContext
+import de.cau.cs.kieler.klighd.KlighdDataManager
+import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
+import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
+import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIDGenerator
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import io.typefox.sprotty.api.Action
 import io.typefox.sprotty.api.ActionMessage
 import io.typefox.sprotty.api.SModelRoot
 import io.typefox.sprotty.api.SetModelAction
+import io.typefox.sprotty.api.UpdateModelAction
 import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
 import java.util.Map
 import org.apache.log4j.Logger
@@ -74,6 +82,8 @@ public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
             val Action action = message.getAction();
             if (action.getKind() === ComputedTextBoundsAction.KIND) {
                 handle(action as ComputedTextBoundsAction)
+            } else if (action.getKind() === PerformActionAction.KIND) {
+                handle(action as PerformActionAction)
             } else {
                 super.accept(message)
             }
@@ -107,6 +117,29 @@ public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
             kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
         }
         updateModel(currentRoot)
+    }
+    
+    /**
+     * Called when a {@link PerformActionAction} is received.
+     * Invokes the contained KlighD {@link IAction} on the current {@link KNode KGraph}.
+     * May cause a {@link UpdateModelAction} to be sent back to the client with an updated model.
+     */
+    protected def handle(PerformActionAction action) {
+        synchronized(diagramState) {
+            
+            val sourceUrl = diagramState.getURIString(clientId)
+            val k2sMap = diagramState.getKGraphToSModelElementMap(sourceUrl)
+            val kGraphElement = KGraphElementIDGenerator.findElementById(k2sMap, action.KGraphElementId)
+            val kRendering = KRenderingIDGenerator.findRenderingById(kGraphElement, action.KRenderingId)
+            
+            val klighdAction = KlighdDataManager.getInstance().getActionById(action.actionId)
+            val viewer = diagramState.getViewer(diagramState.getURIString(clientId))
+            val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
+            val shouldUpdate = klighdAction.execute(actionContext)
+            if (shouldUpdate.actionPerformed) {
+                languageServerExtension.updateDiagram(this)
+            }
+        }
     }
     
     /**
