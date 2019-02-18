@@ -67,14 +67,12 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
         // persist the state safe of model updates in the RenderingContextData.
         val contextData = RenderingContextData.get(diagramElement)
         contextData.setProperty(SprottyProperties.EXPANDED, false)
-        contextData.setProperty(KlighdInternalProperties.ACTIVE, false)
     }
     
     override expand(KNode diagramElement) {
         // persist the state safe of model updates in the RenderingContextData.
         val contextData = RenderingContextData.get(diagramElement)
         contextData.setProperty(SprottyProperties.EXPANDED, true)
-        contextData.setProperty(KlighdInternalProperties.ACTIVE, true)
     }
     
     override getClip() {
