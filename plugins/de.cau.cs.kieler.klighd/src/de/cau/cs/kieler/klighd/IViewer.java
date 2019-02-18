@@ -388,7 +388,7 @@ public interface IViewer {
      * @param diagramElement
      *            a (hierarchic) {@link KNode}
      * @return <code>true</code> if the {@link KNode} <code>diagramElement</code> is expanded,
-     *         <code>true</code> otherwise.
+     *         <code>false</code> otherwise.
      */
     boolean isExpanded(KNode diagramElement);
 
