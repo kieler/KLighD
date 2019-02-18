@@ -326,8 +326,14 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
             renderingContextData.setProperty(KlighdInternalProperties.ACTIVE, true)
         }
-        // Populate the children of this node only if child nodes exist and the node should be drawn extended initially.
-        val isExpanded = node.getProperty(KlighdProperties.EXPAND)
+        // Populate the children of this node only if child nodes exist and the node should be drawn expanded.
+        var boolean isExpanded
+        if (renderingContextData.hasProperty(SprottyProperties.EXPANDED)) {
+            isExpanded = renderingContextData.getProperty(SprottyProperties.EXPANDED)
+        } else {
+            // If the expanded property does not exist yet, use the initial expansion.
+            isExpanded = node.getProperty(KlighdProperties.EXPAND)
+        }
         if (!node.children.empty && isExpanded) {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
         } else {

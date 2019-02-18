@@ -156,8 +156,11 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override toggleExpansion(KNode diagramElement) {
-        println("toggle expansion called")
-        // do nothing.
+        if (diagramElement.isExpanded) {
+            diagramElement.collapse
+        } else {
+            diagramElement.expand
+        }
     }
     
     override zoomToFocus(KNode diagramElement, int duration) {
