@@ -2,18 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         id="lsp-application"
-         point="org.eclipse.core.runtime.applications">
-      <application
-            cardinality="singleton-global"
-            thread="main"
-            visible="true">
-         <run
-               class="de.cau.cs.kieler.klighd.lsp.launcher.Application">
-         </run>
-      </application>
-   </extension>
-   <extension
          point="de.cau.cs.kieler.klighd.extensions">
       <viewer
             class="de.cau.cs.kieler.klighd.lsp.SprottyViewer$Provider"

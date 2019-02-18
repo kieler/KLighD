@@ -19,6 +19,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import io.typefox.sprotty.api.SModelElement
+import java.net.URLDecoder
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.Map
@@ -76,7 +77,7 @@ public class KGraphDiagramState {
      * @param key The key to access the value in the map.
      */
     public def ViewContext getKGraphContext(String key) {
-        kGraphContexts.get(key)
+        kGraphContexts.get(URLDecoder.decode(key, "UTF-8"))
     }
     
     /**
@@ -86,7 +87,7 @@ public class KGraphDiagramState {
      * @param value The value to be stored in the map.
      */
     public def putKGraphContext(String key, ViewContext value) {
-        kGraphContexts.put(key, value)
+        kGraphContexts.put(URLDecoder.decode(key, "UTF-8"), value)
     }
     
     /**
@@ -211,7 +212,7 @@ public class KGraphDiagramState {
     public def remove(String clientId) {
         val key = uriStringMap.get(clientId)
         if (key !== null) {
-            kGraphContexts.remove(key)
+            kGraphContexts.remove(URLDecoder.decode(key, "UTF-8"))
             kGraphToSModelElementMap.remove(key)
             texts.remove(key)
             textMapping.remove(key)
