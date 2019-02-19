@@ -23,6 +23,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetOptionParam
+import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
 import io.typefox.sprotty.api.ActionMessage
 import io.typefox.sprotty.api.IDiagramServer
@@ -254,7 +255,13 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                     return null
                 }
                 // TODO: what about the displayedLayoutOptions and the displayedActions?
-                return viewContext.displayedSynthesisOptions
+                val synthesisOptions = new ArrayList<ValuedSynthesisOption>
+                val recentSynthesisOptions = diagramState.recentSynthesisOptions
+                for (option : viewContext.displayedSynthesisOptions) {
+                    val currentValue = recentSynthesisOptions.get(option)
+                    synthesisOptions.add(new ValuedSynthesisOption(option, currentValue))
+                }
+                return synthesisOptions
             }
         ]
     }

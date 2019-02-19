@@ -64,3 +64,19 @@ class SynthesisOptionValue {
      */
     int sourceHash
 }
+
+/**
+ * Data class to hold a synthesisOption and its current value in one convenient object.
+ */
+@Data
+class ValuedSynthesisOption {
+    /**
+     * The synthesisOption.
+     */
+     
+    SynthesisOption synthesisOption
+    /**
+     * The current value of the synthesisOption.
+     */
+    Object currentValue
+}
