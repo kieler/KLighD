@@ -64,7 +64,12 @@ public class KGraphDiagramState {
     /**
      * Contains the {@link IViewer} displaying the current diagram.
      */
-    private Map<String, IViewer> viewerMapping = new HashMap
+//    private Map<String, IViewer> viewerMapping = new HashMap
+
+    /**
+     * Contains the {@link IViewer} displaying diagrams.
+     */
+     private IViewer viewer = null
     
     /**
      * A map to map the sprotty client id to the uri leading to the resource.
@@ -190,8 +195,9 @@ public class KGraphDiagramState {
      * 
      * @param key The key to access the value in the map.
      */
-    public def IViewer getViewer(String key) {
-        viewerMapping.get(key)
+    public def IViewer getViewer(/*String key*/) {
+//        viewerMapping.get(key)
+        return viewer
     }
     
     /**
@@ -200,8 +206,9 @@ public class KGraphDiagramState {
      * @param key The key to access the map.
      * @param value The value to be stored in the map.
      */
-    public def putViewer(String key, IViewer value) {
-        viewerMapping.put(key, value)
+    public def putViewer(/*String key, */IViewer value) {
+//        viewerMapping.put(key, value)
+        viewer = value
     }
     
     /**
@@ -217,7 +224,7 @@ public class KGraphDiagramState {
             texts.remove(key)
             textMapping.remove(key)
             snapshotModelMapping.remove(key)
-            viewerMapping.remove(key)
+//            viewerMapping.remove(key)
             uriStringMap.remove(clientId)
         }
     }

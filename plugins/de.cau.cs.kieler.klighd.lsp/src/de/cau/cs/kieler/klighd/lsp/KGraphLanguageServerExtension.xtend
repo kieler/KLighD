@@ -131,46 +131,74 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
     }
     
     protected def createModel(KGraphAwareDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
-        // retrieve the view context that may contain updated options for the KGraphDiagramGenerator.
-        var ViewContext oldVC = null
-        synchronized(diagramState) {
-            oldVC = diagramState.getKGraphContext(id)    
-        }
-        // translate the resource to the KGraph model and store it in the diagram state.
-        var ViewContext theViewContext = null
+        
+        val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
-        synchronized (model) {
-            if (oldVC === null) {
-                // Configure the ViewContext and the Klighd synthesis to generate the KGraph model correctly.
-                val properties = new KlighdSynthesisProperties()
-                    .useViewer(SprottyViewer.ID)
-                    .useUpdateStrategy(IncrementalUpdateStrategy.ID)
-                // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
-                // TODO: The ViewContext should have a default constructor for non-SWT-based viewer.
-                theViewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
-                // Update the model and with that call the diagram synthesis.
-                theViewContext.update(model)
-                // Set up a dummy sprotty viewer for specific interactions.
-                viewer = theViewContext.createViewer(null, null) as SprottyViewer
-                viewer.viewContext = theViewContext
-            } else {
-                oldVC.update(model)
-                theViewContext = oldVC
+        synchronized (diagramState) {
+            val iViewer = diagramState.getViewer()
+            if (iViewer instanceof SprottyViewer) {
+                viewer = iViewer
             }
         }
+        // TODO: get synthesis described by the user on the client
+        // see DiagramView#doUpdateDiagram
+//        val synthesisId = 
+
+        // TODO: 
+        // Save previous synthesis options to restore later
+        // storeCurrentSynthesisOptions()
+        // configure options
+        // properties.configureSynthesisOptionValues(...)
+        
+        // Indicated if the model type changed against the current model
+        var modelTypeChanged = false
+        var ViewContext viewContext = null
+        
+        if (viewer === null || viewer.viewContext === null) {
+            // if viewer or context does not exist always init view
+            modelTypeChanged = true
+        } else {
+            viewContext = viewer.viewContext // TODO: is this the old VC?
+            if (viewContext.inputModel === null || viewContext.inputModel.class !== model.class) {
+                modelTypeChanged = true
+            }
+            // TODO:
+//            if (!KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisID)) {
+//                // In case the synthesis changed the sidebar should be updated
+//                modelTypeChanged = true
+//            }
+        }
+        
+        // If the type changed the view must be reinitialized to provide a correct ViewContext
+        // otherwise the ViewContext can be simply updated
+        if (modelTypeChanged) {
+            // Configure the ViewContext and the Klighd synthesis to generate the KGraph model correctly.
+            properties.useViewer(SprottyViewer.ID)
+                .useUpdateStrategy(IncrementalUpdateStrategy.ID)
+            // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
+            // TODO: The ViewContext should have a default constructor for non-SWT-based viewer.
+            viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
+            viewer = viewContext.createViewer(null, null) as SprottyViewer
+            viewer.viewContext = viewContext
+            // Update the model and with that call the diagram synthesis.
+            viewContext.update(model)
+        } else {
+            viewContext.copyProperties(properties)
+            viewContext.update(model)
+        }
+
         synchronized (diagramState) {
             diagramState.putURIString(server.clientId, id)
-            diagramState.putKGraphContext(id, theViewContext)
+            diagramState.putKGraphContext(id, viewContext)
             if (viewer !== null) {
-                diagramState.putViewer(id, viewer)
+                diagramState.putViewer(viewer)
             }
         }
         
         // generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         val diagramGenerator = diagramGeneratorProvider.get
-        val sGraph = diagramGenerator.toSGraph(
-            theViewContext.viewModel, id, cancelChecker)
+        val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, id, cancelChecker)
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putTexts(id, diagramGenerator.getModelLabels)
@@ -188,6 +216,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                     // A diagram for this file is currently not opened, so no options can be shown.
                     return null
                 }
+                // TODO: what about the displayedLayoutOptions and the displayedActions?
                 return viewContext.displayedSynthesisOptions
             }
         ]
@@ -315,7 +344,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             })
             // with that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
             // use the 'model' as its model.
-            val sGraph = this.createModel(diagramServer, model, uri, CancelIndicator.NullImpl)
+            val sGraph = this.createModel(diagramServer, model, uri, cancelIndicator)
             if (sGraph !== null) {
                 diagramServer.requestTextSizesAndUpdateModel(sGraph)
             }
