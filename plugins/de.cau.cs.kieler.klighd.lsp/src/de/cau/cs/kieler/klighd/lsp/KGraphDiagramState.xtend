@@ -14,7 +14,9 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IViewer
+import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.internal.ISynthesis
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
@@ -22,7 +24,9 @@ import io.typefox.sprotty.api.SModelElement
 import java.net.URLDecoder
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.HashSet
 import java.util.Map
+import java.util.Set
 
 /**
  * Singleton class to map a graph id (String) found in SGraphs to their various parts needed for handling KGraph models
@@ -69,12 +73,24 @@ public class KGraphDiagramState {
     /**
      * Contains the {@link IViewer} displaying diagrams.
      */
-     private IViewer viewer = null
+    private IViewer viewer = null
+    
+    /**
+     * Set containing the used {@link ISynthesis}.
+     */
+    private Set<ISynthesis> usedSyntheses = new HashSet
+    
+    /**
+     * Map containing all recently used {@link SynthesisOption} and current value
+     */
+    private Map<SynthesisOption, Object> recentSynthesisOptions = new HashMap
     
     /**
      * A map to map the sprotty client id to the uri leading to the resource.
      */
     private Map<String, String> uriStringMap = new HashMap
+    
+    // ------------ Methods to access or modify the fields -------------
     
     /**
      * Getter to access the value stored in the kGraphContext map.
@@ -212,6 +228,34 @@ public class KGraphDiagramState {
     }
     
     /**
+     * Adds the given synthesis to the set of used syntheses.
+     */
+    public def addUsedSynthesis(ISynthesis synthesis) {
+        usedSyntheses.add(synthesis)
+    }
+    
+    /**
+     * Default getter.
+     */
+    public def getUsedSyntheses() {
+        return usedSyntheses
+    }
+    
+    /**
+     * Default put method for the {@code recentSynthesisOptions} map.
+     */
+    public def putRecentSynthesisOption(SynthesisOption option, Object value) {
+        recentSynthesisOptions.put(option, value)
+    }
+    
+    /**
+     * Default getter.
+     */
+    public def getRecentSynthesisOptions() {
+        return recentSynthesisOptions
+    }
+    
+    /**
      * removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
      * 
      * @param clientId The client ID of the diagram server for that no map should store any data anymore.
@@ -228,4 +272,5 @@ public class KGraphDiagramState {
             uriStringMap.remove(clientId)
         }
     }
+    
 }

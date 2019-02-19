@@ -31,7 +31,9 @@ import io.typefox.sprotty.server.xtext.ILanguageAwareDiagramServer
 import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
 import io.typefox.sprotty.server.xtext.ide.IdeLanguageServerExtension
 import java.util.ArrayList
+import java.util.HashSet
 import java.util.List
+import java.util.Map
 import java.util.concurrent.CompletableFuture
 import org.eclipse.xtext.util.CancelIndicator
 
@@ -144,11 +146,14 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         // see DiagramView#doUpdateDiagram
 //        val synthesisId = 
 
-        // TODO: 
         // Save previous synthesis options to restore later
-        // storeCurrentSynthesisOptions()
+         storeCurrentSynthesisOptions()
         // configure options
-        // properties.configureSynthesisOptionValues(...)
+        var Map<SynthesisOption, Object> recentSynthesisOptions = null
+        synchronized (diagramState) {
+            recentSynthesisOptions = diagramState.recentSynthesisOptions
+        }
+        properties.configureSynthesisOptionValues(recentSynthesisOptions)
         
         // Indicated if the model type changed against the current model
         var modelTypeChanged = false
@@ -206,6 +211,38 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         }
         // finally, match the diagram server with the generated SGraph by returning the SGraph.
         sGraph
+    }
+    
+    /**
+     * Stores the current synthesisOptions configured in the current {@link ViewContext}.
+     * Similar to storing the options in Eclipse UI.
+     * 
+     * @see de.cau.cs.kieler.klighd.ui.view.DiagramView#storeCurrentSynthesisOptions
+     */
+    def storeCurrentSynthesisOptions() {
+        synchronized(diagramState) {
+            val viewer = diagramState.viewer
+            if (viewer !== null && viewer.viewContext !== null) {
+                val viewContext = viewer.viewContext
+                val allUsedSynthesisOptions = new HashSet<SynthesisOption>
+                val usedRootSynthesis = viewContext.diagramSynthesis
+                
+                // Save used syntheses
+                diagramState.addUsedSynthesis(usedRootSynthesis)
+                
+                // Find all available synthesis options for the currently used syntheses
+                allUsedSynthesisOptions.addAll(usedRootSynthesis.displayedSynthesisOptions)
+                for (childVC : viewContext.getChildViewContexts(true)) {
+                    diagramState.addUsedSynthesis(childVC.diagramSynthesis)
+                    allUsedSynthesisOptions.addAll(childVC.diagramSynthesis.displayedSynthesisOptions)
+                }
+                
+                // Save used options
+                for (option : allUsedSynthesisOptions) {
+                    diagramState.putRecentSynthesisOption(option, viewContext.getOptionValue(option))
+                }
+            }
+        }
     }
     
     override getOptions(GetOptionParam param) {
