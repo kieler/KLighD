@@ -133,7 +133,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         ]
     }
     
-    protected def createModel(KGraphAwareDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
+    protected synchronized def createModel(KGraphAwareDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
         
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
@@ -164,7 +164,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             // if viewer or context does not exist always init view
             modelTypeChanged = true
         } else {
-            viewContext = viewer.viewContext // TODO: is this the old VC?
+            viewContext = viewer.viewContext
             if (viewContext.inputModel === null || viewContext.inputModel.class !== model.class) {
                 modelTypeChanged = true
             }

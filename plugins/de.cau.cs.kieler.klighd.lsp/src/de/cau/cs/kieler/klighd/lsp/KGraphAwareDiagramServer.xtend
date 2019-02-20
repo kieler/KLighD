@@ -57,7 +57,7 @@ public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
      * 
      * @param newRoot the diagram to request the text sizes for.
      */
-    protected def requestTextSizesAndUpdateModel(SModelRoot newRoot) {
+    protected synchronized def requestTextSizesAndUpdateModel(SModelRoot newRoot) {
         currentRoot = newRoot
         if (newRoot !== null) {
             val texts = diagramState.getTexts(newRoot.id)
