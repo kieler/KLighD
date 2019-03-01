@@ -15,13 +15,11 @@ package de.cau.cs.kieler.klighd.piccolo.internal.nodes;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Stack;
 
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
-import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -51,6 +49,9 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
 
     /** the edge rendering controller deployed to manage the rendering of {@link #edge}. */
     private KEdgeRenderingController renderingController;
+
+    /** the {@link KNodeAbstractNode} this edgeNode is attached to, is just convenience. */
+    private KNodeAbstractNode parentNode;
 
     /** the bend points. */
     private Point2D[] bendPoints = new Point2D[2];
@@ -93,6 +94,10 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
      */
     public KEdgeRenderingController getRenderingController() {
         return this.renderingController;
+    }
+
+    public void setParentNode(final KNodeAbstractNode parent) {
+        this.parentNode = parent;
     }
 
     /**
@@ -211,26 +216,12 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
      */
     @Override
     public boolean fullPick(PPickPath pickPath) {
-        // Find the parent node. The edge should be contained in a KlighdDisposingLayer
-        // (the EdgeLayer), which should be contained in a KChildAreaNode.
-        // This KChildAreaNode should be contained in the wanted KNodeNode.
-        KNodeNode parentNode = null;
-        if (getParent() instanceof KlighdDisposingLayer) {
-            KlighdDisposingLayer pKDLayer = (KlighdDisposingLayer) getParent();
-            if (pKDLayer.getParent() instanceof KChildAreaNode) {
-                KChildAreaNode pCANode = (KChildAreaNode) pKDLayer.getParent();
-                if (pCANode.getParent() instanceof KNodeNode) {
-                    parentNode = (KNodeNode) pCANode.getParent();
-                }
-            }
-        }
-
         // If something with the parent relationship is wrong, just relegate to the super
         // implementation.
         if (parentNode != null) {
-            // Find out if the parentNode is currently clipped to and if the ports should be hidden
+            // check if the parentNode is currently clipped to and if the ports should be hidden
             // on the main camera
-            if (!parentNode.showClippedPorts() && parentNode.isRootLayer()) {
+            if (parentNode.isDiagramClipWithPortsHidden()) {
                 // Check if the edge is connected to the parentNode
                 final KNode parentKNode = parentNode.getViewModelElement();
                 final KEdge kEdge = getViewModelElement();
@@ -252,94 +243,22 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
      */
     @Override
     public void fullPaint(final PPaintContext paintContext) {
-        // Find the containing KNodeNode
-        KNodeNode parentNode = getParentKNodeNode();
-
         // If something with the parent relationship is wrong,
         // just delegate to the super implementation.
         if (parentNode != null) {
             // Find out if the parentNode is currently clipped to
             // and if the ports should be hidden on the main camera
-            if (!parentNode.showClippedPorts() && parentNode.isRootLayer()) {
-                // Try to find out if we are on the main camera
-                // For that we need the top camera, not the current camera.
-                PCamera topCamera = getTopCamera(paintContext);
-                if (parentNode.getCamerasReference().contains(topCamera)) {
-                    final KEdge kEdge = getViewModelElement();
-                    final KNode parentKNode = parentNode.getViewModelElement();
-                    if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
-                        // This is a short hierarchy edge connected to the parent, filter it out
-                        return;
-                    }
+            if (parentNode.isDiagramClipWithPortsHidden()) {
+                // Check if the edge is connected to the parentNode
+                final KEdge kEdge = getViewModelElement();
+                final KNode parentKNode = parentNode.getViewModelElement();
+                if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
+                    // This is a short hierarchy edge connected to the parent, filter it out
+                    return;
                 }
             }
         }
 
         super.fullPaint(paintContext);
-    }
-
-    /**
-     * Finds the {@link KNodeNode} this {@link KEdgeNode} is contained in. The {@link KEdgeNode} is
-     * not contained directly but through multiple layers (edgeLayer, childArea, ...)
-     * 
-     * @return The parent {@link KNodeNode} of this {@link KEdgeNode} of {@code null} if the
-     *         KNodeNode couldn't be found.
-     */
-    private KNodeNode getParentKNodeNode() {
-        // The edge should be contained in a KlighdDisposingLayer (the EdgeLayer),
-        // which should be contained in a KChildAreaNode.
-        // This KChildAreaNode should be contained in the wanted KNodeNode.
-        if (getParent() instanceof KlighdDisposingLayer) {
-            // We are in an EdgeLayer
-            KlighdDisposingLayer pKDLayer = (KlighdDisposingLayer) getParent();
-            if (pKDLayer.getParent() instanceof KChildAreaNode) {
-                // We are in a ChildArea
-                KChildAreaNode pCANode = (KChildAreaNode) pKDLayer.getParent();
-                // There might be KlighdPaths (or similar) between the ChildArea and the NodeNode
-                // skip these if needed
-                PNode pPNode = pCANode;
-                while (pPNode.getParent() != null && !(pPNode.getParent() instanceof KNodeNode)) {
-                    pPNode = pPNode.getParent();
-                }
-
-                if (pPNode.getParent() instanceof KNodeNode) {
-                    return (KNodeNode) pPNode.getParent();
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the primary {@link PCamera} from the camera stack. The primary camera is containt in
-     * the bottom-most entry of the stack.
-     * 
-     * @param paintContext
-     *            The {@link PPaintContext} to take the camera from.
-     * @return The bottom-most {@link PCamera} or {@code null} if the camera stack is empty.
-     */
-    private PCamera getTopCamera(final PPaintContext paintContext) {
-        // Cameras are stored on a stack
-        // To get the top (bottom in stack) element, we need to tear the stack down and restack it
-        Stack<PCamera> tempCamStack = new Stack<>();
-
-        PCamera topCam = null;
-        while (paintContext.getCamera() != null) {
-            // Grab the first camera from the stack
-            topCam = paintContext.getCamera();
-            // Remove the camera from the stack
-            paintContext.popCamera();
-            // Store a reference to the camera on the temporary stack
-            tempCamStack.add(topCam);
-        }
-        // We now have the last camera stored and our original stack is empty
-        // Restack all cameras from the temporary stack on the original stack
-        while (!tempCamStack.isEmpty()) {
-            PCamera tempCam = tempCamStack.pop();
-            paintContext.pushCamera(tempCam);
-        }
-
-        return topCam;
     }
 }

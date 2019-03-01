@@ -263,11 +263,15 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      */
     @Override
     public void setModel(final KNode model, final boolean sync) {
-        
+        final ViewContext context = getViewContext();
+
         // create a controller for the graph
-        controller = new DiagramController(model, canvas.getCamera(), sync, 
-                getViewContext().getProperty(KlighdProperties.EDGES_FIRST).booleanValue(),
-                getViewContext().getProperty(KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue());
+        controller = new DiagramController(model, canvas.getCamera(), sync,
+                context.getProperty(KlighdProperties.EDGES_FIRST).booleanValue());
+
+        canvas.getCamera().initClipsPortAndLabelsVisibility(
+                !context.getProperty(KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue(),
+                !context.getProperty(KlighdProperties.SHOW_CLIPPED_LABELS).booleanValue());
 
         // update the outline page
         if (outlinePage != null && !outlinePage.isDisposed()) {
@@ -573,7 +577,14 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * {@inheritDoc}
      */
     public void clip(final KNode diagramElement) {
-        controller.clip(diagramElement);
+        this.clip(diagramElement, null, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(final KNode diagramElement, final Boolean hideClipNodePorts, final Boolean hideClipNodeLabels) {
+        controller.clip(diagramElement, hideClipNodePorts, hideClipNodeLabels);
         this.notifyViewChangeListeners(ViewChangeType.CLIP, diagramElement);
     }
 

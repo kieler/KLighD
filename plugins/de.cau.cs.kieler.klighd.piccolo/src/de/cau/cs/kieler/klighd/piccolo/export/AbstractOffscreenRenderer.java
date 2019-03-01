@@ -68,8 +68,7 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
         // since the controller attaches the 'ACTIVE' and 'POPULATED' flags that are examined
         // by the KlighdLayoutManager we need to do this before arranging the diagram
         final DiagramController c = new DiagramController(viewContext.getViewModel(), camera, true,
-                viewContext.getProperty(KlighdProperties.EDGES_FIRST).booleanValue(),
-                viewContext.getProperty(KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue());
+                viewContext.getProperty(KlighdProperties.EDGES_FIRST).booleanValue());
 
         if (properties == null) {
             // layout the diagram

@@ -42,6 +42,7 @@ import com.google.common.collect.Sets;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
@@ -137,7 +138,7 @@ public class ViewChangedNotificationTest {
     @After
     public void postProcess() {
         new LightDiagramLayoutConfig(viewContext)
-            .animate(false)
+            .animate(false).zoomStyle(ZoomStyle.ZOOM_TO_ACTUAL_SIZE)
             .performLayout();
 
         final int[] retry = new int[] {10};
@@ -207,7 +208,7 @@ public class ViewChangedNotificationTest {
     @Test
     public void test01b() {
         countNodesOnly = false;
-        expectedElementsNumber = 40;
+        expectedElementsNumber = 44;
     }
 
 
@@ -231,7 +232,7 @@ public class ViewChangedNotificationTest {
                 (Object) Iterables.getFirst(Iterables.filter(
                         ((EObject) viewContext.getInputModel()).eContents(), KNode.class), null));
         countNodesOnly = false;
-        expectedElementsNumber = 2;
+        expectedElementsNumber = 4;
     }
 
 
@@ -255,7 +256,7 @@ public class ViewChangedNotificationTest {
                 (Object) ((KNode) viewContext.getInputModel()).getChildren().get(0).getChildren()
                         .get(0));
         countNodesOnly = false;
-        expectedElementsNumber = 20;
+        expectedElementsNumber = 24;
     }
 
 
@@ -266,7 +267,7 @@ public class ViewChangedNotificationTest {
     public void test04() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         expectedElementsNumber = 3;
-        shell.setSize(100, shell.getSize().y);
+        shell.setSize(110, shell.getSize().y);
     }
 
     /**
@@ -276,8 +277,8 @@ public class ViewChangedNotificationTest {
     public void test04b() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         countNodesOnly = false;
-        expectedElementsNumber = 9;
-        shell.setSize(100, shell.getSize().y);
+        expectedElementsNumber = 12;
+        shell.setSize(110, shell.getSize().y);
     }
 
 
@@ -288,7 +289,10 @@ public class ViewChangedNotificationTest {
     public void test05() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         expectedElementsNumber = 4;
-        shell.setSize(125, shell.getSize().y);
+        if (KlighdPlugin.IS_WINDOWS)
+            shell.setSize(150, shell.getSize().y);
+        else
+            shell.setSize(130, shell.getSize().y);
     }
 
     /**
@@ -298,7 +302,10 @@ public class ViewChangedNotificationTest {
     public void test05b() {
         viewContext.setZoomStyle(ZoomStyle.NONE);
         countNodesOnly = false;
-        expectedElementsNumber = 20;
-        shell.setSize(125, shell.getSize().y);
+        expectedElementsNumber = 23;
+        if (KlighdPlugin.IS_WINDOWS)
+            shell.setSize(150, shell.getSize().y);
+        else
+            shell.setSize(130, shell.getSize().y);
     }
 }

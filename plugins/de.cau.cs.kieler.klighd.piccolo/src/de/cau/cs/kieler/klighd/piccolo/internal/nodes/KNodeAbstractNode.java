@@ -82,6 +82,14 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
     }
 
     /**
+     * Convenience setter for adding a representation of an edge.
+     */
+    public void addEdge(KEdgeNode edgeRep) {
+        childArea.addEdge(edgeRep);
+        edgeRep.setParentNode(this);
+    }
+
+    /**
      * Method indicates whether this {@link KNodeAbstractNode} has been drawn once; if so the
      * attached {@link KChildAreaNode} must perform its {@link #validateFullBounds() bounds
      * validation} and {@link #validateFullPaint() paint validation} properly; otherwise the child
@@ -169,6 +177,59 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
         }
         scale(scale / curScale);
     }
+
+    /**
+     * Returns whether the diagram is clipped to the represented {@link KNode} and its ports are hidden.
+     * 
+     * @return <code>true</code> if the diagram is clipped to the represented {@link KNode} and its
+     *         ports are hidden, <code>false</code> otherwise.
+     */
+    public abstract boolean isDiagramClipWithPortsHidden();
+
+    /**
+     * Configures the invisibility of the ports on the main diagram in case it's clipped to this
+     * node.
+     * 
+     * @param portsHidden
+     *            if <code>true</code> the ports will be hidden, and displayed otherwise
+     * @param force
+     *            if <code>true</code> the value of <code>portsHidden</code> will be applied under
+     *            all circumstances; otherwise if <code>force == false</code> and <code>this</code>
+     *            node is the current clip node the existing configuration is kept and
+     *            <code>portsHidden</code> is ignored; otherwise (if <code>force == false</code> and
+     *            <code>this</code> node is <em>not</em> the current clip) and a specific definition
+     *            is set to the represented {@link KNode} that definition will superimpose the value
+     *            of <code>portsHidden</code>; otherwise the value of <code>portsHidden</code> is
+     *            applied.
+     */
+    public void setPortsHiddenWhenClipped(boolean portsHidden, boolean force) {}
+
+    /**
+     * Returns whether the diagram is clipped to the represented {@link KNode} and its labels are
+     * hidden.
+     * 
+     * @return <code>true</code> if the diagram is clipped to the represented {@link KNode} and its
+     *         labels are hidden, <code>false</code> otherwise.
+     */
+    public abstract boolean isDiagramClipWithLabelsHidden();
+
+    /**
+     * Configures the invisibility of the labels on the main diagram in case it's clipped to this
+     * node.
+     * 
+     * @param labelsHidden
+     *            if <code>true</code> the labels will be hidden, and displayed otherwise
+     * @param force
+     *            if <code>true</code> the value of <code>labelsHidden</code> will be applied under
+     *            all circumstances; otherwise if <code>force == false</code> and <code>this</code>
+     *            node is the current clip node the existing configuration is kept and
+     *            <code>labelsHidden</code> is ignored; otherwise (if <code>force == false</code>
+     *            and <code>this</code> node is <em>not</em> the current clip) and a specific
+     *            definition is set to the represented {@link KNode} that definition will
+     *            superimpose the value of <code>labelsHidden</code>; otherwise the value of
+     *            <code>labelsHidden</code> is applied.
+     */
+    public void setLabelsHiddenWhenClipped(boolean labelsHidden, boolean force) {}
 
     /**
      * {@inheritDoc}

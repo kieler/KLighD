@@ -105,7 +105,7 @@ public class RenderingTest {
     @Before
     public void initialize() {
         final KlighdMainCamera camera = new KlighdMainCamera(new PRoot());
-        new DiagramController(graph, camera, true, false, false);
+        new DiagramController(graph, camera, true, false);
     }
 
     /**

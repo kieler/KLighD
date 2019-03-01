@@ -207,6 +207,12 @@ public class KlighdPaintContext extends PPaintContext {
         }
     }
 
+    /**
+     * @return the employed top camera
+     */
+    public PCamera getTopCamera() {
+        return (PCamera) cameraStack.get(0);
+    }
 
     /**
      * {@inheritDoc}<br>
