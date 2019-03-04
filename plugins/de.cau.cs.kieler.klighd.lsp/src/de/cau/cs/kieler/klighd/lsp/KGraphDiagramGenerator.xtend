@@ -317,9 +317,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         modelLabels.addAll(findTextsAndLabels(filteredData))
         
         nodeElement.data = node.data.filter [ KRenderingLibrary.isAssignableFrom(it.class) ].toList
-        nodeElement.children.addAll(createPorts(node.ports))
-        nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
-        nodeElement.children.addAll(createLabels(node.labels))
         
         val renderingContextData = RenderingContextData.get(node)
         // activate the element by default if it does not have an active/inactive status yet.
@@ -336,6 +333,9 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         }
         if ((!node.children.empty || !node.labels.empty || !node.ports.empty) && isExpanded) {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, true)
+            nodeElement.children.addAll(createPorts(node.ports))
+            nodeElement.children.addAll(createNodesAndPrepareEdges(node.children, nodeElement))
+            nodeElement.children.addAll(createLabels(node.labels))
         } else {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, false)
         }
@@ -498,10 +498,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                     case SKLabel:
                         (sModelElement as SKLabel).data = #[currentRendering]
                 }
-            }
-            // remove the generated child nodes from the SGraph model so they do not even get transmitted.
-            if (!includeChildren) {
-                sModelElement.children = new ArrayList
             }
         ]
     }
