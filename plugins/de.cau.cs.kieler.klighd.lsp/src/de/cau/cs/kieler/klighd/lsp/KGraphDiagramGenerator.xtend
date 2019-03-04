@@ -347,44 +347,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * Assumes, that the source and target nodes or ports of this {@code edge} have already been generated.
      */
     private def SKEdge generateEdge(KEdge edge) {
-        // SEdges do not contain a direct reference to their source and target elements, but they contain references to
-        // the unique IDs of their source and target elements.
-        val fromElementId = 
-            /* The source (target) of an edge can be a port or a node. Prefer the port, if available. */
-            if (edge.sourcePort !== null) {
-                val element = kGraphToSModelElementMap.get(edge.sourcePort)
-                if (element === null) {
-                    // If the element is not a part of the view model, just ignore it.
-                    return null
-                }
-                element.id
-            } else {
-                val element = kGraphToSModelElementMap.get(edge.source)
-                if (element === null) {
-                    return null
-                }
-                element.id
-            }
-        val toElementId = 
-            if (edge.targetPort !== null) {
-                val element = kGraphToSModelElementMap.get(edge.targetPort)
-                if (element === null) {
-                    return null
-                } else {
-                    element.id
-                }
-            } else {
-                val element = kGraphToSModelElementMap.get(edge.target)
-                if (element === null) {
-                    return null
-                } else {
-                    element.id
-                }
-            }
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
-        
-        edgeElement.sourceId = fromElementId
-        edgeElement.targetId = toElementId
         
         val renderings = edge.data.filter [ KRendering.isAssignableFrom(it.class)].toList
         
