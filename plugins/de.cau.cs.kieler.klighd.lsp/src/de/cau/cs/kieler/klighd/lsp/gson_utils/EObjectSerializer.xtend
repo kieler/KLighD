@@ -80,7 +80,7 @@ class EObjectSerializer implements JsonSerializer<EObject> {
         
         // A more efficient testing of properties depending on the sources class.
         if (KRendering.isAssignableFrom(source.class)) {
-            val propertyHolder = source as KRendering // TODO: test this!
+            val propertyHolder = source as KRendering
             // TODO: put these properties back in a 'properties' field containing these sub fields.
             if (source.class === KRenderingRefImpl) {
                 // Only KRenderingRefs have the bounds- and decoration maps.
@@ -149,7 +149,6 @@ class EObjectSerializer implements JsonSerializer<EObject> {
             || KYPosition       .isAssignableFrom(c)
     }
     
-    // TODO: Special handling of the "data" field. (currently active rendering only.)
     // TODO: Special handling of default values
     def specialHandling(Field f) {
         return false
