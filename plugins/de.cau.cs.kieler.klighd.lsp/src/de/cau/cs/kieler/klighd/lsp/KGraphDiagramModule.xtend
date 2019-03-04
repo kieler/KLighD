@@ -45,7 +45,7 @@ public class KGraphDiagramModule extends IdeDiagramModule {
 	}
 	
 	override bindIDiagramServer() {
-        KGraphAwareDiagramServer
+        KGraphDiagramServer
     }
     
 	public def Class<? extends TraceRegionProvider> bindTraceRegionProvider() {

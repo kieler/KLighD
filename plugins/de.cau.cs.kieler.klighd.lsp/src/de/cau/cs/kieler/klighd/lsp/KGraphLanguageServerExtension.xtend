@@ -68,9 +68,9 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
 	
 	override protected initializeDiagramServer(IDiagramServer server) {
 		super.initializeDiagramServer(server)
-		val kGraphAware = server as KGraphAwareDiagramServer
-		kGraphAware.needsServerLayout = true
-		kGraphAware.needsClientLayout = false
+		val kGraphDiagramServer = server as KGraphDiagramServer
+		kGraphDiagramServer.needsServerLayout = true
+		kGraphDiagramServer.needsClientLayout = false
 		LOG.info("Created diagram server for " + server.clientId)
 	}
 	
@@ -114,7 +114,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                         }
             val cancelChecker = context.cancelChecker
             
-            return (diagramServers as List<KGraphAwareDiagramServer>).map [ server |
+            return (diagramServers as List<KGraphDiagramServer>).map [ server |
                 server -> {
                     server.status = status
                     if (status.severity !== ERROR) {
@@ -133,7 +133,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         ]
     }
     
-    protected synchronized def createModel(KGraphAwareDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
+    protected synchronized def createModel(KGraphDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
         
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
@@ -379,7 +379,7 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         }
         
         val diagramServer = this.getDiagramServer(clientId)
-        if (diagramServer instanceof KGraphAwareDiagramServer) {
+        if (diagramServer instanceof KGraphDiagramServer) {
             synchronized(diagramState) {
                 diagramState.putSnapshotModel(uri, model)
             }

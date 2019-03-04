@@ -40,8 +40,8 @@ import org.apache.log4j.Logger
  * 
  * @author nir
  */
-public class KGraphAwareDiagramServer extends LanguageAwareDiagramServer {
-    private static val LOG = Logger.getLogger(KGraphAwareDiagramServer)
+public class KGraphDiagramServer extends LanguageAwareDiagramServer {
+    private static val LOG = Logger.getLogger(KGraphDiagramServer)
     
     @Inject 
     protected KGraphDiagramState diagramState
