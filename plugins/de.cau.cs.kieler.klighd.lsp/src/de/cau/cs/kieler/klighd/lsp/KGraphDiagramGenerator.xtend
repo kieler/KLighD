@@ -24,8 +24,12 @@ import de.cau.cs.kieler.klighd.kgraph.KLabel
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
+import de.cau.cs.kieler.klighd.krendering.KBackground
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
+import de.cau.cs.kieler.klighd.krendering.KForeground
+import de.cau.cs.kieler.klighd.krendering.KRectangle
 import de.cau.cs.kieler.klighd.krendering.KRendering
+import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.SKEdge
@@ -486,7 +490,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                 if (renderings.empty) {
                     // TODO: create a default rendering for each type here (especially for KPorts) and remove the
                     // default port rendering on the client.
-                    currentRendering = null
+                    currentRendering = createDefaultRendering(kGraphElement.class)
+                    kGraphElement.data.add(currentRendering)
                 } else {
                     currentRendering = renderings.head
                 }
@@ -500,6 +505,34 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                 }
             }
         ]
+    }
+    
+    private def createDefaultRendering(Class<?> clazz) {
+        if (KNode.isAssignableFrom(clazz)) {
+            // Same as klighd.piccolo.internal.controller.KNodeRenderingController#createDefaultRendering
+            // create the default rendering model
+            return KRenderingFactory.eINSTANCE.createKRectangle();
+        } else if (KPort.isAssignableFrom(clazz)) {
+            // Same as klighd.piccolo.internal.controller.KPortRenderingController#createDefaultRendering
+            // create the default rendering model
+            val KRenderingFactory factory = KRenderingFactory.eINSTANCE;
+            val KRectangle rect = factory.createKRectangle();
+    
+            val KForeground foreground = factory.createKForeground().setColor(0, 0, 0);
+            val KBackground background = factory.createKBackground().setColor(0, 0, 0);
+    
+            rect.getStyles().add(foreground);
+            rect.getStyles().add(background);
+            return rect;
+        } else if (KLabel.isAssignableFrom(clazz)) {
+            // Same as klighd.piccolo.internal.controller.KLabelRenderingController#createDefaultRendering
+            // create the default rendering model
+            return KRenderingFactory.eINSTANCE.createKText();
+        } else if (KEdge.isAssignableFrom(clazz)) {
+            // Same as klighd.piccolo.internal.controller.KEdgeRenderingController#createDefaultRendering
+            // create the default rendering model
+            return KRenderingFactory.eINSTANCE.createKPolyline();
+        }
     }
     
     /**
