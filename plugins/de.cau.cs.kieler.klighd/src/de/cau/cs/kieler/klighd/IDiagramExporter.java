@@ -68,6 +68,7 @@ public interface IDiagramExporter {
         private final IPath path;
         private final boolean isWorkspacePath;
         private final boolean isCameraViewport;
+        private final boolean applyCameraZoomLevel;
         private final int scale;
         private final boolean isTextAsShapes;
         private final boolean isEmbedFonts;
@@ -85,6 +86,7 @@ public interface IDiagramExporter {
             this.path = builder.path;
             this.isWorkspacePath = builder.isWorkspacePath;
             this.isCameraViewport = builder.isCameraViewport;
+            this.applyCameraZoomLevel = builder.applyCameraZoomLevel;
             this.scale = builder.scale;
             this.isTextAsShapes = builder.isTextAsShapes;
             this.isEmbedFonts = builder.isEmbedFonts;
@@ -129,6 +131,16 @@ public interface IDiagramExporter {
          */
         public boolean cameraViewport() {
             return isCameraViewport;
+        }
+
+        /**
+         * @return Flag to indicate whether the diagram zoom level determined by the diagram main
+         *         camera's view transform shall be used while evaluating the visibility of the
+         *         particular diagram elements and diagram element figure parts, if
+         *         <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
+         */
+        public boolean applyCameraZoomLevel() {
+            return applyCameraZoomLevel;
         }
 
         /**
@@ -336,6 +348,7 @@ public interface IDiagramExporter {
         private final boolean isWorkspacePath;
 
         private boolean isCameraViewport = false;
+        private boolean applyCameraZoomLevel = false;
         private int scale = 1;
         private boolean isTextAsShapes = false;
         private boolean isEmbedFonts = false;
@@ -401,7 +414,25 @@ public interface IDiagramExporter {
         }
 
         /**
-         * Scaling factor for the export.
+         * Configures the export to use the diagram zoom level determined by the diagram main
+         * camera's view transform while evaluating the visibility of the particular diagram
+         * elements and diagram element figure parts, if <code>false</code> a diagram zoom level of
+         * <code>1.0<code> is assumed. This is entirely independent of the {@link #scale(int)},
+         * which is just about the scale of the exported image (file). The latter can be increased
+         * to improve the image quality of raster images.
+         * 
+         * @param applyCameraZoomLevel
+         *            the applyCameraZoomLevel to set
+         */
+        public ExportDataBuilder applyCameraZoomLevel(boolean applyCameraZoomLevel) {
+            this.applyCameraZoomLevel = applyCameraZoomLevel;
+            return this;
+        }
+
+        /**
+         * Scaling factor to be applied during the diagram export. Just affects the image quality
+         * for raster images, has no effect on the visibility of diagram elements or diagram figure
+         * parts; see {@link #applyCameraZoomLevel(boolean)} for the latter.
          * 
          * @param theScale
          *            The scaling factor to be used.

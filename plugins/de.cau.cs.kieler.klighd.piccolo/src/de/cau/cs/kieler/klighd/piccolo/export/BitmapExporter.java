@@ -112,7 +112,8 @@ public class BitmapExporter extends KlighdCanvasExporter {
         final DiagramExportConfig exportConfig =
                 new DiagramExportConfig(data.viewContext(), bounds, tileBounds, data.scale(), pages)
                 .setBrandingsAndTrim(brandings, trim, tileTrimScaled)
-                .setExportViewport(data.cameraViewport());
+                .setExportViewport(data.cameraViewport())
+                .setApplyCameraZoomLevel(data.applyCameraZoomLevel());
 
         final Rectangle tileClip = getBasicTileClip(tileBounds, tileTrimScaled);
 
