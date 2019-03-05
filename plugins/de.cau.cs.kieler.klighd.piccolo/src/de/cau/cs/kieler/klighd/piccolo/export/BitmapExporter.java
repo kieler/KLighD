@@ -195,9 +195,21 @@ public class BitmapExporter extends KlighdCanvasExporter {
         //  the ImageData array below must contain exactly 1 element,
         //  see the implementations of FileFormat.unloadIntoByteStream(ImageLoader)
         final ImageLoader loader = new ImageLoader();
-        loader.data = new ImageData[] { image.getImageData() };
+        
+        try {
+            loader.data = new ImageData[] { image.getImageData() };
 
-        image.dispose();
+        } catch (OutOfMemoryError e) {
+            System.gc();
+
+            final String msg = ERROR_MSG_PREFIX + "Out of heap space memory!";
+            // a more detailed message is be provided by the UI integration
+            //  (SaveAsImageHandler in de.cau.cs.kieler.klighd.ui)
+            return new Status(IStatus.ERROR, KlighdPiccoloPlugin.PLUGIN_ID, msg, e);
+
+        } finally {
+            image.dispose();
+        }
 
         // translate the requested format identifier
         final int format;
