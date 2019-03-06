@@ -13,7 +13,6 @@
 package de.cau.cs.kieler.klighd.lsp.model
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphData
-import de.cau.cs.kieler.klighd.kgraph.KInsets
 import io.typefox.sprotty.api.SEdge
 import io.typefox.sprotty.api.SGraph
 import io.typefox.sprotty.api.SLabel
@@ -25,7 +24,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Sprotty node with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}
+ * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}.
  */
 @Accessors
 public class SKNode extends SNode implements Traceable {
@@ -35,7 +34,7 @@ public class SKNode extends SNode implements Traceable {
 
 /**
  * Sprotty label with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KLabel KLabel}
+ * {@link de.cau.cs.kieler.klighd.kgraph.KLabel KLabel}.
  */
 @Accessors
 public class SKLabel extends SLabel implements Traceable {
@@ -45,7 +44,7 @@ public class SKLabel extends SLabel implements Traceable {
 
 /**
  * Sprotty edge with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}
+ * {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}.
  */
 @Accessors
 public class SKEdge extends SEdge implements Traceable {
@@ -55,7 +54,7 @@ public class SKEdge extends SEdge implements Traceable {
 
 /**
  * Sprotty port with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KPort KPort}
+ * {@link de.cau.cs.kieler.klighd.kgraph.KPort KPort}.
  */
 @Accessors
 public class SKPort extends SPort implements Traceable {
@@ -65,7 +64,7 @@ public class SKPort extends SPort implements Traceable {
 
 /**
  * Sprotty graph with additional fields needed by the translation from a parent 
- * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}
+ * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}.
  */
 @Accessors
 public class SKGraph extends SGraph {
