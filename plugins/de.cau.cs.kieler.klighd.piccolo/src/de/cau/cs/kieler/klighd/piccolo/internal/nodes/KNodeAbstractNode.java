@@ -55,7 +55,8 @@ public abstract class KNodeAbstractNode extends KlighdDisposingLayer implements
      */
     public KNodeAbstractNode(final KNode node, final boolean edgesFirst) {
         this.node = node;
-        this.childArea = new KChildAreaNode(this, edgesFirst);
+        this.childArea = new KChildAreaNode(this,
+                edgesFirst || node.getProperty(KlighdProperties.EDGES_FIRST).booleanValue());
 
         this.setPickable(true);
     }
