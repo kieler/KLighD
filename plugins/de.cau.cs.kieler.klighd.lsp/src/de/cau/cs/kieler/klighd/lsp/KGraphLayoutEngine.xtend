@@ -15,7 +15,7 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
-import de.cau.cs.kieler.klighd.lsp.utils.MicroLayoutUtil
+import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
 import io.typefox.sprotty.api.SGraph
 import io.typefox.sprotty.api.SModelRoot
 import io.typefox.sprotty.layout.ElkLayoutEngine
@@ -68,7 +68,7 @@ public class KGraphLayoutEngine extends ElkLayoutEngine {
             
             synchronized(kGraphContext.viewModel) {
                 lightDiagramLayoutConfig.performLayout
-                MicroLayoutUtil.calculateAbsoluteBounds(kGraphContext.viewModel)
+                RenderingPreparer.prepareRendering(kGraphContext.viewModel)
             }
             
             // map layouted KGraph to SGraph

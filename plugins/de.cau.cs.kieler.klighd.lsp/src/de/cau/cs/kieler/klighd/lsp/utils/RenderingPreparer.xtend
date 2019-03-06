@@ -49,13 +49,13 @@ import java.util.Map
 import static com.google.common.collect.Iterables.filter
 
 /**
- * Utility class to provide some functionality to persist micro layout bounds data for all {@link KRendering}s of a
- * {@link KGraphElement}.
+ * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.
  * 
  * @author nir
  */
-public final class MicroLayoutUtil {
+public final class RenderingPreparer {
     /**
+     * Prepares a KGraphElement to be rendered in an external viewer.
      * Calculates the position, width and height of each rendering of the parameters {@code element} from KLighD's 
      * micro layout and persists the bounds and in case of a Decorator the decoration in the properties of the 
      * rendering.
@@ -63,12 +63,13 @@ public final class MicroLayoutUtil {
      * In case of a {@link KRenderingRef} the bounds and decoration are persisted for every referenced rendering as a map
      * inside the properties of the reference.
      * For example: <id of the rendering in the library: bounds in this instance>
-     * Also for every rendering a unique ID is generated.
+     * Furthermore, for every rendering a unique ID is generated.
+     * Finally, modifiable styles defined by the synthesis are processed for the rendering.
      * 
      * 
      * @param element The parent element containing the graph to calculate all rendering bounds for.
      */
-    public static def void calculateAbsoluteBounds(KGraphElement element) {
+    public static def void prepareRendering(KGraphElement element) {
         // calculate the sizes of all renderings:
         for (data : element.data) {
             switch(data) {
@@ -106,18 +107,18 @@ public final class MicroLayoutUtil {
         
         if (element instanceof KLabeledGraphElement) {
             for (label : element.labels) {
-                calculateAbsoluteBounds(label)
+                prepareRendering(label)
             }
         }
         if (element instanceof KNode) {
             for (node : element.children) {
-                calculateAbsoluteBounds(node)
+                prepareRendering(node)
             }
             for (edge : element.outgoingEdges) {
-                calculateAbsoluteBounds(edge)
+                prepareRendering(edge)
             }
             for (port : element.ports) {
-                calculateAbsoluteBounds(port)
+                prepareRendering(port)
             }
         }
     }
@@ -345,31 +346,27 @@ public final class MicroLayoutUtil {
     /**
      * Convenience method to set the calculated decoration property of the given rendering
      */
-     public static def setDecoration(KRendering rendering, Decoration decoration) {
-         rendering.properties.put(SprottyProperties.CALCULATED_DECORATION, decoration)
-     }
+    public static def setDecoration(KRendering rendering, Decoration decoration) {
+        rendering.properties.put(SprottyProperties.CALCULATED_DECORATION, decoration)
+    }
     
-    
-    //
-    // TODO: really this now represents the AbstractKGERenderingController and prepares the graph for rendering
-    // without really rendering it with Piccolo2D if this stays here.
     /**
      * A filter that lets only styles with a valid modifier id pass.
      */
-    static val Predicate<KStyle> MODIFIED_STYLE_FILTER = new Predicate<KStyle>() {
+    private static val Predicate<KStyle> MODIFIED_STYLE_FILTER = new Predicate<KStyle>() {
         override apply(KStyle style) {
             return !Strings.isNullOrEmpty(style.getModifierId())
                     && KlighdDataManager.getInstance()
-                        .getStyleModifierById(style.getModifierId()) != null;
+                        .getStyleModifierById(style.getModifierId()) !== null;
         }
     };
 
-    static val StyleModificationContext singletonModContext = new StyleModificationContext();
+    private static val StyleModificationContext singletonModContext = new StyleModificationContext();
     
     /**
      * @see de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles
      */
-    static def void processModifiableStyles(List<KStyle> styles, KGraphElement parent) { // TODO: should be a layout post process?
+    private static def void processModifiableStyles(List<KStyle> styles, KGraphElement parent) {
         val Iterable<KStyle> localModifiedStyles = filter(styles, MODIFIED_STYLE_FILTER);
 
         var boolean deliver
