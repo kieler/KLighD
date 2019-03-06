@@ -40,10 +40,6 @@ public class KGraphDiagramModule extends IdeDiagramModule {
 		KGraphDiagramGenerator
 	}
 	
-	override bindIDiagramExpansionListener() {
-		KGraphDiagramExpansionListener
-	}
-	
 	override bindIDiagramServer() {
         KGraphDiagramServer
     }
