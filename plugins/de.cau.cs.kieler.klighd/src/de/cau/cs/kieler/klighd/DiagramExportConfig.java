@@ -98,6 +98,12 @@ public class DiagramExportConfig {
     public Trim tileTrim = null;
 
     /**
+     * The number of pages the diagram is to be printed, at least 1. Is useful to add page infos
+     * like 'page x/y' to printout pages. 
+     */
+    public final int pages;
+
+    /**
      * The page number of the diagram tile to be printed or exported starting at 1, is updated after
      * each tile print or export.
      */
@@ -215,6 +221,7 @@ public class DiagramExportConfig {
         this.diagramScale = diagramScale;
         this.dotsPerInch = dotsPerInch;
         this.deviceTrim = deviceTrim;
+        this.pages = pages;
     }
 
     /**
@@ -243,6 +250,7 @@ public class DiagramExportConfig {
         this.applyCameraZoomLevel = original.applyCameraZoomLevel;
         this.exportSemanticData = original.exportSemanticData;
 
+        this.pages = original.pages;
         this.pageNo = original.pageNo;
         this.row = original.row;
         this.column = original.column;
