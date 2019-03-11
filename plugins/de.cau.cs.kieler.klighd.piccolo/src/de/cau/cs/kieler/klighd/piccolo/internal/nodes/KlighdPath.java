@@ -731,7 +731,13 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         }
 
         graphics.setAlpha(currentAlpha);
-        graphics.setLineAttributes(KlighdConstants.DEFAULT_LINE_ATTRIBUTES);
+        final LineAttributes defaults = KlighdConstants.DEFAULT_LINE_ATTRIBUTES; 
+        graphics.setLineAttributes(skipCopyingLineAttributes ? defaults
+                : new LineAttributes(
+                        // workaround for KIPRA-1925
+                        defaults.width, defaults.cap, defaults.join, defaults.style,
+                        defaults.dash != null ? defaults.dash.clone() : null, defaults.dashOffset,
+                        defaults.miterLimit));
     }
 
     /**

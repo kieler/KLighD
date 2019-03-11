@@ -202,6 +202,13 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     /**
      * {@inheritDoc}
      */
+    public float getLineWidth() {
+        return lineAttributes.width;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void setLineAttributes(final LineAttributes attributes) {
         lineAttributes = attributes;
 

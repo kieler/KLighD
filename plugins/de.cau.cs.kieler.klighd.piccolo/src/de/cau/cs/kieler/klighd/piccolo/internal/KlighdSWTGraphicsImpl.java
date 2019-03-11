@@ -271,10 +271,11 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
      * {@inheritDoc}
      */
     public void setLineAttributes(final LineAttributes attributes) {
-        gc.setLineAttributes(attributes);
         // the following line keeps the lineWidth in mind in order to
         //  be able to adjust it according to the zoom factor
         this.setLineWidth(attributes.width);
+
+        gc.setLineAttributes(attributes);
     }
 
     private float lineWidth = KlighdConstants.DEFAULT_LINE_ATTRIBUTES.width;
