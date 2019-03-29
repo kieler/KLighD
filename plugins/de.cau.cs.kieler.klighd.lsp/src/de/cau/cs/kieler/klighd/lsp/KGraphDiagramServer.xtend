@@ -26,14 +26,14 @@ import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIDGenerator
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
-import io.typefox.sprotty.api.Action
-import io.typefox.sprotty.api.ActionMessage
-import io.typefox.sprotty.api.SModelRoot
-import io.typefox.sprotty.api.SetModelAction
-import io.typefox.sprotty.api.UpdateModelAction
-import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
 import java.util.Map
 import org.apache.log4j.Logger
+import org.eclipse.sprotty.Action
+import org.eclipse.sprotty.ActionMessage
+import org.eclipse.sprotty.SModelRoot
+import org.eclipse.sprotty.SetModelAction
+import org.eclipse.sprotty.UpdateModelAction
+import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
@@ -137,7 +137,9 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
             val shouldUpdate = klighdAction.execute(actionContext)
             if (shouldUpdate.actionPerformed) {
-                languageServerExtension.updateDiagram(this)
+//                languageServerExtension.updateDiagram(this)
+                // TODO: check if this new way is correct:
+                diagramLanguageServer.getDiagramUpdater().updateDiagram(this)
             }
         }
     }

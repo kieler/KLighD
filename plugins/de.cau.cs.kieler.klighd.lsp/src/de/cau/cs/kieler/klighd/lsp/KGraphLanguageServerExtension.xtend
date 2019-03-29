@@ -13,32 +13,19 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
-import com.google.inject.Provider
 import com.google.inject.Singleton
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
-import de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy
-import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
-import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
-import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties
-import io.typefox.sprotty.api.ActionMessage
-import io.typefox.sprotty.api.IDiagramServer
-import io.typefox.sprotty.api.RequestModelAction
-import io.typefox.sprotty.server.xtext.ILanguageAwareDiagramServer
-import io.typefox.sprotty.server.xtext.LanguageAwareDiagramServer
-import io.typefox.sprotty.server.xtext.ide.IdeLanguageServerExtension
 import java.util.ArrayList
-import java.util.HashSet
-import java.util.List
-import java.util.Map
-import java.util.concurrent.CompletableFuture
+import java.util.Collection
+import org.eclipse.sprotty.ActionMessage
+import org.eclipse.sprotty.DiagramOptions
+import org.eclipse.sprotty.RequestModelAction
+import org.eclipse.sprotty.xtext.ls.SyncDiagramLanguageServer
 import org.eclipse.xtext.util.CancelIndicator
-
-import static io.typefox.sprotty.api.ServerStatus.Severity.*
 
 /**
  * Language server extension that implements functionality for the generation of diagrams and handling of their diagram
@@ -50,29 +37,22 @@ import static io.typefox.sprotty.api.ServerStatus.Severity.*
  *      YangLanguageServerExtension</a>
  */
 @Singleton
-class KGraphLanguageServerExtension extends IdeLanguageServerExtension 
+class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     implements IDiagramOptionsLanguageServerExtension {
-    
-    /**
-     * The {@link Provider} to call an injected {@link KGraphDiagramGenerator} to generate {@link KNode KGraphs} and 
-     * {@link SKGraph}s from that.
-     */
-    @Inject
-    Provider<KGraphDiagramGenerator> diagramGeneratorProvider
-    
     /**
      * Stores data for the generation of diagrams.
      */
     @Inject
     KGraphDiagramState diagramState
 	
-	override protected initializeDiagramServer(IDiagramServer server) {
-		super.initializeDiagramServer(server)
-		val kGraphDiagramServer = server as KGraphDiagramServer
-		kGraphDiagramServer.needsServerLayout = true
-		kGraphDiagramServer.needsClientLayout = false
-		LOG.info("Created diagram server for " + server.clientId)
-	}
+	// TODO: is non-existant. Need this code somewhere else?
+//	override protected initializeDiagramServer(IDiagramServer server) {
+//		super.initializeDiagramServer(server)
+//		val kGraphDiagramServer = server as KGraphDiagramServer
+//		kGraphDiagramServer.needsServerLayout = true
+//		kGraphDiagramServer.needsClientLayout = false
+//		LOG.info("Created diagram server for " + server.clientId)
+//	}
 	
 	override didClose(String clientId) {
 	    // clear the diagramState of this client id additional to the default use of this method.
@@ -80,11 +60,12 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
 	        diagramState.remove(clientId)
 	    }
 		super.didClose(clientId)
-		LOG.info("Removed diagram server for " + clientId)
+//		LOG.info("Removed diagram server for " + clientId)
 	}
 	
 	override accept(ActionMessage message) {
-        val server = getDiagramServer(message.clientId)
+//        val server = getDiagramServer(message.clientId)
+        val server = diagramServerManager.getDiagramServer('keith-diagram', message.clientId) // TODO: This should not be hard coded!
         // if a diagram server is requested for the same client, but a different source file, then close the old server.
         if (message.action instanceof RequestModelAction
             && !server.options.empty // if the server does not have options yet, the server has not been used yet and
@@ -95,159 +76,10 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
             }
         super.accept(message)
     }
-	
-	override protected doUpdateDiagrams(String path, List<? extends ILanguageAwareDiagramServer> diagramServers) {
-        if (diagramServers.empty) {
-            return CompletableFuture.completedFuture(null)
-        }
-        return path.doRead [ context |
-            val status = context.resource.shouldGenerate(context.cancelChecker)
-            val uri = context.resource.URI.toString
-            var Object snapshotModel = null
-            synchronized(diagramState) {
-                snapshotModel = diagramState.getSnapshotModel(path)
-            }
-            val model = if (snapshotModel === null) {
-                            context.resource.contents.head
-                        } else {
-                            snapshotModel
-                        }
-            val cancelChecker = context.cancelChecker
-            
-            return (diagramServers as List<KGraphDiagramServer>).map [ server |
-                server -> {
-                    server.status = status
-                    if (status.severity !== ERROR) {
-                        createModel(server, model, uri, cancelChecker)
-                    } else {
-                        null
-                    }
-                }
-            ]
-        ].thenAccept [ resultList |
-            // call the text size estimation on the diagram server for which a new diagram got created.
-            resultList.filter[value !== null].forEach[key.requestTextSizesAndUpdateModel(value)]
-        ].exceptionally [ throwable |
-            LOG.error('Error while processing build results', throwable)
-            return null
-        ]
-    }
-    
-    protected synchronized def createModel(KGraphDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
-        
-        val properties = new KlighdSynthesisProperties()
-        var SprottyViewer viewer = null
-        synchronized (diagramState) {
-            val iViewer = diagramState.getViewer()
-            if (iViewer instanceof SprottyViewer) {
-                viewer = iViewer
-            }
-        }
-        // TODO: get synthesis described by the user on the client
-        // see DiagramView#doUpdateDiagram
-//        val synthesisId = 
-
-        // Save previous synthesis options to restore later
-         storeCurrentSynthesisOptions()
-        // configure options
-        var Map<SynthesisOption, Object> recentSynthesisOptions = null
-        synchronized (diagramState) {
-            recentSynthesisOptions = diagramState.recentSynthesisOptions
-        }
-        properties.configureSynthesisOptionValues(recentSynthesisOptions)
-        
-        // Indicated if the model type changed against the current model
-        var modelTypeChanged = false
-        var ViewContext viewContext = null
-        
-        if (viewer === null || viewer.viewContext === null) {
-            // if viewer or context does not exist always init view
-            modelTypeChanged = true
-        } else {
-            viewContext = viewer.viewContext
-            if (viewContext.inputModel === null || viewContext.inputModel.class !== model.class) {
-                modelTypeChanged = true
-            }
-            // TODO:
-//            if (!KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisID)) {
-//                // In case the synthesis changed the sidebar should be updated
-//                modelTypeChanged = true
-//            }
-        }
-        
-        // If the type changed the view must be reinitialized to provide a correct ViewContext
-        // otherwise the ViewContext can be simply updated
-        if (modelTypeChanged) {
-            // Configure the ViewContext and the Klighd synthesis to generate the KGraph model correctly.
-            properties.useViewer(SprottyViewer.ID)
-                .useUpdateStrategy(IncrementalUpdateStrategy.ID)
-            // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
-            // TODO: The ViewContext should have a default constructor for non-SWT-based viewer.
-            viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
-            viewer = viewContext.createViewer(null, null) as SprottyViewer
-            viewer.viewContext = viewContext
-            // Update the model and with that call the diagram synthesis.
-            viewContext.update(model)
-        } else {
-            viewContext.copyProperties(properties)
-            viewContext.update(model)
-        }
-
-        synchronized (diagramState) {
-            diagramState.putURIString(server.clientId, id)
-            diagramState.putKGraphContext(id, viewContext)
-            if (viewer !== null) {
-                diagramState.putViewer(viewer)
-            }
-        }
-        
-        // generate the SGraph model from the KGraph model and store every later relevant part in the
-        // diagram state.
-        val diagramGenerator = diagramGeneratorProvider.get
-        val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, id, cancelChecker)
-        synchronized (diagramState) {
-            diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
-            diagramState.putTexts(id, diagramGenerator.getModelLabels)
-            diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
-        }
-        // finally, match the diagram server with the generated SGraph by returning the SGraph.
-        sGraph
-    }
-    
-    /**
-     * Stores the current synthesisOptions configured in the current {@link ViewContext}.
-     * Similar to storing the options in Eclipse UI.
-     * 
-     * @see de.cau.cs.kieler.klighd.ui.view.DiagramView#storeCurrentSynthesisOptions
-     */
-    def storeCurrentSynthesisOptions() {
-        synchronized(diagramState) {
-            val viewer = diagramState.viewer
-            if (viewer !== null && viewer.viewContext !== null) {
-                val viewContext = viewer.viewContext
-                val allUsedSynthesisOptions = new HashSet<SynthesisOption>
-                val usedRootSynthesis = viewContext.diagramSynthesis
-                
-                // Save used syntheses
-                diagramState.addUsedSynthesis(usedRootSynthesis)
-                
-                // Find all available synthesis options for the currently used syntheses
-                allUsedSynthesisOptions.addAll(usedRootSynthesis.displayedSynthesisOptions)
-                for (childVC : viewContext.getChildViewContexts(true)) {
-                    diagramState.addUsedSynthesis(childVC.diagramSynthesis)
-                    allUsedSynthesisOptions.addAll(childVC.diagramSynthesis.displayedSynthesisOptions)
-                }
-                
-                // Save used options
-                for (option : allUsedSynthesisOptions) {
-                    diagramState.putRecentSynthesisOption(option, viewContext.getOptionValue(option))
-                }
-            }
-        }
-    }
     
     override getOptions(GetOptionParam param) {
-        return param.uri.doRead [ context |
+        return languageServerAccess.doRead(param.uri) [ context |
+//        return param.uri.doRead [ context |
             synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
                 if (viewContext === null) {
@@ -267,7 +99,8 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
     }
     
     override setOptions(SetOptionParam param) {
-        return param.uri.doRead [ context |
+        return languageServerAccess.doRead(param.uri) [ context |
+//        return param.uri.doRead [ context |
             synchronized(diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
                 if (viewContext === null) {
@@ -289,8 +122,16 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
                         configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
                     }
                 }
-                this.doUpdateDiagrams(#[context.resource.URI])
-                return "OK"
+//                this.doUpdateDiagrams(#[context.resource.URI])
+                if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                    // TODO: remove this reflection access when I find a better way to do this.
+                    val callThisMethod = KGraphDiagramUpdater.getMethod("updateDiagrams", Collection)
+                    callThisMethod.accessible = true
+                    callThisMethod.invoke(#[context.resource.URI])
+//                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams(#[context.resource.URI])
+                    return "OK"
+                }
+                return "ERR"
             }
         ]
     }
@@ -369,30 +210,34 @@ class KGraphLanguageServerExtension extends IdeLanguageServerExtension
         if (!update) {
             // check if some diagram server already has a diagram for this uri.
             val closeClientIds = new ArrayList
-            diagramServers.forEach[ cId, diagramServer |
-                if (clientId.equals(cId)) {
-                    closeClientIds.add(cId)
+            diagramServerManager.diagramServers.forEach[ diagramServer |
+//            diagramServers.forEach[ cId, diagramServer |
+                if (clientId.equals(diagramServer.clientId)) {
+                    closeClientIds.add(diagramServer.clientId)
                 }
             ]
             // if there is one, close it and open the diagram with a new, initialized diagram server
             closeClientIds.forEach[this.didClose(it)]
         }
         
-        val diagramServer = this.getDiagramServer(clientId)
+//        val diagramServer = this.getDiagramServer(clientId)
+        val diagramServer = diagramServerManager.getDiagramServer('keith-diagram', clientId)
         if (diagramServer instanceof KGraphDiagramServer) {
             synchronized(diagramState) {
                 diagramState.putSnapshotModel(uri, model)
             }
             diagramServer.initializeOptions(#{
-                LanguageAwareDiagramServer.OPTION_SOURCE_URI -> uri
+                DiagramOptions.OPTION_SOURCE_URI -> uri
             })
             // with that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
             // use the 'model' as its model.
-            val sGraph = this.createModel(diagramServer, model, uri, cancelIndicator)
-            if (sGraph !== null) {
-                diagramServer.requestTextSizesAndUpdateModel(sGraph)
+            if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                val sGraph = (diagramUpdater as KGraphDiagramUpdater).createModel(diagramServer, model, uri, cancelIndicator)
+                if (sGraph !== null) {
+                    diagramServer.requestTextSizesAndUpdateModel(sGraph)
+                }
+                return "OK"
             }
-            return "OK"
         }
         return "ERR"
     }

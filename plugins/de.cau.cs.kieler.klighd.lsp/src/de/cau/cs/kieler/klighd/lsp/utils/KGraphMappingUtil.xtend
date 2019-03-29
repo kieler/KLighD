@@ -23,13 +23,13 @@ import de.cau.cs.kieler.klighd.lsp.model.SKEdge
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
-import io.typefox.sprotty.api.Dimension
-import io.typefox.sprotty.api.Point
-import io.typefox.sprotty.api.SEdge
-import io.typefox.sprotty.api.SModelElement
-import io.typefox.sprotty.api.SShapeElement
 import java.util.ArrayList
 import java.util.Map
+import org.eclipse.sprotty.Dimension
+import org.eclipse.sprotty.Point
+import org.eclipse.sprotty.SEdge
+import org.eclipse.sprotty.SModelElement
+import org.eclipse.sprotty.SShapeElement
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.

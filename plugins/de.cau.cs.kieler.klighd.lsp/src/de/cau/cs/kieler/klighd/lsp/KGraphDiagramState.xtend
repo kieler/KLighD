@@ -20,13 +20,13 @@ import de.cau.cs.kieler.klighd.internal.ISynthesis
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
-import io.typefox.sprotty.api.SModelElement
 import java.net.URLDecoder
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import java.util.Map
 import java.util.Set
+import org.eclipse.sprotty.SModelElement
 
 /**
  * Singleton class to map a graph id (String) found in SGraphs to their various parts needed for handling KGraph models

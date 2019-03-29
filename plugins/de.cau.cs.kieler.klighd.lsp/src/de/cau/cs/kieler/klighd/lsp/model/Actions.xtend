@@ -12,11 +12,11 @@
  */
 package de.cau.cs.kieler.klighd.lsp.model
 
-import io.typefox.sprotty.api.Action
-import io.typefox.sprotty.api.ElementAndBounds
-import io.typefox.sprotty.api.SModelRoot
 import java.util.List
 import java.util.function.Consumer
+import org.eclipse.sprotty.Action
+import org.eclipse.sprotty.ElementAndBounds
+import org.eclipse.sprotty.SModelRoot
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString

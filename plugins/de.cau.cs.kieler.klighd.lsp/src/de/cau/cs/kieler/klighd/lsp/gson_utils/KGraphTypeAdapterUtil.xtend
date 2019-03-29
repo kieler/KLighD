@@ -17,9 +17,9 @@ import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
-import io.typefox.sprotty.server.json.ActionTypeAdapter
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.sprotty.server.json.ActionTypeAdapter
 
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.

@@ -13,58 +13,57 @@
 package de.cau.cs.kieler.klighd.lsp.model
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphData
-import io.typefox.sprotty.api.SEdge
-import io.typefox.sprotty.api.SGraph
-import io.typefox.sprotty.api.SLabel
-import io.typefox.sprotty.api.SNode
-import io.typefox.sprotty.api.SPort
-import io.typefox.sprotty.server.xtext.tracing.Traceable
 import java.util.List
+import org.eclipse.sprotty.SEdge
+import org.eclipse.sprotty.SGraph
+import org.eclipse.sprotty.SLabel
+import org.eclipse.sprotty.SNode
+import org.eclipse.sprotty.SPort
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Sprotty node with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}.
+ * {@link KNode KNode}.
  */
 @Accessors
-public class SKNode extends SNode implements Traceable {
+public class SKNode extends SNode {
     private String trace
     private List<KGraphData> data
 }
 
 /**
  * Sprotty label with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KLabel KLabel}.
+ * {@link KLabel KLabel}.
  */
 @Accessors
-public class SKLabel extends SLabel implements Traceable {
+public class SKLabel extends SLabel {
     private String trace
     private List<KGraphData> data
 }
 
 /**
  * Sprotty edge with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KEdge KEdge}.
+ * {@link KEdge KEdge}.
  */
 @Accessors
-public class SKEdge extends SEdge implements Traceable {
+public class SKEdge extends SEdge {
     private String trace
     private List<KGraphData> data
 }
 
 /**
  * Sprotty port with additional fields needed by the translation from a
- * {@link de.cau.cs.kieler.klighd.kgraph.KPort KPort}.
+ * {@link KPort KPort}.
  */
 @Accessors
-public class SKPort extends SPort implements Traceable {
+public class SKPort extends SPort {
     private String trace
     private List<KGraphData> data
 }
 
 /**
  * Sprotty graph with additional fields needed by the translation from a parent 
- * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode}.
+ * {@link KNode KNode}.
  */
 @Accessors
 public class SKGraph extends SGraph {

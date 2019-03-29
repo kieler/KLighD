@@ -12,8 +12,9 @@
  */
 package de.cau.cs.kieler.klighd.lsp.utils
 
-import io.typefox.sprotty.server.xtext.tracing.TraceRegionProvider
+import de.cau.cs.kieler.klighd.kgraph.KNode
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.util.TextRegion
 
@@ -23,7 +24,7 @@ import org.eclipse.xtext.util.TextRegion
  * 
  * @author nir
  */
-public class SimpleTraceRegionProvider extends TraceRegionProvider {
+public class SimpleTraceRegionProvider extends TextRegionProvider { // TODO: find out if this is still needed with the new sprotty version.
     /**
      * Returns the text region of the entire definition of this {@link EObject}.
      */

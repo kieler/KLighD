@@ -16,9 +16,6 @@ import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphMappingUtil
 import de.cau.cs.kieler.klighd.lsp.utils.RenderingPreparer
-import io.typefox.sprotty.api.SGraph
-import io.typefox.sprotty.api.SModelRoot
-import io.typefox.sprotty.layout.ElkLayoutEngine
 import java.io.ByteArrayOutputStream
 import java.util.ArrayList
 import org.apache.log4j.Logger
@@ -26,6 +23,9 @@ import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.sprotty.SGraph
+import org.eclipse.sprotty.SModelRoot
+import org.eclipse.sprotty.layout.ElkLayoutEngine
 
 /**
  * Handles the server side layout of KGraphs.

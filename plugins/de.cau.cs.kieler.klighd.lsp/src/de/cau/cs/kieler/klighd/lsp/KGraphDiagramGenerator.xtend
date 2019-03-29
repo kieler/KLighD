@@ -42,17 +42,6 @@ import de.cau.cs.kieler.klighd.lsp.utils.SprottyProperties
 import de.cau.cs.kieler.klighd.util.KlighdPredicates
 import de.cau.cs.kieler.klighd.util.KlighdProperties
 import de.cau.cs.kieler.klighd.util.RenderingContextData
-import io.typefox.sprotty.api.Dimension
-import io.typefox.sprotty.api.IDiagramState
-import io.typefox.sprotty.api.SEdge
-import io.typefox.sprotty.api.SGraph
-import io.typefox.sprotty.api.SLabel
-import io.typefox.sprotty.api.SModelElement
-import io.typefox.sprotty.api.SNode
-import io.typefox.sprotty.api.SPort
-import io.typefox.sprotty.server.xtext.IDiagramGenerator
-import io.typefox.sprotty.server.xtext.tracing.ITraceProvider
-import io.typefox.sprotty.server.xtext.tracing.Traceable
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
@@ -60,8 +49,16 @@ import java.util.Map
 import java.util.Random
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.sprotty.Dimension
+import org.eclipse.sprotty.SEdge
+import org.eclipse.sprotty.SGraph
+import org.eclipse.sprotty.SLabel
+import org.eclipse.sprotty.SModelElement
+import org.eclipse.sprotty.SNode
+import org.eclipse.sprotty.SPort
+import org.eclipse.sprotty.xtext.IDiagramGenerator
+import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.util.CancelIndicator
 
@@ -81,6 +78,8 @@ import org.eclipse.xtext.util.CancelIndicator
  *      YangDiagramGenerator</a>
  */
 public class KGraphDiagramGenerator implements IDiagramGenerator {
+    @Inject extension ITraceProvider
+    
 	private static val LOG = Logger.getLogger(KGraphDiagramGenerator)
     
     /**
@@ -153,11 +152,12 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
 	/**
 	 * Generates an {@link SGraph} from the resource if its content is a {@link KNode}.
 	 */
-	override generate(Resource resource, IDiagramState state, CancelIndicator cancelIndicator) {
-		val content = resource.contents.head
+    override generate(Context context) {
+        // TODO: The context now contains more data (especially, also some IDiagramState. Adapt to that and use that!)
+		val content = context.resource.contents.head
 		var SGraph ret = null
 		if (content instanceof KNode) {
-			ret = toSGraph(content as KNode, resource.URI.toString, cancelIndicator)
+			ret = toSGraph(content as KNode, context.resource.URI.toString, context.cancelIndicator)
 		}
 		return ret
 	}
@@ -295,7 +295,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * {@link KlighdInternalProperties#MODEL_ELEMEMT} property.
      */
     private def void trace(SModelElement sElement, KGraphElement kElement) {
-        if (sElement instanceof Traceable) {
+//        if (sElement instanceof Traceable) {
             // The real model element that can be traced is the EObject that got synthesized in the
             // {@link translateModel} function. That model element has to be stored in the properties during the 
             // synthesis. Otherwise the tracing will not work
@@ -303,7 +303,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             if (modelKElement instanceof EObject) {
                 traceProvider.trace(sElement, modelKElement)    
             }
-        }
+//        }
     }
     
     /**

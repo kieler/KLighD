@@ -23,10 +23,10 @@ import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KPolyline
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KStyleHolder
-import io.typefox.sprotty.api.SModelElement
 import java.util.HashMap
 import java.util.Map
 import java.util.Random
+import org.eclipse.sprotty.SModelElement
 
 /**
  * Class for generating unique IDs for any KGraphElement. Use a single instance of this and call getId() for all the 

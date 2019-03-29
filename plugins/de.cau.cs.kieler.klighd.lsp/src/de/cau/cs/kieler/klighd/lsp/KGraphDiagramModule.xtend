@@ -13,10 +13,9 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import de.cau.cs.kieler.klighd.lsp.utils.SimpleTraceRegionProvider
-import io.typefox.sprotty.server.xtext.IDiagramGenerator
-import io.typefox.sprotty.server.xtext.ide.IdeDiagramModule
-import io.typefox.sprotty.server.xtext.ide.IdeLanguageServerExtension
-import io.typefox.sprotty.server.xtext.tracing.TraceRegionProvider
+import org.eclipse.sprotty.xtext.DefaultDiagramModule
+import org.eclipse.sprotty.xtext.IDiagramGenerator
+import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
 
 /**
  * Allows to bind all needed modules for KGraph diagram generation via Guice.
@@ -26,11 +25,11 @@ import io.typefox.sprotty.server.xtext.tracing.TraceRegionProvider
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangDiagramModule.xtend">
  *      YangDiagramModule</a>
  */
-public class KGraphDiagramModule extends IdeDiagramModule {
+public class KGraphDiagramModule extends DefaultDiagramModule {
 	
-	public def Class<? extends IdeLanguageServerExtension> bindIdeLanguageServerExtension() {
-		KGraphLanguageServerExtension
-	}
+//	public def Class<? extends IdeLanguageServerExtension> bindIdeLanguageServerExtension() {
+//		KGraphLanguageServerExtension
+//	}
 	
 	override bindILayoutEngine() {
 		KGraphLayoutEngine
@@ -44,7 +43,11 @@ public class KGraphDiagramModule extends IdeDiagramModule {
         KGraphDiagramServer
     }
     
-	public def Class<? extends TraceRegionProvider> bindTraceRegionProvider() {
+	public def Class<? extends TextRegionProvider> bindTraceRegionProvider() {
         SimpleTraceRegionProvider
+    }
+    
+    override bindIDiagramServerFactory() {
+        KGraphDiagramServerFactory
     }
 }
