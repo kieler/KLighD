@@ -137,8 +137,6 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
             val shouldUpdate = klighdAction.execute(actionContext)
             if (shouldUpdate.actionPerformed) {
-//                languageServerExtension.updateDiagram(this)
-                // TODO: check if this new way is correct:
                 diagramLanguageServer.getDiagramUpdater().updateDiagram(this)
             }
         }

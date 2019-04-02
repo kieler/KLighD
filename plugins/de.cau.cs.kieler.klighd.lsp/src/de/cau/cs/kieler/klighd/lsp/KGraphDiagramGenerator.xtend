@@ -78,8 +78,6 @@ import org.eclipse.xtext.util.CancelIndicator
  *      YangDiagramGenerator</a>
  */
 public class KGraphDiagramGenerator implements IDiagramGenerator {
-    @Inject extension ITraceProvider
-    
 	private static val LOG = Logger.getLogger(KGraphDiagramGenerator)
     
     /**
@@ -295,15 +293,15 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * {@link KlighdInternalProperties#MODEL_ELEMEMT} property.
      */
     private def void trace(SModelElement sElement, KGraphElement kElement) {
-//        if (sElement instanceof Traceable) {
-            // The real model element that can be traced is the EObject that got synthesized in the
-            // {@link translateModel} function. That model element has to be stored in the properties during the 
-            // synthesis. Otherwise the tracing will not work
-            val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
-            if (modelKElement instanceof EObject) {
-                traceProvider.trace(sElement, modelKElement)    
+        // The real model element that can be traced is the EObject that got synthesized in the
+        // {@link translateModel} function. That model element has to be stored in the properties during the 
+        // synthesis. Otherwise the tracing will not work
+        val modelKElement = kElement.properties.get(KlighdInternalProperties.MODEL_ELEMEMT)
+        if (modelKElement instanceof EObject) {
+            if (modelKElement.eResource !== null) {
+                traceProvider.trace(sElement, modelKElement)
             }
-//        }
+        }
     }
     
     /**
@@ -440,7 +438,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         // Add all active renderings to the sModelElements.
         this.kGraphToSModelElementMap.forEach [kGraphElement, sModelElement |
             var KRendering currentRendering
-            var boolean includeChildren
             val renderings = kGraphElement.data.filter(KRendering)
             // Getting the current rendering similar to AbstractKGERenderingController#getCurrentRendering
             if (kGraphElement instanceof KNode) {
@@ -461,8 +458,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                     }
                     // also set the element as expanded
                     RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, true)
-                    // and remember to include the children.
-                    includeChildren = true
                 } else {
                     // in case the node to be depicted is tagged as 'not populated',
                     //  i.e. no children are visible in the diagram
@@ -480,13 +475,10 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                     }
                     // also set the element as not expanded
                     RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, false)
-                    // and remember to not include the children.
-                    includeChildren = false
                 }
                 (sModelElement as SKNode).data.add(currentRendering)
             } else {
                 // Child renderings of elements other than KNodes are always displayed.
-                includeChildren = true
                 if (renderings.empty) {
                     // TODO: create a default rendering for each type here (especially for KPorts) and remove the
                     // default port rendering on the client.

@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.lsp
 import de.cau.cs.kieler.klighd.lsp.utils.SimpleTraceRegionProvider
 import org.eclipse.sprotty.xtext.DefaultDiagramModule
 import org.eclipse.sprotty.xtext.IDiagramGenerator
+import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
 
 /**
@@ -26,10 +27,6 @@ import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
  *      YangDiagramModule</a>
  */
 public class KGraphDiagramModule extends DefaultDiagramModule {
-	
-//	public def Class<? extends IdeLanguageServerExtension> bindIdeLanguageServerExtension() {
-//		KGraphLanguageServerExtension
-//	}
 	
 	override bindILayoutEngine() {
 		KGraphLayoutEngine
@@ -49,5 +46,9 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
     
     override bindIDiagramServerFactory() {
         KGraphDiagramServerFactory
+    }
+    
+    public def Class<? extends DiagramUpdater> bindDiagramUpdater() {
+        KGraphDiagramUpdater
     }
 }

@@ -25,12 +25,17 @@ import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.concurrent.CompletableFuture
+import org.eclipse.emf.common.util.URI
+import org.eclipse.sprotty.IDiagramServer
 import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
 
 /**
+ * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
+ * any diagram server can update its diagrams via this diagramUpdater directly to the language server.
+ * 
  * @author nre
  */
 class KGraphDiagramUpdater extends DiagramUpdater {
@@ -40,6 +45,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      */
     @Inject
     Provider<KGraphDiagramGenerator> diagramGeneratorProvider
+    
+    /**
+     * The language server using this diagram updater. Double of the private languageServer field of the DiagramUpdater
+     * class, with protected instead of private field accessibility here.
+     */
     protected DiagramLanguageServer languageServer
     
     /**
@@ -58,8 +68,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             return CompletableFuture.completedFuture(null)
         }
         return languageServer.languageServerAccess.doRead(path) [ context |
-//        return path.doRead [ context |
-//            val status = context.resource.shouldGenerate(context.cancelChecker)
             val uri = context.resource.URI.toString
             var Object snapshotModel = null
             synchronized(diagramState) {
@@ -74,19 +82,13 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             
             return (diagramServers as List<KGraphDiagramServer>).map [ server |
                 server -> {
-//                    server.status = status
-//                    if (status.severity !== ERROR) {
-                        createModel(server, model, uri, cancelChecker)
-//                    } else {
-//                        null
-//                    }
+                    createModel(server, model, uri, cancelChecker)
                 }
             ]
         ].thenAccept [ resultList |
             // call the text size estimation on the diagram server for which a new diagram got created.
             resultList.filter[value !== null].forEach[key.requestTextSizesAndUpdateModel(value)]
         ].exceptionally [ throwable |
-//            LOG.error('Error while processing build results', throwable)
             return null
         ]
     }
@@ -202,5 +204,12 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 }
             }
         }
+    }
+    
+    /**
+     * Makes the protected updateDiagram(List<URI>) method accessible from the outside.
+     */
+    def updateDiagrams2(List<URI> uris) {
+        updateDiagrams(uris)
     }
 }

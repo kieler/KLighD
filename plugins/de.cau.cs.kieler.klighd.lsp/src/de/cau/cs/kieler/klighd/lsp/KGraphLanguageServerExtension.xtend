@@ -20,7 +20,6 @@ import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import java.util.ArrayList
-import java.util.Collection
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
 import org.eclipse.sprotty.RequestModelAction
@@ -44,27 +43,16 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     @Inject
     KGraphDiagramState diagramState
-	
-	// TODO: is non-existant. Need this code somewhere else?
-//	override protected initializeDiagramServer(IDiagramServer server) {
-//		super.initializeDiagramServer(server)
-//		val kGraphDiagramServer = server as KGraphDiagramServer
-//		kGraphDiagramServer.needsServerLayout = true
-//		kGraphDiagramServer.needsClientLayout = false
-//		LOG.info("Created diagram server for " + server.clientId)
-//	}
-	
-	override didClose(String clientId) {
-	    // clear the diagramState of this client id additional to the default use of this method.
-	    synchronized (diagramState) {
-	        diagramState.remove(clientId)
-	    }
-		super.didClose(clientId)
-//		LOG.info("Removed diagram server for " + clientId)
-	}
-	
-	override accept(ActionMessage message) {
-//        val server = getDiagramServer(message.clientId)
+    
+    override didClose(String clientId) {
+        // clear the diagramState of this client id additional to the default use of this method.
+        synchronized (diagramState) {
+            diagramState.remove(clientId)
+        }
+        super.didClose(clientId)
+    }
+    
+    override accept(ActionMessage message) {
         val server = diagramServerManager.getDiagramServer('keith-diagram', message.clientId) // TODO: This should not be hard coded!
         // if a diagram server is requested for the same client, but a different source file, then close the old server.
         if (message.action instanceof RequestModelAction
@@ -79,7 +67,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override getOptions(GetOptionParam param) {
         return languageServerAccess.doRead(param.uri) [ context |
-//        return param.uri.doRead [ context |
             synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
                 if (viewContext === null) {
@@ -100,7 +87,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     override setOptions(SetOptionParam param) {
         return languageServerAccess.doRead(param.uri) [ context |
-//        return param.uri.doRead [ context |
             synchronized(diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
                 if (viewContext === null) {
@@ -122,13 +108,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
                     }
                 }
-//                this.doUpdateDiagrams(#[context.resource.URI])
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                    // TODO: remove this reflection access when I find a better way to do this.
-                    val callThisMethod = KGraphDiagramUpdater.getMethod("updateDiagrams", Collection)
-                    callThisMethod.accessible = true
-                    callThisMethod.invoke(#[context.resource.URI])
-//                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams(#[context.resource.URI])
+                    (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[context.resource.URI])
                     return "OK"
                 }
                 return "ERR"
@@ -211,7 +192,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             // check if some diagram server already has a diagram for this uri.
             val closeClientIds = new ArrayList
             diagramServerManager.diagramServers.forEach[ diagramServer |
-//            diagramServers.forEach[ cId, diagramServer |
                 if (clientId.equals(diagramServer.clientId)) {
                     closeClientIds.add(diagramServer.clientId)
                 }
@@ -220,7 +200,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             closeClientIds.forEach[this.didClose(it)]
         }
         
-//        val diagramServer = this.getDiagramServer(clientId)
         val diagramServer = diagramServerManager.getDiagramServer('keith-diagram', clientId)
         if (diagramServer instanceof KGraphDiagramServer) {
             synchronized(diagramState) {

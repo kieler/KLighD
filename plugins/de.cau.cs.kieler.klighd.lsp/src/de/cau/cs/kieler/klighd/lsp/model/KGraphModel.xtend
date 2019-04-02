@@ -27,7 +27,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 @Accessors
 public class SKNode extends SNode {
-    private String trace
     private List<KGraphData> data
 }
 
@@ -37,7 +36,6 @@ public class SKNode extends SNode {
  */
 @Accessors
 public class SKLabel extends SLabel {
-    private String trace
     private List<KGraphData> data
 }
 
@@ -47,7 +45,6 @@ public class SKLabel extends SLabel {
  */
 @Accessors
 public class SKEdge extends SEdge {
-    private String trace
     private List<KGraphData> data
 }
 
@@ -57,7 +54,6 @@ public class SKEdge extends SEdge {
  */
 @Accessors
 public class SKPort extends SPort {
-    private String trace
     private List<KGraphData> data
 }
 
