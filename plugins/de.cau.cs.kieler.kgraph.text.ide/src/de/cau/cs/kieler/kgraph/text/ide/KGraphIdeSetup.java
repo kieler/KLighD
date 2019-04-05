@@ -44,14 +44,8 @@ public class KGraphIdeSetup extends KGraphStandaloneSetup {
 	public Injector createInjector() {
 		return Guice.createInjector(Modules2.mixin(
             new KGraphRuntimeModule(), 
-            new KGraphIdeModule(), 
-            new KGraphDiagramModule(),
-            (Binder binder) -> {
-                binder.bind(IProjectDescriptionFactory.class).to(DefaultProjectDescriptionFactory.class);
-                binder.bind(IWorkspaceConfigFactory.class).to(KeithProjectWorkspaceConfigFactory.class);
-            }
-                    
-            ));
+            new KGraphIdeModule()
+        ));
 	}
 	
 	public static Injector doSetup() {

@@ -10,7 +10,7 @@
  * 
  * This code is provided under the terms of the Eclipse Public License (EPL).
  */
-package de.cau.cs.kieler.kgraph.text.ide
+package de.cau.cs.kieler.klighd.lsp.setup
 
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.ide.server.IWorkspaceConfigFactory

@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.lsp
 import de.cau.cs.kieler.klighd.lsp.utils.SimpleTraceRegionProvider
 import org.eclipse.sprotty.xtext.DefaultDiagramModule
 import org.eclipse.sprotty.xtext.IDiagramGenerator
+import org.eclipse.sprotty.xtext.ls.DiagramServerManager
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
 
@@ -50,5 +51,13 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
     
     public def Class<? extends DiagramUpdater> bindDiagramUpdater() {
         KGraphDiagramUpdater
+    }
+    
+    // TODO: This really should override the super binding of the DiagramServerManager, but that is class-specific and
+    // needs to be made configurable by Sprotty developers.
+    // FIXME: continue here on this branch when Sprotty made changes to allow this binding.
+    // See: https://github.com/eclipse/sprotty-server/issues/16
+    public def Class<? extends DiagramServerManager> bindDiagramServerManager() {
+        KGraphDiagramServerManager
     }
 }
