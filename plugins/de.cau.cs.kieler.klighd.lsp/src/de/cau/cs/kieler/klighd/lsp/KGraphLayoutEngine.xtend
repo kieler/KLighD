@@ -44,49 +44,28 @@ public class KGraphLayoutEngine extends ElkLayoutEngine {
 	public static val LOG = Logger.getLogger(KGraphLayoutEngine)
 	
 	override layout(SModelRoot root) {
-	    if (root instanceof SGraph) {
-	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
-	        // the KGraphContext.
-            val kGraphContext = diagramState.getKGraphContext(root.id)
-            
-            // layout of KGraph
-            // TODO: use Layout configuration described by user, not hard coded
-            val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
-            val configurator = new LayoutConfigurator
-//            configurator.configure(ElkGraphElement)
-//                .setProperty(CoreOptions.DIRECTION, Direction.RIGHT)
-//                .setProperty(CoreOptions.SPACING_NODE_NODE, 100.0)
-//                .setProperty(CoreOptions.SPACING_EDGE_NODE, 30.0)
-//                .setProperty(CoreOptions.SPACING_EDGE_EDGE, 15.0)
-//                .setProperty(LayeredOptions.SPACING_EDGE_NODE_BETWEEN_LAYERS, 30.0)
-//                .setProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS, 100.0)
-//                .setProperty(CoreOptions.PADDING, new ElkPadding(50))
-            
-            var configurators = new ArrayList
-            configurators.add(configurator)
-            lightDiagramLayoutConfig.options(configurators)
-            
-            synchronized(kGraphContext.viewModel) {
-                lightDiagramLayoutConfig.performLayout
-                RenderingPreparer.prepareRendering(kGraphContext.viewModel)
-            }
-            
-            // map layouted KGraph to SGraph
-            KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
-            
-            // additional code for timing and testing the serialization of the final SGraph model
-//            val gsonBuilder = new GsonBuilder
-//            KGraphTypeAdapterUtil.configureGson(gsonBuilder)
-//            val gson = gsonBuilder.create
-//            for (var i = 0; i < 10; i++) {
-//                println("Starting toGson of the Graph!")
-//                val startTime = System.currentTimeMillis
-//                val json = gson.toJson(root)
-//                
-//                val endTime = System.currentTimeMillis
-//                println("toGson finished after " + (endTime - startTime) + "ms.")
-//                println("The json is " + json.length + " characters long")
-//            }
+	    synchronized (diagramState) {
+    	    if (root instanceof SGraph) {
+    	        // The layout is executed on the KGraph, not the SGraph. So get the KGraph belonging to this SGraph from
+    	        // the KGraphContext.
+                val kGraphContext = diagramState.getKGraphContext(root.id)
+                
+                // layout of KGraph
+                val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
+                val configurator = new LayoutConfigurator
+                
+                var configurators = new ArrayList
+                configurators.add(configurator)
+                lightDiagramLayoutConfig.options(configurators)
+                
+                synchronized(kGraphContext.viewModel) {
+                    lightDiagramLayoutConfig.performLayout
+                    RenderingPreparer.prepareRendering(kGraphContext.viewModel)
+                }
+                
+                // map layouted KGraph to SGraph
+                KGraphMappingUtil.mapLayout(diagramState.getKGraphToSModelElementMap(root.id))
+    	    }
 	    }
 	}
     

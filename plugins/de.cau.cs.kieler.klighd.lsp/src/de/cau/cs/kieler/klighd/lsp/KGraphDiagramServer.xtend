@@ -51,27 +51,31 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
      */
     protected var SModelRoot currentRoot
     
+    protected Object modelLock = new Object
+    
     /**
      * requests the calculation of text sizes by the client via the {@link RequestTextBoundsAction}. After receiving
      * the result back, updates the model with default sprotty behavior via the {@link #updateModel} function.
      * 
      * @param newRoot the diagram to request the text sizes for.
      */
-    protected synchronized def requestTextSizesAndUpdateModel(SModelRoot newRoot) {
-        currentRoot = newRoot
-        if (newRoot !== null) {
-            val texts = diagramState.getTexts(newRoot.id)
-            if (texts === null) {
-                throw new NullPointerException("The id of the SGraph was not found in the diagramState")
-            } else if (texts.empty) {
+    protected def requestTextSizesAndUpdateModel(SModelRoot newRoot) {
+        synchronized (modelLock) {
+            currentRoot = newRoot
+            if (newRoot !== null) {
+                val texts = diagramState.getTexts(newRoot.id)
+                if (texts === null) {
+                    throw new NullPointerException("The id of the SGraph was not found in the diagramState")
+                } else if (texts.empty) {
+                    updateModel(newRoot)
+                    return
+                }
+                val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
+                dispatch(new RequestTextBoundsAction(textDiagram))
+                // the updateModel is then executed after the client returns with its ComputedTextBoundsAction
+            } else {
                 updateModel(newRoot)
-                return
             }
-            val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
-            dispatch(new RequestTextBoundsAction(textDiagram))
-            // the updateModel is then executed after the client returns with its ComputedTextBoundsAction
-        } else {
-            updateModel(newRoot)
         }
     }
     
@@ -96,27 +100,29 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * and updates the model on the client.
      */
     protected def handle(ComputedTextBoundsAction action) {
-        // assume the model is still stored in 'currentRoot', since the ComputedTextBoundsAction only gets issued
-        // after a RequestTextBoundsAction, where it got stored before.
-        
-        val textMapping = diagramState.getTextMapping(currentRoot.id)
-        for (elementAndBound : action.bounds) {
-            val elementId = elementAndBound.elementId
-            val newBounds = elementAndBound.newBounds
-            if (newBounds === null) {
-                throw new NullPointerException("Estimated Bounds for a KText are null!")
+        synchronized (modelLock) {
+            // assume the model is still stored in 'currentRoot', since the ComputedTextBoundsAction only gets issued
+            // after a RequestTextBoundsAction, where it got stored before.
+            
+            val textMapping = diagramState.getTextMapping(currentRoot.id)
+            for (elementAndBound : action.bounds) {
+                val elementId = elementAndBound.elementId
+                val newBounds = elementAndBound.newBounds
+                if (newBounds === null) {
+                    throw new NullPointerException("Estimated Bounds for a KText are null!")
+                }
+                val newBounds_klighd = new Bounds(newBounds.x as float, newBounds.y as float,
+                    newBounds.width as float, newBounds.height as float)
+                val kText = textMapping.get(elementId)
+                if (kText === null) {
+                    LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
+                        "completion of the request. Terminating this request.")
+                    return
+                }
+                kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
             }
-            val newBounds_klighd = new Bounds(newBounds.x as float, newBounds.y as float,
-                newBounds.width as float, newBounds.height as float)
-            val kText = textMapping.get(elementId)
-            if (kText === null) {
-                LOG.info("The textMapping does not contain the referenced Text anymore. The model has changed before" + 
-                    "completion of the request. Terminating this request.")
-                return
-            }
-            kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
+            updateModel(currentRoot)
         }
-        updateModel(currentRoot)
     }
     
     /**
