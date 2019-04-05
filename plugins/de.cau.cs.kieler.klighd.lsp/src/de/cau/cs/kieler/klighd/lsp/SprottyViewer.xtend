@@ -54,12 +54,12 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override centerOn(KGraphElement diagramElement, int duration) {
-        println("center on called")
+//        println("center on called")
         // do nothing.
     }
     
     override clip(KNode diagramElement) {
-        println("clip called")
+//        println("clip called")
         // do nothing.
     }
     
@@ -76,17 +76,17 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override getClip() {
-        println("get clip called")
+//        println("get clip called")
         return null
     }
     
     override getContextViewer() {
-        println("get context viewer called")
+//        println("get context viewer called")
         return null
     }
     
     override getControl() {
-        println("is Visible called")
+//        println("is Visible called")
         // TODO: Remove once KlighD has no more SWT dependency.
         // cannot return any SWT element, as there is none. Cannot create any either, as SWT always needs a parent
         // element.
@@ -94,7 +94,7 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override getScale(KNode diagramElement) {
-        println("get scale called")
+//        println("get scale called")
         return 0
     }
     
@@ -107,17 +107,17 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override getZoomLevel() {
-        println("is Visible called")
+//        println("is Visible called")
         return 0
     }
     
     override hide(KGraphElement diagramElement) {
-        println("hide called")
+//        println("hide called")
         // do nothing.
     }
     
     override isDisplayed(KGraphElement diagramElement, boolean checkParents) {
-        println("is displayed called")
+//        println("is displayed called")
         return false
     }
     
@@ -126,32 +126,32 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override isVisible(KGraphElement diagramElement, boolean checkParents) {
-        println("is visible called")
+//        println("is visible called")
         return false
     }
     
     override panDiagramToTopLeftCorner(int duration) {
-        println("pan diagram to top left corner called")
+//        println("pan diagram to top left corner called")
         // do nothing.
     }
     
     override panToTopLeftCorner(KNode diagramElement, int duration) {
-        println("pan to top left corner called")
+//        println("pan to top left corner called")
         // do nothing.
     }
     
     override reveal(KGraphElement diagramElement, int duration) {
-        println("reveal called")
+//        println("reveal called")
         // do nothing.
     }
     
     override scale(KNode diagramElement, double factor) {
-        println("scale called")
+//        println("scale called")
         // do nothing.
     }
     
     override show(KGraphElement diagramElement) {
-        println("show called")
+//        println("show called")
         // do nothing.
     }
     
@@ -164,27 +164,27 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override zoomToFocus(KNode diagramElement, int duration) {
-        println("zoom to focus called")
+//        println("zoom to focus called")
         // do nothing.
     }
     
     override startRecording() {
-        println("start recording called")
+//        println("start recording called")
         // do nothing.
     }
     
     override stopRecording(int animationTime) {
-        println("stop recording called")
+//        println("stop recording called")
         // do nothing.
     }
     
     override stopRecording(ZoomStyle zoomStyle, KNode focusNode, int animationTime) {
-        println("stop recording called")
+//        println("stop recording called")
         // do nothing.
     }
     
     override getDiagramOutlinePage() {
-        println("get diagramOutlinePage called")
+//        println("get diagramOutlinePage called")
         return null
     }
     
