@@ -45,7 +45,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     KGraphDiagramState diagramState
     
     override didClose(String clientId) {
-        // clear the diagramState of this client id additional to the default use of this method.
+        // Clear the diagramState of this client id additional to the default use of this method.
         synchronized (diagramState) {
             diagramState.remove(clientId)
         }
@@ -53,15 +53,19 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     }
     
     override accept(ActionMessage message) {
-        val server = diagramServerManager.getDiagramServer('keith-diagram', message.clientId) // TODO: This should not be hard coded!
-        // if a diagram server is requested for the same client, but a different source file, then close the old server.
-        if (message.action instanceof RequestModelAction
-            && !server.options.empty // if the server does not have options yet, the server has not been used yet and
-            // does not need to be relaunched.
-            && !(message.action as RequestModelAction).options.get("sourceUri")
-                .equals(server.options.get("sourceUri"))) {
-                didClose(message.clientId)
-            }
+        if (message.action instanceof RequestModelAction) {
+            val action = message.action as RequestModelAction
+            val diagramType = action.diagramType
+                    ?: action.options.get(DiagramOptions.OPTION_DIAGRAM_TYPE)
+            val server = diagramServerManager.getDiagramServer(diagramType, message.clientId)
+            // If a diagram server is requested for the same client, but a different source file, then close the old server.
+            if (!server.options.empty // If the server does not have options yet, the server has not been used yet and
+                // does not need to be relaunched.
+                && !action.options.get("sourceUri")
+                    .equals(server.options.get("sourceUri"))) {
+                    didClose(message.clientId)
+                }
+        }
         super.accept(message)
     }
     
