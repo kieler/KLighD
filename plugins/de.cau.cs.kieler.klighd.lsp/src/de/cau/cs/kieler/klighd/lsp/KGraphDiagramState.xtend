@@ -64,11 +64,6 @@ public class KGraphDiagramState {
      * Contains the model of the currently drawn snapshot for the url of the model, if available.
      */
     private Map<String, Object> snapshotModelMapping = new HashMap
-    
-    /**
-     * Contains the {@link IViewer} displaying the current diagram.
-     */
-//    private Map<String, IViewer> viewerMapping = new HashMap
 
     /**
      * Contains the {@link IViewer} displaying diagrams.
@@ -211,8 +206,7 @@ public class KGraphDiagramState {
      * 
      * @param key The key to access the value in the map.
      */
-    public def IViewer getViewer(/*String key*/) {
-//        viewerMapping.get(key)
+    public def IViewer getViewer() {
         return viewer
     }
     
@@ -222,8 +216,7 @@ public class KGraphDiagramState {
      * @param key The key to access the map.
      * @param value The value to be stored in the map.
      */
-    public def putViewer(/*String key, */IViewer value) {
-//        viewerMapping.put(key, value)
+    public def putViewer(IViewer value) {
         viewer = value
     }
     
@@ -268,7 +261,7 @@ public class KGraphDiagramState {
             texts.remove(key)
             textMapping.remove(key)
             snapshotModelMapping.remove(key)
-//            viewerMapping.remove(key)
+            viewer = null
             uriStringMap.remove(clientId)
         }
     }
