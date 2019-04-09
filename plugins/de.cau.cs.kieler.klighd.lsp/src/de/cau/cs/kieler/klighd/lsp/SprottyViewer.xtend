@@ -122,7 +122,7 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
     }
     
     override isExpanded(KNode diagramElement) {
-        return RenderingContextData.get(diagramElement).getProperty(SprottyProperties.EXPANDED)
+        return RenderingContextData.get(diagramElement).getProperty(KlighdInternalProperties.POPULATED)
     }
     
     override isVisible(KGraphElement diagramElement, boolean checkParents) {

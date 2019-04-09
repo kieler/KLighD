@@ -456,8 +456,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                             !KlighdPredicates.isCollapsedRendering().apply(it)
                         ] 
                     }
-                    // also set the element as expanded
-                    RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, true)
                 } else {
                     // in case the node to be depicted is tagged as 'not populated',
                     //  i.e. no children are visible in the diagram
@@ -473,8 +471,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                             !KlighdPredicates.isExpandedRendering().apply(it)
                         ]
                     }
-                    // also set the element as not expanded
-                    RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, false)
                 }
                 (sModelElement as SKNode).data.add(currentRendering)
             } else {
