@@ -37,6 +37,8 @@ import org.eclipse.elk.core.data.LayoutOptionData.Visibility
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.ElkGraphElement
 import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.lsp4j.InitializeParams
+import org.eclipse.lsp4j.InitializeResult
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
 import org.eclipse.sprotty.RequestModelAction
@@ -60,6 +62,19 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     @Inject
     KGraphDiagramState diagramState
+    
+    boolean alreadyInitialized = false
+    CompletableFuture<InitializeResult> initializedResult
+    
+    override initialize(InitializeParams params) {
+        if (alreadyInitialized) {
+            return this.initializedResult
+        } else {
+            alreadyInitialized = true
+            this.initializedResult = super.initialize(params)
+            return this.initializedResult
+        }
+    }
     
     override didClose(String clientId) {
         // Clear the diagramState of this client id additional to the default use of this method.
