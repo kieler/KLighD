@@ -52,7 +52,9 @@ public class KGraphLayoutEngine extends ElkLayoutEngine {
                 
                 // layout of KGraph
                 val lightDiagramLayoutConfig = new LightDiagramLayoutConfig(kGraphContext)
-                val configurator = new LayoutConfigurator
+                
+                // Get the layout configurator.
+                val configurator = diagramState.getLayoutConfig(root.id)
                 
                 var configurators = new ArrayList
                 configurators.add(configurator)

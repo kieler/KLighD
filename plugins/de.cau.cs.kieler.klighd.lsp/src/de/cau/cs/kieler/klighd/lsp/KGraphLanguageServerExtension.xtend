@@ -14,12 +14,29 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import de.cau.cs.kieler.klighd.IAction.ActionContext
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
-import de.cau.cs.kieler.klighd.lsp.model.SetOptionParam
+import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
+import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
+import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
+import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
+import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import java.util.ArrayList
+import java.util.Collection
+import java.util.List
+import java.util.concurrent.CompletableFuture
+import org.eclipse.elk.core.LayoutConfigurator
+import org.eclipse.elk.core.data.LayoutMetaDataService
+import org.eclipse.elk.core.data.LayoutOptionData
+import org.eclipse.elk.core.data.LayoutOptionData.Type
+import org.eclipse.elk.core.data.LayoutOptionData.Visibility
+import org.eclipse.elk.core.util.Pair
+import org.eclipse.elk.graph.ElkGraphElement
+import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
 import org.eclipse.sprotty.RequestModelAction
@@ -77,21 +94,52 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                     // A diagram for this file is currently not opened, so no options can be shown.
                     return null
                 }
-                // TODO: what about the displayedLayoutOptions and the displayedActions?
                 val synthesisOptions = new ArrayList<ValuedSynthesisOption>
                 val recentSynthesisOptions = diagramState.recentSynthesisOptions
                 for (option : viewContext.displayedSynthesisOptions) {
                     val currentValue = recentSynthesisOptions.get(option)
                     synthesisOptions.add(new ValuedSynthesisOption(option, currentValue))
                 }
-                return synthesisOptions
+                val layoutOptionUIData = calculateLayoutOptionUIData(viewContext.displayedLayoutOptions)
+                
+                return new GetOptionsResult(synthesisOptions, layoutOptionUIData,
+                    viewContext.displayedActions)
             }
         ]
     }
     
-    override setOptions(SetOptionParam param) {
+    def calculateLayoutOptionUIData(List<Pair<IProperty<?>, List<?>>> displayedLayoutOptions) {
+        val List<LayoutOptionUIData> layoutOptionUIData = new ArrayList
+        for (pair : displayedLayoutOptions) {
+            var Object first
+            var Object second
+            if (pair.second instanceof Collection) {
+                val iterator = (pair.second as Collection<?>).iterator
+                first = if (iterator.hasNext) iterator.next else null
+                second = if (iterator.hasNext) iterator.next else null
+            } else {
+                first = null
+                second = null
+            }
+
+            val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(pair.first.id)
+            if (optionData.visibility !== Visibility.HIDDEN) {
+                if (first instanceof Number && second instanceof Number) {
+                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, (first as Number).floatValue,
+                        (second as Number).floatValue, null))
+                } else if (pair.second === null) {
+                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, null, null, null))
+                } else {
+                    layoutOptionUIData.add(new LayoutOptionUIData(optionData, null, null, pair.second))
+                }
+            }
+        }
+        return layoutOptionUIData
+    }
+    
+    override setSynthesisOptions(SetSynthesisOptionsParam param) {
         return languageServerAccess.doRead(param.uri) [ context |
-            synchronized(diagramState) {
+            synchronized (diagramState) {
                 val ViewContext viewContext = diagramState.getKGraphContext(context.resource.URI.toString)
                 if (viewContext === null) {
                     // The diagram has already been closed
@@ -112,6 +160,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                         configureOption(synthesisOption, paramSynthesisOption.currentValue, viewContext)
                     }
                 }
+                // Update the diagram.
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[context.resource.URI])
                     return "OK"
@@ -119,6 +168,69 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 return "ERR"
             }
         ]
+    }
+    
+    override setLayoutOptions(SetLayoutOptionsParam param) {
+        return languageServerAccess.doRead(param.uri) [ context |
+            synchronized (diagramState) {
+                val key = context.resource.URI.toString
+                val LayoutConfigurator layoutConfig = diagramState.getLayoutConfig(key)
+                if (layoutConfig === null) {
+                    // The diagram has already been closed
+                    return "ERR"
+                }
+                
+                // Set the new option.
+                for (layoutOption : param.layoutOptions) {
+                    val LayoutOptionData optionData = LayoutMetaDataService.instance.getOptionData(layoutOption.optionId)
+                    if (optionData.type === Type.ENUM || optionData.type === Type.ENUMSET) {
+                        // Sending it to the server via Json, the Enum will be transformed to a number, which is always
+                        // interpreted as a Double back in Java. So convert it back to its enum here.
+                        val value = optionData.getEnumValue((layoutOption.value as Double).intValue)
+                        layoutConfig.configure(ElkGraphElement).setProperty(optionData, value);
+                    } else if (optionData.type === Type.DOUBLE) {
+                        layoutConfig.configure(ElkGraphElement).setProperty(optionData,
+                            Double.parseDouble(layoutOption.value.toString)
+                        )
+                    } else { // TODO: implement the other cases, if necessary.
+                        layoutConfig.configure(ElkGraphElement).setProperty(optionData, layoutOption.value);
+                    }
+                }
+                diagramState.putLayoutConfig(key, layoutConfig)
+                
+                // Update the layout of the diagram.
+                val diagramServer = this.diagramServerManager.findDiagramServersByUri(key).head
+                if (diagramUpdater instanceof KGraphDiagramUpdater && diagramServer instanceof KGraphDiagramServer) {
+                    (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer as KGraphDiagramServer)
+                } else {
+                    return "ERR"
+                }
+            }
+            return "OK"
+        ]
+    }
+    
+    override performAction(PerformActionParam param) {
+        synchronized (diagramState) {
+            val klighdAction = KlighdDataManager.instance.getActionById(param.actionId)
+            val viewer = diagramState.viewer
+            val actionContext = new ActionContext(viewer, null, null, null)
+            val shouldUpdate = klighdAction.execute(actionContext)
+            if (shouldUpdate.actionPerformed) {
+                if (diagramUpdater instanceof KGraphDiagramUpdater) {
+                    val diagramServer = this.diagramServerManager.findDiagramServersByUri(param.uri)
+                        .filter(KGraphDiagramServer).head
+                    if (diagramServer !== null) {
+                        (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                    } else {
+                        return CompletableFuture.completedFuture("ERR")
+                    }
+                } else {
+                    return CompletableFuture.completedFuture("ERR")
+                }
+            }
+        }
+        return CompletableFuture.completedFuture("OK")
     }
     
     /**
@@ -206,7 +318,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         
         val diagramServer = diagramServerManager.getDiagramServer('keith-diagram', clientId)
         if (diagramServer instanceof KGraphDiagramServer) {
-            synchronized(diagramState) {
+            synchronized (diagramState) {
                 diagramState.putSnapshotModel(uri, model)
             }
             diagramServer.initializeOptions(#{

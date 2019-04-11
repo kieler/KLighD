@@ -26,6 +26,7 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Map
 import java.util.Set
+import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.sprotty.SModelElement
 
 /**
@@ -64,6 +65,11 @@ public class KGraphDiagramState {
      * Contains the model of the currently drawn snapshot for the url of the model, if available.
      */
     private Map<String, Object> snapshotModelMapping = new HashMap
+    
+    /**
+     * Contains the layout configurator for the url of the model.
+     */
+    private Map<String, LayoutConfigurator> layoutConfigMapping = new HashMap
 
     /**
      * Contains the {@link IViewer} displaying diagrams.
@@ -202,6 +208,30 @@ public class KGraphDiagramState {
     }
     
     /**
+     * Getter to access the value stored in the layoutConfig mapping.
+     * 
+     * @param key They key to access the value in the map.
+     */
+    public def getLayoutConfig(String key) {
+        var configurator = layoutConfigMapping.get(key)
+        if (configurator === null) {
+            configurator = new LayoutConfigurator
+            layoutConfigMapping.put(key, configurator)
+        }
+        return configurator
+    }
+    
+    /**
+     * Put method to put a new value in the layoutConfig mapping.
+     * 
+     * @param key The key to access the map.
+     * @param value The value to be stored in the map.
+     */
+    public def putLayoutConfig(String key, LayoutConfigurator value) {
+        layoutConfigMapping.put(key, value)
+    }
+    
+    /**
      * Getter to access the value stored in the viewer map.
      * 
      * @param key The key to access the value in the map.
@@ -249,7 +279,7 @@ public class KGraphDiagramState {
     }
     
     /**
-     * removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
+     * Removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
      * 
      * @param clientId The client ID of the diagram server for that no map should store any data anymore.
      */
@@ -261,6 +291,7 @@ public class KGraphDiagramState {
             texts.remove(key)
             textMapping.remove(key)
             snapshotModelMapping.remove(key)
+            layoutConfigMapping.remove(key)
             viewer = null
             uriStringMap.remove(clientId)
         }

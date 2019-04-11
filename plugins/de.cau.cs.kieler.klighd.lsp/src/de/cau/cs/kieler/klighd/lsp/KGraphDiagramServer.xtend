@@ -138,12 +138,12 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
             val kGraphElement = KGraphElementIDGenerator.findElementById(k2sMap, action.KGraphElementId)
             val kRendering = KRenderingIDGenerator.findRenderingById(kGraphElement, action.KRenderingId)
             
-            val klighdAction = KlighdDataManager.getInstance().getActionById(action.actionId)
-            val viewer = diagramState.getViewer()
+            val klighdAction = KlighdDataManager.instance.getActionById(action.actionId)
+            val viewer = diagramState.viewer
             val actionContext = new ActionContext(viewer, null, kGraphElement, kRendering)
             val shouldUpdate = klighdAction.execute(actionContext)
             if (shouldUpdate.actionPerformed) {
-                val diagramUpdater = diagramLanguageServer.getDiagramUpdater()
+                val diagramUpdater = diagramLanguageServer.diagramUpdater
                 if (diagramUpdater instanceof KGraphDiagramUpdater) {
                     diagramUpdater.updateLayout(this)
                 } else {

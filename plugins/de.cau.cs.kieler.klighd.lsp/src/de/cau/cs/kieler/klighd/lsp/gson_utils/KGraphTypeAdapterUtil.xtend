@@ -24,10 +24,9 @@ import org.eclipse.sprotty.server.json.ActionTypeAdapter
 /**
  * Static util class to configure needed gson type adapters for KGraph serialization.
  * 
- * @author nir
+ * @author nre
  */
 public class KGraphTypeAdapterUtil {
-    
     public def static GsonBuilder configureGson(GsonBuilder gsonBuilder) {
         gsonBuilder
         .registerTypeAdapterFactory(
