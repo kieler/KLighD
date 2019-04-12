@@ -31,6 +31,7 @@ import com.google.inject.Injector;
 import de.cau.cs.kieler.kgraph.text.KGraphRuntimeModule;
 import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramModule;
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerModule;
 
 /**
  * Initialization support for running Xtext languages as language servers.
@@ -46,12 +47,12 @@ public class KGraphIdeSetup extends KGraphStandaloneSetup {
             new KGraphRuntimeModule(), 
             new KGraphIdeModule(), 
             new KGraphDiagramModule(),
+            new KGraphDiagramServerModule(),
             (Binder binder) -> {
                 binder.bind(IProjectDescriptionFactory.class).to(DefaultProjectDescriptionFactory.class);
                 binder.bind(IWorkspaceConfigFactory.class).to(KeithProjectWorkspaceConfigFactory.class);
             }
-                    
-            ));
+		));
 	}
 	
 	public static Injector doSetup() {
@@ -80,5 +81,4 @@ public class KGraphIdeSetup extends KGraphStandaloneSetup {
         register(injector);
         return injector;
     }
-	
 }

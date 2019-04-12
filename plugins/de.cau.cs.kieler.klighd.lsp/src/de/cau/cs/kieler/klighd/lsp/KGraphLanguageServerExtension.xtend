@@ -13,7 +13,6 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
-import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
@@ -37,8 +36,6 @@ import org.eclipse.elk.core.data.LayoutOptionData.Visibility
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.ElkGraphElement
 import org.eclipse.elk.graph.properties.IProperty
-import org.eclipse.lsp4j.InitializeParams
-import org.eclipse.lsp4j.InitializeResult
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
 import org.eclipse.sprotty.RequestModelAction
@@ -50,11 +47,10 @@ import org.eclipse.xtext.util.CancelIndicator
  * servers.
  * Based on the yang-lsp implementation by TypeFox.
  * 
- * @author nir
+ * @author nre
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangLanguageServerExtension.xtend">
  *      YangLanguageServerExtension</a>
  */
-@Singleton
 class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     implements IDiagramOptionsLanguageServerExtension {
     /**
@@ -62,19 +58,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     @Inject
     KGraphDiagramState diagramState
-    
-    boolean alreadyInitialized = false
-    CompletableFuture<InitializeResult> initializedResult
-    
-    override initialize(InitializeParams params) {
-        if (alreadyInitialized) {
-            return this.initializedResult
-        } else {
-            alreadyInitialized = true
-            this.initializedResult = super.initialize(params)
-            return this.initializedResult
-        }
-    }
     
     override didClose(String clientId) {
         // Clear the diagramState of this client id additional to the default use of this method.
