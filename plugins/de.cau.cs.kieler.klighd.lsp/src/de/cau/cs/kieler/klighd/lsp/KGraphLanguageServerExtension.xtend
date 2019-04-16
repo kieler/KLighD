@@ -36,6 +36,7 @@ import org.eclipse.elk.core.data.LayoutOptionData.Visibility
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.ElkGraphElement
 import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
 import org.eclipse.sprotty.RequestModelAction
@@ -58,6 +59,14 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
      */
     @Inject
     KGraphDiagramState diagramState
+    
+    override initialize(InitializeParams params) {
+        // Close all diagram servers still open from a previous session.
+        val oldClientIds = diagramServerManager.diagramServers.map[ clientId ].toList // toList to avoid lazy evaluation
+        oldClientIds.forEach[ didClose ]
+        
+        return super.initialize(params)
+    }
     
     override didClose(String clientId) {
         // Clear the diagramState of this client id additional to the default use of this method.
