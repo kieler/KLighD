@@ -51,7 +51,7 @@ import static com.google.common.collect.Iterables.filter
 /**
  * Utility class to provide some functionality to persist prepare the rendering of a {@link KGraphElement}.
  * 
- * @author nir
+ * @author nre
  */
 public final class RenderingPreparer {
     /**
@@ -96,7 +96,7 @@ public final class RenderingPreparer {
                 }
                 KRendering: {
                     // every rendering needs an ID, generate it here
-                    KRenderingIDGenerator.generateIdsRecursive(data, element.data.indexOf(data))
+                    KRenderingIDGenerator.generateIdsRecursive(data)
                     handleKRendering(element, data, null, null)
                 }
             }
