@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
+import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
@@ -36,11 +37,17 @@ import org.eclipse.elk.core.data.LayoutOptionData.Visibility
 import org.eclipse.elk.core.util.Pair
 import org.eclipse.elk.graph.ElkGraphElement
 import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.emf.common.util.URI
+import org.eclipse.lsp4j.DocumentHighlight
 import org.eclipse.lsp4j.InitializeParams
+import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
 import org.eclipse.sprotty.RequestModelAction
+import org.eclipse.sprotty.xtext.DiagramHighlightService
 import org.eclipse.sprotty.xtext.ls.SyncDiagramLanguageServer
+import org.eclipse.xtext.ide.server.UriExtensions
+import org.eclipse.xtext.ide.server.occurrences.IDocumentHighlightService
 import org.eclipse.xtext.util.CancelIndicator
 
 /**
@@ -54,11 +61,16 @@ import org.eclipse.xtext.util.CancelIndicator
  */
 class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     implements IDiagramOptionsLanguageServerExtension {
+    @Inject
+    Injector injector
+    
     /**
      * Stores data for the generation of diagrams.
      */
     @Inject
     KGraphDiagramState diagramState
+    
+    @Inject extension UriExtensions
     
     override initialize(InitializeParams params) {
         // Close all diagram servers still open from a previous session.
@@ -342,5 +354,39 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             }
         }
         return "ERR"
+    }
+    
+    override documentHighlight(TextDocumentPositionParams params) {
+        // This skips the direct super implementation because we do not want the DiagramHighlightService to only look in
+        // the language registry for an instance, but use the default injector used for this class to provide the
+        // service, as all languages are registered in this injector. Prevents a NullPointerException in the super
+        // implementation when no diagramHighlightService can be found.
+        
+        // this is from super.super.documentHighlight
+        val CompletableFuture<List<? extends DocumentHighlight>> result = requestManager.runRead [ cancelIndicator |
+            val uri = params.textDocument.uri.toUri;
+            val serviceProvider = languagesRegistry
+                .getResourceServiceProvider(uri)
+            val service = serviceProvider?.get(IDocumentHighlightService);
+            if (service === null)
+                return emptyList
+            
+            return workspaceManager.doRead(uri) [doc, resource |
+                service.getDocumentHighlights(doc, resource, params, cancelIndicator)
+            ]
+        ];
+        val URI uri = params.textDocument.uri.toUri
+        workspaceManager.doRead(uri) [ doc, resource |
+            val diagramHighlightService = languagesRegistry
+                .getResourceServiceProvider(uri)
+                .get(DiagramHighlightService)
+                ?: injector.getInstance(DiagramHighlightService)
+            val offset = doc.getOffSet(params.position)
+            diagramServerManager.findDiagramServersByUri(uri.toString).forEach [ server |
+                diagramHighlightService.selectElementFor(server, resource, offset)
+            ]
+            null
+        ]
+        result
     }
 }
