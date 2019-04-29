@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -31,8 +31,8 @@ import org.eclipse.sprotty.SModelElement
 
 /**
  * Singleton class to map a graph id (String) found in SGraphs to their various parts needed for handling KGraph models
- * @author nir
- *
+ * 
+ * @author nre
  */
 @Singleton
 public class KGraphDiagramState {
@@ -70,6 +70,11 @@ public class KGraphDiagramState {
      * Contains the layout configurator for the url of the model.
      */
     private Map<String, LayoutConfigurator> layoutConfigMapping = new HashMap
+    
+    /**
+     * Contains the current synthesis ID for the url of the model.
+     */
+    private Map<String, String> synthesisIdMapping = new HashMap
 
     /**
      * Contains the {@link IViewer} displaying diagrams.
@@ -232,6 +237,25 @@ public class KGraphDiagramState {
     }
     
     /**
+     * Getter to access the value stored in the synthesisId mapping.
+     * 
+     * @param key They key to access the value in the map.
+     */
+    public def getSynthesisId(String key) {
+        synthesisIdMapping.get(key)
+    }
+    
+    /**
+     * Put method to put a new value in the synthesisId mapping.
+     * 
+     * @param key The key to access the map.
+     * @param value The value to be stored in the map.
+     */
+    public def putSynthesisId(String key, String value) {
+        synthesisIdMapping.put(key, value)
+    }
+    
+    /**
      * Getter to access the value stored in the viewer map.
      * 
      * @param key The key to access the value in the map.
@@ -292,6 +316,7 @@ public class KGraphDiagramState {
             textMapping.remove(key)
             snapshotModelMapping.remove(key)
             layoutConfigMapping.remove(key)
+            synthesisIdMapping.remove(key)
             viewer = null
             uriStringMap.remove(clientId)
         }

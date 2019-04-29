@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
-import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
+import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import java.awt.geom.Point2D
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.server.json.ActionTypeAdapter
@@ -31,9 +31,9 @@ public class KGraphTypeAdapterUtil {
         gsonBuilder
         .registerTypeAdapterFactory(
             new ActionTypeAdapter.Factory => [
-                addActionKind(RequestTextBoundsAction.KIND, RequestTextBoundsAction)
                 addActionKind(ComputedTextBoundsAction.KIND, ComputedTextBoundsAction)
                 addActionKind(PerformActionAction.KIND, PerformActionAction)
+                addActionKind(SetSynthesisAction.KIND, SetSynthesisAction)
             ]
         )
         .registerTypeAdapter(Point2D, new Point2DTypeAdapter)

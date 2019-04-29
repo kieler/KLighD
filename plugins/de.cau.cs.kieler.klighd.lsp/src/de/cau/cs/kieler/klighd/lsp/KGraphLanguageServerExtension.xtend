@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -23,6 +23,8 @@ import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
+import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesAction
+import de.cau.cs.kieler.klighd.lsp.model.SetSynthesesActionData
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import java.util.ArrayList
@@ -43,6 +45,7 @@ import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.DiagramOptions
+import org.eclipse.sprotty.IDiagramServer
 import org.eclipse.sprotty.RequestModelAction
 import org.eclipse.sprotty.xtext.DiagramHighlightService
 import org.eclipse.sprotty.xtext.ls.SyncDiagramLanguageServer
@@ -99,10 +102,50 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 // does not need to be relaunched.
                 && !action.options.get("sourceUri")
                     .equals(server.options.get("sourceUri"))) {
-                    didClose(message.clientId)
-                }
+
+                didClose(message.clientId)
+            }
+            // After a new server has been initialized, also send the available syntheses to the client.
+            val path = action.options.get("sourceUri")
+            val newServer = diagramServerManager.getDiagramServer(diagramType, message.clientId)
+            sendAvailableSyntheses(path, newServer)
         }
         super.accept(message)
+    }
+    
+    /**
+     * Sends the available syntheses for the document pointed to by {@code path} via the the given diagram server.
+     * 
+     * @param path The uri pointing towards the document that represents a model with available syntheses
+     * @param server The diagram server that belongs to the document.
+     */
+    def void sendAvailableSyntheses(String path, IDiagramServer server) {
+        if (path !== null) {
+            languageServerAccess.doRead(path) [
+                val availableSynthesesData = getAvailableSynthesesData(resource.contents.head?.class)
+                
+                server.dispatch(new SetSynthesesAction(availableSynthesesData))
+                return null
+            ]
+        }
+    }
+    
+    /**
+     * Calculates ready-to-send data for the {@link SetSynthesesAction}.
+     * 
+     * @param currentModelClass the class for which the available syntheses should be evaluated.
+     */
+    def List<SetSynthesesActionData> getAvailableSynthesesData(Class<?> currentModelClass) {
+        val KlighdDataManager kdm = KlighdDataManager.instance
+        return kdm.getAvailableSyntheses(currentModelClass).map [
+            val id = kdm.getSynthesisID(it)
+            val displayedName = if (id.contains(".") && !id.endsWith(".")) {
+                    id.substring(id.lastIndexOf('.') + 1);
+                } else {
+                    id
+                }
+            return new SetSynthesesActionData(id, displayedName)
+        ].toList
     }
     
     override getOptions(GetOptionParam param) {
@@ -321,6 +364,8 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     
     /**
      * Creates and sends the diagram for an arbitrary snapshot object for any source model to the client.
+     * 
+     * @param update Indicates if this call should update the same snapshot model.
      */
     def showSnapshot(String uri, String clientId, Object model, CancelIndicator cancelIndicator, boolean update) {
         if (!update) {
@@ -343,12 +388,19 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             diagramServer.initializeOptions(#{
                 DiagramOptions.OPTION_SOURCE_URI -> uri
             })
-            // with that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
+            // With that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
             // use the 'model' as its model.
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
                 val sGraph = (diagramUpdater as KGraphDiagramUpdater).createModel(diagramServer, model, uri, cancelIndicator)
                 if (sGraph !== null) {
                     diagramServer.requestTextSizesAndUpdateModel(sGraph)
+                    
+                    // Also, update the syntheses available for the given diagram.
+                    if (!update) {
+                        val availableSynthesesData = getAvailableSynthesesData(model.class)
+                    
+                        diagramServer.dispatch(new SetSynthesesAction(availableSynthesesData))
+                    }
                 }
                 return "OK"
             }

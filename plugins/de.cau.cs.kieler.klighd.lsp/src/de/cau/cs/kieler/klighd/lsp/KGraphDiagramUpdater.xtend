@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright ${year} by
+ * Copyright 2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.inject.Inject
 import com.google.inject.Provider
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
+import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy
@@ -103,7 +104,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             return CompletableFuture.completedFuture(null)
         }
         return languageServer.languageServerAccess.doRead(path) [ context |
-            val uri = context.resource.URI.toString
             var Object snapshotModel = null
             synchronized(diagramState) {
                 snapshotModel = diagramState.getSnapshotModel(path)
@@ -117,7 +117,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             
             return (diagramServers as List<KGraphDiagramServer>).map [ server |
                 server -> {
-                    createModel(server, model, uri, cancelChecker)
+                    createModel(server, model, path, cancelChecker)
                 }
             ]
         ].thenAccept [ resultList |
@@ -132,15 +132,21 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
+        var String synthesisId
         synchronized (diagramState) {
             val iViewer = diagramState.getViewer()
             if (iViewer instanceof SprottyViewer) {
                 viewer = iViewer
             }
+            
+            synthesisId = diagramState.getSynthesisId(id)
         }
-        // TODO: get synthesis described by the user on the client
-        // see DiagramView#doUpdateDiagram
-//        val synthesisId = 
+        
+        // Set properties.
+        if (synthesisId !== null) {
+            // If the synthesisId is null, KLighD will use the a default synthesis defined for this model.
+            properties.setProperty(KlighdSynthesisProperties.REQUESTED_DIAGRAM_SYNTHESIS, synthesisId)
+        }
 
         // Save previous synthesis options to restore later.
          storeCurrentSynthesisOptions()
@@ -163,11 +169,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             if (viewContext.inputModel === null || viewContext.inputModel.class !== model.class) {
                 modelTypeChanged = true
             }
-            // TODO:
-//            if (!KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisID)) {
-//                // In case the synthesis changed the sidebar should be updated
-//                modelTypeChanged = true
-//            }
+            if (!KlighdDataManager.instance.getSynthesisID(viewContext.getDiagramSynthesis()).equals(synthesisId)) {
+                // In case the synthesis changed the sidebar should be updated
+                modelTypeChanged = true
+            }
         }
         
         // If the type changed the view must be reinitialized to provide a correct ViewContext

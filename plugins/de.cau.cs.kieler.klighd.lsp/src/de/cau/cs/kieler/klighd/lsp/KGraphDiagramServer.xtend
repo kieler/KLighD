@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -22,6 +22,7 @@ import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
+import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIDGenerator
 import de.cau.cs.kieler.klighd.microlayout.Bounds
@@ -38,13 +39,19 @@ import org.eclipse.sprotty.xtext.LanguageAwareDiagramServer
 /**
  * Diagram server extension adding functionality to special actions needed for handling KGraphs.
  * 
- * @author nir
+ * @author nre
  */
 public class KGraphDiagramServer extends LanguageAwareDiagramServer {
     private static val LOG = Logger.getLogger(KGraphDiagramServer)
     
     @Inject 
     protected KGraphDiagramState diagramState
+    
+    /**
+     * Indicates if the stored model is a completely new model and should therefore cause a SetModelAction instead of 
+     * an eventual UpdateModelAction.
+     */
+    protected boolean newModel
     
     /**
      * The current root element of the {@link SKGraph}. Stored here during communication with the client.
@@ -54,8 +61,8 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
     protected Object modelLock = new Object
     
     /**
-     * requests the calculation of text sizes by the client via the {@link RequestTextBoundsAction}. After receiving
-     * the result back, updates the model with default sprotty behavior via the {@link #updateModel} function.
+     * Requests the calculation of text sizes by the client via the {@link RequestTextBoundsAction}. After receiving
+     * the result back, updates the model with default Sprotty behavior via the {@link #updateModel} function.
      * 
      * @param newRoot the diagram to request the text sizes for.
      */
@@ -67,14 +74,24 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 if (texts === null) {
                     throw new NullPointerException("The id of the SGraph was not found in the diagramState")
                 } else if (texts.empty) {
-                    updateModel(newRoot)
+                    if (newModel) {
+                        setModel(currentRoot)                
+                    } else {
+                        updateModel(currentRoot)
+                    }
+                    newModel = false
                     return
                 }
                 val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
                 dispatch(new RequestTextBoundsAction(textDiagram))
                 // the updateModel is then executed after the client returns with its ComputedTextBoundsAction
             } else {
-                updateModel(newRoot)
+                if (newModel) {
+                    setModel(currentRoot)                
+                } else {
+                    updateModel(currentRoot)
+                }
+                newModel = false
             }
         }
     }
@@ -88,6 +105,8 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 handle(action as ComputedTextBoundsAction)
             } else if (action.getKind() === PerformActionAction.KIND) {
                 handle(action as PerformActionAction)
+            } else if (action.getKind() === SetSynthesisAction.KIND) {
+                handle(action as SetSynthesisAction)
             } else {
                 super.accept(message)
             }
@@ -121,7 +140,12 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 }
                 kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
             }
-            updateModel(currentRoot)
+            if (newModel) {
+                setModel(currentRoot)                
+            } else {
+                updateModel(currentRoot)
+            }
+            newModel = false
         }
     }
     
@@ -131,7 +155,7 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
      * May cause a {@link UpdateModelAction} to be sent back to the client with an updated model.
      */
     protected def handle(PerformActionAction action) {
-        synchronized(diagramState) {
+        synchronized (diagramState) {
             
             val sourceUrl = diagramState.getURIString(clientId)
             val k2sMap = diagramState.getKGraphToSModelElementMap(sourceUrl)
@@ -150,6 +174,20 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                     throw new IllegalStateException("The diagramUpdater was not initialized correctly")
                 }
             }
+        }
+    }
+    
+    /**
+     * Called when a {@link SetSynthesisAction} is received.
+     * Configures this diagram server to use the synthesis given in the message in future runs to generate a diagram
+     * and invokes an update.
+     */
+    protected def handle(SetSynthesisAction action) {
+        synchronized (diagramState) {
+            val sourceUrl = diagramState.getURIString(clientId)
+            diagramState.putSynthesisId(sourceUrl, action.id)
+            this.newModel = true
+            diagramLanguageServer.diagramUpdater.updateDiagram(this)
         }
     }
     

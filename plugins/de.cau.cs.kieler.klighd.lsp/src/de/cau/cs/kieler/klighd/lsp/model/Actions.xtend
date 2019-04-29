@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -25,7 +25,7 @@ import org.eclipse.xtend.lib.annotations.ToString
  * Sent from the server to the client to request bounds for the given texts. The texts are rendered
  * invisibly so the bounds can derived from the DOM. The response is a {@link ComputedTextBoundsAction}.
  * 
- * @author nir
+ * @author nre
  */
 @Accessors
 @EqualsHashCode
@@ -51,10 +51,49 @@ public class RequestTextBoundsAction implements Action {
 }
 
 /**
+ * Sent from the server to the client to send a list of all available syntheses for the current model.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class SetSynthesesAction implements Action {
+    public static val KIND = 'setSyntheses'
+    String kind = KIND
+    
+    List<SetSynthesesActionData> syntheses
+    
+     new(List<SetSynthesesActionData> syntheses) {
+        this.syntheses = syntheses
+    }
+}
+
+/**
+ * Sent from the client to the server to request a new diagram with the given synthesis.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class SetSynthesisAction implements Action {
+    public static val KIND = 'setSynthesis'
+    String kind = KIND
+    
+    String id
+    
+    new() {}
+    new(Consumer<SetSynthesisAction> initializer) {
+        initializer.accept(this)
+    }
+}
+
+/**
  * Sent from the client to the server to transmit the result of text bounds computation as a response
  * to a {@link RequestTextBoundsAction}.
  * 
- * @author nir
+ * @author nre
  */
 @Accessors
 @EqualsHashCode
