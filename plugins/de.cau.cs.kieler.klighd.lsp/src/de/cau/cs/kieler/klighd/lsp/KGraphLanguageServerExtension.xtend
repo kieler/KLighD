@@ -12,6 +12,8 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.inject.Inject
 import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.IAction.ActionContext
@@ -20,6 +22,7 @@ import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
+import de.cau.cs.kieler.klighd.lsp.model.KeithInitializationOptions
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
@@ -49,6 +52,7 @@ import org.eclipse.sprotty.IDiagramServer
 import org.eclipse.sprotty.RequestModelAction
 import org.eclipse.sprotty.xtext.DiagramHighlightService
 import org.eclipse.sprotty.xtext.ls.SyncDiagramLanguageServer
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.UriExtensions
 import org.eclipse.xtext.ide.server.occurrences.IDocumentHighlightService
 import org.eclipse.xtext.util.CancelIndicator
@@ -63,9 +67,23 @@ import org.eclipse.xtext.util.CancelIndicator
  *      YangLanguageServerExtension</a>
  */
 class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
-    implements IDiagramOptionsLanguageServerExtension {
+    implements IDiagramOptionsLanguageServerExtension, IInitializeOptionsExtension {
     @Inject
     Injector injector
+    
+    /**
+     * Option to indicate if selected elements in the text should also automatically select and focus the elements in
+     * the diagram. Default value is false, if not requested differently by the client.
+     */
+    @Accessors
+    boolean shouldSelectDiagram = false
+    
+    /**
+     * Option to indicate if selected elements in the diagram should also automatically select the elements in the text.
+     * Default value is false, if not requested differently by the client.
+     */
+    @Accessors
+    boolean shouldSelectText = false
     
     /**
      * Stores data for the generation of diagrams.
@@ -79,6 +97,13 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         // Close all diagram servers still open from a previous session.
         val oldClientIds = diagramServerManager.diagramServers.map[ clientId ].toList // toList to avoid lazy evaluation
         oldClientIds.forEach[ didClose ]
+        if (params.initializationOptions instanceof JsonObject) {
+            val userOptions = new Gson().fromJson(params.initializationOptions as JsonObject, KeithInitializationOptions)
+            if (userOptions !== null) {
+                shouldSelectDiagram = userOptions.shouldSelectDiagram
+                shouldSelectText = userOptions.shouldSelectText
+            }
+        }
         
         return super.initialize(params)
     }
@@ -427,18 +452,25 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 service.getDocumentHighlights(doc, resource, params, cancelIndicator)
             ]
         ];
-        val URI uri = params.textDocument.uri.toUri
-        workspaceManager.doRead(uri) [ doc, resource |
-            val diagramHighlightService = languagesRegistry
-                .getResourceServiceProvider(uri)
-                .get(DiagramHighlightService)
-                ?: injector.getInstance(DiagramHighlightService)
-            val offset = doc.getOffSet(params.position)
-            diagramServerManager.findDiagramServersByUri(uri.toString).forEach [ server |
-                diagramHighlightService.selectElementFor(server, resource, offset)
+        if (shouldSelectDiagram) {
+            val URI uri = params.textDocument.uri.toUri
+            workspaceManager.doRead(uri) [ doc, resource |
+                val diagramHighlightService = languagesRegistry
+                    .getResourceServiceProvider(uri)
+                    .get(DiagramHighlightService)
+                    ?: injector.getInstance(DiagramHighlightService)
+                val offset = doc.getOffSet(params.position)
+                diagramServerManager.findDiagramServersByUri(uri.toString).forEach [ server |
+                    diagramHighlightService.selectElementFor(server, resource, offset)
+                ]
+                null
             ]
-            null
-        ]
+        }
         result
+    }
+    
+    override reinitializeOptions(KeithInitializationOptions param) {
+        this.shouldSelectDiagram = param.shouldSelectDiagram
+        this.shouldSelectText = param.shouldSelectText
     }
 }
