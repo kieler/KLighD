@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,23 +12,26 @@
  */
 package de.cau.cs.kieler.klighd.lsp.utils
 
-import de.cau.cs.kieler.klighd.kgraph.KNode
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.util.TextRegion
 
 /**
- * Class to prevent sprotty from searching the significant region (the name of it) since it can not be found in Objects
- * such as {@link KNode} and will cause errors instead.
+ * If Sprotty's text region provider does not find any significant region, this will instead try to highlight the text
+ * for the entire element that was clicked, not just its most significant part.
  * 
- * @author nir
+ * @author nre
  */
-public class SimpleTraceRegionProvider extends TextRegionProvider { // TODO: find out if this is still needed with the new sprotty version.
+public class SimpleTraceRegionProvider extends TextRegionProvider {
     /**
-     * Returns the text region of the entire definition of this {@link EObject}.
+     * Returns the text region of the entire definition of this {@link EObject}, if no more specific region is found.
      */
     override TextRegion getSignificantRegion(EObject element) {
+        val significantRegion = super.getSignificantRegion(element)
+        if (significantRegion !== null) {
+            return significantRegion
+        }
         return NodeModelUtils.findActualNodeFor(element).toTextRegion
     }
 }
