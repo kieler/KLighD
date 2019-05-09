@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -246,7 +247,9 @@ public class LightDiagramLayoutConfig {
      * @return <code>true</code> if the layout should be animated.
      */
     Boolean animate() {
-        return this.animate;
+        return this.animate!= null ? this.animate : (
+                this.properties != null ? this.properties.getProperty(CoreOptions.ANIMATE) : null
+        );
     }
 
     /**
@@ -255,7 +258,9 @@ public class LightDiagramLayoutConfig {
      * @return the minimal time for animations, in milliseconds
      */
     Integer minAnimationTime() {
-        return this.minAnimationTime;
+        return this.minAnimationTime != null ? this.minAnimationTime : (
+                this.properties != null ? this.properties.getProperty(CoreOptions.MIN_ANIM_TIME) : null
+        );
     }
 
     /**
@@ -264,7 +269,9 @@ public class LightDiagramLayoutConfig {
      * @return the maximal time for animations, in milliseconds
      */
     Integer maxAnimationTime() {
-        return this.maxAnimationTime;
+        return this.maxAnimationTime != null ? this.maxAnimationTime : (
+                this.properties != null ? this.properties.getProperty(CoreOptions.MAX_ANIM_TIME) : null
+        );
     }
 
     /**
@@ -273,7 +280,9 @@ public class LightDiagramLayoutConfig {
      * @return Factor for computation of animation time.
      */
     Integer animationTimeFactor() {
-        return this.animationTimeFactor;
+        return this.animationTimeFactor != null ? this.animationTimeFactor : (
+                this.properties != null ? this.properties.getProperty(CoreOptions.ANIM_TIME_FACTOR) : null
+        );
     }
 
     /**
@@ -310,7 +319,7 @@ public class LightDiagramLayoutConfig {
      *         {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY}.
      */
     IPropertyHolder properties() {
-        return this.properties;
+        return this.properties != null ? this.properties : KlighdSynthesisProperties.emptyConfig();
     }
 
     /**

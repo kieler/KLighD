@@ -497,6 +497,31 @@ public interface IViewer {
     void clip(Object semanticElement);
 
     /**
+     * Limits the visible elements of the diagram to the content of the representation of the given
+     * {@link Object} without causing any change on the view model. Hence, this method can be used
+     * for changing the diagram's amount of detail without changing the view model.<br>
+     * The clip can be reset to the whole diagram by calling <code>clip((Object) null)</code>.
+     *
+     * @param semanticElement
+     *            the semantic element to whose representation the diagram view is to be limited,
+     *            may be <code>null</code>
+     * @param hideClipNodePorts
+     *            if {@link Boolean#TRUE} the new clip node's ports will be hidden and likewise
+     *            their connected edges, if {@link Boolean#FALSE} the new clip node's ports will be
+     *            displayed depending on their particular settings; if <code>null</code> and new
+     *            clip node is equal to the current clip node the current port visibility setting is
+     *            kept, otherwise the default setting defined for the clip node or the view context
+     *            is applied
+     * @param hideClipNodeLabels
+     *            if {@link Boolean#TRUE} the new clip node's labels will be hidden, if
+     *            {@link Boolean#FALSE} the new clip node's labels will be displayed depending on
+     *            their particular settings; if <code>null</code> and new clip node is equal to the
+     *            current clip node the current label visibility setting is kept, otherwise the
+     *            default setting defined for the clip node or the view context is applied
+     */
+    void clip(Object semanticElement, Boolean hideClipNodePorts, Boolean hideClipNodeLabels);
+
+    /**
      * Limits the visible elements of the diagram to the content of the given {@link KNode} without
      * causing any change on the view model. Hence, this method can be used for changing the
      * diagram's amount of detail without changing the view model.<br>
@@ -507,6 +532,31 @@ public interface IViewer {
      *            <code>null</code>
      */
     void clip(KNode diagramElement);
+
+    /**
+     * Limits the visible elements of the diagram to the content of the given {@link KNode} without
+     * causing any change on the view model. Hence, this method can be used for changing the
+     * diagram's amount of detail without changing the view model.<br>
+     * The clip can be reset to the whole diagram by calling <code>clip((KNode) null)</code>.
+     *
+     * @param diagramElement
+     *            the diagram element to which the diagram view is to be limited, may be
+     *            <code>null</code>
+     * @param hideClipNodePorts
+     *            if {@link Boolean#TRUE} the new clip node's ports will be hidden and likewise
+     *            their connected edges, if {@link Boolean#FALSE} the new clip node's ports will be
+     *            displayed depending on their particular settings; if <code>null</code> and new
+     *            clip node is equal to the current clip node the current port visibility setting is
+     *            kept, otherwise the default setting defined for the clip node or the view context
+     *            is applied
+     * @param hideClipNodeLabels
+     *            if {@link Boolean#TRUE} the new clip node's labels will be hidden, if
+     *            {@link Boolean#FALSE} the new clip node's labels will be displayed depending on
+     *            their particular settings; if <code>null</code> and new clip node is equal to the
+     *            current clip node the current label visibility setting is kept, otherwise the
+     *            default setting defined for the clip node or the view context is applied
+     */
+    void clip(KNode diagramElement, Boolean hideClipNodePorts, Boolean hideClipNodeLabels);
 
     // a getClipSemantic() is still absent, it's not clear whether that is really necessary
 

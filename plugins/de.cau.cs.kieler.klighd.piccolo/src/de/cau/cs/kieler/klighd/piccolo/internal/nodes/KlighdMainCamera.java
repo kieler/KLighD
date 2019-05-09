@@ -20,6 +20,7 @@ import java.util.Stack;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccoloPlugin;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
@@ -89,6 +90,35 @@ public class KlighdMainCamera extends PCamera {
         }
     }
 
+    private boolean clipsPortsHidden = false;
+    private boolean clipsLabelsHidden = false;
+
+    public void initClipsPortAndLabelsVisibility(final boolean hideClipNodePorts, final boolean hideClipNodeLabels) {
+        this.clipsPortsHidden = hideClipNodePorts;
+        this.clipsLabelsHidden = hideClipNodeLabels;
+    }
+
+    /**
+     * Returns whether the ports of the represented {@link KNode} shall be invisible if the diagram is
+     * clipped to that {@link KNode}.
+     * 
+     * @return <code>true</code> if ports shall be invisible if the diagram is clipped to the
+     *         represented {@link KNode}, <code>false</code> otherwise.
+     */
+    public boolean isClipsPortsHidden() {
+        return this.clipsPortsHidden;
+    }
+
+    /**
+     * Returns whether the labels of the clipped {@link KNode} shall be invisible.
+     * 
+     * @return <code>true</code> if labels shall be invisible if the diagram is clipped to the
+     *         represented {@link KNode}, <code>false</code> otherwise.
+     */
+    public boolean isClipsLabelsHidden() {
+        return this.clipsLabelsHidden;
+    }
+
     /**
      * Re-targets <code>this</code> camera to the given <code>node</code> by detaching the currently
      * displayed {@link PLayer}, if the <code>node</code> is a {@link PLayer}; does nothing
@@ -98,10 +128,32 @@ public class KlighdMainCamera extends PCamera {
      *            the {@link KNodeAbstractNode} to be now displayed, must be contained in the
      *            diagram's PNode figure tree!
      */
-    public void exchangeDisplayedKNodeNode(final KNodeAbstractNode node) {
+    public void exchangeDisplayedKNodeNode(final KNodeAbstractNode node,
+            final Boolean hideClipNodePorts, final Boolean hideClipNodeLabels) {
 
         final KNodeAbstractNode prevNode = this.getDisplayedKNodeNode();
-        if (prevNode == node) {
+        final boolean invalidatePaintRequired = (
+                hideClipNodePorts != null
+                    && hideClipNodePorts.booleanValue() != prevNode.isDiagramClipWithPortsHidden()
+                || hideClipNodeLabels != null
+                    && hideClipNodeLabels.booleanValue() != prevNode.isDiagramClipWithLabelsHidden());
+
+        if (hideClipNodePorts != null) {
+            node.setPortsHiddenWhenClipped(hideClipNodePorts.booleanValue(), true);
+        } else {
+            node.setPortsHiddenWhenClipped(this.clipsPortsHidden, false);
+        }
+
+        if (hideClipNodeLabels != null) {
+            node.setLabelsHiddenWhenClipped(hideClipNodeLabels.booleanValue(), true);
+        } else {
+            node.setLabelsHiddenWhenClipped(this.clipsLabelsHidden, false);
+        }
+
+        if (node == prevNode) {
+            if (invalidatePaintRequired) {
+                this.invalidatePaint();
+            }
             return;
         }
 

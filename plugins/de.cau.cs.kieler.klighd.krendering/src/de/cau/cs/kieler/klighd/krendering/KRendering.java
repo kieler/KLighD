@@ -102,7 +102,7 @@ public interface KRendering extends KGraphData, KStyleHolder {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Actions that should be performed when associated trigger is pulled
+     * Actions that should be performed when associated trigger is pulled.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Actions</em>' containment reference list.
      * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKRendering_Actions()

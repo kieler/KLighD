@@ -75,6 +75,14 @@ public class DiagramExportConfig {
     public boolean exportViewport = false;
 
     /**
+     * Determines whether the diagram zoom level determined by the diagram main camera's view
+     * transform shall be used while evaluating the visibility of the particular diagram elements
+     * and diagram element figure parts, if <code>false</code> a diagram zoom level of
+     * <code>1.0<code> is assumed.
+     */
+    public boolean applyCameraZoomLevel = false;
+
+    /**
      * Determines whether semantic information attached to diagram elements shall be exported.<br>
      * This available for SVG exports only.
      */
@@ -90,7 +98,8 @@ public class DiagramExportConfig {
     public Trim tileTrim = null;
 
     /**
-     * The number of pages the diagram is to be printed, at least 1.
+     * The number of pages the diagram is to be printed, at least 1. Is useful to add page infos
+     * like 'page x/y' to printout pages. 
      */
     public final int pages;
 
@@ -166,7 +175,9 @@ public class DiagramExportConfig {
      *            the bounds of the particular diagram tiles
      * @param diagramScale
      *            the scale factor to be applied to the diagram (e.g. chosen by the user while
-     *            exporting raster images or during printout)
+     *            exporting raster images or during printout), just affects the image quality for
+     *            raster images, has no effect on the visibility of diagram elements or diagram
+     *            figure parts; see {@link #setApplyCameraZoomLevel(boolean)} for the latter
      * @param pages
      *            the number of pages the diagram is to be printed, at least 1.
      */
@@ -174,7 +185,7 @@ public class DiagramExportConfig {
             final Dimension tileBounds, final double diagramScale, final int pages) {
         this(viewContext, diagramBounds, tileBounds, diagramScale, new Point(), Trim.EMPTY_TRIM, pages);
 
-        final org.eclipse.swt.graphics.Point dpi = Display.getDefault().getDPI();
+        final org.eclipse.swt.graphics.Point dpi = Display.getCurrent().getDPI();
         this.dotsPerInch.setLocation(dpi.x, dpi.y);
     }
 
@@ -189,7 +200,9 @@ public class DiagramExportConfig {
      *            the bounds of the particular diagram tiles
      * @param diagramScale
      *            the scale factor to be applied to the diagram (e.g. chosen by the user while
-     *            exporting raster images or during printout)
+     *            exporting raster images or during printout), just affects the image quality for
+     *            raster images, has no effect on the visibility of diagram elements or diagram
+     *            figure parts; see {@link #setApplyCameraZoomLevel(boolean)} for the latter
      * @param dotsPerInch
      *            the image resolution used by the employed drawing
      *            {@link org.eclipse.swt.graphics.Device Device}
@@ -219,7 +232,7 @@ public class DiagramExportConfig {
     public DiagramExportConfig(final DiagramExportConfig original) {
         this.viewContext = original.viewContext;
 
-        // also create copies of those records can be changed, like rectangles, etc.
+        // also create copies of those records that can be changed, like rectangles, etc.
         this.diagramBounds = new Rectangle2D.Double();
         this.diagramBounds.setRect(original.diagramBounds);
         this.diagramScale = original.diagramScale;
@@ -233,8 +246,9 @@ public class DiagramExportConfig {
 
         this.exportBrandings = ImmutableList.copyOf(original.exportBrandings);
 
-        this.exportSemanticData = original.exportSemanticData;
         this.exportViewport = original.exportViewport;
+        this.applyCameraZoomLevel = original.applyCameraZoomLevel;
+        this.exportSemanticData = original.exportSemanticData;
 
         this.pages = original.pages;
         this.pageNo = original.pageNo;
@@ -276,16 +290,35 @@ public class DiagramExportConfig {
     }
 
     /**
-     * Configures the export of the current main diagram's visible area, by default the whole
-     * diagram is exported.
+     * Instructs the exporter to rely on the diagram main camera's currently chosen zoom level while
+     * determining the visibility of the particular diagram elements and diagram element figure
+     * parts, by default the diagram zoom level of <code>1.0</code> is used. This is entirely
+     * independent of the {@link #diagramScale} that is just about the scale of the exported image
+     * (file). The latter can be increased to improve the image quality of raster images.
      *
-     * @param exportViewport
+     * @param applyCameraZoomLevel
      *            {@code true} if just the view port shall be exported
      *
      * @return this {@link DiagramExportConfig} for convenience
      */
-    public DiagramExportConfig setExportSemanticData(final boolean exportViewport) {
-        this.exportViewport = exportViewport;
+    public DiagramExportConfig setApplyCameraZoomLevel(final boolean applyCameraZoomLevel) {
+        this.applyCameraZoomLevel = applyCameraZoomLevel;
+
+        return this;
+    }
+
+    /**
+     * Instructs the exporter to add any semantic information attached to the view model elements by
+     * means of {@link de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData
+     * KlighdSemanticDiagramData} to the export, if supported by the exporter.
+     *
+     * @param exportSemanticData
+     *            {@code true} if just the view port shall be exported
+     *
+     * @return this {@link DiagramExportConfig} for convenience
+     */
+    public DiagramExportConfig setExportSemanticData(final boolean exportSemanticData) {
+        this.exportSemanticData = exportSemanticData;
 
         return this;
     }

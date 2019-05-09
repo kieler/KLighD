@@ -41,6 +41,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.KlighdPlugin;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
@@ -83,6 +84,11 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     private static final Map<Color, RGB> RGB_CACHE = Maps.newConcurrentMap();
 
+    // in order to fix the windows specific issue with the monitor zoom related line width scaling
+    //  (KIPRA-1925) but avoid additional effort on other platforms,
+    // do the workaround only if the following condition is *not* satisfied
+    private static final boolean skipCopyingLineAttributes = !KlighdPlugin.IS_WINDOWS;
+
     /**
      * Types of supported polyline paths, for internal use only.
      */
@@ -122,7 +128,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     // imagine for example the polyline describing the body of a UML actor stick man figure
     //  that may cover only the bottom-most 70% percent of the assigned (knode) bounds
     // the polyline child circle figure denoting the actor's head shall be placed based on bounds
-    //  assigned to the polyline, rather the minimal bounds encompassing the polylines points 
+    //  assigned to the polyline, rather the minimal bounds encompassing the polylines points
     private Rectangle2D assignedBounds = null;
 
     // A field to keep the list of points line points in mind. They are required while determining
@@ -190,7 +196,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
      */
     @Override
     public Rectangle2D getAssignedBounds() {
-        if (assignedBounds == null || !isLineOrPolygon()) {            
+        if (assignedBounds == null || !isLineOrPolygon()) {
             return super.getAssignedBounds();
         } else {
             return assignedBounds;
@@ -691,7 +697,13 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         // draw the foreground if required
         //  in case of a line width of zero we can skip this
         if (lineAttributes.width != 0f) {
-            graphics.setLineAttributes(lineAttributes);
+            final LineAttributes attr = lineAttributes;
+            graphics.setLineAttributes(
+                    skipCopyingLineAttributes ? attr : new LineAttributes(
+                            // workaround for KIPRA-1925
+                            attr.width, attr.cap, attr.join, attr.style,
+                            attr.dash != null ? attr.dash.clone() : null, attr.dashOffset,
+                            attr.miterLimit));
 
             if (swt && shapePath == null && (strokePaint != null || strokePaintGradient != null)) {
                 shapePath = KlighdPaths.createSWTPath(shape.getPathIterator(null), graphics.getDevice());
@@ -719,7 +731,13 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         }
 
         graphics.setAlpha(currentAlpha);
-        graphics.setLineAttributes(KlighdConstants.DEFAULT_LINE_ATTRIBUTES);
+        final LineAttributes defaults = KlighdConstants.DEFAULT_LINE_ATTRIBUTES; 
+        graphics.setLineAttributes(skipCopyingLineAttributes ? defaults
+                : new LineAttributes(
+                        // workaround for KIPRA-1925
+                        defaults.width, defaults.cap, defaults.join, defaults.style,
+                        defaults.dash != null ? defaults.dash.clone() : null, defaults.dashOffset,
+                        defaults.miterLimit));
     }
 
     /**
@@ -1019,7 +1037,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
 
     /**
      * Sets <code>this</code> path to a sequence of segments described by the points.
-     * 
+     *
      * @param theAssignedBounds
      *            the bounds being assigned to this figure based on which the
      *            child figures' bounds are determined
@@ -1079,7 +1097,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     private void updateAssignedBoundsAndSetPathToLine(final Rectangle2D newAssignedBounds,
             final Point2D[] points, final Supplier<Boolean> setPathToLineSupplier) {
 
-        final Rectangle2D oldAssignedBounds = this.assignedBounds;        
+        final Rectangle2D oldAssignedBounds = this.assignedBounds;
         this.assignedBounds = newAssignedBounds;
 
         if (!setPathToLineSupplier.get().booleanValue()

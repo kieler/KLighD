@@ -84,6 +84,7 @@ public class GraphicsAdapter extends Graphics {
             this.alpha = g.getAlpha();
             this.font = g.getFontData();
             this.lineAttributes = g.getLineAttributes();
+            this.lineAttributes.width = g.getLineWidth();
             this.foreground = g.getStrokeColor();
             this.background = g.getFillColor();
             
@@ -198,7 +199,16 @@ public class GraphicsAdapter extends Graphics {
             // pg.setClip(lastState.clip);
             pg.setAlpha(lastState.alpha);
             pg.setFont(lastState.font);
+
+            // because of SWT's new modification of the 'lineAttribute's 'width' field (on win32),
+            //  see https://git.eclipse.org/c/platform/eclipse.platform.swt.git/commit/bundles/
+            //   org.eclipse.swt/Eclipse%20SWT/win32/org/eclipse/swt/graphics/GC.java
+            //   ?id=e02d49aefe42ac4c77b81048299ab069ddb5c2ba
+            // backup and restore the desired line width
+            final float width = lastState.lineAttributes.width;
             pg.setLineAttributes(lastState.lineAttributes);
+            lastState.lineAttributes.width = width;
+
             pg.setStrokeColor(lastState.foreground);
             pg.setFillColor(lastState.background);
             final GC gc = pg.getGC();
@@ -457,7 +467,7 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public int getLineWidth() {
-        return Math.round(this.getLineWidth());
+        return Math.round(this.getLineWidthFloat());
     }
 
     /**
@@ -590,8 +600,15 @@ public class GraphicsAdapter extends Graphics {
      */
     @Override
     public void setLineAttributes(final LineAttributes attributes) {
+        // because of SWT's new modification of the 'lineAttribute's 'width' field (on win32),
+        //  see https://git.eclipse.org/c/platform/eclipse.platform.swt.git/commit/bundles/
+        //   org.eclipse.swt/Eclipse%20SWT/win32/org/eclipse/swt/graphics/GC.java
+        //   ?id=e02d49aefe42ac4c77b81048299ab069ddb5c2ba
+        // backup and restore the desired line width
+        final float width = attributes.width;
         pg.setLineAttributes(attributes);
         updateClip(attributes.width);
+        attributes.width = width;
     }
 
     /**

@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.function.Supplier;
 
 import javax.swing.Timer;
 
@@ -95,8 +96,8 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     private final KlighdCanvas canvas;
     /** the content outline page. */
     private PiccoloOutlinePage outlinePage;
-    /** the event handler contributing the magnifying lens. */
-    private final KlighdMagnificationLensEventHandler magnificationLensHandler;
+    /** a supplier contributing the magnifying lens visibility state, may be <code>null</code>. */
+    private final Supplier<Boolean> magnificationLensVisibleSupplier;
 
     /** the parent viewer. */
     private ContextViewer parentViewer;
@@ -138,26 +139,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
                 theParentViewer.getViewContext().getProperty(KlighdProperties.CANVAS_COLOR));
 
         final KlighdMainCamera camera = canvas.getCamera();
-        magnificationLensHandler = new KlighdMagnificationLensEventHandler(camera);
-
-        // install the required event handlers, they rely on SWT event type codes
-        // the order of registering them DOES MATTER,
-        //  the first has lowest priority, the last highest
-        // make sure those handlers properly execute 'event.setHandled(true);'
-        //  in order to skip invoking the less priority handlers
-        camera.addInputEventListener(new KlighdActionEventHandler(this));
-        camera.addInputEventListener(magnificationLensHandler);
-        camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
-
-        // caution: the selection handler currently marks most of the 'mouse release'
-        //  events as handled; thus all handlers registered above will not get those events!
-        // make sure to let all sub classes of 'PDragSequenceEventHandler' know about
-        //  those release events to get their employed drag activity get terminated.
-        camera.addInputEventListener(new KlighdSelectionEventHandler(this));
-        camera.addInputEventListener(new KlighdBasicInputEventHandler(
-                new KlighdPanEventHandler(canvas)));
-        camera.addInputEventListener(new KlighdBasicInputEventHandler(
-                new KlighdSelectiveZoomEventHandler(this)));
+        this.magnificationLensVisibleSupplier = installEventHanders(camera);
 
         // add a tooltip element
         new PiccoloTooltip(canvas);
@@ -205,6 +187,41 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
     }
 
     /**
+     * Installs the event handlers enabling the user interaction on the diagram main camera. May be
+     * overridden. Overriding methods may or may not call this (super) implementation.
+     * 
+     * @param camera
+     *            the diagram browser's main camera to which the event handlers need to be installed
+     * @return a {@link Supplier} allowing to query the visibility of the diagram browser's
+     *         magnifying glass, if available, may return <code>null</code>
+     */
+    protected Supplier<Boolean> installEventHanders(KlighdMainCamera camera) {
+        final KlighdMagnificationLensEventHandler magnificationLensHandler =
+                new KlighdMagnificationLensEventHandler(camera);
+
+        // install the required event handlers, they rely on SWT event type codes
+        // the order of registering them DOES MATTER,
+        //  the first has lowest priority, the last highest
+        // make sure those handlers properly execute 'event.setHandled(true);'
+        //  in order to skip invoking the less priority handlers
+        camera.addInputEventListener(new KlighdActionEventHandler(this));
+        camera.addInputEventListener(magnificationLensHandler);
+        camera.addInputEventListener(new KlighdMouseWheelZoomEventHandler());
+
+        // caution: the selection handler currently marks most of the 'mouse release'
+        //  events as handled; thus all handlers registered above will not get those events!
+        // make sure to let all sub classes of 'PDragSequenceEventHandler' know about
+        //  those release events to get their employed drag activity get terminated.
+        camera.addInputEventListener(new KlighdSelectionEventHandler(this));
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(
+                new KlighdPanEventHandler(canvas)));
+        camera.addInputEventListener(new KlighdBasicInputEventHandler(
+                new KlighdSelectiveZoomEventHandler(this)));
+
+        return () -> magnificationLensHandler.isLensVisible();
+    }
+
+    /**
      * Provides the visibility state of the magnifying lens.<br>
      * This is evaluated by particular Klighd...EventHandlers that are inactive in case the
      * lens is shown.
@@ -212,7 +229,9 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * @return the visibility state of the magnifying lens.
      */
     public boolean isMagnificationLensVisible() {
-        return magnificationLensHandler.isLensVisible();
+        final Boolean isVisible = magnificationLensVisibleSupplier == null ? Boolean.FALSE
+                : magnificationLensVisibleSupplier.get();
+        return isVisible == null ? false : isVisible.booleanValue();
     }
 
     /**
@@ -263,11 +282,15 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      */
     @Override
     public void setModel(final KNode model, final boolean sync) {
-        
+        final ViewContext context = getViewContext();
+
         // create a controller for the graph
-        controller = new DiagramController(model, canvas.getCamera(), sync, 
-                getViewContext().getProperty(KlighdProperties.EDGES_FIRST).booleanValue(),
-                getViewContext().getProperty(KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue());
+        controller = new DiagramController(model, canvas.getCamera(), sync,
+                context.getProperty(KlighdProperties.EDGES_FIRST).booleanValue());
+
+        canvas.getCamera().initClipsPortAndLabelsVisibility(
+                !context.getProperty(KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue(),
+                !context.getProperty(KlighdProperties.SHOW_CLIPPED_LABELS).booleanValue());
 
         // update the outline page
         if (outlinePage != null && !outlinePage.isDisposed()) {
@@ -573,7 +596,14 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * {@inheritDoc}
      */
     public void clip(final KNode diagramElement) {
-        controller.clip(diagramElement);
+        this.clip(diagramElement, null, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(final KNode diagramElement, final Boolean hideClipNodePorts, final Boolean hideClipNodeLabels) {
+        controller.clip(diagramElement, hideClipNodePorts, hideClipNodeLabels);
         this.notifyViewChangeListeners(ViewChangeType.CLIP, diagramElement);
     }
 

@@ -15,6 +15,23 @@
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <!-- include elk layered in the classpath, as otherwise the diagram layout operations won't complete properly yielding test failures -->
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.elk.alg.layered</id>
+                <versionRange>${elk-version}</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.eclipse.xtend</groupId>
         <artifactId>xtend-maven-plugin</artifactId>
         <executions>

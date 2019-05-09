@@ -13,20 +13,22 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.test.highlightedEdgeToForeground
 
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.krendering.Colors
 import de.cau.cs.kieler.klighd.krendering.extensions.KEdgeExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KNodeExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KPortExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
 import javax.inject.Inject
-import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.elk.core.options.EdgeRouting
 import org.eclipse.elk.core.options.PortConstraints
 import org.eclipse.elk.core.options.PortSide
-import org.eclipse.elk.graph.KNode
-import org.eclipse.elk.graph.KPort
 
+import static de.cau.cs.kieler.klighd.syntheses.DiagramLayoutOptions.*
 import static extension de.cau.cs.kieler.klighd.syntheses.DiagramSyntheses.*
+import org.eclipse.elk.core.math.ElkPadding
+import org.eclipse.elk.alg.layered.options.LayeredOptions
 
 /**
  * @author chsch
@@ -47,27 +49,23 @@ class HighlightedEdgeToForegroundTestModelGen {
     extension KRenderingExtensions
     
     def KNode getTestModel() {
-        val root = createNode();
-        root.addLayoutParam(CoreOptions.SPACING_NODE, 100f)
-        root.addLayoutParam(CoreOptions.SPACING_BORDER, 0f)
+        val root = createNode()
+            .setLayoutOption(PADDING, new ElkPadding(0))
 
         root.children += createNode() => [
             // the visible container node
             it.addRectangle.lineWidth = 3;
 
-            it.addLayoutParam(CoreOptions.SPACING_NODE, 100f)
-            it.addLayoutParam(CoreOptions.SPACING_BORDER, 50f)
-            it.addLayoutParam(CoreOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
+            it.setLayoutOption(LayeredOptions.PADDING, new ElkPadding(50))
+            it.setLayoutOption(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS, 100d)
+            it.setLayoutOption(LayeredOptions.SPACING_EDGE_NODE, 50d)
+            it.setLayoutOption(LayeredOptions.SPACING_EDGE_NODE_BETWEEN_LAYERS, 50d)
+            it.setLayoutOption(LayeredOptions.SPACING_EDGE_EDGE, 50d)
+            it.setLayoutOption(LayeredOptions.SPACING_PORT_PORT, 45d)
+            it.setLayoutOption(LayeredOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL)
 
-            // explicitly configured the edge spacing factors
-            //  after the introduction of the 'edgeNodeSpacingFactor'
-            //  s.t. the earlier determined sample coordinates still hold
-
-            it.setLayoutOption("de.cau.cs.kieler.klay.layered.edgeSpacingFactor", 0.5f)
-            it.setLayoutOption("de.cau.cs.kieler.klay.layered.edgeNodeSpacingFactor", 0.5f)
-
-            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
-            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
+            it.ports += createPort.setLayoutOption(PORT_SIDE, PortSide.WEST).setPortSize(5, 5)
+            it.ports += createPort.setLayoutOption(PORT_SIDE, PortSide.EAST).setPortSize(5, 5)
 
             it.children += createChildNode;
             it.children += createChildNode;
@@ -122,9 +120,9 @@ class HighlightedEdgeToForegroundTestModelGen {
         return createNode => [
             it.addRectangle.lineWidth = 3;
             it.setNodeSize(100, 100);
-            it.addLayoutParam(CoreOptions.PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
-            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
-            it.ports += createPort.addLayoutParam(CoreOptions.PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
+            it.addLayoutParam(PORT_CONSTRAINTS, PortConstraints.FIXED_SIDE);
+            it.ports += createPort.setLayoutOption(PORT_SIDE, PortSide.WEST).setPortSize(5, 5);
+            it.ports += createPort.setLayoutOption(PORT_SIDE, PortSide.EAST).setPortSize(5, 5);
         ]
     }
     
@@ -136,7 +134,7 @@ class HighlightedEdgeToForegroundTestModelGen {
             edge.target = target;
             edge.targetPort = targetPort;
             
-            edge.addPolyline.setLineWidth(3).selectionForeground = Colors.RED            
+            edge.addPolyline.setLineWidth(3).selectionForeground = Colors.RED
         ] 
     }
 }

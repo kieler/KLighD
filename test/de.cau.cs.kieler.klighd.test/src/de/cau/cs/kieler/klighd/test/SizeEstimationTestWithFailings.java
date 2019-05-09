@@ -13,10 +13,12 @@
  */
 package de.cau.cs.kieler.klighd.test;
 
-import org.eclipse.elk.graph.KNode;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
+import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.ModelFilter;
@@ -33,6 +35,7 @@ import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner
 @BundleId("de.cau.cs.kieler.klighd.test")
 @ModelPath("sizeEstimationTests/**")
 @ModelFilter("*.kgt")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SizeEstimationTestWithFailings extends SizeEstimationTest {
 
     /**

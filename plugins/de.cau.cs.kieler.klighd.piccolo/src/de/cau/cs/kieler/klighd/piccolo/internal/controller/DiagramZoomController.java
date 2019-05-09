@@ -13,6 +13,8 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
+import java.util.Collections;
+
 import org.eclipse.elk.core.options.CoreOptions;
 
 import com.google.common.base.Predicate;
@@ -24,8 +26,10 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
+import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
+import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PDimension;
@@ -137,9 +141,7 @@ public class DiagramZoomController {
     private void zoomToFit(final int duration) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
-        final PBounds newBounds = this.diagramController.getShowClippedPorts()
-                ? toPBoundsIncludingPortsAndLabels(displayedKNode)
-                : toChildrenPBoundsWithoutPorts(displayedKNode);
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
 
         if (this.canvasCamera.getBoundsReference().isEmpty()) {
             // this case occurs while initializing the DiagramEditorPart
@@ -179,9 +181,7 @@ public class DiagramZoomController {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
         // fetch bounds of the whole visible diagram
-        final PBounds focusBounds = this.diagramController.getShowClippedPorts()
-                ? toPBoundsIncludingPortsAndLabels(focus)
-                : toChildrenPBoundsWithoutPorts(focus); 
+        final PBounds focusBounds = toPBoundsIncludingPortsAndLabels(focus);
 
         // we need the bounds in view coordinates (absolute), hence for
         // a KNode add the translations of all parent nodes
@@ -292,87 +292,15 @@ public class DiagramZoomController {
      *            the node
      * @return the corresponding {@link PBounds}
      */
-    public PBounds toPBoundsIncludingPortsAndLabels(final KNode node) {
-        return includePortAndLabelBounds(toPBounds(node), node);
-    }
-
-    /**
-     * Checks <code>node</code>child elements without port to create 
-     * {@link PBounds} that fit all child elements, 
-     * respects an attached{@link LayoutOptions#SCALE_FACTOR}.
-     *
-     * @param node
-     *            the node
-     * @return the corresponding {@link PBounds}
-     */
-    public PBounds toChildrenPBoundsWithoutPorts(final KNode node) {
-        final PBounds childBounds = toPBounds(node);
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
-
-        boolean includedElement = false;
-
-        for (final KShapeLayout element : Iterables.filter(
-                node.getChildren()
-                /*Iterables.concat(, node.getLabels())*/, isDisplayedFilter)) {
-            double val;
-
-            val = element.getXpos() * scale;
-            if (val < minX) {
-                minX = val;
-            }
-
-            val = element.getYpos() * scale;
-            if (val < minY) {
-                minY = val;
-            }
-
-            val = element.getXpos() * scale + element.getWidth() * scale;
-            if (val > maxX) {
-                maxX = val;
-            }
-
-            val = element.getYpos() * scale + element.getHeight() * scale;
-            if (val > maxY) {
-                maxY = val;
-
-            }
-            includedElement = true;
-        }
-        if (includedElement) {
-            childBounds.setRect(childBounds.getX() + minX, childBounds.getY() + minY,
-                    maxX - minX, maxY - minY);
-        } else {
-            final KInsets insets = node.getInsets();
-            childBounds.setRect(childBounds.getX() + insets.getLeft() * scale,
-                    childBounds.getY() + insets.getTop() * scale,
-                    childBounds.getWidth() - insets.getLeft() - insets.getRight() * scale,
-                    childBounds.getHeight() - insets.getTop() - insets.getBottom() * scale);
-        }
-
-     
-        return childBounds;
-    }
-    
-    /**
-     * This method checks for ports and labels of the given <code>node</code> and increases the
-     * given <code>nodeBounds</code> accordingly.<br>
-     *
-     * @param nodeBounds
-     *            the bounds of the
-     *            {@link de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode
-     *            KNodeAbstractNode} representing {@link KNode} <code>node</code>
-     * @param node
-     *            the {@link KNode} to be evaluated for ports and labels
-     * @return the updated <code>nodeBounds</code> for convenience
-     */
-    private PBounds includePortAndLabelBounds(final PBounds nodeBounds, final KNode node) {
+    private PBounds toPBoundsIncludingPortsAndLabels(final KNode node) {
+        final PBounds nodeBounds = toPBounds(node);
         double maxX = nodeBounds.getWidth();
         double maxY = nodeBounds.getHeight();
         final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
+        
+        final KNodeAbstractNode nodeNode = RenderingContextData.get(node).getProperty(DiagramController.REP);
+        final boolean excludePorts = nodeNode.isDiagramClipWithPortsHidden();
+        final boolean excludeLabels = nodeNode.isDiagramClipWithLabelsHidden();
 
         // these min values are <= 0 at all times!
         double minX = 0;
@@ -382,8 +310,21 @@ public class DiagramZoomController {
 
         // incorporate only those contained ports & labels that are actually visible
         //  others may not have reasonable positions
+        
+        final Iterable<? extends KGraphElement> kges;
+        
+        if (excludePorts & excludeLabels) {
+            kges = Collections.emptyList();
+        } else if (excludePorts) {
+            kges = node.getLabels();
+        } else if (excludeLabels) {
+            kges = node.getPorts();
+        } else {
+            kges = Iterables.concat(node.getPorts(), node.getLabels());
+        }
+        
         for (final KShapeLayout element : Iterables.filter(
-                Iterables.concat(node.getPorts(), node.getLabels()), isDisplayedFilter)) {
+                Iterables.filter(kges, isDisplayedFilter), KShapeLayout.class)) {
             double val;
 
             val = element.getXpos() * scale;
