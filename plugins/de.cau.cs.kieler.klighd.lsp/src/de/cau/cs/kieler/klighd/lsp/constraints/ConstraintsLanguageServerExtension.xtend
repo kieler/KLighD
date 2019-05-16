@@ -42,7 +42,8 @@ ConstraintsCommandExtension {
     }
     
     override sayHallo(String uri, String clientId, String msg) {
-        System.out.println("Hallo")
+        System.out.println("Hallo "+msg)
+        client.sayGoodbye(uri, "Good bye my old friend")
     }
     
 }
