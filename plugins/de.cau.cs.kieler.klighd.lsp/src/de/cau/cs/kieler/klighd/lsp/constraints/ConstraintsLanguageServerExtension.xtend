@@ -16,34 +16,26 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import javax.inject.Singleton
 import org.eclipse.lsp4j.services.LanguageClient
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * @author jet, cos
  *
  */
  @Singleton
-class ConstraintsLanguageServerExtension implements ILanguageServerExtension,IConstraintsLanguageClientProvider, 
+class ConstraintsLanguageServerExtension implements ILanguageServerExtension, 
 ConstraintsCommandExtension {
     
-    public ConstraintsLanguageClient client;
+    @Accessors ConstraintsLanguageClient client;
     
     
     override initialize(ILanguageServerAccess access) {
         
     }
     
-    override setLanguageClient(LanguageClient client){
-        this.client = client as ConstraintsLanguageClient
-    }
-    
-    
-    override getLanguageClient(){
-        return client
-    }
-    
-    override sayHallo(String uri, String clientId, String msg) {
-        System.out.println("Hallo "+msg)
-        client.sayGoodbye(uri, "Good bye my old friend")
+    override sayHello(String msg) {
+        println("Hallo "+msg)
+        client.sayGoodbye("Good bye my old friend")
     }
     
 }

@@ -22,5 +22,5 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
  @JsonSegment('keith/constraints')
 interface ConstraintsCommandExtension {
     @JsonNotification('sayhello')
-    def void sayHallo(String uri, String clientId, String msg);
+    def void sayHello(String msg);
 }

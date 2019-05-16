@@ -24,6 +24,6 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 interface ConstraintsLanguageClient extends LanguageClient {
     
     @JsonNotification("sayGoodbye")
-    def void sayGoodbye(String uri, String msg)
+    def void sayGoodbye(String msg)
     
 }
