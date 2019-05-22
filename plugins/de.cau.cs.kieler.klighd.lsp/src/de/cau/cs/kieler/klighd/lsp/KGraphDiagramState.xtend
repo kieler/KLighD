@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -26,12 +26,13 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Map
 import java.util.Set
+import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.sprotty.SModelElement
 
 /**
  * Singleton class to map a graph id (String) found in SGraphs to their various parts needed for handling KGraph models
- * @author nir
- *
+ * 
+ * @author nre
  */
 @Singleton
 public class KGraphDiagramState {
@@ -66,9 +67,14 @@ public class KGraphDiagramState {
     private Map<String, Object> snapshotModelMapping = new HashMap
     
     /**
-     * Contains the {@link IViewer} displaying the current diagram.
+     * Contains the layout configurator for the url of the model.
      */
-//    private Map<String, IViewer> viewerMapping = new HashMap
+    private Map<String, LayoutConfigurator> layoutConfigMapping = new HashMap
+    
+    /**
+     * Contains the current synthesis ID for the url of the model.
+     */
+    private Map<String, String> synthesisIdMapping = new HashMap
 
     /**
      * Contains the {@link IViewer} displaying diagrams.
@@ -207,12 +213,54 @@ public class KGraphDiagramState {
     }
     
     /**
+     * Getter to access the value stored in the layoutConfig mapping.
+     * 
+     * @param key They key to access the value in the map.
+     */
+    public def getLayoutConfig(String key) {
+        var configurator = layoutConfigMapping.get(key)
+        if (configurator === null) {
+            configurator = new LayoutConfigurator
+            layoutConfigMapping.put(key, configurator)
+        }
+        return configurator
+    }
+    
+    /**
+     * Put method to put a new value in the layoutConfig mapping.
+     * 
+     * @param key The key to access the map.
+     * @param value The value to be stored in the map.
+     */
+    public def putLayoutConfig(String key, LayoutConfigurator value) {
+        layoutConfigMapping.put(key, value)
+    }
+    
+    /**
+     * Getter to access the value stored in the synthesisId mapping.
+     * 
+     * @param key They key to access the value in the map.
+     */
+    public def getSynthesisId(String key) {
+        synthesisIdMapping.get(key)
+    }
+    
+    /**
+     * Put method to put a new value in the synthesisId mapping.
+     * 
+     * @param key The key to access the map.
+     * @param value The value to be stored in the map.
+     */
+    public def putSynthesisId(String key, String value) {
+        synthesisIdMapping.put(key, value)
+    }
+    
+    /**
      * Getter to access the value stored in the viewer map.
      * 
      * @param key The key to access the value in the map.
      */
-    public def IViewer getViewer(/*String key*/) {
-//        viewerMapping.get(key)
+    public def IViewer getViewer() {
         return viewer
     }
     
@@ -222,8 +270,7 @@ public class KGraphDiagramState {
      * @param key The key to access the map.
      * @param value The value to be stored in the map.
      */
-    public def putViewer(/*String key, */IViewer value) {
-//        viewerMapping.put(key, value)
+    public def putViewer(IViewer value) {
         viewer = value
     }
     
@@ -256,7 +303,7 @@ public class KGraphDiagramState {
     }
     
     /**
-     * removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
+     * Removes the key for this client ID from all stored maps. Should be called when the diagram view is closed.
      * 
      * @param clientId The client ID of the diagram server for that no map should store any data anymore.
      */
@@ -268,7 +315,9 @@ public class KGraphDiagramState {
             texts.remove(key)
             textMapping.remove(key)
             snapshotModelMapping.remove(key)
-//            viewerMapping.remove(key)
+            layoutConfigMapping.remove(key)
+            synthesisIdMapping.remove(key)
+            viewer = null
             uriStringMap.remove(clientId)
         }
     }

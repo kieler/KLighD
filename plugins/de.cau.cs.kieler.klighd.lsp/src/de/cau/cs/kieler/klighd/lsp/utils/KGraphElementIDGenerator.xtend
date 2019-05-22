@@ -25,14 +25,15 @@ import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KStyleHolder
 import java.util.HashMap
 import java.util.Map
-import java.util.Random
 import org.eclipse.sprotty.SModelElement
+import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 
 /**
- * Class for generating unique IDs for any KGraphElement. Use a single instance of this and call getId() for all the 
- * elements you need IDs for to guarantee uniqueness.
+ * Class for generating unique IDs for any {@link KGraphElement}. Use a single instance of this and call getId() for all
+ * the elements you need IDs for. IDs will be unique, assuming that hashCode() on KGraphElements returns unique hashes
+ * per instance.
  * 
- * @author nir
+ * @author nre
  */
 public class KGraphElementIDGenerator {
     /**
@@ -44,13 +45,6 @@ public class KGraphElementIDGenerator {
      * Internal map to remember the {@link KGraphElement} for all IDs for that IDs already have been generated.
      */
     private Map<String, KGraphElement> idToElementMap
-    
-    /**
-     * A random value used to generate unique IDs for elements without a name.
-     * This causes that the same object will get different IDs over multiple updates (prevents morphing of not matching
-     * objects into each other). Unnamed elements therefore cannot morph on updated models. Name your elements!
-     */
-    private int randomOffset // TODO: maybe exchange the random value for the hash of the object
     
     /**
      * The character used to separate levels of hierarchy in the ID of {@link KGraphElement}s or unnamed elements.
@@ -76,9 +70,6 @@ public class KGraphElementIDGenerator {
     new() {
         elementToIdMap = new HashMap
         idToElementMap = new HashMap
-        
-        val r = new Random
-        randomOffset = r.nextInt
     }
     
     /**
@@ -108,23 +99,18 @@ public class KGraphElementIDGenerator {
         
         val identifier = element.data.filter(KIdentifier)
         var char elementSeparator
-        var int parentOffset
         
         switch (element) {
             KNode: {
-                parentOffset = (parent as KNode).children.indexOf(element)
                 elementSeparator = NODE_SEPARATOR
             }
             KEdge: {
-                parentOffset = (parent as KNode).outgoingEdges.indexOf(element)
                 elementSeparator = EDGE_SEPARATOR
             }
             KLabel: {
-                parentOffset = (parent as KLabeledGraphElement).labels.indexOf(element)
                 elementSeparator = LABEL_SEPARATOR
             }
-            KPort: { 
-                parentOffset = (parent as KNode).ports.indexOf(element)
+            KPort: {
                 elementSeparator = PORT_SEPARATOR
             }
             default: {
@@ -133,7 +119,7 @@ public class KGraphElementIDGenerator {
         }
         
         if (identifier.empty) {
-            elementId = "" + ID_SEPARATOR + elementSeparator + (parentOffset + randomOffset)
+            elementId = "" + ID_SEPARATOR + elementSeparator + element.hashCode
         } else {
             elementId = elementSeparator + identifier.head.id
         }
@@ -167,6 +153,12 @@ public class KGraphElementIDGenerator {
     }
 }
 
+/**
+ * Class for generating unique IDs for any {@link KRendering}. IDs will be unique, assuming that hashCode() on
+ * KRenderings returns unique hashes per instance.
+ * 
+ * @author nre
+ */
 public class KRenderingIDGenerator {
     /**
      * The character used to separate levels of hierarchy in the ID of {@link KRendering}s.
@@ -182,22 +174,15 @@ public class KRenderingIDGenerator {
     public static final char JUNCTION_POINT_SEPARATOR = 'J'
     
     /**
-     * Generates a new unique ID for all child elements of this rendering (if any) and writes it in their ID fields.
-     * Assumes, that the given rendering already has a unique id not containing the character '$'.
+     * Generates a new unique ID for this rendering (if necessary) and all child elements of this rendering (if any)
+     * and writes it in their ID fields.
+     * If the given rendering already has an id, it has to bee unique and not contain the character '$'.
      */
     public static def void generateIdsRecursive(KStyleHolder rendering) {
         if (rendering !== null) {
-            generateIdsRecursive(rendering, null)
-        }
-    }
-    
-    /**
-     * Generates a new unique ID for this rendering and all its child renderings and writes it in their ID fields.
-     * Use different {@code renderingNumber}s if an element has multiple {@link KRendering}s.
-     */
-    public static def void generateIdsRecursive(KStyleHolder rendering, int renderingNumber) {
-        if (rendering !== null) {
-            rendering.id = "rendering" + ID_SEPARATOR + RENDERING_SEPERATOR + renderingNumber
+            if (rendering.id === null) {
+                rendering.id = "rendering" + ID_SEPARATOR + RENDERING_SEPERATOR + rendering.hashCode
+            }
             generateIdsRecursive(rendering, null)
         }
     }
@@ -207,14 +192,14 @@ public class KRenderingIDGenerator {
             return
         }
         if (parentRendering !== null && !rendering.equals(parentRendering)) {
-            // generate a new ID based on the parent rendering's ID and the index of the rendering inside its parent
+            // Generate a new ID based on the parent rendering's ID.
             rendering.id = parentRendering.id 
                 + ID_SEPARATOR + RENDERING_SEPERATOR 
-                + parentRendering.children.indexOf(rendering)
+                + rendering.hashCode
         }
         if (rendering instanceof KPolyline) {
             // Special case for KPolyline: It has a junctionPointRendering that also needs an ID.
-            // use a new separator and think of this as a new rendering hierarchy with possible children
+            // Use a new separator and think of this as a new rendering hierarchy with possible children.
             val junctionPointRendering = rendering.junctionPointRendering
             if (junctionPointRendering !== null) {
                 junctionPointRendering.id = rendering.id
@@ -222,7 +207,7 @@ public class KRenderingIDGenerator {
             } 
         }
         if (rendering instanceof KContainerRendering) {
-            // each KContainerRendering has child Renderings that also need new IDs
+            // Each KContainerRendering has child renderings that also need new IDs.
             for (childRendering : rendering.children) {
                 generateIdsRecursive(childRendering, rendering)
             }
@@ -239,18 +224,33 @@ public class KRenderingIDGenerator {
      */
     public static def findRenderingById(KGraphElement element, String id) {
         val ids = id.split("\\" + KRenderingIDGenerator.ID_SEPARATOR)
-        if (ids.size < 2) {
-            // Every rendering ID starts with "rendering[ID_SEPARATOR][RENDERING_SEPARATOR][...]",
-            // so ids should have a length of at least two.
-            throw new IllegalArgumentException("Misformed ID")
-        }
-        val renderings = element.data.filter(KRendering) // TODO: could also be contained in a KRenderingLibrary
+        // Every rendering ID starts with "rendering<ID_SEPARATOR><RENDERING_SEPARATOR><description of rendering>",
+        // so ids should have a length of at least two.
+        // Except for KRenderingRefs: They start with <ref name><ID_SEPARATOR>
+        val isRendering = id.startsWith("rendering" + ID_SEPARATOR + RENDERING_SEPERATOR)
+        
+        val renderings = if (isRendering) 
+                element.data.filter(KRendering) 
+            else
+                element.data.filter(KRenderingRef)
         // TODO: There could also be multiple renderings in the element, check for the currently displayed rendering.
-        var rendering = renderings.findFirst[
-            it.id.equals(ids.get(0) + KRenderingIDGenerator.ID_SEPARATOR + ids.get(1))
-        ]
+        var rendering = if (isRendering)
+                // The first rendering starting with 'rendering$R<description of rendering>
+                renderings.findFirst [
+                    id.startsWith(ids.get(0) + KRenderingIDGenerator.ID_SEPARATOR + ids.get(1))
+                ]
+            else
+                // The first rendering starting with <ref name>
+                renderings.findFirst [
+                    id.startsWith(ids.get(0))
+                ]
         if (rendering === null) {
             throw new IllegalArgumentException("Misformed ID or element")
+        }
+        if (rendering instanceof KRenderingRef) {
+            // We only support actions on the ref itself, not the rendering it is referencing, as that has no real
+            // connection back to what it is attached to anymore.
+            return rendering
         }
         for (var i = 2; i < ids.size; i++) {
             if (ids.get(i).startsWith("" + KRenderingIDGenerator.RENDERING_SEPERATOR)) {

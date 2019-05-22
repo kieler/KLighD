@@ -46,7 +46,6 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
-import java.util.Random
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -73,7 +72,7 @@ import org.eclipse.xtext.util.CancelIndicator
  * only labels with all texts in the source KNode.
  * Based on the yang-lsp implementation by TypeFox.
  * 
- * @author nir
+ * @author nre
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangDiagramGenerator.xtend">
  *      YangDiagramGenerator</a>
  */
@@ -115,18 +114,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
 	 */
 	@Inject
 	private ITraceProvider traceProvider
-    
-    /**
-     * A random value used to generate unique IDs for elements without a name.
-     * This causes that the same object will get different IDs over multiple updates (prevents morphing of not matching
-     * objects into each other). Unnamed elements therefore cannot morph on updated models. Name your elements!
-     */
-    private int randomOffset // TODO: maybe exchange the random value for the hash of the object
-    
-    /**
-     * Counting how many labels and texts are in the graph.
-     */
-    private int numLabels
     
     /**
      * Generates unique IDs for any KGraphElement.
@@ -172,9 +159,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
 //        val startTime = System.currentTimeMillis
         LOG.info("Generating diagram for input: '" + identifier + "'")
 	    
-        val r = new Random
-        randomOffset = r.nextInt
-        numLabels = 0
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
         modelLabels = new ArrayList
@@ -456,8 +440,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                             !KlighdPredicates.isCollapsedRendering().apply(it)
                         ] 
                     }
-                    // also set the element as expanded
-                    RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, true)
                 } else {
                     // in case the node to be depicted is tagged as 'not populated',
                     //  i.e. no children are visible in the diagram
@@ -473,8 +455,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                             !KlighdPredicates.isExpandedRendering().apply(it)
                         ]
                     }
-                    // also set the element as not expanded
-                    RenderingContextData.get(kGraphElement).setProperty(SprottyProperties.EXPANDED, false)
                 }
                 (sModelElement as SKNode).data.add(currentRendering)
             } else {
@@ -570,9 +550,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             val sKLabel = generateLabel(label, false)
             sKLabel.id = diagramRoot.id + KGraphElementIDGenerator.ID_SEPARATOR + "texts-only" + 
                 KGraphElementIDGenerator.ID_SEPARATOR + KGraphElementIDGenerator.LABEL_SEPARATOR 
-                + (numLabels + randomOffset)
+                + label.hashCode
             textMapping.put(sKLabel.id, data)
-            numLabels++
             
             dataLabels += sKLabel
         } else if (data instanceof KContainerRendering) {
