@@ -57,11 +57,4 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
     override Class<? extends IDiagramSelectionListener> bindIDiagramSelectionListener() {
         KeithDiagramSelectionListener
     }
-    // TODO: This really should override the super binding of the DiagramServerManager, but that is class-specific and
-    // needs to be made configurable by Sprotty developers.
-    // FIXME: continue here on this branch when Sprotty made changes to allow this binding.
-    // See: https://github.com/eclipse/sprotty-server/issues/16
-    public def Class<? extends DiagramServerManager> bindDiagramServerManager() {
-        KGraphDiagramServerManager
-    }
 }

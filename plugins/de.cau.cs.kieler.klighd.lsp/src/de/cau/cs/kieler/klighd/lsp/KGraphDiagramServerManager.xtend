@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright ${year} by
+ * Copyright 2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -12,10 +12,12 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
+import java.util.ArrayList
 import java.util.List
+import javax.inject.Inject
+import javax.inject.Provider
 import org.eclipse.sprotty.xtext.IDiagramServerFactory
 import org.eclipse.sprotty.xtext.ls.DiagramServerManager
-import java.util.ArrayList
 
 /**
  * A Manager that provides diagram servers.
@@ -29,15 +31,17 @@ class KGraphDiagramServerManager extends DiagramServerManager {
      */
     protected List<IDiagramServerFactory> diagramServerFactories
     
+    @Inject Provider<IDiagramServerFactory> diagramServerFactoryProvider
+    
     override getDiagramServerFactories() {
         // If the diagram server factories are not initialized yet, initialize the list of all factories with the
         // factories provided by the resource providers in the language registry from the super implementation
-        // and add our language-unspecific KGraphDiagramServerFactory to that list.
-        // On every other call, just return that already generated list.
+        // and add any language-unspecific IDiagramServerFactory to that list.
+        // Otherwise, just return that already generated list.
         if (diagramServerFactories === null) {
             diagramServerFactories = new ArrayList<IDiagramServerFactory>
             diagramServerFactories.addAll(super.diagramServerFactories)
-            diagramServerFactories.add(new KGraphDiagramServerFactory)
+            diagramServerFactories.add(diagramServerFactoryProvider.get())
         }
         return diagramServerFactories
     }

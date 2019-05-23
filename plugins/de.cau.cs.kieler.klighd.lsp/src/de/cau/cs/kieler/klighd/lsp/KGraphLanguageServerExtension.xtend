@@ -14,6 +14,7 @@ package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
 import com.google.inject.Injector
+import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
@@ -64,6 +65,7 @@ import org.eclipse.xtext.util.CancelIndicator
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangLanguageServerExtension.xtend">
  *      YangLanguageServerExtension</a>
  */
+@Singleton
 class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     implements IDiagramOptionsLanguageServerExtension, IPreferencesExtension {
     @Inject

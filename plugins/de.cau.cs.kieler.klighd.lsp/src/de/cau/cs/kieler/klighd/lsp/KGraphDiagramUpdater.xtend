@@ -124,6 +124,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             // Call the text size estimation on the diagram server for which a new diagram got created.
             resultList.filter[value !== null].forEach[key.requestTextSizesAndUpdateModel(value)]
         ].exceptionally [ throwable |
+            println("ERROR: " + throwable)
             return null
         ]
     }
