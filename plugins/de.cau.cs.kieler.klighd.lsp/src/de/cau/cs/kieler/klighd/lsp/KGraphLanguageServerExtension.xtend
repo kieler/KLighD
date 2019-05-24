@@ -13,7 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import com.google.inject.Inject
-import com.google.inject.Injector
+import com.google.inject.Provider
 import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
@@ -69,7 +69,7 @@ import org.eclipse.xtext.util.CancelIndicator
 class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
     implements IDiagramOptionsLanguageServerExtension, IPreferencesExtension {
     @Inject
-    Injector injector
+    Provider<DiagramHighlightService> diagramHighlightServiceProvider
     
     /**
      * Option to indicate if selected elements in the text should also automatically select and focus the elements in
@@ -450,7 +450,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 val diagramHighlightService = languagesRegistry
                     .getResourceServiceProvider(uri)
                     .get(DiagramHighlightService)
-                    ?: injector.getInstance(DiagramHighlightService)
+                    ?: diagramHighlightServiceProvider.get
                 val offset = doc.getOffSet(params.position)
                 diagramServerManager.findDiagramServersByUri(uri.toString).forEach [ server |
                     diagramHighlightService.selectElementFor(server, resource, offset)
