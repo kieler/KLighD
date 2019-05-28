@@ -15,13 +15,7 @@ package de.cau.cs.kieler.klighd.test;
 
 import java.util.Iterator;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
-import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.core.util.internal.LayoutOptionProxy;
-import org.eclipse.elk.graph.KGraphData;
-import org.eclipse.elk.graph.KGraphFactory;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.PersistentEntry;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -29,6 +23,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
+import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
+import de.cau.cs.kieler.klighd.kgraph.KGraphData;
+import de.cau.cs.kieler.klighd.kgraph.KGraphFactory;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -39,6 +38,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
  * 
  * @author chsch
  */
+@SuppressWarnings("restriction")
 public final class SizeEstimationTrainer {
 
     /**
@@ -57,7 +57,7 @@ public final class SizeEstimationTrainer {
         PersistentEntry pe = KGraphFactory.eINSTANCE.createPersistentEntry();
         pe.setKey(KlighdInternalProperties.KLIGHD_TESTING_IGNORE.getId());
         pe.setValue(Boolean.valueOf(true).toString());
-        node.getData(KShapeLayout.class).getPersistentEntries().add(pe);
+        node.getPersistentEntries().add(pe);
     }
 
     /**
@@ -99,21 +99,18 @@ public final class SizeEstimationTrainer {
         }
 
         if (textsPresent) {
-            KShapeLayout sl = node.getData(KShapeLayout.class);
-            if (sl != null) {
-                node.getData().remove(sl);
-                ElkUtil.validate(node);
-                sl = node.getData(KShapeLayout.class);
-            }
+            node.getProperties().clear();
+            node.getPersistentEntries().clear();
+            
             Bounds b = PlacementUtil.estimateSize(node);
-            getPE(sl, KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_HEIGHT.getId()).setValue(
+            getPE(node, KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_HEIGHT.getId()).setValue(
                     Float.toString(b.getHeight()));
-            getPE(sl, KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_WIDTH.getId()).setValue(
+            getPE(node, KlighdInternalProperties.KLIGHD_TESTING_EXPECTED_WIDTH.getId()).setValue(
                     Float.toString(b.getWidth()));
         }
     }
 
-    private static PersistentEntry getPE(final KGraphData data, final String id) {
+    private static PersistentEntry getPE(final EMapPropertyHolder data, final String id) {
         PersistentEntry pe = Iterables.find(data.getPersistentEntries(),
                 new Predicate<PersistentEntry>() {
                     public boolean apply(final PersistentEntry pe) {

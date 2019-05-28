@@ -456,12 +456,14 @@ public class KEdgeImpl extends KLabeledGraphElementImpl implements KEdge {
             KPoint kpoint;
             if (oldPointIter.hasNext()) {
                 kpoint = oldPointIter.next();
+                kpoint.setX((float) nextPoint.x);
+                kpoint.setY((float) nextPoint.y);
             } else {
                 kpoint = KGraphFactory.eINSTANCE.createKPoint();
+                kpoint.setX((float) nextPoint.x);
+                kpoint.setY((float) nextPoint.y);
                 oldPointIter.add(kpoint);
             }
-            kpoint.setX((float) nextPoint.x);
-            kpoint.setY((float) nextPoint.y);
         }
         while (oldPointIter.hasNext()) {
             oldPointIter.next();

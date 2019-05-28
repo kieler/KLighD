@@ -236,7 +236,7 @@ public abstract class KYPositionImpl<T extends KYPosition<T>> extends EObjectImp
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (absolute: ");
         result.append(absolute);
         result.append(", relative: ");

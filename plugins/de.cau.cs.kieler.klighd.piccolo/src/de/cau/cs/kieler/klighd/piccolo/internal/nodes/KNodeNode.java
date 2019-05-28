@@ -29,6 +29,7 @@ import de.cau.cs.kieler.klighd.piccolo.internal.controller.KNodeRenderingControl
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera.KlighdPickPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -74,11 +75,18 @@ public class KNodeNode extends KNodeAbstractNode implements
     /** this flag indicates whether this node is currently observed by the {@link KlighdMainCamera}. */
     private boolean isRootLayer = false;
 
-    /** Flag to indicate whether the ports of this node should be drawn when the diagram is clipped
-     * to this node.
+    /**
+     * Flag indicating whether the ports of the represented {@link KNode} shall be invisible if the
+     * diagram is clipped to that {@link KNode}.
      */
-    private boolean showClippedPorts;
-    
+    private boolean portsHiddenWhenClipped = false;
+
+    /**
+     * Flag indicating whether the labels of the represented {@link KNode} shall be invisible if the
+     * diagram is clipped to that {@link KNode}.
+     */
+    private boolean labelsHiddenWhenClipped = false;
+
     /**
      * tracks whether this node has been drawn once; required for {@link #isBoundsValidationRequired()}.
      */
@@ -99,14 +107,10 @@ public class KNodeNode extends KNodeAbstractNode implements
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
-     * @param showClippedPorts
-     *            determines whether the ports of this node should be drawn if the diagram is 
-     *            clipped to this node
      */
-    public KNodeNode(final KNode node, final boolean edgesFirst, final boolean showClippedPorts) {
+    public KNodeNode(final KNode node, final boolean edgesFirst) {
         super(node, edgesFirst);
 
-        this.showClippedPorts = showClippedPorts;
         this.visibilityHelper = KGraphElementNode.evaluateVisibilityDefinitions(node, null);
 
         this.childAreaCamera = new PCamera() {
@@ -268,7 +272,57 @@ public class KNodeNode extends KNodeAbstractNode implements
             updateChildAreaCamera(true);
         }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDiagramClipWithPortsHidden() {
+        return this.isRootLayer && this.portsHiddenWhenClipped;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setPortsHiddenWhenClipped(boolean portsHidden, boolean force) {
+        if (force) {
+            this.portsHiddenWhenClipped = portsHidden;
+        } else if (!isRootLayer) {
+            // in case the diagram is clipped to this node, ignore non-force changes,
+            //  and keep the existing setup
+            final KNode node = getViewModelElement();
+            if (node.getProperties().containsKey(KlighdProperties.SHOW_CLIPPED_PORTS)) {
+                this.portsHiddenWhenClipped = !node.getProperty(KlighdProperties.SHOW_CLIPPED_PORTS);
+            } else {
+                this.portsHiddenWhenClipped = portsHidden;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDiagramClipWithLabelsHidden() {
+        return this.isRootLayer && this.labelsHiddenWhenClipped;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLabelsHiddenWhenClipped(boolean labelsHidden, boolean force) {
+        if (force) {
+            this.labelsHiddenWhenClipped = labelsHidden;
+        } else if (!isRootLayer) {
+            // in case the diagram is clipped to this node, ignore non-force changes,
+            //  and keep the existing setup
+            final KNode node = getViewModelElement();
+            if (node.getProperties().containsKey(KlighdProperties.SHOW_CLIPPED_LABELS)) {
+                this.labelsHiddenWhenClipped = !node.getProperty(KlighdProperties.SHOW_CLIPPED_LABELS);
+            } else {
+                this.labelsHiddenWhenClipped = labelsHidden;
+            }
+        }
+    }
+
     /**
      * Get the PortLayer.
      * @return a dedicated layer accommodating all attached {@link KPortNode KPortNodes}.
@@ -294,15 +348,6 @@ public class KNodeNode extends KNodeAbstractNode implements
      */
     public boolean isRootLayer() {
         return isRootLayer;
-    }
-
-    /**
-     * Flag to control if the ports of the clipped node should be shown.
-     * 
-     * @return Flag to control if the ports of the clipped node should be shown.
-     */
-    public boolean showClippedPorts() {
-        return showClippedPorts;
     }
 
     /**
@@ -515,20 +560,21 @@ public class KNodeNode extends KNodeAbstractNode implements
                 final int count = getChildrenCount();
                 for (int i = count - 1; i >= 0; i--) {
                     final PNode each = (PNode) getChildrenReference().get(i);
+                    if (this.isRootLayer) {
+                        if (i == 0 && each != this.childArea) {
+                            // do not try to pick the node's figure if the main diagram is clipped to
+                            //  this node
+                            //  ('each != this.childArea' implies that 'each' is a KlighdFigureNode)
+                            continue;
 
-                    if (i == 0 && this.isRootLayer && each != this.childArea) {
-                        // do not try to pick the node's figure if the main diagram is clipped to
-                        //  this node
-                        //  ('each != this.childArea' implies that 'each' is a KlighdFigureNode)
-                        continue;
+                        } else if (each == this.portLayer && portsHiddenWhenClipped
+                                || each == this.labelLayer && labelsHiddenWhenClipped) {
+                            // do not pick the node's external ports and/or labels on the main diagram
+                            //  if it is clipped to this node and ports should be hidden.
+                            continue;
+                        }
                     }
-                    if (this.isRootLayer && each == this.portLayer && each.getVisible()
-                            && !showClippedPorts) {
-                        // do not pick the node's external ports on the main diagram if it is
-                        // clipped to this node and ports should be hidden.
-                        continue;
-                    }
-                    
+
                     if (each.fullPick(pickPath)) {
                         return true;
                     }
@@ -591,25 +637,30 @@ public class KNodeNode extends KNodeAbstractNode implements
             final int count = getChildrenCount();
             for (int i = 0; i < count; i++) {
                 final PNode each = (PNode) getChildrenReference().get(i);
-                if (i == 0 && this.isRootLayer && each != this.childArea
-                        && this.getCamerasReference().contains(paintContext.getCamera())) {
-                    // do not draw the node's figure on the main diagram if it is clipped to this node
-                    continue;
+
+                if (this.isRootLayer) {
+                    // the following flag is false if drawn on the outline view, for example
+                    final boolean drawnViaMainCamera = this.getCamerasReference().contains(paintContext.getCamera());
+                    if (drawnViaMainCamera) {
+                        if (i == 0 && each != this.childArea) {
+                            // do not draw the node's figure on the main diagram if it is clipped to this node
+                            continue;
+
+                        } else if (each == this.portLayer && this.portsHiddenWhenClipped
+                                || each == this.labelLayer && this.labelsHiddenWhenClipped) {
+                            // do not draw the node's external ports/labels on the main diagram if it is clipped to
+                            // this node and the ports/labels should be hidden
+                            continue;
+                        }
+
+                    } else if (each == this.childAreaCamera && each.getVisible()) { // implies isRootLayer == true
+                        // do not draw the childAreaCamera on the outline view if the diagram is clipped
+                        //  to this node and the paint camera is unequal to that of the main diagram.
+                        //  Hence, it must be that of the outline diagram or any further one.
+                        continue;
+                    }
                 }
-                if (each == this.portLayer && each.getVisible() // implies isRootLayer == true
-                        && this.getCamerasReference().contains(paintContext.getCamera())
-                        && !this.showClippedPorts) {
-                    // do not draw the node's external ports on the main diagram if it is clipped to
-                    // this node and the ports should be hidden
-                    continue;
-                }
-                if (each == this.childAreaCamera && each.getVisible() // implies isRootLayer == true
-                        && !this.getCamerasReference().contains(paintContext.getCamera())) {
-                    // do not draw the childAreaCamera on the outline view if the diagram is clipped
-                    //  to this node and the paint camera is unequal to that of the main diagram.
-                    //  Hence, it must be that of the outline diagram or an further one.
-                    continue;
-                }
+
                 each.fullPaint(paintContext);
             }
 

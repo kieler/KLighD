@@ -780,7 +780,7 @@ public abstract class KColoringImpl<T extends KColoring<T>> extends KStyleImpl i
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (alpha: ");
         result.append(alpha);
         result.append(", targetAlpha: ");

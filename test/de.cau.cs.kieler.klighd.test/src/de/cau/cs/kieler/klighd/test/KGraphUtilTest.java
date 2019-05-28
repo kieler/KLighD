@@ -18,9 +18,6 @@ import static com.google.common.collect.Iterables.getLast;
 import java.net.URL;
 import java.util.Iterator;
 
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -31,14 +28,17 @@ import org.junit.Test;
 
 import com.google.common.collect.Iterators;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.test.ModelingUtilTest.IsIteratorWithSize;
 
 /**
- * A collection of tests checking some helper methods of {@link ElkUtil}.
+ * A collection of tests checking some helper methods of {@link KGraphUtil}.
  *
  * @author chsch
  */
-public class KimlUtilTest {
+public class KGraphUtilTest {
 
     private static KNode testModel;
 
@@ -64,7 +64,7 @@ public class KimlUtilTest {
 
     @Test
     public void getConnectedEdgesTest01() {
-        final Iterator<KEdge> res = ElkUtil.getConnectedEdges(
+        final Iterator<KEdge> res = KGraphUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
         Assert.assertThat(res, IsIteratorWithSize.iteratorWithSize(3));
@@ -72,7 +72,7 @@ public class KimlUtilTest {
 
     @Test
     public void getConnectedEdgesTest01a() {
-        final Iterator<KEdge> edges = ElkUtil.getConnectedEdges(
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
         final KEdge first = Iterators.getNext(edges, null);
@@ -85,7 +85,7 @@ public class KimlUtilTest {
 
     @Test
     public void getConnectedEdgesTest01b() {
-        final Iterator<KEdge> edges = ElkUtil.getConnectedEdges(
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
         Iterators.advance(edges, 1);
@@ -101,7 +101,7 @@ public class KimlUtilTest {
 
     @Test
     public void getConnectedEdgesTest01c() {
-        final Iterator<KEdge> edges = ElkUtil.getConnectedEdges(
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
         Iterators.advance(edges, 2);
@@ -117,7 +117,7 @@ public class KimlUtilTest {
 
     @Test
     public void getConnectedEdgesTest02() {
-        final Iterator<KEdge> res = ElkUtil.getConnectedEdges(
+        final Iterator<KEdge> res = KGraphUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
 
         Assert.assertThat(res, IsIteratorWithSize.iteratorWithSize(2));
@@ -125,7 +125,7 @@ public class KimlUtilTest {
 
     @Test
     public void getConnectedEdgesTest02a() {
-        final Iterator<KEdge> edges = ElkUtil.getConnectedEdges(
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
 
         final KEdge first = Iterators.getNext(edges, null);
@@ -138,7 +138,7 @@ public class KimlUtilTest {
 
     @Test
     public void getConnectedEdgesTest02b() {
-        final Iterator<KEdge> edges = ElkUtil.getConnectedEdges(
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
 
         Iterators.advance(edges, 1);

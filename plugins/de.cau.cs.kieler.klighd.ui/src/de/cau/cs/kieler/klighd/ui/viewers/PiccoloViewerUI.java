@@ -133,7 +133,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
      * @param parentViewer
      *            the viewer to which to add the text widget
      */
-    private void addLabelTextWidget(final ContextViewer parentViewer) {
+    protected void addLabelTextWidget(final ContextViewer parentViewer) {
         labelWidget = new StyledText(this.getControl(), SWT.MULTI);
         labelWidget.setEditable(false);
         labelWidget.setVisible(false);

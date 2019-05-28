@@ -96,8 +96,10 @@ public final class GeneratorOptionsUtil {
                         }
                     } else if (option.getDefault() instanceof RandVal) {
                         value = option.getDefault();
-                    } else {
+                    } else if (option.getDefault() instanceof String) {
                         value = preferenceStore.getString(option.getId());
+                    } else {
+                        value = null;
                     }
                     propertyHolder.setProperty(option, value);
                     // check lower and upper bounds of the generator option

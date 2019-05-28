@@ -113,6 +113,22 @@ public class KNodeTopNode extends KNodeAbstractNode {
      * {@inheritDoc}
      */
     @Override
+    public boolean isDiagramClipWithPortsHidden() {
+        return this.diagramMainCamera.getLayersReference().contains(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isDiagramClipWithLabelsHidden() {
+        return this.diagramMainCamera.getLayersReference().contains(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean fullPick(final PPickPath pickPath) {
         final boolean fullPick = super.fullPick(pickPath);
 

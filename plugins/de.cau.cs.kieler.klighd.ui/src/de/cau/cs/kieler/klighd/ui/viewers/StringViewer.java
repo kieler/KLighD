@@ -369,7 +369,22 @@ public class StringViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
+    public void clip(Object semanticElement, Boolean hideClipNodePorts,
+            Boolean hideClipNodeLabels) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void clip(final KNode diagramElement) {
+        // do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(KNode diagramElement, Boolean hideClipNodePorts, Boolean hideClipNodeLabels) {
         // do nothing
     }
 

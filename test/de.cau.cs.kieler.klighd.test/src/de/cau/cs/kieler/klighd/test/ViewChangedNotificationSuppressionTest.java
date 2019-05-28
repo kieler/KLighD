@@ -20,11 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.elk.core.util.GraphDataUtil;
-import org.eclipse.elk.graph.KGraphElement;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -37,7 +34,10 @@ import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
@@ -53,6 +53,8 @@ import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphDataUtil;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
@@ -64,6 +66,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  *
  * @author chsch
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ViewChangedNotificationSuppressionTest {
 
     private static final int _40_MILLISECONDS =  40; // SUPPRESS CHECKSTYLE Name
@@ -77,6 +80,13 @@ public class ViewChangedNotificationSuppressionTest {
 
     // CHECKSTYLEOFF MagicNumber|Visibility|Javadoc
 
+    @BeforeClass
+    public static void lookForElkLayered() {
+        Assert.assertNotNull(
+                "ELK Layered is not on the classpath, but it's required for properly executing the tests.",
+                LayoutMetaDataService.getInstance().getAlgorithmDataBySuffix("org.eclipse.elk.layered")
+        );
+    }
 
     /**
      * Prepares the test: creates a fresh {@link Shell} and attaches KLighD's diagramming
@@ -97,7 +107,7 @@ public class ViewChangedNotificationSuppressionTest {
         heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
-        GraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
+        KGraphDataUtil.loadDataElements((KNode) viewContext.getInputModel());
         viewContext.update(null);
 
         // the zoom to fit causes the VIEW_PORT change events the listeners are waiting for
@@ -145,9 +155,9 @@ public class ViewChangedNotificationSuppressionTest {
                 d.sleep();
             }
         }
+        while (d.readAndDispatch());
 
         shell.close();
-        shell.dispose();
 
         Assert.assertThat(observedNotifications01,
                 IsIterableContainingInOrder.contains(expectedNotifications01.toArray()));
@@ -248,15 +258,9 @@ public class ViewChangedNotificationSuppressionTest {
         secondListenerEmployed = true;
     }
 
-    private static final List<LayoutConfigurator> CONF = Lists.newArrayList();
-    
-    static {
-        final LayoutConfigurator lc = new LayoutConfigurator();
-        lc.configure(KGraphElement.class)
-                .setProperty(CoreOptions.MIN_ANIM_TIME, _40_MILLISECONDS)
-                .setProperty(CoreOptions.MAX_ANIM_TIME, _40_MILLISECONDS);
-        CONF.add(lc);
-    }
+    private static final KlighdSynthesisProperties properties = KlighdSynthesisProperties.create()
+            .setProperty(CoreOptions.MIN_ANIM_TIME, _40_MILLISECONDS)
+            .setProperty(CoreOptions.MAX_ANIM_TIME, _40_MILLISECONDS);
 
     private static final Function<ViewContext, Object> MODEL_QUERY =
             new Function<ViewContext, Object>() {
@@ -379,7 +383,7 @@ public class ViewChangedNotificationSuppressionTest {
 
         viewContext.getViewer().collapse(modelElement);
         new LightDiagramLayoutConfig(viewContext)
-            .options(CONF)
+            .properties(properties)
             .performLayout();
         waitALongMoment();
 
@@ -390,7 +394,7 @@ public class ViewChangedNotificationSuppressionTest {
 
         viewContext.getViewer().expand(modelElement);
         new LightDiagramLayoutConfig(viewContext)
-            .options(CONF)
+            .properties(properties)
             .performLayout();
         waitALongMoment();
 

@@ -64,6 +64,14 @@ public interface KlighdSWTGraphicsEx extends KlighdSWTGraphics {
     LineAttributes getLineAttributes();
 
     /**
+     * Returns the currently configured original line width without any adjustments potentially
+     * performed by the (native) rendering layer.
+     * 
+     * @return the currently configured original <em>unadjusted</em> line width.
+     */
+    float getLineWidth();
+
+    /**
      * Returns the currently configured stroke color in form of an {@link RGB} record structure.
      * 
      * @return an {@link RGB} record reflecting the currently set stroke color.

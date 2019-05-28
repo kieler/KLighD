@@ -74,8 +74,7 @@ public final class DiagramControllerHelper {
             final KNodeAbstractNode commonParentNode =
                     RenderingContextData.get(commonParent).getProperty(DiagramController.REP);
             if (commonParentNode != null) {
-                KChildAreaNode childAreaNode = commonParentNode.getChildAreaNode();
-                childAreaNode.addEdge(edgeRep);
+                commonParentNode.addEdge(edgeRep);
             }
         }
     }

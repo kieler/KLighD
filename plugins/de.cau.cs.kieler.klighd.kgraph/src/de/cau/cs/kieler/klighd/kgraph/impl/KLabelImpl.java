@@ -387,8 +387,8 @@ public class KLabelImpl extends KGraphElementImpl implements KLabel {
             modified = true;
         }
         if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__YPOS, oldYpos, ypos));
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__XPOS, oldXpos, xpos));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KLABEL__YPOS, oldYpos, ypos));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KLABEL__XPOS, oldXpos, xpos));
         }
     }
 
@@ -423,8 +423,8 @@ public class KLabelImpl extends KGraphElementImpl implements KLabel {
             modified = true;
         }
         if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__WIDTH, oldWidth, width));
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__HEIGHT, oldHeight, height));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KLABEL__WIDTH, oldWidth, width));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KLABEL__HEIGHT, oldHeight, height));
         }
     }
 

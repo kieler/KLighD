@@ -244,7 +244,7 @@ public class KRotationImpl extends KStyleImpl implements KRotation {
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (rotation: ");
         result.append(rotation);
         result.append(')');

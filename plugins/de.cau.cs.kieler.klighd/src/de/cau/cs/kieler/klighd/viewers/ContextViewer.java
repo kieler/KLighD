@@ -623,11 +623,39 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /**
      * {@inheritDoc}
      */
+        public void clip(Object semanticElement, Boolean hideClipNodePorts,
+                Boolean hideClipNodeLabels) {
+        if (semanticElement == null) {
+            this.currentViewer.clip(this.getViewContext().getViewModel(), hideClipNodePorts, hideClipNodeLabels);
+            return;
+        }
+
+        final EObject diagramElement =
+                getViewContext().getTargetElement(semanticElement, KGraphElement.class);
+        if (diagramElement instanceof KNode) {
+            this.currentViewer.clip((KNode) diagramElement, hideClipNodePorts, hideClipNodeLabels);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void clip(final KNode diagramElement) {
         if (diagramElement == null) {
             this.currentViewer.clip(this.getViewContext().getViewModel());
         } else {
             this.currentViewer.clip(diagramElement);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clip(KNode diagramElement, Boolean hideClipNodePorts, Boolean hideClipNodeLabels) {
+        if (diagramElement == null) {
+            this.currentViewer.clip(this.getViewContext().getViewModel(), hideClipNodePorts, hideClipNodeLabels);
+        } else {
+            this.currentViewer.clip(diagramElement, hideClipNodePorts, hideClipNodeLabels);
         }
     }
 

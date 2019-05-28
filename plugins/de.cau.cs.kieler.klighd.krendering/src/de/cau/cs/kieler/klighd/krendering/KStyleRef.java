@@ -65,7 +65,7 @@ public interface KStyleRef extends KStyle {
 
     /**
      * Returns the value of the '<em><b>Referenced Types</b></em>' attribute list.
-     * The list contents are of type {@link java.lang.Class}&lt;de.cau.cs.kieler.klighd.krendering.KStyle>.
+     * The list contents are of type {@link java.lang.Class}<code>&lt;de.cau.cs.kieler.klighd.krendering.KStyle&gt;</code>.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->

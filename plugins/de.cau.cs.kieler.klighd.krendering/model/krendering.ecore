@@ -73,10 +73,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="actions" upperBound="-1"
         eType="#//KAction" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="documentation" value="actions that should be performed when according trigger is pulled"/>
-        </eAnnotations>
-        <details key="documentation" value="Actions that should be performed when associated trigger is pulled"/>
+        <details key="documentation" value="Actions that should be performed when associated trigger is pulled."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -87,10 +84,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRectangle" eSuperTypes="#//KContainerRendering">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Define a rectangular shape that fits inside the space defined (a) by the node it is attached to or (b) by the placementData that is attached to the rendering"/>
-      </eAnnotations>
-      <details key="documentation" value="define a rectangle by adding the topLeft and bottomRight coordinates"/>
+      <details key="documentation" value="Define a rectangular shape that fits inside the space defined (a) by the node it is attached to or (b) by the placementData that is attached to the rendering"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KRoundedRectangle" eSuperTypes="#//KContainerRendering">
