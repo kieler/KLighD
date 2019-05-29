@@ -44,22 +44,15 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     override setLayerConstraint(LayerConstraint lc) {
-        println("URI: " + lc.getUri)
         val mapKToS = diagramState.getKGraphToSModelElementMap(lc.getUri)
-        println("Map: " + mapKToS)
 
-    // TODO: implement the method. Therefore we need the correct diagramState and
-    // hence the correct injector. => Niklas & Sören
-    
-//        val map = diagramState.kGraphToSModelElementMap
-//        println(map.isEmpty)
-
-//        val kGraphEle = KGraphElementIDGenerator.findElementById(mapKToS, lc.getID)
-//        if (kGraphEle instanceof KNode) {
-//            val kNode = kGraphEle as KNode
-//            kNode.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getLayer)
-//            println("Test ID: " + mapKToS.get(kGraphEle).id)
-//        }
+        // KGraphElement which corresponding SNode has the correct ID
+        val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, lc.getID)
+        if (kGEle instanceof KNode) {
+            val kNode = kGEle as KNode
+            // TODO: check whether value for the property is valid
+            kNode.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getLayer)
+        }
     }
     
     // TODO: define & implement setPositionConstraint method 

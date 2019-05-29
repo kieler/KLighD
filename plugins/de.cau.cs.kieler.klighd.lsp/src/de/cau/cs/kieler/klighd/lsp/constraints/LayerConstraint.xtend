@@ -13,7 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp.constraints
 
 /**
- * @author Drakae
+ * @author jet, cos
  * 
  */
 class LayerConstraint {
