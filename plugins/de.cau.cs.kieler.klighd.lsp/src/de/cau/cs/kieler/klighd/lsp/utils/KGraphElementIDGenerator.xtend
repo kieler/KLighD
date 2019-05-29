@@ -191,6 +191,12 @@ public class KRenderingIDGenerator {
         if (rendering === null) {
             return
         }
+        // KRenderingRefs need the ID of their reference to be identifiable on different systems.
+        if (rendering instanceof KRenderingRef) {
+            rendering.id = rendering.rendering.id
+            return
+        }
+        
         val parentId = parentRendering?.id ?: ""
         // If the rendering does not already have an ID matching the hierarchical ID scheme
         if (parentRendering !== null && !rendering.id?.startsWith(parentId + ID_SEPARATOR)) {
