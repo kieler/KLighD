@@ -19,6 +19,8 @@ import org.eclipse.sprotty.xtext.DefaultDiagramModule
 import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.sprotty.xtext.tracing.TextRegionProvider
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.naming.SimpleNameProvider
 
 /**
  * Allows to bind all needed modules for KGraph diagram generation via Guice.
@@ -56,5 +58,9 @@ public class KGraphDiagramModule extends DefaultDiagramModule {
     
     override Class<? extends IDiagramSelectionListener> bindIDiagramSelectionListener() {
         KeithDiagramSelectionListener
+    }
+    
+    public def Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
+        SimpleNameProvider
     }
 }

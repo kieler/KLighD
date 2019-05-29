@@ -6,8 +6,9 @@ Bundle-Version: 0.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.cau.cs.kieler.klighd.lsp,
+ de.cau.cs.kieler.klighd.lsp.gson_utils,
+ de.cau.cs.kieler.klighd.lsp.setup
  de.cau.cs.kieler.klighd.lsp.constraints,
- de.cau.cs.kieler.klighd.lsp.gson_utils
 Bundle-Vendor: Kiel University
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy

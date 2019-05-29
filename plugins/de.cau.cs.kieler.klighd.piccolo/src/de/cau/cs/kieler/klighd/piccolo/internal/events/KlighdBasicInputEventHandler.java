@@ -43,6 +43,12 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
     private final PBasicInputEventHandler delegate;
 
     /**
+     * The button id of mouse button to check for the detection of drag events, usually
+     * {@link SWT#BUTTON1}.
+     */
+    private final int dragMouseButtonId;
+
+    /**
      * A flag indicating whether right mouse button events shall be forwarded, this must not be done
      * to {@link PDragSequenceEventHandler PDragSequenceEventHandlers} (at least on OSX).
      */
@@ -52,9 +58,21 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
      * Constructor. Is protected as it is to be called by subclasses only.
      */
     protected KlighdBasicInputEventHandler() {
+        this(SWT.BUTTON1);
+    }
+
+    /**
+     * Constructor. Is protected as it is to be called by subclasses only.
+     * 
+     * @param dragMouseButtonId
+     *            the id the mouse button to react on for identifying drag events, usually
+     *            {@link SWT#BUTTON1}
+     */
+    protected KlighdBasicInputEventHandler(int dragMouseButtonId) {
         this.setEventFilter(null);
 
         this.delegate = this;
+        this.dragMouseButtonId = dragMouseButtonId;
         this.forwardRightMouseButtonEvents = true;
     }
 
@@ -66,6 +84,20 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
      *            <code>null</code>.
      */
     public KlighdBasicInputEventHandler(final PBasicInputEventHandler theDelegate) {
+        this(theDelegate, SWT.BUTTON1);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param theDelegate
+     *            a delegate input event handler to be (re-)used by this one, must not be
+     *            <code>null</code>.
+     * @param dragMouseButtonId
+     *            the id the mouse button to react on for identifying drag events, usually
+     *            {@link SWT#BUTTON1}
+     */
+    public KlighdBasicInputEventHandler(final PBasicInputEventHandler theDelegate, int dragMouseButtonId) {
         this.setEventFilter(null);
 
         if (theDelegate == null) {
@@ -77,6 +109,7 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
         theDelegate.setEventFilter(null);
 
         this.delegate = theDelegate;
+        this.dragMouseButtonId = dragMouseButtonId;
 
         // at least on OSX 'MouseDown' events with button = 3 are sent to the diagram canvas,
         //  but no corresponding 'MouseUp' events, maybe because the context menu widget gets
@@ -136,7 +169,7 @@ public class KlighdBasicInputEventHandler extends PBasicInputEventHandler implem
             break;
 
         case SWT.MouseMove:
-            if ((((MouseEvent) kEvent.getEvent()).stateMask & SWT.BUTTON1) != 0) {
+            if ((((MouseEvent) kEvent.getEvent()).stateMask & dragMouseButtonId) != 0) {
                 // since SWT doesn't distinguish a dedicated 'drag' event similar to the move we have
                 //  to test for a pressed button ourselves;
                 // could be improved using SWT.DragDetected in future

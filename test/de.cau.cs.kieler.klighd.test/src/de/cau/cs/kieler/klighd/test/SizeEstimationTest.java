@@ -24,19 +24,21 @@ import static de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties.PRE
 
 import java.util.Iterator;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
@@ -69,6 +71,7 @@ import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner
 @BundleId("de.cau.cs.kieler.klighd.test")
 @ModelPath("sizeEstimationTests/")
 @ModelFilter("*.kgt")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SizeEstimationTest {
     
     /**
@@ -103,37 +106,32 @@ public class SizeEstimationTest {
             return;
         }
         
-        KShapeLayout sl = node.getData(KShapeLayout.class);
-        
-        boolean isIgnored = sl.getProperties().get(KLIGHD_TESTING_IGNORE) != null;
+        boolean isIgnored = node.getProperties().get(KLIGHD_TESTING_IGNORE) != null;
         if (isIgnored) {
             return;
         }
         
-        boolean containsSizeData = sl.getProperties().get(KLIGHD_TESTING_EXPECTED_HEIGHT) != null;
-        containsSizeData &= sl.getProperties().get(KLIGHD_TESTING_EXPECTED_WIDTH) != null;
-        
-        if (!containsSizeData && !isIgnored) {
-            throw new IllegalArgumentException(
-                    "The KShapeLayout of the tested node must be equipped with properties"
-                            + " named " + KLIGHD_TESTING_EXPECTED_HEIGHT + " and "
-                            + KLIGHD_TESTING_EXPECTED_WIDTH
-                            + " defining the related expected size of the node.");
-        }
-        
+        boolean containsSizeData = node.getProperties().get(KLIGHD_TESTING_EXPECTED_HEIGHT) != null;
+        containsSizeData &= node.getProperties().get(KLIGHD_TESTING_EXPECTED_WIDTH) != null;
+
+        Assert.assertTrue(
+                "The KNode must be equipped with properties named "
+                        + KLIGHD_TESTING_EXPECTED_HEIGHT + " and " + KLIGHD_TESTING_EXPECTED_WIDTH
+                        + " defining the related expected size of the node.",
+                containsSizeData || isIgnored);
+
         for (Iterator<KText> it = Iterators.filter(node.eAllContents(), KText.class); containsSizeData
                 && it.hasNext();) {
             KText text = it.next();
             containsSizeData &= Iterables.any(text.getPersistentEntries(), PRED_TESTING_HEIGHT);
             containsSizeData &= Iterables.any(text.getPersistentEntries(), PRED_TESTING_WIDTH);
         }
-        
-        if (!containsSizeData) {
-            throw new IllegalArgumentException(
-                    "All KText renderings must be equipped with properties named "
-                            + KLIGHD_TESTING_HEIGHT + " and " + KLIGHD_TESTING_WIDTH
-                            + " defining the assumed minimal size.");
-        }
+
+        Assert.assertTrue(
+                "All KText renderings must be equipped with properties named "
+                        + KLIGHD_TESTING_HEIGHT + " and " + KLIGHD_TESTING_WIDTH
+                        + " defining the assumed minimal size.",
+                containsSizeData);
     }
     
     /**
@@ -146,12 +144,8 @@ public class SizeEstimationTest {
         // reveal all KNodes that are not to be ignored ...
         Iterator<KNode> it = Iterators.filter(
                 Iterators.filter(node.eAllContents(), KNode.class),
-                new Predicate<KNode>() {
-                    public boolean apply(final KNode node) {
-                        return node.getData(KShapeLayout.class).getProperties()
-                                .get(KLIGHD_TESTING_IGNORE) == null;
-                    }
-                });
+                (n) -> n.getProperties().get(KLIGHD_TESTING_IGNORE) == null
+        );
         
         // ... and perform the size estimation test on the valid ones
         for (; it.hasNext();) {
@@ -177,18 +171,16 @@ public class SizeEstimationTest {
             return;
         }
         
-        KShapeLayout sl = node.getData(KShapeLayout.class);
-
         Bounds expected = Bounds.of(
-            Float.parseFloat(sl.getProperties().get(KLIGHD_TESTING_EXPECTED_WIDTH).toString()),
-            Float.parseFloat(sl.getProperties().get(KLIGHD_TESTING_EXPECTED_HEIGHT).toString())
+            Float.parseFloat(node.getProperties().get(KLIGHD_TESTING_EXPECTED_WIDTH).toString()),
+            Float.parseFloat(node.getProperties().get(KLIGHD_TESTING_EXPECTED_HEIGHT).toString())
         );
         
         Bounds actual = PlacementUtil.estimateSize(node);
         
         // put the estimated size into the node layout for testing the stability
         //  in the second run (second test; statement is useless in 2nd run)
-        sl.setSize(actual.getWidth(), actual.getHeight());
+        node.setSize(actual.getWidth(), actual.getHeight());
         
         Pair<Boolean, Boolean> result = Bounds.compare(expected, actual, DELTA);
         

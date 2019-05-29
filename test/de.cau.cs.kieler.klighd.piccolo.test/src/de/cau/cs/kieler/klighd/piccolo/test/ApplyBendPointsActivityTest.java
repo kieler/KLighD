@@ -16,14 +16,14 @@ package de.cau.cs.kieler.klighd.piccolo.test;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KNode;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.activities.ApplyBendPointsActivity;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KEdgeNode;
 
@@ -43,12 +43,12 @@ public class ApplyBendPointsActivityTest {
      * @return a {@link KEdgeNode} being required by the {@link ApplyBendPointsActivity}
      */
     private KEdgeNode prepareEdge(final Point2D[] currentBends) {
-        KNode node0 = ElkUtil.createInitializedNode(); 
-        KNode node1 = ElkUtil.createInitializedNode(); 
-        KNode node2 = ElkUtil.createInitializedNode();
+        KNode node0 = KGraphUtil.createInitializedNode(); 
+        KNode node1 = KGraphUtil.createInitializedNode(); 
+        KNode node2 = KGraphUtil.createInitializedNode();
         node0.getChildren().addAll(Lists.newArrayList(node1, node2));
         
-        KEdge edge = ElkUtil.createInitializedEdge();
+        KEdge edge = KGraphUtil.createInitializedEdge();
         edge.setSource(node1);
         edge.setTarget(node2);
         

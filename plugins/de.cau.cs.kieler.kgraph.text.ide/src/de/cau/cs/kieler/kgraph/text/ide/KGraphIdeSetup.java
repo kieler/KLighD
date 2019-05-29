@@ -18,20 +18,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.XtextPackage;
-import org.eclipse.xtext.ide.server.DefaultProjectDescriptionFactory;
-import org.eclipse.xtext.ide.server.IProjectDescriptionFactory;
-import org.eclipse.xtext.ide.server.IWorkspaceConfigFactory;
 import org.eclipse.xtext.resource.impl.BinaryGrammarResourceFactoryImpl;
 import org.eclipse.xtext.util.Modules2;
 
-import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.cau.cs.kieler.kgraph.text.KGraphRuntimeModule;
 import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramModule;
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerModule;
 
 /**
  * Initialization support for running Xtext languages as language servers.
@@ -45,13 +39,7 @@ public class KGraphIdeSetup extends KGraphStandaloneSetup {
 	public Injector createInjector() {
 		return Guice.createInjector(Modules2.mixin(
             new KGraphRuntimeModule(), 
-            new KGraphIdeModule(), 
-            new KGraphDiagramModule(),
-            new KGraphDiagramServerModule(),
-            (Binder binder) -> {
-                binder.bind(IProjectDescriptionFactory.class).to(DefaultProjectDescriptionFactory.class);
-                binder.bind(IWorkspaceConfigFactory.class).to(KeithProjectWorkspaceConfigFactory.class);
-            }
+            new KGraphIdeModule()
 		));
 	}
 	
@@ -81,4 +69,5 @@ public class KGraphIdeSetup extends KGraphStandaloneSetup {
         register(injector);
         return injector;
     }
+	
 }

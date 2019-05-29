@@ -18,29 +18,27 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.elk.core.klayoutdata.KIdentifier;
-import org.eclipse.elk.core.klayoutdata.KLayoutData;
-import org.eclipse.elk.core.util.ElkUtil;
-import org.eclipse.elk.core.util.selection.DefaultSelectionIterator;
-import org.eclipse.elk.core.util.selection.SelectionIterator;
-import org.eclipse.elk.graph.KEdge;
-import org.eclipse.elk.graph.KNode;
-import org.eclipse.elk.graph.KPort;
-import org.eclipse.elk.graph.PersistentEntry;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 
 import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
+import de.cau.cs.kieler.klighd.kgraph.KEdge;
+import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
+import de.cau.cs.kieler.klighd.kgraph.PersistentEntry;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.util.Iterables2;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner;
 import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner.BundleId;
@@ -55,6 +53,7 @@ import de.cau.cs.kieler.pragmatics.test.common.runners.ModelCollectionTestRunner
 @BundleId("de.cau.cs.kieler.klighd.test")
 @ModelPath("connectedEdgesTests/")
 @ModelFilter("*.kgt")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConnectedEdgesTest {
     /**
      * The model to be tested.
@@ -98,9 +97,8 @@ public class ConnectedEdgesTest {
      */
     @Before
     public void loadModel() {
-        final KLayoutData layoutData = model.getData(KLayoutData.class);
         int expConnectedEdges = INVALID_EDGE_COUNT;
-        for (PersistentEntry pe : layoutData.getPersistentEntries()) {
+        for (PersistentEntry pe : model.getPersistentEntries()) {
             if (SOURCE_PORT.equals(pe.getKey())) {
                 final String sourcePortName = pe.getValue();
 
@@ -165,19 +163,7 @@ public class ConnectedEdgesTest {
     public void test() {
         for (int i = 0; i < sourcePorts.size(); i++) {
             List<KEdge> edges = sourcePorts.get(i).getEdges();
-            Iterator<KEdge> it =
-                    Iterators.concat(Iterators.transform(edges.iterator(),
-                            new Function<KEdge, Iterator<KEdge>>() {
-                                @Override
-                                public Iterator<KEdge> apply(KEdge input) {
-                                    SelectionIterator sourceIter =
-                                            new DefaultSelectionIterator(input, false, false);
-                                    SelectionIterator targetIter =
-                                            new DefaultSelectionIterator(input, false, true);
-                                    return Iterators.filter(ElkUtil.getConnectedElements(input,
-                                            sourceIter, targetIter), KEdge.class);
-                                }
-                            }));
+            Iterator<KEdge> it = KGraphUtil.getConnectedEdges(edges);
 
             for (KEdge e : Iterables2.toIterable(it)) {
                 if (e.getSourcePort() == this.sourcePorts.get(i)) {
@@ -199,19 +185,7 @@ public class ConnectedEdgesTest {
 
         while (port != null) {
 //            test++;
-            Iterator<KEdge> it =
-                    Iterators.concat(Iterators.transform(port.getEdges().iterator(),
-                            new Function<KEdge, Iterator<KEdge>>() {
-                                @Override
-                                public Iterator<KEdge> apply(KEdge input) {
-                                    SelectionIterator sourceIter =
-                                            new DefaultSelectionIterator(input, false, false);
-                                    SelectionIterator targetIter =
-                                            new DefaultSelectionIterator(input, false, true);
-                                    return Iterators.filter(ElkUtil.getConnectedElements(input,
-                                            sourceIter, targetIter), KEdge.class);
-                                }
-                            }));
+            Iterator<KEdge> it = KGraphUtil.getConnectedEdges(port.getEdges());
             for (KEdge e : Iterables2.toIterable(it)) {
                 if (e.getTargetPort() == this.expectedTargetPorts.get(index)) {
                     return true;

@@ -66,10 +66,15 @@ public abstract class AbstractDiagramExporter {
      *
      * @param graphics
      *            the {@link KlighdSWTGraphics} to draw on
+     * @param exportConfig
+     *            an {@link DiagramExportConfig} providing more details on the requested export,
+     *            must not be <code>null</code>
      * @return a {@link KlighdPaintContext} tailored to the type of diagram rendering/export.
      */
-    protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics) {
-        return KlighdPaintContext.createExportDiagramPaintContext(graphics);
+    protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics,
+            final DiagramExportConfig exportConfig) {
+        return KlighdPaintContext.createExportDiagramPaintContext(graphics,
+                exportConfig.applyCameraZoomLevel, exportConfig.exportSemanticData);
     }
 
 
@@ -420,7 +425,7 @@ public abstract class AbstractDiagramExporter {
 
         // create the required paint context containing, e.g., information whether a printout or
         //  an image export is to be done
-        final KlighdPaintContext paintContext = createPaintContext(graphics);
+        final KlighdPaintContext paintContext = createPaintContext(graphics, exportConfig);
 
         final PLayer exportedLayer = camera.getDisplayedKNodeNode();
 

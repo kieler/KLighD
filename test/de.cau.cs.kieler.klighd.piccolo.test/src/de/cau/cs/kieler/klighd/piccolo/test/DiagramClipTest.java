@@ -17,11 +17,8 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.elk.core.util.ElkUtil;
 import org.eclipse.elk.core.util.Pair;
-import org.eclipse.elk.graph.KNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -36,6 +33,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +49,9 @@ import com.google.common.collect.Lists;
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
+import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.test.KlighdTestPlugin;
@@ -87,6 +88,8 @@ public class DiagramClipTest {
     private static final Object testModel = loadTestModel();
     private static final ColorMatcher<Pair<Control, KVector>> IS_BLACK =
             ColorMatcher.acceptingPairsOfControlAndKVectorExpecting(Colors.BLACK);
+    private static final ColorMatcher<Pair<Control, KVector>> IS_WHITE =
+            ColorMatcher.acceptingPairsOfControlAndKVectorExpecting(Colors.WHITE);
 
     private static DiagramClipTest sharedInstance;
 
@@ -94,7 +97,7 @@ public class DiagramClipTest {
     private Shell shell = null;
 
     private Point zeroPoint;
-    private boolean finished = false;
+    private boolean finished = true;
     private long deadline = 0;
     private boolean respectDeadline = true;
     private int heightDelta = 0;
@@ -168,7 +171,6 @@ public class DiagramClipTest {
         viewContext.update(null);
         viewer = viewContext.getViewer();
 
-        finished = false;
         deadline = System.currentTimeMillis() + EXPECTED_DURATION;
 
         shell.layout(true, true);
@@ -176,6 +178,13 @@ public class DiagramClipTest {
         shell.open();
 
         zeroPoint = viewer.getControl().toDisplay(0, 0);
+
+        // make sure the color recognition works by checking the background color in the top left corner
+        // in case this check gives, e.g., RGB {0, 0, 0} the color identification doesn't work and
+        //  this whole test class shall be skipped
+        Assume.assumeThat(Pair.of(viewer.getControl(), new KVector(2, 2)), IS_WHITE);
+        
+        finished = false;
     }
 
 
@@ -206,13 +215,13 @@ public class DiagramClipTest {
 
             final float zoom = viewer.getZoomLevel();
 
-            final KShapeLayout port0Layout = clip.getPorts().get(0).getData(KShapeLayout.class);
-            final KVector port0pos = ElkUtil.toAbsolute(port0Layout.createVector(), clip);
+            final KShapeLayout port0Layout = clip.getPorts().get(0);
+            final KVector port0pos = KGraphUtil.toAbsolute(port0Layout.createVector(), clip);
             port0pos.add(port0Layout.getWidth() / 2, port0Layout.getHeight() / 2);
             port0pos.scale(zoom);
 
-            final KShapeLayout portXLayout = Iterables.getLast(clip.getPorts()).getData(KShapeLayout.class);
-            final KVector portXpos = ElkUtil.toAbsolute(portXLayout.createVector(), clip);
+            final KShapeLayout portXLayout = Iterables.getLast(clip.getPorts());
+            final KVector portXpos = KGraphUtil.toAbsolute(portXLayout.createVector(), clip);
             portXpos.add(1, portXLayout.getHeight() / 2);
             portXpos.scale(zoom);
 

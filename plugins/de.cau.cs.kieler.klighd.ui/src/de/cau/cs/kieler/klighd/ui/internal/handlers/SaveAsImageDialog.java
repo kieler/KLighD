@@ -88,6 +88,9 @@ public class SaveAsImageDialog extends Dialog {
     /** the preference key for the camera viewport. */
     private static final String PREFERENCE_CAMERA_VIEWPORT = "saveAsImageDialog."
             + "cameraViewport"; //$NON-NLS-1$
+    /** the preference key for the applying the camera zoom level. */
+    private static final String PREFERENCE_CAMERA_ZOOM_LEVEL = "saveAsImageDialog."
+            + "cameraZoomLevel"; //$NON-NLS-1$
     /** the preference key for the scale factor. */
     private static final String PREFERENCE_SCALE_FACTOR = "saveAsImageDialog.scaleFactor"; //$NON-NLS-1$
     /** the preference key for the text as shapes property. */
@@ -126,6 +129,8 @@ public class SaveAsImageDialog extends Dialog {
     private Label tilingStateLabel;
     /** the camera viewport checkbox. */
     private Button cameraViewportCheckbox;
+    /** the camera zoom level checkbox. */
+    private Button cameraZoomLevelCheckbox;
     /** the camera text as shapes checkbox. */
     private Button textAsShapesCheckbox;
     /** the camera embed fonts checkbox. */
@@ -406,6 +411,11 @@ public class SaveAsImageDialog extends Dialog {
         cameraViewportCheckbox.setText(Messages.SaveAsImageDialog_use_camera_viewport_caption);
         cameraViewportCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_CAMERA_VIEWPORT));
 
+        // visibility zoom level
+        cameraZoomLevelCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+        cameraZoomLevelCheckbox.setText(Messages.SaveAsImageDialog_apply_camera_zoom_level_caption);
+        cameraZoomLevelCheckbox.setSelection(preferenceStore.getBoolean(PREFERENCE_CAMERA_ZOOM_LEVEL));
+
         // text as shapes
         textAsShapesCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
         textAsShapesCheckbox.setText(Messages.SaveAsImageDialog_text_as_shapes);
@@ -647,6 +657,7 @@ public class SaveAsImageDialog extends Dialog {
         preferenceStore.setValue(PREFERENCE_WORKSPACE_PATH, workspacePathCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_IMAGE_FORMAT, imageFormatCombo.getSelectionIndex());
         preferenceStore.setValue(PREFERENCE_CAMERA_VIEWPORT, cameraViewportCheckbox.getSelection());
+        preferenceStore.setValue(PREFERENCE_CAMERA_ZOOM_LEVEL, cameraZoomLevelCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_SCALE_FACTOR, scaleSlider.getSelection());
         preferenceStore.setValue(PREFERENCE_TEXT_AS_SHAPES, textAsShapesCheckbox.getSelection());
         preferenceStore.setValue(PREFERENCE_TRANSPARENT_BACKGROUND,
@@ -677,6 +688,7 @@ public class SaveAsImageDialog extends Dialog {
         ExportDataBuilder builder = new ExportDataBuilder(viewContext, currentExporter.subFormatId,
                 new Path(fileText.getText()), workspacePathCheckbox.getSelection())
                 .cameraViewport(cameraViewportCheckbox.getSelection())
+                .applyCameraZoomLevel(cameraZoomLevelCheckbox.getSelection())
                 .scale(scaleSlider.getSelection())
                 .textAsShapes(textAsShapesCheckbox.getSelection())
                 .embedFonts(embedFontsCheckbox.getSelection())

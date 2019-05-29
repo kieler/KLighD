@@ -144,9 +144,6 @@ public class DiagramController {
     /** whether edges are drawn before nodes, i.e. nodes have priority over edges. */
     private final boolean edgesFirst;
 
-    /** whether ports of clipped nodes should be shown. */
-    private final boolean showClippedPorts;
-
     /** whether to record layout changes, will be set to true by the KlighdLayoutManager. */
     private boolean record = false;
 
@@ -169,17 +166,14 @@ public class DiagramController {
      * @param edgesFirst
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
-     * @param showClippedPorts
-     *            determines whether the ports of the clipped node should be shown
      */
     public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
-            final boolean edgesFirst, final boolean showClippedPorts) {
+            final boolean edgesFirst) {
         DiagramControllerHelper.resetGraphElement(graph);
 
         this.sync = sync;
         this.edgesFirst = edgesFirst;
-        this.showClippedPorts = showClippedPorts;
-        
+
         this.canvasCamera = camera;
 
         // check whether the employed mainCamera has a component set that is a KlighdCanvas;
@@ -224,15 +218,6 @@ public class DiagramController {
         return sync;
     }
 
-    /**
-     * Returns whether the ports of clipped nodes should be shown.
-     * 
-     * @return true if ports of clipped nodes should be shown, false otherwise
-     */
-    public boolean getShowClippedPorts() {
-        return showClippedPorts;
-    }
-    
     /**
      * Returns the employed root camera.
      *
@@ -380,9 +365,9 @@ public class DiagramController {
      * visible diagram excerpt (viewport).<br>
      * <br>
      * Note that a recursive displaying check along the containment hierarchy is done only if
-     * <code>checkContainment</code> is <code>true</code>. Otherwise that is omitted for performance
+     * <code>checkParents</code> is <code>true</code>. Otherwise that is omitted for performance
      * reasons. Thus, given the nested diagram nodes A contains B contains C with A collapsed this
-     * method may return <code>true</code> for C if <code>checkContainment</code> is
+     * method may return <code>true</code> for C if <code>checkParents</code> is
      * <code>false</code>.
      *
      * @param diagramElement
@@ -410,14 +395,8 @@ public class DiagramController {
             // corresponding parent node in case of labels and ports (and their labels)
 
             if (diagramElement instanceof KNode) {
-                if (showClippedPorts) {
-                    // If ports of the clipped node should be shown,
-                    // we can just always treat these nodes as shown.
-                    return true;                    
-                } else {
-                    // Otherwise we treat the whole node as not shown
-                    return !getClip().equals((KNode) diagramElement);
-                }
+                // nothing to do
+                return true;
             }
 
             if (diagramElement instanceof KEdge) {
@@ -427,11 +406,17 @@ public class DiagramController {
             }
 
             if (diagramElement instanceof KPort) {
-                return isDisplayed(((KPort) diagramElement).getNode(), false);
+                final KNode node = ((KPort) diagramElement).getNode();
+                return !(node == getClip() && canvasCamera.isClipsPortsHidden()) && isDisplayed(node, false);
             }
 
             if (diagramElement instanceof KLabel) {
-                return isDisplayed(((KLabel) diagramElement).getParent(), false);
+                final KLabeledGraphElement parent = ((KLabel) diagramElement).getParent();
+                if (parent instanceof KNode) {
+                    return !(parent == getClip() && canvasCamera.isClipsLabelsHidden()) && isDisplayed(parent, false);
+                } else {
+                    return isDisplayed(parent, false);
+                }
             }
 
             // the required default case, should never be executed!
@@ -716,8 +701,22 @@ public class DiagramController {
      * @param diagramElement
      *            the diagram element to which the diagram view is to be limited, may be
      *            <code>null</code>
+     * @param hideClipNodePorts
+     *            if {@link Boolean#TRUE} the new clip node's ports will be hidden and likewise
+     *            their connected edges, if {@link Boolean#FALSE} the new clip node's ports will be
+     *            displayed depending on their particular settings; if <code>null</code> and new
+     *            clip node is equal to the current clip node the current port visibility setting is
+     *            kept, otherwise the default setting defined for the clip node or the view context
+     *            is applied
+     * @param hideClipNodeLabels
+     *            if {@link Boolean#TRUE} the new clip node's labels will be hidden, if
+     *            {@link Boolean#FALSE} the new clip node's labels will be displayed depending on
+     *            their particular settings; if <code>null</code> and new clip node is equal to the
+     *            current clip node the current label visibility setting is kept, otherwise the
+     *            default setting defined for the clip node or the view context is applied
      */
-    public void clip(final KNode diagramElement) {
+    public void clip(final KNode diagramElement, final Boolean hideClipNodePorts,
+            final Boolean hideClipNodeLabels) {
         final KNodeAbstractNode node =
                 (diagramElement == null) ? topNode : getKNodeRepresentation(diagramElement);
 
@@ -726,17 +725,12 @@ public class DiagramController {
                     diagramElement.toString()));
         }
 
-        final KNodeAbstractNode currentRootNode = canvasCamera.getDisplayedKNodeNode();
-        if (currentRootNode == node) {
-            return;
-        }
-
         if (node.getRoot() == null) {
             throw new RuntimeException(INVALID_CLIP_NODE_ERROR_MSG.replace("XX",
                     diagramElement.toString()));
         }
 
-        canvasCamera.exchangeDisplayedKNodeNode(node);
+        canvasCamera.exchangeDisplayedKNodeNode(node, hideClipNodePorts, hideClipNodeLabels);
         zoomController.setFocusNode(diagramElement);
     }
 
@@ -1128,7 +1122,7 @@ public class DiagramController {
                 return;
             }
 
-            nodeNode = new KNodeNode(node, edgesFirst, showClippedPorts);
+            nodeNode = new KNodeNode(node, edgesFirst);
             contextData.setProperty(REP, nodeNode);
 
             updateRendering(nodeNode);

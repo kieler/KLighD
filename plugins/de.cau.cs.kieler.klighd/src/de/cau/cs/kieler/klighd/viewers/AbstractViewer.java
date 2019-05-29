@@ -436,6 +436,14 @@ public abstract class AbstractViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
+    public void clip(Object semanticElement, Boolean hideClipNodePorts,
+            Boolean hideClipNodeLabels) {
+        getContextViewer().clip(semanticElement, hideClipNodePorts, hideClipNodeLabels);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void scale(final Object semanticElement, final double scale) {
         getContextViewer().scale(semanticElement, scale);
     }

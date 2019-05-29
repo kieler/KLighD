@@ -196,19 +196,33 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
 
     /**
      * @param key
-     *            the key
+     *            the key, must not be <code>null</code>; method will return immediately otherwise
      * @param value
-     *            the value as String
+     *            the value as String, maybe <code>null</code> for deleting an earlier non-null
+     *            registration; <code>null</code> values won't be put into the export
      * @return <code>this</code> {@link KlighdSemanticDiagramData} for convenience
      */
     public KlighdSemanticDiagramData put(final String key, final String value) {
-        if (strStr == null) {
+        if (key == null) {
+            return this;
+        }
+
+        if (strStr == null && value != null) {
             strStr = Maps.newHashMap();
         }
+
         if (strFun != null && strFun.containsKey(key)) {
             strFun.remove(key);
         }
-        strStr.put(key, value);
+        
+        if (strStr != null) {
+            if (strStr.containsKey(key)) {
+                strStr.remove(key);
+            }
+            if (value != null) {
+                strStr.put(key, value);
+            }
+        }
 
         return this;
     }
@@ -226,12 +240,13 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
 
     /**
      * @param key
-     *            the key
+     *            the key, must not be <code>null</code>; method will return immediately otherwise
      * @param fun
-     *            a function returning a String value. The function is evaluated every time the
-     *            key's value is requested.<br>
-     *            The input provided to the function is a record offering configured
-     *            {@link ViewContext} and the configured view model element (
+     *            a function returning a String value, maybe <code>null</code> for deleting an
+     *            earlier non-null registration.<br>
+     *            The function is evaluated every time the key's value is requested. The input
+     *            provided to the function is a record offering configured {@link ViewContext} and
+     *            the configured view model element (
      *            {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
      *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}); both may be
      *            <code>null</code>!
@@ -239,13 +254,26 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
      * @return <code>this</code> {@link KlighdSemanticDiagramData} for convenience
      */
     public KlighdSemanticDiagramData put(final String key, final Function<FunctionInput, String> fun) {
-        if (strFun == null) {
+        if (key == null) {
+            return this;
+        }
+
+        if (strFun == null && fun != null) {
             strFun =  Maps.newHashMap();
         }
+
         if (strStr != null && strStr.containsKey(key)) {
             strStr.remove(key);
         }
-        strFun.put(key, fun);
+
+        if (strFun != null) {
+            if (strFun.containsKey(key)) {
+                strFun.remove(key);
+            }
+            if (fun != null) {
+                strFun.put(key, fun);
+            }
+        }
 
         return this;
     }
@@ -270,12 +298,13 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
 
     /**
      * @param key
-     *            the key
+     *            the key, must not be <code>null</code>; method will return immediately otherwise
      * @param fun
-     *            a function returning a String value. The function is evaluated every time the
-     *            key's value is requested.<br>
-     *            The input provided to the function is a record offering the configured
-     *            {@link ViewContext}, the configured view model element (
+     *            a function returning a String value, maybe <code>null</code> for deleting an
+     *            earlier non-null registration.<br>
+     *            The function is evaluated every time the key's value is requested. The input
+     *            provided to the function is a record offering the configured {@link ViewContext},
+     *            the configured view model element (
      *            {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
      *            {@link de.cau.cs.kieler.klighd.krendering.KRendering KRendering}), the line of text
      *            to being exported, and the number of the line of text within the multi-line text;
@@ -285,12 +314,22 @@ public class KlighdSemanticDiagramData implements Iterable<Map.Entry<String, Str
      */
     public KlighdSemanticDiagramData putAtTextLine(
             final String key, final Function<TextLineFunctionInput, String> fun) {
+        if (key == null) {
+            return this;
+        }
 
-        if (strFunTextLine == null) {
+        if (strFunTextLine == null && fun != null) {
             strFunTextLine = Maps.newHashMap();
         }
 
-        strFunTextLine.put(key, fun);
+        if (strFunTextLine != null) {
+            if (strFunTextLine.containsKey(key)) {
+                strFunTextLine.remove(key);
+            }
+            if (fun != null) {
+                strFunTextLine.put(key, fun);
+            }
+        }
 
         return this;
     }

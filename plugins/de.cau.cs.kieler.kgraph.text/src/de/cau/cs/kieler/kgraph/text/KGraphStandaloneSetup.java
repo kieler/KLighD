@@ -13,7 +13,11 @@
  */
 package de.cau.cs.kieler.kgraph.text;
 
+import org.eclipse.emf.ecore.EPackage;
+
 import com.google.inject.Injector;
+
+import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 
 /**
  * Initialization support for running Xtext languages without equinox extension registry.
@@ -32,5 +36,16 @@ public class KGraphStandaloneSetup extends KGraphStandaloneSetupGenerated {
             injector = new KGraphStandaloneSetup().createInjectorAndDoEMFRegistration();
         }
         return injector;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Injector createInjectorAndDoEMFRegistration() {
+        if (!EPackage.Registry.INSTANCE.containsKey(KGraphPackage.eNS_URI))
+            EPackage.Registry.INSTANCE.put(KGraphPackage.eNS_URI, KGraphPackage.eINSTANCE);
+
+        return super.createInjectorAndDoEMFRegistration();
     }
 }

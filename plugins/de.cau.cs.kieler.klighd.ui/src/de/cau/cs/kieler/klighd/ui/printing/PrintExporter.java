@@ -184,8 +184,8 @@ public final class PrintExporter extends AbstractDiagramExporter {
      * rather than image exports.
      */
     @Override
-    protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics) {
-        return KlighdPaintContext.createPrintoutPaintContext(graphics);
+    protected KlighdPaintContext createPaintContext(final KlighdSWTGraphics graphics, DiagramExportConfig exportConfig) {
+        return KlighdPaintContext.createPrintoutPaintContext(graphics, exportConfig.applyCameraZoomLevel);
     }
 
 
@@ -234,7 +234,7 @@ public final class PrintExporter extends AbstractDiagramExporter {
     /**
      * Export preview. Can export the diagram in tiles to print on multiple pages.
      *
-     * @param config
+     * @param exportConfig
      *            the employed {@link DiagramExportConfig}
      * @param printer
      *            the printer to print to, required for creating
@@ -252,13 +252,13 @@ public final class PrintExporter extends AbstractDiagramExporter {
      *            the offset to be applied to centrally align the diagram as requested
      * @return the image
      */
-    public Image exportPreview(final DiagramExportConfig config, final Printer printer,
+    public Image exportPreview(final DiagramExportConfig exportConfig, final Printer printer,
             final Dimension imageBounds, final Rectangle imageClip, final double previewScale,
             final Point2D centeringOffset) {
 
         final Image image = new Image(
                 viewer.getControl().getDisplay(), imageBounds.width, imageBounds.height);
-        export(config, image, printer, imageBounds, imageClip, previewScale, centeringOffset);
+        export(exportConfig, image, printer, imageBounds, imageClip, previewScale, centeringOffset);
 
         return image;
     }

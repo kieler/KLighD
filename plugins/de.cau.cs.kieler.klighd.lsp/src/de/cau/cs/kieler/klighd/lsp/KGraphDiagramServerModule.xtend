@@ -13,6 +13,7 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import org.eclipse.sprotty.xtext.ls.DiagramServerModule
+import org.eclipse.sprotty.xtext.ls.IDiagramServerManager
 
 /**
  * Module binding the language server extension for KEITH diagrams.
@@ -22,5 +23,9 @@ import org.eclipse.sprotty.xtext.ls.DiagramServerModule
 class KGraphDiagramServerModule extends DiagramServerModule {
     override bindLanguageServerImpl() {
         KGraphLanguageServerExtension
+    }
+    
+    override Class<? extends IDiagramServerManager> bindIDiagramServerManager() {
+        KGraphDiagramServerManager
     }
 }

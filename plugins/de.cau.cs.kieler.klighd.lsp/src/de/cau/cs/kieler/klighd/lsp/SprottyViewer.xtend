@@ -63,6 +63,11 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder,
         // do nothing.
     }
     
+    override clip(KNode diagramElement, Boolean hideClipNodePorts, Boolean hideClipNodeLabels) {
+//        println("clip called")
+        // do nothing.
+    }
+    
     override collapse(KNode diagramElement) {
         // persist the state safe of model updates in the RenderingContextData.
         val contextData = RenderingContextData.get(diagramElement)

@@ -309,12 +309,17 @@ public final class KlighdProperties {
 
     /**
      * Whether the ports and port labels of clipped nodes should be shown or not.
-     * By default the ports are shown, preventing problems with external ports.
-     * If clipped ports are not shown, Zoom to Fit will focus on the child elements of
-     * of the clipped node.
+     * By default the ports are shown, preventing issues with links to external ports.
      */
     public static final IProperty<Boolean> SHOW_CLIPPED_PORTS =
-            new Property<Boolean>("klighd.showClippedPorts", true);
+            new Property<Boolean>("klighd.showClippedNodesPorts", true);
+
+    /**
+     * Whether the labels of clipped nodes should be shown or not.
+     * By default the labels are shown.
+     */
+    public static final IProperty<Boolean> SHOW_CLIPPED_LABELS =
+            new Property<Boolean>("klighd.showClippedNodesLabels", true);
 
     /**
      * Property to define the color of the canvas.

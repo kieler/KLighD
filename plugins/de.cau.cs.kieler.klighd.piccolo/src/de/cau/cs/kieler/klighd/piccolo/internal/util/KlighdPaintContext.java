@@ -42,7 +42,7 @@ public class KlighdPaintContext extends PPaintContext {
      * @return the desired {@link KlighdPaintContext}
      */
     public static KlighdPaintContext createDiagramPaintContext(final KlighdSWTGraphics graphics) {
-        return new KlighdPaintContext(graphics, false, false, false, false);
+        return new KlighdPaintContext(graphics, false, false, false, true, false);
     }
 
     /**
@@ -54,7 +54,7 @@ public class KlighdPaintContext extends PPaintContext {
      * @return the desired {@link KlighdPaintContext}
      */
     public static KlighdPaintContext createOutlinePaintContext(final KlighdSWTGraphics graphics) {
-        return new KlighdPaintContext(graphics, true, false, false, false);
+        return new KlighdPaintContext(graphics, true, false, false, true, false);
     }
 
     /**
@@ -63,10 +63,16 @@ public class KlighdPaintContext extends PPaintContext {
      *
      * @param graphics
      *            the {@link KlighdSWTGraphics} to draw on
+     * @param applyCameraZoomLevel
+     *            if <code>true</code> the diagram zoom level determined by the
+     *            {@link KlighdMainCamera}'s view transform will be used while evaluating the
+     *            visibility of the particular diagram elements and diagram element figure parts, if
+     *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
      * @return the desired {@link KlighdPaintContext}
      */
-    public static KlighdPaintContext createExportDiagramPaintContext(final KlighdSWTGraphics graphics) {
-        return new KlighdPaintContext(graphics, false, true, false, true);
+    public static KlighdPaintContext createExportDiagramPaintContext(
+            final KlighdSWTGraphics graphics, boolean applyCameraZoomLevel, boolean addSemanticData) {
+        return new KlighdPaintContext(graphics, false, true, false, applyCameraZoomLevel, addSemanticData);
     }
 
     /**
@@ -74,10 +80,16 @@ public class KlighdPaintContext extends PPaintContext {
      *
      * @param graphics
      *            the {@link KlighdSWTGraphics} to draw on
+     * @param applyCameraZoomLevel
+     *            if <code>true</code> the diagram zoom level determined by the
+     *            {@link KlighdMainCamera}'s view transform will be used while evaluating the
+     *            visibility of the particular diagram elements and diagram element figure parts, if
+     *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
      * @return the desired {@link KlighdPaintContext}
      */
-    public static KlighdPaintContext createPrintoutPaintContext(final KlighdSWTGraphics graphics) {
-        return new KlighdPaintContext(graphics, false, false, true, false);
+    public static KlighdPaintContext createPrintoutPaintContext(final KlighdSWTGraphics graphics,
+            boolean applyCameraZoomLevel) {
+        return new KlighdPaintContext(graphics, false, false, true, applyCameraZoomLevel, false);
     }
 
 
@@ -92,17 +104,24 @@ public class KlighdPaintContext extends PPaintContext {
      *            indicates that the diagram is about to be exported into an image
      * @param printout
      *            indicates that the diagram is about to be printed
+     * @param applyCameraZoomLevel
+     *            if <code>true</code> the diagram zoom level determined by the
+     *            {@link KlighdMainCamera}'s view transform will be used while evaluating the
+     *            visibility of the particular diagram elements and diagram element figure parts, if
+     *            <code>false</code> a diagram zoom level of <code>1.0<code> is assumed.
      * @param addSemanticData
      *            flag determining whether semantic data shall be added to the diagram, e.g. while
      *            exporting an SVG based image
      */
     protected KlighdPaintContext(final KlighdSWTGraphics graphics, final boolean outline,
-            final boolean export, final boolean printout, final boolean addSemanticData) {
+            final boolean export, final boolean printout, boolean applyCameraZoomLevel,
+            final boolean addSemanticData) {
         super((Graphics2D) graphics);
         this.mainDiagram = !(outline || export || printout);
         this.outline = outline;
         this.export = export;
         this.printout = printout;
+        this.applyCameraZoomLevel = applyCameraZoomLevel;
         this.addSemanticData = addSemanticData;
     }
 
@@ -111,6 +130,7 @@ public class KlighdPaintContext extends PPaintContext {
     private final boolean outline;
     private final boolean export;
     private final boolean printout;
+    private final boolean applyCameraZoomLevel;
     private final boolean addSemanticData;
 
     private final Stack<Double> cameraScales = new Stack<Double>();
@@ -159,6 +179,16 @@ public class KlighdPaintContext extends PPaintContext {
     }
 
     /**
+     * @return <code>true</code> if the diagram zoom level determined by the
+     *         {@link KlighdMainCamera}'s view transform shall be used while evaluating the
+     *         visibility of the particular diagram elements and diagram element figure parts,
+     *         <code>false</code> if a diagram zoom level of <code>1.0<code> shall be assumed
+     */
+    public boolean isApplyCameraZoomLevel() {
+        return applyCameraZoomLevel;
+    }
+
+    /**
      * Returns <code>true</code> if semantic data shall be added to the diagram while drawing, e.g.
      * while creating an SVG export.
      *
@@ -182,16 +212,12 @@ public class KlighdPaintContext extends PPaintContext {
     public void pushCamera(final PCamera aCamera) {
         super.pushCamera(aCamera);
 
-        if (isPrintout()) {
-            // in case a printout is to be created leave the cameraZoomScale as it is,
-            //  should be equal to 1d!
-            return;
-
-        } else if (aCamera instanceof KlighdMainCamera) {
-            cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
-
-        } else if (aCamera instanceof KlighdMagnificationLensCamera) {
-            cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
+        if (isApplyCameraZoomLevel()) {
+            if (aCamera instanceof KlighdMainCamera) {
+                cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
+            } else if (aCamera instanceof KlighdMagnificationLensCamera) {
+                cameraZoomScale = aCamera.getViewTransformReference().getScaleX();
+            }
         }
     }
 
@@ -207,6 +233,12 @@ public class KlighdPaintContext extends PPaintContext {
         }
     }
 
+    /**
+     * @return the employed top camera
+     */
+    public PCamera getTopCamera() {
+        return (PCamera) cameraStack.get(0);
+    }
 
     /**
      * {@inheritDoc}<br>

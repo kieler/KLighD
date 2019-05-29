@@ -37,6 +37,11 @@ public enum Arc implements Enumerator {
      * The '<em><b>OPEN</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * plain arc without any closing line connection from end to beginning
+     * {@link Arc2D#OPEN}, {@link Arc2D#CHORD}, and
+     *      *            {@link Arc2D#PIE}
+     * <!-- end-model-doc -->
      * @see #OPEN_VALUE
      * @generated
      * @ordered
@@ -47,6 +52,9 @@ public enum Arc implements Enumerator {
      * The '<em><b>CHORD</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * arc with a straight closing line connection from end to beginning via the arc's center
+     * <!-- end-model-doc -->
      * @see #CHORD_VALUE
      * @generated
      * @ordered
@@ -57,6 +65,9 @@ public enum Arc implements Enumerator {
      * The '<em><b>PIE</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * arc with a straight closing line connection from end to beginning
+     * <!-- end-model-doc -->
      * @see #PIE_VALUE
      * @generated
      * @ordered

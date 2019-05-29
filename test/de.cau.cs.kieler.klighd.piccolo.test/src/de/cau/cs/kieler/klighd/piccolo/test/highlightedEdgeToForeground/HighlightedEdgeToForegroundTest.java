@@ -13,11 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.test.highlightedEdgeToForeground;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.elk.core.klayoutdata.KShapeLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -28,6 +23,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,6 +36,7 @@ import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared;
 import de.cau.cs.kieler.klighd.piccolo.test.ColorMatcher;
@@ -61,7 +58,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  *
  * @author chsch
  */
-public class HighlightedEdgeToForegroundTes {
+public class HighlightedEdgeToForegroundTest {
 
     private static HighlightedEdgeToForegroundTestModelGen testModelGen;
     private static ViewContext viewContext;
@@ -74,7 +71,7 @@ public class HighlightedEdgeToForegroundTes {
      * Prepares a {@link Shell} with a KLighD diagram canvas displaying a simple test model.
      */
     @BeforeClass
-    public static void prepare() {
+    public static void prepare() throws InterruptedException {
 
         testModelGen = Guice.createInjector(new Module() {
             public void configure(final Binder binder) {
@@ -83,7 +80,7 @@ public class HighlightedEdgeToForegroundTes {
         }).getInstance(HighlightedEdgeToForegroundTestModelGen.class);
 
         shell = new Shell(Display.getDefault());
-        shell.setSize(630, 330);
+        shell.setSize(650, 330);
         shell.setLayout(new FillLayout());
 
         viewContext = new ViewContext((IDiagramWorkbenchPart) null, testModelGen.getTestModel())
@@ -102,36 +99,47 @@ public class HighlightedEdgeToForegroundTes {
 
         canvas = viewContext.getViewer().getControl();
         zeroPoint = canvas.toDisplay(0, 0);
+
+        // make sure the color recognition works by checking the background color in the top left corner
+        // in case this check gives, e.g., RGB {0, 0, 0} the color identification doesn't work and
+        //  this whole test class is skipped
+        Assume.assumeThat(getColorAt(2, 2), IS_WHITE);
+//
+//        // The following might be helpful when running/debugging via Eclipse:
+//
+//        // The following is some mouse pointer "warm up" since I experienced some delayed reactions of the
+//        //  UI on the mouse pointer movement commands executed in the tests below.
+//        // Note, that these movements are not mandatory for the test execution,
+//        //  but very helpful for developers for verifying the test execution.
+//        for (int i = 0; i < 3; i++) {
+//            clickOn(4, 2);
+//            waitAmoment();
+//            clickOn(4, 4);
+//            waitAmoment();
+//        }
+//        clickOn(4, 4);
+//        waitAmoment();
+//
+//        // The following is display a "warm up" test since the continuous build's (virtual) display's palette
+//        //  seems to be very limited. The observed behavior is: If 'black' or 'white' is the first observed
+//        //  color, only those colors will be obtained subsequently. I interpret this as follows:
+//        // The image's color palette then contains only black and white. If the image also contains 'red'
+//        //  parts before testing the first time for any color the palette than also contains 'red'.
+//        // Weird ...
+//        final KShapeLayout firstChildNodeLayout = viewContext.getViewModel().getChildren().get(0).getChildren().get(0);
+//        final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
+//        final int firstClickXPos = 5 + 100;
+//
+//        clickOn(firstClickXPos, firstChildNodeYPos);
+//        waitAmoment();
+//
+//        clickOn(4, 4);
+//        waitAmoment();
     }
 
     private static final ColorMatcher<RGB> IS_BLACK = ColorMatcher.acceptingRGBsExpecting(Colors.BLACK);
     private static final ColorMatcher<RGB> IS_RED = ColorMatcher.acceptingRGBsExpecting(Colors.RED);
-
-
-    /**
-     * This is just a "warm up" test since the continuous build's (virtual) display's palette seems
-     * to be very limited. The observed behavior is: If 'black' or 'white' is the first observed
-     * color, only those colors will be obtained subsequently. I interpret this as follows: The
-     * image's color palette then contains only black and white. If the image also contains 'red'
-     * parts before testing the first time for any color the palette than also contains 'red'.
-     * Weird ...
-     */
-    @Test
-    public void test00() throws InterruptedException {
-        final KShapeLayout firstChildNodeLayout =
-                viewContext.getViewModel().getChildren().get(0).getChildren().get(0)
-                        .getData(KShapeLayout.class);
-        final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
-
-        final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
-
-        waitAmoment();
-        clickOn(firstClickXPos, firstChildNodeYPos);
-        waitAmoment();
-
-        clickOn(4, 4);
-        waitAmoment();
-    }
+    private static final ColorMatcher<RGB> IS_WHITE = ColorMatcher.acceptingRGBsExpecting(Colors.WHITE);
 
 
     /**
@@ -140,22 +148,18 @@ public class HighlightedEdgeToForegroundTes {
     @Test
     public void test01() throws InterruptedException {
         final KShapeLayout firstChildNodeLayout =
-                viewContext.getViewModel().getChildren().get(0).getChildren().get(0)
-                        .getData(KShapeLayout.class);
+                viewContext.getViewModel().getChildren().get(0).getChildren().get(0);
         final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
 
         final KShapeLayout firstWPortLayout =
-                viewContext.getViewModel().getChildren().get(0).getPorts().get(2)
-                .getData(KShapeLayout.class);
+                viewContext.getViewModel().getChildren().get(0).getPorts().get(2);
         final int firstWPortLayoutCenterYPos = Math.round(firstWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 50;
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 200;
-        waitAmoment();
 
         moveTo(firstClickXPos, firstChildNodeYPos);
-        waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
 
         clickOn(firstClickXPos, firstChildNodeYPos);
@@ -167,7 +171,6 @@ public class HighlightedEdgeToForegroundTes {
         Assert.assertThat(getColorAt(sampleXPos, firstWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, firstWPortLayoutCenterYPos);
-        waitAmoment();
         Assert.assertThat(getColorAt(secondClickXPos, firstWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, firstWPortLayoutCenterYPos);
@@ -189,22 +192,18 @@ public class HighlightedEdgeToForegroundTes {
     @Test
     public void test02() throws InterruptedException {
         final KShapeLayout firstChildNodeLayout =
-                viewContext.getViewModel().getChildren().get(0).getChildren().get(0)
-                        .getData(KShapeLayout.class);
+                viewContext.getViewModel().getChildren().get(0).getChildren().get(0);
         final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
 
         final KShapeLayout secondWPortLayout =
-                viewContext.getViewModel().getChildren().get(0).getPorts().get(0)
-                .getData(KShapeLayout.class);
+                viewContext.getViewModel().getChildren().get(0).getPorts().get(0);
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 120;
         final int firstClickXPos = 5 + 100; // port width + border spacing + edge spacing factor * spacing
         final int secondClickXPos = 50;
-        waitAmoment();
 
         moveTo(firstClickXPos, firstChildNodeYPos);
-        waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
 
         clickOn(firstClickXPos, firstChildNodeYPos);
@@ -216,7 +215,6 @@ public class HighlightedEdgeToForegroundTes {
         Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
-        waitAmoment();
         Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
@@ -238,13 +236,11 @@ public class HighlightedEdgeToForegroundTes {
     @Test
     public void test03() throws InterruptedException {
         final KShapeLayout firstChildNodeLayout =
-                viewContext.getViewModel().getChildren().get(0).getChildren().get(0)
-                        .getData(KShapeLayout.class);
+                viewContext.getViewModel().getChildren().get(0).getChildren().get(0);
         final int firstChildNodeYPos = Math.round(firstChildNodeLayout.getYpos());
 
         final KShapeLayout secondWPortLayout =
-                viewContext.getViewModel().getChildren().get(0).getPorts().get(0)
-                .getData(KShapeLayout.class);
+                viewContext.getViewModel().getChildren().get(0).getPorts().get(0);
         final int secondWPortLayoutCenterYPos = Math.round(secondWPortLayout.getYpos()) + 3;
 
         final int sampleXPos = 350;
@@ -254,10 +250,8 @@ public class HighlightedEdgeToForegroundTes {
                 //   + edge spacing factor * spacing
         final int secondClickXPos = 5 + 50 + 100 + 5 + 100 + 5 + 20;
             // port width + border spacing + spacing + port width + node with + port width + 20
-        waitAmoment();
 
         moveTo(firstClickXPos, firstChildNodeYPos);
-        waitAmoment();
         Assert.assertThat(getColorAt(firstClickXPos, firstChildNodeYPos), IS_BLACK);
 
         clickOn(firstClickXPos, firstChildNodeYPos);
@@ -269,7 +263,6 @@ public class HighlightedEdgeToForegroundTes {
         Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         moveTo(secondClickXPos, secondWPortLayoutCenterYPos);
-        waitAmoment();
         Assert.assertThat(getColorAt(secondClickXPos, secondWPortLayoutCenterYPos), IS_BLACK);
 
         clickOn(secondClickXPos, secondWPortLayoutCenterYPos);
@@ -281,6 +274,7 @@ public class HighlightedEdgeToForegroundTes {
         Assert.assertThat(getColorAt(sampleXPos, secondWPortLayoutCenterYPos), IS_RED);
 
         clickOn(4, 4);
+        waitAmoment();
     }
 
 
@@ -306,7 +300,7 @@ public class HighlightedEdgeToForegroundTes {
     }
 
 
-    private void moveTo(final int x, final int y) {
+    private static void moveTo(final int x, final int y) {
         final Display d = shell.getDisplay();
 
         final Event moveTo = new Event();
@@ -318,7 +312,7 @@ public class HighlightedEdgeToForegroundTes {
         while (d.readAndDispatch());
     }
 
-    private void clickOn(final int x, final int y) {
+    private static void clickOn(final int x, final int y) {
         final Display d = shell.getDisplay();
 
         moveTo(x, y);
@@ -338,28 +332,24 @@ public class HighlightedEdgeToForegroundTes {
         while (d.readAndDispatch());
     }
 
-    private void waitAmoment() throws InterruptedException {
+    private static void waitAmoment() throws InterruptedException {
         final Display d = shell.getDisplay();
+        final boolean[] sleep = new boolean[]{ true };
 
-        alarmClock.schedule(A_MOMENT);
-        d.sleep();
         while (d.readAndDispatch());
+        d.timerExec(A_MOMENT, new Runnable() {
+            public void run() {
+                sleep[0] = false;
+            }
+        });
 
-        alarmClock.schedule(A_MOMENT);
-        d.sleep();
-        while (d.readAndDispatch());
+        while(sleep[0]) {
+            d.sleep();
+            while (d.readAndDispatch());
+        }
     }
 
-    private RGB getColorAt(final int x, final int y) {
+    private static RGB getColorAt(final int x, final int y) {
         return ColorMatcher.getColorAt(canvas, x, y);
     }
-
-    private static Job alarmClock = new Job("") {
-
-        @Override
-        protected IStatus run(final IProgressMonitor monitor) {
-            Display.getDefault().wake();
-            return Status.OK_STATUS;
-        }
-    };
 }

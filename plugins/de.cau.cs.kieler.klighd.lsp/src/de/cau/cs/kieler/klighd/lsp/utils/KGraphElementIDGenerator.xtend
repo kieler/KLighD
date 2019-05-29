@@ -181,7 +181,7 @@ public class KRenderingIDGenerator {
     public static def void generateIdsRecursive(KStyleHolder rendering) {
         if (rendering !== null) {
             if (rendering.id === null) {
-                rendering.id = "rendering" + ID_SEPARATOR + RENDERING_SEPERATOR + rendering.hashCode
+                rendering.id = "" + RENDERING_SEPERATOR + rendering.hashCode
             }
             generateIdsRecursive(rendering, null)
         }
@@ -191,9 +191,11 @@ public class KRenderingIDGenerator {
         if (rendering === null) {
             return
         }
-        if (parentRendering !== null && !rendering.equals(parentRendering)) {
+        val parentId = parentRendering?.id ?: ""
+        // If the rendering does not already have an ID matching the hierarchical ID scheme
+        if (parentRendering !== null && !rendering.id?.startsWith(parentId + ID_SEPARATOR)) {
             // Generate a new ID based on the parent rendering's ID.
-            rendering.id = parentRendering.id 
+            rendering.id = parentId
                 + ID_SEPARATOR + RENDERING_SEPERATOR 
                 + rendering.hashCode
         }
@@ -224,26 +226,13 @@ public class KRenderingIDGenerator {
      */
     public static def findRenderingById(KGraphElement element, String id) {
         val ids = id.split("\\" + KRenderingIDGenerator.ID_SEPARATOR)
-        // Every rendering ID starts with "rendering<ID_SEPARATOR><RENDERING_SEPARATOR><description of rendering>",
-        // so ids should have a length of at least two.
-        // Except for KRenderingRefs: They start with <ref name><ID_SEPARATOR>
-        val isRendering = id.startsWith("rendering" + ID_SEPARATOR + RENDERING_SEPERATOR)
+        // Every rendering ID is built hierarchically, separated by the RENDERING_SEPERATOR symbol.
         
-        val renderings = if (isRendering) 
-                element.data.filter(KRendering) 
-            else
-                element.data.filter(KRenderingRef)
+        val renderings = element.data.filter(KRendering) + element.data.filter(KRenderingRef)
         // TODO: There could also be multiple renderings in the element, check for the currently displayed rendering.
-        var rendering = if (isRendering)
-                // The first rendering starting with 'rendering$R<description of rendering>
-                renderings.findFirst [
-                    id.startsWith(ids.get(0) + KRenderingIDGenerator.ID_SEPARATOR + ids.get(1))
-                ]
-            else
-                // The first rendering starting with <ref name>
-                renderings.findFirst [
-                    id.startsWith(ids.get(0))
-                ]
+        var rendering = renderings.findFirst [
+            id.startsWith(it.id)
+        ]
         if (rendering === null) {
             throw new IllegalArgumentException("Misformed ID or element")
         }
@@ -252,14 +241,20 @@ public class KRenderingIDGenerator {
             // connection back to what it is attached to anymore.
             return rendering
         }
-        for (var i = 2; i < ids.size; i++) {
-            if (ids.get(i).startsWith("" + KRenderingIDGenerator.RENDERING_SEPERATOR)) {
-                rendering = (rendering as KContainerRendering).children.findFirst[ id.startsWith(it.id) ]
-            } else if (ids.get(i).startsWith("" + KRenderingIDGenerator.JUNCTION_POINT_SEPARATOR)) {
-                rendering = (rendering as KPolyline).junctionPointRendering
-            } else {
+        for (var i = 1; i < ids.size; i++) {
+            var KRendering nextRendering = null
+            if (rendering instanceof KContainerRendering) {
+                // Look for the id in the child renderings
+                nextRendering = rendering.children.findFirst[ id.startsWith(it.id) ]
+                if (nextRendering === null && rendering instanceof KPolyline) {
+                    // Special case for KPolyline renderings, as they might have another rendering for junction points.
+                    nextRendering = (rendering as KPolyline).junctionPointRendering
+                }
+            }
+            if (nextRendering === null) {
                 throw new IllegalArgumentException("Misformed ID")
             }
+            rendering = nextRendering
         }
         return rendering
     }

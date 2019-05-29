@@ -373,8 +373,8 @@ public class KPortImpl extends KLabeledGraphElementImpl implements KPort {
             modified = true;
         }
         if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__YPOS, oldYpos, ypos));
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__XPOS, oldXpos, xpos));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPORT__YPOS, oldYpos, ypos));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPORT__XPOS, oldXpos, xpos));
         }
     }
 
@@ -409,8 +409,8 @@ public class KPortImpl extends KLabeledGraphElementImpl implements KPort {
             modified = true;
         }
         if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__WIDTH, oldWidth, width));
-            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KSHAPE_LAYOUT__HEIGHT, oldHeight, height));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPORT__WIDTH, oldWidth, width));
+            eNotify(new ENotificationImpl(this, Notification.SET, KGraphPackage.KPORT__HEIGHT, oldHeight, height));
         }
     }
 

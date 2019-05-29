@@ -116,7 +116,13 @@ public class ColorMatcher<T> extends BaseMatcher<T> {
      */
     @Override
     public void describeMismatch(final Object item, final Description description) {
-        description.appendText("obtained actual color").appendValue(item);
+        if (item instanceof RGB)
+            description.appendText("obtained actual color ").appendValue(item);
+        else if (item instanceof Pair<?, ?> && ((Pair<?, ?>) item).getFirst() instanceof RGB)
+            description.appendText("obtained actual color ")
+                    .appendValue(((Pair<?, ?>) item).getFirst());
+        else
+            description.appendText("obtained ").appendValue(item);
     }
 
     /**
@@ -127,11 +133,16 @@ public class ColorMatcher<T> extends BaseMatcher<T> {
             return areSimilar(color, (RGB) item);
 
         } else if (item instanceof Pair<?, ?>) {
-            final Pair<?, ?> pair = (Pair<?, ?>) item;
+            @SuppressWarnings("unchecked")
+            final Pair<Object, ?> pair = (Pair<Object, ?>) item;
 
             if (pair.getFirst() instanceof Control && pair.getSecond() instanceof KVector) {
-                return areSimilar(color, getColorAt(
-                        (Control) pair.getFirst(), (KVector) pair.getSecond()));
+                final RGB actualColor =
+                        getColorAt((Control) pair.getFirst(), (KVector) pair.getSecond());
+                // write the actual color into the result in order to have access to that
+                //  while composing the error message in case of a mismatch
+                pair.setFirst(actualColor);
+                return areSimilar(color, actualColor);
             }
         };
 

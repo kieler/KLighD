@@ -83,8 +83,10 @@ public class SVGExporter extends KlighdCanvasExporter {
         final Dimension tileBounds = extendedBounds.getBounds().getSize();
 
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(data.viewContext(), bounds, tileBounds).setBrandingsAndTrim(
-                        brandings, diagramTrim, diagramTileTrim);
+                new DiagramExportConfig(data.viewContext(), bounds, tileBounds)
+                        .setBrandingsAndTrim(brandings, diagramTrim, diagramTileTrim)
+                        .setApplyCameraZoomLevel(data.applyCameraZoomLevel())
+                        .setExportSemanticData(true);
 
         // initialize a graphics object that 'collects' all the drawing instructions
         final KlighdAbstractSVGGraphics graphics;

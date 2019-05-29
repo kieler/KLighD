@@ -12,17 +12,15 @@
  */
 package de.cau.cs.kieler.klighd.lsp
 
-import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.inject.Inject
-import com.google.inject.Injector
+import com.google.inject.Provider
+import com.google.inject.Singleton
 import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionParam
 import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
-import de.cau.cs.kieler.klighd.lsp.model.KeithInitializationOptions
 import de.cau.cs.kieler.klighd.lsp.model.LayoutOptionUIData
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
@@ -33,6 +31,7 @@ import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
 import java.util.ArrayList
 import java.util.Collection
 import java.util.List
+import java.util.Map
 import java.util.concurrent.CompletableFuture
 import org.eclipse.elk.core.LayoutConfigurator
 import org.eclipse.elk.core.data.LayoutMetaDataService
@@ -66,10 +65,11 @@ import org.eclipse.xtext.util.CancelIndicator
  * @see <a href="https://github.com/theia-ide/yang-lsp/blob/master/yang-lsp/io.typefox.yang.diagram/src/main/java/io/typefox/yang/diagram/YangLanguageServerExtension.xtend">
  *      YangLanguageServerExtension</a>
  */
+@Singleton
 class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
-    implements IDiagramOptionsLanguageServerExtension, IInitializeOptionsExtension {
+    implements IDiagramOptionsLanguageServerExtension, IPreferencesExtension {
     @Inject
-    Injector injector
+    Provider<DiagramHighlightService> diagramHighlightServiceProvider
     
     /**
      * Option to indicate if selected elements in the text should also automatically select and focus the elements in
@@ -97,14 +97,6 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         // Close all diagram servers still open from a previous session.
         val oldClientIds = diagramServerManager.diagramServers.map[ clientId ].toList // toList to avoid lazy evaluation
         oldClientIds.forEach[ didClose ]
-        if (params.initializationOptions instanceof JsonObject) {
-            val userOptions = new Gson().fromJson(params.initializationOptions as JsonObject, KeithInitializationOptions)
-            if (userOptions !== null) {
-                shouldSelectDiagram = userOptions.shouldSelectDiagram
-                shouldSelectText = userOptions.shouldSelectText
-            }
-        }
-        
         return super.initialize(params)
     }
     
@@ -458,7 +450,7 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
                 val diagramHighlightService = languagesRegistry
                     .getResourceServiceProvider(uri)
                     .get(DiagramHighlightService)
-                    ?: injector.getInstance(DiagramHighlightService)
+                    ?: diagramHighlightServiceProvider.get
                 val offset = doc.getOffSet(params.position)
                 diagramServerManager.findDiagramServersByUri(uri.toString).forEach [ server |
                     diagramHighlightService.selectElementFor(server, resource, offset)
@@ -469,8 +461,21 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         result
     }
     
-    override reinitializeOptions(KeithInitializationOptions param) {
-        this.shouldSelectDiagram = param.shouldSelectDiagram
-        this.shouldSelectText = param.shouldSelectText
+    override setPreferences(Map<String, Object> prefs) {
+        prefs.forEach[ key, value | 
+            switch (key) {
+                case "diagram.shouldSelectDiagram": {
+                    if (value instanceof Boolean) {
+                        this.shouldSelectDiagram = value
+                    }
+                }
+                case "diagram.shouldSelectText": {
+                    if (value instanceof Boolean) {
+                        this.shouldSelectText = value
+                    }
+                }
+            }
+        ]
     }
+    
 }
