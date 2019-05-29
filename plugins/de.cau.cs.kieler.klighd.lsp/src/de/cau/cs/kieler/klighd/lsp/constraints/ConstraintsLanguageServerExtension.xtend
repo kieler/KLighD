@@ -22,6 +22,8 @@ import org.eclipse.sprotty.SNode
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
+import org.eclipse.elk.graph.ElkNode
 
 /**
  * @author jet, cos
@@ -48,10 +50,16 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
         // KGraphElement which corresponding SNode has the correct ID
         val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, lc.getID)
+        // set property of KNode
         if (kGEle instanceof KNode) {
             val kNode = kGEle as KNode
             // TODO: check whether value for the property is valid
             kNode.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getLayer)
+            // set Property of corresponding elkNode
+            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+            if (elkNode instanceof ElkNode) {
+                elkNode.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getLayer)
+            }
         }
     }
     
