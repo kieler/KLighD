@@ -12,9 +12,8 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
-import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
-import org.eclipse.sprotty.SNode
+import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 
 /**
  * @author jet, cos
@@ -29,4 +28,6 @@ interface ConstraintsCommandExtension {
     @JsonNotification('setLayerConstraint')
     def void setLayerConstraint(LayerConstraint lc);
     
+    @JsonNotification('setPositionConstraint')
+    def void setPositionConstraint(PositionConstraint pc);
 }
