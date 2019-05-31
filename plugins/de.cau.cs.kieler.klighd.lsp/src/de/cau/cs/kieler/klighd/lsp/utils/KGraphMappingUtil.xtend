@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -25,16 +25,16 @@ import de.cau.cs.kieler.klighd.lsp.model.SKNode
 import de.cau.cs.kieler.klighd.lsp.model.SKPort
 import java.util.ArrayList
 import java.util.Map
+import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.sprotty.Dimension
 import org.eclipse.sprotty.Point
-import org.eclipse.sprotty.SEdge
 import org.eclipse.sprotty.SModelElement
 import org.eclipse.sprotty.SShapeElement
 
 /**
  * A helper class containing static methods for mapping of KGraph and SGraph bounds.
  * 
- * @author nir
+ * @author nre
  */
 public class KGraphMappingUtil {    
     /**
@@ -58,17 +58,21 @@ public class KGraphMappingUtil {
         ]
     }
     
-    private static def mapLayout(KEdgeLayout kedge, SEdge skedge) {
-        // copy all routing points
+    private static def mapLayout(KEdgeLayout kedge, SKEdge skedge) {
+        // Copy all routing points.
         var ArrayList<Point> routingPoints = new ArrayList<Point>
-        var sourcePoint = kedge.sourcePoint
-        var targetPoint = kedge.targetPoint
+        val sourcePoint = kedge.sourcePoint
+        val targetPoint = kedge.targetPoint
         routingPoints.add(new Point(sourcePoint.x, sourcePoint.y))
         for (bendPoint : kedge.bendPoints) {
             routingPoints.add(new Point(bendPoint.x, bendPoint.y))
         }
         routingPoints.add(new Point(targetPoint.x, targetPoint.y))
         skedge.routingPoints = routingPoints
+        
+        // Copy the bend points.
+        skedge.junctionPoints = kedge.getProperty(CoreOptions.JUNCTION_POINTS)
+        
     }
     
     private static def mapLayout(KShapeLayout kElement, SShapeElement sElement) {

@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -14,6 +14,7 @@ package de.cau.cs.kieler.klighd.lsp.model
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphData
 import java.util.List
+import org.eclipse.elk.core.math.KVectorChain
 import org.eclipse.sprotty.SEdge
 import org.eclipse.sprotty.SGraph
 import org.eclipse.sprotty.SLabel
@@ -46,6 +47,7 @@ public class SKLabel extends SLabel {
 @Accessors
 public class SKEdge extends SEdge {
     private List<KGraphData> data
+    private KVectorChain junctionPoints
 }
 
 /**

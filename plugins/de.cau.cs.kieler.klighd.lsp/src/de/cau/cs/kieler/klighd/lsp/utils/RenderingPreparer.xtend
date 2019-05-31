@@ -156,6 +156,13 @@ public final class RenderingPreparer {
         if (rendering instanceof KContainerRendering) {
             handleChildren(rendering.children, rendering.childPlacement, bounds, boundsMap, decorationMap, element)
         }
+        // Calculate the bounds for the junction point rendering.
+        if (rendering instanceof KPolyline) {
+            if (rendering.junctionPointRendering !== null) {                
+                handleAreaAndPointAndDecoratorPlacementRendering(rendering.junctionPointRendering, bounds, boundsMap,
+                    decorationMap, element)
+            }
+        }
     }
     
     /**
