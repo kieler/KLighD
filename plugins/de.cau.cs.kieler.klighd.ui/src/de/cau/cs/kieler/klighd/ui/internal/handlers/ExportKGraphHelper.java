@@ -99,47 +99,50 @@ public final class ExportKGraphHelper {
             while (root.getParent() != null) {
                 root = root.getParent();
             }
-            Copier copier = new Copier();
-            KNode copy = (KNode) copier.copy(root);
-            copier.copyReferences();
 
-            // We have the whole graph copied now
-            // If we want the whole graph thats fine,
-            // if we want a subgraph, we need to perform
-            // some adjustments to have a valid new root
-            final KNode exportGraph;
-            if (graph == root) {
-                // Whole graph export
-                exportGraph = copy;
-            } else {
-                // Subgraph export, move some stuff around
-                // The new root's position is at 0,0 now
-                KNode subgraphCopy = (KNode) copier.get(graph);
-                subgraphCopy.setPos(0, 0);
+            final KNode exportedGraph;
+            final Copier copier = new Copier();
+            {
+                final KNode copy = (KNode) copier.copy(root);
+                copier.copyReferences();
 
-                // Search for Rendering Libraries in the Graph to move them to the new root node
-                KRenderingLibrary[] libs = Iterators.toArray(
-                        Iterators.filter(copy.eAllContents(), KRenderingLibrary.class),
-                        KRenderingLibrary.class);
+                // We have the whole graph copied now
+                // If we want the whole graph thats fine,
+                // if we want a subgraph, we need to perform
+                // some adjustments to have a valid new root
+                if (graph == root) {
+                    // Whole graph export
+                    exportedGraph = copy;
+                } else {
+                    // Subgraph export, move some stuff around
+                    // The new root's position is at 0,0 now
+                    KNode subgraphCopy = (KNode) copier.get(graph);
+                    subgraphCopy.setPos(0, 0);
 
-                for (KRenderingLibrary lib : libs) {
-                    // Move the libs to the new root
-                    subgraphCopy.getData().add(lib);
+                    // Search for Rendering Libraries in the Graph to move them to the new root node
+                    KRenderingLibrary[] libs = Iterators.toArray(
+                            Iterators.filter(copy.eAllContents(), KRenderingLibrary.class),
+                            KRenderingLibrary.class);
+
+                    for (KRenderingLibrary lib : libs) {
+                        // Move the libs to the new root
+                        subgraphCopy.getData().add(lib);
+                    }
+
+                    // we wrap the subgraph into a new pseudo root node
+                    // to retain external ports
+                    KNode newRoot = KGraphUtil.createInitializedNode();
+                    newRoot.getChildren().add(subgraphCopy);
+                    // give the root a proper dimension
+                    newRoot.setWidth(subgraphCopy.getWidth());
+                    newRoot.setHeight(subgraphCopy.getHeight());
+
+                    // expand the subgraph by default
+                    newRoot.setProperty(KlighdInternalProperties.POPULATED, true);
+                    newRoot.setProperty(KlighdProperties.EXPAND, true);
+
+                    exportedGraph = newRoot;
                 }
-
-                // we wrap the subgraph into a new pseudo root node
-                // to retain external ports
-                KNode newRoot = KGraphUtil.createInitializedNode();
-                newRoot.getChildren().add(subgraphCopy);
-                // give the root a proper dimension
-                newRoot.setWidth(subgraphCopy.getWidth());
-                newRoot.setHeight(subgraphCopy.getHeight());
-
-                // expand the subgraph by default
-                newRoot.setProperty(KlighdInternalProperties.POPULATED, true);
-                newRoot.setProperty(KlighdProperties.EXPAND, true);
-
-                exportGraph = newRoot;
             }
 
             try {
@@ -156,7 +159,7 @@ public final class ExportKGraphHelper {
                     KGraphElement kge = kgeIt.next();
 
                     // remember whether a node was expanded / collapsed
-                    if (kge instanceof KNode && kge != exportGraph) {
+                    if (kge instanceof KNode && kge != exportedGraph) {
                         KNode kNode = (KNode) kge;
                         boolean isPopulated = kNode.getProperty(KlighdInternalProperties.POPULATED);
                         kNode.setProperty(KlighdProperties.EXPAND, isPopulated);
@@ -243,7 +246,7 @@ public final class ExportKGraphHelper {
                 }
 
                 // persist layout options and friends
-                KGraphUtil.persistDataElements(copy);
+                KGraphUtil.persistDataElements(exportedGraph);
 
                 // remove children if requested. Do this after the previous removal
                 // happening to make sure all rendering libraries are considered etc
@@ -279,7 +282,7 @@ public final class ExportKGraphHelper {
             }
             ResourceSet rs = new ResourceSetImpl();
             Resource r = rs.createResource(fileOutputURI);
-            r.getContents().add(exportGraph);
+            r.getContents().add(exportedGraph);
 
             // remove any edges that do not have a target anymore
             recursivelyRemoveInvalidEdges((KNode) copier.get(graph));
