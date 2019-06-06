@@ -24,6 +24,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import org.eclipse.elk.graph.ElkNode
+import org.eclipse.elk.graph.properties.IProperty
 
 /**
  * @author jet, cos
@@ -46,23 +47,29 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     override setLayerConstraint(LayerConstraint lc) {
-        val mapKToS = diagramState.getKGraphToSModelElementMap(lc.getUri)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getUri, lc.getID, lc.getLayer)
+    }
 
+    override setPositionConstraint(PositionConstraint pc) {
+        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.getUri, pc.getID,
+            pc.getPosition)
+    }
+
+    private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
+        val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
         // KGraphElement which corresponding SNode has the correct ID
-        val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, lc.getID)
+        val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, targetID)
         // set property of KNode
         if (kGEle instanceof KNode) {
             val kNode = kGEle as KNode
             // TODO: check whether value for the property is valid
-            kNode.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getLayer)
+            kNode.setProperty(PropID, value)
             // set Property of corresponding elkNode
             val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
             if (elkNode instanceof ElkNode) {
-                elkNode.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getLayer)
+                elkNode.setProperty(PropID, value)
             }
         }
     }
-    
-    // TODO: define & implement setPositionConstraint method 
 
 }
