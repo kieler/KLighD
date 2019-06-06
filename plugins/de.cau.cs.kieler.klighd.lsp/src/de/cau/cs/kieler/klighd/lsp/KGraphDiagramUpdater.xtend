@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
  * Copyright 2019 by
@@ -33,6 +33,9 @@ import org.eclipse.sprotty.xtext.ILanguageAwareDiagramServer
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
+import org.eclipse.sprotty.ILayoutEngine
+import org.eclipse.sprotty.layout.ElkLayoutEngine
+import de.cau.cs.kieler.klighd.lsp.constraints.InteractiveLayout
 
 /**
  * Connection between {@link IDiagramServer} and the {@link DiagramLanguageServer}. With this singleton diagram updater,
@@ -47,24 +50,27 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      */
     @Inject
     Provider<KGraphDiagramGenerator> diagramGeneratorProvider
-    
+
     /**
      * The language server using this diagram updater. Double of the private languageServer field of the DiagramUpdater
      * class, with protected instead of private field accessibility here.
      */
     protected DiagramLanguageServer languageServer
-    
+
     /**
      * Stores data for the generation of diagrams.
      */
     @Inject
     KGraphDiagramState diagramState
-    
+
+    @Inject
+    ILayoutEngine layoutEngine
+
     override initialize(DiagramLanguageServer languageServer) {
         this.languageServer = languageServer
         super.initialize(languageServer)
     }
-    
+
     /**
      * Updates the diagram without re-generating the underlying KGraph.
      * So this will use the stored KGraph saved for this diagramServer and create a new SGraph for that and call the
@@ -75,7 +81,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     def updateLayout(KGraphDiagramServer diagramServer) {
         return CompletableFuture.completedFuture(doUpdateLayout(diagramServer))
     }
-    
+
     /**
      * Updates the layout for the diagramServer, see {@see #updateLayout(KGraphDiagramServer)}.
      * Does this later as a completable future.
@@ -87,10 +93,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             // Just update the SGraph from the already existing KGraph.
             var ViewContext viewContext = null
             val id = context.resource.URI.toString
-            synchronized(diagramState) {
+            synchronized (diagramState) {
                 viewContext = diagramState.getKGraphContext(id)
             }
-            
+
             return diagramServer -> doCreateModel(viewContext, id, context.cancelChecker)
         ].thenAccept [
             key.requestTextSizesAndUpdateModel(value)
@@ -98,25 +104,37 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             return null
         ]
     }
-    
+
     override protected doUpdateDiagrams(String path, List<? extends ILanguageAwareDiagramServer> diagramServers) {
+        // doUpdateLayout aufrufen?
         if (diagramServers.empty) {
             return CompletableFuture.completedFuture(null)
         }
+
         return languageServer.languageServerAccess.doRead(path) [ context |
+
+            // own code
+            // TODO: check interactive property
+            if (layoutEngine instanceof KGraphLayoutEngine) {
+                for (dS : diagramServers){
+                    InteractiveLayout.calcLayout(dS as KGraphDiagramServer, context, layoutEngine, diagramState)
+                }
+            }
+
             var Object snapshotModel = null
-            synchronized(diagramState) {
+            synchronized (diagramState) {
                 snapshotModel = diagramState.getSnapshotModel(path)
             }
             val model = if (snapshotModel === null) {
-                            context.resource.contents.head
-                        } else {
-                            snapshotModel
-                        }
+                    context.resource.contents.head
+                } else {
+                    snapshotModel
+                }
             val cancelChecker = context.cancelChecker
-            
+
             return (diagramServers as List<KGraphDiagramServer>).map [ server |
                 server -> {
+                    // macht Synthese
                     createModel(server, model, path, cancelChecker)
                 }
             ]
@@ -128,9 +146,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             return null
         ]
     }
-    
+
     synchronized def createModel(KGraphDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
-        
+
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
         var String synthesisId
@@ -139,10 +157,10 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             if (iViewer instanceof SprottyViewer) {
                 viewer = iViewer
             }
-            
+
             synthesisId = diagramState.getSynthesisId(id)
         }
-        
+
         // Set properties.
         if (synthesisId !== null) {
             // If the synthesisId is null, KLighD will use the a default synthesis defined for this model.
@@ -150,18 +168,18 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         }
 
         // Save previous synthesis options to restore later.
-         storeCurrentSynthesisOptions()
+        storeCurrentSynthesisOptions()
         // Configure options.
         var Map<SynthesisOption, Object> recentSynthesisOptions = null
         synchronized (diagramState) {
             recentSynthesisOptions = diagramState.recentSynthesisOptions
         }
         properties.configureSynthesisOptionValues(recentSynthesisOptions)
-        
+
         // Indicated if the model type changed against the current model
         var modelTypeChanged = false
         var ViewContext viewContext = null
-        
+
         if (viewer === null || viewer.viewContext === null) {
             // if viewer or context does not exist always init view
             modelTypeChanged = true
@@ -175,13 +193,12 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 modelTypeChanged = true
             }
         }
-        
+
         // If the type changed the view must be reinitialized to provide a correct ViewContext
         // otherwise the ViewContext can be simply updated.
         if (modelTypeChanged) {
             // Configure the ViewContext and the KlighD synthesis to generate the KGraph model correctly.
-            properties.useViewer(SprottyViewer.ID)
-                .useUpdateStrategy(IncrementalUpdateStrategy.ID)
+            properties.useViewer(SprottyViewer.ID).useUpdateStrategy(IncrementalUpdateStrategy.ID)
             // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
             // TODO: The ViewContext should have a default constructor for non-SWT-based viewer.
             viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
@@ -201,11 +218,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 diagramState.putViewer(viewer)
             }
         }
-        
+
         // Finally, match the diagram server with the generated SGraph by returning the SGraph.
         return doCreateModel(viewContext, id, cancelChecker)
     }
-    
+
     /**
      * Generates an {@link SGraph} from the given {@link ViewContext} and the id under which it should be remembered in
      * the {@link KGraphDiagramState}.
@@ -228,7 +245,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         }
         return sGraph
     }
-    
+
     /**
      * Stores the current synthesisOptions configured in the current {@link ViewContext}.
      * Similar to storing the options in Eclipse UI.
@@ -236,23 +253,23 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @see de.cau.cs.kieler.klighd.ui.view.DiagramView#storeCurrentSynthesisOptions
      */
     def storeCurrentSynthesisOptions() {
-        synchronized(diagramState) {
+        synchronized (diagramState) {
             val viewer = diagramState.viewer
             if (viewer !== null && viewer.viewContext !== null) {
                 val viewContext = viewer.viewContext
                 val allUsedSynthesisOptions = new HashSet<SynthesisOption>
                 val usedRootSynthesis = viewContext.diagramSynthesis
-                
+
                 // Save used syntheses.
                 diagramState.addUsedSynthesis(usedRootSynthesis)
-                
+
                 // Find all available synthesis options for the currently used syntheses.
                 allUsedSynthesisOptions.addAll(usedRootSynthesis.displayedSynthesisOptions)
                 for (childVC : viewContext.getChildViewContexts(true)) {
                     diagramState.addUsedSynthesis(childVC.diagramSynthesis)
                     allUsedSynthesisOptions.addAll(childVC.diagramSynthesis.displayedSynthesisOptions)
                 }
-                
+
                 // Save used options.
                 for (option : allUsedSynthesisOptions) {
                     diagramState.putRecentSynthesisOption(option, viewContext.getOptionValue(option))
@@ -260,7 +277,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             }
         }
     }
-    
+
     /**
      * Makes the protected updateDiagram(List<URI>) method accessible from the outside.
      */
