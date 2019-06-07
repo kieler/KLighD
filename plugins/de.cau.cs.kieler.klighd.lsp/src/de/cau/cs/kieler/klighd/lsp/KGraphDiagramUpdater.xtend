@@ -66,6 +66,9 @@ class KGraphDiagramUpdater extends DiagramUpdater {
     @Inject
     ILayoutEngine layoutEngine
 
+    @Inject
+    InteractiveLayout inLa
+
     override initialize(DiagramLanguageServer languageServer) {
         this.languageServer = languageServer
         super.initialize(languageServer)
@@ -112,14 +115,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         }
 
         return languageServer.languageServerAccess.doRead(path) [ context |
-
-            // own code
-            // TODO: check interactive property
-            if (layoutEngine instanceof KGraphLayoutEngine) {
-                for (dS : diagramServers){
-                    InteractiveLayout.calcLayout(dS as KGraphDiagramServer, context, layoutEngine, diagramState)
-                }
-            }
 
             var Object snapshotModel = null
             synchronized (diagramState) {
@@ -242,6 +237,12 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putTexts(id, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
+        }
+
+        // own code
+        // TODO: check interactive property
+        if (layoutEngine instanceof KGraphLayoutEngine) {
+            inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
         }
         return sGraph
     }

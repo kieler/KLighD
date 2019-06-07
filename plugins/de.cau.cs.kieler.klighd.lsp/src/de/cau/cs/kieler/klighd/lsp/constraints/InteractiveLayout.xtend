@@ -17,31 +17,126 @@ import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
 import de.cau.cs.kieler.klighd.lsp.KGraphLayoutEngine
 import org.eclipse.xtext.ide.server.ILanguageServerAccess.Context
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import org.eclipse.elk.alg.layered.options.LayeredOptions
+import org.eclipse.elk.alg.layered.options.CrossingMinimizationStrategy
+import org.eclipse.elk.alg.layered.options.LayeringStrategy
+import org.eclipse.elk.alg.layered.options.CycleBreakingStrategy
+import com.google.inject.Inject
+import com.google.inject.Singleton
+import org.eclipse.elk.graph.ElkNode
+import java.util.List
+import org.eclipse.emf.common.util.EList
 
 /**
  * @author jet, cos
  * 
  */
+@Singleton
 class InteractiveLayout {
 
-    public def static calcLayout(KGraphDiagramServer diagramServer, Context context, KGraphLayoutEngine layoutE,
-        KGraphDiagramState diagramState) {
+    @Inject
+    private KGraphDiagramState diagramState
+
+    public def calcLayout(String id, KGraphLayoutEngine layoutE) {
 
         // layout
         var ViewContext viewContext = null
-        val id = context.resource.URI.toString
+        // val id = context.resource.URI.toString
         synchronized (diagramState) {
             viewContext = diagramState.getKGraphContext(id)
         }
-        var root = viewContext.viewModel
+
+        val root = viewContext.viewModel
+
+        println("ourLayout")
         // initiales layout
-        //​ neue layout Methode machen
-        //layoutE.onlyLayoutOnKGraph(id)
+        layoutE.onlyLayoutOnKGraph(id)
         // Koordinaten der Knoten anpassen
-//setCoordinates()
+        setCoordinates(root)
         // interactive strategies aktivieren
-//setInteractiveStrats()
-        //nochmal layout oder einfach weiterlaufen lassen?
-        
+        setInteractiveStrats(root)
+        // nochmal layout oder einfach weiterlaufen lassen?
+        layoutE.onlyLayoutOnKGraph(id)
     }
+
+    private def static setCoordinates(KNode root) {
+        val children = root.children
+        val List<KNode> nodesWithLayerProp = newArrayList()
+        val List<KNode> nodes = newArrayList()
+        for (node : children) {
+            if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) !== -1) {
+                nodesWithLayerProp.add(node)
+            } else {
+                nodes.add(node)
+            }
+        }
+
+        nodesWithLayerProp.sort(
+            [ a, b |
+                a.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) -
+                    b.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
+            ]
+        )
+        
+        nodes.sort([ a, b |
+            if (a.xpos > b.xpos) {
+                return 1
+            } else if (a.xpos < b.xpos) {
+                return -1
+            } else {
+                return 0
+            }
+        ])
+
+        setXCoordinates(nodesWithLayerProp, nodes)
+    }
+
+    def static setXCoordinates(List<KNode> nodesWithLayerProp, List<KNode> nodes) {
+        //TODO: edit this method. Currently it doesn't work properly
+        var rightmostX = Float.MIN_VALUE
+        var currentLayer = -1
+        var List<KNode> nodesOfLayer = newArrayList()
+        var counter = 0
+
+        for (node : nodes) {
+            var posX = node.xpos
+            if (posX > rightmostX) {
+                if (counter < nodesWithLayerProp.size) {
+                    var propNode = nodesWithLayerProp.get(counter)
+                    var ok = true
+                    while (ok &&
+                        propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == currentLayer) {
+                        propNode.xpos = rightmostX - propNode.width
+                        nodesOfLayer.add(propNode)
+                        counter++
+                        if (counter >= nodesWithLayerProp.size) {
+                            ok = false
+                        } else {
+                            propNode = nodesWithLayerProp.get(counter)
+                        }
+                    }
+                }
+                currentLayer++
+                setYCoordinates(nodesOfLayer)
+                nodesOfLayer = newArrayList
+            }
+            nodesOfLayer.add(node)
+            if (posX + node.width > rightmostX) {
+                rightmostX = posX + node.width
+            }
+        }
+    }
+
+    def static setYCoordinates(List<KNode> nodes) {
+        // TODO: implement
+    }
+
+    private def static setInteractiveStrats(KNode root) {
+        root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
+        root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
+        root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
+        root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE)
+    }
+
 }
