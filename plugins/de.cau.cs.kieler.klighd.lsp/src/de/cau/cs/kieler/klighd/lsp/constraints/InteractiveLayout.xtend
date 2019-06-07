@@ -78,7 +78,7 @@ class InteractiveLayout {
                     b.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
             ]
         )
-        
+
         nodes.sort([ a, b |
             if (a.xpos > b.xpos) {
                 return 1
@@ -93,7 +93,8 @@ class InteractiveLayout {
     }
 
     def static setXCoordinates(List<KNode> nodesWithLayerProp, List<KNode> nodes) {
-        //TODO: edit this method. Currently it doesn't work properly
+        // TODO: edit this method. Currently it doesn't work properly
+        // works for nodes without edges and if all nodes have the same width
         var rightmostX = Float.MIN_VALUE
         var currentLayer = -1
         var List<KNode> nodesOfLayer = newArrayList()
@@ -125,6 +126,24 @@ class InteractiveLayout {
             if (posX + node.width > rightmostX) {
                 rightmostX = posX + node.width
             }
+        }
+
+        while (counter < nodesWithLayerProp.size) {
+            var propNode = nodesWithLayerProp.get(counter)
+            var ok = true
+            while (ok && propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == currentLayer) {
+                propNode.xpos = rightmostX - propNode.width
+                nodesOfLayer.add(propNode)
+                counter++
+                if (counter >= nodesWithLayerProp.size) {
+                    ok = false
+                } else {
+                    propNode = nodesWithLayerProp.get(counter)
+                }
+            }
+            rightmostX += propNode.width + 1
+            currentLayer++
+            setYCoordinates(nodesOfLayer)
         }
     }
 
