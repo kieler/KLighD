@@ -94,8 +94,9 @@ class InteractiveLayout {
 
     def static setXCoordinates(List<KNode> nodesWithLayerProp, List<KNode> nodes) {
         // TODO: edit this method. Currently it doesn't work properly
-        // works for nodes without edges and if all nodes have the same width
+        // works for nodes without edges
         var rightmostX = Float.MIN_VALUE
+        var offset = Float.MIN_VALUE
         var currentLayer = -1
         var List<KNode> nodesOfLayer = newArrayList()
         var counter = 0
@@ -103,12 +104,18 @@ class InteractiveLayout {
         for (node : nodes) {
             var posX = node.xpos
             if (posX > rightmostX) {
+                var float newOff = 0
                 if (counter < nodesWithLayerProp.size) {
                     var propNode = nodesWithLayerProp.get(counter)
                     var ok = true
+
                     while (ok &&
                         propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == currentLayer) {
-                        propNode.xpos = rightmostX - propNode.width
+                        propNode.xpos = rightmostX + offset - 1
+                        var o = propNode.width
+                        if (o > newOff) {
+                            newOff = o
+                        }
                         nodesOfLayer.add(propNode)
                         counter++
                         if (counter >= nodesWithLayerProp.size) {
@@ -118,6 +125,7 @@ class InteractiveLayout {
                         }
                     }
                 }
+                offset = offset + newOff
                 currentLayer++
                 setYCoordinates(nodesOfLayer)
                 nodesOfLayer = newArrayList
@@ -126,22 +134,30 @@ class InteractiveLayout {
             if (posX + node.width > rightmostX) {
                 rightmostX = posX + node.width
             }
+            if (offset != Float.MIN_VALUE) {
+                node.xpos = offset + node.xpos + 1
+            }
         }
 
         while (counter < nodesWithLayerProp.size) {
             var propNode = nodesWithLayerProp.get(counter)
             var ok = true
+            var float newOff = 0
             while (ok && propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == currentLayer) {
-                propNode.xpos = rightmostX - propNode.width
+                propNode.xpos = rightmostX + offset - 1
                 nodesOfLayer.add(propNode)
                 counter++
+                var o = propNode.width
+                if (o > newOff) {
+                    newOff = o
+                }
                 if (counter >= nodesWithLayerProp.size) {
                     ok = false
                 } else {
                     propNode = nodesWithLayerProp.get(counter)
                 }
             }
-            rightmostX += propNode.width + 1
+            offset = offset + newOff + 1
             currentLayer++
             setYCoordinates(nodesOfLayer)
         }
