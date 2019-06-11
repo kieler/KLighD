@@ -25,6 +25,7 @@ import org.eclipse.xtext.ide.server.ILanguageServerExtension
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.emf.common.util.URI
 
 /**
  * @author jet, cos
@@ -56,7 +57,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
-        val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
+        val mapKToS = diagramState.getKGraphToSModelElementMap(uri.toString)
         // KGraphElement which corresponding SNode has the correct ID
         val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, targetID)
         // set property of KNode
@@ -65,11 +66,21 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             // TODO: check whether value for the property is valid
             kNode.setProperty(PropID, value)
             // set Property of corresponding elkNode
-            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            if (elkNode instanceof ElkNode) {
-                elkNode.setProperty(PropID, value)
-            }
+//            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+//            if (elkNode instanceof ElkNode) {
+//                elkNode.setProperty(PropID, value)
+//            }
+            
+           
         }
+    }
+    
+    override deletePositionConstraint(PositionConstraint pc) {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub")
+    }
+    
+    override deleteLayerConstraint(LayerConstraint lc) {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub")
     }
 
 }

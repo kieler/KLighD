@@ -30,4 +30,10 @@ interface ConstraintsCommandExtension {
     
     @JsonNotification('setPositionConstraint')
     def void setPositionConstraint(PositionConstraint pc);
+    
+    @JsonNotification('deletePositionConstraint')
+    def void deletePositionConstraint(PositionConstraint pc);
+    
+    @JsonNotification('deleteLayerConstraint')
+    def void deleteLayerConstraint(LayerConstraint lc);
 }
