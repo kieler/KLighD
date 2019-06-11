@@ -49,7 +49,8 @@ class InteractiveLayout {
 
         val root = viewContext.viewModel
 
-        println("ourLayout")
+        // Test
+        // println("ourLayout")
         // initiales layout
         layoutE.onlyLayoutOnKGraph(id)
         // Koordinaten der Knoten anpassen
@@ -72,29 +73,14 @@ class InteractiveLayout {
             }
         }
 
-        nodesWithLayerProp.sort(
-            [ a, b |
-                a.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) -
-                    b.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
-            ]
-        )
-
-        nodes.sort([ a, b |
-            if (a.xpos > b.xpos) {
-                return 1
-            } else if (a.xpos < b.xpos) {
-                return -1
-            } else {
-                return 0
-            }
-        ])
-
         setXCoordinates(nodesWithLayerProp, nodes)
     }
 
-    def static setXCoordinates(List<KNode> nodesWithLayerProp, List<KNode> nodes) {
-        // TODO: edit this method. Currently it doesn't work properly
-        // works for nodes without edges
+    private def static setXCoordinates(List<KNode> propNodes, List<KNode> nodes) {
+
+        sortListsForXPos(propNodes, nodes)
+
+        // TODO: only works properly for nodes without edges
         var rightmostX = Float.MIN_VALUE
         var offset = Float.MIN_VALUE
         var currentLayer = -1
@@ -105,8 +91,8 @@ class InteractiveLayout {
             var posX = node.xpos
             if (posX > rightmostX) {
                 var float newOff = 0
-                if (counter < nodesWithLayerProp.size) {
-                    var propNode = nodesWithLayerProp.get(counter)
+                if (counter < propNodes.size) {
+                    var propNode = propNodes.get(counter)
                     var ok = true
 
                     while (ok &&
@@ -118,10 +104,10 @@ class InteractiveLayout {
                         }
                         nodesOfLayer.add(propNode)
                         counter++
-                        if (counter >= nodesWithLayerProp.size) {
+                        if (counter >= propNodes.size) {
                             ok = false
                         } else {
-                            propNode = nodesWithLayerProp.get(counter)
+                            propNode = propNodes.get(counter)
                         }
                     }
                 }
@@ -139,8 +125,8 @@ class InteractiveLayout {
             }
         }
 
-        while (counter < nodesWithLayerProp.size) {
-            var propNode = nodesWithLayerProp.get(counter)
+        while (counter < propNodes.size) {
+            var propNode = propNodes.get(counter)
             var ok = true
             var float newOff = 0
             while (ok && propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == currentLayer) {
@@ -151,20 +137,93 @@ class InteractiveLayout {
                 if (o > newOff) {
                     newOff = o
                 }
-                if (counter >= nodesWithLayerProp.size) {
+                if (counter >= propNodes.size) {
                     ok = false
                 } else {
-                    propNode = nodesWithLayerProp.get(counter)
+                    propNode = propNodes.get(counter)
                 }
             }
             offset = offset + newOff + 1
-            currentLayer++
+            currentLayer = propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
             setYCoordinates(nodesOfLayer)
         }
     }
 
-    def static setYCoordinates(List<KNode> nodes) {
-        // TODO: implement
+    private def static sortListsForXPos(List<KNode> propNodes, List<KNode> nodes) {
+        // sorting based on layer the nodes should be in 
+        propNodes.sort(
+            [ a, b |
+                a.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) -
+                    b.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
+            ]
+        )
+        // sorting based on the x coordinates
+        nodes.sort([ a, b |
+            if (a.xpos > b.xpos) {
+                return 1
+            } else if (a.xpos < b.xpos) {
+                return -1
+            } else {
+                return 0
+            }
+        ])
+    }
+
+    private def static setYCoordinates(List<KNode> nodesOfLayer) {
+        val List<KNode> propNodes = newArrayList()
+        val List<KNode> nodes = newArrayList()
+        for (node : nodesOfLayer) {
+            if (node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) !== -1) {
+                propNodes.add(node)
+            } else {
+                nodes.add(node)
+            }
+        }
+        sortListsForYPos(propNodes, nodes)
+
+        var currentPos = 0
+        var counter = 0
+        var maxY = Float.MIN_VALUE
+        for (var i = 0; i < nodes.size; i++) {
+            var ok = true
+            if (counter < propNodes.size) {
+                var propNode = propNodes.get(counter)
+                if (propNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) ===
+                    currentPos) {
+                    propNode.ypos = maxY
+                    maxY++
+                    currentPos++
+                    i--
+                    ok = false
+                }
+            }
+            if (ok) {
+                var node = nodes.get(i)
+                node.ypos = maxY
+                maxY = maxY + node.height + 1
+                currentPos++
+            }
+        }
+    }
+
+    private def static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
+        // sorting based on position the nodes should have
+        propNodes.sort(
+            [ a, b |
+                a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) -
+                    b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+            ]
+        )
+        // sorting based on the y coordinates
+        nodes.sort([ a, b |
+            if (a.ypos > b.ypos) {
+                return 1
+            } else if (a.ypos < b.ypos) {
+                return -1
+            } else {
+                return 0
+            }
+        ])
     }
 
     private def static setInteractiveStrats(KNode root) {
