@@ -91,10 +91,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 viewContext = diagramState.getKGraphContext(id)
             }
             
-            return diagramServer -> doCreateModel(viewContext, id, context.cancelChecker)
+            return diagramServer -> createModel(viewContext, id, context.cancelChecker)
         ].thenAccept [
             key.requestTextSizesAndUpdateModel(value)
         ].exceptionally [ throwable |
+            println("ERROR: " + throwable)
             return null
         ]
     }
@@ -113,23 +114,24 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                         } else {
                             snapshotModel
                         }
-            val cancelChecker = context.cancelChecker
             
-            return (diagramServers as List<KGraphDiagramServer>).map [ server |
-                server -> {
-                    createModel(server, model, path, cancelChecker)
-                }
+            (diagramServers as List<KGraphDiagramServer>).forEach [ server |
+                prepareModel(server, model, path)
+                updateLayout(server)
             ]
-        ].thenAccept [ resultList |
-            // Call the text size estimation on the diagram server for which a new diagram got created.
-            resultList.filter[value !== null].forEach[key.requestTextSizesAndUpdateModel(value)]
-        ].exceptionally [ throwable |
-            println("ERROR: " + throwable)
             return null
         ]
     }
     
-    synchronized def createModel(KGraphDiagramServer server, Object model, String id, CancelIndicator cancelChecker) {
+    /**
+     * Prepares the DiagramState and the diagram server to generate an SGraph for the given model the next time the 
+     * createModel is called.
+     * 
+     * @param server The diagramServer for that the diagram state should be updated.
+     * @param model The new model that should be shown for the server.
+     * @param key The key to access the diagram state maps.
+     */
+    synchronized def void prepareModel(KGraphDiagramServer server, Object model, String key) {
         
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
@@ -140,7 +142,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 viewer = iViewer
             }
             
-            synthesisId = diagramState.getSynthesisId(id)
+            synthesisId = diagramState.getSynthesisId(key)
         }
         
         // Set properties.
@@ -195,15 +197,12 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         }
 
         synchronized (diagramState) {
-            diagramState.putURIString(server.clientId, id)
-            diagramState.putKGraphContext(id, viewContext)
+            diagramState.putURIString(server.clientId, key)
+            diagramState.putKGraphContext(key, viewContext)
             if (viewer !== null) {
                 diagramState.putViewer(viewer)
             }
         }
-        
-        // Finally, match the diagram server with the generated SGraph by returning the SGraph.
-        return doCreateModel(viewContext, id, cancelChecker)
     }
     
     /**
@@ -216,7 +215,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * relevant data in the {@link KGraphDiagramState}.
      * @param cancelChecker The {@link CancelIndicator} used to tell the diagram translation to stop.
      */
-    protected def SGraph doCreateModel(ViewContext viewContext, String id, CancelIndicator cancelChecker) {
+    synchronized def SGraph createModel(ViewContext viewContext, String id, CancelIndicator cancelChecker) {
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         val diagramGenerator = diagramGeneratorProvider.get
