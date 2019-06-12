@@ -27,6 +27,8 @@ import com.google.inject.Singleton
 import org.eclipse.elk.graph.ElkNode
 import java.util.List
 import org.eclipse.emf.common.util.EList
+import java.util.ArrayList
+import de.cau.cs.kieler.klighd.kgraph.KEdge
 
 /**
  * @author jet, cos
@@ -62,103 +64,25 @@ class InteractiveLayout {
     }
 
     private def static setCoordinates(KNode root) {
-        val children = root.children
-        val List<KNode> nodesWithLayerProp = newArrayList()
-        val List<KNode> nodes = newArrayList()
-        for (node : children) {
+        var layers = calcLayerNodes(root.children)
+        setXCoordinates(layers)
+        for (layer : layers) {
+            setYCoordinates(layer)
+        }
+    }
+
+    private def static calcLayerNodes(EList<KNode> allNodes) {
+        var allNs = newArrayList()
+        var propNs = newArrayList()
+        for (node : allNodes) {
+            allNs.add(node)
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) !== -1) {
-                nodesWithLayerProp.add(node)
-            } else {
-                nodes.add(node)
+                propNs.add(node)
             }
         }
 
-        setXCoordinates(nodesWithLayerProp, nodes)
-    }
-
-    private def static setXCoordinates(List<KNode> propNodes, List<KNode> nodes) {
-
-        sortListsForXPos(propNodes, nodes)
-
-        // TODO: only works properly for nodes without edges
-        var rightmostX = Float.MIN_VALUE
-        var offset = Float.MIN_VALUE
-        var currentLayer = -1
-        var List<KNode> nodesOfLayer = newArrayList()
-        var counter = 0
-
-        for (node : nodes) {
-            var posX = node.xpos
-            if (posX > rightmostX) {
-                var float newOff = 0
-                if (counter < propNodes.size) {
-                    var propNode = propNodes.get(counter)
-                    var ok = true
-
-                    while (ok &&
-                        propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == currentLayer) {
-                        propNode.xpos = rightmostX + offset - 1
-                        var o = propNode.width
-                        if (o > newOff) {
-                            newOff = o
-                        }
-                        nodesOfLayer.add(propNode)
-                        counter++
-                        if (counter >= propNodes.size) {
-                            ok = false
-                        } else {
-                            propNode = propNodes.get(counter)
-                        }
-                    }
-                }
-                offset = offset + newOff
-                currentLayer++
-                setYCoordinates(nodesOfLayer)
-                nodesOfLayer = newArrayList
-            }
-            nodesOfLayer.add(node)
-            if (posX + node.width > rightmostX) {
-                rightmostX = posX + node.width
-            }
-            if (offset != Float.MIN_VALUE) {
-                node.xpos = offset + node.xpos + 1
-            }
-        }
-
-        while (counter < propNodes.size) {
-            var propNode = propNodes.get(counter)
-            var ok = true
-            var float newOff = 0
-            while (ok && propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) == currentLayer) {
-                propNode.xpos = rightmostX + offset - 1
-                nodesOfLayer.add(propNode)
-                counter++
-                var o = propNode.width
-                if (o > newOff) {
-                    newOff = o
-                }
-                if (counter >= propNodes.size) {
-                    ok = false
-                } else {
-                    propNode = propNodes.get(counter)
-                }
-            }
-            offset = offset + newOff + 1
-            currentLayer = propNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
-            setYCoordinates(nodesOfLayer)
-        }
-    }
-
-    private def static sortListsForXPos(List<KNode> propNodes, List<KNode> nodes) {
-        // sorting based on layer the nodes should be in 
-        propNodes.sort(
-            [ a, b |
-                a.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) -
-                    b.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
-            ]
-        )
-        // sorting based on the x coordinates
-        nodes.sort([ a, b |
+        // sorting based on x position
+        allNs.sort([ a, b |
             if (a.xpos > b.xpos) {
                 return 1
             } else if (a.xpos < b.xpos) {
@@ -167,9 +91,107 @@ class InteractiveLayout {
                 return 0
             }
         ])
+
+        var layerNodes = initialLayers(allNs)
+
+        // sorting based on layer the node should be in
+        propNs.sort(
+            [ a, b |
+                a.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) -
+                    b.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
+            ]
+        )
+
+        var diff = 0
+        for (node : propNs) {
+            var layer = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) - diff;
+            if (layer < layerNodes.size) {
+                var nodesOfLayer = layerNodes.get(layer)
+                shiftOtherNs(node, nodesOfLayer, layerNodes, true)
+                nodesOfLayer.add(node)
+            } else {
+                diff = diff + layer - layerNodes.size
+                var list = newArrayList()
+                list.add(node)
+                layerNodes.add(list)
+            }
+        }
+
+        return layerNodes
+    }
+
+    private def static void shiftOtherNs(KNode movedNode, ArrayList<KNode> nodesOfLayer,
+        ArrayList<ArrayList<KNode>> layerNodes, boolean incoming) {
+        var EList<KEdge> edges = null
+        if (incoming) {
+            edges = movedNode.incomingEdges
+        } else {
+            edges = movedNode.outgoingEdges
+        }
+        var layer = movedNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT);
+        for (edge : edges) {
+            var KNode node = null
+            if (incoming) {
+                node = edge.source
+            } else {
+                node = edge.target
+            }
+            if (nodesOfLayer.contains(node)) {
+                nodesOfLayer.remove(node)
+                if (layer + 1 < layerNodes.size) {
+                    layerNodes.get(layer + 1).add(node)
+                    shiftOtherNs(node, layerNodes.get(layer + 1), layerNodes, false)
+                } else {
+                    var list = newArrayList()
+                    list.add(node)
+                    layerNodes.add(list)
+                }
+            }
+        }
+    }
+
+    private def static initialLayers(ArrayList<KNode> nodes) {
+        var layerNodes = newArrayList()
+        var rightmostX = Float.MIN_VALUE
+        var nodesOfLayer = newArrayList()
+        for (node : nodes) {
+            var posX = node.xpos
+            if (posX > rightmostX) {
+                layerNodes.add(nodesOfLayer)
+                nodesOfLayer = newArrayList()
+            }
+            if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) === -1) {
+                nodesOfLayer.add(node)
+            }
+            if (posX + node.width > rightmostX) {
+                rightmostX = posX + node.width
+            }
+
+        }
+        if (!nodesOfLayer.isEmpty) {
+            layerNodes.add(nodesOfLayer)
+        }
+        layerNodes.remove(0)
+        return layerNodes
+    }
+
+    private def static setXCoordinates(ArrayList<ArrayList<KNode>> layers) {
+        var float xPos = 0
+        var float nextX = 0
+        for (var i = 0; i < layers.size; i++) {
+            var nodesOfLayer = layers.get(i)
+            for (node : nodesOfLayer) {
+                node.xpos = xPos
+                if (xPos + node.width >= nextX) {
+                    nextX = xPos + node.width
+                }
+            }
+            xPos = nextX + 1
+        }
     }
 
     private def static setYCoordinates(List<KNode> nodesOfLayer) {
+
         val List<KNode> propNodes = newArrayList()
         val List<KNode> nodes = newArrayList()
         for (node : nodesOfLayer) {
@@ -181,29 +203,21 @@ class InteractiveLayout {
         }
         sortListsForYPos(propNodes, nodes)
 
-        var currentPos = 0
-        var counter = 0
-        var maxY = Float.MIN_VALUE
-        for (var i = 0; i < nodes.size; i++) {
-            var ok = true
-            if (counter < propNodes.size) {
-                var propNode = propNodes.get(counter)
-                if (propNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) ===
-                    currentPos) {
-                    propNode.ypos = maxY
-                    maxY++
-                    currentPos++
-                    i--
-                    ok = false
-                }
-            }
-            if (ok) {
-                var node = nodes.get(i)
-                node.ypos = maxY
-                maxY = maxY + node.height + 1
-                currentPos++
+        for (node : propNodes) {
+            var pos = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+            if (pos < nodes.size) {
+                nodes.add(pos, node)
+            } else {
+                nodes.add(node)
             }
         }
+
+        var yPos = nodes.get(0).ypos
+        for (node : nodes) {
+            node.ypos = yPos
+            yPos = yPos + node.height + 1
+        }
+
     }
 
     private def static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
