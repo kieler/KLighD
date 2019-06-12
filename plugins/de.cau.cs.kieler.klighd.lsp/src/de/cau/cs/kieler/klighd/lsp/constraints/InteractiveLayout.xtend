@@ -191,6 +191,7 @@ class InteractiveLayout {
     }
 
     private def static setYCoordinates(List<KNode> nodesOfLayer) {
+
         val List<KNode> propNodes = newArrayList()
         val List<KNode> nodes = newArrayList()
         for (node : nodesOfLayer) {
@@ -202,29 +203,21 @@ class InteractiveLayout {
         }
         sortListsForYPos(propNodes, nodes)
 
-        var currentPos = 0
-        var counter = 0
-        var maxY = Float.MIN_VALUE
-        for (var i = 0; i < nodes.size; i++) {
-            var ok = true
-            if (counter < propNodes.size) {
-                var propNode = propNodes.get(counter)
-                if (propNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT) ===
-                    currentPos) {
-                    propNode.ypos = maxY
-                    maxY++
-                    currentPos++
-                    i--
-                    ok = false
-                }
-            }
-            if (ok) {
-                var node = nodes.get(i)
-                node.ypos = maxY
-                maxY = maxY + node.height + 1
-                currentPos++
+        for (node : propNodes) {
+            var pos = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+            if (pos < nodes.size) {
+                nodes.add(pos, node)
+            } else {
+                nodes.add(node)
             }
         }
+
+        var yPos = nodes.get(0).ypos
+        for (node : nodes) {
+            node.ypos = yPos
+            yPos = yPos + node.height + 1
+        }
+
     }
 
     private def static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
