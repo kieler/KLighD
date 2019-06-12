@@ -12,23 +12,20 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
-import de.cau.cs.kieler.klighd.ViewContext
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
-import de.cau.cs.kieler.klighd.lsp.KGraphLayoutEngine
-import org.eclipse.xtext.ide.server.ILanguageServerAccess.Context
-import de.cau.cs.kieler.klighd.kgraph.KNode
-import org.eclipse.elk.alg.layered.options.LayeredOptions
-import org.eclipse.elk.alg.layered.options.CrossingMinimizationStrategy
-import org.eclipse.elk.alg.layered.options.LayeringStrategy
-import org.eclipse.elk.alg.layered.options.CycleBreakingStrategy
 import com.google.inject.Inject
 import com.google.inject.Singleton
-import org.eclipse.elk.graph.ElkNode
-import java.util.List
-import org.eclipse.emf.common.util.EList
-import java.util.ArrayList
+import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.kgraph.KEdge
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
+import de.cau.cs.kieler.klighd.lsp.KGraphLayoutEngine
+import java.util.ArrayList
+import java.util.List
+import org.eclipse.elk.alg.layered.options.CrossingMinimizationStrategy
+import org.eclipse.elk.alg.layered.options.CycleBreakingStrategy
+import org.eclipse.elk.alg.layered.options.LayeredOptions
+import org.eclipse.elk.alg.layered.options.LayeringStrategy
+import org.eclipse.emf.common.util.EList
 
 /**
  * @author jet, cos
@@ -51,8 +48,8 @@ class InteractiveLayout {
 
         val root = viewContext.viewModel
 
-        // Test
-        // println("ourLayout")
+        root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
+
         // initiales layout
         layoutE.onlyLayoutOnKGraph(id)
         // Koordinaten der Knoten anpassen
@@ -67,7 +64,9 @@ class InteractiveLayout {
         var layers = calcLayerNodes(root.children)
         setXCoordinates(layers)
         for (layer : layers) {
-            setYCoordinates(layer)
+            if (layer.size > 0) {
+                setYCoordinates(layer)
+            }
         }
     }
 
@@ -107,7 +106,8 @@ class InteractiveLayout {
             var layer = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) - diff;
             if (layer < layerNodes.size) {
                 var nodesOfLayer = layerNodes.get(layer)
-                shiftOtherNs(node, nodesOfLayer, layerNodes, true)
+                shiftOtherNs(node, layer, layerNodes, true)
+                shiftOtherNs(node, layer, layerNodes, false)
                 nodesOfLayer.add(node)
             } else {
                 diff = diff + layer - layerNodes.size
@@ -120,15 +120,15 @@ class InteractiveLayout {
         return layerNodes
     }
 
-    private def static void shiftOtherNs(KNode movedNode, ArrayList<KNode> nodesOfLayer,
-        ArrayList<ArrayList<KNode>> layerNodes, boolean incoming) {
+    private def static void shiftOtherNs(KNode movedNode, int layer, ArrayList<ArrayList<KNode>> layerNodes,
+        boolean incoming) {
+        var nodesOfLayer = layerNodes.get(layer)
         var EList<KEdge> edges = null
         if (incoming) {
             edges = movedNode.incomingEdges
         } else {
             edges = movedNode.outgoingEdges
         }
-        var layer = movedNode.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT);
         for (edge : edges) {
             var KNode node = null
             if (incoming) {
@@ -140,7 +140,8 @@ class InteractiveLayout {
                 nodesOfLayer.remove(node)
                 if (layer + 1 < layerNodes.size) {
                     layerNodes.get(layer + 1).add(node)
-                    shiftOtherNs(node, layerNodes.get(layer + 1), layerNodes, false)
+                    shiftOtherNs(node, layer + 1, layerNodes, false)
+                    shiftOtherNs(node, layer + 1, layerNodes, true)
                 } else {
                     var list = newArrayList()
                     list.add(node)
@@ -166,7 +167,6 @@ class InteractiveLayout {
             if (posX + node.width > rightmostX) {
                 rightmostX = posX + node.width
             }
-
         }
         if (!nodesOfLayer.isEmpty) {
             layerNodes.add(nodesOfLayer)
@@ -178,8 +178,7 @@ class InteractiveLayout {
     private def static setXCoordinates(ArrayList<ArrayList<KNode>> layers) {
         var float xPos = 0
         var float nextX = 0
-        for (var i = 0; i < layers.size; i++) {
-            var nodesOfLayer = layers.get(i)
+        for (nodesOfLayer : layers) {
             for (node : nodesOfLayer) {
                 node.xpos = xPos
                 if (xPos + node.width >= nextX) {
@@ -241,7 +240,6 @@ class InteractiveLayout {
     }
 
     private def static setInteractiveStrats(KNode root) {
-        root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE)
