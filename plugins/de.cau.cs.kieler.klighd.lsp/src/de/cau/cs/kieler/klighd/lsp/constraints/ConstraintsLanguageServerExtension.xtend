@@ -25,6 +25,12 @@ import org.eclipse.elk.graph.properties.IProperty
 import java.util.HashMap
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
+import com.google.inject.Injector
+import org.eclipse.xtext.resource.XtextResourceSet
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import java.net.URLDecoder
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
+import org.eclipse.elk.graph.ElkNode
 
 /**
  * @author jet, cos
@@ -37,6 +43,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
     @Inject
     KGraphDiagramState diagramState
+
+    @Inject
+    Injector injector
 
     override initialize(ILanguageServerAccess access) {
     }
@@ -57,32 +66,40 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
     private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
         val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
+        
         // KGraphElement which corresponding SNode has the correct ID
         val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, targetID)
+        
         // set property of KNode
         if (kGEle instanceof KNode) {
             val kNode = kGEle as KNode
             // TODO: check whether value for the property is valid
             kNode.setProperty(PropID, value)
+
+            // set Property of corresponding elkNode 
+            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
             
-           var u = URI.createURI(uri)
-           
-            
-            //kNode.eResource.save(new HashMap())
-            // set Property of corresponding elkNode
-//            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-//            if (elkNode instanceof ElkNode) {
-//                elkNode.setProperty(PropID, value)
-//            }
-            
-           
+            if (elkNode instanceof ElkNode) {
+                elkNode.setProperty(PropID, value)
+                val elkGraph = elkNode.parent
+                val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+                
+                // Delete the old model
+                resource.contents.clear
+                // Store the new model
+                resource.contents += elkGraph
+                // Serialize it into the file
+                resource.save(emptyMap())
+
+            }
+
         }
     }
-    
+
     override deletePositionConstraint(PositionConstraint pc) {
         throw new UnsupportedOperationException("TODO: auto-generated method stub")
     }
-    
+
     override deleteLayerConstraint(LayerConstraint lc) {
         throw new UnsupportedOperationException("TODO: auto-generated method stub")
     }
