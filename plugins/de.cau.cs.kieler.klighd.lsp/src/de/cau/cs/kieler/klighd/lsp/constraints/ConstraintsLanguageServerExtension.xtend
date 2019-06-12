@@ -18,14 +18,13 @@ import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import javax.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
-import org.eclipse.sprotty.SNode
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
-import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
-import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
+import java.util.HashMap
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.Resource
 
 /**
  * @author jet, cos
@@ -57,7 +56,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
-        val mapKToS = diagramState.getKGraphToSModelElementMap(uri.toString)
+        val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
         // KGraphElement which corresponding SNode has the correct ID
         val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, targetID)
         // set property of KNode
@@ -65,6 +64,11 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             val kNode = kGEle as KNode
             // TODO: check whether value for the property is valid
             kNode.setProperty(PropID, value)
+            
+           var u = URI.createURI(uri)
+           
+            
+            //kNode.eResource.save(new HashMap())
             // set Property of corresponding elkNode
 //            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
 //            if (elkNode instanceof ElkNode) {

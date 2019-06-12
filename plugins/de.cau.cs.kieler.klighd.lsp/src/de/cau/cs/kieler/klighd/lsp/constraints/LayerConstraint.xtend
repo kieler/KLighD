@@ -12,7 +12,6 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
-import org.eclipse.emf.common.util.URI
 
 /**
  * @author jet, cos

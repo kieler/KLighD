@@ -23,7 +23,7 @@ class Reevaluation {
     
     def static reevaluatePositionConstraints (KGraphDiagramState diagramState, KNode target, PositionConstraint pc){
           val allNodes = target.parent.children
-        
+           
     }
     
 }
