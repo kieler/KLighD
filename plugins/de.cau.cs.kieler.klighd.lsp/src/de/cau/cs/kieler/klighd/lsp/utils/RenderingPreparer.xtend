@@ -156,6 +156,13 @@ public final class RenderingPreparer {
         if (rendering instanceof KContainerRendering) {
             handleChildren(rendering.children, rendering.childPlacement, bounds, boundsMap, decorationMap, element)
         }
+        // Calculate the bounds for the junction point rendering.
+        if (rendering instanceof KPolyline) {
+            if (rendering.junctionPointRendering !== null) {                
+                handleAreaAndPointAndDecoratorPlacementRendering(rendering.junctionPointRendering, bounds, boundsMap,
+                    decorationMap, element)
+            }
+        }
     }
     
     /**
@@ -196,19 +203,40 @@ public final class RenderingPreparer {
         
         // Apply the element bounds for each rendering.
         for (var i = 0; i < renderings.size; i++) {
+            var Map<String, Bounds> usedBoundsMap = boundsMap
+            var Map<String, Decoration> usedDecorationMap = decorationMap
             val rendering = renderings.get(i)
+            // KRenderingRefs inside other renderings. This reference needs a new bounds- and decoration map to be
+            // stored inside it.
+            if (rendering instanceof KRenderingRef) {
+                usedBoundsMap = new HashMap<String, Bounds>
+                usedDecorationMap = new HashMap<String, Decoration>
+                
+                 // add new Property to contain the boundsMap
+                rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS_MAP, usedBoundsMap)
+                // and the decorationMap
+                rendering.properties.put(SprottyProperties.CALCULATED_DECORATION_MAP, usedDecorationMap)    
+            }
+            
             val bounds = elementBounds.get(i)
             // Decide if the bounds should be put in the boundsMap or in the rendering's properties.
-            if (boundsMap === null) {
+            if (usedBoundsMap === null) {
                 rendering.setBounds(bounds)
             } else {
-                boundsMap.put(rendering.id, bounds)
+                usedBoundsMap.put(rendering.id, bounds)
             }
             // Process modifiable styles
-            processModifiableStyles(rendering.styles, parent)
+            processModifiableStyles(rendering, parent)
             // Calculate the bounds and decorations of all child renderings.
             if (rendering instanceof KContainerRendering) {
-                handleChildren(rendering.children, rendering.childPlacement, bounds, boundsMap, decorationMap, parent)
+                handleChildren(rendering.children, rendering.childPlacement, bounds, usedBoundsMap, usedDecorationMap,
+                    parent)
+            } else if (rendering instanceof KRenderingRef
+                && (rendering as KRenderingRef).rendering instanceof KContainerRendering
+            ) {
+                val referencedRendering = (rendering as KRenderingRef).rendering as KContainerRendering
+                handleChildren(referencedRendering.children, referencedRendering.childPlacement, bounds, usedBoundsMap,
+                    usedDecorationMap, parent)
             }
         }
     }
@@ -220,9 +248,24 @@ public final class RenderingPreparer {
      */
     private static def void handleAreaAndPointAndDecoratorPlacementRendering(KRendering rendering, Bounds parentBounds,
         Map<String, Bounds> boundsMap, Map<String, Decoration> decorationMap, KGraphElement parent) {
-        val placementData = rendering.placementData
+        var placementData = rendering.placementData
         var Bounds bounds
         var Decoration decoration = null
+        var Map<String, Bounds> usedBoundsMap = boundsMap
+        var Map<String, Decoration> usedDecorationMap = decorationMap
+        
+        // KRenderingRefs inside other renderings. This reference needs a new bounds- and decoration map to be stored
+        // inside it.
+        if (rendering instanceof KRenderingRef) {
+            usedBoundsMap = new HashMap<String, Bounds>
+            usedDecorationMap = new HashMap<String, Decoration>
+            placementData = rendering.rendering.placementData
+            
+             // add new Property to contain the boundsMap
+            rendering.properties.put(SprottyProperties.CALCULATED_BOUNDS_MAP, usedBoundsMap)
+            // and the decorationMap
+            rendering.properties.put(SprottyProperties.CALCULATED_DECORATION_MAP, usedDecorationMap)
+        }
         
         switch (placementData) {
             KAreaPlacementData: {
@@ -266,7 +309,7 @@ public final class RenderingPreparer {
                             "the pointList of the KPolyline rendering is empty")
                     }
                     
-                    // Convert the point list to a needed point array.
+                    // Convert the KPoint list to a needed Point2D.Float array.
                     var points = newArrayOfSize(pointList.size)
                     for (var i = 0; i < pointList.size; i++) {
                         val point = pointList.get(i)
@@ -274,6 +317,9 @@ public final class RenderingPreparer {
                     }
                     // The path is a polyline as the parent rendering indicates.
                     path.setPathToPolyline(points)
+                } else {
+                    throw new IllegalArgumentException("A decorator placement is only applicable to KPolygons or " +
+                        "KPolylines")
                 }
                 
                 // Now evaluate the decorator placement micro layout with the help of KLighD.
@@ -288,22 +334,28 @@ public final class RenderingPreparer {
         }
         // Decide if the bounds and decoration should be put in the boundsMap/decorationMap or in the rendering's
         // properties.
-        if (boundsMap === null) {
+        if (usedBoundsMap === null) {
             rendering.setBounds(bounds)
             if (decoration !== null) {
                 rendering.setDecoration(decoration)
             }
         } else {
-            boundsMap.put(rendering.id, bounds)
+            usedBoundsMap.put(rendering.id, bounds)
             if (decoration !== null) {
-                decorationMap.put(rendering.id, decoration)
+                usedDecorationMap.put(rendering.id, decoration)
             }
         }
         // Process modifiable styles
-        processModifiableStyles(rendering.styles, parent)
+        processModifiableStyles(rendering, parent)
         // Calculate the bounds and decorations of all child renderings.
         if (rendering instanceof KContainerRendering) {
-            handleChildren(rendering.children, rendering.childPlacement, bounds, boundsMap, decorationMap, parent)
+            handleChildren(rendering.children, rendering.childPlacement, bounds, usedBoundsMap, usedDecorationMap, parent)
+        } else if (rendering instanceof KRenderingRef
+            && (rendering as KRenderingRef).rendering instanceof KContainerRendering
+        ) {
+            val referencedRendering = (rendering as KRenderingRef).rendering as KContainerRendering
+            handleChildren(referencedRendering.children, referencedRendering.childPlacement, bounds, usedBoundsMap,
+                usedDecorationMap, parent)
         }
     }
     
@@ -366,7 +418,12 @@ public final class RenderingPreparer {
     /**
      * @see de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController#processModifiableStyles
      */
-    private static def void processModifiableStyles(List<KStyle> styles, KGraphElement parent) {
+    private static def void processModifiableStyles(KRendering rendering, KGraphElement parent) {
+        val styles = if (rendering instanceof KRenderingRef)
+                rendering.rendering.styles
+            else
+                rendering.styles
+        
         val Iterable<KStyle> localModifiedStyles = filter(styles, MODIFIED_STYLE_FILTER);
 
         var boolean deliver
@@ -374,7 +431,7 @@ public final class RenderingPreparer {
             deliver  = s.eDeliver();
             s.eSetDeliver(false);
             KlighdDataManager.getInstance().getStyleModifierById(s.getModifierId()).modify(
-                    singletonModContext.configure(s, parent));
+                singletonModContext.configure(s, parent));
             s.eSetDeliver(deliver);
         }
     }

@@ -408,16 +408,13 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
             // With that new diagram server, do a similar procedure to generate a diagram as for usual diagrams (except,
             // use the 'model' as its model.
             if (diagramUpdater instanceof KGraphDiagramUpdater) {
-                val sGraph = (diagramUpdater as KGraphDiagramUpdater).createModel(diagramServer, model, uri, cancelIndicator)
-                if (sGraph !== null) {
-                    diagramServer.requestTextSizesAndUpdateModel(sGraph)
-                    
-                    // Also, update the syntheses available for the given diagram.
-                    if (!update) {
-                        val availableSynthesesData = getAvailableSynthesesData(model.class)
-                    
-                        diagramServer.dispatch(new SetSynthesesAction(availableSynthesesData))
-                    }
+                (diagramUpdater as KGraphDiagramUpdater).prepareModel(diagramServer, model, uri)
+                (diagramUpdater as KGraphDiagramUpdater).updateLayout(diagramServer)
+                // Also, update the syntheses available for the given diagram.
+                if (!update) {
+                    val availableSynthesesData = getAvailableSynthesesData(model.class)
+                
+                    diagramServer.dispatch(new SetSynthesesAction(availableSynthesesData))
                 }
                 return "OK"
             }

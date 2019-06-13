@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2018 by
+ * Copyright 2018-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -47,6 +47,7 @@ import java.util.HashMap
 import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
+import org.eclipse.elk.core.options.CoreOptions
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.sprotty.Dimension
@@ -340,6 +341,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         modelLabels.addAll(findTextsAndLabels(renderings))
         
         edgeElement.children.addAll(createLabels(edge.labels))
+        edgeElement.junctionPoints = edge.getProperty(CoreOptions.JUNCTION_POINTS)
         
         // activate the element by default if it does not have an active/inactive status yet.
         val renderingContextData = RenderingContextData.get(edge)
