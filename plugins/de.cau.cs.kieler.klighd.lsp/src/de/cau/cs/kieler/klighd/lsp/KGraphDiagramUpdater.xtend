@@ -99,7 +99,13 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             synchronized (diagramState) {
                 viewContext = diagramState.getKGraphContext(id)
             }
-            
+
+            // own code
+            // TODO: check interactive property
+            if (layoutEngine instanceof KGraphLayoutEngine) {
+                inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
+            }
+
             return diagramServer -> createModel(viewContext, id, context.cancelChecker)
         ].thenAccept [
             key.requestTextSizesAndUpdateModel(value)
@@ -122,11 +128,11 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 snapshotModel = diagramState.getSnapshotModel(path)
             }
             val model = if (snapshotModel === null) {
-                            context.resource.contents.head
-                        } else {
-                            snapshotModel
-                        }
-            
+                    context.resource.contents.head
+                } else {
+                    snapshotModel
+                }
+
             (diagramServers as List<KGraphDiagramServer>).forEach [ server |
                 prepareModel(server, model, path)
                 updateLayout(server)
@@ -134,7 +140,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             return null
         ]
     }
-    
+
     /**
      * Prepares the DiagramState and the diagram server to generate an SGraph for the given model the next time the 
      * createModel is called.
@@ -144,7 +150,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param key The key to access the diagram state maps.
      */
     synchronized def void prepareModel(KGraphDiagramServer server, Object model, String key) {
-        
+
         val properties = new KlighdSynthesisProperties()
         var SprottyViewer viewer = null
         var String synthesisId
@@ -153,7 +159,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             if (iViewer instanceof SprottyViewer) {
                 viewer = iViewer
             }
-            
+
             synthesisId = diagramState.getSynthesisId(key)
         }
 
@@ -237,11 +243,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
         }
 
-        // own code
-        // TODO: check interactive property
-        if (layoutEngine instanceof KGraphLayoutEngine) {
-            inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
-        }
         return sGraph
     }
 
