@@ -100,12 +100,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
                 viewContext = diagramState.getKGraphContext(id)
             }
 
-            // own code
-            // TODO: check interactive property
-            if (layoutEngine instanceof KGraphLayoutEngine) {
-                inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
-            }
-
             return diagramServer -> createModel(viewContext, id, context.cancelChecker)
         ].thenAccept [
             key.requestTextSizesAndUpdateModel(value)
@@ -241,6 +235,12 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putTexts(id, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
+        }
+
+        // own code
+        // TODO: check interactive property
+        if (layoutEngine instanceof KGraphLayoutEngine) {
+            inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
         }
 
         return sGraph
