@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import java.net.URLDecoder
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import org.eclipse.elk.graph.ElkNode
+import de.cau.cs.kieler.klighd.ViewContext
 
 /**
  * @author jet, cos
@@ -66,33 +67,40 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
     private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
         val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
-        
+
         // KGraphElement which corresponding SNode has the correct ID
         val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, targetID)
-        
-        // set property of KNode
-        if (kGEle instanceof KNode) {
-            val kNode = kGEle as KNode
-            // TODO: check whether value for the property is valid
-            kNode.setProperty(PropID, value)
 
-            // set Property of corresponding elkNode 
-            val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            
-            if (elkNode instanceof ElkNode) {
-                elkNode.setProperty(PropID, value)
-                val elkGraph = elkNode.parent
-                val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
-                
-                // Delete the old model
-                resource.contents.clear
-                // Store the new model
-                resource.contents += elkGraph
-                // Serialize it into the file
-                resource.save(emptyMap())
+        var ViewContext viewContext = null
+        synchronized (diagramState) {
+            viewContext = diagramState.getKGraphContext(uri)
+        }
 
+        if (viewContext !== null) {
+            val root = viewContext.viewModel
+
+            // set property of KNode
+            if (root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT) && kGEle instanceof KNode) {
+                val kNode = kGEle as KNode
+                // TODO: check whether value for the property is valid
+                kNode.setProperty(PropID, value)
+
+                // set Property of corresponding elkNode 
+                val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+
+                if (elkNode instanceof ElkNode) {
+                    elkNode.setProperty(PropID, value)
+                    val elkGraph = elkNode.parent
+                    val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+
+                    // Delete the old model
+                    resource.contents.clear
+                    // Store the new model
+                    resource.contents += elkGraph
+                    // Serialize it into the file
+                    resource.save(emptyMap())
+                }
             }
-
         }
     }
 

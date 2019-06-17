@@ -54,16 +54,18 @@ class InteractiveLayout {
         }
 
         val root = viewContext.viewModel
+        if (root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT)) {
 
-        root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
+            root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
 
-        // initial layout
-        layoutE.onlyLayoutOnKGraph(id)
-        // adjust coordinates of the nodes
-        setCoordinates(root)
-        // activate interactive strategies
-        setInteractiveStrats(root)
-    // layoutE.onlyLayoutOnKGraph(id)
+            // initial layout
+            layoutE.onlyLayoutOnKGraph(id)
+            // adjust coordinates of the nodes
+            setCoordinates(root)
+            // activate interactive strategies
+            setInteractiveStrats(root)
+        // layoutE.onlyLayoutOnKGraph(id)
+        }
     }
 
     /**
