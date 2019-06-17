@@ -37,6 +37,13 @@ class InteractiveLayout {
     @Inject
     private KGraphDiagramState diagramState
 
+    /**
+     * Calculates the layout for graphs that contain constraints.
+     * 
+     * @param id The identifier used in the SGraph model generation and that is used to store diagram generation
+     * relevant data in the {@link KGraphDiagramState}.
+     * @param layoutE The KGraphLayoutEngine
+     */
     public def calcLayout(String id, KGraphLayoutEngine layoutE) {
 
         // layout
@@ -50,16 +57,20 @@ class InteractiveLayout {
 
         root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
 
-        // initiales layout
+        // initial layout
         layoutE.onlyLayoutOnKGraph(id)
-        // Koordinaten der Knoten anpassen
+        // adjust coordinates of the nodes
         setCoordinates(root)
-        // interactive strategies aktivieren
+        // activate interactive strategies
         setInteractiveStrats(root)
-        // nochmal layout oder einfach weiterlaufen lassen?
-        layoutE.onlyLayoutOnKGraph(id)
+    // layoutE.onlyLayoutOnKGraph(id)
     }
 
+    /**
+     * Sets the coordinates of the nodes in the graph {@code root} according to the set constraints.
+     * 
+     * @param root The root of the graph that should be layoutet.
+     */
     private def static setCoordinates(KNode root) {
         var layers = calcLayerNodes(root.children)
         setXCoordinates(layers)
@@ -70,29 +81,39 @@ class InteractiveLayout {
         }
     }
 
-    private def static calcLayerNodes(EList<KNode> allNodes) {
+    /**
+     * Calculates the layers the {@code allNodes} belong to without the nodes which constraints are set.
+     * 
+     *  @param nodes The nodes of the graph for which the layers should be calculated.
+     */
+    private def static calcLayerNodes(EList<KNode> nodes) {
         var allNs = newArrayList()
         var propNs = newArrayList()
-        for (node : allNodes) {
+        // copy all nodes in another list
+        // save the nodes which layer constraint are set in a separate list
+        for (node : nodes) {
             allNs.add(node)
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) !== -1) {
                 propNs.add(node)
             }
         }
 
-        // sorting based on x position
-        allNs.sort([ a, b |
-            if (a.xpos > b.xpos) {
-                return 1
-            } else if (a.xpos < b.xpos) {
-                return -1
-            } else {
-                return 0
-            }
-        ])
-
+        // calculate layers for nodes without constraints
         var layerNodes = initialLayers(allNs)
 
+        // add the nodes with constraints
+        addPropNodes(propNs, layerNodes)
+
+        return layerNodes
+    }
+
+    /**
+     * Adds the nodes in {@code propNs} to {@code layerNodes} based on their layer constraint.
+     * 
+     * @param propNs Nodes with set layer constraint that should be added to the layers.
+     * @param layerNodes List that contains the layers with their corresponding nodes.
+     */
+    private def static addPropNodes(ArrayList<KNode> propNs, ArrayList<ArrayList<KNode>> layerNodes) {
         // sorting based on layer the node should be in
         propNs.sort(
             [ a, b |
@@ -101,45 +122,62 @@ class InteractiveLayout {
             ]
         )
 
+        // add the nodes with constraints in the correct layer
         var diff = 0
         for (node : propNs) {
             var layer = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) - diff;
             if (layer < layerNodes.size) {
                 var nodesOfLayer = layerNodes.get(layer)
+                // edges in the same layer are not allowed
                 shiftOtherNs(node, layer, layerNodes, true)
                 shiftOtherNs(node, layer, layerNodes, false)
                 nodesOfLayer.add(node)
             } else {
+                // diff keeps track of the difference between the layer the node should 
+                // be in and the layer the node is really in.
+                // In this way nodes with the same layer constraint go in Fthe same layer 
+                // although it may not be the layer that is specified by the constraint
                 diff = diff + layer - layerNodes.size
                 var list = newArrayList()
                 list.add(node)
                 layerNodes.add(list)
             }
         }
-
-        return layerNodes
     }
 
+    /**
+     * Shifts nodes to the right such that edges in the same layer do not exist.
+     * 
+     * @param movedNode The node which connected nodes must be shifted .
+     * @param layer The layer {@code moveNode} is in.
+     * @param layerNodes All existing layers with the containing nodes.
+     * @param incoming Determines if incoming or outgoing edges should be considered. True: incoming edges.
+     */
     private def static void shiftOtherNs(KNode movedNode, int layer, ArrayList<ArrayList<KNode>> layerNodes,
         boolean incoming) {
         var nodesOfLayer = layerNodes.get(layer)
+        // get edges
         var EList<KEdge> edges = null
         if (incoming) {
             edges = movedNode.incomingEdges
         } else {
             edges = movedNode.outgoingEdges
         }
+
         for (edge : edges) {
+            // get connected node
             var KNode node = null
             if (incoming) {
                 node = edge.source
             } else {
                 node = edge.target
             }
+            // shift node to the next layer
             if (nodesOfLayer.contains(node)) {
                 nodesOfLayer.remove(node)
                 if (layer + 1 < layerNodes.size) {
                     layerNodes.get(layer + 1).add(node)
+                    // the connected nodes in the layer the node is shifted to must be shifted too
                     shiftOtherNs(node, layer + 1, layerNodes, false)
                     shiftOtherNs(node, layer + 1, layerNodes, true)
                 } else {
@@ -151,33 +189,62 @@ class InteractiveLayout {
         }
     }
 
+    /**
+     * Calculates the layer for the {@code nodes} based on their x coordinate.
+     * 
+     * @param nodes The nodes of the graph which layers should be calculated.
+     */
     private def static initialLayers(ArrayList<KNode> nodes) {
+        // sorting based on x position
+        nodes.sort([ a, b |
+            if (a.xpos > b.xpos) {
+                return 1
+            } else if (a.xpos < b.xpos) {
+                return -1
+            } else {
+                return 0
+            }
+        ])
+
         var layerNodes = newArrayList()
         var rightmostX = Float.MIN_VALUE
         var nodesOfLayer = newArrayList()
+        // assign the nodes to layers
         for (node : nodes) {
             var posX = node.xpos
             if (posX > rightmostX) {
+                // node is in a new layer
                 layerNodes.add(nodesOfLayer)
                 nodesOfLayer = newArrayList()
             }
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) === -1) {
+                // nodes with layer constraint should be ignored
                 nodesOfLayer.add(node)
             }
             if (posX + node.width > rightmostX) {
+                // update the rightmost x occurrence of a node
                 rightmostX = posX + node.width
             }
         }
         if (!nodesOfLayer.isEmpty) {
+            // add the last layer
             layerNodes.add(nodesOfLayer)
         }
+        // the first node is added to the second layer
+        // thats why the first layer must be removed
         layerNodes.remove(0)
         return layerNodes
     }
 
+    /**
+     * Sets the x coordinates of the nodes in {@code layers} according to their layer.
+     *  
+     * @param layers The layers containing the associated nodes.
+     */
     private def static setXCoordinates(ArrayList<ArrayList<KNode>> layers) {
         var float xPos = 0
         var float nextX = 0
+        // nodes in the same layer get the same x coordinate
         for (nodesOfLayer : layers) {
             for (node : nodesOfLayer) {
                 node.xpos = xPos
@@ -185,12 +252,19 @@ class InteractiveLayout {
                     nextX = xPos + node.width
                 }
             }
+            // nodes in different layer should not overlap horizontally 
             xPos = nextX + 1
         }
     }
 
+    /**
+     * Sets the y coordinate of the nodes in {@code nodesOfLayer}.
+     * 
+     * @param nodesOfLayer The list containing nodes that are in the same layer. 
+     */
     private def static setYCoordinates(List<KNode> nodesOfLayer) {
 
+        // separate node with and without position constraint
         val List<KNode> propNodes = newArrayList()
         val List<KNode> nodes = newArrayList()
         for (node : nodesOfLayer) {
@@ -200,8 +274,10 @@ class InteractiveLayout {
                 nodes.add(node)
             }
         }
-        sortListsForYPos(propNodes, nodes)
 
+        // determine the order of the nodes
+        sortListsForYPos(propNodes, nodes)
+        // add the nodes with position constraint at the desired position in the nodes list
         for (node : propNodes) {
             var pos = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
             if (pos < nodes.size) {
@@ -211,6 +287,7 @@ class InteractiveLayout {
             }
         }
 
+        // set the y positions according to the order of the nodes
         var yPos = nodes.get(0).ypos
         for (node : nodes) {
             node.ypos = yPos
@@ -219,6 +296,13 @@ class InteractiveLayout {
 
     }
 
+    /**
+     * Sorts the {@code propNodes} according their position constraint 
+     * and {@code nodes} according to their y coordinate.
+     * 
+     * @param propNodes The nodes which position constraint is set
+     * @param nodes The nodes without position constraints
+     */
     private def static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
         // sorting based on position the nodes should have
         propNodes.sort(
@@ -239,6 +323,12 @@ class InteractiveLayout {
         ])
     }
 
+    /**
+     * Sets the interactive strategies in the phases crossing minimization, layer assignment, 
+     * cycle breaking for the graph {@code root}.
+     * 
+     * @param root The graph with strategies should be set.
+     */
     private def static setInteractiveStrats(KNode root) {
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
