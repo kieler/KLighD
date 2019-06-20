@@ -257,6 +257,30 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      */
     private static final IProperty<Boolean> INITIAL_NODE_SIZE = new Property<Boolean>(
             "klighd.initialNodeSize", true);
+    
+    /**
+     * This internal property serves as a vehicle to apply the layerID 
+     * that was set during ELK Layered back on the KGraph.
+     * 
+     * It is used for the Intentional Layout in Sprotty Diagrams
+     */
+    private static final IProperty<Integer> LAYERING_LAYER_I_D = new Property<Integer>(
+            "org.eclipse.elk.layered.layering.layerID",
+            (-1),
+            (-1),
+            null);
+    
+    /**
+     * This internal property serves as a vehicle to apply the positionID 
+     * that was set during ELK Layered back on the KGraph.
+     * 
+     * It is used for the Intentional Layout in Sprotty Diagrams
+     */
+    private static final IProperty<Integer> CROSSING_MINIMIZATION_POSITION_I_D = new Property<Integer>(
+            "org.eclipse.elk.layered.crossingMinimization.positionID",
+            (-1),
+            (-1),
+            null);
 
     /**
      * Creates a layout node for the node inside the given layout parent node.
@@ -656,6 +680,17 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 public Boolean caseElkNode(final ElkNode layoutNode) {
                     final KNode node = (KNode) element;
                     
+                    //Apply the nodeID and layerId that were set on the LGraph on the ElkGraph
+                    if(layoutNode.hasProperty(LAYERING_LAYER_I_D) 
+                            && layoutNode.hasProperty(CROSSING_MINIMIZATION_POSITION_I_D)) {
+                        
+                        final int nodeID = layoutNode.getProperty(CROSSING_MINIMIZATION_POSITION_I_D);
+                        final int layerID = layoutNode.getProperty(LAYERING_LAYER_I_D);
+                        node.setProperty(CROSSING_MINIMIZATION_POSITION_I_D, nodeID);
+                        node.setProperty(LAYERING_LAYER_I_D, layerID);
+                    }
+                  
+                    
                     shapeToViewModel(mapping, layoutNode, node, true, true);
                     node.setProperty(INITIAL_NODE_SIZE, false);
 
@@ -664,6 +699,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                     // and the figure scaling will be set according this property setting
                     node.setProperty(CoreOptions.SCALE_FACTOR,
                             layoutNode.getProperty(CoreOptions.SCALE_FACTOR));
+                                        
                     return true;
                 }
 

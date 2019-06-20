@@ -64,7 +64,13 @@ class InteractiveLayout {
             setCoordinates(root)
             // activate interactive strategies
             setInteractiveStrats(root)
-        // layoutE.onlyLayoutOnKGraph(id)
+//            layoutE.onlyLayoutOnKGraph(id)
+//
+//            for (node : root.children) {
+//                println("Layer ID: " + node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + " Pos ID " +
+//                    node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D))
+//            }
+
         }
     }
 
@@ -94,6 +100,7 @@ class InteractiveLayout {
         // copy all nodes in another list
         // save the nodes which layer constraint are set in a separate list
         for (node : nodes) {
+
             allNs.add(node)
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) !== -1) {
                 propNs.add(node)

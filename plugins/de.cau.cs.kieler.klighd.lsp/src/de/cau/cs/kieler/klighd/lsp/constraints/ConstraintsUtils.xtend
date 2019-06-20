@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.URI
 import com.google.inject.Injector
 import org.eclipse.xtext.resource.XtextResourceSet
 
+
 /**
  * Provides a set of utility methods that is used in the constraints package.
  * 
@@ -40,5 +41,5 @@ class ConstraintsUtils {
         }
 
         return injector.getInstance(XtextResourceSet).getResource(URI.createFileURI(fileUri), true)
-    }
+    }     
 }
