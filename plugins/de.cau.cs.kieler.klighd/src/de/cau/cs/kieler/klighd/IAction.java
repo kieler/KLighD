@@ -211,6 +211,7 @@ public interface IAction {
 
         private List<LayoutConfigurator> layoutConfigs = null;
 
+        private boolean needsSynthesis = false;
         private boolean actionPerformed = true;
         private Boolean animateLayout = null;
         private Boolean zoomToActualSize = null;
@@ -264,6 +265,18 @@ public interface IAction {
             } else {
                 return new ActionResult(actionRequiresLayout).dontZoom();
             }
+        }
+        
+        /**
+         * Do a new synthesis before the subsequent automatic layout run.
+         * Overwrites that the action now definitely also needs an automatic layout run after the synthesis.
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doSynthesis() {
+            this.needsSynthesis = true;
+            this.actionPerformed = true;
+            return this;
         }
 
         
@@ -387,6 +400,14 @@ public interface IAction {
          */
         public List<LayoutConfigurator> getLayoutConfigs() {
             return this.layoutConfigs;
+        }
+        
+        /**
+         * Getter. Denotes whether a subsequent synthesis is required.
+         * @return The {@link #needsSynthesis} flag.
+         */
+        public boolean getNeedsSynthesis() {
+            return this.needsSynthesis;
         }
 
         /**
