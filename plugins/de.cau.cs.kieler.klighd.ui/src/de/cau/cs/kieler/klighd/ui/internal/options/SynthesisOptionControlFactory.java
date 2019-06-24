@@ -23,6 +23,8 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -33,6 +35,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.events.IExpansionListener;
@@ -233,6 +236,9 @@ public class SynthesisOptionControlFactory {
                 return true;
             } else if (option.isRangeOption()) {
                 createRangeOptionControl(option, context);
+                return true;
+            } else if (option.isTextOption()) {
+                createTextOptionControl(option, context);
                 return true;
             } else if (option.isSeparator()) {
                 createSeparator(option.getName());
@@ -609,6 +615,87 @@ public class SynthesisOptionControlFactory {
                                 .performUpdate();
                         }
                     }
+                });
+            }
+        });
+    }
+    
+    /**
+     * Factory method for creating a text box related to a 'text' option.  
+     * 
+     * @param option the 'text' option
+     * @param context the related {@link ViewContext} the option is declared in
+     */
+    private void createTextOptionControl(final SynthesisOption option, final ViewContext context) {
+        
+        final GridLayout gl = new GridLayout();
+        gl.verticalSpacing = MINOR_VERTICAL_SPACING;
+        gl.marginTop = 0;
+        gl.marginHeight = 0;
+        gl.marginWidth = 0;
+        
+        // create a container composite in order to group the label and the scaler
+        final Composite container = formToolkit.createComposite(parent);
+        //  ... and determine its layout
+        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        container.setLayout(gl);
+        controls.add(container);
+        
+        // add the label ...
+        final Label label = formToolkit.createLabel(container, "");
+        
+        // ... and the text box for choosing the value
+        final Text text = formToolkit.createText(container, (String) context.getOptionValue(option));
+
+        // configure its layout
+        final GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        text.setLayoutData(gridData);
+        
+        // configure the label's text in terms of a fixed string
+        label.setText(option.getName() + ":");
+
+        final String us = option.getUpdateStrategy();
+        final KlighdSynthesisProperties properties = 
+                us == null ? null : KlighdSynthesisProperties.create().useUpdateStrategy(us);
+
+        // and finally add a selection listener for instant diagram updates
+        text.addModifyListener(new ModifyListener() {
+            
+            // a little buffer used for dropping unnecessary events
+            private String currentValue = text.getText();
+            
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                final Text text = (Text) e.widget;
+                
+                // The text in the widget.
+                String s = text.getText();
+                
+                // Check whether the value actually changed.
+                if (s == currentValue) {
+                    return;
+                } else {
+                    currentValue = s;
+                }
+                
+                context.configureOption(option, s);
+                container.layout(true);
+                
+                // Trigger the diagram update.
+                Display.getCurrent().asyncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (option.getUpdateAction() != null) {
+                            invokeUpdateAction(option.getUpdateAction(), context);
+                        } else {
+                            new LightDiagramLayoutConfig(context)
+                                .properties(properties)
+                                .animate(option.getAnimateUpdate())
+                                .performUpdate();
+                        }
+                    }
+                    
                 });
             }
         });

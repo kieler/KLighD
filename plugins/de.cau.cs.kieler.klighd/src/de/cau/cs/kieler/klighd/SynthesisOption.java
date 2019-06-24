@@ -233,7 +233,34 @@ public final class SynthesisOption {
             option.setStepSize(Math.round(stepSize.floatValue()));
         }
         return option;
-    }    
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param name The name of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOption(final String name) {
+        return new SynthesisOption(name, TransformationOptionType.TEXT, "");
+    }
+    
+    /**
+     * Static factory method providing a 'Text' {@link SynthesisOption}.<br>
+     * <br>
+     * Hint: Declare {@link SynthesisOption TransformationOptions} by means of static fields if
+     * the transformation is a re-initialized one (determined in the registration).
+     * 
+     * @param name The name of the option.
+     * @param initialValue The initial value of the option.
+     * @return The desired 'Text' {@link SynthesisOption}
+     */
+    public static SynthesisOption createTextOption(final String name, final String initialValue) {
+        return new SynthesisOption(name, TransformationOptionType.TEXT, initialValue);
+    }
 
     /* -- the internal part -- */
 
@@ -250,6 +277,8 @@ public final class SynthesisOption {
         CHOICE,
         /** Options of this type provide a range of possible continuous values. */
         RANGE,
+        /** Options of this type provide any String as its possible values. */
+        TEXT,
         /** Pseudo option representing a separator. */
         SEPARATOR,
         /** Pseudo option representing a container for other options. */
@@ -305,6 +334,13 @@ public final class SynthesisOption {
      */
     public boolean isRangeOption() {
         return type.equals(TransformationOptionType.RANGE);
+    }
+    
+    /**
+     * @return the type
+     */
+    public boolean isTextOption() {
+        return type.equals(TransformationOptionType.TEXT);
     }
     
     /**
