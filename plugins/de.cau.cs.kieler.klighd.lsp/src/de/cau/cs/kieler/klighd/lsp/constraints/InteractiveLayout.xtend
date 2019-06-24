@@ -70,7 +70,6 @@ class InteractiveLayout {
 //                println("Layer ID: " + node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + " Pos ID " +
 //                    node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D))
 //            }
-
         }
     }
 
@@ -90,7 +89,7 @@ class InteractiveLayout {
     }
 
     /**
-     * Calculates the layers the {@code allNodes} belong to without the nodes which constraints are set.
+     * Calculates the layers the {@code nodes} belong to.
      * 
      *  @param nodes The nodes of the graph for which the layers should be calculated.
      */
@@ -204,35 +203,27 @@ class InteractiveLayout {
      * @param nodes The nodes of the graph which layers should be calculated.
      */
     private def static initialLayers(ArrayList<KNode> nodes) {
-        // sorting based on x position
+        // sorting based on layer ID position
         nodes.sort([ a, b |
-            if (a.xpos > b.xpos) {
-                return 1
-            } else if (a.xpos < b.xpos) {
-                return -1
-            } else {
-                return 0
-            }
+            a.getProperty(LayeredOptions.LAYERING_LAYER_I_D) - b.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
         ])
 
         var layerNodes = newArrayList()
-        var rightmostX = Float.MIN_VALUE
         var nodesOfLayer = newArrayList()
+        var currentL = -1
         // assign the nodes to layers
         for (node : nodes) {
-            var posX = node.xpos
-            if (posX > rightmostX) {
+            var layer = node.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            if (layer > currentL) {
                 // node is in a new layer
                 layerNodes.add(nodesOfLayer)
                 nodesOfLayer = newArrayList()
+                currentL = layer
             }
+
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) === -1) {
                 // nodes with layer constraint should be ignored
                 nodesOfLayer.add(node)
-            }
-            if (posX + node.width > rightmostX) {
-                // update the rightmost x occurrence of a node
-                rightmostX = posX + node.width
             }
         }
         if (!nodesOfLayer.isEmpty) {
