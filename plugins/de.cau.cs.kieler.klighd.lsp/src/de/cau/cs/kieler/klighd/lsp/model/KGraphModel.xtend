@@ -21,6 +21,8 @@ import org.eclipse.sprotty.SLabel
 import org.eclipse.sprotty.SNode
 import org.eclipse.sprotty.SPort
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.elk.graph.properties.IProperty
+import java.util.Map
 
 /**
  * Sprotty node with additional fields needed by the translation from a
@@ -29,6 +31,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 public class SKNode extends SNode {
     private List<KGraphData> data
+    private int layerId
+    private int layerCons
+    private int posCons 
 }
 
 /**

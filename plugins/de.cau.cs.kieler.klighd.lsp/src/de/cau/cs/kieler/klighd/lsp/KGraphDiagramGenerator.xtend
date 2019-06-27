@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
  * Copyright 2018-2019 by
@@ -61,6 +61,8 @@ import org.eclipse.sprotty.xtext.IDiagramGenerator
 import org.eclipse.sprotty.xtext.tracing.ITraceProvider
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.util.CancelIndicator
+import org.eclipse.elk.graph.properties.IProperty
+import org.eclipse.elk.alg.layered.options.LayeredOptions
 
 /**
  * A diagram generator that can create Sprotty {@link SGraph} from any {@link EObject} that has a registered view
@@ -78,8 +80,8 @@ import org.eclipse.xtext.util.CancelIndicator
  *      YangDiagramGenerator</a>
  */
 public class KGraphDiagramGenerator implements IDiagramGenerator {
-	private static val LOG = Logger.getLogger(KGraphDiagramGenerator)
-    
+    private static val LOG = Logger.getLogger(KGraphDiagramGenerator)
+
     /**
      * A map that maps each {@link KGraphElement} to its {@link SModelElement}.
      * Convenient for finding a specific key KGraphElement faster.
@@ -88,7 +90,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     private var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
-    
+
     /**
      * A list containing all texts from the source KGraph inside Sprotty labels. Used for the simpler texts-only SGraph.
      * @see #generateTextDiagram
@@ -96,7 +98,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     private var ArrayList<SKLabel> modelLabels
-    
+
     /**
      * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
      * @see #generateTextDiagram
@@ -108,19 +110,19 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * The root node of the translated {@link SGraph}.
      */
-	private var SGraph diagramRoot
-	
-	/**
-	 * Provides functionality to tag SModelElements.
-	 */
-	@Inject
-	private ITraceProvider traceProvider
-    
+    private var SGraph diagramRoot
+
+    /**
+     * Provides functionality to tag SModelElements.
+     */
+    @Inject
+    private ITraceProvider traceProvider
+
     /**
      * Generates unique IDs for any KGraphElement.
      */
     private KGraphElementIDGenerator idGen
-    
+
     /**
      * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
      * element of each pair.
@@ -134,58 +136,57 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     public static def ViewContext translateModel(Object model, ViewContext oldVC) {
         return LightDiagramServices.translateModel2(model, oldVC)
     }
-	
-	/**
-	 * Generates an {@link SGraph} from the resource if its content is a {@link KNode}.
-	 */
+
+    /**
+     * Generates an {@link SGraph} from the resource if its content is a {@link KNode}.
+     */
     override generate(Context context) {
         // TODO: The context now contains more data (especially, also some IDiagramState. Adapt to that and use that!)
-		val content = context.resource.contents.head
-		var SGraph ret = null
-		if (content instanceof KNode) {
-			ret = toSGraph(content as KNode, context.resource.URI.toString, context.cancelIndicator)
-		}
-		return ret
-	}
-	
-	/**
-	 * Translates a plain {@link KNode} or a KNode translated by {@link #translateModel} to an {@link SGraph}. 
-	 * @param parentNode      the KNode that should be translated. This is the parent node containing all elements of the 
-	 *                        graph, that is translated
-	 * @param identifier      The URI of the resource containing this KNode before the translation.
-	 * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
-	 */
-	public def SGraph toSGraph(KNode parentNode, String identifier, CancelIndicator cancelIndicator) {
+        val content = context.resource.contents.head
+        var SGraph ret = null
+        if (content instanceof KNode) {
+            ret = toSGraph(content as KNode, context.resource.URI.toString, context.cancelIndicator)
+        }
+        return ret
+    }
+
+    /**
+     * Translates a plain {@link KNode} or a KNode translated by {@link #translateModel} to an {@link SGraph}. 
+     * @param parentNode      the KNode that should be translated. This is the parent node containing all elements of the 
+     *                        graph, that is translated
+     * @param identifier      The URI of the resource containing this KNode before the translation.
+     * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
+     */
+    public def SGraph toSGraph(KNode parentNode, String identifier, CancelIndicator cancelIndicator) {
 //        println("Starting SGraph generation!")
 //        val startTime = System.currentTimeMillis
         LOG.info("Generating diagram for input: '" + identifier + "'")
-	    
+
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
         modelLabels = new ArrayList
         idGen = new KGraphElementIDGenerator
         edgesToGenerate = new ArrayList
-        
+
         // generate an SGraph root element around the translation of the parent KNode.
         diagramRoot = new SKGraph => [
             type = 'graph'
             id = identifier
             children = new ArrayList
         ]
-        
+
         diagramRoot.children.addAll(createNodesAndPrepareEdges(#[parentNode], diagramRoot))
         // Do post processing.
         postProcess()
-        
+
 //        val endTime = System.currentTimeMillis
 //        println("SGraph generation finished after " + (endTime - startTime) + "ms.")
-        
-        return if (cancelIndicator.canceled) 
-                   null 
-               else 
-                   diagramRoot
-        // TODO: incorporate the cancelIndicator on more places?
-	}
+        return if (cancelIndicator.canceled)
+            null
+        else
+            diagramRoot
+    // TODO: incorporate the cancelIndicator on more places?
+    }
 
     /**
      * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
@@ -203,7 +204,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             nodeAndEdgeElements.add(nodeElement)
             kGraphToSModelElementMap.put(node, nodeElement)
             nodeElement.trace(node)
-            
+
             // Add all edges in a list to be generated later, as they need their source and target nodes or ports
             // to be generated previously. Because hierarchical edges could connect to any arbitrary parent or child node,
             // they can only be generated safely in the end.
@@ -220,9 +221,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         }
         return nodeAndEdgeElements
     }
-    
-    
-    
+
     /**
      * Function to be called after the the {@link SKGraph} has been generated and all edges are prepared to be added
      * in the {@link edgesToGenerate} field. This method translates all {@link KEdge}s in the {@link edgesToGenerate}
@@ -230,7 +229,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * Also handles tracing and mapping between {@link KGraphElement}s and SModelElements.
      */
     private def createEdges() {
-        edgesToGenerate.forEach[ edgeAndParent |
+        edgesToGenerate.forEach [ edgeAndParent |
             val edge = edgeAndParent.key
             val parent = edgeAndParent.value
             val SEdge edgeElement = generateEdge(edge)
@@ -241,7 +240,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             }
         ]
     }
-    
+
     /**
      * Translates all {@code ports} to SModelElements. Also handles tracing and mapping between
      * KGraphElements and SModelElements.
@@ -256,7 +255,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         }
         return portElements
     }
-    
+
     /**
      * Translates all {@code labels} to SModelElements. Also handles tracing and mapping between
      * KGraphElements and SModelElements.
@@ -271,7 +270,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         }
         return labelElements
     }
-    
+
     /**
      * Generates a trace for the {@code kElement}'s source EObject on the {@code sElement}. 
      * The kElement must be synthesized by a KLighD synthesis before and must have its source EObject stored in the 
@@ -288,23 +287,27 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             }
         }
     }
-    
+
     /**
      * Creates a Sprotty node corresponding to the given {@link KNode}.
      */
     private def SKNode generateNode(KNode node) {
         val nodeElement = configSElement(SKNode, idGen.getId(node))
-        
+
         nodeElement.size = new Dimension(node.width, node.height)
         val filteredData = node.data.filter [
-            KRendering.isAssignableFrom(it.class)
-            || KRenderingLibrary.isAssignableFrom(it.class)
+            KRendering.isAssignableFrom(it.class) || KRenderingLibrary.isAssignableFrom(it.class)
         ].toList
-        
+
         modelLabels.addAll(findTextsAndLabels(filteredData))
+
+        nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
+
+        nodeElement.layerId = node.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+        nodeElement.layerCons = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
+        nodeElement.posCons = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
         
-        nodeElement.data = node.data.filter [ KRenderingLibrary.isAssignableFrom(it.class) ].toList
-        
+
         val renderingContextData = RenderingContextData.get(node)
         // activate the element by default if it does not have an active/inactive status yet.
         if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
@@ -326,23 +329,23 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         } else {
             renderingContextData.setProperty(KlighdInternalProperties.POPULATED, false)
         }
-        return nodeElement 
+        return nodeElement
     }
-    
+
     /**
      * Creates a Sprotty edge corresponding to the given {@link KEdge}.
      * Assumes, that the source and target nodes or ports of this {@code edge} have already been generated.
      */
     private def SKEdge generateEdge(KEdge edge) {
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
-        
-        val renderings = edge.data.filter [ KRendering.isAssignableFrom(it.class)].toList
-        
+
+        val renderings = edge.data.filter[KRendering.isAssignableFrom(it.class)].toList
+
         modelLabels.addAll(findTextsAndLabels(renderings))
-        
+
         edgeElement.children.addAll(createLabels(edge.labels))
         edgeElement.junctionPoints = edge.getProperty(CoreOptions.JUNCTION_POINTS)
-        
+
         // activate the element by default if it does not have an active/inactive status yet.
         val renderingContextData = RenderingContextData.get(edge)
         if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
@@ -351,19 +354,19 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
 
         return edgeElement
     }
-    
+
     /**
      * Creates a Sprotty port corresponding to the given {@link KPort}.
      */
     private def SKPort generatePort(KPort port) {
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
-        
-        val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
-        
+
+        val renderings = port.data.filter[KRendering.isAssignableFrom(it.class)].toList
+
         modelLabels.addAll(findTextsAndLabels(renderings))
-        
+
         portElement.children.addAll(createLabels(port.labels))
-        
+
         // activate the element by default if it does not have an active/inactive status yet.
         val renderingContextData = RenderingContextData.get(port)
         if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
@@ -372,7 +375,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
 
         return portElement
     }
-    
+
     /**
      * Creates a Sprotty label corresponding to the given {@link KLabel}.
      * 
@@ -382,13 +385,13 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     private def SKLabel generateLabel(KLabel label, boolean main) {
         val SKLabel labelElement = configSElement(SKLabel, idGen.getId(label))
         labelElement.text = label.text
-        
-        val renderings = label.data.filter [ KRendering.isAssignableFrom(it.class)].toList
-        
+
+        val renderings = label.data.filter[KRendering.isAssignableFrom(it.class)].toList
+
         if (main) {
             // remember KLabel element for later size estimation
             modelLabels.addAll(findTextsAndLabels(renderings))
-        
+
             // activate the element by default if it does not have an active/inactive status yet.
             val renderingContextData = RenderingContextData.get(label)
             if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
@@ -412,7 +415,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             children = new ArrayList
         ]
     }
-    
+
     /**
      * Handles processing that has to happen after the generation of the SKGraph model depending on data that may only
      * be accessible once all elements are generated.
@@ -420,36 +423,36 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     def postProcess() {
         // Create the edges all edges now that their source and target IDs are defined
         createEdges()
-        
+
         // Add all active renderings to the sModelElements.
-        this.kGraphToSModelElementMap.forEach [kGraphElement, sModelElement |
+        this.kGraphToSModelElementMap.forEach [ kGraphElement, sModelElement |
             var KRendering currentRendering
             val renderings = kGraphElement.data.filter(KRendering)
             // Getting the current rendering similar to AbstractKGERenderingController#getCurrentRendering
             if (kGraphElement instanceof KNode) {
                 // in case the node to be depicted is tagged as 'populated',
-                //  i.e. children are depicted in the diagram ...
+                // i.e. children are depicted in the diagram ...
                 if (RenderingContextData.get(kGraphElement).getProperty(KlighdInternalProperties.POPULATED)) {
                     // ... look for a rendering tagged as 'expanded', ...
                     currentRendering = renderings.findFirst [
                         KlighdPredicates.isExpandedRendering().apply(it)
                     ]
-        
+
                     // ... and if none exists ...
                     if (currentRendering === null) {
                         // ... take the first one that is not marked as 'collapsed' one
                         currentRendering = renderings.findFirst [
                             !KlighdPredicates.isCollapsedRendering().apply(it)
-                        ] 
+                        ]
                     }
                 } else {
                     // in case the node to be depicted is tagged as 'not populated',
-                    //  i.e. no children are visible in the diagram
+                    // i.e. no children are visible in the diagram
                     // look for a rendering marked as 'collapsed' one, ...
                     currentRendering = renderings.findFirst [
                         KlighdPredicates.isCollapsedRendering().apply(it)
                     ]
-        
+
                     // ... and if none exists ...
                     if (currentRendering === null) {
                         // ... take the first one that is not marked as 'expanded' one
@@ -480,7 +483,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             }
         ]
     }
-    
+
     private def createDefaultRendering(Class<?> clazz) {
         if (KNode.isAssignableFrom(clazz)) {
             // Same as klighd.piccolo.internal.controller.KNodeRenderingController#createDefaultRendering
@@ -491,10 +494,10 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             // create the default rendering model
             val KRenderingFactory factory = KRenderingFactory.eINSTANCE;
             val KRectangle rect = factory.createKRectangle();
-    
+
             val KForeground foreground = factory.createKForeground().setColor(0, 0, 0);
             val KBackground background = factory.createKBackground().setColor(0, 0, 0);
-    
+
             rect.getStyles().add(foreground);
             rect.getStyles().add(background);
             return rect;
@@ -508,7 +511,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             return KRenderingFactory.eINSTANCE.createKPolyline();
         }
     }
-    
+
     /**
      * Finds all KText and KLabel elements within the renderings in dataList and returns them as new labels.
      * Also remembers the mapping to the KText elements from the source model in the textMapping field.
@@ -520,7 +523,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         }
         return dataTexts
     }
-    
+
     /**
      * Finds all {@link KText} and {@link KLabel} elements within the renderings in {@code dataList} and returns them as
      * new labels. Also remembers the mapping to the KText elements from the source model in the {@code textMapping} 
@@ -547,17 +550,16 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             // need to put a copy of the text inside the new label because otherwise inserting it into the label will
             // modify the eContainer feature of the Text, which should not be changed
             label.data += EcoreUtil.copy(data)
-            
+
             // generate a new Label as if it would belong to the main model
             val sKLabel = generateLabel(label, false)
-            sKLabel.id = diagramRoot.id + KGraphElementIDGenerator.ID_SEPARATOR + "texts-only" + 
-                KGraphElementIDGenerator.ID_SEPARATOR + KGraphElementIDGenerator.LABEL_SEPARATOR 
-                + label.hashCode
+            sKLabel.id = diagramRoot.id + KGraphElementIDGenerator.ID_SEPARATOR + "texts-only" +
+                KGraphElementIDGenerator.ID_SEPARATOR + KGraphElementIDGenerator.LABEL_SEPARATOR + label.hashCode
             textMapping.put(sKLabel.id, data)
-            
+
             dataLabels += sKLabel
         } else if (data instanceof KContainerRendering) {
-            for (childData: data.children) {
+            for (childData : data.children) {
                 dataLabels.addAll(findTextsAndLabels(childData))
             }
         } else if (data instanceof KRenderingLibrary) {
@@ -566,7 +568,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         }
         return dataLabels
     }
-    
+
     /**
      * Returns a String describing the type of the {@link SModelElement}.
      */
@@ -579,7 +581,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             default: 'dontknow'
         }
     }
-    
+
     /**
      * Generates a simple text-only {@link SGraph} for a Graph with only the given labels.
      * The {@code label}s are expected to come from the {@code modelLabels} field after the {@link #toSGraph}
@@ -595,7 +597,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             id = parentId + KGraphElementIDGenerator.ID_SEPARATOR + "texts-only"
             children = new ArrayList
         ]
-        
+
         root.children = new ArrayList
         root.children += labels
         return root
