@@ -31,9 +31,19 @@ interface ConstraintsCommandExtension {
     @JsonNotification('setPositionConstraint')
     def void setPositionConstraint(PositionConstraint pc);
     
+    /**
+     * Deletes a position constraint from the node that is specified 
+     * in the sent PositionConstraint container 
+     * by setting the property to its default value -1.
+     */
     @JsonNotification('deletePositionConstraint')
     def void deletePositionConstraint(PositionConstraint pc);
     
+    /**
+     * Deletes a layer constraint from the node that is specified 
+     * in the sent PositionConstraint container 
+     * by setting the property to its default value -1.
+     */
     @JsonNotification('deleteLayerConstraint')
     def void deleteLayerConstraint(LayerConstraint lc);
 }

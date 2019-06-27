@@ -65,6 +65,26 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             pc.getPosition)
     }
 
+   
+    override deletePositionConstraint(PositionConstraint pc) {
+        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.getUri, pc.getID, -1)
+    }
+
+    
+    override deleteLayerConstraint(LayerConstraint lc) {
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getUri, lc.getID, -1)
+    }
+
+    /**
+     * Sets a layer or position constraint with a chosen {@code value} on the node 
+     * that is specified by the {@code targetID}.
+     * 
+     * @param PropID the type of constraint that should be set (LayerConstraint or PositionConstraint) 
+     * The IProperty class is expected.
+     * @param uri The uri of the diagram/file.
+     * @param targetID The id of the node on which the constraint should be set.
+     * @param value Either the id of the position or the id of the layer.
+     */
     private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
         val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
 
@@ -102,14 +122,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
                 }
             }
         }
-    }
-
-    override deletePositionConstraint(PositionConstraint pc) {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub")
-    }
-
-    override deleteLayerConstraint(LayerConstraint lc) {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub")
     }
 
 }
