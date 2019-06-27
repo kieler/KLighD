@@ -64,7 +64,7 @@ class InteractiveLayout {
             setCoordinates(root)
             // activate interactive strategies
             setInteractiveStrats(root)
-//            layoutE.onlyLayoutOnKGraph(id)
+            layoutE.onlyLayoutOnKGraph(id)
 //
 //            for (node : root.children) {
 //                println("Layer ID: " + node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + " Pos ID " +

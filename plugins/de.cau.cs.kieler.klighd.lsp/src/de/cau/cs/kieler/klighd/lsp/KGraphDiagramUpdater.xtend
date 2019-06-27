@@ -227,20 +227,21 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      * @param cancelChecker The {@link CancelIndicator} used to tell the diagram translation to stop.
      */
     synchronized def SGraph createModel(ViewContext viewContext, String id, CancelIndicator cancelChecker) {
+        // own code
+        // TODO: check interactive property
+        if (layoutEngine instanceof KGraphLayoutEngine) {
+            inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
+        }
+
         // Generate the SGraph model from the KGraph model and store every later relevant part in the
         // diagram state.
         val diagramGenerator = diagramGeneratorProvider.get
+
         val sGraph = diagramGenerator.toSGraph(viewContext.viewModel, id, cancelChecker)
         synchronized (diagramState) {
             diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putTexts(id, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
-        }
-
-        // own code
-        // TODO: check interactive property
-        if (layoutEngine instanceof KGraphLayoutEngine) {
-            inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
         }
 
         return sGraph
