@@ -89,6 +89,10 @@ import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
  * @author uru
  */
 public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
+    
+    /** Whether we're currently running on a Linux system. */
+    private static final boolean RUNNING_ON_LINUX = System.getProperty("os.name").startsWith("Linux")
+            || System.getProperty("os.name").startsWith("LINUX");
 
     public static final String VERSION_1_1 = "Version 1.1 (REC-SVG11-20030114)";
 
@@ -895,11 +899,13 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
         final String[] lines = text.split("\\r?\\n|\\r");
         final StringBuffer content = new StringBuffer();
         if (display != null) {
-            // Translate font size in 'pt' to display 'px'
-            //  see #addFontHeightUnit javadoc for more information
-            // As opposed to the font metrics used below, the determined
-            //  size is a non-rounded decimal number 
-            float size = this.getFont().getSize2D() * ((float) display.getDPI().x) / 72;
+            // Translate font size in 'pt' to display 'px', see #addFontHeightUnit javadoc for more information.
+            // As opposed to the font metrics used below, the determined size is a non-rounded decimal number. Linux
+            // is a special case here because the dpi value depends on the display size, not on the scaling factor
+            // chosen by the user. That means that people using high-dpi screens will have font sizes vastly different
+            // from those other people get. We choose 96 in this case as a default that sort of works.
+            final float dpi = RUNNING_ON_LINUX ? 96 : (float) display.getDPI().x;
+            float size = this.getFont().getSize2D() * dpi / 72;
             
             // Translate the font back to an swt font
             //  KLighD used SWT to determine font sizes and as SWT and AWT font metrics

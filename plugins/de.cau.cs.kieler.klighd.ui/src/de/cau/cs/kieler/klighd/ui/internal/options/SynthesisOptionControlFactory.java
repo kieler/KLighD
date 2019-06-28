@@ -644,6 +644,10 @@ public class SynthesisOptionControlFactory {
                         .getViewModel(), null));
 
         if (result.getActionPerformed()) {
+            if (result.getNeedsSynthesis()) {
+                viewContext.update();
+            }
+            
             new LightDiagramLayoutConfig(viewContext)
                 .animate(result.getAnimateLayout())
                 .zoomStyle(ZoomStyle.create(result, viewContext))
