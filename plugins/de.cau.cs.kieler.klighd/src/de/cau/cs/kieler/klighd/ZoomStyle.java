@@ -33,8 +33,23 @@ public enum ZoomStyle {
     /** Apply revert zooming to the actual size of the diagram. */
     ZOOM_TO_ACTUAL_SIZE,
 
-    /** Fit the whole diagram into the viewport, translating and scaling. */
+    /**
+     * Fit the current diagram (clip) into the viewport by translating and scaling. Precisely, the
+     * diagram transform will be changed to fit the bounds of the
+     * {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode} the diagram is currently clipped to. By
+     * default, this applies to the diagram root node.
+     */
     ZOOM_TO_FIT,
+
+    /**
+     * Fit the content of the current diagram (clip) into the viewport by translating and scaling.
+     * Precisely, the diagram transform will be changed to fit the bounding box of the children of
+     * the {@link de.cau.cs.kieler.klighd.kgraph.KNode KNode} the diagram is currently clipped to,
+     * including the children's connecting edges as well as the clip node's ports and label if those
+     * are turned visible. By default, this applies to the diagram root node. In contrast to
+     * {@link ZoomStyle#ZOOM_TO_FIT ZOOM_TO_FIT}, the diagram clip node's bounds are ignored here.
+     */
+    ZOOM_TO_FIT_CONTENT,
 
     /**
      * Center the current viewport on a certain element that is the 'focus', possibly zoom if the
@@ -73,6 +88,8 @@ public enum ZoomStyle {
      * Dispatching method determining a {@link ZoomStyle} value based on the given flags.
      * 'zoomToFit' has higher priority than 'zoomToFocus'.
      *
+     * @deprecated use {@link #create(boolean, boolean, boolean, boolean)}
+     *
      * @param zoomToActualSize
      *            request of zoom to actual size
      * @param zoomToFit
@@ -84,9 +101,30 @@ public enum ZoomStyle {
      */
     public static ZoomStyle create(final boolean zoomToActualSize, final boolean zoomToFit,
             final boolean zoomToFocus) {
+        return create(zoomToActualSize, zoomToFit, false, zoomToFocus);
+    }
+
+    /**
+     * Dispatching method determining a {@link ZoomStyle} value based on the given flags.
+     * 'zoomToFit' has higher priority than 'zoomToFocus'.
+     *
+     * @param zoomToActualSize
+     *            request of zoom to actual size
+     * @param zoomToFit
+     *            request of zoom to fit
+     * @param zoomToFocus
+     *            request of zoom to focus
+     *
+     * @return a {@link ZoomStyle} depending on the parameters.
+     */
+    public static ZoomStyle create(final boolean zoomToActualSize, final boolean zoomToFit,
+            final boolean zoomToFitContent, final boolean zoomToFocus) {
 
         if (zoomToActualSize) {
             return ZOOM_TO_ACTUAL_SIZE;
+
+        } else if (zoomToFitContent) {
+            return ZOOM_TO_FIT_CONTENT;
 
         } else if (zoomToFit) {
             return ZOOM_TO_FIT;
@@ -119,10 +157,13 @@ public enum ZoomStyle {
         final boolean zoomToFit = actionResult.getZoomToFit() != null
                 ? actionResult.getZoomToFit() : viewContext.isZoomToFit();
 
+        final boolean zoomToFitContent = actionResult.getZoomToFitContent() != null
+                ? actionResult.getZoomToFitContent() : viewContext.isZoomToFitContent();
+
         final boolean zoomToFocus = actionResult.getZoomToFocus() != null
                 ? actionResult.getZoomToFocus() : viewContext.isZoomToFocus();
 
-        return create(zoomToActualSize, zoomToFit, zoomToFocus);
+        return create(zoomToActualSize, zoomToFit, zoomToFitContent, zoomToFocus);
     }
 
     /**

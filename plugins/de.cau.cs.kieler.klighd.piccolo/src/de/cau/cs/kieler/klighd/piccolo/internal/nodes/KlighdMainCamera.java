@@ -106,17 +106,28 @@ public class KlighdMainCamera extends PCamera {
      *         represented {@link KNode}, <code>false</code> otherwise.
      */
     public boolean isClipsPortsHidden() {
-        return this.clipsPortsHidden;
+        final KNodeAbstractNode clipNode = getDisplayedKNodeNode();
+        if (clipNode != null) {
+            return clipNode.isDiagramClipWithPortsHidden();
+        } else { 
+            return false;
+        }
     }
 
     /**
-     * Returns whether the labels of the clipped {@link KNode} shall be invisible.
+     * Returns whether the labels of the represented {@link KNode} shall be invisible if the diagram is
+     * clipped to that {@link KNode}.
      * 
      * @return <code>true</code> if labels shall be invisible if the diagram is clipped to the
      *         represented {@link KNode}, <code>false</code> otherwise.
      */
     public boolean isClipsLabelsHidden() {
-        return this.clipsLabelsHidden;
+        final KNodeAbstractNode clipNode = getDisplayedKNodeNode();
+        if (clipNode != null) {
+            return clipNode.isDiagramClipWithLabelsHidden();
+        } else { 
+            return false;
+        }
     }
 
     /**
