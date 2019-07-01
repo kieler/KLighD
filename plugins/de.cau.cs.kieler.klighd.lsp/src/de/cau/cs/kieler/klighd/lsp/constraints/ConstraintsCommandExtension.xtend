@@ -28,6 +28,9 @@ interface ConstraintsCommandExtension {
     @JsonNotification('setLayerConstraint')
     def void setLayerConstraint(LayerConstraint lc);
     
+    @JsonNotification('setStaticConstraint')
+    def void setStaticConstraint(StaticConstraint sc);
+    
     @JsonNotification('setPositionConstraint')
     def void setPositionConstraint(PositionConstraint pc);
     

@@ -103,6 +103,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             if (root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT) && kGEle instanceof KNode) {
                 val kNode = kGEle as KNode
                 // TODO: check whether value for the property is valid
+                
                 kNode.setProperty(PropID, value)
 
                 // set Property of corresponding elkNode 
@@ -122,6 +123,10 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
                 }
             }
         }
+    }
+    
+    override setStaticConstraint(StaticConstraint sc) {
+        throw new UnsupportedOperationException("TODO: auto-generated method stub")
     }
 
 }

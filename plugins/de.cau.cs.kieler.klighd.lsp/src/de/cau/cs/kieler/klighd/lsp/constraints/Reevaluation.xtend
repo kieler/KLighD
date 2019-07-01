@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
  * Copyright ${year} by
@@ -15,31 +15,54 @@ package de.cau.cs.kieler.klighd.lsp.constraints
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import org.eclipse.elk.alg.layered.options.LayeredOptions
+import java.util.ArrayList
+import java.util.List
 
 /**
  * @author cos
- *
+ * 
  */
 class Reevaluation {
-    
-    def static reevaluatePositionConstraints (KGraphDiagramState diagramState, KNode target, PositionConstraint pc){
-          val allNodes = target.parent.children
-//          allNodes.stream
-//          .filter([KNode n | n.getProperty(LayeredOptions.LAYERING_LAYER_I_D) == target.getProperty(LayeredOptions.LAYERING_LAYER_I_D)])
-//          .filter([KNode n | n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)>=pc.position])
-//          .forEach([KNode n| n.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, 
-//              n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)+1)])
-          
-            
+
+    /**
+     * Adjusts positional constraints in a layer after one node received a new positional constraint in it.
+     */
+    def static reevaluatePositionConstraints(List<KNode> nodesOfLayer, KNode target) {
+        for (n : nodesOfLayer) {
+            val posChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+            val targetChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+
+            if (posChoiceCons != -1 && posChoiceCons >= targetChoiceCons) {
+                n.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons + 1)
+            }
+        }
+
     }
-    
-    def static reevaluateLayerConstraints (KGraphDiagramState diagramState, KNode target, LayerConstraint lc){
-        
-     
-        
-        
-        
-        
+
+    /**
+     * Adjusts positional constraints in a layer after one node has been shifted. 
+     */
+    def static reevaluateAfterShift(KNode shiftedNode, KNode targetNode, ArrayList<KNode> originLayer) {
+
+        val posIndexOfShifted = shiftedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+
+        // Decrement all positional constraint values of nodes that are below the shifted node
+        for (n : originLayer) {
+            val posChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+
+            if (posChoiceCons != -1 && posChoiceCons >= posIndexOfShifted) {
+                n.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons - 1)
+            }
+        }
+
+        // In the case that a static constraint was set also examine the target node
+        val targetPosChoiceCons = targetNode.getProperty(
+            LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+        if (targetPosChoiceCons > 0 && targetPosChoiceCons >= posIndexOfShifted) {
+            targetNode.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                targetPosChoiceCons - 1)
+        }
+
     }
-    
+
 }
