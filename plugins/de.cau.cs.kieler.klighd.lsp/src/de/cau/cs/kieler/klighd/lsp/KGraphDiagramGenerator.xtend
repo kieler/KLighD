@@ -304,6 +304,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
 
         nodeElement.layerId = node.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+        nodeElement.posId = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
         nodeElement.layerCons = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
         nodeElement.posCons = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
         
