@@ -32,6 +32,7 @@ import java.util.Map
 public class SKNode extends SNode {
     private List<KGraphData> data
     private int layerId
+    private int posId
     private int layerCons
     private int posCons 
 }
