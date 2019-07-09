@@ -285,12 +285,7 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
         final ViewContext context = getViewContext();
 
         // create a controller for the graph
-        controller = new DiagramController(model, canvas.getCamera(), sync,
-                context.getProperty(KlighdProperties.EDGES_FIRST).booleanValue());
-
-        canvas.getCamera().initClipsPortAndLabelsVisibility(
-                !context.getProperty(KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue(),
-                !context.getProperty(KlighdProperties.SHOW_CLIPPED_LABELS).booleanValue());
+        controller = new DiagramController(model, canvas.getCamera(), sync, context);
 
         // update the outline page
         if (outlinePage != null && !outlinePage.isDisposed()) {
