@@ -28,15 +28,17 @@ class Reevaluation {
      * Adjusts positional constraints in a layer after one node received a new positional constraint in it.
      */
     def static reevaluatePositionConstraints(List<KNode> nodesOfLayer, KNode target) {
-        for (n : nodesOfLayer) {
-            val posChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
-            val targetChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+        // Offset all positional constraint greater or equal to the new one in order to conserve the 
+        // established subsequence of nodes below the inserted node
+        val targetChoiceCons = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+        offsetPositionConstraintsInLayerBeginningAt(nodesOfLayer, 1, targetChoiceCons)
+    }
 
-            if (posChoiceCons != -1 && posChoiceCons >= targetChoiceCons) {
-                n.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons + 1)
-            }
-        }
-
+    def static reevaluatePositionConstraintsAfterRemoval(List<KNode> nodesOfLayer, KNode removedNode) {
+        // Offset all positional constraint greater or equal to the new one in order to conserve the 
+        // established subsequence of nodes below the removed node
+        val formerPosCons = removedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+        offsetPositionConstraintsInLayerBeginningAt(nodesOfLayer, -1, formerPosCons)
     }
 
     /**
@@ -47,13 +49,7 @@ class Reevaluation {
         val posIndexOfShifted = shiftedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
 
         // Decrement all positional constraint values of nodes that are below the shifted node
-        for (n : originLayer) {
-            val posChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
-
-            if (posChoiceCons != -1 && posChoiceCons >= posIndexOfShifted) {
-                n.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons - 1)
-            }
-        }
+        offsetPositionConstraintsInLayerBeginningAt(originLayer, -1, posIndexOfShifted)
 
         // In the case that a static constraint was set also examine the target node
         val targetPosChoiceCons = targetNode.getProperty(
@@ -63,6 +59,20 @@ class Reevaluation {
                 targetPosChoiceCons - 1)
         }
 
+    }
+
+    /**
+     * Offsets all nodes in a layer by {@code offset} that own a positional constraint that is greater or equal 
+     * than {@code startPos}.
+     */
+    def private static offsetPositionConstraintsInLayerBeginningAt(List<KNode> layer, int offset, int startPos) {
+        for (n : layer) {
+            val posChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+
+            if (posChoiceCons != -1 && posChoiceCons >= startPos) {
+                n.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons - 1)
+            }
+        }
     }
 
 }
