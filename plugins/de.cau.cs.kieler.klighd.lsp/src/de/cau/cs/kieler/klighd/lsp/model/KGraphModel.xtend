@@ -35,6 +35,7 @@ public class SKNode extends SNode {
     private int posId
     private int layerCons
     private int posCons 
+    private boolean interactiveLayout
 }
 
 /**
