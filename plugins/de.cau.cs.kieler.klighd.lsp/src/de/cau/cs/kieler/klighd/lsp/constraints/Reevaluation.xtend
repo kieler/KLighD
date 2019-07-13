@@ -59,6 +59,9 @@ class Reevaluation {
                 targetPosChoiceCons - 1)
         }
 
+        //Currently, we only shift from left to right.
+        // Also nodes with layer constraints are shifted. These layer constraints need to be updated
+        
     }
 
     /**
@@ -66,11 +69,12 @@ class Reevaluation {
      * than {@code startPos}.
      */
     def private static offsetPositionConstraintsInLayerBeginningAt(List<KNode> layer, int offset, int startPos) {
-        for (n : layer) {
-            val posChoiceCons = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+        for (node : layer) {
+            val posChoiceCons = ConstraintsUtils.getPosConstraint(node)
 
             if (posChoiceCons != -1 && posChoiceCons >= startPos) {
-                n.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, posChoiceCons - 1)
+                ConstraintsUtils.setPosConstraint(node, posChoiceCons - 1)
+            
             }
         }
     }
