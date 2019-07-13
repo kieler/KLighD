@@ -16,7 +16,8 @@ import java.net.URLDecoder
 import org.eclipse.emf.common.util.URI
 import com.google.inject.Injector
 import org.eclipse.xtext.resource.XtextResourceSet
-
+import de.cau.cs.kieler.klighd.kgraph.KNode
+import org.eclipse.elk.alg.layered.options.LayeredOptions
 
 /**
  * Provides a set of utility methods that is used in the constraints package.
@@ -41,5 +42,21 @@ class ConstraintsUtils {
         }
 
         return injector.getInstance(XtextResourceSet).getResource(URI.createFileURI(fileUri), true)
-    }     
+    }  
+    
+    def static getPosConstraint(KNode node){
+        return node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+    } 
+    
+    def static getLayerConstraint(KNode node){
+        return node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
+    } 
+    
+    def static setPosConstraint(KNode node, int pos){
+        node.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pos)
+    }
+    
+    def static setLayerConstraint(KNode node, int layer){
+        node.setProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, layer)
+    }
 }

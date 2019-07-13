@@ -32,6 +32,12 @@ import java.net.URLDecoder
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import org.eclipse.elk.graph.ElkNode
 import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramUpdater
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerManager
+import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
+import org.eclipse.sprotty.xtext.ls.IDiagramServerManager
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 
 /**
  * @author jet, cos
@@ -44,7 +50,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
     @Inject
     KGraphDiagramState diagramState
-
+    
     @Inject
     Injector injector
 
@@ -127,6 +133,16 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     
     override setStaticConstraint(StaticConstraint sc) {
         throw new UnsupportedOperationException("TODO: auto-generated method stub")
+    }
+@Inject KGraphLanguageServerExtension kGraphLanguageServerExt
+    override refreshLayout(String uri) {
+      
+        val fittingServers = kGraphLanguageServerExt.diagramServerManager.findDiagramServersByUri(uri)
+        val diagramServer = fittingServers.head as KGraphDiagramServer
+        val diagramUpdater = kGraphLanguageServerExt.diagramUpdater as KGraphDiagramUpdater
+        
+        //Triggers the new layout and sends it to the client
+        diagramUpdater.updateLayout(diagramServer)
     }
 
 }

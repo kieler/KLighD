@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
  * Copyright ${year} by
@@ -14,23 +14,19 @@ package de.cau.cs.kieler.klighd.lsp.constraints
 
 /**
  * @author jet, cos
- *
+ * 
  */
 class StaticConstraint {
-        String uri
+
+    String uri
     String id
-    int position
     int layer
+    int position
 
     new(String uri, String id, int layer, int position) {
         this.uri = uri
         this.id = id
         this.layer = layer
-        this.position = position
-    }
-    
-    def int getLayer(){
-        return this.layer
     }
 
     def String getUri() {
@@ -41,8 +37,12 @@ class StaticConstraint {
         return id
     }
 
+    def int getLayer() {
+        return layer
+    }
+
     def int getPosition() {
         return position
     }
-    
+
 }
