@@ -18,15 +18,31 @@ package de.cau.cs.kieler.klighd.lsp.constraints
  */
 class StaticConstraint {
 
+    /**
+     * URI of the resource as String
+     */
     String uri
+
+    /**
+     * Id of the target node
+     */
     String id
+
+    /**
+     * Value for the layer constraint
+     */
     int layer
+
+    /**
+     * Value for the positional constraint
+     */
     int position
 
     new(String uri, String id, int layer, int position) {
         this.uri = uri
         this.id = id
         this.layer = layer
+        this.position = position
     }
 
     def String getUri() {

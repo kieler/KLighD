@@ -38,6 +38,7 @@ import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerManager
 import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.IDiagramServerManager
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
+import java.util.List
 
 /**
  * @author jet, cos
@@ -50,7 +51,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
     @Inject
     KGraphDiagramState diagramState
-    
+
     @Inject
     Injector injector
 
@@ -71,12 +72,10 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             pc.getPosition)
     }
 
-   
     override deletePositionConstraint(PositionConstraint pc) {
         setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.getUri, pc.getID, -1)
     }
 
-    
     override deleteLayerConstraint(LayerConstraint lc) {
         setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getUri, lc.getID, -1)
     }
@@ -92,10 +91,25 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
      * @param value Either the id of the position or the id of the layer.
      */
     private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
+        val kNode = getKNode(uri, targetID)
+
+        if (kNode !== null) {
+            kNode.setProperty(PropID, value)
+            updateSourceCode(kNode, PropID, value, uri)
+        }
+    }
+
+    /**
+     * Returns the {@code KNode} of the node described by {@code ID}.
+     * Returns null if the {@code ViewContext} of the resource described by {@code uri} is null.
+     * Returns null if the element behind the ID is no kNode.
+     * Returns null if the {@code INTERACTIVE_LAYOUT} IProperty is not set on the root of the resource.
+     */
+    private def getKNode(String uri, String ID) {
         val mapKToS = diagramState.getKGraphToSModelElementMap(uri)
 
         // KGraphElement which corresponding SNode has the correct ID
-        val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, targetID)
+        val kGEle = KGraphElementIDGenerator.findElementById(mapKToS, ID)
 
         var ViewContext viewContext = null
         synchronized (diagramState) {
@@ -107,41 +121,96 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
             // set property of KNode
             if (root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT) && kGEle instanceof KNode) {
-                val kNode = kGEle as KNode
-                // TODO: check whether value for the property is valid
-                
-                kNode.setProperty(PropID, value)
-
-                // set Property of corresponding elkNode 
-                val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-
-                if (elkNode instanceof ElkNode) {
-                    elkNode.setProperty(PropID, value)
-                    val elkGraph = elkNode.parent
-                    val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
-
-                    // Delete the old model
-                    resource.contents.clear
-                    // Store the new model
-                    resource.contents += elkGraph
-                    // Serialize it into the file
-                    resource.save(emptyMap())
-                }
+                return kGEle as KNode
+            } else {
+                return null
             }
+        } else {
+            return null
         }
     }
-    
-    override setStaticConstraint(StaticConstraint sc) {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub")
+
+    /**
+     * Updates the source code of the elk model that is in the resource of {@code uri}.
+     */
+    private def updateSourceCode(KNode kNode, IProperty<Integer> PropID, int value, String uri) {
+        // set Property of corresponding elkNode 
+        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+
+        if (elkNode instanceof ElkNode) {
+            elkNode.setProperty(PropID, value)
+            val elkGraph = elkNode.parent
+            val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+
+            // Delete the old model
+            resource.contents.clear
+            // Store the new model
+            resource.contents += elkGraph
+            // Serialize it into the file
+            resource.save(emptyMap())
+        }
     }
-@Inject KGraphLanguageServerExtension kGraphLanguageServerExt
+
+    /**
+     * Updates the source code of the elk model that is in the resource of {@code uri}.
+     */
+    private def updateSourceCode(KNode kNode, List<IProperty<Integer>> propIDs, List<Integer> vals, String uri) {
+        // set Property of corresponding elkNode 
+        val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
+
+        if (elkNode instanceof ElkNode) {
+            for (var i = 0; i < propIDs.length; i++) {
+                elkNode.setProperty(propIDs.get(i), vals.get(i))
+            }
+            val elkGraph = elkNode.parent
+            val resource = ConstraintsUtils.getResourceFromUri(uri, injector)
+
+            // Delete the old model
+            resource.contents.clear
+            // Store the new model
+            resource.contents += elkGraph
+            // Serialize it into the file
+            resource.save(emptyMap())
+        }
+    }
+
+    /**
+     * Sets a layer constraint and a positional constraint that 
+     * are encapsulated in an instance of StaticConstraint.
+     * 
+     */
+    override setStaticConstraint(StaticConstraint sc) {
+        val uri = sc.uri
+        val kNode = getKNode(uri, sc.ID)
+
+        // In case that the interactive mode is active, the viewContext is not null 
+        // and the element is actually a KNode. Carry on.
+        if (kNode !== null) {
+            val layer = sc.layer
+            val pos = sc.position
+            
+            ConstraintsUtils.setLayerConstraint(kNode, layer)
+            // Reevaluate possible shifting
+            ConstraintsUtils.setPosConstraint(kNode, pos)
+            // Reevaluate insertion of node to target layer
+            // Update source code of the model
+            val props = #[LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
+                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT]
+            val vals = #[layer, pos]
+            updateSourceCode(kNode, props, vals, uri)
+
+        }
+    }
+
+    @Inject KGraphLanguageServerExtension kGraphLanguageServerExt
+
     override refreshLayout(String uri) {
-      
+
         val fittingServers = kGraphLanguageServerExt.diagramServerManager.findDiagramServersByUri(uri)
         val diagramServer = fittingServers.head as KGraphDiagramServer
         val diagramUpdater = kGraphLanguageServerExt.diagramUpdater as KGraphDiagramUpdater
-        
-        //Triggers the new layout and sends it to the client
+
+        // Triggers the new layout and sends it to the client
         diagramUpdater.updateLayout(diagramServer)
     }
 
