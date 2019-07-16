@@ -64,11 +64,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     override deleteStaticConstraint(DeleteConstraint dc) {
-        println("MIEP")
         val uri = dc.uri
         val kNode = getKNode(uri, dc.ID)
         if (kNode !== null) {
-            println("MIEP2")
             ConstraintsUtils.nullifyPosConstraint(kNode)
             ConstraintsUtils.nullifyLayerConstraint(kNode)
             val nullList = #[null, null]
@@ -183,7 +181,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
         if (elkNode instanceof ElkNode) {
             for (var i = 0; i < propIDs.length; i++) {
-                println("propIDs.get(i): "+propIDs.get(i)+" vals.get(i) "+vals.get(i))
                 elkNode.setProperty(propIDs.get(i), vals.get(i))
             }
             val elkGraph = elkNode.parent
