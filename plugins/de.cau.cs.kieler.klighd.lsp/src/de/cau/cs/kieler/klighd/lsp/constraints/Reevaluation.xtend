@@ -30,7 +30,7 @@ class Reevaluation {
     def static reevaluatePositionConstraints(List<KNode> nodesOfLayer, KNode target) {
         // Offset all positional constraint greater or equal to the new one in order to conserve the 
         // established subsequence of nodes below the inserted node
-        val targetChoiceCons = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
+        val targetChoiceCons = ConstraintsUtils.getPosConstraint(target)
         offsetPositionConstraintsInLayerBeginningAt(nodesOfLayer, 1, targetChoiceCons)
     }
 
@@ -42,13 +42,18 @@ class Reevaluation {
     }
 
     /**
-     * Adjusts positional constraints in a layer after one node has been shifted. 
+     * Adjusts positional constraints in the source and target layer after one node has been shifted. 
      */
-    def static reevaluateAfterShift(KNode shiftedNode, KNode targetNode, ArrayList<KNode> originLayer) {
-
+    def static reevaluateAfterShift(
+        KNode shiftedNode,
+        KNode targetNode,
+        ArrayList<KNode> originLayer,
+        ArrayList<KNode> targetLayer
+    ) {
+        // Currently, we only shift from left to right.
         val posIndexOfShifted = shiftedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
 
-        // Decrement all positional constraint values of nodes that are below the shifted node
+        // Decrement all positional constraint values of nodes that are below the shifted node in the original layer.
         offsetPositionConstraintsInLayerBeginningAt(originLayer, -1, posIndexOfShifted)
 
         // In the case that a static constraint was set also examine the target node
@@ -59,9 +64,17 @@ class Reevaluation {
                 targetPosChoiceCons - 1)
         }
 
-        //Currently, we only shift from left to right.
-        // Also nodes with layer constraints are shifted. These layer constraints need to be updated
-        
+        // If the shifted node has a layer constraint. It needs to be incremented else the shift would have no effect.
+        val layerCons = ConstraintsUtils.getLayerConstraint(shiftedNode)
+        if (layerCons != -1) {
+            ConstraintsUtils.setLayerConstraint(shiftedNode, layerCons + 1)
+        }
+
+        // If the shifted node has a positional constraint. Its target layer needs to be reevaluated. 
+        val posCons = ConstraintsUtils.getPosConstraint(shiftedNode)
+        if (posCons != -1) {
+            offsetPositionConstraintsInLayerBeginningAt(targetLayer, 1, posCons)
+        }
     }
 
     /**
@@ -74,7 +87,7 @@ class Reevaluation {
 
             if (posChoiceCons != -1 && posChoiceCons >= startPos) {
                 ConstraintsUtils.setPosConstraint(node, posChoiceCons - 1)
-            
+
             }
         }
     }
