@@ -40,7 +40,7 @@ interface ConstraintsCommandExtension {
      * by setting the property to its default value -1.
      */
     @JsonNotification('deletePositionConstraint')
-    def void deletePositionConstraint(PositionConstraint pc);
+    def void deletePositionConstraint(DeleteConstraint dc);
 
     /**
      * Deletes a layer constraint from the node that is specified 
@@ -48,7 +48,10 @@ interface ConstraintsCommandExtension {
      * by setting the property to its default value -1.
      */
     @JsonNotification('deleteLayerConstraint')
-    def void deleteLayerConstraint(LayerConstraint lc);
+    def void deleteLayerConstraint(DeleteConstraint dc);
+
+    @JsonNotification('deleteStaticConstraint')
+    def void deleteStaticConstraint(DeleteConstraint dc);
 
     /**
      * Triggers a new layout of the unchanged KGraph. 

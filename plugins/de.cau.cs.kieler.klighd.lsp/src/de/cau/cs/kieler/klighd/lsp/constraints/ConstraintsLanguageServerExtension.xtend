@@ -13,32 +13,23 @@
 package de.cau.cs.kieler.klighd.lsp.constraints
 
 import com.google.inject.Inject
+import com.google.inject.Injector
+import de.cau.cs.kieler.klighd.ViewContext
+import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
+import de.cau.cs.kieler.klighd.lsp.KGraphDiagramUpdater
+import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
+import java.util.List
 import javax.inject.Singleton
 import org.eclipse.elk.alg.layered.options.LayeredOptions
+import org.eclipse.elk.graph.ElkNode
+import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
-import org.eclipse.elk.graph.properties.IProperty
-import java.util.HashMap
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.Resource
-import com.google.inject.Injector
-import org.eclipse.xtext.resource.XtextResourceSet
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull
-import java.net.URLDecoder
-import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
-import org.eclipse.elk.graph.ElkNode
-import de.cau.cs.kieler.klighd.ViewContext
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramUpdater
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServerManager
-import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
-import org.eclipse.sprotty.xtext.ls.IDiagramServerManager
-import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
-import java.util.List
 
 /**
  * @author jet, cos
@@ -72,12 +63,44 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             pc.getPosition)
     }
 
-    override deletePositionConstraint(PositionConstraint pc) {
-        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.getUri, pc.getID, -1)
+    override deleteStaticConstraint(DeleteConstraint dc) {
+        println("MIEP")
+        val uri = dc.uri
+        val kNode = getKNode(uri, dc.ID)
+        if (kNode !== null) {
+            println("MIEP2")
+            ConstraintsUtils.nullifyPosConstraint(kNode)
+            ConstraintsUtils.nullifyLayerConstraint(kNode)
+            val nullList = #[null, null]
+            val propIds = #[LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT]
+            updateSourceCode(kNode, propIds, nullList, uri)
+
+        }
     }
 
-    override deleteLayerConstraint(LayerConstraint lc) {
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getUri, lc.getID, -1)
+    override deletePositionConstraint(DeleteConstraint dc) {
+        val uri = dc.uri
+        val kNode = getKNode(uri, dc.ID)
+        if (kNode !== null) {
+            ConstraintsUtils.nullifyPosConstraint(kNode)
+            updateSourceCode(
+                kNode,
+                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                null,
+                uri
+            )
+
+        }
+    }
+
+    override deleteLayerConstraint(DeleteConstraint dc) {
+        val uri = dc.uri
+        val kNode = getKNode(uri, dc.ID)
+        if (kNode !== null) {
+            ConstraintsUtils.nullifyLayerConstraint(kNode)
+            updateSourceCode(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null, uri)
+        }
     }
 
     /**
@@ -133,7 +156,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     /**
      * Updates the source code of the elk model that is in the resource of {@code uri}.
      */
-    private def updateSourceCode(KNode kNode, IProperty<Integer> PropID, int value, String uri) {
+    private def updateSourceCode(KNode kNode, IProperty<Integer> PropID, Integer value, String uri) {
         // set Property of corresponding elkNode 
         val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
 
@@ -160,6 +183,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 
         if (elkNode instanceof ElkNode) {
             for (var i = 0; i < propIDs.length; i++) {
+                println("propIDs.get(i): "+propIDs.get(i)+" vals.get(i) "+vals.get(i))
                 elkNode.setProperty(propIDs.get(i), vals.get(i))
             }
             val elkGraph = elkNode.parent
@@ -188,7 +212,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         if (kNode !== null) {
             val layer = sc.layer
             val pos = sc.position
-            
+
             ConstraintsUtils.setLayerConstraint(kNode, layer)
             // Reevaluate possible shifting
             ConstraintsUtils.setPosConstraint(kNode, pos)
