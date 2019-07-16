@@ -73,11 +73,26 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     override deletePositionConstraint(PositionConstraint pc) {
-        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.getUri, pc.getID, -1)
+        val uri = pc.uri
+        val kNode = getKNode(uri, pc.ID)
+        if (kNode !== null) {
+            ConstraintsUtils.nullifyPosConstraint(kNode)
+            updateSourceCode(
+                kNode,
+                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
+                null,
+                uri
+            )
+
+        }
     }
 
     override deleteLayerConstraint(LayerConstraint lc) {
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getUri, lc.getID, -1)
+        val kNode = getKNode(lc.uri, lc.ID)
+        if (kNode !== null) {
+            ConstraintsUtils.nullifyLayerConstraint(kNode)
+            updateSourceCode(kNode, LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, null, lc.uri)
+        }
     }
 
     /**
@@ -133,7 +148,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     /**
      * Updates the source code of the elk model that is in the resource of {@code uri}.
      */
-    private def updateSourceCode(KNode kNode, IProperty<Integer> PropID, int value, String uri) {
+    private def updateSourceCode(KNode kNode, IProperty<Integer> PropID, Integer value, String uri) {
         // set Property of corresponding elkNode 
         val elkNode = kNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
 
@@ -188,7 +203,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         if (kNode !== null) {
             val layer = sc.layer
             val pos = sc.position
-            
+
             ConstraintsUtils.setLayerConstraint(kNode, layer)
             // Reevaluate possible shifting
             ConstraintsUtils.setPosConstraint(kNode, pos)
