@@ -22,7 +22,6 @@ import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.DiagramController;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import de.cau.cs.kieler.klighd.util.KlighdProperties;
 
 /**
  * Abstract implementation of {@link IOffscreenRenderer} providing common functionalities of
@@ -67,8 +66,8 @@ public abstract class AbstractOffscreenRenderer extends AbstractDiagramExporter 
         // create a controller for the graph
         // since the controller attaches the 'ACTIVE' and 'POPULATED' flags that are examined
         // by the KlighdLayoutManager we need to do this before arranging the diagram
-        final DiagramController c = new DiagramController(viewContext.getViewModel(), camera, true,
-                viewContext.getProperty(KlighdProperties.EDGES_FIRST).booleanValue());
+        final DiagramController c =
+                new DiagramController(viewContext.getViewModel(), camera, true, viewContext);
 
         if (properties == null) {
             // layout the diagram
