@@ -55,6 +55,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.UriExtensions
 import org.eclipse.xtext.ide.server.occurrences.IDocumentHighlightService
 import org.eclipse.xtext.util.CancelIndicator
+import java.net.URLDecoder
 
 /**
  * Language server extension that implements functionality for the generation of diagrams and handling of their diagram
@@ -475,4 +476,30 @@ class KGraphLanguageServerExtension extends SyncDiagramLanguageServer
         ]
     }
     
+    /**
+     * Updates the layout of the diagram given by the uri and sends it to the client.
+     * 
+     * @param uri The uri of the model file.
+     */
+    def void updateLayout(String uri) {
+        if (diagramUpdater instanceof KGraphDiagramUpdater) {
+            (diagramUpdater as KGraphDiagramUpdater).updateLayout(
+                diagramServerManager.findDiagramServersByUri(
+                        URLDecoder.decode(uri, "UTF-8")
+                    )?.head as KGraphDiagramServer
+                )
+        }
+    }
+    
+    /**
+     * Updates the diagram by calling a new synthesis and calculating the layout of the diagram given by the uri.
+     * Sends the new diagram to the client.
+     * 
+     * @param uri The uri of the model file.
+     */
+    def void updateDiagram(String uri) {
+        if (diagramUpdater instanceof KGraphDiagramUpdater) {
+            (diagramUpdater as KGraphDiagramUpdater).updateDiagrams2(#[URI.createURI(URLDecoder.decode(uri, "UTF-8"))])
+        }
+    }
 }
