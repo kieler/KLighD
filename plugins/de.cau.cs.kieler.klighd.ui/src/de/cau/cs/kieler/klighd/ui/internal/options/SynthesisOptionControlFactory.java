@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -36,6 +38,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.events.IExpansionListener;
@@ -100,6 +103,8 @@ public class SynthesisOptionControlFactory {
     private static final int GROUP_SEPARATOR_SPACING = 10;
     /** the horizontal indentation option value controls, e.g. radio buttons. */
     private static final int MINOR_HORIZONTAL_MARGIN = 10;
+    /** The amount of time to wait for further inputs before updating rapidly updating options. */
+    private static final int UPDATE_WAIT_TIME_MS = 1000;
     
     
     /**
@@ -568,54 +573,81 @@ public class SynthesisOptionControlFactory {
         // and finally add a selection listener for instant diagram updates
         scale.addSelectionListener(new SelectionAdapter() {
             
+            // A timer used for concluding multiple quick updates into one.
+            private Timer timer;
+            
             // a little buffer used for dropping unnecessary events
             private double currentValue = scale.getSelection();
             
             @Override
             public void widgetSelected(final SelectionEvent event) {
+                // Cancel any existing timer so it does not execute anymore if it has not done so yet.
+                if (timer != null) {
+                    timer.cancel();
+                }
+                
                 final Scale scale = (Scale) event.widget;
                 
                 // determine the actually selected value
-                Double value = minShifted + scalerStepSize * (scale.getSelection());
+                Double sourceValue = minShifted + scalerStepSize * (scale.getSelection());
                 
                 // round it wrt the required step size
-                value = min + Math.floor((value - min) / stepSize) * stepSize;
+                final Double value = min + Math.floor((sourceValue - min) / stepSize) * stepSize;
                 
                 // configure the adjusted selection
                 //  lets the the scaler snap to the closest possible value
                 scale.setSelection((int) Math.floor((value - min) / scalerStepSize));
-
-                // check whether the value actually changed
-                if (value == currentValue) {
-                    return;
-                } else {
-                    currentValue = value;
-                }
                 
-                // update the value in the label
-                //  and configure the new option value in the view context
+                // Update the value in the label immediately.
                 if (floatSteps) {
                     label.setText(labelString + value);
-                    context.configureOption(option, value.floatValue());
                 } else {
                     label.setText(labelString + value.intValue());
-                    context.configureOption(option, value.intValue());
                 }
-                container.layout(true);
                 
-                // trigger the diagram update
-                Display.getCurrent().asyncExec(new Runnable() {
+                // Create a new timer that executes after a small delay, if not canceled earlier.
+                timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    
+                    @Override
                     public void run() {
-                        if (option.getUpdateAction() != null) {
-                            invokeUpdateAction(option.getUpdateAction(), context);
+                        // check whether the value actually changed
+                        if (value == currentValue) {
+                            return;
                         } else {
-                            new LightDiagramLayoutConfig(context)
-                                .properties(properties)
-                                .animate(option.getAnimateUpdate())
-                                .performUpdate();
+                            currentValue = value;
                         }
+                        
+                        // Trigger the diagram and UI update.
+                        PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+                            
+                            public void run() {
+                                // Configure the new option value in the view context.
+                                if (floatSteps) {
+                                    context.configureOption(option, value.floatValue());
+                                } else {
+                                    context.configureOption(option, value.intValue());
+                                }
+                                container.layout(true);
+                                
+                                if (option.getUpdateAction() != null) {
+                                    invokeUpdateAction(option.getUpdateAction(), context);
+                                } else {
+                                    new LightDiagramLayoutConfig(context)
+                                    .properties(properties)
+                                    .animate(option.getAnimateUpdate())
+                                    .performUpdate();
+                                }
+                            }
+                            
+                        });
+                        timer.cancel();
                     }
-                });
+                    
+                };
+                
+                timer.schedule(task, UPDATE_WAIT_TIME_MS);
+
             }
         });
     }
@@ -661,42 +693,61 @@ public class SynthesisOptionControlFactory {
         // and finally add a selection listener for instant diagram updates
         text.addModifyListener(new ModifyListener() {
             
-            // a little buffer used for dropping unnecessary events
+            // A timer used for concluding multiple quick updates into one.
+            private Timer timer;
+            
+            // A little buffer used for dropping unnecessary events.
             private String currentValue = text.getText();
             
             @Override
             public void modifyText(final ModifyEvent e) {
+                // Cancel any existing timer so it does not execute anymore if it has not done so yet.
+                if (timer != null) {
+                    timer.cancel();
+                }
                 final Text text = (Text) e.widget;
                 
                 // The text in the widget.
                 String s = text.getText();
                 
-                // Check whether the value actually changed.
-                if (s == currentValue) {
-                    return;
-                } else {
-                    currentValue = s;
-                }
-                
-                context.configureOption(option, s);
-                container.layout(true);
-                
-                // Trigger the diagram update.
-                Display.getCurrent().asyncExec(new Runnable() {
-
+                // Create a new timer that executes after a small delay, if not canceled earlier.
+                timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    
                     @Override
                     public void run() {
-                        if (option.getUpdateAction() != null) {
-                            invokeUpdateAction(option.getUpdateAction(), context);
+                        
+                        // Check whether the value actually changed.
+                        if (s == currentValue) {
+                            return;
                         } else {
-                            new LightDiagramLayoutConfig(context)
-                                .properties(properties)
-                                .animate(option.getAnimateUpdate())
-                                .performUpdate();
+                            currentValue = s;
                         }
+                        
+                        // Trigger the diagram and UI update.
+                        PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+                            public void run() {
+                                context.configureOption(option, s);
+                                container.layout(true);
+                                
+                                if (option.getUpdateAction() != null) {
+                                    invokeUpdateAction(option.getUpdateAction(), context);
+                                } else {
+                                    new LightDiagramLayoutConfig(context)
+                                    .properties(properties)
+                                    .animate(option.getAnimateUpdate())
+                                    .performUpdate();
+                                }
+                            }
+                            
+                        });
+                        timer.cancel();
                     }
                     
-                });
+                };
+                
+                timer.schedule(task, UPDATE_WAIT_TIME_MS);
+                
             }
         });
     }
