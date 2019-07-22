@@ -42,6 +42,21 @@ class Reevaluation {
     }
 
     /**
+     * Adjust layer constraints in the graph if a new layer constraints empties a layer and lets it disappear. 
+     */
+    def static reevaluateAfterEmptyingALayer(int targetLayer, List<KNode> nodes) {
+        // If a layer is emptied and disappears from the drawing 
+        // then all LayerConstraints with a value higher or equal than
+        // the disappeared layer need to be decreased
+        for (node : nodes) {
+            val layerCons = ConstraintsUtils.getLayerConstraint(node)
+            if (layerCons >= targetLayer) {
+                ConstraintsUtils.setLayerConstraint(node, layerCons - 1)
+            }
+        }
+    }
+
+    /**
      * Adjusts positional constraints in the source and target layer after one node has been shifted. 
      */
     def static reevaluateAfterShift(
