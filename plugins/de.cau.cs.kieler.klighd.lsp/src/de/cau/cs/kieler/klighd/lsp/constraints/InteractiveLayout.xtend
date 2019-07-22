@@ -183,16 +183,19 @@ class InteractiveLayout {
             // shift node to the next layer
             if (nodesOfLayer.contains(node)) {
                 nodesOfLayer.remove(node)
+                var ArrayList<KNode> newLayer
                 if (layer + 1 < layerNodes.size) {
-                    layerNodes.get(layer + 1).add(node)
+                    newLayer = layerNodes.get(layer + 1)
+                    newLayer.add(node)
                     // the connected nodes in the layer the node is shifted to must be shifted too
                     shiftOtherNs(node, layer + 1, layerNodes, false)
                     shiftOtherNs(node, layer + 1, layerNodes, true)
                 } else {
-                    var list = newArrayList()
-                    list.add(node)
-                    layerNodes.add(list)
+                    newLayer = newArrayList()
+                    newLayer.add(node)
+                    layerNodes.add(newLayer)
                 }
+                Reevaluation.reevaluateAfterShift(node, movedNode, nodesOfLayer, newLayer)
             }
         }
     }
