@@ -183,22 +183,25 @@ class InteractiveLayout {
             // shift node to the next layer
             if (nodesOfLayer.contains(node)) {
                 nodesOfLayer.remove(node)
+                var ArrayList<KNode> newLayer
                 if (layer + 1 < layerNodes.size) {
-                    layerNodes.get(layer + 1).add(node)
+                    newLayer = layerNodes.get(layer + 1)
+                    newLayer.add(node)
                     // the connected nodes in the layer the node is shifted to must be shifted too
                     shiftOtherNs(node, layer + 1, layerNodes, false)
                     shiftOtherNs(node, layer + 1, layerNodes, true)
                 } else {
-                    var list = newArrayList()
-                    list.add(node)
-                    layerNodes.add(list)
+                    newLayer = newArrayList()
+                    newLayer.add(node)
+                    layerNodes.add(newLayer)
                 }
+                Reevaluation.reevaluateAfterShift(node, movedNode, nodesOfLayer, newLayer)
             }
         }
     }
 
     /**
-     * Calculates the layer for the {@code nodes} based on their x coordinate.
+     * Sorts the {@code nodes} in layers based on their layerID.
      * 
      * @param nodes The nodes of the graph which layers should be calculated.
      */
@@ -327,7 +330,7 @@ class InteractiveLayout {
      * Sets the interactive strategies in the phases crossing minimization, layer assignment, 
      * cycle breaking for the graph {@code root}.
      * 
-     * @param root The graph with strategies should be set.
+     * @param root The graph which strategies should be set.
      */
     private def static setInteractiveStrats(KNode root) {
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
