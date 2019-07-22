@@ -198,7 +198,7 @@ class InteractiveLayout {
     }
 
     /**
-     * Calculates the layer for the {@code nodes} based on their x coordinate.
+     * Sorts the {@code nodes} in layers based on their layerID.
      * 
      * @param nodes The nodes of the graph which layers should be calculated.
      */
@@ -327,7 +327,7 @@ class InteractiveLayout {
      * Sets the interactive strategies in the phases crossing minimization, layer assignment, 
      * cycle breaking for the graph {@code root}.
      * 
-     * @param root The graph with strategies should be set.
+     * @param root The graph which strategies should be set.
      */
     private def static setInteractiveStrats(KNode root) {
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
