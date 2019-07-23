@@ -117,18 +117,11 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
             var layerCons = ConstraintsUtils.getLayerConstraint(kNode)
             var List<KNode> residingLayer
-
-            if (layerCons != -1) {
-                residingLayer = ConstraintsUtils.getNodesOfLayer(layerCons, root.children)
-            } else {
-                residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, root.children)
-            }
-//            switch PropID {
-//                case LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT:
-//                    Reevaluation.reevaluatePositionConstraintsAfterAdd(residingLayer, kNode)
-//                case LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT:
-//                    Reevaluation.reevaluateAfterEmptyingALayer(layerID, ConstraintsUtils.getLayerConstraint(kNode),
-//                        root.children)
+//
+//            if (layerCons != -1) {
+//                residingLayer = ConstraintsUtils.getNodesOfLayer(layerCons, root.children)
+//            } else {
+//                residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, root.children)
 //            }
             updateSourceCode(kNode, PropID, value, uri)
 
@@ -136,7 +129,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     /**
-     * Returns the {@code KNode} of the node described by {@code ID}.
+     * Returns the {@code KNode of the node described by {@code ID}.
      * Returns null if the {@code ViewContext} of the resource described by {@code uri} is null.
      * Returns null if the element behind the ID is no kNode.
      * Returns null if the {@code INTERACTIVE_LAYOUT} IProperty is not set on the root of the resource.
@@ -204,44 +197,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             refreshModelInEditor(elkGraph, uri)
 
         }
-    }
-
-    /**
-     * Applies the constraints that were set on the KNodes on the ElkNode model and updates the model so that
-     * the changes become visible in the editor of KEITH/KIELER.
-     * 
-     * @param constraintsToApply All triples of PropertyID, values and KNode that are to set
-     * @param resourceUri The uri of the model's resource
-     * @return Returns false if something went wrong and true if the model was successfully updated.
-     */
-    private def updateModel(List<LocalConstraintEntry> constraintsToApply, String resourceUri) {
-        if (constraintsToApply.isEmpty) {
-            return false
-        }
-
-        // Apply all constraints on the model
-        for (entry : constraintsToApply) {
-            val KNode = entry.KNode
-
-            val elkNode = KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-            if (elkNode instanceof ElkNode) {
-                elkNode.setProperty(entry.propID, entry.value)
-            } else {
-                return false
-            }
-        }
-
-        // All the KNodes in this step should have the same parent. Retrieve the parent
-        val head = constraintsToApply.head.KNode.getProperty(KlighdInternalProperties.MODEL_ELEMEMT)
-        var ElkNode newModel
-        if (head instanceof ElkNode) {
-            newModel = head.parent
-        } else {
-            return false
-        }
-
-        refreshModelInEditor(newModel, resourceUri)
-        return true
     }
 
     /**
@@ -314,7 +269,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             val layerCons = sc.layer
             val pos = sc.position
             val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(layerCons, allNodes)
+            //var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(layerCons, allNodes)
 
             ConstraintsUtils.setLayerConstraint(kNode, layerCons)
             ConstraintsUtils.setPosConstraint(kNode, pos)
@@ -323,9 +278,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             // Reevaluation.reevaluateAfterEmptyingALayer(layerId, layerCons, allNodes)
             // Reevaluation.reevaluatePositionConstraintsAfterAdd(targetLayerNodes, kNode)
             // Update source code of the model
-            val props = #[LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT,
-                LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT]
-            val vals = #[layerCons, pos]
             updateSourceCode(kNode, uri)
 
         }

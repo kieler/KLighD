@@ -65,11 +65,7 @@ class InteractiveLayout {
             // activate interactive strategies
             setInteractiveStrats(root)
             layoutE.onlyLayoutOnKGraph(id)
-//
-//            for (node : root.children) {
-//                println("Layer ID: " + node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + " Pos ID " +
-//                    node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D))
-//            }
+
         }
     }
 
@@ -195,7 +191,7 @@ class InteractiveLayout {
                     newLayer.add(node)
                     layerNodes.add(newLayer)
                 }
-                Reevaluation.reevaluateAfterShift(node, movedNode, nodesOfLayer, newLayer)
+                //Reevaluation.reevaluateAfterShift(node, movedNode, nodesOfLayer, newLayer)
             }
         }
     }

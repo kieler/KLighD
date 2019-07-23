@@ -21,6 +21,7 @@ import org.eclipse.elk.alg.layered.options.LayeredOptions
 import java.util.List
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
+import java.util.ArrayList
 
 /**
  * Provides a set of utility methods that is used in the constraints package.
@@ -48,15 +49,27 @@ class ConstraintsUtils {
     }
 
     /**
-     * Calculates the nodes that are in the layer based on the layer ID.
+     * Calculates the nodes that are in the layer based on the layer ID. The  nodes receive a list position 
+     * respecting their position in the layer. If the pos constraint is set it is used as the position of the node 
+     * else the position id is used.
+     * After the interactive layout the pos constraint is equal to the position id. 
      * @param layer the layer which containing nodes should be calculated
      * @param nodes all nodes the graph contains
      */
     def static getNodesOfLayer(int layer, List<KNode> nodes) {
-        var List<KNode> nodesOfLayer = newArrayList()
+        var ArrayList<KNode> nodesOfLayer = newArrayList()
         for (node : nodes) {
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) === layer) {
-                nodesOfLayer.add(node)
+                var pos = ConstraintsUtils.getPosConstraint(node)
+                
+                if(pos === -1){
+                    pos = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+                }
+                
+                
+               
+                nodesOfLayer.ensureCapacity(pos+1)
+                nodesOfLayer.add(pos, node)
             }
         }
         return nodesOfLayer
