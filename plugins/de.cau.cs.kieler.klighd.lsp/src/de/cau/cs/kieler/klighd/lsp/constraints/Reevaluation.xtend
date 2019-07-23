@@ -26,21 +26,48 @@ import java.util.HashMap
  */
 class Reevaluation {
 
+    ArrayList<KNode> changedNodes = newArrayList()
+    KNode target
+    
+    new(KNode target){
+        this.target = target
+    }
+
+    def getTarget(){
+        return target
+    }
+    
+    def getChangedNodes(){
+        return changedNodes
+    }
+    
+
     /**
-     * Adjusts positional constraints in a layer after one node received a new positional constraint in it.
+     * Adjusts position constraints in a layer after one node has been introduced to it.
      */
-    def static reevaluatePositionConstraintsAfterAdd(List<KNode> nodesOfLayer, KNode target) {
+    def static reevaluatePosConstraintsAfterLayerSwap(List<KNode> nodesOfLayer, KNode target) {
         // Offset all positional constraint greater or equal to the new one in order to conserve the 
         // established subsequence of nodes below the inserted node
         val targetChoiceCons = ConstraintsUtils.getPosConstraint(target)
-        offsetPositionConstraintsInLayerBeginningAt(nodesOfLayer, 1, targetChoiceCons, target)
+        offsetPosConstraintsOfLayerFrom(nodesOfLayer, 1, targetChoiceCons, target)
     }
-
+    
+    def static reevaluatePosConstraintsAfterPosChangeInLayer(List<KNode> nodesOfLayer, KNode target){
+        val targetChoiceCons = ConstraintsUtils.getPosConstraint(target)
+        val oldPos = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+        offsetPosConstraintsOfLayerFromTo(nodesOfLayer, 1, targetChoiceCons, oldPos, target)
+    }
+    
+    
+/**
+ * Adjusts position constraints in a layer after the removal of a position constraint.
+ * TODO: Think through all cases.
+ */
     def static reevaluatePositionConstraintsAfterRemoval(List<KNode> nodesOfLayer, KNode removedNode) {
         // Offset all positional constraint greater or equal to the new one in order to conserve the 
         // established subsequence of nodes below the removed node
         val formerPosCons = removedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
-        offsetPositionConstraintsInLayerBeginningAt(nodesOfLayer, -1, formerPosCons, removedNode)
+        offsetPosConstraintsOfLayerFrom(nodesOfLayer, -1, formerPosCons, removedNode)
     }
 
     /**
@@ -76,7 +103,7 @@ class Reevaluation {
         val posIndexOfShifted = shiftedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
 
         // Decrement all positional constraint values of nodes that are below the shifted node in the original layer.
-        offsetPositionConstraintsInLayerBeginningAt(originLayer, -1, posIndexOfShifted, shiftedNode)
+        offsetPosConstraintsOfLayerFrom(originLayer, -1, posIndexOfShifted, shiftedNode)
 
         // In the case that a static constraint was set also examine the target node
         val targetPosChoiceCons = targetNode.getProperty(
@@ -95,22 +122,40 @@ class Reevaluation {
         // If the shifted node has a positional constraint. Its target layer needs to be reevaluated. 
         val posCons = ConstraintsUtils.getPosConstraint(shiftedNode)
         if (posCons != -1) {
-            offsetPositionConstraintsInLayerBeginningAt(targetLayer, 1, posCons, shiftedNode)
+            offsetPosConstraintsOfLayerFrom(targetLayer, 1, posCons, shiftedNode)
         }
     }
 
     /**
      * Offsets all nodes in a layer by {@code offset} that own a positional constraint that is greater or equal 
-     * than {@code startPos}.
+     * than {@code startPos} and smaller than {@code endPos}.
+     * 
+     * @param layer The layer to examine as a list including its nodes ordered by position.
+     * @param The offset that should be applied on the position constraints
+     * 
      */
-    def private static offsetPositionConstraintsInLayerBeginningAt(List<KNode> layer, int offset, int startPos, KNode target) {
-        for (node : layer) {
-            val posChoiceCons = ConstraintsUtils.getPosConstraint(node)
+    def private static offsetPosConstraintsOfLayerFromTo(List<KNode> layer, int offset, int startPos, int endPos, KNode target) {
+        
+        
+        for (var i = startPos; i < endPos; i++) {
+            val node = layer.get(i)
+            val posChoiceCons = ConstraintsUtils.getPosConstraint(node)            
 
-            if (node !== target && posChoiceCons != -1 && posChoiceCons >= startPos) {
+            if (node != target && posChoiceCons != -1) {
                 ConstraintsUtils.setPosConstraint(node, posChoiceCons + offset)
             }
         }
+    }
+     /**
+     * Offsets all nodes in a layer by {@code offset} that own a positional constraint that is greater or equal 
+     * than {@code startPos}.
+     * 
+     * @param layer The layer to examine as a list including its nodes ordered by position.
+     * @param The offset that should be applied on the position constraints
+     * 
+     */
+    def private static offsetPosConstraintsOfLayerFrom(List<KNode> layer, int offset, int startPos, KNode target){
+        offsetPosConstraintsOfLayerFromTo(layer, offset, startPos, layer.length, target)
     }
 
     /**
