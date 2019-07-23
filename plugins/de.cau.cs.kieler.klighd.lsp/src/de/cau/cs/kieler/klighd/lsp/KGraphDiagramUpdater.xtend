@@ -34,7 +34,6 @@ import org.eclipse.sprotty.xtext.ls.DiagramLanguageServer
 import org.eclipse.sprotty.xtext.ls.DiagramUpdater
 import org.eclipse.xtext.util.CancelIndicator
 import org.eclipse.sprotty.ILayoutEngine
-import org.eclipse.sprotty.layout.ElkLayoutEngine
 import de.cau.cs.kieler.klighd.lsp.constraints.InteractiveLayout
 
 /**

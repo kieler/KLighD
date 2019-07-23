@@ -57,19 +57,18 @@ class ConstraintsUtils {
      * @param nodes all nodes the graph contains
      */
     def static getNodesOfLayer(int layer, List<KNode> nodes) {
-        var ArrayList<KNode> nodesOfLayer = newArrayList()
+        val maxPos = maxActualPositionInLayer(nodes, layer)
+        
+        var KNode[] nodesOfLayer = newArrayOfSize(maxPos)
+
         for (node : nodes) {
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) === layer) {
                 var pos = ConstraintsUtils.getPosConstraint(node)
-                
-                if(pos === -1){
+
+                if (pos === -1) {
                     pos = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
                 }
-                
-                
-               
-                nodesOfLayer.ensureCapacity(pos+1)
-                nodesOfLayer.add(pos, node)
+
             }
         }
         return nodesOfLayer
@@ -94,6 +93,22 @@ class ConstraintsUtils {
     }
 
     /**
+     * The actual position of a KNode is the position where it will end up after the interactive layout.
+     * The actual position of a KNode is determined by the position constraint value.
+     * If there is no position constraint value the actual position of a KNode is its position id.
+     * After the interactive layout the position id is equals to the position constraint value.
+     * @param node the node of which you want to know the actual position
+     */
+    def static actualPos(KNode node) {
+        val posCandidate = ConstraintsUtils.getPosConstraint(node)
+        if (posCandidate == -1) {
+            return node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+        } else {
+            return posCandidate
+        }
+    }
+
+    /**
      * Searches the maximal actual layer in a list of KNodes.
      * @param nodes All nodes that should be included in this search.
      */
@@ -113,6 +128,25 @@ class ConstraintsUtils {
             }
         }
         return maxLayer
+    }
+/**
+ * Searches the maximal position in the layer denoted by {@code layer} in a list of KNodes.
+ * Returns -1 if there is no node in the layer or if the list of nodes is empty.
+ * @param nodes List of KNodes in which the method should search
+ * @param layer The layer index of the layer of which you want the maximal position
+ * @return the maximal position in the layer
+ */
+    def static maxActualPositionInLayer(List<KNode> nodes, int layer) {
+        var maxPosInLayer = -1
+        for (n : nodes) {
+            if (actualLayer(n) === layer) {
+                val posCandidate = actualPos(n)
+                if (posCandidate > maxPosInLayer) {
+                    maxPosInLayer = posCandidate
+                }
+            }
+        }
+        return maxPosInLayer
     }
 
     /**
