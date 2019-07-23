@@ -163,8 +163,11 @@ public class KlighdActionEventHandler implements PInputEventListener {
         ActionResult resultOfLastAction = null;
         ActionResult resultOfLastActionRequiringLayout = null;
 
-        // this flag is used to track the execution of actions requiring a layout update
+        // This flag is used to track the execution of actions requiring a layout update.
         boolean anyActionRequiresLayout = false;
+        
+        // This flat is used to track the execution of actions requiring a synthesis re-run.
+        boolean anyActionRequiresSynthesis = false;
 
         for (final KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
             if (!action.getTrigger().equals(trigger) || !guardsMatch(action, me)) {
@@ -205,6 +208,9 @@ public class KlighdActionEventHandler implements PInputEventListener {
                 anyActionRequiresLayout = true;
                 resultOfLastActionRequiringLayout = resultOfLastAction;
             }
+            
+            final boolean actionRequiresSynthesis = resultOfLastAction.getNeedsSynthesis();
+            anyActionRequiresSynthesis |= actionRequiresSynthesis;
         }
 
         if (resultOfLastAction == null) {
@@ -233,6 +239,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
             return;
         }
 
+        final boolean doSynthesis = anyActionRequiresSynthesis;
         final boolean animate = resultOfLastAction.getAnimateLayout();
         final ZoomStyle zoomStyle = ZoomStyle.create(resultOfLastActionRequiringLayout, vc);
         final KNode focusNode = resultOfLastActionRequiringLayout.getFocusNode();
@@ -249,6 +256,11 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  flag of 'inputEvent' properly.
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
+                // Update the view model first if a new synthesis is required.
+                if (doSynthesis) {
+                    vc.update();
+                }
+                
                 new LightDiagramLayoutConfig(vc)
                         .animate(animate)
                         .zoomStyle(zoomStyle)

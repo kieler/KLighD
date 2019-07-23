@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.elk.core.math.Spacing;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
@@ -44,6 +45,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import de.cau.cs.kieler.klighd.KlighdOptions;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.internal.macrolayout.KlighdDiagramLayoutConnector;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -153,6 +155,35 @@ public class DiagramController {
     /** indicates whether scheduled diagram element updates must be executed via this display. */
     private final Display display;
 
+
+    /**
+     * Constructs a diagram controller for the given KGraph.
+     *
+     * @param graph
+     *            the diagram describing KGraph rooted by a {@link KNode}
+     * @param camera
+     *            the {@link KlighdMainCamera} to be used
+     * @param sync
+     *            true if the visualization should be synchronized with the graph; false otherwise<br>
+     *            <b>Hint</b>: setting to false will prevent the application of automatic layout
+     * @param viewContext
+     *            the current {@link ViewContext} providing access to view-specific configurations
+     */
+    public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
+            final ViewContext viewContext) {
+        this(graph, camera, sync,
+                getProperty(viewContext, KlighdProperties.EDGES_FIRST).booleanValue(),
+                getProperty(viewContext, KlighdProperties.ZOOM_TO_FIT_CONTENT_SPACING));
+
+        camera.initClipsPortAndLabelsVisibility(
+                !getProperty(viewContext, KlighdProperties.SHOW_CLIPPED_PORTS).booleanValue(),
+                !getProperty(viewContext, KlighdProperties.SHOW_CLIPPED_LABELS).booleanValue());
+    }
+    
+    private static <T> T getProperty(ViewContext context, IProperty<T> property) {
+        return context != null ? context.getProperty(property) : property.getDefault(); 
+    }
+
     /**
      * Constructs a diagram controller for the given KGraph.
      *
@@ -167,8 +198,8 @@ public class DiagramController {
      *            determining whether edges are drawn before nodes, i.e. nodes have priority over
      *            edges
      */
-    public DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
-            final boolean edgesFirst) {
+    protected DiagramController(final KNode graph, final KlighdMainCamera camera, final boolean sync,
+            final boolean edgesFirst, final Spacing defaultZoomToFitContentSpacing) {
         DiagramControllerHelper.resetGraphElement(graph);
 
         this.sync = sync;
@@ -187,7 +218,8 @@ public class DiagramController {
         final RenderingContextData contextData = RenderingContextData.get(graph);
         contextData.setProperty(REP, topNode);
 
-        this.zoomController = new DiagramZoomController(topNode, canvasCamera, this);
+        this.zoomController = new DiagramZoomController(
+                topNode, canvasCamera, this, defaultZoomToFitContentSpacing);
 
         canvasCamera.getRoot().addChild(topNode);
         canvasCamera.setDisplayedKNodeNode(topNode);
@@ -197,7 +229,6 @@ public class DiagramController {
         contextData.setProperty(KlighdInternalProperties.ACTIVE, true);
 
         topNode.setExpanded(true);
-//        addChildren(topNode);
     }
 
     /**
@@ -400,9 +431,20 @@ public class DiagramController {
             }
 
             if (diagramElement instanceof KEdge) {
-                // edges are handled explicitly at removal of nodes (see DiagramController) so we don't
-                //  test their source and target node explicitly here.
-                return true;
+                final KEdge edge = (KEdge) diagramElement;
+                final KNode clip = getClip();
+
+                if (edge.getSource() == clip) {
+                    return edge.getSourcePort() != null && isDisplayed(edge.getSourcePort(), false);
+
+                } else if (edge.getTarget() == clip) {
+                    return edge.getSourcePort() != null && isDisplayed(edge.getSourcePort(), false);
+
+                } else {
+                    // edges are handled explicitly at removal of nodes (see DiagramController) so we don't
+                    //  test their source and target node explicitly here.
+                    return true;
+                }
             }
 
             if (diagramElement instanceof KPort) {
@@ -1024,6 +1066,7 @@ public class DiagramController {
      *            because the element actually has been removed from the view model rather than just
      *            hidden
      */
+    @SuppressWarnings("unused")
     private void remove(final KGraphElement element, final boolean releaseControllers) {
         if (element.eContainer() == null) {
             return;

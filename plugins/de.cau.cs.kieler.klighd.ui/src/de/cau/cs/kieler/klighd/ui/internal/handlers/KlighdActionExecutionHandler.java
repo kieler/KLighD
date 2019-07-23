@@ -105,6 +105,7 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
 
         ActionResult resultOfLastRun = null;
         ActionResult resultOfLastRunRequiringLayout = null;
+        boolean anyResultNeedsNewSynthesis = false;
 
         // in order to enable animated movements of diagram elements due to view model changes,
         //  the viewer must be informed to record view model changes before executing any action
@@ -123,11 +124,16 @@ public class KlighdActionExecutionHandler extends AbstractHandler {
             if (resultOfLastRun != null && resultOfLastRun.getActionPerformed()) {
                 resultOfLastRunRequiringLayout = resultOfLastRun;
             }
+            anyResultNeedsNewSynthesis |= resultOfLastRun.getNeedsSynthesis();
         }
 
         if (resultOfLastRunRequiringLayout != null) {
             final ActionResult result = resultOfLastRunRequiringLayout;
             final ZoomStyle zoomStyle = ZoomStyle.create(result, viewContext);
+            
+            if (anyResultNeedsNewSynthesis) {
+                viewContext.update();
+            }
 
             new LightDiagramLayoutConfig(viewContext)
                 .animate(result.getAnimateLayout())

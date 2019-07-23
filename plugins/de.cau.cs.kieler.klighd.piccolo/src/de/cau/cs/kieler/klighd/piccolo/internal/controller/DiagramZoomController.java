@@ -13,23 +13,15 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
-import java.util.Collections;
-
+import org.eclipse.elk.core.math.Spacing;
 import org.eclipse.elk.core.options.CoreOptions;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
-import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeAbstractNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
-import de.cau.cs.kieler.klighd.util.RenderingContextData;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PDimension;
@@ -46,12 +38,9 @@ public class DiagramZoomController {
 
     private final DiagramController diagramController;
 
-    private final Predicate<KGraphElement> isDisplayedFilter = new Predicate<KGraphElement>() {
+    private final DiagramZoomControllerBoundsComputer boundsComputer;
 
-        public boolean apply(final KGraphElement input) {
-            return diagramController.isDisplayed(input, false);
-        }
-    };
+    private final Spacing defaultZoomToFitContentSpacing;
 
     /**
      * Constructor.
@@ -62,11 +51,20 @@ public class DiagramZoomController {
      *            the employed {@link KlighdMainCamera}
      * @param theDiagramController
      *            the employed {@link DiagramController}
+     * @param defaultZoomToFitContentSpacing
+     *            default spacing to be applied if {@link ZoomStyle#ZOOM_TO_FIT_CONTENT} is
+     *            demanded, see also
+     *            {@link de.cau.cs.kieler.klighd.util.KlighdProperties#ZOOM_TO_FIT_CONTENT_SPACING},
+     *            may be <code>null</code>.
      */
     public DiagramZoomController(final KNodeTopNode theTopNode,
-            final KlighdMainCamera theCanvasCamera, final DiagramController theDiagramController) {
+            final KlighdMainCamera theCanvasCamera, final DiagramController theDiagramController,
+            final Spacing defaultZoomToFitContentSpacing) {
         this.canvasCamera = theCanvasCamera;
         this.diagramController = theDiagramController;
+        this.defaultZoomToFitContentSpacing = defaultZoomToFitContentSpacing;
+        this.boundsComputer = new DiagramZoomControllerBoundsComputer(
+                input -> diagramController.isDisplayed(input, false));
     }
 
     private KNode focusNode = null;
@@ -101,7 +99,11 @@ public class DiagramZoomController {
             break;
 
         case ZOOM_TO_FIT:
-            zoomToFit(duration);
+            zoomToFit(duration, false, null);
+            break;
+
+        case ZOOM_TO_FIT_CONTENT:
+            zoomToFit(duration, true, defaultZoomToFitContentSpacing);
             break;
 
         case ZOOM_TO_FOCUS:
@@ -137,11 +139,23 @@ public class DiagramZoomController {
     /**
      * @param duration
      *            time to animate in ms
+     * @param narrowDownToContents
+     *            set to <code>true</code> yields the bounding box of the nested diagram's content
+     *            including <code>node</code>'s ports and labels if visible, with <code>false</code>
+     *            the bounds of the given <code>node</code> including its port and labels if visible
+     *            are returned
+     * @param defaultZoomToFitContentSpacing
+     *            default spacing to be applied if <code>narrowDownToContents</code> is
+     *            <code>true</code>, see also
+     *            {@link de.cau.cs.kieler.klighd.util.KlighdProperties#ZOOM_TO_FIT_CONTENT_SPACING},
+     *            may be <code>null</code>.
      */
-    private void zoomToFit(final int duration) {
+    private void zoomToFit(final int duration, boolean narrowDownToContents,
+            final Spacing defaultZoomToFitContentSpacing) {
         final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
 
-        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(displayedKNode);
+        final PBounds newBounds = toPBoundsIncludingPortsAndLabels(
+                displayedKNode, narrowDownToContents, defaultZoomToFitContentSpacing);
 
         if (this.canvasCamera.getBoundsReference().isEmpty()) {
             // this case occurs while initializing the DiagramEditorPart
@@ -269,19 +283,16 @@ public class DiagramZoomController {
         canvasCamera.animateViewToCenterBounds(newBounds, true, duration);
     }
 
-
     /**
-     * Converts <code>node</code>'s layout data into {@link PBounds}, respects an attached
-     * {@link LayoutOptions#SCALE_FACTOR}.
+     * Converts <code>node</code>'s layout data into {@link PBounds} s.t. <code>node</code>'s ports
+     * and labels are included, respects an attached {@link LayoutOptions#SCALE_FACTOR}.
      *
      * @param node
      *            the node
-     * @return the corresponding {@link PBounds}
+     * @return the requested bounding box in form of a {@link PBounds}
      */
-    public static PBounds toPBounds(final KNode node) {
-        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
-        return new PBounds(node.getXpos(), node.getYpos(),
-                node.getWidth() * scale, node.getHeight() * scale);
+    private PBounds toPBoundsIncludingPortsAndLabels(final KNode node) {
+        return toPBoundsIncludingPortsAndLabels(node, false, null);
     }
 
     /**
@@ -290,77 +301,21 @@ public class DiagramZoomController {
      *
      * @param node
      *            the node
-     * @return the corresponding {@link PBounds}
+     * @param doComputeSubDiagramSize
+     *            set to <code>true</code> yields the bounding box of the nested diagram's content
+     *            including <code>node</code>'s ports and labels if visible, with <code>false</code>
+     *            the bounds of the given <code>node</code> including its port and labels if visible
+     *            are returned
+     * @param defaultZoomToFitContentSpacing
+     *            default spacing to be applied if <code>narrowDownToContents</code> is
+     *            <code>true</code>, see also
+     *            {@link de.cau.cs.kieler.klighd.util.KlighdProperties#ZOOM_TO_FIT_CONTENT_SPACING},
+     *            may be <code>null</code>.
+     * @return the requested bounding box in form of a {@link PBounds}
      */
-    private PBounds toPBoundsIncludingPortsAndLabels(final KNode node) {
-        final PBounds nodeBounds = toPBounds(node);
-        double maxX = nodeBounds.getWidth();
-        double maxY = nodeBounds.getHeight();
-        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
-        
-        final KNodeAbstractNode nodeNode = RenderingContextData.get(node).getProperty(DiagramController.REP);
-        final boolean excludePorts = nodeNode.isDiagramClipWithPortsHidden();
-        final boolean excludeLabels = nodeNode.isDiagramClipWithLabelsHidden();
-
-        // these min values are <= 0 at all times!
-        double minX = 0;
-        double minY = 0;
-
-        boolean includedElement = false;
-
-        // incorporate only those contained ports & labels that are actually visible
-        //  others may not have reasonable positions
-        
-        final Iterable<? extends KGraphElement> kges;
-        
-        if (excludePorts & excludeLabels) {
-            kges = Collections.emptyList();
-        } else if (excludePorts) {
-            kges = node.getLabels();
-        } else if (excludeLabels) {
-            kges = node.getPorts();
-        } else {
-            kges = Iterables.concat(node.getPorts(), node.getLabels());
-        }
-        
-        for (final KShapeLayout element : Iterables.filter(
-                Iterables.filter(kges, isDisplayedFilter), KShapeLayout.class)) {
-            double val;
-
-            val = element.getXpos() * scale;
-            if (val < minX) {
-                minX = val;
-            }
-
-            val = element.getYpos() * scale;
-            if (val < minY) {
-                minY = val;
-            }
-
-            val = element.getXpos() * scale + element.getWidth() * scale;
-            if (val > maxX) {
-                maxX = val;
-            }
-
-            val = element.getYpos() * scale + element.getHeight() * scale;
-            if (val > maxY) {
-                maxY = val;
-            }
-
-            includedElement = true;
-        }
-
-        if (includedElement) {
-            nodeBounds.setRect(nodeBounds.getX() + minX, nodeBounds.getY() + minY,
-                    maxX - minX, maxY - minY);
-        } else {
-            final KInsets insets = node.getInsets();
-            nodeBounds.setRect(nodeBounds.getX() + insets.getLeft() * scale,
-                    nodeBounds.getY() + insets.getTop() * scale,
-                    maxX - insets.getLeft() - insets.getRight() * scale,
-                    maxY - insets.getTop() - insets.getBottom() * scale);
-        }
-
-        return nodeBounds;
+    protected PBounds toPBoundsIncludingPortsAndLabels(final KNode node,
+            final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpacing) {
+        return boundsComputer.toPBoundsIncludingPortsAndLabels(
+                node, doComputeSubDiagramSize, defaultZoomToFitContentSpacing);
     }
 }

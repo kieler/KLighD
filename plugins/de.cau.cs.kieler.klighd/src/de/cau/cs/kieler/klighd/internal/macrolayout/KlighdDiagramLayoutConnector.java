@@ -81,6 +81,7 @@ import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
+import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.util.RenderingContextData;
 
 /**
@@ -833,7 +834,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                         (float) (sourceShape.getWidth() / scale),
                         (float) (sourceShape.getHeight() / scale));
             } else if (sourceShape instanceof ElkPort || sourceShape instanceof ElkLabel) {
-                final double scale = ((ElkGraphElement) sourceShape.eContainer()).getProperty(CoreOptions.SCALE_FACTOR);
+                final double scale = ModelingUtil.eContainerOfType(sourceShape, ElkNode.class).getProperty(CoreOptions.SCALE_FACTOR);
                 targetShapeLayout.setPos(
                         (float) (sourceShape.getX() / scale),
                         (float) (sourceShape.getY() / scale));

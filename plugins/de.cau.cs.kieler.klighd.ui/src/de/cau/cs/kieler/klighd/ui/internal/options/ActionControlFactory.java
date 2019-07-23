@@ -139,6 +139,9 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                 //  in order to enable animated diagram changes, the viewer must be informed to
                 //  record view model changes, which is done once an action is actually executed
                 boolean anyActionPerformed = false;
+                
+                // This flag tracks if any successful action requires a new synthesis to be executed before the layout.
+                boolean anyActionRequiresSynthesis = false;
 
                 viewContext.getLayoutRecorder().startRecording();
 
@@ -149,6 +152,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                     result = action.execute(new ActionContext(
                             viewer, null, viewer.getViewContext().getViewModel(), null));
                     anyActionPerformed = result.getActionPerformed();
+                    anyActionRequiresSynthesis = result.getNeedsSynthesis();
                 } else {
                     // call the action on all selected elements
                     for (final EObject e : Iterables2.toIterable(
@@ -168,10 +172,15 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                         if (res != null) {
                             result = res;
                             anyActionPerformed |= res.getActionPerformed();
+                            anyActionRequiresSynthesis |= res.getNeedsSynthesis();
                         }
                     }
                 }
 
+                if (anyActionRequiresSynthesis) {
+                    viewContext.update();
+                }
+                
                 if (anyActionPerformed) {
                     new LightDiagramLayoutConfig(viewContext)
                             .animate(result.getAnimateLayout())
