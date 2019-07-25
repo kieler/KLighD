@@ -193,8 +193,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         if (elkNode instanceof ElkNode) {
             // elkNode.setProperty(PropID, value)
             ConstraintsUtils.copyConstraintProp(elkNode, kNode, PropID)
-            val elkGraph = elkNode.parent
-            refreshModelInEditor(elkGraph, uri)
+            refreshModelInEditor(ConstraintsUtils.getRootNodeOf(elkNode), uri)
 
         }
     }
