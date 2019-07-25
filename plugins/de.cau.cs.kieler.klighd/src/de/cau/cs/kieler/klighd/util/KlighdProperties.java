@@ -16,6 +16,7 @@ package de.cau.cs.kieler.klighd.util;
 import java.awt.Color;
 
 import org.eclipse.elk.core.math.KVector;
+import org.eclipse.elk.core.math.Spacing;
 import org.eclipse.elk.core.options.PortSide;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.Property;
@@ -308,18 +309,28 @@ public final class KlighdProperties {
             "klighd.edgesFirst", false);
 
     /**
-     * Whether the ports and port labels of clipped nodes should be shown or not.
+     * Determines whether the ports and port labels of clipped nodes should be shown or not.
      * By default the ports are shown, preventing issues with links to external ports.
      */
     public static final IProperty<Boolean> SHOW_CLIPPED_PORTS =
             new Property<Boolean>("klighd.showClippedNodesPorts", true);
 
     /**
-     * Whether the labels of clipped nodes should be shown or not.
+     * Determines whether the labels of clipped nodes should be shown or not.
      * By default the labels are shown.
      */
     public static final IProperty<Boolean> SHOW_CLIPPED_LABELS =
             new Property<Boolean>("klighd.showClippedNodesLabels", true);
+
+    /**
+     * Property denoting additional spacing to the zoom to fit content bounds of a (nested) diagram.
+     * The particular values are added (subtracted) to the bounds if the particular bound is
+     * determined by a child node or one of its connecting edges. The spacings are not applied to
+     * bounds that are determined by the clip node's ports or labels, which expected to be located
+     * directly at the viewport bounds.
+     */
+    public static final IProperty<Spacing> ZOOM_TO_FIT_CONTENT_SPACING =
+            new Property<Spacing>("klighd.zoomToFitContentSpacing", null);
 
     /**
      * Property to define the color of the canvas.

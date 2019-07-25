@@ -58,18 +58,17 @@ class InteractiveLayout {
 
             root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
 
+            prepareParentsForFirstLayout(root)
             // initial layout
             layoutE.onlyLayoutOnKGraph(id)
             // adjust coordinates of the nodes
             setCoordinates(root)
             // activate interactive strategies
             setInteractiveStrats(root)
+            setStratsAndCoordinatesOnParents(root)
+
             layoutE.onlyLayoutOnKGraph(id)
-//
-//            for (node : root.children) {
-//                println("Layer ID: " + node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + " Pos ID " +
-//                    node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D))
-//            }
+
         }
     }
 
@@ -99,7 +98,6 @@ class InteractiveLayout {
         // copy all nodes in another list
         // save the nodes which layer constraint are set in a separate list
         for (node : nodes) {
-
             allNs.add(node)
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) !== -1) {
                 propNs.add(node)
@@ -195,7 +193,6 @@ class InteractiveLayout {
                     newLayer.add(node)
                     layerNodes.add(newLayer)
                 }
-                Reevaluation.reevaluateAfterShift(node, movedNode, nodesOfLayer, newLayer)
             }
         }
     }
@@ -296,7 +293,6 @@ class InteractiveLayout {
             node.ypos = yPos
             yPos = yPos + node.height + 1
         }
-
     }
 
     /**
@@ -336,6 +332,33 @@ class InteractiveLayout {
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE)
+    }
+/**
+ * Sets the interactive_layout property and deactivates seperate connected components 
+ * on all children of root, having own children.
+ */
+    private def static void prepareParentsForFirstLayout(KNode root) {
+        for (n : root.children) {
+            val nestedNodes = n.children
+            if (!nestedNodes.empty) {
+                n.setProperty(LayeredOptions.INTERACTIVE_LAYOUT, true)
+                n.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
+                prepareParentsForFirstLayout(n)
+            }
+        }
+    }
+/**
+ * Activates the interactive strats and applies setCoordinates on all children of root, having own children.
+ */
+    private def static void setStratsAndCoordinatesOnParents(KNode root) {
+        for (n : root.children) {
+            val nestedNodes = n.children
+            if (!nestedNodes.empty) {
+                setInteractiveStrats(n)                
+                setCoordinates(n)
+                setStratsAndCoordinatesOnParents(n)
+            }
+        }
     }
 
 }

@@ -21,6 +21,7 @@ import org.eclipse.elk.alg.layered.options.LayeredOptions
 import java.util.List
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
+import java.util.ArrayList
 
 /**
  * Provides a set of utility methods that is used in the constraints package.
@@ -48,15 +49,26 @@ class ConstraintsUtils {
     }
 
     /**
-     * Calculates the nodes that are in the layer based on the layer ID.
+     * Calculates the nodes that are in the layer based on the layer ID. The  nodes receive a list position 
+     * respecting their position in the layer. If the pos constraint is set it is used as the position of the node 
+     * else the position id is used.
+     * After the interactive layout the pos constraint is equal to the position id. 
      * @param layer the layer which containing nodes should be calculated
      * @param nodes all nodes the graph contains
      */
     def static getNodesOfLayer(int layer, List<KNode> nodes) {
-        var List<KNode> nodesOfLayer = newArrayList()
+        val maxPos = maxActualPositionInLayer(nodes, layer)
+        
+        var KNode[] nodesOfLayer = newArrayOfSize(maxPos)
+
         for (node : nodes) {
             if (node.getProperty(LayeredOptions.LAYERING_LAYER_I_D) === layer) {
-                nodesOfLayer.add(node)
+                var pos = ConstraintsUtils.getPosConstraint(node)
+
+                if (pos === -1) {
+                    pos = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+                }
+
             }
         }
         return nodesOfLayer
@@ -81,6 +93,22 @@ class ConstraintsUtils {
     }
 
     /**
+     * The actual position of a KNode is the position where it will end up after the interactive layout.
+     * The actual position of a KNode is determined by the position constraint value.
+     * If there is no position constraint value the actual position of a KNode is its position id.
+     * After the interactive layout the position id is equals to the position constraint value.
+     * @param node the node of which you want to know the actual position
+     */
+    def static actualPos(KNode node) {
+        val posCandidate = ConstraintsUtils.getPosConstraint(node)
+        if (posCandidate == -1) {
+            return node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+        } else {
+            return posCandidate
+        }
+    }
+
+    /**
      * Searches the maximal actual layer in a list of KNodes.
      * @param nodes All nodes that should be included in this search.
      */
@@ -100,6 +128,25 @@ class ConstraintsUtils {
             }
         }
         return maxLayer
+    }
+/**
+ * Searches the maximal position in the layer denoted by {@code layer} in a list of KNodes.
+ * Returns -1 if there is no node in the layer or if the list of nodes is empty.
+ * @param nodes List of KNodes in which the method should search
+ * @param layer The layer index of the layer of which you want the maximal position
+ * @return the maximal position in the layer
+ */
+    def static maxActualPositionInLayer(List<KNode> nodes, int layer) {
+        var maxPosInLayer = -1
+        for (n : nodes) {
+            if (actualLayer(n) === layer) {
+                val posCandidate = actualPos(n)
+                if (posCandidate > maxPosInLayer) {
+                    maxPosInLayer = posCandidate
+                }
+            }
+        }
+        return maxPosInLayer
     }
 
     /**

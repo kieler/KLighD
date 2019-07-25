@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER Lightweight Diagrams Custom XMI Resource Factory Implementation
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.kgx;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: de.cau.cs.kieler.klighd.kgx
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Kiel University
+Fragment-Host: de.cau.cs.kieler.klighd
+Require-Bundle: org.eclipse.emf.ecore.xmi

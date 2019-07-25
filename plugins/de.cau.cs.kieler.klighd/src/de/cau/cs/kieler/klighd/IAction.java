@@ -211,10 +211,12 @@ public interface IAction {
 
         private List<LayoutConfigurator> layoutConfigs = null;
 
+        private boolean needsSynthesis = false;
         private boolean actionPerformed = true;
         private Boolean animateLayout = null;
         private Boolean zoomToActualSize = null;
         private Boolean zoomToFit = null;
+        private Boolean zoomToFitContent = null;
         private Boolean zoomToFocus = null;
         private KNode focus = null;
 
@@ -265,6 +267,18 @@ public interface IAction {
                 return new ActionResult(actionRequiresLayout).dontZoom();
             }
         }
+        
+        /**
+         * Do a new synthesis before the subsequent automatic layout run.
+         * Overwrites that the action now definitely also needs an automatic layout run after the synthesis.
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doSynthesis() {
+            this.needsSynthesis = true;
+            this.actionPerformed = true;
+            return this;
+        }
 
         
         /**
@@ -295,6 +309,7 @@ public interface IAction {
         public ActionResult doZoomToActualSize() {
             this.zoomToActualSize = true;
             this.zoomToFit = null;
+            this.zoomToFitContent = null;
             this.zoomToFocus = null;
             return this;
         }
@@ -317,6 +332,20 @@ public interface IAction {
         public ActionResult doZoomToFit() {
             this.zoomToActualSize = null;
             this.zoomToFit = true;
+            this.zoomToFitContent = null;
+            this.zoomToFocus = null;
+            return this;
+        }
+
+        /**
+         * Schedule zoomToFitContent during the subsequent automatic layout run.
+         *
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doZoomToFitContent() {
+            this.zoomToActualSize = null;
+            this.zoomToFit = null;
+            this.zoomToFitContent = true;
             this.zoomToFocus = null;
             return this;
         }
@@ -353,6 +382,7 @@ public interface IAction {
         public ActionResult doZoomToFocus(final KNode focusNode) {
             this.zoomToActualSize = null;
             this.zoomToFit = null;
+            this.zoomToFitContent = null;
             this.zoomToFocus = true;
             this.focus = focusNode;
             return this;
@@ -376,6 +406,7 @@ public interface IAction {
         public ActionResult dontZoom() {
             this.zoomToActualSize = false;
             this.zoomToFit = false;
+            this.zoomToFitContent = false;
             this.zoomToFocus = false;
             return this;
         }
@@ -387,6 +418,14 @@ public interface IAction {
          */
         public List<LayoutConfigurator> getLayoutConfigs() {
             return this.layoutConfigs;
+        }
+        
+        /**
+         * Getter. Denotes whether a subsequent synthesis is required.
+         * @return The {@link #needsSynthesis} flag.
+         */
+        public boolean getNeedsSynthesis() {
+            return this.needsSynthesis;
         }
 
         /**
@@ -429,6 +468,17 @@ public interface IAction {
          */
         public Boolean getZoomToFit() {
             return this.zoomToFit;
+        }
+
+        /**
+         * Getter. Returns a {@link Boolean} instead of the primitive <code>boolean</code>
+         * in order distinguish the 'not configured' state. Returns <code>null</code> in this
+         * case.
+         *
+         * @return the {@link #zoomToFitContent} state
+         */
+        public Boolean getZoomToFitContent() {
+            return this.zoomToFitContent;
         }
 
         /**

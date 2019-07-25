@@ -207,7 +207,7 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
         }
         super.repaintFrom(localBounds, childOrThis);
     }
-    
+
     /**
      * {@inheritDoc}
      * <br>
@@ -216,22 +216,18 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
      */
     @Override
     public boolean fullPick(PPickPath pickPath) {
-        // If something with the parent relationship is wrong, just relegate to the super
-        // implementation.
-        if (parentNode != null) {
-            // check if the parentNode is currently clipped to and if the ports should be hidden
-            // on the main camera
-            if (parentNode.isDiagramClipWithPortsHidden()) {
-                // Check if the edge is connected to the parentNode
-                final KNode parentKNode = parentNode.getViewModelElement();
-                final KEdge kEdge = getViewModelElement();
-                if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
-                    // This is a short hierarchy edge connected to the parent node, filter it out
-                    return false;
-                }
+        // check if the parentNode is currently clipped to and if the ports should be hidden
+        // on the main camera
+        if (parentNode != null && parentNode.isDiagramClipWithPortsHidden()) {
+            // Check if the edge is connected to the parentNode
+            final KNode parentKNode = parentNode.getViewModelElement();
+            final KEdge kEdge = getViewModelElement();
+            if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
+                // This is a short hierarchy edge connected to the parent node, filter it out
+                return false;
             }
         }
-        
+
         return super.fullPick(pickPath);            
     }
     
@@ -243,12 +239,11 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
      */
     @Override
     public void fullPaint(final PPaintContext paintContext) {
-        // If something with the parent relationship is wrong,
-        // just delegate to the super implementation.
-        if (parentNode != null) {
-            // Find out if the parentNode is currently clipped to
-            // and if the ports should be hidden on the main camera
-            if (parentNode.isDiagramClipWithPortsHidden()) {
+        // check if the parentNode is currently clipped to and if the ports should be hidden on the main camera
+        if (parentNode != null && parentNode.isDiagramClipWithPortsHidden()) {
+            // the following flag is false if drawn on the outline view, for example
+            final boolean drawnViaMainCamera = parentNode.getCamerasReference().contains(paintContext.getCamera());
+            if (drawnViaMainCamera) {
                 // Check if the edge is connected to the parentNode
                 final KEdge kEdge = getViewModelElement();
                 final KNode parentKNode = parentNode.getViewModelElement();
