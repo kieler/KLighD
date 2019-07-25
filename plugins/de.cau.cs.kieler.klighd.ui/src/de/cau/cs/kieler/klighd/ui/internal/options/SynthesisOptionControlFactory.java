@@ -589,10 +589,10 @@ public class SynthesisOptionControlFactory {
                 final Scale scale = (Scale) event.widget;
                 
                 // determine the actually selected value
-                Double sourceValue = minShifted + scalerStepSize * (scale.getSelection());
+                double sourceValue = minShifted + scalerStepSize * (scale.getSelection());
                 
                 // round it wrt the required step size
-                final Double value = min + Math.floor((sourceValue - min) / stepSize) * stepSize;
+                final double value = min + Math.floor((sourceValue - min) / stepSize) * stepSize;
                 
                 // configure the adjusted selection
                 //  lets the the scaler snap to the closest possible value
@@ -602,7 +602,7 @@ public class SynthesisOptionControlFactory {
                 if (floatSteps) {
                     label.setText(labelString + value);
                 } else {
-                    label.setText(labelString + value.intValue());
+                    label.setText(labelString + (int) value);
                 }
                 
                 // Create a new timer that executes after a small delay, if not canceled earlier.
@@ -624,9 +624,9 @@ public class SynthesisOptionControlFactory {
                             public void run() {
                                 // Configure the new option value in the view context.
                                 if (floatSteps) {
-                                    context.configureOption(option, value.floatValue());
+                                    context.configureOption(option, (float) value);
                                 } else {
-                                    context.configureOption(option, value.intValue());
+                                    context.configureOption(option, (int) value);
                                 }
                                 container.layout(true);
                                 
