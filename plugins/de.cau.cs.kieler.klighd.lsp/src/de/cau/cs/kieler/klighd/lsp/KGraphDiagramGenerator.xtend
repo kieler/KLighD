@@ -346,6 +346,8 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     private def SKEdge generateEdge(KEdge edge) {
         val SKEdge edgeElement = configSElement(SKEdge, idGen.getId(edge))
+        edgeElement.sourceId = idGen.getId(edge.source)
+        edgeElement.targetId = idGen.getId(edge.target)
 
         val renderings = edge.data.filter[KRendering.isAssignableFrom(it.class)].toList
 
