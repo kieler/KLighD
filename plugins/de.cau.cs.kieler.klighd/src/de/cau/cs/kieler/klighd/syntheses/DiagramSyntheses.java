@@ -784,8 +784,8 @@ public final class DiagramSyntheses {
 
     /**
      * Configures a tooltip on the provided {@link KGraphElement KGraphElement}. This method has no
-     * effect if another tooltip is defined on the root {@link KRendering} attached attached to this
-     * {@link KGraphElement} (except of blowing up the view model :-P).
+     * effect if another tooltip is defined on any {@link KRendering} attached to this {@link KGraphElement}
+     * (except of blowing up the view model :-P).
      *
      * @param <S>
      *            the concrete type of {@code kge}
@@ -801,10 +801,7 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Configures a tooltip on the provided {@link KRendering root KRendering} of a
-     * {@link KGraphElement}. Similar to {@link #setAsCollapsedView(KRendering)} or
-     * {@link #setAsExpandedView(KRendering)} this method has no effect on nested {@link KRendering
-     * KRenderings} (except of blowing up the view model :-P).
+     * Configures a tooltip on the provided {@link KRendering} of a {@link KGraphElement}.
      *
      * @param <T>
      *            the concrete type of <code>krendering</code>
