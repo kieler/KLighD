@@ -26,54 +26,72 @@ import java.util.HashMap
  */
 class Reevaluation {
 
-    ArrayList<KNode> changedNodes = newArrayList()
+    HashSet<KNode> changedNodes = newHashSet()
     KNode target
-    
-    new(KNode target){
+
+    new(KNode target) {
         this.target = target
     }
 
-    def getTarget(){
+    def getTarget() {
         return target
     }
-    
-    def getChangedNodes(){
+
+    def getChangedNodes() {
         return changedNodes
     }
-    
 
     /**
      * Adjusts position constraints in a layer after one node has been introduced to it.
      */
-    def static reevaluatePosConstraintsAfterLayerSwap(List<KNode> nodesOfLayer, KNode target) {
-        // Offset all positional constraint greater or equal to the new one in order to conserve the 
-        // established subsequence of nodes below the inserted node
-        val targetChoiceCons = ConstraintsUtils.getPosConstraint(target)
-        offsetPosConstraintsOfLayerFrom(nodesOfLayer, 1, targetChoiceCons, target)
+    def reevaluatePosConstraintsAfterLayerSwap(List<KNode> newNodesOfLayer, List<KNode> oldNodesOfLayer, KNode target,
+        int newPos) {
+
+        // formerLayer != newLayer -- should always be true - it doesn't cause errors if it's not, though.
+        // The node is "deleted" from its old layer if it had a position constraint the old layer 
+        // needs to be reevaluated
+        offsetPosConstraintsOfLayerFrom(oldNodesOfLayer, -1,
+            target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D), target)
+
+        // The node is added at the new position in the new layer.
+        offsetPosConstraintsOfLayerFrom(newNodesOfLayer, 1, newPos, target)
+
     }
-    
-    def static reevaluatePosConstraintsAfterPosChangeInLayer(List<KNode> nodesOfLayer, KNode target){
-        val targetChoiceCons = ConstraintsUtils.getPosConstraint(target)
+
+    def reevaluatePosConstraintsAfterPosChangeInLayer(List<KNode> nodesOfLayer, KNode target, int newPos) {
         val oldPos = target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
-        offsetPosConstraintsOfLayerFromTo(nodesOfLayer, 1, targetChoiceCons, oldPos, target)
+
+        if (newPos < oldPos) {
+            // new position constraint is above the old position
+            // increment all position constraints of nodes that weren't below the target beforehand
+            offsetPosConstraintsOfLayerFromTo(nodesOfLayer, 1, newPos, oldPos, target)
+
+        } else {
+            // oldPos < newPos new position constraint is below the old position
+            // Decrement all position constraints of nodes that weren't above the target beforehand
+            offsetPosConstraintsOfLayerFromTo(nodesOfLayer, -1, oldPos, newPos, target)
+
+        }
+
     }
-    
-    
-/**
- * Adjusts position constraints in a layer after the removal of a position constraint.
- * TODO: Think through all cases.
- */
-    def static reevaluatePositionConstraintsAfterRemoval(List<KNode> nodesOfLayer, KNode removedNode) {
+
+    /**
+     * Decrements all nodes below a node that has been removed from the layer
+     * 
+     */
+    def reevaluatePositionConstraintsAfterRemoval(List<KNode> nodesOfLayer, KNode removedNode) {
         // Offset all positional constraint greater or equal to the new one in order to conserve the 
         // established subsequence of nodes below the removed node
-        val formerPosCons = removedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
-        offsetPosConstraintsOfLayerFrom(nodesOfLayer, -1, formerPosCons, removedNode)
+        val formerPosCons = ConstraintsUtils.getPosConstraint(removedNode)
+        if (formerPosCons !== -1) {
+            offsetPosConstraintsOfLayerFrom(nodesOfLayer, -1, formerPosCons, removedNode)
+        }
     }
 
     /**
      * Adjust layer constraints in the graph if a new layer constraint empties a layer and lets it disappear. 
      */
-    def static reevaluateAfterEmptyingALayer(int origLayer, int targetLayer, List<KNode> nodes) {
+    def reevaluateAfterEmptyingALayer(int origLayer, int targetLayer, List<KNode> nodes) {
 
         val origLayerL = ConstraintsUtils.getNodesOfLayer(origLayer, nodes)
 
@@ -83,47 +101,94 @@ class Reevaluation {
              * the disappeared layer need to be decremented*/
             for (node : nodes) {
                 val layerCons = ConstraintsUtils.getLayerConstraint(node)
-                if (layerCons >= targetLayer) {
+                if (layerCons >= origLayer) {
+                    changedNodes.add(node)
                     ConstraintsUtils.setLayerConstraint(node, layerCons - 1)
                 }
             }
+
+            if (origLayer <= targetLayer) {
+                return true
+            }
         }
+        return false
     }
 
     /**
+     * Shifting-Reval 
+     * Simulates the shifting of nodes in order to adjust layer and position constraints.
+     * 
+     * @param insertedNode the node that is the target of the constraints
+     * @param posCons the value of the position constraint for insertedNode
+     * @param layerCons the value of the layer constraint for insertedNode
+     * @param oldLayerNodes The origin layer of insertedNode
+     * @param newLayerNodes The target layer of insertedNode
+     * @param nodes All nodes of the current graph
+     */
+    def void shiftIfNec(KNode insertedNode, int posCons, int layerCons, List<KNode> oldLayerNodes,
+        List<KNode> newLayerNodes, List<KNode> nodes) {
+
+        val inEdges = insertedNode.incomingEdges
+        val outEdges = insertedNode.outgoingEdges
+        var List<KNode> adjacentNodes = newArrayList()
+
+        for (e : inEdges) {
+            adjacentNodes.add(e.source)
+        }
+        for (e : outEdges) {
+            adjacentNodes.add(e.target)
+        }
+
+        var List<KNode> shiftedNodes = newArrayList()
+
+        for (n : adjacentNodes) {
+            if (newLayerNodes.contains(n)) {
+                // If the shifted node has a layer constraint. It needs to be incremented else the shift would have no effect.
+                shiftedNodes.add(n)
+                if (ConstraintsUtils.getLayerConstraint(n) != -1) {
+                    ConstraintsUtils.setLayerConstraint(n, layerCons + 1)
+                    changedNodes.add(n)
+
+                }
+                // Test whether the shift leads to more shifts in the next layer.
+                val nextNextLayerNodes = ConstraintsUtils.getNodesOfLayer(
+                    n.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + 1, nodes)
+                val nPosId = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+
+                shiftIfNec(n, nPosId, layerCons + 1, newLayerNodes, nextNextLayerNodes, nodes)
+
+            }
+        }
+        // Adjust position constraints in the source layer of the shifted node 
+        // and in the target layer of the shifted node
+//        for (n : shiftedNodes) {
+//            val nextNextLayerNodes = ConstraintsUtils.getNodesOfLayer(
+//                n.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + 1, nodes)
+//            reevaluateAfterShift(n, insertedNode, newLayerNodes, nextNextLayerNodes)
+//        }
+
+    }
+
+    /**
+     * Position Reevaluation for Blockshifting
      * Adjusts positional constraints in the source and target layer after one node has been shifted. 
      */
-    def static reevaluateAfterShift(
-        KNode shiftedNode,
-        KNode targetNode,
-        ArrayList<KNode> originLayer,
-        ArrayList<KNode> targetLayer
-    ) {
+    def reevaluateAfterShift(KNode shiftedNode, KNode targetNode, List<KNode> originLayer, List<KNode> targetLayer) {
         // Currently, we only shift from left to right.
+        // Get the position of the shiftedNode - it's the same position on which it will end up in its new layer
         val posIndexOfShifted = shiftedNode.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+        // Reevaluate the position constraints in the source and target layer accordingly
+        reevaluatePosConstraintsAfterLayerSwap(originLayer, targetLayer, shiftedNode, posIndexOfShifted)
 
-        // Decrement all positional constraint values of nodes that are below the shifted node in the original layer.
-        offsetPosConstraintsOfLayerFrom(originLayer, -1, posIndexOfShifted, shiftedNode)
-
-        // In the case that a static constraint was set also examine the target node
+        // Also examine the position constraint of the target node
         val targetPosChoiceCons = targetNode.getProperty(
             LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
         if (targetPosChoiceCons > 0 && targetPosChoiceCons >= posIndexOfShifted) {
             targetNode.setProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT,
                 targetPosChoiceCons - 1)
+            changedNodes.add(targetNode)
         }
 
-        // If the shifted node has a layer constraint. It needs to be incremented else the shift would have no effect.
-        val layerCons = ConstraintsUtils.getLayerConstraint(shiftedNode)
-        if (layerCons != -1) {
-            ConstraintsUtils.setLayerConstraint(shiftedNode, layerCons + 1)
-        }
-
-        // If the shifted node has a positional constraint. Its target layer needs to be reevaluated. 
-        val posCons = ConstraintsUtils.getPosConstraint(shiftedNode)
-        if (posCons != -1) {
-            offsetPosConstraintsOfLayerFrom(targetLayer, 1, posCons, shiftedNode)
-        }
     }
 
     /**
@@ -134,19 +199,23 @@ class Reevaluation {
      * @param The offset that should be applied on the position constraints
      * 
      */
-    def private static offsetPosConstraintsOfLayerFromTo(List<KNode> layer, int offset, int startPos, int endPos, KNode target) {
-        
-        
-        for (var i = startPos; i < endPos; i++) {
-            val node = layer.get(i)
-            val posChoiceCons = ConstraintsUtils.getPosConstraint(node)            
+    def private offsetPosConstraintsOfLayerFromTo(List<KNode> layer, int offset, int startPos, int endPos,
+        KNode target) {
 
-            if (node != target && posChoiceCons != -1) {
-                ConstraintsUtils.setPosConstraint(node, posChoiceCons + offset)
+        if (!layer.empty) {
+            for (var i = startPos; i < endPos + 1; i++) {
+                val node = layer.get(i)
+                val posChoiceCons = ConstraintsUtils.getPosConstraint(node)
+
+                if (node != target && posChoiceCons !== -1) {
+                    ConstraintsUtils.setPosConstraint(node, posChoiceCons + offset)
+                    changedNodes.add(node)
+                }
             }
         }
     }
-     /**
+
+    /**
      * Offsets all nodes in a layer by {@code offset} that own a positional constraint that is greater or equal 
      * than {@code startPos}.
      * 
@@ -154,8 +223,8 @@ class Reevaluation {
      * @param The offset that should be applied on the position constraints
      * 
      */
-    def private static offsetPosConstraintsOfLayerFrom(List<KNode> layer, int offset, int startPos, KNode target){
-        offsetPosConstraintsOfLayerFromTo(layer, offset, startPos, layer.length, target)
+    def private offsetPosConstraintsOfLayerFrom(List<KNode> layer, int offset, int startPos, KNode target) {
+        offsetPosConstraintsOfLayerFromTo(layer, offset, startPos, layer.length - 1, target)
     }
 
     /**
@@ -175,53 +244,47 @@ class Reevaluation {
      * @param nodes All nodes to examine. Requirement: The nodes must not have constraints that cause flat edges.
      */
     def static eliminateEqualPositionsInSameLayer(List<KNode> nodes) {
-     
-     //TODO - still doesn't work completely
-     
-     // Find out the maximal value among layer ids and layer constraints
-     // in order to init the layerSets arry with this value           
+
+        // TODO - still doesn't work completely
+        // Find out the maximal value among layer ids and layer constraints
+        // in order to init the layerSets arry with this value           
         var maxLayer = 0
-        for (n : nodes){
-           
-           //The method is called before the layout has been performed
-           //This means a layer id does not need to be equal to the layer constraint
-           var actualLayer = ConstraintsUtils.actualLayer(n)
-            if(actualLayer == -1){
-                actualLayer = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            }
-            
-            if(actualLayer > maxLayer){
-                maxLayer = actualLayer
-            } 
-        }
-        
-       var HashSet<Integer>[] layerSets = newArrayOfSize(maxLayer + 1)
-                
-        
         for (n : nodes) {
-            
+
+            // The method is called before the layout has been performed
+            // This means a layer id does not need to be equal to the layer constraint
+            var actualLayer = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+
+            if (actualLayer > maxLayer) {
+                maxLayer = actualLayer
+            }
+        }
+
+        var HashSet<Integer>[] layerSets = newArrayOfSize(maxLayer + 1)
+
+        for (n : nodes) {
+
             var actualLayerId = ConstraintsUtils.getLayerConstraint(n)
-            if(actualLayerId == -1){
+            if (actualLayerId == -1) {
                 actualLayerId = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
             }
-            
+
             var HashSet<Integer> layerSet = layerSets.get(actualLayerId)
-            
-            if(layerSet === null){
+
+            if (layerSet === null) {
                 layerSet = new HashSet<Integer>
                 layerSets.set(actualLayerId, layerSet)
             }
-            
+
             val posCons = ConstraintsUtils.getPosConstraint(n)
             // Only examine nodes that actually have a position constraint
             if (posCons != -1) {
-                if(layerSet.contains(posCons)){
-                    ConstraintsUtils::setPosConstraint(n, posCons+1)
-                    layerSet.add(posCons+1)
+                if (layerSet.contains(posCons)) {
+                    ConstraintsUtils::setPosConstraint(n, posCons + 1)
+                    layerSet.add(posCons + 1)
                 }
             }
         }
-        
 
     }
 
@@ -231,15 +294,14 @@ class Reevaluation {
      */
     def static checkForBoundaryBreakingConstraints(List<KNode> nodes) {
     }
+
     /**
      * Checks for constraints in the model that cause flat edges (edges in one layer).
      * It performs an adjusted shift reevaluation.
      * While the reevaluation edits constraints that cause flat edges, they need to be handled differently 
      * if they are introduced via a loaded file. 
      */
-    def static checkForFlatEdgeCausingConstraints(List<KNode> nodes){
-        
-        
+    def static checkForFlatEdgeCausingConstraints(List<KNode> nodes) {
     }
 
 }

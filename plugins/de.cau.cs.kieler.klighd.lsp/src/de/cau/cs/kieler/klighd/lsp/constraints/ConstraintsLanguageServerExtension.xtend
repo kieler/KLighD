@@ -30,6 +30,8 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
+import java.util.Collections
+import java.util.HashSet
 
 /**
  * @author jet, cos
@@ -113,18 +115,20 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         val kNode = getKNode(uri, targetID, root)
 
         if (kNode !== null) {
-            kNode.setProperty(PropID, value)
             var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            var layerCons = ConstraintsUtils.getLayerConstraint(kNode)
             var List<KNode> residingLayer
-//
-//            if (layerCons != -1) {
-//                residingLayer = ConstraintsUtils.getNodesOfLayer(layerCons, root.children)
-//            } else {
-//                residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, root.children)
-//            }
-            updateSourceCode(kNode, PropID, value, uri)
+            residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, root.children)
 
+            var reval = new Reevaluation(kNode)
+            switch (PropID) {
+                case LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT:
+                    reval.reevaluatePosConstraintsAfterPosChangeInLayer(residingLayer, kNode, value)
+            }
+            kNode.setProperty(PropID, value)
+
+            var changes = reval.changedNodes
+            changes.add(kNode)
+            updateSourceCode(changes.toList, uri)
         }
     }
 
@@ -265,19 +269,29 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         // In case that the interactive mode is active, the viewContext is not null 
         // and the element is actually a KNode. Carry on.
         if (kNode !== null) {
-            val layerCons = sc.layer
+            var layerCons = sc.layer
             val pos = sc.position
             val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            //var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(layerCons, allNodes)
+            var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(layerCons, allNodes)
+            var oldLayerNodes = ConstraintsUtils.getNodesOfLayer(layerId, allNodes)
+
+            // Reevaluate insertion of node to target layer
+            var reval = new Reevaluation(kNode)
+
+            if (reval.reevaluateAfterEmptyingALayer(layerId, layerCons, allNodes)) {
+                layerCons--
+            }
+
+            //reval.shiftIfNec(kNode, pos, layerCons, oldLayerNodes, targetLayerNodes, allNodes)
+            reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, pos)
 
             ConstraintsUtils.setLayerConstraint(kNode, layerCons)
             ConstraintsUtils.setPosConstraint(kNode, pos)
 
-            // Reevaluate insertion of node to target layer
-            // Reevaluation.reevaluateAfterEmptyingALayer(layerId, layerCons, allNodes)
-            // Reevaluation.reevaluatePositionConstraintsAfterAdd(targetLayerNodes, kNode)
+            var ns = reval.changedNodes
+            ns.add(kNode)
             // Update source code of the model
-            updateSourceCode(kNode, uri)
+            updateSourceCode(ns.toList, uri)
 
         }
     }
