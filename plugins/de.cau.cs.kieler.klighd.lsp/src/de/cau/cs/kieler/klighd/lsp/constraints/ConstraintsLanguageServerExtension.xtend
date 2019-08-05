@@ -272,18 +272,22 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             var layerCons = sc.layer
             val pos = sc.position
             val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+
             var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(layerCons, allNodes)
             var oldLayerNodes = ConstraintsUtils.getNodesOfLayer(layerId, allNodes)
 
             // Reevaluate insertion of node to target layer
             var reval = new Reevaluation(kNode)
 
-            if (reval.reevaluateAfterEmptyingALayer(layerId, layerCons, allNodes)) {
+
+            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
                 layerCons--
             }
 
-            //reval.shiftIfNec(kNode, pos, layerCons, oldLayerNodes, targetLayerNodes, allNodes)
+            // reval.shiftIfNec(kNode, pos, layerCons, oldLayerNodes, targetLayerNodes, allNodes)
             reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, pos)
+
+
 
             ConstraintsUtils.setLayerConstraint(kNode, layerCons)
             ConstraintsUtils.setPosConstraint(kNode, pos)
