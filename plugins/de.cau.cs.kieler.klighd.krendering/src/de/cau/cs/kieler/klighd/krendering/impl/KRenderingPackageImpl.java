@@ -78,6 +78,7 @@ import de.cau.cs.kieler.klighd.krendering.KYPosition;
 import de.cau.cs.kieler.klighd.krendering.LineCap;
 import de.cau.cs.kieler.klighd.krendering.LineJoin;
 import de.cau.cs.kieler.klighd.krendering.LineStyle;
+import de.cau.cs.kieler.klighd.krendering.ModifierState;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.krendering.Underline;
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
@@ -499,6 +500,13 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * @generated
      */
     private EEnum lineCapEEnum = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EEnum modifierStateEEnum = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -2008,6 +2016,15 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EEnum getModifierState() {
+        return modifierStateEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getTrigger() {
         return triggerEEnum;
     }
@@ -2286,6 +2303,7 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         horizontalAlignmentEEnum = createEEnum(HORIZONTAL_ALIGNMENT);
         verticalAlignmentEEnum = createEEnum(VERTICAL_ALIGNMENT);
         lineCapEEnum = createEEnum(LINE_CAP);
+        modifierStateEEnum = createEEnum(MODIFIER_STATE);
         triggerEEnum = createEEnum(TRIGGER);
         underlineEEnum = createEEnum(UNDERLINE);
         lineJoinEEnum = createEEnum(LINE_JOIN);
@@ -2863,9 +2881,9 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         initEClass(kActionEClass, KAction.class, "KAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getKAction_ActionId(), ecorePackage.getEString(), "actionId", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getKAction_Trigger(), this.getTrigger(), "trigger", null, 1, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKAction_AltPressed(), ecorePackage.getEBoolean(), "altPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKAction_CtrlCmdPressed(), ecorePackage.getEBoolean(), "ctrlCmdPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getKAction_ShiftPressed(), ecorePackage.getEBoolean(), "shiftPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_AltPressed(), this.getModifierState(), "altPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_CtrlCmdPressed(), this.getModifierState(), "ctrlCmdPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getKAction_ShiftPressed(), this.getModifierState(), "shiftPressed", null, 0, 1, KAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(kPointPlacementDataEClass, KPointPlacementData.class, "KPointPlacementData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getKPointPlacementData_ReferencePoint(), this.getKPosition(), null, "referencePoint", null, 0, 1, KPointPlacementData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2931,6 +2949,11 @@ public class KRenderingPackageImpl extends EPackageImpl implements KRenderingPac
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_FLAT);
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_ROUND);
         addEEnumLiteral(lineCapEEnum, LineCap.CAP_SQUARE);
+
+        initEEnum(modifierStateEEnum, ModifierState.class, "ModifierState");
+        addEEnumLiteral(modifierStateEEnum, ModifierState.DONT_CARE);
+        addEEnumLiteral(modifierStateEEnum, ModifierState.PRESSED);
+        addEEnumLiteral(modifierStateEEnum, ModifierState.NOT_PRESSED);
 
         initEEnum(triggerEEnum, Trigger.class, "Trigger");
         addEEnumLiteral(triggerEEnum, Trigger.SINGLECLICK);

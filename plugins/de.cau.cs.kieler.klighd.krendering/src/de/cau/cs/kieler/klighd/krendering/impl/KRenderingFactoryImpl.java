@@ -134,6 +134,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return createVerticalAlignmentFromString(eDataType, initialValue);
             case KRenderingPackage.LINE_CAP:
                 return createLineCapFromString(eDataType, initialValue);
+            case KRenderingPackage.MODIFIER_STATE:
+                return createModifierStateFromString(eDataType, initialValue);
             case KRenderingPackage.TRIGGER:
                 return createTriggerFromString(eDataType, initialValue);
             case KRenderingPackage.UNDERLINE:
@@ -165,6 +167,8 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
                 return convertVerticalAlignmentToString(eDataType, instanceValue);
             case KRenderingPackage.LINE_CAP:
                 return convertLineCapToString(eDataType, instanceValue);
+            case KRenderingPackage.MODIFIER_STATE:
+                return convertModifierStateToString(eDataType, instanceValue);
             case KRenderingPackage.TRIGGER:
                 return convertTriggerToString(eDataType, instanceValue);
             case KRenderingPackage.UNDERLINE:
@@ -707,6 +711,26 @@ public class KRenderingFactoryImpl extends EFactoryImpl implements KRenderingFac
      * @generated
      */
     public String convertLineCapToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ModifierState createModifierStateFromString(EDataType eDataType, String initialValue) {
+        ModifierState result = ModifierState.get(initialValue);
+        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertModifierStateToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

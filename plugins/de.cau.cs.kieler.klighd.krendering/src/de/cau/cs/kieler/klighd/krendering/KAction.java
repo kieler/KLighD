@@ -30,9 +30,9 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#getActionId <em>Action Id</em>}</li>
  *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#getTrigger <em>Trigger</em>}</li>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#isAltPressed <em>Alt Pressed</em>}</li>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
- *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#isShiftPressed <em>Shift Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#getAltPressed <em>Alt Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#getCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}</li>
+ *   <li>{@link de.cau.cs.kieler.klighd.krendering.KAction#getShiftPressed <em>Shift Pressed</em>}</li>
  * </ul>
  *
  * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKAction()
@@ -95,77 +95,86 @@ public interface KAction extends EObject {
 
     /**
      * Returns the value of the '<em><b>Alt Pressed</b></em>' attribute.
+     * The literals are from the enumeration {@link de.cau.cs.kieler.klighd.krendering.ModifierState}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * if <code>true</code> the 'alt' key must be pressed to let the associated action be executed
+     * The 'alt' key must, must not or is indifferent to be pressed to let the associated action be executed.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Alt Pressed</em>' attribute.
-     * @see #setAltPressed(boolean)
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @see #setAltPressed(ModifierState)
      * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKAction_AltPressed()
      * @model
      * @generated
      */
-    boolean isAltPressed();
+    ModifierState getAltPressed();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KAction#isAltPressed <em>Alt Pressed</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KAction#getAltPressed <em>Alt Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Alt Pressed</em>' attribute.
-     * @see #isAltPressed()
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @see #getAltPressed()
      * @generated
      */
-    void setAltPressed(boolean value);
+    void setAltPressed(ModifierState value);
 
     /**
      * Returns the value of the '<em><b>Ctrl Cmd Pressed</b></em>' attribute.
+     * The literals are from the enumeration {@link de.cau.cs.kieler.klighd.krendering.ModifierState}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * if <code>true</code> the 'ctrl' key, on OSX the 'cmd' key, must be pressed to let the associated action be executed
+     * The 'ctrl' key, on OSX the 'cmd' key must, must not or is indifferent to be pressed to let the associated action be executed.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Ctrl Cmd Pressed</em>' attribute.
-     * @see #setCtrlCmdPressed(boolean)
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @see #setCtrlCmdPressed(ModifierState)
      * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKAction_CtrlCmdPressed()
      * @model
      * @generated
      */
-    boolean isCtrlCmdPressed();
+    ModifierState getCtrlCmdPressed();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KAction#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KAction#getCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Ctrl Cmd Pressed</em>' attribute.
-     * @see #isCtrlCmdPressed()
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @see #getCtrlCmdPressed()
      * @generated
      */
-    void setCtrlCmdPressed(boolean value);
+    void setCtrlCmdPressed(ModifierState value);
 
     /**
      * Returns the value of the '<em><b>Shift Pressed</b></em>' attribute.
+     * The literals are from the enumeration {@link de.cau.cs.kieler.klighd.krendering.ModifierState}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * if <code>true</code> the 'shift' key must be pressed to let the associated action be executed
+     * The 'shift' key must, must not or is indifferent to be pressed to let the associated action be executed.
      * <!-- end-model-doc -->
      * @return the value of the '<em>Shift Pressed</em>' attribute.
-     * @see #setShiftPressed(boolean)
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @see #setShiftPressed(ModifierState)
      * @see de.cau.cs.kieler.klighd.krendering.KRenderingPackage#getKAction_ShiftPressed()
      * @model
      * @generated
      */
-    boolean isShiftPressed();
+    ModifierState getShiftPressed();
 
     /**
-     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KAction#isShiftPressed <em>Shift Pressed</em>}' attribute.
+     * Sets the value of the '{@link de.cau.cs.kieler.klighd.krendering.KAction#getShiftPressed <em>Shift Pressed</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Shift Pressed</em>' attribute.
-     * @see #isShiftPressed()
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @see #getShiftPressed()
      * @generated
      */
-    void setShiftPressed(boolean value);
+    void setShiftPressed(ModifierState value);
 
 } // KAction
