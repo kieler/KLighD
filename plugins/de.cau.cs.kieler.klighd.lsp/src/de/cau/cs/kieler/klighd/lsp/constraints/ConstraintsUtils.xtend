@@ -55,7 +55,6 @@ class ConstraintsUtils {
      * @param nodes all nodes the graph contains
      */
     def static List<KNode> getNodesOfLayer(int layer, List<KNode> nodes) {
-
         // It is possible that the layer constraint is higher than the max layer id
         // since users are allowed to specify layer constraints > count of layers
         var maxLayerId = -1

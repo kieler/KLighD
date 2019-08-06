@@ -132,6 +132,7 @@ class Reevaluation {
     }
 
     /**
+     * Optional reevaluation when emptying a layer should lead to its disappearance.
      * Adjust layer constraints in the graph if a new layer constraint empties a layer and lets it disappear. 
      */
 

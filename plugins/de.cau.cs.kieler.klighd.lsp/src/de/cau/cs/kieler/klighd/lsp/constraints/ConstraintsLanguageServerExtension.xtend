@@ -113,11 +113,12 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
         val root = getRoot(uri)
         val kNode = getKNode(uri, targetID, root)
+        val parentOfNode = kNode.parent
 
         if (kNode !== null) {
             var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
             var List<KNode> residingLayer
-            residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, root.children)
+            residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, parentOfNode.children)
 
             var reval = new Reevaluation(kNode)
             switch (PropID) {
@@ -264,7 +265,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         val uri = sc.uri
         val root = getRoot(uri)
         val kNode = getKNode(uri, sc.ID, root)
-        var allNodes = root.children
+        val parentOfNode = kNode.parent
+        var allNodes = parentOfNode.children
+        
 
         // In case that the interactive mode is active, the viewContext is not null 
         // and the element is actually a KNode. Carry on.
@@ -280,9 +283,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             var reval = new Reevaluation(kNode)
 
 
-            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
-                layerCons--
-            }
+//            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
+//                layerCons--
+//            }
 
             // reval.shiftIfNec(kNode, pos, layerCons, oldLayerNodes, targetLayerNodes, allNodes)
             reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, pos)
@@ -303,13 +306,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     @Inject KGraphLanguageServerExtension kGraphLanguageServerExt
 
     override refreshLayout(String uri) {
-
-        val fittingServers = kGraphLanguageServerExt.diagramServerManager.findDiagramServersByUri(uri)
-        val diagramServer = fittingServers.head as KGraphDiagramServer
-        val diagramUpdater = kGraphLanguageServerExt.diagramUpdater as KGraphDiagramUpdater
-
-        // Triggers the new layout and sends it to the client
-        diagramUpdater.updateLayout(diagramServer)
+        kGraphLanguageServerExt.updateLayout(uri)
     }
 
 }
