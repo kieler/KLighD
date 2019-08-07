@@ -308,13 +308,13 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         nodeElement.layerCons = node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)
         nodeElement.posCons = node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)
 
-        if (node.parent !== null) {
-            var parent = node.parent
-            while (parent.parent !== null) {
-                parent = parent.parent
-            }
-            nodeElement.interactiveLayout = parent.getProperty(LayeredOptions.INTERACTIVE_LAYOUT);
+        
+        var parent = node
+        while (parent.parent !== null) {
+            parent = parent.parent
         }
+        nodeElement.interactiveLayout = parent.getProperty(LayeredOptions.INTERACTIVE_LAYOUT);
+        
         
         val renderingContextData = RenderingContextData.get(node)
         // activate the element by default if it does not have an active/inactive status yet.
