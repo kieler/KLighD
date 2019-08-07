@@ -146,8 +146,7 @@ public class PiccoloTooltip {
             
             Object n = nodeStack.pop();
             // Continue if the stack is empty or a graph element is found.
-            while (!(nodeStack.isEmpty()
-                    || (graphElement instanceof IInternalKGraphElementNode<?>))) {
+            while (!(nodeStack.isEmpty() || (graphElement instanceof IInternalKGraphElementNode<?>))) {
                 if (n instanceof IInternalKGraphElementNode<?> && graphElement == null) {
                     graphElement = (IInternalKGraphElementNode<?>) n;
                 }
@@ -158,9 +157,7 @@ public class PiccoloTooltip {
             }
 
 
-            if (n instanceof KNodeTopNode) {
-                return;
-            } else if (graphElement == null) {
+            if (graphElement instanceof KNodeTopNode || graphElement == null) {
                 return;
             }
 
