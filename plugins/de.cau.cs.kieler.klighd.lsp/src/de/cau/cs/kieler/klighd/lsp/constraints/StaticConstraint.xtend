@@ -37,12 +37,18 @@ class StaticConstraint {
      * Value for the positional constraint
      */
     int position
+    
+    int posCons
+    
+    int layerCons
 
-    new(String uri, String id, int layer, int position) {
+    new(String uri, String id, int layer, int layerCons, int position, int posCons) {
         this.uri = uri
         this.id = id
         this.layer = layer
         this.position = position
+        this.posCons = posCons
+        this.layerCons = layerCons
     }
 
     def String getUri() {
@@ -59,6 +65,14 @@ class StaticConstraint {
 
     def int getPosition() {
         return position
+    }
+    
+    def int getLayerCons(){
+        return layerCons
+    }
+    
+    def int getPosCons(){
+        return posCons
     }
 
 }

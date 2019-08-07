@@ -57,12 +57,12 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     override setLayerConstraint(LayerConstraint lc) {
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getUri, lc.getID, lc.getLayer)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.uri, lc.ID, lc.layer, lc.layerCons)
     }
 
     override setPositionConstraint(PositionConstraint pc) {
-        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.getUri, pc.getID,
-            pc.getPosition)
+        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.uri, pc.ID,
+            pc.position, pc.posCons)
     }
 
     override deleteStaticConstraint(DeleteConstraint dc) {
@@ -110,7 +110,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
      * @param targetID The id of the node on which the constraint should be set.
      * @param value Either the id of the position or the id of the layer.
      */
-    private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
+    private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int valueId, int valueCons) {
         val root = getRoot(uri)
         val kNode = getKNode(uri, targetID, root)
         val parentOfNode = kNode.parent
@@ -123,9 +123,9 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             var reval = new Reevaluation(kNode)
             switch (PropID) {
                 case LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT:
-                    reval.reevaluatePosConstraintsAfterPosChangeInLayer(residingLayer, kNode, value)
+                    reval.reevaluatePosConstraintsAfterPosChangeInLayer(residingLayer, kNode, valueId)
             }
-            kNode.setProperty(PropID, value)
+            kNode.setProperty(PropID, valueCons)
 
             var changes = reval.changedNodes
             changes.add(kNode)
@@ -267,33 +267,38 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         val kNode = getKNode(uri, sc.ID, root)
         val parentOfNode = kNode.parent
         var allNodes = parentOfNode.children
-        
 
         // In case that the interactive mode is active, the viewContext is not null 
         // and the element is actually a KNode. Carry on.
         if (kNode !== null) {
-            var layerCons = sc.layer
-            val pos = sc.position
+            /*
+             * As long as no increased pos constraint is present in the target layer
+             * and no increased layer constraint is present left to the target layer
+             * newLayerId === newLayer Cons && newPosCons = newPosId
+             * In the other cases both values can differ.
+             */
+            var newLayerId = sc.layer
+            val newPosId = sc.position
+            val newPosCons = sc.posCons
+            val newLayerCons = sc.layerCons
+
             val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
 
-            var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(layerCons, allNodes)
+            var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(newLayerId, allNodes)
             var oldLayerNodes = ConstraintsUtils.getNodesOfLayer(layerId, allNodes)
 
             // Reevaluate insertion of node to target layer
             var reval = new Reevaluation(kNode)
 
-
+//TODO: Create an option for this.
 //            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
 //                layerCons--
 //            }
+            reval.shiftIfNec(kNode, newPosId, newLayerId, oldLayerNodes, targetLayerNodes, allNodes)
+            reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
 
-            // reval.shiftIfNec(kNode, pos, layerCons, oldLayerNodes, targetLayerNodes, allNodes)
-            reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, pos)
-
-
-
-            ConstraintsUtils.setLayerConstraint(kNode, layerCons)
-            ConstraintsUtils.setPosConstraint(kNode, pos)
+            ConstraintsUtils.setLayerConstraint(kNode, newLayerCons)
+            ConstraintsUtils.setPosConstraint(kNode, newPosCons)
 
             var ns = reval.changedNodes
             ns.add(kNode)

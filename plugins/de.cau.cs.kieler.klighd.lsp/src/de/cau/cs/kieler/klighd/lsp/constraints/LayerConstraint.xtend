@@ -21,11 +21,13 @@ class LayerConstraint {
     String uri
     String id
     int layer
+    int layerCons
 
-    new(String uri, String id, int layer) {
+    new(String uri, String id, int layer, int layerCons) {
         this.uri = uri
         this.id = id
         this.layer = layer
+        this.layerCons = layerCons
     }
 
     def String getUri() {
@@ -38,5 +40,9 @@ class LayerConstraint {
 
     def int getLayer() {
         return layer
+    }
+    
+    def int getLayerCons(){
+        return layerCons
     }
 }
