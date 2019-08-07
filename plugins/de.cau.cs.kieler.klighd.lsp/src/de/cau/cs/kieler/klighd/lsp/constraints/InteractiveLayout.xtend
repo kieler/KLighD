@@ -26,6 +26,7 @@ import org.eclipse.elk.alg.layered.options.CycleBreakingStrategy
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.alg.layered.options.LayeringStrategy
 import org.eclipse.emf.common.util.EList
+import javax.sound.sampled.BooleanControl.Type
 
 /**
  * @author jet, cos
@@ -62,10 +63,11 @@ class InteractiveLayout {
             // initial layout
             layoutE.onlyLayoutOnKGraph(id)
             // adjust coordinates of the nodes
-            setCoordinates(root)
+             setCoordinates(root)
             // activate interactive strategies
             setInteractiveStrats(root)
-            setStratsAndCoordinatesOnParents(root)
+             setStratsAndCoordinatesOnParents(root)
+            //setCoordinatesDepthFirst(root)
 
             layoutE.onlyLayoutOnKGraph(id)
 
@@ -333,10 +335,11 @@ class InteractiveLayout {
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE)
     }
-/**
- * Sets the interactive_layout property and deactivates seperate connected components 
- * on all children of root, having own children.
- */
+
+    /**
+     * Sets the interactive_layout property and deactivates seperate connected components 
+     * on all children of root, having own children.
+     */
     private def static void prepareParentsForFirstLayout(KNode root) {
         for (n : root.children) {
             val nestedNodes = n.children
@@ -347,18 +350,37 @@ class InteractiveLayout {
             }
         }
     }
-/**
- * Activates the interactive strats and applies setCoordinates on all children of root, having own children.
- */
+
+    /**
+     * Activates the interactive strats and applies setCoordinates on all children of root, having own children.
+     */
     private def static void setStratsAndCoordinatesOnParents(KNode root) {
         for (n : root.children) {
             val nestedNodes = n.children
             if (!nestedNodes.empty) {
-                setInteractiveStrats(n)                
+
+                setInteractiveStrats(n)
                 setCoordinates(n)
                 setStratsAndCoordinatesOnParents(n)
             }
         }
+    }
+
+    private def static void setCoordinatesDepthFirst(KNode root) {
+        var empty = true
+        for (n : root.children) {
+            empty = false
+            val nestedNodes = n.children
+            if (!nestedNodes.empty) {
+                empty = false
+                setInteractiveStrats(n)
+                setCoordinatesDepthFirst(n)
+            }
+        }
+        if (!empty) {
+            setCoordinates(root)
+        }
+
     }
 
 }

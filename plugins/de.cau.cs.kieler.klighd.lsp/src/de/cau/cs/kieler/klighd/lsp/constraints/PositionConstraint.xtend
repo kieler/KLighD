@@ -21,8 +21,9 @@ class PositionConstraint {
     String uri
     String id
     int position
+    int posCons
 
-    new(String uri, String id, int position) {
+    new(String uri, String id, int position, int posCons) {
         this.uri = uri
         this.id = id
         this.position = position
@@ -38,5 +39,9 @@ class PositionConstraint {
 
     def int getPosition() {
         return position
+    }
+    
+    def int getPosCons(){
+        return posCons
     }
 }

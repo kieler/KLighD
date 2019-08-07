@@ -54,28 +54,52 @@ class ConstraintsUtils {
      * @param layer the layer which containing nodes should be calculated
      * @param nodes all nodes the graph contains
      */
-    def static getNodesOfLayer(int layer, List<KNode> nodes) {
-
-        var ArrayList<KNode> temp = newArrayList()
-        var nodeCount = 0
-
+    def static List<KNode> getNodesOfLayer(int layer, List<KNode> nodes) {
+        // It is possible that the layer constraint is higher than the max layer id
+        // since users are allowed to specify layer constraints > count of layers
+        var maxLayerId = -1
         for (n : nodes) {
-            val layerID = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            if (layerID === layer) {
-                temp.add(n)
-                nodeCount++
+            val layerId = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            if (maxLayerId < layerId) {
+                maxLayerId = layerId
             }
         }
 
-        temp.sort([ a, b |
-            a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D) -
-                b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
-        ])
+        var ArrayList<KNode> temp = newArrayList()
+        // Should the layer constraint be higher than the max layer id
+        if (layer > maxLayerId) {
+            /*Check whether a node exists that has the same layer constraint if that's the case use its layer id to get 
+             all of the nodes of the same layer. Else return an empty list.*/
+            for (n : nodes) {
+                if (ConstraintsUtils.getLayerConstraint(n) == layer) {
+                    return getNodesOfLayer(n.getProperty(LayeredOptions.LAYERING_LAYER_I_D), nodes)
+                }
+            }
+            return temp
 
-        return temp
+        } else {
+
+            // layer <= maxLayerId: Collect all nodes with the fitting layer id in a list
+            var nodeCount = 0
+
+            for (n : nodes) {
+                val layerID = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+                if (layerID === layer) {
+                    temp.add(n)
+                    nodeCount++
+                }
+            }
+
+            // sort them based on their position id - this is used for speeding up future reevaluation
+            temp.sort([ a, b |
+                a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D) -
+                    b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+            ])
+
+            return temp
+
+        }
     }
-
-
 
     /**
      * Copies an arbitrary IProperty of a KNode to an ElkNode if the value on the KNode 

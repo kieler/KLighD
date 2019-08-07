@@ -30,6 +30,8 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
+import java.util.Collections
+import java.util.HashSet
 
 /**
  * @author jet, cos
@@ -55,12 +57,12 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     }
 
     override setLayerConstraint(LayerConstraint lc) {
-        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.getUri, lc.getID, lc.getLayer)
+        setConstraint(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT, lc.uri, lc.ID, lc.layer, lc.layerCons)
     }
 
     override setPositionConstraint(PositionConstraint pc) {
-        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.getUri, pc.getID,
-            pc.getPosition)
+        setConstraint(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT, pc.uri, pc.ID,
+            pc.position, pc.posCons)
     }
 
     override deleteStaticConstraint(DeleteConstraint dc) {
@@ -108,23 +110,26 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
      * @param targetID The id of the node on which the constraint should be set.
      * @param value Either the id of the position or the id of the layer.
      */
-    private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int value) {
+    private def setConstraint(IProperty<Integer> PropID, String uri, String targetID, int valueId, int valueCons) {
         val root = getRoot(uri)
         val kNode = getKNode(uri, targetID, root)
+        val parentOfNode = kNode.parent
 
         if (kNode !== null) {
-            kNode.setProperty(PropID, value)
             var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            var layerCons = ConstraintsUtils.getLayerConstraint(kNode)
             var List<KNode> residingLayer
-//
-//            if (layerCons != -1) {
-//                residingLayer = ConstraintsUtils.getNodesOfLayer(layerCons, root.children)
-//            } else {
-//                residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, root.children)
-//            }
-            updateSourceCode(kNode, PropID, value, uri)
+            residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, parentOfNode.children)
 
+            var reval = new Reevaluation(kNode)
+            switch (PropID) {
+                case LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT:
+                    reval.reevaluatePosConstraintsAfterPosChangeInLayer(residingLayer, kNode, valueId)
+            }
+            kNode.setProperty(PropID, valueCons)
+
+            var changes = reval.changedNodes
+            changes.add(kNode)
+            updateSourceCode(changes.toList, uri)
         }
     }
 
@@ -260,24 +265,45 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         val uri = sc.uri
         val root = getRoot(uri)
         val kNode = getKNode(uri, sc.ID, root)
-        var allNodes = root.children
+        val parentOfNode = kNode.parent
+        var allNodes = parentOfNode.children
 
         // In case that the interactive mode is active, the viewContext is not null 
         // and the element is actually a KNode. Carry on.
         if (kNode !== null) {
-            val layerCons = sc.layer
-            val pos = sc.position
-            val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            //var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(layerCons, allNodes)
+            /*
+             * As long as no increased pos constraint is present in the target layer
+             * and no increased layer constraint is present left to the target layer
+             * newLayerId === newLayer Cons && newPosCons = newPosId
+             * In the other cases both values can differ.
+             */
+            var newLayerId = sc.layer
+            val newPosId = sc.position
+            val newPosCons = sc.posCons
+            val newLayerCons = sc.layerCons
 
-            ConstraintsUtils.setLayerConstraint(kNode, layerCons)
-            ConstraintsUtils.setPosConstraint(kNode, pos)
+            val layerId = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+
+            var targetLayerNodes = ConstraintsUtils.getNodesOfLayer(newLayerId, allNodes)
+            var oldLayerNodes = ConstraintsUtils.getNodesOfLayer(layerId, allNodes)
 
             // Reevaluate insertion of node to target layer
-            // Reevaluation.reevaluateAfterEmptyingALayer(layerId, layerCons, allNodes)
-            // Reevaluation.reevaluatePositionConstraintsAfterAdd(targetLayerNodes, kNode)
+            var reval = new Reevaluation(kNode)
+
+//TODO: Create an option for this.
+//            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
+//                layerCons--
+//            }
+            reval.shiftIfNec(kNode, newPosId, newLayerId, oldLayerNodes, targetLayerNodes, allNodes)
+            reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
+
+            ConstraintsUtils.setLayerConstraint(kNode, newLayerCons)
+            ConstraintsUtils.setPosConstraint(kNode, newPosCons)
+
+            var ns = reval.changedNodes
+            ns.add(kNode)
             // Update source code of the model
-            updateSourceCode(kNode, uri)
+            updateSourceCode(ns.toList, uri)
 
         }
     }
@@ -285,13 +311,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     @Inject KGraphLanguageServerExtension kGraphLanguageServerExt
 
     override refreshLayout(String uri) {
-
-        val fittingServers = kGraphLanguageServerExt.diagramServerManager.findDiagramServersByUri(uri)
-        val diagramServer = fittingServers.head as KGraphDiagramServer
-        val diagramUpdater = kGraphLanguageServerExt.diagramUpdater as KGraphDiagramUpdater
-
-        // Triggers the new layout and sends it to the client
-        diagramUpdater.updateLayout(diagramServer)
+        kGraphLanguageServerExt.updateLayout(uri)
     }
 
 }
