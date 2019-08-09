@@ -33,6 +33,7 @@ import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KBottomPosition;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
+import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KInvisibility;
 import de.cau.cs.kieler.klighd.krendering.KLeftPosition;
 import de.cau.cs.kieler.klighd.krendering.KLineStyle;
@@ -715,6 +716,9 @@ public final class DiagramSyntheses {
         }
         return node;
     }
+    
+    private static final String NO_DECORATOR_ERROR_MSG = 
+            "KLighD: Only decorator renderings and KTexts can be made not selectable.";
 
     /**
      * Deactivates the selectability of given {@link KGraphElement}.<br>
@@ -744,6 +748,24 @@ public final class DiagramSyntheses {
     public static KText suppressSelectability(final KText kText) {
         kText.setProperty(KlighdProperties.NOT_SELECTABLE, true);
         return kText;
+    }
+    
+    /**
+     * Deactivates the selectability of given decorator {@link KRendering}.<br>
+     * If done the {@link KRendering} can't be selected anymore and other event handling like associated
+     * action evaluation will be caused on the element behind it instead.
+     *
+     * @param kRendering
+     *            the decorator {@link KRendering} to configure
+     * @return the <code>kRendering</code> for convenience
+     * @throws IllegalArgumentException if the given rendering is not a decorator.
+     */
+    public static KRendering suppressSelectablility(final KRendering kRendering) {
+        if (!(kRendering.getPlacementData() instanceof KDecoratorPlacementData)) {
+            throw new IllegalArgumentException(NO_DECORATOR_ERROR_MSG);
+        }
+        kRendering.setProperty(KlighdProperties.NOT_SELECTABLE, true);
+        return kRendering;
     }
 
     /**

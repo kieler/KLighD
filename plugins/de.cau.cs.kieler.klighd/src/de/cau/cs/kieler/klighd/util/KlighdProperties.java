@@ -116,8 +116,9 @@ public final class KlighdProperties {
 
     /**
      * Property determining the selectability of a certain
-     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement} or
-     * {@link de.cau.cs.kieler.klighd.krendering.KText KText}. If it is set to <code>true</code> that
+     * {@link de.cau.cs.kieler.klighd.kgraph.KGraphElement KGraphElement},
+     * {@link de.cau.cs.kieler.klighd.krendering.KText KText} or
+     * decorator {@link de.cau.cs.kieler.klighd.krendering.KRendering}. If it is set to <code>true</code> that
      * particular diagram element cannot be selected, and the (geometrically) underlying element will
      * be selected if possible.<br>
      * If a {@link KNode} is not selectable the selection attempt is stopped!
