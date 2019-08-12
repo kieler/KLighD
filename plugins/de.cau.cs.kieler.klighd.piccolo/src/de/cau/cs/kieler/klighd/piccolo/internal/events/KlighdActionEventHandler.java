@@ -37,6 +37,7 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KAction;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
+import de.cau.cs.kieler.klighd.krendering.ModifierState;
 import de.cau.cs.kieler.klighd.krendering.Trigger;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
@@ -166,7 +167,7 @@ public class KlighdActionEventHandler implements PInputEventListener {
         // This flag is used to track the execution of actions requiring a layout update.
         boolean anyActionRequiresLayout = false;
         
-        // This flat is used to track the execution of actions requiring a synthesis re-run.
+        // This flag is used to track the execution of actions requiring a synthesis re-run.
         boolean anyActionRequiresSynthesis = false;
 
         for (final KAction action : Iterables.filter(rendering.getActions(), WELLFORMED)) {
@@ -272,9 +273,14 @@ public class KlighdActionEventHandler implements PInputEventListener {
     }
 
     private boolean guardsMatch(final KAction action, final KlighdMouseEvent event) {
-        return (!action.isAltPressed() || event.isAltDown())
-                && (!action.isCtrlCmdPressed() || event.isControlDown())
-                && (!action.isShiftPressed() || event.isShiftDown());
+        // Chain of implications. If the action requires / forbids some modifier, it has to be in that state, for all 
+        // possible combinations.
+        return (action.getAltPressed()     != ModifierState.PRESSED     ||  event.isAltDown())
+            && (action.getAltPressed()     != ModifierState.NOT_PRESSED || !event.isAltDown())
+            && (action.getCtrlCmdPressed() != ModifierState.PRESSED     ||  event.isControlDown())
+            && (action.getCtrlCmdPressed() != ModifierState.NOT_PRESSED || !event.isControlDown())
+            && (action.getShiftPressed()   != ModifierState.PRESSED     ||  event.isShiftDown())
+            && (action.getShiftPressed()   != ModifierState.NOT_PRESSED || !event.isShiftDown());
     }
 
     /**

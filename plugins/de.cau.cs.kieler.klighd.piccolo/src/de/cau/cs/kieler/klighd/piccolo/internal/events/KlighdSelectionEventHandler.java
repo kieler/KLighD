@@ -34,11 +34,15 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.util.DefaultSelectionIterator;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
+import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData;
+import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
+import de.cau.cs.kieler.klighd.piccolo.KlighdNode.KlighdFigureNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController.JunctionPointCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdMouseEventListener.KlighdMouseEvent;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
+import de.cau.cs.kieler.klighd.util.KlighdProperties;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -224,10 +228,29 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
             // run variables
             PNode selectedNode = null;
             EObject viewModelElement = null;
+            boolean cont = false;
 
-            while (it.hasPrevious()) {
+            while (it.hasPrevious() && !cont) {
                 selectedNode = (PNode) it.previous();
-
+                
+                if (selectedNode instanceof KlighdFigureNode<?>) {
+                    KlighdFigureNode<?> figureNode = (KlighdFigureNode<?>) selectedNode;
+                    if (figureNode.getViewModelElement() != null
+                        && figureNode.getViewModelElement().hasProperty(KlighdProperties.NOT_SELECTABLE)
+                        && figureNode.getViewModelElement().getProperty(KlighdProperties.NOT_SELECTABLE)
+                        && (figureNode.getViewModelElement() instanceof KRendering)) {
+                        KRendering rendering = ((KlighdFigureNode<?>) selectedNode).getViewModelElement();
+                        if (rendering.getPlacementData() instanceof KDecoratorPlacementData) {
+                            // If we selected a not selectable decorator rendering, pick the next underlying element ...
+                            pickPath.nextPickedNode();
+                            
+                            // and restart the overall loop.
+                            cont = true;
+                            continue;
+                        }
+                    }
+                }
+                
                 // get the corresponding view model element, i.e. KText or KGraphElement
                 if (selectedNode instanceof IKlighdNode && ((IKlighdNode) selectedNode).isSelectable()) {
                     viewModelElement = ((IKlighdNode) selectedNode).getViewModelElement();
@@ -242,6 +265,10 @@ public class KlighdSelectionEventHandler extends KlighdBasicInputEventHandler {
                             ? ((IKlighdNode) selectedNode).getViewModelElement() : null;
                     break;
                 }
+            }
+            
+            if (cont) {
+                continue;
             }
 
             if (viewModelElement == null) {

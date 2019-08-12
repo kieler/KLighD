@@ -1472,21 +1472,29 @@
         <details key="documentation" value="trigger that fires the associated action implementation"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="altPressed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="altPressed" eType="#//ModifierState">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="if &lt;code>true&lt;/code> the 'alt' key must be pressed to let the associated action be executed"/>
+        <details key="documentation" value="The 'alt' key must, must not or is indifferent to be pressed to let the associated action be executed."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ctrlCmdPressed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ctrlCmdPressed" eType="#//ModifierState">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="if &lt;code>true&lt;/code> the 'ctrl' key, on OSX the 'cmd' key, must be pressed to let the associated action be executed"/>
+        <details key="documentation" value="The 'ctrl' key, on OSX the 'cmd' key must, must not or is indifferent to be pressed to let the associated action be executed."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shiftPressed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shiftPressed" eType="#//ModifierState">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="if &lt;code>true&lt;/code> the 'shift' key must be pressed to let the associated action be executed"/>
+        <details key="documentation" value="The 'shift' key must, must not or is indifferent to be pressed to let the associated action be executed."/>
       </eAnnotations>
     </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ModifierState">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The state of a modifier that it has to be in in order for some action to be performed."/>
+    </eAnnotations>
+    <eLiterals name="DONT_CARE"/>
+    <eLiterals name="PRESSED" value="1"/>
+    <eLiterals name="NOT_PRESSED" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="KPointPlacementData" eSuperTypes="#//KPlacementData">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

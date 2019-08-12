@@ -4239,6 +4239,16 @@ public interface KRenderingPackage extends EPackage {
     int LINE_CAP = 56;
 
     /**
+     * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.ModifierState <em>Modifier State</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getModifierState()
+     * @generated
+     */
+    int MODIFIER_STATE = 57;
+
+    /**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.Trigger <em>Trigger</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4246,7 +4256,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getTrigger()
      * @generated
      */
-    int TRIGGER = 57;
+    int TRIGGER = 58;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.Underline <em>Underline</em>}' enum.
@@ -4256,7 +4266,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getUnderline()
      * @generated
      */
-    int UNDERLINE = 58;
+    int UNDERLINE = 59;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.LineJoin <em>Line Join</em>}' enum.
@@ -4266,7 +4276,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getLineJoin()
      * @generated
      */
-    int LINE_JOIN = 59;
+    int LINE_JOIN = 60;
 
     /**
      * The meta object id for the '{@link de.cau.cs.kieler.klighd.krendering.Arc <em>Arc</em>}' enum.
@@ -4276,7 +4286,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getArc()
      * @generated
      */
-    int ARC = 60;
+    int ARC = 61;
 
     /**
      * The meta object id for the '<em>Colors</em>' data type.
@@ -4286,7 +4296,7 @@ public interface KRenderingPackage extends EPackage {
      * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getColors()
      * @generated
      */
-    int COLORS = 61;
+    int COLORS = 62;
 
 
     /**
@@ -5554,33 +5564,33 @@ public interface KRenderingPackage extends EPackage {
     EAttribute getKAction_Trigger();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.klighd.krendering.KAction#isAltPressed <em>Alt Pressed</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.klighd.krendering.KAction#getAltPressed <em>Alt Pressed</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Alt Pressed</em>'.
-     * @see de.cau.cs.kieler.klighd.krendering.KAction#isAltPressed()
+     * @see de.cau.cs.kieler.klighd.krendering.KAction#getAltPressed()
      * @see #getKAction()
      * @generated
      */
     EAttribute getKAction_AltPressed();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.klighd.krendering.KAction#isCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.klighd.krendering.KAction#getCtrlCmdPressed <em>Ctrl Cmd Pressed</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Ctrl Cmd Pressed</em>'.
-     * @see de.cau.cs.kieler.klighd.krendering.KAction#isCtrlCmdPressed()
+     * @see de.cau.cs.kieler.klighd.krendering.KAction#getCtrlCmdPressed()
      * @see #getKAction()
      * @generated
      */
     EAttribute getKAction_CtrlCmdPressed();
 
     /**
-     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.klighd.krendering.KAction#isShiftPressed <em>Shift Pressed</em>}'.
+     * Returns the meta object for the attribute '{@link de.cau.cs.kieler.klighd.krendering.KAction#getShiftPressed <em>Shift Pressed</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Shift Pressed</em>'.
-     * @see de.cau.cs.kieler.klighd.krendering.KAction#isShiftPressed()
+     * @see de.cau.cs.kieler.klighd.krendering.KAction#getShiftPressed()
      * @see #getKAction()
      * @generated
      */
@@ -5947,6 +5957,16 @@ public interface KRenderingPackage extends EPackage {
      * @generated
      */
     EEnum getLineCap();
+
+    /**
+     * Returns the meta object for enum '{@link de.cau.cs.kieler.klighd.krendering.ModifierState <em>Modifier State</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for enum '<em>Modifier State</em>'.
+     * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+     * @generated
+     */
+    EEnum getModifierState();
 
     /**
      * Returns the meta object for enum '{@link de.cau.cs.kieler.klighd.krendering.Trigger <em>Trigger</em>}'.
@@ -7382,6 +7402,16 @@ public interface KRenderingPackage extends EPackage {
          * @generated
          */
         EEnum LINE_CAP = eINSTANCE.getLineCap();
+
+        /**
+         * The meta object literal for the '{@link de.cau.cs.kieler.klighd.krendering.ModifierState <em>Modifier State</em>}' enum.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see de.cau.cs.kieler.klighd.krendering.ModifierState
+         * @see de.cau.cs.kieler.klighd.krendering.impl.KRenderingPackageImpl#getModifierState()
+         * @generated
+         */
+        EEnum MODIFIER_STATE = eINSTANCE.getModifierState();
 
         /**
          * The meta object literal for the '{@link de.cau.cs.kieler.klighd.krendering.Trigger <em>Trigger</em>}' enum.

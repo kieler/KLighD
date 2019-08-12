@@ -77,8 +77,14 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
     }
 
     /**
-     * {@inheritDoc}
+     * Error message if an edge is created with an illegal rendering.
      */
+    private String illegalEdgeRenderingText() {
+        return "KLighD: Illegal KRendering is attached to graph edge: "
+            + getGraphElement()
+            + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!";
+    }
+    
     @Override
     protected PNodeController<?> internalUpdateRendering() {
         final KEdgeNode repNode = getRepresentation();
@@ -122,13 +128,11 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
             }
 
         case KRenderingPackage.KRENDERING_REF:
-            // TODO this is only a preliminary support of references for edge renderings
             final KRenderingRef renderingRef = (KRenderingRef) currentRendering;
             if (renderingRef.getRendering() == null) {
                 return handleEdgeRendering(createDefaultRendering(), repNode);
             } else if (renderingRef.getRendering() instanceof KPolyline) {
-                renderingNodeController =
-                        handleEdgeRendering((KPolyline) renderingRef.getRendering(), repNode);
+                renderingNodeController = handleEdgeRendering(renderingRef, repNode);
             } else {
                 throw new RuntimeException("KLighD: llegal KRendering is attached to graph edge.");
             }
@@ -136,9 +140,7 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
 
         default:
             // hence, throw an exception if something different is provided
-            throw new RuntimeException("KLighD: Illegal KRendering is attached to graph edge: "
-                    + getGraphElement()
-                    + ", must be a KPolyline, KRoundedBendsPolyline, KSpline, or KCustomRendering!");
+            throw new RuntimeException(illegalEdgeRenderingText());
         }
 
         return renderingNodeController;
@@ -147,20 +149,29 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
     /**
      * Creates the Piccolo2D node for a rendering of a {@code KEdge} inside a parent Piccolo2D node.<br>
      * <br>
-     * The rendering has to be a {@code KPolyline} or the method fails.
+     * The rendering has to be a {@code KPolyline} or reference one or the method fails.
      *
-     * @param rendering
+     * @param renderingOrRef
      *            the rendering
      * @param parent
      *            the parent Piccolo2D edge node
      * @return the {@link PNodeController} managing the Piccolo2D node that represents
      *         <code>rendering</code>
      */
-    private PNodeController<?> handleEdgeRendering(final KPolyline rendering, final KEdgeNode parent) {
+    private PNodeController<?> handleEdgeRendering(final KRendering renderingOrRef, final KEdgeNode parent) {
         // create the rendering
         @SuppressWarnings("unchecked")
         final PNodeController<KlighdPath> controller = (PNodeController<KlighdPath>) createRendering(
-                rendering, parent, new Bounds(1, 1), true);
+                renderingOrRef, parent, new Bounds(1, 1), true);
+        
+        // De-reference the rendering if it is a reference.
+        KRendering kRendering = (renderingOrRef instanceof KRenderingRef)
+            ? ((KRenderingRef) renderingOrRef).getRendering()
+            : renderingOrRef;
+        if (!(kRendering instanceof KPolyline)) {
+            throw new IllegalArgumentException(illegalEdgeRenderingText());
+        }
+        KPolyline rendering = (KPolyline) kRendering;
 
         if (rendering instanceof KSpline) {
             controller.getNode().setPathToSpline(parent.getBendPoints());
@@ -411,9 +422,6 @@ public class KEdgeRenderingController extends AbstractKGERenderingController<KEd
         return KRenderingFactory.eINSTANCE.createKPolyline();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void moveToFront() {
         this.getRepresentation().moveToFront();

@@ -33,6 +33,7 @@ import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KBackground;
 import de.cau.cs.kieler.klighd.krendering.KBottomPosition;
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering;
+import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KInvisibility;
 import de.cau.cs.kieler.klighd.krendering.KLeftPosition;
 import de.cau.cs.kieler.klighd.krendering.KLineStyle;
@@ -715,6 +716,9 @@ public final class DiagramSyntheses {
         }
         return node;
     }
+    
+    private static final String NO_DECORATOR_ERROR_MSG = 
+            "KLighD: Only decorator renderings and KTexts can be made not selectable.";
 
     /**
      * Deactivates the selectability of given {@link KGraphElement}.<br>
@@ -744,6 +748,24 @@ public final class DiagramSyntheses {
     public static KText suppressSelectability(final KText kText) {
         kText.setProperty(KlighdProperties.NOT_SELECTABLE, true);
         return kText;
+    }
+    
+    /**
+     * Deactivates the selectability of given decorator {@link KRendering}.<br>
+     * If done the {@link KRendering} can't be selected anymore and other event handling like associated
+     * action evaluation will be caused on the element behind it instead.
+     *
+     * @param kRendering
+     *            the decorator {@link KRendering} to configure
+     * @return the <code>kRendering</code> for convenience
+     * @throws IllegalArgumentException if the given rendering is not a decorator.
+     */
+    public static KRendering suppressSelectablility(final KRendering kRendering) {
+        if (!(kRendering.getPlacementData() instanceof KDecoratorPlacementData)) {
+            throw new IllegalArgumentException(NO_DECORATOR_ERROR_MSG);
+        }
+        kRendering.setProperty(KlighdProperties.NOT_SELECTABLE, true);
+        return kRendering;
     }
 
     /**
@@ -784,8 +806,8 @@ public final class DiagramSyntheses {
 
     /**
      * Configures a tooltip on the provided {@link KGraphElement KGraphElement}. This method has no
-     * effect if another tooltip is defined on the root {@link KRendering} attached attached to this
-     * {@link KGraphElement} (except of blowing up the view model :-P).
+     * effect if another tooltip is defined on any {@link KRendering} attached to this {@link KGraphElement}
+     * (except of blowing up the view model :-P).
      *
      * @param <S>
      *            the concrete type of {@code kge}
@@ -801,10 +823,7 @@ public final class DiagramSyntheses {
     }
 
     /**
-     * Configures a tooltip on the provided {@link KRendering root KRendering} of a
-     * {@link KGraphElement}. Similar to {@link #setAsCollapsedView(KRendering)} or
-     * {@link #setAsExpandedView(KRendering)} this method has no effect on nested {@link KRendering
-     * KRenderings} (except of blowing up the view model :-P).
+     * Configures a tooltip on the provided {@link KRendering} of a {@link KGraphElement}.
      *
      * @param <T>
      *            the concrete type of <code>krendering</code>
