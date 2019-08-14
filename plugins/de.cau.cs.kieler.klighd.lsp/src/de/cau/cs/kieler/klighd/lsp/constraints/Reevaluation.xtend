@@ -23,7 +23,6 @@ import org.eclipse.elk.alg.layered.options.LayeredOptions
  */
 class Reevaluation {
 
-
     HashSet<KNode> changedNodes = newHashSet()
     KNode target
 
@@ -45,7 +44,6 @@ class Reevaluation {
     def reevaluatePosConstraintsAfterLayerSwap(List<KNode> newNodesOfLayer, List<KNode> oldNodesOfLayer, KNode target,
         int newPos) {
 
-
         // formerLayer != newLayer -- should always be true - it doesn't cause errors if it's not, though.
         // The node is "deleted" from its old layer if it had a position constraint the old layer 
         // needs to be reevaluated
@@ -53,7 +51,6 @@ class Reevaluation {
             target.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D), target)
 
         // The node is added at the new position in the new layer.
-
         offsetPosConstraintsOfLayerFrom(newNodesOfLayer, 1, newPos, target)
 
     }
@@ -69,7 +66,6 @@ class Reevaluation {
         } else {
             // oldPos < newPos new position constraint is below the old position
             // Decrement all position constraints of nodes that weren't above the target beforehand
-
             offsetPosConstraintsOfLayerFromTo(nodesOfLayer, -1, oldPos, newPos, target)
 
         }
@@ -93,7 +89,6 @@ class Reevaluation {
      * Optional reevaluation when emptying a layer should lead to its disappearance.
      * Adjust layer constraints in the graph if a new layer constraint empties a layer and lets it disappear. 
      */
-
     def reevaluateAfterEmptyingALayer(KNode target, int targetLayer, List<KNode> nodes) {
 
         val layerConsTarget = ConstraintsUtils.getLayerConstraint(target)
@@ -132,19 +127,10 @@ class Reevaluation {
      * @param newLayerNodes The target layer of insertedNode
      * @param nodes All nodes of the current graph
      */
-    def void shiftIfNec(KNode insertedNode, int posCons, int layerCons, List<KNode> oldLayerNodes,
-        List<KNode> newLayerNodes, List<KNode> nodes) {
+    def void shiftIfNec(KNode insertedNode, int newLayerId, int layerCons, int newPosId, int posCons,
+        List<KNode> oldLayerNodes, List<KNode> newLayerNodes, List<KNode> nodes) {
 
-        val inEdges = insertedNode.incomingEdges
-        val outEdges = insertedNode.outgoingEdges
-        var List<KNode> adjacentNodes = newArrayList()
-
-        for (e : inEdges) {
-            adjacentNodes.add(e.source)
-        }
-        for (e : outEdges) {
-            adjacentNodes.add(e.target)
-        }
+        val adjacentNodes = ConstraintsUtils.getAdjacentNodes(insertedNode)
 
         var List<KNode> shiftedNodes = newArrayList()
 
@@ -152,17 +138,17 @@ class Reevaluation {
             if (newLayerNodes.contains(n)) {
                 // If the shifted node has a layer constraint. It needs to be incremented else the shift would have no effect.
                 shiftedNodes.add(n)
-                if (ConstraintsUtils.getLayerConstraint(n) != -1) {
+                if (ConstraintsUtils.getLayerConstraint(n) !== -1) {
                     ConstraintsUtils.setLayerConstraint(n, layerCons + 1)
                     changedNodes.add(n)
 
                 }
                 // Test whether the shift leads to more shifts in the next layer.
-                val nextNextLayerNodes = ConstraintsUtils.getNodesOfLayer(
-                    n.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + 1, nodes)
+                val nextNextLayerNodes = ConstraintsUtils.getNodesOfLayer(newLayerId + 1, nodes)
                 val nPosId = n.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+                val nPosCons = ConstraintsUtils.getPosConstraint(n)
 
-                shiftIfNec(n, nPosId, layerCons + 1, newLayerNodes, nextNextLayerNodes, nodes)
+                shiftIfNec(n, newLayerId + 1, layerCons + 1, nPosId, nPosCons, newLayerNodes, nextNextLayerNodes, nodes)
 
             }
         }
@@ -174,7 +160,6 @@ class Reevaluation {
 //                n.getProperty(LayeredOptions.LAYERING_LAYER_I_D) + 1, nodes)
 //            reevaluateAfterShift(n, insertedNode, newLayerNodes, nextNextLayerNodes)
 //        }
-
     }
 
     /**

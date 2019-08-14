@@ -63,12 +63,11 @@ class InteractiveLayout {
             // initial layout
             layoutE.onlyLayoutOnKGraph(id)
             // adjust coordinates of the nodes
-             setCoordinates(root)
+            //setCoordinates(root)
             // activate interactive strategies
             setInteractiveStrats(root)
-             setStratsAndCoordinatesOnParents(root)
-            //setCoordinatesDepthFirst(root)
-
+            //setStratsAndCoordinatesOnParents(root)
+            setCoordinatesDepthFirst(root)
             layoutE.onlyLayoutOnKGraph(id)
 
         }
@@ -257,14 +256,26 @@ class InteractiveLayout {
             // nodes in different layer should not overlap horizontally 
             xPos = nextX + 1
         }
+        if (!layers.empty && !layers.get(0).empty) {
+            
+
+            val parent = layers.get(0).get(0).parent
+            if (parent !== null) {
+                val padding = parent.getProperty(LayeredOptions.PADDING)
+                parent.width = (padding.left + padding.right + xPos) as float
+            }
+        }
     }
 
-    /**
-     * Sets the y coordinate of the nodes in {@code nodesOfLayer}.
-     * 
-     * @param nodesOfLayer The list containing nodes that are in the same layer. 
-     */
-    private def static setYCoordinates(List<KNode> nodesOfLayer) {
+
+/**
+ * Sets the y coordinate of the nodes in {@code nodesOfLayer}.
+ * 
+ * @param nodesOfLayer The list containing nodes that are in the same layer. 
+ */
+private def
+
+static setYCoordinates(List<KNode> nodesOfLayer) {
 
         // separate node with and without position constraint
         val List<KNode> propNodes = newArrayList()
@@ -297,14 +308,16 @@ class InteractiveLayout {
         }
     }
 
-    /**
-     * Sorts the {@code propNodes} according their position constraint 
-     * and {@code nodes} according to their y coordinate.
-     * 
-     * @param propNodes The nodes which position constraint is set
-     * @param nodes The nodes without position constraints
-     */
-    private def static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
+/**
+ * Sorts the {@code propNodes} according their position constraint 
+ * and {@code nodes} according to their y coordinate.
+ * 
+ * @param propNodes The nodes which position constraint is set
+ * @param nodes The nodes without position constraints
+ */
+private def
+
+static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
         // sorting based on position the nodes should have
         propNodes.sort(
             [ a, b |
@@ -324,23 +337,27 @@ class InteractiveLayout {
         ])
     }
 
-    /**
-     * Sets the interactive strategies in the phases crossing minimization, layer assignment, 
-     * cycle breaking for the graph {@code root}.
-     * 
-     * @param root The graph which strategies should be set.
-     */
-    private def static setInteractiveStrats(KNode root) {
+/**
+ * Sets the interactive strategies in the phases crossing minimization, layer assignment, 
+ * cycle breaking for the graph {@code root}.
+ * 
+ * @param root The graph which strategies should be set.
+ */
+private def
+
+static setInteractiveStrats(KNode root) {
         root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE)
     }
 
-    /**
-     * Sets the interactive_layout property and deactivates seperate connected components 
-     * on all children of root, having own children.
-     */
-    private def static void prepareParentsForFirstLayout(KNode root) {
+/**
+ * Sets the interactive_layout property and deactivates seperate connected components 
+ * on all children of root, having own children.
+ */
+private def
+
+static void prepareParentsForFirstLayout(KNode root) {
         for (n : root.children) {
             val nestedNodes = n.children
             if (!nestedNodes.empty) {
@@ -351,10 +368,12 @@ class InteractiveLayout {
         }
     }
 
-    /**
-     * Activates the interactive strats and applies setCoordinates on all children of root, having own children.
-     */
-    private def static void setStratsAndCoordinatesOnParents(KNode root) {
+/**
+ * Activates the interactive strats and applies setCoordinates on all children of root, having own children.
+ */
+private def
+
+static void setStratsAndCoordinatesOnParents(KNode root) {
         for (n : root.children) {
             val nestedNodes = n.children
             if (!nestedNodes.empty) {
@@ -366,7 +385,9 @@ class InteractiveLayout {
         }
     }
 
-    private def static void setCoordinatesDepthFirst(KNode root) {
+private def
+
+static void setCoordinatesDepthFirst(KNode root) {
         var empty = true
         for (n : root.children) {
             empty = false

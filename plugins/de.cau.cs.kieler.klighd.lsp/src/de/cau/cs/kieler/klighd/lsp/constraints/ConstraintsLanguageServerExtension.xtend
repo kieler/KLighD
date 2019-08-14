@@ -294,7 +294,8 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
 //            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
 //                layerCons--
 //            }
-            reval.shiftIfNec(kNode, newPosId, newLayerId, oldLayerNodes, targetLayerNodes, allNodes)
+            reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,
+                allNodes)
             reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
 
             ConstraintsUtils.setLayerConstraint(kNode, newLayerCons)

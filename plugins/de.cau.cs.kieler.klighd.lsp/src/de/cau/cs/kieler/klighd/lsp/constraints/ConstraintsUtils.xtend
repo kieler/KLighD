@@ -55,50 +55,27 @@ class ConstraintsUtils {
      * @param nodes all nodes the graph contains
      */
     def static List<KNode> getNodesOfLayer(int layer, List<KNode> nodes) {
-        // It is possible that the layer constraint is higher than the max layer id
-        // since users are allowed to specify layer constraints > count of layers
-        var maxLayerId = -1
-        for (n : nodes) {
-            val layerId = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-            if (maxLayerId < layerId) {
-                maxLayerId = layerId
-            }
-        }
 
         var ArrayList<KNode> temp = newArrayList()
-        // Should the layer constraint be higher than the max layer id
-        if (layer > maxLayerId) {
-            /*Check whether a node exists that has the same layer constraint if that's the case use its layer id to get 
-             all of the nodes of the same layer. Else return an empty list.*/
-            for (n : nodes) {
-                if (ConstraintsUtils.getLayerConstraint(n) == layer) {
-                    return getNodesOfLayer(n.getProperty(LayeredOptions.LAYERING_LAYER_I_D), nodes)
-                }
+
+        // layer <= maxLayerId: Collect all nodes with the fitting layer id in a list
+        var nodeCount = 0
+
+        for (n : nodes) {
+            val layerID = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            if (layerID === layer) {
+                temp.add(n)
+                nodeCount++
             }
-            return temp
-
-        } else {
-
-            // layer <= maxLayerId: Collect all nodes with the fitting layer id in a list
-            var nodeCount = 0
-
-            for (n : nodes) {
-                val layerID = n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
-                if (layerID === layer) {
-                    temp.add(n)
-                    nodeCount++
-                }
-            }
-
-            // sort them based on their position id - this is used for speeding up future reevaluation
-            temp.sort([ a, b |
-                a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D) -
-                    b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
-            ])
-
-            return temp
-
         }
+
+        // sort them based on their position id - this is used for speeding up future reevaluation
+        temp.sort([ a, b |
+            a.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D) -
+                b.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_I_D)
+        ])
+
+        return temp
     }
 
     /**
@@ -159,16 +136,22 @@ class ConstraintsUtils {
     }
 
     /**
-     * Creates a List of layer lists that models the actual layering of a graph that is coined 
-     * by layer constraints or layer ids if a node has no layer constraint.
-     * It expects that there are no constraints on the nodes that cause flat edges since
-     * these alter the actual layer of a node in the interactive layout 
-     * process because ElkLayered does not allow flat edges.
-     * 
-     * @param nodes All nodes that should be included in the layering. 
-     * Requirement: The nodes must not have constraints that cause flat edges.
+     * Collects the adjacent nodes of {@code node} in a list.
+     * @param node The node of which you want to know the adjacent nodes.
+     * @return 
      */
-    def static getLayering(List<KNode> nodes) {
+    static def getAdjacentNodes(KNode node) {
+        val inEdges = node.incomingEdges
+        val outEdges = node.outgoingEdges
+        var List<KNode> adjacentNodes = newArrayList()
+
+        for (e : inEdges) {
+            adjacentNodes.add(e.source)
+        }
+        for (e : outEdges) {
+            adjacentNodes.add(e.target)
+        }
+        return adjacentNodes
     }
 
     /*

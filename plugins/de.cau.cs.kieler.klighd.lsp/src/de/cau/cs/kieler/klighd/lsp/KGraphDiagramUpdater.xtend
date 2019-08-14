@@ -227,7 +227,6 @@ class KGraphDiagramUpdater extends DiagramUpdater {
      */
     synchronized def SGraph createModel(ViewContext viewContext, String id, CancelIndicator cancelChecker) {
         // own code
-        // TODO: check interactive property
         if (layoutEngine instanceof KGraphLayoutEngine) {
             inLa.calcLayout(id, layoutEngine as KGraphLayoutEngine)
         }
