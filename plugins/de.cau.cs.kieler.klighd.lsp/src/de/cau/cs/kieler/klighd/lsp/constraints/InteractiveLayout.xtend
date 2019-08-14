@@ -62,12 +62,11 @@ class InteractiveLayout {
             prepareParentsForFirstLayout(root)
             // initial layout
             layoutE.onlyLayoutOnKGraph(id)
-            // adjust coordinates of the nodes
-            //setCoordinates(root)
+            // set coordinates
+            setCoordinatesDepthFirst(root)
             // activate interactive strategies
             setInteractiveStrats(root)
-            //setStratsAndCoordinatesOnParents(root)
-            setCoordinatesDepthFirst(root)
+
             layoutE.onlyLayoutOnKGraph(id)
 
         }
@@ -256,14 +255,14 @@ class InteractiveLayout {
             // nodes in different layer should not overlap horizontally 
             xPos = nextX + 1
         }
+        
+        // adjust the width of the parent of the nodes in the layers
         if (!layers.empty && !layers.get(0).empty) {
-            
-
-            val parent = layers.get(0).get(0).parent
-            if (parent !== null) {
-                val padding = parent.getProperty(LayeredOptions.PADDING)
-                parent.width = (padding.left + padding.right + xPos) as float
-            }
+            var node = layers.get(0).get(0)
+            var padding = node.getProperty(LayeredOptions.PADDING)
+            node.parent.width = (padding.left + padding.right + xPos - node.xpos +
+                node.getProperty(LayeredOptions.SPACING_NODE_NODE_BETWEEN_LAYERS) * (layers.length - 1)
+                        ) as float
         }
     }
 
