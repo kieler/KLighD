@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.ui.view.syntheses
 
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.Colors
+import de.cau.cs.kieler.klighd.krendering.KRectangle
 import de.cau.cs.kieler.klighd.krendering.KRoundedRectangle
 import de.cau.cs.kieler.klighd.krendering.extensions.KContainerRenderingExtensions
 import de.cau.cs.kieler.klighd.krendering.extensions.KRenderingExtensions
@@ -55,7 +56,8 @@ class ErrorModelSynthesis extends AbstractDiagramSynthesis<ErrorModel> {
         // Adjust diagram
         if (rootNode !== null && !rootNode.children.empty) {
             val messageNode = rootNode.children.head;
-            val messageRect = messageNode.data.filter(KRoundedRectangle).head;
+            val rect = messageNode.data.head as KRectangle;
+            val messageRect = rect.children.filter(KRoundedRectangle).head;
             if (messageRect !== null) {
                 // title text red
                 messageRect.children.head.foreground = Colors.RED;
