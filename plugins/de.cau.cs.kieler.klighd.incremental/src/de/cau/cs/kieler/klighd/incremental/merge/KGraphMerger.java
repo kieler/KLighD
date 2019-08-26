@@ -254,17 +254,19 @@ public class KGraphMerger {
     private void handleLabels(final KLabeledGraphElement baseElement,
             final KLabeledGraphElement newElement) {
 
+        // Every label that is not in the new graph has to be removed. Will whittle it down.
+        LinkedList<KLabel> removedLabels = Lists.newLinkedList(baseElement.getLabels());
         LinkedList<KLabel> newLabels = Lists.newLinkedList();
         for (KLabel newLabel : newElement.getLabels()) {
             KLabel baseLabel = comparison.lookupBaseLabel(newLabel);
             if (baseLabel != null) {
-                newLabels.add(baseLabel);
+                removedLabels.remove(baseLabel);
                 updateLabel(baseLabel, newLabel);
             } else {
                 newLabels.add(newLabel);
             }
         }
-        baseElement.getLabels().clear();
+        baseElement.getLabels().removeAll(removedLabels);
         baseElement.getLabels().addAll(newLabels);
     }
 
