@@ -54,8 +54,6 @@ public class KGraphMerger {
     /** The filter to determine, which KGraphData to merge. */
     private Predicate<KGraphData> filter;
 
-    /** Maps ports in the new model to ports in the base model. */
-    private Map<KPort, KPort> newToBasePortMap;
     /** Set of nodes whose ports already have been updated. */
     private Set<KNode> portupdatedNodes;
     /** Map of base and new edges whose ports still need to be updated. */
@@ -72,7 +70,6 @@ public class KGraphMerger {
     public KGraphMerger(final KComparison comparison, final Predicate<KGraphData> filter) {
         this.comparison = comparison;
         this.filter = filter;
-        newToBasePortMap = Maps.newHashMap();
         portupdatedNodes = new HashSet<KNode>();
         edgesToDo = Maps.newHashMap();
     }
@@ -286,8 +283,8 @@ public class KGraphMerger {
     }
 
     /**
-     * Update the ports of the given node pair. For now, all existing ports are removed and copied
-     * from the new model. Source and target ports of edges need to be updated individually.
+     * Update the ports of the given node pair. Ports are removed, moved from the new
+     * model or updated. Source and target ports of edges need to be updated individually.
      * 
      * @see {@link #handlePorts(KEdge, KEdge)}, {@link #newToBasePortMap}, {@link #portupdatedNodes}
      * @param baseNode
@@ -296,22 +293,43 @@ public class KGraphMerger {
      *            the node to update from.
      */
     private void handlePorts(final KNode baseNode, final KNode newNode) {
-        // TODO handle ports better
-        EList<KPort> basePorts = baseNode.getPorts();
-        basePorts.clear();
+        // Every port that is not in the new graph has to be removed. Will whittle it down.
+        LinkedList<KPort> removedPorts = Lists.newLinkedList(baseNode.getPorts());
+        LinkedList<KPort> newPorts = Lists.newLinkedList();
         for (KPort newPort : newNode.getPorts()) {
-            KPort basePort = EcoreUtil.copy(newPort);
-            basePorts.add(basePort);
-            newToBasePortMap.put(newPort, basePort);
+            KPort basePort = comparison.lookupBasePort(newPort);
+            if (basePort != null) {
+                removedPorts.remove(basePort);
+                updatePort(basePort, newPort);
+            } else {
+                newPorts.add(newPort);
+            }
+            portupdatedNodes.add(baseNode);
         }
-        portupdatedNodes.add(baseNode);
+        baseNode.getPorts().removeAll(removedPorts);
+        baseNode.getPorts().addAll(newPorts);
+    }
+
+    /**
+     * Update the given port pair.
+     * 
+     * @param basePort
+     *            the port to update to.
+     * @param newPort
+     *            the port to update from.
+     */
+    private void updatePort(final KPort basePort, final KPort newPort) {
+        updateGraphElement(basePort, newPort);
+        updateShapeLayout(basePort, newPort);
+        copyInsets(newPort.getInsets(), basePort.getInsets());
+        handleLabels(basePort, newPort);
     }
 
     /**
      * Update source and target ports of the given edge pair. Both source and target node must have
      * updated ports.
      * 
-     * @see {@link #portupdatedNodes}, {@link #newToBasePortMap}
+     * @see {@link #portupdatedNodes}
      * @param baseEdge
      *            the edge to update to.
      * @param newEdge
@@ -321,8 +339,8 @@ public class KGraphMerger {
         if (portupdatedNodes.contains(baseEdge.getSource())
                 && portupdatedNodes.contains(baseEdge.getTarget())) {
 
-            baseEdge.setSourcePort(newToBasePortMap.get(newEdge.getSourcePort()));
-            baseEdge.setTargetPort(newToBasePortMap.get(newEdge.getTargetPort()));
+            baseEdge.setSourcePort(newEdge.getSourcePort());
+            baseEdge.setTargetPort(newEdge.getTargetPort());
         } else {
             edgesToDo.put(baseEdge, newEdge);
         }
@@ -393,7 +411,7 @@ public class KGraphMerger {
      * @return a copy of the node.
      */
     private KNode copyKNode(final KNode node) {
-        KNodeCopier copier = new KNodeCopier(newToBasePortMap, portupdatedNodes);
+        KNodeCopier copier = new KNodeCopier(portupdatedNodes);
         KNode result = (KNode) copier.copy(node);
         copier.copyReferences();
         return result;
