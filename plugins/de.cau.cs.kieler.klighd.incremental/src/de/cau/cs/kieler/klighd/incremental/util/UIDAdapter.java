@@ -32,11 +32,12 @@ import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
 import de.cau.cs.kieler.klighd.kgraph.KLabel;
 import de.cau.cs.kieler.klighd.kgraph.KLabeledGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KPort;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 
 /**
  * A self-propagating {@link EContentAdapter} that calculates unique ids for {@link KNode nodes},
- * {@link KEdge edges} and {@link KLabel labels}. The ids are constructed from a local id and the
+ * {@link KEdge edges}, {@link KLabel labels} and {@link KPort ports}. The ids are constructed from a local id and the
  * containers unique id. If a {@link KIdentifier} is set, it's used as local id, otherwise the
  * following fallbacks are used:
  * <dl>
@@ -47,6 +48,8 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  * <dd>The index in the source's list of outgoing edges.</dd>
  * <dt>KLabel</dt>
  * <dd>The index in the parent's list of labels.</d>
+ * <dt>KPort</dt>
+ * <dd>The index in the parent's list of ports.</d>
  * </dl>
  * 
  * @author csp
@@ -54,11 +57,12 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
 public class UIDAdapter extends EContentAdapter {
 
     private static final Predicate<Object> CANDIDATES =
-            KlighdPredicates.instanceOf(KNode.class, KLabel.class, KEdge.class);
+            KlighdPredicates.instanceOf(KNode.class, KLabel.class, KEdge.class, KPort.class);
     private static final String ID_SEPARATOR = "$";
     private BiMap<String, KNode> nodes = HashBiMap.create();
     private BiMap<String, KEdge> edges = HashBiMap.create();
     private BiMap<String, KLabel> labels = HashBiMap.create();
+    private BiMap<String, KPort> ports = HashBiMap.create();
     private boolean invalid = false;
 
     /**
@@ -93,6 +97,17 @@ public class UIDAdapter extends EContentAdapter {
     public String getId(final KLabel label) {
         return labels.inverse().get(label);
     }
+    
+    /**
+     * Get the associated id.
+     * 
+     * @param port
+     *          the port to get the id for.
+     * @return the port's id.
+     */
+    public String getId(final KPort port) {
+        return ports.inverse().get(port);
+    }
 
     /**
      * Get all ids associated to nodes.
@@ -119,6 +134,15 @@ public class UIDAdapter extends EContentAdapter {
      */
     public Set<String> getLabelIds() {
         return labels.keySet();
+    }
+    
+    /**
+     * Get all ids associated to ports.
+     * 
+     * @return all port's ids.
+     */
+    public Set<String> getPortIds() {
+        return ports.keySet();
     }
 
     /**
@@ -153,6 +177,17 @@ public class UIDAdapter extends EContentAdapter {
     public KLabel getLabel(final String id) {
         return labels.get(id);
     }
+    
+    /**
+     * Get the associated port.
+     * 
+     * @param id
+     *          the id to get the port for.
+     * @return the associated port.
+     */
+    public KPort getPort(final String id) {
+        return ports.get(id);
+    }
 
     /**
      * Get the map associating ids and nodes.
@@ -173,12 +208,21 @@ public class UIDAdapter extends EContentAdapter {
     }
 
     /**
-     * Get the map associating ids and Labels.
+     * Get the map associating ids and labels.
      * 
      * @return the id to label map.
      */
     public BiMap<String, KLabel> getLabelMap() {
         return labels;
+    }
+    
+    /**
+     * Get the map associating ids and ports.
+     * 
+     * @return the id to the port map.
+     */
+    public BiMap<String, KPort> getPortMap() {
+        return ports;
     }
 
     /**
@@ -203,6 +247,8 @@ public class UIDAdapter extends EContentAdapter {
             addId((KEdge) target);
         } else if (target instanceof KLabel) {
             addId((KLabel) target);
+        } else if (target instanceof KPort) {
+            addId((KPort) target);
         }
 
         final Iterator<? extends Notifier> eContents = resolve() ? target.eContents().iterator()
@@ -225,6 +271,8 @@ public class UIDAdapter extends EContentAdapter {
             removeId((KEdge) target);
         } else if (target instanceof KLabel) {
             removeId((KLabel) target);
+        } else if (target instanceof KPort) {
+            removeId((KPort) target);
         }
 
         final Iterator<? extends Notifier> eContents = resolve() ? target.eContents().iterator()
@@ -368,6 +416,8 @@ public class UIDAdapter extends EContentAdapter {
             parentId = getId((KNode) parent);
         } else if (parent instanceof KEdge) {
             parentId = getId((KEdge) parent);
+        } else if (parent instanceof KPort) {
+            parentId = getId((KPort) parent);
         }
         String localId;
         KIdentifier identifier = label.getData(KIdentifier.class);
@@ -378,6 +428,36 @@ public class UIDAdapter extends EContentAdapter {
         }
         id = parentId + ID_SEPARATOR + localId;
         if (labels.put(id, label) != null) {
+            invalid = true;
+            return null;
+        }
+        return id;
+    }
+    
+    /**
+     * Add a new port id to the map. If the given port has already been added, return its existing
+     * id. Returns null if the id already exists for a different port.
+     * 
+     * @param port
+     *          the port to add.
+     * @return the new or existing id, or {@code null} if the id is already taken.
+     */
+    private String addId(final KPort port) {
+        String id = getId(port);
+        if (id != null) {
+            return id;
+        }
+        KNode parent = port.getNode();
+        String parentId = getId(parent);
+        String localId = "";
+        KIdentifier identifier = port.getData(KIdentifier.class);
+        if (identifier != null) {
+            localId = identifier.getId();
+        } else {
+            localId = "P" + parent.getPorts().indexOf(port);
+        }
+        id = parentId + ID_SEPARATOR + localId;
+        if (ports.put(id, port) != null) {
             invalid = true;
             return null;
         }
@@ -412,6 +492,16 @@ public class UIDAdapter extends EContentAdapter {
      */
     private void removeId(final KLabel label) {
         labels.inverse().remove(label);
+    }
+    
+    /**
+     * remove the given port and its associated id.
+     * 
+     * @param port
+     *          the port to remove.
+     */
+    private void removeId(final KPort port) {
+        ports.inverse().remove(port);
     }
 
 }

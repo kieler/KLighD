@@ -19,6 +19,7 @@ import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.KPort
 import de.cau.cs.kieler.klighd.krendering.Colors
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment
+import de.cau.cs.kieler.klighd.krendering.KArc
 import de.cau.cs.kieler.klighd.krendering.KAreaPlacementData
 import de.cau.cs.kieler.klighd.krendering.KBackground
 import de.cau.cs.kieler.klighd.krendering.KColor
@@ -133,6 +134,24 @@ class KRenderingExtensions {
 
     def dispatch KEllipse addEllipse(KLabel label){
         return createKEllipse() => [
+            label.data += it
+        ];
+    }
+    
+    def dispatch KArc addArc(KNode node) {
+        return createKArc() => [
+            node.data += it
+        ];
+    }
+    
+    def dispatch KArc addArc(KPort port) {
+        return createKArc() => [
+            port.data += it
+        ];
+    }
+    
+    def dispatch KArc addArc(KLabel label) {
+        return createKArc() => [
             label.data += it
         ];
     }
