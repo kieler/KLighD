@@ -25,8 +25,8 @@ import org.eclipse.elk.alg.layered.options.CrossingMinimizationStrategy
 import org.eclipse.elk.alg.layered.options.CycleBreakingStrategy
 import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.alg.layered.options.LayeringStrategy
+import org.eclipse.elk.core.math.KVector
 import org.eclipse.emf.common.util.EList
-import javax.sound.sampled.BooleanControl.Type
 
 /**
  * @author jet, cos
@@ -58,6 +58,7 @@ class InteractiveLayout {
         if (root.getProperty(LayeredOptions.INTERACTIVE_LAYOUT)) {
 
             root.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
+            setStandardStrats(root)
 
             prepareParentsForFirstLayout(root)
             // initial layout
@@ -255,7 +256,7 @@ class InteractiveLayout {
             // nodes in different layer should not overlap horizontally 
             xPos = nextX + 1
         }
-        
+
         // adjust the width of the parent of the nodes in the layers
         if (!layers.empty && !layers.get(0).empty) {
             var node = layers.get(0).get(0)
@@ -266,15 +267,12 @@ class InteractiveLayout {
         }
     }
 
-
-/**
- * Sets the y coordinate of the nodes in {@code nodesOfLayer}.
- * 
- * @param nodesOfLayer The list containing nodes that are in the same layer. 
- */
-private def
-
-static setYCoordinates(List<KNode> nodesOfLayer) {
+    /**
+     * Sets the positions of the nodes in {@code nodesOfLayer}.
+     * 
+     * @param nodesOfLayer The list containing nodes that are in the same layer. 
+     */
+    private def static setYCoordinates(List<KNode> nodesOfLayer) {
 
         // separate node with and without position constraint
         val List<KNode> propNodes = newArrayList()
@@ -302,21 +300,19 @@ static setYCoordinates(List<KNode> nodesOfLayer) {
         // set the y positions according to the order of the nodes
         var yPos = nodes.get(0).ypos
         for (node : nodes) {
-            node.ypos = yPos
+            node.setProperty(LayeredOptions.POSITION, new KVector(node.xpos, yPos))
             yPos = yPos + node.height + 1
         }
     }
 
-/**
- * Sorts the {@code propNodes} according their position constraint 
- * and {@code nodes} according to their y coordinate.
- * 
- * @param propNodes The nodes which position constraint is set
- * @param nodes The nodes without position constraints
- */
-private def
-
-static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
+    /**
+     * Sorts the {@code propNodes} according their position constraint 
+     * and {@code nodes} according to their y coordinate.
+     * 
+     * @param propNodes The nodes which position constraint is set
+     * @param nodes The nodes without position constraints
+     */
+    private def static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
         // sorting based on position the nodes should have
         propNodes.sort(
             [ a, b |
@@ -336,57 +332,35 @@ static sortListsForYPos(List<KNode> propNodes, List<KNode> nodes) {
         ])
     }
 
-/**
- * Sets the interactive strategies in the phases crossing minimization, layer assignment, 
- * cycle breaking for the graph {@code root}.
- * 
- * @param root The graph which strategies should be set.
- */
-private def
-
-static setInteractiveStrats(KNode root) {
-        root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.INTERACTIVE)
+    /**
+     * Sets the (semi) interactive strategies in the phases crossing minimization, layer assignment, 
+     * cycle breaking for the graph {@code root}.
+     * 
+     * @param root The graph which strategies should be set.
+     */
+    private def static setInteractiveStrats(KNode root) {
+        root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_SEMI_INTERACTIVE, true)
         root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.INTERACTIVE)
         root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.INTERACTIVE)
     }
 
-/**
- * Sets the interactive_layout property and deactivates seperate connected components 
- * on all children of root, having own children.
- */
-private def
-
-static void prepareParentsForFirstLayout(KNode root) {
+    /**
+     * Sets the interactive_layout property, deactivates seperate connected components, and resets strategies
+     * on all children of root, having own children.
+     */
+    private def static void prepareParentsForFirstLayout(KNode root) {
         for (n : root.children) {
             val nestedNodes = n.children
             if (!nestedNodes.empty) {
                 n.setProperty(LayeredOptions.INTERACTIVE_LAYOUT, true)
                 n.setProperty(LayeredOptions.SEPARATE_CONNECTED_COMPONENTS, false)
+                setStandardStrats(n)
                 prepareParentsForFirstLayout(n)
             }
         }
     }
 
-/**
- * Activates the interactive strats and applies setCoordinates on all children of root, having own children.
- */
-private def
-
-static void setStratsAndCoordinatesOnParents(KNode root) {
-        for (n : root.children) {
-            val nestedNodes = n.children
-            if (!nestedNodes.empty) {
-
-                setInteractiveStrats(n)
-                setCoordinates(n)
-                setStratsAndCoordinatesOnParents(n)
-            }
-        }
-    }
-
-private def
-
-static void setCoordinatesDepthFirst(KNode root) {
+    private def static void setCoordinatesDepthFirst(KNode root) {
         var empty = true
         for (n : root.children) {
             empty = false
@@ -401,6 +375,18 @@ static void setCoordinatesDepthFirst(KNode root) {
             setCoordinates(root)
         }
 
+    }
+
+    /**
+     * Resets the strategies in the phases crossing minimization, layer assignment, 
+     * cycle breaking for the graph {@code root}.
+     * 
+     * @param root The graph which strategies should be set.
+     */
+    private def static setStandardStrats(KNode root) {
+        root.setProperty(LayeredOptions.CROSSING_MINIMIZATION_STRATEGY, CrossingMinimizationStrategy.LAYER_SWEEP)
+        root.setProperty(LayeredOptions.LAYERING_STRATEGY, LayeringStrategy.NETWORK_SIMPLEX)
+        root.setProperty(LayeredOptions.CYCLE_BREAKING_STRATEGY, CycleBreakingStrategy.DEPTH_FIRST)
     }
 
 }
