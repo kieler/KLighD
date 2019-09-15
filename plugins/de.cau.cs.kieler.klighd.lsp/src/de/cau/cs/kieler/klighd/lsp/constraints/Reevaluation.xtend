@@ -138,7 +138,7 @@ class Reevaluation {
             if (newLayerNodes.contains(n)) {
                 // If the shifted node has a layer constraint. It needs to be incremented else the shift would have no effect.
                 shiftedNodes.add(n)
-                if (ConstraintsUtils.getLayerConstraint(n) !== -1) {
+                if (ConstraintsUtils.getLayerConstraint(n) !== -1 && false) {
                     ConstraintsUtils.setLayerConstraint(n, layerCons + 1)
                     changedNodes.add(n)
 
@@ -232,7 +232,6 @@ class Reevaluation {
      * This should be caught before the layout is done. Constraints that are invalid are deactivated.
      */
     def static ckeckModelConstraints(List<KNode> nodes) {
-        checkForFlatEdgeCausingConstraints(nodes)
     }
 
     /**
@@ -287,10 +286,20 @@ class Reevaluation {
     }
 
     /**
-     * Checks and corrects constraints that break the upper boundary of the positions in layer or layers.
-     * @param nodes All nodes to examine. Requirement: The nodes must not have constraints that cause flat edges.
+     * Check for Position Constraints that point to the same position and deactivate all but one
      */
-    def static checkForBoundaryBreakingConstraints(List<KNode> nodes) {
+    def static checkForCollidingPosConstraints(List<KNode> nodes) {
+        var HashSet<Pair<Integer, Integer>> layerPosSet = newHashSet()
+
+        var propNodes = nodes.filter([n|n.hasProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT)])
+        for (n : propNodes) {
+            val layer = n.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT) ? ConstraintsUtils.
+                    getLayerConstraint(n) : n.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
+            
+            if(!layerPosSet.add(layer -> ConstraintsUtils.getPosConstraint(n))){
+                ConstraintsUtils.nullifyPosConstraint(n)
+            }
+        }
     }
 
     /**
@@ -300,6 +309,10 @@ class Reevaluation {
      * if they are introduced via a loaded file. 
      */
     def static checkForFlatEdgeCausingConstraints(List<KNode> nodes) {
+        
+        var propNodes = nodes.filter([n|n.hasProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT)])
+        
+        
     }
 
 }

@@ -367,22 +367,7 @@ static void prepareParentsForFirstLayout(KNode root) {
         }
     }
 
-/**
- * Activates the interactive strats and applies setCoordinates on all children of root, having own children.
- */
-private def
 
-static void setStratsAndCoordinatesOnParents(KNode root) {
-        for (n : root.children) {
-            val nestedNodes = n.children
-            if (!nestedNodes.empty) {
-
-                setInteractiveStrats(n)
-                setCoordinates(n)
-                setStratsAndCoordinatesOnParents(n)
-            }
-        }
-    }
 
 private def
 

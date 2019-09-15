@@ -115,7 +115,7 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         val kNode = getKNode(uri, targetID, root)
         val parentOfNode = kNode.parent
 
-        if (kNode !== null) {
+        if (kNode !== null && parentOfNode !== null) {
             var layerID = kNode.getProperty(LayeredOptions.LAYERING_LAYER_I_D)
             var List<KNode> residingLayer
             residingLayer = ConstraintsUtils.getNodesOfLayer(layerID, parentOfNode.children)
@@ -266,17 +266,17 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
         val root = getRoot(uri)
         val kNode = getKNode(uri, sc.ID, root)
         val parentOfNode = kNode.parent
-        var allNodes = parentOfNode.children
 
         // In case that the interactive mode is active, the viewContext is not null 
         // and the element is actually a KNode. Carry on.
-        if (kNode !== null) {
+        if (kNode !== null && parentOfNode !== null) {
             /*
              * As long as no increased pos constraint is present in the target layer
              * and no increased layer constraint is present left to the target layer
              * newLayerId === newLayer Cons && newPosCons = newPosId
              * In the other cases both values can differ.
              */
+            var allNodes = parentOfNode.children
             var newLayerId = sc.layer
             val newPosId = sc.position
             val newPosCons = sc.posCons
@@ -290,12 +290,12 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
             // Reevaluate insertion of node to target layer
             var reval = new Reevaluation(kNode)
 
-//TODO: Create an option for this.
+//TODO: Should this be active now or not? Probably not. It should be an option.
 //            if (reval.reevaluateAfterEmptyingALayer(kNode, layerCons, allNodes)) {
 //                layerCons--
 //            }
-            reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,
-                allNodes)
+            //TODO: Shift reevaluation is not ready yet. 
+            //reval.shiftIfNec(kNode, newLayerId, newLayerCons, newPosId, newPosCons, oldLayerNodes, targetLayerNodes,allNodes)
             reval.reevaluatePosConstraintsAfterLayerSwap(targetLayerNodes, oldLayerNodes, kNode, newPosId)
 
             ConstraintsUtils.setLayerConstraint(kNode, newLayerCons)
