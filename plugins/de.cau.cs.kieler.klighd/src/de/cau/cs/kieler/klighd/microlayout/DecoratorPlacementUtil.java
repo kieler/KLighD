@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.piccolo.internal.util;
+package de.cau.cs.kieler.klighd.microlayout;
 
 import java.awt.geom.Point2D;
 
@@ -19,53 +19,23 @@ import org.eclipse.elk.core.util.Pair;
 
 import de.cau.cs.kieler.klighd.krendering.KDecoratorPlacementData;
 import de.cau.cs.kieler.klighd.krendering.KPlacementData;
-import de.cau.cs.kieler.klighd.krendering.KPolyline;
-import de.cau.cs.kieler.klighd.krendering.KPosition;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef;
 import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
-import de.cau.cs.kieler.klighd.microlayout.Bounds;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
+import de.cau.cs.kieler.klighd.util.MathUtil;
 
 /**
- * A utility class for evaluating the placement of KRenderings.
+ * A utility class for evaluating the placement of decorating KRenderings.
  * 
  * @author mri
  */
-public final class PiccoloPlacementUtil {
+public final class DecoratorPlacementUtil {
 
     /**
      * A private constructor to prevent instantiation.
      */
-    private PiccoloPlacementUtil() {
+    private DecoratorPlacementUtil() {
         // do nothing
-    }
-    
-
-    /**
-     * Returns the points for a polyline placement data in given parent bounds.
-     * 
-     * @param line
-     *            the polyline with its points
-     * @param parentBounds
-     *            the parent bounds
-     * @return the points
-     */
-    public static Point2D[] evaluatePolylinePlacement(final KPolyline line,
-            final Bounds parentBounds) {
-        if (line.getPoints() == null || line.getPoints().isEmpty()) {
-            return new Point2D[] { new Point2D.Float(0, 0) };
-        }
-
-        // evaluate the points of the polyline inside the parent bounds
-        Point2D[] points = new Point2D[line.getPoints().size()];
-        int i = 0;
-        for (KPosition point : line.getPoints()) {
-            points[i++] = PlacementUtil.evaluateKPosition(point, parentBounds, true).toPoint2D();
-        }
-
-        return points;
     }
 
     /**
@@ -74,16 +44,16 @@ public final class PiccoloPlacementUtil {
      * @param dpd
      *            the decorator placement data
      * @param path
-     *            the path
+     *            the points on the path
      * @return the origin, bounds and rotation for the decorator
      */
     public static Decoration evaluateDecoratorPlacement(final KDecoratorPlacementData dpd,
-            final KlighdPath path) {
+            final Point2D[] path) {
         Decoration decoration = new Decoration();
 
         Point2D[] points = null; 
         if (path != null) {
-            points = path.getShapePoints();
+            points = path;
         }
         
         if (points == null) {
@@ -192,4 +162,5 @@ public final class PiccoloPlacementUtil {
             return rotation;
         }
     }
+    
 }
