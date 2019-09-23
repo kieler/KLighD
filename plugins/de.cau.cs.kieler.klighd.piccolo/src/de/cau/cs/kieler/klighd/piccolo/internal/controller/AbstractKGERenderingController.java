@@ -66,6 +66,8 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingUtil;
 import de.cau.cs.kieler.klighd.krendering.KStyle;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil;
+import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
@@ -74,8 +76,6 @@ import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.IInternalKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.NodeDisposeListener;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 import de.cau.cs.kieler.klighd.util.CrossDocumentContentAdapter;
 import de.cau.cs.kieler.klighd.util.KlighdPredicates;
@@ -1011,8 +1011,8 @@ public abstract class AbstractKGERenderingController
     protected IKlighdFigureNode handleDecoratorPlacementRendering(final KRendering rendering,
             final List<KStyle> styles, final KlighdPath parent) {
         // determine the initial bounds and rotation
-        final Decoration decoration = PiccoloPlacementUtil.evaluateDecoratorPlacement(
-                PiccoloPlacementUtil.getDecoratorPlacementData(rendering), parent);
+        final Decoration decoration = DecoratorPlacementUtil.evaluateDecoratorPlacement(
+                DecoratorPlacementUtil.getDecoratorPlacementData(rendering), parent.getShapePoints());
 
         // create an empty node for the decorator
         final KlighdDecoratorNode decorator = new KlighdDecoratorNode(rendering);
@@ -1033,8 +1033,8 @@ public abstract class AbstractKGERenderingController
 
                     public void propertyChange(final PropertyChangeEvent e) {
                         // calculate the new bounds and rotation for the rendering
-                        final Decoration decoration = PiccoloPlacementUtil.evaluateDecoratorPlacement(
-                                PiccoloPlacementUtil.getDecoratorPlacementData(rendering), parent);
+                        final Decoration decoration = DecoratorPlacementUtil.evaluateDecoratorPlacement(
+                                DecoratorPlacementUtil.getDecoratorPlacementData(rendering), parent.getShapePoints());
 
                         // apply the new offset
                         decorator.setOffset(decoration.getOrigin().getX(), decoration.getOrigin()

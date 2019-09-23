@@ -476,6 +476,31 @@ public final class PlacementUtil {
         return Bounds.of(x0, y0, width, height);
     }
 
+    /**
+     * Returns the points for a polyline placement data in given parent bounds.
+     * 
+     * @param line
+     *            the polyline with its points
+     * @param parentBounds
+     *            the parent bounds
+     * @return the points
+     */
+    public static Point2D[] evaluatePolylinePlacement(final KPolyline line,
+            final Bounds parentBounds) {
+        if (line.getPoints() == null || line.getPoints().isEmpty()) {
+            return new Point2D[] { new Point2D.Float(0, 0) };
+        }
+
+        // evaluate the points of the polyline inside the parent bounds
+        Point2D[] points = new Point2D[line.getPoints().size()];
+        int i = 0;
+        for (KPosition point : line.getPoints()) {
+            points[i++] = PlacementUtil.evaluateKPosition(point, parentBounds, true).toPoint2D();
+        }
+
+        return points;
+    }
+
 
     /*--------------------------------------------------*/
     /*                                                  */

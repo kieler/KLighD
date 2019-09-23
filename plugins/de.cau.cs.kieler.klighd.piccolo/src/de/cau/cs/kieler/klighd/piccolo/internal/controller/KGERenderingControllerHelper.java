@@ -53,6 +53,7 @@ import de.cau.cs.kieler.klighd.krendering.KStyle;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.krendering.VerticalAlignment;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
+import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKlighdFigureNode;
@@ -65,7 +66,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdImage;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.PolylineUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.Styles;
 
@@ -404,7 +404,7 @@ final class KGERenderingControllerHelper {
         if (line.getChildren().size() > 0) {
             final List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : line.getChildren()) {
-                if (PiccoloPlacementUtil.getDecoratorPlacementData(rendering) != null) {
+                if (DecoratorPlacementUtil.getDecoratorPlacementData(rendering) != null) {
                     controller.handleDecoratorPlacementRendering(rendering, propagatedStyles, path);
                 } else {
                     restChildren.add(rendering);
@@ -445,7 +445,7 @@ final class KGERenderingControllerHelper {
 
     private static void setPathToLine(final KlighdPath path, final KPolyline line, final Bounds bounds) {
         
-        final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(line, bounds);
+        final Point2D[] points = PlacementUtil.evaluatePolylinePlacement(line, bounds);
         final int type = line.eClass().getClassifierID();
 
         switch (type) {
@@ -500,7 +500,7 @@ final class KGERenderingControllerHelper {
         if (polygon.getChildren().size() > 0) {
             final List<KRendering> restChildren = Lists.newLinkedList();
             for (final KRendering rendering : polygon.getChildren()) {
-                if (PiccoloPlacementUtil.getDecoratorPlacementData(rendering) != null) {
+                if (DecoratorPlacementUtil.getDecoratorPlacementData(rendering) != null) {
                     controller.handleDecoratorPlacementRendering(rendering, propagatedStyles, path);
                 } else {
                     restChildren.add(rendering);
@@ -753,7 +753,7 @@ final class KGERenderingControllerHelper {
             clipShape = bounds.toEllipse2D();
 
         } else if (clipRendering instanceof KPolygon) {
-            final Point2D[] points = PiccoloPlacementUtil.evaluatePolylinePlacement(
+            final Point2D[] points = PlacementUtil.evaluatePolylinePlacement(
                     (KPolygon) clipRendering, imageBounds);
             clipShape = PolylineUtil.createPolygonPath(null, points);
 
