@@ -35,11 +35,11 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingLibrary
 import de.cau.cs.kieler.klighd.krendering.KRenderingRef
 import de.cau.cs.kieler.klighd.krendering.KStyle
 import de.cau.cs.kieler.klighd.microlayout.Bounds
+import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil
+import de.cau.cs.kieler.klighd.microlayout.DecoratorPlacementUtil.Decoration
 import de.cau.cs.kieler.klighd.microlayout.GridPlacementUtil
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPath
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil
-import de.cau.cs.kieler.klighd.piccolo.internal.util.PiccoloPlacementUtil.Decoration
 import java.awt.geom.Point2D
 import java.util.ArrayList
 import java.util.HashMap
@@ -280,7 +280,7 @@ public final class RenderingPreparer {
                 // Decorator placements can only be evaluated if the path they should decorate is known.
                 // to call KLighD's PiccoloPlacementUtil#evaluateDecoratorPlacement the path of the parent rendering
                 // has to be stored in a KlighdPath.
-                var path = new KlighdPath(rendering)
+                var path = new KlighdPath(rendering) // TODO: Can I also only use the points of the rendering?
                 val parentRendering = rendering.eContainer
                 if (parentRendering instanceof KPolygon) {
                     // For a KPolygon as the parent rendering the points it have to be evaluated first.
@@ -323,7 +323,7 @@ public final class RenderingPreparer {
                 }
                 
                 // Now evaluate the decorator placement micro layout with the help of KLighD.
-                decoration = PiccoloPlacementUtil.evaluateDecoratorPlacement(placementData, path)
+                decoration = DecoratorPlacementUtil.evaluateDecoratorPlacement(placementData, path.shapePoints)
                 bounds = decoration.bounds
             }
             default: {
