@@ -20,6 +20,7 @@ import de.cau.cs.kieler.klighd.kgraph.KEdge;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.AbstractKGERenderingController;
 import de.cau.cs.kieler.klighd.piccolo.internal.controller.KEdgeRenderingController;
+import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
 import edu.umd.cs.piccolo.util.PPaintContext;
@@ -219,16 +220,20 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
         // check if the parentNode is currently clipped to and if the ports should be hidden
         // on the main camera
         if (parentNode != null && parentNode.isDiagramClipWithPortsHidden()) {
+            // the check whether we're on a clip-able diagram (see fullPaint) is skipped here,
+            //  as non-clip-able diagrams like the outline view are not expected to support
+            //  element picking (selection, highlighting, hover)
+
             // Check if the edge is connected to the parentNode
             final KNode parentKNode = parentNode.getViewModelElement();
             final KEdge kEdge = getViewModelElement();
             if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
-                // This is a short hierarchy edge connected to the parent node, filter it out
+                // This is a short hierarchy edge connected to the parent node -> skip it
                 return false;
             }
         }
 
-        return super.fullPick(pickPath);            
+        return super.fullPick(pickPath);
     }
     
     /**
@@ -240,15 +245,23 @@ public class KEdgeNode extends KGraphElementNode<KEdge> implements
     @Override
     public void fullPaint(final PPaintContext paintContext) {
         // check if the parentNode is currently clipped to and if the ports should be hidden on the main camera
-        if (parentNode != null && parentNode.isDiagramClipWithPortsHidden()) {
-            // the following flag is false if drawn on the outline view, for example
-            final boolean drawnViaMainCamera = parentNode.getCamerasReference().contains(paintContext.getCamera());
-            if (drawnViaMainCamera) {
+        if (parentNode != null && parentNode.isDiagramClipWithPortsHidden()
+                && paintContext instanceof KlighdPaintContext) {
+            final KlighdPaintContext kpc = (KlighdPaintContext) paintContext;
+
+            // via the following check the drawing of cross level edges connecting 'parentNode' and
+            //  one of its (nested) children, which are added to the 'parentNode's childArea,
+            //  see DiagramControllerHelper.updateEdgeParent(...),
+            //  is skipped for the main diagram, but not skipped for e.g. the outline view;
+            if (kpc.isMainDiagram()) {
                 // Check if the edge is connected to the parentNode
                 final KEdge kEdge = getViewModelElement();
                 final KNode parentKNode = parentNode.getViewModelElement();
                 if (kEdge.getSource() == parentKNode || kEdge.getTarget() == parentKNode) {
-                    // This is a short hierarchy edge connected to the parent, filter it out
+                    // This is a short hierarchy edge connected to the parent -> skip it
+                    // note: checking whether the edge is actually connected via a port is skipped
+                    //  as it seems unnatural to distinct edges wrt. that
+                    //  and we don't want to have dangling non-ported edges 
                     return;
                 }
             }
