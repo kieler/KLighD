@@ -345,7 +345,7 @@ class InteractiveLayout {
     }
 
     /**
-     * Sets the interactive_layout property, deactivates seperate connected components, and resets strategies
+     * Sets the interactive_layout property, deactivates separate connected components, and resets strategies
      * on all children of root, having own children.
      */
     private def static void prepareParentsForFirstLayout(KNode root) {
