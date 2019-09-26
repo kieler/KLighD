@@ -22,9 +22,6 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 @JsonSegment('keith/constraints')
 interface ConstraintsCommandExtension {
 
-    @JsonNotification('sayhello')
-    def void sayHello(String msg);
-
     @JsonNotification('setLayerConstraint')
     def void setLayerConstraint(LayerConstraint lc);
 

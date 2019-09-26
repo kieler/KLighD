@@ -12,9 +12,8 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
-import org.eclipse.lsp4j.services.LanguageClient
-import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
+import org.eclipse.lsp4j.services.LanguageClient
 
 /**
  * @author jet, cos
@@ -22,8 +21,5 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
  */
  @JsonSegment("keith/constraintsLC")
 interface ConstraintsLanguageClient extends LanguageClient {
-    
-    @JsonNotification("sayGoodbye")
-    def void sayGoodbye(String msg)
     
 }

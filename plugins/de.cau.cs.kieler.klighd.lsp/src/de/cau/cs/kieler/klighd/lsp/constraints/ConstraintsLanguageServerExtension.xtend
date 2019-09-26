@@ -17,9 +17,7 @@ import com.google.inject.Injector
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramServer
 import de.cau.cs.kieler.klighd.lsp.KGraphDiagramState
-import de.cau.cs.kieler.klighd.lsp.KGraphDiagramUpdater
 import de.cau.cs.kieler.klighd.lsp.KGraphLanguageServerExtension
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import java.util.List
@@ -30,8 +28,6 @@ import org.eclipse.elk.graph.properties.IProperty
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.ide.server.ILanguageServerAccess
 import org.eclipse.xtext.ide.server.ILanguageServerExtension
-import java.util.Collections
-import java.util.HashSet
 
 /**
  * @author jet, cos
@@ -49,11 +45,6 @@ class ConstraintsLanguageServerExtension implements ILanguageServerExtension, Co
     Injector injector
 
     override initialize(ILanguageServerAccess access) {
-    }
-
-    override sayHello(String msg) {
-        println("Hallo " + msg)
-        client.sayGoodbye("Good bye my old friend")
     }
 
     override setLayerConstraint(LayerConstraint lc) {
