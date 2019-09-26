@@ -46,10 +46,7 @@ class InteractiveLayout {
      * @param layoutE The KGraphLayoutEngine
      */
     public def calcLayout(String id, KGraphLayoutEngine layoutE) {
-
-        // layout
         var ViewContext viewContext = null
-        // val id = context.resource.URI.toString
         synchronized (diagramState) {
             viewContext = diagramState.getKGraphContext(id)
         }
@@ -360,6 +357,11 @@ class InteractiveLayout {
         }
     }
 
+    /**
+     * Sets the coordinates of the nodes in the graph, which root is the given node. 
+     * 
+     * @param root Root of the graph
+     */
     private def static void setCoordinatesDepthFirst(KNode root) {
         var empty = true
         for (n : root.children) {

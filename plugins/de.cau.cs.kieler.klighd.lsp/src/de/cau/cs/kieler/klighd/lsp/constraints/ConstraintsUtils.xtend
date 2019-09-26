@@ -12,17 +12,16 @@
  */
 package de.cau.cs.kieler.klighd.lsp.constraints
 
-import java.net.URLDecoder
-import org.eclipse.emf.common.util.URI
 import com.google.inject.Injector
-import org.eclipse.xtext.resource.XtextResourceSet
 import de.cau.cs.kieler.klighd.kgraph.KNode
-import org.eclipse.elk.alg.layered.options.LayeredOptions
+import java.net.URLDecoder
+import java.util.ArrayList
 import java.util.List
+import org.eclipse.elk.alg.layered.options.LayeredOptions
 import org.eclipse.elk.graph.ElkNode
 import org.eclipse.elk.graph.properties.IProperty
-import java.util.ArrayList
-import java.util.LinkedList
+import org.eclipse.emf.common.util.URI
+import org.eclipse.xtext.resource.XtextResourceSet
 
 /**
  * Provides a set of utility methods that is used in the constraints package.
@@ -119,6 +118,11 @@ class ConstraintsUtils {
 
     }
 
+    /**
+     * Determines the root of the given node.
+     * 
+     * @param node ElkNode, which root should be returned.
+     */
     static def getRootNodeOf(ElkNode node) {
         var ElkNode parent = node
         while (parent.parent !== null) {
@@ -127,6 +131,11 @@ class ConstraintsUtils {
         return parent
     }
 
+    /**
+     * Determines the root of the given node.
+     * 
+     * @param node KNode, which root should be returned.
+     */
     static def getRootNodeOf(KNode node) {
         var KNode parent = node
         while (parent.parent !== null) {
