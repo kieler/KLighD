@@ -256,6 +256,13 @@ public class KlighdActionEventHandler implements PInputEventListener {
         //  flag of 'inputEvent' properly.
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
+                if (viewer.getControl() != null && viewer.getControl().isDisposed()) {
+                    // This may happen if, e.g. the view oder editor is closed immediately after
+                    //  triggering a potentially long-running action;
+                    // in that case the subsequent executions may fail.
+                    return;
+                }
+                
                 // Update the view model first if a new synthesis is required.
                 if (doSynthesis) {
                     vc.update();
