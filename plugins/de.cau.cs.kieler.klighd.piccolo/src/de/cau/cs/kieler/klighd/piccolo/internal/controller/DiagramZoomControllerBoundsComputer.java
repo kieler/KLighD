@@ -83,16 +83,19 @@ public class DiagramZoomControllerBoundsComputer {
      *            <code>true</code>, see also
      *            {@link de.cau.cs.kieler.klighd.util.KlighdProperties#ZOOM_TO_FIT_CONTENT_SPACING},
      *            may be <code>null</code>.
+     * @param doApplyInsets
+     *            set to <code>true</code> enables the application of <code>node</code>'s
+     *            {@link KInsets} to the computed bounds, if valid
      * @return the requested bounding box in form of a {@link PBounds}
      */
     public PBounds toPBoundsIncludingPortsAndLabels(final KNode node,
-            final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpacing) {
+            final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpacing,
+            boolean doApplyInsets) {
 
         final Iterable<KGraphElement> kges = getIncludedKGEs(node, isDisplayedFilter);
         return toPBoundsIncludingPortsAndLabels(
-                node, kges, doComputeSubDiagramSize, defaultZoomToFitContentSpacing);
+                node, kges, doComputeSubDiagramSize, defaultZoomToFitContentSpacing, doApplyInsets);
     }
-
 
     /**
      * Provides an {@link Iterable} of <code>node</code>'s ports and labels to be included into its
@@ -136,11 +139,14 @@ public class DiagramZoomControllerBoundsComputer {
      *            <code>true</code>, see also
      *            {@link de.cau.cs.kieler.klighd.util.KlighdProperties#ZOOM_TO_FIT_CONTENT_SPACING},
      *            may be <code>null</code>.
+     * @param doApplyInsets
+     *            set to <code>true</code> enables the application of <code>node</code>'s
+     *            {@link KInsets} to the computed bounds, if valid
      * @return the requested bounding box in form of a {@link PBounds}
      */
     public PBounds toPBoundsIncludingPortsAndLabels(final KNode node,
             final Iterable<KGraphElement> kges, final boolean doComputeSubDiagramSize,
-            final Spacing defaultZoomToFitContentSpaceing) {
+            final Spacing defaultZoomToFitContentSpacing, boolean doApplyInsets) {
         double minX = Double.MAX_VALUE;
         double minY = Double.MAX_VALUE;
         double maxX = Double.MIN_VALUE;
@@ -215,7 +221,8 @@ public class DiagramZoomControllerBoundsComputer {
             final Spacing specificFitContentSpacing =
                     node.getProperty(KlighdProperties.ZOOM_TO_FIT_CONTENT_SPACING);
             final Spacing viewPortSpacing = specificFitContentSpacing != null
-                    ? specificFitContentSpacing : defaultZoomToFitContentSpaceing;
+                    ? specificFitContentSpacing : defaultZoomToFitContentSpacing;
+
             if (doComputeSubDiagramSize && viewPortSpacing != null) {
                 // increase the nested diagram content's bounding box by the 'viewPortSpacing'
                 //  in order to avoid surrounding edges to be hidden in half of their line width
@@ -224,13 +231,38 @@ public class DiagramZoomControllerBoundsComputer {
                 maxX = maxXchanged ? maxX : nodeBounds.getMaxX() + viewPortSpacing.getRight();
                 maxY = maxYchanged ? maxY : nodeBounds.getMaxY() + viewPortSpacing.getBottom();
             }
+
             nodeBounds.setRect(
                     minX, minY, maxX - minX, maxY - minY);
 
-        } else {
-            if (doComputeSubDiagramSize && nodeBounds.isEmpty()) {
+        } else if (doComputeSubDiagramSize) {
+            if (nodeBounds.isEmpty()) {
                 nodeBounds.setRect(toPBounds(node));
+                final KInsets insets = node.getInsets();
+                nodeBounds.setRect(
+                        nodeBounds.getX() + insets.getLeft() * scale,
+                        nodeBounds.getY() + insets.getTop() * scale,
+                        nodeBounds.getWidth() - insets.getLeft() * scale - insets.getRight() * scale,
+                        nodeBounds.getHeight() - insets.getTop() * scale - insets.getBottom() * scale
+                );
+
+            } else {
+                final Spacing specificFitContentSpacing =
+                        node.getProperty(KlighdProperties.ZOOM_TO_FIT_CONTENT_SPACING);
+                final Spacing viewPortSpacing = specificFitContentSpacing != null
+                        ? specificFitContentSpacing : defaultZoomToFitContentSpacing;
+
+                if (viewPortSpacing != null) {
+                    nodeBounds.setRect(
+                            nodeBounds.getX() - viewPortSpacing.getLeft(),
+                            nodeBounds.getY() - viewPortSpacing.getTop(),
+                            nodeBounds.getWidth() + viewPortSpacing.getLeft() + viewPortSpacing.getRight(),
+                            nodeBounds.getHeight() + viewPortSpacing.getTop() + viewPortSpacing.getBottom()
+                    );
+                }
             }
+
+        } else if (doApplyInsets) {
             final KInsets insets = node.getInsets();
             nodeBounds.setRect(
                     nodeBounds.getX() + insets.getLeft() * scale,
@@ -260,8 +292,8 @@ public class DiagramZoomControllerBoundsComputer {
         final Set<KEdge> visitedEdges = Sets.newHashSet();
 
         for (final KNode childNode : Iterables.filter(node.getChildren(), isDisplayedFilter)) {
-            nodeBounds.add(toPBoundsIncludingPortsAndLabels(childNode, false, null));
-            
+            nodeBounds.add(toPBoundsIncludingPortsAndLabels(childNode, false, null, false));
+
             final Iterable<KEdge> allEdges = Iterables.concat(childNode.getOutgoingEdges(), childNode.getIncomingEdges());
             for (final KEdge edge : Iterables.filter(allEdges,
                     // check only those edge not already checked, whose target is a child of 'node'

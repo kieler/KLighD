@@ -401,6 +401,6 @@ public class DiagramZoomController {
     protected PBounds toPBoundsIncludingPortsAndLabels(final KNode node,
             final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpacing) {
         return boundsComputer.toPBoundsIncludingPortsAndLabels(
-                node, doComputeSubDiagramSize, defaultZoomToFitContentSpacing);
+                node, doComputeSubDiagramSize, defaultZoomToFitContentSpacing, true);
     }
 }

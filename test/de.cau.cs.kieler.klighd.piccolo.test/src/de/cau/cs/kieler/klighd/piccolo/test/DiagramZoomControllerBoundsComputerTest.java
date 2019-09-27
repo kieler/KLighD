@@ -247,7 +247,7 @@ public class DiagramZoomControllerBoundsComputerTest {
 
         // compute the required bounds
         final Rectangle2D result = new DiagramZoomControllerBoundsComputer(visibilityFilter)
-                .toPBoundsIncludingPortsAndLabels(node, narrowDownToContent, null);
+                .toPBoundsIncludingPortsAndLabels(node, narrowDownToContent, null, true);
 
         // round 'result' to two decimals by
         //  * scaling up the result by factor of 100,
