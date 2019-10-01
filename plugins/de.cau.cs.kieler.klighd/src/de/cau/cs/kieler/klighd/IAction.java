@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Point;
 
@@ -218,7 +219,9 @@ public interface IAction {
         private Boolean zoomToFit = null;
         private Boolean zoomToFitContent = null;
         private Boolean zoomToFocus = null;
-        private KNode focus = null;
+        private Boolean zoomToStay = null;
+        private KGraphElement focus = null;
+        private KVector previousPosition = null;
 
         private ActionResult(final boolean theActionPerformed) {
             this.actionPerformed = theActionPerformed;
@@ -311,6 +314,7 @@ public interface IAction {
             this.zoomToFit = null;
             this.zoomToFitContent = null;
             this.zoomToFocus = null;
+            this.zoomToStay = null;
             return this;
         }
 
@@ -334,6 +338,7 @@ public interface IAction {
             this.zoomToFit = true;
             this.zoomToFitContent = null;
             this.zoomToFocus = null;
+            this.zoomToStay = null;
             return this;
         }
 
@@ -347,6 +352,7 @@ public interface IAction {
             this.zoomToFit = null;
             this.zoomToFitContent = true;
             this.zoomToFocus = null;
+            this.zoomToStay = null;
             return this;
         }
 
@@ -368,7 +374,9 @@ public interface IAction {
         public ActionResult doZoomToFocus() {
             this.zoomToActualSize = null;
             this.zoomToFit = null;
+            this.zoomToFitContent = null;
             this.zoomToFocus = true;
+            this.zoomToStay = null;
             return this;
         }
 
@@ -384,6 +392,7 @@ public interface IAction {
             this.zoomToFit = null;
             this.zoomToFitContent = null;
             this.zoomToFocus = true;
+            this.zoomToStay = null;
             this.focus = focusNode;
             return this;
         }
@@ -397,6 +406,32 @@ public interface IAction {
             this.zoomToFocus = false;
             return this;
         }
+        
+        /**
+         * Schedule toomZoStay during the subsequent automatic layout run.
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult doZoomToStay(final KVector previousPosition, final KGraphElement focusElement) {
+            this.zoomToActualSize = null;
+            this.zoomToFit = null;
+            this.zoomToFitContent = null;
+            this.zoomToFocus = null;
+            this.zoomToStay = true;
+            this.previousPosition = previousPosition;
+            this.focus = focusElement;
+            return this;
+        }
+        
+        /**
+         * Suppress zoomToStay during the subsequent automatic layout run.
+         * 
+         * @return <code>this</code> {@link ActionResult}
+         */
+        public ActionResult dontZoomZoStay() {
+            this.zoomToStay = false;
+            return this;
+        }
 
         /**
          * Suppress any zooming during the subsequent automatic layout run.
@@ -408,6 +443,7 @@ public interface IAction {
             this.zoomToFit = false;
             this.zoomToFitContent = false;
             this.zoomToFocus = false;
+            this.zoomToStay = false;
             return this;
         }
 
@@ -491,14 +527,34 @@ public interface IAction {
         public Boolean getZoomToFocus() {
             return this.zoomToFocus;
         }
+        
+        /**
+         * Getter. Returns a {@link Boolean} instead of the primitive <code>boolean</code>
+         * in order distinguish the 'not configured' state. Returns <code>null</code> in this
+         * case.
+         * 
+         * @return the {@link #zoomToStay} state.
+         */
+        public Boolean getZoomToStay() {
+            return this.zoomToStay;
+        }
 
         /**
          * Getter.
          *
-         * @return the {@link KNode} to focus on
+         * @return the {@link KGraphElement} to focus on
          */
-        public KNode getFocusNode() {
+        public KGraphElement getFocusElement() {
             return focus;
+        }
+        
+        /**
+         * Getter.
+         * 
+         * @return the previous position of the element the action was issued on
+         */
+        public KVector getPreviousPosition() {
+            return previousPosition;
         }
     }
 }

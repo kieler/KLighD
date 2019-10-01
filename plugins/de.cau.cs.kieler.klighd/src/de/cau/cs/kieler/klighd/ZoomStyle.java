@@ -62,7 +62,14 @@ public enum ZoomStyle {
      * completely into the canvas area. Requests {@link #ZOOM_TO_FIT} for the (clipped) diagram (not
      * the configured focus node) in such cases.
      */
-    ZOOM_TO_FOCUS_OR_INCREASE_TO_FIT;
+    ZOOM_TO_FOCUS_OR_INCREASE_TO_FIT,
+    
+    /**
+     * Animate the whole diagram with translation and zoom such that the position and zoom level of the previously
+     * focused element stays constant. This way, everything around the currently focused element may animate and move
+     * around, while the focused element does not move for a better mental map of which element has just been clicked.
+     */
+    ZOOM_TO_STAY;
 
     /**
      * The 'zoom to focus' style configured by the employing application,
@@ -88,7 +95,7 @@ public enum ZoomStyle {
      * Dispatching method determining a {@link ZoomStyle} value based on the given flags.
      * 'zoomToFit' has higher priority than 'zoomToFocus'.
      *
-     * @deprecated use {@link #create(boolean, boolean, boolean, boolean)}
+     * @deprecated use {@link #create(boolean, boolean, boolean, boolean, boolean)}
      *
      * @param zoomToActualSize
      *            request of zoom to actual size
@@ -101,7 +108,7 @@ public enum ZoomStyle {
      */
     public static ZoomStyle create(final boolean zoomToActualSize, final boolean zoomToFit,
             final boolean zoomToFocus) {
-        return create(zoomToActualSize, zoomToFit, false, zoomToFocus);
+        return create(zoomToActualSize, zoomToFit, false, zoomToFocus, false);
     }
 
     /**
@@ -114,11 +121,13 @@ public enum ZoomStyle {
      *            request of zoom to fit
      * @param zoomToFocus
      *            request of zoom to focus
+     * @param zoomToStay
+     *            request to zoom to let the focused element stay
      *
      * @return a {@link ZoomStyle} depending on the parameters.
      */
     public static ZoomStyle create(final boolean zoomToActualSize, final boolean zoomToFit,
-            final boolean zoomToFitContent, final boolean zoomToFocus) {
+            final boolean zoomToFitContent, final boolean zoomToFocus, final boolean zoomToStay) {
 
         if (zoomToActualSize) {
             return ZOOM_TO_ACTUAL_SIZE;
@@ -131,6 +140,9 @@ public enum ZoomStyle {
 
         } else if (zoomToFocus) {
             return KlighdPreferences.getZoomToFocusStyle();
+
+        } else if (zoomToStay) {
+            return ZOOM_TO_STAY;
 
         } else {
             return NONE;
@@ -163,7 +175,10 @@ public enum ZoomStyle {
         final boolean zoomToFocus = actionResult.getZoomToFocus() != null
                 ? actionResult.getZoomToFocus() : viewContext.isZoomToFocus();
 
-        return create(zoomToActualSize, zoomToFit, zoomToFitContent, zoomToFocus);
+        final boolean zoomToStay = actionResult.getZoomToStay() != null
+                ? actionResult.getZoomToStay() : viewContext.isZoomToStay();
+
+        return create(zoomToActualSize, zoomToFit, zoomToFitContent, zoomToFocus, zoomToStay);
     }
 
     /**

@@ -162,8 +162,10 @@ public final class LightDiagramServices {
         if (viewModel != null) {
             theViewContext.setProperty(KlighdInternalProperties.NEXT_ZOOM_STYLE,
                     config.zoomStyle());
-            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_NODE,
-                    config.focusNode());
+            theViewContext.setProperty(KlighdInternalProperties.NEXT_FOCUS_ELEMENT,
+                    config.focusElement());
+            theViewContext.setProperty(KlighdInternalProperties.PREVIOUS_POSITION,
+                    config.previousPosition());
     
             // Activate the ELK Service plug-in so all layout options are loaded
             ElkServicePlugin.getInstance();
@@ -234,7 +236,7 @@ public final class LightDiagramServices {
             }
         } else {
             if (recorder != null) {
-                recorder.stopRecording(config.zoomStyle(), null, 0);
+                recorder.stopRecording(config.zoomStyle(), null, null, 0);
             }
         }
         

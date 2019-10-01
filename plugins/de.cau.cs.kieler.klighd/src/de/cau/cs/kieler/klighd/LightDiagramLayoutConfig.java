@@ -15,10 +15,11 @@ package de.cau.cs.kieler.klighd;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 
-import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 
 /**
@@ -75,9 +76,15 @@ public class LightDiagramLayoutConfig {
     private ZoomStyle zoomStyle;
 
     /**
-     * The {@link KNode} to focus on, if {@link ZoomStyle#ZOOM_TO_FOCUS} is active.
+     * The {@link KGraphElement} to focus on, if {@link ZoomStyle#ZOOM_TO_FOCUS} or
+     * {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is active.
      */
-    private KNode focusNode;
+    private KGraphElement focusElement;
+    
+    /**
+     * The previous position of an element before the layout, if {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is active.
+     */
+    private KVector previousPosition;
 
     /**
      * List of {@link LayoutConfigurator LayoutConfigurators} to override default layout
@@ -193,14 +200,27 @@ public class LightDiagramLayoutConfig {
     }
 
     /**
-     * Sets the node to focus on.
+     * Sets the element to focus on.
      * 
-     * @param theFocusNode
-     *            the {@link KNode} to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} is set.
+     * @param theFocusElement
+     *            the {@link KGraphElement} to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or
+     *            {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is set.
      * @return the configuration
      */
-    public LightDiagramLayoutConfig focusNode(final KNode theFocusNode) {
-        this.focusNode = theFocusNode;
+    public LightDiagramLayoutConfig focusElement(final KGraphElement theFocusElement) {
+        this.focusElement = theFocusElement;
+        return this;
+    }
+    
+    /**
+     * Sets the previous position of an element before the layout run.
+     * 
+     * @param thePreviousPosition
+     *            the previous position of an element if {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is set.
+     * @return the configuration
+     */
+    public LightDiagramLayoutConfig previousPosition(final KVector thePreviousPosition) {
+        this.previousPosition = thePreviousPosition;
         return this;
     }
 
@@ -295,12 +315,21 @@ public class LightDiagramLayoutConfig {
     }
 
     /**
-     * The node to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} is configured.
+     * The element to focus on if {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is
+     * configured.
      * 
-     * @return the focusNode
+     * @return the focusElement
      */
-    KNode focusNode() {
-        return this.focusNode;
+    KGraphElement focusElement() {
+        return this.focusElement;
+    }
+    
+    /**
+     * The previous position of an element if {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is configured.
+     * @return
+     */
+    KVector previousPosition() {
+        return this.previousPosition;
     }
 
     /**

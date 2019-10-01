@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.emf.common.util.AbstractTreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
@@ -178,10 +179,10 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /**
      * {@inheritDoc}
      */
-    public void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode,
-            final int animationTime) {
+    public void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement,
+            final KVector previousPosition, final int animationTime) {
         if (layoutRecorder != null) {
-            layoutRecorder.stopRecording(zoomStyle, focusNode, animationTime);
+            layoutRecorder.stopRecording(zoomStyle, focusElement, previousPosition, animationTime);
         }
     }
 

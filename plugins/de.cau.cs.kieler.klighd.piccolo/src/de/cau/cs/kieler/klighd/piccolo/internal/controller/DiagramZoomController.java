@@ -13,13 +13,18 @@
  */
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
+import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.math.Spacing;
 import org.eclipse.elk.core.options.CoreOptions;
+import org.eclipse.emf.ecore.EObject;
 
 import de.cau.cs.kieler.klighd.KlighdPreferences;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.kgraph.EMapPropertyHolder;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KInsets;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
+import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KNodeTopNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.util.PAffineTransform;
@@ -84,13 +89,17 @@ public class DiagramZoomController {
      *
      * @param zoomStyle
      *            the desired style
-     * @param desiredFocusNode
-     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
-     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     * @param desiredFocusElement
+     *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY}, is ignored otherwise
+     * @param previousPosition
+     *            the position the focused element had in the previous layout run.
+     *            Is ignored if the <code>zoomStyle</code> is {@link ZoomStyle#ZOOM_TO_STAY}.
      * @param duration
      *            time to animate
      */
-    public void zoom(final ZoomStyle zoomStyle, final KNode desiredFocusNode, final int duration) {
+    public void zoom(final ZoomStyle zoomStyle, final KGraphElement desiredFocusElement,
+            final KVector previousPosition, final int duration) {
         final KNode focus;
 
         switch (zoomStyle) {
@@ -107,15 +116,19 @@ public class DiagramZoomController {
             break;
 
         case ZOOM_TO_FOCUS:
-            focus = desiredFocusNode != null ? desiredFocusNode : focusNode != null
+            focus = desiredFocusElement instanceof KNode ? (KNode) desiredFocusElement : focusNode != null
                     ? focusNode : diagramController.getClip();
             zoomToFocus(focus, duration, false);
             break;
 
         case ZOOM_TO_FOCUS_OR_INCREASE_TO_FIT:
-            focus = desiredFocusNode != null ? desiredFocusNode : focusNode != null
+            focus = desiredFocusElement instanceof KNode ? (KNode) desiredFocusElement : focusNode != null
                     ? focusNode : diagramController.getClip();
             zoomToFocus(focus, duration, true);
+            break;
+
+        case ZOOM_TO_STAY:
+            zoomToStay(desiredFocusElement, previousPosition, duration);
             break;
 
         default:
@@ -281,6 +294,61 @@ public class DiagramZoomController {
 
         // perform the animation
         canvasCamera.animateViewToCenterBounds(newBounds, true, duration);
+    }
+    
+    /**
+     * Moves the camera as an animation with the focused element, such that that element stays at the same
+     * zoom level and camera position as it has been before with all other elements animating to their new positions
+     * smoothly around the focused node.
+     * 
+     * @param focusElement The element that should not move in the animation.
+     * @param previousPosition The position the focused element had in the previous layout run.
+     * @param duration The time to animate.
+     */
+    public void zoomToStay(final EObject focusElement, final KVector previousPosition, final int duration) {
+        final KShapeLayout focus;
+        if (focusElement instanceof KShapeLayout) {
+            focus = (KShapeLayout) focusElement;
+        } else {
+            // TODO: what about if a KText was focused?
+            return;
+        }
+        final KNode displayedKNode = this.canvasCamera.getDisplayedKNodeNode().getViewModelElement();
+
+        // Fetch bounds of the focused element.
+        final PBounds focusBounds = boundsComputer.toPBounds(focus);
+
+        // We need the bounds in view coordinates (absolute), hence for
+        // an element add the translations of all parent elements.
+
+        if (focus != displayedKNode) {
+            EObject parent = focus.eContainer();
+            while (parent != null && parent != displayedKNode.getParent()) {
+                while (!(parent instanceof KShapeLayout) && !(parent instanceof EMapPropertyHolder) && parent != null) {
+                    parent = parent.eContainer();
+                }
+                // We know that the parent is a KShapeLayout and an EMapPropertyHolder now, if its not null.
+                if (parent == null) {
+                    continue;
+                }
+                
+                final double scale = ((EMapPropertyHolder) parent).getProperty(CoreOptions.SCALE_FACTOR).doubleValue();
+                
+                focusBounds.setSize(scale * focusBounds.width, scale * focusBounds.height);
+                focusBounds.setOrigin(scale * focusBounds.x, scale * focusBounds.y);
+
+                final KInsets insets = ((KShapeLayout) parent).getInsets();
+                focusBounds.moveBy(insets.getLeft(), insets.getTop());
+
+                focusBounds.moveBy(((KShapeLayout) parent).getXpos(), ((KShapeLayout) parent).getYpos());
+                parent = parent.eContainer();
+            }
+        }
+        
+        final PAffineTransform transform = canvasCamera.getViewTransform();
+        transform.translate(previousPosition.x - focusBounds.x, previousPosition.y - focusBounds.y);
+
+        canvasCamera.animateViewToTransform(transform, duration);
     }
 
     /**

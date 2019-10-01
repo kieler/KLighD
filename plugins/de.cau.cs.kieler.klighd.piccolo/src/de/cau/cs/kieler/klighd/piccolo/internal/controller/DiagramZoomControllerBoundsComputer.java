@@ -54,17 +54,17 @@ public class DiagramZoomControllerBoundsComputer {
     }
 
     /**
-     * Converts <code>node</code>'s layout data into {@link PBounds}, respects an attached
+     * Converts the <code>element</code>'s layout data into {@link PBounds}, respects an attached
      * {@link LayoutOptions#SCALE_FACTOR}.
      *
-     * @param node
-     *            the node
+     * @param element
+     *            the element
      * @return the requested bounding box in form of a {@link PBounds}
      */
-    public PBounds toPBounds(final KNode node) {
-        final double scale = node.getProperty(CoreOptions.SCALE_FACTOR);
-        return new PBounds(node.getXpos(), node.getYpos(),
-                node.getWidth() * scale, node.getHeight() * scale);
+    public PBounds toPBounds(final KShapeLayout element) {
+        final double scale = element.getProperty(CoreOptions.SCALE_FACTOR);
+        return new PBounds(element.getXpos(), element.getYpos(),
+                element.getWidth() * scale, element.getHeight() * scale);
     }
 
     /**
@@ -86,11 +86,11 @@ public class DiagramZoomControllerBoundsComputer {
      * @return the requested bounding box in form of a {@link PBounds}
      */
     public PBounds toPBoundsIncludingPortsAndLabels(final KNode node,
-            final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpaceing) {
+            final boolean doComputeSubDiagramSize, final Spacing defaultZoomToFitContentSpacing) {
 
         final Iterable<KGraphElement> kges = getIncludedKGEs(node, isDisplayedFilter);
         return toPBoundsIncludingPortsAndLabels(
-                node, kges, doComputeSubDiagramSize, defaultZoomToFitContentSpaceing);
+                node, kges, doComputeSubDiagramSize, defaultZoomToFitContentSpacing);
     }
 
 

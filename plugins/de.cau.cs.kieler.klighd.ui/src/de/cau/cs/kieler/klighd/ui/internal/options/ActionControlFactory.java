@@ -185,11 +185,12 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                     new LightDiagramLayoutConfig(viewContext)
                             .animate(result.getAnimateLayout())
                             .zoomStyle(ZoomStyle.create(result, viewContext))
-                            .focusNode(result.getFocusNode())
+                            .focusElement(result.getFocusElement())
+                            .previousPosition(result.getPreviousPosition())
                             .options(result.getLayoutConfigs())
                             .performLayout();
                 } else {
-                    viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, 0);
+                    viewContext.getLayoutRecorder().stopRecording(ZoomStyle.NONE, null, null, 0);
                 }
             }
         });

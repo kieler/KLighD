@@ -13,7 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.internal;
 
+import org.eclipse.elk.core.math.KVector;
+
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
@@ -52,11 +55,15 @@ public interface ILayoutRecorder {
      * 
      * @param zoomStyle
      *            the style used to zoom, e.g. zoom to fit or zoom to focus
-     * @param focusNode
-     *            the {@link KNode} to focus in case <code>zoomStyle</code> is
-     *            {@link ZoomStyle#ZOOM_TO_FOCUS}, is ignored otherwise
+     * @param focusElement
+     *            the {@link KGraphElement} to focus in case <code>zoomStyle</code> is
+     *            {@link ZoomStyle#ZOOM_TO_FOCUS} or {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}, is ignored otherwise
+     * @param previousPosition
+     *            the position the selected element had in the previous layout run.
+     *            Is ignored if the <code>zoomStyle</code> is ont {@link ZoomStyle#ZOOM_TO_STAY_SELECTED}.
      * @param animationTime
      *            duration of the animated layout
      */
-    void stopRecording(final ZoomStyle zoomStyle, final KNode focusNode, final int animationTime);
+    void stopRecording(final ZoomStyle zoomStyle, final KGraphElement focusElement, final KVector previousPosition,
+            final int animationTime);
 }
