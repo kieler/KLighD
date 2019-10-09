@@ -3,7 +3,7 @@
  *
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2016 by
+ * Copyright 2016-2019 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -45,14 +45,14 @@ import de.cau.cs.kieler.klighd.util.KlighdPredicates;
  * <dd>Concatenated labels.<br/>
  * If no labels are present, the index in the parent's list of children.</dd>
  * <dt>KEdge</dt>
- * <dd>The index in the source's list of outgoing edges.</dd>
+ * <dd>The source port's and target node's and port's ids, if applicable.</dd>
  * <dt>KLabel</dt>
  * <dd>The index in the parent's list of labels.</d>
  * <dt>KPort</dt>
  * <dd>The index in the parent's list of ports.</d>
  * </dl>
  * 
- * @author csp
+ * @author csp, nre
  */
 public class UIDAdapter extends EContentAdapter {
 
@@ -387,9 +387,35 @@ public class UIDAdapter extends EContentAdapter {
         if (identifier != null) {
             localId = identifier.getId();
         } else {
-            localId = "E" + parent.getOutgoingEdges().indexOf(edge);
+            localId = "E";
+            KPort sourcePort = edge.getSourcePort();
+            if (sourcePort != null) {
+                localId += addId(sourcePort);
+            }
+            localId += "->";
+            
+            KNode targetNode = edge.getTarget();
+            if (targetNode != null) {
+                localId += addId(targetNode);
+            }
+            localId += ":";
+            
+            KPort targetPort = edge.getTargetPort();
+            if (targetPort != null) {
+                localId += addId(targetPort);
+            }
         }
         id = parentId + ID_SEPARATOR + localId;
+        // If the id was not constructed via the identifier, any id clash can be resolved by adding a number in the end.
+        if (identifier == null && edges.containsKey(id)) {
+            int cnt = 2;
+            String copyId;
+            do {
+                copyId = id + ID_SEPARATOR + ID_SEPARATOR + "copy" + cnt;
+                cnt++;
+            } while (edges.containsKey(copyId));
+            id = copyId;
+        }
         if (edges.put(id, edge) != null) {
             invalid = true;
             return null;
