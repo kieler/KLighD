@@ -12,6 +12,7 @@
  */
 package de.cau.cs.kieler.klighd.lsp.model
 
+import de.cau.cs.kieler.klighd.krendering.KImage
 import java.util.List
 import java.util.function.Consumer
 import org.eclipse.sprotty.Action
@@ -66,6 +67,63 @@ public class SetSynthesesAction implements Action {
     
      new(List<SetSynthesesActionData> syntheses) {
         this.syntheses = syntheses
+    }
+}
+
+/**
+ * Sent from the server to the client to check if the {@link KImage}s provided in the message are cached or if they need
+ * to be sent to the client again.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class CheckImagesAction implements Action {
+    public static val KIND = 'checkImages'
+    String kind = KIND
+    
+    List<KImage> images
+    
+    new(List<KImage> images) {
+        this.images = images
+    }
+}
+
+/**
+ * Sent from the server to the client to store images in base64 format needed for rendering on the client.
+ * 
+ * @author nre
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class StoreImagesAction implements Action {
+    public static val KIND = 'storeImages'
+    String kind = KIND
+    
+    List<Pair<String, String>> images
+    
+    new(List<Pair<String, String>> images) {
+        this.images = images
+    }
+}
+
+/**
+ * Sent from the client to the server to inform it whether images need to be sent to the client before accepting the next diagram.
+ */
+@Accessors
+@EqualsHashCode
+@ToString(skipNulls = true)
+public class CheckedImagesAction implements Action {
+    public static val KIND = 'checkedImages'
+    String kind = KIND
+    
+    List<String> notCached
+
+    new() {}
+    new(Consumer<CheckedImagesAction> initializer) {
+        initializer.accept(this)
     }
 }
 

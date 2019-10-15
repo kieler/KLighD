@@ -92,7 +92,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             
             return diagramServer -> createModel(viewContext, id, context.cancelChecker)
         ].thenAccept [
-            key.requestTextSizesAndUpdateModel(value)
+            key.prepareUpdateModel(value)
         ].exceptionally [ throwable |
             println("ERROR: " + throwable)
             return null
@@ -222,6 +222,7 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             diagramState.putKGraphToSModelElementMap(id, diagramGenerator.getKGraphToSModelElementMap)
             diagramState.putTexts(id, diagramGenerator.getModelLabels)
             diagramState.putTextMapping(id, diagramGenerator.getTextMapping)
+            diagramState.putImages(id, diagramGenerator.images)
         }
         return sGraph
     }

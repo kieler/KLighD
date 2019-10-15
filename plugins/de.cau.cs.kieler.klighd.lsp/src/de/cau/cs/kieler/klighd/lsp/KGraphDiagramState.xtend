@@ -18,12 +18,13 @@ import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
 import de.cau.cs.kieler.klighd.internal.ISynthesis
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement
+import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KText
 import de.cau.cs.kieler.klighd.lsp.model.SKLabel
 import java.net.URLDecoder
-import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
+import java.util.List
 import java.util.Map
 import java.util.Set
 import org.eclipse.elk.core.LayoutConfigurator
@@ -50,10 +51,16 @@ public class KGraphDiagramState {
     private Map<String, Map<KGraphElement, SModelElement>> kGraphToSModelElementMap = new HashMap
     
     /**
+     * A list containing all {@link KImage}s from the source KGraph.
+     * Mapped by the url this map belongs to.
+     */
+    private Map<String, List<KImage>> images = new HashMap
+    
+    /**
      * A list containing all texts from the source KGraph in Sprotty labels.
      * Mapped by the url this map belongs to.
      */
-    private Map<String, ArrayList<SKLabel>> texts = new HashMap
+    private Map<String, List<SKLabel>> texts = new HashMap
     
     /**
      * A map containing all KTexts from the source KGraph under the key of their id.
@@ -137,11 +144,30 @@ public class KGraphDiagramState {
     }
     
     /**
+     * Getter to access the value stored in the images map.
+     * 
+     * @param key The key to access the value in the map.
+     */
+    public def List<KImage> getImages(String key) {
+        images.get(key)
+    }
+    
+    /**
+     * Put method to put a new value in the images map under the given key.
+     * 
+     * @param key The key to access the map.
+     * @param value The value to be stored in the map.
+     */
+    public def putImages(String key, List<KImage> value) {
+        images.put(key, value)
+    }
+    
+    /**
      * Getter to access the value stored in the texts map.
      * 
      * @param key The key to access the value in the map.
      */
-    public def ArrayList<SKLabel> getTexts(String key) {
+    public def List<SKLabel> getTexts(String key) {
         texts.get(key)
     }
     
@@ -151,7 +177,7 @@ public class KGraphDiagramState {
      * @param key The key to access the map.
      * @param value The value to be stored in the map.
      */
-    public def putTexts(String key, ArrayList<SKLabel> value) {
+    public def putTexts(String key, List<SKLabel> value) {
         texts.put(key, value)
     }
     

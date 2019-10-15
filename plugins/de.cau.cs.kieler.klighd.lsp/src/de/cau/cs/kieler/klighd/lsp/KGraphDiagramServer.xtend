@@ -18,17 +18,23 @@ import de.cau.cs.kieler.klighd.IAction.ActionContext
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.krendering.KText
+import de.cau.cs.kieler.klighd.lsp.model.CheckImagesAction
+import de.cau.cs.kieler.klighd.lsp.model.CheckedImagesAction
 import de.cau.cs.kieler.klighd.lsp.model.ComputedTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionAction
 import de.cau.cs.kieler.klighd.lsp.model.RequestTextBoundsAction
 import de.cau.cs.kieler.klighd.lsp.model.SKGraph
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisAction
+import de.cau.cs.kieler.klighd.lsp.model.StoreImagesAction
 import de.cau.cs.kieler.klighd.lsp.utils.KGraphElementIDGenerator
 import de.cau.cs.kieler.klighd.lsp.utils.KRenderingIDGenerator
 import de.cau.cs.kieler.klighd.microlayout.Bounds
 import de.cau.cs.kieler.klighd.util.KlighdProperties
+import java.util.ArrayList
+import java.util.Base64
 import java.util.Map
 import org.apache.log4j.Logger
+import org.eclipse.core.runtime.Platform
 import org.eclipse.sprotty.Action
 import org.eclipse.sprotty.ActionMessage
 import org.eclipse.sprotty.SModelRoot
@@ -56,42 +62,64 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
     /**
      * The current root element of the {@link SKGraph}. Stored here during communication with the client.
      */
-    protected var SModelRoot currentRoot
+    protected SModelRoot currentRoot
+    
+    /**
+     * Flag indicating if the texts of the current root are updated.
+     */
+    protected boolean textsUpdated = false
+    
+    /**
+     * Flag indicating if the images of the current root are updated on the client.
+     */
+    protected boolean imagesUpdated = false
     
     protected Object modelLock = new Object
     
     /**
-     * Requests the calculation of text sizes by the client via the {@link RequestTextBoundsAction}. After receiving
+     * Prepares the client side update of the model by processing the potentially needed text sizes and images on the 
+     * client. Requests the calculation of text sizes by the client via the {@link RequestTextBoundsAction} and checks
+     * for client-side cached images with the {@link CheckImagesAction}. If the corresponding response to the 
+     * {@link CheckImagesAction} requires images to be sent, a {@link SendImagesAction} is sent first. After receiving
      * the result back, updates the model with default Sprotty behavior via the {@link #updateModel} function.
      * 
      * @param newRoot the diagram to request the text sizes for.
      */
-    protected def requestTextSizesAndUpdateModel(SModelRoot newRoot) {
+    protected def prepareUpdateModel(SModelRoot newRoot) {
         synchronized (modelLock) {
             currentRoot = newRoot
             if (newRoot !== null) {
+                textsUpdated = false
+                imagesUpdated =  false
+                
+                // text handling
                 val texts = diagramState.getTexts(newRoot.id)
                 if (texts === null) {
                     throw new NullPointerException("The id of the SGraph was not found in the diagramState")
                 } else if (texts.empty) {
-                    if (newModel) {
-                        setModel(currentRoot)                
-                    } else {
-                        updateModel(currentRoot)
-                    }
-                    newModel = false
-                    return
-                }
-                val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
-                dispatch(new RequestTextBoundsAction(textDiagram))
-                // the updateModel is then executed after the client returns with its ComputedTextBoundsAction
-            } else {
-                if (newModel) {
-                    setModel(currentRoot)                
+                    textsUpdated = true
                 } else {
-                    updateModel(currentRoot)
+                    val textDiagram = KGraphDiagramGenerator.generateTextDiagram(texts, newRoot.id)
+                    dispatch(new RequestTextBoundsAction(textDiagram))
+                    // the setOrUpdateModel is then executed after the client returns with its ComputedTextBoundsAction
                 }
-                newModel = false
+                
+                // image handling
+                val images = diagramState.getImages(newRoot.id)
+                if (images === null) {
+                    throw new NullPointerException("The id of the SGraph was not found in the diagramState")
+                } else if (images.empty) {
+                    imagesUpdated = true
+                } else {
+                    dispatch(new CheckImagesAction(images))
+                    // the setOrUpdateModel is then executed after the client confirms it has all images cached.
+                }
+            } else {
+                setOrUpdateModel
+            }
+            // If the texts and the images are already updated, the model is ready to be sent to the client.
+            if (textsUpdated && imagesUpdated) {
+                setOrUpdateModel
             }
         }
     }
@@ -107,7 +135,9 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 handle(action as PerformActionAction)
             } else if (action.getKind() === SetSynthesisAction.KIND) {
                 handle(action as SetSynthesisAction)
-            } else {
+            } else if (action.getKind === CheckedImagesAction.KIND) {
+                handle(action as CheckedImagesAction)
+            } else{
                 super.accept(message)
             }
         }
@@ -140,12 +170,10 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
                 }
                 kText.properties.put(KlighdProperties.CALCULATED_TEXT_BOUNDS, newBounds_klighd)
             }
-            if (newModel) {
-                setModel(currentRoot)                
-            } else {
-                updateModel(currentRoot)
+            textsUpdated = true
+            if (imagesUpdated) {
+                setOrUpdateModel
             }
-            newModel = false
         }
     }
     
@@ -192,6 +220,44 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
     }
     
     /**
+     * Called when a {@link CheckedImagesAction} is received.
+     * Tells the server that the images on the client have been checked if they are cached and requests any non-cached
+     * images to be sent.
+     * The requested images are then sent to the client.
+     */
+    protected def handle(CheckedImagesAction action) {
+        synchronized (modelLock) {
+            if (action.notCached.empty) {
+                imagesUpdated = true
+            } else {
+                val images = new ArrayList<Pair<String, String>>
+                for (notCached : action.notCached) {
+                    try {
+                        val bundleAndPath = notCached.split(":", 2)
+                        val bundle = bundleAndPath.get(0)
+                        val path = bundleAndPath.get(1)
+                        val imageStream = Platform.getBundle(bundle)
+                            .getResource(path)
+                            .openStream
+                        val imageBytes = imageStream.readAllBytes
+                        imageStream.close
+                        val imageString = Base64.encoder.encodeToString(imageBytes)
+                        images.add(notCached -> imageString)
+                    } catch (Exception e) {
+                        // TODO: make the user notice this image has failed to load.
+                        // Either send a message that the image has not loaded with a reason or place a dummy image instead.
+                    }
+                }
+                dispatch(new StoreImagesAction(images))
+                imagesUpdated = true
+            }
+            if (textsUpdated) {
+                setOrUpdateModel
+            }
+        }
+    }
+    
+    /**
      * Initializes the stored options in this diagram server. Usable if a diagram server is created by something other
      * than a {@link SetModelAction}.
      * 
@@ -201,5 +267,15 @@ public class KGraphDiagramServer extends LanguageAwareDiagramServer {
         if (getOptions.isEmpty) {
             setOptions(options)
         }
+    }
+    
+    /** Sets or updates the {@code currentRoot} as the model. */
+    protected def void setOrUpdateModel() {
+        if (newModel) {
+            setModel(currentRoot)                
+        } else {
+            updateModel(currentRoot)
+        }
+        newModel = false
     }
 }

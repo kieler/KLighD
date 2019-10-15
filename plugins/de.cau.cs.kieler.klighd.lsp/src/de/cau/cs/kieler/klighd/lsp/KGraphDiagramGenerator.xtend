@@ -27,6 +27,7 @@ import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.KBackground
 import de.cau.cs.kieler.klighd.krendering.KContainerRendering
 import de.cau.cs.kieler.klighd.krendering.KForeground
+import de.cau.cs.kieler.klighd.krendering.KImage
 import de.cau.cs.kieler.klighd.krendering.KRectangle
 import de.cau.cs.kieler.klighd.krendering.KRendering
 import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
@@ -95,7 +96,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      * @see KGraphDiagramState
      */
     @Accessors(PUBLIC_GETTER)
-    private var ArrayList<SKLabel> modelLabels
+    private var List<SKLabel> modelLabels
     
     /**
      * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
@@ -104,6 +105,12 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     private var Map<String, KText> textMapping
+    
+    /**
+     * The {@link KImage}s contained in the view model.
+     */
+    @Accessors(PUBLIC_GETTER)
+    private var List<KImage> images
 
     /**
      * The root node of the translated {@link SGraph}.
@@ -163,6 +170,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         kGraphToSModelElementMap = new HashMap
         textMapping = new HashMap
         modelLabels = new ArrayList
+        images = new ArrayList
         idGen = new KGraphElementIDGenerator
         edgesToGenerate = new ArrayList
         
@@ -184,7 +192,6 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                    null 
                else 
                    diagramRoot
-        // TODO: incorporate the cancelIndicator on more places?
 	}
 
     /**
@@ -301,7 +308,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
             || KRenderingLibrary.isAssignableFrom(it.class)
         ].toList
         
-        modelLabels.addAll(findTextsAndLabels(filteredData))
+        findSpecialRenderings(filteredData)
         
         nodeElement.data = node.data.filter [ KRenderingLibrary.isAssignableFrom(it.class) ].toList
         
@@ -338,7 +345,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         
         val renderings = edge.data.filter [ KRendering.isAssignableFrom(it.class)].toList
         
-        modelLabels.addAll(findTextsAndLabels(renderings))
+        findSpecialRenderings(renderings)
         
         edgeElement.children.addAll(createLabels(edge.labels))
         edgeElement.junctionPoints = edge.getProperty(CoreOptions.JUNCTION_POINTS)
@@ -360,7 +367,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         
         val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
         
-        modelLabels.addAll(findTextsAndLabels(renderings))
+        findSpecialRenderings(renderings)
         
         portElement.children.addAll(createLabels(port.labels))
         
@@ -387,7 +394,7 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
         
         if (main) {
             // remember KLabel element for later size estimation
-            modelLabels.addAll(findTextsAndLabels(renderings))
+            findSpecialRenderings(renderings)
         
             // activate the element by default if it does not have an active/inactive status yet.
             val renderingContextData = RenderingContextData.get(label)
@@ -510,24 +517,27 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
     }
     
     /**
-     * Finds all KText and KLabel elements within the renderings in dataList and returns them as new labels.
-     * Also remembers the mapping to the KText elements from the source model in the textMapping field.
+     * Looks through the data of elements and searches for special renderings that are needed to be pre-processed before
+     * rendering:
+     * Finds all KText and KLabel elements within the renderings in dataList and puts them as new labels in the
+     * {@code modelLabels} field.
+     * Remembers the mapping to the KText elements from the source model in the textMapping field.
+     * Stores all {@link KImage}s in the {@code images} field.
      */
-    private def List<SKLabel> findTextsAndLabels(List<KGraphData> dataList) {
-        val dataTexts = new ArrayList
-        for (data : dataList) {
-            dataTexts.addAll(findTextsAndLabels(data))
+    private def void findSpecialRenderings(List<KGraphData> datas) {
+        for (data : datas) {
+            findSpecialRenderings(data)
         }
-        return dataTexts
     }
     
     /**
-     * Finds all {@link KText} and {@link KLabel} elements within the renderings in {@code dataList} and returns them as
-     * new labels. Also remembers the mapping to the KText elements from the source model in the {@code textMapping} 
+     * Finds all {@link KText}, {@link KLabel} and {@link KImage} elements within the renderings in {@code dataList} and 
+     * stores them. Also remembers the mapping to the KText elements from the source model in the {@code textMapping} 
      * field.
      */
-    private def List<SKLabel> findTextsAndLabels(KGraphData data) {
-        val dataLabels = new ArrayList
+    private def void findSpecialRenderings(KGraphData data) {
+        var SKLabel dataLabel = null
+        var KImage dataImage = null
         if (data instanceof KText) {
             // create a new Label with data as its text
             val label = KGraphFactory.eINSTANCE.createKLabel()
@@ -555,16 +565,26 @@ public class KGraphDiagramGenerator implements IDiagramGenerator {
                 + label.hashCode
             textMapping.put(sKLabel.id, data)
             
-            dataLabels += sKLabel
+            dataLabel = sKLabel
         } else if (data instanceof KContainerRendering) {
+            // KImages are container renderings themselves, so also look for their child renderings.
+            if (data instanceof KImage) {
+                dataImage = data
+            }
+            
             for (childData: data.children) {
-                dataLabels.addAll(findTextsAndLabels(childData))
+                findSpecialRenderings(childData)
             }
         } else if (data instanceof KRenderingLibrary) {
-            // TODO: add all texts in the KRenderingLibrary and don't add any from KRenderingRefs
-            // I don't have an example of used texts in KRenderingLibraries yet (construct one)
+            // TODO: add all texts and images in the KRenderingLibrary and don't add any from KRenderingRefs
+            // I don't have an example of used texts/images in KRenderingLibraries yet (construct one)
         }
-        return dataLabels
+        if (dataLabel !== null) {
+            modelLabels.add(dataLabel)
+        }
+        if (dataImage !== null) {
+            images.add(dataImage)
+        }
     }
     
     /**
