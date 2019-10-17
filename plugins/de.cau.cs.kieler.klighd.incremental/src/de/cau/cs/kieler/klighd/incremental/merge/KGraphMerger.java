@@ -130,7 +130,9 @@ public class KGraphMerger {
             addNode(node.getParent());
         } else {
             if (comparison.lookupBaseNode(node) == null) {
-                baseParent.getChildren().add(EcoreUtil.copy(node));
+                KNode copiedNode = EcoreUtil.copy(node);
+                baseParent.getChildren().add(copiedNode);
+                comparison.getBaseAdapter().generateIDs(copiedNode, false);
             }
         }
     }
@@ -214,7 +216,6 @@ public class KGraphMerger {
         }
         
         // Transfer source and target ports.
-        handleLabels(baseEdge, newEdge);
         KPort baseTargetPort = comparison.lookupBasePort(newEdge.getTargetPort());
         if (baseTargetPort != baseEdge.getTargetPort()) {
             baseEdge.setTargetPort(baseTargetPort);
@@ -232,7 +233,9 @@ public class KGraphMerger {
         bendPoints.clear();
         for (KPoint kPoint : newEdge.getBendPoints()) {
             bendPoints.add(EcoreUtil.copy(kPoint));
-        }        
+        }
+        comparison.getBaseAdapter().generateIDs(baseEdge, false);
+        handleLabels(baseEdge, newEdge);
     }
 
     /**
@@ -246,20 +249,25 @@ public class KGraphMerger {
      */
     private void handleLabels(final KLabeledGraphElement baseElement,
             final KLabeledGraphElement newElement) {
-        // Every label that is not in the new graph has to be removed. Will whittle it down.
-        LinkedList<KLabel> removedLabels = Lists.newLinkedList(baseElement.getLabels());
-        LinkedList<KLabel> newLabels = Lists.newLinkedList();
-        for (KLabel newLabel : newElement.getLabels()) {
+        Set<KLabel> oldLabels = null;
+        if (baseElement != null) {
+            oldLabels = new HashSet<KLabel>(baseElement.getLabels());
+        }
+        for (KLabel newLabel : Lists.newLinkedList(newElement.getLabels())) {
             KLabel baseLabel = comparison.lookupBaseLabel(newLabel);
-            if (baseLabel != null) {
-                removedLabels.remove(baseLabel);
+            if (baseLabel == null) {
+                baseLabel = EcoreUtil.copy(newLabel);
                 updateLabel(baseLabel, newLabel);
             } else {
-                newLabels.add(newLabel);
+                if (oldLabels != null) {
+                    oldLabels.remove(baseLabel);
+                }
+                updateLabel(baseLabel, newLabel);
             }
         }
-        baseElement.getLabels().removeAll(removedLabels);
-        baseElement.getLabels().addAll(newLabels);
+        if (baseElement != null) {
+            baseElement.getLabels().removeAll(oldLabels);
+        }
     }
 
     /**
@@ -271,10 +279,25 @@ public class KGraphMerger {
      *            the label to update from.
      */
     private void updateLabel(final KLabel baseLabel, final KLabel newLabel) {
+        // Transfer parent.
+        KLabeledGraphElement newParent = newLabel.getParent();
+        KLabeledGraphElement baseParent = null;
+        if (newParent instanceof KNode) {
+            baseParent = comparison.lookupBaseNode((KNode) newLabel.getParent());
+        } else if (newParent instanceof KPort) {
+            baseParent = comparison.lookupBasePort((KPort) newLabel.getParent());
+        } else if (newParent instanceof KEdge) {
+            baseParent = comparison.lookupBaseEdge((KEdge) newLabel.getParent());
+        }
+        if (baseParent != baseLabel.getParent()) {
+            baseLabel.setParent(baseParent);
+        }
+        
         updateGraphElement(baseLabel, newLabel);
         updateShapeLayout(baseLabel, newLabel);
         baseLabel.setText(newLabel.getText());
         copyInsets(newLabel.getInsets(), baseLabel.getInsets());
+        comparison.getBaseAdapter().generateIDs(baseLabel, false);
     }
 
     /**
@@ -287,20 +310,23 @@ public class KGraphMerger {
      *            the node to update from.
      */
     private void handlePorts(final KNode baseNode, final KNode newNode) {
-        // Every port that is not in the new graph has to be removed. Will whittle it down.
-        LinkedList<KPort> removedPorts = Lists.newLinkedList(baseNode.getPorts());
-        LinkedList<KPort> newPorts = Lists.newLinkedList();
-        for (KPort newPort : newNode.getPorts()) {
+        Set<KPort> oldPorts = null;
+        if (baseNode != null) {
+            oldPorts = new HashSet<KPort>(baseNode.getPorts());
+        }
+        for (KPort newPort : Lists.newLinkedList(newNode.getPorts())) {
             KPort basePort = comparison.lookupBasePort(newPort);
-            if (basePort != null) {
-                removedPorts.remove(basePort);
+            if (basePort == null) {
+                basePort = EcoreUtil.copy(newPort);
                 updatePort(basePort, newPort);
             } else {
-                newPorts.add(newPort);
+                if (oldPorts != null) {
+                    oldPorts.remove(basePort);
+                }
+                updatePort(basePort, newPort);
             }
         }
-        baseNode.getPorts().removeAll(removedPorts);
-        baseNode.getPorts().addAll(newPorts);
+        
     }
 
     /**
@@ -312,9 +338,16 @@ public class KGraphMerger {
      *            the port to update from.
      */
     private void updatePort(final KPort basePort, final KPort newPort) {
+        // Transfer parent.
+        KNode baseNode = comparison.lookupBaseNode(newPort.getNode());
+        if (baseNode != basePort.getNode()) {
+            basePort.setNode(baseNode);
+        }
+        
         updateGraphElement(basePort, newPort);
         updateShapeLayout(basePort, newPort);
         copyInsets(newPort.getInsets(), basePort.getInsets());
+        comparison.getBaseAdapter().generateIDs(basePort, false);
         handleLabels(basePort, newPort);
     }
 
